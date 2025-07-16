@@ -1,0 +1,19 @@
+# noinspection EditorConfigKeyCorrectness
+[**/generated/**]
+ktlint = disabled
+
+[**/generate-resources/**]
+ktlint = disabled
+
+[*.gradle.kts]
+ktlint = disabled
+
+[*.{kt,kts}]
+indent_size = 4
+insert_final_newline = true
+max_line_length = 120
+
+ktlint_standard_multiline-expression-wrapping = disabled
+ktlint_standard_function-naming = disabled
+ktlint_standard_chain-method-continuation = disabled
+ktlint_standard_function-expression-body = disabled
