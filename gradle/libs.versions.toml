@@ -78,6 +78,7 @@ koin-android-compose = { module = "io.insert-koin:koin-androidx-compose" }
 
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-config = { group = "com.google.firebase", name = "firebase-config" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 

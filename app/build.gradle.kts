@@ -78,6 +78,7 @@ dependencies {
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.config)
+    implementation(libs.firebase.analytics)
 
     // Android Compose
     implementation(platform(libs.androidx.compose.bom))

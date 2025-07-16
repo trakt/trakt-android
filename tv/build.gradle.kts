@@ -58,6 +58,7 @@ dependencies {
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.config)
+    implementation(libs.firebase.analytics)
 
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.okhttp)
