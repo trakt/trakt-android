@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.google.services)
 }
 
 private val localProperties = gradleLocalProperties(rootDir, providers)
@@ -58,12 +59,6 @@ android {
         compose = true
     }
 
-    sourceSets {
-        getByName("main") {
-            java.srcDir("${rootDir}/build/generate-resources/main/src/main")
-        }
-    }
-
     kotlin {
         jvmToolchain(11)
     }
@@ -75,9 +70,14 @@ android {
 }
 
 dependencies {
+    implementation(project(path = ":tv"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.android.material)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.config)
 
     // Android Compose
     implementation(platform(libs.androidx.compose.bom))

@@ -1,0 +1,290 @@
+package tv.trakt.app.tv.core.main
+
+import android.app.Activity
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Brush.Companion.horizontalGradient
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
+import androidx.tv.material3.DrawerValue.Closed
+import androidx.tv.material3.DrawerValue.Open
+import androidx.tv.material3.ModalNavigationDrawer
+import androidx.tv.material3.rememberDrawerState
+import tv.trakt.app.tv.LocalDrawerVisibility
+import tv.trakt.app.tv.LocalSnackbarState
+import tv.trakt.app.tv.R
+import tv.trakt.app.tv.core.auth.navigation.authScreen
+import tv.trakt.app.tv.core.auth.navigation.navigateToAuth
+import tv.trakt.app.tv.core.details.episode.navigation.episodeDetailsScreen
+import tv.trakt.app.tv.core.details.episode.navigation.navigateToEpisode
+import tv.trakt.app.tv.core.details.lists.details.movies.navigation.customListMovies
+import tv.trakt.app.tv.core.details.lists.details.movies.navigation.navigateToCustomListMovies
+import tv.trakt.app.tv.core.details.lists.details.shows.navigation.customListShows
+import tv.trakt.app.tv.core.details.lists.details.shows.navigation.navigateToCustomListShows
+import tv.trakt.app.tv.core.details.movie.navigation.movieDetailsScreen
+import tv.trakt.app.tv.core.details.movie.navigation.navigateToMovie
+import tv.trakt.app.tv.core.details.show.navigation.navigateToShow
+import tv.trakt.app.tv.core.details.show.navigation.showDetailsScreen
+import tv.trakt.app.tv.core.home.navigation.HomeDestination
+import tv.trakt.app.tv.core.home.navigation.homeScreen
+import tv.trakt.app.tv.core.home.navigation.navigateToHome
+import tv.trakt.app.tv.core.lists.details.movies.navigation.navigateToWatchlistMovies
+import tv.trakt.app.tv.core.lists.details.movies.navigation.watchlistMovies
+import tv.trakt.app.tv.core.lists.details.shows.navigation.navigateToWatchlistShows
+import tv.trakt.app.tv.core.lists.details.shows.navigation.watchlistShows
+import tv.trakt.app.tv.core.lists.navigation.listsScreen
+import tv.trakt.app.tv.core.main.navigation.navigateToMainDestination
+import tv.trakt.app.tv.core.main.ui.drawer.NavigationDrawerContent
+import tv.trakt.app.tv.core.main.ui.snackbar.MainSnackbarHost
+import tv.trakt.app.tv.core.movies.navigation.moviesScreen
+import tv.trakt.app.tv.core.people.navigation.navigateToPerson
+import tv.trakt.app.tv.core.people.navigation.personDetailsScreen
+import tv.trakt.app.tv.core.profile.navigation.navigateToProfile
+import tv.trakt.app.tv.core.profile.navigation.profileScreen
+import tv.trakt.app.tv.core.profile.sections.favorites.movies.viewall.navigation.navigateToProfileFavoriteMoviesViewAll
+import tv.trakt.app.tv.core.profile.sections.favorites.movies.viewall.navigation.profileFavoriteMoviesViewAllScreen
+import tv.trakt.app.tv.core.profile.sections.favorites.shows.viewall.navigation.navigateToProfileFavoriteShowsViewAll
+import tv.trakt.app.tv.core.profile.sections.favorites.shows.viewall.navigation.profileFavoriteShowsViewAllScreen
+import tv.trakt.app.tv.core.profile.sections.history.viewall.navigation.navigateToProfileHistoryViewAll
+import tv.trakt.app.tv.core.profile.sections.history.viewall.navigation.profileHistoryViewAllScreen
+import tv.trakt.app.tv.core.shows.navigation.showsScreen
+import tv.trakt.app.tv.core.splash.SplashScreen
+import tv.trakt.app.tv.ui.theme.TraktTheme
+
+@Composable
+internal fun MainScreen(
+    viewModel: MainViewModel,
+    modifier: Modifier = Modifier,
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    val localContext = LocalContext.current
+    val localSnackbar = LocalSnackbarState.current
+    val localDrawerVisibility = LocalDrawerVisibility.current
+
+    val drawerState = rememberDrawerState(Closed)
+    val hostFocusRequester = remember { FocusRequester() }
+    val backHandlerEnabled by remember { mutableStateOf(true) }
+
+    val navController = rememberNavController()
+    val currentDestination = navController
+        .currentBackStackEntryFlow
+        .collectAsStateWithLifecycle(initialValue = null)
+
+    LaunchedEffect(state.isSignedOut) {
+        if (state.isSignedOut == true) {
+            navController.navigateToAuth()
+            localSnackbar.showSnackbar(localContext.getString(R.string.info_signed_out))
+        }
+    }
+
+    ModalNavigationDrawer(
+        modifier = modifier
+            .fillMaxSize()
+            .background(TraktTheme.colors.backgroundPrimary)
+            .alpha(if (state.splash == null || state.splash == true) 0f else 1f),
+        scrimBrush = horizontalGradient(listOf(Color.Black.copy(alpha = 0.9F), Color.Transparent)),
+        drawerState = drawerState,
+        drawerContent = { drawerValue ->
+            Box(
+                modifier = Modifier
+                    .requiredWidth(TraktTheme.size.navigationDrawerSize)
+                    .alpha(if (localDrawerVisibility.value) 1f else 0f),
+            ) {
+                NavigationDrawerContent(
+                    drawerValue = drawerValue,
+                    currentDestination = currentDestination.value?.destination,
+                    profile = state.profile,
+                    modifier = Modifier
+                        .padding(
+                            start = 16.dp,
+                            top = 24.dp,
+                            bottom = 24.dp,
+                        )
+                        .onPreviewKeyEvent {
+                            when {
+                                KeyEventType.KeyUp == it.type && Key.DirectionRight == it.key -> {
+                                    drawerState.setValue(Closed)
+                                    hostFocusRequester.requestFocus()
+                                    true
+                                }
+
+                                else -> false
+                            }
+                        },
+                    onProfileSelected = {
+                        drawerState.setValue(Closed)
+                        when (state.profile) {
+                            null -> navController.navigateToAuth()
+                            else -> navController.navigateToProfile()
+                        }
+                    },
+                    onSelected = {
+                        navController.navigateToMainDestination(
+                            destination = it.destination,
+                            isSignedIn = state.profile != null,
+                        )
+                    },
+                    onReselected = {
+                        drawerState.setValue(Closed)
+                        hostFocusRequester.requestFocus()
+                    },
+                )
+            }
+        },
+    ) {
+        MainNavHost(
+            navController = navController,
+            hostFocusRequester = hostFocusRequester,
+            onAuthorized = {
+                drawerState.setValue(Closed)
+                navController.navigateToHome()
+            },
+        )
+
+        MainSnackbarHost(
+            snackbarHostState = localSnackbar,
+        )
+    }
+
+    if (state.splash == true) {
+        SplashScreen(onDismiss = {
+            viewModel.dismissSplash()
+            drawerState.setValue(Closed)
+        })
+    }
+
+    BackHandler(backHandlerEnabled) {
+        when {
+            drawerState.currentValue == Open -> {
+                (localContext as? Activity)?.finish()
+            }
+
+            navController.previousBackStackEntry == null -> {
+                drawerState.setValue(Open)
+            }
+
+            else -> navController.popBackStack()
+        }
+    }
+}
+
+@Composable
+private fun MainNavHost(
+    navController: NavHostController,
+    hostFocusRequester: FocusRequester,
+    modifier: Modifier = Modifier,
+    onAuthorized: () -> Unit,
+) {
+    NavHost(
+        navController = navController,
+        startDestination = HomeDestination,
+        modifier = modifier.focusRequester(hostFocusRequester),
+    ) {
+        with(navController) {
+            authScreen(
+                onAuthorized = onAuthorized,
+            )
+            homeScreen(
+                onNavigateToAuth = { navigateToAuth() },
+                onNavigateToMovie = { navigateToMovie(it) },
+                onNavigateToEpisode = { showId, episodeId ->
+                    navigateToEpisode(showId, episodeId)
+                },
+            )
+            profileScreen(
+                onNavigateToShow = { navigateToShow(it) },
+                onNavigateToMovie = { navigateToMovie(it) },
+                onNavigateToEpisode = { showId, episodeId ->
+                    navigateToEpisode(showId, episodeId)
+                },
+                onNavigateToHistoryViewAll = { navigateToProfileHistoryViewAll() },
+                onNavigateToFavShowsViewAll = { navigateToProfileFavoriteShowsViewAll() },
+                onNavigateToFavMoviesViewAll = { navigateToProfileFavoriteMoviesViewAll() },
+            )
+            profileHistoryViewAllScreen(
+                onNavigateToMovie = { navigateToMovie(it) },
+                onNavigateToEpisode = { showId, episode ->
+                    navigateToEpisode(showId, episode)
+                },
+            )
+            profileFavoriteShowsViewAllScreen(
+                onNavigateToShow = { navigateToShow(it) },
+            )
+            profileFavoriteMoviesViewAllScreen(
+                onNavigateToMovie = { navigateToMovie(it) },
+            )
+            showsScreen(
+                onNavigateToShow = { navigateToShow(it) },
+            )
+            moviesScreen(
+                onNavigateToMovie = { navigateToMovie(it) },
+            )
+            listsScreen(
+                onNavigateToShow = { navigateToShow(it) },
+                onNavigateToMovie = { navigateToMovie(it) },
+                onNavigateToWatchlistShow = { navigateToWatchlistShows() },
+                onNavigateToWatchlistMovie = { navigateToWatchlistMovies() },
+            )
+            watchlistMovies(
+                onNavigateToMovie = { navigateToMovie(it) },
+            )
+            watchlistShows(
+                onNavigateToShow = { navigateToShow(it) },
+            )
+            showDetailsScreen(
+                onNavigateToShow = { navigateToShow(it) },
+                onNavigateToEpisode = { showId, episodeId ->
+                    navigateToEpisode(showId, episodeId)
+                },
+                onNavigateToPerson = { navigateToPerson(it) },
+                onNavigateToList = { navigateToCustomListShows(it) },
+            )
+            movieDetailsScreen(
+                onNavigateToMovie = { navigateToMovie(it) },
+                onNavigateToPerson = { navigateToPerson(it) },
+                onNavigateToList = { navigateToCustomListMovies(it) },
+            )
+            episodeDetailsScreen(
+                onNavigateToShow = { navigateToShow(it) },
+                onNavigateToEpisode = { showId, episodeId ->
+                    navigateToEpisode(showId, episodeId)
+                },
+                onNavigateToPerson = { navigateToPerson(it) },
+            )
+            personDetailsScreen(
+                onNavigateToShow = { navigateToShow(it) },
+                onNavigateToMovie = { navigateToMovie(it) },
+            )
+            customListShows(
+                onNavigateToShow = { navigateToShow(it) },
+            )
+            customListMovies(
+                onNavigateToMovie = { navigateToMovie(it) },
+            )
+        }
+    }
+}

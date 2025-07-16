@@ -1,0 +1,117 @@
+package tv.trakt.app.tv.core.episodes.data.remote
+
+import org.openapitools.client.apis.ShowsApi
+import org.openapitools.client.apis.UsersApi
+import tv.trakt.app.tv.common.model.TraktId
+import tv.trakt.app.tv.networking.openapi.CastCrewDto
+import tv.trakt.app.tv.networking.openapi.CommentDto
+import tv.trakt.app.tv.networking.openapi.EpisodeDto
+import tv.trakt.app.tv.networking.openapi.ExternalRatingsDto
+import tv.trakt.app.tv.networking.openapi.StreamingDto
+import tv.trakt.app.tv.networking.openapi.SyncHistoryEpisodeItemDto
+
+internal class EpisodesApiClient(
+    private val showsApi: ShowsApi,
+    private val usersApi: UsersApi,
+) : EpisodesRemoteDataSource {
+    override suspend fun getEpisodeDetails(
+        showId: TraktId,
+        season: Int,
+        episode: Int,
+    ): EpisodeDto {
+        val response = showsApi.getShowsEpisodeSummary(
+            id = showId.value.toString(),
+            season = season,
+            episode = episode,
+            extended = "full,cloud9",
+        )
+        return response.body()
+    }
+
+    override suspend fun getEpisodeExternalRatings(
+        showId: TraktId,
+        season: Int,
+        episode: Int,
+    ): ExternalRatingsDto {
+        val response = showsApi.getShowsEpisodeRatings(
+            id = showId.value.toString(),
+            season = season,
+            episode = episode,
+            extended = "all",
+        )
+        return response.body()
+    }
+
+    override suspend fun getEpisodeStreamings(
+        showId: TraktId,
+        season: Int,
+        episode: Int,
+        countryCode: String,
+    ): Map<String, StreamingDto> {
+        val response = showsApi.getShowsEpisodeWatchnow(
+            country = countryCode,
+            id = showId.value.toString(),
+            season = season,
+            episode = episode,
+            links = "direct",
+        )
+        return response.body()
+    }
+
+    override suspend fun getEpisodeCastCrew(
+        showId: TraktId,
+        season: Int,
+        episode: Int,
+    ): CastCrewDto {
+        val response = showsApi.getShowsEpisodePeople(
+            id = showId.value.toString(),
+            season = season,
+            episode = episode,
+            extended = "cloud9",
+        )
+        return response.body()
+    }
+
+    override suspend fun getEpisodeComments(
+        showId: TraktId,
+        season: Int,
+        episode: Int,
+    ): List<CommentDto> {
+        val response = showsApi.getShowsEpisodeComments(
+            id = showId.value.toString(),
+            season = season,
+            episode = episode,
+            sort = "likes",
+            extended = "images",
+            page = null,
+            limit = 20.toString(),
+        )
+        return response.body()
+    }
+
+    override suspend fun getEpisodeSeason(
+        showId: TraktId,
+        season: Int,
+    ): List<EpisodeDto> {
+        val response = showsApi.getShowsSeasonEpisodes(
+            id = showId.value.toString(),
+            season = season,
+            extended = "full,cloud9",
+        )
+        return response.body()
+    }
+
+    override suspend fun getEpisodeHistory(episodeId: TraktId): List<SyncHistoryEpisodeItemDto> {
+        val response = usersApi.getUsersHistoryEpisode(
+            id = "me",
+            itemId = episodeId.value.toString(),
+            extended = "full,images",
+            startAt = null,
+            endAt = null,
+            page = 1,
+            limit = 50,
+        )
+
+        return response.body()
+    }
+}

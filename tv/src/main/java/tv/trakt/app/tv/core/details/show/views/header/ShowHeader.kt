@@ -1,0 +1,252 @@
+package tv.trakt.app.tv.core.details.show.views.header
+
+import ExternalRatingsStrip
+import InfoChip
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Person
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.type
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.tv.material3.Icon
+import androidx.tv.material3.Text
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import tv.trakt.app.tv.R
+import tv.trakt.app.tv.common.model.ExternalRating
+import tv.trakt.app.tv.common.model.Images.Size.MEDIUM
+import tv.trakt.app.tv.core.details.show.ShowDetailsState.CollectionState
+import tv.trakt.app.tv.core.details.ui.PosterImage
+import tv.trakt.app.tv.core.shows.model.Show
+import tv.trakt.app.tv.helpers.extensions.onClick
+import tv.trakt.app.tv.helpers.extensions.thousandsFormat
+import tv.trakt.app.tv.helpers.longDateFormat
+import tv.trakt.app.tv.ui.theme.TraktTheme
+import tv.trakt.app.tv.ui.theme.colors.Red500
+
+@Composable
+internal fun ShowHeader(
+    show: Show,
+    showCollection: CollectionState,
+    externalRating: ExternalRating?,
+    modifier: Modifier = Modifier,
+    focusRequester: FocusRequester,
+    onFocused: (String) -> Unit,
+    onPosterUnfocused: () -> Unit,
+    onBackdropFocused: () -> Unit,
+) {
+    val scope = rememberCoroutineScope()
+    var isPosterFocused by remember { mutableStateOf(false) }
+
+    Row(
+        horizontalArrangement = Arrangement.Absolute.spacedBy(24.dp, Alignment.Start),
+        verticalAlignment = Alignment.Bottom,
+        modifier = modifier
+            .padding(
+                start = TraktTheme.spacing.mainContentStartSpace,
+                top = TraktTheme.spacing.mainContentVerticalSpace,
+            )
+            .fillMaxWidth()
+            .height(TraktTheme.size.detailsPosterSize),
+    ) {
+        PosterImage(
+            posterUrl = show.images?.getPosterUrl(size = MEDIUM),
+            modifier = Modifier
+                .onKeyEvent {
+                    if (!isPosterFocused) {
+                        return@onKeyEvent false
+                    }
+                    if (it.type == KeyEventType.KeyUp && it.key == Key.DirectionUp) {
+                        onBackdropFocused()
+                        return@onKeyEvent true
+                    }
+                    return@onKeyEvent false
+                }
+                .onFocusChanged {
+                    if (it.isFocused) {
+                        onFocused("poster")
+                    } else {
+                        onPosterUnfocused()
+                    }
+                    scope.launch {
+                        delay(100)
+                        isPosterFocused = it.isFocused
+                    }
+                }
+                .focusRequester(focusRequester)
+                .onClick {
+                    onPosterUnfocused()
+                },
+        )
+
+        Column {
+            Text(
+                text = show.title,
+                color = TraktTheme.colors.textPrimary,
+                style = TraktTheme.typography.heading3,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(end = TraktTheme.spacing.mainContentEndSpace),
+            )
+
+            Row(
+                horizontalArrangement = Arrangement.Absolute.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(top = 4.dp),
+            ) {
+                // Release date
+                val releaseDate = show.released
+                if (releaseDate != null) {
+                    Row(
+                        horizontalArrangement = Arrangement.Absolute.spacedBy(4.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_calendar),
+                            contentDescription = "Genres",
+                            tint = TraktTheme.colors.textSecondary,
+                            modifier = Modifier.size(18.dp),
+                        )
+                        Text(
+                            text = releaseDate.format(longDateFormat),
+                            color = TraktTheme.colors.textSecondary,
+                            style = TraktTheme.typography.heading6,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
+                }
+
+                // Genres
+                Row(
+                    horizontalArrangement = Arrangement.Absolute.spacedBy(6.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_clapper),
+                        contentDescription = "Genres",
+                        tint = TraktTheme.colors.textSecondary,
+                        modifier = Modifier.size(14.dp),
+                    )
+                    Text(
+                        text = show.genres.take(5)
+                            .joinToString(" / ") { genre ->
+                                genre.replaceFirstChar { it.uppercaseChar() }
+                            },
+                        color = TraktTheme.colors.textSecondary,
+                        style = TraktTheme.typography.heading6,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+            }
+
+            Column(
+                verticalArrangement = Arrangement.Absolute.spacedBy(8.dp),
+                modifier = Modifier.padding(top = 24.dp),
+            ) {
+                // Ratings
+                Row(
+                    horizontalArrangement = Arrangement.Absolute.spacedBy(16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.horizontalScroll(rememberScrollState()),
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.Absolute.spacedBy(2.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_heart),
+                            contentDescription = null,
+                            tint = Red500,
+                            modifier = Modifier.size(18.dp),
+                        )
+                        Text(
+                            text = "${show.rating.ratingPercent}%",
+                            color = TraktTheme.colors.textPrimary,
+                            style = TraktTheme.typography.ratingLabel,
+                        )
+
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.align(Alignment.Top),
+                        ) {
+                            Icon(
+                                imageVector = Icons.Rounded.Person,
+                                contentDescription = null,
+                                tint = TraktTheme.colors.textSecondary,
+                                modifier = Modifier.size(12.5.dp),
+                            )
+                            Text(
+                                text = show.rating.votes.thousandsFormat(),
+                                color = TraktTheme.colors.textSecondary,
+                                style = TraktTheme.typography.ratingLabel.copy(fontSize = 12.sp),
+                            )
+                        }
+                    }
+
+                    AnimatedVisibility(
+                        visible = externalRating != null,
+                        enter = fadeIn(),
+                        exit = fadeOut(),
+                    ) {
+                        ExternalRatingsStrip(
+                            externalRating = externalRating,
+                        )
+                    }
+                }
+
+                // Info chips
+                if (show.certification != null || show.released != null) {
+                    Row(
+                        horizontalArrangement = Arrangement.Absolute.spacedBy(6.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        if (showCollection.episodesPlays > 0) {
+                            val episodes = remember(showCollection.episodesPlays) { showCollection.episodesPlays }
+                            InfoChip(
+                                text = stringResource(R.string.episodes_watched, episodes).uppercase(),
+                                containerColor = TraktTheme.colors.accent,
+                            )
+                        }
+                        if (show.certification != null) {
+                            InfoChip(text = show.certification)
+                        }
+                        if (show.released != null) {
+                            InfoChip(text = show.released.year.toString())
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
