@@ -6,6 +6,7 @@ import androidx.compose.runtime.Immutable
 
 @Immutable
 internal data class NavigationItem(
+    val destination: Any,
     @param:StringRes val label: Int,
     @param:DrawableRes val iconOn: Int,
     @param:DrawableRes val iconOff: Int,
