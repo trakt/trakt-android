@@ -4,7 +4,6 @@ import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,9 +41,7 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
         .collectAsStateWithLifecycle(initialValue = null)
 
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(TraktTheme.colors.backgroundPrimary),
+        modifier = modifier.fillMaxSize(),
     ) {
         MainNavHost(
             navController = navController,
@@ -53,7 +49,7 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
 
         NavigationBar(
             containerColor = TraktTheme.colors.navigationContainer,
-            contentColor = Color.Transparent,
+            contentColor = TraktTheme.colors.accent,
             modifier = Modifier
                 .align(BottomCenter)
                 .fillMaxWidth()

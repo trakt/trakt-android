@@ -20,6 +20,9 @@ internal class MainActivity : ComponentActivity() {
             navigationBarStyle = SystemBarStyle.Companion.dark(
                 scrim = Color.TRANSPARENT,
             ),
+            statusBarStyle = SystemBarStyle.Companion.dark(
+                scrim = Color.TRANSPARENT,
+            ),
         )
 
         setContent {
