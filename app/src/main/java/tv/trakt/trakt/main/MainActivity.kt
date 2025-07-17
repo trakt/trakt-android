@@ -16,9 +16,8 @@ internal class MainActivity : ComponentActivity() {
 
         setupOrientation()
         enableEdgeToEdge(
-            navigationBarStyle = SystemBarStyle.light(
+            navigationBarStyle = SystemBarStyle.dark(
                 scrim = TRANSPARENT,
-                darkScrim = TRANSPARENT,
             ),
         )
 

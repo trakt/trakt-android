@@ -53,6 +53,7 @@ import tv.trakt.trakt.tv.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.tv.helpers.extensions.toLocal
 import tv.trakt.trakt.tv.helpers.longDateTimeFormat
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
+import tv.trakt.trakt.common.R as RCommon
 
 @Composable
 internal fun EpisodeHeader(
@@ -143,7 +144,7 @@ internal fun EpisodeHeader(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_shows_off),
+                        painter = painterResource(RCommon.drawable.ic_shows_off),
                         contentDescription = "Genres",
                         tint = TraktTheme.colors.textSecondary,
                         modifier = Modifier.size(18.dp),

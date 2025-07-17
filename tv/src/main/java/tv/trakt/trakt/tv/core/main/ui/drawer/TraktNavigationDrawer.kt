@@ -68,6 +68,7 @@ import tv.trakt.trakt.tv.helpers.extensions.onClick
 import tv.trakt.trakt.tv.helpers.preview.PreviewData
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
 import kotlin.math.max
+import tv.trakt.trakt.common.R as RCommon
 
 @Composable
 internal fun NavigationDrawerContent(
@@ -395,26 +396,26 @@ private fun Preview() {
 private val drawerItems = listOf(
     TraktDrawerItem(
         destination = HomeDestination,
-        label = R.string.home,
-        iconOn = R.drawable.ic_home_on,
-        iconOff = R.drawable.ic_home_off,
+        label = RCommon.string.home,
+        iconOn = RCommon.drawable.ic_home_on,
+        iconOff = RCommon.drawable.ic_home_off,
     ),
     TraktDrawerItem(
         destination = ShowsDestination,
-        label = R.string.shows,
-        iconOn = R.drawable.ic_shows_on,
-        iconOff = R.drawable.ic_shows_off,
+        label = RCommon.string.shows,
+        iconOn = RCommon.drawable.ic_shows_on,
+        iconOff = RCommon.drawable.ic_shows_off,
     ),
     TraktDrawerItem(
         destination = MoviesDestination,
-        label = R.string.movies,
-        iconOn = R.drawable.ic_movies_on,
-        iconOff = R.drawable.ic_movie_off,
+        label = RCommon.string.movies,
+        iconOn = RCommon.drawable.ic_movies_on,
+        iconOff = RCommon.drawable.ic_movies_off,
     ),
     TraktDrawerItem(
         destination = ListsDestination,
-        label = R.string.lists,
-        iconOn = R.drawable.ic_lists_on,
-        iconOff = R.drawable.ic_lists_off,
+        label = RCommon.string.lists,
+        iconOn = RCommon.drawable.ic_lists_on,
+        iconOff = RCommon.drawable.ic_lists_off,
     ),
 )

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Trakt</string>
+
+    <string name="search">Search</string>
+    <string name="home">Home</string>
+    <string name="shows">Shows</string>
+    <string name="movies">Movies</string>
+    <string name="lists">Lists</string>
+</resources>

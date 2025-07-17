@@ -60,6 +60,7 @@ import tv.trakt.trakt.tv.helpers.extensions.onClick
 import tv.trakt.trakt.tv.helpers.preview.PreviewData
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
 import kotlin.math.roundToInt
+import tv.trakt.trakt.common.R as RCommon
 
 private val sections = listOf(
     "poster",
@@ -279,7 +280,7 @@ private fun MainContent(
             exit = fadeOut(),
         ) {
             ShowCreditsList(
-                header = stringResource(R.string.shows),
+                header = stringResource(RCommon.string.shows),
                 shows = showCredits ?: emptyList<Show>().toImmutableList(),
                 onFocused = { onFocused("shows") },
                 onClicked = onShowClick,
@@ -294,7 +295,7 @@ private fun MainContent(
             exit = fadeOut(),
         ) {
             MovieCreditsList(
-                header = stringResource(R.string.movies),
+                header = stringResource(RCommon.string.movies),
                 movies = movieCredits ?: emptyList<Movie>().toImmutableList(),
                 onFocused = { onFocused("movies") },
                 onClicked = onMovieClick,
