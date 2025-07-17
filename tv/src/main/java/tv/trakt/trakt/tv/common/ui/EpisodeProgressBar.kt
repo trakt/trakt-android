@@ -15,8 +15,8 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Text
+import tv.trakt.trakt.common.ui.theme.colors.Purple700
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
-import tv.trakt.trakt.tv.ui.theme.colors.Purple700
 
 @Composable
 internal fun EpisodeProgressBar(

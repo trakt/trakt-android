@@ -4,6 +4,16 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
+import tv.trakt.trakt.common.ui.theme.colors.Purple400
+import tv.trakt.trakt.common.ui.theme.colors.Purple500
+import tv.trakt.trakt.common.ui.theme.colors.Purple900
+import tv.trakt.trakt.common.ui.theme.colors.Shade300
+import tv.trakt.trakt.common.ui.theme.colors.Shade600
+import tv.trakt.trakt.common.ui.theme.colors.Shade700
+import tv.trakt.trakt.common.ui.theme.colors.Shade800
+import tv.trakt.trakt.common.ui.theme.colors.Shade900
+import tv.trakt.trakt.common.ui.theme.colors.Shade920
+import tv.trakt.trakt.common.ui.theme.colors.Shade940
 
 val DarkColors: TraktColors = TraktColors(
     accent = Purple500,

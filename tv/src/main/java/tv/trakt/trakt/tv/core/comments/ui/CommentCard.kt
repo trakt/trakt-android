@@ -44,12 +44,12 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
+import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.tv.R
 import tv.trakt.trakt.tv.common.model.Comment
 import tv.trakt.trakt.tv.helpers.longDateTimeFormat
 import tv.trakt.trakt.tv.helpers.preview.PreviewData
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
-import tv.trakt.trakt.tv.ui.theme.colors.Shade500
 
 @Composable
 internal fun CommentCard(

@@ -22,10 +22,10 @@ import androidx.tv.material3.Border
 import androidx.tv.material3.Card
 import androidx.tv.material3.CardDefaults
 import androidx.tv.material3.Text
+import tv.trakt.trakt.common.ui.theme.colors.Purple300
+import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.tv.R
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
-import tv.trakt.trakt.tv.ui.theme.colors.Purple300
-import tv.trakt.trakt.tv.ui.theme.colors.Purple400
 
 @Composable
 internal fun HorizontalViewAllCard(

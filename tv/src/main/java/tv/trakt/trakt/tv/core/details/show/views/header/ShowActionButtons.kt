@@ -18,15 +18,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import tv.trakt.trakt.common.ui.theme.colors.Blue50
+import tv.trakt.trakt.common.ui.theme.colors.Blue500
+import tv.trakt.trakt.common.ui.theme.colors.Purple50
+import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.tv.Config
 import tv.trakt.trakt.tv.R
 import tv.trakt.trakt.tv.core.details.show.ShowDetailsState.CollectionState
 import tv.trakt.trakt.tv.core.details.show.ShowDetailsState.StreamingsState
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
-import tv.trakt.trakt.tv.ui.theme.colors.Blue50
-import tv.trakt.trakt.tv.ui.theme.colors.Blue500
-import tv.trakt.trakt.tv.ui.theme.colors.Purple50
-import tv.trakt.trakt.tv.ui.theme.colors.Purple500
 
 @Composable
 internal fun ShowActionButtons(
