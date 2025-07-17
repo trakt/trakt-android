@@ -5,10 +5,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.common.helpers.extensions.popUpToTop
 import tv.trakt.trakt.tv.common.model.TraktId
 import tv.trakt.trakt.tv.core.episodes.model.Episode
 import tv.trakt.trakt.tv.core.home.HomeScreen
-import tv.trakt.trakt.tv.helpers.extensions.popUpToTop
 
 @Serializable
 internal data object HomeDestination

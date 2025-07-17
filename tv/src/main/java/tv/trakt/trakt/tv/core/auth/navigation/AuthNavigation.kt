@@ -5,8 +5,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.common.helpers.extensions.popUpToTop
 import tv.trakt.trakt.tv.core.auth.AuthScreen
-import tv.trakt.trakt.tv.helpers.extensions.popUpToTop
 
 @Serializable
 internal data object AuthDestination

@@ -1,4 +1,4 @@
-package tv.trakt.trakt.main.model
+package tv.trakt.trakt.core.main.model
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

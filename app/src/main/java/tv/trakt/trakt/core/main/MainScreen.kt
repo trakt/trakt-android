@@ -1,4 +1,4 @@
-package tv.trakt.trakt.main
+package tv.trakt.trakt.core.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -24,12 +24,24 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import tv.trakt.trakt.main.model.NavigationItem
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
+import tv.trakt.trakt.core.main.model.NavigationItem
+import tv.trakt.trakt.core.shows.navigation.ShowsDestination
+import tv.trakt.trakt.core.shows.navigation.showsScreen
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.common.R as RCommon
 
 @Composable
 internal fun MainScreen(modifier: Modifier = Modifier) {
+    val navController = rememberNavController()
+
+    val currentDestination = navController
+        .currentBackStackEntryFlow
+        .collectAsStateWithLifecycle(initialValue = null)
+
     var selectedDestination by remember { mutableIntStateOf(0) }
 
     Box(
@@ -37,6 +49,10 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
             .fillMaxSize()
             .background(TraktTheme.colors.backgroundPrimary),
     ) {
+        MainNavHost(
+            navController = navController,
+        )
+
         NavigationBar(
             containerColor = TraktTheme.colors.navigationContainer,
             contentColor = Color.Transparent,
@@ -77,6 +93,24 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun MainNavHost(
+    navController: NavHostController,
+    modifier: Modifier = Modifier,
+) {
+    NavHost(
+        navController = navController,
+        startDestination = ShowsDestination,
+        modifier = modifier,
+    ) {
+        with(navController) {
+            showsScreen(
+                onNavigateToShow = {},
+            )
         }
     }
 }

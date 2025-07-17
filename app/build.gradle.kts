@@ -76,6 +76,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.android.material)
+    implementation(libs.androidx.navigation)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.config)

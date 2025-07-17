@@ -1,4 +1,4 @@
-package tv.trakt.trakt.tv.helpers.extensions
+package tv.trakt.trakt.common.helpers.extensions
 
 import androidx.navigation.NavController
 import androidx.navigation.NavOptionsBuilder
