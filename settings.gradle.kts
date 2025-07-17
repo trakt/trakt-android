@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "Trakt"
 include(":app")
 include(":tv")
+include(":common")

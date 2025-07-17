@@ -70,7 +70,8 @@ android {
 }
 
 dependencies {
-    implementation(project(path = ":tv"))
+    implementation(project(":common"))
+    implementation(project(":tv"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
