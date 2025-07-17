@@ -27,7 +27,7 @@
 
     <string name="episode_number">Episode %d</string>
     <string name="season_number">Season %d</string>
-    <string name="season_episode_number">Season %d • Episode %d</string>
+    <string name="season_episode_number">Season %1$d • Episode %2$d</string>
     <string name="episodes_number">%d episodes</string>
     <string name="episodes_remaining">%d remaining</string>
     <string name="episodes_watched">Watched episodes: %d</string>

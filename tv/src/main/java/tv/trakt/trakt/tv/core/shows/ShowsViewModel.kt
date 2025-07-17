@@ -1,0 +1,114 @@
+package tv.trakt.trakt.tv.core.shows
+
+import android.util.Log
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import tv.trakt.trakt.tv.auth.session.SessionManager
+import tv.trakt.trakt.tv.core.shows.model.AnticipatedShow
+import tv.trakt.trakt.tv.core.shows.model.Show
+import tv.trakt.trakt.tv.core.shows.model.TrendingShow
+import tv.trakt.trakt.tv.core.shows.usecase.GetAnticipatedShowsUseCase
+import tv.trakt.trakt.tv.core.shows.usecase.GetHotShowsUseCase
+import tv.trakt.trakt.tv.core.shows.usecase.GetPopularShowsUseCase
+import tv.trakt.trakt.tv.core.shows.usecase.GetRecommendedShowsUseCase
+import tv.trakt.trakt.tv.core.shows.usecase.GetTrendingShowsUseCase
+import tv.trakt.trakt.tv.helpers.extensions.rethrowCancellation
+
+internal class ShowsViewModel(
+    private val getTrendingShowsUseCase: GetTrendingShowsUseCase,
+    private val getPopularShowsUseCase: GetPopularShowsUseCase,
+    private val getAnticipatedShowsUseCase: GetAnticipatedShowsUseCase,
+    private val getHotShowsUseCase: GetHotShowsUseCase,
+    private val getRecommendedShowsUseCase: GetRecommendedShowsUseCase,
+    private val sessionManager: SessionManager,
+) : ViewModel() {
+    private val initialState = ShowsState()
+
+    private val loadingState = MutableStateFlow(initialState.isLoading)
+    private val trendingShowsState = MutableStateFlow(initialState.trendingShows)
+    private val hotShowsState = MutableStateFlow(initialState.hotShows)
+    private val popularShowsState = MutableStateFlow(initialState.popularShows)
+    private val anticipatedShowsState = MutableStateFlow(initialState.anticipatedShows)
+    private val recommendedShowsState = MutableStateFlow(initialState.recommendedShows)
+    private val errorState = MutableStateFlow(initialState.error)
+
+    init {
+        loadData()
+    }
+
+    private fun loadData() {
+        viewModelScope.launch {
+            try {
+                loadingState.update { true }
+                coroutineScope {
+                    val trendingShowsAsync = async { getTrendingShowsUseCase.getTrendingShows() }
+                    val hotShowsAsync = async { getHotShowsUseCase.getHotShows() }
+                    val popularShowsAsync = async { getPopularShowsUseCase.getPopularShows() }
+                    val anticipatedShowsAsync = async { getAnticipatedShowsUseCase.getAnticipatedShows() }
+
+                    val recommendedShowsAsync = async {
+                        if (sessionManager.isAuthenticated()) {
+                            getRecommendedShowsUseCase.getRecommendedShows()
+                        } else {
+                            null
+                        }
+                    }
+
+                    val trendingShows = trendingShowsAsync.await()
+                    val hotShows = hotShowsAsync.await()
+                    val popularShows = popularShowsAsync.await()
+                    val anticipatedShows = anticipatedShowsAsync.await()
+                    val recommendedShows = recommendedShowsAsync.await()
+
+                    trendingShowsState.value = trendingShows
+                    hotShowsState.value = hotShows
+                    popularShowsState.value = popularShows
+                    anticipatedShowsState.value = anticipatedShows
+                    recommendedShowsState.value = recommendedShows
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Log.e("ShowsViewModel", error.toString())
+                }
+            } finally {
+                loadingState.update { false }
+            }
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    val state: StateFlow<ShowsState> = combine(
+        loadingState,
+        trendingShowsState,
+        hotShowsState,
+        popularShowsState,
+        anticipatedShowsState,
+        recommendedShowsState,
+        errorState,
+    ) { s ->
+        ShowsState(
+            isLoading = s[0] as Boolean,
+            trendingShows = s[1] as ImmutableList<TrendingShow>?,
+            hotShows = s[2] as ImmutableList<TrendingShow>?,
+            popularShows = s[3] as ImmutableList<Show>?,
+            anticipatedShows = s[4] as ImmutableList<AnticipatedShow>?,
+            recommendedShows = s[5] as ImmutableList<Show>?,
+            error = s[6] as Exception?,
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = initialState,
+    )
+}
