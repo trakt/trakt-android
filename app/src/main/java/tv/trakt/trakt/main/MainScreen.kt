@@ -2,10 +2,10 @@ package tv.trakt.trakt.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -35,44 +35,48 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(Color.White.copy(alpha = 0.45F)),
+            .background(TraktTheme.colors.backgroundPrimary),
     ) {
         NavigationBar(
             containerColor = TraktTheme.colors.navigationContainer,
-            contentColor = TraktTheme.colors.navigationContent,
+            contentColor = Color.Transparent,
             modifier = Modifier
-                .fillMaxWidth()
                 .align(BottomCenter)
+                .fillMaxWidth()
                 .clip(
                     RoundedCornerShape(
                         topStart = 24.dp,
                         topEnd = 24.dp,
+                        bottomStart = 0.dp,
+                        bottomEnd = 0.dp,
                     ),
                 ),
         ) {
-            Spacer(Modifier.width(4.dp))
-            navigationItems.forEachIndexed { index, item ->
-                val isSelected = (selectedDestination == index)
-                NavigationBarItem(
-                    alwaysShowLabel = false,
-                    selected = isSelected,
-                    onClick = { selectedDestination = index },
-                    icon = {
-                        Icon(
-                            painter = painterResource(
-                                if (isSelected) item.iconOn else item.iconOff,
-                            ),
-                            contentDescription = stringResource(id = item.label),
-                        )
-                    },
-                    colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = TraktTheme.colors.accent,
-                        unselectedIconColor = TraktTheme.colors.navigationContent,
-                        indicatorColor = Color.Transparent,
-                    ),
-                )
+            Row(
+                modifier = Modifier.padding(horizontal = 12.dp),
+            ) {
+                navigationItems.forEachIndexed { index, item ->
+                    val isSelected = (selectedDestination == index)
+                    NavigationBarItem(
+                        alwaysShowLabel = false,
+                        selected = isSelected,
+                        onClick = { selectedDestination = index },
+                        icon = {
+                            Icon(
+                                painter = painterResource(
+                                    if (isSelected) item.iconOn else item.iconOff,
+                                ),
+                                contentDescription = stringResource(id = item.label),
+                            )
+                        },
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = TraktTheme.colors.accent,
+                            unselectedIconColor = TraktTheme.colors.navigationContent,
+                            indicatorColor = Color.Transparent,
+                        ),
+                    )
+                }
             }
-            Spacer(Modifier.width(4.dp))
         }
     }
 }

@@ -15,17 +15,14 @@
       </SelectionState>
       <SelectionState runConfigName="Mobile App">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-07-17T14:32:51.189151Z">
+        <DropdownSelection timestamp="2025-07-17T17:33:07.544612Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/michal/.android/avd/Pixel_5_API_33.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/michal/.android/avd/Pixel_5_API_34.avd" />
             </handle>
           </Target>
         </DropdownSelection>
         <DialogSelection />
-      </SelectionState>
-      <SelectionState runConfigName="common">
-        <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
   </component>
