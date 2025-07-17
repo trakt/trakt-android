@@ -11,11 +11,11 @@ plugins {
 private val localProperties = gradleLocalProperties(rootDir, providers)
 
 android {
-    namespace = "tv.trakt.app"
+    namespace = "tv.trakt.trakt"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "tv.trakt.app"
+        applicationId = "tv.trakt.trakt"
 
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
