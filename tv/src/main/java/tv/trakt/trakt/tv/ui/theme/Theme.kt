@@ -6,12 +6,12 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import tv.trakt.trakt.tv.ui.theme.colors.DarkColors
 import tv.trakt.trakt.tv.ui.theme.colors.TraktColors
 
-val LocalTraktColors = staticCompositionLocalOf { TraktColors() }
-val LocalTraktTypography = staticCompositionLocalOf { TraktTypography() }
-val LocalTraktSpacing = staticCompositionLocalOf { TraktSpacing() }
-val LocalTraktSize = staticCompositionLocalOf { TraktSize() }
+internal val LocalTraktColors = staticCompositionLocalOf { TraktColors() }
+internal val LocalTraktTypography = staticCompositionLocalOf { TraktTypography() }
+internal val LocalTraktSpacing = staticCompositionLocalOf { TraktSpacing() }
+internal val LocalTraktSize = staticCompositionLocalOf { TraktSize() }
 
-object TraktTheme {
+internal object TraktTheme {
     val colors: TraktColors
         @Composable
         get() = LocalTraktColors.current
@@ -30,7 +30,7 @@ object TraktTheme {
 }
 
 @Composable
-fun TraktTheme(content: @Composable () -> Unit) {
+internal fun TraktTheme(content: @Composable () -> Unit) {
     CompositionLocalProvider(
         LocalTraktColors provides DarkColors,
         LocalTraktTypography provides Typography,

@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-val Spacing: TraktSpacing = TraktSpacing(
+internal val Spacing: TraktSpacing = TraktSpacing(
     mainRowSpace = 10.dp,
     mainGridSpace = 10.dp,
     mainRowHeaderSpace = 12.dp,
@@ -15,7 +15,7 @@ val Spacing: TraktSpacing = TraktSpacing(
 )
 
 @Immutable
-data class TraktSpacing(
+internal data class TraktSpacing(
     val mainRowSpace: Dp = Dp.Unspecified,
     val mainGridSpace: Dp = Dp.Unspecified,
     val mainRowHeaderSpace: Dp = Dp.Unspecified,

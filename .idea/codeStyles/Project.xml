@@ -3,16 +3,25 @@
     <AndroidXmlCodeStyleSettings>
       <option name="LAYOUT_SETTINGS">
         <value>
+          <option name="INSERT_BLANK_LINE_BEFORE_TAG" value="false" />
+          <option name="INSERT_LINE_BREAK_BEFORE_FIRST_ATTRIBUTE" value="false" />
           <option name="INSERT_LINE_BREAK_AFTER_LAST_ATTRIBUTE" value="true" />
         </value>
       </option>
       <option name="MANIFEST_SETTINGS">
         <value>
+          <option name="INSERT_LINE_BREAK_BEFORE_FIRST_ATTRIBUTE" value="false" />
           <option name="INSERT_LINE_BREAK_AFTER_LAST_ATTRIBUTE" value="true" />
+        </value>
+      </option>
+      <option name="VALUE_RESOURCE_FILE_SETTINGS">
+        <value>
+          <option name="INSERT_LINE_BREAKS_AROUND_STYLE" value="false" />
         </value>
       </option>
       <option name="OTHER_SETTINGS">
         <value>
+          <option name="INSERT_LINE_BREAK_BEFORE_FIRST_ATTRIBUTE" value="false" />
           <option name="INSERT_LINE_BREAK_AFTER_LAST_ATTRIBUTE" value="true" />
         </value>
       </option>

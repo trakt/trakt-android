@@ -15,7 +15,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Shade900
 import tv.trakt.trakt.common.ui.theme.colors.Shade920
 import tv.trakt.trakt.common.ui.theme.colors.Shade940
 
-val DarkColors: TraktColors = TraktColors(
+internal val DarkColors: TraktColors = TraktColors(
     accent = Purple500,
     backgroundPrimary = Shade940,
     textPrimary = White,
@@ -48,7 +48,7 @@ val DarkColors: TraktColors = TraktColors(
 )
 
 @Immutable
-data class TraktColors(
+internal data class TraktColors(
     val accent: Color = Color.Unspecified,
     val backgroundPrimary: Color = Color.Unspecified,
     val textPrimary: Color = Color.Unspecified,

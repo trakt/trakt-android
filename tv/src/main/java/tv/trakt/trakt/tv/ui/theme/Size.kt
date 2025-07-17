@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-val Size: TraktSize = TraktSize(
+internal val Size: TraktSize = TraktSize(
     verticalMediaCardSize = 102.dp,
     horizontalMediaCardSize = 160.dp,
     detailsPosterSize = 335.dp,
@@ -15,7 +15,7 @@ val Size: TraktSize = TraktSize(
 )
 
 @Immutable
-data class TraktSize(
+internal data class TraktSize(
     val horizontalMediaCardSize: Dp = Dp.Unspecified,
     val verticalMediaCardSize: Dp = Dp.Unspecified,
     val detailsPosterSize: Dp = Dp.Unspecified,

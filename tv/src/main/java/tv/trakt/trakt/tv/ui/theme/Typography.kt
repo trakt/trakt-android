@@ -18,7 +18,7 @@ private val SplineFamily = FontFamily(
     Font(R.font.spline_sans_bold, FontWeight.W700),
 )
 
-val Typography: TraktTypography = TraktTypography(
+internal val Typography: TraktTypography = TraktTypography(
     heading1 = TextStyle(
         fontFamily = SplineFamily,
         fontWeight = FontWeight.W600,
@@ -127,7 +127,7 @@ val Typography: TraktTypography = TraktTypography(
 )
 
 @Immutable
-data class TraktTypography(
+internal data class TraktTypography(
     val heading1: TextStyle = TextStyle.Default,
     val heading2: TextStyle = TextStyle.Default,
     val heading3: TextStyle = TextStyle.Default,
