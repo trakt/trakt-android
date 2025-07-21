@@ -7,6 +7,7 @@
     <string name="log_out">Sign out</string>
     <string name="view_profile">View profile</string>
     <string name="stream_on">Stream on</string>
+    <string name="stream_unavailable">No service</string>
     <string name="people_watching">%s watching</string>
     <string name="people_eager">%s eager</string>
     <string name="watch_count">Watch count: %d</string>

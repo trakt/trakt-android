@@ -25,7 +25,6 @@ import tv.trakt.trakt.common.ui.theme.colors.Blue50
 import tv.trakt.trakt.common.ui.theme.colors.Blue500
 import tv.trakt.trakt.common.ui.theme.colors.Purple50
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
-import tv.trakt.trakt.tv.Config
 import tv.trakt.trakt.tv.R
 import tv.trakt.trakt.tv.core.details.movie.MovieDetailsState.CollectionState
 import tv.trakt.trakt.tv.core.details.movie.MovieDetailsState.StreamingsState
@@ -51,14 +50,18 @@ internal fun MovieActionButtons(
         val directLink = service?.linkDirect
 
         WatchNowButton(
-            name = if (directLink != null) service.name else "Plex",
-            logo = if (directLink != null) service.logo else Config.PLEX_IMAGE_URL,
-            enabled = !streamingState.isLoading,
+            text = if (streamingState.isLoading || directLink != null) {
+                stringResource(R.string.stream_on)
+            } else {
+                stringResource(R.string.stream_unavailable)
+            },
+            name = if (directLink != null) service.name else "",
+            logo = if (directLink != null) service.logo else null,
+            enabled = !streamingState.isLoading && directLink != null,
             loading = streamingState.isLoading,
             containerColor = service?.color ?: TraktTheme.colors.primaryButtonContainerDisabled,
             onClick = {
                 if (directLink == null) {
-                    uriHandler.openUri("${Config.PLEX_BASE_URL}movie/${streamingState.slug?.value}")
                     return@WatchNowButton
                 }
                 if (directLink.contains("netflix", ignoreCase = true)) {
