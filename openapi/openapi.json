@@ -3308,7 +3308,7 @@
                             "blocked_uids": {
                               "type": "array",
                               "items": {
-                                "nullable": true
+                                "type": "integer"
                               }
                             }
                           },
@@ -3645,8 +3645,16 @@
                         "type": "string",
                         "nullable": true
                       },
+                      "location": {
+                        "type": "string",
+                        "nullable": true
+                      },
                       "private": {
                         "type": "boolean",
+                        "nullable": true
+                      },
+                      "dob": {
+                        "type": "string",
                         "nullable": true
                       }
                     },
