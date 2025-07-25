@@ -19,6 +19,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.context.startKoin
 import tv.trakt.trakt.common.auth.di.commonAuthModule
+import tv.trakt.trakt.common.networking.di.networkingModule
 import tv.trakt.trakt.tv.core.auth.di.authDataModule
 import tv.trakt.trakt.tv.core.auth.di.authModule
 import tv.trakt.trakt.tv.core.comments.di.commentsDataModule
@@ -44,7 +45,6 @@ import tv.trakt.trakt.tv.core.shows.di.showsDataModule
 import tv.trakt.trakt.tv.core.shows.di.showsModule
 import tv.trakt.trakt.tv.core.streamings.di.streamingsModule
 import tv.trakt.trakt.tv.core.sync.di.syncModule
-import tv.trakt.trakt.tv.networking.di.networkingModule
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
 
 internal val LocalDrawerVisibility = compositionLocalOf { mutableStateOf(true) }

@@ -1,4 +1,4 @@
-package tv.trakt.trakt.tv.networking
+package tv.trakt.trakt.common.networking.client
 
 import android.util.Log
 import io.ktor.client.HttpClientConfig
@@ -21,12 +21,12 @@ import io.ktor.http.ContentType.Application
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import tv.trakt.trakt.common.BuildConfig
+import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.auth.TokenProvider
 import tv.trakt.trakt.common.auth.model.TraktAccessToken
 import tv.trakt.trakt.common.auth.model.TraktRefreshToken
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.tv.BuildConfig
-import tv.trakt.trakt.tv.Config
 import kotlin.time.Duration.Companion.seconds
 
 private const val HEADER_TRAKT_API_KEY = "trakt-api-key"

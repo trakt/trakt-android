@@ -1,4 +1,4 @@
-package tv.trakt.trakt.tv.networking
+package tv.trakt.trakt.common.networking.client
 
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
