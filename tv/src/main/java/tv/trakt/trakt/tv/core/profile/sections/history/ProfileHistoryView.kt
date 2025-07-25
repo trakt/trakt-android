@@ -27,9 +27,9 @@ import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.R
 import tv.trakt.trakt.tv.common.model.SyncHistoryItem
-import tv.trakt.trakt.tv.common.model.TraktId
 import tv.trakt.trakt.tv.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.tv.common.ui.mediacards.EpisodeSkeletonCard
 import tv.trakt.trakt.tv.common.ui.mediacards.HorizontalMediaCard

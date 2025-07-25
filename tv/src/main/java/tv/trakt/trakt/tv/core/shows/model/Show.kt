@@ -5,9 +5,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.core.graphics.toColorInt
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.ShowDto
-import tv.trakt.trakt.tv.common.model.Ids
 import tv.trakt.trakt.tv.common.model.Images
 import tv.trakt.trakt.tv.common.model.MediaColors
 import tv.trakt.trakt.tv.common.model.Rating

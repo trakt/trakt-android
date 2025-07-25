@@ -1,4 +1,4 @@
-package tv.trakt.trakt.tv.common.model
+package tv.trakt.trakt.common.model
 
 import androidx.compose.runtime.Immutable
 import kotlinx.serialization.Serializable
@@ -8,7 +8,7 @@ import tv.trakt.trakt.common.networking.ShowIdsDto
 
 @Immutable
 @Serializable
-internal data class Ids(
+data class Ids(
     val trakt: TraktId,
     val slug: SlugId,
     val tvdb: TvdbId? = null,

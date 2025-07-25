@@ -2,7 +2,7 @@ package tv.trakt.trakt.tv.core.people.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.tv.common.model.TraktId
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.tv.core.movies.model.Movie
 import tv.trakt.trakt.tv.core.movies.model.fromDto

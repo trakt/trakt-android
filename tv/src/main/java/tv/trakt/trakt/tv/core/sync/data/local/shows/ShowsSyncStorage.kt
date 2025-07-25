@@ -3,7 +3,7 @@ package tv.trakt.trakt.tv.core.sync.data.local.shows
 import io.ktor.util.collections.ConcurrentSet
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import tv.trakt.trakt.tv.common.model.TraktId
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.core.sync.model.WatchedShow
 import java.time.ZonedDateTime
 import java.util.concurrent.ConcurrentHashMap

@@ -2,6 +2,9 @@ package tv.trakt.trakt.tv.common.model
 
 import androidx.compose.runtime.Immutable
 import kotlinx.serialization.Serializable
+import tv.trakt.trakt.common.model.Ids
+import tv.trakt.trakt.common.model.SlugId
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.UserDto
 import tv.trakt.trakt.common.networking.UserSettingsDto
 import tv.trakt.trakt.tv.Config

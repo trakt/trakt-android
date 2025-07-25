@@ -1,10 +1,10 @@
 package tv.trakt.trakt.tv.core.sync.data.remote.shows
 
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.ProgressShowDto
 import tv.trakt.trakt.common.networking.SyncAddHistoryResponseDto
 import tv.trakt.trakt.common.networking.WatchedShowDto
 import tv.trakt.trakt.common.networking.WatchlistShowDto
-import tv.trakt.trakt.tv.common.model.TraktId
 import java.time.ZonedDateTime
 
 internal interface ShowsSyncRemoteDataSource {

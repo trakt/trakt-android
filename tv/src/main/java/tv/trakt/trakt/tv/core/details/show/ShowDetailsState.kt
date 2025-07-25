@@ -2,12 +2,12 @@ package tv.trakt.trakt.tv.core.details.show
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
+import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.tv.common.model.CastPerson
 import tv.trakt.trakt.tv.common.model.Comment
 import tv.trakt.trakt.tv.common.model.CustomList
 import tv.trakt.trakt.tv.common.model.ExternalRating
 import tv.trakt.trakt.tv.common.model.ExtraVideo
-import tv.trakt.trakt.tv.common.model.SlugId
 import tv.trakt.trakt.tv.common.model.StreamingService
 import tv.trakt.trakt.tv.common.model.User
 import tv.trakt.trakt.tv.core.details.show.models.ShowSeasons

@@ -2,9 +2,9 @@ package tv.trakt.trakt.tv.core.details.movie.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.common.model.CustomList
 import tv.trakt.trakt.tv.common.model.CustomList.Type
-import tv.trakt.trakt.tv.common.model.TraktId
 import tv.trakt.trakt.tv.core.movies.data.remote.MoviesRemoteDataSource
 import tv.trakt.trakt.tv.helpers.extensions.asyncMap
 

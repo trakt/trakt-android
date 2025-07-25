@@ -1,6 +1,6 @@
 package tv.trakt.trakt.tv.core.details.movie.usecases.collection
 
-import tv.trakt.trakt.tv.common.model.TraktId
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.core.sync.data.local.movies.MoviesSyncLocalDataSource
 import tv.trakt.trakt.tv.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
 import tv.trakt.trakt.tv.core.sync.model.WatchedMovie

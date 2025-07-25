@@ -1,18 +1,18 @@
 package tv.trakt.trakt.tv.helpers.preview
 
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.model.Ids
+import tv.trakt.trakt.common.model.ImdbId
+import tv.trakt.trakt.common.model.SlugId
+import tv.trakt.trakt.common.model.TmdbId
+import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.TvdbId
 import tv.trakt.trakt.tv.common.model.Comment
 import tv.trakt.trakt.tv.common.model.CustomList
 import tv.trakt.trakt.tv.common.model.CustomList.Type
-import tv.trakt.trakt.tv.common.model.Ids
 import tv.trakt.trakt.tv.common.model.Images
-import tv.trakt.trakt.tv.common.model.ImdbId
 import tv.trakt.trakt.tv.common.model.Person
 import tv.trakt.trakt.tv.common.model.Rating
-import tv.trakt.trakt.tv.common.model.SlugId
-import tv.trakt.trakt.tv.common.model.TmdbId
-import tv.trakt.trakt.tv.common.model.TraktId
-import tv.trakt.trakt.tv.common.model.TvdbId
 import tv.trakt.trakt.tv.common.model.User
 import tv.trakt.trakt.tv.common.model.sorting.SortOrder
 import tv.trakt.trakt.tv.common.model.sorting.SortType

@@ -1,8 +1,8 @@
 package tv.trakt.trakt.tv.core.details.movie.usecases
 
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.Config.DEFAULT_COUNTRY_CODE
 import tv.trakt.trakt.tv.common.model.StreamingService
-import tv.trakt.trakt.tv.common.model.TraktId
 import tv.trakt.trakt.tv.common.model.User
 import tv.trakt.trakt.tv.core.movies.data.remote.MoviesRemoteDataSource
 import tv.trakt.trakt.tv.core.streamings.data.local.StreamingLocalDataSource

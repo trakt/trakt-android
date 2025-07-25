@@ -1,6 +1,6 @@
 package tv.trakt.trakt.tv.core.details.episode.usecases.collection
 
-import tv.trakt.trakt.tv.common.model.TraktId
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.core.sync.data.remote.episodes.EpisodesSyncRemoteDataSource
 import tv.trakt.trakt.tv.helpers.extensions.nowUtc
 

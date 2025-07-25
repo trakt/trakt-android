@@ -24,8 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle.Event.ON_CREATE
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.common.model.Images
-import tv.trakt.trakt.tv.common.model.TraktId
 import tv.trakt.trakt.tv.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.tv.common.ui.mediacards.HorizontalMediaSkeletonCard
 import tv.trakt.trakt.tv.core.details.ui.BackdropImage

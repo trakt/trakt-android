@@ -1,7 +1,7 @@
 package tv.trakt.trakt.tv.core.people.usecases
 
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.common.model.Person
-import tv.trakt.trakt.tv.common.model.TraktId
 import tv.trakt.trakt.tv.common.model.fromDto
 import tv.trakt.trakt.tv.core.people.data.local.PeopleLocalDataSource
 import tv.trakt.trakt.tv.core.people.data.remote.PeopleRemoteDataSource

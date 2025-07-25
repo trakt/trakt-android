@@ -23,8 +23,8 @@ import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.common.model.Images
-import tv.trakt.trakt.tv.common.model.TraktId
 import tv.trakt.trakt.tv.core.details.ui.BackdropImage
 import tv.trakt.trakt.tv.core.episodes.model.Episode
 import tv.trakt.trakt.tv.core.home.HomeState.AuthenticationState.AUTHENTICATED

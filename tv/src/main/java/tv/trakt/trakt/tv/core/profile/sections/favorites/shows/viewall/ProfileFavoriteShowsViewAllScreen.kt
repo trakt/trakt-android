@@ -32,9 +32,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.R
 import tv.trakt.trakt.tv.common.model.Images
-import tv.trakt.trakt.tv.common.model.TraktId
 import tv.trakt.trakt.tv.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.tv.core.details.ui.BackdropImage
 import tv.trakt.trakt.tv.core.profile.ProfileConfig.FAVORITES_ALL_PAGE_LIMIT

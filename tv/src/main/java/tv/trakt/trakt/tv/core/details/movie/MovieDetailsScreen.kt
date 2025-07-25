@@ -48,6 +48,7 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.LocalDrawerVisibility
 import tv.trakt.trakt.tv.LocalSnackbarState
 import tv.trakt.trakt.tv.R
@@ -58,7 +59,6 @@ import tv.trakt.trakt.tv.common.model.ExternalRating
 import tv.trakt.trakt.tv.common.model.ExtraVideo
 import tv.trakt.trakt.tv.common.model.Images
 import tv.trakt.trakt.tv.common.model.Person
-import tv.trakt.trakt.tv.common.model.TraktId
 import tv.trakt.trakt.tv.core.details.comments.CommentDetailsDialog
 import tv.trakt.trakt.tv.core.details.movie.views.content.MovieCastCrewList
 import tv.trakt.trakt.tv.core.details.movie.views.content.MovieCommentsList

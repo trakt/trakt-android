@@ -1,6 +1,6 @@
 package tv.trakt.trakt.tv.core.details.show.usecases.collection
 
-import tv.trakt.trakt.tv.common.model.TraktId
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.core.sync.data.local.shows.ShowsSyncLocalDataSource
 import tv.trakt.trakt.tv.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 import tv.trakt.trakt.tv.helpers.extensions.nowUtc

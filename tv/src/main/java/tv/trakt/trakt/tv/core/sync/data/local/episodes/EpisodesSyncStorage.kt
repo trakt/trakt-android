@@ -2,7 +2,7 @@ package tv.trakt.trakt.tv.core.sync.data.local.episodes
 
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import tv.trakt.trakt.tv.common.model.TraktId
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.core.sync.model.WatchedEpisode
 import java.time.ZonedDateTime
 import java.util.concurrent.ConcurrentHashMap

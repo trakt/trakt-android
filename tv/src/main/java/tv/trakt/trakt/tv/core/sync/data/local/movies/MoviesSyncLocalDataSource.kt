@@ -1,6 +1,6 @@
 package tv.trakt.trakt.tv.core.sync.data.local.movies
 
-import tv.trakt.trakt.tv.common.model.TraktId
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.core.sync.model.WatchedMovie
 import java.time.ZonedDateTime
 

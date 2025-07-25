@@ -2,10 +2,10 @@ package tv.trakt.trakt.tv.core.details.episode
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
+import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.tv.common.model.CastPerson
 import tv.trakt.trakt.tv.common.model.Comment
 import tv.trakt.trakt.tv.common.model.ExternalRating
-import tv.trakt.trakt.tv.common.model.SlugId
 import tv.trakt.trakt.tv.common.model.StreamingService
 import tv.trakt.trakt.tv.common.model.SyncHistoryEpisodeItem
 import tv.trakt.trakt.tv.common.model.User

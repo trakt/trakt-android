@@ -1,7 +1,7 @@
 package tv.trakt.trakt.tv.core.details.episode.usecases
 
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.common.model.SeasonEpisode
-import tv.trakt.trakt.tv.common.model.TraktId
 import tv.trakt.trakt.tv.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.tv.core.episodes.data.remote.EpisodesRemoteDataSource
 import tv.trakt.trakt.tv.core.episodes.model.Episode

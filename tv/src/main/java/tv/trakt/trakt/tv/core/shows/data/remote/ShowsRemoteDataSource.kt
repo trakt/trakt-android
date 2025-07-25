@@ -1,5 +1,6 @@
 package tv.trakt.trakt.tv.core.shows.data.remote
 
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
@@ -9,7 +10,6 @@ import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.SeasonDto
 import tv.trakt.trakt.common.networking.ShowDto
 import tv.trakt.trakt.common.networking.StreamingDto
-import tv.trakt.trakt.tv.common.model.TraktId
 import tv.trakt.trakt.tv.core.shows.data.remote.model.response.AnticipatedShowDto
 import tv.trakt.trakt.tv.core.shows.data.remote.model.response.TrendingShowDto
 

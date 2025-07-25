@@ -1,6 +1,6 @@
 package tv.trakt.trakt.tv.core.details.show.usecases
 
-import tv.trakt.trakt.tv.common.model.TraktId
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.tv.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.tv.core.shows.model.Show

@@ -1,10 +1,10 @@
 package tv.trakt.trakt.tv.core.people.data.remote
 
 import org.openapitools.client.apis.PeopleApi
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.PersonDetailsDto
 import tv.trakt.trakt.common.networking.PersonMoviesDto
 import tv.trakt.trakt.common.networking.PersonShowsDto
-import tv.trakt.trakt.tv.common.model.TraktId
 
 internal class PeopleApiClient(
     private val api: PeopleApi,

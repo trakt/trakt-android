@@ -32,11 +32,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.model.Ids
+import tv.trakt.trakt.common.model.SlugId
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.R
-import tv.trakt.trakt.tv.common.model.Ids
 import tv.trakt.trakt.tv.common.model.Images
-import tv.trakt.trakt.tv.common.model.SlugId
-import tv.trakt.trakt.tv.common.model.TraktId
 import tv.trakt.trakt.tv.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.tv.core.details.ui.BackdropImage
 import tv.trakt.trakt.tv.core.lists.ListsConfig.LISTS_NEXT_PAGE_OFFSET

@@ -1,6 +1,6 @@
 package tv.trakt.trakt.tv.core.movies.data.local
 
-import tv.trakt.trakt.tv.common.model.TraktId
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.core.movies.model.Movie
 
 internal interface MovieLocalDataSource {

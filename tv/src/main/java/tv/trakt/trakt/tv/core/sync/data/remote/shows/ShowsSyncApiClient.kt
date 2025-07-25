@@ -6,11 +6,11 @@ import org.openapitools.client.apis.WatchedApi
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerOneOfIds
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.ProgressShowDto
 import tv.trakt.trakt.common.networking.SyncAddHistoryResponseDto
 import tv.trakt.trakt.common.networking.WatchedShowDto
 import tv.trakt.trakt.common.networking.WatchlistShowDto
-import tv.trakt.trakt.tv.common.model.TraktId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter.ISO_INSTANT
 
