@@ -1,6 +1,6 @@
 package tv.trakt.trakt.tv.core.auth.model
 
-import tv.trakt.trakt.tv.auth.model.TraktAccessToken
+import tv.trakt.trakt.common.auth.model.TraktAccessToken
 
 internal sealed interface AuthDeviceTokenState {
     data class Success(

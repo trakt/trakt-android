@@ -1,10 +1,10 @@
-package tv.trakt.trakt.tv.auth.model
+package tv.trakt.trakt.common.auth.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class TraktRefreshToken(
+data class TraktRefreshToken(
     @SerialName("refresh_token") val refreshToken: String,
     @SerialName("client_id") val clientId: String,
     @SerialName("client_secret") val clientSecret: String,

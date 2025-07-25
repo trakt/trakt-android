@@ -1,4 +1,4 @@
-package tv.trakt.trakt.tv.auth.di
+package tv.trakt.trakt.common.auth.di
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -14,15 +14,13 @@ import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import tv.trakt.trakt.tv.auth.DefaultTokenProvider
-import tv.trakt.trakt.tv.auth.TokenProvider
-import tv.trakt.trakt.tv.auth.session.DefaultSessionManager
-import tv.trakt.trakt.tv.auth.session.SessionManager
+import tv.trakt.trakt.common.auth.DefaultTokenProvider
+import tv.trakt.trakt.common.auth.TokenProvider
 
 private const val AUTH_PREFERENCES = "auth_preferences"
 private const val SESSION_PREFERENCES = "session_preferences"
 
-internal val baseAuthModule = module {
+val commonAuthModule = module {
     single<DataStore<Preferences>>(named(AUTH_PREFERENCES)) {
         createStore(
             context = androidContext(),
@@ -40,13 +38,6 @@ internal val baseAuthModule = module {
     single<TokenProvider> {
         DefaultTokenProvider(
             dataStore = get(named(AUTH_PREFERENCES)),
-        )
-    }
-
-    single<SessionManager> {
-        DefaultSessionManager(
-            tokenProvider = get(),
-            dataStore = get(named(SESSION_PREFERENCES)),
         )
     }
 }

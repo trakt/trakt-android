@@ -4,6 +4,7 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.openapitools.client.apis.OauthApi
+import tv.trakt.trakt.common.auth.TokenProvider
 import tv.trakt.trakt.tv.Config.API_BASE_URL
 import tv.trakt.trakt.tv.core.auth.AuthViewModel
 import tv.trakt.trakt.tv.core.auth.data.remote.AuthApiClient
@@ -34,7 +35,7 @@ internal val authModule = module {
     factory {
         GetDeviceTokenUseCase(
             remoteSource = get(),
-            tokenProvider = get(),
+            tokenProvider = get<TokenProvider>(),
         )
     }
 

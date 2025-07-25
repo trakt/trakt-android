@@ -4,8 +4,8 @@ import io.ktor.client.plugins.ResponseException
 import org.openapitools.client.apis.OauthApi
 import org.openapitools.client.models.PostOauthDeviceCodeRequest
 import org.openapitools.client.models.PostOauthDeviceTokenRequest
+import tv.trakt.trakt.common.auth.model.TraktAccessToken
 import tv.trakt.trakt.tv.BuildConfig
-import tv.trakt.trakt.tv.auth.model.TraktAccessToken
 import tv.trakt.trakt.tv.core.auth.model.AuthDeviceCode
 import tv.trakt.trakt.tv.core.auth.model.AuthDeviceTokenCode
 import tv.trakt.trakt.tv.core.auth.model.AuthDeviceTokenState

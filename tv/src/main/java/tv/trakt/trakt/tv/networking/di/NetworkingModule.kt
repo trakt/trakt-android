@@ -5,6 +5,7 @@ import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.HttpClientEngine
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import tv.trakt.trakt.common.auth.TokenProvider
 import tv.trakt.trakt.tv.Config.API_BASE_URL
 import tv.trakt.trakt.tv.networking.KtorClientFactory
 
@@ -12,7 +13,7 @@ internal val networkingModule = module {
     single<KtorClientFactory> {
         KtorClientFactory(
             baseUrl = API_BASE_URL,
-            tokenProvider = get(),
+            tokenProvider = get<TokenProvider>(),
             sessionManager = get(),
         )
     }

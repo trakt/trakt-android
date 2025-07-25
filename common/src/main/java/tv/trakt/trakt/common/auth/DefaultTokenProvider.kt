@@ -1,4 +1,4 @@
-package tv.trakt.trakt.tv.auth
+package tv.trakt.trakt.common.auth
 
 import android.util.Log
 import androidx.datastore.core.DataStore
@@ -7,7 +7,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.first
-import tv.trakt.trakt.tv.auth.model.TraktAccessToken
+import tv.trakt.trakt.common.auth.model.TraktAccessToken
 
 private val KEY_ACCESS_TOKEN = stringPreferencesKey("key_access_token")
 private val KEY_REFRESH_TOKEN = stringPreferencesKey("key_refresh_token")

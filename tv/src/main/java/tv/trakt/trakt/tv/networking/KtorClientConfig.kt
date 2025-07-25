@@ -21,11 +21,11 @@ import io.ktor.http.ContentType.Application
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import tv.trakt.trakt.common.auth.TokenProvider
+import tv.trakt.trakt.common.auth.model.TraktAccessToken
+import tv.trakt.trakt.common.auth.model.TraktRefreshToken
 import tv.trakt.trakt.tv.BuildConfig
 import tv.trakt.trakt.tv.Config
-import tv.trakt.trakt.tv.auth.TokenProvider
-import tv.trakt.trakt.tv.auth.model.TraktAccessToken
-import tv.trakt.trakt.tv.auth.model.TraktRefreshToken
 import tv.trakt.trakt.tv.auth.session.SessionManager
 import kotlin.time.Duration.Companion.seconds
 

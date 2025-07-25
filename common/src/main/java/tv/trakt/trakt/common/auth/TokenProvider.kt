@@ -1,8 +1,8 @@
-package tv.trakt.trakt.tv.auth
+package tv.trakt.trakt.common.auth
 
-import tv.trakt.trakt.tv.auth.model.TraktAccessToken
+import tv.trakt.trakt.common.auth.model.TraktAccessToken
 
-internal interface TokenProvider {
+interface TokenProvider {
     suspend fun saveToken(token: TraktAccessToken)
 
     suspend fun getToken(): TraktAccessToken?
