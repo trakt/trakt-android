@@ -3,10 +3,10 @@ package tv.trakt.trakt.tv.common.model
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.Serializable
+import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.tv.common.model.sorting.SortOrder
 import tv.trakt.trakt.tv.common.model.sorting.SortType
 import tv.trakt.trakt.tv.helpers.extensions.toZonedDateTime
-import tv.trakt.trakt.tv.networking.openapi.ListDto
 import java.time.ZonedDateTime
 
 @Immutable

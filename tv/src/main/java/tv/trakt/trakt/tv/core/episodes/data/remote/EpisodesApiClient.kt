@@ -2,13 +2,13 @@ package tv.trakt.trakt.tv.core.episodes.data.remote
 
 import org.openapitools.client.apis.ShowsApi
 import org.openapitools.client.apis.UsersApi
+import tv.trakt.trakt.common.networking.CastCrewDto
+import tv.trakt.trakt.common.networking.CommentDto
+import tv.trakt.trakt.common.networking.EpisodeDto
+import tv.trakt.trakt.common.networking.ExternalRatingsDto
+import tv.trakt.trakt.common.networking.StreamingDto
+import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.tv.common.model.TraktId
-import tv.trakt.trakt.tv.networking.openapi.CastCrewDto
-import tv.trakt.trakt.tv.networking.openapi.CommentDto
-import tv.trakt.trakt.tv.networking.openapi.EpisodeDto
-import tv.trakt.trakt.tv.networking.openapi.ExternalRatingsDto
-import tv.trakt.trakt.tv.networking.openapi.StreamingDto
-import tv.trakt.trakt.tv.networking.openapi.SyncHistoryEpisodeItemDto
 
 internal class EpisodesApiClient(
     private val showsApi: ShowsApi,

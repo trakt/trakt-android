@@ -3,7 +3,7 @@ package tv.trakt.trakt.tv.common.model
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.tv.networking.openapi.ImagesDto
+import tv.trakt.trakt.common.networking.ImagesDto
 
 @Immutable
 internal data class Images(

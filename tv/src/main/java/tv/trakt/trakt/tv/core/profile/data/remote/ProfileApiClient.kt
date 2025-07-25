@@ -3,13 +3,13 @@ package tv.trakt.trakt.tv.core.profile.data.remote
 import org.openapitools.client.apis.CalendarsApi
 import org.openapitools.client.apis.HistoryApi
 import org.openapitools.client.apis.UsersApi
+import tv.trakt.trakt.common.networking.CalendarShowDto
+import tv.trakt.trakt.common.networking.SyncFavoriteMovieDto
+import tv.trakt.trakt.common.networking.SyncFavoriteShowDto
+import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
+import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
 import tv.trakt.trakt.tv.common.model.User
 import tv.trakt.trakt.tv.common.model.fromDto
-import tv.trakt.trakt.tv.networking.openapi.CalendarShowDto
-import tv.trakt.trakt.tv.networking.openapi.SyncFavoriteMovieDto
-import tv.trakt.trakt.tv.networking.openapi.SyncFavoriteShowDto
-import tv.trakt.trakt.tv.networking.openapi.SyncHistoryEpisodeItemDto
-import tv.trakt.trakt.tv.networking.openapi.SyncHistoryMovieItemDto
 import java.time.LocalDate
 
 internal class ProfileApiClient(

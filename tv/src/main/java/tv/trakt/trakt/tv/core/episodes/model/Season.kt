@@ -2,12 +2,12 @@ package tv.trakt.trakt.tv.core.episodes.model
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.networking.SeasonDto
 import tv.trakt.trakt.tv.common.model.Ids
 import tv.trakt.trakt.tv.common.model.Images
 import tv.trakt.trakt.tv.common.model.toSlugId
 import tv.trakt.trakt.tv.common.model.toTraktId
 import tv.trakt.trakt.tv.helpers.extensions.toZonedDateTime
-import tv.trakt.trakt.tv.networking.openapi.SeasonDto
 import java.time.ZonedDateTime
 
 @Immutable

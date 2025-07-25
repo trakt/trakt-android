@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -28,6 +29,12 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
+    sourceSets {
+        getByName("main") {
+            java.srcDir("${rootDir}/build/generate-resources/main/src/main")
+        }
+    }
 }
 
 dependencies {
@@ -35,6 +42,13 @@ dependencies {
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.navigation)
     implementation(libs.androidx.datastore)
+
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.client.logger)
+    implementation(libs.ktor.client.serialization)
+    implementation(libs.ktor.client.negotiation)
+    implementation(libs.ktor.client.auth)
 
     implementation(project.dependencies.platform(libs.koin.bom))
     implementation(libs.koin.core)

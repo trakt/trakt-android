@@ -2,9 +2,9 @@ package tv.trakt.trakt.tv.common.model
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.networking.PersonDetailsDto
+import tv.trakt.trakt.common.networking.PersonDto
 import tv.trakt.trakt.tv.common.model.Person.Companion
-import tv.trakt.trakt.tv.networking.openapi.PersonDetailsDto
-import tv.trakt.trakt.tv.networking.openapi.PersonDto
 
 @Immutable
 internal data class Person(

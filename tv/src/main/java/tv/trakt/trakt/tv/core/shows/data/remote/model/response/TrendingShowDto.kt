@@ -1,7 +1,7 @@
 package tv.trakt.trakt.tv.core.shows.data.remote.model.response
 
 import kotlinx.serialization.Serializable
-import tv.trakt.trakt.tv.networking.openapi.ShowDto
+import tv.trakt.trakt.common.networking.ShowDto
 
 @Serializable
 internal data class TrendingShowDto(

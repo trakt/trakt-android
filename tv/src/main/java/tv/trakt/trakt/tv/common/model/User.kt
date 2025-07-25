@@ -2,10 +2,10 @@ package tv.trakt.trakt.tv.common.model
 
 import androidx.compose.runtime.Immutable
 import kotlinx.serialization.Serializable
+import tv.trakt.trakt.common.networking.UserDto
+import tv.trakt.trakt.common.networking.UserSettingsDto
 import tv.trakt.trakt.tv.Config
 import tv.trakt.trakt.tv.common.model.User.Companion
-import tv.trakt.trakt.tv.networking.openapi.UserDto
-import tv.trakt.trakt.tv.networking.openapi.UserSettingsDto
 
 @Immutable
 @Serializable

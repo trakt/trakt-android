@@ -5,14 +5,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.core.graphics.toColorInt
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.networking.RecommendedShowDto
+import tv.trakt.trakt.common.networking.ShowDto
 import tv.trakt.trakt.tv.common.model.Ids
 import tv.trakt.trakt.tv.common.model.Images
 import tv.trakt.trakt.tv.common.model.MediaColors
 import tv.trakt.trakt.tv.common.model.Rating
 import tv.trakt.trakt.tv.core.shows.model.Show.Companion
 import tv.trakt.trakt.tv.helpers.extensions.toZonedDateTime
-import tv.trakt.trakt.tv.networking.openapi.RecommendedShowDto
-import tv.trakt.trakt.tv.networking.openapi.ShowDto
 import java.time.ZonedDateTime
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes

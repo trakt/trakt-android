@@ -21,7 +21,7 @@ internal class GetAvailableNowMoviesUseCase(
             limit = 30,
             extended = "full,cloud9,colors",
         ).filter {
-            !it.movie.released.isNullOrBlank() && it.movie.released <= nowDay
+            !it.movie.released.isNullOrBlank() && it.movie.released!! <= nowDay
         }.asyncMap {
             WatchlistMovie(
                 movie = Movie.fromDto(it.movie),

@@ -1,8 +1,8 @@
 package tv.trakt.trakt.tv.common.model
 
 import androidx.compose.runtime.Immutable
+import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.tv.helpers.extensions.toZonedDateTime
-import tv.trakt.trakt.tv.networking.openapi.ExtraVideoDto
 import java.time.ZonedDateTime
 
 @Immutable

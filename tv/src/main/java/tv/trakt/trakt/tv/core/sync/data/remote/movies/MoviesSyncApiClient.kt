@@ -7,9 +7,9 @@ import org.openapitools.client.models.PostCheckinMovieRequestMovieIds
 import org.openapitools.client.models.PostSyncHistoryRemoveRequest
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInner
+import tv.trakt.trakt.common.networking.WatchedMovieDto
+import tv.trakt.trakt.common.networking.WatchlistMovieDto
 import tv.trakt.trakt.tv.common.model.TraktId
-import tv.trakt.trakt.tv.networking.openapi.WatchedMovieDto
-import tv.trakt.trakt.tv.networking.openapi.WatchlistMovieDto
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 

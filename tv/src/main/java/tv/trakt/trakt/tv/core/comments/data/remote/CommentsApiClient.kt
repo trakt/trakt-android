@@ -1,7 +1,7 @@
 package tv.trakt.trakt.tv.core.comments.data.remote
 
 import org.openapitools.client.apis.CommentsApi
-import tv.trakt.trakt.tv.networking.openapi.CommentDto
+import tv.trakt.trakt.common.networking.CommentDto
 
 internal class CommentsApiClient(
     private val api: CommentsApi,

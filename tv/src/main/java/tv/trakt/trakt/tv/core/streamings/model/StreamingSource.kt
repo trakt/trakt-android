@@ -3,8 +3,8 @@ package tv.trakt.trakt.tv.core.streamings.model
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import androidx.core.graphics.toColorInt
+import tv.trakt.trakt.common.networking.StreamingSourceDto
 import tv.trakt.trakt.tv.core.streamings.model.StreamingSource.Companion
-import tv.trakt.trakt.tv.networking.openapi.StreamingSourceDto
 
 @Immutable
 internal data class StreamingSource(

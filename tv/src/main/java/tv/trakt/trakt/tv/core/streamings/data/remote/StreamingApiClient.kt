@@ -1,7 +1,7 @@
 package tv.trakt.trakt.tv.core.streamings.data.remote
 
 import org.openapitools.client.apis.WatchnowApi
-import tv.trakt.trakt.tv.networking.openapi.StreamingSourceDto
+import tv.trakt.trakt.common.networking.StreamingSourceDto
 
 internal class StreamingApiClient(
     private val api: WatchnowApi,

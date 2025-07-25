@@ -2,9 +2,9 @@ package tv.trakt.trakt.tv.common.model
 
 import androidx.compose.runtime.Immutable
 import kotlinx.serialization.Serializable
-import tv.trakt.trakt.tv.networking.openapi.EpisodeIdsDto
-import tv.trakt.trakt.tv.networking.openapi.MovieIdsDto
-import tv.trakt.trakt.tv.networking.openapi.ShowIdsDto
+import tv.trakt.trakt.common.networking.EpisodeIdsDto
+import tv.trakt.trakt.common.networking.MovieIdsDto
+import tv.trakt.trakt.common.networking.ShowIdsDto
 
 @Immutable
 @Serializable

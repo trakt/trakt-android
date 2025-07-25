@@ -2,18 +2,18 @@ package tv.trakt.trakt.tv.core.shows.data.remote
 
 import org.openapitools.client.apis.RecommendationsApi
 import org.openapitools.client.apis.ShowsApi
+import tv.trakt.trakt.common.networking.CastCrewDto
+import tv.trakt.trakt.common.networking.CommentDto
+import tv.trakt.trakt.common.networking.ExternalRatingsDto
+import tv.trakt.trakt.common.networking.ExtraVideoDto
+import tv.trakt.trakt.common.networking.ListDto
+import tv.trakt.trakt.common.networking.RecommendedShowDto
+import tv.trakt.trakt.common.networking.SeasonDto
+import tv.trakt.trakt.common.networking.ShowDto
+import tv.trakt.trakt.common.networking.StreamingDto
 import tv.trakt.trakt.tv.common.model.TraktId
 import tv.trakt.trakt.tv.core.shows.data.remote.model.response.AnticipatedShowDto
 import tv.trakt.trakt.tv.core.shows.data.remote.model.response.TrendingShowDto
-import tv.trakt.trakt.tv.networking.openapi.CastCrewDto
-import tv.trakt.trakt.tv.networking.openapi.CommentDto
-import tv.trakt.trakt.tv.networking.openapi.ExternalRatingsDto
-import tv.trakt.trakt.tv.networking.openapi.ExtraVideoDto
-import tv.trakt.trakt.tv.networking.openapi.ListDto
-import tv.trakt.trakt.tv.networking.openapi.RecommendedShowDto
-import tv.trakt.trakt.tv.networking.openapi.SeasonDto
-import tv.trakt.trakt.tv.networking.openapi.ShowDto
-import tv.trakt.trakt.tv.networking.openapi.StreamingDto
 
 internal class ShowsApiClient(
     private val api: ShowsApi,

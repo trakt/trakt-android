@@ -1,9 +1,9 @@
 package tv.trakt.trakt.tv.core.people.data.remote
 
+import tv.trakt.trakt.common.networking.PersonDetailsDto
+import tv.trakt.trakt.common.networking.PersonMoviesDto
+import tv.trakt.trakt.common.networking.PersonShowsDto
 import tv.trakt.trakt.tv.common.model.TraktId
-import tv.trakt.trakt.tv.networking.openapi.PersonDetailsDto
-import tv.trakt.trakt.tv.networking.openapi.PersonMoviesDto
-import tv.trakt.trakt.tv.networking.openapi.PersonShowsDto
 
 internal interface PeopleRemoteDataSource {
     suspend fun getPersonDetails(personId: TraktId): PersonDetailsDto

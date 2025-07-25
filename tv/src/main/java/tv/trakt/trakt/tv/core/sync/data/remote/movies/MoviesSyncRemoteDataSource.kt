@@ -1,8 +1,8 @@
 package tv.trakt.trakt.tv.core.sync.data.remote.movies
 
+import tv.trakt.trakt.common.networking.WatchedMovieDto
+import tv.trakt.trakt.common.networking.WatchlistMovieDto
 import tv.trakt.trakt.tv.common.model.TraktId
-import tv.trakt.trakt.tv.networking.openapi.WatchedMovieDto
-import tv.trakt.trakt.tv.networking.openapi.WatchlistMovieDto
 import java.time.ZonedDateTime
 
 internal interface MoviesSyncRemoteDataSource {

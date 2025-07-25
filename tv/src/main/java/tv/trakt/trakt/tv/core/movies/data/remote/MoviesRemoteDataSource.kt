@@ -1,16 +1,16 @@
 package tv.trakt.trakt.tv.core.movies.data.remote
 
+import tv.trakt.trakt.common.networking.CastCrewDto
+import tv.trakt.trakt.common.networking.CommentDto
+import tv.trakt.trakt.common.networking.ExternalRatingsDto
+import tv.trakt.trakt.common.networking.ExtraVideoDto
+import tv.trakt.trakt.common.networking.ListDto
+import tv.trakt.trakt.common.networking.MovieDto
+import tv.trakt.trakt.common.networking.RecommendedMovieDto
+import tv.trakt.trakt.common.networking.StreamingDto
 import tv.trakt.trakt.tv.common.model.TraktId
 import tv.trakt.trakt.tv.core.movies.data.remote.model.response.AnticipatedMovieDto
 import tv.trakt.trakt.tv.core.movies.data.remote.model.response.TrendingMovieDto
-import tv.trakt.trakt.tv.networking.openapi.CastCrewDto
-import tv.trakt.trakt.tv.networking.openapi.CommentDto
-import tv.trakt.trakt.tv.networking.openapi.ExternalRatingsDto
-import tv.trakt.trakt.tv.networking.openapi.ExtraVideoDto
-import tv.trakt.trakt.tv.networking.openapi.ListDto
-import tv.trakt.trakt.tv.networking.openapi.MovieDto
-import tv.trakt.trakt.tv.networking.openapi.RecommendedMovieDto
-import tv.trakt.trakt.tv.networking.openapi.StreamingDto
 
 internal interface MoviesRemoteDataSource {
     suspend fun getTrendingMovies(): List<TrendingMovieDto>
