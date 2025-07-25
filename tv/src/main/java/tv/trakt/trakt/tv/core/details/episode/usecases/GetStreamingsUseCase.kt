@@ -1,10 +1,10 @@
 package tv.trakt.trakt.tv.core.details.episode.usecases
 
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.tv.Config.DEFAULT_COUNTRY_CODE
 import tv.trakt.trakt.tv.common.model.SeasonEpisode
 import tv.trakt.trakt.tv.common.model.StreamingService
-import tv.trakt.trakt.tv.common.model.User
 import tv.trakt.trakt.tv.core.episodes.data.remote.EpisodesRemoteDataSource
 import tv.trakt.trakt.tv.core.streamings.data.local.StreamingLocalDataSource
 import tv.trakt.trakt.tv.core.streamings.data.remote.StreamingRemoteDataSource

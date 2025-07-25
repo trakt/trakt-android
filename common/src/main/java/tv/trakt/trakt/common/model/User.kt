@@ -1,18 +1,15 @@
-package tv.trakt.trakt.tv.common.model
+package tv.trakt.trakt.common.model
 
 import androidx.compose.runtime.Immutable
 import kotlinx.serialization.Serializable
-import tv.trakt.trakt.common.model.Ids
-import tv.trakt.trakt.common.model.SlugId
-import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.Config
+import tv.trakt.trakt.common.model.User.Companion
 import tv.trakt.trakt.common.networking.UserDto
 import tv.trakt.trakt.common.networking.UserSettingsDto
-import tv.trakt.trakt.tv.Config
-import tv.trakt.trakt.tv.common.model.User.Companion
 
 @Immutable
 @Serializable
-internal data class User(
+data class User(
     val ids: Ids,
     val username: String,
     val name: String?,
@@ -53,7 +50,7 @@ internal data class User(
     companion object
 }
 
-internal fun Companion.fromDto(dto: UserDto): User {
+fun Companion.fromDto(dto: UserDto): User {
     return User(
         ids = Ids(
             trakt = TraktId(dto.ids.trakt),
@@ -75,7 +72,7 @@ internal fun Companion.fromDto(dto: UserDto): User {
     )
 }
 
-internal fun Companion.fromDto(dto: UserSettingsDto): User {
+fun Companion.fromDto(dto: UserSettingsDto): User {
     return User(
         ids = Ids(
             trakt = TraktId(dto.user.ids.trakt ?: 0),

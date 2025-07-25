@@ -1,11 +1,11 @@
 package tv.trakt.trakt.tv.core.profile.data.remote
 
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.networking.CalendarShowDto
 import tv.trakt.trakt.common.networking.SyncFavoriteMovieDto
 import tv.trakt.trakt.common.networking.SyncFavoriteShowDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
-import tv.trakt.trakt.tv.common.model.User
 import java.time.LocalDate
 
 internal interface ProfileRemoteDataSource {

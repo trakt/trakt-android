@@ -54,9 +54,9 @@ import androidx.tv.material3.DrawerValue.Open
 import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
 import coil3.compose.AsyncImage
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.theme.colors.Purple50
 import tv.trakt.trakt.tv.R
-import tv.trakt.trakt.tv.common.model.User
 import tv.trakt.trakt.tv.core.auth.navigation.AuthDestination
 import tv.trakt.trakt.tv.core.home.navigation.HomeDestination
 import tv.trakt.trakt.tv.core.lists.navigation.ListsDestination

@@ -7,13 +7,13 @@ import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TmdbId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.TvdbId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.tv.common.model.Comment
 import tv.trakt.trakt.tv.common.model.CustomList
 import tv.trakt.trakt.tv.common.model.CustomList.Type
 import tv.trakt.trakt.tv.common.model.Images
 import tv.trakt.trakt.tv.common.model.Person
 import tv.trakt.trakt.tv.common.model.Rating
-import tv.trakt.trakt.tv.common.model.User
 import tv.trakt.trakt.tv.common.model.sorting.SortOrder
 import tv.trakt.trakt.tv.common.model.sorting.SortType
 import tv.trakt.trakt.tv.core.episodes.model.Episode

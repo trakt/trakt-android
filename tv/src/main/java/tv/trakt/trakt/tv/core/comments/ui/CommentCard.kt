@@ -140,9 +140,10 @@ private fun CommentHeader(
             modifier = Modifier.size(36.dp),
         ) {
             val avatarBorder = if (comment.user.isAnyVip) Color.Red else Color.Transparent
-            if (comment.user.images?.avatar?.full != null) {
+            val avatar = comment.user.images?.avatar?.full
+            if (avatar != null) {
                 AsyncImage(
-                    model = comment.user.images.avatar.full,
+                    model = avatar,
                     contentDescription = "User avatar",
                     contentScale = ContentScale.Crop,
                     error = painterResource(R.drawable.ic_person_placeholder),

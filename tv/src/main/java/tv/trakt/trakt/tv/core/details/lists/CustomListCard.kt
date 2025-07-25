@@ -171,12 +171,10 @@ private fun CustomListHeader(
                     .size(36.dp),
         ) {
             val avatarBorder = if (list.user.isAnyVip) Color.Red else Color.Transparent
-            if (list.user.images
-                    ?.avatar
-                    ?.full != null
-            ) {
+            val avatar = list.user.images?.avatar?.full
+            if (avatar != null) {
                 AsyncImage(
-                    model = list.user.images.avatar.full,
+                    model = avatar,
                     contentDescription = "User avatar",
                     contentScale = ContentScale.Crop,
                     error = painterResource(R.drawable.ic_person_placeholder),

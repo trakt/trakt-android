@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.tv.R
 import tv.trakt.trakt.tv.auth.session.SessionManager
@@ -26,7 +27,6 @@ import tv.trakt.trakt.tv.common.model.Comment
 import tv.trakt.trakt.tv.common.model.CustomList
 import tv.trakt.trakt.tv.common.model.ExternalRating
 import tv.trakt.trakt.tv.common.model.ExtraVideo
-import tv.trakt.trakt.tv.common.model.User
 import tv.trakt.trakt.tv.core.details.movie.MovieDetailsState.CollectionState
 import tv.trakt.trakt.tv.core.details.movie.MovieDetailsState.StreamingsState
 import tv.trakt.trakt.tv.core.details.movie.navigation.MovieDestination

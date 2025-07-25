@@ -1,6 +1,8 @@
 package tv.trakt.trakt.tv.common.model
 
 import androidx.compose.runtime.Immutable
+import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.tv.helpers.LiteRating
 import tv.trakt.trakt.tv.helpers.extensions.toZonedDateTime

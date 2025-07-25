@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
 import tv.trakt.trakt.common.auth.TokenProvider
-import tv.trakt.trakt.tv.common.model.User
+import tv.trakt.trakt.common.model.User
 
 private val KEY_USER_PROFILE = stringPreferencesKey("key_user_profile")
 
