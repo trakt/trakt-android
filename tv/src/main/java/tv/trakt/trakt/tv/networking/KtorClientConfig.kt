@@ -24,9 +24,9 @@ import kotlinx.serialization.json.Json
 import tv.trakt.trakt.common.auth.TokenProvider
 import tv.trakt.trakt.common.auth.model.TraktAccessToken
 import tv.trakt.trakt.common.auth.model.TraktRefreshToken
+import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.tv.BuildConfig
 import tv.trakt.trakt.tv.Config
-import tv.trakt.trakt.tv.auth.session.SessionManager
 import kotlin.time.Duration.Companion.seconds
 
 private const val HEADER_TRAKT_API_KEY = "trakt-api-key"

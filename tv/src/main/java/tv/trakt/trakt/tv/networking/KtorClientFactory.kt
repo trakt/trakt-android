@@ -5,7 +5,7 @@ import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.okhttp.OkHttp
 import tv.trakt.trakt.common.auth.TokenProvider
-import tv.trakt.trakt.tv.auth.session.SessionManager
+import tv.trakt.trakt.common.auth.session.SessionManager
 
 internal class KtorClientFactory(
     private val baseUrl: String,

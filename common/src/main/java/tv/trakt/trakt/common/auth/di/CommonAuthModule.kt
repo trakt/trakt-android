@@ -16,6 +16,8 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.common.auth.DefaultTokenProvider
 import tv.trakt.trakt.common.auth.TokenProvider
+import tv.trakt.trakt.common.auth.session.DefaultSessionManager
+import tv.trakt.trakt.common.auth.session.SessionManager
 
 private const val AUTH_PREFERENCES = "auth_preferences"
 private const val SESSION_PREFERENCES = "session_preferences"
@@ -38,6 +40,13 @@ val commonAuthModule = module {
     single<TokenProvider> {
         DefaultTokenProvider(
             dataStore = get(named(AUTH_PREFERENCES)),
+        )
+    }
+
+    single<SessionManager> {
+        DefaultSessionManager(
+            tokenProvider = get<TokenProvider>(),
+            dataStore = get(named(SESSION_PREFERENCES)),
         )
     }
 }

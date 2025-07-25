@@ -1,4 +1,4 @@
-package tv.trakt.trakt.tv.auth.session
+package tv.trakt.trakt.common.auth.session
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences

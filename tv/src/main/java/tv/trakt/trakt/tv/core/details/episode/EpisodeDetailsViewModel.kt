@@ -15,12 +15,12 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.tv.R
-import tv.trakt.trakt.tv.auth.session.SessionManager
 import tv.trakt.trakt.tv.common.model.CastPerson
 import tv.trakt.trakt.tv.common.model.Comment
 import tv.trakt.trakt.tv.common.model.ExternalRating

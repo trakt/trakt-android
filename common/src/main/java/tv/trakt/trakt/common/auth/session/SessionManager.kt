@@ -1,9 +1,9 @@
-package tv.trakt.trakt.tv.auth.session
+package tv.trakt.trakt.common.auth.session
 
 import kotlinx.coroutines.flow.Flow
 import tv.trakt.trakt.common.model.User
 
-internal interface SessionManager {
+interface SessionManager {
     suspend fun saveProfile(user: User)
 
     suspend fun getProfile(): User?

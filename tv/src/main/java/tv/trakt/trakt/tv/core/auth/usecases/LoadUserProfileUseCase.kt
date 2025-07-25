@@ -1,6 +1,6 @@
 package tv.trakt.trakt.tv.core.auth.usecases
 
-import tv.trakt.trakt.tv.auth.session.SessionManager
+import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.tv.core.profile.data.remote.ProfileRemoteDataSource
 
 internal class LoadUserProfileUseCase(

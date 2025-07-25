@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import tv.trakt.trakt.tv.auth.session.SessionManager
+import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.tv.core.profile.usecases.LogoutProfileUseCase
 
 internal class ProfileViewModel(

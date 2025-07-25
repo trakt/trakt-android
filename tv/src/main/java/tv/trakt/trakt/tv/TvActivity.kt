@@ -19,7 +19,6 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.context.startKoin
 import tv.trakt.trakt.common.auth.di.commonAuthModule
-import tv.trakt.trakt.tv.auth.di.tvAuthModule
 import tv.trakt.trakt.tv.core.auth.di.authDataModule
 import tv.trakt.trakt.tv.core.auth.di.authModule
 import tv.trakt.trakt.tv.core.comments.di.commentsDataModule
@@ -103,7 +102,6 @@ class TvActivity : ComponentActivity() {
                     authModule,
                     authDataModule,
                     commonAuthModule,
-                    tvAuthModule,
                     showsModule,
                     showsDataModule,
                     showDetailsModule,
