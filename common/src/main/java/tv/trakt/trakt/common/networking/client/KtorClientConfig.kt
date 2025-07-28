@@ -20,6 +20,8 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType.Application
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.json.Json
 import tv.trakt.trakt.common.BuildConfig
 import tv.trakt.trakt.common.Config
@@ -27,6 +29,7 @@ import tv.trakt.trakt.common.auth.TokenProvider
 import tv.trakt.trakt.common.auth.model.TraktAccessToken
 import tv.trakt.trakt.common.auth.model.TraktRefreshToken
 import tv.trakt.trakt.common.auth.session.SessionManager
+import kotlin.coroutines.cancellation.CancellationException
 import kotlin.time.Duration.Companion.seconds
 
 private const val HEADER_TRAKT_API_KEY = "trakt-api-key"
@@ -39,6 +42,8 @@ private val jsonNegotiation = Json {
     ignoreUnknownKeys = true
     explicitNulls = false
 }
+
+private val mutex = Mutex()
 
 internal fun HttpClientConfig<*>.applyConfig(baseUrl: String) {
     expectSuccess = true
@@ -76,46 +81,64 @@ internal fun HttpClientConfig<*>.applyAuthorizationConfig(
     install(Auth) {
         bearer {
             loadTokens {
+                Log.d("HttpClient", "Loading auth tokens")
                 val token = tokenProvider.getToken()!!
                 BearerTokens(
                     accessToken = token.accessToken,
                     refreshToken = token.refreshToken,
                 )
             }
+
             refreshTokens {
-                try {
-                    Log.d("HttpClient", "Refreshing auth tokens")
-                    val newTokens = client.post("${Config.API_BASE_URL}oauth/token") {
-                        setBody(
-                            TraktRefreshToken(
-                                refreshToken = oldTokens?.refreshToken!!,
-                                clientId = BuildConfig.TRAKT_API_KEY,
-                                clientSecret = BuildConfig.TRAKT_API_SECRET,
-                                type = "refresh_token",
+                Log.d("HttpClient", "Refresh tokens requested")
+                mutex.withLock {
+                    val oldTokens = this.oldTokens
+                    val currentTokens = tokenProvider.getToken()!!
+
+                    if (oldTokens?.accessToken != currentTokens.accessToken) {
+                        Log.d("HttpClient", "Tokens already refreshed by another request")
+                        return@withLock BearerTokens(
+                            accessToken = currentTokens.accessToken,
+                            refreshToken = currentTokens.refreshToken,
+                        )
+                    }
+
+                    try {
+                        Log.d("HttpClient", "Refreshing auth tokens")
+                        val newTokens = client.post("${Config.API_BASE_URL}oauth/token") {
+                            setBody(
+                                TraktRefreshToken(
+                                    refreshToken = oldTokens.refreshToken ?: "",
+                                    clientId = BuildConfig.TRAKT_API_KEY,
+                                    clientSecret = BuildConfig.TRAKT_API_SECRET,
+                                    type = "refresh_token",
+                                ),
+                            )
+                        }.body<TraktAccessToken>()
+
+                        tokenProvider.saveToken(
+                            TraktAccessToken(
+                                accessToken = newTokens.accessToken,
+                                refreshToken = newTokens.refreshToken,
+                                expiresIn = newTokens.expiresIn,
+                                createdAt = newTokens.createdAt,
                             ),
                         )
-                    }.body<TraktAccessToken>()
 
-                    tokenProvider.saveToken(
-                        TraktAccessToken(
+                        return@withLock BearerTokens(
                             accessToken = newTokens.accessToken,
                             refreshToken = newTokens.refreshToken,
-                            expiresIn = newTokens.expiresIn,
-                            createdAt = newTokens.createdAt,
-                        ),
-                    )
-
-                    return@refreshTokens BearerTokens(
-                        accessToken = newTokens.accessToken,
-                        refreshToken = newTokens.refreshToken,
-                    ).also {
-                        Log.d("HttpClient", "Auth tokens refreshed successfully")
-                    }
-                } catch (error: Exception) {
-                    sessionManager.clear()
-                    tokenProvider.clear()
-                    return@refreshTokens null.also {
-                        Log.e("HttpClient", "Failed to refresh auth tokens", error)
+                        ).also {
+                            Log.d("HttpClient", "Auth tokens refreshed successfully")
+                        }
+                    } catch (error: Exception) {
+                        if (error !is CancellationException) {
+                            sessionManager.clear()
+                            tokenProvider.clear()
+                        }
+                        return@withLock null.also {
+                            Log.e("HttpClient", "Failed to refresh auth tokens", error)
+                        }
                     }
                 }
             }
