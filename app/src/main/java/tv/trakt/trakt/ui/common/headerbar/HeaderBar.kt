@@ -1,12 +1,20 @@
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,54 +25,81 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun HeaderBar(modifier: Modifier = Modifier) {
-    Row(
+internal fun HeaderBar(
+    modifier: Modifier = Modifier,
+    height: Dp = TraktTheme.size.navigationHeaderHeight,
+    containerColor: Color = TraktTheme.colors.navigationHeaderContainer,
+) {
+    val headerBarHeight = WindowInsets.statusBars.asPaddingValues()
+        .calculateTopPadding()
+        .plus(height)
+
+    Box(
         modifier = modifier
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy(16.dp),
-    ) {
-        Column(
-            verticalArrangement = spacedBy(1.dp),
-        ) {
-            Text(
-                text = "Hello there!",
-                color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.paragraphSmall,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
+            .height(headerBarHeight)
+            .clip(
+                RoundedCornerShape(
+                    bottomStart = 24.dp,
+                    bottomEnd = 24.dp,
+                ),
             )
-            Text(
-                text = "November 30th, 2025",
-                color = TraktTheme.colors.textSecondary,
-                style = TraktTheme.typography.meta,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
+            .background(containerColor),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .padding(
+                    start = TraktTheme.spacing.mainPageHorizontalSpace,
+                    end = TraktTheme.spacing.mainPageHorizontalSpace,
+                    bottom = TraktTheme.spacing.mainPageHorizontalSpace,
+                ),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = spacedBy(16.dp),
+        ) {
+            Column(
+                verticalArrangement = spacedBy(0.dp),
+            ) {
+                Text(
+                    text = "Hello there!",
+                    color = TraktTheme.colors.textPrimary,
+                    style = TraktTheme.typography.paragraphSmall,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    text = "November 30th, 2025",
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.meta,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+
+            Spacer(modifier = Modifier.weight(1F))
+
+            Icon(
+                painter = painterResource(R.drawable.ic_filter_off),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier.size(24.dp),
+            )
+
+            Image(
+                painter = painterResource(R.drawable.ic_person_placeholder),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(30.dp)
+                    .border(2.dp, Color.White, CircleShape)
+                    .clip(CircleShape),
             )
         }
-
-        Spacer(modifier = Modifier.weight(1F))
-
-        Icon(
-            painter = painterResource(R.drawable.ic_filter_off),
-            contentDescription = null,
-            tint = TraktTheme.colors.textPrimary,
-            modifier = Modifier.size(24.dp),
-        )
-
-        Image(
-            painter = painterResource(R.drawable.ic_person_placeholder),
-            contentDescription = null,
-            modifier = Modifier
-                .size(30.dp)
-                .border(2.dp, Color.White, CircleShape)
-                .clip(CircleShape),
-        )
     }
 }
 

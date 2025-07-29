@@ -19,6 +19,7 @@ internal val DarkColors: TraktColors = TraktColors(
     skeletonShimmer = Shade700,
     chipContainer = Shade800,
     chipContent = Color.White,
+    navigationHeaderContainer = Shade920,
     navigationContainer = Shade920.copy(alpha = 0.98F),
     navigationContent = White,
 )
@@ -34,6 +35,7 @@ internal data class TraktColors(
     val chipContainer: Color = Color.Unspecified,
     val chipContent: Color = Color.Unspecified,
     // Nav
+    val navigationHeaderContainer: Color = Color.Unspecified,
     val navigationContainer: Color = Color.Unspecified,
     val navigationContent: Color = Color.Unspecified,
 )
