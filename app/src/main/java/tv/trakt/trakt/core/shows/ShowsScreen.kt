@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.shows.sections.hot.ShowsHotView
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -47,13 +48,17 @@ private fun ShowsScreenContent(
                 bottom = TraktTheme.spacing.mainPageBottomSpace,
             ),
         ) {
-            repeat(4) {
-                item {
-                    ShowsTrendingView(
-                        headerPadding = sectionPadding,
-                        contentPadding = sectionPadding,
-                    )
-                }
+            item {
+                ShowsTrendingView(
+                    headerPadding = sectionPadding,
+                    contentPadding = sectionPadding,
+                )
+            }
+            item {
+                ShowsHotView(
+                    headerPadding = sectionPadding,
+                    contentPadding = sectionPadding,
+                )
             }
         }
     }

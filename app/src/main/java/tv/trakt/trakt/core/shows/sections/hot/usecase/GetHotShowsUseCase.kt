@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.shows.sections.trending.usecase
+package tv.trakt.trakt.core.shows.sections.hot.usecase
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -8,11 +8,11 @@ import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.core.shows.model.WatchersShow
 import tv.trakt.trakt.tv.helpers.extensions.asyncMap
 
-internal class GetTrendingShowsUseCase(
+internal class GetHotShowsUseCase(
     private val remoteSource: ShowsRemoteDataSource,
 ) {
-    suspend fun getTrendingShows(): ImmutableList<WatchersShow> {
-        return remoteSource.getTrending(30)
+    suspend fun getHotShows(): ImmutableList<WatchersShow> {
+        return remoteSource.getHot(30)
             .asyncMap {
                 WatchersShow(
                     watchers = it.watchers,

@@ -1,1 +1,3 @@
-<resources />
+<resources>
+    <string name="header_hot">Hot</string>
+</resources>
