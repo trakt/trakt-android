@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.shows.sections.anticipated.ShowsAnticipatedView
 import tv.trakt.trakt.core.shows.sections.hot.ShowsHotView
 import tv.trakt.trakt.core.shows.sections.popular.ShowsPopularView
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -31,7 +33,12 @@ private fun ShowsScreenContent(
     modifier: Modifier = Modifier,
     onShowClick: (TraktId) -> Unit,
 ) {
-    val topPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() + 32.dp
+    val topPadding =
+        WindowInsets.statusBars.asPaddingValues().calculateTopPadding() + 32.dp
+
+    val bottomPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+        .plus(TraktTheme.size.navigationBarHeight)
+        .plus(TraktTheme.spacing.mainPageBottomSpace)
 
     val sectionPadding = PaddingValues(
         start = TraktTheme.spacing.mainPageHorizontalSpace,
@@ -46,7 +53,7 @@ private fun ShowsScreenContent(
             verticalArrangement = spacedBy(TraktTheme.spacing.mainSectionVerticalSpace),
             contentPadding = PaddingValues(
                 top = topPadding,
-                bottom = TraktTheme.spacing.mainPageBottomSpace,
+                bottom = bottomPadding,
             ),
         ) {
             item {
@@ -57,6 +64,12 @@ private fun ShowsScreenContent(
             }
             item {
                 ShowsHotView(
+                    headerPadding = sectionPadding,
+                    contentPadding = sectionPadding,
+                )
+            }
+            item {
+                ShowsAnticipatedView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                 )

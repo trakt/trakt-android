@@ -9,8 +9,8 @@ internal val Spacing: TraktSpacing = TraktSpacing(
     mainRowHeaderSpace = 12.dp,
     mainPageHorizontalSpace = 12.dp,
     mainPageTopSpace = 128.dp,
-    mainPageBottomSpace = 164.dp,
-    mainSectionVerticalSpace = 28.dp,
+    mainPageBottomSpace = 64.dp,
+    mainSectionVerticalSpace = 30.dp,
 )
 
 @Immutable

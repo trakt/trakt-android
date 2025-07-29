@@ -7,6 +7,8 @@ import org.openapitools.client.apis.ShowsApi
 import tv.trakt.trakt.common.Config.API_BASE_URL
 import tv.trakt.trakt.core.shows.data.remote.ShowsApiClient
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
+import tv.trakt.trakt.core.shows.sections.anticipated.ShowsAnticipatedViewModel
+import tv.trakt.trakt.core.shows.sections.anticipated.usecase.GetAnticipatedShowsUseCase
 import tv.trakt.trakt.core.shows.sections.hot.ShowsHotViewModel
 import tv.trakt.trakt.core.shows.sections.hot.usecase.GetHotShowsUseCase
 import tv.trakt.trakt.core.shows.sections.popular.ShowsPopularViewModel
@@ -46,6 +48,12 @@ internal val showsModule = module {
         )
     }
 
+    factory {
+        GetAnticipatedShowsUseCase(
+            remoteSource = get(),
+        )
+    }
+
     viewModel {
         ShowsTrendingViewModel(
             getTrendingUseCase = get(),
@@ -55,6 +63,12 @@ internal val showsModule = module {
     viewModel {
         ShowsHotViewModel(
             getHotUseCase = get(),
+        )
+    }
+
+    viewModel {
+        ShowsAnticipatedViewModel(
+            getAnticipatedUseCase = get(),
         )
     }
 

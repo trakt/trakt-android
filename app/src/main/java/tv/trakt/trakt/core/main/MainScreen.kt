@@ -7,6 +7,7 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.NavigationBar
 import androidx.compose.runtime.Composable
@@ -53,6 +54,7 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .align(BottomCenter)
                 .fillMaxWidth()
+                .height(TraktTheme.size.navigationBarHeight)
                 .clip(
                     RoundedCornerShape(
                         topStart = 24.dp,
