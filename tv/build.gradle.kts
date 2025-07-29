@@ -75,6 +75,9 @@ dependencies {
     implementation(libs.kotlinx.datetime)
     implementation(libs.qr.compose)
 
+    implementation(libs.youtube.player)
+    implementation(libs.youtube.player.ui)
+
     debugImplementation(libs.androidx.compose.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 }

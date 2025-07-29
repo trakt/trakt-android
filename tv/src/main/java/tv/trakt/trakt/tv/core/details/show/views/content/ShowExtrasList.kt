@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Text
@@ -24,10 +23,10 @@ import tv.trakt.trakt.tv.ui.theme.TraktTheme
 internal fun ShowExtrasList(
     header: String,
     videos: () -> ImmutableList<ExtraVideo>,
+    onClicked: (videoUrl: String) -> Unit,
     onFocused: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val uriHandler = LocalUriHandler.current
     Column(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -54,7 +53,7 @@ internal fun ShowExtrasList(
             ) { video ->
                 HorizontalMediaCard(
                     title = "",
-                    onClick = { uriHandler.openUri(video.url) },
+                    onClick = { onClicked(video.url) },
                     containerImageUrl = video.getYoutubeImageUrl,
                     footerContent = {
                         Column(

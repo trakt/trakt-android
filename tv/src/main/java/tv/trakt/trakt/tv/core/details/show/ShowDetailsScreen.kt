@@ -81,8 +81,6 @@ import tv.trakt.trakt.tv.ui.theme.TraktTheme
 import java.time.ZonedDateTime
 import kotlin.math.roundToInt
 
-// TODO Refactor into smaller files/sections
-
 private val sections = listOf(
     "poster",
     "buttons",
@@ -102,6 +100,7 @@ internal fun ShowDetailsScreen(
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToPerson: (PersonDestination) -> Unit,
     onNavigateToList: (CustomList) -> Unit,
+    onNavigateToVideo: (String) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var historyConfirmationDialog by remember { mutableStateOf(false) }
@@ -115,6 +114,7 @@ internal fun ShowDetailsScreen(
         onNavigateToEpisode = onNavigateToEpisode,
         onNavigateToPerson = onNavigateToPerson,
         onNavigateToList = onNavigateToList,
+        onNavigateToVideo = onNavigateToVideo,
         onWatchlistClick = viewModel::toggleWatchlist,
         onSeasonClick = viewModel::loadSeason,
         onHistoryClick = {
@@ -145,6 +145,7 @@ private fun ShowDetailsScreenContent(
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToPerson: (PersonDestination) -> Unit,
     onNavigateToList: (CustomList) -> Unit,
+    onNavigateToVideo: (String) -> Unit,
     onHistoryClick: () -> Unit,
     onWatchlistClick: () -> Unit,
     onSeasonClick: (Season) -> Unit,
@@ -245,6 +246,7 @@ private fun ShowDetailsScreenContent(
                     },
                     onCommentClick = { selectedComment = it },
                     onListClick = onNavigateToList,
+                    onVideoClick = onNavigateToVideo,
                     onHistoryClick = onHistoryClick,
                     onWatchlistClick = onWatchlistClick,
                 )
@@ -271,6 +273,7 @@ private fun MainContent(
     onEpisodeClick: (episode: Episode) -> Unit,
     onCommentClick: (Comment) -> Unit,
     onListClick: (CustomList) -> Unit,
+    onVideoClick: (String) -> Unit,
     onHistoryClick: () -> Unit,
     onWatchlistClick: () -> Unit,
     focusRequesters: Map<String, FocusRequester>,
@@ -324,6 +327,7 @@ private fun MainContent(
                 header = stringResource(R.string.header_extras),
                 videos = { state.showVideos ?: emptyList<ExtraVideo>().toImmutableList() },
                 onFocused = { onFocused("extras") },
+                onClicked = onVideoClick,
                 modifier = Modifier
                     .padding(top = 24.dp)
                     .focusRequester(focusRequesters.getValue("extras")),
@@ -584,6 +588,7 @@ private fun MainScreenPreview() {
             onNavigateToEpisode = { _, _ -> },
             onNavigateToPerson = {},
             onNavigateToList = {},
+            onNavigateToVideo = {},
             onHistoryClick = {},
             onWatchlistClick = {},
             onSeasonClick = {},

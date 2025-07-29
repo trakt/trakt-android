@@ -91,6 +91,7 @@ internal fun MovieDetailsScreen(
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToPerson: (PersonDestination) -> Unit,
     onNavigateToList: (CustomList) -> Unit,
+    onNavigateToVideo: (String) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -102,6 +103,7 @@ internal fun MovieDetailsScreen(
         onNavigateToMovie = onNavigateToMovie,
         onNavigateToPerson = onNavigateToPerson,
         onNavigateToList = onNavigateToList,
+        onNavigateToVideo = onNavigateToVideo,
         onWatchlistClick = viewModel::toggleWatchlist,
         onHistoryClick = viewModel::toggleHistory,
     )
@@ -120,6 +122,7 @@ private fun MovieDetailsScreenContent(
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToPerson: (PersonDestination) -> Unit,
     onNavigateToList: (CustomList) -> Unit,
+    onNavigateToVideo: (String) -> Unit,
     onHistoryClick: () -> Unit,
     onWatchlistClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -218,6 +221,7 @@ private fun MovieDetailsScreenContent(
                     },
                     onCommentClick = { selectedComment = it },
                     onListClick = onNavigateToList,
+                    onVideoClick = onNavigateToVideo,
                     onHistoryClick = onHistoryClick,
                     onWatchlistClick = onWatchlistClick,
                 )
@@ -242,6 +246,7 @@ private fun MainContent(
     onPersonClick: (Person) -> Unit,
     onCommentClick: (Comment) -> Unit,
     onListClick: (CustomList) -> Unit,
+    onVideoClick: (String) -> Unit,
     onHistoryClick: () -> Unit,
     onWatchlistClick: () -> Unit,
     focusRequesters: Map<String, FocusRequester>,
@@ -292,6 +297,7 @@ private fun MainContent(
             MovieExtrasList(
                 header = stringResource(R.string.header_extras),
                 videos = { state.movieVideos ?: emptyList<ExtraVideo>().toImmutableList() },
+                onClicked = onVideoClick,
                 onFocused = { onFocused("extras") },
                 modifier = Modifier
                     .padding(top = 32.dp)
@@ -478,6 +484,7 @@ private fun Preview() {
             onNavigateToMovie = {},
             onNavigateToPerson = {},
             onNavigateToList = {},
+            onNavigateToVideo = {},
             onHistoryClick = {},
             onWatchlistClick = {},
         )

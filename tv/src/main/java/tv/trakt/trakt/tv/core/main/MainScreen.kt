@@ -62,6 +62,7 @@ import tv.trakt.trakt.tv.core.main.ui.snackbar.MainSnackbarHost
 import tv.trakt.trakt.tv.core.movies.navigation.moviesScreen
 import tv.trakt.trakt.tv.core.people.navigation.navigateToPerson
 import tv.trakt.trakt.tv.core.people.navigation.personDetailsScreen
+import tv.trakt.trakt.tv.core.player.navigateToPlayer
 import tv.trakt.trakt.tv.core.profile.navigation.navigateToProfile
 import tv.trakt.trakt.tv.core.profile.navigation.profileScreen
 import tv.trakt.trakt.tv.core.profile.sections.favorites.movies.viewall.navigation.navigateToProfileFavoriteMoviesViewAll
@@ -261,11 +262,13 @@ private fun MainNavHost(
                 },
                 onNavigateToPerson = { navigateToPerson(it) },
                 onNavigateToList = { navigateToCustomListShows(it) },
+                onNavigateToVideo = { navigateToPlayer(it) },
             )
             movieDetailsScreen(
                 onNavigateToMovie = { navigateToMovie(it) },
                 onNavigateToPerson = { navigateToPerson(it) },
                 onNavigateToList = { navigateToCustomListMovies(it) },
+                onNavigateToVideo = { navigateToPlayer(it) },
             )
             episodeDetailsScreen(
                 onNavigateToShow = { navigateToShow(it) },
