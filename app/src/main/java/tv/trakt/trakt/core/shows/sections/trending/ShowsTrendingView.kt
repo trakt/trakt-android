@@ -67,7 +67,7 @@ internal fun ShowsTrendingContent(
                 style = TraktTheme.typography.buttonTertiary,
             )
         }
-        
+
         ContentLoadingList(
             contentPadding = contentPadding,
         )

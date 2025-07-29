@@ -127,14 +127,14 @@ private fun CommentHeader(comment: Comment) {
                     model = avatar,
                     contentDescription = "User avatar",
                     contentScale = ContentScale.Crop,
-                    error = painterResource(R.drawable.ic_person_placeholder),
+                    error = painterResource(tv.trakt.trakt.common.R.drawable.ic_person_placeholder),
                     modifier = Modifier
                         .border(2.dp, avatarBorder, CircleShape)
                         .clip(CircleShape),
                 )
             } else {
                 Image(
-                    painter = painterResource(R.drawable.ic_person_placeholder),
+                    painter = painterResource(tv.trakt.trakt.common.R.drawable.ic_person_placeholder),
                     contentDescription = null,
                     modifier = Modifier
                         .border(2.dp, avatarBorder, CircleShape)
