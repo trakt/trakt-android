@@ -9,6 +9,8 @@ import tv.trakt.trakt.core.shows.data.remote.ShowsApiClient
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.core.shows.sections.hot.ShowsHotViewModel
 import tv.trakt.trakt.core.shows.sections.hot.usecase.GetHotShowsUseCase
+import tv.trakt.trakt.core.shows.sections.popular.ShowsPopularViewModel
+import tv.trakt.trakt.core.shows.sections.popular.usecase.GetPopularShowsUseCase
 import tv.trakt.trakt.core.shows.sections.trending.ShowsTrendingViewModel
 import tv.trakt.trakt.core.shows.sections.trending.usecase.GetTrendingShowsUseCase
 
@@ -38,6 +40,12 @@ internal val showsModule = module {
         )
     }
 
+    factory {
+        GetPopularShowsUseCase(
+            remoteSource = get(),
+        )
+    }
+
     viewModel {
         ShowsTrendingViewModel(
             getTrendingUseCase = get(),
@@ -47,6 +55,12 @@ internal val showsModule = module {
     viewModel {
         ShowsHotViewModel(
             getHotUseCase = get(),
+        )
+    }
+
+    viewModel {
+        ShowsPopularViewModel(
+            getPopularUseCase = get(),
         )
     }
 }
