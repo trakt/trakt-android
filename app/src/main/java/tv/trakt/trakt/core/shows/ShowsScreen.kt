@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.shows.sections.anticipated.ShowsAnticipatedView
 import tv.trakt.trakt.core.shows.sections.hot.ShowsHotView
@@ -34,7 +33,8 @@ private fun ShowsScreenContent(
     onShowClick: (TraktId) -> Unit,
 ) {
     val topPadding =
-        WindowInsets.statusBars.asPaddingValues().calculateTopPadding() + 32.dp
+        WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
+            .plus(TraktTheme.spacing.mainPageTopSpace)
 
     val bottomPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
         .plus(TraktTheme.size.navigationBarHeight)

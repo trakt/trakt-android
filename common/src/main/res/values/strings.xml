@@ -6,6 +6,7 @@
     <string name="shows">Shows</string>
     <string name="movies">Movies</string>
     <string name="lists">Lists</string>
+    <string name="view_all">View all</string>
 
     <string name="header_trending">Trending</string>
     <string name="header_hot_month">Hot This Month</string>

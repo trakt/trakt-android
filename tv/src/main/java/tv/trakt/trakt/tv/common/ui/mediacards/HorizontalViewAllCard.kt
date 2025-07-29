@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Border
@@ -26,6 +27,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Purple300
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.tv.R
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
+import tv.trakt.trakt.common.R as RCommon
 
 @Composable
 internal fun HorizontalViewAllCard(
@@ -82,7 +84,7 @@ internal fun HorizontalViewAllCard(
         )
 
         Text(
-            text = "View All".uppercase(),
+            text = stringResource(RCommon.string.view_all).uppercase(),
             style = TraktTheme.typography.buttonPrimary,
             color = TraktTheme.colors.textPrimary,
             maxLines = 1,

@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.shows.sections.popular
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,14 +50,24 @@ internal fun ShowsPopularContent(
         modifier = modifier,
     ) {
         Row(
-            modifier = Modifier.padding(headerPadding),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(headerPadding),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = stringResource(R.string.header_most_popular),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading5,
             )
+            Text(
+                text = stringResource(R.string.view_all).uppercase(),
+                color = TraktTheme.colors.textSecondary,
+                style = TraktTheme.typography.buttonTertiary,
+            )
         }
+
         ContentLoadingList(
             contentPadding = contentPadding,
         )
