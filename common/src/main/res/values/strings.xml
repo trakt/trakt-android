@@ -6,4 +6,10 @@
     <string name="shows">Shows</string>
     <string name="movies">Movies</string>
     <string name="lists">Lists</string>
+
+    <string name="header_trending">Trending</string>
+    <string name="header_hot_month">Hot This Month</string>
+    <string name="header_most_popular">Most Popular</string>
+    <string name="header_most_anticipated">Most Anticipated</string>
+    <string name="header_recommended">Recommendations</string>
 </resources>

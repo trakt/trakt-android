@@ -50,6 +50,8 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.model.Images.Size
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.LocalDrawerVisibility
 import tv.trakt.trakt.tv.LocalSnackbarState
@@ -59,7 +61,6 @@ import tv.trakt.trakt.tv.common.model.Comment
 import tv.trakt.trakt.tv.common.model.CustomList
 import tv.trakt.trakt.tv.common.model.ExternalRating
 import tv.trakt.trakt.tv.common.model.ExtraVideo
-import tv.trakt.trakt.tv.common.model.Images.Size
 import tv.trakt.trakt.tv.common.model.Person
 import tv.trakt.trakt.tv.core.details.comments.CommentDetailsDialog
 import tv.trakt.trakt.tv.core.details.show.views.content.ShowCastCrewList
@@ -75,7 +76,6 @@ import tv.trakt.trakt.tv.core.details.ui.BackdropImage
 import tv.trakt.trakt.tv.core.episodes.model.Episode
 import tv.trakt.trakt.tv.core.episodes.model.Season
 import tv.trakt.trakt.tv.core.people.navigation.PersonDestination
-import tv.trakt.trakt.tv.core.shows.model.Show
 import tv.trakt.trakt.tv.helpers.preview.PreviewData
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
 import java.time.ZonedDateTime

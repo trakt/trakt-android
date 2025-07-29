@@ -51,10 +51,10 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
+import tv.trakt.trakt.common.model.Images.Size.FULL
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.tv.R
-import tv.trakt.trakt.tv.common.model.Images.Size.FULL
 import tv.trakt.trakt.tv.core.details.ui.BackdropImage
 import tv.trakt.trakt.tv.core.episodes.model.Episode
 import tv.trakt.trakt.tv.core.profile.sections.favorites.movies.ProfileFavoriteMoviesView

@@ -1,4 +1,4 @@
-package tv.trakt.trakt.tv.helpers.extensions
+package tv.trakt.trakt.common.helpers.extensions
 
 import kotlin.coroutines.cancellation.CancellationException
 

@@ -2,14 +2,14 @@ package tv.trakt.trakt.tv.core.people.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.tv.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.tv.core.movies.model.Movie
 import tv.trakt.trakt.tv.core.movies.model.fromDto
 import tv.trakt.trakt.tv.core.people.data.remote.PeopleRemoteDataSource
 import tv.trakt.trakt.tv.core.shows.data.local.ShowLocalDataSource
-import tv.trakt.trakt.tv.core.shows.model.Show
-import tv.trakt.trakt.tv.core.shows.model.fromDto
 
 internal class GetPersonCreditsUseCase(
     private val peopleRemoteSource: PeopleRemoteDataSource,

@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
@@ -45,7 +46,6 @@ import tv.trakt.trakt.tv.core.movies.model.Movie
 import tv.trakt.trakt.tv.helpers.DynamicStringResource
 import tv.trakt.trakt.tv.helpers.StaticStringResource
 import tv.trakt.trakt.tv.helpers.StringResource
-import tv.trakt.trakt.tv.helpers.extensions.rethrowCancellation
 
 internal class MovieDetailsViewModel(
     savedStateHandle: SavedStateHandle,

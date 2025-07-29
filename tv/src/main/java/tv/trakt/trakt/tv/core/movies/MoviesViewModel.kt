@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.tv.core.movies.model.AnticipatedMovie
 import tv.trakt.trakt.tv.core.movies.model.Movie
 import tv.trakt.trakt.tv.core.movies.model.TrendingMovie
@@ -22,7 +23,6 @@ import tv.trakt.trakt.tv.core.movies.usecase.GetHotMoviesUseCase
 import tv.trakt.trakt.tv.core.movies.usecase.GetPopularMoviesUseCase
 import tv.trakt.trakt.tv.core.movies.usecase.GetRecommendedMoviesUseCase
 import tv.trakt.trakt.tv.core.movies.usecase.GetTrendingMoviesUseCase
-import tv.trakt.trakt.tv.helpers.extensions.rethrowCancellation
 
 internal class MoviesViewModel(
     private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,

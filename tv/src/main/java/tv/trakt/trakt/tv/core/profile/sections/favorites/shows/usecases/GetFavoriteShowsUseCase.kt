@@ -2,10 +2,10 @@ package tv.trakt.trakt.tv.core.profile.sections.favorites.shows.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.tv.core.profile.data.remote.ProfileRemoteDataSource
 import tv.trakt.trakt.tv.core.shows.data.local.ShowLocalDataSource
-import tv.trakt.trakt.tv.core.shows.model.Show
-import tv.trakt.trakt.tv.core.shows.model.fromDto
 import tv.trakt.trakt.tv.helpers.extensions.asyncMap
 
 internal class GetFavoriteShowsUseCase(

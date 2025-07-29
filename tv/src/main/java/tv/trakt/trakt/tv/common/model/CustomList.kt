@@ -3,7 +3,9 @@ package tv.trakt.trakt.tv.common.model
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.Serializable
+import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.Ids
+import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
@@ -11,7 +13,6 @@ import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.tv.common.model.sorting.SortOrder
 import tv.trakt.trakt.tv.common.model.sorting.SortType
-import tv.trakt.trakt.tv.helpers.extensions.toZonedDateTime
 import java.time.ZonedDateTime
 
 @Immutable

@@ -64,4 +64,6 @@ dependencies {
     implementation(project.dependencies.platform(libs.koin.bom))
     implementation(libs.koin.core)
     implementation(libs.koin.android.compose)
+
+    implementation(libs.kotlin.immutable.collections)
 }

@@ -2,17 +2,17 @@ package tv.trakt.trakt.tv.core.home.sections.shows.upnext.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
+import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.tv.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.tv.core.episodes.model.Episode
 import tv.trakt.trakt.tv.core.episodes.model.fromDto
 import tv.trakt.trakt.tv.core.home.sections.shows.upnext.model.Progress
 import tv.trakt.trakt.tv.core.home.sections.shows.upnext.model.ProgressShow
 import tv.trakt.trakt.tv.core.shows.data.local.ShowLocalDataSource
-import tv.trakt.trakt.tv.core.shows.model.Show
-import tv.trakt.trakt.tv.core.shows.model.fromDto
 import tv.trakt.trakt.tv.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 import tv.trakt.trakt.tv.helpers.extensions.asyncMap
-import tv.trakt.trakt.tv.helpers.extensions.toZonedDateTime
 
 internal class GetUpNextUseCase(
     private val remoteShowsSource: ShowsSyncRemoteDataSource,

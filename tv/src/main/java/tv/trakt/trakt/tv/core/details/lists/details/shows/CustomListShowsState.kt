@@ -2,7 +2,7 @@ package tv.trakt.trakt.tv.core.details.lists.details.shows
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
-import tv.trakt.trakt.tv.core.shows.model.Show
+import tv.trakt.trakt.common.model.Show
 
 @Immutable
 internal data class CustomListShowsState(

@@ -1,24 +1,20 @@
-package tv.trakt.trakt.tv.core.shows.model
+package tv.trakt.trakt.common.model
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import androidx.core.graphics.toColorInt
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.model.Ids
+import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
+import tv.trakt.trakt.common.model.Show.Companion
 import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.ShowDto
-import tv.trakt.trakt.tv.common.model.Images
-import tv.trakt.trakt.tv.common.model.MediaColors
-import tv.trakt.trakt.tv.common.model.Rating
-import tv.trakt.trakt.tv.core.shows.model.Show.Companion
-import tv.trakt.trakt.tv.helpers.extensions.toZonedDateTime
 import java.time.ZonedDateTime
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 
 @Immutable
-internal data class Show(
+data class Show(
     val ids: Ids,
     val title: String,
     val overview: String?,
@@ -35,7 +31,7 @@ internal data class Show(
     companion object
 }
 
-internal fun Companion.fromDto(dto: ShowDto): Show {
+fun Companion.fromDto(dto: ShowDto): Show {
     return Show(
         ids = Ids.fromDto(dto.ids),
         title = dto.title,
@@ -62,7 +58,7 @@ internal fun Companion.fromDto(dto: ShowDto): Show {
     )
 }
 
-internal fun Companion.fromDto(dto: RecommendedShowDto): Show {
+fun Companion.fromDto(dto: RecommendedShowDto): Show {
     return Show(
         ids = Ids.fromDto(dto.ids),
         title = dto.title,

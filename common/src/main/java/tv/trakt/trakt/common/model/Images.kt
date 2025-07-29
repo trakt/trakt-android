@@ -1,4 +1,4 @@
-package tv.trakt.trakt.tv.common.model
+package tv.trakt.trakt.common.model
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
@@ -6,7 +6,7 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.networking.ImagesDto
 
 @Immutable
-internal data class Images(
+data class Images(
     val fanart: ImmutableList<String> = emptyList<String>().toImmutableList(),
     val poster: ImmutableList<String> = emptyList<String>().toImmutableList(),
     val posters: ImmutableList<String> = emptyList<String>().toImmutableList(),

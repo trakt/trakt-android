@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.tv.core.auth.AuthState.LoadingState.LOADING
 import tv.trakt.trakt.tv.core.auth.AuthState.LoadingState.REJECTED
 import tv.trakt.trakt.tv.core.auth.AuthState.LoadingState.SUCCESS
@@ -24,7 +25,6 @@ import tv.trakt.trakt.tv.core.auth.usecases.GetDeviceCodeUseCase
 import tv.trakt.trakt.tv.core.auth.usecases.GetDeviceTokenUseCase
 import tv.trakt.trakt.tv.core.auth.usecases.LoadUserProfileUseCase
 import tv.trakt.trakt.tv.helpers.extensions.nowUtc
-import tv.trakt.trakt.tv.helpers.extensions.rethrowCancellation
 import kotlin.time.Duration
 
 internal class AuthViewModel(

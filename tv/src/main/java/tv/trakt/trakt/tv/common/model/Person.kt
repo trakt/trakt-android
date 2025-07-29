@@ -3,6 +3,7 @@ package tv.trakt.trakt.tv.common.model
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.model.Ids
+import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.ImdbId
 import tv.trakt.trakt.common.model.TmdbId
 import tv.trakt.trakt.common.model.toSlugId

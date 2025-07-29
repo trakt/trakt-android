@@ -10,11 +10,11 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.tv.core.home.sections.shows.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.tv.core.sync.data.local.episodes.EpisodesSyncLocalDataSource
 import tv.trakt.trakt.tv.core.sync.data.local.shows.ShowsSyncLocalDataSource
 import tv.trakt.trakt.tv.helpers.extensions.nowUtc
-import tv.trakt.trakt.tv.helpers.extensions.rethrowCancellation
 import java.time.ZonedDateTime
 
 internal class HomeUpNextViewModel(

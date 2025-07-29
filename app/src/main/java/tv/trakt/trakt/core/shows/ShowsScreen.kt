@@ -1,15 +1,19 @@
 package tv.trakt.trakt.core.shows
 
+import ShowsTrendingView
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
-import tv.trakt.trakt.common.R
+import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -25,21 +29,38 @@ private fun ShowsScreenContent(
     modifier: Modifier = Modifier,
     onShowClick: (TraktId) -> Unit,
 ) {
+    val topPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() + 32.dp
+
+    val sectionPadding = PaddingValues(
+        start = TraktTheme.spacing.mainPageHorizontalSpace,
+        end = TraktTheme.spacing.mainPageHorizontalSpace,
+    )
+
     Box(
-        modifier = modifier
-            .fillMaxSize(),
+        contentAlignment = Alignment.TopStart,
+        modifier = modifier.fillMaxSize(),
     ) {
-        Text(
-            text = stringResource(R.string.shows),
-            color = TraktTheme.colors.textPrimary,
-            fontSize = 24.sp,
-            modifier = Modifier.align(Alignment.Center),
-        )
+        LazyColumn(
+            verticalArrangement = spacedBy(TraktTheme.spacing.mainSectionVerticalSpace),
+            contentPadding = PaddingValues(
+                top = topPadding,
+                bottom = TraktTheme.spacing.mainPageBottomSpace,
+            ),
+        ) {
+            repeat(4) {
+                item {
+                    ShowsTrendingView(
+                        headerPadding = sectionPadding,
+                        contentPadding = sectionPadding,
+                    )
+                }
+            }
+        }
     }
 }
 
 @Preview(
-    device = "id:pixel_9",
+    device = "id:pixel_6",
     showBackground = true,
     backgroundColor = 0xFF131517,
 )

@@ -10,9 +10,9 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.tv.core.lists.ListsConfig.LISTS_PAGE_LIMIT
 import tv.trakt.trakt.tv.core.lists.usecases.GetListsMoviesWatchlistUseCase
-import tv.trakt.trakt.tv.helpers.extensions.rethrowCancellation
 
 internal class MoviesWatchlistViewModel(
     private val getListItemsUseCase: GetListsMoviesWatchlistUseCase,

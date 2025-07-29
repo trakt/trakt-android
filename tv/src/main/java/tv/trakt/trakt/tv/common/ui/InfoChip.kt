@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
-import tv.trakt.trakt.tv.R
+import tv.trakt.trakt.common.R
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
 
 @Composable
@@ -33,10 +33,6 @@ internal fun InfoChip(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = spacedBy((2.5).dp),
         modifier = modifier
-//            .shadow(
-//                elevation = 1.dp,
-//                shape = RoundedCornerShape(100),
-//            )
             .background(
                 shape = RoundedCornerShape(100),
                 color = containerColor,

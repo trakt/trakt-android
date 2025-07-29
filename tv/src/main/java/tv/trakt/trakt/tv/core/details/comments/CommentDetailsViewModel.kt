@@ -13,9 +13,9 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.tv.common.model.Comment
 import tv.trakt.trakt.tv.core.details.comments.usecases.GetCommentRepliesUseCase
-import tv.trakt.trakt.tv.helpers.extensions.rethrowCancellation
 
 internal class CommentDetailsViewModel(
     private val getCommentRepliesUseCase: GetCommentRepliesUseCase,

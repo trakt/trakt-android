@@ -15,14 +15,14 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.common.model.Person
 import tv.trakt.trakt.tv.core.movies.model.Movie
 import tv.trakt.trakt.tv.core.people.navigation.PersonDestination
 import tv.trakt.trakt.tv.core.people.usecases.GetPersonCreditsUseCase
 import tv.trakt.trakt.tv.core.people.usecases.GetPersonUseCase
-import tv.trakt.trakt.tv.core.shows.model.Show
-import tv.trakt.trakt.tv.helpers.extensions.rethrowCancellation
 
 internal class PersonDetailsViewModel(
     savedStateHandle: SavedStateHandle,

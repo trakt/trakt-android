@@ -22,13 +22,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.tv.R
 import tv.trakt.trakt.tv.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.tv.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.tv.common.ui.mediacards.HorizontalViewAllCard
 import tv.trakt.trakt.tv.core.lists.ListsConfig.LISTS_SECTION_LIMIT
 import tv.trakt.trakt.tv.core.lists.ListsContentLoading
-import tv.trakt.trakt.tv.core.shows.model.Show
 import tv.trakt.trakt.tv.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
 

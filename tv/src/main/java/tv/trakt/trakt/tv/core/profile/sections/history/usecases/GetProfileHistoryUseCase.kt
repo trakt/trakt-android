@@ -4,6 +4,9 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
+import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.tv.common.model.SyncHistoryItem
 import tv.trakt.trakt.tv.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.tv.core.episodes.model.Episode
@@ -12,10 +15,7 @@ import tv.trakt.trakt.tv.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.tv.core.movies.model.Movie
 import tv.trakt.trakt.tv.core.movies.model.fromDto
 import tv.trakt.trakt.tv.core.profile.data.remote.ProfileRemoteDataSource
-import tv.trakt.trakt.tv.core.shows.model.Show
-import tv.trakt.trakt.tv.core.shows.model.fromDto
 import tv.trakt.trakt.tv.helpers.extensions.asyncMap
-import tv.trakt.trakt.tv.helpers.extensions.toZonedDateTime
 
 internal class GetProfileHistoryUseCase(
     private val remoteUserSource: ProfileRemoteDataSource,

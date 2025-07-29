@@ -2,7 +2,10 @@ package tv.trakt.trakt.tv.helpers.preview
 
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.model.Ids
+import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.ImdbId
+import tv.trakt.trakt.common.model.Rating
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TmdbId
 import tv.trakt.trakt.common.model.TraktId
@@ -11,14 +14,11 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.tv.common.model.Comment
 import tv.trakt.trakt.tv.common.model.CustomList
 import tv.trakt.trakt.tv.common.model.CustomList.Type
-import tv.trakt.trakt.tv.common.model.Images
 import tv.trakt.trakt.tv.common.model.Person
-import tv.trakt.trakt.tv.common.model.Rating
 import tv.trakt.trakt.tv.common.model.sorting.SortOrder
 import tv.trakt.trakt.tv.common.model.sorting.SortType
 import tv.trakt.trakt.tv.core.episodes.model.Episode
 import tv.trakt.trakt.tv.core.movies.model.Movie
-import tv.trakt.trakt.tv.core.shows.model.Show
 import java.time.LocalDate
 import java.time.ZonedDateTime
 import kotlin.time.Duration.Companion.minutes

@@ -30,6 +30,7 @@ import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.R
 import tv.trakt.trakt.tv.common.ui.PositionFocusLazyRow
@@ -37,7 +38,6 @@ import tv.trakt.trakt.tv.common.ui.mediacards.EpisodeSkeletonCard
 import tv.trakt.trakt.tv.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.tv.core.episodes.model.Episode
 import tv.trakt.trakt.tv.core.home.sections.shows.upnext.model.ProgressShow
-import tv.trakt.trakt.tv.core.shows.model.Show
 import tv.trakt.trakt.tv.helpers.extensions.durationFormat
 import tv.trakt.trakt.tv.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.tv.ui.theme.TraktTheme

@@ -16,7 +16,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Ids
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
@@ -39,12 +41,10 @@ import tv.trakt.trakt.tv.core.details.episode.usecases.collection.ChangeHistoryU
 import tv.trakt.trakt.tv.core.details.show.usecases.GetRelatedShowsUseCase
 import tv.trakt.trakt.tv.core.details.show.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.tv.core.episodes.model.Episode
-import tv.trakt.trakt.tv.core.shows.model.Show
 import tv.trakt.trakt.tv.helpers.DynamicStringResource
 import tv.trakt.trakt.tv.helpers.StaticStringResource
 import tv.trakt.trakt.tv.helpers.StringResource
 import tv.trakt.trakt.tv.helpers.extensions.nowUtc
-import tv.trakt.trakt.tv.helpers.extensions.rethrowCancellation
 
 internal class EpisodeDetailsViewModel(
     savedStateHandle: SavedStateHandle,

@@ -53,6 +53,7 @@ import coil3.request.crossfade
 import tv.trakt.trakt.tv.R
 import tv.trakt.trakt.tv.helpers.preview.PreviewData
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
+import tv.trakt.trakt.common.R as RCommon
 
 @Composable
 internal fun HorizontalMediaCard(
@@ -242,14 +243,14 @@ private fun Preview() {
                     cardContent = {
                         InfoChip(
                             text = "1h 45m",
-                            iconPainter = painterResource(R.drawable.ic_clock),
+                            iconPainter = painterResource(RCommon.drawable.ic_clock),
                             modifier = Modifier,
                         )
                     },
                     footerContent = {
                         InfoChip(
                             text = "1h 45m",
-                            iconPainter = painterResource(R.drawable.ic_clock),
+                            iconPainter = painterResource(RCommon.drawable.ic_clock),
                             modifier = Modifier,
                         )
                     },

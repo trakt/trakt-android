@@ -13,11 +13,11 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.core.details.lists.details.CustomListDetailsConfig.CUSTOM_LIST_PAGE_LIMIT
 import tv.trakt.trakt.tv.core.details.lists.details.movies.navigation.CustomListMoviesDestination
 import tv.trakt.trakt.tv.core.details.lists.details.movies.usecases.GetListItemsUseCase
-import tv.trakt.trakt.tv.helpers.extensions.rethrowCancellation
 
 internal class CustomListMoviesViewModel(
     savedStateHandle: SavedStateHandle,

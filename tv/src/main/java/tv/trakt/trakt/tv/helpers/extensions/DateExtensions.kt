@@ -20,7 +20,6 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZoneOffset.UTC
 import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatter.ISO_INSTANT
 import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalAdjusters
@@ -45,18 +44,6 @@ fun nowLocalString(): String = nowLocal().format(ISO_INSTANT)
 fun ZonedDateTime.toLocal(): ZonedDateTime = this.withZoneSameInstant(ZoneId.systemDefault())
 
 // Misc
-
-fun String.toZonedDateTime(): ZonedDateTime {
-    // Current Nitro endpoints pattern is "2025-06-23 03:24:23.000000"
-    val nitroFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS").withZone(UTC)
-    return when {
-        else -> runCatching {
-            ZonedDateTime.parse(this)
-        }.getOrElse {
-            ZonedDateTime.parse(this, nitroFormatter).withFixedOffsetZone()
-        }
-    }
-}
 
 fun LocalDate.relativeDateString(locale: Locale = Locale.US): String {
     val today = nowLocal().toLocalDate()

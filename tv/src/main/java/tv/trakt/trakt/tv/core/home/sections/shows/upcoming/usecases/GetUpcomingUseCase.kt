@@ -2,18 +2,18 @@ package tv.trakt.trakt.tv.core.home.sections.shows.upcoming.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
+import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.tv.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.tv.core.episodes.model.Episode
 import tv.trakt.trakt.tv.core.episodes.model.fromDto
 import tv.trakt.trakt.tv.core.home.sections.shows.upcoming.model.CalendarShow
 import tv.trakt.trakt.tv.core.profile.data.remote.ProfileRemoteDataSource
 import tv.trakt.trakt.tv.core.shows.data.local.ShowLocalDataSource
-import tv.trakt.trakt.tv.core.shows.model.Show
-import tv.trakt.trakt.tv.core.shows.model.fromDto
 import tv.trakt.trakt.tv.helpers.extensions.asyncMap
 import tv.trakt.trakt.tv.helpers.extensions.nowLocal
 import tv.trakt.trakt.tv.helpers.extensions.nowUtc
-import tv.trakt.trakt.tv.helpers.extensions.toZonedDateTime
 
 private val premiereValues = listOf("season_premiere", "series_premiere")
 private val finaleValues = listOf("season_finale", "series_finale")

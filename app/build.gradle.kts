@@ -82,12 +82,25 @@ dependencies {
     implementation(libs.firebase.config)
     implementation(libs.firebase.analytics)
 
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.client.logger)
+    implementation(libs.ktor.client.serialization)
+    implementation(libs.ktor.client.negotiation)
+    implementation(libs.ktor.client.auth)
+
+    implementation(project.dependencies.platform(libs.koin.bom))
+    implementation(libs.koin.core)
+    implementation(libs.koin.android.compose)
+
     // Android Compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.tooling.preview)
     debugImplementation(libs.androidx.compose.tooling)
+
+    implementation(libs.kotlin.immutable.collections)
 
     // Testing
 

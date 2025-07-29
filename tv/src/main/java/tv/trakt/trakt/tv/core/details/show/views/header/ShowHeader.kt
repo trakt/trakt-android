@@ -41,13 +41,13 @@ import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.common.model.Images.Size.MEDIUM
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.tv.R
 import tv.trakt.trakt.tv.common.model.ExternalRating
-import tv.trakt.trakt.tv.common.model.Images.Size.MEDIUM
 import tv.trakt.trakt.tv.core.details.show.ShowDetailsState.CollectionState
 import tv.trakt.trakt.tv.core.details.ui.PosterImage
-import tv.trakt.trakt.tv.core.shows.model.Show
 import tv.trakt.trakt.tv.helpers.extensions.onClick
 import tv.trakt.trakt.tv.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.tv.helpers.longDateFormat
@@ -238,11 +238,11 @@ internal fun ShowHeader(
                                 containerColor = TraktTheme.colors.accent,
                             )
                         }
-                        if (show.certification != null) {
-                            InfoChip(text = show.certification)
+                        show.certification?.let {
+                            InfoChip(text = it)
                         }
-                        if (show.released != null) {
-                            InfoChip(text = show.released.year.toString())
+                        show.released?.let {
+                            InfoChip(text = it.year.toString())
                         }
                     }
                 }

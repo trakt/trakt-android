@@ -10,10 +10,10 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.tv.core.profile.ProfileConfig.FAVORITES_ALL_PAGE_LIMIT
 import tv.trakt.trakt.tv.core.profile.sections.favorites.shows.usecases.GetFavoriteShowsUseCase
 import tv.trakt.trakt.tv.helpers.extensions.nowUtc
-import tv.trakt.trakt.tv.helpers.extensions.rethrowCancellation
 import java.time.ZonedDateTime
 
 internal class ProfileFavoriteShowsViewAllViewModel(

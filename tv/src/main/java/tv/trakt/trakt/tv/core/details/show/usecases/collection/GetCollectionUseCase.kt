@@ -1,12 +1,12 @@
 package tv.trakt.trakt.tv.core.details.show.usecases.collection
 
+import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.tv.core.sync.data.local.shows.ShowsSyncLocalDataSource
 import tv.trakt.trakt.tv.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 import tv.trakt.trakt.tv.core.sync.model.WatchedShow
 import tv.trakt.trakt.tv.helpers.extensions.asyncMap
-import tv.trakt.trakt.tv.helpers.extensions.toZonedDateTime
 
 internal class GetCollectionUseCase(
     private val remoteSource: ShowsSyncRemoteDataSource,

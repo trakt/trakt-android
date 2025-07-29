@@ -2,13 +2,13 @@ package tv.trakt.trakt.tv.core.home.sections.movies.comingsoon.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.tv.core.home.sections.movies.availablenow.model.WatchlistMovie
 import tv.trakt.trakt.tv.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.tv.core.movies.model.Movie
 import tv.trakt.trakt.tv.core.movies.model.fromDto
 import tv.trakt.trakt.tv.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
 import tv.trakt.trakt.tv.helpers.extensions.asyncMap
-import tv.trakt.trakt.tv.helpers.extensions.toZonedDateTime
 import java.time.LocalDate
 
 internal class GetComingSoonMoviesUseCase(

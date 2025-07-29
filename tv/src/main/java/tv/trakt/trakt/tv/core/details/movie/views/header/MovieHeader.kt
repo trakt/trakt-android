@@ -41,10 +41,10 @@ import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.common.model.Images.Size.MEDIUM
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.tv.R
 import tv.trakt.trakt.tv.common.model.ExternalRating
-import tv.trakt.trakt.tv.common.model.Images.Size.MEDIUM
 import tv.trakt.trakt.tv.core.details.movie.MovieDetailsState.CollectionState
 import tv.trakt.trakt.tv.core.details.ui.PosterImage
 import tv.trakt.trakt.tv.core.movies.model.Movie

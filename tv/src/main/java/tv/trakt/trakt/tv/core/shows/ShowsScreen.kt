@@ -33,20 +33,21 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.R
-import tv.trakt.trakt.tv.common.model.Images
 import tv.trakt.trakt.tv.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.tv.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.tv.common.ui.mediacards.HorizontalMediaSkeletonCard
 import tv.trakt.trakt.tv.core.details.ui.BackdropImage
 import tv.trakt.trakt.tv.core.shows.model.AnticipatedShow
-import tv.trakt.trakt.tv.core.shows.model.Show
 import tv.trakt.trakt.tv.core.shows.model.TrendingShow
 import tv.trakt.trakt.tv.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.tv.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.tv.helpers.preview.PreviewData
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
+import tv.trakt.trakt.common.R as RCommon
 
 private val sections = listOf(
     "initial",
@@ -124,7 +125,7 @@ private fun ShowsScreenContent(
             ) {
                 item {
                     TrendingShowsList(
-                        header = stringResource(R.string.header_trending),
+                        header = stringResource(RCommon.string.header_trending),
                         shows = state.trendingShows,
                         isLoading = state.isLoading,
                         onShowClick = onShowClick,
@@ -141,7 +142,7 @@ private fun ShowsScreenContent(
 
                 item {
                     HotShowsList(
-                        header = stringResource(R.string.header_hot_month),
+                        header = stringResource(RCommon.string.header_hot_month),
                         shows = state.hotShows,
                         isLoading = state.isLoading,
                         onShowClick = onShowClick,
@@ -157,7 +158,7 @@ private fun ShowsScreenContent(
 
                 item {
                     AnticipatedShowsList(
-                        header = stringResource(R.string.header_most_anticipated),
+                        header = stringResource(RCommon.string.header_most_anticipated),
                         shows = state.anticipatedShows,
                         isLoading = state.isLoading,
                         onShowClick = onShowClick,
@@ -173,7 +174,7 @@ private fun ShowsScreenContent(
 
                 item {
                     StandardShowsList(
-                        header = stringResource(R.string.header_most_popular),
+                        header = stringResource(RCommon.string.header_most_popular),
                         shows = state.popularShows,
                         isLoading = state.isLoading,
                         onShowClick = onShowClick,
@@ -190,7 +191,7 @@ private fun ShowsScreenContent(
                 if (state.recommendedShows != null) {
                     item {
                         StandardShowsList(
-                            header = stringResource(R.string.header_recommended),
+                            header = stringResource(RCommon.string.header_recommended),
                             shows = state.recommendedShows,
                             isLoading = state.isLoading,
                             onShowClick = onShowClick,

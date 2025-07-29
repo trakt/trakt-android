@@ -2,12 +2,12 @@ package tv.trakt.trakt.tv.core.details.lists.details.shows.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.tv.core.details.lists.data.remote.ListsRemoteDataSource
 import tv.trakt.trakt.tv.core.details.lists.details.CustomListDetailsConfig.CUSTOM_LIST_PAGE_LIMIT
 import tv.trakt.trakt.tv.core.shows.data.local.ShowLocalDataSource
-import tv.trakt.trakt.tv.core.shows.model.Show
-import tv.trakt.trakt.tv.core.shows.model.fromDto
 
 internal class GetListItemsUseCase(
     private val remoteSource: ListsRemoteDataSource,

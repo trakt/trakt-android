@@ -2,9 +2,9 @@ package tv.trakt.trakt.tv.core.people
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.tv.common.model.Person
 import tv.trakt.trakt.tv.core.movies.model.Movie
-import tv.trakt.trakt.tv.core.shows.model.Show
 
 @Immutable
 internal data class PersonDetailsState(

@@ -14,15 +14,15 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.tv.core.shows.model.AnticipatedShow
-import tv.trakt.trakt.tv.core.shows.model.Show
 import tv.trakt.trakt.tv.core.shows.model.TrendingShow
 import tv.trakt.trakt.tv.core.shows.usecase.GetAnticipatedShowsUseCase
 import tv.trakt.trakt.tv.core.shows.usecase.GetHotShowsUseCase
 import tv.trakt.trakt.tv.core.shows.usecase.GetPopularShowsUseCase
 import tv.trakt.trakt.tv.core.shows.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.tv.core.shows.usecase.GetTrendingShowsUseCase
-import tv.trakt.trakt.tv.helpers.extensions.rethrowCancellation
 
 internal class ShowsViewModel(
     private val getTrendingShowsUseCase: GetTrendingShowsUseCase,

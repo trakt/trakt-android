@@ -14,13 +14,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Text
+import tv.trakt.trakt.common.model.Images.Size.MEDIUM
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.tv.R
-import tv.trakt.trakt.tv.common.model.Images.Size.MEDIUM
 import tv.trakt.trakt.tv.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.tv.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.tv.core.details.show.models.ShowSeasons
 import tv.trakt.trakt.tv.core.episodes.model.Season
-import tv.trakt.trakt.tv.core.shows.model.Show
 import tv.trakt.trakt.tv.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
 

@@ -32,9 +32,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.R
-import tv.trakt.trakt.tv.common.model.Images.Size
 import tv.trakt.trakt.tv.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.tv.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.tv.common.ui.mediacards.HorizontalMediaSkeletonCard
@@ -47,6 +47,7 @@ import tv.trakt.trakt.tv.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.tv.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.tv.helpers.preview.PreviewData
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
+import tv.trakt.trakt.common.R as RCommon
 
 private val sections = listOf(
     "initial",
@@ -125,7 +126,7 @@ private fun MoviesScreenContent(
             ) {
                 item {
                     TrendingMoviesList(
-                        header = stringResource(R.string.header_trending),
+                        header = stringResource(RCommon.string.header_trending),
                         movies = state.trendingMovies,
                         isLoading = state.isLoading,
                         onMovieClick = onMovieClick,
@@ -142,7 +143,7 @@ private fun MoviesScreenContent(
 
                 item {
                     HotMoviesList(
-                        header = stringResource(R.string.header_hot_month),
+                        header = stringResource(RCommon.string.header_hot_month),
                         movies = state.hotMovies,
                         isLoading = state.isLoading,
                         onMovieFocus = {
@@ -158,7 +159,7 @@ private fun MoviesScreenContent(
 
                 item {
                     AnticipatedMoviesList(
-                        header = stringResource(R.string.header_most_anticipated),
+                        header = stringResource(RCommon.string.header_most_anticipated),
                         movies = state.anticipatedMovies,
                         isLoading = state.isLoading,
                         onMovieFocus = {
@@ -174,7 +175,7 @@ private fun MoviesScreenContent(
 
                 item {
                     StandardMoviesList(
-                        header = stringResource(R.string.header_most_popular),
+                        header = stringResource(RCommon.string.header_most_popular),
                         movies = state.popularMovies,
                         isLoading = state.isLoading,
                         onMovieFocus = {
@@ -191,7 +192,7 @@ private fun MoviesScreenContent(
                 if (state.recommendedMovies != null) {
                     item {
                         StandardMoviesList(
-                            header = stringResource(R.string.header_recommended),
+                            header = stringResource(RCommon.string.header_recommended),
                             movies = state.recommendedMovies,
                             isLoading = state.isLoading,
                             onMovieFocus = {

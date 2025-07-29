@@ -1,0 +1,33 @@
+package tv.trakt.trakt.core.shows.data.remote
+
+import org.openapitools.client.apis.ShowsApi
+import tv.trakt.trakt.core.shows.data.remote.model.TrendingShowDto
+
+internal class ShowsApiClient(
+    private val api: ShowsApi,
+) : ShowsRemoteDataSource {
+    override suspend fun getTrending(limit: Int): List<TrendingShowDto> {
+        val response = api.getShowsTrending(
+            extended = "full,streaming_ids,cloud9,colors",
+            limit = limit,
+            watchnow = null,
+            genres = null,
+            years = null,
+            ratings = null,
+            page = null,
+            ignoreWatched = null,
+            ignoreCollected = null,
+            ignoreWatchlisted = null,
+            startDate = null,
+            endDate = null,
+        )
+
+        return response.body()
+            .map {
+                TrendingShowDto(
+                    watchers = it.watchers,
+                    show = it.show,
+                )
+            }
+    }
+}

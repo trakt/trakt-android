@@ -35,10 +35,6 @@
     <string name="comment_likes">%d likes</string>
     <string name="comment_replies">%d replies</string>
 
-    <string name="header_trending">Trending</string>
-    <string name="header_hot_month">Hot This Month</string>
-    <string name="header_most_popular">Most Popular</string>
-    <string name="header_most_anticipated">Most Anticipated</string>
     <string name="header_movies_available_now">Available Now</string>
     <string name="header_movies_coming_soon">Coming Soon</string>
     <string name="header_movies_watchlist">Movies Watchlist</string>
@@ -57,7 +53,6 @@
     <string name="header_recently_watched">Recently Watched</string>
     <string name="header_favorite_shows">Favorite Shows</string>
     <string name="header_favorite_movies">Favorite Movies</string>
-    <string name="header_recommended">Recommendations</string>
 
     <string name="info_signed_in">You have been signed in.</string>
     <string name="info_signed_out">You have been signed out.</string>

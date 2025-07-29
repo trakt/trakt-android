@@ -1,10 +1,10 @@
 package tv.trakt.trakt.tv.core.details.show.usecases
 
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.tv.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.tv.core.shows.data.remote.ShowsRemoteDataSource
-import tv.trakt.trakt.tv.core.shows.model.Show
-import tv.trakt.trakt.tv.core.shows.model.fromDto
 
 internal class GetShowDetailsUseCase(
     private val remoteSource: ShowsRemoteDataSource,

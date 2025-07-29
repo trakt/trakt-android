@@ -1,10 +1,10 @@
-package tv.trakt.trakt.tv.common.model
+package tv.trakt.trakt.common.model
 
 import androidx.compose.runtime.Immutable
 import kotlin.math.roundToInt
 
 @Immutable
-internal data class Rating(
+data class Rating(
     val rating: Float,
     val votes: Int,
 ) {
