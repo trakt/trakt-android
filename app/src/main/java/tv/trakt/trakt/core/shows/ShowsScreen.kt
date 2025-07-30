@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,6 +23,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastRoundToInt
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.shows.sections.anticipated.ShowsAnticipatedView
 import tv.trakt.trakt.core.shows.sections.hot.ShowsHotView
@@ -31,14 +33,21 @@ import tv.trakt.trakt.ui.components.BackdropImage
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun ShowsScreen(onNavigateToShow: (TraktId) -> Unit) {
+internal fun ShowsScreen(
+    viewModel: ShowsViewModel,
+    onNavigateToShow: (TraktId) -> Unit,
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
     ShowsScreenContent(
+        state = state,
         onShowClick = onNavigateToShow,
     )
 }
 
 @Composable
 private fun ShowsScreenContent(
+    state: ShowsState,
     modifier: Modifier = Modifier,
     onShowClick: (TraktId) -> Unit,
 ) {
@@ -66,7 +75,7 @@ private fun ShowsScreenContent(
         )
 
         BackdropImage(
-            imageUrl = "",
+            imageUrl = state.backgroundUrl,
             modifier = Modifier.graphicsLayer {
                 if (lazyListState.firstVisibleItemIndex == 0) {
                     translationY = (-0.75F * lazyListState.firstVisibleItemScrollOffset)
@@ -137,6 +146,7 @@ private fun ShowsScreenContent(
 private fun Preview() {
     TraktTheme {
         ShowsScreenContent(
+            state = ShowsState(),
             onShowClick = {},
         )
     }

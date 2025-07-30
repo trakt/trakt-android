@@ -1,7 +1,6 @@
 package tv.trakt.trakt.ui.components
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
@@ -19,14 +18,16 @@ import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
+import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
-import tv.trakt.trakt.R
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -64,33 +65,18 @@ internal fun BackdropImage(
             .width(screenWidth)
             .aspectRatio(HorizontalImageAspectRatio),
     ) {
-        Image(
-            painter = painterResource(R.drawable.background_harry),
-            contentDescription = "Backdrop image",
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(imageUrl)
+                .crossfade(true)
+                .build(),
+            contentDescription = null,
             contentScale = ContentScale.Crop,
             colorFilter = grayscaleColorFilter,
             modifier = Modifier
                 .fillMaxSize()
                 .alpha(imageAlpha),
         )
-//        Crossfade(
-//            targetState = imageUrl,
-//            animationSpec = tween(if (crossfade) 750 else 0),
-//            label = "Backdrop Fanart",
-//        ) { url ->
-//            if (url != null) {
-//                AsyncImage(
-//                    model = url,
-//                    contentDescription = null,
-//                    contentScale = ContentScale.Crop,
-//                    colorFilter = grayscaleColorFilter,
-//                    modifier = Modifier
-//                        .fillMaxSize()
-//                        .alpha(transitionImageAlpha)
-//                        .blur(transitionBlur),
-//                )
-//            }
-//        }
         Box(
             modifier = Modifier
                 .fillMaxSize()

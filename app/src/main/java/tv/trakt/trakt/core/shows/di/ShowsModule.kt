@@ -5,6 +5,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.openapitools.client.apis.ShowsApi
 import tv.trakt.trakt.common.Config.API_BASE_URL
+import tv.trakt.trakt.core.shows.ShowsViewModel
 import tv.trakt.trakt.core.shows.data.remote.ShowsApiClient
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.core.shows.sections.anticipated.ShowsAnticipatedViewModel
@@ -52,6 +53,10 @@ internal val showsModule = module {
         GetAnticipatedShowsUseCase(
             remoteSource = get(),
         )
+    }
+
+    viewModel {
+        ShowsViewModel()
     }
 
     viewModel {
