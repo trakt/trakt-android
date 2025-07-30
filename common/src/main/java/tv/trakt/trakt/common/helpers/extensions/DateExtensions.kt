@@ -4,6 +4,8 @@ import java.time.ZoneOffset.UTC
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
+fun nowLocal(): ZonedDateTime = ZonedDateTime.now()
+
 // Misc
 
 fun String.toZonedDateTime(): ZonedDateTime {

@@ -2,6 +2,7 @@ package tv.trakt.trakt.tv.core.home.sections.shows.upcoming.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
@@ -12,7 +13,6 @@ import tv.trakt.trakt.tv.core.home.sections.shows.upcoming.model.CalendarShow
 import tv.trakt.trakt.tv.core.profile.data.remote.ProfileRemoteDataSource
 import tv.trakt.trakt.tv.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.tv.helpers.extensions.asyncMap
-import tv.trakt.trakt.tv.helpers.extensions.nowLocal
 import tv.trakt.trakt.tv.helpers.extensions.nowUtc
 
 private val premiereValues = listOf("season_premiere", "series_premiere")

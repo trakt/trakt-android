@@ -1,0 +1,62 @@
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import tv.trakt.trakt.common.R
+import tv.trakt.trakt.ui.theme.TraktTheme
+
+@Composable
+internal fun VipChip(modifier: Modifier = Modifier) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = spacedBy(5.dp),
+        modifier = modifier
+            .background(
+                shape = RoundedCornerShape(100),
+                color = Color.Red,
+            )
+            .padding(
+                horizontal = 10.dp,
+                vertical = 5.dp,
+            ),
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_crown),
+            contentDescription = "VIP",
+            tint = TraktTheme.colors.chipContent,
+            modifier = Modifier
+                .size(16.dp)
+                .graphicsLayer {
+                    translationY = -(0.5).dp.toPx()
+                },
+        )
+
+        Text(
+            text = stringResource(R.string.get_vip).uppercase(),
+            style = TraktTheme.typography.buttonPrimary,
+            color = TraktTheme.colors.chipContent,
+            maxLines = 1,
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun ShowCardChipPreview() {
+    TraktTheme {
+        VipChip()
+    }
+}

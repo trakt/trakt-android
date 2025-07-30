@@ -1,6 +1,8 @@
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,17 +31,30 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.R
+import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.ui.theme.TraktTheme
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.util.Locale
+
+private val todayDateFormat = DateTimeFormatter
+    .ofLocalizedDate(FormatStyle.FULL)
+    .withLocale(Locale.US)
 
 @Composable
 internal fun HeaderBar(
     modifier: Modifier = Modifier,
     height: Dp = TraktTheme.size.navigationHeaderHeight,
     containerColor: Color = TraktTheme.colors.navigationHeaderContainer,
+    showVip: Boolean = false,
 ) {
     val headerBarHeight = WindowInsets.statusBars.asPaddingValues()
         .calculateTopPadding()
         .plus(height)
+
+    val todayLabel = remember {
+        nowLocal().format(todayDateFormat)
+    }
 
     Box(
         modifier = modifier
@@ -63,23 +79,32 @@ internal fun HeaderBar(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = spacedBy(16.dp),
         ) {
-            Column(
-                verticalArrangement = spacedBy(0.dp),
-            ) {
-                Text(
-                    text = "Hello there!",
-                    color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.paragraphSmall,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                Text(
-                    text = "November 30th, 2025",
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.meta,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
+            Crossfade(
+                targetState = showVip,
+                label = "HeaderBarVipCrossfade",
+            ) { state ->
+                if (state) {
+                    VipChip()
+                } else {
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                    ) {
+                        Text(
+                            text = "Hello there!",
+                            color = TraktTheme.colors.textPrimary,
+                            style = TraktTheme.typography.paragraphSmall,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                        Text(
+                            text = todayLabel,
+                            color = TraktTheme.colors.textSecondary,
+                            style = TraktTheme.typography.meta,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
+                }
             }
 
             Spacer(modifier = Modifier.weight(1F))
@@ -95,7 +120,7 @@ internal fun HeaderBar(
                 painter = painterResource(R.drawable.ic_person_placeholder),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(30.dp)
+                    .size(32.dp)
                     .border(2.dp, Color.White, CircleShape)
                     .clip(CircleShape),
             )
@@ -108,5 +133,15 @@ internal fun HeaderBar(
 private fun Preview() {
     TraktTheme {
         HeaderBar()
+    }
+}
+
+@Preview(widthDp = 320)
+@Composable
+private fun Preview2() {
+    TraktTheme {
+        HeaderBar(
+            showVip = true,
+        )
     }
 }

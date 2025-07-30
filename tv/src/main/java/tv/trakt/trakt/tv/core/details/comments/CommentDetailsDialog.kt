@@ -1,7 +1,6 @@
 package tv.trakt.trakt.tv.core.details.comments
 
 import FilmProgressIndicator
-import VipChip
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -61,6 +60,7 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.tv.R
 import tv.trakt.trakt.tv.common.model.Comment
+import tv.trakt.trakt.tv.common.ui.TvVipChip
 import tv.trakt.trakt.tv.core.comments.ui.CommentReplyCard
 import tv.trakt.trakt.tv.helpers.extensions.onClick
 import tv.trakt.trakt.tv.helpers.longDateTimeFormat
@@ -278,7 +278,7 @@ private fun CommentHeader(
                     overflow = TextOverflow.Ellipsis,
                 )
                 if (comment.user.isAnyVip) {
-                    VipChip()
+                    TvVipChip()
                 }
             }
             Text(

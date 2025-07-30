@@ -14,6 +14,7 @@ import android.icu.text.RelativeDateTimeFormatter.RelativeUnit.HOURS
 import android.icu.text.RelativeDateTimeFormatter.RelativeUnit.MINUTES
 import android.icu.text.RelativeDateTimeFormatter.RelativeUnit.MONTHS
 import android.icu.text.RelativeDateTimeFormatter.RelativeUnit.WEEKS
+import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.tv.helpers.longDateTimeFormat
 import java.time.DayOfWeek.MONDAY
 import java.time.LocalDate
@@ -34,12 +35,6 @@ fun nowUtcMillis(): Long = nowUtc().toInstant().toEpochMilli()
 fun nowUtcString(): String = nowUtc().format(ISO_INSTANT)
 
 // Local time functions
-
-fun nowLocal(): ZonedDateTime = ZonedDateTime.now()
-
-fun nowLocalMillis(): Long = nowLocal().toInstant().toEpochMilli()
-
-fun nowLocalString(): String = nowLocal().format(ISO_INSTANT)
 
 fun ZonedDateTime.toLocal(): ZonedDateTime = this.withZoneSameInstant(ZoneId.systemDefault())
 

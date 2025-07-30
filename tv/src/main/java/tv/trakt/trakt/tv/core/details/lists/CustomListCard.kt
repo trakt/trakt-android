@@ -1,6 +1,5 @@
 package tv.trakt.trakt.tv.core.details.lists
 
-import VipChip
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -43,6 +42,7 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.tv.R
 import tv.trakt.trakt.tv.common.model.CustomList
 import tv.trakt.trakt.tv.common.model.CustomList.Type
+import tv.trakt.trakt.tv.common.ui.TvVipChip
 import tv.trakt.trakt.tv.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.tv.helpers.preview.PreviewData
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
@@ -222,7 +222,7 @@ private fun CustomListHeader(
                     overflow = TextOverflow.Ellipsis,
                 )
                 if (list.user.isAnyVip) {
-                    VipChip()
+                    TvVipChip()
                 }
             }
         }

@@ -1,6 +1,5 @@
 package tv.trakt.trakt.tv.core.comments.ui
 
-import VipChip
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -45,6 +44,7 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.tv.R
 import tv.trakt.trakt.tv.common.model.Comment
+import tv.trakt.trakt.tv.common.ui.TvVipChip
 import tv.trakt.trakt.tv.helpers.longDateTimeFormat
 import tv.trakt.trakt.tv.helpers.preview.PreviewData
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
@@ -180,7 +180,7 @@ private fun CommentHeader(comment: Comment) {
                     overflow = TextOverflow.Ellipsis,
                 )
                 if (comment.user.isAnyVip) {
-                    VipChip()
+                    TvVipChip()
                 }
             }
             Text(

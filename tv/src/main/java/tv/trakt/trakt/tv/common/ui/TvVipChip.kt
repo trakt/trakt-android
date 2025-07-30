@@ -1,3 +1,5 @@
+package tv.trakt.trakt.tv.common.ui
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Row
@@ -13,7 +15,7 @@ import androidx.tv.material3.Text
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
 
 @Composable
-internal fun VipChip(modifier: Modifier = Modifier) {
+internal fun TvVipChip(modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = spacedBy(2.dp),
@@ -38,8 +40,8 @@ internal fun VipChip(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-private fun ShowCardChipPreview() {
+private fun Preview() {
     TraktTheme {
-        VipChip()
+        TvVipChip()
     }
 }

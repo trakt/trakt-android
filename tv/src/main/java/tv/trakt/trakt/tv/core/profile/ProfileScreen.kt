@@ -62,6 +62,7 @@ import tv.trakt.trakt.tv.core.profile.sections.favorites.shows.ProfileFavoriteSh
 import tv.trakt.trakt.tv.core.profile.sections.history.ProfileHistoryView
 import tv.trakt.trakt.tv.helpers.preview.PreviewData
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
+import tv.trakt.trakt.common.R as RCommon
 
 private val sections = listOf(
     "header",
@@ -284,7 +285,7 @@ private fun ProfileAvatar(
                 model = profile.images?.avatar?.full,
                 contentDescription = "User avatar",
                 contentScale = ContentScale.Crop,
-                error = painterResource(tv.trakt.trakt.common.R.drawable.ic_person_placeholder),
+                error = painterResource(RCommon.drawable.ic_person_placeholder),
                 modifier = Modifier
                     .fillMaxSize()
                     .border(2.dp, Color.White, CircleShape)
@@ -292,7 +293,7 @@ private fun ProfileAvatar(
             )
         } else {
             Image(
-                painter = painterResource(tv.trakt.trakt.common.R.drawable.ic_person_placeholder),
+                painter = painterResource(RCommon.drawable.ic_person_placeholder),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize()
@@ -303,7 +304,7 @@ private fun ProfileAvatar(
 
         if (profile?.isAnyVip == true) {
             Icon(
-                painter = painterResource(R.drawable.ic_crown),
+                painter = painterResource(RCommon.drawable.ic_crown),
                 contentDescription = null,
                 tint = Color.White,
                 modifier = Modifier

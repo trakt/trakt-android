@@ -296,7 +296,7 @@ private fun NavigationProfileItem(
 
             if (profile?.isAnyVip == true) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_crown),
+                    painter = painterResource(RCommon.drawable.ic_crown),
                     contentDescription = null,
                     tint = Color.White,
                     modifier = Modifier
