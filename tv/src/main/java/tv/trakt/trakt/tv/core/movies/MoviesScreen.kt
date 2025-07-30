@@ -32,7 +32,6 @@ import androidx.tv.material3.Text
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.tv.R
 import tv.trakt.trakt.tv.common.ui.GenericErrorView
 import tv.trakt.trakt.tv.common.ui.InfoChip
 import tv.trakt.trakt.tv.common.ui.PositionFocusLazyRow
@@ -281,7 +280,7 @@ private fun TrendingMoviesList(
                         paletteColor = movie.colors?.colors?.second,
                         footerContent = {
                             InfoChip(
-                                text = stringResource(R.string.people_watching, watchers.thousandsFormat()),
+                                text = stringResource(RCommon.string.people_watching, watchers.thousandsFormat()),
                             )
                         },
                         modifier = Modifier.onFocusChanged {
@@ -344,7 +343,7 @@ private fun HotMoviesList(
                         paletteColor = movie.colors?.colors?.second,
                         footerContent = {
                             InfoChip(
-                                text = stringResource(R.string.people_eager, watchers.thousandsFormat()),
+                                text = stringResource(RCommon.string.people_eager, watchers.thousandsFormat()),
                             )
                         },
                         modifier = Modifier.onFocusChanged {
@@ -473,7 +472,7 @@ private fun AnticipatedMoviesList(
                         paletteColor = movie.colors?.colors?.second,
                         footerContent = {
                             InfoChip(
-                                text = stringResource(R.string.people_eager, listCount.thousandsFormat()),
+                                text = stringResource(RCommon.string.people_eager, listCount.thousandsFormat()),
                             )
                         },
                         modifier = Modifier.onFocusChanged {

@@ -12,7 +12,7 @@ internal class GetHotShowsUseCase(
     private val remoteSource: ShowsRemoteDataSource,
 ) {
     suspend fun getHotShows(): ImmutableList<WatchersShow> {
-        return remoteSource.getHot(30)
+        return remoteSource.getHot(20)
             .asyncMap {
                 WatchersShow(
                     watchers = it.watchers,

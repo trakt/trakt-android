@@ -122,7 +122,7 @@ internal fun HorizontalMediaCard(
                                 .align(Alignment.Center),
                         )
                         Icon(
-                            painter = painterResource(R.drawable.ic_placeholder_trakt),
+                            painter = painterResource(RCommon.drawable.ic_placeholder_trakt),
                             contentDescription = title,
                             tint = TraktTheme.colors.placeholderContent,
                             modifier = Modifier

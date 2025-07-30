@@ -11,7 +11,7 @@ internal class GetPopularShowsUseCase(
     private val remoteSource: ShowsRemoteDataSource,
 ) {
     suspend fun getPopularShows(): ImmutableList<Show> {
-        return remoteSource.getPopular(30)
+        return remoteSource.getPopular(20)
             .asyncMap {
                 Show.fromDto(it)
             }

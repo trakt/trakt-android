@@ -12,7 +12,7 @@ internal class GetTrendingShowsUseCase(
     private val remoteSource: ShowsRemoteDataSource,
 ) {
     suspend fun getTrendingShows(): ImmutableList<WatchersShow> {
-        return remoteSource.getTrending(30)
+        return remoteSource.getTrending(20)
             .asyncMap {
                 WatchersShow(
                     watchers = it.watchers,

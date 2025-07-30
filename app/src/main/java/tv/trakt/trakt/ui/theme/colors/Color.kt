@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.common.ui.theme.colors.Shade300
+import tv.trakt.trakt.common.ui.theme.colors.Shade600
 import tv.trakt.trakt.common.ui.theme.colors.Shade700
 import tv.trakt.trakt.common.ui.theme.colors.Shade800
 import tv.trakt.trakt.common.ui.theme.colors.Shade920
@@ -17,6 +18,8 @@ internal val DarkColors: TraktColors = TraktColors(
     textSecondary = Shade300,
     skeletonContainer = Shade800,
     skeletonShimmer = Shade700,
+    placeholderContainer = Shade800,
+    placeholderContent = Shade600,
     chipContainer = Shade800,
     chipContent = Color.White,
     navigationHeaderContainer = Shade920,
@@ -34,6 +37,8 @@ internal data class TraktColors(
     val skeletonShimmer: Color = Color.Unspecified,
     val chipContainer: Color = Color.Unspecified,
     val chipContent: Color = Color.Unspecified,
+    val placeholderContainer: Color = Color.Unspecified,
+    val placeholderContent: Color = Color.Unspecified,
     // Nav
     val navigationHeaderContainer: Color = Color.Unspecified,
     val navigationContainer: Color = Color.Unspecified,

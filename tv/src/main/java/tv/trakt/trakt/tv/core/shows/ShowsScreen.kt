@@ -272,7 +272,7 @@ private fun TrendingShowsList(
                         paletteColor = show.colors?.colors?.second,
                         footerContent = {
                             InfoChip(
-                                text = stringResource(R.string.people_watching, watchers.thousandsFormat()),
+                                text = stringResource(RCommon.string.people_watching, watchers.thousandsFormat()),
                                 modifier = Modifier,
                             )
                         },
@@ -336,7 +336,7 @@ private fun HotShowsList(
                         paletteColor = show.colors?.colors?.second,
                         footerContent = {
                             InfoChip(
-                                text = stringResource(R.string.people_eager, listCount.thousandsFormat()),
+                                text = stringResource(RCommon.string.people_eager, listCount.thousandsFormat()),
                                 modifier = Modifier,
                             )
                         },
@@ -463,7 +463,7 @@ private fun AnticipatedShowsList(
                         paletteColor = show.colors?.colors?.second,
                         footerContent = {
                             InfoChip(
-                                text = stringResource(R.string.people_eager, listCount.thousandsFormat()),
+                                text = stringResource(RCommon.string.people_eager, listCount.thousandsFormat()),
                             )
                         },
                         modifier = Modifier.onFocusChanged {

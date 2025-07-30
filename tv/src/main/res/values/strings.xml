@@ -8,8 +8,6 @@
     <string name="view_profile">View profile</string>
     <string name="stream_on">Stream on</string>
     <string name="stream_unavailable">No service</string>
-    <string name="people_watching">%s watching</string>
-    <string name="people_eager">%s eager</string>
     <string name="watch_count">Watch count: %d</string>
     <string name="add_to_history_confirmation">Are you sure you want to mark \“%s\” as watched? This will mark all episodes as watched.</string>
     <string name="remove_from_history_confirmation">Are you sure you want to remove this play from your history?</string>

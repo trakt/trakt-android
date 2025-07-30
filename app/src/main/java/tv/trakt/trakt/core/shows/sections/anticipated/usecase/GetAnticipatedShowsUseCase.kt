@@ -12,7 +12,7 @@ internal class GetAnticipatedShowsUseCase(
     private val remoteSource: ShowsRemoteDataSource,
 ) {
     suspend fun getAnticipatedShows(): ImmutableList<WatchersShow> {
-        return remoteSource.getAnticipated(30)
+        return remoteSource.getAnticipated(20)
             .asyncMap {
                 WatchersShow(
                     watchers = it.listCount,

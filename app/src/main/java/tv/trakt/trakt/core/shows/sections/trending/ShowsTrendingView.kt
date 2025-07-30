@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,8 +17,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.R
+import tv.trakt.trakt.core.shows.model.WatchersShow
+import tv.trakt.trakt.tv.helpers.extensions.thousandsFormat
+import tv.trakt.trakt.ui.components.InfoChip
+import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -68,9 +75,21 @@ internal fun ShowsTrendingContent(
             )
         }
 
-        ContentLoadingList(
-            contentPadding = contentPadding,
-        )
+        when {
+            state.loading -> {
+                ContentLoadingList(
+                    contentPadding = contentPadding,
+                )
+            }
+            else -> {
+                ContentList(
+                    listItems = {
+                        state.items ?: emptyList<WatchersShow>().toImmutableList()
+                    },
+                    contentPadding = contentPadding,
+                )
+            }
+        }
     }
 }
 
@@ -85,6 +104,44 @@ private fun ContentLoadingList(contentPadding: PaddingValues) {
             VerticalMediaSkeletonCard()
         }
     }
+}
+
+@Composable
+private fun ContentList(
+    listItems: () -> ImmutableList<WatchersShow>,
+    contentPadding: PaddingValues,
+) {
+    LazyRow(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
+        contentPadding = contentPadding,
+    ) {
+        items(
+            items = listItems(),
+            key = { it.show.ids.trakt.value },
+        ) { item ->
+            ContentListItem(
+                item = item,
+            )
+        }
+    }
+}
+
+@Composable
+private fun ContentListItem(
+    item: WatchersShow,
+    onClick: () -> Unit = {},
+) {
+    VerticalMediaCard(
+        title = item.show.title,
+        imageUrl = item.show.images?.getPosterUrl(),
+        onClick = onClick,
+        chipContent = {
+            InfoChip(
+                text = stringResource(R.string.people_watching, item.watchers.thousandsFormat()),
+            )
+        },
+    )
 }
 
 @Preview(
