@@ -30,6 +30,7 @@ import tv.trakt.trakt.tv.common.ui.mediacards.HorizontalViewAllCard
 import tv.trakt.trakt.tv.core.profile.ProfileConfig.PROFILE_FAVORITES_SECTION_LIMIT
 import tv.trakt.trakt.tv.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
+import tv.trakt.trakt.common.R as RCommon
 
 private val sections = listOf(
     "content",
@@ -174,7 +175,7 @@ private fun ContentListItem(
         onClick = onClick,
         footerContent = {
             InfoChip(
-                text = stringResource(R.string.episodes_number, item.airedEpisodes),
+                text = stringResource(RCommon.string.episodes_count, item.airedEpisodes),
             )
         },
         modifier = Modifier

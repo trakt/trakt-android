@@ -25,7 +25,7 @@ import tv.trakt.trakt.core.shows.model.WatchersShow
 import tv.trakt.trakt.tv.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
-import tv.trakt.trakt.ui.components.mediacards.VerticalMediaSkeletonCard
+import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable

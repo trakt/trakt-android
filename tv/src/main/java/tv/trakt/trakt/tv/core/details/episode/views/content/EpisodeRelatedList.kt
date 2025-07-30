@@ -13,8 +13,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
+import tv.trakt.trakt.common.R
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.tv.R
 import tv.trakt.trakt.tv.common.ui.InfoChip
 import tv.trakt.trakt.tv.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.tv.common.ui.mediacards.HorizontalMediaCard
@@ -63,7 +63,7 @@ internal fun EpisodeRelatedList(
                         val episodes = show.airedEpisodes
                         if (episodes > 0) {
                             InfoChip(
-                                text = stringResource(R.string.episodes_number, show.airedEpisodes),
+                                text = stringResource(R.string.episodes_count, show.airedEpisodes),
                                 modifier = Modifier.padding(end = 8.dp),
                             )
                         }

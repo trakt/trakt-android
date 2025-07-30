@@ -31,6 +31,7 @@ import tv.trakt.trakt.tv.core.lists.ListsConfig.LISTS_SECTION_LIMIT
 import tv.trakt.trakt.tv.core.lists.ListsContentLoading
 import tv.trakt.trakt.tv.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
+import tv.trakt.trakt.common.R as RCommon
 
 @Composable
 internal fun ListsShowsWatchlistView(
@@ -125,7 +126,7 @@ private fun ContentList(
                 onClick = { onClick(item) },
                 footerContent = {
                     InfoChip(
-                        text = stringResource(R.string.episodes_number, item.airedEpisodes),
+                        text = stringResource(RCommon.string.episodes_count, item.airedEpisodes),
                     )
                 },
                 modifier = Modifier

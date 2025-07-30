@@ -68,7 +68,7 @@ internal fun VerticalMediaCard(
     var isError by remember(imageUrl) { mutableStateOf(false) }
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = modifier
             .widthIn(max = cardWidth),
     ) {

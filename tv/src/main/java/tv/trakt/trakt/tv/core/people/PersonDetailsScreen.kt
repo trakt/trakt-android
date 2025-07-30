@@ -349,7 +349,7 @@ private fun ShowCreditsList(
                         val episodes = show.airedEpisodes
                         if (episodes > 0) {
                             InfoChip(
-                                text = stringResource(R.string.episodes_number, show.airedEpisodes),
+                                text = stringResource(RCommon.string.episodes_count, show.airedEpisodes),
                                 modifier = Modifier.padding(end = 8.dp),
                             )
                         }

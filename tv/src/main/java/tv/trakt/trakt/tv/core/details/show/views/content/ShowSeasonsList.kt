@@ -23,6 +23,7 @@ import tv.trakt.trakt.tv.core.details.show.models.ShowSeasons
 import tv.trakt.trakt.tv.core.episodes.model.Season
 import tv.trakt.trakt.tv.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
+import tv.trakt.trakt.common.R as RCommon
 
 @Composable
 internal fun ShowSeasonsList(
@@ -91,7 +92,7 @@ internal fun ShowSeasonsList(
 
                             item.episodeCount?.let {
                                 Text(
-                                    text = stringResource(R.string.episodes_number, it),
+                                    text = stringResource(RCommon.string.episodes_count, it),
                                     style = TraktTheme.typography.cardSubtitle,
                                     color = TraktTheme.colors.textSecondary,
                                     maxLines = 1,

@@ -34,7 +34,6 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.tv.R
 import tv.trakt.trakt.tv.common.ui.GenericErrorView
 import tv.trakt.trakt.tv.common.ui.InfoChip
 import tv.trakt.trakt.tv.common.ui.PositionFocusLazyRow
@@ -400,7 +399,7 @@ private fun StandardShowsList(
                         paletteColor = show.colors?.colors?.second,
                         footerContent = {
                             InfoChip(
-                                text = stringResource(R.string.episodes_number, show.airedEpisodes),
+                                text = stringResource(RCommon.string.episodes_count, show.airedEpisodes),
                             )
                         },
                         modifier = Modifier.onFocusChanged {

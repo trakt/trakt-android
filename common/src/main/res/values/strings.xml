@@ -11,6 +11,8 @@
     <string name="people_watching">%s watching</string>
     <string name="people_eager">%s eager</string>
 
+    <string name="episodes_count">%d episodes</string>
+
     <string name="header_trending">Trending</string>
     <string name="header_hot_month">Hot This Month</string>
     <string name="header_most_popular">Most Popular</string>

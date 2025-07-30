@@ -44,6 +44,7 @@ import tv.trakt.trakt.tv.core.lists.ListsConfig.LISTS_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.tv.core.lists.ListsConfig.LISTS_PAGE_LIMIT
 import tv.trakt.trakt.tv.helpers.preview.PreviewData
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
+import tv.trakt.trakt.common.R as RCommon
 
 @Composable
 internal fun ShowsWatchlistScreen(
@@ -139,7 +140,7 @@ private fun ShowsWatchlistContent(
                         },
                         chipContent = {
                             InfoChip(
-                                text = stringResource(R.string.episodes_number, show.airedEpisodes),
+                                text = stringResource(RCommon.string.episodes_count, show.airedEpisodes),
                                 modifier = Modifier.padding(end = 8.dp),
                             )
                         },

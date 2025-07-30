@@ -41,6 +41,7 @@ import tv.trakt.trakt.tv.core.details.ui.BackdropImage
 import tv.trakt.trakt.tv.core.profile.ProfileConfig.FAVORITES_ALL_PAGE_LIMIT
 import tv.trakt.trakt.tv.core.profile.ProfileConfig.FAVORITES_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
+import tv.trakt.trakt.common.R as RCommon
 
 @Composable
 internal fun ProfileFavoriteShowsViewAllScreen(
@@ -152,7 +153,7 @@ private fun ProfileFavoriteShowsViewAllContent(
                         },
                         chipContent = {
                             InfoChip(
-                                text = stringResource(R.string.episodes_number, show.airedEpisodes),
+                                text = stringResource(RCommon.string.episodes_count, show.airedEpisodes),
                                 modifier = Modifier.padding(end = 8.dp),
                             )
                         },

@@ -34,7 +34,6 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.tv.R
 import tv.trakt.trakt.tv.common.ui.FilmProgressIndicator
 import tv.trakt.trakt.tv.common.ui.GenericErrorView
 import tv.trakt.trakt.tv.common.ui.InfoChip
@@ -44,6 +43,7 @@ import tv.trakt.trakt.tv.core.details.lists.details.CustomListDetailsConfig.CUST
 import tv.trakt.trakt.tv.core.details.ui.BackdropImage
 import tv.trakt.trakt.tv.helpers.preview.PreviewData
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
+import tv.trakt.trakt.common.R as RCommon
 
 @Composable
 internal fun CustomListShowsScreen(
@@ -143,7 +143,7 @@ private fun CustomListShowsContent(
                             val episodes = show.airedEpisodes
                             if (episodes > 0) {
                                 InfoChip(
-                                    text = stringResource(R.string.episodes_number, show.airedEpisodes),
+                                    text = stringResource(RCommon.string.episodes_count, show.airedEpisodes),
                                     modifier = Modifier.padding(end = 8.dp),
                                 )
                             }

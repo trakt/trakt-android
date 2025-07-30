@@ -1,4 +1,4 @@
-package tv.trakt.trakt.ui.components.mediacards
+package tv.trakt.trakt.ui.components.mediacards.skeletons
 
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.RepeatMode
@@ -53,7 +53,7 @@ internal fun VerticalMediaSkeletonCard(
     }
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = modifier
             .widthIn(max = cardWidth),
     ) {
