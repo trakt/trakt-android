@@ -60,7 +60,7 @@ private fun ShowsScreenContent(
         .plus(TraktTheme.spacing.mainPageTopSpace)
 
     val bottomPadding = navigationBarPaddings
-        .calculateBottomPadding()
+        .calculateTopPadding()
         .plus(TraktTheme.size.navigationBarHeight)
         .plus(TraktTheme.spacing.mainPageBottomSpace)
 
