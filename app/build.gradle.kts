@@ -93,6 +93,10 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.android.compose)
 
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network)
+    implementation(libs.coil.svg)
+
     // Android Compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)

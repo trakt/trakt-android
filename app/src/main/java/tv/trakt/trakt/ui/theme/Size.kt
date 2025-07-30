@@ -1,11 +1,13 @@
+@file:Suppress("ktlint:standard:property-naming")
+
 package tv.trakt.trakt.ui.theme
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-@Suppress("ktlint:standard:property-naming")
 internal const val VerticalImageAspectRatio = 2f / 3
+internal const val HorizontalImageAspectRatio = 16f / 9
 
 internal val Size: TraktSize = TraktSize(
     navigationBarHeight = 80.dp,

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -22,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -33,6 +35,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.shows.sections.anticipated.ShowsAnticipatedView
 import tv.trakt.trakt.core.shows.sections.hot.ShowsHotView
 import tv.trakt.trakt.core.shows.sections.popular.ShowsPopularView
+import tv.trakt.trakt.ui.components.BackdropImage
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -47,6 +50,8 @@ private fun ShowsScreenContent(
     modifier: Modifier = Modifier,
     onShowClick: (TraktId) -> Unit,
 ) {
+    val lazyListState = rememberLazyListState()
+
     val statusBarPaddings = WindowInsets.statusBars.asPaddingValues()
     val navigationBarPaddings = WindowInsets.navigationBars.asPaddingValues()
 
@@ -88,7 +93,19 @@ private fun ShowsScreenContent(
             .fillMaxSize()
             .nestedScroll(headerBarConnection),
     ) {
+        BackdropImage(
+            imageUrl = "",
+            modifier = Modifier.graphicsLayer {
+                if (lazyListState.firstVisibleItemIndex == 0) {
+                    translationY = (-0.75F * lazyListState.firstVisibleItemScrollOffset)
+                } else {
+                    alpha = 0F
+                }
+            },
+        )
+
         LazyColumn(
+            state = lazyListState,
             verticalArrangement = spacedBy(TraktTheme.spacing.mainSectionVerticalSpace),
             contentPadding = PaddingValues(
                 top = topPadding,

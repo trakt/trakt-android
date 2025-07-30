@@ -18,7 +18,7 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.R
 import tv.trakt.trakt.core.shows.sections.trending.ShowsTrendingState
 import tv.trakt.trakt.core.shows.sections.trending.ShowsTrendingViewModel
-import tv.trakt.trakt.ui.common.mediacards.VerticalMediaSkeletonCard
+import tv.trakt.trakt.ui.components.mediacards.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable

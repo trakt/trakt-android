@@ -1,4 +1,4 @@
-package tv.trakt.trakt.ui.common.mediacards
+package tv.trakt.trakt.ui.components.mediacards
 
 import InfoChip
 import androidx.compose.animation.animateColor
