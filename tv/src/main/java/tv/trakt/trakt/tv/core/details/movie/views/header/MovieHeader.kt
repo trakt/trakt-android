@@ -1,7 +1,6 @@
 package tv.trakt.trakt.tv.core.details.movie.views.header
 
 import ExternalRatingsStrip
-import InfoChip
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -45,6 +44,7 @@ import tv.trakt.trakt.common.model.Images.Size.MEDIUM
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.tv.R
 import tv.trakt.trakt.tv.common.model.ExternalRating
+import tv.trakt.trakt.tv.common.ui.InfoChip
 import tv.trakt.trakt.tv.core.details.movie.MovieDetailsState.CollectionState
 import tv.trakt.trakt.tv.core.details.ui.PosterImage
 import tv.trakt.trakt.tv.core.movies.model.Movie

@@ -51,7 +51,7 @@ internal val Typography: TraktTypography = TraktTypography(
     heading6 = TextStyle(
         fontFamily = SplineFamily,
         fontWeight = FontWeight.W600,
-        fontSize = 16.sp,
+        fontSize = 14.sp,
         letterSpacing = 0.04.em,
     ),
     meta = TextStyle(
@@ -69,7 +69,7 @@ internal val Typography: TraktTypography = TraktTypography(
     buttonTertiary = TextStyle(
         fontFamily = SplineFamily,
         fontWeight = FontWeight.W600,
-        fontSize = 12.sp,
+        fontSize = 13.sp,
         letterSpacing = 0.04.em,
     ),
     paragraphSmall = TextStyle(

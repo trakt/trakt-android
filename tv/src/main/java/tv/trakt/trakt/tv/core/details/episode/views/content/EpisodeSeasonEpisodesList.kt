@@ -1,6 +1,5 @@
 package tv.trakt.trakt.tv.core.details.episode.views.content
 
-import InfoChip
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,6 +14,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
+import tv.trakt.trakt.tv.common.ui.InfoChip
 import tv.trakt.trakt.tv.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.tv.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.tv.core.episodes.model.Episode

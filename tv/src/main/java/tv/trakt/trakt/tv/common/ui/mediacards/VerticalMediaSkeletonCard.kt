@@ -1,6 +1,5 @@
 package tv.trakt.trakt.tv.common.ui.mediacards
 
-import InfoChip
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.infiniteRepeatable
@@ -25,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Border
 import androidx.tv.material3.Card
 import androidx.tv.material3.CardDefaults
+import tv.trakt.trakt.tv.common.ui.InfoChip
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
 
 @Composable

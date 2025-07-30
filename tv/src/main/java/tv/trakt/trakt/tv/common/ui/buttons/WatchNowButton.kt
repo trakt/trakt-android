@@ -25,6 +25,7 @@ import androidx.tv.material3.ButtonDefaults
 import androidx.tv.material3.Text
 import coil3.compose.AsyncImage
 import tv.trakt.trakt.tv.R
+import tv.trakt.trakt.tv.common.ui.FilmProgressIndicator
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
 
 @Composable

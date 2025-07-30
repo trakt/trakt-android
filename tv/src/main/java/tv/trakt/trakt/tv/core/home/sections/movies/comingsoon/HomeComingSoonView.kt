@@ -1,6 +1,5 @@
 package tv.trakt.trakt.tv.core.home.sections.movies.comingsoon
 
-import InfoChip
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -24,6 +23,7 @@ import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.R
+import tv.trakt.trakt.tv.common.ui.InfoChip
 import tv.trakt.trakt.tv.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.tv.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.tv.common.ui.mediacards.HorizontalMediaSkeletonCard

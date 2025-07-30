@@ -1,6 +1,5 @@
 package tv.trakt.trakt.tv.core.home.sections.shows.upcoming
 
-import InfoChip
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -26,6 +25,7 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.R
+import tv.trakt.trakt.tv.common.ui.InfoChip
 import tv.trakt.trakt.tv.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.tv.common.ui.mediacards.EpisodeSkeletonCard
 import tv.trakt.trakt.tv.common.ui.mediacards.HorizontalMediaCard

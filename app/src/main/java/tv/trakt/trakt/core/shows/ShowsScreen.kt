@@ -1,7 +1,5 @@
 package tv.trakt.trakt.core.shows
 
-import HeaderBar
-import ShowsTrendingView
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -28,8 +26,10 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.shows.sections.anticipated.ShowsAnticipatedView
 import tv.trakt.trakt.core.shows.sections.hot.ShowsHotView
 import tv.trakt.trakt.core.shows.sections.popular.ShowsPopularView
+import tv.trakt.trakt.core.shows.sections.trending.ShowsTrendingView
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.ui.components.BackdropImage
+import tv.trakt.trakt.ui.components.headerbar.HeaderBar
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable

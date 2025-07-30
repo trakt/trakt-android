@@ -1,3 +1,5 @@
+package tv.trakt.trakt.tv.common.ui
+
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable

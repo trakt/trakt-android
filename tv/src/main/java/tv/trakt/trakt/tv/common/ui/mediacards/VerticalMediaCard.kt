@@ -1,6 +1,5 @@
 package tv.trakt.trakt.tv.common.ui.mediacards
 
-import InfoChip
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -49,6 +48,7 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import tv.trakt.trakt.tv.R
+import tv.trakt.trakt.tv.common.ui.InfoChip
 import tv.trakt.trakt.tv.ui.theme.TraktTheme
 import tv.trakt.trakt.common.R as RCommon
 

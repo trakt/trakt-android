@@ -1,7 +1,5 @@
 package tv.trakt.trakt.tv.core.people
 
-import GenericErrorView
-import InfoChip
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -50,6 +48,8 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.R
 import tv.trakt.trakt.tv.common.model.Person
+import tv.trakt.trakt.tv.common.ui.GenericErrorView
+import tv.trakt.trakt.tv.common.ui.InfoChip
 import tv.trakt.trakt.tv.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.tv.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.tv.core.details.ui.BackdropImage

@@ -1,3 +1,5 @@
+package tv.trakt.trakt.tv.common.ui
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Row

@@ -1,8 +1,5 @@
 package tv.trakt.trakt.tv.core.details.lists.details.movies
 
-import FilmProgressIndicator
-import GenericErrorView
-import InfoChip
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
@@ -35,6 +32,9 @@ import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.tv.common.ui.FilmProgressIndicator
+import tv.trakt.trakt.tv.common.ui.GenericErrorView
+import tv.trakt.trakt.tv.common.ui.InfoChip
 import tv.trakt.trakt.tv.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.tv.core.details.lists.details.CustomListDetailsConfig.CUSTOM_LIST_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.tv.core.details.lists.details.CustomListDetailsConfig.CUSTOM_LIST_PAGE_LIMIT

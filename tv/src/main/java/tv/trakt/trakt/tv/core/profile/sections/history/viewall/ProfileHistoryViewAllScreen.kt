@@ -1,7 +1,5 @@
 package tv.trakt.trakt.tv.core.profile.sections.history.viewall
 
-import FilmProgressIndicator
-import GenericErrorView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -37,6 +35,8 @@ import androidx.tv.material3.Text
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.R
 import tv.trakt.trakt.tv.common.model.SyncHistoryItem
+import tv.trakt.trakt.tv.common.ui.FilmProgressIndicator
+import tv.trakt.trakt.tv.common.ui.GenericErrorView
 import tv.trakt.trakt.tv.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.tv.core.details.ui.BackdropImage
 import tv.trakt.trakt.tv.core.episodes.model.Episode

@@ -1,3 +1,5 @@
+package tv.trakt.trakt.tv.common.ui
+
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

@@ -1,8 +1,5 @@
 package tv.trakt.trakt.tv.core.profile.sections.favorites.movies.viewall
 
-import FilmProgressIndicator
-import GenericErrorView
-import InfoChip
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -35,6 +32,9 @@ import androidx.tv.material3.Text
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.R
+import tv.trakt.trakt.tv.common.ui.FilmProgressIndicator
+import tv.trakt.trakt.tv.common.ui.GenericErrorView
+import tv.trakt.trakt.tv.common.ui.InfoChip
 import tv.trakt.trakt.tv.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.tv.core.details.ui.BackdropImage
 import tv.trakt.trakt.tv.core.movies.model.Movie

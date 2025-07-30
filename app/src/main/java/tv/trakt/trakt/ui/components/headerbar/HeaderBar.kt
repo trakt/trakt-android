@@ -1,3 +1,5 @@
+package tv.trakt.trakt.ui.components.headerbar
+
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -32,6 +34,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.R
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
+import tv.trakt.trakt.ui.components.VipChip
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -77,7 +80,7 @@ internal fun HeaderBar(
                     bottom = TraktTheme.spacing.mainPageHorizontalSpace,
                 ),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = spacedBy(16.dp),
+            horizontalArrangement = spacedBy(20.dp),
         ) {
             Crossfade(
                 targetState = showVip,

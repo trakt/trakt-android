@@ -1,7 +1,5 @@
 package tv.trakt.trakt.tv.core.movies
 
-import GenericErrorView
-import InfoChip
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.focusable
@@ -35,6 +33,8 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.tv.R
+import tv.trakt.trakt.tv.common.ui.GenericErrorView
+import tv.trakt.trakt.tv.common.ui.InfoChip
 import tv.trakt.trakt.tv.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.tv.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.tv.common.ui.mediacards.HorizontalMediaSkeletonCard
