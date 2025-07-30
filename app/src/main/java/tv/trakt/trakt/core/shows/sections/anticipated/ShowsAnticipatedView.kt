@@ -1,5 +1,7 @@
 package tv.trakt.trakt.core.shows.sections.anticipated
 
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
@@ -75,19 +77,22 @@ internal fun ShowsAnticipatedContent(
             )
         }
 
-        when {
-            state.loading -> {
-                ContentLoadingList(
-                    contentPadding = contentPadding,
-                )
-            }
-            else -> {
-                ContentList(
-                    listItems = {
-                        state.items ?: emptyList<WatchersShow>().toImmutableList()
-                    },
-                    contentPadding = contentPadding,
-                )
+        Crossfade(
+            targetState = state.items?.size,
+            animationSpec = tween(250),
+        ) { items ->
+            when (items == null) {
+                true -> {
+                    ContentLoadingList(
+                        contentPadding = contentPadding,
+                    )
+                }
+                false -> {
+                    ContentList(
+                        listItems = { state.items ?: emptyList<WatchersShow>().toImmutableList() },
+                        contentPadding = contentPadding,
+                    )
+                }
             }
         }
     }
