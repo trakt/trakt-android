@@ -1,6 +1,8 @@
 package tv.trakt.trakt.ui.components.headerbar
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,6 +52,7 @@ internal fun HeaderBar(
     modifier: Modifier = Modifier,
     height: Dp = TraktTheme.size.navigationHeaderHeight,
     containerColor: Color = TraktTheme.colors.navigationHeaderContainer,
+    containerAlpha: Float = 1F,
     showVip: Boolean = false,
 ) {
     val headerBarHeight = WindowInsets.statusBars.asPaddingValues()
@@ -59,6 +63,11 @@ internal fun HeaderBar(
         nowLocal().format(todayDateFormat)
     }
 
+    val animatedContainerAlpha by animateFloatAsState(
+        targetValue = containerAlpha,
+        animationSpec = tween(),
+    )
+
     Box(
         modifier = modifier
             .height(headerBarHeight)
@@ -68,7 +77,7 @@ internal fun HeaderBar(
                     bottomEnd = 24.dp,
                 ),
             )
-            .background(containerColor),
+            .background(containerColor.copy(alpha = animatedContainerAlpha)),
     ) {
         Row(
             modifier = Modifier

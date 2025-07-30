@@ -27,6 +27,11 @@ internal class ScreenHeaderState(
         onStartScrollUp = { startScrolled = true },
         onScrollUp = { scrolled = true },
     )
+
+    fun resetScrolled() {
+        connection.resetScrolled()
+        scrolled = false
+    }
 }
 
 @Composable

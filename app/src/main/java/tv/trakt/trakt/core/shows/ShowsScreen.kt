@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.shows
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,10 +13,12 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
@@ -51,17 +54,21 @@ private fun ShowsScreenContent(
     modifier: Modifier = Modifier,
     onShowClick: (TraktId) -> Unit,
 ) {
-    val topPadding = WindowInsets.statusBars.asPaddingValues()
-        .calculateTopPadding()
-        .plus(TraktTheme.spacing.mainPageTopSpace)
-
-    val bottomPadding = WindowInsets.navigationBars.asPaddingValues()
-        .calculateBottomPadding()
-        .plus(TraktTheme.size.navigationBarHeight)
-        .plus(TraktTheme.spacing.mainPageBottomSpace)
-
     val lazyListState = rememberLazyListState()
     val headerState = rememberHeaderState()
+
+    val isScrolledToTop by remember {
+        derivedStateOf {
+            lazyListState.firstVisibleItemIndex == 0 &&
+                lazyListState.firstVisibleItemScrollOffset == 0
+        }
+    }
+
+    LaunchedEffect(isScrolledToTop) {
+        if (isScrolledToTop) {
+            headerState.resetScrolled()
+        }
+    }
 
     Box(
         contentAlignment = Alignment.TopStart,
@@ -69,15 +76,11 @@ private fun ShowsScreenContent(
             .fillMaxSize()
             .nestedScroll(headerState.connection),
     ) {
-        val sectionPadding = PaddingValues(
-            start = TraktTheme.spacing.mainPageHorizontalSpace,
-            end = TraktTheme.spacing.mainPageHorizontalSpace,
-        )
-
         BackdropImage(
             imageUrl = state.backgroundUrl,
             modifier = Modifier.graphicsLayer {
                 if (lazyListState.firstVisibleItemIndex == 0) {
+                    Log.d("ShowsScreen", "MESSI")
                     translationY = (-0.75F * lazyListState.firstVisibleItemScrollOffset)
                 } else {
                     alpha = 0F
@@ -85,13 +88,26 @@ private fun ShowsScreenContent(
             },
         )
 
+        val listPadding = PaddingValues(
+            top = WindowInsets.statusBars.asPaddingValues()
+                .calculateTopPadding()
+                .plus(TraktTheme.spacing.mainPageTopSpace),
+            bottom = WindowInsets.navigationBars.asPaddingValues()
+                .calculateBottomPadding()
+                .plus(TraktTheme.size.navigationBarHeight)
+                .plus(TraktTheme.spacing.mainPageBottomSpace),
+        )
+
+        val sectionPadding = PaddingValues(
+            start = TraktTheme.spacing.mainPageHorizontalSpace,
+            end = TraktTheme.spacing.mainPageHorizontalSpace,
+        )
+
         LazyColumn(
             state = lazyListState,
+            overscrollEffect = null,
             verticalArrangement = spacedBy(TraktTheme.spacing.mainSectionVerticalSpace),
-            contentPadding = PaddingValues(
-                top = topPadding,
-                bottom = bottomPadding,
-            ),
+            contentPadding = listPadding,
         ) {
             item {
                 ShowsTrendingView(
@@ -123,11 +139,7 @@ private fun ShowsScreenContent(
         }
 
         HeaderBar(
-            containerColor = if (!headerState.scrolled) {
-                Color.Transparent
-            } else {
-                TraktTheme.colors.navigationHeaderContainer
-            },
+            containerAlpha = if (headerState.scrolled && !isScrolledToTop) 1F else 0F,
             showVip = headerState.startScrolled,
             modifier = Modifier
                 .offset {

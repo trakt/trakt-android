@@ -36,7 +36,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun BackdropImage(
     imageUrl: String?,
     modifier: Modifier = Modifier,
-    imageAlpha: Float = 0.4F,
+    imageAlpha: Float = 0.35F,
 ) {
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
