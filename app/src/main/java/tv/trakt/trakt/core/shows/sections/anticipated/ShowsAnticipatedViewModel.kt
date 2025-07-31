@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.shows.sections.anticipated
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -10,6 +11,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.common.helpers.extensions.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.extensions.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.shows.sections.anticipated.usecase.GetAnticipatedShowsUseCase
 
@@ -29,17 +32,21 @@ internal class ShowsAnticipatedViewModel(
 
     private fun loadData() {
         viewModelScope.launch {
+            val loadingJob = launch {
+                delay(250)
+                loadingState.update { LOADING }
+            }
             try {
-                loadingState.update { true }
                 val shows = getAnticipatedUseCase.getAnticipatedShows()
                 itemsState.update { shows }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Log.e("ShowsAnticipatedViewModel", "Failed to load data", error)
                     errorState.update { error }
+                    Log.e("ShowsAnticipatedViewModel", "Failed to load data", error)
                 }
             } finally {
-                loadingState.update { false }
+                loadingJob.cancel()
+                loadingState.update { DONE }
             }
         }
     }

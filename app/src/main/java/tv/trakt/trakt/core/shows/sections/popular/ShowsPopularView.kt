@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -23,6 +24,9 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.R
+import tv.trakt.trakt.common.helpers.extensions.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.extensions.LoadingState.IDLE
+import tv.trakt.trakt.common.helpers.extensions.LoadingState.LOADING
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
@@ -77,16 +81,17 @@ internal fun ShowsPopularContent(
         }
 
         Crossfade(
-            targetState = state.items?.size,
-            animationSpec = tween(250),
-        ) { items ->
-            when (items == null) {
-                true -> {
+            targetState = state.loading,
+            animationSpec = tween(200),
+        ) { loading ->
+            when (loading) {
+                IDLE, LOADING -> {
                     ContentLoadingList(
+                        visible = loading.isLoading,
                         contentPadding = contentPadding,
                     )
                 }
-                false -> {
+                DONE -> {
                     ContentList(
                         listItems = { state.items ?: emptyList<Show>().toImmutableList() },
                         contentPadding = contentPadding,
@@ -98,11 +103,16 @@ internal fun ShowsPopularContent(
 }
 
 @Composable
-private fun ContentLoadingList(contentPadding: PaddingValues) {
+private fun ContentLoadingList(
+    visible: Boolean = true,
+    contentPadding: PaddingValues,
+) {
     LazyRow(
-        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
         contentPadding = contentPadding,
+        modifier = Modifier
+            .fillMaxWidth()
+            .alpha(if (visible) 1F else 0F),
     ) {
         items(count = 6) {
             VerticalMediaSkeletonCard()
@@ -157,7 +167,25 @@ private fun ContentListItem(
 private fun Preview() {
     TraktTheme {
         ShowsPopularContent(
-            state = ShowsPopularState(),
+            state = ShowsPopularState(
+                loading = IDLE,
+            ),
+        )
+    }
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun Preview2() {
+    TraktTheme {
+        ShowsPopularContent(
+            state = ShowsPopularState(
+                loading = LOADING,
+            ),
         )
     }
 }
