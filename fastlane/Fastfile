@@ -1,3 +1,5 @@
+default_platform(:android)
+
 platform :android do
   desc "Distribute a new version to me only"
   lane :firebase_distribute_me do
