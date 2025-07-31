@@ -14,3 +14,4 @@
 .cxx
 *.jks
 local.properties
+fastlane/report.xml
