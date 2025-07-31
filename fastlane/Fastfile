@@ -1,17 +1,26 @@
-default_platform(:android)
-
 platform :android do
-  desc "Distribute a new version to Firebase App Distribution"
-  lane :firebase_distribute do
-    # Build the release version of the app
+  desc "Distribute a new version to me only"
+  lane :firebase_distribute_me do
     gradle(
       task: "assembleRelease"
     )
 
-    # Upload to Firebase App Distribution
     firebase_app_distribution(
       app: "1:213753735103:android:13d79e31e4663aea06230a",
       testers: "mike@trakt.tv",
+      release_notes: ""
+    )
+  end
+
+  desc "Distribute a new version to Internal Testers group"
+  lane :firebase_distribute_internal do
+    gradle(
+      task: "assembleRelease"
+    )
+
+    firebase_app_distribution(
+      app: "1:213753735103:android:13d79e31e4663aea06230a",
+      testers: "trakt-internal-testers",
       release_notes: ""
     )
   end
