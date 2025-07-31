@@ -46,7 +46,7 @@ internal fun VipChip(
             contentDescription = "VIP",
             tint = TraktTheme.colors.chipContent,
             modifier = Modifier
-                .size(16.dp)
+                .size(17.dp)
                 .graphicsLayer {
                     translationY = -(0.5).dp.toPx()
                 },
