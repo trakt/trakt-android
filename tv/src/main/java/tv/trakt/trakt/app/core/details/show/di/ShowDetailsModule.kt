@@ -115,6 +115,7 @@ internal val showDetailsModule = module {
             watchlistUseCase = get(),
             historyUseCase = get(),
             sessionManager = get(),
+            tutorialsManager = get(),
         )
     }
 }

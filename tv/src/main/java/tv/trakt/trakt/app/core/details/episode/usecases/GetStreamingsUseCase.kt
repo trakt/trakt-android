@@ -1,5 +1,6 @@
 package tv.trakt.trakt.app.core.details.episode.usecases
 
+import android.icu.util.Currency
 import tv.trakt.trakt.app.Config.DEFAULT_COUNTRY_CODE
 import tv.trakt.trakt.app.common.model.SeasonEpisode
 import tv.trakt.trakt.app.common.model.StreamingService
@@ -52,6 +53,12 @@ internal class GetStreamingsUseCase(
                     color = localSource?.color,
                     logo = localSource?.images?.logo,
                     uhd = it.uhd,
+                    country = countryCode,
+                    purchasePrice = it.prices.purchase,
+                    rentPrice = it.prices.rent,
+                    currency = it.currency?.let { code ->
+                        Currency.getInstance(code)
+                    },
                 )
             }
 

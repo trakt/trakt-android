@@ -36,6 +36,7 @@ import androidx.tv.material3.rememberDrawerState
 import tv.trakt.trakt.app.LocalDrawerVisibility
 import tv.trakt.trakt.app.LocalSnackbarState
 import tv.trakt.trakt.app.R
+import tv.trakt.trakt.app.common.model.SeasonEpisode
 import tv.trakt.trakt.app.core.auth.navigation.authScreen
 import tv.trakt.trakt.app.core.auth.navigation.navigateToAuth
 import tv.trakt.trakt.app.core.details.episode.navigation.episodeDetailsScreen
@@ -73,6 +74,10 @@ import tv.trakt.trakt.app.core.profile.sections.history.viewall.navigation.navig
 import tv.trakt.trakt.app.core.profile.sections.history.viewall.navigation.profileHistoryViewAllScreen
 import tv.trakt.trakt.app.core.shows.navigation.showsScreen
 import tv.trakt.trakt.app.core.splash.SplashScreen
+import tv.trakt.trakt.app.core.streamings.navigation.allStreamingsScreen
+import tv.trakt.trakt.app.core.streamings.navigation.navigateToEpisodeStreamings
+import tv.trakt.trakt.app.core.streamings.navigation.navigateToMovieStreamings
+import tv.trakt.trakt.app.core.streamings.navigation.navigateToShowStreamings
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 
 @Composable
@@ -263,19 +268,30 @@ private fun MainNavHost(
                 onNavigateToPerson = { navigateToPerson(it) },
                 onNavigateToList = { navigateToCustomListShows(it) },
                 onNavigateToVideo = { navigateToPlayer(it) },
+                onNavigateToStreamings = { navigateToShowStreamings(mediaId = it) },
             )
             movieDetailsScreen(
                 onNavigateToMovie = { navigateToMovie(it) },
                 onNavigateToPerson = { navigateToPerson(it) },
                 onNavigateToList = { navigateToCustomListMovies(it) },
                 onNavigateToVideo = { navigateToPlayer(it) },
+                onNavigateToStreamings = { navigateToMovieStreamings(mediaId = it) },
             )
             episodeDetailsScreen(
                 onNavigateToShow = { navigateToShow(it) },
-                onNavigateToEpisode = { showId, episodeId ->
-                    navigateToEpisode(showId, episodeId)
+                onNavigateToEpisode = { showId, episode ->
+                    navigateToEpisode(showId, episode)
                 },
                 onNavigateToPerson = { navigateToPerson(it) },
+                onNavigateToStreamings = { mediaId, episode ->
+                    navigateToEpisodeStreamings(
+                        mediaId = mediaId,
+                        seasonEpisode = SeasonEpisode(
+                            season = episode.season,
+                            episode = episode.number,
+                        ),
+                    )
+                },
             )
             personDetailsScreen(
                 onNavigateToShow = { navigateToShow(it) },
@@ -287,6 +303,7 @@ private fun MainNavHost(
             customListMovies(
                 onNavigateToMovie = { navigateToMovie(it) },
             )
+            allStreamingsScreen()
         }
     }
 }

@@ -41,6 +41,8 @@ import tv.trakt.trakt.app.core.details.show.usecases.collection.ChangeHistoryUse
 import tv.trakt.trakt.app.core.details.show.usecases.collection.ChangeWatchlistUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.collection.GetCollectionUseCase
 import tv.trakt.trakt.app.core.episodes.model.Season
+import tv.trakt.trakt.app.core.tutorials.TutorialsManager
+import tv.trakt.trakt.app.core.tutorials.model.TutorialKey.WATCH_NOW_MORE
 import tv.trakt.trakt.app.helpers.DynamicStringResource
 import tv.trakt.trakt.app.helpers.StaticStringResource
 import tv.trakt.trakt.app.helpers.StringResource
@@ -67,6 +69,7 @@ internal class ShowDetailsViewModel(
     private val historyUseCase: ChangeHistoryUseCase,
     private val watchlistUseCase: ChangeWatchlistUseCase,
     private val sessionManager: SessionManager,
+    private val tutorialsManager: TutorialsManager,
 ) : ViewModel() {
     private val initialState = ShowDetailsState()
 
@@ -288,7 +291,7 @@ internal class ShowDetailsViewModel(
                 if (!sessionManager.isAuthenticated() || user == null) {
                     return@launch
                 }
-                showStreamingsState.update { it.copy(isLoading = true) }
+                showStreamingsState.update { it.copy(loading = true) }
 
                 val streamingService = getStreamingsUseCase.getStreamingService(
                     user = user,
@@ -298,8 +301,13 @@ internal class ShowDetailsViewModel(
                 showStreamingsState.update {
                     it.copy(
                         slug = showIds.plex,
-                        isLoading = false,
+                        loading = false,
                         service = streamingService,
+                        info = when {
+                            !tutorialsManager.get(WATCH_NOW_MORE) ->
+                                DynamicStringResource(R.string.info_watchnow_long_press)
+                            else -> null
+                        },
                     )
                 }
             } catch (error: Exception) {
@@ -421,6 +429,13 @@ internal class ShowDetailsViewModel(
 
     private fun showSnackMessage(message: StringResource) {
         snackMessageState.update { message }
+    }
+
+    fun clearWatchNowTip() {
+        viewModelScope.launch {
+            tutorialsManager.acknowledge(WATCH_NOW_MORE)
+            showStreamingsState.update { it.copy(info = null) }
+        }
     }
 
     fun clearInfoMessage() {

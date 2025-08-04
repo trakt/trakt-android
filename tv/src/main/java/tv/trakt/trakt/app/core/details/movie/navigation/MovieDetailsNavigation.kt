@@ -20,6 +20,7 @@ internal fun NavGraphBuilder.movieDetailsScreen(
     onNavigateToPerson: (PersonDestination) -> Unit,
     onNavigateToList: (CustomList) -> Unit,
     onNavigateToVideo: (String) -> Unit,
+    onNavigateToStreamings: (showId: TraktId) -> Unit,
 ) {
     composable<MovieDestination> {
         MovieDetailsScreen(
@@ -28,6 +29,7 @@ internal fun NavGraphBuilder.movieDetailsScreen(
             onNavigateToPerson = onNavigateToPerson,
             onNavigateToList = onNavigateToList,
             onNavigateToVideo = onNavigateToVideo,
+            onNavigateToStreamings = onNavigateToStreamings,
         )
     }
 }

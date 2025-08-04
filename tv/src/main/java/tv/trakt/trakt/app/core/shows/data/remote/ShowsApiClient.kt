@@ -207,10 +207,10 @@ internal class ShowsApiClient(
 
     override suspend fun getShowStreamings(
         showId: TraktId,
-        countryCode: String,
+        countryCode: String?,
     ): Map<String, StreamingDto> {
         val response = api.getShowsWatchnow(
-            country = countryCode,
+            country = countryCode ?: "",
             id = showId.value.toString(),
             links = "direct",
         )

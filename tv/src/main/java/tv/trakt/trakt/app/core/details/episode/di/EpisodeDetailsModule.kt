@@ -73,6 +73,7 @@ internal val episodeDetailsModule = module {
         EpisodeDetailsViewModel(
             savedStateHandle = get(),
             sessionManager = get(),
+            tutorialsManager = get(),
             getShowDetailsUseCase = get(),
             getEpisodeDetailsUseCase = get(),
             getExternalRatingsUseCase = get(),

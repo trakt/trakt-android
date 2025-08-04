@@ -14,4 +14,13 @@ internal class StreamingApiClient(
             ?.getOrDefault(countryCode, emptyList())
             ?: emptyList()
     }
+
+    override suspend fun getStreamingSources(): List<StreamingSourceDto> {
+        val response = api.getWatchnowSourcesCountry("")
+
+        return response.body()
+            .flatMap { it.values.flatten() }
+            .filter { it.source.isNotBlank() && it.linkCount > 0 }
+            .distinctBy { it.source }
+    }
 }

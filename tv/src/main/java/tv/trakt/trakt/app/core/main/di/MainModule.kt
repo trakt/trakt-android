@@ -16,14 +16,30 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.app.core.main.MainViewModel
+import tv.trakt.trakt.app.core.tutorials.DefaultTutorialsManager
+import tv.trakt.trakt.app.core.tutorials.TutorialsManager
 
-private const val MAIN_PREFERENCES = "main_preferences"
+internal const val MAIN_PREFERENCES = "main_preferences"
+internal const val TUTORIAL_PREFERENCES = "tutorial_preferences"
 
 internal val mainModule = module {
     single<DataStore<Preferences>>(named(MAIN_PREFERENCES)) {
         createStore(
             context = androidContext(),
             key = MAIN_PREFERENCES,
+        )
+    }
+
+    single<DataStore<Preferences>>(named(TUTORIAL_PREFERENCES)) {
+        createStore(
+            context = androidContext(),
+            key = TUTORIAL_PREFERENCES,
+        )
+    }
+
+    single<TutorialsManager> {
+        DefaultTutorialsManager(
+            dataStore = get(named(TUTORIAL_PREFERENCES)),
         )
     }
 

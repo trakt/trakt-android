@@ -50,7 +50,7 @@ internal interface EpisodesRemoteDataSource {
         showId: TraktId,
         season: Int,
         episode: Int,
-        countryCode: String,
+        countryCode: String?,
     ): Map<String, StreamingDto>
 
     /**

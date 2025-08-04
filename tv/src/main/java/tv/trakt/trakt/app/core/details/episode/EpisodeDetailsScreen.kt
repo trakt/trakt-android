@@ -91,6 +91,7 @@ internal fun EpisodeDetailsScreen(
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToPerson: (PersonDestination) -> Unit,
+    onNavigateToStreamings: (showId: TraktId, episode: Episode) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var historyConfirmationDialog: Long? by remember { mutableStateOf(null) }
@@ -103,6 +104,10 @@ internal fun EpisodeDetailsScreen(
         onNavigateToShow = onNavigateToShow,
         onNavigateToEpisode = onNavigateToEpisode,
         onNavigateToPerson = onNavigateToPerson,
+        onNavigateToStreamings = { showId, episode ->
+            viewModel.clearWatchNowTip()
+            onNavigateToStreamings(showId, episode)
+        },
         onAddHistoryClick = viewModel::addToHistory,
         onRemoveHistoryClick = { historyConfirmationDialog = it },
     )
@@ -131,6 +136,7 @@ private fun EpisodeDetailsScreenContent(
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToPerson: (PersonDestination) -> Unit,
+    onNavigateToStreamings: (showId: TraktId, episode: Episode) -> Unit,
     onAddHistoryClick: () -> Unit,
     onRemoveHistoryClick: (id: Long) -> Unit,
     modifier: Modifier = Modifier,
@@ -241,6 +247,12 @@ private fun EpisodeDetailsScreenContent(
                     onCommentClicked = { selectedComment = it },
                     onAddHistoryClick = onAddHistoryClick,
                     onRemoveHistoryClick = onRemoveHistoryClick,
+                    onStreamingsClick = {
+                        onNavigateToStreamings(
+                            state.showDetails.ids.trakt,
+                            state.episodeDetails,
+                        )
+                    },
                     focusRequesters = focusRequesters,
                 )
             }
@@ -264,6 +276,7 @@ private fun MainContent(
     onEpisodeClicked: (Episode) -> Unit,
     onPersonClicked: (Person) -> Unit,
     onCommentClicked: (Comment) -> Unit,
+    onStreamingsClick: () -> Unit,
     onAddHistoryClick: () -> Unit,
     onRemoveHistoryClick: (id: Long) -> Unit,
     focusRequesters: Map<String, FocusRequester>,
@@ -287,6 +300,7 @@ private fun MainContent(
                     streamingState = state.episodeStreamings,
                     historyState = state.episodeHistory,
                     onHistoryClick = onAddHistoryClick,
+                    onStreamingLongClick = onStreamingsClick,
                     modifier = Modifier
                         .focusGroup()
                         .focusRequester(focusRequesters.getValue("buttons"))
@@ -505,6 +519,7 @@ private fun Preview() {
             onNavigateToEpisode = { _, _ -> },
             onNavigateToPerson = { _ -> },
             onAddHistoryClick = {},
+            onNavigateToStreamings = { _, _ -> },
             onRemoveHistoryClick = {},
         )
     }

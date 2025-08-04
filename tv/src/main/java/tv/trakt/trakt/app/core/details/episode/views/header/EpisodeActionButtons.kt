@@ -2,9 +2,6 @@ package tv.trakt.trakt.app.core.details.episode.views.header
 
 import PrimaryButton
 import WatchNowButton
-import android.content.Intent
-import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
-import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.width
@@ -17,9 +14,9 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.core.details.episode.EpisodeDetailsState
+import tv.trakt.trakt.app.helpers.extensions.openWatchNowLink
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.ui.theme.colors.Purple50
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
@@ -29,6 +26,7 @@ internal fun EpisodeActionButtons(
     streamingState: EpisodeDetailsState.StreamingsState,
     historyState: EpisodeDetailsState.HistoryState,
     onHistoryClick: () -> Unit,
+    onStreamingLongClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -40,32 +38,37 @@ internal fun EpisodeActionButtons(
         modifier = modifier.width(buttonsWidth),
     ) {
         val service = streamingState.service
+        val loading = streamingState.loading
         val directLink = service?.linkDirect
 
         WatchNowButton(
-            text = if (streamingState.isLoading || directLink != null) {
+            text = if (loading || !directLink.isNullOrBlank()) {
                 stringResource(R.string.stream_on)
             } else {
-                stringResource(R.string.stream_unavailable)
+                stringResource(R.string.stream_more_options)
+            },
+            secondaryText = if (!loading && directLink != null && streamingState.info != null) {
+                streamingState.info.get(context)
+            } else {
+                null
             },
             name = if (directLink != null) service.name else "",
             logo = if (directLink != null) service.logo else null,
-            enabled = !streamingState.isLoading && directLink != null,
-            loading = streamingState.isLoading,
+            enabled = !loading,
+            loading = loading,
             containerColor = service?.color ?: TraktTheme.colors.primaryButtonContainerDisabled,
+            onLongClick = onStreamingLongClick,
             onClick = {
+                // If the direct link is null, open all streaming screen
                 if (directLink == null) {
+                    onStreamingLongClick()
                     return@WatchNowButton
                 }
-                if (directLink.contains("netflix", ignoreCase = true)) {
-                    val intent = Intent(Intent.ACTION_VIEW)
-                    intent.data = directLink.toUri()
-                    intent.flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
-                    intent.putExtra("source", "30")
-                    context.startActivity(intent)
-                    return@WatchNowButton
-                }
-                uriHandler.openUri(directLink)
+                openWatchNowLink(
+                    context = context,
+                    uriHandler = uriHandler,
+                    link = directLink,
+                )
             },
         )
 

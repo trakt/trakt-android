@@ -101,6 +101,7 @@ internal fun ShowDetailsScreen(
     onNavigateToPerson: (PersonDestination) -> Unit,
     onNavigateToList: (CustomList) -> Unit,
     onNavigateToVideo: (String) -> Unit,
+    onNavigateToStreamings: (showId: TraktId) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var historyConfirmationDialog by remember { mutableStateOf(false) }
@@ -115,6 +116,10 @@ internal fun ShowDetailsScreen(
         onNavigateToPerson = onNavigateToPerson,
         onNavigateToList = onNavigateToList,
         onNavigateToVideo = onNavigateToVideo,
+        onNavigateToStreamings = {
+            viewModel.clearWatchNowTip()
+            onNavigateToStreamings(it)
+        },
         onWatchlistClick = viewModel::toggleWatchlist,
         onSeasonClick = viewModel::loadSeason,
         onHistoryClick = {
@@ -146,6 +151,7 @@ private fun ShowDetailsScreenContent(
     onNavigateToPerson: (PersonDestination) -> Unit,
     onNavigateToList: (CustomList) -> Unit,
     onNavigateToVideo: (String) -> Unit,
+    onNavigateToStreamings: (showId: TraktId) -> Unit,
     onHistoryClick: () -> Unit,
     onWatchlistClick: () -> Unit,
     onSeasonClick: (Season) -> Unit,
@@ -249,6 +255,9 @@ private fun ShowDetailsScreenContent(
                     onVideoClick = onNavigateToVideo,
                     onHistoryClick = onHistoryClick,
                     onWatchlistClick = onWatchlistClick,
+                    onStreamingsClick = {
+                        onNavigateToStreamings(state.showDetails.ids.trakt)
+                    },
                 )
             }
         }
@@ -276,6 +285,7 @@ private fun MainContent(
     onVideoClick: (String) -> Unit,
     onHistoryClick: () -> Unit,
     onWatchlistClick: () -> Unit,
+    onStreamingsClick: () -> Unit,
     focusRequesters: Map<String, FocusRequester>,
 ) {
     Column(
@@ -298,6 +308,7 @@ private fun MainContent(
                     collectionState = state.showCollection,
                     onHistoryClick = onHistoryClick,
                     onWatchlistClick = onWatchlistClick,
+                    onStreamingLongClick = onStreamingsClick,
                     modifier = Modifier
                         .focusGroup()
                         .focusRequester(focusRequesters.getValue("buttons"))
@@ -591,6 +602,7 @@ private fun MainScreenPreview() {
             onNavigateToVideo = {},
             onHistoryClick = {},
             onWatchlistClick = {},
+            onNavigateToStreamings = {},
             onSeasonClick = {},
         )
     }

@@ -206,10 +206,10 @@ internal class MoviesApiClient(
 
     override suspend fun getMovieStreamings(
         movieId: TraktId,
-        countryCode: String,
+        countryCode: String?,
     ): Map<String, StreamingDto> {
         val response = api.getMoviesWatchnow(
-            country = countryCode,
+            country = countryCode ?: "",
             id = movieId.value.toString(),
             links = "direct",
         )

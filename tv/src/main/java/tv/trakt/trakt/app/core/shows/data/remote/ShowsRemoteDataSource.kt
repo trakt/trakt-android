@@ -44,7 +44,7 @@ internal interface ShowsRemoteDataSource {
 
     suspend fun getShowStreamings(
         showId: TraktId,
-        countryCode: String,
+        countryCode: String?,
     ): Map<String, StreamingDto>
 
     suspend fun getShowSeasons(showId: TraktId): List<SeasonDto>

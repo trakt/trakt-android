@@ -46,10 +46,10 @@ internal class EpisodesApiClient(
         showId: TraktId,
         season: Int,
         episode: Int,
-        countryCode: String,
+        countryCode: String?,
     ): Map<String, StreamingDto> {
         val response = showsApi.getShowsEpisodeWatchnow(
-            country = countryCode,
+            country = countryCode ?: "",
             id = showId.value.toString(),
             season = season,
             episode = episode,

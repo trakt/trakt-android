@@ -43,6 +43,6 @@ internal interface MoviesRemoteDataSource {
 
     suspend fun getMovieStreamings(
         movieId: TraktId,
-        countryCode: String,
+        countryCode: String?,
     ): Map<String, StreamingDto>
 }

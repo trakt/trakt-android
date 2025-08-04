@@ -1,6 +1,7 @@
 package tv.trakt.trakt.app.core.details.movie
 
 import android.util.Log
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -37,6 +38,8 @@ import tv.trakt.trakt.app.core.details.movie.usecases.collection.ChangeHistoryUs
 import tv.trakt.trakt.app.core.details.movie.usecases.collection.ChangeWatchlistUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.collection.GetCollectionUseCase
 import tv.trakt.trakt.app.core.movies.model.Movie
+import tv.trakt.trakt.app.core.tutorials.TutorialsManager
+import tv.trakt.trakt.app.core.tutorials.model.TutorialKey.WATCH_NOW_MORE
 import tv.trakt.trakt.app.helpers.DynamicStringResource
 import tv.trakt.trakt.app.helpers.StaticStringResource
 import tv.trakt.trakt.app.helpers.StringResource
@@ -46,6 +49,8 @@ import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
+
+private val keyWatchNowTip = booleanPreferencesKey("key_show_watchnow_tip")
 
 internal class MovieDetailsViewModel(
     savedStateHandle: SavedStateHandle,
@@ -61,6 +66,7 @@ internal class MovieDetailsViewModel(
     private val watchlistUseCase: ChangeWatchlistUseCase,
     private val historyUseCase: ChangeHistoryUseCase,
     private val sessionManager: SessionManager,
+    private val tutorialsManager: TutorialsManager,
 ) : ViewModel() {
     private val initialState = MovieDetailsState()
 
@@ -211,7 +217,7 @@ internal class MovieDetailsViewModel(
                 if (!sessionManager.isAuthenticated() || user == null) {
                     return@launch
                 }
-                movieStreamingsState.update { it.copy(isLoading = true) }
+                movieStreamingsState.update { it.copy(loading = true) }
 
                 val streamingService = getStreamingsUseCase.getStreamingService(
                     user = user,
@@ -221,8 +227,13 @@ internal class MovieDetailsViewModel(
                 movieStreamingsState.update {
                     it.copy(
                         slug = movieIds.plex,
-                        isLoading = false,
+                        loading = false,
                         service = streamingService,
+                        info = when {
+                            !tutorialsManager.get(WATCH_NOW_MORE) ->
+                                DynamicStringResource(R.string.info_watchnow_long_press)
+                            else -> null
+                        },
                     )
                 }
             } catch (e: Exception) {
@@ -341,6 +352,13 @@ internal class MovieDetailsViewModel(
 
     private fun showSnackMessage(message: StringResource) {
         snackMessageState.update { message }
+    }
+
+    fun clearWatchNowTip() {
+        viewModelScope.launch {
+            tutorialsManager.acknowledge(WATCH_NOW_MORE)
+            movieStreamingsState.update { it.copy(info = null) }
+        }
     }
 
     fun clearInfoMessage() {

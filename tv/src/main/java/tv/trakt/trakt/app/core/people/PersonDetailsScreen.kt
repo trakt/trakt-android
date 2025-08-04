@@ -54,6 +54,7 @@ import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.details.ui.PosterImage
 import tv.trakt.trakt.app.core.movies.model.Movie
 import tv.trakt.trakt.app.helpers.extensions.durationFormat
+import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.helpers.extensions.onClick
 import tv.trakt.trakt.app.helpers.preview.PreviewData
 import tv.trakt.trakt.app.ui.theme.TraktTheme
@@ -362,6 +363,8 @@ private fun ShowCreditsList(
                         },
                 )
             }
+
+            emptyFocusListItems()
         }
     }
 }
@@ -421,6 +424,8 @@ private fun MovieCreditsList(
                         },
                 )
             }
+
+            emptyFocusListItems()
         }
     }
 }

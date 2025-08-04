@@ -32,7 +32,8 @@ internal data class MovieDetailsState(
     internal data class StreamingsState(
         val slug: SlugId? = null,
         val service: StreamingService? = null,
-        val isLoading: Boolean = false,
+        val loading: Boolean = false,
+        val info: StringResource? = null,
     )
 
     @Immutable

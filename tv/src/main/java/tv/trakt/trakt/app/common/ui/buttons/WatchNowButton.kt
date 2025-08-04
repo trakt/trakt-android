@@ -1,9 +1,11 @@
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.width
@@ -19,6 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.tv.material3.Border
 import androidx.tv.material3.Button
 import androidx.tv.material3.ButtonDefaults
@@ -32,9 +35,11 @@ import tv.trakt.trakt.app.ui.theme.TraktTheme
 internal fun WatchNowButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
+    onLongClick: () -> Unit = {},
     name: String,
     logo: String? = null,
     text: String = stringResource(R.string.stream_on),
+    secondaryText: String? = null,
     enabled: Boolean = true,
     loading: Boolean = false,
     containerColor: Color = TraktTheme.colors.primaryButtonContainer,
@@ -52,8 +57,7 @@ internal fun WatchNowButton(
             start = 12.dp,
             end = 6.dp,
         ),
-        modifier = modifier
-            .heightIn(max = 42.dp),
+        modifier = modifier.height(42.dp),
         shape = ButtonDefaults.shape(
             shape = RoundedCornerShape(12.dp),
             focusedDisabledShape = RoundedCornerShape(12.dp),
@@ -77,17 +81,27 @@ internal fun WatchNowButton(
             focusedScale = 1.04f,
         ),
         onClick = onClick,
+        onLongClick = onLongClick,
         enabled = enabled,
     ) {
         Row(
             verticalAlignment = CenterVertically,
+            modifier = Modifier.fillMaxHeight(),
         ) {
-            Text(
-                text = text.uppercase(),
-                color = contentColor,
-                style = TraktTheme.typography.buttonPrimary,
-                textAlign = TextAlign.Center,
-            )
+            Column {
+                Text(
+                    text = text.uppercase(),
+                    color = contentColor,
+                    style = TraktTheme.typography.buttonPrimary,
+                )
+                if (!secondaryText.isNullOrBlank()) {
+                    Text(
+                        text = secondaryText.uppercase().take(24),
+                        color = contentColor.copy(alpha = 0.66f),
+                        style = TraktTheme.typography.meta.copy(fontSize = 9.sp),
+                    )
+                }
+            }
 
             when {
                 loading -> {
@@ -154,6 +168,17 @@ private fun Preview2() {
         WatchNowButton(
             name = "Netflix",
             logo = "XXX",
+        )
+    }
+}
+
+@Preview(widthDp = 200)
+@Composable
+private fun Preview3() {
+    TraktTheme {
+        WatchNowButton(
+            name = "Netflix",
+            secondaryText = "Long press for more",
         )
     }
 }

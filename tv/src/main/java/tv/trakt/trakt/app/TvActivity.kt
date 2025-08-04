@@ -41,6 +41,7 @@ import tv.trakt.trakt.app.core.profile.di.profileDataModule
 import tv.trakt.trakt.app.core.profile.di.profileModule
 import tv.trakt.trakt.app.core.shows.di.showsDataModule
 import tv.trakt.trakt.app.core.shows.di.showsModule
+import tv.trakt.trakt.app.core.streamings.di.streamingsDataModule
 import tv.trakt.trakt.app.core.streamings.di.streamingsModule
 import tv.trakt.trakt.app.core.sync.di.syncModule
 import tv.trakt.trakt.app.ui.theme.TraktTheme
@@ -121,6 +122,7 @@ class TvActivity : ComponentActivity() {
                     profileDataModule,
                     profileModule,
                     streamingsModule,
+                    streamingsDataModule,
                     syncModule,
                 )
             }
