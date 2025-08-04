@@ -161,7 +161,7 @@ internal class GetAllStreamingsUseCase(
                 put(
                     "favorite",
                     favorite
-                        .distinctBy { it.source }
+                        .distinctBy { "${it.country}-${it.source}" }
                         .sortedWith(compareBy({ it.source }, { it.country })),
                 )
 
