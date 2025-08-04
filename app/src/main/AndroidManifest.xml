@@ -38,7 +38,7 @@
         </activity>
 
         <activity
-            android:name="tv.trakt.trakt.tv.TvActivity"
+            android:name=".app.TvActivity"
             android:exported="true"
             android:theme="@style/Theme.TraktTv"
             >

@@ -3,7 +3,7 @@
 
     <application>
         <activity
-            android:name=".core.player.TvPlayerActivity"
+            android:name="tv.trakt.trakt.app.core.player.TvPlayerActivity"
             android:hardwareAccelerated="true"
             />
     </application>

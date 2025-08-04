@@ -10,11 +10,11 @@ import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import tv.trakt.trakt.app.TvActivity
 import tv.trakt.trakt.common.auth.di.commonAuthModule
 import tv.trakt.trakt.common.networking.di.networkingModule
 import tv.trakt.trakt.core.shows.di.showsDataModule
 import tv.trakt.trakt.core.shows.di.showsModule
-import tv.trakt.trakt.tv.TvActivity
 import java.util.concurrent.TimeUnit.MINUTES
 
 internal class TraktApplication : Application() {

@@ -2,11 +2,11 @@ package tv.trakt.trakt.core.shows.sections.trending.usecase
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.app.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.core.shows.model.WatchersShow
-import tv.trakt.trakt.tv.helpers.extensions.asyncMap
 
 internal class GetTrendingShowsUseCase(
     private val remoteSource: ShowsRemoteDataSource,
