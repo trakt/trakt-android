@@ -1,3 +1,5 @@
+package tv.trakt.trakt.app.common.ui
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -21,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Text
 import tv.trakt.trakt.app.R
+import tv.trakt.trakt.app.common.ui.buttons.PrimaryButton
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 
 @Composable

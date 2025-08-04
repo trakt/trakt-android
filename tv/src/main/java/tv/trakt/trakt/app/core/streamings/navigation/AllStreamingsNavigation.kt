@@ -6,8 +6,8 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
 import tv.trakt.trakt.app.common.model.SeasonEpisode
-import tv.trakt.trakt.app.common.model.TraktId
 import tv.trakt.trakt.app.core.streamings.AllStreamingsScreen
+import tv.trakt.trakt.common.model.TraktId
 
 @Serializable
 internal data class AllStreamingsDestination(

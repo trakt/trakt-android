@@ -6,15 +6,15 @@ import kotlinx.collections.immutable.toImmutableMap
 import org.openapitools.client.models.GetMoviesWatchnow200ResponseValueCableInner
 import tv.trakt.trakt.app.common.model.SeasonEpisode
 import tv.trakt.trakt.app.common.model.StreamingService
-import tv.trakt.trakt.app.common.model.TraktId
-import tv.trakt.trakt.app.common.model.User
 import tv.trakt.trakt.app.core.episodes.data.remote.EpisodesRemoteDataSource
 import tv.trakt.trakt.app.core.movies.data.remote.MoviesRemoteDataSource
 import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.app.core.streamings.data.remote.StreamingRemoteDataSource
 import tv.trakt.trakt.app.core.streamings.model.StreamingSource
 import tv.trakt.trakt.app.core.streamings.model.fromDto
-import tv.trakt.trakt.app.networking.openapi.StreamingDto
+import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.networking.StreamingDto
 
 internal class GetAllStreamingsUseCase(
     private val remoteShowSource: ShowsRemoteDataSource,

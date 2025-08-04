@@ -1,3 +1,5 @@
+package tv.trakt.trakt.app.common.ui.buttons
+
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.PaddingValues

@@ -1,7 +1,5 @@
 package tv.trakt.trakt.app.core.details.movie.views.header
 
-import PrimaryButton
-import WatchNowButton
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.width
@@ -18,6 +16,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.app.R
+import tv.trakt.trakt.app.common.ui.buttons.PrimaryButton
+import tv.trakt.trakt.app.common.ui.buttons.WatchNowButton
 import tv.trakt.trakt.app.core.details.movie.MovieDetailsState.CollectionState
 import tv.trakt.trakt.app.core.details.movie.MovieDetailsState.StreamingsState
 import tv.trakt.trakt.app.helpers.extensions.openWatchNowLink

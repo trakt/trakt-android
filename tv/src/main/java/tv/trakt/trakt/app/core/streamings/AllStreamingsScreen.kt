@@ -1,8 +1,5 @@
 package tv.trakt.trakt.app.core.streamings
 
-import AllStreamingItemView
-import FilmProgressIndicator
-import GenericErrorView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -39,7 +36,10 @@ import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
 import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.common.model.StreamingService
+import tv.trakt.trakt.app.common.ui.FilmProgressIndicator
+import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
+import tv.trakt.trakt.app.core.streamings.views.AllStreamingItemView
 import tv.trakt.trakt.app.helpers.extensions.openWatchNowLink
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 
@@ -109,7 +109,7 @@ internal fun AllStreamingsContent(
                 .background(TraktTheme.colors.dialogContainer),
         ) {
             Text(
-                text = stringResource(R.string.header_where_to_watch),
+                text = stringResource(R.string.stream_more_options),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading4,
                 modifier = Modifier

@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.details.show
 
-import ConfirmationDialog
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
@@ -59,6 +58,7 @@ import tv.trakt.trakt.app.common.model.CustomList
 import tv.trakt.trakt.app.common.model.ExternalRating
 import tv.trakt.trakt.app.common.model.ExtraVideo
 import tv.trakt.trakt.app.common.model.Person
+import tv.trakt.trakt.app.common.ui.ConfirmationDialog
 import tv.trakt.trakt.app.core.details.comments.CommentDetailsDialog
 import tv.trakt.trakt.app.core.details.show.views.content.ShowCastCrewList
 import tv.trakt.trakt.app.core.details.show.views.content.ShowCommentsList

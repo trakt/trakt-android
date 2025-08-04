@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.auth
 
-import PrimaryButton
 import android.content.ClipData
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -56,6 +55,7 @@ import tv.trakt.trakt.app.LocalSnackbarState
 import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.common.ui.FilmProgressIndicator
 import tv.trakt.trakt.app.common.ui.GenericErrorView
+import tv.trakt.trakt.app.common.ui.buttons.PrimaryButton
 import tv.trakt.trakt.app.core.auth.AuthState.LoadingState.LOADING
 import tv.trakt.trakt.app.core.auth.AuthState.LoadingState.REJECTED
 import tv.trakt.trakt.app.core.auth.AuthState.LoadingState.SUCCESS
