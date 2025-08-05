@@ -1,7 +1,6 @@
 package tv.trakt.trakt.app.core.details.movie
 
 import android.util.Log
-import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -49,8 +48,6 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
-
-private val keyWatchNowTip = booleanPreferencesKey("key_show_watchnow_tip")
 
 internal class MovieDetailsViewModel(
     savedStateHandle: SavedStateHandle,

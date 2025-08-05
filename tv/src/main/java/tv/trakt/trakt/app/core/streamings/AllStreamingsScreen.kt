@@ -50,10 +50,10 @@ private val sections = listOf(
 
 private val types = mapOf(
     "favorite" to R.string.header_streaming_favorite,
-    "free" to R.string.header_streaming_free,
     "subscription" to R.string.header_streaming_subscriptions,
     "purchase" to R.string.header_streaming_purchase,
     "rent" to R.string.header_streaming_rent,
+    "free" to R.string.header_streaming_free,
 )
 
 @Composable
@@ -129,7 +129,7 @@ internal fun AllStreamingsContent(
                             .padding(top = 16.dp),
                     )
                 }
-                state.error == null && state.services.isNullOrEmpty() -> {
+                state.error == null && state.services?.values?.all { it.isEmpty() } == true -> {
                     Text(
                         text = stringResource(R.string.stream_no_services),
                         color = TraktTheme.colors.textSecondary,

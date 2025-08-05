@@ -4,6 +4,7 @@ import android.icu.util.Currency
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
 import org.openapitools.client.models.GetMoviesWatchnow200ResponseValueCableInner
+import tv.trakt.trakt.app.Config.DEFAULT_COUNTRY_CODE
 import tv.trakt.trakt.app.common.model.SeasonEpisode
 import tv.trakt.trakt.app.common.model.StreamingService
 import tv.trakt.trakt.app.core.episodes.data.remote.EpisodesRemoteDataSource
@@ -62,6 +63,7 @@ internal class GetAllStreamingsUseCase(
             streamings = streamings,
             sources = sources,
             favoriteSources = favoriteSources,
+            userCountry = user.streamings?.country ?: DEFAULT_COUNTRY_CODE,
         )
 
         return groupedStreamings.toImmutableMap()
@@ -71,6 +73,7 @@ internal class GetAllStreamingsUseCase(
         streamings: Map<String, StreamingDto>,
         sources: Map<String, StreamingSource>,
         favoriteSources: Set<String>,
+        userCountry: String,
     ): Map<String, List<StreamingService>> {
         fun createService(
             country: String,
@@ -98,22 +101,24 @@ internal class GetAllStreamingsUseCase(
 
             streamings.forEach { (country, streaming) ->
                 subscription.addAll(
-                    streaming.subscription.mapNotNull { subscription ->
-                        val source = sources[subscription.source]
-                        if (source == null || subscription.linkDirect.isNullOrBlank()) {
-                            return@mapNotNull null
-                        }
-                        createService(
-                            country = country,
-                            source = source,
-                            option = subscription,
-                        ).also {
-                            val key = "$country-${it.source}"
-                            if (favoriteSources.any { fav -> fav == key }) {
-                                favorite.add(it)
+                    streaming.subscription
+                        .distinctBy { it.link }
+                        .mapNotNull { subscription ->
+                            val source = sources[subscription.source]
+                            if (source == null || subscription.linkDirect.isNullOrBlank()) {
+                                return@mapNotNull null
                             }
-                        }
-                    },
+                            createService(
+                                country = country,
+                                source = source,
+                                option = subscription,
+                            ).also {
+                                val key = "$country-${it.source}"
+                                if (favoriteSources.any { fav -> fav == key }) {
+                                    favorite.add(it)
+                                }
+                            }
+                        },
                 )
 
                 free.addAll(
@@ -122,6 +127,12 @@ internal class GetAllStreamingsUseCase(
                         if (source == null || free.linkDirect.isNullOrBlank()) {
                             return@mapNotNull null
                         }
+
+                        // For free, we only add services if they are available in the user's country
+                        if (country != userCountry) {
+                            return@forEach
+                        }
+
                         createService(
                             country = country,
                             source = source,
@@ -138,6 +149,11 @@ internal class GetAllStreamingsUseCase(
                 streaming.purchase.forEach {
                     val source = sources[it.source]
                     if (source == null || it.linkDirect.isNullOrBlank()) {
+                        return@forEach
+                    }
+
+                    // For purchase and rent, we only add services if they are available in the user's country
+                    if (country != userCountry) {
                         return@forEach
                     }
 
@@ -166,11 +182,9 @@ internal class GetAllStreamingsUseCase(
                 )
 
                 with(
-                    compareBy<StreamingService>(
-                        { !popularServices.contains(it.source) },
-                        { it.source },
-                        { it.country },
-                    ),
+                    compareByDescending<StreamingService> { "${it.country}-${it.source}" in favoriteSources }
+                        .thenByDescending { popularCountries.indexOf(it.country.lowercase()) }
+                        .thenBy { "${it.source}-${it.country}" },
                 ) {
                     put("subscription", subscription.sortedWith(this))
                     put("free", free.sortedWith(this))
@@ -182,18 +196,32 @@ internal class GetAllStreamingsUseCase(
     }
 }
 
-private val popularServices = setOf(
-    "netflix",
-    "netflix_standard_with_ads",
-    "hbo_max",
-    "hulu",
-    "amazon_video",
-    "amazon_prime",
-    "amazon_prime_video",
-    "apple_tv",
-    "apple_tv_plus",
-    "disney_plus",
-    "peacock",
-    "paramount_plus",
-    "crunchyroll",
+// private val popularServices = setOf(
+//    "netflix",
+//    "netflix_standard_with_ads",
+//    "max",
+//    "hbo_max",
+//    "hulu",
+//    "amazon_video",
+//    "amazon_prime",
+//    "amazon_prime_video",
+//    "apple_tv",
+//    "apple_tv_plus",
+//    "disney_plus",
+//    "peacock",
+//    "paramount_plus",
+//    "crunchyroll",
+// )
+
+private val popularCountries = setOf(
+    "sg",
+    "mx",
+    "nl",
+    "au",
+    "jp",
+    "fr",
+    "de",
+    "ca",
+    "gb",
+    "us",
 )
