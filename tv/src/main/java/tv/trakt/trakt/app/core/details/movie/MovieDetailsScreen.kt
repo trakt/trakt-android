@@ -7,6 +7,7 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -48,6 +49,7 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.delay
 import tv.trakt.trakt.app.LocalDrawerVisibility
 import tv.trakt.trakt.app.LocalSnackbarState
 import tv.trakt.trakt.app.R
@@ -214,6 +216,7 @@ private fun MovieDetailsScreenContent(
                 MainContent(
                     state = state,
                     focusRequesters = focusRequesters,
+                    scrollState = scrollState,
                     onFocused = { focusedSection = it },
                     onMovieClick = { onNavigateToMovie(it.ids.trakt) },
                     onPersonClick = {
@@ -260,7 +263,10 @@ private fun MainContent(
     onWatchlistClick: () -> Unit,
     onStreamingsClick: () -> Unit,
     focusRequesters: Map<String, FocusRequester>,
+    scrollState: ScrollState,
 ) {
+    var initialFocused by rememberSaveable { mutableStateOf(false) }
+
     Column(
         horizontalAlignment = Alignment.Start,
         modifier = Modifier.fillMaxWidth(),
@@ -276,6 +282,15 @@ private fun MainContent(
         ) {
             val posterWidth = TraktTheme.size.detailsPosterSize * 0.666F
             if (state.user != null) {
+                LaunchedEffect(Unit) {
+                    if (initialFocused) return@LaunchedEffect
+                    initialFocused = true
+
+                    focusRequesters["buttons"]?.requestFocus()
+                    delay(50)
+                    scrollState.scrollTo(0)
+                }
+
                 MovieActionButtons(
                     streamingState = state.movieStreamings,
                     collectionState = state.movieCollection,
