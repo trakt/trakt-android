@@ -9,9 +9,9 @@ import java.util.Locale.ROOT
 
 fun Int.thousandsFormat(): String {
     return if (this >= 1_000_000) {
-        String.format(ROOT, "%.1fM", this / 1_000_000F)
+        String.format(ROOT, "%.1fM", this / 1_000_000F).replace(".0M", "M")
     } else if (this >= 1000) {
-        String.format(ROOT, "%.1fK", this / 1000F)
+        String.format(ROOT, "%.1fK", this / 1000F).replace(".0K", "K")
     } else {
         this.toString()
     }
