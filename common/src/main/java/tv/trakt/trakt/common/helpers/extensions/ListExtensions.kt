@@ -1,4 +1,4 @@
-package tv.trakt.trakt.app.helpers.extensions
+package tv.trakt.trakt.common.helpers.extensions
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async

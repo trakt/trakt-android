@@ -5,7 +5,7 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.common.model.CustomList
 import tv.trakt.trakt.app.common.model.CustomList.Type
 import tv.trakt.trakt.app.core.movies.data.remote.MoviesRemoteDataSource
-import tv.trakt.trakt.app.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.TraktId
 
 internal class GetCustomListsUseCase(

@@ -8,8 +8,8 @@ import tv.trakt.trakt.app.common.model.CustomList
 import tv.trakt.trakt.app.common.model.ExternalRating
 import tv.trakt.trakt.app.common.model.ExtraVideo
 import tv.trakt.trakt.app.common.model.StreamingService
-import tv.trakt.trakt.app.core.movies.model.Movie
 import tv.trakt.trakt.app.helpers.StringResource
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.User
 

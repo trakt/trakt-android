@@ -9,7 +9,7 @@ import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.Progress
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressShow
 import tv.trakt.trakt.app.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.app.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
-import tv.trakt.trakt.app.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto

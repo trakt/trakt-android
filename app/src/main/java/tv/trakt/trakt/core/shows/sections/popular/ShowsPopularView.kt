@@ -24,9 +24,9 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.R
-import tv.trakt.trakt.common.helpers.extensions.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.extensions.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.extensions.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.LoadingState.IDLE
+import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard

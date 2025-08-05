@@ -15,10 +15,10 @@ import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
-import tv.trakt.trakt.app.core.movies.model.Movie
-import tv.trakt.trakt.app.helpers.extensions.durationFormat
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.model.Movie
 
 @Composable
 internal fun MovieRelatedList(

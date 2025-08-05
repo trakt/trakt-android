@@ -139,7 +139,7 @@ private fun ShowsScreenContent(
         }
 
         HeaderBar(
-            containerAlpha = if (headerState.scrolled && !isScrolledToTop) 1F else 0F,
+            containerAlpha = if (headerState.scrolled && !isScrolledToTop) 0.98F else 0F,
             showVip = headerState.startScrolled,
             modifier = Modifier
                 .offset {

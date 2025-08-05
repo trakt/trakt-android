@@ -4,11 +4,11 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.core.home.sections.movies.availablenow.model.WatchlistMovie
 import tv.trakt.trakt.app.core.movies.data.local.MovieLocalDataSource
-import tv.trakt.trakt.app.core.movies.model.Movie
-import tv.trakt.trakt.app.core.movies.model.fromDto
 import tv.trakt.trakt.app.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
-import tv.trakt.trakt.app.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.fromDto
 import java.time.LocalDate
 
 internal class GetComingSoonMoviesUseCase(
@@ -30,9 +30,10 @@ internal class GetComingSoonMoviesUseCase(
                 rank = it.rank,
             )
         }.filter {
-            it.movie.released != null &&
-                it.movie.released > nowDay &&
-                it.movie.released <= dayLimit
+            val released = it.movie.released
+            released != null &&
+                released > nowDay &&
+                released <= dayLimit
         }.sortedBy {
             it.movie.released
         }

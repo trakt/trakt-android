@@ -66,11 +66,11 @@ import tv.trakt.trakt.app.core.details.movie.views.content.MovieRelatedList
 import tv.trakt.trakt.app.core.details.movie.views.header.MovieActionButtons
 import tv.trakt.trakt.app.core.details.movie.views.header.MovieHeader
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
-import tv.trakt.trakt.app.core.movies.model.Movie
 import tv.trakt.trakt.app.core.people.navigation.PersonDestination
 import tv.trakt.trakt.app.helpers.preview.PreviewData
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import java.time.ZonedDateTime
 import kotlin.math.roundToInt

@@ -2,7 +2,7 @@ package tv.trakt.trakt.app.core.details.lists.details.movies
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
-import tv.trakt.trakt.app.core.movies.model.Movie
+import tv.trakt.trakt.common.model.Movie
 
 @Immutable
 internal data class CustomListMoviesState(

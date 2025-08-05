@@ -8,8 +8,8 @@ import tv.trakt.trakt.app.core.episodes.model.fromDto
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.CalendarShow
 import tv.trakt.trakt.app.core.profile.data.remote.ProfileRemoteDataSource
 import tv.trakt.trakt.app.core.shows.data.local.ShowLocalDataSource
-import tv.trakt.trakt.app.helpers.extensions.asyncMap
 import tv.trakt.trakt.app.helpers.extensions.nowUtc
+import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.Show

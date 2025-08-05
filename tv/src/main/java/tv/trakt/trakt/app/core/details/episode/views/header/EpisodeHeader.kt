@@ -46,10 +46,10 @@ import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.core.details.ui.PosterImage
 import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.app.helpers.extensions.onClick
-import tv.trakt.trakt.app.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.app.helpers.extensions.toLocal
 import tv.trakt.trakt.app.helpers.longDateTimeFormat
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.common.model.Images.Size.MEDIUM
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.theme.colors.Red500

@@ -2,8 +2,8 @@ package tv.trakt.trakt.app.common.model
 
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.app.core.episodes.model.Episode
-import tv.trakt.trakt.app.core.movies.model.Movie
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import java.time.ZonedDateTime
 

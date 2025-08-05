@@ -45,12 +45,12 @@ import tv.trakt.trakt.app.common.model.ExternalRating
 import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.core.details.movie.MovieDetailsState.CollectionState
 import tv.trakt.trakt.app.core.details.ui.PosterImage
-import tv.trakt.trakt.app.core.movies.model.Movie
 import tv.trakt.trakt.app.helpers.extensions.onClick
-import tv.trakt.trakt.app.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.app.helpers.longDateFormat
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.common.model.Images.Size.MEDIUM
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 
 @Composable
@@ -237,11 +237,11 @@ internal fun MovieHeader(
                                 containerColor = TraktTheme.colors.accent,
                             )
                         }
-                        if (movie.certification != null) {
-                            InfoChip(text = movie.certification)
+                        movie.certification?.let {
+                            InfoChip(text = it)
                         }
-                        if (movie.released != null) {
-                            InfoChip(text = movie.released.year.toString())
+                        movie.released?.let {
+                            InfoChip(text = it.year.toString())
                         }
                     }
                 }

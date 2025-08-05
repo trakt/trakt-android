@@ -1,4 +1,4 @@
-package tv.trakt.trakt.common.helpers.extensions
+package tv.trakt.trakt.common.helpers
 
 enum class LoadingState {
     IDLE,

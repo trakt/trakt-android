@@ -9,7 +9,7 @@ import tv.trakt.trakt.app.core.streamings.data.remote.StreamingRemoteDataSource
 import tv.trakt.trakt.app.core.streamings.model.StreamingSource
 import tv.trakt.trakt.app.core.streamings.model.fromDto
 import tv.trakt.trakt.app.core.streamings.utilities.PriorityStreamingServiceProvider
-import tv.trakt.trakt.app.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 

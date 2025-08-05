@@ -53,7 +53,7 @@ internal fun HeaderBar(
     modifier: Modifier = Modifier,
     height: Dp = TraktTheme.size.navigationHeaderHeight,
     containerColor: Color = TraktTheme.colors.navigationHeaderContainer,
-    containerAlpha: Float = 1F,
+    containerAlpha: Float = 0.98F,
     showVip: Boolean = false,
 ) {
     val headerBarHeight = WindowInsets.statusBars.asPaddingValues()

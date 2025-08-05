@@ -13,6 +13,8 @@ import org.koin.core.context.startKoin
 import tv.trakt.trakt.app.TvActivity
 import tv.trakt.trakt.common.auth.di.commonAuthModule
 import tv.trakt.trakt.common.networking.di.networkingModule
+import tv.trakt.trakt.core.movies.di.moviesDataModule
+import tv.trakt.trakt.core.movies.di.moviesModule
 import tv.trakt.trakt.core.shows.di.showsDataModule
 import tv.trakt.trakt.core.shows.di.showsModule
 import java.util.concurrent.TimeUnit.MINUTES
@@ -55,6 +57,8 @@ internal class TraktApplication : Application() {
                 commonAuthModule,
                 showsModule,
                 showsDataModule,
+                moviesModule,
+                moviesDataModule,
             )
         }
     }

@@ -8,10 +8,10 @@ import tv.trakt.trakt.app.common.model.Person
 import tv.trakt.trakt.app.common.model.sorting.SortOrder
 import tv.trakt.trakt.app.common.model.sorting.SortType
 import tv.trakt.trakt.app.core.episodes.model.Episode
-import tv.trakt.trakt.app.core.movies.model.Movie
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.ImdbId
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Rating
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.SlugId

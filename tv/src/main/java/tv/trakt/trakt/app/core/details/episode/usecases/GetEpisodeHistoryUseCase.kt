@@ -8,7 +8,7 @@ import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.app.core.episodes.model.fromDto
 import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncLocalDataSource
 import tv.trakt.trakt.app.core.sync.model.WatchedEpisode
-import tv.trakt.trakt.app.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId

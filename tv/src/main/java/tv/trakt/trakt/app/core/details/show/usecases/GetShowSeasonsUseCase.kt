@@ -9,7 +9,7 @@ import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.app.core.episodes.model.Season
 import tv.trakt.trakt.app.core.episodes.model.fromDto
 import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
-import tv.trakt.trakt.app.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.TraktId
 
 internal class GetShowSeasonsUseCase(

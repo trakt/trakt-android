@@ -3,7 +3,7 @@ package tv.trakt.trakt.app.core.people
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.app.common.model.Person
-import tv.trakt.trakt.app.core.movies.model.Movie
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 
 @Immutable

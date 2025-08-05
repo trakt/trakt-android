@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import tv.trakt.trakt.common.helpers.extensions.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.extensions.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.shows.sections.hot.usecase.GetHotShowsUseCase
 

@@ -7,7 +7,7 @@ import tv.trakt.trakt.app.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.app.core.episodes.data.remote.EpisodesRemoteDataSource
 import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.app.core.episodes.model.fromDto
-import tv.trakt.trakt.app.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.TraktId
 
 internal class GetEpisodeSeasonUseCase(

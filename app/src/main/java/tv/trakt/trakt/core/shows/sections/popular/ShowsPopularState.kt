@@ -2,7 +2,7 @@ package tv.trakt.trakt.core.shows.sections.popular
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
-import tv.trakt.trakt.common.helpers.extensions.LoadingState
+import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.Show
 
 @Immutable

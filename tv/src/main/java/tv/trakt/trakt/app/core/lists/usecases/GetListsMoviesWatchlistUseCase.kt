@@ -3,10 +3,10 @@ package tv.trakt.trakt.app.core.lists.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.core.movies.data.local.MovieLocalDataSource
-import tv.trakt.trakt.app.core.movies.model.Movie
-import tv.trakt.trakt.app.core.movies.model.fromDto
 import tv.trakt.trakt.app.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
-import tv.trakt.trakt.app.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.fromDto
 
 internal class GetListsMoviesWatchlistUseCase(
     private val remoteSyncSource: MoviesSyncRemoteDataSource,

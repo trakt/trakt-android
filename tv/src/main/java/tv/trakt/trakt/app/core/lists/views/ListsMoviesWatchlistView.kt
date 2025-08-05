@@ -23,10 +23,10 @@ import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalViewAllCard
 import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_SECTION_LIMIT
 import tv.trakt.trakt.app.core.lists.ListsContentLoading
-import tv.trakt.trakt.app.core.movies.model.Movie
-import tv.trakt.trakt.app.helpers.extensions.durationFormat
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.model.Movie
 
 @Composable
 internal fun ListsMoviesWatchlistView(

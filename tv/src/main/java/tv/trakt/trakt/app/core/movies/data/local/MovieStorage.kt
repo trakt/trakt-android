@@ -1,7 +1,7 @@
 package tv.trakt.trakt.app.core.movies.data.local
 
 import kotlinx.collections.immutable.persistentMapOf
-import tv.trakt.trakt.app.core.movies.model.Movie
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import java.util.concurrent.ConcurrentHashMap
 

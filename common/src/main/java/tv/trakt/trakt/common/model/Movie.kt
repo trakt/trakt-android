@@ -1,15 +1,11 @@
-package tv.trakt.trakt.app.core.movies.model
+package tv.trakt.trakt.common.model
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import androidx.core.graphics.toColorInt
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.app.core.movies.model.Movie.Companion
-import tv.trakt.trakt.common.model.Ids
-import tv.trakt.trakt.common.model.Images
-import tv.trakt.trakt.common.model.MediaColors
-import tv.trakt.trakt.common.model.Rating
+import tv.trakt.trakt.common.model.Movie.Companion
 import tv.trakt.trakt.common.networking.MovieDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
 import java.time.LocalDate
@@ -17,7 +13,7 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 
 @Immutable
-internal data class Movie(
+data class Movie(
     val ids: Ids,
     val title: String,
     val overview: String?,
@@ -33,7 +29,7 @@ internal data class Movie(
     companion object
 }
 
-internal fun Companion.fromDto(dto: MovieDto): Movie {
+fun Companion.fromDto(dto: MovieDto): Movie {
     return Movie(
         ids = Ids.fromDto(dto.ids),
         title = dto.title,
@@ -59,7 +55,7 @@ internal fun Companion.fromDto(dto: MovieDto): Movie {
     )
 }
 
-internal fun Companion.fromDto(dto: RecommendedMovieDto): Movie {
+fun Companion.fromDto(dto: RecommendedMovieDto): Movie {
     return Movie(
         ids = Ids.fromDto(dto.ids),
         title = dto.title,

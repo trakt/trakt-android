@@ -3,10 +3,9 @@ package tv.trakt.trakt.app.core.people.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.core.movies.data.local.MovieLocalDataSource
-import tv.trakt.trakt.app.core.movies.model.Movie
-import tv.trakt.trakt.app.core.movies.model.fromDto
 import tv.trakt.trakt.app.core.people.data.remote.PeopleRemoteDataSource
 import tv.trakt.trakt.app.core.shows.data.local.ShowLocalDataSource
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto

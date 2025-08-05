@@ -1,4 +1,4 @@
-package tv.trakt.trakt.app.helpers.extensions
+package tv.trakt.trakt.common.helpers.extensions
 
 import android.icu.text.MeasureFormat
 import android.icu.text.MeasureFormat.FormatWidth

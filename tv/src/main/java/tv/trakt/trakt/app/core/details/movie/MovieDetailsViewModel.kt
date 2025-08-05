@@ -37,7 +37,6 @@ import tv.trakt.trakt.app.core.details.movie.usecases.GetStreamingsUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.collection.ChangeHistoryUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.collection.ChangeWatchlistUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.collection.GetCollectionUseCase
-import tv.trakt.trakt.app.core.movies.model.Movie
 import tv.trakt.trakt.app.core.tutorials.TutorialsManager
 import tv.trakt.trakt.app.core.tutorials.model.TutorialKey.WATCH_NOW_MORE
 import tv.trakt.trakt.app.helpers.DynamicStringResource
@@ -46,6 +45,7 @@ import tv.trakt.trakt.app.helpers.StringResource
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Ids
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
