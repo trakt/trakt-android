@@ -39,6 +39,7 @@ import tv.trakt.trakt.app.common.ui.FilmProgressIndicator
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
+import tv.trakt.trakt.app.core.streamings.model.StreamingType
 import tv.trakt.trakt.app.core.streamings.views.AllStreamingItemView
 import tv.trakt.trakt.app.helpers.extensions.openWatchNowLink
 import tv.trakt.trakt.app.ui.theme.TraktTheme
@@ -46,14 +47,6 @@ import tv.trakt.trakt.app.ui.theme.TraktTheme
 private val sections = listOf(
     "initial",
     "content",
-)
-
-private val types = mapOf(
-    "favorite" to R.string.header_streaming_favorite,
-    "subscription" to R.string.header_streaming_subscriptions,
-    "purchase" to R.string.header_streaming_purchase,
-    "rent" to R.string.header_streaming_rent,
-    "free" to R.string.header_streaming_free,
 )
 
 private val popularServices = setOf(
@@ -122,7 +115,7 @@ internal fun AllStreamingsContent(
                 .background(TraktTheme.colors.dialogContainer),
         ) {
             Text(
-                text = stringResource(R.string.stream_more_options),
+                text = stringResource(R.string.header_where_to_watch),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading4,
                 modifier = Modifier
@@ -187,7 +180,7 @@ internal fun AllStreamingsContent(
 
 @Composable
 private fun AllStreamingsContentGrid(
-    items: ImmutableMap<String, List<StreamingService>>,
+    items: ImmutableMap<StreamingType, List<StreamingService>>,
     modifier: Modifier = Modifier,
     focusRequesters: Map<String, FocusRequester>,
     onItemClick: (StreamingService) -> Unit,
@@ -202,14 +195,16 @@ private fun AllStreamingsContentGrid(
                 focusRequesters.getValue("content"),
             ),
     ) {
-        types.forEach { (type, headerRes) ->
-            StreamingsListSection(
-                headerRes = headerRes,
-                type = type,
-                services = items[type] ?: emptyList(),
-                onItemClick = onItemClick,
-            )
-        }
+        StreamingType.entries
+            .sortedBy { it.order }
+            .forEach {
+                StreamingsListSection(
+                    headerRes = it.labelRes,
+                    type = it.type,
+                    services = items[it] ?: emptyList(),
+                    onItemClick = onItemClick,
+                )
+            }
     }
 }
 

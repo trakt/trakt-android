@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="TV App">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-08-06T14:03:03.139989Z">
+        <DropdownSelection timestamp="2025-08-11T15:57:17.547146Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/michal/.android/avd/Television_4K.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/michal/.android/avd/Pixel_5_API_34.avd" />
             </handle>
           </Target>
         </DropdownSelection>
@@ -15,10 +15,10 @@
       </SelectionState>
       <SelectionState runConfigName="Mobile App">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-08-06T14:02:57.594279Z">
+        <DropdownSelection timestamp="2025-08-11T15:57:28.801035Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/michal/.android/avd/Television_4K.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/michal/.android/avd/Pixel_5_API_34.avd" />
             </handle>
           </Target>
         </DropdownSelection>

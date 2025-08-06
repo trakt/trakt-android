@@ -12,6 +12,7 @@ import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.app.core.streamings.data.local.StreamingLocalDataSource
 import tv.trakt.trakt.app.core.streamings.data.remote.StreamingRemoteDataSource
 import tv.trakt.trakt.app.core.streamings.model.StreamingSource
+import tv.trakt.trakt.app.core.streamings.model.StreamingType
 import tv.trakt.trakt.app.core.streamings.model.fromDto
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.TraktId
@@ -33,7 +34,7 @@ internal class GetAllStreamingsUseCase(
         mediaId: TraktId,
         mediaType: String,
         seasonEpisode: SeasonEpisode?,
-    ): ImmutableMap<String, List<StreamingService>> {
+    ): ImmutableMap<StreamingType, List<StreamingService>> {
         require(mediaType in arrayOf("show", "movie", "episode")) {
             "Invalid media type: $mediaType"
         }
@@ -88,7 +89,7 @@ internal class GetAllStreamingsUseCase(
         sources: Map<String, StreamingSource>,
         favoriteSources: Set<String>,
         userCountry: String,
-    ): Map<String, List<StreamingService>> {
+    ): Map<StreamingType, List<StreamingService>> {
         fun createService(
             country: String,
             source: StreamingSource,
@@ -195,11 +196,11 @@ internal class GetAllStreamingsUseCase(
                         "${it.source}-${it.country}"
                     },
                 ) {
-                    put("favorite", favorite.sortedWith(this))
-                    put("subscription", subscription.sortedWith(this))
-                    put("free", free.sortedWith(this))
-                    put("purchase", purchase.sortedWith(this))
-                    put("rent", rent.sortedWith(this))
+                    put(StreamingType.FAVORITE, favorite.sortedWith(this))
+                    put(StreamingType.SUBSCRIPTION, subscription.sortedWith(this))
+                    put(StreamingType.PURCHASE, purchase.sortedWith(this))
+                    put(StreamingType.RENT, rent.sortedWith(this))
+                    put(StreamingType.FREE, free.sortedWith(this))
                 }
             }
         }
