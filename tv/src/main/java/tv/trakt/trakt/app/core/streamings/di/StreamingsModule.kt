@@ -41,6 +41,7 @@ internal val streamingsModule = module {
             remoteShowSource = get(),
             remoteMovieSource = get(),
             remoteEpisodeSource = get(),
+            localStreamingSource = get(),
         )
     }
 

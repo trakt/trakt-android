@@ -32,13 +32,13 @@ internal class GetStreamingsUseCase(
             localStreamingSource.upsertStreamingSources(sources)
         }
 
-        val countryCode = user.streamings?.country ?: DEFAULT_COUNTRY_CODE
+        val userCountry = user.streamings?.country ?: DEFAULT_COUNTRY_CODE
         val streamings: Map<String, StreamingDto> = remoteShowSource.getShowStreamings(
             showId = showId,
             countryCode = null,
         )
 
-        val subscriptions = streamings[countryCode]?.subscription ?: emptyList()
+        val subscriptions = streamings[userCountry]?.subscription ?: emptyList()
 
         val result = subscriptions
             .asyncMap {
@@ -51,7 +51,7 @@ internal class GetStreamingsUseCase(
                     logo = localSource?.images?.logo,
                     channel = localSource?.images?.channel,
                     uhd = it.uhd,
-                    country = countryCode,
+                    country = userCountry,
                     purchasePrice = it.prices.purchase,
                     rentPrice = it.prices.rent,
                     currency = it.currency?.let { code ->
@@ -65,10 +65,10 @@ internal class GetStreamingsUseCase(
             streamingServices = result,
         )
 
-        val noService = streamings.values.run {
-            flatMap { it.subscription }.isEmpty() &&
-                flatMap { it.purchase }.isEmpty() &&
-                flatMap { it.free }.isEmpty()
+        val noService = streamings.run {
+            values.flatMap { it.free }.isEmpty() &&
+                values.flatMap { it.subscription }.isEmpty() &&
+                filter { it.key == userCountry }.values.flatMap { it.purchase }.isEmpty()
         }
 
         return Result(

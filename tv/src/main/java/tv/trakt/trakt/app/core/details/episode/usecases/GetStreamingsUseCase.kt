@@ -24,24 +24,24 @@ internal class GetStreamingsUseCase(
         user: User,
         showId: TraktId,
         seasonEpisode: SeasonEpisode,
-    ): StreamingService? {
-        val countryCode = user.streamings?.country ?: DEFAULT_COUNTRY_CODE
-
+    ): Result {
         if (!localStreamingSource.isValid()) {
             val sources = remoteStreamingSource
-                .getStreamingSources(countryCode)
+                .getStreamingSources()
                 .asyncMap { StreamingSource.fromDto(it) }
 
             localStreamingSource.upsertStreamingSources(sources)
         }
 
+        val userCountry = user.streamings?.country ?: DEFAULT_COUNTRY_CODE
         val streamings = remoteEpisodesSource.getEpisodeStreamings(
             showId = showId,
             season = seasonEpisode.season,
             episode = seasonEpisode.episode,
-            countryCode = countryCode,
+            countryCode = null,
         )
-        val subscriptions = streamings[countryCode]?.subscription ?: emptyList()
+
+        val subscriptions = streamings[userCountry]?.subscription ?: emptyList()
 
         val result = subscriptions
             .asyncMap {
@@ -54,7 +54,7 @@ internal class GetStreamingsUseCase(
                     logo = localSource?.images?.logo,
                     channel = localSource?.images?.channel,
                     uhd = it.uhd,
-                    country = countryCode,
+                    country = userCountry,
                     purchasePrice = it.prices.purchase,
                     rentPrice = it.prices.rent,
                     currency = it.currency?.let { code ->
@@ -63,9 +63,25 @@ internal class GetStreamingsUseCase(
                 )
             }
 
-        return priorityStreamingProvider.findPriorityStreamingService(
+        val priorityService = priorityStreamingProvider.findPriorityStreamingService(
             favoriteServices = user.streamings?.favorites ?: emptyList(),
             streamingServices = result,
         )
+
+        val noService = streamings.run {
+            values.flatMap { it.free }.isEmpty() &&
+                values.flatMap { it.subscription }.isEmpty() &&
+                filter { it.key == userCountry }.values.flatMap { it.purchase }.isEmpty()
+        }
+
+        return Result(
+            streamingService = priorityService,
+            noServices = noService,
+        )
     }
+
+    data class Result(
+        val streamingService: StreamingService?,
+        val noServices: Boolean,
+    )
 }

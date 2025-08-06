@@ -32,6 +32,7 @@ internal data class EpisodeDetailsState(
     internal data class StreamingsState(
         val slug: SlugId? = null,
         val service: StreamingService? = null,
+        val noServices: Boolean = false,
         val loading: Boolean = false,
         val info: StringResource? = null,
     )

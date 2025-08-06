@@ -180,7 +180,8 @@ internal class EpisodeDetailsViewModel(
                     it.copy(
                         slug = showIds.plex,
                         loading = false,
-                        service = streamingService,
+                        service = streamingService.streamingService,
+                        noServices = streamingService.noServices,
                         info = when {
                             !tutorialsManager.get(WATCH_NOW_MORE) ->
                                 DynamicStringResource(R.string.info_watchnow_long_press)

@@ -42,24 +42,24 @@ internal fun EpisodeActionButtons(
         val directLink = service?.linkDirect
 
         WatchNowButton(
-            text = if (loading || !directLink.isNullOrBlank()) {
-                stringResource(R.string.stream_on)
-            } else {
-                stringResource(R.string.stream_more_options)
+            text = when {
+                loading || !directLink.isNullOrBlank() -> stringResource(R.string.stream_on)
+                streamingState.noServices -> stringResource(R.string.stream_no_services)
+                else -> stringResource(R.string.stream_more_options)
             },
-            secondaryText = if (!loading && directLink != null && streamingState.info != null) {
-                streamingState.info.get(context)
-            } else {
-                null
+            secondaryText = when {
+                !loading && directLink != null && streamingState.info != null -> {
+                    streamingState.info.get(context)
+                }
+                else -> null
             },
             name = if (directLink != null) service.name else "",
             logo = if (directLink != null) service.logo else null,
-            enabled = !loading,
+            enabled = !loading && !streamingState.noServices,
             loading = loading,
             containerColor = service?.color ?: TraktTheme.colors.primaryButtonContainerDisabled,
             onLongClick = onStreamingLongClick,
             onClick = {
-                // If the direct link is null, open all streaming screen
                 if (directLink == null) {
                     onStreamingLongClick()
                     return@WatchNowButton

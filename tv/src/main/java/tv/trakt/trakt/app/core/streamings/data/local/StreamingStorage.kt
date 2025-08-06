@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap
 internal class StreamingStorage : StreamingLocalDataSource {
     private val cache = ConcurrentHashMap<String, StreamingSource>(persistentMapOf())
 
-    override suspend fun getAllStreamingSources(sourceId: String): Map<String, StreamingSource> {
+    override suspend fun getAllStreamingSources(): Map<String, StreamingSource> {
         return cache.toMap()
     }
 

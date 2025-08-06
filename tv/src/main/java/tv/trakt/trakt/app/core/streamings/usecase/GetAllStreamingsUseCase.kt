@@ -3,25 +3,30 @@ package tv.trakt.trakt.app.core.streamings.usecase
 import android.icu.util.Currency
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
-import org.openapitools.client.models.GetMoviesWatchnow200ResponseValueCableInner
 import tv.trakt.trakt.app.Config.DEFAULT_COUNTRY_CODE
 import tv.trakt.trakt.app.common.model.SeasonEpisode
 import tv.trakt.trakt.app.common.model.StreamingService
+import tv.trakt.trakt.app.common.model.TraktId
+import tv.trakt.trakt.app.common.model.User
 import tv.trakt.trakt.app.core.episodes.data.remote.EpisodesRemoteDataSource
 import tv.trakt.trakt.app.core.movies.data.remote.MoviesRemoteDataSource
 import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
+import tv.trakt.trakt.app.core.streamings.data.local.StreamingLocalDataSource
 import tv.trakt.trakt.app.core.streamings.data.remote.StreamingRemoteDataSource
 import tv.trakt.trakt.app.core.streamings.model.StreamingSource
 import tv.trakt.trakt.app.core.streamings.model.fromDto
-import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.common.networking.StreamingDto
+import tv.trakt.trakt.app.helpers.extensions.asyncMap
+import tv.trakt.trakt.app.networking.openapi.StreamingDto
+import tv.trakt.trakt.app.networking.openapi.StreamingServiceDto
+
+private val popularCountries = mutableListOf("us", "gb", "ca", "de", "fr", "jp", "au", "nl", "mx", "sg")
 
 internal class GetAllStreamingsUseCase(
     private val remoteShowSource: ShowsRemoteDataSource,
     private val remoteMovieSource: MoviesRemoteDataSource,
     private val remoteEpisodeSource: EpisodesRemoteDataSource,
     private val remoteStreamingSource: StreamingRemoteDataSource,
+    private val localStreamingSource: StreamingLocalDataSource,
 ) {
     suspend fun getStreamings(
         user: User,
@@ -33,49 +38,49 @@ internal class GetAllStreamingsUseCase(
             "Invalid media type: $mediaType"
         }
 
+        if (!localStreamingSource.isValid()) {
+            val sources = remoteStreamingSource
+                .getStreamingSources()
+                .asyncMap { StreamingSource.fromDto(it) }
+
+            localStreamingSource.upsertStreamingSources(sources)
+        }
+
         val userCountry = user.streamings?.country ?: DEFAULT_COUNTRY_CODE
         popularCountries.add(0, userCountry)
 
+        // Ex. input favorite source: "pl-hbo_max", "us-netflix"
         val favoriteSources = user.streamings?.favorites
             ?.map { it.substringAfter("-") }
             ?.toSet().orEmpty()
 
-        val sources = remoteStreamingSource
-            .getStreamingSources()
-            .associateBy(
-                keySelector = { it.source },
-                valueTransform = { StreamingSource.fromDto(it) },
-            )
+        val sources = localStreamingSource
+            .getAllStreamingSources()
 
         val streamings = when (mediaType) {
             "show" -> remoteShowSource.getShowStreamings(
                 showId = mediaId,
                 countryCode = null,
             )
-
             "movie" -> remoteMovieSource.getMovieStreamings(
                 movieId = mediaId,
                 countryCode = null,
             )
-
             "episode" -> remoteEpisodeSource.getEpisodeStreamings(
                 showId = mediaId,
                 season = seasonEpisode?.season ?: 0,
                 episode = seasonEpisode?.episode ?: 0,
                 countryCode = null,
             )
-
             else -> throw IllegalArgumentException("Unsupported media type: $mediaType")
         }
 
-        val groupedStreamings = groupStreamings(
+        return groupStreamings(
             streamings = streamings,
             sources = sources,
             favoriteSources = favoriteSources,
             userCountry = userCountry,
-        )
-
-        return groupedStreamings.toImmutableMap()
+        ).toImmutableMap()
     }
 
     private fun groupStreamings(
@@ -87,19 +92,19 @@ internal class GetAllStreamingsUseCase(
         fun createService(
             country: String,
             source: StreamingSource,
-            option: GetMoviesWatchnow200ResponseValueCableInner,
+            service: StreamingServiceDto,
         ) = StreamingService(
             name = source.name,
-            linkDirect = option.linkDirect,
-            source = option.source,
+            linkDirect = service.linkDirect,
+            source = service.source,
             color = source.color,
             logo = source.images.logo,
             channel = source.images.channel,
-            uhd = option.uhd,
+            uhd = service.uhd,
             country = country,
-            purchasePrice = option.prices.purchase,
-            rentPrice = option.prices.rent,
-            currency = option.currency?.let { Currency.getInstance(it) },
+            purchasePrice = service.prices.purchase,
+            rentPrice = service.prices.rent,
+            currency = service.currency?.let { Currency.getInstance(it) },
         )
 
         return buildMap {
@@ -122,7 +127,7 @@ internal class GetAllStreamingsUseCase(
                             createService(
                                 country = country,
                                 source = source,
-                                option = subscription,
+                                service = subscription,
                             ).also {
                                 if (source.source in favoriteSources) {
                                     favorite.add(it)
@@ -146,7 +151,7 @@ internal class GetAllStreamingsUseCase(
                         createService(
                             country = country,
                             source = source,
-                            option = free,
+                            service = free,
                         ).also {
                             if (source.source in favoriteSources) {
                                 favorite.add(it)
@@ -169,7 +174,7 @@ internal class GetAllStreamingsUseCase(
                     val service = createService(
                         country = country,
                         source = source,
-                        option = it,
+                        service = it,
                     )
 
                     if (!it.prices.purchase.isNullOrBlank()) {
@@ -200,16 +205,3 @@ internal class GetAllStreamingsUseCase(
         }
     }
 }
-
-private val popularCountries = mutableListOf(
-    "us",
-    "gb",
-    "ca",
-    "de",
-    "fr",
-    "jp",
-    "au",
-    "nl",
-    "mx",
-    "sg",
-)
