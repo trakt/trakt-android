@@ -11,8 +11,14 @@ import tv.trakt.trakt.app.core.movies.data.remote.MoviesRemoteDataSource
 import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.app.core.streamings.data.local.StreamingLocalDataSource
 import tv.trakt.trakt.app.core.streamings.data.remote.StreamingRemoteDataSource
+import tv.trakt.trakt.app.core.streamings.model.StreamingServiceRow
 import tv.trakt.trakt.app.core.streamings.model.StreamingSource
 import tv.trakt.trakt.app.core.streamings.model.StreamingType
+import tv.trakt.trakt.app.core.streamings.model.StreamingType.FAVORITE
+import tv.trakt.trakt.app.core.streamings.model.StreamingType.FREE
+import tv.trakt.trakt.app.core.streamings.model.StreamingType.PURCHASE
+import tv.trakt.trakt.app.core.streamings.model.StreamingType.RENT
+import tv.trakt.trakt.app.core.streamings.model.StreamingType.SUBSCRIPTION
 import tv.trakt.trakt.app.core.streamings.model.fromDto
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.TraktId
@@ -20,7 +26,31 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.networking.StreamingDto
 import tv.trakt.trakt.common.networking.StreamingServiceDto
 
-private val popularCountries = mutableListOf("us", "gb", "ca", "de", "fr", "jp", "au", "nl", "mx", "sg")
+private val popularCountries = mutableListOf(
+    "us",
+    "gb",
+    "ca",
+    "de",
+    "fr",
+    "jp",
+    "au",
+    "nl",
+    "mx",
+    "sg"
+)
+
+private val popularServices = setOf(
+    "netflix",
+    "netflix_standard_with_ads",
+    "apple_tv_plus",
+    "apple_tv",
+    "disney_plus",
+    "amazon_prime_video",
+    "amazon_prime_video_free_with_ads",
+    "hbo_max",
+    "hbo_max_amazon_channel",
+    "hulu",
+)
 
 internal class GetAllStreamingsUseCase(
     private val remoteShowSource: ShowsRemoteDataSource,
@@ -34,7 +64,7 @@ internal class GetAllStreamingsUseCase(
         mediaId: TraktId,
         mediaType: String,
         seasonEpisode: SeasonEpisode?,
-    ): ImmutableMap<StreamingType, List<StreamingService>> {
+    ): ImmutableMap<StreamingType, List<StreamingServiceRow>> {
         require(mediaType in arrayOf("show", "movie", "episode")) {
             "Invalid media type: $mediaType"
         }
@@ -89,12 +119,127 @@ internal class GetAllStreamingsUseCase(
         sources: Map<String, StreamingSource>,
         favoriteSources: Set<String>,
         userCountry: String,
-    ): Map<StreamingType, List<StreamingService>> {
-        fun createService(
-            country: String,
-            source: StreamingSource,
-            service: StreamingServiceDto,
-        ) = StreamingService(
+    ): Map<StreamingType, List<StreamingServiceRow>> {
+        val resultMap = mapOf<StreamingType, MutableList<StreamingService>>(
+            FAVORITE to mutableListOf(),
+            SUBSCRIPTION to mutableListOf(),
+            PURCHASE to mutableListOf(),
+            RENT to mutableListOf(),
+            FREE to mutableListOf(),
+        )
+
+        streamings.forEach { (country, streaming) ->
+            val favorite = resultMap.getValue(FAVORITE)
+            val subscriptions = resultMap.getValue(SUBSCRIPTION)
+            val free = resultMap.getValue(FREE)
+            val purchase = resultMap.getValue(PURCHASE)
+            val rent = resultMap.getValue(RENT)
+
+            subscriptions.addAll(
+                streaming.subscription.mapNotNull { subscription ->
+                    val source = sources[subscription.source]
+                    if (source == null || subscription.linkDirect.isNullOrBlank()) {
+                        return@mapNotNull null
+                    }
+                    createService(
+                        country = country,
+                        source = source,
+                        service = subscription,
+                    ).also {
+                        if (source.source in favoriteSources) {
+                            favorite.add(it)
+                        }
+                    }
+                },
+            )
+
+            free.addAll(
+                streaming.free.mapNotNull { free ->
+                    val source = sources[free.source]
+                    if (source == null || free.linkDirect.isNullOrBlank()) {
+                        return@mapNotNull null
+                    }
+
+                    // For free, we only add services if they are available in the user's country
+                    if (country != userCountry) {
+                        return@forEach
+                    }
+
+                    createService(
+                        country = country,
+                        source = source,
+                        service = free,
+                    ).also {
+                        if (source.source in favoriteSources) {
+                            favorite.add(it)
+                        }
+                    }
+                },
+            )
+
+            streaming.purchase.forEach {
+                val source = sources[it.source]
+                if (source == null || it.linkDirect.isNullOrBlank()) {
+                    return@forEach
+                }
+
+                // For purchase and rent, we only add services if they are available in the user's country
+                if (country != userCountry) {
+                    return@forEach
+                }
+
+                val service = createService(
+                    country = country,
+                    source = source,
+                    service = it,
+                )
+
+                if (!it.prices.purchase.isNullOrBlank()) {
+                    purchase.add(service)
+                }
+                if (!it.prices.rent.isNullOrBlank()) {
+                    rent.add(service)
+                }
+                if (it.source in favoriteSources) {
+                    favorite.add(service)
+                }
+            }
+        }
+
+        val priorityCountries = popularCountries.toSet().reversed()
+        val priorityServices = popularServices.reversed()
+
+        val servicesComparator = compareByDescending<StreamingService> {
+            priorityServices.indexOf(it.source)
+        }.thenBy {
+            it.source
+        }
+
+        val rowComparator = compareByDescending<StreamingService> {
+            priorityCountries.indexOf(it.country.lowercase())
+        }.thenBy {
+            it.country
+        }
+
+        return resultMap.mapValues {
+            it.value
+                .sortedWith(servicesComparator)
+                .groupBy { service -> service.source }
+                .map { (source, rowServices) ->
+                    StreamingServiceRow(
+                        source = source,
+                        services = rowServices.sortedWith(rowComparator)
+                    )
+                }
+        }
+    }
+
+    private fun createService(
+        country: String,
+        source: StreamingSource,
+        service: StreamingServiceDto,
+    ): StreamingService {
+        return StreamingService(
             name = source.name,
             linkDirect = service.linkDirect,
             source = service.source,
@@ -107,102 +252,5 @@ internal class GetAllStreamingsUseCase(
             rentPrice = service.prices.rent,
             currency = service.currency?.let { Currency.getInstance(it) },
         )
-
-        return buildMap {
-            val priorityCountries = popularCountries.toSet().reversed()
-
-            val favorite = mutableListOf<StreamingService>()
-            val subscription = mutableListOf<StreamingService>()
-            val free = mutableListOf<StreamingService>()
-            val purchase = mutableListOf<StreamingService>()
-            val rent = mutableListOf<StreamingService>()
-
-            streamings.forEach { (country, streaming) ->
-                subscription.addAll(
-                    streaming.subscription
-                        .mapNotNull { subscription ->
-                            val source = sources[subscription.source]
-                            if (source == null || subscription.linkDirect.isNullOrBlank()) {
-                                return@mapNotNull null
-                            }
-                            createService(
-                                country = country,
-                                source = source,
-                                service = subscription,
-                            ).also {
-                                if (source.source in favoriteSources) {
-                                    favorite.add(it)
-                                }
-                            }
-                        },
-                )
-
-                free.addAll(
-                    streaming.free.mapNotNull { free ->
-                        val source = sources[free.source]
-                        if (source == null || free.linkDirect.isNullOrBlank()) {
-                            return@mapNotNull null
-                        }
-
-                        // For free, we only add services if they are available in the user's country
-                        if (country != userCountry) {
-                            return@forEach
-                        }
-
-                        createService(
-                            country = country,
-                            source = source,
-                            service = free,
-                        ).also {
-                            if (source.source in favoriteSources) {
-                                favorite.add(it)
-                            }
-                        }
-                    },
-                )
-
-                streaming.purchase.forEach {
-                    val source = sources[it.source]
-                    if (source == null || it.linkDirect.isNullOrBlank()) {
-                        return@forEach
-                    }
-
-                    // For purchase and rent, we only add services if they are available in the user's country
-                    if (country != userCountry) {
-                        return@forEach
-                    }
-
-                    val service = createService(
-                        country = country,
-                        source = source,
-                        service = it,
-                    )
-
-                    if (!it.prices.purchase.isNullOrBlank()) {
-                        purchase.add(service)
-                    }
-                    if (!it.prices.rent.isNullOrBlank()) {
-                        rent.add(service)
-                    }
-                    if (it.source in favoriteSources) {
-                        favorite.add(service)
-                    }
-                }
-
-                with(
-                    compareByDescending<StreamingService> {
-                        priorityCountries.indexOf(it.country.lowercase())
-                    }.thenBy {
-                        "${it.source}-${it.country}"
-                    },
-                ) {
-                    put(StreamingType.FAVORITE, favorite.sortedWith(this))
-                    put(StreamingType.SUBSCRIPTION, subscription.sortedWith(this))
-                    put(StreamingType.PURCHASE, purchase.sortedWith(this))
-                    put(StreamingType.RENT, rent.sortedWith(this))
-                    put(StreamingType.FREE, free.sortedWith(this))
-                }
-            }
-        }
     }
 }

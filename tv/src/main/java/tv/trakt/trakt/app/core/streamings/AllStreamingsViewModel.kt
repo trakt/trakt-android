@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -46,6 +47,7 @@ internal class AllStreamingsViewModel(
 
                 loadingState.update { true }
 
+                delay(500)
                 val streamings = getAllStreamingsUseCase.getStreamings(
                     user = user,
                     mediaId = route.mediaId.toTraktId(),

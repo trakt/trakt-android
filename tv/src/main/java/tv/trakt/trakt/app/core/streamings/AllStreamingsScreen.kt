@@ -39,7 +39,10 @@ import tv.trakt.trakt.app.common.ui.FilmProgressIndicator
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
+import tv.trakt.trakt.app.core.streamings.model.StreamingServiceRow
 import tv.trakt.trakt.app.core.streamings.model.StreamingType
+import tv.trakt.trakt.app.core.streamings.model.StreamingType.PURCHASE
+import tv.trakt.trakt.app.core.streamings.model.StreamingType.RENT
 import tv.trakt.trakt.app.core.streamings.views.AllStreamingItemView
 import tv.trakt.trakt.app.helpers.extensions.openWatchNowLink
 import tv.trakt.trakt.app.ui.theme.TraktTheme
@@ -47,19 +50,6 @@ import tv.trakt.trakt.app.ui.theme.TraktTheme
 private val sections = listOf(
     "initial",
     "content",
-)
-
-private val popularServices = setOf(
-    "netflix",
-    "netflix_standard_with_ads",
-    "apple_tv_plus",
-    "apple_tv",
-    "disney_plus",
-    "amazon_prime_video",
-    "amazon_prime_video_free_with_ads",
-    "hbo_max",
-    "hbo_max_amazon_channel",
-    "hulu",
 )
 
 @Composable
@@ -115,7 +105,7 @@ internal fun AllStreamingsContent(
                 .background(TraktTheme.colors.dialogContainer),
         ) {
             Text(
-                text = stringResource(R.string.header_where_to_watch),
+                text = stringResource(R.string.stream_more_options),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading4,
                 modifier = Modifier
@@ -180,12 +170,15 @@ internal fun AllStreamingsContent(
 
 @Composable
 private fun AllStreamingsContentGrid(
-    items: ImmutableMap<StreamingType, List<StreamingService>>,
+    items: ImmutableMap<StreamingType, List<StreamingServiceRow>>,
     modifier: Modifier = Modifier,
     focusRequesters: Map<String, FocusRequester>,
     onItemClick: (StreamingService) -> Unit,
 ) {
     val scrollState = rememberScrollState()
+    val sections = remember {
+        StreamingType.entries.sortedBy { it.order }
+    }
     Column(
         verticalArrangement = spacedBy(12.dp),
         modifier = modifier
@@ -195,61 +188,42 @@ private fun AllStreamingsContentGrid(
                 focusRequesters.getValue("content"),
             ),
     ) {
-        StreamingType.entries
-            .sortedBy { it.order }
-            .forEach {
-                StreamingsListSection(
-                    headerRes = it.labelRes,
-                    type = it.type,
-                    services = items[it] ?: emptyList(),
-                    onItemClick = onItemClick,
-                )
-            }
+        sections.forEach {
+            StreamingsListSection(
+                type = it,
+                services = items[it],
+                onItemClick = onItemClick,
+            )
+        }
     }
 }
 
 @Composable
 private fun StreamingsListSection(
-    headerRes: Int,
-    type: String,
-    services: List<StreamingService>,
+    type: StreamingType,
+    services: List<StreamingServiceRow>?,
     onItemClick: (StreamingService) -> Unit,
 ) {
-    if (services.isEmpty()) {
+    if (services.isNullOrEmpty()) {
         return
     }
 
-    val itemsGroup = remember(services.size) {
-        val sortedServices = popularServices.reversed()
-        services
-            .sortedWith(
-                compareByDescending<StreamingService> {
-                    sortedServices.indexOf(it.source)
-                }.thenBy {
-                    it.source
-                },
-            )
-            .groupBy { it.source }
-    }
-
     Text(
-        text = stringResource(headerRes).uppercase(),
+        text = stringResource(type.labelRes).uppercase(),
         color = TraktTheme.colors.textSecondary,
         style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
         overflow = TextOverflow.Ellipsis,
         modifier = Modifier.padding(top = 12.dp, start = 32.dp),
     )
 
-    itemsGroup.forEach { (source, items) ->
+    services.forEach { (source, items) ->
         PositionFocusLazyRow(
             mainContentStart = 32.dp,
             contentPadding = PaddingValues(horizontal = 32.dp),
         ) {
             items(
                 count = items.size,
-                key = {
-                    "$source-${items[it].country}-$type"
-                },
+                key = { "$source-${items[it].country}" },
             ) { index ->
                 val item = items.getOrNull(index) ?: return@items
 
@@ -264,10 +238,10 @@ private fun StreamingsListSection(
                     logo = item.logo,
                     channel = item.channel,
                     price = when (type) {
-                        "purchase" -> remember(item.purchasePrice) {
+                        PURCHASE -> remember(item.purchasePrice) {
                             "$currencySymbol$currencySpace${item.purchasePrice}".trim()
                         }
-                        "rent" -> remember(item.rentPrice) {
+                        RENT -> remember(item.rentPrice) {
                             "$currencySymbol$currencySpace${item.rentPrice}".trim()
                         }
                         else -> null
