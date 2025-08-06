@@ -3,15 +3,17 @@ package tv.trakt.trakt.app.core.details.show.usecases
 import android.icu.util.Currency
 import tv.trakt.trakt.app.Config.DEFAULT_COUNTRY_CODE
 import tv.trakt.trakt.app.common.model.StreamingService
+import tv.trakt.trakt.app.common.model.TraktId
+import tv.trakt.trakt.app.common.model.User
 import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.app.core.streamings.data.local.StreamingLocalDataSource
 import tv.trakt.trakt.app.core.streamings.data.remote.StreamingRemoteDataSource
 import tv.trakt.trakt.app.core.streamings.model.StreamingSource
 import tv.trakt.trakt.app.core.streamings.model.fromDto
 import tv.trakt.trakt.app.core.streamings.utilities.PriorityStreamingServiceProvider
-import tv.trakt.trakt.common.helpers.extensions.asyncMap
-import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.app.helpers.extensions.asyncMap
+import tv.trakt.trakt.app.networking.openapi.StreamingDto
+import kotlin.collections.flatMap
 
 internal class GetStreamingsUseCase(
     private val remoteShowSource: ShowsRemoteDataSource,
@@ -22,18 +24,22 @@ internal class GetStreamingsUseCase(
     suspend fun getStreamingService(
         user: User,
         showId: TraktId,
-    ): StreamingService? {
-        val countryCode = user.streamings?.country ?: DEFAULT_COUNTRY_CODE
+    ): Result {
 
         if (!localStreamingSource.isValid()) {
             val sources = remoteStreamingSource
-                .getStreamingSources(countryCode)
+                .getStreamingSources()
                 .asyncMap { StreamingSource.fromDto(it) }
 
             localStreamingSource.upsertStreamingSources(sources)
         }
 
-        val streamings = remoteShowSource.getShowStreamings(showId, countryCode)
+        val countryCode = user.streamings?.country ?: DEFAULT_COUNTRY_CODE
+        val streamings: Map<String, StreamingDto> = remoteShowSource.getShowStreamings(
+            showId = showId,
+            countryCode = null
+        )
+
         val subscriptions = streamings[countryCode]?.subscription ?: emptyList()
 
         val result = subscriptions
@@ -56,9 +62,25 @@ internal class GetStreamingsUseCase(
                 )
             }
 
-        return priorityStreamingProvider.findPriorityStreamingService(
+        val priorityService = priorityStreamingProvider.findPriorityStreamingService(
             favoriteServices = user.streamings?.favorites ?: emptyList(),
             streamingServices = result,
         )
+
+        val noService = streamings.values.run {
+            flatMap { it.subscription }.isEmpty() &&
+                flatMap { it.purchase }.isEmpty() &&
+                flatMap { it.free }.isEmpty()
+        }
+
+        return Result(
+            streamingService = priorityService,
+            noServices = noService,
+        )
     }
+
+    data class Result(
+        val streamingService: StreamingService?,
+        val noServices: Boolean,
+    )
 }
