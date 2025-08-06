@@ -13,6 +13,7 @@ import org.openapitools.client.models.GetMoviesPeople200ResponseCastInnerPerson
 import org.openapitools.client.models.GetMoviesRatings200Response
 import org.openapitools.client.models.GetMoviesVideos200ResponseInner
 import org.openapitools.client.models.GetMoviesWatchnow200ResponseValue
+import org.openapitools.client.models.GetMoviesWatchnow200ResponseValueCableInner
 import org.openapitools.client.models.GetPeopleMovies200Response
 import org.openapitools.client.models.GetPeopleShows200Response
 import org.openapitools.client.models.GetPeopleSummary200Response
@@ -66,6 +67,7 @@ typealias UserDto = GetUsersLikesComments200ResponseInnerAllOfCommentUser
 typealias UserSettingsDto = GetUsersSettings200Response
 typealias StreamingDto = GetMoviesWatchnow200ResponseValue
 typealias StreamingSourceDto = GetWatchnowSourcesAll200ResponseInnerValueInner
+typealias StreamingServiceDto = GetMoviesWatchnow200ResponseValueCableInner
 typealias WatchlistShowDto = GetUsersWatchlistShows200ResponseInner
 typealias WatchlistMovieDto = GetUsersWatchlistMovies200ResponseInner
 typealias CalendarShowDto = GetCalendarsShows200ResponseInner

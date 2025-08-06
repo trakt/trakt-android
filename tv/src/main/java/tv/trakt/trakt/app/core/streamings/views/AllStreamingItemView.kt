@@ -1,3 +1,5 @@
+package tv.trakt.trakt.app.core.streamings.views
+
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -29,7 +31,7 @@ import androidx.tv.material3.Border
 import androidx.tv.material3.Button
 import androidx.tv.material3.ButtonDefaults
 import androidx.tv.material3.Text
-import coil.compose.AsyncImage
+import coil3.compose.AsyncImage
 import com.murgupluoglu.flagkit.FlagKit
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 
@@ -88,7 +90,7 @@ internal fun AllStreamingItemView(
             if (!logo.isNullOrBlank()) {
                 Row(
                     horizontalArrangement = spacedBy(2.dp),
-                    verticalAlignment = CenterVertically
+                    verticalAlignment = CenterVertically,
                 ) {
                     AsyncImage(
                         model = "https://$logo",
@@ -152,7 +154,7 @@ internal fun AllStreamingItemView(
                             contentDescription = "Flag",
                             modifier = Modifier
                                 .height(12.dp)
-                                .clip(RoundedCornerShape(2.dp))
+                                .clip(RoundedCornerShape(2.dp)),
                         )
                     }
                     Text(
@@ -161,7 +163,7 @@ internal fun AllStreamingItemView(
                         style = TraktTheme.typography.buttonTertiary,
                         maxLines = 1,
                         textAlign = TextAlign.Center,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
             }

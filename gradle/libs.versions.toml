@@ -30,6 +30,7 @@ qr = "1.0.1"
 tvFoundation = "1.0.0-alpha12"
 tvMaterial = "1.0.1"
 youtube-player = "12.1.2"
+flagkit = "1.0.5"
 
 # Testing Libraries
 
@@ -67,6 +68,7 @@ kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime",
 qr-compose = { group = "com.lightspark", name = "compose-qr-code", version.ref = "qr" }
 youtube-player = { group = "com.pierfrancescosoffritti.androidyoutubeplayer", name = "core", version.ref = "youtube-player" }
 youtube-player-ui = { group = "com.pierfrancescosoffritti.androidyoutubeplayer", name = "custom-ui", version.ref = "youtube-player" }
+flagkit = { module = "com.github.murgupluoglu:flagkit-android", version.ref = "flagkit" }
 
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }

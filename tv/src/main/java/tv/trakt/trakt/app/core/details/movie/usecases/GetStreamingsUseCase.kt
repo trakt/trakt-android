@@ -3,16 +3,16 @@ package tv.trakt.trakt.app.core.details.movie.usecases
 import android.icu.util.Currency
 import tv.trakt.trakt.app.Config.DEFAULT_COUNTRY_CODE
 import tv.trakt.trakt.app.common.model.StreamingService
-import tv.trakt.trakt.app.common.model.TraktId
-import tv.trakt.trakt.app.common.model.User
 import tv.trakt.trakt.app.core.movies.data.remote.MoviesRemoteDataSource
 import tv.trakt.trakt.app.core.streamings.data.local.StreamingLocalDataSource
 import tv.trakt.trakt.app.core.streamings.data.remote.StreamingRemoteDataSource
 import tv.trakt.trakt.app.core.streamings.model.StreamingSource
 import tv.trakt.trakt.app.core.streamings.model.fromDto
 import tv.trakt.trakt.app.core.streamings.utilities.PriorityStreamingServiceProvider
-import tv.trakt.trakt.app.helpers.extensions.asyncMap
-import tv.trakt.trakt.app.networking.openapi.StreamingDto
+import tv.trakt.trakt.common.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.networking.StreamingDto
 
 internal class GetStreamingsUseCase(
     private val remoteMovieSource: MoviesRemoteDataSource,
