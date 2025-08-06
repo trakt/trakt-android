@@ -1,6 +1,5 @@
 package tv.trakt.trakt.core.movies
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -80,7 +79,6 @@ private fun MoviesScreenContent(
             imageUrl = state.backgroundUrl,
             modifier = Modifier.graphicsLayer {
                 if (lazyListState.firstVisibleItemIndex == 0) {
-                    Log.d("MoviesScreen", "MESSI")
                     translationY = (-0.75F * lazyListState.firstVisibleItemScrollOffset)
                 } else {
                     alpha = 0F

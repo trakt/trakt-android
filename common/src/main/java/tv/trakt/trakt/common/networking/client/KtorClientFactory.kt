@@ -1,5 +1,6 @@
 package tv.trakt.trakt.common.networking.client
 
+import android.content.Context
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.HttpClientEngine
@@ -12,15 +13,15 @@ internal class KtorClientFactory(
     private val tokenProvider: TokenProvider,
     private val sessionManager: SessionManager,
 ) {
-    fun createClientConfig(): (HttpClientConfig<*>) -> Unit {
+    fun createClientConfig(context: Context): (HttpClientConfig<*>) -> Unit {
         return {
-            it.applyConfig(baseUrl)
+            it.applyConfig(baseUrl, context)
         }
     }
 
-    fun createAuthorizedClientConfig(): (HttpClientConfig<*>) -> Unit {
+    fun createAuthorizedClientConfig(context: Context): (HttpClientConfig<*>) -> Unit {
         return {
-            it.applyConfig(baseUrl)
+            it.applyConfig(baseUrl, context)
             it.applyAuthorizationConfig(
                 tokenProvider = tokenProvider,
                 sessionManager = sessionManager,
@@ -32,9 +33,9 @@ internal class KtorClientFactory(
         return OkHttp.create()
     }
 
-    fun createClient(): HttpClient {
+    fun createClient(context: Context): HttpClient {
         return HttpClient(engine = createClientEngine()) {
-            applyConfig(baseUrl)
+            applyConfig(baseUrl, context)
         }
     }
 }

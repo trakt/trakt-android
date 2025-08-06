@@ -1,5 +1,6 @@
 package tv.trakt.trakt.common.networking.client
 
+import android.content.Context
 import android.util.Log
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.call.body
@@ -8,6 +9,7 @@ import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.cache.HttpCache
+import io.ktor.client.plugins.cache.storage.FileStorage
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.ANDROID
@@ -29,6 +31,7 @@ import tv.trakt.trakt.common.auth.TokenProvider
 import tv.trakt.trakt.common.auth.model.TraktAccessToken
 import tv.trakt.trakt.common.auth.model.TraktRefreshToken
 import tv.trakt.trakt.common.auth.session.SessionManager
+import java.nio.file.Files
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.time.Duration.Companion.seconds
 
@@ -45,10 +48,16 @@ private val jsonNegotiation = Json {
 
 private val mutex = Mutex()
 
-internal fun HttpClientConfig<*>.applyConfig(baseUrl: String) {
+internal fun HttpClientConfig<*>.applyConfig(
+    baseUrl: String,
+    context: Context,
+) {
     expectSuccess = true
 
-    install(HttpCache)
+    install(HttpCache) {
+        val cacheFile = Files.createDirectories(context.cacheDir.resolve("ktor").toPath()).toFile()
+        publicStorage(FileStorage(cacheFile))
+    }
 
     install(HttpTimeout) {
         val timeoutMillis = TIMEOUT_DURATION.inWholeMilliseconds

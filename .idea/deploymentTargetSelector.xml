@@ -4,7 +4,7 @@
     <selectionStates>
       <SelectionState runConfigName="TV App">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-08-05T12:45:21.034504Z">
+        <DropdownSelection timestamp="2025-08-06T13:48:57.754277Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=/Users/michal/.android/avd/Pixel_4_API_31.avd" />
@@ -15,7 +15,7 @@
       </SelectionState>
       <SelectionState runConfigName="Mobile App">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-08-05T12:45:29.918186Z">
+        <DropdownSelection timestamp="2025-08-06T13:49:11.723034Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=/Users/michal/.android/avd/Pixel_4_API_31.avd" />

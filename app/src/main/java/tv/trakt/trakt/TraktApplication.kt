@@ -3,10 +3,10 @@ package tv.trakt.trakt
 import android.app.Application
 import android.app.UiModeManager
 import android.content.res.Configuration.UI_MODE_TYPE_TELEVISION
+import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.remoteconfig.ktx.remoteConfig
-import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
+import com.google.firebase.remoteconfig.remoteConfig
+import com.google.firebase.remoteconfig.remoteConfigSettings
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin

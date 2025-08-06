@@ -3,6 +3,7 @@ package tv.trakt.trakt.common.networking.di
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.HttpClientEngine
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.common.Config.API_BASE_URL
@@ -25,16 +26,16 @@ val networkingModule = module {
 
     single<(HttpClientConfig<*>) -> Unit>(named("clientConfig")) {
         val factory = get<KtorClientFactory>()
-        factory.createClientConfig()
+        factory.createClientConfig(androidContext())
     }
 
     single<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")) {
         val factory = get<KtorClientFactory>()
-        factory.createAuthorizedClientConfig()
+        factory.createAuthorizedClientConfig(androidContext())
     }
 
     single<HttpClient> {
         val ktorClientFactory = get<KtorClientFactory>()
-        ktorClientFactory.createClient()
+        ktorClientFactory.createClient(androidContext())
     }
 }
