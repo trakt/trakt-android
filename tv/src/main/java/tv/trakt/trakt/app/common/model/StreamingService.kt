@@ -9,6 +9,7 @@ internal data class StreamingService(
     val source: String,
     val name: String,
     val logo: String?,
+    val channel: String?,
     val linkDirect: String?,
     val uhd: Boolean,
     val color: Color?,

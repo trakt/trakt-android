@@ -18,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 
 @Composable
@@ -25,9 +26,13 @@ internal fun PositionFocusLazyRow(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(),
     horizontalArrangement: Arrangement.Horizontal = spacedBy(TraktTheme.spacing.mainRowSpace),
+    mainContentStart: Dp = TraktTheme.spacing.mainContentStartSpace,
     content: LazyListScope.() -> Unit,
 ) {
-    PositionFocusList(modifier = modifier) { modifier ->
+    PositionFocusList(
+        mainContentStart = mainContentStart,
+        modifier = modifier
+    ) { modifier ->
         LazyRow(
             modifier = modifier.fillMaxWidth(),
             horizontalArrangement = horizontalArrangement,
@@ -41,11 +46,12 @@ internal fun PositionFocusLazyRow(
 @Composable
 internal fun PositionFocusList(
     modifier: Modifier = Modifier,
+    mainContentStart: Dp,
     content: @Composable (modifier: Modifier) -> Unit,
 ) {
     val density = LocalDensity.current
     var rowWidth by remember { mutableFloatStateOf(1f) }
-    val fraction = TraktTheme.spacing.mainContentStartSpace.value / rowWidth
+    val fraction = mainContentStart.value / rowWidth
 
     PositionFocusLayoutItem(parentFraction = fraction) {
         content(

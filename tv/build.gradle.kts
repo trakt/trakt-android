@@ -77,6 +77,7 @@ dependencies {
 
     implementation(libs.youtube.player)
     implementation(libs.youtube.player.ui)
+    implementation(libs.flagkit)
 
     debugImplementation(libs.androidx.compose.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)

@@ -1,5 +1,8 @@
 package tv.trakt.trakt.app.core.streamings
 
+import AllStreamingItemView
+import FilmProgressIndicator
+import GenericErrorView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -8,11 +11,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyGridScope
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -36,10 +38,8 @@ import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
 import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.common.model.StreamingService
-import tv.trakt.trakt.app.common.ui.FilmProgressIndicator
-import tv.trakt.trakt.app.common.ui.GenericErrorView
+import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
-import tv.trakt.trakt.app.core.streamings.views.AllStreamingItemView
 import tv.trakt.trakt.app.helpers.extensions.openWatchNowLink
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 
@@ -54,6 +54,19 @@ private val types = mapOf(
     "purchase" to R.string.header_streaming_purchase,
     "rent" to R.string.header_streaming_rent,
     "free" to R.string.header_streaming_free,
+)
+
+private val popularServices = setOf(
+    "netflix",
+    "netflix_standard_with_ads",
+    "apple_tv_plus",
+    "apple_tv",
+    "disney_plus",
+    "amazon_prime_video",
+    "amazon_prime_video_free_with_ads",
+    "hbo_max",
+    "hbo_max_amazon_channel",
+    "hulu",
 )
 
 @Composable
@@ -109,7 +122,7 @@ internal fun AllStreamingsContent(
                 .background(TraktTheme.colors.dialogContainer),
         ) {
             Text(
-                text = stringResource(R.string.stream_more_options),
+                text = stringResource(R.string.header_where_to_watch),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading4,
                 modifier = Modifier
@@ -129,6 +142,7 @@ internal fun AllStreamingsContent(
                             .padding(top = 16.dp),
                     )
                 }
+
                 state.error == null && state.services?.values?.all { it.isEmpty() } == true -> {
                     Text(
                         text = stringResource(R.string.stream_no_services),
@@ -141,6 +155,7 @@ internal fun AllStreamingsContent(
                             ),
                     )
                 }
+
                 else -> {
                     AllStreamingsContentGrid(
                         items = (state.services ?: emptyMap()).toImmutableMap(),
@@ -177,80 +192,97 @@ private fun AllStreamingsContentGrid(
     focusRequesters: Map<String, FocusRequester>,
     onItemClick: (StreamingService) -> Unit,
 ) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(4),
-        horizontalArrangement = spacedBy(12.dp),
+    val scrollState = rememberScrollState()
+    Column(
         verticalArrangement = spacedBy(12.dp),
-        contentPadding = PaddingValues(
-            start = 32.dp,
-            end = 32.dp,
-            bottom = 32.dp,
-        ),
-        modifier = modifier.focusRequester(
-            focusRequesters.getValue("content"),
-        ),
+        modifier = modifier
+            .verticalScroll(scrollState)
+            .padding(bottom = 32.dp)
+            .focusRequester(
+                focusRequesters.getValue("content"),
+            ),
     ) {
         types.forEach { (type, headerRes) ->
-            streamingsGridSection(
+            StreamingsListSection(
                 headerRes = headerRes,
                 type = type,
-                items = items[type] ?: emptyList(),
+                services = items[type] ?: emptyList(),
                 onItemClick = onItemClick,
             )
         }
     }
 }
 
-private fun LazyGridScope.streamingsGridSection(
+@Composable
+private fun StreamingsListSection(
     headerRes: Int,
     type: String,
-    items: List<StreamingService>,
+    services: List<StreamingService>,
     onItemClick: (StreamingService) -> Unit,
 ) {
-    if (items.isEmpty()) {
+    if (services.isEmpty()) {
         return
     }
 
-    item(span = { GridItemSpan(maxLineSpan) }) {
-        Text(
-            text = stringResource(headerRes).uppercase(),
-            color = TraktTheme.colors.textSecondary,
-            style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.padding(top = 12.dp),
-        )
+    val itemsGroup = remember(services.size) {
+        val sortedServices = popularServices.reversed()
+        services
+            .sortedWith(
+                compareByDescending<StreamingService> {
+                    sortedServices.indexOf(it.source)
+                }.thenBy {
+                    it.source
+                }
+            )
+            .groupBy { it.source }
     }
 
-    items(
-        count = items.size,
-        key = {
-            val item = items[it]
-            "${item.source}-${item.country}-$type"
-        },
-    ) { index ->
-        val item = items.getOrNull(index) ?: return@items
+    Text(
+        text = stringResource(headerRes).uppercase(),
+        color = TraktTheme.colors.textSecondary,
+        style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
+        overflow = TextOverflow.Ellipsis,
+        modifier = Modifier.padding(top = 12.dp, start = 32.dp),
+    )
 
-        val currencySymbol = item.currency?.symbol
-        val currencySpace = remember(currencySymbol) {
-            if (currencySymbol?.count() == 1) "" else " "
+    itemsGroup.forEach { (source, items) ->
+        PositionFocusLazyRow(
+            mainContentStart = 32.dp,
+            contentPadding = PaddingValues(horizontal = 32.dp)
+        ) {
+            items(
+                count = items.size,
+                key = {
+                    "${source}-${items[it].country}-$type"
+                },
+            ) { index ->
+                val item = items.getOrNull(index) ?: return@items
+
+                val currencySymbol = item.currency?.symbol
+                val currencySpace = remember(currencySymbol) {
+                    if (currencySymbol?.count() == 1) "" else " "
+                }
+
+                AllStreamingItemView(
+                    name = item.name,
+                    country = item.country,
+                    logo = item.logo,
+                    channel = item.channel,
+                    price = when (type) {
+                        "purchase" -> remember(item.purchasePrice) {
+                            "$currencySymbol$currencySpace${item.purchasePrice}".trim()
+                        }
+                        "rent" -> remember(item.rentPrice) {
+                            "$currencySymbol$currencySpace${item.rentPrice}".trim()
+                        }
+                        else -> null
+                    },
+                    contentColor = item.color ?: Color.Black,
+                    onClick = { onItemClick(item) },
+                    modifier = Modifier.width(200.dp)
+                )
+            }
         }
-
-        AllStreamingItemView(
-            name = item.name,
-            country = item.country,
-            logo = item.logo,
-            price = when (type) {
-                "purchase" -> remember(item.purchasePrice) {
-                    "$currencySymbol$currencySpace${item.purchasePrice}".trim()
-                }
-                "rent" -> remember(item.rentPrice) {
-                    "$currencySymbol$currencySpace${item.rentPrice}".trim()
-                }
-                else -> null
-            },
-            contentColor = item.color ?: Color.Black,
-            onClick = { onItemClick(item) },
-        )
     }
 }
 

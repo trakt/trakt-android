@@ -45,6 +45,7 @@ internal class GetStreamingsUseCase(
                     source = it.source,
                     color = localSource?.color,
                     logo = localSource?.images?.logo,
+                    channel = localSource?.images?.channel,
                     uhd = it.uhd,
                     country = countryCode,
                     purchasePrice = it.prices.purchase,

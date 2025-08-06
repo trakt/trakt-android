@@ -33,7 +33,13 @@ internal class GetAllStreamingsUseCase(
             "Invalid media type: $mediaType"
         }
 
-        val favoriteSources = user.streamings?.favorites?.toSet().orEmpty()
+        val userCountry = user.streamings?.country ?: DEFAULT_COUNTRY_CODE
+        popularCountries.add(0, userCountry)
+
+        val favoriteSources = user.streamings?.favorites
+            ?.map { it.substringAfter("-") }
+            ?.toSet().orEmpty()
+
         val sources = remoteStreamingSource
             .getStreamingSources()
             .associateBy(
@@ -46,16 +52,19 @@ internal class GetAllStreamingsUseCase(
                 showId = mediaId,
                 countryCode = null,
             )
+
             "movie" -> remoteMovieSource.getMovieStreamings(
                 movieId = mediaId,
                 countryCode = null,
             )
+
             "episode" -> remoteEpisodeSource.getEpisodeStreamings(
                 showId = mediaId,
                 season = seasonEpisode?.season ?: 0,
                 episode = seasonEpisode?.episode ?: 0,
                 countryCode = null,
             )
+
             else -> throw IllegalArgumentException("Unsupported media type: $mediaType")
         }
 
@@ -63,7 +72,7 @@ internal class GetAllStreamingsUseCase(
             streamings = streamings,
             sources = sources,
             favoriteSources = favoriteSources,
-            userCountry = user.streamings?.country ?: DEFAULT_COUNTRY_CODE,
+            userCountry = userCountry,
         )
 
         return groupedStreamings.toImmutableMap()
@@ -85,6 +94,7 @@ internal class GetAllStreamingsUseCase(
             source = option.source,
             color = source.color,
             logo = source.images.logo,
+            channel = source.images.channel,
             uhd = option.uhd,
             country = country,
             purchasePrice = option.prices.purchase,
@@ -93,6 +103,8 @@ internal class GetAllStreamingsUseCase(
         )
 
         return buildMap {
+            val priorityCountries = popularCountries.toSet().reversed()
+
             val favorite = mutableListOf<StreamingService>()
             val subscription = mutableListOf<StreamingService>()
             val free = mutableListOf<StreamingService>()
@@ -102,7 +114,6 @@ internal class GetAllStreamingsUseCase(
             streamings.forEach { (country, streaming) ->
                 subscription.addAll(
                     streaming.subscription
-                        .distinctBy { it.link }
                         .mapNotNull { subscription ->
                             val source = sources[subscription.source]
                             if (source == null || subscription.linkDirect.isNullOrBlank()) {
@@ -113,8 +124,7 @@ internal class GetAllStreamingsUseCase(
                                 source = source,
                                 option = subscription,
                             ).also {
-                                val key = "$country-${it.source}"
-                                if (favoriteSources.any { fav -> fav == key }) {
+                                if (source.source in favoriteSources) {
                                     favorite.add(it)
                                 }
                             }
@@ -138,8 +148,7 @@ internal class GetAllStreamingsUseCase(
                             source = source,
                             option = free,
                         ).also {
-                            val key = "$country-${it.source}"
-                            if (favoriteSources.any { fav -> fav == key }) {
+                            if (source.source in favoriteSources) {
                                 favorite.add(it)
                             }
                         }
@@ -169,23 +178,19 @@ internal class GetAllStreamingsUseCase(
                     if (!it.prices.rent.isNullOrBlank()) {
                         rent.add(service)
                     }
-                    if (favoriteSources.any { fav -> fav == "$country-${it.source}" }) {
+                    if (it.source in favoriteSources) {
                         favorite.add(service)
                     }
                 }
 
-                put(
-                    "favorite",
-                    favorite
-                        .distinctBy { "${it.country}-${it.source}" }
-                        .sortedWith(compareBy({ it.source }, { it.country })),
-                )
-
                 with(
-                    compareByDescending<StreamingService> { "${it.country}-${it.source}" in favoriteSources }
-                        .thenByDescending { popularCountries.indexOf(it.country.lowercase()) }
-                        .thenBy { "${it.source}-${it.country}" },
+                    compareByDescending<StreamingService> {
+                        priorityCountries.indexOf(it.country.lowercase())
+                    }.thenBy {
+                        "${it.source}-${it.country}"
+                    },
                 ) {
+                    put("favorite", favorite.sortedWith(this))
                     put("subscription", subscription.sortedWith(this))
                     put("free", free.sortedWith(this))
                     put("purchase", purchase.sortedWith(this))
@@ -196,32 +201,15 @@ internal class GetAllStreamingsUseCase(
     }
 }
 
-// private val popularServices = setOf(
-//    "netflix",
-//    "netflix_standard_with_ads",
-//    "max",
-//    "hbo_max",
-//    "hulu",
-//    "amazon_video",
-//    "amazon_prime",
-//    "amazon_prime_video",
-//    "apple_tv",
-//    "apple_tv_plus",
-//    "disney_plus",
-//    "peacock",
-//    "paramount_plus",
-//    "crunchyroll",
-// )
-
-private val popularCountries = setOf(
-    "sg",
-    "mx",
-    "nl",
-    "au",
-    "jp",
-    "fr",
-    "de",
-    "ca",
-    "gb",
+private val popularCountries = mutableListOf(
     "us",
+    "gb",
+    "ca",
+    "de",
+    "fr",
+    "jp",
+    "au",
+    "nl",
+    "mx",
+    "sg",
 )
