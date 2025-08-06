@@ -3,17 +3,16 @@ package tv.trakt.trakt.app.core.details.show.usecases
 import android.icu.util.Currency
 import tv.trakt.trakt.app.Config.DEFAULT_COUNTRY_CODE
 import tv.trakt.trakt.app.common.model.StreamingService
-import tv.trakt.trakt.app.common.model.TraktId
-import tv.trakt.trakt.app.common.model.User
 import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.app.core.streamings.data.local.StreamingLocalDataSource
 import tv.trakt.trakt.app.core.streamings.data.remote.StreamingRemoteDataSource
 import tv.trakt.trakt.app.core.streamings.model.StreamingSource
 import tv.trakt.trakt.app.core.streamings.model.fromDto
 import tv.trakt.trakt.app.core.streamings.utilities.PriorityStreamingServiceProvider
-import tv.trakt.trakt.app.helpers.extensions.asyncMap
-import tv.trakt.trakt.app.networking.openapi.StreamingDto
-import kotlin.collections.flatMap
+import tv.trakt.trakt.common.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.networking.StreamingDto
 
 internal class GetStreamingsUseCase(
     private val remoteShowSource: ShowsRemoteDataSource,
@@ -25,7 +24,6 @@ internal class GetStreamingsUseCase(
         user: User,
         showId: TraktId,
     ): Result {
-
         if (!localStreamingSource.isValid()) {
             val sources = remoteStreamingSource
                 .getStreamingSources()
@@ -37,7 +35,7 @@ internal class GetStreamingsUseCase(
         val countryCode = user.streamings?.country ?: DEFAULT_COUNTRY_CODE
         val streamings: Map<String, StreamingDto> = remoteShowSource.getShowStreamings(
             showId = showId,
-            countryCode = null
+            countryCode = null,
         )
 
         val subscriptions = streamings[countryCode]?.subscription ?: emptyList()
