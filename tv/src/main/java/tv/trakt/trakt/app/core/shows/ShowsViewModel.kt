@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.shows
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
@@ -13,6 +12,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import tv.trakt.trakt.app.core.shows.model.AnticipatedShow
 import tv.trakt.trakt.app.core.shows.model.TrendingShow
 import tv.trakt.trakt.app.core.shows.usecase.GetAnticipatedShowsUseCase
@@ -79,7 +79,7 @@ internal class ShowsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Log.e("ShowsViewModel", error.toString())
+                    Timber.e(error, error.toString())
                 }
             } finally {
                 loadingState.update { false }

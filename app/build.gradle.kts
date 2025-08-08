@@ -106,6 +106,7 @@ dependencies {
     debugImplementation(libs.androidx.compose.tooling)
 
     implementation(libs.kotlin.immutable.collections)
+    implementation(libs.timber)
 
     // Testing
 

@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.profile.sections.history
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,6 +9,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import tv.trakt.trakt.app.core.profile.ProfileConfig.PROFILE_SECTION_LIMIT
 import tv.trakt.trakt.app.core.profile.sections.history.usecases.GetProfileHistoryUseCase
 import tv.trakt.trakt.app.core.profile.sections.history.usecases.SyncProfileHistoryUseCase
@@ -47,7 +47,7 @@ internal class ProfileHistoryViewModel(
                 loadedAt = nowUtc()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Log.e("ProfileHistoryViewModel", "Failed to load data", error)
+                    Timber.tag("ProfileHistoryViewModel").e(error, "Failed to load data")
                     errorState.update { error }
                 }
             } finally {
@@ -57,16 +57,15 @@ internal class ProfileHistoryViewModel(
     }
 
     fun updateData() {
-        Log.d("ProfileHistoryViewModel", "updateData called")
         viewModelScope.launch {
             try {
                 if (syncHistoryCase.isSyncRequired(loadedAt)) {
-                    Log.d("ProfileHistoryViewModel", "Sync needed, reloading data")
+                    Timber.d("Sync needed, reloading data")
                     loadData(showLoading = false)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Log.e("ProfileHistoryViewModel", "Error", error)
+                    Timber.e(error, "Error")
                 }
             }
         }

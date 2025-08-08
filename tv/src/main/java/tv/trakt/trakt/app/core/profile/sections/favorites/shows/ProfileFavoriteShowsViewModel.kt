@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.profile.sections.favorites.shows
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,6 +9,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import tv.trakt.trakt.app.core.profile.ProfileConfig.PROFILE_FAVORITES_SECTION_LIMIT
 import tv.trakt.trakt.app.core.profile.sections.favorites.shows.usecases.GetFavoriteShowsUseCase
 import tv.trakt.trakt.app.helpers.extensions.nowUtc
@@ -45,7 +45,7 @@ internal class ProfileFavoriteShowsViewModel(
                 loadedAt = nowUtc()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Log.e("ProfileFavoriteShowsViewModel", "Failed to load data", error)
+                    Timber.e(error, "Failed to load data")
                     errorState.update { error }
                 }
             } finally {

@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.profile.sections.history.viewall
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.plus
@@ -11,6 +10,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import tv.trakt.trakt.app.core.profile.ProfileConfig.HISTORY_ALL_PAGE_LIMIT
 import tv.trakt.trakt.app.core.profile.sections.history.usecases.GetProfileHistoryUseCase
 import tv.trakt.trakt.app.core.profile.sections.history.usecases.SyncProfileHistoryUseCase
@@ -94,16 +94,15 @@ internal class ProfileHistoryViewAllViewModel(
     }
 
     fun updateData() {
-        Log.d("ProfileHistoryViewAllViewModel", "updateData called")
         viewModelScope.launch {
             try {
                 if (syncHistoryCase.isSyncRequired(loadedAt)) {
-                    Log.d("ProfileHistoryViewAllViewModel", "Sync needed, reloading data")
+                    Timber.d("Sync needed, reloading data")
                     loadData()
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Log.e("ProfileHistoryViewAllViewModel", "Error", error)
+                    Timber.e(error, "Error")
                 }
             }
         }

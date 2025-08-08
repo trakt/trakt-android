@@ -3,7 +3,6 @@ package tv.trakt.trakt.app.core.player
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.SeekBar
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -53,6 +52,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import kotlin.time.Duration.Companion.seconds
@@ -180,7 +180,7 @@ private fun TvVideoPlayer(
                         error: PlayerConstants.PlayerError,
                     ) {
                         onOpenVideoExternal(videoUrl)
-                        Log.e("TvVideoPlayer", "YouTube Player Error: $error")
+                        Timber.e("YouTube Player Error: $error")
                         super.onError(youTubePlayer, error)
                     }
                 }

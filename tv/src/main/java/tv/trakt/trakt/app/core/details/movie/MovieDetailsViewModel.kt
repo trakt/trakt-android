@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.details.movie
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,6 +15,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.common.model.CastPerson
 import tv.trakt.trakt.app.common.model.Comment
@@ -108,7 +108,7 @@ internal class MovieDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Log.e("MovieDetailsViewModel", "Error loading movie details: ${error.message}")
+                    Timber.e("Error loading movie details: ${error.message}")
                 }
             }
         }
@@ -122,7 +122,7 @@ internal class MovieDetailsViewModel(
             } catch (e: Exception) {
                 e.rethrowCancellation {
                     showSnackMessage(StaticStringResource(e.toString()))
-                    Log.e("MovieDetailsViewModel", "Error loading external ratings: ${e.message}")
+                    Timber.e("Error loading external ratings: ${e.message}")
                 }
             }
         }
@@ -136,7 +136,7 @@ internal class MovieDetailsViewModel(
             } catch (e: Exception) {
                 e.rethrowCancellation {
                     showSnackMessage(StaticStringResource(e.toString()))
-                    Log.e("MovieDetailsViewModel", "Error loading extra videos: ${e.message}")
+                    Timber.e("Error loading extra videos: ${e.message}")
                 }
             }
         }
@@ -150,7 +150,7 @@ internal class MovieDetailsViewModel(
             } catch (e: Exception) {
                 e.rethrowCancellation {
                     showSnackMessage(StaticStringResource(e.toString()))
-                    Log.e("MovieDetailsViewModel", "Error loading cast and crew: ${e.message}")
+                    Timber.e("Error loading cast and crew: ${e.message}")
                 }
             }
         }
@@ -164,7 +164,7 @@ internal class MovieDetailsViewModel(
             } catch (e: Exception) {
                 e.rethrowCancellation {
                     showSnackMessage(StaticStringResource(e.toString()))
-                    Log.e("MovieDetailsViewModel", "Error loading related movies: ${e.message}")
+                    Timber.e("Error loading related movies: ${e.message}")
                 }
             }
         }
@@ -178,7 +178,7 @@ internal class MovieDetailsViewModel(
             } catch (e: Exception) {
                 e.rethrowCancellation {
                     showSnackMessage(StaticStringResource(e.toString()))
-                    Log.e("MovieDetailsViewModel", "Error loading comments: ${e.message}")
+                    Timber.e("Error loading comments: ${e.message}")
                 }
             }
         }
@@ -199,7 +199,7 @@ internal class MovieDetailsViewModel(
             } catch (e: Exception) {
                 e.rethrowCancellation {
                     showSnackMessage(StaticStringResource(e.toString()))
-                    Log.e("MovieDetailsViewModel", "Error loading lists: ${e.message}")
+                    Timber.e(e, "Error loading lists: ${e.message}")
                 }
             }
         }
@@ -238,7 +238,7 @@ internal class MovieDetailsViewModel(
                 e.rethrowCancellation {
                     showSnackMessage(StaticStringResource(e.toString()))
                     movieStreamingsState.update { StreamingsState() }
-                    Log.e("MovieDetailsViewModel", "Error loading streaming services: ${e.message}")
+                    Timber.e("Error loading streaming services: ${e.message}")
                 }
             }
         }
@@ -279,7 +279,7 @@ internal class MovieDetailsViewModel(
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
                     movieCollectionState.update { CollectionState() }
-                    Log.e("MovieDetailsViewModel", "Error loading history: ${error.message}")
+                    Timber.e("Error loading history: ${error.message}")
                 }
             }
         }
@@ -311,7 +311,7 @@ internal class MovieDetailsViewModel(
             } catch (e: Exception) {
                 e.rethrowCancellation {
                     showSnackMessage(StaticStringResource(e.toString()))
-                    Log.e("MovieDetailsViewModel", "Error toggling history: ${e.message}")
+                    Timber.e("Error toggling history: ${e.message}")
                 }
             }
         }
@@ -342,7 +342,7 @@ internal class MovieDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Log.e("MovieDetailsViewModel", "Error toggling watchlist: ${error.message}")
+                    Timber.e("Error toggling watchlist: ${error.message}")
                 }
             }
         }

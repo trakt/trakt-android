@@ -1,7 +1,6 @@
 package tv.trakt.trakt.common.networking.client
 
 import android.content.Context
-import android.util.Log
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpTimeout
@@ -25,6 +24,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.json.Json
+import timber.log.Timber
 import tv.trakt.trakt.common.BuildConfig
 import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.auth.TokenProvider
@@ -90,7 +90,7 @@ internal fun HttpClientConfig<*>.applyAuthorizationConfig(
     install(Auth) {
         bearer {
             loadTokens {
-                Log.d("HttpClient", "Loading auth tokens")
+                Timber.d("Loading auth tokens")
                 val token = tokenProvider.getToken()!!
                 BearerTokens(
                     accessToken = token.accessToken,
@@ -99,13 +99,13 @@ internal fun HttpClientConfig<*>.applyAuthorizationConfig(
             }
 
             refreshTokens {
-                Log.d("HttpClient", "Refresh tokens requested")
+                Timber.d("Refresh tokens requested")
                 mutex.withLock {
                     val oldTokens = this.oldTokens
                     val currentTokens = tokenProvider.getToken()!!
 
                     if (oldTokens?.accessToken != currentTokens.accessToken) {
-                        Log.d("HttpClient", "Tokens already refreshed by another request")
+                        Timber.d("Tokens already refreshed by another request")
                         return@withLock BearerTokens(
                             accessToken = currentTokens.accessToken,
                             refreshToken = currentTokens.refreshToken,
@@ -113,7 +113,7 @@ internal fun HttpClientConfig<*>.applyAuthorizationConfig(
                     }
 
                     try {
-                        Log.d("HttpClient", "Refreshing auth tokens")
+                        Timber.d("Refreshing auth tokens")
                         val newTokens = client.post("${Config.API_BASE_URL}oauth/token") {
                             setBody(
                                 TraktRefreshToken(
@@ -138,7 +138,7 @@ internal fun HttpClientConfig<*>.applyAuthorizationConfig(
                             accessToken = newTokens.accessToken,
                             refreshToken = newTokens.refreshToken,
                         ).also {
-                            Log.d("HttpClient", "Auth tokens refreshed successfully")
+                            Timber.d("Auth tokens refreshed successfully")
                         }
                     } catch (error: Exception) {
                         if (error !is CancellationException) {
@@ -146,7 +146,7 @@ internal fun HttpClientConfig<*>.applyAuthorizationConfig(
                             tokenProvider.clear()
                         }
                         return@withLock null.also {
-                            Log.e("HttpClient", "Failed to refresh auth tokens", error)
+                            Timber.e(error, "Failed to refresh auth tokens")
                         }
                     }
                 }

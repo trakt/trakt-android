@@ -4,7 +4,6 @@ import android.app.UiModeManager
 import android.content.Context
 import android.content.res.Configuration.UI_MODE_TYPE_TELEVISION
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.SnackbarHostState
@@ -18,6 +17,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.context.startKoin
+import timber.log.Timber
 import tv.trakt.trakt.app.core.auth.di.authDataModule
 import tv.trakt.trakt.app.core.auth.di.authModule
 import tv.trakt.trakt.app.core.comments.di.commentsDataModule
@@ -79,9 +79,9 @@ class TvActivity : ComponentActivity() {
     private fun updateRemoteConfig() {
         Firebase.remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                Log.d("TvActivity", "Remote Config params updated: ${task.result}")
+                Timber.d("Remote Config params updated: ${task.result}")
             } else {
-                Log.w("TvActivity", "Remote Config fetch failed!")
+                Timber.w("Remote Config fetch failed!")
             }
         }
     }

@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.home.sections.movies.comingsoon
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,6 +9,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import tv.trakt.trakt.app.core.home.sections.movies.comingsoon.usecases.GetComingSoonMoviesUseCase
 import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalDataSource
 import tv.trakt.trakt.app.helpers.extensions.nowUtc
@@ -45,7 +45,7 @@ internal class HomeComingSoonViewModel(
                 loadedAt = nowUtc()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Log.e("HomeComingSoonViewModel", "Error loading coming soon movies", error)
+                    Timber.e(error, "Error loading coming soon movies")
                     errorState.update { error }
                 }
             } finally {
@@ -55,17 +55,17 @@ internal class HomeComingSoonViewModel(
     }
 
     fun updateData() {
-        Log.d("HomeComingSoonViewModel", "updateData called")
+        Timber.d("updateData called")
         viewModelScope.launch {
             try {
                 val localUpdatedAt = localSyncSource.getWatchlistUpdatedAt()
                 if (localUpdatedAt != null && loadedAt?.isBefore(localUpdatedAt) == true) {
                     loadData(showLoading = false)
-                    Log.d("HomeComingSoonViewModel", "Updating coming soon movies")
+                    Timber.d("Updating coming soon movies")
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Log.e("HomeComingSoonViewModel", "Error", error)
+                    Timber.e(error, "Error")
                 }
             }
         }

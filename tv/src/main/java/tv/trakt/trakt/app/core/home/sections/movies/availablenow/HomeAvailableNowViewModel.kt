@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.home.sections.movies.availablenow
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,6 +9,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import tv.trakt.trakt.app.core.home.sections.movies.availablenow.usecases.GetAvailableNowMoviesUseCase
 import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalDataSource
 import tv.trakt.trakt.app.helpers.extensions.nowUtc
@@ -45,7 +45,7 @@ internal class HomeAvailableNowViewModel(
                 loadedAt = nowUtc()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Log.e("HomeAvailableNowViewModel", "Error loading available now movies", error)
+                    Timber.e(error, "Error loading available now movies")
                     errorState.update { error }
                 }
             } finally {
@@ -55,17 +55,17 @@ internal class HomeAvailableNowViewModel(
     }
 
     fun updateData() {
-        Log.d("HomeAvailableNowViewModel", "updateData called")
+        Timber.d("updateData called")
         viewModelScope.launch {
             try {
                 val localUpdatedAt = localSyncSource.getWatchlistUpdatedAt()
                 if (localUpdatedAt != null && loadedAt?.isBefore(localUpdatedAt) == true) {
                     loadData(showLoading = false)
-                    Log.d("HomeAvailableNowViewModel", "Updating available now movies")
+                    Timber.d("Updating available now movies")
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Log.e("HomeAvailableNowViewModel", "Error", error)
+                    Timber.e(error, "Error")
                 }
             }
         }

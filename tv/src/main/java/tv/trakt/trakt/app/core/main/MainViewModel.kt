@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.main
 
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -15,6 +14,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import tv.trakt.trakt.app.core.auth.usecases.LoadUserProfileUseCase
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
@@ -68,14 +68,14 @@ internal class MainViewModel(
                 loadUserProfileUseCase.loadUserProfile()
             } catch (error: Exception) {
                 error.rethrowCancellation()
-                Log.e("MainViewModel", "Failed to load user profile", error)
+                Timber.e(error, "Failed to load user profile")
             }
         }
     }
 
     fun dismissSplash() {
         splashState.update { false }
-        Log.d("MainViewModel", "Splash screen dismissed")
+        Timber.d("Splash screen dismissed")
     }
 
     val state: StateFlow<MainState> = combine(

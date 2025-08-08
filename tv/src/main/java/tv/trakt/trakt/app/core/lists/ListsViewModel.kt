@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.lists
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.async
@@ -12,6 +11,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_SECTION_LIMIT
 import tv.trakt.trakt.app.core.lists.usecases.GetListsMoviesWatchlistUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsShowsWatchlistUseCase
@@ -42,7 +42,6 @@ internal class ListsViewModel(
     }
 
     private fun loadData(showLoading: Boolean = true) {
-        Log.d("ListsViewModel", "Loading data")
         viewModelScope.launch {
             try {
                 if (showLoading) {
@@ -70,7 +69,7 @@ internal class ListsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.value = error
-                    Log.e("ListsViewModel", "Error loading: ${error.message}")
+                    Timber.e(error, "Error loading: ${error.message}")
                 }
             } finally {
                 loadingState.update { false }
@@ -79,7 +78,7 @@ internal class ListsViewModel(
     }
 
     fun updateShowsData() {
-        Log.d("ListsViewModel", "updateShowsData() called")
+        Timber.d("updateShowsData() called")
         viewModelScope.launch {
             try {
                 if (showsLoadedAt == null) {
@@ -92,14 +91,14 @@ internal class ListsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Log.e("ListsViewModel", "Error", error)
+                    Timber.e(error, "Error")
                 }
             }
         }
     }
 
     fun updateMoviesData() {
-        Log.d("ListsViewModel", "updateMoviesData() called")
+        Timber.d("updateMoviesData() called")
         viewModelScope.launch {
             try {
                 if (moviesLoadedAt == null) {
@@ -112,7 +111,7 @@ internal class ListsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Log.e("ListsViewModel", "Error", error)
+                    Timber.e(error, "Error")
                 }
             }
         }

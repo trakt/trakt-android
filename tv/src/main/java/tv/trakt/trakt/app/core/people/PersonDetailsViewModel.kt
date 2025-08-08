@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.people
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,6 +14,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import tv.trakt.trakt.app.common.model.Person
 import tv.trakt.trakt.app.core.people.navigation.PersonDestination
 import tv.trakt.trakt.app.core.people.usecases.GetPersonCreditsUseCase
@@ -87,7 +87,7 @@ internal class PersonDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Log.e("PersonDetailsViewModel", "Error loading person credits: ${error.message}")
+                    Timber.e("Error loading person credits: ${error.message}")
                 }
             }
         }

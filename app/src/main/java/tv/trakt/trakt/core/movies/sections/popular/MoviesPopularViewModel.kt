@@ -1,6 +1,5 @@
 package tv.trakt.trakt.core.movies.sections.popular
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
@@ -11,6 +10,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
@@ -27,7 +27,6 @@ internal class MoviesPopularViewModel(
 
     init {
         loadData()
-        Log.d("MoviesPopularViewModel", "ViewModel initialized")
     }
 
     private fun loadData() {
@@ -42,7 +41,7 @@ internal class MoviesPopularViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Log.e("MoviesPopularViewModel", "Failed to load data", error)
+                    Timber.e(error, "Failed to load data")
                 }
             } finally {
                 loadingJob.cancel()

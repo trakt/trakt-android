@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.movies
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
@@ -13,6 +12,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import tv.trakt.trakt.app.core.movies.model.AnticipatedMovie
 import tv.trakt.trakt.app.core.movies.model.TrendingMovie
 import tv.trakt.trakt.app.core.movies.usecase.GetAnticipatedMoviesUseCase
@@ -79,7 +79,7 @@ internal class MoviesViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Log.e("MoviesViewModel", error.message ?: "Unknown error")
+                    Timber.e(error, error.message ?: "Unknown error")
                 }
             } finally {
                 loadingState.update { false }

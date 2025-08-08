@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.streamings
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,6 +11,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import tv.trakt.trakt.app.common.model.SeasonEpisode
 import tv.trakt.trakt.app.core.streamings.navigation.AllStreamingsDestination
 import tv.trakt.trakt.app.core.streamings.usecase.GetAllStreamingsUseCase
@@ -57,11 +57,11 @@ internal class AllStreamingsViewModel(
                 )
                 streamingsState.update { streamings }
 
-                Log.d("AllStreamingsViewModel", "Loaded streamings: ${streamings.size}")
+                Timber.d("Loaded streamings: ${streamings.size}")
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Log.e("AllStreamingsViewModel", "Error loading streamings", error)
+                    Timber.e(error, "Error loading streamings")
                 }
             } finally {
                 loadingState.update { false }

@@ -4,13 +4,13 @@ import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
+import timber.log.Timber
 import tv.trakt.trakt.core.main.MainScreen
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -48,9 +48,9 @@ internal class MainActivity : ComponentActivity() {
     private fun updateRemoteConfig() {
         Firebase.remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                Log.d("MainActivity", "Remote Config updated: ${task.result}")
+                Timber.d("Remote Config updated: ${task.result}")
             } else {
-                Log.w("MainActivity", "Remote Config update failed!")
+                Timber.w("Remote Config update failed!")
             }
         }
     }

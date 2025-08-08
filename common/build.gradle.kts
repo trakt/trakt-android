@@ -66,4 +66,5 @@ dependencies {
     implementation(libs.koin.android.compose)
 
     implementation(libs.kotlin.immutable.collections)
+    implementation(libs.timber)
 }

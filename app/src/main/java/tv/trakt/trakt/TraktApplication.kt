@@ -10,6 +10,7 @@ import com.google.firebase.remoteconfig.remoteConfigSettings
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import timber.log.Timber
 import tv.trakt.trakt.app.TvActivity
 import tv.trakt.trakt.common.auth.di.commonAuthModule
 import tv.trakt.trakt.common.networking.di.networkingModule
@@ -23,6 +24,7 @@ internal class TraktApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         setupKoin()
+        setupTimber()
 
         FirebaseApp.initializeApp(this)
         setupFirebaseConfig()
@@ -60,6 +62,12 @@ internal class TraktApplication : Application() {
                 moviesModule,
                 moviesDataModule,
             )
+        }
+    }
+
+    fun setupTimber() {
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
         }
     }
 }

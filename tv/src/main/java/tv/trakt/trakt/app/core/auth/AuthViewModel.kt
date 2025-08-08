@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.auth
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
@@ -13,6 +12,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import tv.trakt.trakt.app.core.auth.AuthState.LoadingState.LOADING
 import tv.trakt.trakt.app.core.auth.AuthState.LoadingState.REJECTED
 import tv.trakt.trakt.app.core.auth.AuthState.LoadingState.SUCCESS
@@ -68,7 +68,7 @@ internal class AuthViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Log.e("AuthViewModel", "Error loading data", error)
+                    Timber.e(error, "Error loading data")
                 }
             } finally {
                 loadingState.update { null }
@@ -93,7 +93,7 @@ internal class AuthViewModel(
                         loadUserProfileUseCase.loadUserProfile()
                         deviceCodeState.update { null }
                         loadingState.update { SUCCESS }
-                        Log.i("AuthViewModel", "Device token received successfully")
+                        Timber.i("Device token received successfully")
                     }
 
                     is Failure -> when (state.code) {
@@ -115,7 +115,7 @@ internal class AuthViewModel(
                 error.rethrowCancellation {
                     launch { sessionManager.clear() }
                     errorState.update { error }
-                    Log.e("AuthViewModel", "Error polling device token", error)
+                    Timber.e(error, "Error polling device token")
                 }
             }
         }

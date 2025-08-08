@@ -17,20 +17,21 @@ composeBom = "2025.07.00"
 composeNavigation = "2.9.3"
 coreKtx = "1.16.0"
 datastore = "1.1.7"
-firebaseBom = "34.0.0"
+firebaseBom = "34.1.0"
+flagkit = "1.0.5"
+googleServices = "4.4.3"
 immutableCollections = "0.4.0"
 koinBom = "4.1.0"
 kotlin = "2.2.0"
-googleServices = "4.4.3"
 kotlinx-datetime = "0.7.1"
 ktor = "3.2.3"
 material = "1.12.0"
 openapi = "7.14.0"
 qr = "1.0.1"
+timber = "5.0.1"
 tvFoundation = "1.0.0-alpha12"
 tvMaterial = "1.0.1"
 youtube-player = "12.1.2"
-flagkit = "1.0.5"
 
 # Testing Libraries
 
@@ -69,6 +70,7 @@ qr-compose = { group = "com.lightspark", name = "compose-qr-code", version.ref =
 youtube-player = { group = "com.pierfrancescosoffritti.androidyoutubeplayer", name = "core", version.ref = "youtube-player" }
 youtube-player-ui = { group = "com.pierfrancescosoffritti.androidyoutubeplayer", name = "custom-ui", version.ref = "youtube-player" }
 flagkit = { module = "com.github.murgupluoglu:flagkit-android", version.ref = "flagkit" }
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }

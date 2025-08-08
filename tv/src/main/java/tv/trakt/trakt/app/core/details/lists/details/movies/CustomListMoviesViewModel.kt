@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.details.lists.details.movies
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,6 +12,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import tv.trakt.trakt.app.core.details.lists.details.CustomListDetailsConfig.CUSTOM_LIST_PAGE_LIMIT
 import tv.trakt.trakt.app.core.details.lists.details.movies.navigation.CustomListMoviesDestination
 import tv.trakt.trakt.app.core.details.lists.details.movies.usecases.GetListItemsUseCase
@@ -52,7 +52,7 @@ internal class CustomListMoviesViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Log.e("CustomListMoviesViewModel", "Error loading movies for list: ${destination.listId} $error")
+                    Timber.e(error, "Error loading movies for list: ${destination.listId} $error")
                 }
             } finally {
                 loadingState.update { false }
@@ -82,10 +82,7 @@ internal class CustomListMoviesViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Log.e(
-                        "CustomListMoviesViewModel",
-                        "Error loading next page of movies for list: ${destination.listId} $error",
-                    )
+                    Timber.e("Error loading next page of movies for list: ${destination.listId} $error")
                 }
             } finally {
                 loadingPageState.update { false }

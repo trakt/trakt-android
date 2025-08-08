@@ -1,12 +1,12 @@
 package tv.trakt.trakt.helpers
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import timber.log.Timber
 
 /**
  * A [NestedScrollConnection] that handles the collapsing behavior of a top bar.
@@ -41,7 +41,7 @@ internal class CollapsingBarConnection(
         }
 
         if (!scrolledUp && newBarOffset <= -barMaxHeight) {
-            Log.d("CollapsingBarConnection", "Scrolled up")
+            Timber.d("Scrolled up")
             onScrollUp()
             scrolledUp = true
         }

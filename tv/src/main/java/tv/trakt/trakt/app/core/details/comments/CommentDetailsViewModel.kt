@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.details.comments
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
@@ -13,6 +12,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import tv.trakt.trakt.app.common.model.Comment
 import tv.trakt.trakt.app.core.details.comments.usecases.GetCommentRepliesUseCase
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
@@ -39,7 +39,7 @@ internal class CommentDetailsViewModel(
                 commentRepliesState.update { replies }
             } catch (e: Exception) {
                 e.rethrowCancellation {
-                    Log.e("CommentDetailsViewModel", "Error loading comment replies", e)
+                    Timber.e(e, "Error loading comment replies")
                 }
             } finally {
                 loadingJob?.cancel()

@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.details.episode
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,6 +14,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.common.model.CastPerson
 import tv.trakt.trakt.app.common.model.Comment
@@ -132,7 +132,7 @@ internal class EpisodeDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Log.e("EpisodeDetailsViewModel", "Error loading details: ${error.message}")
+                    Timber.e("Error loading details: ${error.message}")
                 }
             }
         }
@@ -152,7 +152,7 @@ internal class EpisodeDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Log.e("EpisodeDetailsViewModel", "Error loading external ratings: ${error.message}")
+                    Timber.e("Error loading external ratings: ${error.message}")
                 }
             }
         }
@@ -192,7 +192,7 @@ internal class EpisodeDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Log.e("EpisodeDetailsViewModel", "Error loading streaming services: ${error.message}")
+                    Timber.e("Error loading streaming services: ${error.message}")
                     episodeStreamingsState.update { StreamingsState() }
                 }
             }
@@ -210,7 +210,7 @@ internal class EpisodeDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Log.e("EpisodeDetailsViewModel", "Error loading cast and crew: ${error.message}")
+                    Timber.e("Error loading cast and crew: ${error.message}")
                 }
             }
         }
@@ -227,7 +227,7 @@ internal class EpisodeDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Log.e("EpisodeDetailsViewModel", "Error loading season: ${error.message}")
+                    Timber.e("Error loading season: ${error.message}")
                 }
             }
         }
@@ -258,7 +258,7 @@ internal class EpisodeDetailsViewModel(
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
                     episodeHistoryState.update { HistoryState() }
-                    Log.e("EpisodeDetailsViewModel", "Error loading history: ${error.message}")
+                    Timber.e("Error loading history: ${error.message}")
                 }
             }
         }
@@ -275,7 +275,7 @@ internal class EpisodeDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Log.e("EpisodeDetailsViewModel", "Error loading comments: ${error.message}")
+                    Timber.e(error, "Error loading comments: ${error.message}")
                 }
             }
         }
@@ -289,7 +289,7 @@ internal class EpisodeDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Log.e("EpisodeDetailsViewModel", "Error loading related shows: ${error.message}")
+                    Timber.e("Error loading related shows: ${error.message}")
                 }
             }
         }
@@ -318,7 +318,7 @@ internal class EpisodeDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Log.e("EpisodeDetailsViewModel", "Error adding history: ${error.message}")
+                    Timber.e("Error adding history: ${error.message}")
                 }
             }
         }
@@ -347,7 +347,7 @@ internal class EpisodeDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Log.e("EpisodeDetailsViewModel", "Error removing history: ${error.message}")
+                    Timber.e("Error removing history: ${error.message}")
                 }
             }
         }

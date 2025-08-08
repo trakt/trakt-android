@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.details.show
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,6 +17,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.common.model.CastPerson
 import tv.trakt.trakt.app.common.model.Comment
@@ -117,7 +117,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Log.e("ShowDetailsViewModel", "Error loading show details: ${error.message}")
+                    Timber.e("Error loading show details: ${error.message}")
                 }
             }
         }
@@ -132,7 +132,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Log.e("ShowDetailsViewModel", "Error loading external ratings: ${error.message}")
+                    Timber.e("Error loading external ratings: ${error.message}")
                 }
             }
         }
@@ -147,7 +147,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Log.e("ShowDetailsViewModel", "Error loading extra videos: ${error.message}")
+                    Timber.e("Error loading extra videos: ${error.message}")
                 }
             }
         }
@@ -162,7 +162,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Log.e("ShowDetailsViewModel", "Error loading cast and crew: ${error.message}")
+                    Timber.e("Error loading cast and crew: ${error.message}")
                 }
             }
         }
@@ -180,7 +180,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Log.e("ShowDetailsViewModel", "Error loading seasons: ${error.message}")
+                    Timber.e("Error loading seasons: ${error.message}")
                 }
             }
         }
@@ -222,7 +222,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Log.e("ShowDetailsViewModel", "Error loading season: ${error.message}")
+                    Timber.e("Error loading season: ${error.message}")
                     showSeasonsState.update { it.copy(isSeasonLoading = false) }
                 }
             } finally {
@@ -240,7 +240,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Log.e("ShowDetailsViewModel", "Error loading related shows: ${error.message}")
+                    Timber.e("Error loading related shows: ${error.message}")
                 }
             }
         }
@@ -255,7 +255,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Log.e("ShowDetailsViewModel", "Error loading comments: ${error.message}")
+                    Timber.e("Error loading comments: ${error.message}")
                 }
             }
         }
@@ -276,7 +276,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Log.e("ShowDetailsViewModel", "Error loading lists: ${error.message}")
+                    Timber.e(error, "Error loading lists: ${error.message}")
                 }
             }
         }
@@ -315,7 +315,7 @@ internal class ShowDetailsViewModel(
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
                     showStreamingsState.update { StreamingsState() }
-                    Log.e("ShowDetailsViewModel", "Error loading streaming services: ${error.message}")
+                    Timber.e("Error loading streaming services: ${error.message}")
                 }
             }
         }
@@ -356,7 +356,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Log.e("ShowDetailsViewModel", "Error loading collection: ${error.message}")
+                    Timber.e("Error loading collection: ${error.message}")
                     showCollectionState.update { CollectionState() }
                 }
             }
@@ -391,7 +391,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Log.e("ShowDetailsViewModel", "Error toggling history: ${error.message}")
+                    Timber.e("Error toggling history: ${error.message}")
                 }
             }
         }
@@ -422,7 +422,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Log.e("ShowDetailsViewModel", "Error toggling watchlist: ${error.message}")
+                    Timber.e("Error toggling watchlist: ${error.message}")
                 }
             }
         }

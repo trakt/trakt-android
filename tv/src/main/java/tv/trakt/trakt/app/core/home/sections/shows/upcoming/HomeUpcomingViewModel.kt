@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.home.sections.shows.upcoming
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,6 +9,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.usecases.GetUpcomingUseCase
 import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncLocalDataSource
 import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalDataSource
@@ -47,7 +47,7 @@ internal class HomeUpcomingViewModel(
                 loadedAt = nowUtc()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Log.e("HomeUpcomingViewModel", "Failed to load data", error)
+                    Timber.e(error, "Failed to load data")
                     errorState.update { error }
                 }
             } finally {
@@ -57,7 +57,7 @@ internal class HomeUpcomingViewModel(
     }
 
     fun updateData() {
-        Log.d("HomeUpcomingViewModel", "updateData called")
+        Timber.d("updateData called")
         viewModelScope.launch {
             try {
                 if (loadedAt == null) {
@@ -80,11 +80,11 @@ internal class HomeUpcomingViewModel(
                     localEpisodeHistoryUpdatedAt?.isAfter(loadedAt) == true
                 ) {
                     loadData(showLoading = false)
-                    Log.d("HomeUpcomingViewModel", "Updating upcoming shows")
+                    Timber.d("Updating upcoming shows")
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Log.e("HomeUpcomingViewModel", "Error", error)
+                    Timber.e(error, "Error")
                 }
             }
         }
