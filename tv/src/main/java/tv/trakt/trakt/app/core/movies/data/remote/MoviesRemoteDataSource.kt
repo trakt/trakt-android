@@ -13,7 +13,7 @@ import tv.trakt.trakt.common.networking.RecommendedMovieDto
 import tv.trakt.trakt.common.networking.StreamingDto
 
 internal interface MoviesRemoteDataSource {
-    suspend fun getTrendingMovies(): List<TrendingMovieDto>
+    suspend fun getTrendingMovies(limit: Int): List<TrendingMovieDto>
 
     suspend fun getMonthlyHotMovies(): List<TrendingMovieDto>
 

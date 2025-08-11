@@ -13,8 +13,8 @@ internal class GetTrendingMoviesUseCase(
     private val remoteSource: MoviesRemoteDataSource,
     private val localSource: MovieLocalDataSource,
 ) {
-    suspend fun getTrendingMovies(): ImmutableList<TrendingMovie> {
-        return remoteSource.getTrendingMovies()
+    suspend fun getTrendingMovies(limit: Int): ImmutableList<TrendingMovie> {
+        return remoteSource.getTrendingMovies(limit)
             .asyncMap {
                 TrendingMovie(
                     watchers = it.watchers,

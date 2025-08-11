@@ -33,6 +33,12 @@
     <string name="comment_likes">%d likes</string>
     <string name="comment_replies">%d replies</string>
 
+    <string name="header_trending">Trending</string>
+    <string name="header_trending_shows">Trending Shows</string>
+    <string name="header_trending_movies">Trending Movies</string>
+    <string name="header_hot_month">Hot This Month</string>
+    <string name="header_most_popular">Most Popular</string>
+    <string name="header_most_anticipated">Most Anticipated</string>
     <string name="header_movies_available_now">Available Now</string>
     <string name="header_movies_coming_soon">Coming Soon</string>
     <string name="header_movies_watchlist">Movies Watchlist</string>
@@ -51,6 +57,9 @@
     <string name="header_recently_watched">Recently Watched</string>
     <string name="header_favorite_shows">Favorite Shows</string>
     <string name="header_favorite_movies">Favorite Movies</string>
+    <string name="header_recommended">Recommendations</string>
+    <string name="header_search_shows_recents">Recently Searched Shows</string>
+    <string name="header_search_movies_recents">Recently Searched Movies</string>
 
     <string name="header_streaming_subscriptions">Subscription</string>
     <string name="header_streaming_free">Free</string>
@@ -66,6 +75,7 @@
     <string name="info_watchlist_removed">Removed from watchlist.</string>
     <string name="info_generic_empty_list">List is currently empty.</string>
     <string name="info_watchnow_long_press">Long press for more</string>
+    <string name="info_search_placeholder">Search shows &amp; movies…</string>
 
     <string name="error_generic_title">Oops! Something went wrong…</string>
     <string name="error_generic_message">Please try again in a few moments.</string>

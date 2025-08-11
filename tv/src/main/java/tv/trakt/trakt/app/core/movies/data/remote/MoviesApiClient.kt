@@ -18,10 +18,10 @@ internal class MoviesApiClient(
     private val api: MoviesApi,
     private val recommendationsApi: RecommendationsApi,
 ) : MoviesRemoteDataSource {
-    override suspend fun getTrendingMovies(): List<TrendingMovieDto> {
+    override suspend fun getTrendingMovies(limit: Int): List<TrendingMovieDto> {
         val response = api.getMoviesTrending(
             extended = "full,streaming_ids,cloud9,colors",
-            limit = 30,
+            limit = limit,
             watchnow = null,
             genres = null,
             years = null,

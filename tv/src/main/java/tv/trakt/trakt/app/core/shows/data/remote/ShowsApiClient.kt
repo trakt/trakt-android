@@ -19,10 +19,10 @@ internal class ShowsApiClient(
     private val api: ShowsApi,
     private val recommendationsApi: RecommendationsApi,
 ) : ShowsRemoteDataSource {
-    override suspend fun getTrendingShows(): List<TrendingShowDto> {
+    override suspend fun getTrendingShows(limit: Int): List<TrendingShowDto> {
         val response = api.getShowsTrending(
             extended = "full,streaming_ids,cloud9,colors",
-            limit = 30,
+            limit = limit,
             watchnow = null,
             genres = null,
             years = null,

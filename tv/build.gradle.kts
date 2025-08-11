@@ -72,6 +72,7 @@ dependencies {
     implementation(libs.koin.android.compose)
 
     implementation(libs.kotlin.immutable.collections)
+    implementation(libs.kotlinx.serialization.proto)
     implementation(libs.kotlinx.datetime)
     implementation(libs.qr.compose)
 

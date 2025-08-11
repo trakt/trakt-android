@@ -51,7 +51,7 @@ internal class MoviesViewModel(
             try {
                 loadingState.update { true }
                 coroutineScope {
-                    val trendingMoviesAsync = async { getTrendingMoviesUseCase.getTrendingMovies() }
+                    val trendingMoviesAsync = async { getTrendingMoviesUseCase.getTrendingMovies(10) }
                     val hotMoviesAsync = async { getHotMoviesUseCase.getHotMovies() }
                     val popularMoviesAsync = async { getPopularMoviesUseCase.getPopularMovies() }
                     val anticipatedMoviesAsync = async { getAnticipatedMoviesUseCase.getAnticipatedMovies() }

@@ -1,68 +1,258 @@
 package tv.trakt.trakt.app.core.search
 
-import androidx.compose.foundation.focusable
+import TraktTextField
+import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.foundation.focusGroup
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.focus.focusRestorer
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.tv.material3.Text
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import tv.trakt.trakt.app.R
+import tv.trakt.trakt.app.common.model.Images.Size
+import tv.trakt.trakt.app.common.model.TraktId
+import tv.trakt.trakt.app.core.details.ui.BackdropImage
+import tv.trakt.trakt.app.core.movies.model.Movie
+import tv.trakt.trakt.app.core.search.SearchState.State
+import tv.trakt.trakt.app.core.search.views.SearchLoadingView
+import tv.trakt.trakt.app.core.search.views.SearchMoviesView
+import tv.trakt.trakt.app.core.search.views.SearchShowsView
+import tv.trakt.trakt.app.core.shows.model.Show
+import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import kotlin.collections.isNullOrEmpty
+
+private val sections = listOf(
+    "input",
+    "shows",
+    "movies",
+)
 
 @Composable
-internal fun SearchScreen(modifier: Modifier = Modifier) {
-    val focusRequester = remember { FocusRequester() }
+internal fun SearchScreen(
+    viewModel: SearchViewModel,
+    onShowClick: (TraktId) -> Unit,
+    onMovieClick: (TraktId) -> Unit,
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        focusRequester.requestFocus()
+    LaunchedEffect(state) {
+        state.navigateShow?.let {
+            viewModel.clearNavigation()
+            onShowClick(it.ids.trakt)
+        }
+        state.navigateMovie?.let {
+            viewModel.clearNavigation()
+            onMovieClick(it.ids.trakt)
+        }
     }
 
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier.fillMaxSize(),
-    ) {
-        Placeholder(
-            modifier = Modifier
-                .focusRequester(focusRequester)
-                .focusable(enabled = true),
-        )
-    }
+    SearchScreenContent(
+        state = state,
+        onSearchQuery = viewModel::searchQuery,
+        onShowClick = viewModel::navigateToShow,
+        onMovieClick = viewModel::navigateToMovie,
+    )
 }
 
 @Composable
-fun Placeholder(modifier: Modifier = Modifier) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
+private fun SearchScreenContent(
+    state: SearchState,
+    modifier: Modifier = Modifier,
+    onSearchQuery: (String) -> Unit = {},
+    onShowClick: (Show) -> Unit = {},
+    onMovieClick: (Movie) -> Unit = {},
+) {
+    val searchInputState = rememberTextFieldState("")
+
+    var focusedSection by rememberSaveable { mutableStateOf<String?>(null) }
+    var focusedImageUrl by remember { mutableStateOf<String?>(null) }
+
+    val focusRequesters = remember {
+        sections.associateBy(
+            keySelector = { it },
+            valueTransform = { FocusRequester() },
+        )
+    }
+
+    LaunchedEffect(Unit) {
+        Log.d("SearchScreen", "Requesting focus for input")
+        focusRequesters["input"]?.requestSafeFocus()
+    }
+
+    LaunchedEffect(searchInputState.text) {
+        onSearchQuery(searchInputState.text.toString())
+    }
+
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(TraktTheme.colors.backgroundPrimary),
     ) {
-        Text(
-            text = "Search Screen",
-            color = TraktTheme.colors.textPrimary,
-            style = TraktTheme.typography.heading4,
-            modifier = modifier,
+        BackdropImage(
+            imageUrl = focusedImageUrl ?: state.backgroundUrl,
+            saturation = 0F,
+            crossfade = true,
         )
-        Text(
-            text = "\"I am looking for something.\nI don’t know what it is, but I know I have to find it.\"",
-            color = TraktTheme.colors.textPrimary.copy(alpha = 0.5F),
-            style = TraktTheme.typography.heading5.copy(fontSize = 20.sp),
-            fontStyle = FontStyle.Italic,
-            modifier = Modifier.padding(top = 24.dp),
-        )
-        Text(
-            text = "- The Secret Life of Walter Mitty (2013)",
-            color = TraktTheme.colors.textPrimary.copy(alpha = 0.5F),
-            style = TraktTheme.typography.heading5.copy(fontSize = 14.sp),
-            modifier = Modifier.padding(top = 8.dp),
-        )
+
+        Column(
+            verticalArrangement = spacedBy(TraktTheme.spacing.mainRowVerticalSpace),
+            modifier = Modifier
+                .focusProperties {
+                    onEnter = {
+                        focusRequesters[focusedSection]?.requestSafeFocus()
+                    }
+                }
+                .focusRestorer()
+                .focusGroup(),
+        ) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .padding(
+                        top = TraktTheme.spacing.mainContentVerticalSpace,
+                    )
+                    .fillMaxWidth(),
+            ) {
+                TraktTextField(
+                    state = searchInputState,
+                    placeholder = stringResource(R.string.info_search_placeholder),
+                    icon = painterResource(R.drawable.ic_search_tv),
+                    loading = state.searching,
+                    modifier = Modifier
+                        .padding(top = 12.dp)
+                        .width(400.dp)
+                        .onFocusChanged {
+                            if (it.isFocused) {
+                                focusedSection = "input"
+                            }
+                        }
+                        .focusRequester(focusRequesters.getValue("input")),
+                )
+            }
+
+            when {
+                state.searching && (state.state == State.RECENTS || state.state == State.TRENDING) -> {
+                    SearchLoadingView(
+                        header = stringResource(R.string.shows),
+                        focusRequesters = focusRequesters,
+                    )
+                    SearchLoadingView(
+                        header = stringResource(R.string.movies),
+                        focusRequesters = focusRequesters,
+                    )
+                }
+                state.state == State.RECENTS && state.recentsResult != null -> {
+                    with(state.recentsResult) {
+                        if (!shows.isNullOrEmpty()) {
+                            SearchShowsView(
+                                header = stringResource(R.string.header_search_shows_recents),
+                                items = shows,
+                                focusRequesters = focusRequesters,
+                                onFocused = {
+                                    focusedSection = "shows"
+                                    focusedImageUrl = it?.images?.getFanartUrl(Size.FULL)
+                                },
+                                onClick = onShowClick,
+                            )
+                        }
+
+                        if (!movies.isNullOrEmpty()) {
+                            SearchMoviesView(
+                                header = stringResource(R.string.header_search_movies_recents),
+                                items = movies,
+                                focusRequesters = focusRequesters,
+                                onFocused = {
+                                    focusedSection = "movies"
+                                    focusedImageUrl = it?.images?.getFanartUrl(Size.FULL)
+                                },
+                                onClick = onMovieClick,
+                            )
+                        }
+                    }
+                }
+                state.state == State.TRENDING && state.trendingResult != null -> {
+                    with(state.trendingResult) {
+                        if (!shows.isNullOrEmpty()) {
+                            SearchShowsView(
+                                header = stringResource(R.string.header_trending_shows),
+                                items = shows,
+                                focusRequesters = focusRequesters,
+                                onFocused = {
+                                    focusedSection = "shows"
+                                    focusedImageUrl = it?.images?.getFanartUrl(Size.FULL)
+                                },
+                                onClick = onShowClick,
+                            )
+                        }
+
+                        if (!movies.isNullOrEmpty()) {
+                            SearchMoviesView(
+                                header = stringResource(R.string.header_trending_movies),
+                                items = movies,
+                                focusRequesters = focusRequesters,
+                                onFocused = {
+                                    focusedSection = "movies"
+                                    focusedImageUrl = it?.images?.getFanartUrl(Size.FULL)
+                                },
+                                onClick = onMovieClick,
+                            )
+                        }
+                    }
+                }
+            }
+
+            with(state.searchResult) {
+                if (!this?.shows.isNullOrEmpty()) {
+                    SearchShowsView(
+                        header = stringResource(R.string.shows),
+                        items = shows,
+                        focusRequesters = focusRequesters,
+                        onFocused = {
+                            focusedSection = "shows"
+                            focusedImageUrl = it?.images?.getFanartUrl(Size.FULL)
+                        },
+                        onClick = onShowClick,
+                    )
+                }
+
+                if (!this?.movies.isNullOrEmpty()) {
+                    SearchMoviesView(
+                        header = stringResource(R.string.movies),
+                        items = movies,
+                        focusRequesters = focusRequesters,
+                        onFocused = {
+                            focusedSection = "movies"
+                            focusedImageUrl = it?.images?.getFanartUrl(Size.FULL)
+                        },
+                        onClick = onMovieClick,
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -72,8 +262,10 @@ fun Placeholder(modifier: Modifier = Modifier) {
     backgroundColor = 0xFF131517,
 )
 @Composable
-private fun MainScreenPreview() {
+private fun Preview() {
     TraktTheme {
-        SearchScreen()
+        SearchScreenContent(
+            state = SearchState(),
+        )
     }
 }

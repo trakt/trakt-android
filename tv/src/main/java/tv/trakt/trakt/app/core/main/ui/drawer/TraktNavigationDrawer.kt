@@ -61,6 +61,7 @@ import tv.trakt.trakt.app.core.lists.navigation.ListsDestination
 import tv.trakt.trakt.app.core.main.model.TraktDrawerItem
 import tv.trakt.trakt.app.core.movies.navigation.MoviesDestination
 import tv.trakt.trakt.app.core.profile.navigation.ProfileDestination
+import tv.trakt.trakt.app.core.search.navigation.SearchDestination
 import tv.trakt.trakt.app.core.shows.navigation.ShowsDestination
 import tv.trakt.trakt.app.helpers.extensions.onClick
 import tv.trakt.trakt.app.helpers.preview.PreviewData
@@ -394,6 +395,12 @@ private fun Preview() {
 }
 
 private val drawerItems = listOf(
+    TraktDrawerItem(
+        destination = SearchDestination,
+        label = R.string.search,
+        iconOn = R.drawable.ic_search_tv,
+        iconOff = R.drawable.ic_search_tv,
+    ),
     TraktDrawerItem(
         destination = HomeDestination,
         label = RCommon.string.home,

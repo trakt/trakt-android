@@ -1,16 +1,7 @@
 package tv.trakt.trakt.common.auth.di
 
-import android.content.Context
 import androidx.datastore.core.DataStore
-import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
-import androidx.datastore.preferences.SharedPreferencesMigration
-import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.emptyPreferences
-import androidx.datastore.preferences.preferencesDataStoreFile
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -45,22 +36,8 @@ val commonAuthModule = module {
 
     single<SessionManager> {
         DefaultSessionManager(
-            tokenProvider = get<TokenProvider>(),
+            tokenProvider = get(),
             dataStore = get(named(SESSION_PREFERENCES)),
         )
     }
-}
-
-private fun createStore(
-    context: Context,
-    key: String,
-): DataStore<Preferences> {
-    return PreferenceDataStoreFactory.create(
-        corruptionHandler = ReplaceFileCorruptionHandler(
-            produceNewData = { emptyPreferences() },
-        ),
-        migrations = listOf(SharedPreferencesMigration(context, key)),
-        scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
-        produceFile = { context.preferencesDataStoreFile(key) },
-    )
 }

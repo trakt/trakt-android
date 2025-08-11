@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.core.graphics.toColorInt
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.model.Movie.Companion
 import tv.trakt.trakt.common.networking.MovieDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
@@ -13,12 +14,15 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 
 @Immutable
+@kotlinx.serialization.Serializable
 data class Movie(
     val ids: Ids,
     val title: String,
     val overview: String?,
+    @kotlinx.serialization.Serializable(LocalDateSerializer::class)
     val released: LocalDate?,
     val year: Int?,
+    @Serializable(ImmutableListSerializer::class)
     val genres: ImmutableList<String>,
     val images: Images?,
     val colors: MediaColors?,

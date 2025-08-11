@@ -1,0 +1,131 @@
+package tv.trakt.trakt.app.core.search.views
+
+import InfoChip
+import androidx.compose.foundation.focusGroup
+import androidx.compose.foundation.focusable
+import androidx.compose.foundation.layout.Arrangement.spacedBy
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.tv.material3.Text
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
+import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
+import tv.trakt.trakt.app.core.movies.model.Movie
+import tv.trakt.trakt.app.helpers.extensions.durationFormat
+import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
+import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
+import tv.trakt.trakt.app.ui.theme.TraktTheme
+
+@Composable
+internal fun SearchMoviesView(
+    header: String,
+    items: ImmutableList<Movie>?,
+    focusRequesters: Map<String, FocusRequester>,
+    onFocused: (Movie?) -> Unit,
+    onClick: (Movie) -> Unit,
+) {
+    val state = rememberLazyListState()
+    var currentItems by rememberSaveable { mutableStateOf<Int?>(null) }
+
+    LaunchedEffect(items) {
+        val itemsHash = items.hashCode()
+        if (itemsHash != currentItems) {
+            currentItems = itemsHash
+            state.scrollToItem(0)
+        }
+    }
+
+    val contentPadding = PaddingValues(
+        start = TraktTheme.spacing.mainContentStartSpace,
+        end = TraktTheme.spacing.mainContentEndSpace,
+    )
+
+    Column(
+        verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
+        modifier = Modifier
+            .focusProperties {
+                onEnter = {
+                    focusRequesters.getValue("movies").requestSafeFocus()
+                }
+            }
+            .focusGroup()
+            .focusable(),
+    ) {
+        Text(
+            text = header,
+            color = TraktTheme.colors.textPrimary,
+            style = TraktTheme.typography.heading5,
+            modifier = Modifier.padding(contentPadding),
+        )
+
+        ContentList(
+            items = { items ?: emptyList<Movie>().toImmutableList() },
+            state = state,
+            onFocused = onFocused,
+            onClick = onClick,
+            contentPadding = contentPadding,
+            focusRequesters = focusRequesters,
+        )
+    }
+}
+
+@Composable
+private fun ContentList(
+    items: () -> ImmutableList<Movie>,
+    state: LazyListState,
+    onFocused: (Movie?) -> Unit,
+    onClick: (Movie) -> Unit,
+    contentPadding: PaddingValues,
+    focusRequesters: Map<String, FocusRequester>,
+) {
+    PositionFocusLazyRow(
+        state = state,
+        contentPadding = contentPadding,
+        modifier = Modifier
+            .focusRequester(focusRequesters.getValue("movies")),
+    ) {
+        itemsIndexed(
+            items = items(),
+            key = { _, item -> item.ids.trakt.value },
+        ) { index, item ->
+            HorizontalMediaCard(
+                title = item.title,
+                containerImageUrl = item.images?.getFanartUrl(),
+                contentImageUrl = item.images?.getLogoUrl(),
+                paletteColor = item.colors?.colors?.second,
+                onClick = { onClick(item) },
+                footerContent = {
+                    item.runtime?.let {
+                        InfoChip(
+                            text = it.inWholeMinutes.durationFormat(),
+                        )
+                    }
+                },
+                modifier = Modifier
+                    .onFocusChanged {
+                        if (it.isFocused) {
+                            onFocused(item)
+                        }
+                    },
+            )
+        }
+
+        emptyFocusListItems()
+    }
+}

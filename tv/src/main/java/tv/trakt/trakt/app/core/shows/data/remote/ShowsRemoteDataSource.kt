@@ -14,7 +14,7 @@ import tv.trakt.trakt.common.networking.ShowDto
 import tv.trakt.trakt.common.networking.StreamingDto
 
 internal interface ShowsRemoteDataSource {
-    suspend fun getTrendingShows(): List<TrendingShowDto>
+    suspend fun getTrendingShows(limit: Int): List<TrendingShowDto>
 
     suspend fun getMonthlyHotShows(): List<TrendingShowDto>
 

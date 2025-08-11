@@ -72,6 +72,7 @@ import tv.trakt.trakt.app.core.profile.sections.favorites.shows.viewall.navigati
 import tv.trakt.trakt.app.core.profile.sections.favorites.shows.viewall.navigation.profileFavoriteShowsViewAllScreen
 import tv.trakt.trakt.app.core.profile.sections.history.viewall.navigation.navigateToProfileHistoryViewAll
 import tv.trakt.trakt.app.core.profile.sections.history.viewall.navigation.profileHistoryViewAllScreen
+import tv.trakt.trakt.app.core.search.navigation.searchScreen
 import tv.trakt.trakt.app.core.shows.navigation.showsScreen
 import tv.trakt.trakt.app.core.splash.SplashScreen
 import tv.trakt.trakt.app.core.streamings.navigation.allStreamingsScreen
@@ -212,6 +213,10 @@ private fun MainNavHost(
         with(navController) {
             authScreen(
                 onAuthorized = onAuthorized,
+            )
+            searchScreen(
+                onNavigateToShow = { navigateToShow(it) },
+                onNavigateToMovie = { navigateToMovie(it) },
             )
             homeScreen(
                 onNavigateToAuth = { navigateToAuth() },

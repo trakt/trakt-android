@@ -31,6 +31,7 @@ internal val DarkColors: TraktColors = TraktColors(
     commentReplyContainer = Shade900,
     customListContainer = Shade920,
     customOfficialListContainer = Purple900,
+    inputContainer = Shade940,
     // Navigation
     navigationBackground = Color(0xF52E3337),
     navigationItemOn = Purple400,
@@ -64,6 +65,7 @@ internal data class TraktColors(
     val commentReplyContainer: Color = Color.Unspecified,
     val customListContainer: Color = Color.Unspecified,
     val customOfficialListContainer: Color = Color.Unspecified,
+    val inputContainer: Color = Color.Unspecified,
     // Buttons
     val primaryButtonContainer: Color = Color.Unspecified,
     val primaryButtonContainerDisabled: Color = Color.Unspecified,

@@ -4,6 +4,7 @@ import androidx.compose.foundation.focusable
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaSkeletonCard
 
@@ -15,5 +16,11 @@ internal fun LazyListScope.emptyFocusListItems() {
                 .focusProperties { canFocus = false }
                 .focusable(false),
         )
+    }
+}
+
+internal fun FocusRequester.requestSafeFocus() {
+    runCatching {
+        requestFocus()
     }
 }

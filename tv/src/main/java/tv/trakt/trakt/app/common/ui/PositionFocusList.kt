@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -24,6 +26,7 @@ import tv.trakt.trakt.app.ui.theme.TraktTheme
 @Composable
 internal fun PositionFocusLazyRow(
     modifier: Modifier = Modifier,
+    state: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues = PaddingValues(),
     horizontalArrangement: Arrangement.Horizontal = spacedBy(TraktTheme.spacing.mainRowSpace),
     mainContentStart: Dp = TraktTheme.spacing.mainContentStartSpace,
@@ -31,9 +34,10 @@ internal fun PositionFocusLazyRow(
 ) {
     PositionFocusList(
         mainContentStart = mainContentStart,
-        modifier = modifier
+        modifier = modifier,
     ) { modifier ->
         LazyRow(
+            state = state,
             modifier = modifier.fillMaxWidth(),
             horizontalArrangement = horizontalArrangement,
             contentPadding = contentPadding,

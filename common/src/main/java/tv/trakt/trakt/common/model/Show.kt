@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.core.graphics.toColorInt
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.Show.Companion
 import tv.trakt.trakt.common.networking.RecommendedShowDto
@@ -14,12 +15,15 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 
 @Immutable
+@Serializable
 data class Show(
     val ids: Ids,
     val title: String,
     val overview: String?,
+    @Serializable(ZonedDateTimeSerializer::class)
     val released: ZonedDateTime?,
     val year: Int?,
+    @Serializable(ImmutableListSerializer::class)
     val genres: ImmutableList<String>,
     val images: Images?,
     val colors: MediaColors?,

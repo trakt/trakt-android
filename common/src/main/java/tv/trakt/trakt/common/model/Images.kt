@@ -3,17 +3,28 @@ package tv.trakt.trakt.common.model
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.networking.ImagesDto
 
+private val emptyStringList = emptyList<String>().toImmutableList()
+
 @Immutable
+@Serializable
 data class Images(
-    val fanart: ImmutableList<String> = emptyList<String>().toImmutableList(),
-    val poster: ImmutableList<String> = emptyList<String>().toImmutableList(),
-    val posters: ImmutableList<String> = emptyList<String>().toImmutableList(),
-    val logo: ImmutableList<String> = emptyList<String>().toImmutableList(),
-    val thumb: ImmutableList<String> = emptyList<String>().toImmutableList(),
-    val headshot: ImmutableList<String> = emptyList<String>().toImmutableList(),
-    val screenshot: ImmutableList<String> = emptyList<String>().toImmutableList(),
+    @Serializable(with = ImmutableListSerializer::class)
+    val fanart: ImmutableList<String> = emptyStringList,
+    @Serializable(with = ImmutableListSerializer::class)
+    val poster: ImmutableList<String> = emptyStringList,
+    @Serializable(with = ImmutableListSerializer::class)
+    val posters: ImmutableList<String> = emptyStringList,
+    @Serializable(with = ImmutableListSerializer::class)
+    val logo: ImmutableList<String> = emptyStringList,
+    @Serializable(with = ImmutableListSerializer::class)
+    val thumb: ImmutableList<String> = emptyStringList,
+    @Serializable(with = ImmutableListSerializer::class)
+    val headshot: ImmutableList<String> = emptyStringList,
+    @Serializable(with = ImmutableListSerializer::class)
+    val screenshot: ImmutableList<String> = emptyStringList,
 ) {
     fun getFanartUrl(size: Size = Size.MEDIUM): String? {
         return fanart.firstOrNull()?.let {
