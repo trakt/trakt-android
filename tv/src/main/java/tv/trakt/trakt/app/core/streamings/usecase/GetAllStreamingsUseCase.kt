@@ -36,7 +36,7 @@ private val popularCountries = mutableListOf(
     "au",
     "nl",
     "mx",
-    "sg"
+    "sg",
 )
 
 private val popularServices = setOf(
@@ -221,14 +221,16 @@ internal class GetAllStreamingsUseCase(
             it.country
         }
 
-        return resultMap.mapValues {
-            it.value
+        return resultMap.mapValues { entry ->
+            entry.value
                 .sortedWith(servicesComparator)
                 .groupBy { service -> service.source }
                 .map { (source, rowServices) ->
                     StreamingServiceRow(
                         source = source,
-                        services = rowServices.sortedWith(rowComparator)
+                        services = rowServices
+                            .distinctBy { it.country }
+                            .sortedWith(rowComparator),
                     )
                 }
         }
