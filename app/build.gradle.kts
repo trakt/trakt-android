@@ -78,6 +78,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.android.material)
     implementation(libs.androidx.navigation)
+    implementation(libs.androidx.datastore)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.config)

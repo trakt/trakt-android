@@ -3,7 +3,7 @@ package tv.trakt.trakt.ui.components.buttons
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -44,7 +44,7 @@ internal fun PrimaryButton(
             end = 12.dp,
         ),
         modifier = modifier
-            .heightIn(max = 42.dp),
+            .height(42.dp),
         shape = RoundedCornerShape(12.dp),
         colors = buttonColors(
             containerColor = containerColor,
@@ -65,8 +65,7 @@ internal fun PrimaryButton(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = if (icon != null || loading) TextAlign.Start else TextAlign.Center,
-                modifier = Modifier
-                    .weight(1F),
+                modifier = Modifier,
             )
 
             when {

@@ -36,6 +36,7 @@ import tv.trakt.trakt.core.movies.navigation.moviesScreen
 import tv.trakt.trakt.core.profile.navigation.navigateToProfile
 import tv.trakt.trakt.core.profile.navigation.profileScreen
 import tv.trakt.trakt.core.search.navigation.searchScreen
+import tv.trakt.trakt.core.shows.navigation.ShowsDestination
 import tv.trakt.trakt.core.shows.navigation.showsScreen
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -103,7 +104,7 @@ private fun MainNavHost(
     modifier: Modifier = Modifier,
 ) {
     NavHost(
-        startDestination = HomeDestination,
+        startDestination = ShowsDestination, // TODO Change to Home
         navController = navController,
         modifier = modifier,
         enterTransition = { fadeIn(animationSpec = tween(250)) },

@@ -14,6 +14,7 @@ import timber.log.Timber
 import tv.trakt.trakt.app.TvActivity
 import tv.trakt.trakt.common.auth.di.commonAuthModule
 import tv.trakt.trakt.common.networking.di.networkingModule
+import tv.trakt.trakt.core.auth.di.authModule
 import tv.trakt.trakt.core.movies.di.moviesDataModule
 import tv.trakt.trakt.core.movies.di.moviesModule
 import tv.trakt.trakt.core.profile.di.profileModule
@@ -56,6 +57,7 @@ internal class TraktApplication : Application() {
             androidContext(applicationContext)
             androidLogger()
             modules(
+                authModule,
                 networkingModule,
                 commonAuthModule,
                 showsModule,
