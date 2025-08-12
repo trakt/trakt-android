@@ -2,9 +2,12 @@ package tv.trakt.trakt.core.main
 
 import android.app.Activity
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,9 +16,9 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -39,6 +42,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun MainScreen(modifier: Modifier = Modifier) {
     val localContext = LocalContext.current
+    val localDensity = LocalDensity.current
     val localBottomBarVisibility = LocalBottomBarVisibility.current
 
     val navController = rememberNavController()
@@ -53,27 +57,33 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
             navController = navController,
         )
 
-        NavigationBar(
-            containerColor = TraktTheme.colors.navigationContainer,
-            contentColor = TraktTheme.colors.accent,
+        AnimatedVisibility(
+            visible = localBottomBarVisibility.value,
+            enter = fadeIn(tween(200)) + slideInVertically(initialOffsetY = { it / 2 }),
+            exit = fadeOut(tween(200)) + slideOutVertically(targetOffsetY = { it / 2 }),
             modifier = Modifier
-                .alpha(if (localBottomBarVisibility.value) 1f else 0f)
-                .align(BottomCenter)
-                .fillMaxWidth()
-                .clip(
-                    RoundedCornerShape(
-                        topStart = 24.dp,
-                        topEnd = 24.dp,
-                    ),
-                ),
+                .align(BottomCenter),
         ) {
-            TraktNavigationBar(
-                currentDestination = currentDestination.value?.destination,
-                onSelected = {
-                    navController.navigateToMainDestination(it.destination)
-                },
-                enabled = localBottomBarVisibility.value,
-            )
+            NavigationBar(
+                containerColor = TraktTheme.colors.navigationContainer,
+                contentColor = TraktTheme.colors.accent,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(
+                        RoundedCornerShape(
+                            topStart = 24.dp,
+                            topEnd = 24.dp,
+                        ),
+                    ),
+            ) {
+                TraktNavigationBar(
+                    enabled = localBottomBarVisibility.value,
+                    currentDestination = currentDestination.value?.destination,
+                    onSelected = {
+                        navController.navigateToMainDestination(it.destination)
+                    },
+                )
+            }
         }
     }
 
