@@ -2,7 +2,7 @@ package tv.trakt.trakt.core.auth.data.remote
 
 import org.openapitools.client.apis.OauthApi
 import org.openapitools.client.models.PostOauthTokenRequest
-import tv.trakt.trakt.app.BuildConfig
+import tv.trakt.trakt.common.BuildConfig
 import tv.trakt.trakt.common.auth.model.TraktAccessToken
 import tv.trakt.trakt.core.auth.ConfigAuth
 
