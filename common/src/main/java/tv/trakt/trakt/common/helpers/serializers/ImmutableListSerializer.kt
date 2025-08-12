@@ -1,4 +1,4 @@
-package tv.trakt.trakt.app.helpers.serializers
+package tv.trakt.trakt.common.helpers.serializers
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList

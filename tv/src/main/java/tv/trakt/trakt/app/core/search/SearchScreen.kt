@@ -1,7 +1,6 @@
 package tv.trakt.trakt.app.core.search
 
 import TraktTextField
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -31,19 +30,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import timber.log.Timber
 import tv.trakt.trakt.app.R
-import tv.trakt.trakt.app.common.model.Images.Size
-import tv.trakt.trakt.app.common.model.TraktId
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
-import tv.trakt.trakt.app.core.movies.model.Movie
 import tv.trakt.trakt.app.core.search.SearchState.State
 import tv.trakt.trakt.app.core.search.views.SearchLoadingView
 import tv.trakt.trakt.app.core.search.views.SearchMoviesView
 import tv.trakt.trakt.app.core.search.views.SearchShowsView
-import tv.trakt.trakt.app.core.shows.model.Show
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import kotlin.collections.isNullOrEmpty
+import tv.trakt.trakt.common.model.Images.Size
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.R as RCommon
 
 private val sections = listOf(
     "input",
@@ -99,7 +99,7 @@ private fun SearchScreenContent(
     }
 
     LaunchedEffect(Unit) {
-        Log.d("SearchScreen", "Requesting focus for input")
+        Timber.d("Requesting focus for input")
         focusRequesters["input"]?.requestSafeFocus()
     }
 
@@ -140,7 +140,7 @@ private fun SearchScreenContent(
                 TraktTextField(
                     state = searchInputState,
                     placeholder = stringResource(R.string.info_search_placeholder),
-                    icon = painterResource(R.drawable.ic_search_tv),
+                    icon = painterResource(RCommon.drawable.ic_search),
                     loading = state.searching,
                     modifier = Modifier
                         .padding(top = 12.dp)
@@ -157,11 +157,11 @@ private fun SearchScreenContent(
             when {
                 state.searching && (state.state == State.RECENTS || state.state == State.TRENDING) -> {
                     SearchLoadingView(
-                        header = stringResource(R.string.shows),
+                        header = stringResource(RCommon.string.shows),
                         focusRequesters = focusRequesters,
                     )
                     SearchLoadingView(
-                        header = stringResource(R.string.movies),
+                        header = stringResource(RCommon.string.movies),
                         focusRequesters = focusRequesters,
                     )
                 }
@@ -228,7 +228,7 @@ private fun SearchScreenContent(
             with(state.searchResult) {
                 if (!this?.shows.isNullOrEmpty()) {
                     SearchShowsView(
-                        header = stringResource(R.string.shows),
+                        header = stringResource(RCommon.string.shows),
                         items = shows,
                         focusRequesters = focusRequesters,
                         onFocused = {
@@ -241,7 +241,7 @@ private fun SearchScreenContent(
 
                 if (!this?.movies.isNullOrEmpty()) {
                     SearchMoviesView(
-                        header = stringResource(R.string.movies),
+                        header = stringResource(RCommon.string.movies),
                         items = movies,
                         focusRequesters = focusRequesters,
                         onFocused = {

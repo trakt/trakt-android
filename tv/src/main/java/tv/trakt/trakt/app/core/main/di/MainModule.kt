@@ -52,7 +52,7 @@ internal val mainModule = module {
     }
 }
 
-internal fun createStore(
+fun createStore(
     context: Context,
     key: String,
 ): DataStore<Preferences> {

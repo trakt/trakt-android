@@ -397,9 +397,9 @@ private fun Preview() {
 private val drawerItems = listOf(
     TraktDrawerItem(
         destination = SearchDestination,
-        label = R.string.search,
-        iconOn = R.drawable.ic_search_tv,
-        iconOff = R.drawable.ic_search_tv,
+        label = RCommon.string.search,
+        iconOn = RCommon.drawable.ic_search,
+        iconOff = RCommon.drawable.ic_search,
     ),
     TraktDrawerItem(
         destination = HomeDestination,

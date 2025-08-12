@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.model.User.Companion
+import tv.trakt.trakt.common.networking.UserCommentsDto
 import tv.trakt.trakt.common.networking.UserDto
 import tv.trakt.trakt.common.networking.UserSettingsDto
 
@@ -53,18 +54,18 @@ data class User(
 fun Companion.fromDto(dto: UserDto): User {
     return User(
         ids = Ids(
-            trakt = TraktId(dto.ids.trakt),
-            slug = SlugId(dto.ids.slug ?: ""),
+            trakt = dto.ids.trakt?.toTraktId() ?: TraktId(0),
+            slug = SlugId(dto.ids.slug),
         ),
         username = dto.username,
         name = dto.name ?: "",
         location = dto.location,
         isPrivate = dto.private,
-        isVip = dto.vip ?: false,
-        isVipEp = dto.vipEp ?: false,
-        isVipOg = dto.vipOg ?: false,
+        isVip = dto.vip,
+        isVipEp = dto.vipEp,
+        isVipOg = dto.vipOg,
         images = User.Images(
-            avatar = dto.images?.avatar?.let {
+            avatar = dto.images.avatar.let {
                 User.Image(it.full)
             },
         ),
@@ -97,5 +98,27 @@ fun Companion.fromDto(dto: UserSettingsDto): User {
                 isFavoritesOnly = it.onlyFavorites,
             )
         },
+    )
+}
+
+fun Companion.fromDto(dto: UserCommentsDto): User {
+    return User(
+        ids = Ids(
+            trakt = dto.ids.trakt.toTraktId(),
+            slug = dto.ids.slug?.toSlugId() ?: SlugId(""),
+        ),
+        username = dto.username,
+        name = dto.name ?: "",
+        location = dto.location,
+        isPrivate = dto.private,
+        isVip = dto.vip ?: false,
+        isVipEp = dto.vipEp ?: false,
+        isVipOg = dto.vipOg ?: false,
+        images = User.Images(
+            avatar = dto.images?.avatar?.let {
+                User.Image(it.full)
+            },
+        ),
+        streamings = null,
     )
 }

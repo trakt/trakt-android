@@ -4,12 +4,11 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import tv.trakt.trakt.app.core.movies.model.Movie
-import tv.trakt.trakt.app.core.movies.model.fromDto
 import tv.trakt.trakt.app.core.search.data.remote.SearchRemoteDataSource
-import tv.trakt.trakt.app.core.shows.model.Show
-import tv.trakt.trakt.app.core.shows.model.fromDto
-import tv.trakt.trakt.app.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.fromDto
 
 internal class GetSearchResultsUseCase(
     private val remoteSource: SearchRemoteDataSource,
@@ -31,7 +30,7 @@ internal class GetSearchResultsUseCase(
                     .toImmutableList(),
                 movies = movies
                     .asyncMap { Movie.fromDto(it.movie!!) }
-                    .toImmutableList()
+                    .toImmutableList(),
             )
         }
     }

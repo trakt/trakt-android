@@ -93,7 +93,7 @@ internal fun Companion.fromDto(dto: LastEpisodeDto): Episode {
         images = Images(
             screenshot = (dto.images?.screenshot ?: emptyList()).toImmutableList(),
         ),
-        firstAired = dto.firstAired.toZonedDateTime(),
+        firstAired = dto.firstAired?.toZonedDateTime(),
         updatedAt = dto.updatedAt?.toZonedDateTime(),
     )
 }

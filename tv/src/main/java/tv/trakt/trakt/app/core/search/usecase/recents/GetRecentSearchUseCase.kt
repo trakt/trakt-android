@@ -2,10 +2,10 @@ package tv.trakt.trakt.app.core.search.usecase.recents
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.app.core.movies.model.Movie
 import tv.trakt.trakt.app.core.search.data.local.RecentSearchLocalDataSource
-import tv.trakt.trakt.app.core.shows.model.Show
-import tv.trakt.trakt.app.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
 
 internal class GetRecentSearchUseCase(
     private val recentsLocalSource: RecentSearchLocalDataSource,

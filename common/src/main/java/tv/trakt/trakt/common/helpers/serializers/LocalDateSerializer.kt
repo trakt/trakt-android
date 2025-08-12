@@ -1,4 +1,4 @@
-package tv.trakt.trakt.app.helpers.serializers
+package tv.trakt.trakt.common.helpers.serializers
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
@@ -11,7 +11,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 /**
- * Kotlin serializer for [java.time.LocalDate] that handles date string serialization/deserialization.
+ * Kotlin serializer for [LocalDate] that handles date string serialization/deserialization.
  * Uses ISO_LOCAL_DATE format (yyyy-MM-dd) for both serialization and deserialization.
  */
 object LocalDateSerializer : KSerializer<LocalDate> {

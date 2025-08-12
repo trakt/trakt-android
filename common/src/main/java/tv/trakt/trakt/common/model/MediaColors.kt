@@ -3,7 +3,7 @@ package tv.trakt.trakt.common.model
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import kotlinx.serialization.Serializable
-import tv.trakt.trakt.app.helpers.serializers.ColorSerializer
+import tv.trakt.trakt.common.helpers.serializers.ColorSerializer
 
 @Immutable
 @Serializable

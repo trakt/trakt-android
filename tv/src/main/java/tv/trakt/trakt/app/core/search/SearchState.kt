@@ -2,8 +2,8 @@ package tv.trakt.trakt.app.core.search
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
-import tv.trakt.trakt.app.core.movies.model.Movie
-import tv.trakt.trakt.app.core.shows.model.Show
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
 
 @Immutable
 internal data class SearchState(

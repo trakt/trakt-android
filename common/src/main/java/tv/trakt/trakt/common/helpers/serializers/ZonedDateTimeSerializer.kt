@@ -1,4 +1,4 @@
-package tv.trakt.trakt.app.helpers.serializers
+package tv.trakt.trakt.common.helpers.serializers
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
@@ -7,7 +7,7 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import tv.trakt.trakt.app.helpers.extensions.toZonedDateTime
+import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 

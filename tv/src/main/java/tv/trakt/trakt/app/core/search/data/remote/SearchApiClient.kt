@@ -1,7 +1,7 @@
 package tv.trakt.trakt.app.core.search.data.remote
 
 import org.openapitools.client.apis.SearchApi
-import tv.trakt.trakt.app.networking.openapi.SearchItemDto
+import tv.trakt.trakt.common.networking.SearchItemDto
 
 internal class SearchApiClient(
     private val api: SearchApi,

@@ -12,5 +12,5 @@ internal enum class StreamingType(
     SUBSCRIPTION(1, "subscription", R.string.header_streaming_subscriptions),
     PURCHASE(2, "purchase", R.string.header_streaming_purchase),
     RENT(3, "rent", R.string.header_streaming_rent),
-    FREE(4, "free", R.string.header_streaming_free);
+    FREE(4, "free", R.string.header_streaming_free),
 }

@@ -1,6 +1,6 @@
 package tv.trakt.trakt.app.core.search.data.remote
 
-import tv.trakt.trakt.app.networking.openapi.SearchItemDto
+import tv.trakt.trakt.common.networking.SearchItemDto
 
 internal interface SearchRemoteDataSource {
     suspend fun getShows(

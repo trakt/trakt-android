@@ -5,9 +5,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
-import tv.trakt.trakt.app.common.model.TraktId
 import tv.trakt.trakt.app.core.search.SearchScreen
 import tv.trakt.trakt.common.helpers.extensions.popUpToTop
+import tv.trakt.trakt.common.model.TraktId
 
 @Serializable
 internal data object SearchDestination

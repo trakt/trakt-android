@@ -24,6 +24,7 @@ immutableCollections = "0.4.0"
 koinBom = "4.1.0"
 kotlin = "2.2.0"
 kotlinx-datetime = "0.7.1"
+kotlinxSerialization = "1.9.0"
 ktor = "3.2.3"
 material = "1.12.0"
 openapi = "7.14.0"
@@ -66,6 +67,8 @@ coil-svg = { group = "io.coil-kt.coil3", name = "coil-svg", version.ref = "coil"
 
 kotlin-immutable-collections = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "immutableCollections" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
+kotlinx-serialization-proto = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-protobuf", version.ref = "kotlinxSerialization" }
+
 qr-compose = { group = "com.lightspark", name = "compose-qr-code", version.ref = "qr" }
 youtube-player = { group = "com.pierfrancescosoffritti.androidyoutubeplayer", name = "core", version.ref = "youtube-player" }
 youtube-player-ui = { group = "com.pierfrancescosoffritti.androidyoutubeplayer", name = "custom-ui", version.ref = "youtube-player" }

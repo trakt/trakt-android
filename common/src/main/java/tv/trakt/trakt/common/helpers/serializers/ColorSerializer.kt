@@ -1,4 +1,4 @@
-package tv.trakt.trakt.app.helpers.serializers
+package tv.trakt.trakt.common.helpers.serializers
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb

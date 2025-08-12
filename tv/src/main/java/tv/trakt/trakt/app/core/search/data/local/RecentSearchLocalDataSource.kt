@@ -1,9 +1,9 @@
 package tv.trakt.trakt.app.core.search.data.local
 
-import tv.trakt.trakt.app.core.movies.model.Movie
 import tv.trakt.trakt.app.core.search.data.local.model.RecentMovieEntity
 import tv.trakt.trakt.app.core.search.data.local.model.RecentShowEntity
-import tv.trakt.trakt.app.core.shows.model.Show
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
 import java.time.Instant
 
 /**

@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.search.views
 
-import InfoChip
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -25,13 +24,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.app.R
+import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
-import tv.trakt.trakt.app.core.shows.model.Show
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.R as RCommon
 
 @Composable
 internal fun SearchShowsView(
@@ -113,7 +113,7 @@ private fun ContentList(
                 onClick = { onClick(item) },
                 footerContent = {
                     InfoChip(
-                        text = stringResource(R.string.episodes_number, item.airedEpisodes),
+                        text = stringResource(RCommon.string.episodes_count, item.airedEpisodes),
                     )
                 },
                 modifier = Modifier

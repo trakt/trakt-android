@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.search
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
@@ -16,8 +15,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import tv.trakt.trakt.app.core.movies.data.local.MovieLocalDataSource
-import tv.trakt.trakt.app.core.movies.model.Movie
 import tv.trakt.trakt.app.core.movies.usecase.GetTrendingMoviesUseCase
 import tv.trakt.trakt.app.core.search.SearchState.SearchResult
 import tv.trakt.trakt.app.core.search.SearchState.State
@@ -25,10 +24,11 @@ import tv.trakt.trakt.app.core.search.usecase.GetSearchResultsUseCase
 import tv.trakt.trakt.app.core.search.usecase.recents.AddRecentSearchUseCase
 import tv.trakt.trakt.app.core.search.usecase.recents.GetRecentSearchUseCase
 import tv.trakt.trakt.app.core.shows.data.local.ShowLocalDataSource
-import tv.trakt.trakt.app.core.shows.model.Show
 import tv.trakt.trakt.app.core.shows.usecase.GetTrendingShowsUseCase
-import tv.trakt.trakt.app.helpers.extensions.asyncMap
-import tv.trakt.trakt.app.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
 
 internal class SearchViewModel(
     private val getSearchResultsUseCase: GetSearchResultsUseCase,
@@ -91,7 +91,7 @@ internal class SearchViewModel(
                 screenState.update { State.RECENTS }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Log.w("SearchViewModel", "Error loading recent searches!", error)
+                    Timber.w(error, "Error loading recent searches!")
                 }
             }
         }
@@ -120,7 +120,7 @@ internal class SearchViewModel(
                 screenState.update { State.TRENDING }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Log.w("SearchViewModel", "Error loading trending searches!", error)
+                    Timber.w(error, "Error loading trending searches!")
                 }
             }
         }
@@ -154,7 +154,7 @@ internal class SearchViewModel(
                     errorState.value = error
                     searchingState.update { false }
                     screenState.update { State.ERROR }
-                    Log.e("SearchViewModel", "Error!", error)
+                    Timber.e(error, "Error!")
                 }
             }
         }

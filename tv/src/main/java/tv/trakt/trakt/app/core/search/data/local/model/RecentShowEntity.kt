@@ -1,7 +1,7 @@
 package tv.trakt.trakt.app.core.search.data.local.model
 
 import kotlinx.serialization.Serializable
-import tv.trakt.trakt.app.core.shows.model.Show
+import tv.trakt.trakt.common.model.Show
 import java.time.Instant
 
 @Serializable

@@ -11,12 +11,12 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.decodeFromByteArray
 import kotlinx.serialization.encodeToByteArray
 import kotlinx.serialization.protobuf.ProtoBuf
-import tv.trakt.trakt.app.common.model.TraktId
-import tv.trakt.trakt.app.core.movies.model.Movie
 import tv.trakt.trakt.app.core.search.data.local.model.RecentMovieEntity
 import tv.trakt.trakt.app.core.search.data.local.model.RecentShowEntity
 import tv.trakt.trakt.app.core.search.data.local.model.create
-import tv.trakt.trakt.app.core.shows.model.Show
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.TraktId
 import java.time.Instant
 
 private val KEY_RECENT_SEARCH_SHOWS = byteArrayPreferencesKey("key_recent_search_shows")
