@@ -23,6 +23,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Blue50
 import tv.trakt.trakt.common.ui.theme.colors.Blue500
 import tv.trakt.trakt.common.ui.theme.colors.Purple50
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
+import tv.trakt.trakt.common.R as RCommon
 
 @Composable
 internal fun ShowActionButtons(
@@ -80,7 +81,9 @@ internal fun ShowActionButtons(
         val isAllWatched = remember(collectionState.isAllWatched) { collectionState.isAllWatched }
         PrimaryButton(
             text = stringResource(if (isAllWatched) R.string.add_watched_again else R.string.add_watched),
-            icon = painterResource(if (isAllWatched) R.drawable.ic_check_double else R.drawable.ic_check),
+            icon = painterResource(
+                if (isAllWatched) RCommon.drawable.ic_check_double else RCommon.drawable.ic_check,
+            ),
             onClick = onHistoryClick,
             containerColor = if (!isWatched) Purple50 else Purple500,
             contentColor = if (!isWatched) Purple500 else Color.White,

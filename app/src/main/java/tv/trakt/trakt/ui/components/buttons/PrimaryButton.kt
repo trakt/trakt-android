@@ -1,6 +1,5 @@
-package tv.trakt.trakt.app.common.ui.buttons
+package tv.trakt.trakt.ui.components.buttons
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -8,6 +7,9 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults.buttonColors
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -20,13 +22,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.tv.material3.Border
-import androidx.tv.material3.Button
-import androidx.tv.material3.ButtonDefaults
-import androidx.tv.material3.Text
-import tv.trakt.trakt.app.common.ui.FilmProgressIndicator
-import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.R as RCommon
+import tv.trakt.trakt.common.R
+import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 internal fun PrimaryButton(
@@ -40,17 +37,7 @@ internal fun PrimaryButton(
     contentColor: Color = TraktTheme.colors.primaryButtonContent,
     disabledContainerColor: Color = TraktTheme.colors.primaryButtonContainerDisabled,
     disabledContentColor: Color = TraktTheme.colors.primaryButtonContentDisabled,
-    borderColor: Color = Color.White,
-    disabledBorderColor: Color = Color.White,
 ) {
-    val focusedBorder = Border(
-        border = BorderStroke(
-            width = (2.75).dp,
-            color = if (enabled) borderColor else disabledBorderColor,
-        ),
-        shape = RoundedCornerShape(12.dp),
-    )
-
     Button(
         contentPadding = PaddingValues(
             start = 12.dp,
@@ -58,27 +45,12 @@ internal fun PrimaryButton(
         ),
         modifier = modifier
             .heightIn(max = 42.dp),
-        shape = ButtonDefaults.shape(
-            shape = RoundedCornerShape(12.dp),
-            focusedDisabledShape = RoundedCornerShape(12.dp),
-        ),
-        border = ButtonDefaults.border(
-            focusedBorder = focusedBorder,
-            disabledBorder = Border.None,
-            focusedDisabledBorder = focusedBorder,
-        ),
-        colors = ButtonDefaults.colors(
+        shape = RoundedCornerShape(12.dp),
+        colors = buttonColors(
             containerColor = containerColor,
             contentColor = contentColor,
-            focusedContainerColor = containerColor,
-            focusedContentColor = contentColor,
-            pressedContainerColor = containerColor,
-            pressedContentColor = contentColor,
             disabledContainerColor = disabledContainerColor,
             disabledContentColor = disabledContentColor,
-        ),
-        scale = ButtonDefaults.scale(
-            focusedScale = 1.04f,
         ),
         onClick = onClick,
         enabled = enabled,
@@ -99,10 +71,10 @@ internal fun PrimaryButton(
 
             when {
                 loading -> {
-                    FilmProgressIndicator(
-                        size = 16.dp,
-                        color = if (enabled) contentColor else disabledContentColor,
-                    )
+//                    FilmProgressIndicator(
+//                        size = 16.dp,
+//                        color = if (enabled) contentColor else disabledContentColor,
+//                    )
                 }
 
                 icon != null -> {
@@ -137,7 +109,7 @@ private fun Preview2() {
     TraktTheme {
         PrimaryButton(
             text = "Short",
-            icon = painterResource(id = RCommon.drawable.ic_check),
+            icon = painterResource(id = R.drawable.ic_check),
         )
     }
 }
@@ -148,7 +120,7 @@ private fun PreviewIcon() {
     TraktTheme {
         PrimaryButton(
             text = "Mark as something long",
-            icon = painterResource(id = RCommon.drawable.ic_check),
+            icon = painterResource(id = R.drawable.ic_check),
         )
     }
 }

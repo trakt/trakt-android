@@ -26,6 +26,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Blue50
 import tv.trakt.trakt.common.ui.theme.colors.Blue500
 import tv.trakt.trakt.common.ui.theme.colors.Purple50
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
+import tv.trakt.trakt.common.R as RCommon
 
 @Composable
 internal fun MovieActionButtons(
@@ -82,7 +83,7 @@ internal fun MovieActionButtons(
         val isHistory = remember(collectionState.isHistory) { collectionState.isHistory }
         PrimaryButton(
             text = stringResource(if (isHistory) R.string.add_watched_again else R.string.add_watched),
-            icon = painterResource(if (isHistory) R.drawable.ic_check_double else R.drawable.ic_check),
+            icon = painterResource(if (isHistory) RCommon.drawable.ic_check_double else RCommon.drawable.ic_check),
             onClick = onHistoryClick,
             containerColor = if (isHistory) Purple500 else Purple50,
             contentColor = if (isHistory) Color.White else Purple500,
