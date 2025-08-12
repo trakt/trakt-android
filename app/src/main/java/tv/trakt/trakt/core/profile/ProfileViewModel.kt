@@ -1,0 +1,39 @@
+package tv.trakt.trakt.core.profile
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.google.firebase.Firebase
+import com.google.firebase.remoteconfig.remoteConfig
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
+
+internal class ProfileViewModel : ViewModel() {
+    private val initialState = ProfileState()
+
+    private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
+
+    init {
+        loadBackground()
+    }
+
+    private fun loadBackground() {
+        val configUrl = Firebase.remoteConfig.getString("mobile_background_image_url")
+        backgroundState.update { configUrl }
+    }
+
+    val state: StateFlow<ProfileState> = combine(
+        backgroundState,
+    ) { state ->
+        ProfileState(
+            backgroundUrl = state[0],
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = initialState,
+    )
+}

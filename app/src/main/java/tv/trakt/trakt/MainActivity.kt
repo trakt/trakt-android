@@ -8,11 +8,17 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import timber.log.Timber
 import tv.trakt.trakt.core.main.MainScreen
 import tv.trakt.trakt.ui.theme.TraktTheme
+
+internal val LocalBottomBarVisibility = compositionLocalOf { mutableStateOf(true) }
 
 internal class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,8 +35,14 @@ internal class MainActivity : ComponentActivity() {
         )
 
         setContent {
+            val bottomBarVisibility = remember { mutableStateOf(true) }
+
             TraktTheme {
-                MainScreen()
+                CompositionLocalProvider(
+                    LocalBottomBarVisibility provides bottomBarVisibility,
+                ) {
+                    MainScreen()
+                }
             }
         }
     }

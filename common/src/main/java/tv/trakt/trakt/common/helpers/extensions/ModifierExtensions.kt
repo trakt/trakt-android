@@ -1,4 +1,4 @@
-package tv.trakt.trakt.app.helpers.extensions
+package tv.trakt.trakt.common.helpers.extensions
 
 import androidx.compose.foundation.clickable
 import androidx.compose.runtime.mutableLongStateOf

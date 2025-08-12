@@ -12,11 +12,15 @@ import tv.trakt.trakt.core.shows.ShowsScreen
 @Serializable
 internal data object ShowsDestination
 
-internal fun NavGraphBuilder.showsScreen(onNavigateToShow: (TraktId) -> Unit) {
+internal fun NavGraphBuilder.showsScreen(
+    onNavigateToShow: (TraktId) -> Unit,
+    onNavigateToProfile: () -> Unit,
+) {
     composable<ShowsDestination> {
         ShowsScreen(
             viewModel = koinViewModel(),
             onNavigateToShow = onNavigateToShow,
+            onNavigateToProfile = onNavigateToProfile,
         )
     }
 }

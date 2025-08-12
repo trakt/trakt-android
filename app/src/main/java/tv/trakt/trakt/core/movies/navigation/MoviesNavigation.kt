@@ -12,11 +12,15 @@ import tv.trakt.trakt.core.movies.MoviesScreen
 @Serializable
 internal data object MoviesDestination
 
-internal fun NavGraphBuilder.moviesScreen(onNavigateToMovie: (TraktId) -> Unit) {
+internal fun NavGraphBuilder.moviesScreen(
+    onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToProfile: () -> Unit = {},
+) {
     composable<MoviesDestination> {
         MoviesScreen(
             viewModel = koinViewModel(),
             onNavigateToMovie = onNavigateToMovie,
+            onNavigateToProfile = onNavigateToProfile,
         )
     }
 }

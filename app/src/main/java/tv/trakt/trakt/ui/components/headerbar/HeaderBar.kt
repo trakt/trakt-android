@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.R
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.ui.components.VipChip
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.format.DateTimeFormatter
@@ -55,6 +56,7 @@ internal fun HeaderBar(
     containerColor: Color = TraktTheme.colors.navigationHeaderContainer,
     containerAlpha: Float = 0.98F,
     showVip: Boolean = false,
+    onProfileClick: () -> Unit = {},
 ) {
     val headerBarHeight = WindowInsets.statusBars.asPaddingValues()
         .calculateTopPadding()
@@ -140,7 +142,8 @@ internal fun HeaderBar(
                 modifier = Modifier
                     .size(32.dp)
                     .border(2.dp, Color.White, CircleShape)
-                    .clip(CircleShape),
+                    .clip(CircleShape)
+                    .onClick(onProfileClick),
             )
         }
     }

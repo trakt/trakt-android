@@ -13,6 +13,7 @@
 
     <string name="episodes_count">%d episodes</string>
 
+    <string name="header_profile_title">Profile</string>
     <string name="header_trending">Trending</string>
     <string name="header_hot_month">Hot This Month</string>
     <string name="header_most_popular">Most Popular</string>

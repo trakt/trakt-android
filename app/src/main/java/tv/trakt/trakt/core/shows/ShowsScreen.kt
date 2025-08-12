@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.shows.sections.anticipated.ShowsAnticipatedView
 import tv.trakt.trakt.core.shows.sections.hot.ShowsHotView
@@ -38,12 +39,19 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun ShowsScreen(
     viewModel: ShowsViewModel,
     onNavigateToShow: (TraktId) -> Unit,
+    onNavigateToProfile: () -> Unit,
 ) {
+    val localBottomBarVisibility = LocalBottomBarVisibility.current
+    LaunchedEffect(Unit) {
+        localBottomBarVisibility.value = true
+    }
+
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     ShowsScreenContent(
         state = state,
         onShowClick = onNavigateToShow,
+        onProfileClick = onNavigateToProfile,
     )
 }
 
@@ -52,6 +60,7 @@ private fun ShowsScreenContent(
     state: ShowsState,
     modifier: Modifier = Modifier,
     onShowClick: (TraktId) -> Unit,
+    onProfileClick: () -> Unit = {},
 ) {
     val lazyListState = rememberLazyListState()
     val headerState = rememberHeaderState()
@@ -139,6 +148,7 @@ private fun ShowsScreenContent(
         HeaderBar(
             containerAlpha = if (headerState.scrolled && !isScrolledToTop) 0.98F else 0F,
             showVip = headerState.startScrolled,
+            onProfileClick = onProfileClick,
             modifier = Modifier
                 .offset {
                     IntOffset(0, headerState.connection.barOffset.fastRoundToInt())

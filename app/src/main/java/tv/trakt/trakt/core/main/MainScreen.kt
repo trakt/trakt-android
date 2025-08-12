@@ -13,6 +13,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,12 +23,15 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.core.home.navigation.HomeDestination
 import tv.trakt.trakt.core.home.navigation.homeScreen
 import tv.trakt.trakt.core.lists.navigation.listsScreen
 import tv.trakt.trakt.core.main.navigation.navigateToMainDestination
 import tv.trakt.trakt.core.main.ui.menubar.TraktNavigationBar
 import tv.trakt.trakt.core.movies.navigation.moviesScreen
+import tv.trakt.trakt.core.profile.navigation.navigateToProfile
+import tv.trakt.trakt.core.profile.navigation.profileScreen
 import tv.trakt.trakt.core.search.navigation.searchScreen
 import tv.trakt.trakt.core.shows.navigation.showsScreen
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -35,8 +39,9 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun MainScreen(modifier: Modifier = Modifier) {
     val localContext = LocalContext.current
-    val navController = rememberNavController()
+    val localBottomBarVisibility = LocalBottomBarVisibility.current
 
+    val navController = rememberNavController()
     val currentDestination = navController
         .currentBackStackEntryFlow
         .collectAsStateWithLifecycle(initialValue = null)
@@ -52,6 +57,7 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
             containerColor = TraktTheme.colors.navigationContainer,
             contentColor = TraktTheme.colors.accent,
             modifier = Modifier
+                .alpha(if (localBottomBarVisibility.value) 1f else 0f)
                 .align(BottomCenter)
                 .fillMaxWidth()
                 .clip(
@@ -66,6 +72,7 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
                 onSelected = {
                     navController.navigateToMainDestination(it.destination)
                 },
+                enabled = localBottomBarVisibility.value,
             )
         }
     }
@@ -94,10 +101,19 @@ private fun MainNavHost(
     ) {
         with(navController) {
             homeScreen(onNavigateToHome = {})
-            showsScreen(onNavigateToShow = {})
-            moviesScreen(onNavigateToMovie = {})
+            showsScreen(
+                onNavigateToProfile = { navigateToProfile() },
+                onNavigateToShow = {},
+            )
+            moviesScreen(
+                onNavigateToProfile = { navigateToProfile() },
+                onNavigateToMovie = {},
+            )
             listsScreen(onNavigateToList = {})
             searchScreen(onNavigateToSearch = {})
+            profileScreen(
+                onNavigateBack = { popBackStack() },
+            )
         }
     }
 }

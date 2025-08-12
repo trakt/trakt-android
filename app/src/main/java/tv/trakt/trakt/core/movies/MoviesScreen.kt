@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.movies.sections.anticipated.MoviesAnticipatedView
 import tv.trakt.trakt.core.movies.sections.hot.MoviesHotView
@@ -38,12 +39,19 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun MoviesScreen(
     viewModel: MoviesViewModel,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToProfile: () -> Unit,
 ) {
+    val localBottomBarVisibility = LocalBottomBarVisibility.current
+    LaunchedEffect(Unit) {
+        localBottomBarVisibility.value = true
+    }
+
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     MoviesScreenContent(
         state = state,
         onMovieClick = onNavigateToMovie,
+        onProfileClick = onNavigateToProfile,
     )
 }
 
@@ -52,6 +60,7 @@ private fun MoviesScreenContent(
     state: MoviesState,
     modifier: Modifier = Modifier,
     onMovieClick: (TraktId) -> Unit,
+    onProfileClick: () -> Unit = {},
 ) {
     val lazyListState = rememberLazyListState()
     val headerState = rememberHeaderState()
@@ -139,6 +148,7 @@ private fun MoviesScreenContent(
         HeaderBar(
             containerAlpha = if (headerState.scrolled && !isScrolledToTop) 0.98F else 0F,
             showVip = headerState.startScrolled,
+            onProfileClick = onProfileClick,
             modifier = Modifier
                 .offset {
                     IntOffset(0, headerState.connection.barOffset.fastRoundToInt())

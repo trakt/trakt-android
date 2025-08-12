@@ -27,6 +27,7 @@ import tv.trakt.trakt.common.R as RCommon
 internal fun TraktNavigationBar(
     currentDestination: NavDestination?,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     onSelected: (NavigationItem) -> Unit = {},
     onReselected: () -> Unit = {},
 ) {
@@ -43,9 +44,9 @@ internal fun TraktNavigationBar(
                 alwaysShowLabel = false,
                 selected = isSelected,
                 onClick = {
-                    val destination = item.destination
+                    if (!enabled) return@NavigationBarItem
 
-                    if (currentDestination?.hasRoute(destination::class) == true) {
+                    if (currentDestination?.hasRoute(item.destination::class) == true) {
                         onReselected()
                         return@NavigationBarItem
                     }

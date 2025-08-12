@@ -63,9 +63,9 @@ import tv.trakt.trakt.app.core.movies.navigation.MoviesDestination
 import tv.trakt.trakt.app.core.profile.navigation.ProfileDestination
 import tv.trakt.trakt.app.core.search.navigation.SearchDestination
 import tv.trakt.trakt.app.core.shows.navigation.ShowsDestination
-import tv.trakt.trakt.app.helpers.extensions.onClick
 import tv.trakt.trakt.app.helpers.preview.PreviewData
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.theme.colors.Purple50
 import kotlin.math.max
