@@ -51,7 +51,6 @@
     <string name="header_recently_watched">Recently Watched</string>
     <string name="header_favorite_shows">Favorite Shows</string>
     <string name="header_favorite_movies">Favorite Movies</string>
-    <string name="header_recommended">Recommendations</string>
     <string name="header_search_shows_recents">Recently Searched Shows</string>
     <string name="header_search_movies_recents">Recently Searched Movies</string>
 

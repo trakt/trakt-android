@@ -1,0 +1,175 @@
+package tv.trakt.trakt.core.shows.sections.recommended
+
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Arrangement.spacedBy
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
+import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.common.R
+import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.LoadingState.IDLE
+import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.ui.components.InfoChip
+import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
+import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
+import tv.trakt.trakt.ui.theme.TraktTheme
+
+@Composable
+internal fun ShowsRecommendedView(
+    modifier: Modifier = Modifier,
+    viewModel: ShowsRecommendedViewModel = koinViewModel(),
+    headerPadding: PaddingValues,
+    contentPadding: PaddingValues,
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    ShowsRecommendedContent(
+        state = state,
+        modifier = modifier,
+        headerPadding = headerPadding,
+        contentPadding = contentPadding,
+    )
+}
+
+@Composable
+internal fun ShowsRecommendedContent(
+    state: ShowsRecommendedState,
+    modifier: Modifier = Modifier,
+    headerPadding: PaddingValues = PaddingValues(),
+    contentPadding: PaddingValues = PaddingValues(),
+) {
+    Column(
+        verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
+        modifier = modifier,
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(headerPadding),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = stringResource(R.string.header_recommended),
+                color = TraktTheme.colors.textPrimary,
+                style = TraktTheme.typography.heading5,
+            )
+            Text(
+                text = stringResource(R.string.view_all).uppercase(),
+                color = TraktTheme.colors.textSecondary,
+                style = TraktTheme.typography.buttonTertiary,
+            )
+        }
+
+        Crossfade(
+            targetState = state.loading,
+            animationSpec = tween(200),
+        ) { loading ->
+            when (loading) {
+                IDLE, LOADING -> {
+                    ContentLoadingList(
+                        visible = loading.isLoading,
+                        contentPadding = contentPadding,
+                    )
+                }
+                DONE -> {
+                    ContentList(
+                        listItems = { state.items ?: emptyList<Show>().toImmutableList() },
+                        contentPadding = contentPadding,
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ContentLoadingList(
+    visible: Boolean = true,
+    contentPadding: PaddingValues,
+) {
+    LazyRow(
+        horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
+        contentPadding = contentPadding,
+        modifier = Modifier
+            .fillMaxWidth()
+            .alpha(if (visible) 1F else 0F),
+    ) {
+        items(count = 6) {
+            VerticalMediaSkeletonCard()
+        }
+    }
+}
+
+@Composable
+private fun ContentList(
+    listItems: () -> ImmutableList<Show>,
+    contentPadding: PaddingValues,
+) {
+    LazyRow(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
+        contentPadding = contentPadding,
+    ) {
+        items(
+            items = listItems(),
+            key = { it.ids.trakt.value },
+        ) { item ->
+            ContentListItem(
+                item = item,
+            )
+        }
+    }
+}
+
+@Composable
+private fun ContentListItem(
+    item: Show,
+    onClick: () -> Unit = {},
+) {
+    VerticalMediaCard(
+        title = item.title,
+        imageUrl = item.images?.getPosterUrl(),
+        onClick = onClick,
+        chipContent = {
+            InfoChip(
+                text = stringResource(R.string.episodes_count, item.airedEpisodes),
+            )
+        },
+    )
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun Preview() {
+    TraktTheme {
+        ShowsRecommendedContent(
+            state = ShowsRecommendedState(
+                loading = IDLE,
+            ),
+        )
+    }
+}

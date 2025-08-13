@@ -12,5 +12,8 @@ internal data class ShowsState(
     data class UserState(
         val user: User? = null,
         val loading: LoadingState = LoadingState.IDLE,
-    )
+    ) {
+        val isAuthenticated: Boolean
+            get() = user != null
+    }
 }
