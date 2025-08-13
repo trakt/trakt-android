@@ -15,6 +15,7 @@
     <string name="get_vip">Get VIP</string>
     <string name="people_watching">%s watching</string>
     <string name="people_eager">%s eager</string>
+    <string name="join_trakt">Join Trakt</string>
 
     <string name="episodes_count">%d episodes</string>
 

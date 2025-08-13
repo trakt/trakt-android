@@ -17,10 +17,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -40,6 +41,7 @@ import tv.trakt.trakt.common.R
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.ui.components.VipChip
+import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -56,8 +58,12 @@ internal fun HeaderBar(
     containerColor: Color = TraktTheme.colors.navigationHeaderContainer,
     containerAlpha: Float = 0.98F,
     showVip: Boolean = false,
+    showProfile: Boolean = false,
+    showJoinTrakt: Boolean = false,
+    onJoinClick: () -> Unit = {},
     onProfileClick: () -> Unit = {},
 ) {
+    val contentHeight = 34.dp
     val headerBarHeight = WindowInsets.statusBars.asPaddingValues()
         .calculateTopPadding()
         .plus(height)
@@ -90,7 +96,8 @@ internal fun HeaderBar(
                     start = TraktTheme.spacing.mainPageHorizontalSpace,
                     end = TraktTheme.spacing.mainPageHorizontalSpace,
                     bottom = TraktTheme.spacing.mainPageHorizontalSpace,
-                ),
+                )
+                .sizeIn(minHeight = contentHeight),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = spacedBy(20.dp),
         ) {
@@ -129,27 +136,39 @@ internal fun HeaderBar(
 
             Spacer(modifier = Modifier.weight(1F))
 
-            Icon(
-                painter = painterResource(R.drawable.ic_filter_off),
-                contentDescription = null,
-                tint = TraktTheme.colors.textPrimary,
-                modifier = Modifier.size(24.dp),
-            )
+//            Icon(
+//                painter = painterResource(R.drawable.ic_filter_off),
+//                contentDescription = null,
+//                tint = TraktTheme.colors.textPrimary,
+//                modifier = Modifier.size(24.dp),
+//            )
 
-            Image(
-                painter = painterResource(R.drawable.ic_person_placeholder),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(32.dp)
-                    .border(2.dp, Color.White, CircleShape)
-                    .clip(CircleShape)
-                    .onClick(onProfileClick),
-            )
+            when {
+                showProfile -> {
+                    Image(
+                        painter = painterResource(R.drawable.ic_person_placeholder),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(contentHeight)
+                            .border(2.dp, Color.White, CircleShape)
+                            .clip(CircleShape)
+                            .onClick(onProfileClick),
+                    )
+                }
+                showJoinTrakt -> {
+                    PrimaryButton(
+                        text = stringResource(R.string.join_trakt),
+                        icon = painterResource(R.drawable.ic_plus_round),
+                        height = contentHeight,
+                        onClick = onJoinClick,
+                    )
+                }
+            }
         }
     }
 }
 
-@Preview(widthDp = 320)
+@Preview(widthDp = 350)
 @Composable
 private fun Preview() {
     TraktTheme {
@@ -157,12 +176,22 @@ private fun Preview() {
     }
 }
 
-@Preview(widthDp = 320)
+@Preview(widthDp = 350)
 @Composable
 private fun Preview2() {
     TraktTheme {
         HeaderBar(
             showVip = true,
+        )
+    }
+}
+
+@Preview(widthDp = 350)
+@Composable
+private fun Preview3() {
+    TraktTheme {
+        HeaderBar(
+            showJoinTrakt = true,
         )
     }
 }

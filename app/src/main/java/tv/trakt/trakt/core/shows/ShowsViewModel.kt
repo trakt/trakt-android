@@ -10,14 +10,22 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.core.shows.ShowsState.UserState
 
-internal class ShowsViewModel : ViewModel() {
+internal class ShowsViewModel(
+    private val sessionManager: SessionManager,
+) : ViewModel() {
     private val initialState = ShowsState()
 
     private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
+    private val userState = MutableStateFlow(initialState.user)
 
     init {
         loadBackground()
+        observeUser()
     }
 
     private fun loadBackground() {
@@ -25,11 +33,27 @@ internal class ShowsViewModel : ViewModel() {
         backgroundState.update { configUrl }
     }
 
+    private fun observeUser() {
+        viewModelScope.launch {
+            sessionManager.observeProfile()
+                .collect { user ->
+                    userState.update {
+                        UserState(
+                            user = user,
+                            loading = LoadingState.DONE,
+                        )
+                    }
+                }
+        }
+    }
+
     val state: StateFlow<ShowsState> = combine(
         backgroundState,
-    ) { state ->
+        userState,
+    ) { s1, s2 ->
         ShowsState(
-            backgroundUrl = state[0],
+            backgroundUrl = s1,
+            user = s2,
         )
     }.stateIn(
         scope = viewModelScope,

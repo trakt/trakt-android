@@ -56,7 +56,9 @@ internal val showsModule = module {
     }
 
     viewModel {
-        ShowsViewModel()
+        ShowsViewModel(
+            sessionManager = get(),
+        )
     }
 
     viewModel {

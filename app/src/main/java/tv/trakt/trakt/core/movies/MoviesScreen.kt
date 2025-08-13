@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.LocalBottomBarVisibility
+import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.movies.sections.anticipated.MoviesAnticipatedView
 import tv.trakt.trakt.core.movies.sections.hot.MoviesHotView
@@ -145,9 +146,18 @@ private fun MoviesScreenContent(
             }
         }
 
+        val userState = remember(state.user) {
+            val loadingDone = state.user.loading == DONE
+            val userNotNull = state.user.user != null
+            loadingDone to userNotNull
+        }
+
         HeaderBar(
             containerAlpha = if (headerState.scrolled && !isScrolledToTop) 0.98F else 0F,
             showVip = headerState.startScrolled,
+            showProfile = userState.first && userState.second,
+            showJoinTrakt = userState.first && !userState.second,
+            onJoinClick = onProfileClick,
             onProfileClick = onProfileClick,
             modifier = Modifier
                 .offset {

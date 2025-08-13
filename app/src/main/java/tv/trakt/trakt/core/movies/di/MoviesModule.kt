@@ -56,7 +56,9 @@ internal val moviesModule = module {
     }
 
     viewModel {
-        MoviesViewModel()
+        MoviesViewModel(
+            sessionManager = get(),
+        )
     }
 
     viewModel {
