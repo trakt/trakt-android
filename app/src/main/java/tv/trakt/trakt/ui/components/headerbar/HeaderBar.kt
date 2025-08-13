@@ -38,7 +38,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import tv.trakt.trakt.common.Config
@@ -59,7 +58,6 @@ private val todayDateFormat = DateTimeFormatter
 @Composable
 internal fun HeaderBar(
     modifier: Modifier = Modifier,
-    height: Dp = TraktTheme.size.navigationHeaderHeight,
     containerColor: Color = TraktTheme.colors.navigationHeaderContainer,
     containerAlpha: Float = 0.98F,
     title: String? = null,
@@ -74,7 +72,7 @@ internal fun HeaderBar(
     val contentHeight = 34.dp
     val headerBarHeight = WindowInsets.statusBars.asPaddingValues()
         .calculateTopPadding()
-        .plus(height)
+        .plus(TraktTheme.size.navigationHeaderHeight)
 
     val todayLabel = remember {
         nowLocal().format(todayDateFormat)
@@ -111,7 +109,7 @@ internal fun HeaderBar(
         ) {
             val uriHandler = LocalUriHandler.current
             Crossfade(
-                targetState = showVip,
+                targetState = showVip && !userVip,
                 label = "HeaderBarVipCrossfade",
             ) { state ->
                 if (state) {

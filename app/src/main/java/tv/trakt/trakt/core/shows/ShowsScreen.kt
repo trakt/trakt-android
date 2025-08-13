@@ -20,13 +20,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.LocalBottomBarVisibility
-import tv.trakt.trakt.common.R
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.shows.sections.anticipated.ShowsAnticipatedView
@@ -171,15 +169,8 @@ private fun ShowsScreenHeader(
         loadingDone to userNotNull
     }
 
-    val userName = remember(state.user) {
-        state.user.user?.name?.ifBlank {
-            state.user.user.username
-        }
-    }
-
     HeaderBar(
         containerAlpha = if (headerState.scrolled && !isScrolledToTop) 0.98F else 0F,
-        title = userName?.let { stringResource(R.string.header_hello, it) },
         showVip = headerState.startScrolled,
         showProfile = userState.first && userState.second,
         showJoinTrakt = userState.first && !userState.second,
