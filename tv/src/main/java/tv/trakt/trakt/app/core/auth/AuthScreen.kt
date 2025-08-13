@@ -53,7 +53,6 @@ import kotlinx.coroutines.launch
 import tv.trakt.trakt.app.BuildConfig
 import tv.trakt.trakt.app.LocalSnackbarState
 import tv.trakt.trakt.app.R
-import tv.trakt.trakt.app.common.ui.FilmProgressIndicator
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.buttons.PrimaryButton
 import tv.trakt.trakt.app.core.auth.AuthState.LoadingState.LOADING
@@ -62,6 +61,8 @@ import tv.trakt.trakt.app.core.auth.AuthState.LoadingState.SUCCESS
 import tv.trakt.trakt.app.core.auth.model.AuthDeviceCode
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.common.R as RCommon
 
 @Composable
 internal fun AuthScreen(
@@ -192,7 +193,7 @@ private fun DeviceCodeRejected(
         )
 
         PrimaryButton(
-            text = stringResource(R.string.retry),
+            text = stringResource(RCommon.string.retry),
             onClick = onRetryClick,
             modifier = Modifier
                 .width(180.dp)

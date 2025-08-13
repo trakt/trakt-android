@@ -50,7 +50,6 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
-import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.common.ui.buttons.PrimaryButton
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.episodes.model.Episode
@@ -173,7 +172,7 @@ private fun ProfileScreenContent(
                     Spacer(modifier = Modifier.weight(1f))
 
                     PrimaryButton(
-                        text = stringResource(R.string.log_out),
+                        text = stringResource(RCommon.string.log_out),
                         onClick = onLogoutClick,
                         modifier = Modifier.widthIn(max = 128.dp),
                     )
@@ -256,7 +255,7 @@ private fun ProfileHeader(
 
         Column {
             Text(
-                text = stringResource(R.string.header_profile, headerName ?: ""),
+                text = stringResource(RCommon.string.header_hello, headerName ?: ""),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading4,
             )
@@ -280,7 +279,7 @@ private fun ProfileAvatar(
         modifier = modifier
             .size(44.dp),
     ) {
-        if (profile?.hasImage == true) {
+        if (profile?.hasAvatar == true) {
             AsyncImage(
                 model = profile.images?.avatar?.full,
                 contentDescription = "User avatar",

@@ -21,8 +21,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.R
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -33,6 +35,7 @@ internal fun PrimaryButton(
     icon: Painter? = null,
     enabled: Boolean = true,
     loading: Boolean = false,
+    height: Dp = 42.dp,
     containerColor: Color = TraktTheme.colors.primaryButtonContainer,
     contentColor: Color = TraktTheme.colors.primaryButtonContent,
     disabledContainerColor: Color = TraktTheme.colors.primaryButtonContainerDisabled,
@@ -43,8 +46,7 @@ internal fun PrimaryButton(
             start = 12.dp,
             end = 12.dp,
         ),
-        modifier = modifier
-            .height(42.dp),
+        modifier = modifier.height(height),
         shape = RoundedCornerShape(12.dp),
         colors = buttonColors(
             containerColor = containerColor,
@@ -70,10 +72,12 @@ internal fun PrimaryButton(
 
             when {
                 loading -> {
-//                    FilmProgressIndicator(
-//                        size = 16.dp,
-//                        color = if (enabled) contentColor else disabledContentColor,
-//                    )
+                    FilmProgressIndicator(
+                        size = 16.dp,
+                        color = if (enabled) contentColor else disabledContentColor,
+                        modifier = Modifier
+                            .padding(start = 4.dp),
+                    )
                 }
 
                 icon != null -> {
@@ -92,7 +96,7 @@ internal fun PrimaryButton(
     }
 }
 
-@Preview(widthDp = 200)
+@Preview()
 @Composable
 private fun Preview1() {
     TraktTheme {
@@ -102,7 +106,7 @@ private fun Preview1() {
     }
 }
 
-@Preview(widthDp = 200)
+@Preview
 @Composable
 private fun Preview2() {
     TraktTheme {
@@ -113,7 +117,7 @@ private fun Preview2() {
     }
 }
 
-@Preview(widthDp = 200)
+@Preview()
 @Composable
 private fun PreviewIcon() {
     TraktTheme {
@@ -124,7 +128,7 @@ private fun PreviewIcon() {
     }
 }
 
-@Preview(widthDp = 200)
+@Preview
 @Composable
 private fun PreviewLoading() {
     TraktTheme {

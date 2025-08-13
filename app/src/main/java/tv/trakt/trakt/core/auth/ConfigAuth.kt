@@ -10,5 +10,6 @@ internal object ConfigAuth {
         get() = "${Config.WEB_BASE_URL}oauth/authorize" +
             "?response_type=code" +
             "&client_id=${BuildConfig.TRAKT_API_KEY}" +
-            "&redirect_uri=$OAUTH_REDIRECT_URI"
+            "&redirect_uri=$OAUTH_REDIRECT_URI" +
+            "&dark_knight=true"
 }

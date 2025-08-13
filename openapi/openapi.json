@@ -186,9 +186,7 @@
                       },
                       "grant_type": {
                         "type": "string",
-                        "enum": [
-                          "authorization_code"
-                        ]
+                        "description": "Defines how an access token is obtained."
                       }
                     },
                     "required": [
@@ -220,9 +218,7 @@
                       },
                       "grant_type": {
                         "type": "string",
-                        "enum": [
-                          "refresh_token"
-                        ]
+                        "description": "Defines how an access token is obtained."
                       }
                     },
                     "required": [

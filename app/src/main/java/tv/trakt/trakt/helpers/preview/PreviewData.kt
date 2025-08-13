@@ -1,0 +1,110 @@
+package tv.trakt.trakt.helpers.preview
+
+import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.model.Ids
+import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.ImdbId
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Rating
+import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.SlugId
+import tv.trakt.trakt.common.model.TmdbId
+import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.TvdbId
+import tv.trakt.trakt.common.model.User
+import java.time.LocalDate
+import java.time.ZonedDateTime
+import kotlin.time.Duration.Companion.minutes
+
+internal object PreviewData {
+    val show1 = Show(
+        ids = Ids(
+            trakt = TraktId(1),
+            slug = SlugId("slug2"),
+            tvdb = TvdbId(1),
+            tmdb = TmdbId(1),
+            imdb = ImdbId("tt1234562"),
+        ),
+        title = "Show Title",
+        overview = "This is a sample movie overview that provides a brief description of the movie's plot " +
+            "and main themes. It is intended to give viewers an idea of what to expect without revealing too much.",
+        year = 2024,
+        released = ZonedDateTime.now(),
+        genres = listOf("Comedy", "Drama").toImmutableList(),
+        images = Images(
+            fanart = listOf(
+                "walter-r2.trakt.tv/images/shows/000/142/611/fanarts/medium/5248d0dfec.jpg.webp",
+            ).toImmutableList(),
+            logo = listOf(
+                "walter-r2.trakt.tv/images/shows/000/142/611/fanarts/medium/5248d0dfec.jpg.webp",
+            ).toImmutableList(),
+        ),
+        colors = null,
+        rating = Rating(
+            rating = 8.5f,
+            votes = 1234,
+        ),
+        certification = "PG-18",
+        runtime = 90.minutes,
+        airedEpisodes = 28,
+    )
+
+    val show2 = show1.copy(
+        ids = show1.ids.copy(trakt = TraktId(2)),
+    )
+
+    val movie1 = Movie(
+        ids = Ids(
+            trakt = TraktId(1),
+            slug = SlugId("slug2"),
+            tvdb = TvdbId(1),
+            tmdb = TmdbId(1),
+            imdb = ImdbId("tt1234562"),
+        ),
+        title = "Movie Title",
+        overview = "This is a sample movie overview that provides a brief description of the movie's plot " +
+            "and main themes. It is intended to give viewers an idea of what to expect without revealing too much.",
+        year = 2024,
+        released = LocalDate.now(),
+        genres = listOf("Comedy", "Drama").toImmutableList(),
+        images = Images(
+            poster = listOf(
+                "walter-r2.trakt.tv/images/movies/000/142/611/fanarts/medium/5248d0dfec.jpg.webp",
+            ).toImmutableList(),
+            fanart = listOf(
+                "walter-r2.trakt.tv/images/movies/000/142/611/fanarts/medium/5248d0dfec.jpg.webp",
+            ).toImmutableList(),
+        ),
+        colors = null,
+        rating = Rating(
+            rating = 8.5f,
+            votes = 1234,
+        ),
+        certification = "PG-18",
+        runtime = 90.minutes,
+    )
+
+    val movie2 = movie1.copy(
+        ids = movie1.ids.copy(trakt = TraktId(2)),
+        images = null,
+    )
+
+    val user1 = User(
+        ids = Ids(
+            trakt = TraktId(1),
+            slug = SlugId("john-doe"),
+            imdb = ImdbId("tt1234567"),
+            tmdb = TmdbId(67890),
+            tvdb = TvdbId(112233),
+        ),
+        name = "John",
+        username = "johndoe69",
+        location = "New York, USA",
+        isVip = false,
+        isVipEp = false,
+        isVipOg = false,
+        isPrivate = false,
+        images = null,
+        streamings = null,
+    )
+}

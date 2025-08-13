@@ -51,10 +51,13 @@ android {
 }
 
 dependencies {
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.navigation)
     implementation(libs.androidx.datastore)
+
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.tooling.preview)
 
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.okhttp)

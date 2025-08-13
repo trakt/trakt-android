@@ -34,7 +34,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
 import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.common.model.SyncHistoryItem
-import tv.trakt.trakt.app.common.ui.FilmProgressIndicator
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
@@ -45,6 +44,7 @@ import tv.trakt.trakt.app.helpers.extensions.toLocal
 import tv.trakt.trakt.app.helpers.longDateTimeFormat
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 
 @Composable
 internal fun ProfileHistoryViewAllScreen(

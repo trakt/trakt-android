@@ -15,6 +15,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.auth.usecase.AuthorizeUserUseCase
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
@@ -22,6 +25,7 @@ import tv.trakt.trakt.core.profile.usecase.GetUserProfileUseCase
 import tv.trakt.trakt.core.profile.usecase.LogoutUserUseCase
 
 internal class ProfileViewModel(
+    private val sessionManager: SessionManager,
     private val authorizePreferences: DataStore<Preferences>,
     private val authorizeUseCase: AuthorizeUserUseCase,
     private val getProfileUseCase: GetUserProfileUseCase,
@@ -30,9 +34,13 @@ internal class ProfileViewModel(
     private val initialState = ProfileState()
 
     private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
+    private val loadingState = MutableStateFlow(initialState.loading)
+    private val profileState = MutableStateFlow(initialState.profile)
+    private val signedInState = MutableStateFlow(initialState.isSignedIn)
 
     init {
         loadBackground()
+        observeProfile()
         observeAuthCode()
     }
 
@@ -47,6 +55,16 @@ internal class ProfileViewModel(
         }
     }
 
+    private fun observeProfile() {
+        viewModelScope.launch {
+            sessionManager.observeProfile()
+                .collect { profile ->
+                    signedInState.update { (profile != null) }
+                    profileState.update { profile }
+                }
+        }
+    }
+
     private fun loadBackground() {
         val configUrl = Firebase.remoteConfig.getString("mobile_background_image_url")
         backgroundState.update { configUrl }
@@ -55,12 +73,16 @@ internal class ProfileViewModel(
     private fun authorizeUser(code: String) {
         viewModelScope.launch {
             try {
+                loadingState.update { LOADING }
+
                 authorizeUseCase.authorizeByCode(code)
                 getProfileUseCase.loadUserProfile()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.e(error)
                 }
+            } finally {
+                loadingState.update { LoadingState.IDLE }
             }
         }
     }
@@ -79,9 +101,15 @@ internal class ProfileViewModel(
 
     val state: StateFlow<ProfileState> = combine(
         backgroundState,
-    ) { state ->
+        loadingState,
+        profileState,
+        signedInState,
+    ) { s1, s2, s3, s4 ->
         ProfileState(
-            backgroundUrl = state[0],
+            backgroundUrl = s1,
+            loading = s2,
+            profile = s3,
+            isSignedIn = s4,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -30,8 +30,8 @@ import androidx.tv.material3.ButtonDefaults
 import androidx.tv.material3.Text
 import coil3.compose.AsyncImage
 import tv.trakt.trakt.app.R
-import tv.trakt.trakt.app.common.ui.FilmProgressIndicator
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 
 @Composable
 internal fun WatchNowButton(

@@ -1,4 +1,4 @@
-package tv.trakt.trakt.app.common.ui
+package tv.trakt.trakt.common.ui.composables
 
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -6,22 +6,21 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.tv.material3.Icon
-import tv.trakt.trakt.app.R
-import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.R
+import tv.trakt.trakt.common.ui.theme.colors.Shade300
 
 @Composable
-internal fun FilmProgressIndicator(
+fun FilmProgressIndicator(
     modifier: Modifier = Modifier,
-    color: Color = TraktTheme.colors.progressPrimary,
+    color: Color = Shade300,
     size: Dp = 48.dp,
 ) {
     val animation = rememberInfiniteTransition(label = "FilmProgressIndicatorTransition")
@@ -43,12 +42,4 @@ internal fun FilmProgressIndicator(
             .size(size)
             .rotate(animation.value),
     )
-}
-
-@Preview
-@Composable
-private fun Preview() {
-    TraktTheme {
-        FilmProgressIndicator()
-    }
 }

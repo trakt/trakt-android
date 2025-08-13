@@ -275,7 +275,7 @@ private fun NavigationProfileItem(
         Box(
             modifier = Modifier.size(28.dp),
         ) {
-            if (profile?.hasImage == true) {
+            if (profile?.hasAvatar == true) {
                 AsyncImage(
                     model = profile.images?.avatar?.full,
                     contentDescription = "User avatar",
@@ -320,7 +320,7 @@ private fun NavigationProfileItem(
 
         if (isOpen) {
             val profileText = if (profile == null) {
-                stringResource(R.string.log_in)
+                stringResource(RCommon.string.log_in)
             } else {
                 stringResource(R.string.view_profile)
             }

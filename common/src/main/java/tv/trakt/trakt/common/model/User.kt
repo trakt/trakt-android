@@ -25,7 +25,7 @@ data class User(
     val isAnyVip: Boolean
         get() = isVip || isVipEp || isVipOg
 
-    val hasImage: Boolean
+    val hasAvatar: Boolean
         get() = images?.avatar?.full != null
 
     @Immutable

@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.profile
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -15,6 +16,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -28,6 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.core.auth.ConfigAuth
+import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.ui.components.BackdropImage
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -47,6 +51,7 @@ internal fun ProfileScreen(
 
     ProfileScreenContent(
         state = state,
+        onLogoutClick = { viewModel.logoutUser() },
         onBackClick = onNavigateBack,
     )
 }
@@ -55,6 +60,7 @@ internal fun ProfileScreen(
 private fun ProfileScreenContent(
     state: ProfileState,
     modifier: Modifier = Modifier,
+    onLogoutClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
     val uriHandler = LocalUriHandler.current
@@ -93,14 +99,55 @@ private fun ProfileScreenContent(
             )
         }
 
-        PrimaryButton(
-            text = "Tap to sign in",
-            onClick = {
-                uriHandler.openUri(ConfigAuth.authCodeUrl)
-            },
+        val headerName = remember(state.profile) {
+            state.profile?.name?.ifBlank {
+                state.profile.username
+            }
+        }
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .align(Center),
-        )
+        ) {
+            if (state.isSignedIn) {
+                Column(
+                    modifier = Modifier
+                        .padding(bottom = 16.dp),
+                ) {
+                    Text(
+                        text = stringResource(RCommon.string.header_hello, headerName ?: ""),
+                        color = TraktTheme.colors.textPrimary,
+                        style = TraktTheme.typography.heading4,
+                    )
+                    if (!state.profile?.location.isNullOrBlank()) {
+                        Text(
+                            text = state.profile.location ?: "",
+                            color = TraktTheme.colors.textSecondary,
+                            style = TraktTheme.typography.heading6,
+                        )
+                    }
+                }
+            }
+
+            if (!state.isSignedIn) {
+                PrimaryButton(
+                    enabled = !state.loading.isLoading,
+                    loading = state.loading.isLoading,
+                    text = stringResource(RCommon.string.log_in),
+                    onClick = {
+                        uriHandler.openUri(ConfigAuth.authCodeUrl)
+                    },
+                )
+            } else {
+                PrimaryButton(
+                    enabled = !state.loading.isLoading,
+                    loading = state.loading.isLoading,
+                    text = stringResource(RCommon.string.log_out),
+                    onClick = onLogoutClick,
+                )
+            }
+        }
     }
 
     BackHandler {
@@ -117,7 +164,10 @@ private fun ProfileScreenContent(
 private fun Preview() {
     TraktTheme {
         ProfileScreenContent(
-            state = ProfileState(),
+            state = ProfileState(
+                isSignedIn = true,
+                profile = PreviewData.user1,
+            ),
         )
     }
 }

@@ -16,6 +16,7 @@ internal class AuthApiClient(
             clientSecret = BuildConfig.TRAKT_API_SECRET,
             redirectUri = ConfigAuth.OAUTH_REDIRECT_URI,
             grantType = "authorization_code",
+            refreshToken = "",
         )
 
         val response = api.postOauthToken(request).body()

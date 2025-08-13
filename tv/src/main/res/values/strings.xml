@@ -1,10 +1,5 @@
 <resources>
-    <string name="retry">Retry</string>
-    <string name="cancel">Cancel</string>
-    <string name="yes">Yes</string>
     <string name="custom_list_by">by</string>
-    <string name="log_in">Sign in</string>
-    <string name="log_out">Sign out</string>
     <string name="view_profile">View profile</string>
     <string name="stream_on">Stream on</string>
     <string name="stream_no_services">No services</string>
@@ -51,7 +46,6 @@
     <string name="header_related_shows">Related Shows</string>
     <string name="header_comments">Popular Comments</string>
     <string name="header_lists">Popular Lists</string>
-    <string name="header_profile">Hello, %s</string>
     <string name="header_seasons">Seasons</string>
     <string name="header_specials_season">Specials</string>
     <string name="header_recently_watched">Recently Watched</string>
