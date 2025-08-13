@@ -71,7 +71,7 @@ internal fun HeaderBar(
     onJoinClick: () -> Unit = {},
     onProfileClick: () -> Unit = {},
 ) {
-    val contentHeight = 32.dp
+    val contentHeight = 34.dp
     val headerBarHeight = WindowInsets.statusBars.asPaddingValues()
         .calculateTopPadding()
         .plus(height)
@@ -158,6 +158,9 @@ internal fun HeaderBar(
                             .size(contentHeight)
                             .onClick(onProfileClick),
                     ) {
+                        val borderColor = remember(userVip) {
+                            if (userVip) Color.Red else Color.White
+                        }
                         if (userAvatar != null) {
                             AsyncImage(
                                 model = userAvatar,
@@ -165,7 +168,7 @@ internal fun HeaderBar(
                                 contentScale = ContentScale.Crop,
                                 error = painterResource(R.drawable.ic_person_placeholder),
                                 modifier = Modifier
-                                    .border(2.dp, Color.White, CircleShape)
+                                    .border(2.dp, borderColor, CircleShape)
                                     .clip(CircleShape),
                             )
                         } else {
@@ -173,7 +176,7 @@ internal fun HeaderBar(
                                 painter = painterResource(R.drawable.ic_person_placeholder),
                                 contentDescription = null,
                                 modifier = Modifier
-                                    .border(2.dp, Color.White, CircleShape)
+                                    .border(2.dp, borderColor, CircleShape)
                                     .clip(CircleShape),
                             )
                         }
@@ -186,7 +189,7 @@ internal fun HeaderBar(
                                 modifier = Modifier
                                     .align(Alignment.TopEnd)
                                     .graphicsLayer {
-                                        val offset = 4.dp
+                                        val offset = 5.dp
                                         translationX = offset.toPx()
                                         translationY = -offset.toPx()
                                     }
@@ -195,8 +198,8 @@ internal fun HeaderBar(
                                         shape = CircleShape,
                                     )
                                     .background(Color.Red, shape = CircleShape)
-                                    .size(16.dp)
-                                    .padding(bottom = (3.5).dp, top = 3.dp),
+                                    .size(18.dp)
+                                    .padding(bottom = (4).dp, top = 3.dp),
                             )
                         }
                     }
@@ -231,6 +234,8 @@ private fun Preview2() {
     TraktTheme {
         HeaderBar(
             showVip = true,
+            showProfile = true,
+            userVip = false,
         )
     }
 }

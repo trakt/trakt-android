@@ -22,7 +22,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
@@ -30,6 +29,8 @@ import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.core.home.navigation.HomeDestination
 import tv.trakt.trakt.core.home.navigation.homeScreen
 import tv.trakt.trakt.core.lists.navigation.listsScreen
+import tv.trakt.trakt.core.main.navigation.isMainDestination
+import tv.trakt.trakt.core.main.navigation.isStartDestination
 import tv.trakt.trakt.core.main.navigation.navigateToMainDestination
 import tv.trakt.trakt.core.main.ui.menubar.TraktNavigationBar
 import tv.trakt.trakt.core.movies.navigation.moviesScreen
@@ -89,12 +90,17 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
     }
 
     BackHandler {
-        when {
-            currentDestination.value?.destination?.hasRoute<HomeDestination>() != true -> {
-                navController.navigateToMainDestination(HomeDestination)
+        with(currentDestination.value?.destination) {
+            if (isStartDestination(this)) {
+                (localContext as? Activity)?.finish()
+                return@BackHandler
             }
-            else -> (localContext as? Activity)?.finish()
+            if (isMainDestination(this)) {
+                navController.navigateToMainDestination(HomeDestination)
+                return@BackHandler
+            }
         }
+        navController.popBackStack()
     }
 }
 

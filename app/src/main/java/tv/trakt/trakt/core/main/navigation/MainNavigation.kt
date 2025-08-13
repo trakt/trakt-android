@@ -1,6 +1,8 @@
 package tv.trakt.trakt.core.main.navigation
 
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hasRoute
 import tv.trakt.trakt.core.home.navigation.HomeDestination
 import tv.trakt.trakt.core.home.navigation.navigateToHome
 import tv.trakt.trakt.core.lists.navigation.ListsDestination
@@ -20,4 +22,17 @@ internal fun NavController.navigateToMainDestination(destination: Any) {
         MoviesDestination -> navigateToMovies()
         ListsDestination -> navigateToLists()
     }
+}
+
+internal fun isMainDestination(destination: NavDestination?): Boolean {
+    return destination?.let {
+        it.hasRoute<ShowsDestination>() ||
+            it.hasRoute<MoviesDestination>() ||
+            it.hasRoute<SearchDestination>() ||
+            it.hasRoute<ListsDestination>()
+    } ?: false
+}
+
+internal fun isStartDestination(destination: NavDestination?): Boolean {
+    return destination?.hasRoute<HomeDestination>() == true
 }
