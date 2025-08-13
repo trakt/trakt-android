@@ -21,7 +21,7 @@ internal fun HomeScreen(onNavigateToHome: (TraktId) -> Unit) {
     LaunchedEffect(Unit) {
         localBottomBarVisibility.value = true
     }
-    
+
     HomeScreenContent(
         onHomeClick = onNavigateToHome,
     )

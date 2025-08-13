@@ -9,12 +9,14 @@ import tv.trakt.trakt.common.Config.API_BASE_URL
 import tv.trakt.trakt.core.movies.MoviesViewModel
 import tv.trakt.trakt.core.movies.data.remote.MoviesApiClient
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
-import tv.trakt.trakt.core.movies.sections.anticipated.GetAnticipatedMoviesUseCase
 import tv.trakt.trakt.core.movies.sections.anticipated.MoviesAnticipatedViewModel
+import tv.trakt.trakt.core.movies.sections.anticipated.usecase.GetAnticipatedMoviesUseCase
 import tv.trakt.trakt.core.movies.sections.hot.MoviesHotViewModel
 import tv.trakt.trakt.core.movies.sections.hot.usecase.GetHotMoviesUseCase
 import tv.trakt.trakt.core.movies.sections.popular.MoviesPopularViewModel
 import tv.trakt.trakt.core.movies.sections.popular.usecase.GetPopularMoviesUseCase
+import tv.trakt.trakt.core.movies.sections.recommended.MoviesRecommendedViewModel
+import tv.trakt.trakt.core.movies.sections.recommended.usecase.GetRecommendedMoviesUseCase
 import tv.trakt.trakt.core.movies.sections.trending.MoviesTrendingViewModel
 import tv.trakt.trakt.core.movies.sections.trending.usecase.GetTrendingMoviesUseCase
 
@@ -61,6 +63,12 @@ internal val moviesModule = module {
         )
     }
 
+    factory {
+        GetRecommendedMoviesUseCase(
+            remoteSource = get(),
+        )
+    }
+
     viewModel {
         MoviesViewModel(
             sessionManager = get(),
@@ -82,6 +90,12 @@ internal val moviesModule = module {
     viewModel {
         MoviesAnticipatedViewModel(
             getAnticipatedUseCase = get(),
+        )
+    }
+
+    viewModel {
+        MoviesRecommendedViewModel(
+            getRecommendedUseCase = get(),
         )
     }
 

@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.movies.sections.anticipated
+package tv.trakt.trakt.core.movies.sections.anticipated.usecase
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList

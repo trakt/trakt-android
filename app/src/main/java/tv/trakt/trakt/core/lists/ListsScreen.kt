@@ -21,7 +21,7 @@ internal fun ListsScreen(onNavigateToList: (TraktId) -> Unit) {
     LaunchedEffect(Unit) {
         localBottomBarVisibility.value = true
     }
-    
+
     ListsScreenContent(
         onListClick = onNavigateToList,
     )

@@ -30,6 +30,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.movies.sections.anticipated.MoviesAnticipatedView
 import tv.trakt.trakt.core.movies.sections.hot.MoviesHotView
 import tv.trakt.trakt.core.movies.sections.popular.MoviesPopularView
+import tv.trakt.trakt.core.movies.sections.recommended.MoviesRecommendedView
 import tv.trakt.trakt.core.movies.sections.trending.MoviesTrendingView
 import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
@@ -137,6 +138,15 @@ private fun MoviesScreenContent(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                 )
+            }
+
+            if (state.user.isAuthenticated) {
+                item {
+                    MoviesRecommendedView(
+                        headerPadding = sectionPadding,
+                        contentPadding = sectionPadding,
+                    )
+                }
             }
 
             item {

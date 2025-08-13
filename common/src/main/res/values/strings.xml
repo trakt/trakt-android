@@ -26,5 +26,5 @@
     <string name="header_hot_month">Hot This Month</string>
     <string name="header_most_popular">Most Popular</string>
     <string name="header_most_anticipated">Most Anticipated</string>
-    <string name="header_recommended">Recommendations</string>
+    <string name="header_recommended">Recommended</string>
 </resources>
