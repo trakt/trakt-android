@@ -35,7 +35,7 @@
     <string name="header_movies_watchlist">Movies Watchlist</string>
     <string name="header_shows_watchlist">Shows Watchlist</string>
     <string name="header_shows_upcoming">Upcoming Schedule</string>
-    <string name="header_shows_up_next">Up Next</string>
+    <string name="header_shows_up_next">Continue Watching</string>
     <string name="header_extras">Extras</string>
     <string name="header_cast_crew">Cast &amp; Crew</string>
     <string name="header_related_movies">Related Movies</string>
