@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.shows.di
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import org.openapitools.client.apis.RecommendationsApi
 import org.openapitools.client.apis.ShowsApi
 import tv.trakt.trakt.common.Config.API_BASE_URL
 import tv.trakt.trakt.core.shows.ShowsViewModel
@@ -21,10 +22,15 @@ internal val showsDataModule = module {
 
     single<ShowsRemoteDataSource> {
         ShowsApiClient(
-            api = ShowsApi(
+            showsApi = ShowsApi(
                 baseUrl = API_BASE_URL,
                 httpClientEngine = get(),
                 httpClientConfig = get(named("clientConfig")),
+            ),
+            recommendationsApi = RecommendationsApi(
+                baseUrl = API_BASE_URL,
+                httpClientEngine = get(),
+                httpClientConfig = get(named("authorizedClientConfig")),
             ),
         )
     }

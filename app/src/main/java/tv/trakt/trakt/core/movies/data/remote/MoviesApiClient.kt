@@ -1,15 +1,18 @@
 package tv.trakt.trakt.core.movies.data.remote
 
 import org.openapitools.client.apis.MoviesApi
+import org.openapitools.client.apis.RecommendationsApi
 import tv.trakt.trakt.common.networking.MovieDto
+import tv.trakt.trakt.common.networking.RecommendedMovieDto
 import tv.trakt.trakt.core.movies.data.remote.model.AnticipatedMovieDto
 import tv.trakt.trakt.core.movies.data.remote.model.TrendingMovieDto
 
 internal class MoviesApiClient(
-    private val api: MoviesApi,
+    private val moviesApi: MoviesApi,
+    private val recommendationsApi: RecommendationsApi,
 ) : MoviesRemoteDataSource {
     override suspend fun getTrending(limit: Int): List<TrendingMovieDto> {
-        val response = api.getMoviesTrending(
+        val response = moviesApi.getMoviesTrending(
             extended = "full,streaming_ids,cloud9,colors",
             limit = limit,
             watchnow = null,
@@ -34,7 +37,7 @@ internal class MoviesApiClient(
     }
 
     override suspend fun getHot(limit: Int): List<TrendingMovieDto> {
-        val response = api.getMoviesHot(
+        val response = moviesApi.getMoviesHot(
             extended = "full,streaming_ids,cloud9,colors",
             limit = limit,
             watchnow = null,
@@ -59,7 +62,7 @@ internal class MoviesApiClient(
     }
 
     override suspend fun getPopular(limit: Int): List<MovieDto> {
-        val response = api.getMoviesPopular(
+        val response = moviesApi.getMoviesPopular(
             extended = "full,streaming_ids,cloud9,colors",
             limit = limit,
             watchnow = null,
@@ -77,8 +80,27 @@ internal class MoviesApiClient(
         return response.body()
     }
 
+    override suspend fun getRecommended(limit: Int): List<RecommendedMovieDto> {
+        val response = recommendationsApi.getRecommendationsMoviesRecommend(
+            extended = "full,streaming_ids,cloud9,colors",
+            limit = limit,
+            ignoreWatched = true,
+            ignoreWatchlisted = true,
+            ignoreCollected = true,
+            watchWindow = 25,
+            watchnow = null,
+            genres = null,
+            years = null,
+            ratings = null,
+            startDate = null,
+            endDate = null,
+        )
+
+        return response.body()
+    }
+
     override suspend fun getAnticipated(limit: Int): List<AnticipatedMovieDto> {
-        val response = api.getMoviesAnticipated(
+        val response = moviesApi.getMoviesAnticipated(
             extended = "full,streaming_ids,cloud9,colors",
             limit = limit,
             watchnow = null,

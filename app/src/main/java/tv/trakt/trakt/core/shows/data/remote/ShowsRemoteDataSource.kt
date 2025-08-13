@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.shows.data.remote
 
+import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.ShowDto
 import tv.trakt.trakt.core.shows.data.remote.model.AnticipatedShowDto
 import tv.trakt.trakt.core.shows.data.remote.model.TrendingShowDto
@@ -10,6 +11,8 @@ internal interface ShowsRemoteDataSource {
     suspend fun getHot(limit: Int): List<TrendingShowDto>
 
     suspend fun getPopular(limit: Int): List<ShowDto>
+
+    suspend fun getRecommended(limit: Int): List<RecommendedShowDto>
 
     suspend fun getAnticipated(limit: Int): List<AnticipatedShowDto>
 }
