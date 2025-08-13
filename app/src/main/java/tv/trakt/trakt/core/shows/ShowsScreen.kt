@@ -183,6 +183,8 @@ private fun ShowsScreenHeader(
         showVip = headerState.startScrolled,
         showProfile = userState.first && userState.second,
         showJoinTrakt = userState.first && !userState.second,
+        userVip = state.user.user?.isAnyVip ?: false,
+        userAvatar = state.user.user?.images?.avatar?.full,
         onJoinClick = onProfileClick,
         onProfileClick = onProfileClick,
         modifier = Modifier.offset {

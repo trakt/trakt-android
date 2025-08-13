@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,7 +29,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -36,6 +40,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.R
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
@@ -61,6 +66,8 @@ internal fun HeaderBar(
     showVip: Boolean = false,
     showProfile: Boolean = false,
     showJoinTrakt: Boolean = false,
+    userAvatar: String? = null,
+    userVip: Boolean = false,
     onJoinClick: () -> Unit = {},
     onProfileClick: () -> Unit = {},
 ) {
@@ -146,15 +153,53 @@ internal fun HeaderBar(
 
             when {
                 showProfile -> {
-                    Image(
-                        painter = painterResource(R.drawable.ic_person_placeholder),
-                        contentDescription = null,
+                    Box(
                         modifier = Modifier
                             .size(contentHeight)
-                            .border(2.dp, Color.White, CircleShape)
-                            .clip(CircleShape)
                             .onClick(onProfileClick),
-                    )
+                    ) {
+                        if (userAvatar != null) {
+                            AsyncImage(
+                                model = userAvatar,
+                                contentDescription = "User avatar",
+                                contentScale = ContentScale.Crop,
+                                error = painterResource(R.drawable.ic_person_placeholder),
+                                modifier = Modifier
+                                    .border(2.dp, Color.White, CircleShape)
+                                    .clip(CircleShape),
+                            )
+                        } else {
+                            Image(
+                                painter = painterResource(R.drawable.ic_person_placeholder),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .border(2.dp, Color.White, CircleShape)
+                                    .clip(CircleShape),
+                            )
+                        }
+
+                        if (userVip) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_crown),
+                                contentDescription = null,
+                                tint = Color.White,
+                                modifier = Modifier
+                                    .align(Alignment.TopEnd)
+                                    .graphicsLayer {
+                                        val offset = 4.dp
+                                        translationX = offset.toPx()
+                                        translationY = -offset.toPx()
+                                    }
+                                    .shadow(
+                                        elevation = 1.dp,
+                                        shape = CircleShape,
+                                    )
+                                    .background(Color.Red, shape = CircleShape)
+                                    .size(16.dp)
+                                    .padding(bottom = (3.5).dp, top = 3.dp),
+                            )
+                        }
+                    }
                 }
                 showJoinTrakt -> {
                     TertiaryButton(
@@ -173,7 +218,10 @@ internal fun HeaderBar(
 @Composable
 private fun Preview() {
     TraktTheme {
-        HeaderBar()
+        HeaderBar(
+            showProfile = true,
+            userVip = true,
+        )
     }
 }
 
