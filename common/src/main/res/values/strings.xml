@@ -20,6 +20,7 @@
     <string name="episodes_count">%d episodes</string>
 
     <string name="header_hello">Hello, %s</string>
+    <string name="header_hello_default">Hello!</string>
     <string name="header_profile_title">Profile</string>
     <string name="header_trending">Trending</string>
     <string name="header_hot_month">Hot This Month</string>

@@ -41,7 +41,7 @@ import tv.trakt.trakt.common.R
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.ui.components.VipChip
-import tv.trakt.trakt.ui.components.buttons.PrimaryButton
+import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -57,13 +57,14 @@ internal fun HeaderBar(
     height: Dp = TraktTheme.size.navigationHeaderHeight,
     containerColor: Color = TraktTheme.colors.navigationHeaderContainer,
     containerAlpha: Float = 0.98F,
+    title: String? = null,
     showVip: Boolean = false,
     showProfile: Boolean = false,
     showJoinTrakt: Boolean = false,
     onJoinClick: () -> Unit = {},
     onProfileClick: () -> Unit = {},
 ) {
-    val contentHeight = 34.dp
+    val contentHeight = 32.dp
     val headerBarHeight = WindowInsets.statusBars.asPaddingValues()
         .calculateTopPadding()
         .plus(height)
@@ -117,7 +118,7 @@ internal fun HeaderBar(
                         verticalArrangement = spacedBy(1.dp, Alignment.CenterVertically),
                     ) {
                         Text(
-                            text = "Hello there!",
+                            text = title ?: stringResource(R.string.header_hello_default),
                             color = TraktTheme.colors.textPrimary,
                             style = TraktTheme.typography.paragraphSmall,
                             maxLines = 1,
@@ -156,7 +157,7 @@ internal fun HeaderBar(
                     )
                 }
                 showJoinTrakt -> {
-                    PrimaryButton(
+                    TertiaryButton(
                         text = stringResource(R.string.join_trakt),
                         icon = painterResource(R.drawable.ic_plus_round),
                         height = contentHeight,

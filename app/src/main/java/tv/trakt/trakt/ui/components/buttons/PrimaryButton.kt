@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,7 +33,10 @@ internal fun PrimaryButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     text: String,
+    textStyle: TextStyle = TraktTheme.typography.buttonPrimary,
     icon: Painter? = null,
+    iconSize: Dp = 20.dp,
+    iconSpace: Dp = 12.dp,
     enabled: Boolean = true,
     loading: Boolean = false,
     height: Dp = 42.dp,
@@ -63,7 +67,7 @@ internal fun PrimaryButton(
             Text(
                 text = text.uppercase(),
                 color = if (enabled) contentColor else disabledContentColor,
-                style = TraktTheme.typography.buttonPrimary,
+                style = textStyle,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = if (icon != null || loading) TextAlign.Start else TextAlign.Center,
@@ -73,10 +77,10 @@ internal fun PrimaryButton(
             when {
                 loading -> {
                     FilmProgressIndicator(
-                        size = 16.dp,
+                        size = iconSize - 4.dp,
                         color = if (enabled) contentColor else disabledContentColor,
                         modifier = Modifier
-                            .padding(start = 4.dp),
+                            .padding(start = 8.dp),
                     )
                 }
 
@@ -87,8 +91,8 @@ internal fun PrimaryButton(
                         contentScale = ContentScale.Fit,
                         colorFilter = ColorFilter.tint(if (enabled) contentColor else disabledContentColor),
                         modifier = Modifier
-                            .padding(start = 8.dp)
-                            .requiredSize(20.dp),
+                            .padding(start = iconSpace)
+                            .requiredSize(iconSize),
                     )
                 }
             }
