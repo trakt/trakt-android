@@ -36,8 +36,16 @@ internal class ShowsAnticipatedViewModel(
                 loadingState.update { LOADING }
             }
             try {
-                val shows = getAnticipatedUseCase.getAnticipatedShows()
-                itemsState.update { shows }
+                val localShows = getAnticipatedUseCase.getLocalShows()
+                if (localShows.isNotEmpty()) {
+                    loadingJob.cancel()
+                    loadingState.update { DONE }
+                    itemsState.update { localShows }
+                }
+
+                itemsState.update {
+                    getAnticipatedUseCase.getShows()
+                }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

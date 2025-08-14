@@ -36,8 +36,16 @@ internal class ShowsPopularViewModel(
                 loadingState.update { LOADING }
             }
             try {
-                val shows = getPopularUseCase.getPopularShows()
-                itemsState.update { shows }
+                val localShows = getPopularUseCase.getLocalShows()
+                if (localShows.isNotEmpty()) {
+                    loadingJob.cancel()
+                    loadingState.update { DONE }
+                    itemsState.update { localShows }
+                }
+
+                itemsState.update {
+                    getPopularUseCase.getShows()
+                }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

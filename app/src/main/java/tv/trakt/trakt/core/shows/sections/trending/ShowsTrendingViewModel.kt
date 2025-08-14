@@ -36,8 +36,16 @@ internal class ShowsTrendingViewModel(
                 loadingState.update { LOADING }
             }
             try {
-                val shows = getTrendingUseCase.getTrendingShows()
-                itemsState.update { shows }
+                val localShows = getTrendingUseCase.getLocalShows()
+                if (localShows.isNotEmpty()) {
+                    loadingJob.cancel()
+                    loadingState.update { DONE }
+                    itemsState.update { localShows }
+                }
+
+                itemsState.update {
+                    getTrendingUseCase.getShows()
+                }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

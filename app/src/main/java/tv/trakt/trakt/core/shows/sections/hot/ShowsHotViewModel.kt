@@ -36,8 +36,16 @@ internal class ShowsHotViewModel(
                 loadingState.update { LOADING }
             }
             try {
-                val shows = getHotUseCase.getHotShows()
-                itemsState.update { shows }
+                val localShows = getHotUseCase.getLocalShows()
+                if (localShows.isNotEmpty()) {
+                    loadingJob.cancel()
+                    loadingState.update { DONE }
+                    itemsState.update { localShows }
+                }
+
+                itemsState.update {
+                    getHotUseCase.getShows()
+                }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
