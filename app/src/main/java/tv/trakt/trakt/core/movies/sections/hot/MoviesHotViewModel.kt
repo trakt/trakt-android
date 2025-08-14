@@ -34,6 +34,7 @@ internal class MoviesHotViewModel(
                 val localMovies = getHotUseCase.getLocalMovies()
                 if (localMovies.isNotEmpty()) {
                     itemsState.update { localMovies }
+                    loadingState.update { DONE }
                 } else {
                     loadingState.update { LOADING }
                 }

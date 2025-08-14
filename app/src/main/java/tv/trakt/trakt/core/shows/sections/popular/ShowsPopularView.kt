@@ -188,19 +188,3 @@ private fun Preview() {
         )
     }
 }
-
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
-@Composable
-private fun Preview2() {
-    TraktTheme {
-        ShowsPopularContent(
-            state = ShowsPopularState(
-                loading = LOADING,
-            ),
-        )
-    }
-}

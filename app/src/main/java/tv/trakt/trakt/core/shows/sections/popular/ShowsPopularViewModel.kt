@@ -34,6 +34,7 @@ internal class ShowsPopularViewModel(
                 val localShows = getPopularUseCase.getLocalShows()
                 if (localShows.isNotEmpty()) {
                     itemsState.update { localShows }
+                    loadingState.update { DONE }
                 } else {
                     loadingState.update { LOADING }
                 }

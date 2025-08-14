@@ -34,6 +34,7 @@ internal class ShowsHotViewModel(
                 val localShows = getHotUseCase.getLocalShows()
                 if (localShows.isNotEmpty()) {
                     itemsState.update { localShows }
+                    loadingState.update { DONE }
                 } else {
                     loadingState.update { LOADING }
                 }

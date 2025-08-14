@@ -34,6 +34,7 @@ internal class MoviesAnticipatedViewModel(
                 val localMovies = getAnticipatedUseCase.getLocalMovies()
                 if (localMovies.isNotEmpty()) {
                     itemsState.update { localMovies }
+                    loadingState.update { DONE }
                 } else {
                     loadingState.update { LOADING }
                 }

@@ -34,6 +34,7 @@ internal class MoviesTrendingViewModel(
                 val localMovies = getTrendingUseCase.getLocalMovies()
                 if (localMovies.isNotEmpty()) {
                     itemsState.update { localMovies }
+                    loadingState.update { DONE }
                 } else {
                     loadingState.update { LOADING }
                 }

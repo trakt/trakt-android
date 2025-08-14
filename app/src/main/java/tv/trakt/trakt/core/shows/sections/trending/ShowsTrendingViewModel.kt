@@ -34,6 +34,7 @@ internal class ShowsTrendingViewModel(
                 val localShows = getTrendingUseCase.getLocalShows()
                 if (localShows.isNotEmpty()) {
                     itemsState.update { localShows }
+                    loadingState.update { DONE }
                 } else {
                     loadingState.update { LOADING }
                 }

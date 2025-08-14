@@ -34,6 +34,7 @@ internal class MoviesRecommendedViewModel(
                 val localMovies = getRecommendedUseCase.getLocalMovies()
                 if (localMovies.isNotEmpty()) {
                     itemsState.update { localMovies }
+                    loadingState.update { DONE }
                 } else {
                     loadingState.update { LOADING }
                 }

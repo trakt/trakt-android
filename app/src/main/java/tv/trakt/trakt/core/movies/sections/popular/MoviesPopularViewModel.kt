@@ -34,6 +34,7 @@ internal class MoviesPopularViewModel(
                 val localMovies = getPopularUseCase.getLocalMovies()
                 if (localMovies.isNotEmpty()) {
                     itemsState.update { localMovies }
+                    loadingState.update { DONE }
                 } else {
                     loadingState.update { LOADING }
                 }
