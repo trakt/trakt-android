@@ -187,7 +187,7 @@ internal fun HeaderBar(
                                 modifier = Modifier
                                     .align(Alignment.TopEnd)
                                     .graphicsLayer {
-                                        val offset = 5.dp
+                                        val offset = 3.dp
                                         translationX = offset.toPx()
                                         translationY = -offset.toPx()
                                     }

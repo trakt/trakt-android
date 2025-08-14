@@ -7,11 +7,20 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
 import tv.trakt.trakt.core.movies.model.WatchersMovie
+import tv.trakt.trakt.core.movies.sections.anticipated.data.local.AnticipatedMoviesLocalDataSource
+import java.time.Instant
 
 internal class GetAnticipatedMoviesUseCase(
     private val remoteSource: MoviesRemoteDataSource,
+    private val localAnticipatedSource: AnticipatedMoviesLocalDataSource,
 ) {
-    suspend fun getAnticipatedMovies(): ImmutableList<WatchersMovie> {
+    suspend fun getLocalMovies(): ImmutableList<WatchersMovie> {
+        return localAnticipatedSource.getMovies()
+            .sortedByDescending { it.watchers }
+            .toImmutableList()
+    }
+
+    suspend fun getMovies(): ImmutableList<WatchersMovie> {
         return remoteSource.getAnticipated(20)
             .asyncMap {
                 WatchersMovie(
@@ -21,7 +30,10 @@ internal class GetAnticipatedMoviesUseCase(
             }
             .toImmutableList()
             .also { movies ->
-//                localSource.upsertMovies(movies.map { it.movie })
+                localAnticipatedSource.addMovies(
+                    movies = movies,
+                    addedAt = Instant.now(),
+                )
             }
     }
 }

@@ -2,7 +2,6 @@ package tv.trakt.trakt.core.shows.sections.recommended
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -31,16 +30,12 @@ internal class ShowsRecommendedViewModel(
 
     private fun loadData() {
         viewModelScope.launch {
-            val loadingJob = launch {
-                delay(250)
-                loadingState.update { LOADING }
-            }
             try {
                 val localShows = getRecommendedUseCase.getLocalShows()
                 if (localShows.isNotEmpty()) {
-                    loadingJob.cancel()
-                    loadingState.update { DONE }
                     itemsState.update { localShows }
+                } else {
+                    loadingState.update { LOADING }
                 }
 
                 itemsState.update {
@@ -49,10 +44,9 @@ internal class ShowsRecommendedViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error, "Failed to load recommended shows")
+                    Timber.e(error, "Failed to load data")
                 }
             } finally {
-                loadingJob.cancel()
                 loadingState.update { DONE }
             }
         }

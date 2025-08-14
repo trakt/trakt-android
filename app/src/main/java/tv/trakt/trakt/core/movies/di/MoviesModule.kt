@@ -10,14 +10,24 @@ import tv.trakt.trakt.core.movies.MoviesViewModel
 import tv.trakt.trakt.core.movies.data.remote.MoviesApiClient
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
 import tv.trakt.trakt.core.movies.sections.anticipated.MoviesAnticipatedViewModel
+import tv.trakt.trakt.core.movies.sections.anticipated.data.local.AnticipatedMoviesLocalDataSource
+import tv.trakt.trakt.core.movies.sections.anticipated.data.local.AnticipatedMoviesStorage
 import tv.trakt.trakt.core.movies.sections.anticipated.usecase.GetAnticipatedMoviesUseCase
 import tv.trakt.trakt.core.movies.sections.hot.MoviesHotViewModel
+import tv.trakt.trakt.core.movies.sections.hot.data.local.HotMoviesLocalDataSource
+import tv.trakt.trakt.core.movies.sections.hot.data.local.HotMoviesStorage
 import tv.trakt.trakt.core.movies.sections.hot.usecase.GetHotMoviesUseCase
 import tv.trakt.trakt.core.movies.sections.popular.MoviesPopularViewModel
+import tv.trakt.trakt.core.movies.sections.popular.data.local.PopularMoviesLocalDataSource
+import tv.trakt.trakt.core.movies.sections.popular.data.local.PopularMoviesStorage
 import tv.trakt.trakt.core.movies.sections.popular.usecase.GetPopularMoviesUseCase
 import tv.trakt.trakt.core.movies.sections.recommended.MoviesRecommendedViewModel
+import tv.trakt.trakt.core.movies.sections.recommended.data.local.RecommendedMoviesLocalDataSource
+import tv.trakt.trakt.core.movies.sections.recommended.data.local.RecommendedMoviesStorage
 import tv.trakt.trakt.core.movies.sections.recommended.usecase.GetRecommendedMoviesUseCase
 import tv.trakt.trakt.core.movies.sections.trending.MoviesTrendingViewModel
+import tv.trakt.trakt.core.movies.sections.trending.data.local.TrendingMoviesLocalDataSource
+import tv.trakt.trakt.core.movies.sections.trending.data.local.TrendingMoviesStorage
 import tv.trakt.trakt.core.movies.sections.trending.usecase.GetTrendingMoviesUseCase
 
 internal val moviesDataModule = module {
@@ -36,36 +46,61 @@ internal val moviesDataModule = module {
             ),
         )
     }
+
+    single<PopularMoviesLocalDataSource> {
+        PopularMoviesStorage()
+    }
+
+    single<HotMoviesLocalDataSource> {
+        HotMoviesStorage()
+    }
+
+    single<AnticipatedMoviesLocalDataSource> {
+        AnticipatedMoviesStorage()
+    }
+
+    single<TrendingMoviesLocalDataSource> {
+        TrendingMoviesStorage()
+    }
+
+    single<RecommendedMoviesLocalDataSource> {
+        RecommendedMoviesStorage()
+    }
 }
 
 internal val moviesModule = module {
     factory {
         GetTrendingMoviesUseCase(
             remoteSource = get(),
+            localTrendingSource = get(),
         )
     }
 
     factory {
         GetHotMoviesUseCase(
             remoteSource = get(),
+            localHotSource = get(),
         )
     }
 
     factory {
         GetPopularMoviesUseCase(
             remoteSource = get(),
+            localPopularSource = get(),
         )
     }
 
     factory {
         GetAnticipatedMoviesUseCase(
             remoteSource = get(),
+            localAnticipatedSource = get(),
         )
     }
 
     factory {
         GetRecommendedMoviesUseCase(
             remoteSource = get(),
+            localRecommendedSource = get(),
         )
     }
 

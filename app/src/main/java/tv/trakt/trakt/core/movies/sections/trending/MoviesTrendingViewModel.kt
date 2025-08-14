@@ -2,7 +2,6 @@ package tv.trakt.trakt.core.movies.sections.trending
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -31,20 +30,23 @@ internal class MoviesTrendingViewModel(
 
     private fun loadData() {
         viewModelScope.launch {
-            val loadingJob = launch {
-                delay(250)
-                loadingState.update { LOADING }
-            }
             try {
-                val movies = getTrendingUseCase.getTrendingMovies()
-                itemsState.update { movies }
+                val localMovies = getTrendingUseCase.getLocalMovies()
+                if (localMovies.isNotEmpty()) {
+                    itemsState.update { localMovies }
+                } else {
+                    loadingState.update { LOADING }
+                }
+
+                itemsState.update {
+                    getTrendingUseCase.getMovies()
+                }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
                     Timber.e(error, "Failed to load data")
                 }
             } finally {
-                loadingJob.cancel()
                 loadingState.update { DONE }
             }
         }
