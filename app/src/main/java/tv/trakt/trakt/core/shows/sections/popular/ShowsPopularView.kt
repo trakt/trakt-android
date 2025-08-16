@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -16,6 +17,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -95,7 +98,7 @@ internal fun ShowsPopularContent(
                 }
                 DONE -> {
                     ContentList(
-                        listItems = { state.items ?: emptyList<Show>().toImmutableList() },
+                        items = state.items ?: emptyList<Show>().toImmutableList(),
                         contentPadding = contentPadding,
                     )
                 }
@@ -124,23 +127,28 @@ private fun ContentLoadingList(
 
 @Composable
 private fun ContentList(
-    listItems: () -> ImmutableList<Show>,
+    items: ImmutableList<Show>,
+    listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
 ) {
-    val state = rememberLazyListState()
+    val currentList = remember { mutableIntStateOf(items.hashCode()) }
 
-    LaunchedEffect(listItems()) {
-        state.animateScrollToItem(0)
+    LaunchedEffect(items) {
+        val hashCode = items.hashCode()
+        if (currentList.intValue != hashCode) {
+            currentList.intValue = hashCode
+            listState.animateScrollToItem(0)
+        }
     }
 
     LazyRow(
-        state = state,
+        state = listState,
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
         contentPadding = contentPadding,
     ) {
         items(
-            items = listItems(),
+            items = items,
             key = { it.ids.trakt.value },
         ) { item ->
             ContentListItem(

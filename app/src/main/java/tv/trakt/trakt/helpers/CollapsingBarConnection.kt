@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import timber.log.Timber
 
 /**
  * A [NestedScrollConnection] that handles the collapsing behavior of a top bar.
@@ -41,7 +40,6 @@ internal class CollapsingBarConnection(
         }
 
         if (!scrolledUp && newBarOffset <= -barMaxHeight) {
-            Timber.d("Scrolled up")
             onScrollUp()
             scrolledUp = true
         }
