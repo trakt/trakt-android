@@ -1,4 +1,4 @@
-name: Main Flow
+name: Main Branch Flow
 
 on:
   push:
