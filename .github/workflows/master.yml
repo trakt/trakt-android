@@ -1,9 +1,9 @@
-name: Master Flow
+name: Main Flow
 
 on:
   push:
     branches:
-      - master
+      - main
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
