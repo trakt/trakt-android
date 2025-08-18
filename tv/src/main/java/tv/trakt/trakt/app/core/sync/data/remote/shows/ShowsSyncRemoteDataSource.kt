@@ -8,7 +8,10 @@ import tv.trakt.trakt.common.networking.WatchlistShowDto
 import java.time.ZonedDateTime
 
 internal interface ShowsSyncRemoteDataSource {
-    suspend fun getUpNextProgress(limit: Int = 20): List<ProgressShowDto>
+    suspend fun getUpNextProgress(
+        limit: Int,
+        page: Int,
+    ): List<ProgressShowDto>
 
     suspend fun getWatchlist(
         sort: String = "rank",

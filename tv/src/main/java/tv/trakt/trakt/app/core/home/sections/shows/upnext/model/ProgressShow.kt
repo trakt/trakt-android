@@ -1,6 +1,7 @@
 package tv.trakt.trakt.app.core.home.sections.shows.upnext.model
 
 import androidx.compose.runtime.Immutable
+import tv.trakt.trakt.app.common.model.TraktId
 import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.model.Show
@@ -10,7 +11,10 @@ import java.time.ZonedDateTime
 internal data class ProgressShow(
     val progress: Progress,
     val show: Show,
-)
+) {
+    val id: TraktId
+        get() = progress.nextEpisode.ids.trakt
+}
 
 @Immutable
 internal data class Progress(

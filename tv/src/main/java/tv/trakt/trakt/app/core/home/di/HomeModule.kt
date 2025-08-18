@@ -11,6 +11,7 @@ import tv.trakt.trakt.app.core.home.sections.shows.upcoming.HomeUpcomingViewMode
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.usecases.GetUpcomingUseCase
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.HomeUpNextViewModel
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.usecases.GetUpNextUseCase
+import tv.trakt.trakt.app.core.home.sections.shows.upnext.viewall.UpNextViewAllViewModel
 
 internal val homeModule = module {
     factory {
@@ -73,6 +74,14 @@ internal val homeModule = module {
 
     viewModel {
         HomeUpNextViewModel(
+            getUpNextUseCase = get(),
+            localShowsSyncSource = get(),
+            localEpisodesSyncSource = get(),
+        )
+    }
+
+    viewModel {
+        UpNextViewAllViewModel(
             getUpNextUseCase = get(),
             localShowsSyncSource = get(),
             localEpisodesSyncSource = get(),

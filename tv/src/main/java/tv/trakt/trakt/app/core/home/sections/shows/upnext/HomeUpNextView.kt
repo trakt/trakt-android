@@ -34,7 +34,9 @@ import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.common.ui.mediacards.EpisodeSkeletonCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
+import tv.trakt.trakt.app.common.ui.mediacards.HorizontalViewAllCard
 import tv.trakt.trakt.app.core.episodes.model.Episode
+import tv.trakt.trakt.app.core.home.HomeConfig.UP_NEXT_SECTION_LIMIT
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressShow
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
@@ -56,6 +58,7 @@ internal fun HomeUpNextView(
     onLoaded: () -> Unit = {},
     onFocused: (Show) -> Unit = {},
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
+    onNavigateToViewAll: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -83,6 +86,7 @@ internal fun HomeUpNextView(
         onLoaded = onLoaded,
         onFocused = onFocused,
         onNavigateToEpisode = onNavigateToEpisode,
+        onViewAllClick = onNavigateToViewAll,
     )
 }
 
@@ -96,6 +100,7 @@ internal fun HomeUpNextContent(
     onLoaded: () -> Unit = {},
     onFocused: (Show) -> Unit = {},
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
+    onViewAllClick: () -> Unit = {},
 ) {
     var isFocusable by remember { mutableStateOf(true) }
 
@@ -143,6 +148,7 @@ internal fun HomeUpNextContent(
                     onClick = { show, episode ->
                         onNavigateToEpisode(show.ids.trakt, episode)
                     },
+                    onViewAllClick = onViewAllClick,
                     contentPadding = contentPadding,
                     focusRequesters = focusRequesters,
                 )
@@ -156,6 +162,7 @@ private fun ContentList(
     listItems: () -> ImmutableList<ProgressShow>,
     onFocused: (Show) -> Unit,
     onClick: (Show, Episode) -> Unit,
+    onViewAllClick: () -> Unit,
     contentPadding: PaddingValues,
     focusRequesters: Map<String, FocusRequester> = emptyMap(),
 ) {
@@ -172,6 +179,14 @@ private fun ContentList(
                 onClick = onClick,
                 onFocused = onFocused,
             )
+        }
+
+        if (listItems().size >= UP_NEXT_SECTION_LIMIT) {
+            item {
+                HorizontalViewAllCard(
+                    onClick = onViewAllClick,
+                )
+            }
         }
 
         emptyFocusListItems()

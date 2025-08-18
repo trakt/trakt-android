@@ -48,6 +48,7 @@ internal fun HomeScreen(
     onNavigateToAuth: () -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
+    onNavigateToViewAll: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -62,6 +63,7 @@ internal fun HomeScreen(
             state = state,
             onNavigateToMovie = onNavigateToMovie,
             onNavigateToEpisode = onNavigateToEpisode,
+            onNavigateToViewAll = onNavigateToViewAll,
         )
     }
 }
@@ -72,6 +74,7 @@ private fun HomeScreenContent(
     modifier: Modifier = Modifier,
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
+    onNavigateToViewAll: () -> Unit,
 ) {
     var focusedSection by rememberSaveable { mutableStateOf<String?>(null) }
     var focusedImageUrl by remember { mutableStateOf<String?>(null) }
@@ -119,6 +122,7 @@ private fun HomeScreenContent(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     onNavigateToEpisode = onNavigateToEpisode,
+                    onNavigateToViewAll = onNavigateToViewAll,
                     onLoaded = {
                         focusRequesters
                             .getValue("upNextEpisodes")
@@ -194,6 +198,7 @@ private fun MainScreenPreview() {
             state = HomeState(),
             onNavigateToMovie = {},
             onNavigateToEpisode = { _, _ -> },
+            onNavigateToViewAll = {},
         )
     }
 }
