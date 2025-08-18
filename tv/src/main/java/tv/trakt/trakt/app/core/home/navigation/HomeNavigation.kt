@@ -17,7 +17,8 @@ internal fun NavGraphBuilder.homeScreen(
     onNavigateToAuth: () -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
-    onNavigateToViewAll: () -> Unit,
+    onNavigateToUpNext: () -> Unit,
+    onNavigateToAvailableNow: () -> Unit,
 ) {
     composable<HomeDestination> {
         HomeScreen(
@@ -25,7 +26,8 @@ internal fun NavGraphBuilder.homeScreen(
             onNavigateToAuth = onNavigateToAuth,
             onNavigateToMovie = onNavigateToMovie,
             onNavigateToEpisode = onNavigateToEpisode,
-            onNavigateToViewAll = onNavigateToViewAll,
+            onNavigateToUpNext = onNavigateToUpNext,
+            onNavigateToAvailableNow = onNavigateToAvailableNow,
         )
     }
 }

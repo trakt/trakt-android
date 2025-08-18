@@ -1,6 +1,5 @@
-package tv.trakt.trakt.app.core.home.sections.shows.upnext.viewall
+package tv.trakt.trakt.app.core.home.sections.movies.availablenow.viewall
 
-import EpisodeProgressBar
 import FilmProgressIndicator
 import GenericErrorView
 import InfoChip
@@ -8,9 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -42,19 +39,18 @@ import tv.trakt.trakt.app.common.model.Images.Size
 import tv.trakt.trakt.app.common.model.TraktId
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
-import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.app.core.home.HomeConfig.HOME_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.app.core.home.HomeConfig.HOME_PAGE_LIMIT
-import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressShow
-import tv.trakt.trakt.app.core.shows.model.Show
+import tv.trakt.trakt.app.core.home.sections.movies.availablenow.model.WatchlistMovie
+import tv.trakt.trakt.app.core.movies.model.Movie
 import tv.trakt.trakt.app.helpers.extensions.durationFormat
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 
 @Composable
-internal fun UpNextViewAllScreen(
-    viewModel: UpNextViewAllViewModel,
-    onNavigateToEpisode: (TraktId, Episode) -> Unit,
+internal fun AvailableNowViewAllScreen(
+    viewModel: AvailableNowViewAllViewModel,
+    onNavigateToMovie: (TraktId) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -62,10 +58,10 @@ internal fun UpNextViewAllScreen(
         viewModel.updateData()
     }
 
-    UpNextViewAllContent(
+    AvailableNowViewAllContent(
         state = state,
-        onItemClick = { show, episode ->
-            onNavigateToEpisode(show.ids.trakt, episode)
+        onClick = {
+            onNavigateToMovie(it.ids.trakt)
         },
         onLoadNextPage = {
             viewModel.loadNextDataPage()
@@ -74,13 +70,13 @@ internal fun UpNextViewAllScreen(
 }
 
 @Composable
-private fun UpNextViewAllContent(
-    state: UpNextViewAllState,
+private fun AvailableNowViewAllContent(
+    state: AvailableNowViewAllState,
     modifier: Modifier = Modifier,
-    onItemClick: (Show, Episode) -> Unit,
+    onClick: (Movie) -> Unit,
     onLoadNextPage: () -> Unit,
 ) {
-    var focusedItem by remember { mutableStateOf<ProgressShow?>(null) }
+    var focusedItem by remember { mutableStateOf<WatchlistMovie?>(null) }
     var focusedItemId by rememberSaveable { mutableStateOf<Int?>(null) }
     val focusRequesters = remember { mutableMapOf<Int, FocusRequester>() }
 
@@ -105,7 +101,7 @@ private fun UpNextViewAllContent(
             },
     ) {
         BackdropImage(
-            imageUrl = focusedItem?.show?.images?.getFanartUrl(Size.FULL),
+            imageUrl = focusedItem?.movie?.images?.getFanartUrl(Size.FULL),
             saturation = 0F,
             crossfade = true,
         )
@@ -124,7 +120,7 @@ private fun UpNextViewAllContent(
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
-                    text = stringResource(R.string.header_shows_up_next),
+                    text = stringResource(R.string.header_movies_available_now),
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.heading4,
                     overflow = TextOverflow.Ellipsis,
@@ -145,68 +141,24 @@ private fun UpNextViewAllContent(
             } else if (!state.items.isNullOrEmpty()) {
                 items(
                     count = state.items.size,
-                    key = { index -> state.items[index].id.value },
+                    key = { index -> state.items[index].movie.ids.trakt.value },
                 ) { index ->
                     val item = state.items[index]
-                    val focusRequester = focusRequesters.getOrPut(item.id.value) {
+                    val focusRequester = focusRequesters.getOrPut(item.movie.ids.trakt.value) {
                         FocusRequester()
                     }
 
                     HorizontalMediaCard(
-                        title = "",
-                        containerImageUrl =
-                            item.progress.nextEpisode.images?.getScreenshotUrl()
-                                ?: item.show.images?.getFanartUrl(),
-                        onClick = {
-                            onItemClick(
-                                item.show,
-                                item.progress.nextEpisode,
-                            )
-                        },
-                        cardContent = {
-                            Row(
-                                horizontalArrangement = spacedBy(2.dp),
-                            ) {
-                                val runtime = item.progress.nextEpisode.runtime?.inWholeMinutes
-                                if (runtime != null) {
-                                    InfoChip(
-                                        text = runtime.durationFormat(),
-                                        containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
-                                    )
-                                }
-
-                                val remainingEpisodes = remember(item.progress.completed, item.progress.aired) {
-                                    item.progress.remainingEpisodes
-                                }
-                                val remainingPercent = remember(item.progress.completed, item.progress.aired) {
-                                    item.progress.remainingPercent
-                                }
-
-                                EpisodeProgressBar(
-                                    startText = stringResource(R.string.episodes_remaining, remainingEpisodes),
-                                    containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
-                                    progress = remainingPercent,
-                                )
-                            }
-                        },
+                        title = item.movie.title,
+                        containerImageUrl = item.movie.images?.getFanartUrl(),
+                        contentImageUrl = item.movie.images?.getLogoUrl(),
+                        paletteColor = item.movie.colors?.colors?.second,
+                        onClick = { onClick(item.movie) },
                         footerContent = {
-                            Column(
-                                verticalArrangement = spacedBy(1.dp),
-                            ) {
-                                Text(
-                                    text = item.show.title,
-                                    style = TraktTheme.typography.cardTitle,
-                                    color = TraktTheme.colors.textPrimary,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
-                                )
-
-                                Text(
-                                    text = item.progress.nextEpisode.seasonEpisodeString,
-                                    style = TraktTheme.typography.cardSubtitle,
-                                    color = TraktTheme.colors.textSecondary,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
+                            val runtime = item.movie.runtime?.inWholeMinutes
+                            if (runtime != null) {
+                                InfoChip(
+                                    text = runtime.durationFormat(),
                                 )
                             }
                         },
@@ -215,7 +167,7 @@ private fun UpNextViewAllContent(
                             .onFocusChanged {
                                 if (it.isFocused) {
                                     focusedItem = item
-                                    focusedItemId = item.id.value
+                                    focusedItemId = item.movie.ids.trakt.value
 
                                     loadNextPageIfNeeded(
                                         size = state.items.size,
@@ -270,9 +222,9 @@ private fun loadNextPageIfNeeded(
 @Composable
 private fun Preview() {
     TraktTheme {
-        UpNextViewAllContent(
-            state = UpNextViewAllState(),
-            onItemClick = { _, _ -> },
+        AvailableNowViewAllContent(
+            state = AvailableNowViewAllState(),
+            onClick = {},
             onLoadNextPage = {},
         )
     }

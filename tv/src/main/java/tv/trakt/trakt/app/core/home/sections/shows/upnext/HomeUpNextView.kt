@@ -36,7 +36,7 @@ import tv.trakt.trakt.app.common.ui.mediacards.EpisodeSkeletonCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalViewAllCard
 import tv.trakt.trakt.app.core.episodes.model.Episode
-import tv.trakt.trakt.app.core.home.HomeConfig.UP_NEXT_SECTION_LIMIT
+import tv.trakt.trakt.app.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressShow
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
@@ -181,7 +181,7 @@ private fun ContentList(
             )
         }
 
-        if (listItems().size >= UP_NEXT_SECTION_LIMIT) {
+        if (listItems().size >= HOME_SECTION_LIMIT) {
             item {
                 HorizontalViewAllCard(
                     onClick = onViewAllClick,

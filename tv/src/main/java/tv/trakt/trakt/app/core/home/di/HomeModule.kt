@@ -5,6 +5,7 @@ import org.koin.dsl.module
 import tv.trakt.trakt.app.core.home.HomeViewModel
 import tv.trakt.trakt.app.core.home.sections.movies.availablenow.HomeAvailableNowViewModel
 import tv.trakt.trakt.app.core.home.sections.movies.availablenow.usecases.GetAvailableNowMoviesUseCase
+import tv.trakt.trakt.app.core.home.sections.movies.availablenow.viewall.AvailableNowViewAllViewModel
 import tv.trakt.trakt.app.core.home.sections.movies.comingsoon.HomeComingSoonViewModel
 import tv.trakt.trakt.app.core.home.sections.movies.comingsoon.usecases.GetComingSoonMoviesUseCase
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.HomeUpcomingViewModel
@@ -85,6 +86,13 @@ internal val homeModule = module {
             getUpNextUseCase = get(),
             localShowsSyncSource = get(),
             localEpisodesSyncSource = get(),
+        )
+    }
+
+    viewModel {
+        AvailableNowViewAllViewModel(
+            getAvailableNowUseCase = get(),
+            localSyncSource = get(),
         )
     }
 }

@@ -1,4 +1,4 @@
-package tv.trakt.trakt.app.core.home.sections.shows.upnext.viewall
+package tv.trakt.trakt.app.core.home.sections.movies.availablenow.viewall
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -12,19 +12,17 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.app.core.home.HomeConfig.HOME_PAGE_LIMIT
-import tv.trakt.trakt.app.core.home.sections.shows.upnext.usecases.GetUpNextUseCase
-import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncLocalDataSource
-import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalDataSource
+import tv.trakt.trakt.app.core.home.sections.movies.availablenow.usecases.GetAvailableNowMoviesUseCase
+import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalDataSource
 import tv.trakt.trakt.app.helpers.extensions.nowUtc
 import tv.trakt.trakt.app.helpers.extensions.rethrowCancellation
 import java.time.ZonedDateTime
 
-internal class UpNextViewAllViewModel(
-    private val getUpNextUseCase: GetUpNextUseCase,
-    private val localShowsSyncSource: ShowsSyncLocalDataSource,
-    private val localEpisodesSyncSource: EpisodesSyncLocalDataSource,
+internal class AvailableNowViewAllViewModel(
+    private val getAvailableNowUseCase: GetAvailableNowMoviesUseCase,
+    private val localSyncSource: MoviesSyncLocalDataSource,
 ) : ViewModel() {
-    private val initialState = UpNextViewAllState()
+    private val initialState = AvailableNowViewAllState()
 
     private val loadingState = MutableStateFlow(initialState.isLoading)
     private val loadingPageState = MutableStateFlow(initialState.isLoadingPage)
@@ -52,7 +50,7 @@ internal class UpNextViewAllViewModel(
                     loadingState.update { true }
                 }
 
-                val items = getUpNextUseCase.getUpNext(
+                val items = getAvailableNowUseCase.getMovies(
                     limit = HOME_PAGE_LIMIT,
                     page = 1,
                 )
@@ -63,7 +61,7 @@ internal class UpNextViewAllViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Log.e("UpNextViewAllViewModel", "Failed to load data", error)
+                    Log.e("AvailableNowViewAllViewModel", "Failed to load data", error)
                 }
             } finally {
                 loadingState.update { false }
@@ -79,7 +77,7 @@ internal class UpNextViewAllViewModel(
             try {
                 loadingPageState.update { true }
 
-                val items = getUpNextUseCase.getUpNext(
+                val items = getAvailableNowUseCase.getMovies(
                     limit = HOME_PAGE_LIMIT,
                     page = nextDataPage,
                 )
@@ -102,34 +100,17 @@ internal class UpNextViewAllViewModel(
     }
 
     fun updateData() {
-        Log.d("UpNextViewAllViewModel", "updateData called")
+        Log.d("AvailableNowViewAllViewModel", "updateData called")
         viewModelScope.launch {
             try {
-                if (loadedAt == null) {
-                    // No data loaded yet, nothing to update
-                    return@launch
-                }
-
-                val localWatchlistUpdatedAt = localShowsSyncSource.getWatchlistUpdatedAt()
-                val localWatchedUpdatedAt = localShowsSyncSource.getWatchedUpdatedAt()
-                val localEpisodeHistoryUpdatedAt = localEpisodesSyncSource.getHistoryUpdatedAt()
-
-                if (localWatchlistUpdatedAt == null &&
-                    localWatchedUpdatedAt == null &&
-                    localEpisodeHistoryUpdatedAt == null
-                ) {
-                    return@launch
-                }
-
-                if (localWatchlistUpdatedAt?.isAfter(loadedAt) == true ||
-                    localWatchedUpdatedAt?.isAfter(loadedAt) == true ||
-                    localEpisodeHistoryUpdatedAt?.isAfter(loadedAt) == true
-                ) {
+                val localUpdatedAt = localSyncSource.getWatchlistUpdatedAt()
+                if (localUpdatedAt != null && loadedAt?.isBefore(localUpdatedAt) == true) {
                     loadData(showLoading = false)
+                    Log.d("AvailableNowViewAllViewModel", "Updating available now movies")
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Log.e("UpNextViewAllViewModel", "Error", error)
+                    Log.e("AvailableNowViewAllViewModel", "Error", error)
                 }
             }
         }
@@ -141,7 +122,7 @@ internal class UpNextViewAllViewModel(
         itemsState,
         errorState,
     ) { s1, s2, s3, s4 ->
-        UpNextViewAllState(
+        AvailableNowViewAllState(
             isLoading = s1,
             isLoadingPage = s2,
             items = s3,

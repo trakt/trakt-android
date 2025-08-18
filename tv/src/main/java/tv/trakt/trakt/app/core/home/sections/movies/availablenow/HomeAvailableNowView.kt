@@ -23,6 +23,8 @@ import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaSkeletonCard
+import tv.trakt.trakt.app.common.ui.mediacards.HorizontalViewAllCard
+import tv.trakt.trakt.app.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.app.core.home.sections.movies.availablenow.model.WatchlistMovie
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
@@ -38,6 +40,7 @@ internal fun HomeAvailableNowView(
     contentPadding: PaddingValues = PaddingValues(),
     onFocused: (Movie) -> Unit = {},
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToViewAll: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -52,6 +55,7 @@ internal fun HomeAvailableNowView(
         contentPadding = contentPadding,
         onFocused = onFocused,
         onNavigateToMovie = onNavigateToMovie,
+        onNavigateToViewAll = onNavigateToViewAll,
     )
 }
 
@@ -63,6 +67,7 @@ internal fun HomeAvailableNowContent(
     contentPadding: PaddingValues = PaddingValues(),
     onFocused: (Movie) -> Unit = {},
     onNavigateToMovie: (TraktId) -> Unit = {},
+    onNavigateToViewAll: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
@@ -97,6 +102,7 @@ internal fun HomeAvailableNowContent(
                     listItems = { state.movies ?: emptyList<WatchlistMovie>().toImmutableList() },
                     onFocused = onFocused,
                     onClick = { onNavigateToMovie(it.ids.trakt) },
+                    onViewAllClick = onNavigateToViewAll,
                     contentPadding = contentPadding,
                 )
             }
@@ -109,6 +115,7 @@ private fun ContentList(
     listItems: () -> ImmutableList<WatchlistMovie>,
     onFocused: (Movie) -> Unit,
     onClick: (Movie) -> Unit,
+    onViewAllClick: () -> Unit,
     contentPadding: PaddingValues,
 ) {
     PositionFocusLazyRow(
@@ -137,6 +144,14 @@ private fun ContentList(
                         if (it.isFocused) onFocused(item.movie)
                     },
             )
+        }
+
+        if (listItems().size >= HOME_SECTION_LIMIT) {
+            item {
+                HorizontalViewAllCard(
+                    onClick = onViewAllClick,
+                )
+            }
         }
 
         emptyFocusListItems()
