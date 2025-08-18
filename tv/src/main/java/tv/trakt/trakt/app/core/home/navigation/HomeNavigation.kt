@@ -19,6 +19,7 @@ internal fun NavGraphBuilder.homeScreen(
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToUpNext: () -> Unit,
     onNavigateToAvailableNow: () -> Unit,
+    onNavigateToComingSoon: () -> Unit,
 ) {
     composable<HomeDestination> {
         HomeScreen(
@@ -28,6 +29,7 @@ internal fun NavGraphBuilder.homeScreen(
             onNavigateToEpisode = onNavigateToEpisode,
             onNavigateToUpNext = onNavigateToUpNext,
             onNavigateToAvailableNow = onNavigateToAvailableNow,
+            onNavigateToComingSoon = onNavigateToComingSoon,
         )
     }
 }

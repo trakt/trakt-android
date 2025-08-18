@@ -54,6 +54,8 @@ import tv.trakt.trakt.app.core.home.navigation.homeScreen
 import tv.trakt.trakt.app.core.home.navigation.navigateToHome
 import tv.trakt.trakt.app.core.home.sections.movies.availablenow.navigation.homeAvailableNowScreen
 import tv.trakt.trakt.app.core.home.sections.movies.availablenow.navigation.navigateToHomeAvailableNow
+import tv.trakt.trakt.app.core.home.sections.movies.comingsoon.navigation.homeComingSoonScreen
+import tv.trakt.trakt.app.core.home.sections.movies.comingsoon.navigation.navigateToHomeComingSoon
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.navigation.homeUpNextScreen
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.navigation.navigateToHomeUpNext
 import tv.trakt.trakt.app.core.lists.details.movies.navigation.navigateToWatchlistMovies
@@ -246,6 +248,7 @@ private fun MainNavHost(
                 },
                 onNavigateToUpNext = { navigateToHomeUpNext() },
                 onNavigateToAvailableNow = { navigateToHomeAvailableNow() },
+                onNavigateToComingSoon = { navigateToHomeComingSoon() },
             )
             homeUpNextScreen(
                 onNavigateToEpisode = { showId, episode ->
@@ -253,6 +256,9 @@ private fun MainNavHost(
                 },
             )
             homeAvailableNowScreen(
+                onNavigateToMovie = { navigateToMovie(it) },
+            )
+            homeComingSoonScreen(
                 onNavigateToMovie = { navigateToMovie(it) },
             )
             profileScreen(

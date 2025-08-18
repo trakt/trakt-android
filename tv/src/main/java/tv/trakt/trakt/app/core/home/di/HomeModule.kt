@@ -8,6 +8,7 @@ import tv.trakt.trakt.app.core.home.sections.movies.availablenow.usecases.GetAva
 import tv.trakt.trakt.app.core.home.sections.movies.availablenow.viewall.AvailableNowViewAllViewModel
 import tv.trakt.trakt.app.core.home.sections.movies.comingsoon.HomeComingSoonViewModel
 import tv.trakt.trakt.app.core.home.sections.movies.comingsoon.usecases.GetComingSoonMoviesUseCase
+import tv.trakt.trakt.app.core.home.sections.movies.comingsoon.viewall.ComingSoonViewAllViewModel
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.HomeUpcomingViewModel
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.usecases.GetUpcomingUseCase
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.HomeUpNextViewModel
@@ -92,6 +93,13 @@ internal val homeModule = module {
     viewModel {
         AvailableNowViewAllViewModel(
             getAvailableNowUseCase = get(),
+            localSyncSource = get(),
+        )
+    }
+
+    viewModel {
+        ComingSoonViewAllViewModel(
+            getComingSoonUseCase = get(),
             localSyncSource = get(),
         )
     }

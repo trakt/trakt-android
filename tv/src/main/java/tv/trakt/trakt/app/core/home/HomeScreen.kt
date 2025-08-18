@@ -50,6 +50,7 @@ internal fun HomeScreen(
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToUpNext: () -> Unit,
     onNavigateToAvailableNow: () -> Unit,
+    onNavigateToComingSoon: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -65,7 +66,8 @@ internal fun HomeScreen(
             onNavigateToMovie = onNavigateToMovie,
             onNavigateToEpisode = onNavigateToEpisode,
             onNavigateToUpNext = onNavigateToUpNext,
-            onNavigateToAvailableNow = onNavigateToAvailableNow
+            onNavigateToAvailableNow = onNavigateToAvailableNow,
+            onNavigateToComingSoon = onNavigateToComingSoon,
         )
     }
 }
@@ -78,6 +80,7 @@ private fun HomeScreenContent(
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToUpNext: () -> Unit,
     onNavigateToAvailableNow: () -> Unit,
+    onNavigateToComingSoon: () -> Unit,
 ) {
     var focusedSection by rememberSaveable { mutableStateOf<String?>(null) }
     var focusedImageUrl by remember { mutableStateOf<String?>(null) }
@@ -177,6 +180,7 @@ private fun HomeScreenContent(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     onNavigateToMovie = onNavigateToMovie,
+                    onNavigateToViewAll = onNavigateToComingSoon,
                     onFocused = { movie ->
                         focusedSection = "comingSoon"
                         focusedImageUrl = movie.images?.getFanartUrl(Images.Size.FULL)
@@ -204,6 +208,7 @@ private fun MainScreenPreview() {
             onNavigateToEpisode = { _, _ -> },
             onNavigateToUpNext = {},
             onNavigateToAvailableNow = {},
+            onNavigateToComingSoon = {},
         )
     }
 }
