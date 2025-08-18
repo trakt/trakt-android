@@ -19,7 +19,10 @@ internal class ShowsApiClient(
     private val api: ShowsApi,
     private val recommendationsApi: RecommendationsApi,
 ) : ShowsRemoteDataSource {
-    override suspend fun getTrendingShows(limit: Int): List<TrendingShowDto> {
+    override suspend fun getTrendingShows(
+        limit: Int,
+        page: Int,
+    ): List<TrendingShowDto> {
         val response = api.getShowsTrending(
             extended = "full,streaming_ids,cloud9,colors",
             limit = limit,
@@ -27,7 +30,7 @@ internal class ShowsApiClient(
             genres = null,
             years = null,
             ratings = null,
-            page = null,
+            page = page,
             ignoreWatched = null,
             ignoreCollected = null,
             ignoreWatchlisted = null,
@@ -69,15 +72,18 @@ internal class ShowsApiClient(
             }
     }
 
-    override suspend fun getPopularShows(): List<ShowDto> {
+    override suspend fun getPopularShows(
+        limit: Int,
+        page: Int,
+    ): List<ShowDto> {
         val response = api.getShowsPopular(
             extended = "full,streaming_ids,cloud9,colors",
-            limit = 30,
+            limit = limit,
             watchnow = null,
             genres = null,
             years = null,
             ratings = null,
-            page = null,
+            page = page,
             ignoreWatched = null,
             ignoreCollected = null,
             ignoreWatchlisted = null,
@@ -88,15 +94,18 @@ internal class ShowsApiClient(
         return response.body()
     }
 
-    override suspend fun getAnticipatedShows(): List<AnticipatedShowDto> {
+    override suspend fun getAnticipatedShows(
+        limit: Int,
+        page: Int,
+    ): List<AnticipatedShowDto> {
         val response = api.getShowsAnticipated(
             extended = "full,streaming_ids,cloud9,colors",
-            limit = 30,
+            limit = limit,
             watchnow = null,
             genres = null,
             years = null,
             ratings = null,
-            page = null,
+            page = page,
             ignoreWatched = null,
             ignoreCollected = null,
             ignoreWatchlisted = null,
@@ -113,10 +122,13 @@ internal class ShowsApiClient(
             }
     }
 
-    override suspend fun getRecommendedShows(): List<RecommendedShowDto> {
+    override suspend fun getRecommendedShows(
+        limit: Int,
+        page: Int,
+    ): List<RecommendedShowDto> {
         val response = recommendationsApi.getRecommendationsShowsRecommend(
             extended = "full,streaming_ids,cloud9,colors",
-            limit = 30,
+            limit = limit,
             watchWindow = 25,
             ignoreWatched = true,
             ignoreCollected = true,

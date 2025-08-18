@@ -11,6 +11,10 @@ import tv.trakt.trakt.app.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.app.core.shows.data.local.ShowStorage
 import tv.trakt.trakt.app.core.shows.data.remote.ShowsApiClient
 import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
+import tv.trakt.trakt.app.core.shows.features.anticipated.ShowsAnticipatedViewAllViewModel
+import tv.trakt.trakt.app.core.shows.features.popular.ShowsPopularViewAllViewModel
+import tv.trakt.trakt.app.core.shows.features.recommended.ShowsRecommendedViewAllViewModel
+import tv.trakt.trakt.app.core.shows.features.trending.ShowsTrendingViewAllViewModel
 import tv.trakt.trakt.app.core.shows.usecase.GetAnticipatedShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetHotShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetPopularShowsUseCase
@@ -82,6 +86,30 @@ internal val showsModule = module {
             getHotShowsUseCase = get(),
             getRecommendedShowsUseCase = get(),
             sessionManager = get(),
+        )
+    }
+
+    viewModel {
+        ShowsTrendingViewAllViewModel(
+            getItemsUseCase = get(),
+        )
+    }
+
+    viewModel {
+        ShowsPopularViewAllViewModel(
+            getItemsUseCase = get(),
+        )
+    }
+
+    viewModel {
+        ShowsAnticipatedViewAllViewModel(
+            getItemsUseCase = get(),
+        )
+    }
+
+    viewModel {
+        ShowsRecommendedViewAllViewModel(
+            getItemsUseCase = get(),
         )
     }
 }

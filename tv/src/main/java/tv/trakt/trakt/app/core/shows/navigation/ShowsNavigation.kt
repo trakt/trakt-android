@@ -12,11 +12,21 @@ import tv.trakt.trakt.common.model.TraktId
 @Serializable
 internal data object ShowsDestination
 
-internal fun NavGraphBuilder.showsScreen(onNavigateToShow: (TraktId) -> Unit) {
+internal fun NavGraphBuilder.showsScreen(
+    onNavigateToShow: (TraktId) -> Unit,
+    onNavigateToTrending: () -> Unit,
+    onNavigateToPopular: () -> Unit,
+    onNavigateToAnticipated: () -> Unit,
+    onNavigateToRecommended: () -> Unit,
+) {
     composable<ShowsDestination> {
         ShowsScreen(
             viewModel = koinViewModel(),
             onNavigateToShow = onNavigateToShow,
+            onNavigateToTrending = onNavigateToTrending,
+            onNavigateToPopular = onNavigateToPopular,
+            onNavigateToAnticipated = onNavigateToAnticipated,
+            onNavigateToRecommended = onNavigateToRecommended,
         )
     }
 }

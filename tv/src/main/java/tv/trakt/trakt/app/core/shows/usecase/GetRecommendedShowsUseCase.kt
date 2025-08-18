@@ -2,6 +2,7 @@ package tv.trakt.trakt.app.core.shows.usecase
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.app.core.shows.ShowsConfig.SHOWS_SECTION_LIMIT
 import tv.trakt.trakt.app.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -12,8 +13,11 @@ internal class GetRecommendedShowsUseCase(
     private val remoteSource: ShowsRemoteDataSource,
     private val localSource: ShowLocalDataSource,
 ) {
-    suspend fun getRecommendedShows(): ImmutableList<Show> {
-        return remoteSource.getRecommendedShows()
+    suspend fun getRecommendedShows(
+        limit: Int = SHOWS_SECTION_LIMIT,
+        page: Int = 1,
+    ): ImmutableList<Show> {
+        return remoteSource.getRecommendedShows(limit, page)
             .asyncMap {
                 Show.fromDto(it)
             }

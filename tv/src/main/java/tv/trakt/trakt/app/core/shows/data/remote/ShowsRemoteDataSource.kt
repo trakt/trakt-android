@@ -14,15 +14,27 @@ import tv.trakt.trakt.common.networking.ShowDto
 import tv.trakt.trakt.common.networking.StreamingDto
 
 internal interface ShowsRemoteDataSource {
-    suspend fun getTrendingShows(limit: Int): List<TrendingShowDto>
+    suspend fun getTrendingShows(
+        limit: Int,
+        page: Int,
+    ): List<TrendingShowDto>
 
     suspend fun getMonthlyHotShows(): List<TrendingShowDto>
 
-    suspend fun getPopularShows(): List<ShowDto>
+    suspend fun getPopularShows(
+        limit: Int,
+        page: Int,
+    ): List<ShowDto>
 
-    suspend fun getAnticipatedShows(): List<AnticipatedShowDto>
+    suspend fun getAnticipatedShows(
+        limit: Int,
+        page: Int,
+    ): List<AnticipatedShowDto>
 
-    suspend fun getRecommendedShows(): List<RecommendedShowDto>
+    suspend fun getRecommendedShows(
+        limit: Int,
+        page: Int,
+    ): List<RecommendedShowDto>
 
     suspend fun getRelatedShows(showId: TraktId): List<ShowDto>
 

@@ -36,6 +36,7 @@ import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaSkeletonCard
+import tv.trakt.trakt.app.common.ui.mediacards.HorizontalViewAllCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.shows.model.AnticipatedShow
 import tv.trakt.trakt.app.core.shows.model.TrendingShow
@@ -62,12 +63,20 @@ private val sections = listOf(
 internal fun ShowsScreen(
     viewModel: ShowsViewModel,
     onNavigateToShow: (TraktId) -> Unit,
+    onNavigateToTrending: () -> Unit,
+    onNavigateToPopular: () -> Unit,
+    onNavigateToAnticipated: () -> Unit,
+    onNavigateToRecommended: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     ShowsScreenContent(
         state = state,
         onShowClick = onNavigateToShow,
+        onViewAllTrendingClick = onNavigateToTrending,
+        onViewAllPopularClick = onNavigateToPopular,
+        onViewAllAnticipatedClick = onNavigateToAnticipated,
+        onViewAllRecommendedClick = onNavigateToRecommended,
     )
 }
 
@@ -76,6 +85,10 @@ private fun ShowsScreenContent(
     state: ShowsState,
     modifier: Modifier = Modifier,
     onShowClick: (TraktId) -> Unit,
+    onViewAllTrendingClick: () -> Unit,
+    onViewAllPopularClick: () -> Unit,
+    onViewAllAnticipatedClick: () -> Unit,
+    onViewAllRecommendedClick: () -> Unit,
 ) {
     var focusedShow by remember { mutableStateOf<Show?>(null) }
     var focusedSection by rememberSaveable { mutableStateOf<String?>(null) }
@@ -127,6 +140,7 @@ private fun ShowsScreenContent(
                         header = stringResource(RCommon.string.header_trending),
                         shows = state.trendingShows,
                         isLoading = state.isLoading,
+                        onViewAllClick = onViewAllTrendingClick,
                         onShowClick = onShowClick,
                         onShowFocus = {
                             focusedShow = it
@@ -160,6 +174,7 @@ private fun ShowsScreenContent(
                         header = stringResource(RCommon.string.header_most_anticipated),
                         shows = state.anticipatedShows,
                         isLoading = state.isLoading,
+                        onViewAllClick = onViewAllAnticipatedClick,
                         onShowClick = onShowClick,
                         onFocusedShow = {
                             focusedShow = it
@@ -172,10 +187,11 @@ private fun ShowsScreenContent(
                 }
 
                 item {
-                    StandardShowsList(
+                    PopularShowsList(
                         header = stringResource(RCommon.string.header_most_popular),
                         shows = state.popularShows,
                         isLoading = state.isLoading,
+                        onViewAllClick = onViewAllPopularClick,
                         onShowClick = onShowClick,
                         onShowFocus = {
                             focusedShow = it
@@ -189,10 +205,11 @@ private fun ShowsScreenContent(
 
                 if (state.recommendedShows != null) {
                     item {
-                        StandardShowsList(
+                        RecommendedShowsList(
                             header = stringResource(RCommon.string.header_recommended),
                             shows = state.recommendedShows,
                             isLoading = state.isLoading,
+                            onViewAllClick = onViewAllRecommendedClick,
                             onShowClick = onShowClick,
                             onShowFocus = {
                                 focusedShow = it
@@ -228,6 +245,7 @@ private fun TrendingShowsList(
     isLoading: Boolean,
     onShowFocus: (Show) -> Unit,
     onShowClick: (TraktId) -> Unit,
+    onViewAllClick: () -> Unit,
     focusRequesters: Map<String, FocusRequester>,
     modifier: Modifier = Modifier,
 ) {
@@ -280,6 +298,12 @@ private fun TrendingShowsList(
                                 onShowFocus(show)
                             }
                         },
+                    )
+                }
+
+                item {
+                    HorizontalViewAllCard(
+                        onClick = onViewAllClick,
                     )
                 }
 
@@ -354,12 +378,13 @@ private fun HotShowsList(
 }
 
 @Composable
-private fun StandardShowsList(
+private fun RecommendedShowsList(
     header: String,
     shows: ImmutableList<Show>?,
     isLoading: Boolean,
     onShowFocus: (Show) -> Unit,
     onShowClick: (TraktId) -> Unit,
+    onViewAllClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -410,6 +435,12 @@ private fun StandardShowsList(
                     )
                 }
 
+                item {
+                    HorizontalViewAllCard(
+                        onClick = onViewAllClick,
+                    )
+                }
+
                 emptyFocusListItems()
             }
         }
@@ -423,6 +454,7 @@ private fun AnticipatedShowsList(
     isLoading: Boolean,
     onFocusedShow: (Show) -> Unit,
     onShowClick: (TraktId) -> Unit,
+    onViewAllClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -473,6 +505,79 @@ private fun AnticipatedShowsList(
                     )
                 }
 
+                item {
+                    HorizontalViewAllCard(
+                        onClick = onViewAllClick,
+                    )
+                }
+
+                emptyFocusListItems()
+            }
+        }
+    }
+}
+
+@Composable
+private fun PopularShowsList(
+    header: String,
+    shows: ImmutableList<Show>?,
+    isLoading: Boolean,
+    onShowFocus: (Show) -> Unit,
+    onShowClick: (TraktId) -> Unit,
+    onViewAllClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
+        modifier = modifier,
+    ) {
+        Text(
+            text = header,
+            color = TraktTheme.colors.textPrimary,
+            style = TraktTheme.typography.heading5,
+            modifier = Modifier.padding(start = TraktTheme.spacing.mainContentStartSpace),
+        )
+
+        PositionFocusLazyRow(
+            contentPadding = PaddingValues(
+                start = TraktTheme.spacing.mainContentStartSpace,
+                end = 32.dp,
+            ),
+        ) {
+            if (isLoading) {
+                items(count = 10) {
+                    HorizontalMediaSkeletonCard()
+                }
+            } else if (!shows.isNullOrEmpty()) {
+                items(
+                    items = shows,
+                    key = { item -> item.ids.trakt.value },
+                ) { show ->
+                    HorizontalMediaCard(
+                        title = show.title,
+                        onClick = { onShowClick(show.ids.trakt) },
+                        containerImageUrl = show.images?.getFanartUrl(),
+                        contentImageUrl = show.images?.getLogoUrl(),
+                        paletteColor = show.colors?.colors?.second,
+                        footerContent = {
+                            InfoChip(
+                                text = stringResource(RCommon.string.episodes_count, show.airedEpisodes),
+                            )
+                        },
+                        modifier = Modifier.onFocusChanged {
+                            if (it.hasFocus) {
+                                onShowFocus(show)
+                            }
+                        },
+                    )
+                }
+
+                item {
+                    HorizontalViewAllCard(
+                        onClick = onViewAllClick,
+                    )
+                }
+
                 emptyFocusListItems()
             }
         }
@@ -501,6 +606,10 @@ private fun Preview() {
                 ).toImmutableList(),
             ),
             onShowClick = {},
+            onViewAllTrendingClick = {},
+            onViewAllPopularClick = {},
+            onViewAllAnticipatedClick = {},
+            onViewAllRecommendedClick = {},
         )
     }
 }
@@ -528,6 +637,10 @@ private fun Preview2() {
                 ).toImmutableList(),
             ),
             onShowClick = {},
+            onViewAllTrendingClick = {},
+            onViewAllPopularClick = {},
+            onViewAllAnticipatedClick = {},
+            onViewAllRecommendedClick = {},
         )
     }
 }

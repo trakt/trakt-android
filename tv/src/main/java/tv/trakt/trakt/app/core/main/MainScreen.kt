@@ -73,6 +73,14 @@ import tv.trakt.trakt.app.core.profile.sections.favorites.shows.viewall.navigati
 import tv.trakt.trakt.app.core.profile.sections.history.viewall.navigation.navigateToProfileHistoryViewAll
 import tv.trakt.trakt.app.core.profile.sections.history.viewall.navigation.profileHistoryViewAllScreen
 import tv.trakt.trakt.app.core.search.navigation.searchScreen
+import tv.trakt.trakt.app.core.shows.features.anticipated.navigation.navigateToShowsAnticipated
+import tv.trakt.trakt.app.core.shows.features.anticipated.navigation.showsAnticipatedScreen
+import tv.trakt.trakt.app.core.shows.features.popular.navigation.navigateToShowsPopular
+import tv.trakt.trakt.app.core.shows.features.popular.navigation.showsPopularScreen
+import tv.trakt.trakt.app.core.shows.features.recommended.navigation.navigateToShowsRecommended
+import tv.trakt.trakt.app.core.shows.features.recommended.navigation.showsRecommendedScreen
+import tv.trakt.trakt.app.core.shows.features.trending.navigation.navigateToShowsTrending
+import tv.trakt.trakt.app.core.shows.features.trending.navigation.showsTrendingScreen
 import tv.trakt.trakt.app.core.shows.navigation.showsScreen
 import tv.trakt.trakt.app.core.splash.SplashScreen
 import tv.trakt.trakt.app.core.streamings.navigation.allStreamingsScreen
@@ -248,6 +256,22 @@ private fun MainNavHost(
                 onNavigateToMovie = { navigateToMovie(it) },
             )
             showsScreen(
+                onNavigateToShow = { navigateToShow(it) },
+                onNavigateToTrending = { navigateToShowsTrending() },
+                onNavigateToPopular = { navigateToShowsPopular() },
+                onNavigateToAnticipated = { navigateToShowsAnticipated() },
+                onNavigateToRecommended = { navigateToShowsRecommended() },
+            )
+            showsTrendingScreen(
+                onNavigateToShow = { navigateToShow(it) },
+            )
+            showsPopularScreen(
+                onNavigateToShow = { navigateToShow(it) },
+            )
+            showsAnticipatedScreen(
+                onNavigateToShow = { navigateToShow(it) },
+            )
+            showsRecommendedScreen(
                 onNavigateToShow = { navigateToShow(it) },
             )
             moviesScreen(
