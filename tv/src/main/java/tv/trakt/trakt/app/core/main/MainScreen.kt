@@ -60,6 +60,14 @@ import tv.trakt.trakt.app.core.lists.navigation.listsScreen
 import tv.trakt.trakt.app.core.main.navigation.navigateToMainDestination
 import tv.trakt.trakt.app.core.main.ui.drawer.NavigationDrawerContent
 import tv.trakt.trakt.app.core.main.ui.snackbar.MainSnackbarHost
+import tv.trakt.trakt.app.core.movies.features.anticipated.navigation.moviesAnticipatedScreen
+import tv.trakt.trakt.app.core.movies.features.anticipated.navigation.navigateToMoviesAnticipated
+import tv.trakt.trakt.app.core.movies.features.popular.navigation.moviesPopularScreen
+import tv.trakt.trakt.app.core.movies.features.popular.navigation.navigateToMoviesPopular
+import tv.trakt.trakt.app.core.movies.features.recommended.navigation.moviesRecommendedScreen
+import tv.trakt.trakt.app.core.movies.features.recommended.navigation.navigateToMoviesRecommended
+import tv.trakt.trakt.app.core.movies.features.trending.navigation.moviesTrendingScreen
+import tv.trakt.trakt.app.core.movies.features.trending.navigation.navigateToMoviesTrending
 import tv.trakt.trakt.app.core.movies.navigation.moviesScreen
 import tv.trakt.trakt.app.core.people.navigation.navigateToPerson
 import tv.trakt.trakt.app.core.people.navigation.personDetailsScreen
@@ -275,6 +283,22 @@ private fun MainNavHost(
                 onNavigateToShow = { navigateToShow(it) },
             )
             moviesScreen(
+                onNavigateToMovie = { navigateToMovie(it) },
+                onNavigateToTrending = { navigateToMoviesTrending() },
+                onNavigateToPopular = { navigateToMoviesPopular() },
+                onNavigateToAnticipated = { navigateToMoviesAnticipated() },
+                onNavigateToRecommended = { navigateToMoviesRecommended() },
+            )
+            moviesTrendingScreen(
+                onNavigateToMovie = { navigateToMovie(it) },
+            )
+            moviesPopularScreen(
+                onNavigateToMovie = { navigateToMovie(it) },
+            )
+            moviesAnticipatedScreen(
+                onNavigateToMovie = { navigateToMovie(it) },
+            )
+            moviesRecommendedScreen(
                 onNavigateToMovie = { navigateToMovie(it) },
             )
             listsScreen(

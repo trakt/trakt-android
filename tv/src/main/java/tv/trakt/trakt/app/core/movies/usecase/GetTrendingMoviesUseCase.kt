@@ -2,6 +2,7 @@ package tv.trakt.trakt.app.core.movies.usecase
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.app.core.movies.MoviesConfig.MOVIES_SECTION_LIMIT
 import tv.trakt.trakt.app.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.app.core.movies.data.remote.MoviesRemoteDataSource
 import tv.trakt.trakt.app.core.movies.model.TrendingMovie
@@ -13,8 +14,11 @@ internal class GetTrendingMoviesUseCase(
     private val remoteSource: MoviesRemoteDataSource,
     private val localSource: MovieLocalDataSource,
 ) {
-    suspend fun getTrendingMovies(limit: Int): ImmutableList<TrendingMovie> {
-        return remoteSource.getTrendingMovies(limit)
+    suspend fun getTrendingMovies(
+        limit: Int = MOVIES_SECTION_LIMIT,
+        page: Int = 1,
+    ): ImmutableList<TrendingMovie> {
+        return remoteSource.getTrendingMovies(limit, page)
             .asyncMap {
                 TrendingMovie(
                     watchers = it.watchers,

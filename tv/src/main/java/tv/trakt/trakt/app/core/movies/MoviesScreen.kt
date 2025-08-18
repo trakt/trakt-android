@@ -35,6 +35,7 @@ import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaSkeletonCard
+import tv.trakt.trakt.app.common.ui.mediacards.HorizontalViewAllCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.movies.model.AnticipatedMovie
 import tv.trakt.trakt.app.core.movies.model.TrendingMovie
@@ -62,12 +63,20 @@ private val sections = listOf(
 internal fun MoviesScreen(
     viewModel: MoviesViewModel,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToTrending: () -> Unit,
+    onNavigateToPopular: () -> Unit,
+    onNavigateToAnticipated: () -> Unit,
+    onNavigateToRecommended: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     MoviesScreenContent(
         state = state,
         onMovieClick = onNavigateToMovie,
+        onViewAllTrendingClick = onNavigateToTrending,
+        onViewAllPopularClick = onNavigateToPopular,
+        onViewAllAnticipatedClick = onNavigateToAnticipated,
+        onViewAllRecommendedClick = onNavigateToRecommended,
     )
 }
 
@@ -76,6 +85,10 @@ private fun MoviesScreenContent(
     state: MoviesState,
     modifier: Modifier = Modifier,
     onMovieClick: (TraktId) -> Unit,
+    onViewAllTrendingClick: () -> Unit,
+    onViewAllPopularClick: () -> Unit,
+    onViewAllAnticipatedClick: () -> Unit,
+    onViewAllRecommendedClick: () -> Unit,
 ) {
     var focusedMovie by remember { mutableStateOf<Movie?>(null) }
     var focusedSection by rememberSaveable { mutableStateOf<String?>(null) }
@@ -128,6 +141,7 @@ private fun MoviesScreenContent(
                         header = stringResource(RCommon.string.header_trending),
                         movies = state.trendingMovies,
                         isLoading = state.isLoading,
+                        onViewAllClick = onViewAllTrendingClick,
                         onMovieClick = onMovieClick,
                         onMovieFocus = {
                             focusedMovie = it
@@ -161,6 +175,7 @@ private fun MoviesScreenContent(
                         header = stringResource(RCommon.string.header_most_anticipated),
                         movies = state.anticipatedMovies,
                         isLoading = state.isLoading,
+                        onViewAllClick = onViewAllAnticipatedClick,
                         onMovieFocus = {
                             focusedMovie = it
                             focusedSection = "anticipated"
@@ -177,6 +192,7 @@ private fun MoviesScreenContent(
                         header = stringResource(RCommon.string.header_most_popular),
                         movies = state.popularMovies,
                         isLoading = state.isLoading,
+                        onViewAllClick = onViewAllPopularClick,
                         onMovieFocus = {
                             focusedMovie = it
                             focusedSection = "popular"
@@ -194,6 +210,7 @@ private fun MoviesScreenContent(
                             header = stringResource(RCommon.string.header_recommended),
                             movies = state.recommendedMovies,
                             isLoading = state.isLoading,
+                            onViewAllClick = onViewAllRecommendedClick,
                             onMovieFocus = {
                                 focusedMovie = it
                                 focusedSection = "recommended"
@@ -237,6 +254,7 @@ private fun TrendingMoviesList(
     isLoading: Boolean,
     onMovieFocus: (Movie) -> Unit,
     onMovieClick: (TraktId) -> Unit,
+    onViewAllClick: () -> Unit,
     focusRequesters: Map<String, FocusRequester>,
     modifier: Modifier = Modifier,
 ) {
@@ -288,6 +306,12 @@ private fun TrendingMoviesList(
                                 onMovieFocus(movie)
                             }
                         },
+                    )
+                }
+
+                item {
+                    HorizontalViewAllCard(
+                        onClick = onViewAllClick,
                     )
                 }
 
@@ -367,6 +391,7 @@ private fun StandardMoviesList(
     isLoading: Boolean,
     onMovieFocus: (Movie) -> Unit,
     onMovieClick: (TraktId) -> Unit,
+    onViewAllClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -420,6 +445,12 @@ private fun StandardMoviesList(
                     )
                 }
 
+                item {
+                    HorizontalViewAllCard(
+                        onClick = onViewAllClick,
+                    )
+                }
+
                 emptyFocusListItems()
             }
         }
@@ -433,6 +464,7 @@ private fun AnticipatedMoviesList(
     isLoading: Boolean,
     onMovieFocus: (Movie) -> Unit,
     onMovieClick: (TraktId) -> Unit,
+    onViewAllClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -483,6 +515,12 @@ private fun AnticipatedMoviesList(
                     )
                 }
 
+                item {
+                    HorizontalViewAllCard(
+                        onClick = onViewAllClick,
+                    )
+                }
+
                 emptyFocusListItems()
             }
         }
@@ -511,6 +549,10 @@ private fun Preview() {
                 ).toImmutableList(),
             ),
             onMovieClick = {},
+            onViewAllTrendingClick = {},
+            onViewAllPopularClick = {},
+            onViewAllAnticipatedClick = {},
+            onViewAllRecommendedClick = {},
         )
     }
 }
@@ -538,6 +580,10 @@ private fun Preview2() {
                 ).toImmutableList(),
             ),
             onMovieClick = {},
+            onViewAllTrendingClick = {},
+            onViewAllPopularClick = {},
+            onViewAllAnticipatedClick = {},
+            onViewAllRecommendedClick = {},
         )
     }
 }

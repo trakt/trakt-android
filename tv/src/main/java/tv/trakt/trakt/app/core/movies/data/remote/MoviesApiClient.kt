@@ -18,7 +18,10 @@ internal class MoviesApiClient(
     private val api: MoviesApi,
     private val recommendationsApi: RecommendationsApi,
 ) : MoviesRemoteDataSource {
-    override suspend fun getTrendingMovies(limit: Int): List<TrendingMovieDto> {
+    override suspend fun getTrendingMovies(
+        limit: Int,
+        page: Int,
+    ): List<TrendingMovieDto> {
         val response = api.getMoviesTrending(
             extended = "full,streaming_ids,cloud9,colors",
             limit = limit,
@@ -26,7 +29,7 @@ internal class MoviesApiClient(
             genres = null,
             years = null,
             ratings = null,
-            page = null,
+            page = page,
             startDate = null,
             endDate = null,
             ignoreWatched = false,
@@ -68,15 +71,18 @@ internal class MoviesApiClient(
             }
     }
 
-    override suspend fun getPopularMovies(): List<MovieDto> {
+    override suspend fun getPopularMovies(
+        limit: Int,
+        page: Int,
+    ): List<MovieDto> {
         val response = api.getMoviesPopular(
             extended = "full,streaming_ids,cloud9,colors",
-            limit = 30,
+            limit = limit,
             watchnow = null,
             genres = null,
             years = null,
             ratings = null,
-            page = null,
+            page = page,
             ignoreWatched = false,
             ignoreCollected = false,
             ignoreWatchlisted = false,
@@ -87,15 +93,18 @@ internal class MoviesApiClient(
         return response.body()
     }
 
-    override suspend fun getAnticipatedMovies(): List<AnticipatedMovieDto> {
+    override suspend fun getAnticipatedMovies(
+        limit: Int,
+        page: Int,
+    ): List<AnticipatedMovieDto> {
         val response = api.getMoviesAnticipated(
             extended = "full,streaming_ids,cloud9,colors",
-            limit = 30,
+            limit = limit,
             watchnow = null,
             genres = null,
             years = null,
             ratings = null,
-            page = null,
+            page = page,
             ignoreWatched = false,
             ignoreCollected = false,
             ignoreWatchlisted = false,
@@ -112,14 +121,17 @@ internal class MoviesApiClient(
             }
     }
 
-    override suspend fun getRecommendedMovies(): List<RecommendedMovieDto> {
+    override suspend fun getRecommendedMovies(
+        limit: Int,
+        page: Int,
+    ): List<RecommendedMovieDto> {
         val response = recommendationsApi.getRecommendationsMoviesRecommend(
             extended = "full,streaming_ids,cloud9,colors",
-            limit = 30,
-            ignoreWatched = true,
-            ignoreWatchlisted = true,
-            ignoreCollected = true,
+            limit = limit,
             watchWindow = 25,
+            ignoreWatched = true,
+            ignoreCollected = true,
+            ignoreWatchlisted = true,
             watchnow = null,
             genres = null,
             years = null,
