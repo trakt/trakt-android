@@ -46,31 +46,6 @@ internal class MoviesApiClient(
             }
     }
 
-    override suspend fun getMonthlyHotMovies(): List<TrendingMovieDto> {
-        val response = api.getMoviesHot(
-            extended = "full,streaming_ids,cloud9,colors",
-            limit = 30,
-            watchnow = null,
-            genres = null,
-            years = null,
-            ratings = null,
-            page = null,
-            startDate = "lastmonth",
-            endDate = null,
-            ignoreWatched = false,
-            ignoreCollected = false,
-            ignoreWatchlisted = false,
-        )
-
-        return response.body()
-            .map {
-                TrendingMovieDto(
-                    watchers = it.listCount,
-                    movie = it.movie,
-                )
-            }
-    }
-
     override suspend fun getPopularMovies(
         limit: Int,
         page: Int,

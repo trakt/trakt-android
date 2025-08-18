@@ -16,7 +16,6 @@ import tv.trakt.trakt.app.core.movies.features.popular.MoviesPopularViewAllViewM
 import tv.trakt.trakt.app.core.movies.features.recommended.MoviesRecommendedViewAllViewModel
 import tv.trakt.trakt.app.core.movies.features.trending.MoviesTrendingViewAllViewModel
 import tv.trakt.trakt.app.core.movies.usecase.GetAnticipatedMoviesUseCase
-import tv.trakt.trakt.app.core.movies.usecase.GetHotMoviesUseCase
 import tv.trakt.trakt.app.core.movies.usecase.GetPopularMoviesUseCase
 import tv.trakt.trakt.app.core.movies.usecase.GetRecommendedMoviesUseCase
 import tv.trakt.trakt.app.core.movies.usecase.GetTrendingMoviesUseCase
@@ -51,13 +50,6 @@ internal val moviesModule = module {
     }
 
     factory {
-        GetHotMoviesUseCase(
-            remoteSource = get(),
-            localSource = get(),
-        )
-    }
-
-    factory {
         GetPopularMoviesUseCase(
             remoteSource = get(),
             localSource = get(),
@@ -83,7 +75,6 @@ internal val moviesModule = module {
             getTrendingMoviesUseCase = get(),
             getPopularMoviesUseCase = get(),
             getAnticipatedMoviesUseCase = get(),
-            getHotMoviesUseCase = get(),
             getRecommendedMoviesUseCase = get(),
             sessionManager = get(),
         )

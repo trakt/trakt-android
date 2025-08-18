@@ -16,7 +16,6 @@ import tv.trakt.trakt.app.core.shows.features.popular.ShowsPopularViewAllViewMod
 import tv.trakt.trakt.app.core.shows.features.recommended.ShowsRecommendedViewAllViewModel
 import tv.trakt.trakt.app.core.shows.features.trending.ShowsTrendingViewAllViewModel
 import tv.trakt.trakt.app.core.shows.usecase.GetAnticipatedShowsUseCase
-import tv.trakt.trakt.app.core.shows.usecase.GetHotShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetPopularShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetTrendingShowsUseCase
@@ -51,13 +50,6 @@ internal val showsModule = module {
     }
 
     factory {
-        GetHotShowsUseCase(
-            remoteSource = get(),
-            localSource = get(),
-        )
-    }
-
-    factory {
         GetPopularShowsUseCase(
             remoteSource = get(),
             localSource = get(),
@@ -83,7 +75,6 @@ internal val showsModule = module {
             getTrendingShowsUseCase = get(),
             getPopularShowsUseCase = get(),
             getAnticipatedShowsUseCase = get(),
-            getHotShowsUseCase = get(),
             getRecommendedShowsUseCase = get(),
             sessionManager = get(),
         )

@@ -154,22 +154,6 @@ private fun ShowsScreenContent(
                 }
 
                 item {
-                    HotShowsList(
-                        header = stringResource(RCommon.string.header_hot_month),
-                        shows = state.hotShows,
-                        isLoading = state.isLoading,
-                        onShowClick = onShowClick,
-                        onShowFocus = {
-                            focusedShow = it
-                            focusedSection = "hot"
-                        },
-                        modifier = Modifier
-                            .focusGroup()
-                            .focusRequester(focusRequesters.getValue("hot")),
-                    )
-                }
-
-                item {
                     AnticipatedShowsList(
                         header = stringResource(RCommon.string.header_most_anticipated),
                         shows = state.anticipatedShows,
@@ -304,70 +288,6 @@ private fun TrendingShowsList(
                 item {
                     HorizontalViewAllCard(
                         onClick = onViewAllClick,
-                    )
-                }
-
-                emptyFocusListItems()
-            }
-        }
-    }
-}
-
-@Composable
-private fun HotShowsList(
-    header: String,
-    shows: List<TrendingShow>?,
-    isLoading: Boolean,
-    onShowFocus: (Show) -> Unit,
-    onShowClick: (TraktId) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
-        modifier = modifier,
-    ) {
-        Text(
-            text = header,
-            color = TraktTheme.colors.textPrimary,
-            style = TraktTheme.typography.heading5,
-            modifier = Modifier.padding(start = TraktTheme.spacing.mainContentStartSpace),
-        )
-
-        PositionFocusLazyRow(
-            contentPadding = PaddingValues(
-                start = TraktTheme.spacing.mainContentStartSpace,
-                end = 32.dp,
-            ),
-        ) {
-            if (isLoading) {
-                items(count = 10) {
-                    HorizontalMediaSkeletonCard(
-                        modifier = Modifier
-                            .focusProperties { canFocus = false },
-                    )
-                }
-            } else if (!shows.isNullOrEmpty()) {
-                items(
-                    items = shows,
-                    key = { item -> item.show.ids.trakt.value },
-                ) { (listCount, show) ->
-                    HorizontalMediaCard(
-                        title = show.title,
-                        onClick = { onShowClick(show.ids.trakt) },
-                        containerImageUrl = show.images?.getFanartUrl(),
-                        contentImageUrl = show.images?.getLogoUrl(),
-                        paletteColor = show.colors?.colors?.second,
-                        footerContent = {
-                            InfoChip(
-                                text = stringResource(RCommon.string.people_eager, listCount.thousandsFormat()),
-                                modifier = Modifier,
-                            )
-                        },
-                        modifier = Modifier.onFocusChanged {
-                            if (it.hasFocus) {
-                                onShowFocus(show)
-                            }
-                        },
                     )
                 }
 

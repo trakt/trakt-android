@@ -18,8 +18,6 @@ internal interface MoviesRemoteDataSource {
         page: Int,
     ): List<TrendingMovieDto>
 
-    suspend fun getMonthlyHotMovies(): List<TrendingMovieDto>
-
     suspend fun getPopularMovies(
         limit: Int,
         page: Int,

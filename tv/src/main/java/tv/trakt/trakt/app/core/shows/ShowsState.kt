@@ -10,7 +10,6 @@ import tv.trakt.trakt.common.model.Show
 internal data class ShowsState(
     val isLoading: Boolean = true,
     val trendingShows: ImmutableList<TrendingShow>? = null,
-    val hotShows: ImmutableList<TrendingShow>? = null,
     val popularShows: ImmutableList<Show>? = null,
     val anticipatedShows: ImmutableList<AnticipatedShow>? = null,
     val recommendedShows: ImmutableList<Show>? = null,

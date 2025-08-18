@@ -155,22 +155,6 @@ private fun MoviesScreenContent(
                 }
 
                 item {
-                    HotMoviesList(
-                        header = stringResource(RCommon.string.header_hot_month),
-                        movies = state.hotMovies,
-                        isLoading = state.isLoading,
-                        onMovieFocus = {
-                            focusedMovie = it
-                            focusedSection = "hot"
-                        },
-                        onMovieClick = onMovieClick,
-                        modifier = Modifier
-                            .focusGroup()
-                            .focusRequester(focusRequesters.getValue("hot")),
-                    )
-                }
-
-                item {
                     AnticipatedMoviesList(
                         header = stringResource(RCommon.string.header_most_anticipated),
                         movies = state.anticipatedMovies,
@@ -312,69 +296,6 @@ private fun TrendingMoviesList(
                 item {
                     HorizontalViewAllCard(
                         onClick = onViewAllClick,
-                    )
-                }
-
-                emptyFocusListItems()
-            }
-        }
-    }
-}
-
-@Composable
-private fun HotMoviesList(
-    header: String,
-    movies: List<TrendingMovie>?,
-    isLoading: Boolean,
-    onMovieFocus: (Movie) -> Unit,
-    onMovieClick: (TraktId) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
-        modifier = modifier,
-    ) {
-        Text(
-            text = header,
-            color = TraktTheme.colors.textPrimary,
-            style = TraktTheme.typography.heading5,
-            modifier = Modifier.padding(start = TraktTheme.spacing.mainContentStartSpace),
-        )
-
-        PositionFocusLazyRow(
-            contentPadding = PaddingValues(
-                start = TraktTheme.spacing.mainContentStartSpace,
-                end = 32.dp,
-            ),
-        ) {
-            if (isLoading) {
-                items(count = 10) {
-                    HorizontalMediaSkeletonCard(
-                        modifier = Modifier
-                            .focusProperties { canFocus = false },
-                    )
-                }
-            } else if (!movies.isNullOrEmpty()) {
-                items(
-                    items = movies,
-                    key = { item -> item.movie.ids.trakt.value },
-                ) { (watchers, movie) ->
-                    HorizontalMediaCard(
-                        title = movie.title,
-                        onClick = { onMovieClick(movie.ids.trakt) },
-                        containerImageUrl = movie.images?.getFanartUrl(),
-                        contentImageUrl = movie.images?.getLogoUrl(),
-                        paletteColor = movie.colors?.colors?.second,
-                        footerContent = {
-                            InfoChip(
-                                text = stringResource(RCommon.string.people_eager, watchers.thousandsFormat()),
-                            )
-                        },
-                        modifier = Modifier.onFocusChanged {
-                            if (it.hasFocus) {
-                                onMovieFocus(movie)
-                            }
-                        },
                     )
                 }
 

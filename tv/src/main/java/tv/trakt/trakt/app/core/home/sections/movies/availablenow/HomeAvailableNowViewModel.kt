@@ -41,7 +41,7 @@ internal class HomeAvailableNowViewModel(
                 }
 
                 val movies = getAvailableNowUseCase.getMovies(
-                    limit = HOME_SECTION_LIMIT
+                    limit = HOME_SECTION_LIMIT,
                 )
                 moviesState.update { movies }
 

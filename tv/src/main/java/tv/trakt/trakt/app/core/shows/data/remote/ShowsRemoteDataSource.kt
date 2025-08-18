@@ -19,8 +19,6 @@ internal interface ShowsRemoteDataSource {
         page: Int,
     ): List<TrendingShowDto>
 
-    suspend fun getMonthlyHotShows(): List<TrendingShowDto>
-
     suspend fun getPopularShows(
         limit: Int,
         page: Int,

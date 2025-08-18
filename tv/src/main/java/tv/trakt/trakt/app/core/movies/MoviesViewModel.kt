@@ -16,7 +16,6 @@ import timber.log.Timber
 import tv.trakt.trakt.app.core.movies.model.AnticipatedMovie
 import tv.trakt.trakt.app.core.movies.model.TrendingMovie
 import tv.trakt.trakt.app.core.movies.usecase.GetAnticipatedMoviesUseCase
-import tv.trakt.trakt.app.core.movies.usecase.GetHotMoviesUseCase
 import tv.trakt.trakt.app.core.movies.usecase.GetPopularMoviesUseCase
 import tv.trakt.trakt.app.core.movies.usecase.GetRecommendedMoviesUseCase
 import tv.trakt.trakt.app.core.movies.usecase.GetTrendingMoviesUseCase
@@ -28,7 +27,6 @@ internal class MoviesViewModel(
     private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
     private val getAnticipatedMoviesUseCase: GetAnticipatedMoviesUseCase,
-    private val getHotMoviesUseCase: GetHotMoviesUseCase,
     private val getRecommendedMoviesUseCase: GetRecommendedMoviesUseCase,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
@@ -36,7 +34,6 @@ internal class MoviesViewModel(
 
     private val loadingState = MutableStateFlow(initialState.isLoading)
     private val trendingMoviesState = MutableStateFlow(initialState.trendingMovies)
-    private val hotMoviesState = MutableStateFlow(initialState.hotMovies)
     private val popularMoviesState = MutableStateFlow(initialState.popularMovies)
     private val anticipatedMoviesState = MutableStateFlow(initialState.anticipatedMovies)
     private val recommendedMoviesState = MutableStateFlow(initialState.recommendedMovies)
@@ -52,7 +49,6 @@ internal class MoviesViewModel(
                 loadingState.update { true }
                 coroutineScope {
                     val trendingMoviesAsync = async { getTrendingMoviesUseCase.getTrendingMovies(10) }
-                    val hotMoviesAsync = async { getHotMoviesUseCase.getHotMovies() }
                     val popularMoviesAsync = async { getPopularMoviesUseCase.getPopularMovies() }
                     val anticipatedMoviesAsync = async { getAnticipatedMoviesUseCase.getAnticipatedMovies() }
 
@@ -65,13 +61,11 @@ internal class MoviesViewModel(
                     }
 
                     val trendingMovies = trendingMoviesAsync.await()
-                    val hotMovies = hotMoviesAsync.await()
                     val popularMovies = popularMoviesAsync.await()
                     val anticipatedMovies = anticipatedMoviesAsync.await()
                     val recommendedMovies = recommendedMoviesAsync.await()
 
                     trendingMoviesState.value = trendingMovies
-                    hotMoviesState.value = hotMovies
                     popularMoviesState.value = popularMovies
                     anticipatedMoviesState.value = anticipatedMovies
                     recommendedMoviesState.value = recommendedMovies
@@ -90,7 +84,6 @@ internal class MoviesViewModel(
     val state: StateFlow<MoviesState> = combine(
         loadingState,
         trendingMoviesState,
-        hotMoviesState,
         popularMoviesState,
         anticipatedMoviesState,
         recommendedMoviesState,
@@ -100,11 +93,10 @@ internal class MoviesViewModel(
         MoviesState(
             isLoading = s[0] as Boolean,
             trendingMovies = s[1] as ImmutableList<TrendingMovie>?,
-            hotMovies = s[2] as ImmutableList<TrendingMovie>?,
-            popularMovies = s[3] as ImmutableList<Movie>?,
-            anticipatedMovies = s[4] as ImmutableList<AnticipatedMovie>?,
-            recommendedMovies = s[5] as ImmutableList<Movie>?,
-            error = s[6] as Exception?,
+            popularMovies = s[2] as ImmutableList<Movie>?,
+            anticipatedMovies = s[3] as ImmutableList<AnticipatedMovie>?,
+            recommendedMovies = s[4] as ImmutableList<Movie>?,
+            error = s[5] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

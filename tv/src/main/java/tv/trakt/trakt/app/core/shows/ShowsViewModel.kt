@@ -16,7 +16,6 @@ import timber.log.Timber
 import tv.trakt.trakt.app.core.shows.model.AnticipatedShow
 import tv.trakt.trakt.app.core.shows.model.TrendingShow
 import tv.trakt.trakt.app.core.shows.usecase.GetAnticipatedShowsUseCase
-import tv.trakt.trakt.app.core.shows.usecase.GetHotShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetPopularShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetTrendingShowsUseCase
@@ -28,7 +27,6 @@ internal class ShowsViewModel(
     private val getTrendingShowsUseCase: GetTrendingShowsUseCase,
     private val getPopularShowsUseCase: GetPopularShowsUseCase,
     private val getAnticipatedShowsUseCase: GetAnticipatedShowsUseCase,
-    private val getHotShowsUseCase: GetHotShowsUseCase,
     private val getRecommendedShowsUseCase: GetRecommendedShowsUseCase,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
@@ -36,7 +34,6 @@ internal class ShowsViewModel(
 
     private val loadingState = MutableStateFlow(initialState.isLoading)
     private val trendingShowsState = MutableStateFlow(initialState.trendingShows)
-    private val hotShowsState = MutableStateFlow(initialState.hotShows)
     private val popularShowsState = MutableStateFlow(initialState.popularShows)
     private val anticipatedShowsState = MutableStateFlow(initialState.anticipatedShows)
     private val recommendedShowsState = MutableStateFlow(initialState.recommendedShows)
@@ -52,7 +49,6 @@ internal class ShowsViewModel(
                 loadingState.update { true }
                 coroutineScope {
                     val trendingShowsAsync = async { getTrendingShowsUseCase.getTrendingShows() }
-                    val hotShowsAsync = async { getHotShowsUseCase.getHotShows() }
                     val popularShowsAsync = async { getPopularShowsUseCase.getPopularShows() }
                     val anticipatedShowsAsync = async { getAnticipatedShowsUseCase.getAnticipatedShows() }
 
@@ -65,13 +61,11 @@ internal class ShowsViewModel(
                     }
 
                     val trendingShows = trendingShowsAsync.await()
-                    val hotShows = hotShowsAsync.await()
                     val popularShows = popularShowsAsync.await()
                     val anticipatedShows = anticipatedShowsAsync.await()
                     val recommendedShows = recommendedShowsAsync.await()
 
                     trendingShowsState.value = trendingShows
-                    hotShowsState.value = hotShows
                     popularShowsState.value = popularShows
                     anticipatedShowsState.value = anticipatedShows
                     recommendedShowsState.value = recommendedShows
@@ -91,7 +85,6 @@ internal class ShowsViewModel(
     val state: StateFlow<ShowsState> = combine(
         loadingState,
         trendingShowsState,
-        hotShowsState,
         popularShowsState,
         anticipatedShowsState,
         recommendedShowsState,
@@ -100,11 +93,10 @@ internal class ShowsViewModel(
         ShowsState(
             isLoading = s[0] as Boolean,
             trendingShows = s[1] as ImmutableList<TrendingShow>?,
-            hotShows = s[2] as ImmutableList<TrendingShow>?,
-            popularShows = s[3] as ImmutableList<Show>?,
-            anticipatedShows = s[4] as ImmutableList<AnticipatedShow>?,
-            recommendedShows = s[5] as ImmutableList<Show>?,
-            error = s[6] as Exception?,
+            popularShows = s[2] as ImmutableList<Show>?,
+            anticipatedShows = s[3] as ImmutableList<AnticipatedShow>?,
+            recommendedShows = s[4] as ImmutableList<Show>?,
+            error = s[5] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

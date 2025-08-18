@@ -47,31 +47,6 @@ internal class ShowsApiClient(
             }
     }
 
-    override suspend fun getMonthlyHotShows(): List<TrendingShowDto> {
-        val response = api.getShowsHot(
-            extended = "full,streaming_ids,cloud9,colors",
-            limit = 30,
-            watchnow = null,
-            genres = null,
-            years = null,
-            ratings = null,
-            page = null,
-            ignoreWatched = null,
-            ignoreCollected = null,
-            ignoreWatchlisted = null,
-            startDate = "lastmonth",
-            endDate = null,
-        )
-
-        return response.body()
-            .map {
-                TrendingShowDto(
-                    watchers = it.listCount,
-                    show = it.show,
-                )
-            }
-    }
-
     override suspend fun getPopularShows(
         limit: Int,
         page: Int,

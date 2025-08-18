@@ -10,7 +10,6 @@ import tv.trakt.trakt.common.model.Movie
 internal data class MoviesState(
     val isLoading: Boolean = true,
     val trendingMovies: ImmutableList<TrendingMovie>? = null,
-    val hotMovies: ImmutableList<TrendingMovie>? = null,
     val popularMovies: ImmutableList<Movie>? = null,
     val anticipatedMovies: ImmutableList<AnticipatedMovie>? = null,
     val recommendedMovies: ImmutableList<Movie>? = null,
