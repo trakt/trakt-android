@@ -1,9 +1,6 @@
 package tv.trakt.trakt.app.core.home.sections.shows.upnext.viewall
 
 import EpisodeProgressBar
-import FilmProgressIndicator
-import GenericErrorView
-import InfoChip
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -38,18 +35,21 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
 import tv.trakt.trakt.app.R
-import tv.trakt.trakt.app.common.model.Images.Size
-import tv.trakt.trakt.app.common.model.TraktId
+import tv.trakt.trakt.app.common.ui.GenericErrorView
+import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.app.core.home.HomeConfig.HOME_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.app.core.home.HomeConfig.HOME_PAGE_LIMIT
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressShow
-import tv.trakt.trakt.app.core.shows.model.Show
-import tv.trakt.trakt.app.helpers.extensions.durationFormat
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 
 @Composable
 internal fun UpNextViewAllScreen(
@@ -105,7 +105,7 @@ private fun UpNextViewAllContent(
             },
     ) {
         BackdropImage(
-            imageUrl = focusedItem?.show?.images?.getFanartUrl(Size.FULL),
+            imageUrl = focusedItem?.show?.images?.getFanartUrl(Images.Size.FULL),
             saturation = 0F,
             crossfade = true,
         )

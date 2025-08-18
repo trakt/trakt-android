@@ -3,7 +3,6 @@ package tv.trakt.trakt.app.core.home.sections.movies.availablenow.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.core.home.sections.movies.availablenow.model.WatchlistMovie
-import tv.trakt.trakt.app.core.movies.MoviesConfig.MOVIES_SECTION_LIMIT
 import tv.trakt.trakt.app.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.app.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -12,18 +11,21 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.fromDto
 import java.time.LocalDate
 
+internal const val PAGE_LIMIT = 100
+
 internal class GetAvailableNowMoviesUseCase(
     private val remoteSyncSource: MoviesSyncRemoteDataSource,
     private val localMovieSource: MovieLocalDataSource,
 ) {
     suspend fun getMovies(
-        limit: Int = MOVIES_SECTION_LIMIT,
+        limit: Int = 100,
         page: Int = 1,
     ): ImmutableList<WatchlistMovie> {
         val nowDay = LocalDate.now().toString()
         val response = remoteSyncSource.getWatchlist(
             page = page,
-            limit = limit,
+            limit = PAGE_LIMIT,
+            sort = "released",
             extended = "full,cloud9,colors",
         ).filter {
             !it.movie.released.isNullOrBlank() && it.movie.released!! <= nowDay
@@ -33,7 +35,9 @@ internal class GetAvailableNowMoviesUseCase(
                 listedAt = it.listedAt.toZonedDateTime(),
                 rank = it.rank,
             )
-        }.sortedByDescending { it.movie.released }
+        }.sortedByDescending {
+            it.movie.released
+        }.take(limit)
 
         return response
             .toImmutableList()

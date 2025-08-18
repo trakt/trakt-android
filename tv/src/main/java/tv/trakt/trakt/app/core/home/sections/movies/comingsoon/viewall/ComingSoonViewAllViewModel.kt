@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.home.sections.movies.comingsoon.viewall
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.plus
@@ -11,11 +10,12 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import tv.trakt.trakt.app.core.home.HomeConfig.HOME_PAGE_LIMIT
 import tv.trakt.trakt.app.core.home.sections.movies.comingsoon.usecases.GetComingSoonMoviesUseCase
 import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalDataSource
 import tv.trakt.trakt.app.helpers.extensions.nowUtc
-import tv.trakt.trakt.app.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import java.time.ZonedDateTime
 
 internal class ComingSoonViewAllViewModel(
@@ -61,7 +61,7 @@ internal class ComingSoonViewAllViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Log.e("ComingSoonViewAllViewModel", "Failed to load data", error)
+                    Timber.e(error, "Failed to load data")
                 }
             } finally {
                 loadingState.update { false }
@@ -100,17 +100,17 @@ internal class ComingSoonViewAllViewModel(
     }
 
     fun updateData() {
-        Log.d("ComingSoonViewAllViewModel", "updateData called")
+        Timber.d("updateData called")
         viewModelScope.launch {
             try {
                 val localUpdatedAt = localSyncSource.getWatchlistUpdatedAt()
                 if (localUpdatedAt != null && loadedAt?.isBefore(localUpdatedAt) == true) {
                     loadData(showLoading = false)
-                    Log.d("ComingSoonViewAllViewModel", "Updating coming soon movies")
+                    Timber.d("Updating coming soon movies")
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Log.e("ComingSoonViewAllViewModel", "Error", error)
+                    Timber.e(error, "Error")
                 }
             }
         }

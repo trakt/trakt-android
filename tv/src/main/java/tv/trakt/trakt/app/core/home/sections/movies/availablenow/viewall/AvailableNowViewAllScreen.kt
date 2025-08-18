@@ -1,8 +1,5 @@
 package tv.trakt.trakt.app.core.home.sections.movies.availablenow.viewall
 
-import FilmProgressIndicator
-import GenericErrorView
-import InfoChip
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -35,17 +32,19 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
 import tv.trakt.trakt.app.R
-import tv.trakt.trakt.app.common.model.Images.Size
-import tv.trakt.trakt.app.common.model.TraktId
+import tv.trakt.trakt.app.common.ui.GenericErrorView
+import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
-import tv.trakt.trakt.app.core.home.HomeConfig.HOME_NEXT_PAGE_OFFSET
-import tv.trakt.trakt.app.core.home.HomeConfig.HOME_PAGE_LIMIT
 import tv.trakt.trakt.app.core.home.sections.movies.availablenow.model.WatchlistMovie
-import tv.trakt.trakt.app.core.movies.model.Movie
-import tv.trakt.trakt.app.helpers.extensions.durationFormat
+import tv.trakt.trakt.app.core.home.sections.movies.availablenow.usecases.PAGE_LIMIT
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 
 @Composable
 internal fun AvailableNowViewAllScreen(
@@ -101,7 +100,7 @@ private fun AvailableNowViewAllContent(
             },
     ) {
         BackdropImage(
-            imageUrl = focusedItem?.movie?.images?.getFanartUrl(Size.FULL),
+            imageUrl = focusedItem?.movie?.images?.getFanartUrl(Images.Size.FULL),
             saturation = 0F,
             crossfade = true,
         )
@@ -208,7 +207,7 @@ private fun loadNextPageIfNeeded(
     index: Int,
     onLoadNextPage: () -> Unit,
 ) {
-    if (size >= HOME_PAGE_LIMIT && index >= size - HOME_NEXT_PAGE_OFFSET) {
+    if (size >= PAGE_LIMIT && index >= size - PAGE_LIMIT) {
         onLoadNextPage()
     }
 }

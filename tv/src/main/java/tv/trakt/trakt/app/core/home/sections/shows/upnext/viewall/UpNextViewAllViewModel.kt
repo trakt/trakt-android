@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.home.sections.shows.upnext.viewall
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.plus
@@ -11,12 +10,13 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import tv.trakt.trakt.app.core.home.HomeConfig.HOME_PAGE_LIMIT
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncLocalDataSource
 import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalDataSource
 import tv.trakt.trakt.app.helpers.extensions.nowUtc
-import tv.trakt.trakt.app.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import java.time.ZonedDateTime
 
 internal class UpNextViewAllViewModel(
@@ -63,7 +63,7 @@ internal class UpNextViewAllViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Log.e("UpNextViewAllViewModel", "Failed to load data", error)
+                    Timber.e(error, "Failed to load data")
                 }
             } finally {
                 loadingState.update { false }
@@ -102,7 +102,7 @@ internal class UpNextViewAllViewModel(
     }
 
     fun updateData() {
-        Log.d("UpNextViewAllViewModel", "updateData called")
+        Timber.d("updateData called")
         viewModelScope.launch {
             try {
                 if (loadedAt == null) {
@@ -129,7 +129,7 @@ internal class UpNextViewAllViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Log.e("UpNextViewAllViewModel", "Error", error)
+                    Timber.e(error, "Error")
                 }
             }
         }

@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.app.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.app.core.home.sections.movies.availablenow.usecases.GetAvailableNowMoviesUseCase
 import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalDataSource
 import tv.trakt.trakt.app.helpers.extensions.nowUtc
@@ -39,7 +40,9 @@ internal class HomeAvailableNowViewModel(
                     loadingState.update { true }
                 }
 
-                val movies = getAvailableNowUseCase.getMovies()
+                val movies = getAvailableNowUseCase.getMovies(
+                    limit = HOME_SECTION_LIMIT
+                )
                 moviesState.update { movies }
 
                 loadedAt = nowUtc()

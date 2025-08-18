@@ -5,8 +5,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
-import tv.trakt.trakt.app.common.model.TraktId
 import tv.trakt.trakt.app.core.home.sections.movies.comingsoon.viewall.ComingSoonViewAllScreen
+import tv.trakt.trakt.common.model.TraktId
 
 @Serializable
 internal data object HomeComingSoonDestination

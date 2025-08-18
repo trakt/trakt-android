@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.home.sections.movies.availablenow.viewall
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.plus
@@ -11,11 +10,12 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import tv.trakt.trakt.app.core.home.HomeConfig.HOME_PAGE_LIMIT
+import timber.log.Timber
 import tv.trakt.trakt.app.core.home.sections.movies.availablenow.usecases.GetAvailableNowMoviesUseCase
+import tv.trakt.trakt.app.core.home.sections.movies.availablenow.usecases.PAGE_LIMIT
 import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalDataSource
 import tv.trakt.trakt.app.helpers.extensions.nowUtc
-import tv.trakt.trakt.app.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import java.time.ZonedDateTime
 
 internal class AvailableNowViewAllViewModel(
@@ -51,7 +51,7 @@ internal class AvailableNowViewAllViewModel(
                 }
 
                 val items = getAvailableNowUseCase.getMovies(
-                    limit = HOME_PAGE_LIMIT,
+                    limit = PAGE_LIMIT,
                     page = 1,
                 )
                 itemsState.update { items }
@@ -61,7 +61,7 @@ internal class AvailableNowViewAllViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Log.e("AvailableNowViewAllViewModel", "Failed to load data", error)
+                    Timber.e(error, "Failed to load data")
                 }
             } finally {
                 loadingState.update { false }
@@ -78,7 +78,7 @@ internal class AvailableNowViewAllViewModel(
                 loadingPageState.update { true }
 
                 val items = getAvailableNowUseCase.getMovies(
-                    limit = HOME_PAGE_LIMIT,
+                    limit = PAGE_LIMIT,
                     page = nextDataPage,
                 )
 
@@ -86,7 +86,7 @@ internal class AvailableNowViewAllViewModel(
                     it?.toPersistentList()?.plus(items)
                 }
 
-                hasMoreData = (items.size >= HOME_PAGE_LIMIT)
+                hasMoreData = (items.size >= PAGE_LIMIT)
                 nextDataPage += 1
                 loadedAt = nowUtc()
             } catch (error: Exception) {
@@ -100,17 +100,17 @@ internal class AvailableNowViewAllViewModel(
     }
 
     fun updateData() {
-        Log.d("AvailableNowViewAllViewModel", "updateData called")
+        Timber.d("updateData called")
         viewModelScope.launch {
             try {
                 val localUpdatedAt = localSyncSource.getWatchlistUpdatedAt()
                 if (localUpdatedAt != null && loadedAt?.isBefore(localUpdatedAt) == true) {
                     loadData(showLoading = false)
-                    Log.d("AvailableNowViewAllViewModel", "Updating available now movies")
+                    Timber.d("Updating available now movies")
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Log.e("AvailableNowViewAllViewModel", "Error", error)
+                    Timber.e(error, "Error")
                 }
             }
         }
