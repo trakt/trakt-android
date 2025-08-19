@@ -151,7 +151,10 @@ private fun PersonalListContent(
                                 val episodes = show.airedEpisodes
                                 if (episodes > 0) {
                                     InfoChip(
-                                        text = stringResource(tv.trakt.trakt.common.R.string.episodes_count, episodes),
+                                        text = stringResource(
+                                            tv.trakt.trakt.resources.R.string.episodes_number,
+                                            episodes,
+                                        ),
                                     )
                                 }
                             },

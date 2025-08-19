@@ -47,7 +47,7 @@ import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.R as RCommon
+import tv.trakt.trakt.resources.R
 
 private val sections = listOf(
     "initial",
@@ -138,7 +138,7 @@ private fun MoviesScreenContent(
             ) {
                 item {
                     TrendingMoviesList(
-                        header = stringResource(RCommon.string.header_trending),
+                        header = stringResource(R.string.header_trending),
                         movies = state.trendingMovies,
                         isLoading = state.isLoading,
                         onViewAllClick = onViewAllTrendingClick,
@@ -156,7 +156,7 @@ private fun MoviesScreenContent(
 
                 item {
                     AnticipatedMoviesList(
-                        header = stringResource(RCommon.string.header_most_anticipated),
+                        header = stringResource(R.string.header_most_anticipated),
                         movies = state.anticipatedMovies,
                         isLoading = state.isLoading,
                         onViewAllClick = onViewAllAnticipatedClick,
@@ -173,7 +173,7 @@ private fun MoviesScreenContent(
 
                 item {
                     StandardMoviesList(
-                        header = stringResource(RCommon.string.header_most_popular),
+                        header = stringResource(R.string.header_most_popular),
                         movies = state.popularMovies,
                         isLoading = state.isLoading,
                         onViewAllClick = onViewAllPopularClick,
@@ -191,7 +191,7 @@ private fun MoviesScreenContent(
                 if (state.recommendedMovies != null) {
                     item {
                         StandardMoviesList(
-                            header = stringResource(RCommon.string.header_recommended),
+                            header = stringResource(R.string.header_recommended),
                             movies = state.recommendedMovies,
                             isLoading = state.isLoading,
                             onViewAllClick = onViewAllRecommendedClick,
@@ -282,7 +282,7 @@ private fun TrendingMoviesList(
                         paletteColor = movie.colors?.colors?.second,
                         footerContent = {
                             InfoChip(
-                                text = stringResource(RCommon.string.people_watching, watchers.thousandsFormat()),
+                                text = stringResource(R.string.people_watching, watchers.thousandsFormat()),
                             )
                         },
                         modifier = Modifier.onFocusChanged {
@@ -425,7 +425,7 @@ private fun AnticipatedMoviesList(
                         paletteColor = movie.colors?.colors?.second,
                         footerContent = {
                             InfoChip(
-                                text = stringResource(RCommon.string.people_eager, listCount.thousandsFormat()),
+                                text = stringResource(R.string.people_eager, listCount.thousandsFormat()),
                             )
                         },
                         modifier = Modifier.onFocusChanged {

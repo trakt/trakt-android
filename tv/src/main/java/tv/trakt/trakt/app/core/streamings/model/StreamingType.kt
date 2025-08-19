@@ -1,7 +1,7 @@
 package tv.trakt.trakt.app.core.streamings.model
 
 import androidx.annotation.StringRes
-import tv.trakt.trakt.app.R
+import tv.trakt.trakt.resources.R
 
 internal enum class StreamingType(
     val order: Int,

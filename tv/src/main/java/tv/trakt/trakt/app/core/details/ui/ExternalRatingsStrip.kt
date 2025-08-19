@@ -17,10 +17,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
-import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.common.model.ExternalRating
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun ExternalRatingsStrip(

@@ -12,7 +12,6 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.common.ui.buttons.PrimaryButton
 import tv.trakt.trakt.app.common.ui.buttons.WatchNowButton
 import tv.trakt.trakt.app.core.details.show.ShowDetailsState.CollectionState
@@ -23,7 +22,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Blue50
 import tv.trakt.trakt.common.ui.theme.colors.Blue500
 import tv.trakt.trakt.common.ui.theme.colors.Purple50
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
-import tv.trakt.trakt.common.R as RCommon
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun ShowActionButtons(
@@ -82,7 +81,7 @@ internal fun ShowActionButtons(
         PrimaryButton(
             text = stringResource(if (isAllWatched) R.string.add_watched_again else R.string.add_watched),
             icon = painterResource(
-                if (isAllWatched) RCommon.drawable.ic_check_double else RCommon.drawable.ic_check,
+                if (isAllWatched) R.drawable.ic_check_double else R.drawable.ic_check,
             ),
             onClick = onHistoryClick,
             containerColor = if (!isWatched) Purple50 else Purple500,

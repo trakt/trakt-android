@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.common.model.CastPerson
 import tv.trakt.trakt.app.common.model.Comment
 import tv.trakt.trakt.app.common.model.ExternalRating
@@ -47,6 +46,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.resources.R
 
 internal class EpisodeDetailsViewModel(
     savedStateHandle: SavedStateHandle,

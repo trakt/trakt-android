@@ -31,7 +31,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import timber.log.Timber
-import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.search.SearchState.State
 import tv.trakt.trakt.app.core.search.views.SearchLoadingView
@@ -43,7 +42,7 @@ import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.R as RCommon
+import tv.trakt.trakt.resources.R
 
 private val sections = listOf(
     "input",
@@ -140,7 +139,7 @@ private fun SearchScreenContent(
                 TraktTextField(
                     state = searchInputState,
                     placeholder = stringResource(R.string.info_search_placeholder),
-                    icon = painterResource(RCommon.drawable.ic_search),
+                    icon = painterResource(R.drawable.ic_search),
                     loading = state.searching,
                     modifier = Modifier
                         .padding(top = 12.dp)
@@ -157,11 +156,11 @@ private fun SearchScreenContent(
             when {
                 state.searching && (state.state == State.RECENTS || state.state == State.TRENDING) -> {
                     SearchLoadingView(
-                        header = stringResource(RCommon.string.shows),
+                        header = stringResource(R.string.shows),
                         focusRequesters = focusRequesters,
                     )
                     SearchLoadingView(
-                        header = stringResource(RCommon.string.movies),
+                        header = stringResource(R.string.movies),
                         focusRequesters = focusRequesters,
                     )
                 }
@@ -228,7 +227,7 @@ private fun SearchScreenContent(
             with(state.searchResult) {
                 if (!this?.shows.isNullOrEmpty()) {
                     SearchShowsView(
-                        header = stringResource(RCommon.string.shows),
+                        header = stringResource(R.string.shows),
                         items = shows,
                         focusRequesters = focusRequesters,
                         onFocused = {
@@ -241,7 +240,7 @@ private fun SearchScreenContent(
 
                 if (!this?.movies.isNullOrEmpty()) {
                     SearchMoviesView(
-                        header = stringResource(RCommon.string.movies),
+                        header = stringResource(R.string.movies),
                         items = movies,
                         focusRequesters = focusRequesters,
                         onFocused = {

@@ -30,7 +30,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
-import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
@@ -48,6 +47,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun ShowsTrendingScreen(
@@ -148,7 +148,7 @@ private fun ShowsTrendingContent(
                         chipContent = {
                             InfoChip(
                                 text = stringResource(
-                                    tv.trakt.trakt.common.R.string.people_watching,
+                                    tv.trakt.trakt.resources.R.string.people_watching,
                                     show.watchers.thousandsFormat(),
                                 ),
                                 modifier = Modifier,

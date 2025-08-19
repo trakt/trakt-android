@@ -12,7 +12,6 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.common.ui.buttons.PrimaryButton
 import tv.trakt.trakt.app.common.ui.buttons.WatchNowButton
 import tv.trakt.trakt.app.core.details.episode.EpisodeDetailsState
@@ -20,7 +19,7 @@ import tv.trakt.trakt.app.helpers.extensions.openWatchNowLink
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.ui.theme.colors.Purple50
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
-import tv.trakt.trakt.common.R as RCommon
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun EpisodeActionButtons(
@@ -76,7 +75,7 @@ internal fun EpisodeActionButtons(
         val isWatched = remember(historyState.episodes?.size) { historyState.episodesPlays > 0 }
         PrimaryButton(
             text = stringResource(if (isWatched) R.string.add_watched_again else R.string.add_watched),
-            icon = painterResource(if (isWatched) RCommon.drawable.ic_check_double else RCommon.drawable.ic_check),
+            icon = painterResource(if (isWatched) R.drawable.ic_check_double else R.drawable.ic_check),
             onClick = onHistoryClick,
             containerColor = if (!isWatched) Purple50 else Purple500,
             contentColor = if (!isWatched) Purple500 else Color.White,

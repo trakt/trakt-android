@@ -61,7 +61,7 @@ import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.Images.Size.FULL
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.common.R as RCommon
+import tv.trakt.trakt.resources.R
 
 private val sections = listOf(
     "header",
@@ -172,7 +172,7 @@ private fun ProfileScreenContent(
                     Spacer(modifier = Modifier.weight(1f))
 
                     PrimaryButton(
-                        text = stringResource(RCommon.string.log_out),
+                        text = stringResource(R.string.log_out),
                         onClick = onLogoutClick,
                         modifier = Modifier.widthIn(max = 128.dp),
                     )
@@ -255,7 +255,7 @@ private fun ProfileHeader(
 
         Column {
             Text(
-                text = stringResource(RCommon.string.header_hello, headerName ?: ""),
+                text = stringResource(R.string.header_hello, headerName ?: ""),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading4,
             )
@@ -284,7 +284,7 @@ private fun ProfileAvatar(
                 model = profile.images?.avatar?.full,
                 contentDescription = "User avatar",
                 contentScale = ContentScale.Crop,
-                error = painterResource(RCommon.drawable.ic_person_placeholder),
+                error = painterResource(R.drawable.ic_person_placeholder),
                 modifier = Modifier
                     .fillMaxSize()
                     .border(2.dp, Color.White, CircleShape)
@@ -292,7 +292,7 @@ private fun ProfileAvatar(
             )
         } else {
             Image(
-                painter = painterResource(RCommon.drawable.ic_person_placeholder),
+                painter = painterResource(R.drawable.ic_person_placeholder),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize()
@@ -303,7 +303,7 @@ private fun ProfileAvatar(
 
         if (profile?.isAnyVip == true) {
             Icon(
-                painter = painterResource(RCommon.drawable.ic_crown),
+                painter = painterResource(R.drawable.ic_crown),
                 contentDescription = null,
                 tint = Color.White,
                 modifier = Modifier

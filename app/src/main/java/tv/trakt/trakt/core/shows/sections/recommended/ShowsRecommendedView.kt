@@ -28,11 +28,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
-import tv.trakt.trakt.common.R
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
@@ -174,7 +174,7 @@ private fun ContentListItem(
         onClick = onClick,
         chipContent = {
             InfoChip(
-                text = stringResource(R.string.episodes_count, item.airedEpisodes),
+                text = stringResource(R.string.episodes_number, item.airedEpisodes),
             )
         },
         modifier = modifier,

@@ -2,8 +2,8 @@ package tv.trakt.trakt.app.helpers
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
-import tv.trakt.trakt.app.R
 import tv.trakt.trakt.common.ui.theme.colors.Red500
+import tv.trakt.trakt.resources.R
 
 enum class LiteRating(
     @param:DrawableRes val iconRes: Int,

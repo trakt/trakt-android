@@ -40,7 +40,6 @@ import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.common.model.ExternalRating
 import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.core.details.ui.PosterImage
@@ -53,7 +52,7 @@ import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.common.model.Images.Size.MEDIUM
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.theme.colors.Red500
-import tv.trakt.trakt.common.R as RCommon
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun EpisodeHeader(
@@ -144,7 +143,7 @@ internal fun EpisodeHeader(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Icon(
-                        painter = painterResource(RCommon.drawable.ic_shows_off),
+                        painter = painterResource(R.drawable.ic_shows_off),
                         contentDescription = "Genres",
                         tint = TraktTheme.colors.textSecondary,
                         modifier = Modifier.size(18.dp),

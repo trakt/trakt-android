@@ -52,7 +52,6 @@ import com.lightspark.composeqr.QrCodeView
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.app.BuildConfig
 import tv.trakt.trakt.app.LocalSnackbarState
-import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.buttons.PrimaryButton
 import tv.trakt.trakt.app.core.auth.AuthState.LoadingState.LOADING
@@ -62,7 +61,7 @@ import tv.trakt.trakt.app.core.auth.model.AuthDeviceCode
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.common.R as RCommon
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun AuthScreen(
@@ -193,7 +192,7 @@ private fun DeviceCodeRejected(
         )
 
         PrimaryButton(
-            text = stringResource(RCommon.string.retry),
+            text = stringResource(R.string.retry),
             onClick = onRetryClick,
             modifier = Modifier
                 .width(180.dp)

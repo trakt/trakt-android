@@ -14,7 +14,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Text
-import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.show.models.ShowSeasons
@@ -23,7 +22,7 @@ import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.Images.Size.MEDIUM
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.common.R as RCommon
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun ShowSeasonsList(
@@ -92,7 +91,7 @@ internal fun ShowSeasonsList(
 
                             item.episodeCount?.let {
                                 Text(
-                                    text = stringResource(RCommon.string.episodes_count, it),
+                                    text = stringResource(R.string.episodes_number, it),
                                     style = TraktTheme.typography.cardSubtitle,
                                     color = TraktTheme.colors.textSecondary,
                                     maxLines = 1,

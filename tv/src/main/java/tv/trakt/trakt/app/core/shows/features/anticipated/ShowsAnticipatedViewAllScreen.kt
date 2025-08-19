@@ -45,6 +45,7 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun ShowsAnticipatedScreen(
@@ -106,7 +107,7 @@ private fun ShowsAnticipatedContent(
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
-                    text = stringResource(tv.trakt.trakt.common.R.string.header_most_anticipated),
+                    text = stringResource(R.string.header_most_anticipated),
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.heading4,
                     overflow = TextOverflow.Ellipsis,
@@ -145,7 +146,7 @@ private fun ShowsAnticipatedContent(
                         chipContent = {
                             InfoChip(
                                 text = stringResource(
-                                    tv.trakt.trakt.common.R.string.people_eager,
+                                    R.string.people_eager,
                                     anticipatedShow.listCount.thousandsFormat(),
                                 ),
                             )

@@ -31,8 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.tv.material3.Text
 import kotlinx.coroutines.delay
-import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun SplashScreen(onDismiss: () -> Unit) {

@@ -39,11 +39,11 @@ import tv.trakt.trakt.app.core.shows.ShowsConfig.SHOWS_PAGE_LIMIT
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.helpers.preview.PreviewData
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.R
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun ShowsPopularScreen(
@@ -144,7 +144,7 @@ private fun ShowsPopularContent(
                         chipContent = {
                             InfoChip(
                                 text = stringResource(
-                                    R.string.episodes_count,
+                                    R.string.episodes_number,
                                     show.airedEpisodes,
                                 ),
                                 modifier = Modifier.padding(end = 8.dp),

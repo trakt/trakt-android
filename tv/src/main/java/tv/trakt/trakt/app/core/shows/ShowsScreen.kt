@@ -47,7 +47,7 @@ import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.R as RCommon
+import tv.trakt.trakt.resources.R
 
 private val sections = listOf(
     "initial",
@@ -137,7 +137,7 @@ private fun ShowsScreenContent(
             ) {
                 item {
                     TrendingShowsList(
-                        header = stringResource(RCommon.string.header_trending),
+                        header = stringResource(R.string.header_trending),
                         shows = state.trendingShows,
                         isLoading = state.isLoading,
                         onViewAllClick = onViewAllTrendingClick,
@@ -155,7 +155,7 @@ private fun ShowsScreenContent(
 
                 item {
                     AnticipatedShowsList(
-                        header = stringResource(RCommon.string.header_most_anticipated),
+                        header = stringResource(R.string.header_most_anticipated),
                         shows = state.anticipatedShows,
                         isLoading = state.isLoading,
                         onViewAllClick = onViewAllAnticipatedClick,
@@ -172,7 +172,7 @@ private fun ShowsScreenContent(
 
                 item {
                     PopularShowsList(
-                        header = stringResource(RCommon.string.header_most_popular),
+                        header = stringResource(R.string.header_most_popular),
                         shows = state.popularShows,
                         isLoading = state.isLoading,
                         onViewAllClick = onViewAllPopularClick,
@@ -190,7 +190,7 @@ private fun ShowsScreenContent(
                 if (state.recommendedShows != null) {
                     item {
                         RecommendedShowsList(
-                            header = stringResource(RCommon.string.header_recommended),
+                            header = stringResource(R.string.header_recommended),
                             shows = state.recommendedShows,
                             isLoading = state.isLoading,
                             onViewAllClick = onViewAllRecommendedClick,
@@ -273,7 +273,7 @@ private fun TrendingShowsList(
                         paletteColor = show.colors?.colors?.second,
                         footerContent = {
                             InfoChip(
-                                text = stringResource(RCommon.string.people_watching, watchers.thousandsFormat()),
+                                text = stringResource(R.string.people_watching, watchers.thousandsFormat()),
                                 modifier = Modifier,
                             )
                         },
@@ -344,7 +344,7 @@ private fun RecommendedShowsList(
                         paletteColor = show.colors?.colors?.second,
                         footerContent = {
                             InfoChip(
-                                text = stringResource(RCommon.string.episodes_count, show.airedEpisodes),
+                                text = stringResource(R.string.episodes_number, show.airedEpisodes),
                             )
                         },
                         modifier = Modifier.onFocusChanged {
@@ -414,7 +414,7 @@ private fun AnticipatedShowsList(
                         paletteColor = show.colors?.colors?.second,
                         footerContent = {
                             InfoChip(
-                                text = stringResource(RCommon.string.people_eager, listCount.thousandsFormat()),
+                                text = stringResource(R.string.people_eager, listCount.thousandsFormat()),
                             )
                         },
                         modifier = Modifier.onFocusChanged {
@@ -481,7 +481,7 @@ private fun PopularShowsList(
                         paletteColor = show.colors?.colors?.second,
                         footerContent = {
                             InfoChip(
-                                text = stringResource(RCommon.string.episodes_count, show.airedEpisodes),
+                                text = stringResource(R.string.episodes_number, show.airedEpisodes),
                             )
                         },
                         modifier = Modifier.onFocusChanged {

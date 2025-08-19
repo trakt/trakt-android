@@ -49,7 +49,7 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.R as RCommon
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun VerticalMediaCard(
@@ -111,7 +111,7 @@ internal fun VerticalMediaCard(
                         )
                     } else {
                         Image(
-                            painter = painterResource(RCommon.drawable.ic_placeholder_vertical_border),
+                            painter = painterResource(R.drawable.ic_placeholder_vertical_border),
                             contentDescription = title,
                             contentScale = ContentScale.Fit,
                             colorFilter = ColorFilter.tint(TraktTheme.colors.placeholderContent),
@@ -120,7 +120,7 @@ internal fun VerticalMediaCard(
                                 .align(Alignment.Center),
                         )
                         Icon(
-                            painter = painterResource(RCommon.drawable.ic_placeholder_trakt),
+                            painter = painterResource(R.drawable.ic_placeholder_trakt),
                             contentDescription = title,
                             tint = TraktTheme.colors.placeholderContent,
                             modifier = Modifier
@@ -213,7 +213,7 @@ private fun PosterPreviewChipPlaceholder() {
             chipContent = {
                 InfoChip(
                     text = "Test",
-                    iconPainter = painterResource(RCommon.drawable.ic_clock),
+                    iconPainter = painterResource(R.drawable.ic_clock),
                 )
             },
         )

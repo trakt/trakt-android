@@ -26,3 +26,4 @@ rootProject.name = "Trakt"
 include(":app")
 include(":tv")
 include(":common")
+include(":resources")

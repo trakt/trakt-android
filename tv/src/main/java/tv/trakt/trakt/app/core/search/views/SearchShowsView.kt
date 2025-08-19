@@ -31,7 +31,7 @@ import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.common.R as RCommon
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun SearchShowsView(
@@ -113,7 +113,7 @@ private fun ContentList(
                 onClick = { onClick(item) },
                 footerContent = {
                     InfoChip(
-                        text = stringResource(RCommon.string.episodes_count, item.airedEpisodes),
+                        text = stringResource(R.string.episodes_number, item.airedEpisodes),
                     )
                 },
                 modifier = Modifier

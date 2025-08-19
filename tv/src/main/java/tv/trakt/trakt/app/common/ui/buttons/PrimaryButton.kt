@@ -26,7 +26,7 @@ import androidx.tv.material3.ButtonDefaults
 import androidx.tv.material3.Text
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.common.R as RCommon
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun PrimaryButton(
@@ -137,7 +137,7 @@ private fun Preview2() {
     TraktTheme {
         PrimaryButton(
             text = "Short",
-            icon = painterResource(id = RCommon.drawable.ic_check),
+            icon = painterResource(id = R.drawable.ic_check),
         )
     }
 }
@@ -148,7 +148,7 @@ private fun PreviewIcon() {
     TraktTheme {
         PrimaryButton(
             text = "Mark as something long",
-            icon = painterResource(id = RCommon.drawable.ic_check),
+            icon = painterResource(id = R.drawable.ic_check),
         )
     }
 }

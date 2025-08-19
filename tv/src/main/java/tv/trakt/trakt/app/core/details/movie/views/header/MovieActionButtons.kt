@@ -15,7 +15,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.common.ui.buttons.PrimaryButton
 import tv.trakt.trakt.app.common.ui.buttons.WatchNowButton
 import tv.trakt.trakt.app.core.details.movie.MovieDetailsState.CollectionState
@@ -26,7 +25,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Blue50
 import tv.trakt.trakt.common.ui.theme.colors.Blue500
 import tv.trakt.trakt.common.ui.theme.colors.Purple50
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
-import tv.trakt.trakt.common.R as RCommon
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun MovieActionButtons(
@@ -83,7 +82,7 @@ internal fun MovieActionButtons(
         val isHistory = remember(collectionState.isHistory) { collectionState.isHistory }
         PrimaryButton(
             text = stringResource(if (isHistory) R.string.add_watched_again else R.string.add_watched),
-            icon = painterResource(if (isHistory) RCommon.drawable.ic_check_double else RCommon.drawable.ic_check),
+            icon = painterResource(if (isHistory) R.drawable.ic_check_double else R.drawable.ic_check),
             onClick = onHistoryClick,
             containerColor = if (isHistory) Purple500 else Purple50,
             contentColor = if (isHistory) Color.White else Purple500,

@@ -40,12 +40,12 @@ import tv.trakt.trakt.app.core.movies.model.AnticipatedMovie
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.helpers.preview.PreviewData
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.R
 import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun MoviesAnticipatedScreen(

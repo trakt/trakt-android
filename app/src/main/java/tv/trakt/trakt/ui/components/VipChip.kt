@@ -19,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import tv.trakt.trakt.common.R
+import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -53,7 +53,7 @@ internal fun VipChip(
         )
 
         Text(
-            text = stringResource(R.string.get_vip).uppercase(),
+            text = stringResource(R.string.header_vip).uppercase(),
             style = TraktTheme.typography.buttonPrimary,
             color = TraktTheme.colors.chipContent,
             maxLines = 1,

@@ -53,7 +53,6 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import tv.trakt.trakt.app.LocalDrawerVisibility
 import tv.trakt.trakt.app.LocalSnackbarState
-import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.common.model.CastPerson
 import tv.trakt.trakt.app.common.model.Comment
 import tv.trakt.trakt.app.common.model.Person
@@ -75,6 +74,7 @@ import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.resources.R
 import kotlin.math.roundToInt
 
 private val sections = listOf(

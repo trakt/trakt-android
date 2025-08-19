@@ -18,8 +18,8 @@ import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.R
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun EpisodeRelatedList(
@@ -63,7 +63,7 @@ internal fun EpisodeRelatedList(
                         val episodes = show.airedEpisodes
                         if (episodes > 0) {
                             InfoChip(
-                                text = stringResource(R.string.episodes_count, show.airedEpisodes),
+                                text = stringResource(R.string.episodes_number, show.airedEpisodes),
                                 modifier = Modifier.padding(end = 8.dp),
                             )
                         }

@@ -43,13 +43,13 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
-import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.common.model.Comment
 import tv.trakt.trakt.app.common.ui.TvVipChip
 import tv.trakt.trakt.app.helpers.longDateTimeFormat
 import tv.trakt.trakt.app.helpers.preview.PreviewData
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun CommentCard(
@@ -146,14 +146,14 @@ private fun CommentHeader(
                     model = avatar,
                     contentDescription = "User avatar",
                     contentScale = ContentScale.Crop,
-                    error = painterResource(tv.trakt.trakt.common.R.drawable.ic_person_placeholder),
+                    error = painterResource(R.drawable.ic_person_placeholder),
                     modifier = Modifier
                         .border(2.dp, avatarBorder, CircleShape)
                         .clip(CircleShape),
                 )
             } else {
                 Image(
-                    painter = painterResource(tv.trakt.trakt.common.R.drawable.ic_person_placeholder),
+                    painter = painterResource(R.drawable.ic_person_placeholder),
                     contentDescription = null,
                     modifier = Modifier
                         .border(2.dp, avatarBorder, CircleShape)

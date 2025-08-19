@@ -7,7 +7,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import tv.trakt.trakt.common.R
+import tv.trakt.trakt.resources.R
 
 private val SplineFamily = FontFamily(
     Font(R.font.spline_sans_light, FontWeight.W300),

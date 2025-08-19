@@ -53,8 +53,8 @@ import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.resources.R
 import kotlin.time.Duration.Companion.seconds
 
 class TvPlayerActivity : ComponentActivity() {

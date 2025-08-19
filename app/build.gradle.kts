@@ -71,6 +71,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":resources"))
     implementation(project(":common"))
     implementation(project(":tv"))
 

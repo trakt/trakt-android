@@ -31,10 +31,10 @@ import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.helpers.preview.PreviewData
+import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.BackdropImage
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
-import tv.trakt.trakt.common.R as RCommon
 
 @Composable
 internal fun ProfileScreen(
@@ -83,7 +83,7 @@ private fun ProfileScreenContent(
                 .onClick(onBackClick),
         ) {
             Icon(
-                painter = painterResource(RCommon.drawable.ic_back_arrow),
+                painter = painterResource(R.drawable.ic_back_arrow),
                 tint = Color.White,
                 contentDescription = "Back",
                 modifier = Modifier
@@ -92,7 +92,7 @@ private fun ProfileScreenContent(
                     ),
             )
             Text(
-                text = stringResource(RCommon.string.header_profile_title),
+                text = stringResource(R.string.header_profile_title),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading5,
             )
@@ -115,7 +115,7 @@ private fun ProfileScreenContent(
                         .padding(bottom = 16.dp),
                 ) {
                     Text(
-                        text = stringResource(RCommon.string.header_hello, headerName ?: ""),
+                        text = stringResource(R.string.header_hello, headerName ?: ""),
                         color = TraktTheme.colors.textPrimary,
                         style = TraktTheme.typography.heading4,
                     )
@@ -133,7 +133,7 @@ private fun ProfileScreenContent(
                 PrimaryButton(
                     enabled = !state.loading.isLoading,
                     loading = state.loading.isLoading,
-                    text = stringResource(RCommon.string.log_in),
+                    text = stringResource(R.string.log_in),
                     onClick = {
                         uriHandler.openUri(ConfigAuth.authCodeUrl)
                     },
@@ -142,7 +142,7 @@ private fun ProfileScreenContent(
                 PrimaryButton(
                     enabled = !state.loading.isLoading,
                     loading = state.loading.isLoading,
-                    text = stringResource(RCommon.string.log_out),
+                    text = stringResource(R.string.log_out),
                     onClick = onLogoutClick,
                 )
             }

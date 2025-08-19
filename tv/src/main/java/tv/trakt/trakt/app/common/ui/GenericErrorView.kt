@@ -20,8 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
-import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun GenericErrorView(

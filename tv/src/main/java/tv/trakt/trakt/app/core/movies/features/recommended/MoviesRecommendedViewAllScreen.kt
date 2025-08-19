@@ -104,7 +104,7 @@ private fun MoviesRecommendedContent(
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
-                    text = stringResource(tv.trakt.trakt.common.R.string.header_recommended),
+                    text = stringResource(tv.trakt.trakt.resources.R.string.header_recommended),
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.heading4,
                     overflow = TextOverflow.Ellipsis,

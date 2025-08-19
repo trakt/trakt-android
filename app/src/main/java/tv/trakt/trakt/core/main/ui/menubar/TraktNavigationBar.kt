@@ -20,8 +20,8 @@ import tv.trakt.trakt.core.main.model.NavigationItem
 import tv.trakt.trakt.core.movies.navigation.MoviesDestination
 import tv.trakt.trakt.core.search.navigation.SearchDestination
 import tv.trakt.trakt.core.shows.navigation.ShowsDestination
+import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
-import tv.trakt.trakt.common.R as RCommon
 
 @Composable
 internal fun TraktNavigationBar(
@@ -74,32 +74,32 @@ internal fun TraktNavigationBar(
 private val navigationItems = listOf(
     NavigationItem(
         destination = HomeDestination,
-        label = RCommon.string.home,
-        iconOn = RCommon.drawable.ic_home_on,
-        iconOff = RCommon.drawable.ic_home_off,
+        label = R.string.home,
+        iconOn = R.drawable.ic_home_on,
+        iconOff = R.drawable.ic_home_off,
     ),
     NavigationItem(
         destination = ShowsDestination,
-        label = RCommon.string.shows,
-        iconOn = RCommon.drawable.ic_shows_on,
-        iconOff = RCommon.drawable.ic_shows_off,
+        label = R.string.shows,
+        iconOn = R.drawable.ic_shows_on,
+        iconOff = R.drawable.ic_shows_off,
     ),
     NavigationItem(
         destination = MoviesDestination,
-        label = RCommon.string.movies,
-        iconOn = RCommon.drawable.ic_movies_on,
-        iconOff = RCommon.drawable.ic_movies_off,
+        label = R.string.movies,
+        iconOn = R.drawable.ic_movies_on,
+        iconOff = R.drawable.ic_movies_off,
     ),
     NavigationItem(
         destination = ListsDestination,
-        label = RCommon.string.lists,
-        iconOn = RCommon.drawable.ic_lists_on,
-        iconOff = RCommon.drawable.ic_lists_off,
+        label = R.string.lists,
+        iconOn = R.drawable.ic_lists_on,
+        iconOff = R.drawable.ic_lists_off,
     ),
     NavigationItem(
         destination = SearchDestination,
-        label = RCommon.string.search,
-        iconOn = RCommon.drawable.ic_search,
-        iconOff = RCommon.drawable.ic_search,
+        label = R.string.search,
+        iconOn = R.drawable.ic_search,
+        iconOff = R.drawable.ic_search,
     ),
 )

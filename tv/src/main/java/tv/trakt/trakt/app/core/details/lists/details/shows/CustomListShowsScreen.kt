@@ -43,7 +43,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.common.R as RCommon
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun CustomListShowsScreen(
@@ -143,7 +143,7 @@ private fun CustomListShowsContent(
                             val episodes = show.airedEpisodes
                             if (episodes > 0) {
                                 InfoChip(
-                                    text = stringResource(RCommon.string.episodes_count, show.airedEpisodes),
+                                    text = stringResource(R.string.episodes_number, show.airedEpisodes),
                                     modifier = Modifier.padding(end = 8.dp),
                                 )
                             }

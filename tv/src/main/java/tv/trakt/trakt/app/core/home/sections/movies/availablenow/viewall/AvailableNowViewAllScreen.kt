@@ -31,7 +31,6 @@ import androidx.lifecycle.Lifecycle.Event.ON_CREATE
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
-import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
@@ -45,6 +44,7 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun AvailableNowViewAllScreen(

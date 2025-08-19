@@ -41,9 +41,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import tv.trakt.trakt.common.Config
-import tv.trakt.trakt.common.R
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.VipChip
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme

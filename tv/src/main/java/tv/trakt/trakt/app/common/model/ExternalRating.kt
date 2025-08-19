@@ -1,7 +1,7 @@
 package tv.trakt.trakt.app.common.model
 
 import androidx.compose.runtime.Immutable
-import tv.trakt.trakt.app.R
+import tv.trakt.trakt.resources.R
 import java.util.Locale.ROOT
 
 @Immutable

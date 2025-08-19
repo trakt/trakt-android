@@ -104,7 +104,7 @@ private fun MoviesPopularContent(
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
-                    text = stringResource(tv.trakt.trakt.common.R.string.header_most_popular),
+                    text = stringResource(tv.trakt.trakt.resources.R.string.header_most_popular),
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.heading4,
                     overflow = TextOverflow.Ellipsis,

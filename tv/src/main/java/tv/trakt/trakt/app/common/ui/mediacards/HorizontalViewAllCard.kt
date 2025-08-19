@@ -23,11 +23,10 @@ import androidx.tv.material3.Border
 import androidx.tv.material3.Card
 import androidx.tv.material3.CardDefaults
 import androidx.tv.material3.Text
-import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.ui.theme.colors.Purple300
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
-import tv.trakt.trakt.common.R as RCommon
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun HorizontalViewAllCard(
@@ -84,7 +83,7 @@ internal fun HorizontalViewAllCard(
         )
 
         Text(
-            text = stringResource(RCommon.string.view_all).uppercase(),
+            text = stringResource(R.string.view_all).uppercase(),
             style = TraktTheme.typography.buttonPrimary,
             color = TraktTheme.colors.textPrimary,
             maxLines = 1,

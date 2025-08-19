@@ -56,7 +56,6 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.ImmutableList
 import org.koin.androidx.compose.koinViewModel
-import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.common.model.Comment
 import tv.trakt.trakt.app.common.ui.TvVipChip
 import tv.trakt.trakt.app.core.comments.ui.CommentReplyCard
@@ -66,6 +65,7 @@ import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun CommentDetailsDialog(
@@ -219,14 +219,14 @@ private fun CommentHeader(
                     model = avatar,
                     contentDescription = "User avatar",
                     contentScale = ContentScale.Crop,
-                    error = painterResource(tv.trakt.trakt.common.R.drawable.ic_person_placeholder),
+                    error = painterResource(R.drawable.ic_person_placeholder),
                     modifier = Modifier
                         .border(2.dp, avatarBorder, CircleShape)
                         .clip(CircleShape),
                 )
             } else {
                 Image(
-                    painter = painterResource(tv.trakt.trakt.common.R.drawable.ic_person_placeholder),
+                    painter = painterResource(R.drawable.ic_person_placeholder),
                     contentDescription = null,
                     modifier = Modifier
                         .border(2.dp, avatarBorder, CircleShape)

@@ -54,7 +54,6 @@ import androidx.tv.material3.DrawerValue.Open
 import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
 import coil3.compose.AsyncImage
-import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.core.auth.navigation.AuthDestination
 import tv.trakt.trakt.app.core.home.navigation.HomeDestination
 import tv.trakt.trakt.app.core.lists.navigation.ListsDestination
@@ -68,8 +67,8 @@ import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.theme.colors.Purple50
+import tv.trakt.trakt.resources.R
 import kotlin.math.max
-import tv.trakt.trakt.common.R as RCommon
 
 @Composable
 internal fun NavigationDrawerContent(
@@ -280,14 +279,14 @@ private fun NavigationProfileItem(
                     model = profile.images?.avatar?.full,
                     contentDescription = "User avatar",
                     contentScale = ContentScale.Crop,
-                    error = painterResource(RCommon.drawable.ic_person_placeholder),
+                    error = painterResource(R.drawable.ic_person_placeholder),
                     modifier = Modifier
                         .border(2.dp, Color.White, CircleShape)
                         .clip(CircleShape),
                 )
             } else {
                 Image(
-                    painter = painterResource(RCommon.drawable.ic_person_placeholder),
+                    painter = painterResource(R.drawable.ic_person_placeholder),
                     contentDescription = null,
                     modifier = Modifier
                         .border(2.dp, Color.White, CircleShape)
@@ -297,7 +296,7 @@ private fun NavigationProfileItem(
 
             if (profile?.isAnyVip == true) {
                 Icon(
-                    painter = painterResource(RCommon.drawable.ic_crown),
+                    painter = painterResource(R.drawable.ic_crown),
                     contentDescription = null,
                     tint = Color.White,
                     modifier = Modifier
@@ -320,7 +319,7 @@ private fun NavigationProfileItem(
 
         if (isOpen) {
             val profileText = if (profile == null) {
-                stringResource(RCommon.string.join_trakt)
+                stringResource(R.string.join_trakt)
             } else {
                 stringResource(R.string.view_profile)
             }
@@ -397,32 +396,32 @@ private fun Preview() {
 private val drawerItems = listOf(
     TraktDrawerItem(
         destination = SearchDestination,
-        label = RCommon.string.search,
-        iconOn = RCommon.drawable.ic_search,
-        iconOff = RCommon.drawable.ic_search,
+        label = R.string.search,
+        iconOn = R.drawable.ic_search,
+        iconOff = R.drawable.ic_search,
     ),
     TraktDrawerItem(
         destination = HomeDestination,
-        label = RCommon.string.home,
-        iconOn = RCommon.drawable.ic_home_on,
-        iconOff = RCommon.drawable.ic_home_off,
+        label = R.string.home,
+        iconOn = R.drawable.ic_home_on,
+        iconOff = R.drawable.ic_home_off,
     ),
     TraktDrawerItem(
         destination = ShowsDestination,
-        label = RCommon.string.shows,
-        iconOn = RCommon.drawable.ic_shows_on,
-        iconOff = RCommon.drawable.ic_shows_off,
+        label = R.string.shows,
+        iconOn = R.drawable.ic_shows_on,
+        iconOff = R.drawable.ic_shows_off,
     ),
     TraktDrawerItem(
         destination = MoviesDestination,
-        label = RCommon.string.movies,
-        iconOn = RCommon.drawable.ic_movies_on,
-        iconOff = RCommon.drawable.ic_movies_off,
+        label = R.string.movies,
+        iconOn = R.drawable.ic_movies_on,
+        iconOff = R.drawable.ic_movies_off,
     ),
     TraktDrawerItem(
         destination = ListsDestination,
-        label = RCommon.string.lists,
-        iconOn = RCommon.drawable.ic_lists_on,
-        iconOff = RCommon.drawable.ic_lists_off,
+        label = R.string.lists,
+        iconOn = R.drawable.ic_lists_on,
+        iconOff = R.drawable.ic_lists_off,
     ),
 )

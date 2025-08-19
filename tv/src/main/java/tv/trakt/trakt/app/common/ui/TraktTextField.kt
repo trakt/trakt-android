@@ -34,7 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.common.R as RCommon
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun TraktTextField(
@@ -142,7 +142,7 @@ private fun Preview() {
 private fun Preview2() {
     TraktTheme {
         TraktTextField(
-            icon = painterResource(RCommon.drawable.ic_search),
+            icon = painterResource(R.drawable.ic_search),
             placeholder = "Search...",
             modifier = Modifier.padding(16.dp),
         )
@@ -158,7 +158,7 @@ private fun Preview2() {
 private fun Preview3() {
     TraktTheme {
         TraktTextField(
-            icon = painterResource(RCommon.drawable.ic_search),
+            icon = painterResource(R.drawable.ic_search),
             placeholder = "Search...",
             loading = true,
             modifier = Modifier.padding(16.dp),

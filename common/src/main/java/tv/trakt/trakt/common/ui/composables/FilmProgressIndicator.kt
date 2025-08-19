@@ -14,8 +14,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import tv.trakt.trakt.common.R
 import tv.trakt.trakt.common.ui.theme.colors.Shade300
+import tv.trakt.trakt.resources.R
 
 @Composable
 fun FilmProgressIndicator(

@@ -51,6 +51,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":resources"))
+
     implementation(libs.androidx.navigation)
     implementation(libs.androidx.datastore)
 

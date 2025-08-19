@@ -39,13 +39,13 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
-import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.common.model.CustomList
 import tv.trakt.trakt.app.common.model.CustomList.Type
 import tv.trakt.trakt.app.common.ui.TvVipChip
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.helpers.preview.PreviewData
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun CustomListCard(
@@ -177,7 +177,7 @@ private fun CustomListHeader(
                     model = avatar,
                     contentDescription = "User avatar",
                     contentScale = ContentScale.Crop,
-                    error = painterResource(tv.trakt.trakt.common.R.drawable.ic_person_placeholder),
+                    error = painterResource(R.drawable.ic_person_placeholder),
                     modifier =
                         Modifier
                             .border(2.dp, avatarBorder, CircleShape)
@@ -185,7 +185,7 @@ private fun CustomListHeader(
                 )
             } else {
                 Image(
-                    painter = painterResource(tv.trakt.trakt.common.R.drawable.ic_person_placeholder),
+                    painter = painterResource(R.drawable.ic_person_placeholder),
                     contentDescription = null,
                     modifier =
                         Modifier

@@ -19,13 +19,13 @@ import androidx.tv.material3.CardDefaults
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.app.R
 import tv.trakt.trakt.app.common.model.CustomList
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.common.ui.mediacards.CustomListSkeletonCard
 import tv.trakt.trakt.app.core.details.lists.CustomListCard
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun ListsPersonalView(
@@ -47,7 +47,7 @@ internal fun ListsPersonalView(
             .focusRequester(focusRequesters.getValue("personal")),
     ) {
         Text(
-            text = stringResource(tv.trakt.trakt.common.R.string.header_personal_lists),
+            text = stringResource(tv.trakt.trakt.resources.R.string.header_personal_lists),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.heading5,
             modifier = Modifier.padding(contentPadding),
