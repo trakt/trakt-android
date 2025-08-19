@@ -1,7 +1,11 @@
 package tv.trakt.trakt.app.core.profile.data.remote
 
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.networking.CalendarShowDto
+import tv.trakt.trakt.common.networking.ListDto
+import tv.trakt.trakt.common.networking.ListMovieItemDto
+import tv.trakt.trakt.common.networking.ListShowItemDto
 import tv.trakt.trakt.common.networking.SyncFavoriteMovieDto
 import tv.trakt.trakt.common.networking.SyncFavoriteShowDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
@@ -35,4 +39,20 @@ internal interface ProfileRemoteDataSource {
         page: Int = 1,
         limit: Int,
     ): List<SyncFavoriteMovieDto>
+
+    suspend fun getUserLists(): List<ListDto>
+
+    suspend fun getUserShowListItems(
+        listId: TraktId,
+        limit: Int,
+        page: Int = 1,
+        extended: String,
+    ): List<ListShowItemDto>
+
+    suspend fun getUserMovieListItems(
+        listId: TraktId,
+        limit: Int,
+        page: Int = 1,
+        extended: String,
+    ): List<ListMovieItemDto>
 }

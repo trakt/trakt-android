@@ -11,7 +11,7 @@ import tv.trakt.trakt.common.model.TraktId
 @Serializable
 internal data object WatchlistMoviesDestination
 
-internal fun NavGraphBuilder.watchlistMovies(onNavigateToMovie: (TraktId) -> Unit) {
+internal fun NavGraphBuilder.watchlistMoviesScreen(onNavigateToMovie: (TraktId) -> Unit) {
     composable<WatchlistMoviesDestination> {
         MoviesWatchlistScreen(
             viewModel = koinViewModel(),

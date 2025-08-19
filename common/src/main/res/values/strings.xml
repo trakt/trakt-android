@@ -27,4 +27,5 @@
     <string name="header_most_popular">Most Popular</string>
     <string name="header_most_anticipated">Most Anticipated</string>
     <string name="header_recommended">Recommended</string>
+    <string name="header_personal_lists">Personal</string>
 </resources>

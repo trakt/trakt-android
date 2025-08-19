@@ -59,9 +59,11 @@ import tv.trakt.trakt.app.core.home.sections.movies.comingsoon.navigation.naviga
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.navigation.homeUpNextScreen
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.navigation.navigateToHomeUpNext
 import tv.trakt.trakt.app.core.lists.details.movies.navigation.navigateToWatchlistMovies
-import tv.trakt.trakt.app.core.lists.details.movies.navigation.watchlistMovies
+import tv.trakt.trakt.app.core.lists.details.movies.navigation.watchlistMoviesScreen
+import tv.trakt.trakt.app.core.lists.details.personal.navigation.navigateToPersonalList
+import tv.trakt.trakt.app.core.lists.details.personal.navigation.personalListScreen
 import tv.trakt.trakt.app.core.lists.details.shows.navigation.navigateToWatchlistShows
-import tv.trakt.trakt.app.core.lists.details.shows.navigation.watchlistShows
+import tv.trakt.trakt.app.core.lists.details.shows.navigation.watchlistShowsScreen
 import tv.trakt.trakt.app.core.lists.navigation.listsScreen
 import tv.trakt.trakt.app.core.main.navigation.navigateToMainDestination
 import tv.trakt.trakt.app.core.main.ui.drawer.NavigationDrawerContent
@@ -322,15 +324,20 @@ private fun MainNavHost(
                 onNavigateToMovie = { navigateToMovie(it) },
             )
             listsScreen(
+                onNavigateToList = { navigateToPersonalList(it) },
                 onNavigateToShow = { navigateToShow(it) },
                 onNavigateToMovie = { navigateToMovie(it) },
                 onNavigateToWatchlistShow = { navigateToWatchlistShows() },
                 onNavigateToWatchlistMovie = { navigateToWatchlistMovies() },
             )
-            watchlistMovies(
+            personalListScreen(
+                onNavigateToShow = { navigateToShow(it) },
                 onNavigateToMovie = { navigateToMovie(it) },
             )
-            watchlistShows(
+            watchlistMoviesScreen(
+                onNavigateToMovie = { navigateToMovie(it) },
+            )
+            watchlistShowsScreen(
                 onNavigateToShow = { navigateToShow(it) },
             )
             showDetailsScreen(

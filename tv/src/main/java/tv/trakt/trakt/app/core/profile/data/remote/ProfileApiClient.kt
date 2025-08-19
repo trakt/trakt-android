@@ -3,9 +3,13 @@ package tv.trakt.trakt.app.core.profile.data.remote
 import org.openapitools.client.apis.CalendarsApi
 import org.openapitools.client.apis.HistoryApi
 import org.openapitools.client.apis.UsersApi
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.networking.CalendarShowDto
+import tv.trakt.trakt.common.networking.ListDto
+import tv.trakt.trakt.common.networking.ListMovieItemDto
+import tv.trakt.trakt.common.networking.ListShowItemDto
 import tv.trakt.trakt.common.networking.SyncFavoriteMovieDto
 import tv.trakt.trakt.common.networking.SyncFavoriteShowDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
@@ -92,6 +96,62 @@ internal class ProfileApiClient(
             extended = "full,cloud9,colors",
             page = page,
             limit = limit,
+        )
+        return response.body()
+    }
+
+    override suspend fun getUserLists(): List<ListDto> {
+        val response = api.getUsersListsPersonal(
+            id = "me",
+            extended = "images",
+        )
+        return response.body()
+    }
+
+    override suspend fun getUserMovieListItems(
+        listId: TraktId,
+        limit: Int,
+        page: Int,
+        extended: String,
+    ): List<ListMovieItemDto> {
+        val response = api.getUsersListsListItemsMovie(
+            id = "me",
+            listId = listId.value.toString(),
+            limit = limit.toString(),
+            page = page,
+            extended = extended,
+            sortBy = null,
+            sortHow = null,
+            watchnow = null,
+            genres = null,
+            years = null,
+            ratings = null,
+            startDate = null,
+            endDate = null,
+        )
+        return response.body()
+    }
+
+    override suspend fun getUserShowListItems(
+        listId: TraktId,
+        limit: Int,
+        page: Int,
+        extended: String,
+    ): List<ListShowItemDto> {
+        val response = api.getUsersListsListItemsShow(
+            id = "me",
+            listId = listId.value.toString(),
+            limit = limit.toString(),
+            page = page,
+            extended = extended,
+            sortBy = null,
+            sortHow = null,
+            watchnow = null,
+            genres = null,
+            years = null,
+            ratings = null,
+            startDate = null,
+            endDate = null,
         )
         return response.body()
     }

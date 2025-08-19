@@ -4,8 +4,11 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import tv.trakt.trakt.app.core.lists.ListsViewModel
 import tv.trakt.trakt.app.core.lists.details.movies.MoviesWatchlistViewModel
+import tv.trakt.trakt.app.core.lists.details.personal.PersonalListViewModel
+import tv.trakt.trakt.app.core.lists.details.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.app.core.lists.details.shows.ShowsWatchlistViewModel
 import tv.trakt.trakt.app.core.lists.usecases.GetListsMoviesWatchlistUseCase
+import tv.trakt.trakt.app.core.lists.usecases.GetListsPersonalUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsShowsWatchlistUseCase
 
 internal val listsModule = module {
@@ -23,10 +26,25 @@ internal val listsModule = module {
         )
     }
 
+    factory {
+        GetListsPersonalUseCase(
+            remoteProfileSource = get(),
+        )
+    }
+
+    factory {
+        GetPersonalListItemsUseCase(
+            remoteSource = get(),
+            localShowSource = get(),
+            localMovieSource = get(),
+        )
+    }
+
     viewModel {
         ListsViewModel(
             getShowsWatchlistUseCase = get(),
             getMoviesWatchlistUseCase = get(),
+            getPersonalUseCase = get(),
             showsLocalSyncSource = get(),
             moviesLocalSyncSource = get(),
         )
@@ -40,6 +58,13 @@ internal val listsModule = module {
 
     viewModel {
         ShowsWatchlistViewModel(
+            getListItemsUseCase = get(),
+        )
+    }
+
+    viewModel {
+        PersonalListViewModel(
+            savedStateHandle = get(),
             getListItemsUseCase = get(),
         )
     }
