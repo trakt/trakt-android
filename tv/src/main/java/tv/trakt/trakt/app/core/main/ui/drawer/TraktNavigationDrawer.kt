@@ -320,7 +320,7 @@ private fun NavigationProfileItem(
 
         if (isOpen) {
             val profileText = if (profile == null) {
-                stringResource(RCommon.string.log_in)
+                stringResource(RCommon.string.join_trakt)
             } else {
                 stringResource(R.string.view_profile)
             }
