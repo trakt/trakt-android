@@ -5186,12 +5186,12 @@
                                         "nullable": true
                                       },
                                       "tmdb": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "nullable": true
                                       }
                                     },
                                     "required": [
-                                      "trakt",
-                                      "tmdb"
+                                      "trakt"
                                     ]
                                   },
                                   "aired_episodes": {
@@ -7856,12 +7856,12 @@
                                     "nullable": true
                                   },
                                   "tmdb": {
-                                    "type": "integer"
+                                    "type": "integer",
+                                    "nullable": true
                                   }
                                 },
                                 "required": [
-                                  "trakt",
-                                  "tmdb"
+                                  "trakt"
                                 ]
                               },
                               "aired_episodes": {
@@ -49831,12 +49831,12 @@
                                 "nullable": true
                               },
                               "tmdb": {
-                                "type": "integer"
+                                "type": "integer",
+                                "nullable": true
                               }
                             },
                             "required": [
-                              "trakt",
-                              "tmdb"
+                              "trakt"
                             ]
                           }
                         },
@@ -51161,12 +51161,12 @@
                             "nullable": true
                           },
                           "tmdb": {
-                            "type": "integer"
+                            "type": "integer",
+                            "nullable": true
                           }
                         },
                         "required": [
-                          "trakt",
-                          "tmdb"
+                          "trakt"
                         ]
                       },
                       "aired_episodes": {
@@ -56543,13 +56543,13 @@
                             "required": [
                               "title",
                               "ids"
-                            ]
+                            ],
+                            "nullable": true
                           }
                         },
                         "required": [
                           "score",
-                          "type",
-                          "movie"
+                          "type"
                         ]
                       },
                       {
@@ -56791,13 +56791,13 @@
                             "required": [
                               "title",
                               "ids"
-                            ]
+                            ],
+                            "nullable": true
                           }
                         },
                         "required": [
                           "score",
-                          "type",
-                          "show"
+                          "type"
                         ]
                       },
                       {
@@ -56926,13 +56926,13 @@
                             "required": [
                               "name",
                               "ids"
-                            ]
+                            ],
+                            "nullable": true
                           }
                         },
                         "required": [
                           "score",
-                          "type",
-                          "person"
+                          "type"
                         ]
                       }
                     ]
@@ -62310,29 +62310,26 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "reaction_count": {
-                        "type": "integer"
-                      },
-                      "user_count": {
-                        "type": "integer"
-                      },
-                      "distribution": {
-                        "type": "object",
-                        "additionalProperties": {
-                          "type": "integer"
-                        }
-                      }
+                  "type": "object",
+                  "properties": {
+                    "reaction_count": {
+                      "type": "integer"
                     },
-                    "required": [
-                      "reaction_count",
-                      "user_count",
-                      "distribution"
-                    ]
-                  }
+                    "user_count": {
+                      "type": "integer"
+                    },
+                    "distribution": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "integer"
+                      }
+                    }
+                  },
+                  "required": [
+                    "reaction_count",
+                    "user_count",
+                    "distribution"
+                  ]
                 }
               }
             }

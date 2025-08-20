@@ -12,6 +12,7 @@ import tv.trakt.trakt.common.helpers.serializers.ZonedDateTimeSerializer
 import tv.trakt.trakt.common.model.Show.Companion
 import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.ShowDto
+import tv.trakt.trakt.common.networking.ShowLikesDto
 import java.time.ZonedDateTime
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
@@ -65,6 +66,33 @@ fun Companion.fromDto(dto: ShowDto): Show {
 }
 
 fun Companion.fromDto(dto: RecommendedShowDto): Show {
+    return Show(
+        ids = Ids.fromDto(dto.ids),
+        title = dto.title,
+        overview = dto.overview,
+        year = dto.year,
+        released = dto.firstAired?.toZonedDateTime(),
+        genres = (dto.genres ?: listOf()).toImmutableList(),
+        images = dto.images?.let { Images.fromDto(it) },
+        colors = dto.colors?.poster?.let {
+            MediaColors(
+                Pair(
+                    Color(it.getOrElse(0) { "#00000000" }.toColorInt()),
+                    Color(it.getOrElse(1) { "#00000000" }.toColorInt()),
+                ),
+            )
+        },
+        certification = dto.certification,
+        rating = Rating(
+            rating = dto.rating ?: 0F,
+            votes = dto.votes ?: 0,
+        ),
+        runtime = dto.runtime?.minutes,
+        airedEpisodes = dto.airedEpisodes ?: 0,
+    )
+}
+
+fun Companion.fromDto(dto: ShowLikesDto): Show {
     return Show(
         ids = Ids.fromDto(dto.ids),
         title = dto.title,

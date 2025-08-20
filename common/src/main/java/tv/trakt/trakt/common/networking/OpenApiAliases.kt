@@ -16,19 +16,20 @@ import org.openapitools.client.models.GetMoviesWatchnow200ResponseValue
 import org.openapitools.client.models.GetMoviesWatchnow200ResponseValueCableInner
 import org.openapitools.client.models.GetPeopleMovies200Response
 import org.openapitools.client.models.GetPeopleShows200Response
+import org.openapitools.client.models.GetPeopleSummary200Response
 import org.openapitools.client.models.GetRecommendationsMoviesRecommend200ResponseInner
 import org.openapitools.client.models.GetRecommendationsShowsRecommend200ResponseInner
 import org.openapitools.client.models.GetSearchQuery200ResponseInner
-import org.openapitools.client.models.GetSearchQuery200ResponseInnerOneOf2Person
 import org.openapitools.client.models.GetSyncProgressUpNextStandard200ResponseInner
 import org.openapitools.client.models.GetSyncProgressUpNextStandard200ResponseInnerProgressLastEpisode
 import org.openapitools.client.models.GetUsersComments200ResponseInnerOneOf2Season
 import org.openapitools.client.models.GetUsersComments200ResponseInnerOneOfComment
 import org.openapitools.client.models.GetUsersFavoritesMovies200ResponseInner
 import org.openapitools.client.models.GetUsersFavoritesShows200ResponseInner
-import org.openapitools.client.models.GetUsersHistoryAll200ResponseInner
 import org.openapitools.client.models.GetUsersHistoryAll200ResponseInnerOneOf
 import org.openapitools.client.models.GetUsersHistoryAll200ResponseInnerOneOf1
+import org.openapitools.client.models.GetUsersLikesComments200ResponseInnerAllOfOneOf1Show
+import org.openapitools.client.models.GetUsersLikesComments200ResponseInnerAllOfOneOfMovie
 import org.openapitools.client.models.GetUsersListsPersonal200ResponseInner
 import org.openapitools.client.models.GetUsersReactionsComments200ResponseInnerCommentUser
 import org.openapitools.client.models.GetUsersSettings200Response
@@ -45,9 +46,11 @@ import org.openapitools.client.models.PostSyncHistoryAdd200Response
  */
 typealias ShowDto = GetCalendarsShows200ResponseInnerShow
 typealias ShowIdsDto = GetCalendarsShows200ResponseInnerShowIds
+typealias ShowLikesDto = GetUsersLikesComments200ResponseInnerAllOfOneOf1Show
 
 typealias MovieDto = GetCalendarsMovies200ResponseInnerMovie
 typealias MovieIdsDto = GetCalendarsMovies200ResponseInnerMovieIds
+typealias MovieLikesDto = GetUsersLikesComments200ResponseInnerAllOfOneOfMovie
 
 typealias EpisodeDto = GetCalendarsShows200ResponseInnerEpisode
 typealias LastEpisodeDto = GetSyncProgressUpNextStandard200ResponseInnerProgressLastEpisode
@@ -58,7 +61,7 @@ typealias ExtraVideoDto = GetMoviesVideos200ResponseInner
 typealias CastCrewDto = GetMoviesPeople200Response
 typealias ExternalRatingsDto = GetMoviesRatings200Response
 typealias PersonDto = GetMoviesPeople200ResponseCastInnerPerson
-typealias PersonDetailsDto = GetSearchQuery200ResponseInnerOneOf2Person
+typealias PersonDetailsDto = GetPeopleSummary200Response
 typealias PersonShowsDto = GetPeopleShows200Response
 typealias PersonMoviesDto = GetPeopleMovies200Response
 typealias CommentDto = GetUsersComments200ResponseInnerOneOfComment
@@ -81,7 +84,6 @@ typealias WatchedMovieDto = GetUsersWatchedMovies200ResponseInner
 typealias SyncAddHistoryResponseDto = PostSyncHistoryAdd200Response
 typealias SyncHistoryMovieItemDto = GetUsersHistoryAll200ResponseInnerOneOf
 typealias SyncHistoryEpisodeItemDto = GetUsersHistoryAll200ResponseInnerOneOf1
-typealias SyncHistoryAllItemDto = GetUsersHistoryAll200ResponseInner
 typealias SyncFavoriteShowDto = GetUsersFavoritesShows200ResponseInner
 typealias SyncFavoriteMovieDto = GetUsersFavoritesMovies200ResponseInner
 typealias RecommendedMovieDto = GetRecommendationsMoviesRecommend200ResponseInner
