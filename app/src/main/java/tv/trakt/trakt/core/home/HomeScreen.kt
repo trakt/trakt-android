@@ -37,7 +37,7 @@ private fun HomeScreenContent(
             .fillMaxSize(),
     ) {
         Text(
-            text = stringResource(R.string.home),
+            text = stringResource(R.string.page_title_home),
             color = TraktTheme.colors.textPrimary,
             fontSize = 24.sp,
             modifier = Modifier.align(Alignment.Center),

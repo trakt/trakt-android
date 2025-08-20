@@ -82,7 +82,7 @@ internal fun ProfileFavoriteShowsContent(
         modifier = modifier,
     ) {
         Text(
-            text = stringResource(R.string.header_favorite_shows),
+            text = stringResource(R.string.list_title_favorite_shows),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.heading5,
             modifier = Modifier.padding(headerPadding),
@@ -96,7 +96,7 @@ internal fun ProfileFavoriteShowsContent(
             }
             state.items?.isEmpty() == true -> {
                 Text(
-                    text = stringResource(R.string.info_generic_empty_list),
+                    text = stringResource(R.string.list_placeholder_empty),
                     color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.heading6,
                     modifier = Modifier.padding(headerPadding),
@@ -174,7 +174,7 @@ private fun ContentListItem(
         onClick = onClick,
         footerContent = {
             InfoChip(
-                text = stringResource(R.string.episodes_number, item.airedEpisodes),
+                text = stringResource(R.string.tag_text_number_of_episodes, item.airedEpisodes),
             )
         },
         modifier = Modifier

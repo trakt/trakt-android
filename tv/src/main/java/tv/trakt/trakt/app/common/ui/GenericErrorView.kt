@@ -49,13 +49,13 @@ internal fun GenericErrorView(
                 .focusable(),
         )
         Text(
-            text = stringResource(R.string.error_generic_title),
+            text = stringResource(R.string.page_title_unexpected_error),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.heading5,
             textAlign = TextAlign.Center,
         )
         Text(
-            text = stringResource(R.string.error_generic_message),
+            text = stringResource(R.string.error_text_unexpected_error_short),
             color = TraktTheme.colors.textSecondary,
             style = TraktTheme.typography.heading6,
             textAlign = TextAlign.Center,

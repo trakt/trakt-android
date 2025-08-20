@@ -232,9 +232,12 @@ internal fun ShowHeader(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         if (showCollection.episodesPlays > 0) {
-                            val episodes = remember(showCollection.episodesPlays) { showCollection.episodesPlays }
+                            val episodes = remember(showCollection.episodesPlays) {
+                                showCollection.episodesPlays
+                            }
+                            val watchCountText = stringResource(R.string.tag_text_watch_count)
                             InfoChip(
-                                text = stringResource(R.string.episodes_watched, episodes).uppercase(),
+                                text = "$watchCountText: $episodes".uppercase(),
                                 containerColor = TraktTheme.colors.accent,
                             )
                         }

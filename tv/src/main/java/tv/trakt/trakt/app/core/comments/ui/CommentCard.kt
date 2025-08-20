@@ -187,9 +187,9 @@ private fun CommentHeader(
                 Text(
                     text = stringResource(
                         if (comment.isReview) {
-                            R.string.comment_review_by
+                            R.string.text_review_by
                         } else {
-                            R.string.comment_shout_by
+                            R.string.text_shout_by
                         },
                     ),
                     style = TraktTheme.typography.paragraph,
@@ -240,7 +240,7 @@ private fun CommentFooter(
                 modifier = Modifier.size(16.dp),
             )
             Text(
-                text = stringResource(R.string.comment_likes, comment.likes).uppercase(),
+                text = stringResource(R.string.button_text_comment_likes, comment.likes).uppercase(),
                 style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
                 color = TraktTheme.colors.textSecondary,
             )
@@ -257,7 +257,7 @@ private fun CommentFooter(
                 modifier = Modifier.size(18.dp),
             )
             Text(
-                text = stringResource(R.string.comment_replies, comment.replies).uppercase(),
+                text = stringResource(R.string.button_text_comment_replies, comment.replies).uppercase(),
                 style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
                 color = TraktTheme.colors.textSecondary,
             )

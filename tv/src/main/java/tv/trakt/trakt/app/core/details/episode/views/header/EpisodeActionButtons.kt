@@ -43,9 +43,9 @@ internal fun EpisodeActionButtons(
 
         WatchNowButton(
             text = when {
-                loading || !directLink.isNullOrBlank() -> stringResource(R.string.stream_on)
-                streamingState.noServices -> stringResource(R.string.stream_no_services)
-                else -> stringResource(R.string.stream_more_options)
+                loading || !directLink.isNullOrBlank() -> stringResource(R.string.button_text_stream_on)
+                streamingState.noServices -> stringResource(R.string.button_text_no_services)
+                else -> stringResource(R.string.button_text_where_to_watch)
             },
             secondaryText = when {
                 !loading && directLink != null && streamingState.info != null -> {
@@ -74,7 +74,9 @@ internal fun EpisodeActionButtons(
 
         val isWatched = remember(historyState.episodes?.size) { historyState.episodesPlays > 0 }
         PrimaryButton(
-            text = stringResource(if (isWatched) R.string.add_watched_again else R.string.add_watched),
+            text = stringResource(
+                if (isWatched) R.string.button_text_watch_again else R.string.button_text_mark_as_watched,
+            ),
             icon = painterResource(if (isWatched) R.drawable.ic_check_double else R.drawable.ic_check),
             onClick = onHistoryClick,
             containerColor = if (!isWatched) Purple50 else Purple500,

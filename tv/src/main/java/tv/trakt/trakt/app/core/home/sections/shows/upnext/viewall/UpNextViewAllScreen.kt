@@ -124,7 +124,7 @@ private fun UpNextViewAllContent(
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
-                    text = stringResource(R.string.header_shows_up_next),
+                    text = stringResource(R.string.list_title_up_next),
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.heading4,
                     overflow = TextOverflow.Ellipsis,
@@ -183,7 +183,7 @@ private fun UpNextViewAllContent(
                                 }
 
                                 EpisodeProgressBar(
-                                    startText = stringResource(R.string.episodes_remaining, remainingEpisodes),
+                                    startText = stringResource(R.string.tag_text_remaining_episodes, remainingEpisodes),
                                     containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
                                     progress = remainingPercent,
                                 )

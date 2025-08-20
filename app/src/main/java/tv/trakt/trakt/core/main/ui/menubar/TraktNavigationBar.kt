@@ -74,31 +74,31 @@ internal fun TraktNavigationBar(
 private val navigationItems = listOf(
     NavigationItem(
         destination = HomeDestination,
-        label = R.string.home,
+        label = R.string.page_title_home,
         iconOn = R.drawable.ic_home_on,
         iconOff = R.drawable.ic_home_off,
     ),
     NavigationItem(
         destination = ShowsDestination,
-        label = R.string.shows,
+        label = R.string.page_title_shows,
         iconOn = R.drawable.ic_shows_on,
         iconOff = R.drawable.ic_shows_off,
     ),
     NavigationItem(
         destination = MoviesDestination,
-        label = R.string.movies,
+        label = R.string.page_title_movies,
         iconOn = R.drawable.ic_movies_on,
         iconOff = R.drawable.ic_movies_off,
     ),
     NavigationItem(
         destination = ListsDestination,
-        label = R.string.lists,
+        label = R.string.page_title_lists,
         iconOn = R.drawable.ic_lists_on,
         iconOff = R.drawable.ic_lists_off,
     ),
     NavigationItem(
         destination = SearchDestination,
-        label = R.string.search,
+        label = R.string.page_title_search,
         iconOn = R.drawable.ic_search,
         iconOff = R.drawable.ic_search,
     ),

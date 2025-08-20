@@ -105,7 +105,7 @@ private fun ShowsPopularContent(
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
-                    text = stringResource(R.string.header_most_popular),
+                    text = stringResource(R.string.list_title_most_popular),
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.heading4,
                     overflow = TextOverflow.Ellipsis,
@@ -144,7 +144,7 @@ private fun ShowsPopularContent(
                         chipContent = {
                             InfoChip(
                                 text = stringResource(
-                                    R.string.episodes_number,
+                                    R.string.tag_text_number_of_episodes,
                                     show.airedEpisodes,
                                 ),
                                 modifier = Modifier.padding(end = 8.dp),

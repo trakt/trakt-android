@@ -13,10 +13,6 @@ import tv.trakt.trakt.core.movies.sections.anticipated.MoviesAnticipatedViewMode
 import tv.trakt.trakt.core.movies.sections.anticipated.data.local.AnticipatedMoviesLocalDataSource
 import tv.trakt.trakt.core.movies.sections.anticipated.data.local.AnticipatedMoviesStorage
 import tv.trakt.trakt.core.movies.sections.anticipated.usecase.GetAnticipatedMoviesUseCase
-import tv.trakt.trakt.core.movies.sections.hot.MoviesHotViewModel
-import tv.trakt.trakt.core.movies.sections.hot.data.local.HotMoviesLocalDataSource
-import tv.trakt.trakt.core.movies.sections.hot.data.local.HotMoviesStorage
-import tv.trakt.trakt.core.movies.sections.hot.usecase.GetHotMoviesUseCase
 import tv.trakt.trakt.core.movies.sections.popular.MoviesPopularViewModel
 import tv.trakt.trakt.core.movies.sections.popular.data.local.PopularMoviesLocalDataSource
 import tv.trakt.trakt.core.movies.sections.popular.data.local.PopularMoviesStorage
@@ -51,10 +47,6 @@ internal val moviesDataModule = module {
         PopularMoviesStorage()
     }
 
-    single<HotMoviesLocalDataSource> {
-        HotMoviesStorage()
-    }
-
     single<AnticipatedMoviesLocalDataSource> {
         AnticipatedMoviesStorage()
     }
@@ -73,13 +65,6 @@ internal val moviesModule = module {
         GetTrendingMoviesUseCase(
             remoteSource = get(),
             localTrendingSource = get(),
-        )
-    }
-
-    factory {
-        GetHotMoviesUseCase(
-            remoteSource = get(),
-            localHotSource = get(),
         )
     }
 
@@ -113,12 +98,6 @@ internal val moviesModule = module {
     viewModel {
         MoviesTrendingViewModel(
             getTrendingUseCase = get(),
-        )
-    }
-
-    viewModel {
-        MoviesHotViewModel(
-            getHotUseCase = get(),
         )
     }
 

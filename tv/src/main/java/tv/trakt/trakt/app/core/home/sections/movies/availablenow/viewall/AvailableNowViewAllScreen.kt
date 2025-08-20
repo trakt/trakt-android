@@ -119,7 +119,7 @@ private fun AvailableNowViewAllContent(
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
-                    text = stringResource(R.string.header_movies_available_now),
+                    text = stringResource(R.string.list_title_available_now),
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.heading4,
                     overflow = TextOverflow.Ellipsis,

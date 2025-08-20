@@ -105,7 +105,7 @@ internal fun AllStreamingsContent(
                 .background(TraktTheme.colors.dialogContainer),
         ) {
             Text(
-                text = stringResource(R.string.stream_more_options),
+                text = stringResource(R.string.button_text_where_to_watch),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading4,
                 modifier = Modifier
@@ -128,7 +128,7 @@ internal fun AllStreamingsContent(
 
                 state.error == null && state.services?.values?.all { it.isEmpty() } == true -> {
                     Text(
-                        text = stringResource(R.string.stream_no_services),
+                        text = stringResource(R.string.button_text_no_services),
                         color = TraktTheme.colors.textSecondary,
                         style = TraktTheme.typography.heading6,
                         modifier = Modifier

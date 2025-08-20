@@ -306,7 +306,7 @@ internal class ShowDetailsViewModel(
                         noServices = streamingService.noServices,
                         info = when {
                             !tutorialsManager.get(WATCH_NOW_MORE) ->
-                                DynamicStringResource(R.string.info_watchnow_long_press)
+                                DynamicStringResource(R.string.button_text_long_press_for_more)
                             else -> null
                         },
                     )
@@ -387,7 +387,7 @@ internal class ShowDetailsViewModel(
                     )
                 }
 
-                showSnackMessage(DynamicStringResource(R.string.info_history_added))
+                showSnackMessage(DynamicStringResource(R.string.text_info_history_added))
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
@@ -411,13 +411,13 @@ internal class ShowDetailsViewModel(
                     showCollectionState.update {
                         it.copy(isWatchlist = false, isWatchlistLoading = false)
                     }
-                    showSnackMessage(DynamicStringResource(R.string.info_watchlist_removed))
+                    showSnackMessage(DynamicStringResource(R.string.text_info_watchlist_removed))
                 } else {
                     watchlistUseCase.addToWatchlist(show.showId.toTraktId())
                     showCollectionState.update {
                         it.copy(isWatchlist = true, isWatchlistLoading = false)
                     }
-                    showSnackMessage(DynamicStringResource(R.string.info_watchlist_added))
+                    showSnackMessage(DynamicStringResource(R.string.text_info_watchlist_added))
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {

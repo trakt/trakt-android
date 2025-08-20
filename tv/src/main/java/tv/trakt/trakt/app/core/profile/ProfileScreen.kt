@@ -172,9 +172,9 @@ private fun ProfileScreenContent(
                     Spacer(modifier = Modifier.weight(1f))
 
                     PrimaryButton(
-                        text = stringResource(R.string.log_out),
+                        text = stringResource(R.string.button_text_logout),
                         onClick = onLogoutClick,
-                        modifier = Modifier.widthIn(max = 128.dp),
+                        modifier = Modifier.widthIn(max = 172.dp),
                     )
                 }
             }
@@ -255,7 +255,7 @@ private fun ProfileHeader(
 
         Column {
             Text(
-                text = stringResource(R.string.header_hello, headerName ?: ""),
+                text = stringResource(R.string.header_profile_banner_greeting, headerName ?: ""),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading4,
             )

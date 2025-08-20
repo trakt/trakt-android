@@ -31,8 +31,8 @@ internal fun ConfirmationDialog(
     modifier: Modifier = Modifier,
     title: String? = null,
     message: String? = null,
-    cancelText: String = stringResource(R.string.cancel),
-    confirmText: String = stringResource(R.string.yes),
+    cancelText: String = stringResource(R.string.button_text_cancel),
+    confirmText: String = stringResource(R.string.button_text_yes),
     onCancel: () -> Unit = {},
     onConfirm: () -> Unit = {},
 ) {

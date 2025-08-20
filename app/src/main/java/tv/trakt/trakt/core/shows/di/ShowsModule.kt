@@ -13,10 +13,6 @@ import tv.trakt.trakt.core.shows.sections.anticipated.ShowsAnticipatedViewModel
 import tv.trakt.trakt.core.shows.sections.anticipated.data.local.AnticipatedShowsLocalDataSource
 import tv.trakt.trakt.core.shows.sections.anticipated.data.local.AnticipatedShowsStorage
 import tv.trakt.trakt.core.shows.sections.anticipated.usecase.GetAnticipatedShowsUseCase
-import tv.trakt.trakt.core.shows.sections.hot.ShowsHotViewModel
-import tv.trakt.trakt.core.shows.sections.hot.data.local.HotShowsLocalDataSource
-import tv.trakt.trakt.core.shows.sections.hot.data.local.HotShowsStorage
-import tv.trakt.trakt.core.shows.sections.hot.usecase.GetHotShowsUseCase
 import tv.trakt.trakt.core.shows.sections.popular.ShowsPopularViewModel
 import tv.trakt.trakt.core.shows.sections.popular.data.local.PopularShowsLocalDataSource
 import tv.trakt.trakt.core.shows.sections.popular.data.local.PopularShowsStorage
@@ -59,10 +55,6 @@ internal val showsDataModule = module {
         PopularShowsStorage()
     }
 
-    single<HotShowsLocalDataSource> {
-        HotShowsStorage()
-    }
-
     single<AnticipatedShowsLocalDataSource> {
         AnticipatedShowsStorage()
     }
@@ -73,13 +65,6 @@ internal val showsModule = module {
         GetTrendingShowsUseCase(
             remoteSource = get(),
             localTrendingSource = get(),
-        )
-    }
-
-    factory {
-        GetHotShowsUseCase(
-            remoteSource = get(),
-            localHotSource = get(),
         )
     }
 
@@ -113,12 +98,6 @@ internal val showsModule = module {
     viewModel {
         ShowsTrendingViewModel(
             getTrendingUseCase = get(),
-        )
-    }
-
-    viewModel {
-        ShowsHotViewModel(
-            getHotUseCase = get(),
         )
     }
 

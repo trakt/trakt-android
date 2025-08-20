@@ -138,7 +138,7 @@ private fun ShowsScreenContent(
             ) {
                 item {
                     TrendingShowsList(
-                        header = stringResource(R.string.header_trending),
+                        header = stringResource(R.string.list_title_trending),
                         shows = state.trendingShows,
                         isLoading = state.isLoading,
                         onViewAllClick = onViewAllTrendingClick,
@@ -156,7 +156,7 @@ private fun ShowsScreenContent(
 
                 item {
                     AnticipatedShowsList(
-                        header = stringResource(R.string.header_most_anticipated),
+                        header = stringResource(R.string.list_title_most_anticipated),
                         shows = state.anticipatedShows,
                         isLoading = state.isLoading,
                         onViewAllClick = onViewAllAnticipatedClick,
@@ -173,7 +173,7 @@ private fun ShowsScreenContent(
 
                 item {
                     PopularShowsList(
-                        header = stringResource(R.string.header_most_popular),
+                        header = stringResource(R.string.list_title_most_popular),
                         shows = state.popularShows,
                         isLoading = state.isLoading,
                         onViewAllClick = onViewAllPopularClick,
@@ -191,7 +191,7 @@ private fun ShowsScreenContent(
                 if (state.recommendedShows != null) {
                     item {
                         RecommendedShowsList(
-                            header = stringResource(R.string.header_recommended),
+                            header = stringResource(R.string.list_title_recommended),
                             shows = state.recommendedShows,
                             isLoading = state.isLoading,
                             onViewAllClick = onViewAllRecommendedClick,
@@ -345,7 +345,7 @@ private fun RecommendedShowsList(
                         paletteColor = show.colors?.colors?.second,
                         footerContent = {
                             InfoChip(
-                                text = stringResource(R.string.episodes_number, show.airedEpisodes),
+                                text = stringResource(R.string.tag_text_number_of_episodes, show.airedEpisodes),
                             )
                         },
                         modifier = Modifier.onFocusChanged {
@@ -483,7 +483,7 @@ private fun PopularShowsList(
                         paletteColor = show.colors?.colors?.second,
                         footerContent = {
                             InfoChip(
-                                text = stringResource(R.string.episodes_number, show.airedEpisodes),
+                                text = stringResource(R.string.tag_text_number_of_episodes, show.airedEpisodes),
                             )
                         },
                         modifier = Modifier.onFocusChanged {

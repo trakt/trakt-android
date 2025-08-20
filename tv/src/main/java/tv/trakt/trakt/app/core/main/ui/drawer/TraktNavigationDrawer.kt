@@ -255,7 +255,7 @@ private fun NavigationProfileItem(
     if (profile == null) {
         if (isOpen) {
             PrimaryButton(
-                text = stringResource(R.string.join_trakt).uppercase(),
+                text = stringResource(R.string.button_text_join_trakt).uppercase(),
                 icon = painterResource(R.drawable.ic_plus),
                 onClick = onProfileSelected,
                 focusedScale = 1.01f,
@@ -352,7 +352,7 @@ private fun NavigationProfileItem(
             }
 
             if (isOpen) {
-                val profileText = stringResource(R.string.view_profile)
+                val profileText = stringResource(R.string.link_text_view_profile)
                 val profileTextSize = TraktTheme.typography.navigationLabel.copy(fontSize = 10.sp)
 
                 Column(
@@ -435,31 +435,31 @@ private fun Preview() {
 private val drawerItems = listOf(
     TraktDrawerItem(
         destination = SearchDestination,
-        label = R.string.search,
+        label = R.string.page_title_search,
         iconOn = R.drawable.ic_search,
         iconOff = R.drawable.ic_search,
     ),
     TraktDrawerItem(
         destination = HomeDestination,
-        label = R.string.home,
+        label = R.string.page_title_home,
         iconOn = R.drawable.ic_home_on,
         iconOff = R.drawable.ic_home_off,
     ),
     TraktDrawerItem(
         destination = ShowsDestination,
-        label = R.string.shows,
+        label = R.string.page_title_shows,
         iconOn = R.drawable.ic_shows_on,
         iconOff = R.drawable.ic_shows_off,
     ),
     TraktDrawerItem(
         destination = MoviesDestination,
-        label = R.string.movies,
+        label = R.string.page_title_movies,
         iconOn = R.drawable.ic_movies_on,
         iconOff = R.drawable.ic_movies_off,
     ),
     TraktDrawerItem(
         destination = ListsDestination,
-        label = R.string.lists,
+        label = R.string.page_title_lists,
         iconOn = R.drawable.ic_lists_on,
         iconOff = R.drawable.ic_lists_off,
     ),

@@ -77,7 +77,7 @@ internal fun HomeComingSoonContent(
         modifier = modifier,
     ) {
         Text(
-            text = stringResource(R.string.header_movies_coming_soon),
+            text = stringResource(R.string.list_title_coming_soon),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.heading5,
             modifier = Modifier.padding(headerPadding),
@@ -92,7 +92,7 @@ internal fun HomeComingSoonContent(
 
             state.movies?.isEmpty() == true -> {
                 Text(
-                    text = stringResource(R.string.info_generic_empty_list),
+                    text = stringResource(R.string.list_placeholder_empty),
                     color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.heading6,
                     modifier = Modifier

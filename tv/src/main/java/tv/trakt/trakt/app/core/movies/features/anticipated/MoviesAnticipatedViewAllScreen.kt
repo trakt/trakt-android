@@ -108,7 +108,7 @@ private fun MoviesAnticipatedContent(
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
-                    text = stringResource(R.string.header_most_anticipated),
+                    text = stringResource(R.string.list_title_most_anticipated),
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.heading4,
                     overflow = TextOverflow.Ellipsis,

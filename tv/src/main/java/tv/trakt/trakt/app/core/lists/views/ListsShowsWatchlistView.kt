@@ -64,7 +64,7 @@ internal fun ListsShowsWatchlistView(
             .focusRequester(focusRequesters.getValue("shows")),
     ) {
         Text(
-            text = stringResource(R.string.header_shows_watchlist),
+            text = stringResource(R.string.list_title_watchlist_shows),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.heading5,
             modifier = Modifier
@@ -82,7 +82,7 @@ internal fun ListsShowsWatchlistView(
 
             items?.isEmpty() == true -> {
                 Text(
-                    text = stringResource(R.string.info_generic_empty_list),
+                    text = stringResource(R.string.list_placeholder_empty),
                     color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.heading6,
                     modifier = Modifier.padding(contentPadding),
@@ -125,7 +125,7 @@ private fun ContentList(
                 onClick = { onClick(item) },
                 footerContent = {
                     InfoChip(
-                        text = stringResource(R.string.episodes_number, item.airedEpisodes),
+                        text = stringResource(R.string.tag_text_number_of_episodes, item.airedEpisodes),
                     )
                 },
                 modifier = Modifier

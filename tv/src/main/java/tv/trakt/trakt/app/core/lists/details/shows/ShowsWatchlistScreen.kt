@@ -101,7 +101,7 @@ private fun ShowsWatchlistContent(
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
-                    text = stringResource(R.string.header_shows_watchlist),
+                    text = stringResource(R.string.list_title_watchlist_shows),
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.heading4,
                     overflow = TextOverflow.Ellipsis,
@@ -139,7 +139,7 @@ private fun ShowsWatchlistContent(
                         },
                         chipContent = {
                             InfoChip(
-                                text = stringResource(R.string.episodes_number, show.airedEpisodes),
+                                text = stringResource(R.string.tag_text_number_of_episodes, show.airedEpisodes),
                                 modifier = Modifier.padding(end = 8.dp),
                             )
                         },

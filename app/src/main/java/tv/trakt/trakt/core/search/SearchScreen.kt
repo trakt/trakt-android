@@ -37,7 +37,7 @@ private fun SearchScreenContent(
             .fillMaxSize(),
     ) {
         Text(
-            text = stringResource(R.string.search),
+            text = stringResource(R.string.page_title_search),
             color = TraktTheme.colors.textPrimary,
             fontSize = 24.sp,
             modifier = Modifier.align(Alignment.Center),

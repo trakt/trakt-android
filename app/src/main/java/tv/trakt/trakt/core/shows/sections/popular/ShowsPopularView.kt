@@ -74,12 +74,12 @@ internal fun ShowsPopularContent(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = stringResource(R.string.header_most_popular),
+                text = stringResource(R.string.list_title_most_popular),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading5,
             )
             Text(
-                text = stringResource(R.string.view_all).uppercase(),
+                text = stringResource(R.string.button_text_view_all).uppercase(),
                 color = TraktTheme.colors.textSecondary,
                 style = TraktTheme.typography.buttonTertiary,
             )
@@ -174,7 +174,7 @@ private fun ContentListItem(
         onClick = onClick,
         chipContent = {
             InfoChip(
-                text = stringResource(R.string.episodes_number, item.airedEpisodes),
+                text = stringResource(R.string.tag_text_number_of_episodes, item.airedEpisodes),
             )
         },
         modifier = modifier,

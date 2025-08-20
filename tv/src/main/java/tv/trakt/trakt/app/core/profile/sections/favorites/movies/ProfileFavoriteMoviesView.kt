@@ -83,7 +83,7 @@ internal fun ProfileFavoriteMoviesContent(
         modifier = modifier,
     ) {
         Text(
-            text = stringResource(R.string.header_favorite_movies),
+            text = stringResource(R.string.list_title_favorite_movies),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.heading5,
             modifier = Modifier.padding(headerPadding),
@@ -98,7 +98,7 @@ internal fun ProfileFavoriteMoviesContent(
 
             state.items?.isEmpty() == true -> {
                 Text(
-                    text = stringResource(R.string.info_generic_empty_list),
+                    text = stringResource(R.string.list_placeholder_empty),
                     color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.heading6,
                     modifier = Modifier.padding(headerPadding),

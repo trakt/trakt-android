@@ -150,7 +150,7 @@ internal fun EpisodeHeader(
                     )
                     Text(
                         text = stringResource(
-                            R.string.season_episode_number,
+                            R.string.text_season_episode_number,
                             episode.season,
                             episode.number,
                         ),
@@ -247,7 +247,7 @@ internal fun EpisodeHeader(
                     ) {
                         if (episodePlays > 0) {
                             InfoChip(
-                                text = stringResource(R.string.watch_count, episodePlays).uppercase(),
+                                text = stringResource(R.string.tag_text_watch_count, episodePlays).uppercase(),
                                 containerColor = TraktTheme.colors.accent,
                             )
                         }

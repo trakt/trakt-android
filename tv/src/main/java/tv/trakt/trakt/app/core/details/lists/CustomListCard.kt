@@ -208,7 +208,7 @@ private fun CustomListHeader(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = stringResource(R.string.custom_list_by),
+                    text = stringResource(R.string.text_by),
                     style = TraktTheme.typography.paragraphSmall,
                     color = TraktTheme.colors.textSecondary,
                     maxLines = 1,

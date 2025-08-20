@@ -37,7 +37,7 @@ private fun ListsScreenContent(
             .fillMaxSize(),
     ) {
         Text(
-            text = stringResource(R.string.lists),
+            text = stringResource(R.string.page_title_lists),
             color = TraktTheme.colors.textPrimary,
             fontSize = 24.sp,
             modifier = Modifier.align(Alignment.Center),

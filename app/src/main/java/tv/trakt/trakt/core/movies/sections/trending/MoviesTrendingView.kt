@@ -76,12 +76,12 @@ internal fun MoviesTrendingContent(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = stringResource(R.string.header_trending),
+                text = stringResource(R.string.list_title_trending),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading5,
             )
             Text(
-                text = stringResource(R.string.view_all).uppercase(),
+                text = stringResource(R.string.button_text_view_all).uppercase(),
                 color = TraktTheme.colors.textSecondary,
                 style = TraktTheme.typography.buttonTertiary,
             )

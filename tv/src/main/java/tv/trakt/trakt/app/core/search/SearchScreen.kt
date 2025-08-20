@@ -138,7 +138,7 @@ private fun SearchScreenContent(
             ) {
                 TraktTextField(
                     state = searchInputState,
-                    placeholder = stringResource(R.string.info_search_placeholder),
+                    placeholder = stringResource(R.string.input_placeholder_search),
                     icon = painterResource(R.drawable.ic_search),
                     loading = state.searching,
                     modifier = Modifier
@@ -156,11 +156,11 @@ private fun SearchScreenContent(
             when {
                 state.searching && (state.state == State.RECENTS || state.state == State.TRENDING) -> {
                     SearchLoadingView(
-                        header = stringResource(R.string.shows),
+                        header = stringResource(R.string.page_title_shows),
                         focusRequesters = focusRequesters,
                     )
                     SearchLoadingView(
-                        header = stringResource(R.string.movies),
+                        header = stringResource(R.string.page_title_movies),
                         focusRequesters = focusRequesters,
                     )
                 }
@@ -168,7 +168,7 @@ private fun SearchScreenContent(
                     with(state.recentsResult) {
                         if (!shows.isNullOrEmpty()) {
                             SearchShowsView(
-                                header = stringResource(R.string.header_search_shows_recents),
+                                header = stringResource(R.string.list_title_recently_searched_shows),
                                 items = shows,
                                 focusRequesters = focusRequesters,
                                 onFocused = {
@@ -181,7 +181,7 @@ private fun SearchScreenContent(
 
                         if (!movies.isNullOrEmpty()) {
                             SearchMoviesView(
-                                header = stringResource(R.string.header_search_movies_recents),
+                                header = stringResource(R.string.list_title_recently_searched_movies),
                                 items = movies,
                                 focusRequesters = focusRequesters,
                                 onFocused = {
@@ -197,7 +197,7 @@ private fun SearchScreenContent(
                     with(state.trendingResult) {
                         if (!shows.isNullOrEmpty()) {
                             SearchShowsView(
-                                header = stringResource(R.string.header_trending_shows),
+                                header = stringResource(R.string.list_title_trending_shows),
                                 items = shows,
                                 focusRequesters = focusRequesters,
                                 onFocused = {
@@ -210,7 +210,7 @@ private fun SearchScreenContent(
 
                         if (!movies.isNullOrEmpty()) {
                             SearchMoviesView(
-                                header = stringResource(R.string.header_trending_movies),
+                                header = stringResource(R.string.list_title_trending_movies),
                                 items = movies,
                                 focusRequesters = focusRequesters,
                                 onFocused = {
@@ -227,7 +227,7 @@ private fun SearchScreenContent(
             with(state.searchResult) {
                 if (!this?.shows.isNullOrEmpty()) {
                     SearchShowsView(
-                        header = stringResource(R.string.shows),
+                        header = stringResource(R.string.page_title_shows),
                         items = shows,
                         focusRequesters = focusRequesters,
                         onFocused = {
@@ -240,7 +240,7 @@ private fun SearchScreenContent(
 
                 if (!this?.movies.isNullOrEmpty()) {
                     SearchMoviesView(
-                        header = stringResource(R.string.movies),
+                        header = stringResource(R.string.page_title_movies),
                         items = movies,
                         focusRequesters = focusRequesters,
                         onFocused = {

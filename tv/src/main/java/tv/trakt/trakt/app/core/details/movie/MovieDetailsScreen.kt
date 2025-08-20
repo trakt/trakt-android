@@ -307,7 +307,7 @@ private fun MainContent(
             }
 
             Text(
-                text = state.movieDetails?.overview ?: stringResource(R.string.error_no_overview),
+                text = state.movieDetails?.overview ?: stringResource(R.string.text_overview_placeholder),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.paragraphLarge,
                 maxLines = 5,
@@ -321,7 +321,7 @@ private fun MainContent(
             exit = fadeOut(),
         ) {
             MovieExtrasList(
-                header = stringResource(R.string.header_extras),
+                header = stringResource(R.string.list_title_extras),
                 videos = { state.movieVideos ?: emptyList<ExtraVideo>().toImmutableList() },
                 onClicked = onVideoClick,
                 onFocused = { onFocused("extras") },
@@ -337,7 +337,7 @@ private fun MainContent(
             exit = fadeOut(),
         ) {
             MovieCastCrewList(
-                header = stringResource(R.string.header_cast_crew),
+                header = stringResource(R.string.list_title_actors),
                 cast = { state.movieCast ?: emptyList<CastPerson>().toImmutableList() },
                 onFocused = { onFocused("people") },
                 onClick = onPersonClick,
@@ -354,7 +354,7 @@ private fun MainContent(
             exit = fadeOut(),
         ) {
             MovieCommentsList(
-                header = stringResource(R.string.header_comments),
+                header = stringResource(R.string.list_title_comments),
                 comments = { state.movieComments ?: emptyList<Comment>().toImmutableList() },
                 onFocused = { onFocused("comments") },
                 onClick = onCommentClick,
@@ -370,7 +370,7 @@ private fun MainContent(
             exit = fadeOut(),
         ) {
             MovieRelatedList(
-                header = stringResource(R.string.header_related_movies),
+                header = stringResource(R.string.list_title_related_movies),
                 movies = { state.movieRelated ?: emptyList<Movie>().toImmutableList() },
                 onFocused = { onFocused("related") },
                 onClick = onMovieClick,
@@ -387,7 +387,7 @@ private fun MainContent(
             exit = fadeOut(),
         ) {
             MovieCustomListsList(
-                header = stringResource(R.string.header_lists),
+                header = stringResource(R.string.list_title_popular_lists),
                 lists = { state.movieLists ?: emptyList<CustomList>().toImmutableList() },
                 onFocused = { onFocused("lists") },
                 onClick = onListClick,

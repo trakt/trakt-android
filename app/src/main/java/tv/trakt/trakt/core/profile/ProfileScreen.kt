@@ -92,7 +92,7 @@ private fun ProfileScreenContent(
                     ),
             )
             Text(
-                text = stringResource(R.string.header_profile_title),
+                text = "Profile", // TODO
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading5,
             )
@@ -115,7 +115,7 @@ private fun ProfileScreenContent(
                         .padding(bottom = 16.dp),
                 ) {
                     Text(
-                        text = stringResource(R.string.header_hello, headerName ?: ""),
+                        text = stringResource(R.string.header_profile_banner_greeting, headerName ?: ""),
                         color = TraktTheme.colors.textPrimary,
                         style = TraktTheme.typography.heading4,
                     )
@@ -133,7 +133,7 @@ private fun ProfileScreenContent(
                 PrimaryButton(
                     enabled = !state.loading.isLoading,
                     loading = state.loading.isLoading,
-                    text = stringResource(R.string.log_in),
+                    text = stringResource(R.string.button_text_join_trakt),
                     onClick = {
                         uriHandler.openUri(ConfigAuth.authCodeUrl)
                     },
@@ -142,7 +142,7 @@ private fun ProfileScreenContent(
                 PrimaryButton(
                     enabled = !state.loading.isLoading,
                     loading = state.loading.isLoading,
-                    text = stringResource(R.string.log_out),
+                    text = stringResource(R.string.button_text_logout),
                     onClick = onLogoutClick,
                 )
             }

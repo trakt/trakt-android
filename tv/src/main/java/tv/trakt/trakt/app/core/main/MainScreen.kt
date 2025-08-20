@@ -128,7 +128,7 @@ internal fun MainScreen(
     LaunchedEffect(state.isSignedOut) {
         if (state.isSignedOut == true) {
             navController.navigateToAuth()
-            localSnackbar.showSnackbar(localContext.getString(R.string.info_signed_out))
+            localSnackbar.showSnackbar(localContext.getString(R.string.text_info_signed_out))
         }
     }
 

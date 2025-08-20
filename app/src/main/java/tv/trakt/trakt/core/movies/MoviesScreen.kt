@@ -28,7 +28,6 @@ import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.movies.sections.anticipated.MoviesAnticipatedView
-import tv.trakt.trakt.core.movies.sections.hot.MoviesHotView
 import tv.trakt.trakt.core.movies.sections.popular.MoviesPopularView
 import tv.trakt.trakt.core.movies.sections.recommended.MoviesRecommendedView
 import tv.trakt.trakt.core.movies.sections.trending.MoviesTrendingView
@@ -121,13 +120,6 @@ private fun MoviesScreenContent(
         ) {
             item {
                 MoviesTrendingView(
-                    headerPadding = sectionPadding,
-                    contentPadding = sectionPadding,
-                )
-            }
-
-            item {
-                MoviesHotView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                 )

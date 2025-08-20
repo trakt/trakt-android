@@ -336,7 +336,7 @@ private fun MainContent(
             }
 
             Text(
-                text = state.showDetails?.overview ?: stringResource(R.string.error_no_overview),
+                text = state.showDetails?.overview ?: stringResource(R.string.text_overview_placeholder),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.paragraphLarge,
                 maxLines = 5,
@@ -350,7 +350,7 @@ private fun MainContent(
             exit = fadeOut(),
         ) {
             ShowExtrasList(
-                header = stringResource(R.string.header_extras),
+                header = stringResource(R.string.list_title_extras),
                 videos = { state.showVideos ?: emptyList<ExtraVideo>().toImmutableList() },
                 onFocused = { onFocused("extras") },
                 onClicked = onVideoClick,
@@ -366,7 +366,7 @@ private fun MainContent(
             exit = fadeOut(),
         ) {
             ShowCastCrewList(
-                header = stringResource(R.string.header_cast_crew),
+                header = stringResource(R.string.list_title_actors),
                 cast = { state.showCast ?: emptyList<CastPerson>().toImmutableList() },
                 onFocused = { onFocused("people") },
                 onClick = onPersonClick,
@@ -383,12 +383,12 @@ private fun MainContent(
             exit = fadeOut(),
         ) {
             val headerSeasons =
-                stringResource(R.string.header_seasons)
+                stringResource(R.string.list_title_seasons)
 
             val headerCurrentSeason = state.showSeasons.selectedSeason?.let {
                 when {
-                    it.isSpecial -> stringResource(R.string.header_specials_season)
-                    else -> stringResource(R.string.season_number, it.number)
+                    it.isSpecial -> stringResource(R.string.text_season_specials)
+                    else -> stringResource(R.string.text_season_number, it.number)
                 }
             }
 
@@ -429,7 +429,7 @@ private fun MainContent(
             exit = fadeOut(),
         ) {
             ShowCommentsList(
-                header = stringResource(R.string.header_comments),
+                header = stringResource(R.string.list_title_comments),
                 comments = { state.showComments ?: emptyList<Comment>().toImmutableList() },
                 onFocused = { onFocused("comments") },
                 onClick = onCommentClick,
@@ -445,7 +445,7 @@ private fun MainContent(
             exit = fadeOut(),
         ) {
             ShowRelatedList(
-                header = stringResource(R.string.header_related_shows),
+                header = stringResource(R.string.list_title_related_shows),
                 shows = { state.showRelated ?: emptyList<Show>().toImmutableList() },
                 onFocused = { onFocused("related") },
                 onClick = onShowClick,
@@ -462,7 +462,7 @@ private fun MainContent(
             exit = fadeOut(),
         ) {
             ShowCustomsList(
-                header = stringResource(R.string.header_lists),
+                header = stringResource(R.string.list_title_popular_lists),
                 lists = { state.showLists ?: emptyList<CustomList>().toImmutableList() },
                 onFocused = { onFocused("lists") },
                 onClick = onListClick,
@@ -528,8 +528,8 @@ private fun HistoryConfirmationOverlay(
     )
     Dialog(onDismissRequest = onDismiss) {
         ConfirmationDialog(
-            title = stringResource(R.string.add_watched),
-            message = stringResource(R.string.add_to_history_confirmation, showTitle),
+            title = stringResource(R.string.button_text_mark_as_watched),
+            message = stringResource(R.string.warning_prompt_mark_as_watched_show, showTitle),
             onConfirm = {
                 onConfirm()
                 onDismiss()

@@ -8,9 +8,9 @@ internal enum class StreamingType(
     val type: String,
     @param:StringRes val labelRes: Int,
 ) {
-    FAVORITE(0, "favorite", R.string.header_streaming_favorite),
-    SUBSCRIPTION(1, "subscription", R.string.header_streaming_subscriptions),
-    PURCHASE(2, "purchase", R.string.header_streaming_purchase),
-    RENT(3, "rent", R.string.header_streaming_rent),
-    FREE(4, "free", R.string.header_streaming_free),
+    FAVORITE(0, "favorite", R.string.list_title_streaming_favorite),
+    SUBSCRIPTION(1, "subscription", R.string.list_title_streaming_subscription),
+    PURCHASE(2, "purchase", R.string.list_title_streaming_purchase),
+    RENT(3, "rent", R.string.list_title_streaming_rent),
+    FREE(4, "free", R.string.list_title_streaming_free),
 }

@@ -50,9 +50,9 @@ internal fun MovieActionButtons(
 
         WatchNowButton(
             text = when {
-                loading || !directLink.isNullOrBlank() -> stringResource(R.string.stream_on)
-                streamingState.noServices -> stringResource(R.string.stream_no_services)
-                else -> stringResource(R.string.stream_more_options)
+                loading || !directLink.isNullOrBlank() -> stringResource(R.string.button_text_stream_on)
+                streamingState.noServices -> stringResource(R.string.button_text_no_services)
+                else -> stringResource(R.string.button_text_where_to_watch)
             },
             secondaryText = when {
                 !loading && directLink != null && streamingState.info != null -> {
@@ -81,7 +81,9 @@ internal fun MovieActionButtons(
 
         val isHistory = remember(collectionState.isHistory) { collectionState.isHistory }
         PrimaryButton(
-            text = stringResource(if (isHistory) R.string.add_watched_again else R.string.add_watched),
+            text = stringResource(
+                if (isHistory) R.string.button_text_watch_again else R.string.button_text_mark_as_watched,
+            ),
             icon = painterResource(if (isHistory) R.drawable.ic_check_double else R.drawable.ic_check),
             onClick = onHistoryClick,
             containerColor = if (isHistory) Purple500 else Purple50,
@@ -93,7 +95,7 @@ internal fun MovieActionButtons(
 
         val isWatchlist = remember(collectionState.isWatchlist) { collectionState.isWatchlist }
         PrimaryButton(
-            text = stringResource(if (isWatchlist) R.string.in_watchlist else R.string.add_watchlist),
+            text = stringResource(if (isWatchlist) R.string.button_text_watchlist else R.string.button_text_watchlist),
             icon = painterResource(if (isWatchlist) R.drawable.ic_minus else R.drawable.ic_plus),
             onClick = onWatchlistClick,
             containerColor = if (isWatchlist) Blue500 else Blue50,

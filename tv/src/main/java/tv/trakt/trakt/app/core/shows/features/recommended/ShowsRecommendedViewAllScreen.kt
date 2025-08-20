@@ -104,7 +104,7 @@ private fun ShowsRecommendedContent(
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
-                    text = stringResource(tv.trakt.trakt.resources.R.string.header_recommended),
+                    text = stringResource(tv.trakt.trakt.resources.R.string.list_title_recommended),
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.heading4,
                     overflow = TextOverflow.Ellipsis,
@@ -143,7 +143,7 @@ private fun ShowsRecommendedContent(
                         chipContent = {
                             InfoChip(
                                 text = stringResource(
-                                    tv.trakt.trakt.resources.R.string.episodes_number,
+                                    tv.trakt.trakt.resources.R.string.tag_text_number_of_episodes,
                                     show.airedEpisodes,
                                 ),
                             )

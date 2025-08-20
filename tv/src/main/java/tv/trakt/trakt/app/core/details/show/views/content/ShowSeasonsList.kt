@@ -77,8 +77,8 @@ internal fun ShowSeasonsList(
                             verticalArrangement = Arrangement.spacedBy(1.dp),
                         ) {
                             val seasonTitle = when {
-                                item.isSpecial -> stringResource(R.string.header_specials_season)
-                                else -> stringResource(R.string.season_number, item.number)
+                                item.isSpecial -> stringResource(R.string.text_season_specials)
+                                else -> stringResource(R.string.text_season_number, item.number)
                             }
 
                             Text(
@@ -91,7 +91,7 @@ internal fun ShowSeasonsList(
 
                             item.episodeCount?.let {
                                 Text(
-                                    text = stringResource(R.string.episodes_number, it),
+                                    text = stringResource(R.string.tag_text_number_of_episodes, it),
                                     style = TraktTheme.typography.cardSubtitle,
                                     color = TraktTheme.colors.textSecondary,
                                     maxLines = 1,

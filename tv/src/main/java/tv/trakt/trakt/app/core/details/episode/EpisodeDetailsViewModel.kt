@@ -184,7 +184,7 @@ internal class EpisodeDetailsViewModel(
                         noServices = streamingService.noServices,
                         info = when {
                             !tutorialsManager.get(WATCH_NOW_MORE) ->
-                                DynamicStringResource(R.string.info_watchnow_long_press)
+                                DynamicStringResource(R.string.button_text_long_press_for_more)
                             else -> null
                         },
                     )
@@ -314,7 +314,7 @@ internal class EpisodeDetailsViewModel(
                     )
                 }
 
-                showSnackMessage(DynamicStringResource(R.string.info_history_added))
+                showSnackMessage(DynamicStringResource(R.string.text_info_history_added))
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
@@ -343,7 +343,7 @@ internal class EpisodeDetailsViewModel(
                     )
                 }
 
-                showSnackMessage(DynamicStringResource(R.string.info_history_removed))
+                showSnackMessage(DynamicStringResource(R.string.text_info_history_removed))
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))

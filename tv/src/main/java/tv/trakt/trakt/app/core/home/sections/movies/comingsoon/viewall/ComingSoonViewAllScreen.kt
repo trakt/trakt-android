@@ -120,7 +120,7 @@ private fun ComingSoonViewAllContent(
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
-                    text = stringResource(R.string.header_movies_coming_soon),
+                    text = stringResource(R.string.list_title_coming_soon),
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.heading4,
                     overflow = TextOverflow.Ellipsis,

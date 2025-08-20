@@ -152,7 +152,7 @@ private fun PersonalListContent(
                                 if (episodes > 0) {
                                     InfoChip(
                                         text = stringResource(
-                                            tv.trakt.trakt.resources.R.string.episodes_number,
+                                            tv.trakt.trakt.resources.R.string.tag_text_number_of_episodes,
                                             episodes,
                                         ),
                                     )

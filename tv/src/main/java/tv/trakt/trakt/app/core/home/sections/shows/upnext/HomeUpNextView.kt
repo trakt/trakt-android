@@ -109,7 +109,7 @@ internal fun HomeUpNextContent(
         modifier = modifier,
     ) {
         Text(
-            text = stringResource(R.string.header_shows_up_next),
+            text = stringResource(R.string.list_title_up_next),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.heading5,
             modifier = Modifier
@@ -127,7 +127,7 @@ internal fun HomeUpNextContent(
 
             state.items?.isEmpty() == true -> {
                 Text(
-                    text = stringResource(R.string.info_generic_empty_list),
+                    text = stringResource(R.string.list_placeholder_empty),
                     color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.heading6,
                     modifier = Modifier
@@ -230,7 +230,7 @@ private fun ContentListItem(
                 }
 
                 EpisodeProgressBar(
-                    startText = stringResource(R.string.episodes_remaining, remainingEpisodes),
+                    startText = stringResource(R.string.tag_text_remaining_episodes, remainingEpisodes),
                     containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
                     progress = remainingPercent,
                 )

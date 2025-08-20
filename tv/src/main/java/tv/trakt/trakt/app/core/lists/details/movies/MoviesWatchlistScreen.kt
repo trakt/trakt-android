@@ -102,7 +102,7 @@ private fun MoviesWatchlistContent(
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
-                    text = stringResource(R.string.header_movies_watchlist),
+                    text = stringResource(R.string.list_title_watchlist_movies),
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.heading4,
                     overflow = TextOverflow.Ellipsis,

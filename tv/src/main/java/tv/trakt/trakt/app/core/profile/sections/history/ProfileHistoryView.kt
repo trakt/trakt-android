@@ -108,7 +108,7 @@ internal fun ProfileHistoryContent(
         modifier = modifier,
     ) {
         Text(
-            text = stringResource(R.string.header_recently_watched),
+            text = stringResource(R.string.list_title_recently_watched),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.heading5,
             modifier = Modifier.padding(headerPadding),
@@ -123,7 +123,7 @@ internal fun ProfileHistoryContent(
 
             state.items?.isEmpty() == true -> {
                 Text(
-                    text = stringResource(R.string.info_generic_empty_list),
+                    text = stringResource(R.string.list_placeholder_empty),
                     color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.heading6,
                     modifier = Modifier.padding(headerPadding),

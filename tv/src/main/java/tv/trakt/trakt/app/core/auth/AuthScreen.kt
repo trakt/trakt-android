@@ -76,7 +76,7 @@ internal fun AuthScreen(
     LaunchedEffect(state.loadingState) {
         if (state.loadingState == SUCCESS) {
             onAuthorized()
-            localSnack.showSnackbar(localContext.getString(R.string.info_signed_in))
+            localSnack.showSnackbar(localContext.getString(R.string.text_info_signed_in))
         }
     }
 
@@ -185,14 +185,15 @@ private fun DeviceCodeRejected(
         modifier = modifier,
     ) {
         Text(
-            text = stringResource(R.string.error_device_code_expired),
+            text = stringResource(R.string.header_device_auth_try_again),
             color = TraktTheme.colors.textSecondary,
             style = TraktTheme.typography.heading5,
             textAlign = TextAlign.Center,
+            modifier = Modifier.padding(horizontal = 164.dp),
         )
 
         PrimaryButton(
-            text = stringResource(R.string.retry),
+            text = stringResource(R.string.button_text_retry),
             onClick = onRetryClick,
             modifier = Modifier
                 .width(180.dp)
@@ -249,7 +250,7 @@ private fun DeviceCodeContent(
                 .focusable(),
         ) {
             Text(
-                text = stringResource(R.string.auth_sign_in_header1),
+                text = stringResource(R.string.header_device_auth_qr_instruction),
                 color = TraktTheme.colors.textSecondary,
                 style = TraktTheme.typography.heading5,
             )
@@ -261,7 +262,7 @@ private fun DeviceCodeContent(
             )
 
             Text(
-                text = stringResource(R.string.auth_sign_in_header2),
+                text = stringResource(R.string.header_device_auth_code_instruction),
                 color = TraktTheme.colors.textSecondary,
                 style = TraktTheme.typography.heading5,
                 modifier = Modifier.padding(top = 20.dp),

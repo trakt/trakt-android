@@ -139,7 +139,7 @@ private fun MoviesScreenContent(
             ) {
                 item {
                     TrendingMoviesList(
-                        header = stringResource(R.string.header_trending),
+                        header = stringResource(R.string.list_title_trending),
                         movies = state.trendingMovies,
                         isLoading = state.isLoading,
                         onViewAllClick = onViewAllTrendingClick,
@@ -157,7 +157,7 @@ private fun MoviesScreenContent(
 
                 item {
                     AnticipatedMoviesList(
-                        header = stringResource(R.string.header_most_anticipated),
+                        header = stringResource(R.string.list_title_most_anticipated),
                         movies = state.anticipatedMovies,
                         isLoading = state.isLoading,
                         onViewAllClick = onViewAllAnticipatedClick,
@@ -174,7 +174,7 @@ private fun MoviesScreenContent(
 
                 item {
                     StandardMoviesList(
-                        header = stringResource(R.string.header_most_popular),
+                        header = stringResource(R.string.list_title_most_popular),
                         movies = state.popularMovies,
                         isLoading = state.isLoading,
                         onViewAllClick = onViewAllPopularClick,
@@ -192,7 +192,7 @@ private fun MoviesScreenContent(
                 if (state.recommendedMovies != null) {
                     item {
                         StandardMoviesList(
-                            header = stringResource(R.string.header_recommended),
+                            header = stringResource(R.string.list_title_recommended),
                             movies = state.recommendedMovies,
                             isLoading = state.isLoading,
                             onViewAllClick = onViewAllRecommendedClick,

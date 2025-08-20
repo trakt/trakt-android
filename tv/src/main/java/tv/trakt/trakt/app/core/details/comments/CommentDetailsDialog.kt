@@ -185,7 +185,7 @@ private fun CommentDetailsContent(
 
         if (!state.isLoading && state.commentReplies?.isEmpty() == true) {
             Text(
-                text = stringResource(R.string.error_no_comment_replies),
+                text = stringResource(R.string.list_placeholder_comments),
                 style = TraktTheme.typography.paragraphSmall,
                 color = TraktTheme.colors.textSecondary,
                 textAlign = TextAlign.Center,
@@ -260,9 +260,9 @@ private fun CommentHeader(
                 Text(
                     text = stringResource(
                         if (comment.isReview) {
-                            R.string.comment_review_by
+                            R.string.text_review_by
                         } else {
-                            R.string.comment_shout_by
+                            R.string.text_shout_by
                         },
                     ),
                     style = TraktTheme.typography.paragraph,

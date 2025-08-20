@@ -113,7 +113,7 @@ private fun ContentList(
                 onClick = { onClick(item) },
                 footerContent = {
                     InfoChip(
-                        text = stringResource(R.string.episodes_number, item.airedEpisodes),
+                        text = stringResource(R.string.tag_text_number_of_episodes, item.airedEpisodes),
                     )
                 },
                 modifier = Modifier

@@ -40,7 +40,7 @@ internal fun WatchNowButton(
     onLongClick: () -> Unit = {},
     name: String,
     logo: String? = null,
-    text: String = stringResource(R.string.stream_on),
+    text: String = stringResource(R.string.button_text_stream_on),
     secondaryText: String? = null,
     enabled: Boolean = true,
     loading: Boolean = false,

@@ -166,7 +166,7 @@ private fun CommentHeader(comment: Comment) {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = stringResource(R.string.comment_reply_by),
+                    text = stringResource(R.string.text_reply_by),
                     style = TraktTheme.typography.paragraph,
                     color = TraktTheme.colors.textSecondary,
                     maxLines = 1,
@@ -211,7 +211,7 @@ private fun CommentFooter(comment: Comment) {
                 modifier = Modifier.size(16.dp),
             )
             Text(
-                text = stringResource(R.string.comment_likes, comment.likes).uppercase(),
+                text = stringResource(R.string.button_text_comment_likes, comment.likes).uppercase(),
                 style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
                 color = TraktTheme.colors.textSecondary,
             )

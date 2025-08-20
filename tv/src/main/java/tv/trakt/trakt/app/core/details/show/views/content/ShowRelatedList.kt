@@ -63,7 +63,7 @@ internal fun ShowRelatedList(
                         val episodes = show.airedEpisodes
                         if (episodes > 0) {
                             InfoChip(
-                                text = stringResource(R.string.episodes_number, show.airedEpisodes),
+                                text = stringResource(R.string.tag_text_number_of_episodes, show.airedEpisodes),
                                 modifier = Modifier.padding(end = 8.dp),
                             )
                         }

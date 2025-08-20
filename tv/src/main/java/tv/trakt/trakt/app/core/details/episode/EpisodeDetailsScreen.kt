@@ -117,7 +117,7 @@ internal fun EpisodeDetailsScreen(
     if (historyConfirmationDialog != null) {
         HistoryConfirmationOverlay(
             title = state.episodeDetails?.seasonEpisodeString
-                ?: stringResource(R.string.header_recently_watched),
+                ?: stringResource(R.string.list_title_recently_watched),
             episodePlayId = historyConfirmationDialog ?: -1L,
             onConfirm = viewModel::removeFromHistory,
             onDismiss = { historyConfirmationDialog = null },
@@ -328,7 +328,7 @@ private fun MainContent(
             }
 
             Text(
-                text = state.episodeDetails?.overview ?: stringResource(R.string.error_no_overview),
+                text = state.episodeDetails?.overview ?: stringResource(R.string.text_overview_placeholder),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.paragraphLarge,
                 maxLines = 5,
@@ -342,7 +342,7 @@ private fun MainContent(
             exit = fadeOut(),
         ) {
             EpisodeCastCrewList(
-                header = stringResource(R.string.header_cast_crew),
+                header = stringResource(R.string.list_title_actors),
                 cast = { state.episodeCast ?: emptyList<CastPerson>().toImmutableList() },
                 onFocused = { onFocused("people") },
                 onClick = onPersonClicked,
@@ -364,8 +364,8 @@ private fun MainContent(
             exit = fadeOut(),
         ) {
             EpisodeSeasonEpisodesList(
-                header1 = "${stringResource(R.string.header_seasons)} / ",
-                header2 = stringResource(R.string.season_number, state.episodeDetails?.season ?: 0),
+                header1 = "${stringResource(R.string.list_title_seasons)} / ",
+                header2 = stringResource(R.string.text_season_number, state.episodeDetails?.season ?: 0),
                 episodes = { state.episodeSeason ?: emptyList<Episode>().toImmutableList() },
                 onFocused = { onFocused("season") },
                 onClicked = onEpisodeClicked,
@@ -387,7 +387,7 @@ private fun MainContent(
             exit = fadeOut(),
         ) {
             EpisodeCommentsList(
-                header = stringResource(R.string.header_comments),
+                header = stringResource(R.string.list_title_comments),
                 comments = { state.episodeComments ?: emptyList<Comment>().toImmutableList() },
                 onFocused = { onFocused("comments") },
                 onClicked = onCommentClicked,
@@ -403,7 +403,7 @@ private fun MainContent(
             exit = fadeOut(),
         ) {
             EpisodeRelatedList(
-                header = stringResource(R.string.header_related_shows),
+                header = stringResource(R.string.list_title_related_shows),
                 shows = { state.episodeRelated ?: emptyList<Show>().toImmutableList() },
                 onFocused = { onFocused("related") },
                 onClicked = onShowClicked,
@@ -427,7 +427,7 @@ private fun MainContent(
             }
 
             EpisodeRecentlyWatchedList(
-                header = stringResource(R.string.header_recently_watched),
+                header = stringResource(R.string.list_title_recently_watched),
                 items = { state.episodeHistory.episodes ?: emptyList<SyncHistoryEpisodeItem>().toImmutableList() },
                 onFocused = { onFocused("history") },
                 onClicked = {
@@ -504,7 +504,7 @@ private fun HistoryConfirmationOverlay(
     Dialog(onDismissRequest = onDismiss) {
         ConfirmationDialog(
             title = title,
-            message = stringResource(R.string.remove_from_history_confirmation),
+            message = stringResource(R.string.warning_prompt_remove_single_watched),
             onConfirm = {
                 onConfirm(episodePlayId)
                 onDismiss()

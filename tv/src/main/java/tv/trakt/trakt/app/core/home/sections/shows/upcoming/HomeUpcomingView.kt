@@ -75,7 +75,7 @@ internal fun HomeUpcomingContent(
         modifier = modifier,
     ) {
         Text(
-            text = stringResource(R.string.header_shows_upcoming),
+            text = stringResource(R.string.list_title_upcoming_schedule),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.heading5,
             modifier = Modifier.padding(headerPadding),
@@ -90,7 +90,7 @@ internal fun HomeUpcomingContent(
 
             state.items?.isEmpty() == true -> {
                 Text(
-                    text = stringResource(R.string.info_generic_empty_list),
+                    text = stringResource(R.string.list_placeholder_empty),
                     color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.heading6,
                     modifier = Modifier
@@ -187,7 +187,7 @@ private fun ContentListItem(
 
                 val subtitle = when {
                     item.isFullSeason -> stringResource(
-                        R.string.season_number,
+                        R.string.text_season_number,
                         item.episode.season,
                     )
 

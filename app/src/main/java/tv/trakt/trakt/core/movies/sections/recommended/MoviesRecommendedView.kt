@@ -76,12 +76,12 @@ internal fun MoviesRecommendedContent(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = stringResource(R.string.header_recommended),
+                text = stringResource(R.string.list_title_recommended),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading5,
             )
             Text(
-                text = stringResource(R.string.view_all).uppercase(),
+                text = stringResource(R.string.button_text_view_all).uppercase(),
                 color = TraktTheme.colors.textSecondary,
                 style = TraktTheme.typography.buttonTertiary,
             )

@@ -49,7 +49,7 @@ internal fun ListsMoviesWatchlistView(
             .focusRequester(focusRequesters.getValue("movies")),
     ) {
         Text(
-            text = stringResource(R.string.header_movies_watchlist),
+            text = stringResource(R.string.list_title_watchlist_movies),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.heading5,
             modifier = Modifier.padding(contentPadding),
@@ -64,7 +64,7 @@ internal fun ListsMoviesWatchlistView(
 
             items?.isEmpty() == true -> {
                 Text(
-                    text = stringResource(R.string.info_generic_empty_list),
+                    text = stringResource(R.string.list_placeholder_empty),
                     color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.heading6,
                     modifier = Modifier.padding(contentPadding),

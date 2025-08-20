@@ -114,7 +114,7 @@ private fun ProfileFavoriteMoviesViewAllContent(
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
-                    text = stringResource(R.string.header_favorite_movies),
+                    text = stringResource(R.string.list_title_favorite_movies),
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.heading4,
                     overflow = TextOverflow.Ellipsis,

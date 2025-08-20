@@ -123,7 +123,7 @@ internal fun HeaderBar(
                         verticalArrangement = spacedBy(1.dp, Alignment.CenterVertically),
                     ) {
                         Text(
-                            text = title ?: stringResource(R.string.header_hello_default),
+                            text = title ?: "Hello!", // TODO
                             color = TraktTheme.colors.textPrimary,
                             style = TraktTheme.typography.paragraphSmall,
                             maxLines = 1,
@@ -204,7 +204,7 @@ internal fun HeaderBar(
                 }
                 showJoinTrakt -> {
                     TertiaryButton(
-                        text = stringResource(R.string.join_trakt),
+                        text = stringResource(R.string.button_text_join_trakt),
                         icon = painterResource(R.drawable.ic_plus_round),
                         height = contentHeight,
                         onClick = onJoinClick,

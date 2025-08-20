@@ -223,7 +223,7 @@ private fun HeaderContent(
             ) {
                 val color = TraktTheme.colors.accent
                 Text(
-                    text = person.biography ?: stringResource(R.string.error_no_overview),
+                    text = person.biography ?: stringResource(R.string.text_overview_placeholder),
                     color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.paragraphLarge,
                     maxLines = if (isBioExpanded) Int.MAX_VALUE else 5,
@@ -280,7 +280,7 @@ private fun MainContent(
             exit = fadeOut(),
         ) {
             ShowCreditsList(
-                header = stringResource(R.string.shows),
+                header = stringResource(R.string.page_title_shows),
                 shows = showCredits ?: emptyList<Show>().toImmutableList(),
                 onFocused = { onFocused("shows") },
                 onClicked = onShowClick,
@@ -295,7 +295,7 @@ private fun MainContent(
             exit = fadeOut(),
         ) {
             MovieCreditsList(
-                header = stringResource(R.string.movies),
+                header = stringResource(R.string.page_title_movies),
                 movies = movieCredits ?: emptyList<Movie>().toImmutableList(),
                 onFocused = { onFocused("movies") },
                 onClicked = onMovieClick,
@@ -349,7 +349,7 @@ private fun ShowCreditsList(
                         val episodes = show.airedEpisodes
                         if (episodes > 0) {
                             InfoChip(
-                                text = stringResource(R.string.episodes_number, show.airedEpisodes),
+                                text = stringResource(R.string.tag_text_number_of_episodes, show.airedEpisodes),
                                 modifier = Modifier.padding(end = 8.dp),
                             )
                         }
