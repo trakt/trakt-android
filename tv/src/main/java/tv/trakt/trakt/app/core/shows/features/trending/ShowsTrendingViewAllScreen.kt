@@ -149,7 +149,7 @@ private fun ShowsTrendingContent(
                         chipContent = {
                             InfoChip(
                                 text = show.watchers.thousandsFormat(),
-                                iconPainter = painterResource(R.drawable.ic_person)
+                                iconPainter = painterResource(R.drawable.ic_person),
                             )
                         },
                         modifier = Modifier

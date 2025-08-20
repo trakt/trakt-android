@@ -147,7 +147,7 @@ private fun MoviesAnticipatedContent(
                         chipContent = {
                             InfoChip(
                                 text = anticipatedMovie.listCount.thousandsFormat(),
-                                iconPainter = painterResource(R.drawable.ic_star)
+                                iconPainter = painterResource(R.drawable.ic_star),
                             )
                         },
                         modifier = Modifier

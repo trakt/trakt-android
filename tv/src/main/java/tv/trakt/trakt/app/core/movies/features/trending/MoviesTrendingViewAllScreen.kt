@@ -147,7 +147,7 @@ private fun MoviesTrendingContent(
                         chipContent = {
                             InfoChip(
                                 text = trendingMovie.watchers.thousandsFormat(),
-                                iconPainter = painterResource(R.drawable.ic_person)
+                                iconPainter = painterResource(R.drawable.ic_person),
                             )
                         },
                         modifier = Modifier
