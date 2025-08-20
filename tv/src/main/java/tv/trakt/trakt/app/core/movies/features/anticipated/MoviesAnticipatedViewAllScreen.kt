@@ -22,6 +22,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -145,11 +146,8 @@ private fun MoviesAnticipatedContent(
                         },
                         chipContent = {
                             InfoChip(
-                                text = stringResource(
-                                    R.string.people_eager,
-                                    anticipatedMovie.listCount.thousandsFormat(),
-                                ),
-                                modifier = Modifier,
+                                text = anticipatedMovie.listCount.thousandsFormat(),
+                                iconPainter = painterResource(R.drawable.ic_star)
                             )
                         },
                         modifier = Modifier

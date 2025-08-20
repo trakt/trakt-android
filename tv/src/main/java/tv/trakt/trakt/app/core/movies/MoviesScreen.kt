@@ -24,6 +24,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -282,7 +283,8 @@ private fun TrendingMoviesList(
                         paletteColor = movie.colors?.colors?.second,
                         footerContent = {
                             InfoChip(
-                                text = stringResource(R.string.people_watching, watchers.thousandsFormat()),
+                                text = watchers.thousandsFormat(),
+                                iconPainter = painterResource(R.drawable.ic_person),
                             )
                         },
                         modifier = Modifier.onFocusChanged {
@@ -425,7 +427,8 @@ private fun AnticipatedMoviesList(
                         paletteColor = movie.colors?.colors?.second,
                         footerContent = {
                             InfoChip(
-                                text = stringResource(R.string.people_eager, listCount.thousandsFormat()),
+                                text = listCount.thousandsFormat(),
+                                iconPainter = painterResource(R.drawable.ic_star),
                             )
                         },
                         modifier = Modifier.onFocusChanged {

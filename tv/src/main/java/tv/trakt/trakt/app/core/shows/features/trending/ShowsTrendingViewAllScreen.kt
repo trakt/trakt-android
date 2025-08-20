@@ -22,6 +22,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -147,11 +148,8 @@ private fun ShowsTrendingContent(
                         },
                         chipContent = {
                             InfoChip(
-                                text = stringResource(
-                                    tv.trakt.trakt.resources.R.string.people_watching,
-                                    show.watchers.thousandsFormat(),
-                                ),
-                                modifier = Modifier,
+                                text = show.watchers.thousandsFormat(),
+                                iconPainter = painterResource(R.drawable.ic_person)
                             )
                         },
                         modifier = Modifier
