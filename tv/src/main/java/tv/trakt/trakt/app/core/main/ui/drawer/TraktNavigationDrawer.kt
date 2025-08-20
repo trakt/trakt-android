@@ -54,6 +54,7 @@ import androidx.tv.material3.DrawerValue.Open
 import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
 import coil3.compose.AsyncImage
+import tv.trakt.trakt.app.common.ui.buttons.PrimaryButton
 import tv.trakt.trakt.app.core.auth.navigation.AuthDestination
 import tv.trakt.trakt.app.core.home.navigation.HomeDestination
 import tv.trakt.trakt.app.core.lists.navigation.ListsDestination
@@ -251,90 +252,113 @@ private fun NavigationProfileItem(
 ) {
     var isFocused by remember { mutableStateOf(false) }
 
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy(10.dp),
-        modifier = Modifier
-            .padding(horizontal = 3.dp)
-            .border(
-                width = 2.dp,
-                color = if (isFocused) {
-                    TraktTheme.colors.accent
-                } else {
-                    Color.Transparent
-                },
-                shape = RoundedCornerShape(14.dp),
+    if (profile == null) {
+        if (isOpen) {
+            PrimaryButton(
+                text = stringResource(R.string.join_trakt).uppercase(),
+                icon = painterResource(R.drawable.ic_plus),
+                onClick = onProfileSelected,
+                focusedScale = 1.01f,
+                modifier = Modifier
+                    .padding(
+                        start = 7.dp,
+                        end = 7.dp,
+                        bottom = 2.dp,
+                    )
+                    .height(36.dp),
             )
-            .padding(horizontal = 8.dp, vertical = 8.dp)
-            .onFocusChanged { isFocused = it.isFocused }
-            .onClick {
-                onProfileSelected()
-            },
-    ) {
-        Box(
-            modifier = Modifier.size(28.dp),
-        ) {
-            if (profile?.hasAvatar == true) {
-                AsyncImage(
-                    model = profile.images?.avatar?.full,
-                    contentDescription = "User avatar",
-                    contentScale = ContentScale.Crop,
-                    error = painterResource(R.drawable.ic_person_placeholder),
-                    modifier = Modifier
-                        .border(2.dp, Color.White, CircleShape)
-                        .clip(CircleShape),
-                )
-            } else {
-                Image(
-                    painter = painterResource(R.drawable.ic_person_placeholder),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .border(2.dp, Color.White, CircleShape)
-                        .clip(CircleShape),
-                )
-            }
-
-            if (profile?.isAnyVip == true) {
+        } else {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .padding(start = 7.dp, bottom = 2.dp)
+                    .background(TraktTheme.colors.primaryButtonContainer, RoundedCornerShape(12.dp))
+                    .size(36.dp),
+            ) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_crown),
+                    painterResource(R.drawable.ic_plus),
                     contentDescription = null,
                     tint = Color.White,
                     modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .graphicsLayer {
-                            val offset = 4.dp
-                            translationX = offset.toPx()
-                            translationY = -offset.toPx()
-                        }
-                        .shadow(
-                            elevation = 1.dp,
-                            shape = CircleShape,
-                        )
-                        .background(Color.Red, shape = CircleShape)
-                        .size(16.dp)
-                        .padding(bottom = (3.5).dp, top = 3.dp),
+                        .requiredSize(20.dp),
                 )
             }
         }
-
-        if (isOpen) {
-            val profileText = if (profile == null) {
-                stringResource(R.string.join_trakt)
-            } else {
-                stringResource(R.string.view_profile)
-            }
-
-            val profileTextSize = if (profile == null) {
-                TraktTheme.typography.navigationLabel
-            } else {
-                TraktTheme.typography.navigationLabel.copy(fontSize = 10.sp)
-            }
-
-            Column(
-                verticalArrangement = spacedBy(1.dp),
-                modifier = Modifier.fillMaxWidth(),
+    } else {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = spacedBy(10.dp),
+            modifier = Modifier
+                .padding(horizontal = 3.dp)
+                .border(
+                    width = 2.dp,
+                    color = if (isFocused) {
+                        TraktTheme.colors.accent
+                    } else {
+                        Color.Transparent
+                    },
+                    shape = RoundedCornerShape(14.dp),
+                )
+                .padding(horizontal = 8.dp, vertical = 8.dp)
+                .onFocusChanged { isFocused = it.isFocused }
+                .onClick {
+                    onProfileSelected()
+                },
+        ) {
+            Box(
+                modifier = Modifier.size(28.dp),
             ) {
-                if (profile?.username != null) {
+                if (profile.hasAvatar) {
+                    AsyncImage(
+                        model = profile.images?.avatar?.full,
+                        contentDescription = "User avatar",
+                        contentScale = ContentScale.Crop,
+                        error = painterResource(R.drawable.ic_person_placeholder),
+                        modifier = Modifier
+                            .border(2.dp, Color.White, CircleShape)
+                            .clip(CircleShape),
+                    )
+                } else {
+                    Image(
+                        painter = painterResource(R.drawable.ic_person_placeholder),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .border(2.dp, Color.White, CircleShape)
+                            .clip(CircleShape),
+                    )
+                }
+
+                if (profile.isAnyVip) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_crown),
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .graphicsLayer {
+                                val offset = 4.dp
+                                translationX = offset.toPx()
+                                translationY = -offset.toPx()
+                            }
+                            .shadow(
+                                elevation = 1.dp,
+                                shape = CircleShape,
+                            )
+                            .background(Color.Red, shape = CircleShape)
+                            .size(16.dp)
+                            .padding(bottom = (3.5).dp, top = 3.dp),
+                    )
+                }
+            }
+
+            if (isOpen) {
+                val profileText = stringResource(R.string.view_profile)
+                val profileTextSize = TraktTheme.typography.navigationLabel.copy(fontSize = 10.sp)
+
+                Column(
+                    verticalArrangement = spacedBy(1.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
                     Text(
                         text = profile.username,
                         style = TraktTheme.typography.navigationLabel.copy(
@@ -346,15 +370,15 @@ private fun NavigationProfileItem(
                         overflow = TextOverflow.Ellipsis,
                         textAlign = TextAlign.Start,
                     )
+                    Text(
+                        text = profileText.uppercase(),
+                        style = profileTextSize,
+                        color = TraktTheme.colors.navigationItemOff,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Start,
+                    )
                 }
-                Text(
-                    text = profileText.uppercase(),
-                    style = profileTextSize,
-                    color = TraktTheme.colors.navigationItemOff,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Start,
-                )
             }
         }
     }
@@ -385,6 +409,21 @@ private fun Preview() {
                 drawerValue = Open,
                 currentDestination = null,
                 profile = PreviewData.user1,
+                onSelected = {},
+                onReselected = {},
+                modifier = Modifier.width(TraktTheme.size.navigationDrawerSize),
+            )
+            NavigationDrawerContent(
+                drawerValue = Closed,
+                currentDestination = null,
+                profile = null,
+                onSelected = {},
+                onReselected = {},
+            )
+            NavigationDrawerContent(
+                drawerValue = Open,
+                currentDestination = null,
+                profile = null,
                 onSelected = {},
                 onReselected = {},
                 modifier = Modifier.width(TraktTheme.size.navigationDrawerSize),

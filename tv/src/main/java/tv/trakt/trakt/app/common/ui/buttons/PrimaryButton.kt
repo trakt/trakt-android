@@ -42,6 +42,7 @@ internal fun PrimaryButton(
     disabledContentColor: Color = TraktTheme.colors.primaryButtonContentDisabled,
     borderColor: Color = Color.White,
     disabledBorderColor: Color = Color.White,
+    focusedScale: Float = 1.04F,
 ) {
     val focusedBorder = Border(
         border = BorderStroke(
@@ -78,7 +79,7 @@ internal fun PrimaryButton(
             disabledContentColor = disabledContentColor,
         ),
         scale = ButtonDefaults.scale(
-            focusedScale = 1.04f,
+            focusedScale = focusedScale,
         ),
         onClick = onClick,
         enabled = enabled,
