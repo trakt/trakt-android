@@ -42,7 +42,7 @@ internal fun HomeUpcomingView(
     viewModel: HomeUpcomingViewModel = koinViewModel(),
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onFocused: (Show) -> Unit = {},
+    onFocused: (Show?) -> Unit = {},
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -67,7 +67,7 @@ internal fun HomeUpcomingContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onFocused: (Show) -> Unit = {},
+    onFocused: (Show?) -> Unit = {},
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
 ) {
     Column(
@@ -85,6 +85,7 @@ internal fun HomeUpcomingContent(
             state.isLoading -> {
                 ContentLoadingList(
                     contentPadding = contentPadding,
+                    onFocused = { onFocused(null) },
                 )
             }
 
@@ -113,12 +114,21 @@ internal fun HomeUpcomingContent(
 }
 
 @Composable
-private fun ContentLoadingList(contentPadding: PaddingValues) {
+private fun ContentLoadingList(
+    contentPadding: PaddingValues,
+    onFocused: () -> Unit,
+) {
     PositionFocusLazyRow(
         contentPadding = contentPadding,
     ) {
         items(count = 10) {
-            EpisodeSkeletonCard()
+            EpisodeSkeletonCard(
+                modifier = Modifier.onFocusChanged {
+                    if (it.isFocused) {
+                        onFocused()
+                    }
+                },
+            )
         }
     }
 }

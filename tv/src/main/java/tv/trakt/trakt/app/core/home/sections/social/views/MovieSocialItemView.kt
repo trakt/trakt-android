@@ -35,7 +35,7 @@ import tv.trakt.trakt.resources.R
 internal fun MovieSocialItemView(
     item: SocialActivityItem.MovieItem,
     onClick: (TraktId) -> Unit,
-    onFocused: (SocialActivityItem) -> Unit,
+    onFocused: (SocialActivityItem?) -> Unit,
 ) {
     HorizontalMediaCard(
         title = "",

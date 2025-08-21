@@ -41,7 +41,7 @@ internal fun HomeComingSoonView(
     viewModel: HomeComingSoonViewModel = koinViewModel(),
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onFocused: (Movie) -> Unit = {},
+    onFocused: (Movie?) -> Unit = {},
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToViewAll: () -> Unit,
 ) {
@@ -68,7 +68,7 @@ internal fun HomeComingSoonContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onFocused: (Movie) -> Unit = {},
+    onFocused: (Movie?) -> Unit = {},
     onNavigateToMovie: (TraktId) -> Unit = {},
     onNavigateToViewAll: () -> Unit = {},
 ) {
@@ -87,6 +87,7 @@ internal fun HomeComingSoonContent(
             state.isLoading -> {
                 ContentLoadingList(
                     contentPadding = contentPadding,
+                    onFocused = { onFocused(null) },
                 )
             }
 
@@ -169,12 +170,21 @@ private fun ContentList(
 }
 
 @Composable
-private fun ContentLoadingList(contentPadding: PaddingValues) {
+private fun ContentLoadingList(
+    contentPadding: PaddingValues,
+    onFocused: () -> Unit,
+) {
     PositionFocusLazyRow(
         contentPadding = contentPadding,
     ) {
         items(count = 10) {
-            HorizontalMediaSkeletonCard()
+            HorizontalMediaSkeletonCard(
+                modifier = Modifier.onFocusChanged {
+                    if (it.isFocused) {
+                        onFocused()
+                    }
+                },
+            )
         }
     }
 }

@@ -10,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -36,7 +37,7 @@ internal fun HomeSocialView(
     viewModel: HomeSocialViewModel = koinViewModel(),
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onFocused: (SocialActivityItem) -> Unit = {},
+    onFocused: (SocialActivityItem?) -> Unit = {},
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToMovie: (movieId: TraktId) -> Unit,
     onNavigateToViewAll: () -> Unit,
@@ -61,7 +62,7 @@ internal fun HomeSocialContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onFocused: (SocialActivityItem) -> Unit = {},
+    onFocused: (SocialActivityItem?) -> Unit = {},
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
     onMovieClick: (movieId: TraktId) -> Unit = {},
     onViewAllClick: () -> Unit = {},
@@ -81,6 +82,7 @@ internal fun HomeSocialContent(
             state.isLoading -> {
                 ContentLoadingList(
                     contentPadding = contentPadding,
+                    onFocused = { onFocused(null) },
                 )
             }
 
@@ -110,7 +112,7 @@ internal fun HomeSocialContent(
 @Composable
 private fun ContentList(
     listItems: () -> ImmutableList<SocialActivityItem>,
-    onFocused: (SocialActivityItem) -> Unit,
+    onFocused: (SocialActivityItem?) -> Unit,
     onEpisodeClick: (TraktId, Episode) -> Unit,
     onMovieClick: (TraktId) -> Unit = {},
     onViewAllClick: () -> Unit,
@@ -154,12 +156,21 @@ private fun ContentList(
 }
 
 @Composable
-private fun ContentLoadingList(contentPadding: PaddingValues) {
+private fun ContentLoadingList(
+    contentPadding: PaddingValues,
+    onFocused: () -> Unit,
+) {
     PositionFocusLazyRow(
         contentPadding = contentPadding,
     ) {
         items(count = 10) {
-            EpisodeSkeletonCard()
+            EpisodeSkeletonCard(
+                modifier = Modifier.onFocusChanged {
+                    if (it.isFocused) {
+                        onFocused()
+                    }
+                },
+            )
         }
     }
 }

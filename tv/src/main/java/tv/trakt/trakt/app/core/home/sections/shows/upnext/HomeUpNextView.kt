@@ -1,7 +1,6 @@
 package tv.trakt.trakt.app.core.home.sections.shows.upnext
 
 import EpisodeProgressBar
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,9 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -38,7 +35,6 @@ import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.app.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressShow
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
-import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.model.Show
@@ -56,8 +52,8 @@ internal fun HomeUpNextView(
     viewModel: HomeUpNextViewModel = koinViewModel(),
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
+    onFocused: (Show?) -> Unit = {},
     onLoaded: () -> Unit = {},
-    onFocused: (Show) -> Unit = {},
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToViewAll: () -> Unit,
 ) {
@@ -70,12 +66,14 @@ internal fun HomeUpNextView(
         )
     }
 
-    LaunchedEffect(Unit) {
-        focusRequesters["initial"]?.requestSafeFocus()
-    }
-
     LifecycleEventEffect(ON_CREATE) {
         viewModel.updateData()
+    }
+
+    LaunchedEffect(state.isLoading) {
+        if (!state.isLoading && state.items != null) {
+            onLoaded()
+        }
     }
 
     HomeUpNextContent(
@@ -84,7 +82,6 @@ internal fun HomeUpNextView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         focusRequesters = focusRequesters,
-        onLoaded = onLoaded,
         onFocused = onFocused,
         onNavigateToEpisode = onNavigateToEpisode,
         onViewAllClick = onNavigateToViewAll,
@@ -98,13 +95,10 @@ internal fun HomeUpNextContent(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     focusRequesters: Map<String, FocusRequester> = emptyMap(),
-    onLoaded: () -> Unit = {},
-    onFocused: (Show) -> Unit = {},
+    onFocused: (Show?) -> Unit = {},
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
     onViewAllClick: () -> Unit = {},
 ) {
-    var isFocusable by remember { mutableStateOf(true) }
-
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
         modifier = modifier,
@@ -113,16 +107,14 @@ internal fun HomeUpNextContent(
             text = stringResource(R.string.list_title_up_next),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.heading5,
-            modifier = Modifier
-                .padding(headerPadding)
-                .focusRequester(focusRequesters["initial"] ?: FocusRequester.Default)
-                .focusable(isFocusable),
+            modifier = Modifier.padding(headerPadding),
         )
 
         when {
             state.isLoading -> {
                 ContentLoadingList(
                     contentPadding = contentPadding,
+                    onFocused = { onFocused(null) },
                 )
             }
 
@@ -137,12 +129,6 @@ internal fun HomeUpNextContent(
             }
 
             else -> {
-                LaunchedEffect(state.items) {
-                    if (state.items != null) {
-                        onLoaded()
-                        isFocusable = false
-                    }
-                }
                 ContentList(
                     listItems = { state.items ?: emptyList<ProgressShow>().toImmutableList() },
                     onFocused = onFocused,
@@ -169,7 +155,8 @@ private fun ContentList(
 ) {
     PositionFocusLazyRow(
         contentPadding = contentPadding,
-        modifier = Modifier.focusRequester(focusRequesters["content"] ?: FocusRequester.Default),
+        modifier = Modifier
+            .focusRequester(focusRequesters["content"] ?: FocusRequester.Default),
     ) {
         items(
             items = listItems(),
@@ -266,12 +253,21 @@ private fun ContentListItem(
 }
 
 @Composable
-private fun ContentLoadingList(contentPadding: PaddingValues) {
+private fun ContentLoadingList(
+    contentPadding: PaddingValues,
+    onFocused: () -> Unit,
+) {
     PositionFocusLazyRow(
         contentPadding = contentPadding,
     ) {
         items(count = 10) {
-            EpisodeSkeletonCard()
+            EpisodeSkeletonCard(
+                modifier = Modifier.onFocusChanged {
+                    if (it.isFocused) {
+                        onFocused()
+                    }
+                },
+            )
         }
     }
 }

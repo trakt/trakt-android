@@ -23,6 +23,7 @@ import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.delay
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.app.core.home.HomeState.AuthenticationState.AUTHENTICATED
@@ -38,8 +39,8 @@ import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.TraktId
 
 private val sections = listOf(
-    "upNextEpisodes",
-    "upcomingEpisodes",
+    "upNext",
+    "upcomingSchedule",
     "availableNow",
     "comingSoon",
     "socialActivity",
@@ -85,6 +86,7 @@ private fun HomeScreenContent(
     onNavigateToAvailableNow: () -> Unit,
     onNavigateToComingSoon: () -> Unit,
 ) {
+    var focusedInitial by rememberSaveable { mutableStateOf(false) }
     var focusedSection by rememberSaveable { mutableStateOf<String?>(null) }
     var focusedImageUrl by remember { mutableStateOf<String?>(null) }
 
@@ -93,6 +95,16 @@ private fun HomeScreenContent(
             keySelector = { it },
             valueTransform = { FocusRequester() },
         )
+    }
+
+    LaunchedEffect(Unit) {
+        delay(500)
+        if (focusedSection == null) {
+            focusedSection = "upNext"
+            focusRequesters["upNext"]?.requestSafeFocus()
+        } else {
+            focusRequesters[focusedSection]?.requestSafeFocus()
+        }
     }
 
     Box(
@@ -133,17 +145,17 @@ private fun HomeScreenContent(
                     onNavigateToEpisode = onNavigateToEpisode,
                     onNavigateToViewAll = onNavigateToUpNext,
                     onLoaded = {
-                        focusRequesters
-                            .getValue("upNextEpisodes")
-                            .requestSafeFocus()
+                        if (!focusedInitial) {
+                            focusedInitial = true
+                            focusRequesters["upNext"]?.requestSafeFocus()
+                        }
                     },
                     onFocused = { show ->
-                        focusedSection = "upNextEpisodes"
-                        focusedImageUrl = show.images?.getFanartUrl(Size.FULL)
+                        focusedSection = "upNext"
+                        focusedImageUrl = show?.images?.getFanartUrl(Size.FULL)
                     },
                     modifier = Modifier
-                        .focusGroup()
-                        .focusRequester(focusRequesters.getValue("upNextEpisodes")),
+                        .focusRequester(focusRequesters.getValue("upNext")),
                 )
             }
 
@@ -153,12 +165,11 @@ private fun HomeScreenContent(
                     contentPadding = sectionPadding,
                     onNavigateToEpisode = onNavigateToEpisode,
                     onFocused = { show ->
-                        focusedSection = "upcomingEpisodes"
-                        focusedImageUrl = show.images?.getFanartUrl(Size.FULL)
+                        focusedSection = "upcomingSchedule"
+                        focusedImageUrl = show?.images?.getFanartUrl(Size.FULL)
                     },
                     modifier = Modifier
-                        .focusGroup()
-                        .focusRequester(focusRequesters.getValue("upcomingEpisodes")),
+                        .focusRequester(focusRequesters.getValue("upcomingSchedule")),
                 )
             }
 
@@ -170,10 +181,9 @@ private fun HomeScreenContent(
                     onNavigateToViewAll = onNavigateToAvailableNow,
                     onFocused = { movie ->
                         focusedSection = "availableNow"
-                        focusedImageUrl = movie.images?.getFanartUrl(Size.FULL)
+                        focusedImageUrl = movie?.images?.getFanartUrl(Size.FULL)
                     },
                     modifier = Modifier
-                        .focusGroup()
                         .focusRequester(focusRequesters.getValue("availableNow")),
                 )
             }
@@ -186,10 +196,9 @@ private fun HomeScreenContent(
                     onNavigateToViewAll = onNavigateToComingSoon,
                     onFocused = { movie ->
                         focusedSection = "comingSoon"
-                        focusedImageUrl = movie.images?.getFanartUrl(Size.FULL)
+                        focusedImageUrl = movie?.images?.getFanartUrl(Size.FULL)
                     },
                     modifier = Modifier
-                        .focusGroup()
                         .focusRequester(focusRequesters.getValue("comingSoon")),
                 )
             }
@@ -203,10 +212,9 @@ private fun HomeScreenContent(
                     onNavigateToViewAll = {},
                     onFocused = { item ->
                         focusedSection = "socialActivity"
-                        focusedImageUrl = item.images?.getFanartUrl(Size.FULL)
+                        focusedImageUrl = item?.images?.getFanartUrl(Size.FULL)
                     },
                     modifier = Modifier
-                        .focusGroup()
                         .focusRequester(focusRequesters.getValue("socialActivity")),
                 )
             }
