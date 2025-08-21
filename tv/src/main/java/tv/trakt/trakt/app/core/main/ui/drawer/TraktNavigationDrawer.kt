@@ -308,6 +308,9 @@ private fun NavigationProfileItem(
             Box(
                 modifier = Modifier.size(28.dp),
             ) {
+                val borderColor = remember(profile.isAnyVip) {
+                    if (profile.isAnyVip) Color.Red else Color.Transparent
+                }
                 if (profile.hasAvatar) {
                     AsyncImage(
                         model = profile.images?.avatar?.full,
@@ -315,7 +318,7 @@ private fun NavigationProfileItem(
                         contentScale = ContentScale.Crop,
                         error = painterResource(R.drawable.ic_person_placeholder),
                         modifier = Modifier
-                            .border(2.dp, Color.White, CircleShape)
+                            .border(2.dp, borderColor, CircleShape)
                             .clip(CircleShape),
                     )
                 } else {
@@ -323,7 +326,7 @@ private fun NavigationProfileItem(
                         painter = painterResource(R.drawable.ic_person_placeholder),
                         contentDescription = null,
                         modifier = Modifier
-                            .border(2.dp, Color.White, CircleShape)
+                            .border(2.dp, borderColor, CircleShape)
                             .clip(CircleShape),
                     )
                 }
