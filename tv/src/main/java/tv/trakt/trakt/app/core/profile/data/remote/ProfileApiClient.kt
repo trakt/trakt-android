@@ -167,7 +167,7 @@ internal class ProfileApiClient(
             type = type,
             extended = "full,cloud9",
             page = page,
-            limit = limit
+            limit = limit,
         )
         return response.body()
     }

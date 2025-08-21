@@ -92,7 +92,7 @@ internal val homeModule = module {
 
     viewModel {
         HomeSocialViewModel(
-            getSocialActivityUseCase = get()
+            getSocialActivityUseCase = get(),
         )
     }
 
