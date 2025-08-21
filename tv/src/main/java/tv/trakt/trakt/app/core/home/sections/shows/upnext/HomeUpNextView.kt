@@ -38,6 +38,7 @@ import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.app.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressShow
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
+import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.model.Show
@@ -70,7 +71,7 @@ internal fun HomeUpNextView(
     }
 
     LaunchedEffect(Unit) {
-        focusRequesters["initial"]?.requestFocus()
+        focusRequesters["initial"]?.requestSafeFocus()
     }
 
     LifecycleEventEffect(ON_CREATE) {

@@ -31,8 +31,10 @@ import tv.trakt.trakt.app.core.home.sections.movies.availablenow.HomeAvailableNo
 import tv.trakt.trakt.app.core.home.sections.movies.comingsoon.HomeComingSoonView
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.HomeUpcomingView
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.HomeUpNextView
+import tv.trakt.trakt.app.core.home.sections.social.HomeSocialView
+import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.TraktId
 
 private val sections = listOf(
@@ -40,6 +42,7 @@ private val sections = listOf(
     "upcomingEpisodes",
     "availableNow",
     "comingSoon",
+    "socialActivity",
 )
 
 @Composable
@@ -99,7 +102,7 @@ private fun HomeScreenContent(
             .background(TraktTheme.colors.backgroundPrimary)
             .focusProperties {
                 onEnter = {
-                    focusRequesters[focusedSection]?.requestFocus()
+                    focusRequesters[focusedSection]?.requestSafeFocus()
                 }
             },
     ) {
@@ -132,11 +135,11 @@ private fun HomeScreenContent(
                     onLoaded = {
                         focusRequesters
                             .getValue("upNextEpisodes")
-                            .requestFocus()
+                            .requestSafeFocus()
                     },
                     onFocused = { show ->
                         focusedSection = "upNextEpisodes"
-                        focusedImageUrl = show.images?.getFanartUrl(Images.Size.FULL)
+                        focusedImageUrl = show.images?.getFanartUrl(Size.FULL)
                     },
                     modifier = Modifier
                         .focusGroup()
@@ -151,7 +154,7 @@ private fun HomeScreenContent(
                     onNavigateToEpisode = onNavigateToEpisode,
                     onFocused = { show ->
                         focusedSection = "upcomingEpisodes"
-                        focusedImageUrl = show.images?.getFanartUrl(Images.Size.FULL)
+                        focusedImageUrl = show.images?.getFanartUrl(Size.FULL)
                     },
                     modifier = Modifier
                         .focusGroup()
@@ -167,7 +170,7 @@ private fun HomeScreenContent(
                     onNavigateToViewAll = onNavigateToAvailableNow,
                     onFocused = { movie ->
                         focusedSection = "availableNow"
-                        focusedImageUrl = movie.images?.getFanartUrl(Images.Size.FULL)
+                        focusedImageUrl = movie.images?.getFanartUrl(Size.FULL)
                     },
                     modifier = Modifier
                         .focusGroup()
@@ -183,11 +186,28 @@ private fun HomeScreenContent(
                     onNavigateToViewAll = onNavigateToComingSoon,
                     onFocused = { movie ->
                         focusedSection = "comingSoon"
-                        focusedImageUrl = movie.images?.getFanartUrl(Images.Size.FULL)
+                        focusedImageUrl = movie.images?.getFanartUrl(Size.FULL)
                     },
                     modifier = Modifier
                         .focusGroup()
                         .focusRequester(focusRequesters.getValue("comingSoon")),
+                )
+            }
+
+            item {
+                HomeSocialView(
+                    headerPadding = sectionPadding,
+                    contentPadding = sectionPadding,
+                    onNavigateToMovie = onNavigateToMovie,
+                    onNavigateToEpisode = onNavigateToEpisode,
+                    onNavigateToViewAll = {},
+                    onFocused = { item ->
+                        focusedSection = "socialActivity"
+                        focusedImageUrl = item.images?.getFanartUrl(Size.FULL)
+                    },
+                    modifier = Modifier
+                        .focusGroup()
+                        .focusRequester(focusRequesters.getValue("socialActivity")),
                 )
             }
         }

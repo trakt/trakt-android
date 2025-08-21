@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
@@ -29,6 +30,7 @@ internal fun InfoChip(
     iconVector: ImageVector? = null,
     iconPainter: Painter? = null,
     containerColor: Color = TraktTheme.colors.chipContainer,
+    endPadding: Dp = 0.dp,
 ) {
     val hasIcon = (iconVector != null || iconPainter != null)
     Row(
@@ -42,7 +44,8 @@ internal fun InfoChip(
             .padding(
                 horizontal = if (hasIcon) 5.dp else 8.dp,
                 vertical = 4.dp,
-            ),
+            )
+            .padding(end = endPadding),
     ) {
         if (iconVector != null) {
             Icon(

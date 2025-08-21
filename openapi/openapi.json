@@ -4013,16 +4013,7 @@
                                 "nullable": true
                               },
                               "age": {
-                                "oneOf": [
-                                  {
-                                    "type": "integer"
-                                  },
-                                  {
-                                    "type": "string",
-                                    "format": "null",
-                                    "nullable": true
-                                  }
-                                ],
+                                "type": "integer",
                                 "nullable": true
                               },
                               "images": {
@@ -4258,16 +4249,7 @@
                                     "nullable": true
                                   },
                                   "age": {
-                                    "oneOf": [
-                                      {
-                                        "type": "integer"
-                                      },
-                                      {
-                                        "type": "string",
-                                        "format": "null",
-                                        "nullable": true
-                                      }
-                                    ],
+                                    "type": "integer",
                                     "nullable": true
                                   },
                                   "images": {
@@ -5451,16 +5433,7 @@
                                 "nullable": true
                               },
                               "age": {
-                                "oneOf": [
-                                  {
-                                    "type": "integer"
-                                  },
-                                  {
-                                    "type": "string",
-                                    "format": "null",
-                                    "nullable": true
-                                  }
-                                ],
+                                "type": "integer",
                                 "nullable": true
                               },
                               "images": {
@@ -5683,16 +5656,7 @@
                       "nullable": true
                     },
                     "age": {
-                      "oneOf": [
-                        {
-                          "type": "integer"
-                        },
-                        {
-                          "type": "string",
-                          "format": "null",
-                          "nullable": true
-                        }
-                      ],
+                      "type": "integer",
                       "nullable": true
                     },
                     "images": {
@@ -5805,15 +5769,13 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "discriminator": {
-                      "propertyName": "type"
-                    },
                     "oneOf": [
                       {
                         "type": "object",
                         "properties": {
                           "id": {
-                            "type": "integer"
+                            "type": "number",
+                            "format": "int64"
                           },
                           "activity_at": {
                             "type": "string"
@@ -5881,16 +5843,7 @@
                                 "nullable": true
                               },
                               "age": {
-                                "oneOf": [
-                                  {
-                                    "type": "integer"
-                                  },
-                                  {
-                                    "type": "string",
-                                    "format": "null",
-                                    "nullable": true
-                                  }
-                                ],
+                                "type": "integer",
                                 "nullable": true
                               },
                               "images": {
@@ -6074,7 +6027,8 @@
                               "number",
                               "title",
                               "ids"
-                            ]
+                            ],
+                            "nullable": true
                           },
                           "show": {
                             "type": "object",
@@ -6302,7 +6256,8 @@
                             "required": [
                               "title",
                               "ids"
-                            ]
+                            ],
+                            "nullable": true
                           }
                         },
                         "required": [
@@ -6310,16 +6265,15 @@
                           "activity_at",
                           "action",
                           "user",
-                          "type",
-                          "episode",
-                          "show"
+                          "type"
                         ]
                       },
                       {
                         "type": "object",
                         "properties": {
                           "id": {
-                            "type": "integer"
+                            "type": "number",
+                            "format": "int64"
                           },
                           "activity_at": {
                             "type": "string"
@@ -6387,16 +6341,7 @@
                                 "nullable": true
                               },
                               "age": {
-                                "oneOf": [
-                                  {
-                                    "type": "integer"
-                                  },
-                                  {
-                                    "type": "string",
-                                    "format": "null",
-                                    "nullable": true
-                                  }
-                                ],
+                                "type": "integer",
                                 "nullable": true
                               },
                               "images": {
@@ -6649,7 +6594,8 @@
                             "required": [
                               "title",
                               "ids"
-                            ]
+                            ],
+                            "nullable": true
                           }
                         },
                         "required": [
@@ -6657,8 +6603,7 @@
                           "activity_at",
                           "action",
                           "user",
-                          "type",
-                          "movie"
+                          "type"
                         ]
                       }
                     ]
@@ -7116,16 +7061,7 @@
                                     "nullable": true
                                   },
                                   "age": {
-                                    "oneOf": [
-                                      {
-                                        "type": "integer"
-                                      },
-                                      {
-                                        "type": "string",
-                                        "format": "null",
-                                        "nullable": true
-                                      }
-                                    ],
+                                    "type": "integer",
                                     "nullable": true
                                   },
                                   "images": {
@@ -7522,16 +7458,7 @@
                                     "nullable": true
                                   },
                                   "age": {
-                                    "oneOf": [
-                                      {
-                                        "type": "integer"
-                                      },
-                                      {
-                                        "type": "string",
-                                        "format": "null",
-                                        "nullable": true
-                                      }
-                                    ],
+                                    "type": "integer",
                                     "nullable": true
                                   },
                                   "images": {
@@ -8045,16 +7972,7 @@
                                     "nullable": true
                                   },
                                   "age": {
-                                    "oneOf": [
-                                      {
-                                        "type": "integer"
-                                      },
-                                      {
-                                        "type": "string",
-                                        "format": "null",
-                                        "nullable": true
-                                      }
-                                    ],
+                                    "type": "integer",
                                     "nullable": true
                                   },
                                   "images": {
@@ -8382,16 +8300,7 @@
                                     "nullable": true
                                   },
                                   "age": {
-                                    "oneOf": [
-                                      {
-                                        "type": "integer"
-                                      },
-                                      {
-                                        "type": "string",
-                                        "format": "null",
-                                        "nullable": true
-                                      }
-                                    ],
+                                    "type": "integer",
                                     "nullable": true
                                   },
                                   "images": {
@@ -9238,16 +9147,7 @@
                           "nullable": true
                         },
                         "age": {
-                          "oneOf": [
-                            {
-                              "type": "integer"
-                            },
-                            {
-                              "type": "string",
-                              "format": "null",
-                              "nullable": true
-                            }
-                          ],
+                          "type": "integer",
                           "nullable": true
                         },
                         "images": {
@@ -9435,16 +9335,7 @@
                             "nullable": true
                           },
                           "age": {
-                            "oneOf": [
-                              {
-                                "type": "integer"
-                              },
-                              {
-                                "type": "string",
-                                "format": "null",
-                                "nullable": true
-                              }
-                            ],
+                            "type": "integer",
                             "nullable": true
                           },
                           "images": {
@@ -9598,16 +9489,7 @@
                             "nullable": true
                           },
                           "age": {
-                            "oneOf": [
-                              {
-                                "type": "integer"
-                              },
-                              {
-                                "type": "string",
-                                "format": "null",
-                                "nullable": true
-                              }
-                            ],
+                            "type": "integer",
                             "nullable": true
                           },
                           "images": {
@@ -9761,16 +9643,7 @@
                             "nullable": true
                           },
                           "age": {
-                            "oneOf": [
-                              {
-                                "type": "integer"
-                              },
-                              {
-                                "type": "string",
-                                "format": "null",
-                                "nullable": true
-                              }
-                            ],
+                            "type": "integer",
                             "nullable": true
                           },
                           "images": {
@@ -16731,16 +16604,7 @@
                             "nullable": true
                           },
                           "age": {
-                            "oneOf": [
-                              {
-                                "type": "integer"
-                              },
-                              {
-                                "type": "string",
-                                "format": "null",
-                                "nullable": true
-                              }
-                            ],
+                            "type": "integer",
                             "nullable": true
                           },
                           "images": {
@@ -19633,16 +19497,7 @@
                             "nullable": true
                           },
                           "age": {
-                            "oneOf": [
-                              {
-                                "type": "integer"
-                              },
-                              {
-                                "type": "string",
-                                "format": "null",
-                                "nullable": true
-                              }
-                            ],
+                            "type": "integer",
                             "nullable": true
                           },
                           "images": {
@@ -19865,16 +19720,7 @@
                             "nullable": true
                           },
                           "age": {
-                            "oneOf": [
-                              {
-                                "type": "integer"
-                              },
-                              {
-                                "type": "string",
-                                "format": "null",
-                                "nullable": true
-                              }
-                            ],
+                            "type": "integer",
                             "nullable": true
                           },
                           "images": {
@@ -20143,16 +19989,7 @@
                           "nullable": true
                         },
                         "age": {
-                          "oneOf": [
-                            {
-                              "type": "integer"
-                            },
-                            {
-                              "type": "string",
-                              "format": "null",
-                              "nullable": true
-                            }
-                          ],
+                          "type": "integer",
                           "nullable": true
                         },
                         "images": {
@@ -20393,16 +20230,7 @@
                             "nullable": true
                           },
                           "age": {
-                            "oneOf": [
-                              {
-                                "type": "integer"
-                              },
-                              {
-                                "type": "string",
-                                "format": "null",
-                                "nullable": true
-                              }
-                            ],
+                            "type": "integer",
                             "nullable": true
                           },
                           "images": {
@@ -20718,16 +20546,7 @@
                           "nullable": true
                         },
                         "age": {
-                          "oneOf": [
-                            {
-                              "type": "integer"
-                            },
-                            {
-                              "type": "string",
-                              "format": "null",
-                              "nullable": true
-                            }
-                          ],
+                          "type": "integer",
                           "nullable": true
                         },
                         "images": {
@@ -21013,16 +20832,7 @@
                             "nullable": true
                           },
                           "age": {
-                            "oneOf": [
-                              {
-                                "type": "integer"
-                              },
-                              {
-                                "type": "string",
-                                "format": "null",
-                                "nullable": true
-                              }
-                            ],
+                            "type": "integer",
                             "nullable": true
                           },
                           "images": {
@@ -26174,16 +25984,7 @@
                             "nullable": true
                           },
                           "age": {
-                            "oneOf": [
-                              {
-                                "type": "integer"
-                              },
-                              {
-                                "type": "string",
-                                "format": "null",
-                                "nullable": true
-                              }
-                            ],
+                            "type": "integer",
                             "nullable": true
                           },
                           "images": {
@@ -26423,16 +26224,7 @@
                             "nullable": true
                           },
                           "age": {
-                            "oneOf": [
-                              {
-                                "type": "integer"
-                              },
-                              {
-                                "type": "string",
-                                "format": "null",
-                                "nullable": true
-                              }
-                            ],
+                            "type": "integer",
                             "nullable": true
                           },
                           "images": {
@@ -31804,16 +31596,7 @@
                             "nullable": true
                           },
                           "age": {
-                            "oneOf": [
-                              {
-                                "type": "integer"
-                              },
-                              {
-                                "type": "string",
-                                "format": "null",
-                                "nullable": true
-                              }
-                            ],
+                            "type": "integer",
                             "nullable": true
                           },
                           "images": {
@@ -31963,16 +31746,7 @@
                             "nullable": true
                           },
                           "age": {
-                            "oneOf": [
-                              {
-                                "type": "integer"
-                              },
-                              {
-                                "type": "string",
-                                "format": "null",
-                                "nullable": true
-                              }
-                            ],
+                            "type": "integer",
                             "nullable": true
                           },
                           "images": {
@@ -32133,16 +31907,7 @@
                           "nullable": true
                         },
                         "age": {
-                          "oneOf": [
-                            {
-                              "type": "integer"
-                            },
-                            {
-                              "type": "string",
-                              "format": "null",
-                              "nullable": true
-                            }
-                          ],
+                          "type": "integer",
                           "nullable": true
                         },
                         "images": {
@@ -42333,16 +42098,7 @@
                               "nullable": true
                             },
                             "age": {
-                              "oneOf": [
-                                {
-                                  "type": "integer"
-                                },
-                                {
-                                  "type": "string",
-                                  "format": "null",
-                                  "nullable": true
-                                }
-                              ],
+                              "type": "integer",
                               "nullable": true
                             },
                             "images": {
@@ -42453,16 +42209,7 @@
                               "nullable": true
                             },
                             "age": {
-                              "oneOf": [
-                                {
-                                  "type": "integer"
-                                },
-                                {
-                                  "type": "string",
-                                  "format": "null",
-                                  "nullable": true
-                                }
-                              ],
+                              "type": "integer",
                               "nullable": true
                             },
                             "images": {
@@ -42974,16 +42721,7 @@
                               "nullable": true
                             },
                             "age": {
-                              "oneOf": [
-                                {
-                                  "type": "integer"
-                                },
-                                {
-                                  "type": "string",
-                                  "format": "null",
-                                  "nullable": true
-                                }
-                              ],
+                              "type": "integer",
                               "nullable": true
                             },
                             "images": {
@@ -43094,16 +42832,7 @@
                               "nullable": true
                             },
                             "age": {
-                              "oneOf": [
-                                {
-                                  "type": "integer"
-                                },
-                                {
-                                  "type": "string",
-                                  "format": "null",
-                                  "nullable": true
-                                }
-                              ],
+                              "type": "integer",
                               "nullable": true
                             },
                             "images": {
@@ -43535,16 +43264,7 @@
                               "nullable": true
                             },
                             "age": {
-                              "oneOf": [
-                                {
-                                  "type": "integer"
-                                },
-                                {
-                                  "type": "string",
-                                  "format": "null",
-                                  "nullable": true
-                                }
-                              ],
+                              "type": "integer",
                               "nullable": true
                             },
                             "images": {
@@ -43655,16 +43375,7 @@
                               "nullable": true
                             },
                             "age": {
-                              "oneOf": [
-                                {
-                                  "type": "integer"
-                                },
-                                {
-                                  "type": "string",
-                                  "format": "null",
-                                  "nullable": true
-                                }
-                              ],
+                              "type": "integer",
                               "nullable": true
                             },
                             "images": {
@@ -44081,16 +43792,7 @@
                               "nullable": true
                             },
                             "age": {
-                              "oneOf": [
-                                {
-                                  "type": "integer"
-                                },
-                                {
-                                  "type": "string",
-                                  "format": "null",
-                                  "nullable": true
-                                }
-                              ],
+                              "type": "integer",
                               "nullable": true
                             },
                             "images": {
@@ -44201,16 +43903,7 @@
                               "nullable": true
                             },
                             "age": {
-                              "oneOf": [
-                                {
-                                  "type": "integer"
-                                },
-                                {
-                                  "type": "string",
-                                  "format": "null",
-                                  "nullable": true
-                                }
-                              ],
+                              "type": "integer",
                               "nullable": true
                             },
                             "images": {
@@ -45202,16 +44895,7 @@
                         "nullable": true
                       },
                       "age": {
-                        "oneOf": [
-                          {
-                            "type": "integer"
-                          },
-                          {
-                            "type": "string",
-                            "format": "null",
-                            "nullable": true
-                          }
-                        ],
+                        "type": "integer",
                         "nullable": true
                       },
                       "images": {
@@ -46287,16 +45971,7 @@
                             "nullable": true
                           },
                           "age": {
-                            "oneOf": [
-                              {
-                                "type": "integer"
-                              },
-                              {
-                                "type": "string",
-                                "format": "null",
-                                "nullable": true
-                              }
-                            ],
+                            "type": "integer",
                             "nullable": true
                           },
                           "images": {
@@ -46565,16 +46240,7 @@
                             "nullable": true
                           },
                           "age": {
-                            "oneOf": [
-                              {
-                                "type": "integer"
-                              },
-                              {
-                                "type": "string",
-                                "format": "null",
-                                "nullable": true
-                              }
-                            ],
+                            "type": "integer",
                             "nullable": true
                           },
                           "images": {
@@ -50307,16 +49973,7 @@
                         "nullable": true
                       },
                       "age": {
-                        "oneOf": [
-                          {
-                            "type": "integer"
-                          },
-                          {
-                            "type": "string",
-                            "format": "null",
-                            "nullable": true
-                          }
-                        ],
+                        "type": "integer",
                         "nullable": true
                       },
                       "images": {
@@ -51792,16 +51449,7 @@
                             "nullable": true
                           },
                           "age": {
-                            "oneOf": [
-                              {
-                                "type": "integer"
-                              },
-                              {
-                                "type": "string",
-                                "format": "null",
-                                "nullable": true
-                              }
-                            ],
+                            "type": "integer",
                             "nullable": true
                           },
                           "images": {
@@ -52070,16 +51718,7 @@
                             "nullable": true
                           },
                           "age": {
-                            "oneOf": [
-                              {
-                                "type": "integer"
-                              },
-                              {
-                                "type": "string",
-                                "format": "null",
-                                "nullable": true
-                              }
-                            ],
+                            "type": "integer",
                             "nullable": true
                           },
                           "images": {
@@ -52920,16 +52559,7 @@
                         "nullable": true
                       },
                       "age": {
-                        "oneOf": [
-                          {
-                            "type": "integer"
-                          },
-                          {
-                            "type": "string",
-                            "format": "null",
-                            "nullable": true
-                          }
-                        ],
+                        "type": "integer",
                         "nullable": true
                       },
                       "images": {
@@ -53185,16 +52815,7 @@
                             "nullable": true
                           },
                           "age": {
-                            "oneOf": [
-                              {
-                                "type": "integer"
-                              },
-                              {
-                                "type": "string",
-                                "format": "null",
-                                "nullable": true
-                              }
-                            ],
+                            "type": "integer",
                             "nullable": true
                           },
                           "images": {
@@ -58997,16 +58618,7 @@
                                 "nullable": true
                               },
                               "age": {
-                                "oneOf": [
-                                  {
-                                    "type": "integer"
-                                  },
-                                  {
-                                    "type": "string",
-                                    "format": "null",
-                                    "nullable": true
-                                  }
-                                ],
+                                "type": "integer",
                                 "nullable": true
                               },
                               "images": {
@@ -59330,16 +58942,7 @@
                                 "nullable": true
                               },
                               "age": {
-                                "oneOf": [
-                                  {
-                                    "type": "integer"
-                                  },
-                                  {
-                                    "type": "string",
-                                    "format": "null",
-                                    "nullable": true
-                                  }
-                                ],
+                                "type": "integer",
                                 "nullable": true
                               },
                               "images": {
@@ -59643,16 +59246,7 @@
                           "nullable": true
                         },
                         "age": {
-                          "oneOf": [
-                            {
-                              "type": "integer"
-                            },
-                            {
-                              "type": "string",
-                              "format": "null",
-                              "nullable": true
-                            }
-                          ],
+                          "type": "integer",
                           "nullable": true
                         },
                         "images": {
@@ -61195,16 +60789,7 @@
                             "nullable": true
                           },
                           "age": {
-                            "oneOf": [
-                              {
-                                "type": "integer"
-                              },
-                              {
-                                "type": "string",
-                                "format": "null",
-                                "nullable": true
-                              }
-                            ],
+                            "type": "integer",
                             "nullable": true
                           },
                           "images": {
@@ -61432,16 +61017,7 @@
                             "nullable": true
                           },
                           "age": {
-                            "oneOf": [
-                              {
-                                "type": "integer"
-                              },
-                              {
-                                "type": "string",
-                                "format": "null",
-                                "nullable": true
-                              }
-                            ],
+                            "type": "integer",
                             "nullable": true
                           },
                           "images": {
@@ -61720,16 +61296,7 @@
                             "nullable": true
                           },
                           "age": {
-                            "oneOf": [
-                              {
-                                "type": "integer"
-                              },
-                              {
-                                "type": "string",
-                                "format": "null",
-                                "nullable": true
-                              }
-                            ],
+                            "type": "integer",
                             "nullable": true
                           },
                           "images": {
@@ -61953,16 +61520,7 @@
                           "nullable": true
                         },
                         "age": {
-                          "oneOf": [
-                            {
-                              "type": "integer"
-                            },
-                            {
-                              "type": "string",
-                              "format": "null",
-                              "nullable": true
-                            }
-                          ],
+                          "type": "integer",
                           "nullable": true
                         },
                         "images": {
@@ -62187,16 +61745,7 @@
                           "nullable": true
                         },
                         "age": {
-                          "oneOf": [
-                            {
-                              "type": "integer"
-                            },
-                            {
-                              "type": "string",
-                              "format": "null",
-                              "nullable": true
-                            }
-                          ],
+                          "type": "integer",
                           "nullable": true
                         },
                         "images": {
@@ -62473,16 +62022,7 @@
                             "nullable": true
                           },
                           "age": {
-                            "oneOf": [
-                              {
-                                "type": "integer"
-                              },
-                              {
-                                "type": "string",
-                                "format": "null",
-                                "nullable": true
-                              }
-                            ],
+                            "type": "integer",
                             "nullable": true
                           },
                           "images": {
@@ -62933,16 +62473,7 @@
                           "nullable": true
                         },
                         "age": {
-                          "oneOf": [
-                            {
-                              "type": "integer"
-                            },
-                            {
-                              "type": "string",
-                              "format": "null",
-                              "nullable": true
-                            }
-                          ],
+                          "type": "integer",
                           "nullable": true
                         },
                         "images": {

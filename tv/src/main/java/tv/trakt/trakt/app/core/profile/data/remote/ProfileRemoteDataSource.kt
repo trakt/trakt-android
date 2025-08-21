@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.networking.CalendarShowDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.ListMovieItemDto
 import tv.trakt.trakt.common.networking.ListShowItemDto
+import tv.trakt.trakt.common.networking.SocialActivityItemDto
 import tv.trakt.trakt.common.networking.SyncFavoriteMovieDto
 import tv.trakt.trakt.common.networking.SyncFavoriteShowDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
@@ -55,4 +56,10 @@ internal interface ProfileRemoteDataSource {
         page: Int = 1,
         extended: String,
     ): List<ListMovieItemDto>
+
+    suspend fun getUserSocialActivity(
+        page: Int = 1,
+        limit: Int,
+        type: String,
+    ): List<SocialActivityItemDto>
 }

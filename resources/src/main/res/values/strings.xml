@@ -42,6 +42,7 @@
     <string name="list_title_related_movies">Related Movies</string>
     <string name="list_title_related_shows">Related Shows</string>
     <string name="list_title_seasons">Seasons</string>
+    <string name="list_title_social_activity">Social Activity</string>
     <string name="list_title_streaming_favorite">Favorite</string>
     <string name="list_title_streaming_free">Free</string>
     <string name="list_title_streaming_purchase">Purchase</string>

@@ -64,6 +64,7 @@ internal fun HorizontalMediaCard(
     onClick: () -> Unit = {},
     footerContent: @Composable () -> Unit = {},
     cardContent: @Composable () -> Unit = {},
+    cardTopContent: @Composable () -> Unit = {},
 ) {
     var isContainerError by remember(containerImageUrl) { mutableStateOf(false) }
     var isContentError by remember(contentImageUrl) { mutableStateOf(false) }
@@ -209,6 +210,14 @@ internal fun HorizontalMediaCard(
                             .align(Alignment.BottomStart),
                     ) {
                         cardContent()
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .padding(6.dp)
+                            .align(Alignment.TopEnd),
+                    ) {
+                        cardTopContent()
                     }
                 }
             },

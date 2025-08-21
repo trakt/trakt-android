@@ -10,6 +10,7 @@ import tv.trakt.trakt.common.networking.CalendarShowDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.ListMovieItemDto
 import tv.trakt.trakt.common.networking.ListShowItemDto
+import tv.trakt.trakt.common.networking.SocialActivityItemDto
 import tv.trakt.trakt.common.networking.SyncFavoriteMovieDto
 import tv.trakt.trakt.common.networking.SyncFavoriteShowDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
@@ -152,6 +153,21 @@ internal class ProfileApiClient(
             ratings = null,
             startDate = null,
             endDate = null,
+        )
+        return response.body()
+    }
+
+    override suspend fun getUserSocialActivity(
+        page: Int,
+        limit: Int,
+        type: String,
+    ): List<SocialActivityItemDto> {
+        val response = api.getUsersActivities(
+            id = "me",
+            type = type,
+            extended = "full,cloud9",
+            page = page,
+            limit = limit
         )
         return response.body()
     }

@@ -9,6 +9,7 @@ import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Rating
 import tv.trakt.trakt.common.networking.EpisodeDto
+import tv.trakt.trakt.common.networking.EpisodeLikesDto
 import tv.trakt.trakt.common.networking.LastEpisodeDto
 import java.time.ZonedDateTime
 import java.util.Locale.ROOT
@@ -43,7 +44,7 @@ internal data class Episode(
     val seasonEpisodeString: String
         get() = String.format(
             ROOT,
-            "%01dx%02d - %s",
+            "%01dx%02d • %s",
             this.season,
             this.number,
             this.title.ifBlank { "TBA" },
@@ -75,6 +76,30 @@ internal fun Companion.fromDto(dto: EpisodeDto): Episode {
 }
 
 internal fun Companion.fromDto(dto: LastEpisodeDto): Episode {
+    return Episode(
+        ids = Ids.fromDto(dto.ids),
+        number = dto.number,
+        season = dto.season,
+        title = dto.title,
+        numberAbs = dto.numberAbs,
+        overview = dto.overview,
+        rating = Rating(
+            rating = dto.rating ?: 0F,
+            votes = dto.votes ?: 0,
+        ),
+        commentCount = dto.commentCount ?: 0,
+        runtime = dto.runtime?.minutes,
+        episodeType = dto.episodeType?.value,
+        originalTitle = dto.originalTitle ?: "",
+        images = Images(
+            screenshot = (dto.images?.screenshot ?: emptyList()).toImmutableList(),
+        ),
+        firstAired = dto.firstAired?.toZonedDateTime(),
+        updatedAt = dto.updatedAt?.toZonedDateTime(),
+    )
+}
+
+internal fun Companion.fromDto(dto: EpisodeLikesDto): Episode {
     return Episode(
         ids = Ids.fromDto(dto.ids),
         number = dto.number,
