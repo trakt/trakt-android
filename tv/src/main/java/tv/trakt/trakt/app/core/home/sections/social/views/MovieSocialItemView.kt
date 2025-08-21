@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.CircleShape
@@ -89,12 +90,10 @@ internal fun MovieSocialItemView(
                     overflow = TextOverflow.Companion.Ellipsis,
                 )
 
-                Text(
+                InfoChip(
                     text = item.activityAt.toLocal().relativePastDateTimeString(),
-                    style = TraktTheme.typography.cardSubtitle,
-                    color = TraktTheme.colors.textSecondary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
+                    iconPainter = painterResource(R.drawable.ic_calendar_check),
+                    modifier = Modifier.padding(top = 7.dp),
                 )
             }
         },

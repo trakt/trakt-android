@@ -108,19 +108,16 @@ internal fun EpisodeSocialItemView(
 
                     Text(
                         text = item.episode.seasonEpisodeString,
-                        style = TraktTheme.typography.cardTitle,
-                        color = TraktTheme.colors.textPrimary,
+                        style = TraktTheme.typography.cardSubtitle,
+                        color = TraktTheme.colors.textSecondary,
                         maxLines = 1,
                         overflow = TextOverflow.Companion.Ellipsis,
                     )
 
-                    Text(
+                    InfoChip(
                         text = item.activityAt.toLocal().relativePastDateTimeString(),
-                        style = TraktTheme.typography.cardSubtitle,
-                        color = TraktTheme.colors.textSecondary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.padding(top = 2.dp),
+                        iconPainter = painterResource(R.drawable.ic_calendar_check),
+                        modifier = Modifier.padding(top = 7.dp),
                     )
                 }
             },
