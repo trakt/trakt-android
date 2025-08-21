@@ -102,11 +102,11 @@ private fun HomeScreenContent(
     }
 
     LaunchedEffect(Unit) {
-        delay(500)
         if (focusedSection == null) {
             focusedSection = "upNext"
             focusRequesters["upNext"]?.requestSafeFocus()
         } else {
+            delay(500)
             focusRequesters[focusedSection]?.requestSafeFocus()
         }
     }
