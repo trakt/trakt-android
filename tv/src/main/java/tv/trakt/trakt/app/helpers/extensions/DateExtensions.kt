@@ -14,6 +14,7 @@ import android.icu.text.RelativeDateTimeFormatter.RelativeUnit.HOURS
 import android.icu.text.RelativeDateTimeFormatter.RelativeUnit.MINUTES
 import android.icu.text.RelativeDateTimeFormatter.RelativeUnit.MONTHS
 import android.icu.text.RelativeDateTimeFormatter.RelativeUnit.WEEKS
+import tv.trakt.trakt.app.helpers.longDateFormat
 import tv.trakt.trakt.app.helpers.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import java.time.DayOfWeek.MONDAY
@@ -21,6 +22,7 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZoneOffset.UTC
 import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatter.ISO_INSTANT
 import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalAdjusters
@@ -105,7 +107,10 @@ fun ZonedDateTime.relativeDateTimeString(locale: Locale = Locale.US): String {
     }
 }
 
-fun ZonedDateTime.relativePastDateTimeString(locale: Locale = Locale.US): String {
+fun ZonedDateTime.relativePastDateTimeString(
+    locale: Locale = Locale.US,
+    format: DateTimeFormatter = longDateTimeFormat,
+): String {
     val formatter = RelativeDateTimeFormatter.getInstance(locale)
     val now = ZonedDateTime.now()
 
@@ -118,8 +123,12 @@ fun ZonedDateTime.relativePastDateTimeString(locale: Locale = Locale.US): String
         daysBetween == 0L -> formatter.format(THIS, DAY)
         daysBetween == 1L -> formatter.format(LAST, DAY)
         daysBetween <= 3L -> formatter.format(daysBetween.toDouble(), LAST, DAYS)
-        else -> this.format(longDateTimeFormat)
+        else -> this.format(format)
     }.replaceFirstChar {
         it.titlecase(locale)
     }
+}
+
+fun ZonedDateTime.relativePastDateString(locale: Locale = Locale.US): String {
+    return relativePastDateTimeString(locale, longDateFormat)
 }

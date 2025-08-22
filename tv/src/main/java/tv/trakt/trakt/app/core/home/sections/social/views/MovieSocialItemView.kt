@@ -25,7 +25,7 @@ import coil3.compose.AsyncImage
 import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.core.home.sections.social.model.SocialActivityItem
-import tv.trakt.trakt.app.helpers.extensions.relativePastDateTimeString
+import tv.trakt.trakt.app.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.app.helpers.extensions.toLocal
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.TraktId
@@ -92,7 +92,7 @@ internal fun MovieSocialItemView(
                 )
 
                 InfoChip(
-                    text = item.activityAt.toLocal().relativePastDateTimeString(),
+                    text = item.activityAt.toLocal().relativePastDateString(),
                     iconPainter = painterResource(R.drawable.ic_calendar_check),
                     modifier = Modifier.padding(top = 7.dp),
                 )

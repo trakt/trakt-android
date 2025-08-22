@@ -53,7 +53,7 @@ internal fun VipChip(
         )
 
         Text(
-            text = stringResource(R.string.page_title_get_vip).uppercase(),
+            text = stringResource(R.string.badge_text_get_vip).uppercase(),
             style = TraktTheme.typography.buttonPrimary,
             color = TraktTheme.colors.chipContent,
             maxLines = 1,

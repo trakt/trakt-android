@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Trakt</string>
+    <string name="badge_text_get_vip">Get VIP</string>
     <string name="button_text_cancel">Cancel</string>
     <string name="button_text_comment_likes">%d likes</string>
     <string name="button_text_comment_replies">%d replies</string>
@@ -10,11 +10,11 @@
     <string name="button_text_no_services">No services</string>
     <string name="button_text_retry">Retry</string>
     <string name="button_text_stream_on">Stream on</string>
+    <string name="button_text_view_all">View All</string>
     <string name="button_text_watch_again">Watch again</string>
     <string name="button_text_watchlist">Watchlist</string>
     <string name="button_text_where_to_watch">Where to watch</string>
     <string name="button_text_yes">Yes</string>
-    <string name="button_text_view_all">View all</string>
     <string name="error_text_unexpected_error_short">Uh oh… Something unexpected happened. If this keeps happening, please contact Trakt support.</string>
     <string name="header_device_auth_code_instruction">and enter the following code:</string>
     <string name="header_device_auth_qr_instruction">Scan the QR code, or sign in at:</string>
@@ -55,7 +55,6 @@
     <string name="list_title_upcoming_schedule">Upcoming Schedule</string>
     <string name="list_title_watchlist_movies">Movies Watchlist</string>
     <string name="list_title_watchlist_shows">Shows Watchlist</string>
-    <string name="page_title_get_vip">Get VIP</string>
     <string name="page_title_home">Home</string>
     <string name="page_title_lists">Lists</string>
     <string name="page_title_movies">Movies</string>

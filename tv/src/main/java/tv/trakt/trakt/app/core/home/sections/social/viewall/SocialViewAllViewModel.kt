@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.home.sections.social.viewall
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -9,9 +8,10 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import tv.trakt.trakt.app.core.home.HomeConfig.HOME_SOCIAL_PAGE_LIMIT
 import tv.trakt.trakt.app.core.home.sections.social.usecases.GetSocialActivityUseCase
-import tv.trakt.trakt.app.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 
 internal class SocialViewAllViewModel(
     private val getSocialActivityUseCase: GetSocialActivityUseCase,
@@ -43,7 +43,7 @@ internal class SocialViewAllViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Log.e("SocialViewAllViewModel", "Failed to load data", error)
+                    Timber.e(error, "Failed to load data")
                 }
             } finally {
                 loadingState.update { false }

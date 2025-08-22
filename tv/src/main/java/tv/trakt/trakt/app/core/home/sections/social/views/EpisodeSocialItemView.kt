@@ -28,7 +28,7 @@ import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.app.core.home.sections.social.model.SocialActivityItem
 import tv.trakt.trakt.app.helpers.extensions.nowUtc
-import tv.trakt.trakt.app.helpers.extensions.relativePastDateTimeString
+import tv.trakt.trakt.app.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.app.helpers.extensions.toLocal
 import tv.trakt.trakt.app.helpers.preview.PreviewData
 import tv.trakt.trakt.app.ui.theme.TraktTheme
@@ -116,7 +116,7 @@ internal fun EpisodeSocialItemView(
                     )
 
                     InfoChip(
-                        text = item.activityAt.toLocal().relativePastDateTimeString(),
+                        text = item.activityAt.toLocal().relativePastDateString(),
                         iconPainter = painterResource(R.drawable.ic_calendar_check),
                         modifier = Modifier.padding(top = 7.dp),
                     )
