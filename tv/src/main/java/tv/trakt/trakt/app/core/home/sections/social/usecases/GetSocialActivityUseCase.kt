@@ -6,7 +6,6 @@ import org.openapitools.client.models.GetUsersActivities200ResponseInner.Type.EP
 import org.openapitools.client.models.GetUsersActivities200ResponseInner.Type.MOVIE
 import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.app.core.episodes.model.fromDto
-import tv.trakt.trakt.app.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.app.core.home.sections.social.model.SocialActivityItem
 import tv.trakt.trakt.app.core.profile.data.remote.ProfileRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -19,13 +18,9 @@ import tv.trakt.trakt.common.model.fromDto
 internal class GetSocialActivityUseCase(
     private val remoteProfileSource: ProfileRemoteDataSource,
 ) {
-    suspend fun getSocialActivity(
-        page: Int = 1,
-        limit: Int = HOME_SECTION_LIMIT,
-    ): ImmutableList<SocialActivityItem> {
+    suspend fun getSocialActivity(limit: Int): ImmutableList<SocialActivityItem> {
         val items = remoteProfileSource.getUserSocialActivity(
             limit = limit,
-            page = page,
             type = "following",
         )
         return items

@@ -36,6 +36,7 @@ internal fun MovieSocialItemView(
     item: SocialActivityItem.MovieItem,
     onClick: (TraktId) -> Unit,
     onFocused: (SocialActivityItem?) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     HorizontalMediaCard(
         title = "",
@@ -86,7 +87,7 @@ internal fun MovieSocialItemView(
                     text = item.movie.title,
                     style = TraktTheme.typography.cardTitle,
                     color = TraktTheme.colors.textPrimary,
-                    maxLines = 1,
+                    maxLines = 2,
                     overflow = TextOverflow.Companion.Ellipsis,
                 )
 
@@ -97,7 +98,7 @@ internal fun MovieSocialItemView(
                 )
             }
         },
-        modifier = Modifier.Companion
+        modifier = modifier
             .onFocusChanged {
                 if (it.isFocused) {
                     onFocused(item)

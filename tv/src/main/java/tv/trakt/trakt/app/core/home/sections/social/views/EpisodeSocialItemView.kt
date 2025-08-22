@@ -40,10 +40,11 @@ internal fun EpisodeSocialItemView(
     item: SocialActivityItem.EpisodeItem,
     onClick: (TraktId, Episode) -> Unit,
     onFocused: (SocialActivityItem) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier
+        modifier = modifier
             .sizeIn(maxWidth = TraktTheme.size.horizontalMediaCardSize),
     ) {
         HorizontalMediaCard(
@@ -121,7 +122,7 @@ internal fun EpisodeSocialItemView(
                     )
                 }
             },
-            modifier = Modifier.Companion
+            modifier = Modifier
                 .onFocusChanged {
                     if (it.isFocused) {
                         onFocused(item)

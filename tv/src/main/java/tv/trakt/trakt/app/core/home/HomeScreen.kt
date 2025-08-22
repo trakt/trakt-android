@@ -58,6 +58,7 @@ internal fun HomeScreen(
     onNavigateToUpNext: () -> Unit,
     onNavigateToAvailableNow: () -> Unit,
     onNavigateToComingSoon: () -> Unit,
+    onNavigateToSocialActivity: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -75,6 +76,7 @@ internal fun HomeScreen(
             onNavigateToUpNext = onNavigateToUpNext,
             onNavigateToAvailableNow = onNavigateToAvailableNow,
             onNavigateToComingSoon = onNavigateToComingSoon,
+            onNavigateToSocialActivity = onNavigateToSocialActivity,
         )
     }
 }
@@ -89,6 +91,7 @@ private fun HomeScreenContent(
     onNavigateToUpNext: () -> Unit,
     onNavigateToAvailableNow: () -> Unit,
     onNavigateToComingSoon: () -> Unit,
+    onNavigateToSocialActivity: () -> Unit,
 ) {
     var focusedInitial by rememberSaveable { mutableStateOf(false) }
     var focusedSection by rememberSaveable { mutableStateOf<String?>(null) }
@@ -219,7 +222,7 @@ private fun HomeScreenContent(
                     contentPadding = sectionPadding,
                     onNavigateToMovie = onNavigateToMovie,
                     onNavigateToEpisode = onNavigateToEpisode,
-                    onNavigateToViewAll = {},
+                    onNavigateToViewAll = onNavigateToSocialActivity,
                     onFocused = { item ->
                         focusedSection = "socialActivity"
                         focusedImageUrl = item?.images?.getFanartUrl(Size.FULL)
@@ -247,6 +250,7 @@ private fun MainScreenPreview() {
             onNavigateToUpNext = {},
             onNavigateToAvailableNow = {},
             onNavigateToComingSoon = {},
+            onNavigateToSocialActivity = {},
         )
     }
 }

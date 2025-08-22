@@ -158,7 +158,6 @@ internal class ProfileApiClient(
     }
 
     override suspend fun getUserSocialActivity(
-        page: Int,
         limit: Int,
         type: String,
     ): List<SocialActivityItemDto> {
@@ -166,7 +165,7 @@ internal class ProfileApiClient(
             id = "me",
             type = type,
             extended = "full,cloud9",
-            page = page,
+            page = 1,
             limit = limit,
         )
         return response.body()

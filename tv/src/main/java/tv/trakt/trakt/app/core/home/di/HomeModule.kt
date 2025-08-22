@@ -16,6 +16,7 @@ import tv.trakt.trakt.app.core.home.sections.shows.upnext.usecases.GetUpNextUseC
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.viewall.UpNextViewAllViewModel
 import tv.trakt.trakt.app.core.home.sections.social.HomeSocialViewModel
 import tv.trakt.trakt.app.core.home.sections.social.usecases.GetSocialActivityUseCase
+import tv.trakt.trakt.app.core.home.sections.social.viewall.SocialViewAllViewModel
 
 internal val homeModule = module {
     factory {
@@ -115,6 +116,12 @@ internal val homeModule = module {
         ComingSoonViewAllViewModel(
             getComingSoonUseCase = get(),
             localSyncSource = get(),
+        )
+    }
+
+    viewModel {
+        SocialViewAllViewModel(
+            getSocialActivityUseCase = get(),
         )
     }
 }

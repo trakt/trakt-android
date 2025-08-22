@@ -58,7 +58,6 @@ internal interface ProfileRemoteDataSource {
     ): List<ListMovieItemDto>
 
     suspend fun getUserSocialActivity(
-        page: Int = 1,
         limit: Int,
         type: String,
     ): List<SocialActivityItemDto>
