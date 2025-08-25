@@ -309,7 +309,7 @@ private fun NavigationProfileItem(
                 modifier = Modifier.size(28.dp),
             ) {
                 val borderColor = remember(profile.isAnyVip) {
-                    if (profile.isAnyVip) Color.Red else Color.Transparent
+                    if (profile.isAnyVip) Color.Red else Color.White
                 }
                 if (profile.hasAvatar) {
                     AsyncImage(
