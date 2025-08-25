@@ -279,6 +279,9 @@ private fun ProfileAvatar(
         modifier = modifier
             .size(44.dp),
     ) {
+        val borderColor = remember(profile?.isAnyVip) {
+            if (profile?.isAnyVip == true) Color.Red else Color.Transparent
+        }
         if (profile?.hasAvatar == true) {
             AsyncImage(
                 model = profile.images?.avatar?.full,
@@ -287,7 +290,7 @@ private fun ProfileAvatar(
                 error = painterResource(R.drawable.ic_person_placeholder),
                 modifier = Modifier
                     .fillMaxSize()
-                    .border(2.dp, Color.White, CircleShape)
+                    .border((2.5).dp, borderColor, CircleShape)
                     .clip(CircleShape),
             )
         } else {
@@ -296,7 +299,7 @@ private fun ProfileAvatar(
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize()
-                    .border(2.dp, Color.White, CircleShape)
+                    .border((2.5).dp, borderColor, CircleShape)
                     .clip(CircleShape),
             )
         }
