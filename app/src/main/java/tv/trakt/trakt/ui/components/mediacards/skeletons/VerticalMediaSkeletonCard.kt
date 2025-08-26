@@ -53,7 +53,7 @@ internal fun VerticalMediaSkeletonCard(
     }
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier
             .widthIn(max = cardWidth),
     ) {
@@ -75,7 +75,7 @@ internal fun VerticalMediaSkeletonCard(
             InfoChip(
                 text = "",
                 containerColor = shimmerTransition,
-                modifier = Modifier.fillMaxWidth(0.5F),
+                modifier = Modifier.fillMaxWidth(0.33F),
             )
         }
     }

@@ -68,7 +68,7 @@ internal fun VerticalMediaCard(
     var isError by remember(imageUrl) { mutableStateOf(false) }
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier
             .widthIn(max = cardWidth),
     ) {
@@ -147,7 +147,7 @@ internal fun VerticalMediaCard(
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier
                                 .align(Alignment.BottomCenter)
-                                .padding(horizontal = 12.dp, vertical = 14.dp),
+                                .padding(horizontal = 12.dp, vertical = 16.dp),
                         )
                     }
                 }
