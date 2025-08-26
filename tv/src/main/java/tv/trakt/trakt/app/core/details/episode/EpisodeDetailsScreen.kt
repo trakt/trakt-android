@@ -49,8 +49,12 @@ import androidx.lifecycle.Lifecycle.Event.ON_RESUME
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
+import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.android.play.core.review.testing.FakeReviewManager
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
+import timber.log.Timber
+import tv.trakt.trakt.app.BuildConfig
 import tv.trakt.trakt.app.LocalDrawerVisibility
 import tv.trakt.trakt.app.LocalSnackbarState
 import tv.trakt.trakt.app.common.model.CastPerson
@@ -128,6 +132,30 @@ internal fun EpisodeDetailsScreen(
         state.snackMessage?.let {
             localSnack.showSnackbar(it.get(localContext))
             viewModel.clearInfoMessage()
+        }
+    }
+
+    LaunchedEffect(state.isReviewRequest) {
+        if (state.isReviewRequest) {
+            viewModel.clearReviewRequest()
+
+            val activity = localContext as? androidx.activity.ComponentActivity
+            activity?.let { activity ->
+                val manager = when {
+                    BuildConfig.DEBUG -> FakeReviewManager(activity)
+                    else -> ReviewManagerFactory.create(activity)
+                }
+
+                manager.requestReviewFlow().addOnCompleteListener { request ->
+                    if (request.isSuccessful) {
+                        val reviewInfo = request.result
+                        manager.launchReviewFlow(activity, reviewInfo)
+                        Timber.d("Review flow launched")
+                    } else {
+                        Timber.w("Review flow error: ${request.exception}")
+                    }
+                }
+            }
         }
     }
 }

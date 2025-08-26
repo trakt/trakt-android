@@ -4,8 +4,29 @@
         <key>background_image_url</key>
         <value>https://walter-r2.trakt.tv/images/movies/000/759/944/fanarts/full/604a9cc456.jpg.webp</value>
     </entry>
+
     <entry>
         <key>mobile_background_image_url</key>
         <value>https://walter-r2.trakt.tv/images/movies/000/759/944/fanarts/medium/604a9cc456.jpg.webp</value>
+    </entry>
+
+    <entry>
+        <key>background_image_url</key>
+        <value>https://walter-r2.trakt.tv/images/movies/000/759/944/fanarts/full/604a9cc456.jpg.webp</value>
+    </entry>
+
+    <entry>
+        <key>in_app_review_count_1</key>
+        <value>3</value>
+    </entry>
+
+    <entry>
+        <key>in_app_review_count_2</key>
+        <value>15</value>
+    </entry>
+
+    <entry>
+        <key>in_app_review_count_3</key>
+        <value>45</value>
     </entry>
 </defaultsMap>

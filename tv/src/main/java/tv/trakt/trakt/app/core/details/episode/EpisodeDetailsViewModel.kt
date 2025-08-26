@@ -33,6 +33,7 @@ import tv.trakt.trakt.app.core.details.episode.usecases.collection.ChangeHistory
 import tv.trakt.trakt.app.core.details.show.usecases.GetRelatedShowsUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.app.core.episodes.model.Episode
+import tv.trakt.trakt.app.core.inappreview.usecases.RequestAppReviewUseCase
 import tv.trakt.trakt.app.core.tutorials.TutorialsManager
 import tv.trakt.trakt.app.core.tutorials.model.TutorialKey.WATCH_NOW_MORE
 import tv.trakt.trakt.app.helpers.DynamicStringResource
@@ -62,6 +63,7 @@ internal class EpisodeDetailsViewModel(
     private val getSeasonUseCase: GetEpisodeSeasonUseCase,
     private val getHistoryUseCase: GetEpisodeHistoryUseCase,
     private val changeHistoryUseCase: ChangeHistoryUseCase,
+    private val appReviewUseCase: RequestAppReviewUseCase,
 ) : ViewModel() {
     private val initialState = EpisodeDetailsState()
 
@@ -76,6 +78,7 @@ internal class EpisodeDetailsViewModel(
     private val episodeSeasonState = MutableStateFlow(initialState.episodeSeason)
     private val episodeHistoryState = MutableStateFlow(initialState.episodeHistory)
     private val loadingState = MutableStateFlow(initialState.isLoading)
+    private val reviewState = MutableStateFlow(initialState.isReviewRequest)
     private val snackMessageState = MutableStateFlow(initialState.snackMessage)
 
     private val destination = savedStateHandle.toRoute<EpisodeDestination>()
@@ -314,6 +317,7 @@ internal class EpisodeDetailsViewModel(
                     )
                 }
 
+                requestReviewIfNeeded()
                 showSnackMessage(DynamicStringResource(R.string.text_info_history_added))
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -353,6 +357,13 @@ internal class EpisodeDetailsViewModel(
         }
     }
 
+    private suspend fun requestReviewIfNeeded() {
+        appReviewUseCase.incrementCount()
+        reviewState.update {
+            appReviewUseCase.shouldRequest()
+        }
+    }
+
     private fun showSnackMessage(message: StringResource) {
         snackMessageState.update { message }
     }
@@ -366,6 +377,10 @@ internal class EpisodeDetailsViewModel(
 
     fun clearInfoMessage() {
         snackMessageState.update { null }
+    }
+
+    fun clearReviewRequest() {
+        reviewState.update { false }
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -382,6 +397,7 @@ internal class EpisodeDetailsViewModel(
         episodeHistoryState,
         loadingState,
         snackMessageState,
+        reviewState,
     ) { states ->
         EpisodeDetailsState(
             user = states[0] as User?,
@@ -396,6 +412,7 @@ internal class EpisodeDetailsViewModel(
             episodeHistory = states[9] as HistoryState,
             isLoading = states[10] as Boolean,
             snackMessage = states[11] as StringResource?,
+            isReviewRequest = states[12] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.navigation)
     implementation(libs.androidx.datastore)
+    implementation(libs.androidx.app.review)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.config)

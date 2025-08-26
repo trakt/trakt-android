@@ -84,6 +84,7 @@ internal val episodeDetailsModule = module {
             getSeasonUseCase = get(),
             getHistoryUseCase = get(),
             changeHistoryUseCase = get(),
+            appReviewUseCase = get(),
         )
     }
 }

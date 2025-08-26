@@ -26,6 +26,7 @@ internal data class MovieDetailsState(
     val movieStreamings: StreamingsState = StreamingsState(),
     val movieCollection: CollectionState = CollectionState(),
     val isLoading: Boolean = false,
+    val isReviewRequest: Boolean = false,
     val snackMessage: StringResource? = null,
 ) {
     @Immutable

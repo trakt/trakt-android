@@ -35,6 +35,7 @@ import tv.trakt.trakt.app.core.details.movie.usecases.GetStreamingsUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.collection.ChangeHistoryUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.collection.ChangeWatchlistUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.collection.GetCollectionUseCase
+import tv.trakt.trakt.app.core.inappreview.usecases.RequestAppReviewUseCase
 import tv.trakt.trakt.app.core.tutorials.TutorialsManager
 import tv.trakt.trakt.app.core.tutorials.model.TutorialKey.WATCH_NOW_MORE
 import tv.trakt.trakt.app.helpers.DynamicStringResource
@@ -62,6 +63,7 @@ internal class MovieDetailsViewModel(
     private val getCollectionUseCase: GetCollectionUseCase,
     private val watchlistUseCase: ChangeWatchlistUseCase,
     private val historyUseCase: ChangeHistoryUseCase,
+    private val appReviewUseCase: RequestAppReviewUseCase,
     private val sessionManager: SessionManager,
     private val tutorialsManager: TutorialsManager,
 ) : ViewModel() {
@@ -78,6 +80,7 @@ internal class MovieDetailsViewModel(
     private val movieCollectionState = MutableStateFlow(initialState.movieCollection)
     private val userState = MutableStateFlow(initialState.user)
     private val loadingState = MutableStateFlow(initialState.isLoading)
+    private val reviewState = MutableStateFlow(initialState.isReviewRequest)
     private val snackMessageState = MutableStateFlow(initialState.snackMessage)
 
     private val movie = savedStateHandle.toRoute<MovieDestination>()
@@ -307,6 +310,7 @@ internal class MovieDetailsViewModel(
                     )
                 }
 
+                requestReviewIfNeeded()
                 showSnackMessage(DynamicStringResource(R.string.text_info_history_added))
             } catch (e: Exception) {
                 e.rethrowCancellation {
@@ -348,6 +352,13 @@ internal class MovieDetailsViewModel(
         }
     }
 
+    private suspend fun requestReviewIfNeeded() {
+        appReviewUseCase.incrementCount()
+        reviewState.update {
+            appReviewUseCase.shouldRequest()
+        }
+    }
+
     private fun showSnackMessage(message: StringResource) {
         snackMessageState.update { message }
     }
@@ -363,6 +374,10 @@ internal class MovieDetailsViewModel(
         snackMessageState.update { null }
     }
 
+    fun clearReviewRequest() {
+        reviewState.update { false }
+    }
+
     val state: StateFlow<MovieDetailsState> = combine(
         loadingState,
         movieDetailsState,
@@ -376,6 +391,7 @@ internal class MovieDetailsViewModel(
         movieCollectionState,
         userState,
         snackMessageState,
+        reviewState,
     ) { states ->
         @Suppress("UNCHECKED_CAST")
         MovieDetailsState(
@@ -391,6 +407,7 @@ internal class MovieDetailsViewModel(
             movieCollection = states[9] as CollectionState,
             user = states[10] as User?,
             snackMessage = states[11] as StringResource?,
+            isReviewRequest = states[12] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

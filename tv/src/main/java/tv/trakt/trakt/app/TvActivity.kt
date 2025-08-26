@@ -30,6 +30,7 @@ import tv.trakt.trakt.app.core.details.movie.di.movieDetailsModule
 import tv.trakt.trakt.app.core.details.show.di.showDetailsModule
 import tv.trakt.trakt.app.core.episodes.di.episodesDataModule
 import tv.trakt.trakt.app.core.home.di.homeModule
+import tv.trakt.trakt.app.core.inappreview.di.inAppReviewModule
 import tv.trakt.trakt.app.core.lists.di.listsModule
 import tv.trakt.trakt.app.core.main.MainScreen
 import tv.trakt.trakt.app.core.main.di.mainModule
@@ -128,6 +129,7 @@ class TvActivity : ComponentActivity() {
                     streamingsModule,
                     streamingsDataModule,
                     syncModule,
+                    inAppReviewModule,
                 )
             }
         }

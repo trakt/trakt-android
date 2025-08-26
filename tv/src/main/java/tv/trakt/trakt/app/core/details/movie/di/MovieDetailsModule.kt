@@ -105,6 +105,7 @@ internal val movieDetailsModule = module {
             getCollectionUseCase = get(),
             watchlistUseCase = get(),
             historyUseCase = get(),
+            appReviewUseCase = get(),
             sessionManager = get(),
             tutorialsManager = get(),
         )

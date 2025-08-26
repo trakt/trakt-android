@@ -33,6 +33,7 @@ timber = "5.0.1"
 tvFoundation = "1.0.0-alpha12"
 tvMaterial = "1.0.1"
 youtube-player = "12.1.2"
+inAppReview = "2.0.2"
 
 # Testing Libraries
 
@@ -60,6 +61,7 @@ androidx-tv-material = { group = "androidx.tv", name = "tv-material", version.re
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation" }
 androidx-datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+androidx-app-review = { group = "com.google.android.play", name = "review-ktx", version.ref = "inAppReview" }
 
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 coil-network = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", version.ref = "coil" }

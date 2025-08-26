@@ -26,6 +26,7 @@ internal data class EpisodeDetailsState(
     val episodeSeason: ImmutableList<Episode>? = null,
     val episodeHistory: HistoryState = HistoryState(),
     val isLoading: Boolean = false,
+    val isReviewRequest: Boolean = false,
     val snackMessage: StringResource? = null,
 ) {
     @Immutable
