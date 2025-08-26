@@ -1,8 +1,15 @@
 package tv.trakt.trakt.core.home
 
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,6 +26,7 @@ import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextView
 import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.ui.components.BackdropImage
@@ -75,6 +83,37 @@ private fun HomeScreenContent(
                 }
             },
         )
+
+        val listPadding = PaddingValues(
+            top = WindowInsets.statusBars.asPaddingValues()
+                .calculateTopPadding()
+                .plus(TraktTheme.spacing.mainPageTopSpace),
+            bottom = WindowInsets.navigationBars.asPaddingValues()
+                .calculateBottomPadding()
+                .plus(TraktTheme.size.navigationBarHeight)
+                .plus(TraktTheme.spacing.mainPageBottomSpace),
+        )
+
+        val sectionPadding = PaddingValues(
+            start = TraktTheme.spacing.mainPageHorizontalSpace,
+            end = TraktTheme.spacing.mainPageHorizontalSpace,
+        )
+
+        LazyColumn(
+            state = lazyListState,
+            overscrollEffect = null,
+            verticalArrangement = spacedBy(TraktTheme.spacing.mainSectionVerticalSpace),
+            contentPadding = listPadding,
+        ) {
+            if (state.user.isAuthenticated) {
+                item {
+                    HomeUpNextView(
+                        headerPadding = sectionPadding,
+                        contentPadding = sectionPadding,
+                    )
+                }
+            }
+        }
 
         HomeScreenHeader(
             state = state,

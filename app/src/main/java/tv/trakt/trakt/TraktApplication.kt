@@ -22,6 +22,7 @@ import tv.trakt.trakt.core.profile.di.profileDataModule
 import tv.trakt.trakt.core.profile.di.profileModule
 import tv.trakt.trakt.core.shows.di.showsDataModule
 import tv.trakt.trakt.core.shows.di.showsModule
+import tv.trakt.trakt.core.sync.di.syncModule
 import java.util.concurrent.TimeUnit.MINUTES
 
 internal class TraktApplication : Application() {
@@ -69,6 +70,7 @@ internal class TraktApplication : Application() {
                 moviesDataModule,
                 profileModule,
                 profileDataModule,
+                syncModule,
             )
         }
     }

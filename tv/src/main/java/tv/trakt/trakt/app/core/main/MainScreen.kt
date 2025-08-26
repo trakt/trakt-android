@@ -35,7 +35,6 @@ import androidx.tv.material3.ModalNavigationDrawer
 import androidx.tv.material3.rememberDrawerState
 import tv.trakt.trakt.app.LocalDrawerVisibility
 import tv.trakt.trakt.app.LocalSnackbarState
-import tv.trakt.trakt.app.common.model.SeasonEpisode
 import tv.trakt.trakt.app.core.auth.navigation.authScreen
 import tv.trakt.trakt.app.core.auth.navigation.navigateToAuth
 import tv.trakt.trakt.app.core.details.episode.navigation.episodeDetailsScreen
@@ -105,6 +104,7 @@ import tv.trakt.trakt.app.core.streamings.navigation.navigateToEpisodeStreamings
 import tv.trakt.trakt.app.core.streamings.navigation.navigateToMovieStreamings
 import tv.trakt.trakt.app.core.streamings.navigation.navigateToShowStreamings
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.resources.R
 
 @Composable

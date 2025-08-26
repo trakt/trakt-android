@@ -1,11 +1,11 @@
-package tv.trakt.trakt.app.common.model
+package tv.trakt.trakt.common.model
 
 import androidx.compose.runtime.Immutable
 import kotlinx.serialization.Serializable
 
 @Immutable
 @Serializable
-internal data class SeasonEpisode(
+data class SeasonEpisode(
     val season: Int,
     val episode: Int,
 ) {

@@ -30,6 +30,4 @@ internal interface ShowsSyncRemoteDataSource {
         showId: TraktId,
         watchedAt: ZonedDateTime,
     ): SyncAddHistoryResponseDto
-//
-//    suspend fun removeFromHistory(showId: TraktId)
 }

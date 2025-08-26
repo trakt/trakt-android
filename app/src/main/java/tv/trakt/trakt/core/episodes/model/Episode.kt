@@ -1,8 +1,7 @@
-package tv.trakt.trakt.app.core.episodes.model
+package tv.trakt.trakt.core.episodes.model
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.app.core.episodes.model.Episode.Companion
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.Images
@@ -51,7 +50,7 @@ internal data class Episode(
         )
 }
 
-internal fun Companion.fromDto(dto: EpisodeDto): Episode {
+internal fun Episode.Companion.fromDto(dto: EpisodeDto): Episode {
     return Episode(
         ids = Ids.fromDto(dto.ids),
         number = dto.number,
@@ -75,7 +74,7 @@ internal fun Companion.fromDto(dto: EpisodeDto): Episode {
     )
 }
 
-internal fun Companion.fromDto(dto: LastEpisodeDto): Episode {
+internal fun Episode.Companion.fromDto(dto: LastEpisodeDto): Episode {
     return Episode(
         ids = Ids.fromDto(dto.ids),
         number = dto.number,
@@ -99,7 +98,7 @@ internal fun Companion.fromDto(dto: LastEpisodeDto): Episode {
     )
 }
 
-internal fun Companion.fromDto(dto: EpisodeLikesDto): Episode {
+internal fun Episode.Companion.fromDto(dto: EpisodeLikesDto): Episode {
     return Episode(
         ids = Ids.fromDto(dto.ids),
         number = dto.number,

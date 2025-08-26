@@ -2,7 +2,6 @@ package tv.trakt.trakt.app.core.details.episode.usecases
 
 import android.icu.util.Currency
 import tv.trakt.trakt.app.Config.DEFAULT_COUNTRY_CODE
-import tv.trakt.trakt.app.common.model.SeasonEpisode
 import tv.trakt.trakt.app.common.model.StreamingService
 import tv.trakt.trakt.app.core.episodes.data.remote.EpisodesRemoteDataSource
 import tv.trakt.trakt.app.core.streamings.data.local.StreamingLocalDataSource
@@ -11,6 +10,7 @@ import tv.trakt.trakt.app.core.streamings.model.StreamingSource
 import tv.trakt.trakt.app.core.streamings.model.fromDto
 import tv.trakt.trakt.app.core.streamings.utilities.PriorityStreamingServiceProvider
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 
