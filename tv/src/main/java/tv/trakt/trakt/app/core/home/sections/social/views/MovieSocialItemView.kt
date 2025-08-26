@@ -18,6 +18,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Text
@@ -89,6 +90,12 @@ internal fun MovieSocialItemView(
                     color = TraktTheme.colors.textPrimary,
                     maxLines = 2,
                     overflow = TextOverflow.Companion.Ellipsis,
+                )
+
+                Text(
+                    text = stringResource(R.string.translated_value_type_movie),
+                    style = TraktTheme.typography.cardSubtitle,
+                    color = TraktTheme.colors.textSecondary,
                 )
 
                 InfoChip(
