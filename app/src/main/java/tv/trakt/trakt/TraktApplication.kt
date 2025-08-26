@@ -15,6 +15,7 @@ import tv.trakt.trakt.app.TvActivity
 import tv.trakt.trakt.common.auth.di.commonAuthModule
 import tv.trakt.trakt.common.networking.di.networkingModule
 import tv.trakt.trakt.core.auth.di.authModule
+import tv.trakt.trakt.core.home.di.homeModule
 import tv.trakt.trakt.core.movies.di.moviesDataModule
 import tv.trakt.trakt.core.movies.di.moviesModule
 import tv.trakt.trakt.core.profile.di.profileDataModule
@@ -61,6 +62,7 @@ internal class TraktApplication : Application() {
                 authModule,
                 networkingModule,
                 commonAuthModule,
+                homeModule,
                 showsModule,
                 showsDataModule,
                 moviesModule,

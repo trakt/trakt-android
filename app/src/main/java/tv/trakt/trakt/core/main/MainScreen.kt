@@ -116,7 +116,9 @@ private fun MainNavHost(
         exitTransition = { fadeOut(animationSpec = tween(250)) },
     ) {
         with(navController) {
-            homeScreen(onNavigateToHome = {})
+            homeScreen(
+                onNavigateToProfile = { navigateToProfile() },
+            )
             showsScreen(
                 onNavigateToProfile = { navigateToProfile() },
                 onNavigateToShow = {},
