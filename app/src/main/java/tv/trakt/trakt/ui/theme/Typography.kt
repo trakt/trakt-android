@@ -5,6 +5,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.resources.R
@@ -78,6 +79,20 @@ internal val Typography: TraktTypography = TraktTypography(
         fontSize = 14.sp,
         lineHeight = 1.2.em,
     ),
+    cardTitle = TextStyle(
+        fontFamily = SplineFamily,
+        fontWeight = FontWeight.W500,
+        fontSize = 12.sp,
+        textAlign = TextAlign.Start,
+        letterSpacing = (0.48).sp,
+    ),
+    cardSubtitle = TextStyle(
+        fontFamily = SplineFamily,
+        fontWeight = FontWeight.W400,
+        fontSize = 12.sp,
+        textAlign = TextAlign.Start,
+        letterSpacing = (0.48).sp,
+    ),
 )
 
 @Immutable
@@ -92,4 +107,7 @@ internal data class TraktTypography(
     val buttonPrimary: TextStyle = TextStyle.Default,
     val buttonTertiary: TextStyle = TextStyle.Default,
     val paragraphSmall: TextStyle = TextStyle.Default,
+    // Misc
+    val cardTitle: TextStyle = TextStyle.Default,
+    val cardSubtitle: TextStyle = TextStyle.Default,
 )

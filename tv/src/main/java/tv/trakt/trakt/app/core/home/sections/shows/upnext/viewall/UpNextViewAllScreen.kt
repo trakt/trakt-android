@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.home.sections.shows.upnext.viewall
 
-import EpisodeProgressBar
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -48,7 +47,9 @@ import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.ui.composables.EpisodeProgressBar
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.common.ui.theme.colors.White
 import tv.trakt.trakt.resources.R
 
 @Composable
@@ -184,6 +185,8 @@ private fun UpNextViewAllContent(
 
                                 EpisodeProgressBar(
                                     startText = stringResource(R.string.tag_text_remaining_episodes, remainingEpisodes),
+                                    textColor = White,
+                                    textStyle = TraktTheme.typography.meta,
                                     containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
                                     progress = remainingPercent,
                                 )

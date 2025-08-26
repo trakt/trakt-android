@@ -74,4 +74,6 @@ dependencies {
 
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.timber)
+
+    debugImplementation(libs.androidx.compose.tooling)
 }

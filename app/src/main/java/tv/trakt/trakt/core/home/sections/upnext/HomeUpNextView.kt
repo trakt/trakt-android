@@ -22,9 +22,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -32,11 +33,16 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.ui.composables.EpisodeProgressBar
+import tv.trakt.trakt.common.ui.theme.colors.White
+import tv.trakt.trakt.core.episodes.model.Episode
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
-import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
-import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
+import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
+import tv.trakt.trakt.ui.components.mediacards.skeletons.HorizontalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -121,7 +127,7 @@ private fun ContentLoadingList(
             .alpha(if (visible) 1F else 0F),
     ) {
         items(count = 6) {
-            VerticalMediaSkeletonCard()
+            HorizontalMediaSkeletonCard()
         }
     }
 }
@@ -154,6 +160,7 @@ private fun ContentList(
         ) { item ->
             ContentListItem(
                 item = item,
+                onClick = { _, _ -> },
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
                     fadeOutSpec = null,
@@ -167,19 +174,68 @@ private fun ContentList(
 private fun ContentListItem(
     item: ProgressShow,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = {},
+    onClick: (Show, Episode) -> Unit,
 ) {
-    VerticalMediaCard(
-        title = item.show.title,
-        imageUrl = item.show.images?.getPosterUrl(),
-        onClick = onClick,
-        chipContent = {
-            InfoChip(
-                text = "TODO",
-                iconPainter = painterResource(R.drawable.ic_person),
+    HorizontalMediaCard(
+        title = "",
+        containerImageUrl =
+            item.progress.nextEpisode.images?.getScreenshotUrl()
+                ?: item.show.images?.getFanartUrl(),
+        onClick = {
+            onClick(
+                item.show,
+                item.progress.nextEpisode,
             )
         },
-        modifier = modifier,
+        cardContent = {
+            Row(
+                horizontalArrangement = spacedBy(2.dp),
+            ) {
+                val runtime = item.progress.nextEpisode.runtime?.inWholeMinutes
+                if (runtime != null) {
+                    InfoChip(
+                        text = runtime.durationFormat(),
+                        containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
+                    )
+                }
+
+                val remainingEpisodes = remember(item.progress.completed, item.progress.aired) {
+                    item.progress.remainingEpisodes
+                }
+                val remainingPercent = remember(item.progress.completed, item.progress.aired) {
+                    item.progress.remainingPercent
+                }
+
+                EpisodeProgressBar(
+                    startText = stringResource(R.string.tag_text_remaining_episodes, remainingEpisodes),
+                    textColor = White,
+                    textStyle = TraktTheme.typography.meta,
+                    containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
+                    progress = remainingPercent,
+                )
+            }
+        },
+        footerContent = {
+            Column(
+                verticalArrangement = spacedBy(1.dp),
+            ) {
+                Text(
+                    text = item.show.title,
+                    style = TraktTheme.typography.cardTitle,
+                    color = TraktTheme.colors.textPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+
+                Text(
+                    text = item.progress.nextEpisode.seasonEpisodeString,
+                    style = TraktTheme.typography.cardSubtitle,
+                    color = TraktTheme.colors.textSecondary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+        },
     )
 }
 

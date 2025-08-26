@@ -1,9 +1,12 @@
+package tv.trakt.trakt.common.ui.composables
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -11,19 +14,22 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.tv.material3.Text
-import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.ui.theme.colors.Purple700
+import tv.trakt.trakt.common.ui.theme.colors.Shade800
 
 @Composable
-internal fun EpisodeProgressBar(
+fun EpisodeProgressBar(
     modifier: Modifier = Modifier,
     startText: String? = null,
     endText: String? = null,
-    containerColor: Color = TraktTheme.colors.chipContainer,
+    textColor: Color = White,
+    textStyle: TextStyle = TextStyle.Default,
+    containerColor: Color = Shade800,
     progress: Float = 0f,
     trackColor: Color = Purple700,
 ) {
@@ -63,8 +69,8 @@ internal fun EpisodeProgressBar(
         startText?.let {
             Text(
                 text = startText,
-                style = TraktTheme.typography.meta,
-                color = TraktTheme.colors.chipContent,
+                style = textStyle,
+                color = textColor,
                 maxLines = 1,
             )
         }
@@ -74,8 +80,8 @@ internal fun EpisodeProgressBar(
         endText?.let {
             Text(
                 text = endText,
-                style = TraktTheme.typography.meta,
-                color = TraktTheme.colors.chipContent,
+                style = textStyle,
+                color = textColor,
                 maxLines = 1,
             )
         }
@@ -85,22 +91,18 @@ internal fun EpisodeProgressBar(
 @Preview(widthDp = 200)
 @Composable
 private fun Preview1() {
-    TraktTheme {
-        EpisodeProgressBar(
-            startText = "12 remaining",
-            endText = "1h 23m",
-        )
-    }
+    EpisodeProgressBar(
+        startText = "12 remaining",
+        endText = "1h 23m",
+    )
 }
 
 @Preview(widthDp = 120)
 @Composable
 private fun Preview2() {
-    TraktTheme {
-        EpisodeProgressBar(
-            startText = "12 remaining",
-            endText = "1h 23m",
-            progress = 0.75F,
-        )
-    }
+    EpisodeProgressBar(
+        startText = "12 remaining",
+        endText = "1h 23m",
+        progress = 0.75F,
+    )
 }
