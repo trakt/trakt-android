@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.movies.sections.popular
+package tv.trakt.trakt.core.home.sections.watchlist
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
@@ -33,7 +33,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
-import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.core.home.sections.watchlist.model.WatchlistMovie
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
@@ -41,15 +41,15 @@ import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCa
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun MoviesPopularView(
+internal fun HomeWatchlistView(
     modifier: Modifier = Modifier,
-    viewModel: MoviesPopularViewModel = koinViewModel(),
+    viewModel: HomeWatchlistViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    MoviesPopularContent(
+    HomeWatchlistContent(
         state = state,
         modifier = modifier,
         headerPadding = headerPadding,
@@ -58,8 +58,8 @@ internal fun MoviesPopularView(
 }
 
 @Composable
-internal fun MoviesPopularContent(
-    state: MoviesPopularState,
+internal fun HomeWatchlistContent(
+    state: HomeWatchlistState,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
@@ -75,11 +75,21 @@ internal fun MoviesPopularContent(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
-                text = stringResource(R.string.list_title_most_popular),
-                color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.heading5,
-            )
+            // TODO Experiment with subheader
+            Column(
+                verticalArrangement = Arrangement.Center,
+            ) {
+                Text(
+                    text = stringResource(R.string.page_title_watchlist),
+                    color = TraktTheme.colors.textPrimary,
+                    style = TraktTheme.typography.heading5,
+                )
+                Text(
+                    text = "Released Movies", // TODO
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.meta,
+                )
+            }
             Text(
                 text = stringResource(R.string.button_text_view_all),
                 color = TraktTheme.colors.textSecondary,
@@ -100,7 +110,7 @@ internal fun MoviesPopularContent(
                 }
                 DONE -> {
                     ContentList(
-                        items = state.items ?: emptyList<Movie>().toImmutableList(),
+                        listItems = (state.items ?: emptyList()).toImmutableList(),
                         contentPadding = contentPadding,
                     )
                 }
@@ -129,14 +139,14 @@ private fun ContentLoadingList(
 
 @Composable
 private fun ContentList(
-    items: ImmutableList<Movie>,
+    listItems: ImmutableList<WatchlistMovie>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
 ) {
-    val currentList = remember { mutableIntStateOf(items.hashCode()) }
+    val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
-    LaunchedEffect(items) {
-        val hashCode = items.hashCode()
+    LaunchedEffect(listItems) {
+        val hashCode = listItems.hashCode()
         if (currentList.intValue != hashCode) {
             currentList.intValue = hashCode
             listState.animateScrollToItem(0)
@@ -150,11 +160,12 @@ private fun ContentList(
         contentPadding = contentPadding,
     ) {
         items(
-            items = items,
-            key = { it.ids.trakt.value },
+            items = listItems,
+            key = { it.movie.ids.trakt.value },
         ) { item ->
             ContentListItem(
                 item = item,
+                onClick = {},
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
                     fadeOutSpec = null,
@@ -166,23 +177,23 @@ private fun ContentList(
 
 @Composable
 private fun ContentListItem(
-    item: Movie,
+    item: WatchlistMovie,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
 ) {
     VerticalMediaCard(
-        title = item.title,
-        imageUrl = item.images?.getPosterUrl(),
+        title = item.movie.title,
+        imageUrl = item.movie.images?.getPosterUrl(),
         onClick = onClick,
         chipContent = {
             Row(
                 horizontalArrangement = spacedBy(5.dp),
             ) {
                 InfoChip(
-                    text = item.year.toString(),
+                    text = item.movie.year.toString(),
                 )
-                item.runtime?.inWholeMinutes?.let {
-                    val runtimeString = remember(item.runtime) {
+                item.movie.runtime?.inWholeMinutes?.let {
+                    val runtimeString = remember(item.movie.runtime) {
                         it.durationFormat()
                     }
                     InfoChip(
@@ -204,8 +215,8 @@ private fun ContentListItem(
 @Composable
 private fun Preview() {
     TraktTheme {
-        MoviesPopularContent(
-            state = MoviesPopularState(
+        HomeWatchlistContent(
+            state = HomeWatchlistState(
                 loading = IDLE,
             ),
         )
@@ -220,8 +231,8 @@ private fun Preview() {
 @Composable
 private fun Preview2() {
     TraktTheme {
-        MoviesPopularContent(
-            state = MoviesPopularState(
+        HomeWatchlistContent(
+            state = HomeWatchlistState(
                 loading = LOADING,
             ),
         )

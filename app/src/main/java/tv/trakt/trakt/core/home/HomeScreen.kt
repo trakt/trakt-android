@@ -20,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastRoundToInt
@@ -28,6 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextView
+import tv.trakt.trakt.core.home.sections.watchlist.HomeWatchlistView
 import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.ui.components.BackdropImage
@@ -72,8 +72,8 @@ private fun HomeScreenContent(
         contentAlignment = Alignment.TopStart,
         modifier = modifier
             .fillMaxSize()
-            .background(TraktTheme.colors.backgroundPrimary)
-            .nestedScroll(headerState.connection),
+            .background(TraktTheme.colors.backgroundPrimary),
+//            .nestedScroll(headerState.connection),
     ) {
         BackdropImage(
             imageUrl = state.backgroundUrl,
@@ -101,15 +101,22 @@ private fun HomeScreenContent(
             end = TraktTheme.spacing.mainPageHorizontalSpace,
         )
 
-        LazyColumn(
-            state = lazyListState,
-            overscrollEffect = null,
-            verticalArrangement = spacedBy(TraktTheme.spacing.mainSectionVerticalSpace),
-            contentPadding = listPadding,
-        ) {
-            if (state.user.isAuthenticated) {
+        if (state.user.isAuthenticated) {
+            LazyColumn(
+                state = lazyListState,
+                overscrollEffect = null,
+                verticalArrangement = spacedBy(TraktTheme.spacing.mainSectionVerticalSpace),
+                contentPadding = listPadding,
+            ) {
                 item {
                     HomeUpNextView(
+                        headerPadding = sectionPadding,
+                        contentPadding = sectionPadding,
+                    )
+                }
+
+                item {
+                    HomeWatchlistView(
                         headerPadding = sectionPadding,
                         contentPadding = sectionPadding,
                     )

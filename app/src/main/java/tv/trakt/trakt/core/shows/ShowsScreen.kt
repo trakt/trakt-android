@@ -134,6 +134,13 @@ private fun ShowsScreenContent(
                 )
             }
 
+            item {
+                ShowsPopularView(
+                    headerPadding = sectionPadding,
+                    contentPadding = sectionPadding,
+                )
+            }
+
             if (state.user.isAuthenticated) {
                 item {
                     ShowsRecommendedView(
@@ -141,13 +148,6 @@ private fun ShowsScreenContent(
                         contentPadding = sectionPadding,
                     )
                 }
-            }
-
-            item {
-                ShowsPopularView(
-                    headerPadding = sectionPadding,
-                    contentPadding = sectionPadding,
-                )
             }
         }
 

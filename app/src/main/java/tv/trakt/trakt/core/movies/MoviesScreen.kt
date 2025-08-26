@@ -134,6 +134,13 @@ private fun MoviesScreenContent(
                 )
             }
 
+            item {
+                MoviesPopularView(
+                    headerPadding = sectionPadding,
+                    contentPadding = sectionPadding,
+                )
+            }
+
             if (state.user.isAuthenticated) {
                 item {
                     MoviesRecommendedView(
@@ -141,13 +148,6 @@ private fun MoviesScreenContent(
                         contentPadding = sectionPadding,
                     )
                 }
-            }
-
-            item {
-                MoviesPopularView(
-                    headerPadding = sectionPadding,
-                    contentPadding = sectionPadding,
-                )
             }
         }
 

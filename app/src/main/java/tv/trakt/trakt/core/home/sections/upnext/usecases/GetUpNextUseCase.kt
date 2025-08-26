@@ -13,7 +13,6 @@ import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSo
 import tv.trakt.trakt.core.home.sections.upnext.model.Progress
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
-import java.time.Instant
 
 internal class GetUpNextUseCase(
     private val remoteSyncSource: ShowsSyncRemoteDataSource,
@@ -57,10 +56,9 @@ internal class GetUpNextUseCase(
                 )
             }
             .toImmutableList()
-            .also { shows ->
+            .also {
                 localDataSource.addItems(
-                    shows = shows,
-                    addedAt = Instant.now(),
+                    items = it,
                 )
             }
     }

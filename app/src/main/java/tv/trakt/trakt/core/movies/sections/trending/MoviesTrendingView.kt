@@ -81,7 +81,7 @@ internal fun MoviesTrendingContent(
                 style = TraktTheme.typography.heading5,
             )
             Text(
-                text = stringResource(R.string.button_text_view_all).uppercase(),
+                text = stringResource(R.string.button_text_view_all),
                 color = TraktTheme.colors.textSecondary,
                 style = TraktTheme.typography.buttonTertiary,
             )

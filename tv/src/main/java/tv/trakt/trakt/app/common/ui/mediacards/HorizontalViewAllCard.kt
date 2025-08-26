@@ -83,7 +83,7 @@ internal fun HorizontalViewAllCard(
         )
 
         Text(
-            text = stringResource(R.string.button_text_view_all).uppercase(),
+            text = stringResource(R.string.button_text_view_all),
             style = TraktTheme.typography.buttonPrimary,
             color = TraktTheme.colors.textPrimary,
             maxLines = 1,

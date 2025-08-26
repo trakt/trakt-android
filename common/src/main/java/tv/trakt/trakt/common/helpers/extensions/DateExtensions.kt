@@ -1,5 +1,6 @@
 package tv.trakt.trakt.common.helpers.extensions
 
+import java.time.Instant
 import java.time.ZoneOffset.UTC
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -7,6 +8,10 @@ import java.time.format.DateTimeFormatter
 fun nowLocal(): ZonedDateTime = ZonedDateTime.now()
 
 // Misc
+
+fun String.toInstant(): Instant {
+    return Instant.parse(this)
+}
 
 fun String.toZonedDateTime(): ZonedDateTime {
     // Current Nitro endpoints pattern is "2025-06-23 03:24:23.000000"
