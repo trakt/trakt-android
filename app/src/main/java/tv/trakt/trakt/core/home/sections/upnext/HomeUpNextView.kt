@@ -42,7 +42,7 @@ import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
-import tv.trakt.trakt.ui.components.mediacards.skeletons.HorizontalMediaSkeletonCard
+import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -127,7 +127,7 @@ private fun ContentLoadingList(
             .alpha(if (visible) 1F else 0F),
     ) {
         items(count = 6) {
-            HorizontalMediaSkeletonCard()
+            EpisodeSkeletonCard()
         }
     }
 }

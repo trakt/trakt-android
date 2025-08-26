@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.movies
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -84,6 +85,7 @@ private fun MoviesScreenContent(
         contentAlignment = Alignment.TopStart,
         modifier = modifier
             .fillMaxSize()
+            .background(TraktTheme.colors.backgroundPrimary)
             .nestedScroll(headerState.connection),
     ) {
         BackdropImage(

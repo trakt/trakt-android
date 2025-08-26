@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.profile
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -68,7 +69,9 @@ private fun ProfileScreenContent(
         .calculateTopPadding()
 
     Box(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .background(TraktTheme.colors.backgroundPrimary),
     ) {
         BackdropImage(
             imageUrl = state.backgroundUrl,

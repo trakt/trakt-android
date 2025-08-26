@@ -35,7 +35,13 @@ internal class HomeUpNextViewModel(
     private fun loadData() {
         viewModelScope.launch {
             try {
-                loadingState.update { LOADING }
+                val localItems = getUpNextUseCase.getLocalUpNext()
+                if (localItems.isNotEmpty()) {
+                    itemsState.update { localItems }
+                    loadingState.update { DONE }
+                } else {
+                    loadingState.update { LOADING }
+                }
 
                 itemsState.update {
                     getUpNextUseCase.getUpNext()

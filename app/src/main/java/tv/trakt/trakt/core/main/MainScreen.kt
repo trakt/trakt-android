@@ -18,7 +18,6 @@ import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -43,7 +42,6 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun MainScreen(modifier: Modifier = Modifier) {
     val localContext = LocalContext.current
-    val localDensity = LocalDensity.current
     val localBottomBarVisibility = LocalBottomBarVisibility.current
 
     val navController = rememberNavController()
