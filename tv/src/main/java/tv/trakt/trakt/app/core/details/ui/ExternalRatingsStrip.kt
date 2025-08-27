@@ -26,6 +26,7 @@ import tv.trakt.trakt.resources.R
 internal fun ExternalRatingsStrip(
     externalRating: ExternalRating?,
     modifier: Modifier = Modifier,
+    hidden: Boolean = false,
 ) {
     val grayFilter = remember {
         ColorFilter.colorMatrix(
@@ -50,16 +51,16 @@ internal fun ExternalRatingsStrip(
                 painter = painterResource(R.drawable.ic_imdb_color),
                 contentDescription = null,
                 modifier = Modifier.height(14.dp),
-                colorFilter = if (imdbRating > 0) null else grayFilter,
+                colorFilter = if (imdbRating > 0 && !hidden) null else grayFilter,
             )
             Text(
-                text = if (imdbRating > 0) externalRating?.imdb?.ratingString ?: "-" else "-",
+                text = if (imdbRating > 0 && !hidden) externalRating?.imdb?.ratingString ?: "-" else "-",
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.ratingLabel,
             )
 
             val imdbVotes = externalRating?.imdb?.votes ?: 0
-            if (imdbVotes > 0) {
+            if (imdbVotes > 0 && !hidden) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.align(Alignment.Top),
@@ -89,10 +90,10 @@ internal fun ExternalRatingsStrip(
                 painter = painterResource(externalRating?.rotten?.ratingIcon ?: R.drawable.ic_rotten_tomato),
                 contentDescription = null,
                 modifier = Modifier.height(16.dp),
-                colorFilter = if (rottenRating > 0) null else grayFilter,
+                colorFilter = if (rottenRating > 0 && !hidden) null else grayFilter,
             )
             Text(
-                text = if (rottenRating > 0) "$rottenRating%" else "-",
+                text = if (rottenRating > 0 && !hidden) "$rottenRating%" else "-",
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.ratingLabel,
             )
@@ -110,10 +111,10 @@ internal fun ExternalRatingsStrip(
                 ),
                 contentDescription = null,
                 modifier = Modifier.height(16.dp),
-                colorFilter = if (rottenRatingAud > 0) null else grayFilter,
+                colorFilter = if (rottenRatingAud > 0 && !hidden) null else grayFilter,
             )
             Text(
-                text = if (rottenRatingAud > 0) "$rottenRatingAud%" else "-",
+                text = if (rottenRatingAud > 0 && !hidden) "$rottenRatingAud%" else "-",
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.ratingLabel,
             )
@@ -121,11 +122,45 @@ internal fun ExternalRatingsStrip(
     }
 }
 
-@Preview(widthDp = 600)
+@Preview(widthDp = 300)
 @Composable
 private fun ExternalRatingsStripPreview() {
     TraktTheme {
         ExternalRatingsStrip(
+            hidden = false,
+            externalRating = ExternalRating(
+                tmdb = ExternalRating.TmdbRating(
+                    rating = 8.5F,
+                    votes = 123456,
+                    link = "https://www.themoviedb.org/movie/123456",
+                ),
+                imdb = ExternalRating.ImdbRating(
+                    rating = 7.9F,
+                    votes = 1_267_356,
+                    link = "https://www.imdb.com/title/tt1234567/",
+                ),
+                meta = ExternalRating.MetaRating(
+                    rating = 85,
+                    link = "https://www.metacritic.com/movie/some-movie",
+                ),
+                rotten = ExternalRating.RottenRating(
+                    rating = 23F,
+                    state = "Fresh",
+                    userRating = 80,
+                    userState = "spilled",
+                    link = "https://www.rottentomatoes.com/m/some_movie",
+                ),
+            ),
+        )
+    }
+}
+
+@Preview(widthDp = 300)
+@Composable
+private fun ExternalRatingsStripPreview2() {
+    TraktTheme {
+        ExternalRatingsStrip(
+            hidden = true,
             externalRating = ExternalRating(
                 tmdb = ExternalRating.TmdbRating(
                     rating = 8.5F,

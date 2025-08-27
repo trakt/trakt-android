@@ -4,8 +4,9 @@ import ExternalRatingsStrip
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,6 +27,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
@@ -44,6 +47,7 @@ import tv.trakt.trakt.app.common.model.ExternalRating
 import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.core.details.show.ShowDetailsState.CollectionState
 import tv.trakt.trakt.app.core.details.ui.PosterImage
+import tv.trakt.trakt.app.helpers.extensions.nowUtc
 import tv.trakt.trakt.app.helpers.longDateFormat
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -68,7 +72,7 @@ internal fun ShowHeader(
     var isPosterFocused by remember { mutableStateOf(false) }
 
     Row(
-        horizontalArrangement = Arrangement.Absolute.spacedBy(24.dp, Alignment.Start),
+        horizontalArrangement = spacedBy(24.dp, Alignment.Start),
         verticalAlignment = Alignment.Bottom,
         modifier = modifier
             .padding(
@@ -119,7 +123,7 @@ internal fun ShowHeader(
             )
 
             Row(
-                horizontalArrangement = Arrangement.Absolute.spacedBy(16.dp),
+                horizontalArrangement = spacedBy(16.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(top = 4.dp),
             ) {
@@ -127,7 +131,7 @@ internal fun ShowHeader(
                 val releaseDate = show.released
                 if (releaseDate != null) {
                     Row(
-                        horizontalArrangement = Arrangement.Absolute.spacedBy(4.dp),
+                        horizontalArrangement = spacedBy(4.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Icon(
@@ -148,7 +152,7 @@ internal fun ShowHeader(
 
                 // Genres
                 Row(
-                    horizontalArrangement = Arrangement.Absolute.spacedBy(6.dp),
+                    horizontalArrangement = spacedBy(6.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Icon(
@@ -171,46 +175,63 @@ internal fun ShowHeader(
             }
 
             Column(
-                verticalArrangement = Arrangement.Absolute.spacedBy(8.dp),
+                verticalArrangement = spacedBy(8.dp),
                 modifier = Modifier.padding(top = 24.dp),
             ) {
                 // Ratings
                 Row(
-                    horizontalArrangement = Arrangement.Absolute.spacedBy(16.dp),
+                    horizontalArrangement = spacedBy(16.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.horizontalScroll(rememberScrollState()),
                 ) {
+                    val hidden = remember(show.released) {
+                        show.released == null || show.released?.isAfter(nowUtc()) == true
+                    }
+
                     Row(
-                        horizontalArrangement = Arrangement.Absolute.spacedBy(2.dp),
+                        horizontalArrangement = spacedBy(2.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Icon(
+                        val grayFilter = remember {
+                            ColorFilter.colorMatrix(
+                                ColorMatrix().apply {
+                                    setToSaturation(0F)
+                                },
+                            )
+                        }
+                        val redFilter = remember {
+                            ColorFilter.tint(Red500)
+                        }
+
+                        Image(
                             painter = painterResource(R.drawable.ic_heart),
                             contentDescription = null,
-                            tint = Red500,
                             modifier = Modifier.size(18.dp),
+                            colorFilter = if (show.rating.rating > 0 && !hidden) redFilter else grayFilter,
                         )
                         Text(
-                            text = "${show.rating.ratingPercent}%",
+                            text = if (show.rating.rating > 0 && !hidden) "${show.rating.ratingPercent}%" else "-",
                             color = TraktTheme.colors.textPrimary,
                             style = TraktTheme.typography.ratingLabel,
                         )
 
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.align(Alignment.Top),
-                        ) {
-                            Icon(
-                                imageVector = Icons.Rounded.Person,
-                                contentDescription = null,
-                                tint = TraktTheme.colors.textSecondary,
-                                modifier = Modifier.size(12.5.dp),
-                            )
-                            Text(
-                                text = show.rating.votes.thousandsFormat(),
-                                color = TraktTheme.colors.textSecondary,
-                                style = TraktTheme.typography.ratingLabel.copy(fontSize = 12.sp),
-                            )
+                        if (show.rating.rating > 0 && !hidden) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.align(Alignment.Top),
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Rounded.Person,
+                                    contentDescription = null,
+                                    tint = TraktTheme.colors.textSecondary,
+                                    modifier = Modifier.size(12.5.dp),
+                                )
+                                Text(
+                                    text = show.rating.votes.thousandsFormat(),
+                                    color = TraktTheme.colors.textSecondary,
+                                    style = TraktTheme.typography.ratingLabel.copy(fontSize = 12.sp),
+                                )
+                            }
                         }
                     }
 
@@ -221,6 +242,7 @@ internal fun ShowHeader(
                     ) {
                         ExternalRatingsStrip(
                             externalRating = externalRating,
+                            hidden = hidden,
                         )
                     }
                 }
@@ -228,7 +250,7 @@ internal fun ShowHeader(
                 // Info chips
                 if (show.certification != null || show.released != null) {
                     Row(
-                        horizontalArrangement = Arrangement.Absolute.spacedBy(6.dp),
+                        horizontalArrangement = spacedBy(6.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         if (showCollection.episodesPlays > 0) {

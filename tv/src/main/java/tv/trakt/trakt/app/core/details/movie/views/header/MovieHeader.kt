@@ -4,6 +4,7 @@ import ExternalRatingsStrip
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
@@ -26,6 +27,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
@@ -52,6 +55,7 @@ import tv.trakt.trakt.common.model.Images.Size.MEDIUM
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.resources.R
+import java.time.LocalDate
 
 @Composable
 internal fun MovieHeader(
@@ -180,37 +184,54 @@ internal fun MovieHeader(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.horizontalScroll(rememberScrollState()),
                 ) {
+                    val hidden = remember(movie.released) {
+                        movie.released == null || movie.released?.isAfter(LocalDate.now()) == true
+                    }
+
                     Row(
                         horizontalArrangement = spacedBy(2.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Icon(
+                        val grayFilter = remember {
+                            ColorFilter.colorMatrix(
+                                ColorMatrix().apply {
+                                    setToSaturation(0F)
+                                },
+                            )
+                        }
+                        val redFilter = remember {
+                            ColorFilter.tint(Red500)
+                        }
+
+                        Image(
                             painter = painterResource(R.drawable.ic_heart),
                             contentDescription = null,
-                            tint = Red500,
                             modifier = Modifier.size(18.dp),
+                            colorFilter = if (movie.rating.rating > 0 && !hidden) redFilter else grayFilter,
                         )
                         Text(
-                            text = "${movie.rating.ratingPercent}%",
+                            text = if (movie.rating.rating > 0 && !hidden) "${movie.rating.ratingPercent}%" else "-",
                             color = TraktTheme.colors.textPrimary,
                             style = TraktTheme.typography.ratingLabel,
                         )
 
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.align(Alignment.Top),
-                        ) {
-                            Icon(
-                                imageVector = Icons.Rounded.Person,
-                                contentDescription = null,
-                                tint = TraktTheme.colors.textSecondary,
-                                modifier = Modifier.size(12.5.dp),
-                            )
-                            Text(
-                                text = movie.rating.votes.thousandsFormat(),
-                                color = TraktTheme.colors.textSecondary,
-                                style = TraktTheme.typography.ratingLabel.copy(fontSize = 12.sp),
-                            )
+                        if (movie.rating.rating > 0 && !hidden) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.align(Alignment.Top),
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Rounded.Person,
+                                    contentDescription = null,
+                                    tint = TraktTheme.colors.textSecondary,
+                                    modifier = Modifier.size(12.5.dp),
+                                )
+                                Text(
+                                    text = movie.rating.votes.thousandsFormat(),
+                                    color = TraktTheme.colors.textSecondary,
+                                    style = TraktTheme.typography.ratingLabel.copy(fontSize = 12.sp),
+                                )
+                            }
                         }
                     }
 
@@ -221,6 +242,7 @@ internal fun MovieHeader(
                     ) {
                         ExternalRatingsStrip(
                             externalRating = externalRating,
+                            hidden = hidden,
                         )
                     }
                 }
