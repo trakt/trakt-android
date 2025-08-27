@@ -25,7 +25,7 @@ import coil3.compose.AsyncImage
 import tv.trakt.trakt.app.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.home.sections.activity.model.SocialActivityItem
+import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
@@ -33,7 +33,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 internal fun MovieSocialItemView(
-    item: SocialActivityItem.MovieItem,
+    item: HomeActivityItem.MovieItem,
     onClick: (TraktId) -> Unit,
     modifier: Modifier = Modifier,
 ) {

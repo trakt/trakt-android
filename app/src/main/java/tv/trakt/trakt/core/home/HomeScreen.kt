@@ -27,7 +27,7 @@ import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.core.home.sections.activity.HomeSocialView
+import tv.trakt.trakt.core.home.sections.activity.HomeActivityView
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextView
 import tv.trakt.trakt.core.home.sections.watchlist.HomeWatchlistView
 import tv.trakt.trakt.helpers.ScreenHeaderState
@@ -125,7 +125,7 @@ private fun HomeScreenContent(
                 }
 
                 item {
-                    HomeSocialView(
+                    HomeActivityView(
                         headerPadding = sectionPadding,
                         contentPadding = sectionPadding,
                     )

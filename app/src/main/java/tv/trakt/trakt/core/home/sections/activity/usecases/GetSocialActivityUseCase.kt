@@ -12,13 +12,13 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.episodes.model.Episode
 import tv.trakt.trakt.core.episodes.model.fromDto
-import tv.trakt.trakt.core.home.sections.activity.model.SocialActivityItem
+import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.profile.data.remote.UserRemoteDataSource
 
 internal class GetSocialActivityUseCase(
     private val remoteSource: UserRemoteDataSource,
 ) {
-    suspend fun getSocialActivity(limit: Int): ImmutableList<SocialActivityItem> {
+    suspend fun getSocialActivity(limit: Int): ImmutableList<HomeActivityItem> {
         val items = remoteSource.getSocialActivity(
             limit = limit,
             type = "following",
@@ -26,7 +26,7 @@ internal class GetSocialActivityUseCase(
         return items
             .asyncMap {
                 when (it.type) {
-                    MOVIE -> SocialActivityItem.MovieItem(
+                    MOVIE -> HomeActivityItem.MovieItem(
                         id = it.id,
                         user = User.fromDto(it.user),
                         activity = it.action,
@@ -38,7 +38,7 @@ internal class GetSocialActivityUseCase(
                         ),
                     )
                     EPISODE -> {
-                        SocialActivityItem.EpisodeItem(
+                        HomeActivityItem.EpisodeItem(
                             id = it.id,
                             user = User.fromDto(it.user),
                             activity = it.action,

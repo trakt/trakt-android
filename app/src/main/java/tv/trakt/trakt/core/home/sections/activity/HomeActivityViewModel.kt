@@ -16,12 +16,13 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
 
-internal class HomeSocialViewModel(
+internal class HomeActivityViewModel(
     private val getSocialActivityUseCase: GetSocialActivityUseCase,
 ) : ViewModel() {
-    private val initialState = HomeSocialState()
+    private val initialState = HomeActivityState()
 
     private val itemsState = MutableStateFlow(initialState.items)
+    private val filterState = MutableStateFlow(initialState.filter)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -48,15 +49,17 @@ internal class HomeSocialViewModel(
         }
     }
 
-    val state: StateFlow<HomeSocialState> = combine(
+    val state: StateFlow<HomeActivityState> = combine(
         loadingState,
         itemsState,
+        filterState,
         errorState,
-    ) { s1, s2, s3 ->
-        HomeSocialState(
+    ) { s1, s2, s3, s4 ->
+        HomeActivityState(
             loading = s1,
             items = s2,
-            error = s3,
+            filter = s3,
+            error = s4,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -26,7 +26,7 @@ import tv.trakt.trakt.app.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.episodes.model.Episode
-import tv.trakt.trakt.core.home.sections.activity.model.SocialActivityItem
+import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
@@ -36,7 +36,7 @@ import java.time.Instant
 
 @Composable
 internal fun EpisodeSocialItemView(
-    item: SocialActivityItem.EpisodeItem,
+    item: HomeActivityItem.EpisodeItem,
     onClick: (TraktId, Episode) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -49,6 +49,14 @@ internal fun EpisodeSocialItemView(
             onClick(
                 item.show.ids.trakt,
                 item.episode,
+            )
+        },
+        cardContent = {
+            InfoChip(
+                text = item.activityAt.toLocal().relativePastDateString(),
+                iconPainter = painterResource(R.drawable.ic_calendar_check),
+                containerColor = TraktTheme.colors.chipContainerOnContent,
+                modifier = Modifier.padding(top = 6.dp),
             )
         },
         cardTopContent = {
@@ -107,12 +115,6 @@ internal fun EpisodeSocialItemView(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
-
-                InfoChip(
-                    text = item.activityAt.toLocal().relativePastDateString(),
-                    iconPainter = painterResource(R.drawable.ic_calendar_check),
-                    modifier = Modifier.padding(top = 6.dp),
-                )
             }
         },
         modifier = modifier,
@@ -124,7 +126,7 @@ internal fun EpisodeSocialItemView(
 private fun EpisodeSocialItemViewPreview() {
     TraktTheme {
         EpisodeSocialItemView(
-            item = SocialActivityItem.EpisodeItem(
+            item = HomeActivityItem.EpisodeItem(
                 id = 1,
                 activity = "watch",
                 activityAt = Instant.now(),

@@ -9,10 +9,15 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Done
+import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -33,17 +39,20 @@ import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.episodes.model.Episode
-import tv.trakt.trakt.core.home.sections.activity.model.SocialActivityItem
+import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.PERSONAL
+import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.SOCIAL
+import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.views.EpisodeSocialItemView
 import tv.trakt.trakt.core.home.sections.activity.views.MovieSocialItemView
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.FilterChip
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun HomeSocialView(
+internal fun HomeActivityView(
     modifier: Modifier = Modifier,
-    viewModel: HomeSocialViewModel = koinViewModel(),
+    viewModel: HomeActivityViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
@@ -51,7 +60,7 @@ internal fun HomeSocialView(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    HomeSocialContent(
+    HomeActivityContent(
         state = state,
         modifier = modifier,
         headerPadding = headerPadding,
@@ -62,8 +71,8 @@ internal fun HomeSocialView(
 }
 
 @Composable
-internal fun HomeSocialContent(
-    state: HomeSocialState,
+internal fun HomeActivityContent(
+    state: HomeActivityState,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
@@ -71,7 +80,7 @@ internal fun HomeSocialContent(
     onMovieClick: (TraktId) -> Unit = {},
 ) {
     Column(
-        verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
+        verticalArrangement = spacedBy(0.dp),
         modifier = modifier,
     ) {
         Row(
@@ -90,6 +99,41 @@ internal fun HomeSocialContent(
                 text = stringResource(R.string.button_text_view_all),
                 color = TraktTheme.colors.textSecondary,
                 style = TraktTheme.typography.buttonTertiary,
+            )
+        }
+
+        Row(
+            modifier = Modifier
+                .padding(headerPadding)
+                .padding(top = 11.dp)
+                .padding(bottom = 13.dp),
+            horizontalArrangement = spacedBy(6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            FilterChip(
+                selected = state.filter == SOCIAL,
+                text = stringResource(SOCIAL.displayRes),
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Rounded.Done,
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier.size(FilterChipDefaults.IconSize),
+                    )
+                },
+            )
+
+            FilterChip(
+                selected = state.filter == PERSONAL,
+                text = stringResource(PERSONAL.displayRes),
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Rounded.Done,
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier.size(FilterChipDefaults.IconSize),
+                    )
+                },
             )
         }
 
@@ -146,7 +190,7 @@ private fun ContentLoadingList(
 
 @Composable
 private fun ContentList(
-    listItems: ImmutableList<SocialActivityItem>,
+    listItems: ImmutableList<HomeActivityItem>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
     onEpisodeClick: (TraktId, Episode) -> Unit,
@@ -173,7 +217,7 @@ private fun ContentList(
             key = { it.id },
         ) { item ->
             when (item) {
-                is SocialActivityItem.MovieItem ->
+                is HomeActivityItem.MovieItem ->
                     MovieSocialItemView(
                         item = item,
                         onClick = onMovieClick,
@@ -182,7 +226,7 @@ private fun ContentList(
                             fadeOutSpec = null,
                         ),
                     )
-                is SocialActivityItem.EpisodeItem ->
+                is HomeActivityItem.EpisodeItem ->
                     EpisodeSocialItemView(
                         item = item,
                         onClick = onEpisodeClick,
@@ -204,8 +248,8 @@ private fun ContentList(
 @Composable
 private fun Preview() {
     TraktTheme {
-        HomeSocialContent(
-            state = HomeSocialState(
+        HomeActivityContent(
+            state = HomeActivityState(
                 loading = IDLE,
             ),
         )
@@ -220,8 +264,8 @@ private fun Preview() {
 @Composable
 private fun Preview2() {
     TraktTheme {
-        HomeSocialContent(
-            state = HomeSocialState(
+        HomeActivityContent(
+            state = HomeActivityState(
                 loading = LOADING,
             ),
         )
