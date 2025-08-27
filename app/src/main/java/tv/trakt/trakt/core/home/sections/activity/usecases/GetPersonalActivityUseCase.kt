@@ -11,13 +11,21 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.episodes.model.Episode
 import tv.trakt.trakt.core.episodes.model.fromDto
+import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.profile.data.remote.UserRemoteDataSource
 
 // TODO This should not be split. Use single history once API is fixed.
 internal class GetPersonalActivityUseCase(
     private val remoteUserSource: UserRemoteDataSource,
+    private val localDataSource: HomePersonalLocalDataSource,
 ) {
+    suspend fun getLocalPersonalActivity(): ImmutableList<HomeActivityItem> {
+        return localDataSource.getItems()
+            .sortedByDescending { it.activityAt }
+            .toImmutableList()
+    }
+
     suspend fun getPersonalActivity(
         page: Int = 1,
         limit: Int,
@@ -68,6 +76,11 @@ internal class GetPersonalActivityUseCase(
             return@coroutineScope (remoteEpisodes + remoteMovies)
                 .sortedByDescending { it.activityAt }
                 .toImmutableList()
+                .also {
+                    localDataSource.addItems(
+                        items = it,
+                    )
+                }
         }
     }
 }

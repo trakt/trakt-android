@@ -17,6 +17,10 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.core.home.HomeViewModel
 import tv.trakt.trakt.core.home.sections.activity.HomeActivityViewModel
+import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
+import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalStorage
+import tv.trakt.trakt.core.home.sections.activity.data.local.social.HomeSocialLocalDataSource
+import tv.trakt.trakt.core.home.sections.activity.data.local.social.HomeSocialStorage
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetActivityFilterUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
@@ -45,6 +49,14 @@ internal val homeDataModule = module {
     single<HomeWatchlistLocalDataSource> {
         HomeWatchlistStorage()
     }
+
+    single<HomeSocialLocalDataSource> {
+        HomeSocialStorage()
+    }
+
+    single<HomePersonalLocalDataSource> {
+        HomePersonalStorage()
+    }
 }
 
 internal val homeModule = module {
@@ -66,12 +78,14 @@ internal val homeModule = module {
     factory {
         GetSocialActivityUseCase(
             remoteSource = get(),
+            localDataSource = get(),
         )
     }
 
     factory {
         GetPersonalActivityUseCase(
             remoteUserSource = get(),
+            localDataSource = get(),
         )
     }
 

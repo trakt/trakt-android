@@ -40,9 +40,21 @@ internal class HomeActivityViewModel(
     private fun loadData() {
         viewModelScope.launch {
             try {
-                loadingState.update { LOADING }
+                val filter = loadFilter()
+                val localItems = when (filter) {
+                    SOCIAL -> getSocialActivityUseCase.getLocalSocialActivity()
+                    PERSONAL -> getPersonalActivityUseCase.getLocalPersonalActivity()
+                }
+
+                if (localItems.isNotEmpty()) {
+                    itemsState.update { localItems }
+                    loadingState.update { DONE }
+                } else {
+                    loadingState.update { LOADING }
+                }
+
                 itemsState.update {
-                    when (loadFilter()) {
+                    when (filter) {
                         SOCIAL -> getSocialActivityUseCase.getSocialActivity(HOME_SECTION_LIMIT)
                         PERSONAL -> getPersonalActivityUseCase.getPersonalActivity(1, HOME_SECTION_LIMIT)
                     }

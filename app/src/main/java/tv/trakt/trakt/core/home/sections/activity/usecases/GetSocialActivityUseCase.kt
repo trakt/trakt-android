@@ -12,12 +12,19 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.episodes.model.Episode
 import tv.trakt.trakt.core.episodes.model.fromDto
+import tv.trakt.trakt.core.home.sections.activity.data.local.social.HomeSocialLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.profile.data.remote.UserRemoteDataSource
 
 internal class GetSocialActivityUseCase(
     private val remoteSource: UserRemoteDataSource,
+    private val localDataSource: HomeSocialLocalDataSource,
 ) {
+    suspend fun getLocalSocialActivity(): ImmutableList<HomeActivityItem> {
+        return localDataSource.getItems()
+            .toImmutableList()
+    }
+
     suspend fun getSocialActivity(limit: Int): ImmutableList<HomeActivityItem> {
         val items = remoteSource.getSocialActivity(
             limit = limit,
@@ -58,5 +65,10 @@ internal class GetSocialActivityUseCase(
                 }
             }
             .toImmutableList()
+            .also {
+                localDataSource.addItems(
+                    items = it,
+                )
+            }
     }
 }
