@@ -1,16 +1,20 @@
 package tv.trakt.trakt.core.profile.data.remote
 
+import org.openapitools.client.apis.CalendarsApi
 import org.openapitools.client.apis.HistoryApi
 import org.openapitools.client.apis.UsersApi
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.networking.CalendarShowDto
 import tv.trakt.trakt.common.networking.SocialActivityItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
+import java.time.LocalDate
 
 internal class UserApiClient(
     private val usersApi: UsersApi,
     private val historyApi: HistoryApi,
+    private val calendarsApi: CalendarsApi,
 ) : UserRemoteDataSource {
     override suspend fun getProfile(): User {
         val response = usersApi.getUsersSettings(
@@ -61,6 +65,19 @@ internal class UserApiClient(
             endAt = null,
             page = page,
             limit = limit,
+        )
+        return response.body()
+    }
+
+    override suspend fun getShowsCalendar(
+        startDate: LocalDate,
+        days: Int,
+    ): List<CalendarShowDto> {
+        val response = calendarsApi.getCalendarsShows(
+            target = "my",
+            startDate = startDate.toString(),
+            days = days,
+            extended = "full,cloud9,colors",
         )
         return response.body()
     }

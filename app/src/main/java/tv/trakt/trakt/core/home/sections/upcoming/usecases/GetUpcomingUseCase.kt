@@ -2,34 +2,38 @@ package tv.trakt.trakt.core.home.sections.upcoming.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.core.episodes.model.Episode
-import tv.trakt.trakt.core.episodes.model.fromDto
-import tv.trakt.trakt.core.home.sections.upcoming.model.CalendarShow
-import tv.trakt.trakt.core.profile.data.remote.UserRemoteDataSource
+import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
-import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
+import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
-import java.time.ZonedDateTime
+import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.episodes.model.Episode
+import tv.trakt.trakt.core.episodes.model.fromDto
+import tv.trakt.trakt.core.home.HomeConfig.HOME_UPCOMING_DAYS_LIMIT
+import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
+import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
+import tv.trakt.trakt.core.profile.data.remote.UserRemoteDataSource
+import java.time.Instant
 
 private val premiereValues = listOf("season_premiere", "series_premiere")
 private val finaleValues = listOf("season_finale", "series_finale")
 
+// TODO Add movies support.
 internal class GetUpcomingUseCase(
     private val remoteUserSource: UserRemoteDataSource,
+    private val localDataSource: HomeUpcomingLocalDataSource,
 ) {
-    suspend fun getCalendar(): ImmutableList<CalendarShow> {
-        // For now, return empty list until we implement calendar API in app module
-        // TODO: Add calendar functionality to UserRemoteDataSource
-        return emptyList<CalendarShow>().toImmutableList()
+    suspend fun getLocalUpcoming(): ImmutableList<HomeUpcomingItem> {
+        return localDataSource.getItems()
+            .sortedBy { it.releasedAt }
+            .toImmutableList()
     }
-    
-    // TODO: Implement this method when calendar API is available
-    private suspend fun getCalendarImplementation(): ImmutableList<CalendarShow> {
-        /*
-        val remoteItems = remoteUserSource.getUserShowsCalendar(
+
+    suspend fun getUpcoming(): ImmutableList<HomeUpcomingItem> {
+        val remoteItems = remoteUserSource.getShowsCalendar(
             startDate = nowLocal().toLocalDate(),
-            days = 14,
+            days = HOME_UPCOMING_DAYS_LIMIT,
         )
 
         val fullSeasonItems = remoteItems
@@ -47,26 +51,32 @@ internal class GetUpcomingUseCase(
             }
 
         return remoteItems
-            .mapNotNull {
-                val releaseAt = it.firstAired.toZonedDateTime()
-                if (releaseAt.isBefore(nowUtc())) {
-                    return@mapNotNull null
+            .asyncMap {
+                val releaseAt = it.firstAired.toInstant()
+                if (releaseAt.isBefore(Instant.now())) {
+                    return@asyncMap null
                 }
 
                 val isFullSeason = fullSeasonItems[it.show.ids.trakt] != null
                 if (isFullSeason && it.episode.number > 1) {
-                    return@mapNotNull null
+                    return@asyncMap null
                 }
 
-                CalendarShow(
-                    show = Show.fromDto(it.show),
+                HomeUpcomingItem.EpisodeItem(
+                    id = it.episode.ids.trakt.toTraktId(),
+                    releasedAt = releaseAt,
                     episode = Episode.fromDto(it.episode),
-                    releaseAt = releaseAt,
+                    show = Show.fromDto(it.show),
                     isFullSeason = isFullSeason,
                 )
             }
+            .filterNotNull()
+            .sortedBy { it.releasedAt }
             .toImmutableList()
-        */
-        return emptyList<CalendarShow>().toImmutableList()
+            .also {
+                localDataSource.addItems(
+                    items = it,
+                )
+            }
     }
 }

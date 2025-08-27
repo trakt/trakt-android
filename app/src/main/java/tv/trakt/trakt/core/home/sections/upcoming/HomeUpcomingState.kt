@@ -2,11 +2,12 @@ package tv.trakt.trakt.core.home.sections.upcoming
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
-import tv.trakt.trakt.core.home.sections.upcoming.model.CalendarShow
+import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 
 @Immutable
 internal data class HomeUpcomingState(
-    val items: ImmutableList<CalendarShow>? = null,
-    val isLoading: Boolean = true,
+    val items: ImmutableList<HomeUpcomingItem>? = null,
+    val loading: LoadingState = LoadingState.IDLE,
     val error: Exception? = null,
 )

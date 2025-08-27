@@ -24,14 +24,14 @@ import tv.trakt.trakt.core.home.sections.activity.data.local.social.HomeSocialSt
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetActivityFilterUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
-import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextViewModel
-import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
-import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextStorage
-import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.home.sections.upcoming.HomeUpcomingViewModel
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingStorage
 import tv.trakt.trakt.core.home.sections.upcoming.usecases.GetUpcomingUseCase
+import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextViewModel
+import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
+import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextStorage
+import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.HomeWatchlistViewModel
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistStorage
@@ -106,6 +106,7 @@ internal val homeModule = module {
     factory {
         GetUpcomingUseCase(
             remoteUserSource = get(),
+            localDataSource = get(),
         )
     }
 
