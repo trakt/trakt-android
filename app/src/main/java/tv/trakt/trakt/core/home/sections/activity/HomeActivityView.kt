@@ -108,8 +108,8 @@ internal fun HomeActivityContent(
         Row(
             modifier = Modifier
                 .padding(headerPadding)
-                .padding(top = 11.dp)
-                .padding(bottom = 13.dp),
+                .padding(top = 12.dp)
+                .padding(bottom = 14.dp),
             horizontalArrangement = spacedBy(6.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
