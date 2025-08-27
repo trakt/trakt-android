@@ -39,9 +39,9 @@ import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.app.core.profile.ProfileConfig.HISTORY_ALL_PAGE_LIMIT
 import tv.trakt.trakt.app.core.profile.ProfileConfig.HISTORY_NEXT_PAGE_OFFSET
-import tv.trakt.trakt.app.helpers.extensions.toLocal
 import tv.trakt.trakt.app.helpers.longDateTimeFormat
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R

@@ -1,4 +1,4 @@
-package tv.trakt.trakt.app.core.home.sections.social.views
+package tv.trakt.trakt.core.home.sections.activity.views
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -9,39 +9,48 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.tv.material3.Text
 import coil3.compose.AsyncImage
-import tv.trakt.trakt.app.common.ui.InfoChip
-import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
-import tv.trakt.trakt.app.core.home.sections.social.model.SocialActivityItem
 import tv.trakt.trakt.app.helpers.extensions.relativePastDateString
-import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.episodes.model.Episode
+import tv.trakt.trakt.core.home.sections.activity.model.SocialActivityItem
+import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.InfoChip
+import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
+import tv.trakt.trakt.ui.theme.TraktTheme
+import java.time.Instant
 
 @Composable
-internal fun MovieSocialItemView(
-    item: SocialActivityItem.MovieItem,
-    onClick: (TraktId) -> Unit,
-    onFocused: (SocialActivityItem?) -> Unit,
+internal fun EpisodeSocialItemView(
+    item: SocialActivityItem.EpisodeItem,
+    onClick: (TraktId, Episode) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     HorizontalMediaCard(
         title = "",
-        containerImageUrl = item.movie.images?.getFanartUrl(),
-        onClick = { onClick(item.movie.ids.trakt) },
+        containerImageUrl =
+            item.episode.images?.getScreenshotUrl()
+                ?: item.show.images?.getFanartUrl(),
+        onClick = {
+            onClick(
+                item.show.ids.trakt,
+                item.episode,
+            )
+        },
         cardTopContent = {
             Box(
                 contentAlignment = Alignment.CenterEnd,
@@ -49,7 +58,7 @@ internal fun MovieSocialItemView(
             ) {
                 InfoChip(
                     text = (item.user.name ?: "").ifBlank { item.user.username },
-                    containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
+                    containerColor = TraktTheme.colors.chipContainerOnContent,
                     endPadding = 19.dp,
                 )
 
@@ -84,25 +93,46 @@ internal fun MovieSocialItemView(
                 verticalArrangement = Arrangement.spacedBy(1.dp),
             ) {
                 Text(
-                    text = item.movie.title,
+                    text = item.show.title,
                     style = TraktTheme.typography.cardTitle,
                     color = TraktTheme.colors.textPrimary,
-                    maxLines = 2,
-                    overflow = TextOverflow.Companion.Ellipsis,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+
+                Text(
+                    text = item.episode.seasonEpisodeString,
+                    style = TraktTheme.typography.cardSubtitle,
+                    color = TraktTheme.colors.textSecondary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
 
                 InfoChip(
                     text = item.activityAt.toLocal().relativePastDateString(),
                     iconPainter = painterResource(R.drawable.ic_calendar_check),
-                    modifier = Modifier.padding(top = 7.dp),
+                    modifier = Modifier.padding(top = 6.dp),
                 )
             }
         },
-        modifier = modifier
-            .onFocusChanged {
-                if (it.isFocused) {
-                    onFocused(item)
-                }
-            },
+        modifier = modifier,
     )
+}
+
+@Preview
+@Composable
+private fun EpisodeSocialItemViewPreview() {
+    TraktTheme {
+        EpisodeSocialItemView(
+            item = SocialActivityItem.EpisodeItem(
+                id = 1,
+                activity = "watch",
+                activityAt = Instant.now(),
+                user = PreviewData.user1,
+                show = PreviewData.show1,
+                episode = PreviewData.episode1,
+            ),
+            onClick = { _, _ -> },
+        )
+    }
 }

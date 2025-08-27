@@ -1,4 +1,4 @@
-package tv.trakt.trakt.app.core.home.sections.social.views
+package tv.trakt.trakt.core.home.sections.activity.views
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -9,33 +9,32 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.tv.material3.Text
 import coil3.compose.AsyncImage
-import tv.trakt.trakt.app.common.ui.InfoChip
-import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
-import tv.trakt.trakt.app.core.home.sections.social.model.SocialActivityItem
 import tv.trakt.trakt.app.helpers.extensions.relativePastDateString
-import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.home.sections.activity.model.SocialActivityItem
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.InfoChip
+import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
+import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 internal fun MovieSocialItemView(
     item: SocialActivityItem.MovieItem,
     onClick: (TraktId) -> Unit,
-    onFocused: (SocialActivityItem?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     HorizontalMediaCard(
@@ -49,7 +48,7 @@ internal fun MovieSocialItemView(
             ) {
                 InfoChip(
                     text = (item.user.name ?: "").ifBlank { item.user.username },
-                    containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
+                    containerColor = TraktTheme.colors.chipContainerOnContent,
                     endPadding = 19.dp,
                 )
 
@@ -88,7 +87,13 @@ internal fun MovieSocialItemView(
                     style = TraktTheme.typography.cardTitle,
                     color = TraktTheme.colors.textPrimary,
                     maxLines = 2,
-                    overflow = TextOverflow.Companion.Ellipsis,
+                    overflow = TextOverflow.Ellipsis,
+                )
+
+                Text(
+                    text = stringResource(R.string.translated_value_type_movie),
+                    style = TraktTheme.typography.cardSubtitle,
+                    color = TraktTheme.colors.textSecondary,
                 )
 
                 InfoChip(
@@ -98,11 +103,6 @@ internal fun MovieSocialItemView(
                 )
             }
         },
-        modifier = modifier
-            .onFocusChanged {
-                if (it.isFocused) {
-                    onFocused(item)
-                }
-            },
+        modifier = modifier,
     )
 }

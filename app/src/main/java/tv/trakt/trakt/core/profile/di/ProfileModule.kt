@@ -20,7 +20,7 @@ internal val profileDataModule = module {
         val httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig"))
 
         UserApiClient(
-            api = UsersApi(
+            usersApi = UsersApi(
                 baseUrl = API_BASE_URL,
                 httpClientEngine = httpClientEngine,
                 httpClientConfig = httpClientConfig,

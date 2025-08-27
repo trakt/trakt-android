@@ -1,11 +1,18 @@
 package tv.trakt.trakt.common.helpers.extensions
 
 import java.time.Instant
+import java.time.ZoneId
 import java.time.ZoneOffset.UTC
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 fun nowLocal(): ZonedDateTime = ZonedDateTime.now()
+
+// Local time functions
+
+fun ZonedDateTime.toLocal(): ZonedDateTime = this.withZoneSameInstant(ZoneId.systemDefault())
+
+fun Instant.toLocal(): ZonedDateTime = this.atZone(ZoneId.systemDefault())
 
 // Misc
 

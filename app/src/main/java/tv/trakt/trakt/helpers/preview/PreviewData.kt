@@ -12,6 +12,7 @@ import tv.trakt.trakt.common.model.TmdbId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.TvdbId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.episodes.model.Episode
 import java.time.LocalDate
 import java.time.ZonedDateTime
 import kotlin.time.Duration.Companion.minutes
@@ -106,5 +107,33 @@ internal object PreviewData {
         isPrivate = false,
         images = null,
         streamings = null,
+    )
+
+    val episode1 = Episode(
+        ids = Ids(
+            trakt = TraktId(1),
+            slug = SlugId("slug2"),
+            tvdb = TvdbId(1),
+            tmdb = TmdbId(1),
+            imdb = ImdbId("tt1234562"),
+        ),
+        number = 12,
+        season = 2,
+        title = "Some Episode Title",
+        numberAbs = null,
+        overview = "John Doe is a fictional character often used as a placeholder name in various contexts. " +
+            "He represents an average person and is commonly used in legal cases, examples, and discussions.",
+        rating = Rating(rating = 4.34f, votes = 5394),
+        commentCount = 4424,
+        runtime = 24.minutes,
+        episodeType = null,
+        originalTitle = "Episode Original Title",
+        images = Images(
+            screenshot = listOf(
+                "walter-r2.trakt.tv/images/movies/000/142/611/fanarts/medium/5248d0dfec.jpg.webp",
+            ).toImmutableList(),
+        ),
+        firstAired = ZonedDateTime.now(),
+        updatedAt = ZonedDateTime.now(),
     )
 }

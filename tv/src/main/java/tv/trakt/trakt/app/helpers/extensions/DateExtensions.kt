@@ -19,7 +19,6 @@ import tv.trakt.trakt.app.helpers.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import java.time.DayOfWeek.MONDAY
 import java.time.LocalDate
-import java.time.ZoneId
 import java.time.ZoneOffset.UTC
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -35,10 +34,6 @@ fun nowUtc(): ZonedDateTime = ZonedDateTime.now(UTC)
 fun nowUtcMillis(): Long = nowUtc().toInstant().toEpochMilli()
 
 fun nowUtcString(): String = nowUtc().format(ISO_INSTANT)
-
-// Local time functions
-
-fun ZonedDateTime.toLocal(): ZonedDateTime = this.withZoneSameInstant(ZoneId.systemDefault())
 
 // Misc
 

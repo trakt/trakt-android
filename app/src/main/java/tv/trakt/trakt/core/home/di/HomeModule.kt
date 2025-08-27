@@ -3,6 +3,8 @@ package tv.trakt.trakt.core.home.di
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import tv.trakt.trakt.core.home.HomeViewModel
+import tv.trakt.trakt.core.home.sections.activity.HomeSocialViewModel
+import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextViewModel
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextStorage
@@ -39,6 +41,12 @@ internal val homeModule = module {
         )
     }
 
+    factory {
+        GetSocialActivityUseCase(
+            remoteSource = get(),
+        )
+    }
+
     viewModel {
         HomeViewModel(
             sessionManager = get(),
@@ -54,6 +62,12 @@ internal val homeModule = module {
     viewModel {
         HomeWatchlistViewModel(
             getWatchlistUseCase = get(),
+        )
+    }
+
+    viewModel {
+        HomeSocialViewModel(
+            getSocialActivityUseCase = get(),
         )
     }
 }

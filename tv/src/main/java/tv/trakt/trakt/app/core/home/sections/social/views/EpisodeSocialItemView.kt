@@ -29,9 +29,9 @@ import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.app.core.home.sections.social.model.SocialActivityItem
 import tv.trakt.trakt.app.helpers.extensions.nowUtc
 import tv.trakt.trakt.app.helpers.extensions.relativePastDateString
-import tv.trakt.trakt.app.helpers.extensions.toLocal
 import tv.trakt.trakt.app.helpers.preview.PreviewData
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.resources.R
 

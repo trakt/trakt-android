@@ -97,7 +97,9 @@ internal fun HorizontalMediaCard(
                             contentDescription = title,
                             contentScale = ContentScale.Crop,
                             onError = { isContainerError = true },
-                            modifier = Modifier.align(Alignment.Center),
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                                .fillMaxSize(),
                         )
                     } else {
                         Image(

@@ -19,8 +19,8 @@ import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.helpers.extensions.relativePastDateTimeString
-import tv.trakt.trakt.app.helpers.extensions.toLocal
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 
 @Composable
 internal fun EpisodeRecentlyWatchedList(

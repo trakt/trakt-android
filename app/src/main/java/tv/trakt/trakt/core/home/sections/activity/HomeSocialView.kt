@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.home.sections.upnext
+package tv.trakt.trakt.core.home.sections.activity
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
@@ -23,9 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -33,41 +31,44 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
-import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.common.ui.composables.EpisodeProgressBar
-import tv.trakt.trakt.common.ui.theme.colors.White
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.episodes.model.Episode
-import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
+import tv.trakt.trakt.core.home.sections.activity.model.SocialActivityItem
+import tv.trakt.trakt.core.home.sections.activity.views.EpisodeSocialItemView
+import tv.trakt.trakt.core.home.sections.activity.views.MovieSocialItemView
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.InfoChip
-import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun HomeUpNextView(
+internal fun HomeSocialView(
     modifier: Modifier = Modifier,
-    viewModel: HomeUpNextViewModel = koinViewModel(),
+    viewModel: HomeSocialViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
+    onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
+    onNavigateToMovie: (movieId: TraktId) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    HomeUpNextContent(
+    HomeSocialContent(
         state = state,
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
+        onEpisodeClick = onNavigateToEpisode,
+        onMovieClick = onNavigateToMovie,
     )
 }
 
 @Composable
-internal fun HomeUpNextContent(
-    state: HomeUpNextState,
+internal fun HomeSocialContent(
+    state: HomeSocialState,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
+    onEpisodeClick: (TraktId, Episode) -> Unit = { _, _ -> },
+    onMovieClick: (TraktId) -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
@@ -81,7 +82,7 @@ internal fun HomeUpNextContent(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = stringResource(R.string.list_title_up_next),
+                text = stringResource(R.string.list_title_activity),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading5,
             )
@@ -104,10 +105,21 @@ internal fun HomeUpNextContent(
                     )
                 }
                 DONE -> {
-                    ContentList(
-                        listItems = (state.items ?: emptyList()).toImmutableList(),
-                        contentPadding = contentPadding,
-                    )
+                    if (state.items?.isEmpty() == true) {
+                        Text(
+                            text = stringResource(R.string.list_placeholder_empty),
+                            color = TraktTheme.colors.textSecondary,
+                            style = TraktTheme.typography.heading6,
+                            modifier = Modifier.padding(headerPadding),
+                        )
+                    } else {
+                        ContentList(
+                            listItems = (state.items ?: emptyList()).toImmutableList(),
+                            contentPadding = contentPadding,
+                            onEpisodeClick = onEpisodeClick,
+                            onMovieClick = onMovieClick,
+                        )
+                    }
                 }
             }
         }
@@ -134,9 +146,11 @@ private fun ContentLoadingList(
 
 @Composable
 private fun ContentList(
-    listItems: ImmutableList<ProgressShow>,
+    listItems: ImmutableList<SocialActivityItem>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
+    onEpisodeClick: (TraktId, Episode) -> Unit,
+    onMovieClick: (TraktId) -> Unit,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
@@ -156,87 +170,30 @@ private fun ContentList(
     ) {
         items(
             items = listItems,
-            key = { it.show.ids.trakt.value },
+            key = { it.id },
         ) { item ->
-            ContentListItem(
-                item = item,
-                onClick = { _, _ -> },
-                modifier = Modifier.animateItem(
-                    fadeInSpec = null,
-                    fadeOutSpec = null,
-                ),
-            )
+            when (item) {
+                is SocialActivityItem.MovieItem ->
+                    MovieSocialItemView(
+                        item = item,
+                        onClick = onMovieClick,
+                        modifier = Modifier.animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
+                    )
+                is SocialActivityItem.EpisodeItem ->
+                    EpisodeSocialItemView(
+                        item = item,
+                        onClick = onEpisodeClick,
+                        modifier = Modifier.animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
+                    )
+            }
         }
     }
-}
-
-@Composable
-private fun ContentListItem(
-    item: ProgressShow,
-    modifier: Modifier = Modifier,
-    onClick: (Show, Episode) -> Unit,
-) {
-    HorizontalMediaCard(
-        title = "",
-        containerImageUrl =
-            item.progress.nextEpisode.images?.getScreenshotUrl()
-                ?: item.show.images?.getFanartUrl(),
-        onClick = {
-            onClick(
-                item.show,
-                item.progress.nextEpisode,
-            )
-        },
-        cardContent = {
-            Row(
-                horizontalArrangement = spacedBy(2.dp),
-            ) {
-                val runtime = item.progress.nextEpisode.runtime?.inWholeMinutes
-                if (runtime != null) {
-                    InfoChip(
-                        text = runtime.durationFormat(),
-                        containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.75F),
-                    )
-                }
-
-                val remainingEpisodes = remember(item.progress.completed, item.progress.aired) {
-                    item.progress.remainingEpisodes
-                }
-                val remainingPercent = remember(item.progress.completed, item.progress.aired) {
-                    item.progress.remainingPercent
-                }
-
-                EpisodeProgressBar(
-                    startText = stringResource(R.string.tag_text_remaining_episodes, remainingEpisodes),
-                    textColor = White,
-                    textStyle = TraktTheme.typography.meta,
-                    containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.75F),
-                    progress = remainingPercent,
-                )
-            }
-        },
-        footerContent = {
-            Column(
-                verticalArrangement = spacedBy(1.dp),
-            ) {
-                Text(
-                    text = item.show.title,
-                    style = TraktTheme.typography.cardTitle,
-                    color = TraktTheme.colors.textPrimary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-
-                Text(
-                    text = item.progress.nextEpisode.seasonEpisodeString,
-                    style = TraktTheme.typography.cardSubtitle,
-                    color = TraktTheme.colors.textSecondary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
-        },
-    )
 }
 
 @Preview(
@@ -247,8 +204,8 @@ private fun ContentListItem(
 @Composable
 private fun Preview() {
     TraktTheme {
-        HomeUpNextContent(
-            state = HomeUpNextState(
+        HomeSocialContent(
+            state = HomeSocialState(
                 loading = IDLE,
             ),
         )
@@ -263,8 +220,8 @@ private fun Preview() {
 @Composable
 private fun Preview2() {
     TraktTheme {
-        HomeUpNextContent(
-            state = HomeUpNextState(
+        HomeSocialContent(
+            state = HomeSocialState(
                 loading = LOADING,
             ),
         )
