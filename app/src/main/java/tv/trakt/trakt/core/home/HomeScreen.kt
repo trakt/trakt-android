@@ -28,6 +28,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.core.home.sections.activity.HomeActivityView
+import tv.trakt.trakt.core.home.sections.upcoming.HomeUpcomingView
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextView
 import tv.trakt.trakt.core.home.sections.watchlist.HomeWatchlistView
 import tv.trakt.trakt.helpers.ScreenHeaderState
@@ -119,6 +120,13 @@ private fun HomeScreenContent(
 
                 item {
                     HomeWatchlistView(
+                        headerPadding = sectionPadding,
+                        contentPadding = sectionPadding,
+                    )
+                }
+
+                item {
+                    HomeUpcomingView(
                         headerPadding = sectionPadding,
                         contentPadding = sectionPadding,
                     )

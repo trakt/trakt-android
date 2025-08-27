@@ -28,6 +28,10 @@ import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextViewModel
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextStorage
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
+import tv.trakt.trakt.core.home.sections.upcoming.HomeUpcomingViewModel
+import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
+import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingStorage
+import tv.trakt.trakt.core.home.sections.upcoming.usecases.GetUpcomingUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.HomeWatchlistViewModel
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistStorage
@@ -56,6 +60,10 @@ internal val homeDataModule = module {
 
     single<HomePersonalLocalDataSource> {
         HomePersonalStorage()
+    }
+
+    single<HomeUpcomingLocalDataSource> {
+        HomeUpcomingStorage()
     }
 }
 
@@ -95,6 +103,12 @@ internal val homeModule = module {
         )
     }
 
+    factory {
+        GetUpcomingUseCase(
+            remoteUserSource = get(),
+        )
+    }
+
     viewModel {
         HomeViewModel(
             sessionManager = get(),
@@ -118,6 +132,12 @@ internal val homeModule = module {
             getSocialActivityUseCase = get(),
             getPersonalActivityUseCase = get(),
             getActivityFilterUseCase = get(),
+        )
+    }
+
+    viewModel {
+        HomeUpcomingViewModel(
+            getUpcomingUseCase = get(),
         )
     }
 }
