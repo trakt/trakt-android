@@ -1,6 +1,19 @@
 package tv.trakt.trakt.core.home.di
 
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
+import androidx.datastore.preferences.SharedPreferencesMigration
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.preferencesDataStoreFile
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.core.home.HomeViewModel
 import tv.trakt.trakt.core.home.sections.activity.HomeActivityViewModel
@@ -15,7 +28,14 @@ import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocal
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistStorage
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetWatchlistMoviesUseCase
 
+internal const val HOME_PREFERENCES = "home_preferences_mobile"
+
 internal val homeDataModule = module {
+    single<DataStore<Preferences>>(named(HOME_PREFERENCES)) {
+        createStore(
+            context = androidContext(),
+        )
+    }
 
     single<HomeUpNextLocalDataSource> {
         HomeUpNextStorage()
@@ -50,7 +70,7 @@ internal val homeModule = module {
 
     factory {
         GetActivityFilterUseCase(
-            remoteSource = get(),
+            homeDataStore = get(named(HOME_PREFERENCES)),
         )
     }
 
@@ -78,4 +98,15 @@ internal val homeModule = module {
             getActivityFilterUseCase = get(),
         )
     }
+}
+
+private fun createStore(context: Context): DataStore<Preferences> {
+    return PreferenceDataStoreFactory.create(
+        corruptionHandler = ReplaceFileCorruptionHandler(
+            produceNewData = { emptyPreferences() },
+        ),
+        migrations = listOf(SharedPreferencesMigration(context, HOME_PREFERENCES)),
+        scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
+        produceFile = { context.preferencesDataStoreFile(HOME_PREFERENCES) },
+    )
 }

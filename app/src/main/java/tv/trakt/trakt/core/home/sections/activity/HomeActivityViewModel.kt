@@ -34,20 +34,15 @@ internal class HomeActivityViewModel(
     private val errorState = MutableStateFlow(initialState.error)
 
     init {
-        val filter = loadFilter()
-        loadData(filter)
+        loadData()
     }
 
-    private fun loadFilter(): HomeActivityFilter {
-        val filter = getActivityFilterUseCase.getFilter()
-        filterState.update { filter }
-        return filter
-    }
-
-    private fun loadData(filter: HomeActivityFilter) {
+    private fun loadData() {
         viewModelScope.launch {
             try {
                 loadingState.update { LOADING }
+
+                val filter = loadFilter()
                 itemsState.update {
                     when (filter) {
                         SOCIAL -> getSocialActivityUseCase.getSocialActivity(HOME_SECTION_LIMIT)
@@ -65,15 +60,21 @@ internal class HomeActivityViewModel(
         }
     }
 
+    private suspend fun loadFilter(): HomeActivityFilter {
+        val filter = getActivityFilterUseCase.getFilter()
+        filterState.update { filter }
+        return filter
+    }
+
     fun setFilter(newFilter: HomeActivityFilter) {
         if (newFilter == filterState.value || loadingState.value.isLoading) {
             return
         }
-
-        getActivityFilterUseCase.setFilter(newFilter)
-
-        val filter = loadFilter()
-        loadData(filter)
+        viewModelScope.launch {
+            getActivityFilterUseCase.setFilter(newFilter)
+            loadFilter()
+            loadData()
+        }
     }
 
     val state: StateFlow<HomeActivityState> = combine(
