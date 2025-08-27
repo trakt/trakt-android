@@ -39,6 +39,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.episodes.model.Episode
+import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.PERSONAL
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.SOCIAL
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
@@ -67,6 +68,7 @@ internal fun HomeActivityView(
         contentPadding = contentPadding,
         onEpisodeClick = onNavigateToEpisode,
         onMovieClick = onNavigateToMovie,
+        onFilterClick = viewModel::setFilter,
     )
 }
 
@@ -78,6 +80,7 @@ internal fun HomeActivityContent(
     contentPadding: PaddingValues = PaddingValues(),
     onEpisodeClick: (TraktId, Episode) -> Unit = { _, _ -> },
     onMovieClick: (TraktId) -> Unit = {},
+    onFilterClick: (HomeActivityFilter) -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -121,6 +124,7 @@ internal fun HomeActivityContent(
                         modifier = Modifier.size(FilterChipDefaults.IconSize),
                     )
                 },
+                onClick = { onFilterClick(SOCIAL) },
             )
 
             FilterChip(
@@ -134,6 +138,7 @@ internal fun HomeActivityContent(
                         modifier = Modifier.size(FilterChipDefaults.IconSize),
                     )
                 },
+                onClick = { onFilterClick(PERSONAL) },
             )
         }
 

@@ -1,12 +1,12 @@
 package tv.trakt.trakt.app.core.inappreview.usecases
 
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.longPreferencesKey
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.coroutines.flow.first
+import timber.log.Timber
 
 private val KEY_APP_REVIEW_COUNT = longPreferencesKey("key_app_review_count")
 
@@ -29,10 +29,7 @@ internal class RequestAppReviewUseCase(
         )
 
         return (count in requestCounts).also {
-            Log.d(
-                "RequestAppReview",
-                "shouldRequest: $it (count = $count) counts = ${requestCounts.joinToString(", ")}",
-            )
+            Timber.d("shouldRequest: $it (count = $count) counts = ${requestCounts.joinToString(", ")}")
         }
     }
 

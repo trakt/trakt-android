@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.home.sections.activity
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -14,10 +15,16 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
+import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter
+import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.PERSONAL
+import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.SOCIAL
+import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
+import tv.trakt.trakt.core.home.sections.activity.usecases.GetActivityFilterUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
 
 internal class HomeActivityViewModel(
     private val getSocialActivityUseCase: GetSocialActivityUseCase,
+    private val getActivityFilterUseCase: GetActivityFilterUseCase,
 ) : ViewModel() {
     private val initialState = HomeActivityState()
 
@@ -27,16 +34,25 @@ internal class HomeActivityViewModel(
     private val errorState = MutableStateFlow(initialState.error)
 
     init {
-        loadData()
+        val filter = loadFilter()
+        loadData(filter)
     }
 
-    private fun loadData() {
+    private fun loadFilter(): HomeActivityFilter {
+        val filter = getActivityFilterUseCase.getFilter()
+        filterState.update { filter }
+        return filter
+    }
+
+    private fun loadData(filter: HomeActivityFilter) {
         viewModelScope.launch {
             try {
                 loadingState.update { LOADING }
-
                 itemsState.update {
-                    getSocialActivityUseCase.getSocialActivity(HOME_SECTION_LIMIT)
+                    when (filter) {
+                        SOCIAL -> getSocialActivityUseCase.getSocialActivity(HOME_SECTION_LIMIT)
+                        PERSONAL -> emptyList<HomeActivityItem>().toImmutableList()
+                    }
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -47,6 +63,17 @@ internal class HomeActivityViewModel(
                 loadingState.update { DONE }
             }
         }
+    }
+
+    fun setFilter(newFilter: HomeActivityFilter) {
+        if (newFilter == filterState.value || loadingState.value.isLoading) {
+            return
+        }
+
+        getActivityFilterUseCase.setFilter(newFilter)
+
+        val filter = loadFilter()
+        loadData(filter)
     }
 
     val state: StateFlow<HomeActivityState> = combine(
