@@ -11,14 +11,14 @@ import java.time.Instant
 @Immutable
 internal sealed class HomeActivityItem(
     open val id: Long,
-    open val user: User,
+    open val user: User?,
     open val activity: String,
     open val activityAt: Instant,
 ) {
     @Immutable
     internal data class MovieItem(
         override val id: Long,
-        override val user: User,
+        override val user: User?,
         override val activity: String,
         override val activityAt: Instant,
         val movie: Movie,
@@ -27,7 +27,7 @@ internal sealed class HomeActivityItem(
     @Immutable
     internal data class EpisodeItem(
         override val id: Long,
-        override val user: User,
+        override val user: User?,
         override val activity: String,
         override val activityAt: Instant,
         val episode: Episode,

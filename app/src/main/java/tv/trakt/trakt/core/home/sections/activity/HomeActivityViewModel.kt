@@ -2,7 +2,6 @@ package tv.trakt.trakt.core.home.sections.activity
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -18,13 +17,14 @@ import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.PERSONAL
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.SOCIAL
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetActivityFilterUseCase
+import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
 
 internal class HomeActivityViewModel(
-    private val getSocialActivityUseCase: GetSocialActivityUseCase,
     private val getActivityFilterUseCase: GetActivityFilterUseCase,
+    private val getSocialActivityUseCase: GetSocialActivityUseCase,
+    private val getPersonalActivityUseCase: GetPersonalActivityUseCase,
 ) : ViewModel() {
     private val initialState = HomeActivityState()
 
@@ -41,12 +41,10 @@ internal class HomeActivityViewModel(
         viewModelScope.launch {
             try {
                 loadingState.update { LOADING }
-
-                val filter = loadFilter()
                 itemsState.update {
-                    when (filter) {
+                    when (loadFilter()) {
                         SOCIAL -> getSocialActivityUseCase.getSocialActivity(HOME_SECTION_LIMIT)
-                        PERSONAL -> emptyList<HomeActivityItem>().toImmutableList()
+                        PERSONAL -> getPersonalActivityUseCase.getPersonalActivity(1, HOME_SECTION_LIMIT)
                     }
                 }
             } catch (error: Exception) {

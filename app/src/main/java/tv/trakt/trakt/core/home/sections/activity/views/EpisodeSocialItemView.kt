@@ -5,7 +5,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.CircleShape
@@ -56,43 +55,44 @@ internal fun EpisodeSocialItemView(
                 text = item.activityAt.toLocal().relativePastDateString(),
                 iconPainter = painterResource(R.drawable.ic_calendar_check),
                 containerColor = TraktTheme.colors.chipContainerOnContent,
-                modifier = Modifier.padding(top = 6.dp),
             )
         },
         cardTopContent = {
-            Box(
-                contentAlignment = Alignment.CenterEnd,
-                modifier = Modifier.sizeIn(maxHeight = 22.dp),
-            ) {
-                InfoChip(
-                    text = (item.user.name ?: "").ifBlank { item.user.username },
-                    containerColor = TraktTheme.colors.chipContainerOnContent,
-                    endPadding = 19.dp,
-                )
+            item.user?.let { user ->
+                Box(
+                    contentAlignment = Alignment.CenterEnd,
+                    modifier = Modifier.sizeIn(maxHeight = 22.dp),
+                ) {
+                    InfoChip(
+                        text = (user.name ?: "").ifBlank { user.username },
+                        containerColor = TraktTheme.colors.chipContainerOnContent,
+                        endPadding = 19.dp,
+                    )
 
-                val borderColor = remember(item.user.isAnyVip) {
-                    if (item.user.isAnyVip) Color.Red else Color.Transparent
-                }
-                if (item.user.hasAvatar) {
-                    AsyncImage(
-                        model = item.user.images?.avatar?.full,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        error = painterResource(R.drawable.ic_person_placeholder),
-                        modifier = Modifier
-                            .size(22.dp)
-                            .border(1.5.dp, borderColor, CircleShape)
-                            .clip(CircleShape),
-                    )
-                } else {
-                    Image(
-                        painter = painterResource(R.drawable.ic_person_placeholder),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(22.dp)
-                            .border(1.5.dp, borderColor, CircleShape)
-                            .clip(CircleShape),
-                    )
+                    val borderColor = remember(user.isAnyVip) {
+                        if (user.isAnyVip) Color.Red else Color.Transparent
+                    }
+                    if (user.hasAvatar) {
+                        AsyncImage(
+                            model = user.images?.avatar?.full,
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            error = painterResource(R.drawable.ic_person_placeholder),
+                            modifier = Modifier
+                                .size(22.dp)
+                                .border(1.5.dp, borderColor, CircleShape)
+                                .clip(CircleShape),
+                        )
+                    } else {
+                        Image(
+                            painter = painterResource(R.drawable.ic_person_placeholder),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(22.dp)
+                                .border(1.5.dp, borderColor, CircleShape)
+                                .clip(CircleShape),
+                        )
+                    }
                 }
             }
         },

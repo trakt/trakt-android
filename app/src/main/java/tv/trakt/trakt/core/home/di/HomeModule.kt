@@ -18,6 +18,7 @@ import org.koin.dsl.module
 import tv.trakt.trakt.core.home.HomeViewModel
 import tv.trakt.trakt.core.home.sections.activity.HomeActivityViewModel
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetActivityFilterUseCase
+import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextViewModel
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
@@ -69,6 +70,12 @@ internal val homeModule = module {
     }
 
     factory {
+        GetPersonalActivityUseCase(
+            remoteUserSource = get(),
+        )
+    }
+
+    factory {
         GetActivityFilterUseCase(
             homeDataStore = get(named(HOME_PREFERENCES)),
         )
@@ -95,6 +102,7 @@ internal val homeModule = module {
     viewModel {
         HomeActivityViewModel(
             getSocialActivityUseCase = get(),
+            getPersonalActivityUseCase = get(),
             getActivityFilterUseCase = get(),
         )
     }

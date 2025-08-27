@@ -9,7 +9,7 @@ import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 @Immutable
 internal data class HomeActivityState(
     val items: ImmutableList<HomeActivityItem>? = null,
-    val filter: HomeActivityFilter = HomeActivityFilter.SOCIAL,
+    val filter: HomeActivityFilter? = null,
     val loading: LoadingState = LoadingState.IDLE,
     val error: Exception? = null,
 )
