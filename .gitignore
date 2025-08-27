@@ -9,4 +9,4 @@
 .cxx
 *.jks
 local.properties
-fastlane/report.xml
+/fastlane/report.xml

@@ -195,7 +195,7 @@ private fun ContentListItem(
                 if (runtime != null) {
                     InfoChip(
                         text = runtime.durationFormat(),
-                        containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
+                        containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.45F),
                     )
                 }
 
@@ -210,7 +210,7 @@ private fun ContentListItem(
                     startText = stringResource(R.string.tag_text_remaining_episodes, remainingEpisodes),
                     textColor = White,
                     textStyle = TraktTheme.typography.meta,
-                    containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
+                    containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.45F),
                     progress = remainingPercent,
                 )
             }
