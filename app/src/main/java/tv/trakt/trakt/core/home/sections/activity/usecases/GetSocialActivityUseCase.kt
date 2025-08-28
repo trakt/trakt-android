@@ -75,7 +75,7 @@ internal class GetSocialActivityUseCase(
         return localDataSource.getItems()
             .sortedWith(
                 compareByDescending<HomeActivityItem> { it.activityAt }
-                    .thenBy { it.sortId },
+                    .thenByDescending { it.sortId },
             )
             .toImmutableList()
     }
