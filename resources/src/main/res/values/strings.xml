@@ -86,4 +86,11 @@
     <string name="translated_value_type_movie">Movie</string>
     <string name="button_text_social">Social</string>
     <string name="button_text_personal">Personal</string>
+
+    <!-- Migrate to generator -->
+
+    <string name="text_empty_upnext">Continue watching your favorite shows and pick up where you left off.</string>
+    <string name="text_empty_watchlist">Add movies to your watchlist and start building a list of movies you want to watch.</string>
+    <string name="text_empty_upcoming">Your upcoming schedule keeps track of new episodes and movies releasing soon.</string>
+    <string name="text_empty_social">Kick off your social activity by following Trakt members and exploring what they watch.</string>
 </resources>

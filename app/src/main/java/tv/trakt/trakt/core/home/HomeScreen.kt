@@ -40,6 +40,8 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun HomeScreen(
     viewModel: HomeViewModel,
     onNavigateToProfile: () -> Unit,
+    onNavigateToShows: () -> Unit,
+    onNavigateToMovies: () -> Unit,
 ) {
     val localBottomBarVisibility = LocalBottomBarVisibility.current
     LaunchedEffect(Unit) {
@@ -51,6 +53,8 @@ internal fun HomeScreen(
     HomeScreenContent(
         state = state,
         onProfileClick = onNavigateToProfile,
+        onShowsClick = onNavigateToShows,
+        onMoviesClick = onNavigateToMovies,
     )
 }
 
@@ -59,6 +63,8 @@ private fun HomeScreenContent(
     state: HomeState,
     modifier: Modifier = Modifier,
     onProfileClick: () -> Unit = {},
+    onShowsClick: () -> Unit = {},
+    onMoviesClick: () -> Unit = {},
 ) {
     val lazyListState = rememberLazyListState()
     val headerState = rememberHeaderState()
@@ -112,6 +118,7 @@ private fun HomeScreenContent(
                 HomeUpNextView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
+                    onShowsClick = onShowsClick,
                 )
             }
 
@@ -119,25 +126,23 @@ private fun HomeScreenContent(
                 HomeWatchlistView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
+                    onMoviesClick = onMoviesClick,
                 )
             }
 
-            if (state.user.isAuthenticated) {
-                item {
-                    HomeUpcomingView(
-                        headerPadding = sectionPadding,
-                        contentPadding = sectionPadding,
-                    )
-                }
+            item {
+                HomeUpcomingView(
+                    headerPadding = sectionPadding,
+                    contentPadding = sectionPadding,
+                    onShowsClick = onShowsClick,
+                )
             }
 
-            if (state.user.isAuthenticated) {
-                item {
-                    HomeActivityView(
-                        headerPadding = sectionPadding,
-                        contentPadding = sectionPadding,
-                    )
-                }
+            item {
+                HomeActivityView(
+                    headerPadding = sectionPadding,
+                    contentPadding = sectionPadding,
+                )
             }
         }
 

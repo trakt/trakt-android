@@ -17,13 +17,14 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import java.time.ZonedDateTime
 
 internal class HomeUpNextViewModel(
     private val getUpNextUseCase: GetUpNextUseCase,
-    private val sessionManager: SessionManager
+    private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = HomeUpNextState()
 
@@ -31,23 +32,31 @@ internal class HomeUpNextViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
+    private var user: User? = null
     private var loadedAt: ZonedDateTime? = null
 
     init {
         loadData()
+        observeUser()
+    }
+
+    private fun observeUser() {
+        viewModelScope.launch {
+            user = sessionManager.getProfile()
+            sessionManager.observeProfile()
+                .collect {
+                    if (user != it) {
+                        user = it
+                        loadData()
+                    }
+                }
+        }
     }
 
     private fun loadData() {
         viewModelScope.launch {
-            if (!sessionManager.isAuthenticated()) {
-                itemsState.update {
-                    emptyList<ProgressShow>().toImmutableList()
-                }
-                loadingState.update { DONE }
+            if (loadEmptyIfNeeded()) {
                 return@launch
-            } else {
-                itemsState.update { null }
-                loadingState.update { IDLE }
             }
 
             try {
@@ -73,6 +82,21 @@ internal class HomeUpNextViewModel(
                 loadingState.update { DONE }
             }
         }
+    }
+
+    private suspend fun loadEmptyIfNeeded(): Boolean {
+        if (!sessionManager.isAuthenticated()) {
+            itemsState.update {
+                emptyList<ProgressShow>().toImmutableList()
+            }
+            loadingState.update { DONE }
+            return true
+        } else {
+            itemsState.update { null }
+            loadingState.update { IDLE }
+        }
+
+        return false
     }
 
     val state: StateFlow<HomeUpNextState> = combine(

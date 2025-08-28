@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.home.sections.activity
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -11,13 +12,17 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.PERSONAL
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.SOCIAL
+import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetActivityFilterUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
@@ -26,6 +31,7 @@ internal class HomeActivityViewModel(
     private val getActivityFilterUseCase: GetActivityFilterUseCase,
     private val getSocialActivityUseCase: GetSocialActivityUseCase,
     private val getPersonalActivityUseCase: GetPersonalActivityUseCase,
+    private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = HomeActivityState()
 
@@ -34,16 +40,35 @@ internal class HomeActivityViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
+    private var user: User? = null
     private var loadDataJob: Job? = null
 
     init {
         loadData()
+        observeUser()
+    }
+
+    private fun observeUser() {
+        viewModelScope.launch {
+            user = sessionManager.getProfile()
+            sessionManager.observeProfile()
+                .collect {
+                    if (user != it) {
+                        user = it
+                        loadData()
+                    }
+                }
+        }
     }
 
     private fun loadData() {
         loadDataJob?.cancel()
         loadDataJob = viewModelScope.launch {
             try {
+                if (loadEmptyIfNeeded()) {
+                    return@launch
+                }
+
                 val filter = loadFilter()
                 val localItems = when (filter) {
                     SOCIAL -> getSocialActivityUseCase.getLocalSocialActivity()
@@ -72,6 +97,21 @@ internal class HomeActivityViewModel(
                 loadingState.update { DONE }
             }
         }
+    }
+
+    private suspend fun loadEmptyIfNeeded(): Boolean {
+        if (!sessionManager.isAuthenticated()) {
+            itemsState.update {
+                emptyList<HomeActivityItem>().toImmutableList()
+            }
+            loadingState.update { DONE }
+            return true
+        } else {
+            itemsState.update { null }
+            loadingState.update { IDLE }
+        }
+
+        return false
     }
 
     private suspend fun loadFilter(): HomeActivityFilter {

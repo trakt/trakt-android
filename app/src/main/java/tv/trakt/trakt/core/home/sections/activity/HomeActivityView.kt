@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
@@ -45,6 +47,7 @@ import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.SOCIA
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.views.EpisodeSocialItemView
 import tv.trakt.trakt.core.home.sections.activity.views.MovieSocialItemView
+import tv.trakt.trakt.core.home.views.HomeEmptySocialView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.FilterChip
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
@@ -98,48 +101,54 @@ internal fun HomeActivityContent(
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading5,
             )
-            Text(
-                text = stringResource(R.string.button_text_view_all),
-                color = TraktTheme.colors.textSecondary,
-                style = TraktTheme.typography.buttonTertiary,
-            )
+            if (!state.items.isNullOrEmpty()) {
+                Text(
+                    text = stringResource(R.string.button_text_view_all),
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.buttonTertiary,
+                )
+            }
         }
 
-        Row(
-            modifier = Modifier
-                .padding(headerPadding)
-                .padding(top = 12.dp)
-                .padding(bottom = 14.dp),
-            horizontalArrangement = spacedBy(6.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            FilterChip(
-                selected = state.filter == SOCIAL,
-                text = stringResource(SOCIAL.displayRes),
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Rounded.Done,
-                        contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier.size(FilterChipDefaults.IconSize),
-                    )
-                },
-                onClick = { onFilterClick(SOCIAL) },
-            )
+        if (!state.items.isNullOrEmpty() || state.loading.isLoading) {
+            Row(
+                modifier = Modifier
+                    .padding(headerPadding)
+                    .padding(top = 12.dp)
+                    .padding(bottom = 14.dp),
+                horizontalArrangement = spacedBy(6.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                FilterChip(
+                    selected = state.filter == SOCIAL,
+                    text = stringResource(SOCIAL.displayRes),
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Rounded.Done,
+                            contentDescription = null,
+                            tint = TraktTheme.colors.textPrimary,
+                            modifier = Modifier.size(FilterChipDefaults.IconSize),
+                        )
+                    },
+                    onClick = { onFilterClick(SOCIAL) },
+                )
 
-            FilterChip(
-                selected = state.filter == PERSONAL,
-                text = stringResource(PERSONAL.displayRes),
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Rounded.Done,
-                        contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier.size(FilterChipDefaults.IconSize),
-                    )
-                },
-                onClick = { onFilterClick(PERSONAL) },
-            )
+                FilterChip(
+                    selected = state.filter == PERSONAL,
+                    text = stringResource(PERSONAL.displayRes),
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Rounded.Done,
+                            contentDescription = null,
+                            tint = TraktTheme.colors.textPrimary,
+                            modifier = Modifier.size(FilterChipDefaults.IconSize),
+                        )
+                    },
+                    onClick = { onFilterClick(PERSONAL) },
+                )
+            }
+        } else {
+            Spacer(modifier = Modifier.height(16.dp))
         }
 
         Crossfade(
@@ -155,11 +164,9 @@ internal fun HomeActivityContent(
                 }
                 DONE -> {
                     if (state.items?.isEmpty() == true) {
-                        Text(
-                            text = stringResource(R.string.list_placeholder_empty),
-                            color = TraktTheme.colors.textSecondary,
-                            style = TraktTheme.typography.heading6,
-                            modifier = Modifier.padding(headerPadding),
+                        HomeEmptySocialView(
+                            modifier = Modifier
+                                .padding(contentPadding),
                         )
                     } else {
                         ContentList(
@@ -272,6 +279,23 @@ private fun Preview2() {
         HomeActivityContent(
             state = HomeActivityState(
                 loading = LOADING,
+            ),
+        )
+    }
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun Preview3() {
+    TraktTheme {
+        HomeActivityContent(
+            state = HomeActivityState(
+                loading = DONE,
+                items = emptyList<HomeActivityItem>().toImmutableList(),
             ),
         )
     }

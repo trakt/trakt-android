@@ -11,11 +11,17 @@ import tv.trakt.trakt.core.home.HomeScreen
 @Serializable
 internal data object HomeDestination
 
-internal fun NavGraphBuilder.homeScreen(onNavigateToProfile: () -> Unit) {
+internal fun NavGraphBuilder.homeScreen(
+    onNavigateToProfile: () -> Unit,
+    onNavigateToShows: () -> Unit,
+    onNavigateToMovies: () -> Unit,
+) {
     composable<HomeDestination> {
         HomeScreen(
             viewModel = koinViewModel(),
             onNavigateToProfile = onNavigateToProfile,
+            onNavigateToShows = onNavigateToShows,
+            onNavigateToMovies = onNavigateToMovies,
         )
     }
 }

@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.home.sections.upcoming
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -10,12 +11,17 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.core.home.sections.upcoming.usecases.GetUpcomingUseCase
 
 internal class HomeUpcomingViewModel(
     private val getUpcomingUseCase: GetUpcomingUseCase,
+    private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = HomeUpcomingState()
 
@@ -23,12 +29,32 @@ internal class HomeUpcomingViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
+    private var user: User? = null
+
     init {
         loadData()
+        observeUser()
+    }
+
+    private fun observeUser() {
+        viewModelScope.launch {
+            user = sessionManager.getProfile()
+            sessionManager.observeProfile()
+                .collect {
+                    if (user != it) {
+                        user = it
+                        loadData()
+                    }
+                }
+        }
     }
 
     private fun loadData() {
         viewModelScope.launch {
+            if (loadEmptyIfNeeded()) {
+                return@launch
+            }
+
             try {
                 val localItems = getUpcomingUseCase.getLocalUpcoming()
                 if (localItems.isNotEmpty()) {
@@ -48,6 +74,21 @@ internal class HomeUpcomingViewModel(
                 loadingState.update { DONE }
             }
         }
+    }
+
+    private suspend fun loadEmptyIfNeeded(): Boolean {
+        if (!sessionManager.isAuthenticated()) {
+            itemsState.update {
+                emptyList<HomeUpcomingItem>().toImmutableList()
+            }
+            loadingState.update { DONE }
+            return true
+        } else {
+            itemsState.update { null }
+            loadingState.update { IDLE }
+        }
+
+        return false
     }
 
     val state: StateFlow<HomeUpcomingState> = combine(

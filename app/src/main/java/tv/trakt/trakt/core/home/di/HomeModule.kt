@@ -135,12 +135,14 @@ internal val homeModule = module {
             getSocialActivityUseCase = get(),
             getPersonalActivityUseCase = get(),
             getActivityFilterUseCase = get(),
+            sessionManager = get(),
         )
     }
 
     viewModel {
         HomeUpcomingViewModel(
             getUpcomingUseCase = get(),
+            sessionManager = get(),
         )
     }
 }

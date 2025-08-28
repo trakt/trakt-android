@@ -9,12 +9,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -23,16 +20,14 @@ import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil3.ColorImage
-import coil3.annotation.ExperimentalCoilApi
-import coil3.compose.AsyncImagePreviewHandler
-import coil3.compose.LocalAsyncImagePreviewHandler
+import tv.trakt.trakt.common.Config.WEB_ABOUT_US_URL
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.common.ui.theme.colors.Shade900
 import tv.trakt.trakt.resources.R
@@ -41,31 +36,23 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
-internal fun HomeEmptyView(
-    modifier: Modifier = Modifier,
-    text: String,
-    icon: Int,
-    backgroundImage: Int? = null,
-    buttonText: String,
-    buttonIcon: Int = R.drawable.ic_search,
-    onClick: () -> Unit = {},
-) {
+internal fun HomeEmptySocialView(modifier: Modifier = Modifier) {
+    val uriHandler = LocalUriHandler.current
+
     BoxWithConstraints(
         modifier = modifier
             .clip(
                 shape = RoundedCornerShape(12.dp),
             ),
     ) {
-        backgroundImage?.let {
-            Image(
-                painter = painterResource(it),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .alpha(0.8F)
-                    .matchParentSize(),
-            )
-        }
+        Image(
+            painter = painterResource(R.drawable.fanart_big_bang),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .alpha(0.8F)
+                .matchParentSize(),
+        )
 
         Column(
             verticalArrangement = spacedBy(16.dp),
@@ -85,26 +72,19 @@ internal fun HomeEmptyView(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = text,
+                    text = stringResource(R.string.text_empty_social),
                     style = TraktTheme.typography.paragraphSmall
                         .copy(fontWeight = W400),
                     color = TraktTheme.colors.textPrimary,
-                    modifier = Modifier.weight(1f),
-                )
-
-                Icon(
-                    painter = painterResource(id = icon),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .size(72.dp),
                 )
             }
 
             PrimaryButton(
-                text = buttonText,
-                icon = painterResource(buttonIcon),
-                onClick = onClick,
+                text = "Meet the Team",
+                icon = painterResource(R.drawable.ic_star),
+                onClick = {
+                    uriHandler.openUri(WEB_ABOUT_US_URL)
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .dropShadow(
@@ -125,31 +105,6 @@ internal fun HomeEmptyView(
 @Composable
 private fun Preview() {
     TraktTheme {
-        HomeEmptyView(
-            text = "Continue watching your favorite shows & pick up where you left off." +
-                "\n\nWhich shows are you currently following?",
-            icon = R.drawable.ic_empty_upnext,
-            buttonText = "Browse Shows",
-            backgroundImage = R.drawable.fanart_got,
-        )
-    }
-}
-
-@OptIn(ExperimentalCoilApi::class)
-@Preview(widthDp = 350)
-@Composable
-private fun Preview2() {
-    val previewHandler = AsyncImagePreviewHandler {
-        ColorImage(Color.Blue.toArgb())
-    }
-    TraktTheme {
-        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            HomeEmptyView(
-                text = "Add movies to your watchlist and start building a list of movies you want to watch.",
-                icon = R.drawable.ic_empty_watchlist,
-                buttonText = "Browse Movies",
-                backgroundImage = R.drawable.fanart_guardians,
-            )
-        }
+        HomeEmptySocialView()
     }
 }

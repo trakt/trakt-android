@@ -48,6 +48,7 @@ internal fun HomeWatchlistView(
     viewModel: HomeWatchlistViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
+    onMoviesClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -56,6 +57,7 @@ internal fun HomeWatchlistView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
+        onMoviesClick = onMoviesClick,
     )
 }
 
@@ -65,6 +67,7 @@ internal fun HomeWatchlistContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
+    onMoviesClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
@@ -115,12 +118,13 @@ internal fun HomeWatchlistContent(
                 DONE -> {
                     if (state.items?.isEmpty() == true) {
                         HomeEmptyView(
-                            text = "Add movies to your watchlist and start building a list of movies you want to watch.",
+                            text = stringResource(R.string.text_empty_watchlist),
                             icon = R.drawable.ic_empty_watchlist,
                             buttonText = "Browse Movies",
-                            imageUrl = "https://walter-r2.trakt.tv/images/shows/000/150/469/fanarts/medium/8a02e4c084.jpg.webp",
+                            backgroundImage = R.drawable.fanart_guardians,
+                            onClick = onMoviesClick,
                             modifier = Modifier
-                                .padding(contentPadding)
+                                .padding(contentPadding),
                         )
                     } else {
                         ContentList(

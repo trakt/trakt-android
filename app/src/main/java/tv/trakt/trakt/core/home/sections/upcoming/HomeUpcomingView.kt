@@ -31,11 +31,10 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
-import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.core.episodes.model.Episode
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.core.home.sections.upcoming.views.EpisodeUpcomingItemView
 import tv.trakt.trakt.core.home.sections.upcoming.views.MovieUpcomingItemView
+import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -46,7 +45,7 @@ internal fun HomeUpcomingView(
     viewModel: HomeUpcomingViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
-    onNavigateToEpisode: (Show, Episode) -> Unit = { _, _ -> },
+    onShowsClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -55,6 +54,7 @@ internal fun HomeUpcomingView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
+        onShowsClick = onShowsClick,
     )
 }
 
@@ -64,6 +64,7 @@ internal fun HomeUpcomingContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
+    onShowsClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
@@ -81,11 +82,13 @@ internal fun HomeUpcomingContent(
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading5,
             )
-            Text(
-                text = stringResource(R.string.button_text_view_all),
-                color = TraktTheme.colors.textSecondary,
-                style = TraktTheme.typography.buttonTertiary,
-            )
+            if (!state.items.isNullOrEmpty()) {
+                Text(
+                    text = stringResource(R.string.button_text_view_all),
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.buttonTertiary,
+                )
+            }
         }
 
         Crossfade(
@@ -101,11 +104,14 @@ internal fun HomeUpcomingContent(
                 }
                 DONE -> {
                     if (state.items?.isEmpty() == true) {
-                        Text(
-                            text = stringResource(R.string.list_placeholder_empty),
-                            color = TraktTheme.colors.textSecondary,
-                            style = TraktTheme.typography.heading6,
-                            modifier = Modifier.padding(headerPadding),
+                        HomeEmptyView(
+                            text = stringResource(R.string.text_empty_upcoming),
+                            icon = R.drawable.ic_empty_upcoming,
+                            buttonText = "Browse Shows",
+                            backgroundImage = R.drawable.fanart_got,
+                            onClick = onShowsClick,
+                            modifier = Modifier
+                                .padding(contentPadding),
                         )
                     } else {
                         ContentList(

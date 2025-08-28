@@ -51,6 +51,7 @@ internal fun HomeUpNextView(
     viewModel: HomeUpNextViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
+    onShowsClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -59,6 +60,7 @@ internal fun HomeUpNextView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
+        onShowsClick = onShowsClick,
     )
 }
 
@@ -68,6 +70,7 @@ internal fun HomeUpNextContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
+    onShowsClick: () -> Unit,
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
@@ -108,12 +111,13 @@ internal fun HomeUpNextContent(
                 DONE -> {
                     if (state.items?.isEmpty() == true) {
                         HomeEmptyView(
-                            text = "Continue watching your favorite shows & pick up where you left off.\n\nWhich shows are you currently following?",
+                            text = stringResource(R.string.text_empty_upnext),
                             icon = R.drawable.ic_empty_upnext,
                             buttonText = "Browse Shows",
-                            imageUrl = "https://walter-r2.trakt.tv/images/shows/000/150/469/fanarts/medium/8a02e4c084.jpg.webp",
+                            backgroundImage = R.drawable.fanart_foundation,
                             modifier = Modifier
-                                .padding(contentPadding)
+                                .padding(contentPadding),
+                            onClick = onShowsClick,
                         )
                     } else {
                         ContentList(
@@ -261,6 +265,7 @@ private fun Preview() {
             state = HomeUpNextState(
                 loading = IDLE,
             ),
+            onShowsClick = {},
         )
     }
 }
@@ -277,6 +282,7 @@ private fun Preview2() {
             state = HomeUpNextState(
                 loading = LOADING,
             ),
+            onShowsClick = {},
         )
     }
 }
@@ -292,8 +298,9 @@ private fun Preview3() {
         HomeUpNextContent(
             state = HomeUpNextState(
                 loading = DONE,
-                items = emptyList<ProgressShow>().toImmutableList()
+                items = emptyList<ProgressShow>().toImmutableList(),
             ),
+            onShowsClick = {},
         )
     }
 }
