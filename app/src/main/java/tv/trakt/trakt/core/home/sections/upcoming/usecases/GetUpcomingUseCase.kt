@@ -42,7 +42,7 @@ internal class GetUpcomingUseCase(
             return@coroutineScope (
                 showsAsync.await() +
                     moviesAsync.await()
-                )
+            )
                 .sortedBy { it.releasedAt }
                 .toImmutableList()
                 .also {

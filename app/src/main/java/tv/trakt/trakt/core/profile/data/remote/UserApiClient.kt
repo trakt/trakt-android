@@ -83,7 +83,10 @@ internal class UserApiClient(
         return response.body()
     }
 
-    override suspend fun getMoviesCalendar(startDate: LocalDate, days: Int): List<CalendarMovieDto> {
+    override suspend fun getMoviesCalendar(
+        startDate: LocalDate,
+        days: Int,
+    ): List<CalendarMovieDto> {
         val response = calendarsApi.getCalendarsMovies(
             target = "my",
             startDate = startDate.toString(),
