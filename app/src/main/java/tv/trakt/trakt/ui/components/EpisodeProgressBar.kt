@@ -40,13 +40,13 @@ internal fun EpisodeProgressBar(
                 color = containerColor,
             )
             .padding(
-                horizontal = 8.dp,
+                horizontal = 9.dp,
                 vertical = 5.dp,
             )
             .drawWithContent {
                 if (progress > 0.1F) {
                     val cornerRadius = CornerRadius(size.width * 2)
-                    val xOffset = (1.2).dp.toPx()
+                    val xOffset = (0).dp.toPx()
                     val yOffset = (4).dp.toPx()
 
                     drawRoundRect(
