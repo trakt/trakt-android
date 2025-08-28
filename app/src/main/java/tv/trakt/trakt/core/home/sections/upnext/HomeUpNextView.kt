@@ -104,10 +104,19 @@ internal fun HomeUpNextContent(
                     )
                 }
                 DONE -> {
-                    ContentList(
-                        listItems = (state.items ?: emptyList()).toImmutableList(),
-                        contentPadding = contentPadding,
-                    )
+                    if (state.items?.isEmpty() == true) {
+                        Text(
+                            text = stringResource(R.string.list_placeholder_empty),
+                            color = TraktTheme.colors.textSecondary,
+                            style = TraktTheme.typography.heading6,
+                            modifier = Modifier.padding(headerPadding),
+                        )
+                    } else {
+                        ContentList(
+                            listItems = (state.items ?: emptyList()).toImmutableList(),
+                            contentPadding = contentPadding,
+                        )
+                    }
                 }
             }
         }
