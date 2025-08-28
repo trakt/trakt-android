@@ -39,4 +39,10 @@ internal sealed class HomeActivityItem(
             is MovieItem -> movie.images
             is EpisodeItem -> show.images
         }
+
+    val sortId: Long?
+        get() = when (this) {
+            is MovieItem -> movie.released?.toEpochDay()
+            is EpisodeItem -> episode.seasonEpisode.id
+        }
 }

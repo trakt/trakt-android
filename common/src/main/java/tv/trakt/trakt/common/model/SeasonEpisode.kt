@@ -8,6 +8,7 @@ import kotlinx.serialization.Serializable
 data class SeasonEpisode(
     val season: Int,
     val episode: Int,
+    val id: Long = (season * 10_000L) + episode,
 ) {
     init {
         require(season >= 0) { "Season number must be >= 0" }

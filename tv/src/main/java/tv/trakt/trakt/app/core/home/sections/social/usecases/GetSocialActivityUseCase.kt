@@ -50,13 +50,17 @@ internal class GetSocialActivityUseCase(
                             ),
                             show = Show.fromDto(
                                 checkNotNull(it.show) {
-                                    "Show should not be null if type is EPISODE"
+                                    "Show should not be null if type is SHOW"
                                 },
                             ),
                         )
                     }
                 }
             }
+            .sortedWith(
+                compareByDescending<SocialActivityItem> { it.activityAt }
+                    .thenByDescending { it.sortId },
+            )
             .toImmutableList()
     }
 }

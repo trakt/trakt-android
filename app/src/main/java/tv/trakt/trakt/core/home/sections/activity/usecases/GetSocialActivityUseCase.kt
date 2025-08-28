@@ -20,11 +20,6 @@ internal class GetSocialActivityUseCase(
     private val remoteSource: UserRemoteDataSource,
     private val localDataSource: HomeSocialLocalDataSource,
 ) {
-    suspend fun getLocalSocialActivity(): ImmutableList<HomeActivityItem> {
-        return localDataSource.getItems()
-            .toImmutableList()
-    }
-
     suspend fun getSocialActivity(limit: Int): ImmutableList<HomeActivityItem> {
         val items = remoteSource.getSocialActivity(
             limit = limit,
@@ -57,18 +52,31 @@ internal class GetSocialActivityUseCase(
                             ),
                             show = Show.fromDto(
                                 checkNotNull(it.show) {
-                                    "Show should not be null if type is EPISODE"
+                                    "Show should not be null if type is SHOW"
                                 },
                             ),
                         )
                     }
                 }
             }
+            .sortedWith(
+                compareByDescending<HomeActivityItem> { it.activityAt }
+                    .thenByDescending { it.sortId },
+            )
             .toImmutableList()
             .also {
                 localDataSource.addItems(
                     items = it,
                 )
             }
+    }
+
+    suspend fun getLocalSocialActivity(): ImmutableList<HomeActivityItem> {
+        return localDataSource.getItems()
+            .sortedWith(
+                compareByDescending<HomeActivityItem> { it.activityAt }
+                    .thenBy { it.sortId },
+            )
+            .toImmutableList()
     }
 }
