@@ -41,6 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import tv.trakt.trakt.common.Config
+import tv.trakt.trakt.common.helpers.GreetingQuotes
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.resources.R
@@ -123,7 +124,7 @@ internal fun HeaderBar(
                         verticalArrangement = spacedBy(1.dp, Alignment.CenterVertically),
                     ) {
                         Text(
-                            text = title ?: "Hello!", // TODO
+                            text = title ?: GreetingQuotes.getTodayQuote(), // TODO
                             color = TraktTheme.colors.textPrimary,
                             style = TraktTheme.typography.paragraphSmall,
                             maxLines = 1,
