@@ -1,4 +1,4 @@
-package tv.trakt.trakt.common.ui.composables
+package tv.trakt.trakt.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -14,24 +14,22 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import tv.trakt.trakt.common.ui.theme.colors.Purple700
-import tv.trakt.trakt.common.ui.theme.colors.Shade800
+import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-fun EpisodeProgressBar(
+internal fun EpisodeProgressBar(
     modifier: Modifier = Modifier,
     startText: String? = null,
     endText: String? = null,
-    textColor: Color = White,
-    textStyle: TextStyle = TextStyle.Default,
-    containerColor: Color = Shade800,
+    textColor: Color = TraktTheme.colors.textPrimary,
+    textStyle: TextStyle = TraktTheme.typography.meta,
+    containerColor: Color = TraktTheme.colors.chipContainerOnContent,
     progress: Float = 0f,
-    trackColor: Color = Purple700,
+    trackColor: Color = TraktTheme.colors.accent,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -43,12 +41,12 @@ fun EpisodeProgressBar(
             )
             .padding(
                 horizontal = 8.dp,
-                vertical = 4.dp,
+                vertical = 5.dp,
             )
             .drawWithContent {
                 if (progress > 0.1F) {
                     val cornerRadius = CornerRadius(size.width * 2)
-                    val xOffset = (0.5).dp.toPx()
+                    val xOffset = (1.2).dp.toPx()
                     val yOffset = (4).dp.toPx()
 
                     drawRoundRect(
@@ -91,18 +89,22 @@ fun EpisodeProgressBar(
 @Preview(widthDp = 200)
 @Composable
 private fun Preview1() {
-    EpisodeProgressBar(
-        startText = "12 remaining",
-        endText = "1h 23m",
-    )
+    TraktTheme {
+        EpisodeProgressBar(
+            startText = "12 remaining",
+            endText = "1h 23m",
+        )
+    }
 }
 
 @Preview(widthDp = 120)
 @Composable
 private fun Preview2() {
-    EpisodeProgressBar(
-        startText = "12 remaining",
-        endText = "1h 23m",
-        progress = 0.75F,
-    )
+    TraktTheme {
+        EpisodeProgressBar(
+            startText = "12 remaining",
+            endText = "1h 23m",
+            progress = 0.75F,
+        )
+    }
 }

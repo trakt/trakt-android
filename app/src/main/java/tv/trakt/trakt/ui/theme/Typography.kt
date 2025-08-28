@@ -58,7 +58,7 @@ internal val Typography: TraktTypography = TraktTypography(
     meta = TextStyle(
         fontFamily = SplineFamily,
         fontWeight = FontWeight.W600,
-        fontSize = 10.sp,
+        fontSize = 11.sp,
         lineHeight = 0.9.em,
         letterSpacing = 0.04.em,
     ),
@@ -76,7 +76,7 @@ internal val Typography: TraktTypography = TraktTypography(
     paragraphSmall = TextStyle(
         fontFamily = SplineFamily,
         fontWeight = FontWeight.W700,
-        fontSize = 14.sp,
+        fontSize = 15.sp,
         lineHeight = 1.2.em,
     ),
     cardTitle = TextStyle(

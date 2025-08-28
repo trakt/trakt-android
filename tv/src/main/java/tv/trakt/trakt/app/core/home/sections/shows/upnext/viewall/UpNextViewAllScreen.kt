@@ -33,6 +33,7 @@ import androidx.lifecycle.Lifecycle.Event.ON_CREATE
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
+import tv.trakt.trakt.app.common.ui.EpisodeProgressBar
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
@@ -47,9 +48,7 @@ import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.ui.composables.EpisodeProgressBar
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.common.ui.theme.colors.White
 import tv.trakt.trakt.resources.R
 
 @Composable
@@ -185,8 +184,6 @@ private fun UpNextViewAllContent(
 
                                 EpisodeProgressBar(
                                     startText = stringResource(R.string.tag_text_remaining_episodes, remainingEpisodes),
-                                    textColor = White,
-                                    textStyle = TraktTheme.typography.meta,
                                     containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
                                     progress = remainingPercent,
                                 )

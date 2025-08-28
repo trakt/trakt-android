@@ -61,12 +61,12 @@ internal fun EpisodeSocialItemView(
             item.user?.let { user ->
                 Box(
                     contentAlignment = Alignment.CenterEnd,
-                    modifier = Modifier.sizeIn(maxHeight = 22.dp),
+                    modifier = Modifier.sizeIn(maxHeight = 26.dp),
                 ) {
                     InfoChip(
                         text = (user.name ?: "").ifBlank { user.username },
                         containerColor = TraktTheme.colors.chipContainerOnContent,
-                        endPadding = 19.dp,
+                        endPadding = 22.dp,
                     )
 
                     val borderColor = remember(user.isAnyVip) {
@@ -79,7 +79,7 @@ internal fun EpisodeSocialItemView(
                             contentScale = ContentScale.Crop,
                             error = painterResource(R.drawable.ic_person_placeholder),
                             modifier = Modifier
-                                .size(22.dp)
+                                .size(26.dp)
                                 .border(1.5.dp, borderColor, CircleShape)
                                 .clip(CircleShape),
                         )
@@ -88,7 +88,7 @@ internal fun EpisodeSocialItemView(
                             painter = painterResource(R.drawable.ic_person_placeholder),
                             contentDescription = null,
                             modifier = Modifier
-                                .size(22.dp)
+                                .size(26.dp)
                                 .border(1.5.dp, borderColor, CircleShape)
                                 .clip(CircleShape),
                         )

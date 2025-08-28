@@ -35,11 +35,10 @@ import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.common.ui.composables.EpisodeProgressBar
-import tv.trakt.trakt.common.ui.theme.colors.White
 import tv.trakt.trakt.core.episodes.model.Episode
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.EpisodeProgressBar
 import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
@@ -217,9 +216,6 @@ private fun ContentListItem(
 
                 EpisodeProgressBar(
                     startText = stringResource(R.string.tag_text_remaining_episodes, remainingEpisodes),
-                    textColor = White,
-                    textStyle = TraktTheme.typography.meta,
-                    containerColor = TraktTheme.colors.chipContainerOnContent,
                     progress = remainingPercent,
                 )
             }
