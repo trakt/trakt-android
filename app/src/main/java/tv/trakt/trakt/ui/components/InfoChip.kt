@@ -36,7 +36,7 @@ internal fun InfoChip(
     val hasIcon = (iconVector != null || iconPainter != null)
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy((2.5).dp),
+        horizontalArrangement = spacedBy(2.dp),
         modifier = modifier
             .background(
                 shape = RoundedCornerShape(100),
