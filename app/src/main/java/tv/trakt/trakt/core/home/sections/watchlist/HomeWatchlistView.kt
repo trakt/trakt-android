@@ -35,6 +35,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.core.home.sections.watchlist.model.WatchlistMovie
+import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
@@ -91,11 +92,13 @@ internal fun HomeWatchlistContent(
                     style = TraktTheme.typography.meta.copy(fontWeight = W400),
                 )
             }
-            Text(
-                text = stringResource(R.string.button_text_view_all),
-                color = TraktTheme.colors.textSecondary,
-                style = TraktTheme.typography.buttonTertiary,
-            )
+            if (!state.items.isNullOrEmpty()) {
+                Text(
+                    text = stringResource(R.string.button_text_view_all),
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.buttonTertiary,
+                )
+            }
         }
 
         Crossfade(
@@ -111,11 +114,13 @@ internal fun HomeWatchlistContent(
                 }
                 DONE -> {
                     if (state.items?.isEmpty() == true) {
-                        Text(
-                            text = stringResource(R.string.list_placeholder_empty),
-                            color = TraktTheme.colors.textSecondary,
-                            style = TraktTheme.typography.heading6,
-                            modifier = Modifier.padding(headerPadding),
+                        HomeEmptyView(
+                            text = "Add movies to your watchlist and start building a list of movies you want to watch.",
+                            icon = R.drawable.ic_empty_watchlist,
+                            buttonText = "Browse Movies",
+                            imageUrl = "https://walter-r2.trakt.tv/images/shows/000/150/469/fanarts/medium/8a02e4c084.jpg.webp",
+                            modifier = Modifier
+                                .padding(contentPadding)
                         )
                     } else {
                         ContentList(

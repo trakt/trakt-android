@@ -119,12 +119,14 @@ internal val homeModule = module {
     viewModel {
         HomeUpNextViewModel(
             getUpNextUseCase = get(),
+            sessionManager = get(),
         )
     }
 
     viewModel {
         HomeWatchlistViewModel(
             getWatchlistUseCase = get(),
+            sessionManager = get(),
         )
     }
 

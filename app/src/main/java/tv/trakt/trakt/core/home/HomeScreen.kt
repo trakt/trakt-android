@@ -17,7 +17,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -72,7 +71,6 @@ private fun HomeScreenContent(
     }
 
     Box(
-        contentAlignment = Alignment.TopStart,
         modifier = modifier
             .fillMaxSize()
             .background(TraktTheme.colors.backgroundPrimary)
@@ -104,34 +102,36 @@ private fun HomeScreenContent(
             end = TraktTheme.spacing.mainPageHorizontalSpace,
         )
 
-        if (state.user.isAuthenticated) {
-            LazyColumn(
-                state = lazyListState,
-                overscrollEffect = null,
-                verticalArrangement = spacedBy(TraktTheme.spacing.mainSectionVerticalSpace),
-                contentPadding = listPadding,
-            ) {
-                item {
-                    HomeUpNextView(
-                        headerPadding = sectionPadding,
-                        contentPadding = sectionPadding,
-                    )
-                }
+        LazyColumn(
+            state = lazyListState,
+            overscrollEffect = null,
+            verticalArrangement = spacedBy(TraktTheme.spacing.mainSectionVerticalSpace),
+            contentPadding = listPadding,
+        ) {
+            item {
+                HomeUpNextView(
+                    headerPadding = sectionPadding,
+                    contentPadding = sectionPadding,
+                )
+            }
 
-                item {
-                    HomeWatchlistView(
-                        headerPadding = sectionPadding,
-                        contentPadding = sectionPadding,
-                    )
-                }
+            item {
+                HomeWatchlistView(
+                    headerPadding = sectionPadding,
+                    contentPadding = sectionPadding,
+                )
+            }
 
+            if (state.user.isAuthenticated) {
                 item {
                     HomeUpcomingView(
                         headerPadding = sectionPadding,
                         contentPadding = sectionPadding,
                     )
                 }
+            }
 
+            if (state.user.isAuthenticated) {
                 item {
                     HomeActivityView(
                         headerPadding = sectionPadding,

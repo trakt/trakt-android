@@ -121,7 +121,7 @@ internal fun HeaderBar(
                     )
                 } else {
                     Column(
-                        verticalArrangement = spacedBy(1.dp, Alignment.CenterVertically),
+                        verticalArrangement = spacedBy(2.dp, Alignment.CenterVertically),
                     ) {
                         Text(
                             text = title ?: GreetingQuotes.getTodayQuote(), // TODO

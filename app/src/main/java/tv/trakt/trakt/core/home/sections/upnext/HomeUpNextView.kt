@@ -37,6 +37,7 @@ import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.episodes.model.Episode
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
+import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EpisodeProgressBar
 import tv.trakt.trakt.ui.components.InfoChip
@@ -84,11 +85,13 @@ internal fun HomeUpNextContent(
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading5,
             )
-            Text(
-                text = stringResource(R.string.button_text_view_all),
-                color = TraktTheme.colors.textSecondary,
-                style = TraktTheme.typography.buttonTertiary,
-            )
+            if (!state.items.isNullOrEmpty()) {
+                Text(
+                    text = stringResource(R.string.button_text_view_all),
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.buttonTertiary,
+                )
+            }
         }
 
         Crossfade(
@@ -104,11 +107,13 @@ internal fun HomeUpNextContent(
                 }
                 DONE -> {
                     if (state.items?.isEmpty() == true) {
-                        Text(
-                            text = stringResource(R.string.list_placeholder_empty),
-                            color = TraktTheme.colors.textSecondary,
-                            style = TraktTheme.typography.heading6,
-                            modifier = Modifier.padding(headerPadding),
+                        HomeEmptyView(
+                            text = "Continue watching your favorite shows & pick up where you left off.\n\nWhich shows are you currently following?",
+                            icon = R.drawable.ic_empty_upnext,
+                            buttonText = "Browse Shows",
+                            imageUrl = "https://walter-r2.trakt.tv/images/shows/000/150/469/fanarts/medium/8a02e4c084.jpg.webp",
+                            modifier = Modifier
+                                .padding(contentPadding)
                         )
                     } else {
                         ContentList(
@@ -271,6 +276,23 @@ private fun Preview2() {
         HomeUpNextContent(
             state = HomeUpNextState(
                 loading = LOADING,
+            ),
+        )
+    }
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun Preview3() {
+    TraktTheme {
+        HomeUpNextContent(
+            state = HomeUpNextState(
+                loading = DONE,
+                items = emptyList<ProgressShow>().toImmutableList()
             ),
         )
     }

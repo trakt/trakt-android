@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.home.sections.upnext
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -11,14 +12,18 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.app.helpers.extensions.nowUtc
+import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import java.time.ZonedDateTime
 
 internal class HomeUpNextViewModel(
     private val getUpNextUseCase: GetUpNextUseCase,
+    private val sessionManager: SessionManager
 ) : ViewModel() {
     private val initialState = HomeUpNextState()
 
@@ -34,6 +39,17 @@ internal class HomeUpNextViewModel(
 
     private fun loadData() {
         viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                itemsState.update {
+                    emptyList<ProgressShow>().toImmutableList()
+                }
+                loadingState.update { DONE }
+                return@launch
+            } else {
+                itemsState.update { null }
+                loadingState.update { IDLE }
+            }
+
             try {
                 val localItems = getUpNextUseCase.getLocalUpNext()
                 if (localItems.isNotEmpty()) {
