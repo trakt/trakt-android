@@ -1,5 +1,6 @@
 package tv.trakt.trakt.common.networking
 
+import org.openapitools.client.models.GetCalendarsMovies200ResponseInner
 import org.openapitools.client.models.GetCalendarsMovies200ResponseInnerMovie
 import org.openapitools.client.models.GetCalendarsMovies200ResponseInnerMovieIds
 import org.openapitools.client.models.GetCalendarsShows200ResponseInner
@@ -81,6 +82,7 @@ typealias StreamingServiceDto = GetMoviesWatchnow200ResponseValueCableInner
 typealias WatchlistShowDto = GetUsersWatchlistShows200ResponseInner
 typealias WatchlistMovieDto = GetUsersWatchlistMovies200ResponseInner
 typealias CalendarShowDto = GetCalendarsShows200ResponseInner
+typealias CalendarMovieDto = GetCalendarsMovies200ResponseInner
 typealias ProgressShowDto = GetSyncProgressUpNextStandard200ResponseInner
 typealias WatchedShowDto = GetUsersWatchedShows200ResponseInner
 typealias WatchedMovieDto = GetUsersWatchedMovies200ResponseInner

@@ -5,6 +5,7 @@ import org.openapitools.client.apis.HistoryApi
 import org.openapitools.client.apis.UsersApi
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.networking.CalendarMovieDto
 import tv.trakt.trakt.common.networking.CalendarShowDto
 import tv.trakt.trakt.common.networking.SocialActivityItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
@@ -74,6 +75,16 @@ internal class UserApiClient(
         days: Int,
     ): List<CalendarShowDto> {
         val response = calendarsApi.getCalendarsShows(
+            target = "my",
+            startDate = startDate.toString(),
+            days = days,
+            extended = "full,cloud9,colors",
+        )
+        return response.body()
+    }
+
+    override suspend fun getMoviesCalendar(startDate: LocalDate, days: Int): List<CalendarMovieDto> {
+        val response = calendarsApi.getCalendarsMovies(
             target = "my",
             startDate = startDate.toString(),
             days = days,

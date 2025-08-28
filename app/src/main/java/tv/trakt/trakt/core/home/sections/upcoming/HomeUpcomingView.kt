@@ -35,6 +35,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.episodes.model.Episode
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.core.home.sections.upcoming.views.EpisodeUpcomingItemView
+import tv.trakt.trakt.core.home.sections.upcoming.views.MovieUpcomingItemView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -165,7 +166,11 @@ private fun ContentList(
             key = { it.id.value },
         ) { item ->
             when (item) {
-                is HomeUpcomingItem.MovieItem -> {}
+                is HomeUpcomingItem.MovieItem ->
+                    MovieUpcomingItemView(
+                        item = item,
+                        onClick = onClick,
+                    )
                 is HomeUpcomingItem.EpisodeItem ->
                     EpisodeUpcomingItemView(
                         item = item,
