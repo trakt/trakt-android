@@ -61,13 +61,16 @@ internal class ShowsApiClient(
             }
     }
 
-    override suspend fun getPopular(limit: Int): List<ShowDto> {
+    override suspend fun getPopular(
+        limit: Int,
+        years: Int,
+    ): List<ShowDto> {
         val response = showsApi.getShowsPopular(
             extended = "full,streaming_ids,cloud9,colors",
             limit = limit,
             watchnow = null,
             genres = null,
-            years = null,
+            years = years.toString(),
             ratings = null,
             page = null,
             ignoreWatched = null,

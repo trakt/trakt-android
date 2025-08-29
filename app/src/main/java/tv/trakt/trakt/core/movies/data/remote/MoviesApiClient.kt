@@ -61,13 +61,16 @@ internal class MoviesApiClient(
             }
     }
 
-    override suspend fun getPopular(limit: Int): List<MovieDto> {
+    override suspend fun getPopular(
+        limit: Int,
+        years: Int,
+    ): List<MovieDto> {
         val response = moviesApi.getMoviesPopular(
             extended = "full,streaming_ids,cloud9,colors",
             limit = limit,
             watchnow = null,
             genres = null,
-            years = null,
+            years = years.toString(),
             ratings = null,
             page = null,
             ignoreWatched = null,

@@ -8,6 +8,8 @@ import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.core.shows.sections.popular.data.local.PopularShowsLocalDataSource
 import java.time.Instant
+import java.time.LocalDate
+import java.time.Year
 
 internal class GetPopularShowsUseCase(
     private val remoteSource: ShowsRemoteDataSource,
@@ -19,7 +21,10 @@ internal class GetPopularShowsUseCase(
     }
 
     suspend fun getShows(): ImmutableList<Show> {
-        return remoteSource.getPopular(20)
+        return remoteSource.getPopular(
+            limit = 20,
+            years = getYearsRange(),
+        )
             .asyncMap {
                 Show.fromDto(it)
             }
@@ -30,5 +35,15 @@ internal class GetPopularShowsUseCase(
                     addedAt = Instant.now(),
                 )
             }
+    }
+
+    private fun getYearsRange(): Int {
+        val currentYear = Year.now().value
+        val currentMonth = LocalDate.now().monthValue
+        return if (currentMonth <= 3) {
+            currentYear - 1
+        } else {
+            currentYear
+        }
     }
 }

@@ -8,7 +8,7 @@ internal val Spacing: TraktSpacing = TraktSpacing(
     mainRowSpace = 10.dp,
     mainRowHeaderSpace = 14.dp,
     mainPageHorizontalSpace = 16.dp,
-    mainPageTopSpace = 90.dp,
+    mainPageTopSpace = 88.dp,
     mainPageBottomSpace = 64.dp,
     mainSectionVerticalSpace = 30.dp,
 )

@@ -106,7 +106,7 @@ internal fun HeaderBar(
                 )
                 .sizeIn(minHeight = contentHeight),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = spacedBy(20.dp),
+            horizontalArrangement = spacedBy(16.dp),
         ) {
             val uriHandler = LocalUriHandler.current
             Crossfade(
@@ -142,13 +142,6 @@ internal fun HeaderBar(
             }
 
             Spacer(modifier = Modifier.weight(1F))
-
-//            Icon(
-//                painter = painterResource(R.drawable.ic_filter_off),
-//                contentDescription = null,
-//                tint = TraktTheme.colors.textPrimary,
-//                modifier = Modifier.size(24.dp),
-//            )
 
             when {
                 showProfile -> {

@@ -10,7 +10,10 @@ internal interface MoviesRemoteDataSource {
 
     suspend fun getHot(limit: Int): List<TrendingMovieDto>
 
-    suspend fun getPopular(limit: Int): List<MovieDto>
+    suspend fun getPopular(
+        limit: Int,
+        years: Int,
+    ): List<MovieDto>
 
     suspend fun getRecommended(limit: Int): List<RecommendedMovieDto>
 

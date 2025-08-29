@@ -10,7 +10,10 @@ internal interface ShowsRemoteDataSource {
 
     suspend fun getHot(limit: Int): List<TrendingShowDto>
 
-    suspend fun getPopular(limit: Int): List<ShowDto>
+    suspend fun getPopular(
+        limit: Int,
+        years: Int,
+    ): List<ShowDto>
 
     suspend fun getRecommended(limit: Int): List<RecommendedShowDto>
 
