@@ -1,7 +1,6 @@
 package tv.trakt.trakt.common.networking.client
 
 import android.content.Context
-import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.okhttp.OkHttp
@@ -31,11 +30,5 @@ internal class KtorClientFactory(
 
     fun createClientEngine(): HttpClientEngine {
         return OkHttp.create()
-    }
-
-    fun createClient(context: Context): HttpClient {
-        return HttpClient(engine = createClientEngine()) {
-            applyConfig(baseUrl, context)
-        }
     }
 }
