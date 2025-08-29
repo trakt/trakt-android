@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.home
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -58,6 +60,7 @@ internal fun HomeScreen(
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun HomeScreenContent(
     state: HomeState,
@@ -66,8 +69,13 @@ private fun HomeScreenContent(
     onShowsClick: () -> Unit = {},
     onMoviesClick: () -> Unit = {},
 ) {
-    val lazyListState = rememberLazyListState()
     val headerState = rememberHeaderState()
+    val lazyListState = rememberLazyListState(
+        cacheWindow = LazyLayoutCacheWindow(
+            aheadFraction = 0.5F,
+            behindFraction = 0.5F,
+        ),
+    )
 
     val isScrolledToTop by remember {
         derivedStateOf {

@@ -3,11 +3,15 @@ package tv.trakt.trakt.core.home.views
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,6 +33,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
@@ -47,6 +52,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun HomeEmptyView(
     modifier: Modifier = Modifier,
+    height: Dp? = null,
     text: String,
     icon: Int,
     backgroundImage: Int? = null,
@@ -87,13 +93,14 @@ internal fun HomeEmptyView(
         }
 
         Column(
-            verticalArrangement = spacedBy(16.dp),
+            verticalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
+                .heightIn(min = height ?: Dp.Unspecified)
                 .background(
                     brush = Brush.linearGradient(
                         colors = listOf(
                             Shade900,
-                            Purple500.copy(alpha = 0.66F),
+                            Purple500.copy(alpha = 0.33F),
                         ),
                     ),
                 )
@@ -119,6 +126,8 @@ internal fun HomeEmptyView(
                         .size(72.dp),
                 )
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             PrimaryButton(
                 text = buttonText,
@@ -164,6 +173,7 @@ private fun Preview2() {
     TraktTheme {
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             HomeEmptyView(
+                height = 200.dp,
                 text = "Add movies to your watchlist and start building a list of movies you want to watch.",
                 icon = R.drawable.ic_empty_watchlist,
                 buttonText = "Browse Movies",

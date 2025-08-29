@@ -86,7 +86,7 @@ internal fun HomeEmptySocialView(modifier: Modifier = Modifier) {
                     brush = Brush.linearGradient(
                         colors = listOf(
                             Shade900,
-                            Purple500.copy(alpha = 0.66F),
+                            Purple500.copy(alpha = 0.33F),
                         ),
                     ),
                 )

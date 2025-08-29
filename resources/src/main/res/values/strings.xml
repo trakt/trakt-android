@@ -92,8 +92,8 @@
     <string name="button_text_browse_shows">Browse shows</string>
     <string name="button_text_browse_movies">Browse movies</string>
     <string name="button_text_meet_team">Meet the team</string>
-    <string name="text_empty_upnext">Continue watching your favorite shows and pick up where you left off.</string>
-    <string name="text_empty_watchlist">Add movies to your watchlist and start building a list of movies you want to watch.</string>
-    <string name="text_empty_upcoming">Your upcoming schedule keeps track of new episodes and movies releasing soon.</string>
+    <string name="text_empty_upnext">Your shows. Your pace. Jump back in exactly where you left off. What are you currently watching?</string>
+    <string name="text_empty_watchlist">See it. Save it. Watch it later. Start curating your personal movie queue.</string>
+    <string name="text_empty_upcoming">Your timeline. See what\'s dropping next with a full list of upcoming episodes you care about.</string>
     <string name="text_empty_social">Kick off your social activity by following Trakt members and exploring what they watch.</string>
 </resources>
