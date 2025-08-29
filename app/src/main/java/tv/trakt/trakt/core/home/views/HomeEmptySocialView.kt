@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -21,12 +22,18 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
+import com.google.firebase.Firebase
+import com.google.firebase.remoteconfig.remoteConfig
 import tv.trakt.trakt.common.Config.WEB_ABOUT_US_URL
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.common.ui.theme.colors.Shade900
@@ -39,20 +46,38 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun HomeEmptySocialView(modifier: Modifier = Modifier) {
     val uriHandler = LocalUriHandler.current
 
+    val imageUrl = remember {
+        Firebase.remoteConfig.getString("mobile_empty_image_4").ifBlank { null }
+    }
+
     BoxWithConstraints(
         modifier = modifier
             .clip(
                 shape = RoundedCornerShape(12.dp),
             ),
     ) {
-        Image(
-            painter = painterResource(R.drawable.fanart_big_bang),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .alpha(0.8F)
-                .matchParentSize(),
-        )
+        if (imageUrl != null) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(imageUrl)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .alpha(0.8F)
+                    .matchParentSize(),
+            )
+        } else {
+            Image(
+                painter = painterResource(R.drawable.ic_splash_background_2),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .alpha(0.8F)
+                    .matchParentSize(),
+            )
+        }
 
         Column(
             verticalArrangement = spacedBy(16.dp),
@@ -80,7 +105,7 @@ internal fun HomeEmptySocialView(modifier: Modifier = Modifier) {
             }
 
             PrimaryButton(
-                text = "Meet the Team",
+                text = stringResource(R.string.button_text_meet_team),
                 icon = painterResource(R.drawable.ic_star),
                 onClick = {
                     uriHandler.openUri(WEB_ABOUT_US_URL)

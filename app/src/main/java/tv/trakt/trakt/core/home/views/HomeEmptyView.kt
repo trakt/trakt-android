@@ -25,14 +25,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
+import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.common.ui.theme.colors.Shade900
 import tv.trakt.trakt.resources.R
@@ -46,6 +50,7 @@ internal fun HomeEmptyView(
     text: String,
     icon: Int,
     backgroundImage: Int? = null,
+    backgroundImageUrl: String? = null,
     buttonText: String,
     buttonIcon: Int = R.drawable.ic_search,
     onClick: () -> Unit = {},
@@ -59,6 +64,20 @@ internal fun HomeEmptyView(
         backgroundImage?.let {
             Image(
                 painter = painterResource(it),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .alpha(0.8F)
+                    .matchParentSize(),
+            )
+        }
+
+        backgroundImageUrl?.let {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(it)
+                    .crossfade(true)
+                    .build(),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -130,7 +149,7 @@ private fun Preview() {
                 "\n\nWhich shows are you currently following?",
             icon = R.drawable.ic_empty_upnext,
             buttonText = "Browse Shows",
-            backgroundImage = R.drawable.fanart_got,
+            backgroundImage = R.drawable.ic_splash_background_2,
         )
     }
 }
@@ -148,7 +167,7 @@ private fun Preview2() {
                 text = "Add movies to your watchlist and start building a list of movies you want to watch.",
                 icon = R.drawable.ic_empty_watchlist,
                 buttonText = "Browse Movies",
-                backgroundImage = R.drawable.fanart_guardians,
+                backgroundImage = R.drawable.ic_splash_background,
             )
         }
     }

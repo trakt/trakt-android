@@ -89,6 +89,9 @@
 
     <!-- Migrate to generator -->
 
+    <string name="button_text_browse_shows">Browse shows</string>
+    <string name="button_text_browse_movies">Browse movies</string>
+    <string name="button_text_meet_team">Meet the team</string>
     <string name="text_empty_upnext">Continue watching your favorite shows and pick up where you left off.</string>
     <string name="text_empty_watchlist">Add movies to your watchlist and start building a list of movies you want to watch.</string>
     <string name="text_empty_upcoming">Your upcoming schedule keeps track of new episodes and movies releasing soon.</string>

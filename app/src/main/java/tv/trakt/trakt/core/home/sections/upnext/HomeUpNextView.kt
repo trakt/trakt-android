@@ -27,6 +27,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.firebase.Firebase
+import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
@@ -110,11 +112,15 @@ internal fun HomeUpNextContent(
                 }
                 DONE -> {
                     if (state.items?.isEmpty() == true) {
+                        val imageUrl = remember {
+                            Firebase.remoteConfig.getString("mobile_empty_image_1").ifBlank { null }
+                        }
                         HomeEmptyView(
                             text = stringResource(R.string.text_empty_upnext),
                             icon = R.drawable.ic_empty_upnext,
-                            buttonText = "Browse Shows",
-                            backgroundImage = R.drawable.fanart_foundation,
+                            buttonText = stringResource(R.string.button_text_browse_shows),
+                            backgroundImageUrl = imageUrl,
+                            backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
                             modifier = Modifier
                                 .padding(contentPadding),
                             onClick = onShowsClick,

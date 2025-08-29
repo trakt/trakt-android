@@ -27,6 +27,8 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.firebase.Firebase
+import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
@@ -117,11 +119,15 @@ internal fun HomeWatchlistContent(
                 }
                 DONE -> {
                     if (state.items?.isEmpty() == true) {
+                        val imageUrl = remember {
+                            Firebase.remoteConfig.getString("mobile_empty_image_2").ifBlank { null }
+                        }
                         HomeEmptyView(
                             text = stringResource(R.string.text_empty_watchlist),
                             icon = R.drawable.ic_empty_watchlist,
-                            buttonText = "Browse Movies",
-                            backgroundImage = R.drawable.fanart_guardians,
+                            buttonText = stringResource(R.string.button_text_browse_movies),
+                            backgroundImageUrl = imageUrl,
+                            backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
                             onClick = onMoviesClick,
                             modifier = Modifier
                                 .padding(contentPadding),
