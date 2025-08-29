@@ -80,7 +80,7 @@ internal fun HomeEmptySocialView(modifier: Modifier = Modifier) {
         }
 
         Column(
-            verticalArrangement = spacedBy(16.dp),
+            verticalArrangement = spacedBy(24.dp),
             modifier = Modifier
                 .background(
                     brush = Brush.linearGradient(
