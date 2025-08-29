@@ -22,4 +22,8 @@ internal class HomePersonalStorage : HomePersonalLocalDataSource {
             storage.values.toList()
         }
     }
+
+    override fun clear() {
+        storage.clear()
+    }
 }

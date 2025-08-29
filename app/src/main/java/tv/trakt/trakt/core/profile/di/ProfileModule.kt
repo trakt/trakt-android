@@ -52,6 +52,11 @@ internal val profileModule = module {
     factory {
         LogoutUserUseCase(
             sessionManager = get(),
+            localUpNext = get(),
+            localWatchlist = get(),
+            localUpcoming = get(),
+            localSocial = get(),
+            localPersonal = get(),
         )
     }
 

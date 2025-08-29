@@ -22,4 +22,8 @@ internal class HomeSocialStorage : HomeSocialLocalDataSource {
             storage.values.toList()
         }
     }
+
+    override fun clear() {
+        storage.clear()
+    }
 }

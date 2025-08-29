@@ -6,4 +6,6 @@ internal interface HomeUpcomingLocalDataSource {
     suspend fun addItems(items: List<HomeUpcomingItem>)
 
     suspend fun getItems(): List<HomeUpcomingItem>
+
+    fun clear()
 }

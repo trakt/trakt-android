@@ -23,4 +23,8 @@ internal class HomeUpcomingStorage : HomeUpcomingLocalDataSource {
             storage.values.toList()
         }
     }
+
+    override fun clear() {
+        storage.clear()
+    }
 }

@@ -23,4 +23,8 @@ internal class HomeWatchlistStorage : HomeWatchlistLocalDataSource {
             storage.values.toList()
         }
     }
+
+    override fun clear() {
+        storage.clear()
+    }
 }

@@ -6,4 +6,6 @@ internal interface HomeUpNextLocalDataSource {
     suspend fun addItems(items: List<ProgressShow>)
 
     suspend fun getItems(): List<ProgressShow>
+
+    fun clear()
 }

@@ -23,4 +23,8 @@ internal class HomeUpNextStorage : HomeUpNextLocalDataSource {
             storage.values.toList()
         }
     }
+
+    override fun clear() {
+        storage.clear()
+    }
 }

@@ -6,4 +6,6 @@ internal interface HomeWatchlistLocalDataSource {
     suspend fun addItems(items: List<WatchlistMovie>)
 
     suspend fun getItems(): List<WatchlistMovie>
+
+    fun clear()
 }

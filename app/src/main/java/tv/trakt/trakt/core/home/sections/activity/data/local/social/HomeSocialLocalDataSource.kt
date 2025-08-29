@@ -6,4 +6,6 @@ internal interface HomeSocialLocalDataSource {
     suspend fun addItems(items: List<HomeActivityItem>)
 
     suspend fun getItems(): List<HomeActivityItem>
+
+    fun clear()
 }
