@@ -394,6 +394,7 @@ private fun MainContent(
             EpisodeSeasonEpisodesList(
                 header1 = "${stringResource(R.string.list_title_seasons)} / ",
                 header2 = stringResource(R.string.text_season_number, state.episodeDetails?.season ?: 0),
+                show = state.showDetails,
                 episodes = { state.episodeSeason ?: emptyList<Episode>().toImmutableList() },
                 onFocused = { onFocused("season") },
                 onClicked = onEpisodeClicked,

@@ -413,6 +413,7 @@ private fun MainContent(
         ) {
             ShowEpisodesList(
                 isLoading = state.showSeasons.isSeasonLoading,
+                show = state.showDetails,
                 episodes = { state.showSeasons.selectedSeasonEpisodes },
                 onFocused = { onFocused("episodes") },
                 onEpisodeClick = onEpisodeClick,
