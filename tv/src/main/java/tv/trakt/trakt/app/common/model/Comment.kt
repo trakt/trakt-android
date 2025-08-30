@@ -25,6 +25,11 @@ internal data class Comment(
     val hasSpoilers: Boolean
         get() = isSpoiler || comment.contains("[spoiler]", ignoreCase = true)
 
+    val commentNoSpoilers: String
+        get() = comment.replace("[spoiler]", "", ignoreCase = true)
+            .replace("[/spoiler]", "", ignoreCase = true)
+            .trim()
+
     val userLiteRating: LiteRating?
         get() = userRating?.let { LiteRating.fromValue(it) }
 

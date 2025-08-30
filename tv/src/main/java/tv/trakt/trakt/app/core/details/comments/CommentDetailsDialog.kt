@@ -134,7 +134,7 @@ private fun CommentDetailsContent(
         )
 
         Text(
-            text = comment.comment,
+            text = comment.commentNoSpoilers,
             style = TraktTheme.typography.paragraphSmall,
             color = TraktTheme.colors.textSecondary,
             maxLines = if (isExpanded) Int.MAX_VALUE else 3,
@@ -304,7 +304,6 @@ private fun CommentRepliesContent(
         comments.forEach { comment ->
             CommentReplyCard(
                 comment = comment,
-                onClick = {},
             )
         }
     }

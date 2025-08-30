@@ -28,6 +28,7 @@ import tv.trakt.trakt.app.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun ShowEpisodesList(

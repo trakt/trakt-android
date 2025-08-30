@@ -99,7 +99,7 @@ private fun CommentCardContent(comment: Comment) {
         )
 
         Text(
-            text = comment.comment,
+            text = comment.commentNoSpoilers,
             style = TraktTheme.typography.paragraphSmall,
             color = TraktTheme.colors.textSecondary,
             maxLines = 3,

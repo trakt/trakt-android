@@ -16,13 +16,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -36,11 +39,8 @@ import androidx.tv.material3.Card
 import androidx.tv.material3.CardDefaults
 import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
-import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
-import coil3.compose.AsyncImagePreviewHandler
-import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.app.common.model.Comment
 import tv.trakt.trakt.app.common.ui.TvVipChip
 import tv.trakt.trakt.app.helpers.longDateTimeFormat
@@ -53,10 +53,15 @@ import tv.trakt.trakt.resources.R
 internal fun CommentReplyCard(
     comment: Comment,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit,
 ) {
+    var spoilersHidden by remember { mutableStateOf(true) }
+    var isExpanded by remember { mutableStateOf(false) }
+
     Card(
-        onClick = onClick,
+        onClick = {
+            spoilersHidden = !spoilersHidden
+            isExpanded = !isExpanded
+        },
         modifier = modifier,
         shape = CardDefaults.shape(
             shape = RoundedCornerShape(12.dp),
@@ -78,13 +83,19 @@ internal fun CommentReplyCard(
         content = {
             CommentCardContent(
                 comment = comment,
+                spoilersHidden = spoilersHidden,
+                isExpanded = isExpanded,
             )
         },
     )
 }
 
 @Composable
-private fun CommentCardContent(comment: Comment) {
+private fun CommentCardContent(
+    comment: Comment,
+    spoilersHidden: Boolean,
+    isExpanded: Boolean,
+) {
     Column(
         verticalArrangement = spacedBy(0.dp, Alignment.Top),
         modifier = Modifier
@@ -96,11 +107,18 @@ private fun CommentCardContent(comment: Comment) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = comment.comment,
+            text = comment.commentNoSpoilers,
             style = TraktTheme.typography.paragraphSmall,
             color = TraktTheme.colors.textSecondary,
-            maxLines = 3,
+            maxLines = if (isExpanded) Int.MAX_VALUE else 3,
             overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.then(
+                if (comment.hasSpoilers && spoilersHidden) {
+                    Modifier.blur(4.dp)
+                } else {
+                    Modifier
+                },
+            )
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -224,18 +242,12 @@ private fun CommentFooter(comment: Comment) {
 @Composable
 fun CommentReplyPreview() {
     TraktTheme {
-        val previewHandler = AsyncImagePreviewHandler {
-            ColorImage(Color.LightGray.toArgb())
-        }
-        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            Column(
-                verticalArrangement = spacedBy(32.dp),
-            ) {
-                CommentReplyCard(
-                    onClick = {},
-                    comment = PreviewData.comment1,
-                )
-            }
+        Column(
+            verticalArrangement = spacedBy(32.dp),
+        ) {
+            CommentReplyCard(
+                comment = PreviewData.comment1,
+            )
         }
     }
 }
