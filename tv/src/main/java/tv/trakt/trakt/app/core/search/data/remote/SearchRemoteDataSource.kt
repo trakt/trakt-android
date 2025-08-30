@@ -6,12 +6,12 @@ internal interface SearchRemoteDataSource {
     suspend fun getShows(
         query: String,
         limit: Int,
-        extended: String = "full,cloud9",
+        extended: String = "full,cloud9,colors",
     ): List<SearchItemDto>
 
     suspend fun getMovies(
         query: String,
         limit: Int,
-        extended: String = "full,cloud9",
+        extended: String = "full,cloud9,colors",
     ): List<SearchItemDto>
 }
