@@ -14,7 +14,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
@@ -106,9 +105,6 @@ internal class HomeActivityViewModel(
             }
             loadingState.update { DONE }
             return true
-        } else {
-            itemsState.update { null }
-            loadingState.update { IDLE }
         }
 
         return false
