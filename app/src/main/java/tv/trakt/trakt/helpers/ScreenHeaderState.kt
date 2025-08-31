@@ -42,7 +42,7 @@ internal fun rememberHeaderState(): ScreenHeaderState {
         .calculateTopPadding()
         .plus(TraktTheme.size.navigationHeaderHeight)
 
-    return remember {
+    return remember(headerHeight) {
         ScreenHeaderState(
             maxHeaderHeightPx = with(density) {
                 headerHeight.roundToPx()
