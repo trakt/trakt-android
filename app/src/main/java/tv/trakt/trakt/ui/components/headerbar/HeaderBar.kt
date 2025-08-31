@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
@@ -113,30 +114,38 @@ internal fun HeaderBar(
                 targetState = showVip && !userVip,
                 label = "HeaderBarVipCrossfade",
             ) { state ->
-                if (state) {
-                    VipChip(
-                        onClick = {
-                            uriHandler.openUri(Config.WEB_VIP_URL)
-                        },
-                    )
-                } else {
-                    Column(
-                        verticalArrangement = spacedBy(2.dp, Alignment.CenterVertically),
-                    ) {
-                        Text(
-                            text = title ?: GreetingQuotes.getTodayQuote(), // TODO
-                            color = TraktTheme.colors.textPrimary,
-                            style = TraktTheme.typography.paragraphSmall,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .heightIn(min = contentHeight),
+                ) {
+                    if (state) {
+                        VipChip(
+                            onClick = {
+                                uriHandler.openUri(Config.WEB_VIP_URL)
+                            },
+                            modifier = Modifier.align(Alignment.Center),
                         )
-                        Text(
-                            text = todayLabel,
-                            color = TraktTheme.colors.textSecondary,
-                            style = TraktTheme.typography.meta,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
+                    } else {
+                        Column(
+                            verticalArrangement = spacedBy(2.dp, Alignment.CenterVertically),
+                            modifier = Modifier.align(Alignment.Center),
+                        ) {
+                            Text(
+                                text = title ?: GreetingQuotes.getTodayQuote(), // TODO
+                                color = TraktTheme.colors.textPrimary,
+                                style = TraktTheme.typography.paragraphSmall,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                            Text(
+                                text = todayLabel,
+                                color = TraktTheme.colors.textSecondary,
+                                style = TraktTheme.typography.meta,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        }
                     }
                 }
             }
@@ -237,6 +246,17 @@ private fun Preview2() {
 private fun Preview3() {
     TraktTheme {
         HeaderBar(
+            showJoinTrakt = true,
+        )
+    }
+}
+
+@Preview(widthDp = 350)
+@Composable
+private fun Preview4() {
+    TraktTheme {
+        HeaderBar(
+            showVip = true,
             showJoinTrakt = true,
         )
     }
