@@ -23,6 +23,5 @@ data class SeasonEpisode(
             this.season,
             this.episode,
         )
-
     }
 }

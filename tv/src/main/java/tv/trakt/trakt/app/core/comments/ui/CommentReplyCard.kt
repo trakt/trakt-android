@@ -118,7 +118,7 @@ private fun CommentCardContent(
                 } else {
                     Modifier
                 },
-            )
+            ),
         )
 
         Spacer(modifier = Modifier.height(16.dp))
