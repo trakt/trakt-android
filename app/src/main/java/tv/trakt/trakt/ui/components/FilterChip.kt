@@ -80,7 +80,7 @@ internal fun FilterChip(
             maxLines = 1,
             textAlign = TextAlign.Center,
             modifier = Modifier
-                .padding(start = 4.dp)
+                .padding(start = 4.dp),
         )
     }
 }

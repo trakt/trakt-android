@@ -136,7 +136,7 @@ private fun ContentList(
                         modifier = Modifier.animateItem(
                             fadeInSpec = null,
                             fadeOutSpec = null,
-                        )
+                        ),
                     )
                 is SocialActivityItem.EpisodeItem ->
                     EpisodeSocialItemView(
@@ -146,7 +146,7 @@ private fun ContentList(
                         modifier = Modifier.animateItem(
                             fadeInSpec = null,
                             fadeOutSpec = null,
-                        )
+                        ),
                     )
             }
         }
