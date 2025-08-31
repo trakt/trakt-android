@@ -101,7 +101,7 @@ internal fun HomeActivityContent(
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading5,
             )
-            if (!state.items.isNullOrEmpty()) {
+            if (!state.items.isNullOrEmpty() || state.loading != DONE) {
                 Text(
                     text = stringResource(R.string.button_text_view_all),
                     color = TraktTheme.colors.textSecondary,

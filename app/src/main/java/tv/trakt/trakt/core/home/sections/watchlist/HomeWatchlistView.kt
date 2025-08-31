@@ -97,7 +97,7 @@ internal fun HomeWatchlistContent(
                     style = TraktTheme.typography.meta.copy(fontWeight = W400),
                 )
             }
-            if (!state.items.isNullOrEmpty()) {
+            if (!state.items.isNullOrEmpty() || state.loading != DONE) {
                 Text(
                     text = stringResource(R.string.button_text_view_all),
                     color = TraktTheme.colors.textSecondary,

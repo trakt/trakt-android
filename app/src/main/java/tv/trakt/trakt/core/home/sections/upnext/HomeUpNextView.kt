@@ -90,7 +90,7 @@ internal fun HomeUpNextContent(
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading5,
             )
-            if (!state.items.isNullOrEmpty()) {
+            if (!state.items.isNullOrEmpty() || state.loading != DONE) {
                 Text(
                     text = stringResource(R.string.button_text_view_all),
                     color = TraktTheme.colors.textSecondary,
@@ -287,24 +287,6 @@ private fun Preview2() {
         HomeUpNextContent(
             state = HomeUpNextState(
                 loading = LOADING,
-            ),
-            onShowsClick = {},
-        )
-    }
-}
-
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
-@Composable
-private fun Preview3() {
-    TraktTheme {
-        HomeUpNextContent(
-            state = HomeUpNextState(
-                loading = DONE,
-                items = emptyList<ProgressShow>().toImmutableList(),
             ),
             onShowsClick = {},
         )
