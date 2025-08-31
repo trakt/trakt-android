@@ -256,6 +256,7 @@ private fun ContentListItem(
                 )
             }
         },
+        modifier = modifier,
     )
 }
 

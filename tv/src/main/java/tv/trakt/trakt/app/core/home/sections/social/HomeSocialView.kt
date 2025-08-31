@@ -133,12 +133,20 @@ private fun ContentList(
                         item = it,
                         onClick = onMovieClick,
                         onFocused = onFocused,
+                        modifier = Modifier.animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        )
                     )
                 is SocialActivityItem.EpisodeItem ->
                     EpisodeSocialItemView(
                         item = it,
                         onClick = onEpisodeClick,
                         onFocused = onFocused,
+                        modifier = Modifier.animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        )
                     )
             }
         }
