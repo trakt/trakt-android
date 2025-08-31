@@ -1,5 +1,11 @@
 package tv.trakt.trakt.ui.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -34,7 +40,7 @@ internal fun FilterChip(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy(4.dp),
+        horizontalArrangement = spacedBy(0.dp),
         modifier = modifier
             .height(28.dp)
             .border(
@@ -55,12 +61,16 @@ internal fun FilterChip(
                 },
             )
             .padding(
-                start = if (leadingIcon != null && selected) 10.dp else 13.dp,
+                start = 9.dp,
                 end = 13.dp,
             )
             .onClick(onClick),
     ) {
-        if (selected) {
+        AnimatedVisibility(
+            visible = selected && leadingIcon != null,
+            enter = fadeIn(tween(150)) + expandHorizontally(tween(150)),
+            exit = fadeOut(tween(150)) + shrinkHorizontally(tween(150)),
+        ) {
             leadingIcon?.invoke()
         }
         Text(
@@ -69,6 +79,8 @@ internal fun FilterChip(
             color = TraktTheme.colors.textPrimary,
             maxLines = 1,
             textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(start = 4.dp)
         )
     }
 }
