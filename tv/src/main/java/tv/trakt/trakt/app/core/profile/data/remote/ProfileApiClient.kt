@@ -49,7 +49,7 @@ internal class ProfileApiClient(
     ): List<SyncHistoryEpisodeItemDto> {
         val response = historyApi.getUsersHistoryEpisodes(
             id = "me",
-            extended = "full,cloud9",
+            extended = "full,cloud9,streaming_ids",
             startAt = null,
             endAt = null,
             page = page,
@@ -64,7 +64,7 @@ internal class ProfileApiClient(
     ): List<SyncHistoryMovieItemDto> {
         val response = historyApi.getUsersHistoryMovies(
             id = "me",
-            extended = "full,cloud9",
+            extended = "full,cloud9,streaming_ids",
             startAt = null,
             endAt = null,
             page = page,
