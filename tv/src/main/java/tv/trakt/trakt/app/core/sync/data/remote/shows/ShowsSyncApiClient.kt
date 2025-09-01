@@ -1,5 +1,6 @@
 package tv.trakt.trakt.app.core.sync.data.remote.shows
 
+import org.openapitools.client.apis.CollectionApi
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
 import org.openapitools.client.apis.WatchedApi
@@ -7,6 +8,7 @@ import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerOneOfIds
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.ProgressShowDto
 import tv.trakt.trakt.common.networking.SyncAddHistoryResponseDto
 import tv.trakt.trakt.common.networking.WatchedShowDto
@@ -18,6 +20,7 @@ internal class ShowsSyncApiClient(
     private val usersApi: UsersApi,
     private val syncApi: SyncApi,
     private val watchedApi: WatchedApi,
+    private val collectionApi: CollectionApi,
 ) : ShowsSyncRemoteDataSource {
     override suspend fun addToWatchlist(showId: TraktId) {
         val request = PostUsersListsListAddRequest(
@@ -125,5 +128,53 @@ internal class ShowsSyncApiClient(
             countSpecials = null,
         )
         return response.body()
+    }
+
+    /** Example (shows -> seasons -> episodes):
+     * {
+     *     "150469": {
+     *         "462717": {
+     *             "13101183": "2025-09-01T10:58:10.000Z"
+     *         }
+     *     },
+     *     "249647": {
+     *         "404720": {
+     *             "12142723": "2025-09-01T10:57:43.000Z",
+     *             "12853592": "2025-09-01T10:57:43.000Z",
+     *         }
+     *     }
+     * }
+     */
+    override suspend fun getShowsPlexCollection(): Map<TraktId, Map<TraktId, TraktId>> {
+        val response = collectionApi.getSyncCollectionMinimalShows(
+            extended = "min",
+            availableOn = "plex",
+        )
+        return response.body()
+            .map {
+                val showId = it.key.toInt().toTraktId()
+                showId to it.value.map { entry ->
+                    val seasonId = entry.key.toInt().toTraktId()
+                    val episodeId = entry.value.toInt().toTraktId()
+                    seasonId to episodeId
+                }.toMap()
+            }
+            .toMap()
+    }
+
+    /** Example:
+     * {
+     *     "12142723": "2025-09-01T10:57:43.000Z",
+     *     "12853592": "2025-09-01T10:57:43.000Z",
+     * }
+     */
+    override suspend fun getEpisodesPlexCollection(): Map<TraktId, String> {
+        val response = collectionApi.getSyncCollectionMinimalEpisodes(
+            extended = "min",
+            availableOn = "plex",
+        )
+        return response.body()
+            .map { it.key.toInt().toTraktId() to it.value }
+            .toMap()
     }
 }

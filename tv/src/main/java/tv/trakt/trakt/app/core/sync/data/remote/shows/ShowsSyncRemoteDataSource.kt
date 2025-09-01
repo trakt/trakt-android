@@ -30,4 +30,10 @@ internal interface ShowsSyncRemoteDataSource {
         showId: TraktId,
         watchedAt: ZonedDateTime,
     ): SyncAddHistoryResponseDto
+//
+//    suspend fun removeFromHistory(showId: TraktId)
+
+    suspend fun getShowsPlexCollection(): Map<TraktId, Map<TraktId, TraktId>>
+
+    suspend fun getEpisodesPlexCollection(): Map<TraktId, String>
 }

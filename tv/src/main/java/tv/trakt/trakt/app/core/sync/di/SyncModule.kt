@@ -4,6 +4,7 @@ import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.HttpClientEngine
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import org.openapitools.client.apis.CollectionApi
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
 import org.openapitools.client.apis.WatchedApi
@@ -42,6 +43,11 @@ internal val syncModule = module {
                 httpClientEngine = httpClientEngine,
                 httpClientConfig = httpClientConfig,
             ),
+            collectionApi = CollectionApi(
+                baseUrl = API_BASE_URL,
+                httpClientEngine = httpClientEngine,
+                httpClientConfig = httpClientConfig,
+            ),
         )
     }
 
@@ -61,6 +67,11 @@ internal val syncModule = module {
                 httpClientConfig = httpClientConfig,
             ),
             watchedApi = WatchedApi(
+                baseUrl = API_BASE_URL,
+                httpClientEngine = httpClientEngine,
+                httpClientConfig = httpClientConfig,
+            ),
+            collectionApi = CollectionApi(
                 baseUrl = API_BASE_URL,
                 httpClientEngine = httpClientEngine,
                 httpClientConfig = httpClientConfig,

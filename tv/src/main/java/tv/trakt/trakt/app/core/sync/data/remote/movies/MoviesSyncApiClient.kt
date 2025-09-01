@@ -1,5 +1,6 @@
 package tv.trakt.trakt.app.core.sync.data.remote.movies
 
+import org.openapitools.client.apis.CollectionApi
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
 import org.openapitools.client.apis.WatchedApi
@@ -8,6 +9,7 @@ import org.openapitools.client.models.PostSyncHistoryRemoveRequest
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInner
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.WatchedMovieDto
 import tv.trakt.trakt.common.networking.WatchlistMovieDto
 import java.time.ZonedDateTime
@@ -17,6 +19,7 @@ internal class MoviesSyncApiClient(
     private val usersApi: UsersApi,
     private val syncApi: SyncApi,
     private val watchedApi: WatchedApi,
+    private val collectionApi: CollectionApi,
 ) : MoviesSyncRemoteDataSource {
     override suspend fun addToWatchlist(movieId: TraktId) {
         val request = PostUsersListsListAddRequest(
@@ -107,5 +110,20 @@ internal class MoviesSyncApiClient(
         )
 
         return response.body()
+    }
+
+    /** Example:
+     * {
+     *     "696075": "2025-06-11T08:37:33.000Z"
+     * }
+     */
+    override suspend fun getMoviesPlexCollection(): Map<TraktId, String> {
+        val response = collectionApi.getSyncCollectionMinimalMovies(
+            extended = "min",
+            availableOn = "plex",
+        )
+        return response.body()
+            .map { it.key.toInt().toTraktId() to it.value }
+            .toMap()
     }
 }
