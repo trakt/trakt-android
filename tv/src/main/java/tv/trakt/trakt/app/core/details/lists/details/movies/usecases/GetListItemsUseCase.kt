@@ -21,7 +21,7 @@ internal class GetListItemsUseCase(
             listId = listId,
             limit = CUSTOM_LIST_PAGE_LIMIT,
             page = page,
-            extended = "full,images",
+            extended = "full,cloud9,streaming_ids",
         )
             .map { Movie.fromDto(it.movie) }
             .toImmutableList()

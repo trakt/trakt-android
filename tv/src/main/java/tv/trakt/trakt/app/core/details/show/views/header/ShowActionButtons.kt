@@ -12,10 +12,12 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import tv.trakt.trakt.app.Config.DEFAULT_PLEX_LOGO_URL
 import tv.trakt.trakt.app.common.ui.buttons.PrimaryButton
 import tv.trakt.trakt.app.common.ui.buttons.WatchNowButton
 import tv.trakt.trakt.app.core.details.show.ShowDetailsState.CollectionState
 import tv.trakt.trakt.app.core.details.show.ShowDetailsState.StreamingsState
+import tv.trakt.trakt.app.helpers.extensions.openPlexLink
 import tv.trakt.trakt.app.helpers.extensions.openWatchNowLink
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.ui.theme.colors.Blue50
@@ -41,38 +43,23 @@ internal fun ShowActionButtons(
         verticalArrangement = spacedBy(8.dp),
         modifier = modifier.width(buttonsWidth),
     ) {
-        val service = streamingState.service
-        val loading = streamingState.loading
-        val directLink = service?.linkDirect
-
-        WatchNowButton(
-            text = when {
-                loading || !directLink.isNullOrBlank() -> stringResource(R.string.button_text_stream_on)
-                streamingState.noServices -> stringResource(R.string.button_text_no_services)
-                else -> stringResource(R.string.button_text_where_to_watch)
-            },
-            secondaryText = when {
-                !loading && directLink != null && streamingState.info != null -> {
-                    streamingState.info.get(context)
-                }
-                else -> null
-            },
-            name = if (directLink != null) service.name else "",
-            logo = if (directLink != null) service.logo else null,
-            enabled = !loading && !streamingState.noServices,
-            loading = loading,
-            containerColor = service?.color ?: TraktTheme.colors.primaryButtonContainerDisabled,
+        WatchButton(
+            streamingState = streamingState,
             onLongClick = onStreamingLongClick,
             onClick = {
-                if (directLink == null) {
-                    onStreamingLongClick()
-                    return@WatchNowButton
+                if (streamingState.plex) {
+                    openPlexLink(
+                        uriHandler = uriHandler,
+                        slug = streamingState.slug?.value,
+                        type = "show",
+                    )
+                } else {
+                    openWatchNowLink(
+                        context = context,
+                        uriHandler = uriHandler,
+                        link = streamingState.service?.linkDirect,
+                    )
                 }
-                openWatchNowLink(
-                    context = context,
-                    uriHandler = uriHandler,
-                    link = directLink,
-                )
             },
         )
 
@@ -105,4 +92,57 @@ internal fun ShowActionButtons(
             loading = collectionState.isWatchlistLoading,
         )
     }
+}
+
+@Composable
+private fun WatchButton(
+    streamingState: StreamingsState,
+    onClick: () -> Unit,
+    onLongClick: () -> Unit,
+) {
+    val context = LocalContext.current
+
+    val plex = streamingState.plex
+    val service = streamingState.service
+    val loading = streamingState.loading
+    val directLink = service?.linkDirect
+
+    WatchNowButton(
+        text = when {
+            loading || !directLink.isNullOrBlank() || plex -> stringResource(R.string.button_text_stream_on)
+            streamingState.noServices -> stringResource(R.string.button_text_no_services)
+            else -> stringResource(R.string.button_text_where_to_watch)
+        },
+        secondaryText = when {
+            !loading && (plex || directLink != null) && streamingState.info != null -> {
+                streamingState.info.get(context)
+            }
+            else -> null
+        },
+        name = when {
+            plex -> "Plex"
+            directLink != null -> service.name
+            else -> ""
+        },
+        logo = when {
+            plex -> DEFAULT_PLEX_LOGO_URL
+            directLink != null -> service.logo
+            else -> null
+        },
+        enabled = !loading && !streamingState.noServices,
+        loading = loading,
+        containerColor = when {
+            plex -> Color(0xFFE8AE0A)
+            service?.color != null -> service.color
+            else -> TraktTheme.colors.primaryButtonContainerDisabled
+        },
+        onLongClick = onLongClick,
+        onClick = {
+            if (directLink == null && !plex) {
+                onLongClick()
+                return@WatchNowButton
+            }
+            onClick()
+        },
+    )
 }

@@ -164,7 +164,7 @@ internal class ProfileApiClient(
         val response = api.getUsersActivities(
             id = "me",
             type = type,
-            extended = "full,cloud9",
+            extended = "full,cloud9,streaming_ids",
             page = 1,
             limit = limit,
         )

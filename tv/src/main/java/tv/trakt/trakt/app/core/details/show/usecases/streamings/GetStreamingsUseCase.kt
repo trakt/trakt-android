@@ -1,7 +1,7 @@
-package tv.trakt.trakt.app.core.details.show.usecases
+package tv.trakt.trakt.app.core.details.show.usecases.streamings
 
 import android.icu.util.Currency
-import tv.trakt.trakt.app.Config.DEFAULT_COUNTRY_CODE
+import tv.trakt.trakt.app.Config
 import tv.trakt.trakt.app.common.model.StreamingService
 import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.app.core.streamings.data.local.StreamingLocalDataSource
@@ -27,12 +27,12 @@ internal class GetStreamingsUseCase(
         if (!localStreamingSource.isValid()) {
             val sources = remoteStreamingSource
                 .getStreamingSources()
-                .asyncMap { StreamingSource.fromDto(it) }
+                .asyncMap { StreamingSource.Companion.fromDto(it) }
 
             localStreamingSource.upsertStreamingSources(sources)
         }
 
-        val userCountry = user.streamings?.country ?: DEFAULT_COUNTRY_CODE
+        val userCountry = user.streamings?.country ?: Config.DEFAULT_COUNTRY_CODE
         val streamings: Map<String, StreamingDto> = remoteShowSource.getShowStreamings(
             showId = showId,
             countryCode = null,

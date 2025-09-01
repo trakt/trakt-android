@@ -35,10 +35,11 @@ import tv.trakt.trakt.app.core.details.show.usecases.GetExtraVideosUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.GetRelatedShowsUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.GetShowSeasonsUseCase
-import tv.trakt.trakt.app.core.details.show.usecases.GetStreamingsUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.collection.ChangeHistoryUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.collection.ChangeWatchlistUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.collection.GetCollectionUseCase
+import tv.trakt.trakt.app.core.details.show.usecases.streamings.GetPlexUseCase
+import tv.trakt.trakt.app.core.details.show.usecases.streamings.GetStreamingsUseCase
 import tv.trakt.trakt.app.core.episodes.model.Season
 import tv.trakt.trakt.app.core.tutorials.TutorialsManager
 import tv.trakt.trakt.app.core.tutorials.model.TutorialKey.WATCH_NOW_MORE
@@ -63,6 +64,7 @@ internal class ShowDetailsViewModel(
     private val getRelatedShowsUseCase: GetRelatedShowsUseCase,
     private val getCommentsUseCase: GetCommentsUseCase,
     private val getStreamingsUseCase: GetStreamingsUseCase,
+    private val getPlexUseCase: GetPlexUseCase,
     private val getListsUseCase: GetCustomListsUseCase,
     private val getSeasonsUseCase: GetShowSeasonsUseCase,
     private val getCollectionUseCase: GetCollectionUseCase,
@@ -292,6 +294,23 @@ internal class ShowDetailsViewModel(
                     return@launch
                 }
                 showStreamingsState.update { it.copy(loading = true) }
+
+                val plexService = getPlexUseCase.getPlexStatus(showIds.trakt)
+                if (plexService.isPlex) {
+                    showStreamingsState.update {
+                        it.copy(
+                            plex = true,
+                            slug = plexService.plexSlug,
+                            loading = false,
+                            info = when {
+                                !tutorialsManager.get(WATCH_NOW_MORE) ->
+                                    DynamicStringResource(R.string.button_text_long_press_for_more)
+                                else -> null
+                            },
+                        )
+                    }
+                    return@launch
+                }
 
                 val streamingService = getStreamingsUseCase.getStreamingService(
                     user = user,

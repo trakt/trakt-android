@@ -11,10 +11,11 @@ import tv.trakt.trakt.app.core.details.show.usecases.GetExtraVideosUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.GetRelatedShowsUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.GetShowSeasonsUseCase
-import tv.trakt.trakt.app.core.details.show.usecases.GetStreamingsUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.collection.ChangeHistoryUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.collection.ChangeWatchlistUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.collection.GetCollectionUseCase
+import tv.trakt.trakt.app.core.details.show.usecases.streamings.GetPlexUseCase
+import tv.trakt.trakt.app.core.details.show.usecases.streamings.GetStreamingsUseCase
 
 internal val showDetailsModule = module {
     factory {
@@ -71,6 +72,14 @@ internal val showDetailsModule = module {
     }
 
     factory {
+        GetPlexUseCase(
+            remoteSyncSource = get(),
+            remoteShowSource = get(),
+            localShowSource = get()
+        )
+    }
+
+    factory {
         GetCollectionUseCase(
             remoteSource = get(),
             syncLocalSource = get(),
@@ -110,6 +119,7 @@ internal val showDetailsModule = module {
             getCommentsUseCase = get(),
             getListsUseCase = get(),
             getStreamingsUseCase = get(),
+            getPlexUseCase = get(),
             getCollectionUseCase = get(),
             getSeasonsUseCase = get(),
             watchlistUseCase = get(),

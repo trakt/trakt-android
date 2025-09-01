@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.details.episode
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -190,11 +189,8 @@ internal class EpisodeDetailsViewModel(
                             },
                         )
                     }
-
-                    Log.d("MovieDetailsViewModel", "Movie is in Plex collection, skipping streaming services load.")
                     return@launch
                 }
-
 
                 val streamingService = getStreamingsUseCase.getStreamingService(
                     user = user,
