@@ -46,8 +46,6 @@ internal fun MovieActionButtons(
         verticalArrangement = spacedBy(8.dp),
         modifier = modifier.width(buttonsWidth),
     ) {
-        val service = streamingState.service
-        val directLink = service?.linkDirect
 
         WatchButton(
             streamingState = streamingState,
@@ -63,7 +61,7 @@ internal fun MovieActionButtons(
                     openWatchNowLink(
                         context = context,
                         uriHandler = uriHandler,
-                        link = directLink!!,
+                        link = streamingState.service?.linkDirect,
                     )
                 }
             },

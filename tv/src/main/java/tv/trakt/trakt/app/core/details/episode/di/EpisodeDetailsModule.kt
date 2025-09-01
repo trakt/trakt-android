@@ -9,8 +9,9 @@ import tv.trakt.trakt.app.core.details.episode.usecases.GetEpisodeDetailsUseCase
 import tv.trakt.trakt.app.core.details.episode.usecases.GetEpisodeHistoryUseCase
 import tv.trakt.trakt.app.core.details.episode.usecases.GetEpisodeSeasonUseCase
 import tv.trakt.trakt.app.core.details.episode.usecases.GetExternalRatingsUseCase
-import tv.trakt.trakt.app.core.details.episode.usecases.GetStreamingsUseCase
 import tv.trakt.trakt.app.core.details.episode.usecases.collection.ChangeHistoryUseCase
+import tv.trakt.trakt.app.core.details.episode.usecases.streamings.GetPlexUseCase
+import tv.trakt.trakt.app.core.details.episode.usecases.streamings.GetStreamingsUseCase
 
 internal val episodeDetailsModule = module {
 
@@ -33,6 +34,14 @@ internal val episodeDetailsModule = module {
             remoteStreamingSource = get(),
             localStreamingSource = get(),
             priorityStreamingProvider = get(),
+        )
+    }
+
+    factory {
+        GetPlexUseCase(
+            remoteSyncSource = get(),
+            remoteShowSource = get(),
+            localShowSource = get(),
         )
     }
 
@@ -78,6 +87,7 @@ internal val episodeDetailsModule = module {
             getEpisodeDetailsUseCase = get(),
             getExternalRatingsUseCase = get(),
             getStreamingsUseCase = get(),
+            getPlexUseCase = get(),
             getCastCrewUseCase = get(),
             getRelatedShowsUseCase = get(),
             getCommentsUseCase = get(),

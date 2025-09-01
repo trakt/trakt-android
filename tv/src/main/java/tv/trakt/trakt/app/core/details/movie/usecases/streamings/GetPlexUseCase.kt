@@ -25,8 +25,8 @@ internal class GetPlexUseCase(
 
         val result = remoteSyncSource.getPlexCollection()
         return Result(
-            isPlex = result[movieId] != null && movie.ids.plex != null,
-            plexSlug = movie.ids.plex,
+            isPlex = result.containsKey(movieId) && movie.ids.plex != null,
+            plexSlug = movie.ids.plex
         )
     }
 
