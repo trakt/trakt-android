@@ -1,5 +1,6 @@
 package tv.trakt.trakt.app.core.details.movie
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -31,10 +32,11 @@ import tv.trakt.trakt.app.core.details.movie.usecases.GetExternalRatingsUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.GetExtraVideosUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.GetMovieDetailsUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.GetRelatedMoviesUseCase
-import tv.trakt.trakt.app.core.details.movie.usecases.GetStreamingsUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.collection.ChangeHistoryUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.collection.ChangeWatchlistUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.collection.GetCollectionUseCase
+import tv.trakt.trakt.app.core.details.movie.usecases.streamings.GetPlexUseCase
+import tv.trakt.trakt.app.core.details.movie.usecases.streamings.GetStreamingsUseCase
 import tv.trakt.trakt.app.core.inappreview.usecases.RequestAppReviewUseCase
 import tv.trakt.trakt.app.core.tutorials.TutorialsManager
 import tv.trakt.trakt.app.core.tutorials.model.TutorialKey.WATCH_NOW_MORE
@@ -60,6 +62,7 @@ internal class MovieDetailsViewModel(
     private val getCommentsUseCase: GetCommentsUseCase,
     private val getListsUseCase: GetCustomListsUseCase,
     private val getStreamingsUseCase: GetStreamingsUseCase,
+    private val getPlexUseCase: GetPlexUseCase,
     private val getCollectionUseCase: GetCollectionUseCase,
     private val watchlistUseCase: ChangeWatchlistUseCase,
     private val historyUseCase: ChangeHistoryUseCase,
@@ -218,6 +221,25 @@ internal class MovieDetailsViewModel(
                     return@launch
                 }
                 movieStreamingsState.update { it.copy(loading = true) }
+
+                val plexService = getPlexUseCase.getPlexStatus(movieIds.trakt)
+                if (plexService.isPlex) {
+                    movieStreamingsState.update {
+                        it.copy(
+                            plex = true,
+                            slug = plexService.plexSlug,
+                            loading = false,
+                            info = when {
+                                !tutorialsManager.get(WATCH_NOW_MORE) ->
+                                    DynamicStringResource(R.string.button_text_long_press_for_more)
+                                else -> null
+                            },
+                        )
+                    }
+
+                    Log.d("MovieDetailsViewModel", "Movie is in Plex collection, skipping streaming services load.")
+                    return@launch
+                }
 
                 val streamingService = getStreamingsUseCase.getStreamingService(
                     user = user,

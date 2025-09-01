@@ -26,5 +26,5 @@ internal interface MoviesSyncRemoteDataSource {
 
     suspend fun removeFromHistory(movieId: TraktId)
 
-    suspend fun getMoviesPlexCollection(): Map<TraktId, String>
+    suspend fun getPlexCollection(): Map<TraktId, String>
 }

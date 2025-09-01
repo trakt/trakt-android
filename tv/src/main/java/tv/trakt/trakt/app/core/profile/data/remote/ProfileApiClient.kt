@@ -38,7 +38,7 @@ internal class ProfileApiClient(
             target = "my",
             startDate = startDate.toString(),
             days = days,
-            extended = "full,cloud9,colors",
+            extended = "full,cloud9,colors,streaming_ids",
         )
         return response.body()
     }
@@ -80,7 +80,7 @@ internal class ProfileApiClient(
         val response = api.getUsersFavoritesShows(
             id = "me",
             sort = "added",
-            extended = "full,cloud9,colors",
+            extended = "full,cloud9,colors,streaming_ids",
             page = page,
             limit = limit,
         )
@@ -94,7 +94,7 @@ internal class ProfileApiClient(
         val response = api.getUsersFavoritesMovies(
             id = "me",
             sort = "added",
-            extended = "full,cloud9,colors",
+            extended = "full,cloud9,colors,streaming_ids",
             page = page,
             limit = limit,
         )

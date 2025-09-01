@@ -26,7 +26,7 @@ internal class GetAvailableNowMoviesUseCase(
             page = page,
             limit = PAGE_LIMIT,
             sort = "released",
-            extended = "full,cloud9,colors",
+            extended = "full,cloud9,colors,streaming_ids",
         ).filter {
             !it.movie.released.isNullOrBlank() && it.movie.released!! <= nowDay
         }.asyncMap {

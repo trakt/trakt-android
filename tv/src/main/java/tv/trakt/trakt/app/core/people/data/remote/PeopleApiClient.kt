@@ -20,7 +20,7 @@ internal class PeopleApiClient(
     override suspend fun getPersonShowsCredits(personId: TraktId): PersonShowsDto {
         val response = api.getPeopleShows(
             id = personId.value.toString(),
-            extended = "full,cloud9,colors",
+            extended = "full,cloud9,colors,streaming_ids",
         )
         return response.body()
     }
@@ -28,7 +28,7 @@ internal class PeopleApiClient(
     override suspend fun getPersonMoviesCredits(personId: TraktId): PersonMoviesDto {
         val response = api.getPeopleMovies(
             id = personId.value.toString(),
-            extended = "full,cloud9,colors",
+            extended = "full,cloud9,colors,streaming_ids",
         )
         return response.body()
     }

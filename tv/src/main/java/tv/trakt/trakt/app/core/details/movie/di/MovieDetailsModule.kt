@@ -10,10 +10,11 @@ import tv.trakt.trakt.app.core.details.movie.usecases.GetExternalRatingsUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.GetExtraVideosUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.GetMovieDetailsUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.GetRelatedMoviesUseCase
-import tv.trakt.trakt.app.core.details.movie.usecases.GetStreamingsUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.collection.ChangeHistoryUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.collection.ChangeWatchlistUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.collection.GetCollectionUseCase
+import tv.trakt.trakt.app.core.details.movie.usecases.streamings.GetPlexUseCase
+import tv.trakt.trakt.app.core.details.movie.usecases.streamings.GetStreamingsUseCase
 
 internal val movieDetailsModule = module {
     factory {
@@ -71,6 +72,14 @@ internal val movieDetailsModule = module {
     }
 
     factory {
+        GetPlexUseCase(
+            remoteSyncSource = get(),
+            remoteMovieSource = get(),
+            localMovieSource = get(),
+        )
+    }
+
+    factory {
         GetCollectionUseCase(
             remoteSource = get(),
             syncLocalSource = get(),
@@ -102,6 +111,7 @@ internal val movieDetailsModule = module {
             getCommentsUseCase = get(),
             getListsUseCase = get(),
             getStreamingsUseCase = get(),
+            getPlexUseCase = get(),
             getCollectionUseCase = get(),
             watchlistUseCase = get(),
             historyUseCase = get(),

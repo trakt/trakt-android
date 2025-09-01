@@ -34,6 +34,7 @@ internal data class MovieDetailsState(
         val slug: SlugId? = null,
         val service: StreamingService? = null,
         val noServices: Boolean = false,
+        val plex: Boolean = false,
         val loading: Boolean = false,
         val info: StringResource? = null,
     )

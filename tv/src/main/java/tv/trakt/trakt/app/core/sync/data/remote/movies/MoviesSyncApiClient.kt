@@ -117,7 +117,7 @@ internal class MoviesSyncApiClient(
      *     "696075": "2025-06-11T08:37:33.000Z"
      * }
      */
-    override suspend fun getMoviesPlexCollection(): Map<TraktId, String> {
+    override suspend fun getPlexCollection(): Map<TraktId, String> {
         val response = collectionApi.getSyncCollectionMinimalMovies(
             extended = "min",
             availableOn = "plex",

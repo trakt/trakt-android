@@ -1,4 +1,4 @@
-package tv.trakt.trakt.app.core.details.movie.usecases
+package tv.trakt.trakt.app.core.details.movie.usecases.streamings
 
 import android.icu.util.Currency
 import tv.trakt.trakt.app.Config.DEFAULT_COUNTRY_CODE
@@ -12,7 +12,6 @@ import tv.trakt.trakt.app.core.streamings.utilities.PriorityStreamingServiceProv
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.common.networking.StreamingDto
 
 internal class GetStreamingsUseCase(
     private val remoteMovieSource: MoviesRemoteDataSource,
@@ -33,7 +32,7 @@ internal class GetStreamingsUseCase(
         }
 
         val userCountry = user.streamings?.country ?: DEFAULT_COUNTRY_CODE
-        val streamings: Map<String, StreamingDto> = remoteMovieSource.getMovieStreamings(
+        val streamings = remoteMovieSource.getMovieStreamings(
             movieId = movieId,
             countryCode = null,
         )

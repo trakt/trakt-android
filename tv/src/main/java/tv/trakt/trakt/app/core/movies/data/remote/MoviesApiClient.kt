@@ -186,7 +186,7 @@ internal class MoviesApiClient(
     override suspend fun getMovieDetails(movieId: TraktId): MovieDto {
         val response = api.getMoviesSummary(
             id = movieId.value.toString(),
-            extended = "full,streaming_ids,cloud9",
+            extended = "full,streaming_ids,cloud9,colors",
         )
 
         return response.body()

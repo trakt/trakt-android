@@ -27,7 +27,7 @@ internal class GetComingSoonMoviesUseCase(
             limit = limit,
             page = page,
             sort = "released",
-            extended = "full,cloud9,colors",
+            extended = "full,cloud9,colors,streaming_ids",
         ).asyncMap {
             WatchlistMovie(
                 movie = Movie.fromDto(it.movie),
