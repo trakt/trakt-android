@@ -49,13 +49,14 @@ internal class MoviesApiClient(
     override suspend fun getPopularMovies(
         limit: Int,
         page: Int,
+        years: Int?,
     ): List<MovieDto> {
         val response = api.getMoviesPopular(
             extended = "full,streaming_ids,cloud9,colors",
             limit = limit,
             watchnow = null,
             genres = null,
-            years = null,
+            years = years.toString(),
             ratings = null,
             page = page,
             ignoreWatched = false,

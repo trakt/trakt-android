@@ -22,6 +22,7 @@ internal interface ShowsRemoteDataSource {
     suspend fun getPopularShows(
         limit: Int,
         page: Int,
+        years: Int? = null,
     ): List<ShowDto>
 
     suspend fun getAnticipatedShows(

@@ -21,6 +21,7 @@ internal interface MoviesRemoteDataSource {
     suspend fun getPopularMovies(
         limit: Int,
         page: Int,
+        years: Int? = null,
     ): List<MovieDto>
 
     suspend fun getAnticipatedMovies(
