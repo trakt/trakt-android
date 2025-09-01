@@ -92,7 +92,7 @@ internal fun HomeWatchlistContent(
                     style = TraktTheme.typography.heading5,
                 )
                 Text(
-                    text = "Released Movies", // TODO
+                    text = "Released movies", // TODO
                     color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.meta.copy(fontWeight = W400),
                 )
