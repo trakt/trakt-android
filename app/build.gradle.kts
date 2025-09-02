@@ -107,6 +107,7 @@ dependencies {
     implementation(libs.androidx.compose.tooling.preview)
     debugImplementation(libs.androidx.compose.tooling)
 
+    implementation(libs.kotlinx.serialization.proto)
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.timber)
 

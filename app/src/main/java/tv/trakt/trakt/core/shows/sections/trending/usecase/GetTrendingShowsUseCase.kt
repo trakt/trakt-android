@@ -26,8 +26,8 @@ internal class GetTrendingShowsUseCase(
             .toImmutableList()
     }
 
-    suspend fun getShows(): ImmutableList<WatchersShow> {
-        return remoteSource.getTrending(20)
+    suspend fun getShows(limit: Int = 20): ImmutableList<WatchersShow> {
+        return remoteSource.getTrending(limit)
             .asyncMap {
                 WatchersShow(
                     watchers = it.watchers,

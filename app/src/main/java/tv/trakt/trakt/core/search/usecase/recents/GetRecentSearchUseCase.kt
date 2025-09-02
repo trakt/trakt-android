@@ -1,0 +1,28 @@
+package tv.trakt.trakt.core.search.usecase.recents
+
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.core.search.data.local.RecentSearchLocalDataSource
+
+internal class GetRecentSearchUseCase(
+    private val recentsLocalSource: RecentSearchLocalDataSource,
+) {
+    suspend fun getRecentShows(): ImmutableList<Show> {
+        return recentsLocalSource
+            .getShows()
+            .sortedByDescending { it.createdAt }
+            .asyncMap { it.show }
+            .toImmutableList()
+    }
+
+    suspend fun getRecentMovies(): ImmutableList<Movie> {
+        return recentsLocalSource
+            .getMovies()
+            .sortedByDescending { it.createdAt }
+            .asyncMap { it.movie }
+            .toImmutableList()
+    }
+}

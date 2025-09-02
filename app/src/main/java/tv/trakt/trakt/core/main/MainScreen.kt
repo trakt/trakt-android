@@ -130,7 +130,11 @@ private fun MainNavHost(
                 onNavigateToMovie = {},
             )
             listsScreen(onNavigateToList = {})
-            searchScreen(onNavigateToSearch = {})
+            searchScreen(
+                onNavigateToShow = { },
+                onNavigateToMovie = { },
+                onNavigateToProfile = { navigateToProfile() },
+            )
             profileScreen(
                 onNavigateBack = { popBackStack() },
             )
