@@ -125,7 +125,7 @@ internal class EpisodeDetailsViewModel(
                     showDetailsState.update { show }
                     episodeDetailsState.update { episode }
 
-                    loadStreamings(show.ids, episode.seasonEpisode, user)
+                    loadStreamings(show.ids, episode, user)
                     loadHistory(episode.ids.trakt)
 
                     loadExternalRatings(showId, episode.seasonEpisode)
@@ -165,7 +165,7 @@ internal class EpisodeDetailsViewModel(
 
     private fun loadStreamings(
         showIds: Ids,
-        seasonEpisode: SeasonEpisode,
+        episode: Episode,
         user: User?,
     ) {
         viewModelScope.launch {
@@ -175,7 +175,10 @@ internal class EpisodeDetailsViewModel(
                 }
                 episodeStreamingsState.update { it.copy(loading = true) }
 
-                val plexService = getPlexUseCase.getPlexStatus(showIds.trakt)
+                val plexService = getPlexUseCase.getPlexStatus(
+                    showId = showIds.trakt,
+                    episodeId = episode.ids.trakt,
+                )
                 if (plexService.isPlex) {
                     episodeStreamingsState.update {
                         it.copy(
@@ -195,7 +198,7 @@ internal class EpisodeDetailsViewModel(
                 val streamingService = getStreamingsUseCase.getStreamingService(
                     user = user,
                     showId = showIds.trakt,
-                    seasonEpisode = seasonEpisode,
+                    episode = episode,
                 )
 
                 episodeStreamingsState.update {

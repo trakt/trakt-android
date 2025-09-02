@@ -51,7 +51,7 @@ internal fun EpisodeActionButtons(
                         uriHandler = uriHandler,
                         slug = streamingState.slug?.value,
                         type = "episode",
-                        episode = episode
+                        episode = episode,
                     )
                 } else {
                     openWatchNowLink(

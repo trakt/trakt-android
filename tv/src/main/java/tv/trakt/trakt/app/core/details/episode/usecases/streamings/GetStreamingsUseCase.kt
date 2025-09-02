@@ -4,6 +4,7 @@ import android.icu.util.Currency
 import tv.trakt.trakt.app.Config
 import tv.trakt.trakt.app.common.model.StreamingService
 import tv.trakt.trakt.app.core.episodes.data.remote.EpisodesRemoteDataSource
+import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.app.core.streamings.data.local.StreamingLocalDataSource
 import tv.trakt.trakt.app.core.streamings.data.remote.StreamingRemoteDataSource
 import tv.trakt.trakt.app.core.streamings.model.StreamingSource
@@ -23,7 +24,7 @@ internal class GetStreamingsUseCase(
     suspend fun getStreamingService(
         user: User,
         showId: TraktId,
-        seasonEpisode: SeasonEpisode,
+        episode: Episode,
     ): Result {
         if (!localStreamingSource.isValid()) {
             val sources = remoteStreamingSource
@@ -36,8 +37,8 @@ internal class GetStreamingsUseCase(
         val userCountry = user.streamings?.country ?: Config.DEFAULT_COUNTRY_CODE
         val streamings = remoteEpisodesSource.getEpisodeStreamings(
             showId = showId,
-            season = seasonEpisode.season,
-            episode = seasonEpisode.episode,
+            season = episode.season,
+            episode = episode.number,
             countryCode = null,
         )
 

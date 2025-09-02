@@ -75,7 +75,7 @@ internal val showDetailsModule = module {
         GetPlexUseCase(
             remoteSyncSource = get(),
             remoteShowSource = get(),
-            localShowSource = get()
+            localShowSource = get(),
         )
     }
 

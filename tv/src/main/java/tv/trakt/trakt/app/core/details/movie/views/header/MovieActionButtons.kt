@@ -46,7 +46,6 @@ internal fun MovieActionButtons(
         verticalArrangement = spacedBy(8.dp),
         modifier = modifier.width(buttonsWidth),
     ) {
-
         WatchButton(
             streamingState = streamingState,
             onLongClick = onStreamingLongClick,

@@ -1,12 +1,12 @@
 package tv.trakt.trakt.app.core.details.show.usecases.streamings
 
-import tv.trakt.trakt.app.common.model.SlugId
-import tv.trakt.trakt.app.common.model.TraktId
 import tv.trakt.trakt.app.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
-import tv.trakt.trakt.app.core.shows.model.Show
-import tv.trakt.trakt.app.core.shows.model.fromDto
 import tv.trakt.trakt.app.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
+import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.SlugId
+import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.fromDto
 
 internal class GetPlexUseCase(
     private val remoteSyncSource: ShowsSyncRemoteDataSource,
@@ -26,12 +26,12 @@ internal class GetPlexUseCase(
         val result = remoteSyncSource.getShowsPlexCollection()
         return Result(
             isPlex = result.containsKey(showId) && show?.ids?.plex != null,
-            plexSlug = show?.ids?.plex
+            plexSlug = show?.ids?.plex,
         )
     }
 
     data class Result(
         val isPlex: Boolean,
-        val plexSlug: SlugId?
+        val plexSlug: SlugId?,
     )
 }
