@@ -89,6 +89,7 @@
 
     <!-- Migrate to generator -->
 
+    <string name="input_placeholder_search2">Search…</string> // TODO Generator
     <string name="button_text_browse_shows">Browse shows</string>
     <string name="button_text_browse_movies">Browse movies</string>
     <string name="button_text_meet_team">Meet the team</string>

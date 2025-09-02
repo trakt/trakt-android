@@ -26,6 +26,7 @@ internal val DarkColors: TraktColors = TraktColors(
     navigationHeaderContainer = Shade920.copy(alpha = 0.98F),
     navigationContainer = Shade920.copy(alpha = 0.98F),
     navigationContent = White,
+    inputContainer = Shade940,
     // Buttons
     primaryButtonContainer = Purple500,
     primaryButtonContainerDisabled = Shade700,
@@ -46,6 +47,7 @@ internal data class TraktColors(
     val chipContent: Color = Color.Unspecified,
     val placeholderContainer: Color = Color.Unspecified,
     val placeholderContent: Color = Color.Unspecified,
+    val inputContainer: Color = Color.Unspecified,
     // Nav
     val navigationHeaderContainer: Color = Color.Unspecified,
     val navigationContainer: Color = Color.Unspecified,
