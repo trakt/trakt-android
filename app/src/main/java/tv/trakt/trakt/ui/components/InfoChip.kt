@@ -30,13 +30,14 @@ internal fun InfoChip(
     modifier: Modifier = Modifier,
     iconVector: ImageVector? = null,
     iconPainter: Painter? = null,
+    iconPadding: Dp = 0.dp,
     containerColor: Color = TraktTheme.colors.chipContainer,
     endPadding: Dp = 0.dp,
 ) {
     val hasIcon = (iconVector != null || iconPainter != null)
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy(2.dp),
+        horizontalArrangement = spacedBy(2.dp + iconPadding),
         modifier = modifier
             .background(
                 shape = RoundedCornerShape(100),

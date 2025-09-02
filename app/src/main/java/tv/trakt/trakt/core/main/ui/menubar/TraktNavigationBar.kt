@@ -68,7 +68,7 @@ internal fun TraktNavigationBar(
                 loading = false,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 42.dp)
+                    .padding(horizontal = 41.dp)
                     .padding(top = 24.dp)
                     .focusRequester(searchFocusRequester),
             )
