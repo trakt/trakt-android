@@ -57,7 +57,7 @@ internal class SearchApiClient(
         }
 
         val response = api.getSearchQuery(
-            type = "movie",
+            type = "show,movie",
             query = query,
             page = 1,
             limit = limit,
