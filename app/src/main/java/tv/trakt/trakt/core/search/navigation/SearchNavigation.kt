@@ -15,6 +15,7 @@ internal data object SearchDestination
 
 internal fun NavGraphBuilder.searchScreen(
     searchInput: SearchInput,
+    onSearchLoading: (Boolean) -> Unit,
     onNavigateToShow: (showId: TraktId) -> Unit,
     onNavigateToMovie: (movieId: TraktId) -> Unit,
     onNavigateToProfile: () -> Unit,
@@ -23,6 +24,7 @@ internal fun NavGraphBuilder.searchScreen(
         SearchScreen(
             viewModel = koinViewModel(),
             searchInput = searchInput,
+            onSearchLoading = onSearchLoading,
             onShowClick = onNavigateToShow,
             onMovieClick = onNavigateToMovie,
             onProfileClick = onNavigateToProfile,

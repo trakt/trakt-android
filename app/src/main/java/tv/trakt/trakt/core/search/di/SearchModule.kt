@@ -17,7 +17,7 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.openapitools.client.apis.SearchApi
-import tv.trakt.trakt.common.Config.API_BASE_URL
+import tv.trakt.trakt.common.Config.API_HD_BASE_URL
 import tv.trakt.trakt.core.search.SearchViewModel
 import tv.trakt.trakt.core.search.data.local.RecentSearchLocalDataSource
 import tv.trakt.trakt.core.search.data.local.RecentSearchStorage
@@ -33,7 +33,7 @@ internal val searchDataModule = module {
     single<SearchRemoteDataSource> {
         SearchApiClient(
             api = SearchApi(
-                baseUrl = API_BASE_URL,
+                baseUrl = API_HD_BASE_URL,
                 httpClientEngine = get(),
                 httpClientConfig = get(named("clientConfig")),
             ),

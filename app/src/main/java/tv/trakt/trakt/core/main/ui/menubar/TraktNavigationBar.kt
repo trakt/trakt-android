@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
@@ -35,6 +36,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
+import kotlinx.coroutines.delay
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.core.home.navigation.HomeDestination
 import tv.trakt.trakt.core.lists.navigation.ListsDestination
 import tv.trakt.trakt.core.main.model.NavigationItem
@@ -51,18 +54,20 @@ internal fun TraktNavigationBar(
     currentDestination: NavDestination?,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    searchLoading: Boolean = false,
     onSelected: (NavigationItem) -> Unit = {},
     onReselected: () -> Unit = {},
     onSearchInput: (SearchInput) -> Unit = {},
 ) {
-    val isSearch = remember(currentDestination) {
+    val searchVisible = remember(currentDestination) {
         currentDestination?.hasRoute(SearchDestination::class) == true
     }
 
     TraktNavigationBarContent(
         currentDestination = currentDestination,
         modifier = modifier,
-        searching = isSearch,
+        searchVisible = searchVisible,
+        searchLoading = searchLoading,
         enabled = enabled,
         onSelected = onSelected,
         onReselected = onReselected,
@@ -74,7 +79,8 @@ internal fun TraktNavigationBar(
 private fun TraktNavigationBarContent(
     currentDestination: NavDestination?,
     modifier: Modifier = Modifier,
-    searching: Boolean = false,
+    searchVisible: Boolean = false,
+    searchLoading: Boolean = false,
     enabled: Boolean = true,
     onSelected: (NavigationItem) -> Unit = {},
     onReselected: () -> Unit = {},
@@ -88,7 +94,9 @@ private fun TraktNavigationBarContent(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         SearchContent(
-            visible = searching,
+            visible = searchVisible,
+            enabled = enabled,
+            loading = searchLoading,
             searchFocusRequester = searchFocusRequester,
             onSearchInput = onSearchInput,
         )
@@ -110,7 +118,7 @@ private fun TraktNavigationBarContent(
 
                         if (currentDestination?.hasRoute(item.destination::class) == true) {
                             onReselected()
-                            if (searching) {
+                            if (searchVisible) {
                                 runCatching {
                                     searchFocusRequester.requestFocus()
                                 }
@@ -142,11 +150,25 @@ private fun TraktNavigationBarContent(
 @Composable
 private fun SearchContent(
     visible: Boolean,
+    enabled: Boolean,
+    loading: Boolean,
     searchFocusRequester: FocusRequester,
     onSearchInput: (SearchInput) -> Unit,
 ) {
     var searchInput by remember { mutableStateOf(SearchInput()) }
     val searchQuery = rememberTextFieldState("")
+
+    fun clearSearch() {
+        searchInput = SearchInput()
+        searchQuery.clearText()
+    }
+
+    LaunchedEffect(visible) {
+        if (!visible) {
+            delay(300)
+            clearSearch()
+        }
+    }
 
     LaunchedEffect(searchQuery.text) {
         searchInput = searchInput.copy(query = searchQuery.text.toString())
@@ -166,6 +188,7 @@ private fun SearchContent(
         ) {
             SearchFiltersList(
                 onFilterClick = {
+                    if (!visible) return@SearchFiltersList
                     searchInput = searchInput.copy(filter = it)
                     onSearchInput(searchInput)
                 },
@@ -176,7 +199,20 @@ private fun SearchContent(
                 state = searchQuery,
                 placeholder = stringResource(searchInput.filter.placeholderRes),
                 icon = painterResource(R.drawable.ic_search),
-                loading = false,
+                enabled = enabled && visible,
+                loading = loading,
+                endSlot = {
+                    if (searchQuery.text.isNotBlank()) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_close),
+                            contentDescription = null,
+                            tint = TraktTheme.colors.textSecondary,
+                            modifier = Modifier.onClick {
+                                clearSearch()
+                            },
+                        )
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .focusRequester(searchFocusRequester),
@@ -195,7 +231,7 @@ private fun Preview1() {
     TraktTheme {
         TraktNavigationBarContent(
             currentDestination = null,
-            searching = false,
+            searchVisible = false,
         )
     }
 }
@@ -210,7 +246,7 @@ private fun Preview2() {
     TraktTheme {
         TraktNavigationBarContent(
             currentDestination = null,
-            searching = true,
+            searchVisible = true,
         )
     }
 }

@@ -6,7 +6,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,7 +28,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
@@ -43,15 +41,14 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.search.model.SearchFilter
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.model.SearchItem
+import tv.trakt.trakt.core.search.views.SearchGridItem
 import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
-import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.BackdropImage
-import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
-import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -59,6 +56,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun SearchScreen(
     viewModel: SearchViewModel,
     searchInput: SearchInput,
+    onSearchLoading: (Boolean) -> Unit,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onProfileClick: () -> Unit,
@@ -83,6 +81,10 @@ internal fun SearchScreen(
 
     LaunchedEffect(searchInput) {
         viewModel.updateSearch(searchInput)
+    }
+
+    LaunchedEffect(state.searching) {
+        onSearchLoading(state.searching)
     }
 
     SearchScreenContent(
@@ -141,8 +143,9 @@ private fun SearchScreenContent(
         )
 
         ContentList(
-            searching = state.searching,
             listState = lazyListState,
+            searching = state.searching,
+            filter = state.input.filter,
             recentItems = (state.recentsResult?.items ?: emptyList()).toImmutableList(),
             popularItems = (state.popularResults?.items ?: emptyList()).toImmutableList(),
             resultItems = (state.searchResult?.items ?: emptyList()).toImmutableList(),
@@ -161,8 +164,9 @@ private fun SearchScreenContent(
 
 @Composable
 private fun ContentList(
-    searching: Boolean,
     listState: LazyGridState = rememberLazyGridState(),
+    searching: Boolean,
+    filter: SearchFilter,
     recentItems: ImmutableList<SearchItem>,
     popularItems: ImmutableList<SearchItem>,
     resultItems: ImmutableList<SearchItem>,
@@ -208,7 +212,7 @@ private fun ContentList(
                 count = recentItems.size,
                 key = { index -> "${recentItems[index].key}_recent" },
             ) { index ->
-                ContentListItem(
+                SearchGridItem(
                     item = recentItems[index],
                     onShowClick = onShowClick,
                     onMovieClick = onMovieClick,
@@ -236,7 +240,7 @@ private fun ContentList(
                 count = popularItems.size,
                 key = { index -> "${popularItems[index].key}_popular" },
             ) { index ->
-                ContentListItem(
+                SearchGridItem(
                     item = popularItems[index],
                     onShowClick = onShowClick,
                     onMovieClick = onMovieClick,
@@ -253,7 +257,7 @@ private fun ContentList(
         if (isSearching) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
-                    text = "Results", // TODO
+                    text = stringResource(filter.displayRes),
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.heading5,
                     modifier = Modifier.padding(top = topPadding),
@@ -264,7 +268,7 @@ private fun ContentList(
                     count = resultItems.size,
                     key = { index -> resultItems[index].key },
                 ) { index ->
-                    ContentListItem(
+                    SearchGridItem(
                         item = resultItems[index],
                         onShowClick = onShowClick,
                         onMovieClick = onMovieClick,
@@ -288,57 +292,6 @@ private fun ContentList(
                     )
                 }
             }
-        }
-    }
-}
-
-@Composable
-private fun ContentListItem(
-    item: SearchItem,
-    modifier: Modifier = Modifier,
-    onShowClick: (Show) -> Unit = {},
-    onMovieClick: (Movie) -> Unit = {},
-) {
-    when (item) {
-        is SearchItem.Show -> {
-            VerticalMediaCard(
-                title = item.show.title,
-                imageUrl = item.show.images?.getPosterUrl(),
-                chipContent = {
-                    Row(
-                        horizontalArrangement = spacedBy(5.dp),
-                    ) {
-                        InfoChip(
-                            text = item.show.released?.year?.toString()
-                                ?: stringResource(R.string.translated_value_type_show),
-                            iconPainter = painterResource(R.drawable.ic_shows_off),
-                            iconPadding = 2.dp,
-                        )
-                    }
-                },
-                onClick = { onShowClick(item.show) },
-                modifier = modifier,
-            )
-        }
-        is SearchItem.Movie -> {
-            VerticalMediaCard(
-                title = item.movie.title,
-                imageUrl = item.movie.images?.getPosterUrl(),
-                chipContent = {
-                    Row(
-                        horizontalArrangement = spacedBy(5.dp),
-                    ) {
-                        InfoChip(
-                            text = item.movie.released?.year?.toString()
-                                ?: stringResource(R.string.translated_value_type_movie),
-                            iconPainter = painterResource(R.drawable.ic_movies_off),
-                            iconPadding = 1.dp,
-                        )
-                    }
-                },
-                onClick = { onMovieClick(item.movie) },
-                modifier = modifier,
-            )
         }
     }
 }

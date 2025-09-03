@@ -8,6 +8,7 @@ import tv.trakt.trakt.common.helpers.serializers.ImmutableListSerializer
 import tv.trakt.trakt.common.networking.ImagesDto
 
 private val emptyStringList = emptyList<String>().toImmutableList()
+private val imageSizeRegex = Regex("/(thumb|medium|original|full)/")
 
 @Immutable
 @Serializable
@@ -34,7 +35,7 @@ data class Images(
                     append("https://")
                 }
                 append(it)
-            }.replace("/medium/", "/${size.value}/")
+            }.replace(imageSizeRegex, "/${size.value}/")
         }
     }
 
@@ -45,7 +46,7 @@ data class Images(
                     append("https://")
                 }
                 append(it)
-            }.replace("/thumb/", "/${size.value}/")
+            }.replace(imageSizeRegex, "/${size.value}/")
         }
     }
 
@@ -58,7 +59,7 @@ data class Images(
                         append("https://")
                     }
                     append(it)
-                }.replace("/thumb/", "/${size.value}/")
+                }.replace(imageSizeRegex, "/${size.value}/")
             }
     }
 
@@ -69,7 +70,7 @@ data class Images(
                     append("https://")
                 }
                 append(it)
-            }.replace("/thumb/", "/${size.value}/")
+            }.replace(imageSizeRegex, "/${size.value}/")
         }
     }
 
@@ -80,7 +81,7 @@ data class Images(
                     append("https://")
                 }
                 append(it)
-            }.replace("/medium/", "/${size.value}/")
+            }.replace(imageSizeRegex, "/${size.value}/")
         }
     }
 
@@ -91,7 +92,7 @@ data class Images(
                     append("https://")
                 }
                 append(it)
-            }.replace("/medium/", "/${size.value}/")
+            }.replace(imageSizeRegex, "/${size.value}/")
         }
     }
 

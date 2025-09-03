@@ -30,6 +30,8 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization.Companion.None
+import androidx.compose.ui.text.input.KeyboardType.Companion.Text
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
@@ -43,11 +45,14 @@ internal fun InputField(
     icon: Painter? = null,
     placeholder: String? = null,
     loading: Boolean = false,
+    enabled: Boolean = true,
+    endSlot: @Composable (() -> Unit)? = null,
 ) {
     var isFocused by remember { mutableStateOf(false) }
 
     BasicTextField(
         state = state,
+        enabled = enabled,
         textStyle = TraktTheme.typography.paragraph.copy(
             color = when {
                 isFocused -> TraktTheme.colors.textPrimary
@@ -60,6 +65,8 @@ internal fun InputField(
             else -> SolidColor(TraktTheme.colors.textSecondary)
         },
         keyboardOptions = KeyboardOptions(
+            keyboardType = Text,
+            capitalization = None,
             autoCorrectEnabled = false,
             imeAction = ImeAction.Done,
         ),
@@ -108,6 +115,11 @@ internal fun InputField(
                     )
                 } else {
                     innerField()
+                }
+
+                if (endSlot != null) {
+                    Spacer(Modifier.weight(1F))
+                    endSlot()
                 }
             }
         },
@@ -180,6 +192,13 @@ private fun PreviewFocused() {
         }
         InputField(
             placeholder = "Search...",
+            endSlot = {
+                Icon(
+                    painter = painterResource(R.drawable.ic_close),
+                    contentDescription = "Clear",
+                    tint = TraktTheme.colors.textSecondary,
+                )
+            },
             modifier = Modifier
                 .padding(16.dp)
                 .focusRequester(focus),

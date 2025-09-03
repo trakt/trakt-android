@@ -57,6 +57,7 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
         .collectAsStateWithLifecycle(initialValue = null)
 
     var searchInput by remember { mutableStateOf(SearchInput()) }
+    var searchLoading by remember { mutableStateOf(false) }
 
     Box(
         modifier = modifier.fillMaxSize(),
@@ -64,6 +65,7 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
         MainNavHost(
             navController = navController,
             searchInput = searchInput,
+            onSearchLoading = { searchLoading = it },
         )
 
         AnimatedVisibility(
@@ -86,8 +88,9 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
                     ),
             ) {
                 TraktNavigationBar(
-                    enabled = localBottomBarVisibility.value,
                     currentDestination = currentDestination.value?.destination,
+                    enabled = localBottomBarVisibility.value,
+                    searchLoading = searchLoading,
                     onSelected = {
                         navController.navigateToMainDestination(it.destination)
                     },
@@ -118,6 +121,7 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
 private fun MainNavHost(
     navController: NavHostController,
     searchInput: SearchInput,
+    onSearchLoading: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     NavHost(
@@ -144,6 +148,7 @@ private fun MainNavHost(
             listsScreen(onNavigateToList = {})
             searchScreen(
                 searchInput = searchInput,
+                onSearchLoading = onSearchLoading,
                 onNavigateToShow = { },
                 onNavigateToMovie = { },
                 onNavigateToProfile = { navigateToProfile() },

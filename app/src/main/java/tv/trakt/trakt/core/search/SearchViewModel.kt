@@ -202,9 +202,13 @@ internal class SearchViewModel(
 
         if (currentFilter != searchInput.filter) {
             clearJobs()
-            initialJob = viewModelScope.launch {
-                loadRecentlySearched()
-                loadPopularSearches()
+            if (searchInput.query.isNotBlank()) {
+                onSearchQuery(searchInput.query, 0)
+            } else {
+                initialJob = viewModelScope.launch {
+                    loadRecentlySearched()
+                    loadPopularSearches()
+                }
             }
         }
 
@@ -214,7 +218,10 @@ internal class SearchViewModel(
         }
     }
 
-    private fun onSearchQuery(query: String) {
+    private fun onSearchQuery(
+        query: String,
+        debounce: Long = 350,
+    ) {
         if (query.isBlank()) {
             searchingState.update { false }
             searchResultState.update { null }
@@ -224,9 +231,14 @@ internal class SearchViewModel(
         searchJob = viewModelScope.launch {
             try {
                 searchingState.update { true }
-                delay(500) // Throttle user input
+                delay(debounce) // Debounce user input
 
-                val results = getSearchResultsUseCase.getSearchResults(query)
+                val results = when (inputState.value.filter) {
+                    MEDIA -> getSearchResultsUseCase.getSearchResults(query)
+                    SHOWS -> getSearchResultsUseCase.getShowsSearchResults(query)
+                    MOVIES -> getSearchResultsUseCase.getMoviesSearchResults(query)
+                }
+
                 searchResultState.update {
                     SearchResult(
                         items = results
