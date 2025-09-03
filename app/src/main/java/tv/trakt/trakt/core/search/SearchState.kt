@@ -6,10 +6,12 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.model.SearchItem
 
 @Immutable
 internal data class SearchState(
+    val input: SearchInput = SearchInput(),
     val state: State = State.IDLE,
     val popularResults: SearchResult2? = null,
     val recentsResult: SearchResult2? = null,
@@ -40,8 +42,6 @@ internal data class SearchState(
 
     enum class State {
         IDLE,
-        RECENTS,
-        TRENDING,
         SEARCH_RESULTS,
         ERROR,
     }

@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.search
 
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -41,6 +42,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.model.SearchItem
 import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
@@ -54,6 +56,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun SearchScreen(
     viewModel: SearchViewModel,
+    searchInput: SearchInput,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onProfileClick: () -> Unit,
@@ -74,6 +77,10 @@ internal fun SearchScreen(
             viewModel.clearNavigation()
             onMovieClick(it.ids.trakt)
         }
+    }
+
+    LaunchedEffect(searchInput) {
+        viewModel.updateSearch(searchInput)
     }
 
     SearchScreenContent(
@@ -200,8 +207,8 @@ private fun ContentList(
                     modifier = Modifier
                         .padding(bottom = 6.dp)
                         .animateItem(
-                            fadeInSpec = null,
-                            fadeOutSpec = null,
+                            fadeInSpec = tween(200),
+                            fadeOutSpec = tween(200),
                         ),
                 )
             }
@@ -227,8 +234,8 @@ private fun ContentList(
                 modifier = Modifier
                     .padding(bottom = 6.dp)
                     .animateItem(
-                        fadeInSpec = null,
-                        fadeOutSpec = null,
+                        fadeInSpec = tween(200),
+                        fadeOutSpec = tween(200),
                     ),
             )
         }

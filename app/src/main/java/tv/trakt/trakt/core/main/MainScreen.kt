@@ -14,6 +14,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.NavigationBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,6 +40,7 @@ import tv.trakt.trakt.core.movies.navigation.MoviesDestination
 import tv.trakt.trakt.core.movies.navigation.moviesScreen
 import tv.trakt.trakt.core.profile.navigation.navigateToProfile
 import tv.trakt.trakt.core.profile.navigation.profileScreen
+import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.searchScreen
 import tv.trakt.trakt.core.shows.navigation.ShowsDestination
 import tv.trakt.trakt.core.shows.navigation.showsScreen
@@ -51,11 +56,14 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
         .currentBackStackEntryFlow
         .collectAsStateWithLifecycle(initialValue = null)
 
+    var searchInput by remember { mutableStateOf(SearchInput()) }
+
     Box(
         modifier = modifier.fillMaxSize(),
     ) {
         MainNavHost(
             navController = navController,
+            searchInput = searchInput,
         )
 
         AnimatedVisibility(
@@ -83,6 +91,9 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
                     onSelected = {
                         navController.navigateToMainDestination(it.destination)
                     },
+                    onSearchInput = {
+                        searchInput = it
+                    },
                 )
             }
         }
@@ -106,6 +117,7 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
 @Composable
 private fun MainNavHost(
     navController: NavHostController,
+    searchInput: SearchInput,
     modifier: Modifier = Modifier,
 ) {
     NavHost(
@@ -131,6 +143,7 @@ private fun MainNavHost(
             )
             listsScreen(onNavigateToList = {})
             searchScreen(
+                searchInput = searchInput,
                 onNavigateToShow = { },
                 onNavigateToMovie = { },
                 onNavigateToProfile = { navigateToProfile() },

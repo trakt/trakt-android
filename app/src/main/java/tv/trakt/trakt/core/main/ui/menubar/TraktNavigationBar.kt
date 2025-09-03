@@ -17,7 +17,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -34,6 +37,8 @@ import tv.trakt.trakt.core.home.navigation.HomeDestination
 import tv.trakt.trakt.core.lists.navigation.ListsDestination
 import tv.trakt.trakt.core.main.model.NavigationItem
 import tv.trakt.trakt.core.movies.navigation.MoviesDestination
+import tv.trakt.trakt.core.search.model.SearchFilter
+import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.SearchDestination
 import tv.trakt.trakt.core.search.views.SearchFiltersList
 import tv.trakt.trakt.core.shows.navigation.ShowsDestination
@@ -47,6 +52,7 @@ internal fun TraktNavigationBar(
     enabled: Boolean = true,
     onSelected: (NavigationItem) -> Unit = {},
     onReselected: () -> Unit = {},
+    onSearchInput: (SearchInput) -> Unit = {},
 ) {
     val isSearch = remember(currentDestination) {
         currentDestination?.hasRoute(SearchDestination::class) == true
@@ -59,6 +65,7 @@ internal fun TraktNavigationBar(
         enabled = enabled,
         onSelected = onSelected,
         onReselected = onReselected,
+        onSearchInput = onSearchInput,
     )
 }
 
@@ -70,8 +77,11 @@ private fun TraktNavigationBarContent(
     enabled: Boolean = true,
     onSelected: (NavigationItem) -> Unit = {},
     onReselected: () -> Unit = {},
+    onSearchInput: (SearchInput) -> Unit = {},
 ) {
     val searchFocusRequester = remember { FocusRequester() }
+    var searchFilter by remember { mutableStateOf(SearchFilter.MEDIA) }
+
     Column(
         modifier = modifier.imePadding(),
         verticalArrangement = spacedBy(0.dp),
@@ -79,7 +89,7 @@ private fun TraktNavigationBarContent(
     ) {
         AnimatedVisibility(
             visible = isSearch,
-            enter = fadeIn(tween(delayMillis = 150)) + expandVertically(),
+            enter = fadeIn(tween(delayMillis = 200)) + expandVertically(),
             exit = fadeOut(tween(200)) + shrinkVertically(),
         ) {
             Column(
@@ -89,11 +99,15 @@ private fun TraktNavigationBarContent(
                     .padding(top = 16.dp),
             ) {
                 SearchFiltersList(
+                    onFilterClick = {
+                        searchFilter = it
+                        onSearchInput(SearchInput(filter = it))
+                    },
                     modifier = Modifier
                         .fillMaxWidth(),
                 )
                 InputField(
-                    placeholder = stringResource(R.string.input_placeholder_search2),
+                    placeholder = stringResource(searchFilter.placeholderRes),
                     icon = painterResource(R.drawable.ic_search),
                     loading = false,
                     modifier = Modifier
@@ -102,6 +116,7 @@ private fun TraktNavigationBarContent(
                 )
             }
         }
+
         Row(
             modifier = Modifier
                 .padding(horizontal = 12.dp),

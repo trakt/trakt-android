@@ -29,6 +29,10 @@ import tv.trakt.trakt.core.search.SearchState.SearchResult
 import tv.trakt.trakt.core.search.SearchState.SearchResult2
 import tv.trakt.trakt.core.search.SearchState.State
 import tv.trakt.trakt.core.search.SearchState.UserState
+import tv.trakt.trakt.core.search.model.SearchFilter.MEDIA
+import tv.trakt.trakt.core.search.model.SearchFilter.MOVIES
+import tv.trakt.trakt.core.search.model.SearchFilter.SHOWS
+import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.model.SearchItem
 import tv.trakt.trakt.core.search.usecase.GetSearchResultsUseCase
 import tv.trakt.trakt.core.search.usecase.recents.AddRecentSearchUseCase
@@ -45,6 +49,7 @@ internal class SearchViewModel(
 ) : ViewModel() {
     private val initialState = SearchState()
 
+    private val inputState = MutableStateFlow(initialState.input)
     private val screenState = MutableStateFlow(initialState.state)
     private val popularResultState = MutableStateFlow(initialState.popularResults)
     private val recentsResultState = MutableStateFlow(initialState.recentsResult)
@@ -56,13 +61,14 @@ internal class SearchViewModel(
     private val userState = MutableStateFlow(initialState.user)
     private val errorState = MutableStateFlow(initialState.error)
 
+    private var initialJob: Job? = null
     private var searchJob: Job? = null
 
     init {
         observeUser()
         loadBackground()
 
-        viewModelScope.launch {
+        initialJob = viewModelScope.launch {
             loadRecentlySearched()
             loadPopularSearches()
         }
@@ -93,8 +99,14 @@ internal class SearchViewModel(
                 val recentShowsAsync = async { getRecentSearchUseCase.getRecentShows() }
                 val recentMoviesAsync = async { getRecentSearchUseCase.getRecentMovies() }
 
-                val recentShows = recentShowsAsync.await()
-                val recentMovies = recentMoviesAsync.await()
+                val recentShows = when (inputState.value.filter) {
+                    in arrayOf(MEDIA, SHOWS) -> recentShowsAsync.await()
+                    else -> emptyList()
+                }
+                val recentMovies = when (inputState.value.filter) {
+                    in arrayOf(MEDIA, MOVIES) -> recentMoviesAsync.await()
+                    else -> emptyList()
+                }
 
                 if (searchingState.value || screenState.value == State.SEARCH_RESULTS) {
                     return@coroutineScope
@@ -123,8 +135,6 @@ internal class SearchViewModel(
                             .toImmutableList(),
                     )
                 }
-
-                screenState.update { State.RECENTS }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.w(error, "Error loading recent searches!")
@@ -143,14 +153,24 @@ internal class SearchViewModel(
                 val showsAsync = async { getTrendingShowsUseCase.getShows() }
                 val moviesAsync = async { getTrendingMoviesUseCase.getMovies() }
 
-                val shows = showsAsync.await()
-                val movies = moviesAsync.await()
+                val shows = when (inputState.value.filter) {
+                    in arrayOf(MEDIA, SHOWS) -> showsAsync.await()
+                    else -> emptyList()
+                }
+                val movies = when (inputState.value.filter) {
+                    in arrayOf(MEDIA, MOVIES) -> moviesAsync.await()
+                    else -> emptyList()
+                }
 
                 popularResultState.update {
                     SearchResult2(
                         items = buildList {
-                            val showItems = shows.asyncMap { SearchItem.Show(it.watchers.toLong(), it.show) }
-                            val movieItems = movies.asyncMap { SearchItem.Movie(it.watchers.toLong(), it.movie) }
+                            val showItems = shows.asyncMap {
+                                SearchItem.Show(it.watchers.toLong(), it.show)
+                            }
+                            val movieItems = movies.asyncMap {
+                                SearchItem.Movie(it.watchers.toLong(), it.movie)
+                            }
 
                             // Interleave shows and movies, taking one from each list at a time
                             val maxSize = maxOf(showItems.size, movieItems.size)
@@ -163,16 +183,27 @@ internal class SearchViewModel(
                                 }
                             }
                         }
-                            .take(36)
+                            .take(if (shows.isEmpty() || movies.isEmpty()) 18 else 36)
                             .toImmutableList(),
                     )
                 }
-
-                screenState.update { State.TRENDING }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.w(error, "Error loading trending searches!")
                 }
+            }
+        }
+    }
+
+    fun updateSearch(searchInput: SearchInput) {
+        val currentFilter = inputState.value.filter
+        inputState.update { searchInput }
+
+        if (currentFilter != searchInput.filter) {
+            initialJob?.cancel()
+            initialJob = viewModelScope.launch {
+                loadRecentlySearched()
+                loadPopularSearches()
             }
         }
     }

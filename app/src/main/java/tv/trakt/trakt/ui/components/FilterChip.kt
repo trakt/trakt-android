@@ -42,6 +42,7 @@ internal fun FilterChip(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = spacedBy(0.dp),
         modifier = modifier
+            .onClick(onClick)
             .height(28.dp)
             .border(
                 width = 1.dp,
@@ -63,8 +64,7 @@ internal fun FilterChip(
             .padding(
                 start = 9.dp,
                 end = 13.dp,
-            )
-            .onClick(onClick),
+            ),
     ) {
         AnimatedVisibility(
             visible = selected && leadingIcon != null,

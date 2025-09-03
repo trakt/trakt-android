@@ -75,7 +75,7 @@ internal fun InputField(
                         width = 2.dp,
                         color = when {
                             isFocused -> TraktTheme.colors.accent
-                            else -> TraktTheme.colors.textSecondary
+                            else -> TraktTheme.colors.chipContainer
                         },
                         shape = RoundedCornerShape(16.dp),
                     )

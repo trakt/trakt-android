@@ -21,6 +21,8 @@
     <string name="header_device_auth_try_again">The activation was denied, expired, or something unforeseeable happened. Please try again.</string>
     <string name="header_profile_banner_greeting">Hello, %s</string>
     <string name="input_placeholder_search">Search shows &amp; movies…</string>
+    <string name="input_placeholder_search_movies">Search movies…</string>
+    <string name="input_placeholder_search_shows">Search shows…</string>
     <string name="link_text_view_profile">View profile</string>
     <string name="list_placeholder_comments">No comments yet.</string>
     <string name="list_placeholder_empty">There is nothing in this list.</string>
@@ -85,7 +87,6 @@
     <string name="warning_prompt_remove_single_watched">Are you sure you want to remove this play of %s from your Watched list?</string>
     <string name="page_title_watchlist">Watchlist</string>
 
-
     <!-- Migrate to generator -->
     <string name="button_text_shows">Shows</string>
     <string name="button_text_movies">Movies</string>
@@ -93,7 +94,6 @@
     <string name="button_text_personal">Personal</string>
     <string name="button_text_toggle_search_media">Media</string>
     <string name="button_label_toggle_search_people">People</string>
-    <string name="input_placeholder_search2">Search…</string> // TODO Generator
     <string name="button_text_browse_shows">Browse shows</string>
     <string name="button_text_browse_movies">Browse movies</string>
     <string name="button_text_meet_team">Meet the team</string>

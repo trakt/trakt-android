@@ -6,6 +6,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -20,8 +24,9 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun SearchFiltersList(
     modifier: Modifier = Modifier,
     selectedFilter: SearchFilter = SearchFilter.MEDIA,
-    onClick: (SearchFilter) -> Unit = {},
+    onFilterClick: (SearchFilter) -> Unit = {},
 ) {
+    var currentFilter by remember(selectedFilter) { mutableStateOf(selectedFilter) }
     Row(
         horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically,
@@ -29,7 +34,7 @@ internal fun SearchFiltersList(
     ) {
         SearchFilter.entries.forEach {
             FilterChip(
-                selected = selectedFilter == it,
+                selected = currentFilter == it,
                 text = stringResource(it.displayRes),
                 leadingIcon = {
                     Icon(
@@ -39,7 +44,12 @@ internal fun SearchFiltersList(
                         modifier = Modifier.size(FilterChipDefaults.IconSize),
                     )
                 },
-                onClick = { onClick(it) },
+                onClick = {
+                    if (currentFilter != it) {
+                        currentFilter = it
+                        onFilterClick(it)
+                    }
+                },
             )
         }
     }
@@ -75,12 +85,12 @@ private fun Preview3() {
     }
 }
 
-@Preview
-@Composable
-private fun Preview4() {
-    TraktTheme {
-        SearchFiltersList(
-            selectedFilter = SearchFilter.PEOPLE,
-        )
-    }
-}
+// @Preview
+// @Composable
+// private fun Preview4() {
+//    TraktTheme {
+//        SearchFiltersList(
+//            selectedFilter = SearchFilter.PEOPLE,
+//        )
+//    }
+// }
