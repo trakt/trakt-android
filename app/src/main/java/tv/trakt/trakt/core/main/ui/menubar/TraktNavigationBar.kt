@@ -50,17 +50,34 @@ internal fun TraktNavigationBar(
         currentDestination?.hasRoute(SearchDestination::class) == true
     }
 
-    val searchFocusRequester = remember { FocusRequester() }
+    TraktNavigationBarContent(
+        currentDestination = currentDestination,
+        modifier = modifier,
+        isSearch = isSearch,
+        enabled = enabled,
+        onSelected = onSelected,
+        onReselected = onReselected,
+    )
+}
 
+@Composable
+private fun TraktNavigationBarContent(
+    currentDestination: NavDestination?,
+    modifier: Modifier = Modifier,
+    isSearch: Boolean = false,
+    enabled: Boolean = true,
+    onSelected: (NavigationItem) -> Unit = {},
+    onReselected: () -> Unit = {},
+) {
+    val searchFocusRequester = remember { FocusRequester() }
     Column(
-        modifier = modifier
-            .imePadding(),
+        modifier = modifier.imePadding(),
         verticalArrangement = spacedBy(0.dp),
     ) {
         AnimatedVisibility(
             visible = isSearch,
             enter = fadeIn(tween(delayMillis = 150)) + expandVertically(),
-            exit = fadeOut() + shrinkVertically(),
+            exit = fadeOut(tween(200)) + shrinkVertically(),
         ) {
             InputField(
                 placeholder = stringResource(R.string.input_placeholder_search2),
@@ -68,7 +85,7 @@ internal fun TraktNavigationBar(
                 loading = false,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 41.dp)
+                    .padding(horizontal = 24.dp)
                     .padding(top = 24.dp)
                     .focusRequester(searchFocusRequester),
             )
@@ -125,10 +142,26 @@ internal fun TraktNavigationBar(
     backgroundColor = 0xFF212427,
 )
 @Composable
-private fun TraktNavigationBarPreview() {
+private fun Preview1() {
     TraktTheme {
-        TraktNavigationBar(
+        TraktNavigationBarContent(
             currentDestination = null,
+            isSearch = false,
+        )
+    }
+}
+
+@Preview(
+    device = "id:pixel_9",
+    showBackground = true,
+    backgroundColor = 0xFF212427,
+)
+@Composable
+private fun Preview2() {
+    TraktTheme {
+        TraktNavigationBarContent(
+            currentDestination = null,
+            isSearch = true,
         )
     }
 }

@@ -212,7 +212,7 @@ private fun ContentList(
                 text = "Popular Searches", // TODO
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading5,
-                modifier = Modifier.padding(top = if (recentItems.isEmpty()) topPadding else 0.dp),
+                modifier = Modifier.padding(top = if (recentItems.isEmpty()) topPadding else 10.dp),
             )
         }
 
