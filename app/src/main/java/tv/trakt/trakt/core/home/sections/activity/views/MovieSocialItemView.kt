@@ -94,7 +94,7 @@ internal fun MovieSocialItemView(
                     text = item.movie.title,
                     style = TraktTheme.typography.cardTitle,
                     color = TraktTheme.colors.textPrimary,
-                    maxLines = 2,
+                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
 

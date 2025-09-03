@@ -84,11 +84,15 @@
     <string name="warning_prompt_mark_as_watched_show">Are you sure you want to mark %s as watched? This will mark all episodes as watched.</string>
     <string name="warning_prompt_remove_single_watched">Are you sure you want to remove this play of %s from your Watched list?</string>
     <string name="page_title_watchlist">Watchlist</string>
-    <string name="button_text_social">Social</string>
-    <string name="button_text_personal">Personal</string>
+
 
     <!-- Migrate to generator -->
-
+    <string name="button_text_shows">Shows</string>
+    <string name="button_text_movies">Movies</string>
+    <string name="button_text_social">Social</string>
+    <string name="button_text_personal">Personal</string>
+    <string name="button_text_toggle_search_media">Media</string>
+    <string name="button_label_toggle_search_people">People</string>
     <string name="input_placeholder_search2">Search…</string> // TODO Generator
     <string name="button_text_browse_shows">Browse shows</string>
     <string name="button_text_browse_movies">Browse movies</string>

@@ -18,6 +18,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -34,6 +35,7 @@ import tv.trakt.trakt.core.lists.navigation.ListsDestination
 import tv.trakt.trakt.core.main.model.NavigationItem
 import tv.trakt.trakt.core.movies.navigation.MoviesDestination
 import tv.trakt.trakt.core.search.navigation.SearchDestination
+import tv.trakt.trakt.core.search.views.SearchFiltersList
 import tv.trakt.trakt.core.shows.navigation.ShowsDestination
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -73,22 +75,32 @@ private fun TraktNavigationBarContent(
     Column(
         modifier = modifier.imePadding(),
         verticalArrangement = spacedBy(0.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         AnimatedVisibility(
             visible = isSearch,
             enter = fadeIn(tween(delayMillis = 150)) + expandVertically(),
             exit = fadeOut(tween(200)) + shrinkVertically(),
         ) {
-            InputField(
-                placeholder = stringResource(R.string.input_placeholder_search2),
-                icon = painterResource(R.drawable.ic_search),
-                loading = false,
+            Column(
+                verticalArrangement = spacedBy(16.dp, Alignment.CenterVertically),
                 modifier = Modifier
-                    .fillMaxWidth()
                     .padding(horizontal = 24.dp)
-                    .padding(top = 24.dp)
-                    .focusRequester(searchFocusRequester),
-            )
+                    .padding(top = 16.dp),
+            ) {
+                SearchFiltersList(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                )
+                InputField(
+                    placeholder = stringResource(R.string.input_placeholder_search2),
+                    icon = painterResource(R.drawable.ic_search),
+                    loading = false,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .focusRequester(searchFocusRequester),
+                )
+            }
         }
         Row(
             modifier = Modifier

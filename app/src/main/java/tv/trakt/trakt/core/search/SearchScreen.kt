@@ -251,16 +251,18 @@ private fun ContentListItem(
                     Row(
                         horizontalArrangement = spacedBy(5.dp),
                     ) {
-                        InfoChip(
-                            text = "Show",
-                            iconPainter = painterResource(R.drawable.ic_shows_off),
-                            iconPadding = 1.dp,
-                        )
-//                        item.show.released?.year?.let {
-//                            InfoChip(
-//                                text = it.toString(),
-//                            )
-//                        }
+//                        InfoChip(
+//                            text = "",
+//                            iconPainter = painterResource(R.drawable.ic_shows_off),
+//                            iconPadding = 1.dp,
+//                        )
+                        item.show.released?.year?.let {
+                            InfoChip(
+                                text = it.toString(),
+                                iconPainter = painterResource(R.drawable.ic_shows_off),
+                                iconPadding = 2.dp,
+                            )
+                        }
                     }
                 },
                 onClick = { onShowClick(item.show) },
@@ -275,16 +277,18 @@ private fun ContentListItem(
                     Row(
                         horizontalArrangement = spacedBy(5.dp),
                     ) {
-                        InfoChip(
-                            text = "Movie",
-                            iconPainter = painterResource(R.drawable.ic_movies_off),
-                            iconPadding = 1.dp,
-                        )
-//                        item.movie.released?.year?.let {
-//                            InfoChip(
-//                                text = it.toString(),
-//                            )
-//                        }
+//                        InfoChip(
+//                            text = "",
+//                            iconPainter = painterResource(R.drawable.ic_movies_off),
+//                            iconPadding = 1.dp,
+//                        )
+                        item.movie.released?.year?.let {
+                            InfoChip(
+                                text = it.toString(),
+                                iconPainter = painterResource(R.drawable.ic_movies_off),
+                                iconPadding = 1.dp,
+                            )
+                        }
                     }
                 },
                 onClick = { onMovieClick(item.movie) },
