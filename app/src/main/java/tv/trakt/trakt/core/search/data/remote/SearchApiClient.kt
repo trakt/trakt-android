@@ -46,4 +46,25 @@ internal class SearchApiClient(
 
         return response.body()
     }
+
+    override suspend fun getShowsMovies(
+        query: String,
+        limit: Int,
+        extended: String,
+    ): List<SearchItemDto> {
+        if (query.trim().isBlank()) {
+            return emptyList()
+        }
+
+        val response = api.getSearchQuery(
+            type = "movie",
+            query = query,
+            page = 1,
+            limit = limit,
+            extended = extended,
+            engine = "typesense",
+        )
+
+        return response.body()
+    }
 }

@@ -88,6 +88,7 @@
     <string name="page_title_watchlist">Watchlist</string>
 
     <!-- Migrate to generator -->
+    <string name="translated_value_type_show">Show</string>
     <string name="button_text_shows">Shows</string>
     <string name="button_text_movies">Movies</string>
     <string name="button_text_social">Social</string>

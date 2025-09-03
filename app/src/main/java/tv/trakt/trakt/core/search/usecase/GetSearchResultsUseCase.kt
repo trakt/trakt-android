@@ -1,42 +1,15 @@
 package tv.trakt.trakt.core.search.usecase
 
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
-import tv.trakt.trakt.common.helpers.extensions.asyncMap
-import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.networking.SearchItemDto
 import tv.trakt.trakt.core.search.data.remote.SearchRemoteDataSource
 
 internal class GetSearchResultsUseCase(
     private val remoteSource: SearchRemoteDataSource,
 ) {
-    suspend fun getSearchResults(query: String): Result {
+    suspend fun getSearchResults(query: String): List<SearchItemDto> {
         if (query.trim().isBlank()) {
-            return Result()
+            return emptyList()
         }
-        return coroutineScope {
-            val showsAsync = async { remoteSource.getShows(query, 30) }
-            val moviesAsync = async { remoteSource.getMovies(query, 30) }
-
-            val shows = showsAsync.await()
-            val movies = moviesAsync.await()
-
-            Result(
-                shows = shows
-                    .asyncMap { Show.fromDto(it.show!!) }
-                    .toImmutableList(),
-                movies = movies
-                    .asyncMap { Movie.fromDto(it.movie!!) }
-                    .toImmutableList(),
-            )
-        }
+        return remoteSource.getShowsMovies(query, 30)
     }
-
-    data class Result(
-        val shows: ImmutableList<Show> = listOf<Show>().toImmutableList(),
-        val movies: ImmutableList<Movie> = listOf<Movie>().toImmutableList(),
-    )
 }

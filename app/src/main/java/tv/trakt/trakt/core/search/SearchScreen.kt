@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -51,6 +52,7 @@ import tv.trakt.trakt.ui.components.BackdropImage
 import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
+import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -85,7 +87,6 @@ internal fun SearchScreen(
 
     SearchScreenContent(
         state = state,
-        onSearchQuery = viewModel::searchQuery,
         onShowClick = { viewModel.navigateToShow(it) },
         onMovieClick = { viewModel.navigateToMovie(it) },
         onProfileClick = onProfileClick,
@@ -97,7 +98,6 @@ internal fun SearchScreen(
 private fun SearchScreenContent(
     state: SearchState,
     modifier: Modifier = Modifier,
-    onSearchQuery: (String) -> Unit = {},
     onShowClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
     onProfileClick: () -> Unit = {},
@@ -141,9 +141,11 @@ private fun SearchScreenContent(
         )
 
         ContentList(
+            searching = state.searching,
+            listState = lazyListState,
             recentItems = (state.recentsResult?.items ?: emptyList()).toImmutableList(),
             popularItems = (state.popularResults?.items ?: emptyList()).toImmutableList(),
-            listState = lazyListState,
+            resultItems = (state.searchResult?.items ?: emptyList()).toImmutableList(),
             onShowClick = onShowClick,
             onMovieClick = onMovieClick,
         )
@@ -159,9 +161,11 @@ private fun SearchScreenContent(
 
 @Composable
 private fun ContentList(
+    searching: Boolean,
+    listState: LazyGridState = rememberLazyGridState(),
     recentItems: ImmutableList<SearchItem>,
     popularItems: ImmutableList<SearchItem>,
-    listState: LazyGridState = rememberLazyGridState(),
+    resultItems: ImmutableList<SearchItem>,
     onShowClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
 ) {
@@ -178,6 +182,10 @@ private fun ContentList(
             .plus(TraktTheme.spacing.mainPageBottomSpace),
     )
 
+    val isSearching = remember(searching, resultItems) {
+        searching || resultItems.isNotEmpty()
+    }
+
     LazyVerticalGrid(
         state = listState,
         columns = GridCells.Fixed(3),
@@ -186,7 +194,7 @@ private fun ContentList(
         contentPadding = contentPadding,
         overscrollEffect = null,
     ) {
-        if (recentItems.isNotEmpty()) {
+        if (!isSearching && recentItems.isNotEmpty()) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
                     text = "Recently Searched", // TODO
@@ -214,30 +222,72 @@ private fun ContentList(
             }
         }
 
-        item(span = { GridItemSpan(maxLineSpan) }) {
-            Text(
-                text = "Popular Searches", // TODO
-                color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.heading5,
-                modifier = Modifier.padding(top = if (recentItems.isEmpty()) topPadding else 10.dp),
-            )
+        if (!isSearching) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                Text(
+                    text = "Popular Searches", // TODO
+                    color = TraktTheme.colors.textPrimary,
+                    style = TraktTheme.typography.heading5,
+                    modifier = Modifier.padding(top = if (recentItems.isEmpty()) topPadding else 10.dp),
+                )
+            }
+
+            items(
+                count = popularItems.size,
+                key = { index -> "${popularItems[index].key}_popular" },
+            ) { index ->
+                ContentListItem(
+                    item = popularItems[index],
+                    onShowClick = onShowClick,
+                    onMovieClick = onMovieClick,
+                    modifier = Modifier
+                        .padding(bottom = 6.dp)
+                        .animateItem(
+                            fadeInSpec = tween(200),
+                            fadeOutSpec = tween(200),
+                        ),
+                )
+            }
         }
 
-        items(
-            count = popularItems.size,
-            key = { index -> "${popularItems[index].key}_popular" },
-        ) { index ->
-            ContentListItem(
-                item = popularItems[index],
-                onShowClick = onShowClick,
-                onMovieClick = onMovieClick,
-                modifier = Modifier
-                    .padding(bottom = 6.dp)
-                    .animateItem(
-                        fadeInSpec = tween(200),
-                        fadeOutSpec = tween(200),
-                    ),
-            )
+        if (isSearching) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                Text(
+                    text = "Results", // TODO
+                    color = TraktTheme.colors.textPrimary,
+                    style = TraktTheme.typography.heading5,
+                    modifier = Modifier.padding(top = topPadding),
+                )
+            }
+            if (resultItems.isNotEmpty()) {
+                items(
+                    count = resultItems.size,
+                    key = { index -> resultItems[index].key },
+                ) { index ->
+                    ContentListItem(
+                        item = resultItems[index],
+                        onShowClick = onShowClick,
+                        onMovieClick = onMovieClick,
+                        modifier = Modifier
+                            .padding(bottom = 6.dp)
+                            .animateItem(
+                                fadeInSpec = tween(200),
+                                fadeOutSpec = tween(200),
+                            ),
+                    )
+                }
+            } else {
+                items(count = 12) { index ->
+                    VerticalMediaSkeletonCard(
+                        modifier = Modifier
+                            .padding(bottom = 6.dp)
+                            .animateItem(
+                                fadeInSpec = tween(200),
+                                fadeOutSpec = tween(200),
+                            ),
+                    )
+                }
+            }
         }
     }
 }
@@ -258,18 +308,12 @@ private fun ContentListItem(
                     Row(
                         horizontalArrangement = spacedBy(5.dp),
                     ) {
-//                        InfoChip(
-//                            text = "",
-//                            iconPainter = painterResource(R.drawable.ic_shows_off),
-//                            iconPadding = 1.dp,
-//                        )
-                        item.show.released?.year?.let {
-                            InfoChip(
-                                text = it.toString(),
-                                iconPainter = painterResource(R.drawable.ic_shows_off),
-                                iconPadding = 2.dp,
-                            )
-                        }
+                        InfoChip(
+                            text = item.show.released?.year?.toString()
+                                ?: stringResource(R.string.translated_value_type_show),
+                            iconPainter = painterResource(R.drawable.ic_shows_off),
+                            iconPadding = 2.dp,
+                        )
                     }
                 },
                 onClick = { onShowClick(item.show) },
@@ -284,18 +328,12 @@ private fun ContentListItem(
                     Row(
                         horizontalArrangement = spacedBy(5.dp),
                     ) {
-//                        InfoChip(
-//                            text = "",
-//                            iconPainter = painterResource(R.drawable.ic_movies_off),
-//                            iconPadding = 1.dp,
-//                        )
-                        item.movie.released?.year?.let {
-                            InfoChip(
-                                text = it.toString(),
-                                iconPainter = painterResource(R.drawable.ic_movies_off),
-                                iconPadding = 1.dp,
-                            )
-                        }
+                        InfoChip(
+                            text = item.movie.released?.year?.toString()
+                                ?: stringResource(R.string.translated_value_type_movie),
+                            iconPainter = painterResource(R.drawable.ic_movies_off),
+                            iconPadding = 1.dp,
+                        )
                     }
                 },
                 onClick = { onMovieClick(item.movie) },

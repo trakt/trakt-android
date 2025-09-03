@@ -13,10 +13,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,7 +39,6 @@ import tv.trakt.trakt.core.home.navigation.HomeDestination
 import tv.trakt.trakt.core.lists.navigation.ListsDestination
 import tv.trakt.trakt.core.main.model.NavigationItem
 import tv.trakt.trakt.core.movies.navigation.MoviesDestination
-import tv.trakt.trakt.core.search.model.SearchFilter
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.SearchDestination
 import tv.trakt.trakt.core.search.views.SearchFiltersList
@@ -61,7 +62,7 @@ internal fun TraktNavigationBar(
     TraktNavigationBarContent(
         currentDestination = currentDestination,
         modifier = modifier,
-        isSearch = isSearch,
+        searching = isSearch,
         enabled = enabled,
         onSelected = onSelected,
         onReselected = onReselected,
@@ -73,49 +74,24 @@ internal fun TraktNavigationBar(
 private fun TraktNavigationBarContent(
     currentDestination: NavDestination?,
     modifier: Modifier = Modifier,
-    isSearch: Boolean = false,
+    searching: Boolean = false,
     enabled: Boolean = true,
     onSelected: (NavigationItem) -> Unit = {},
     onReselected: () -> Unit = {},
     onSearchInput: (SearchInput) -> Unit = {},
 ) {
     val searchFocusRequester = remember { FocusRequester() }
-    var searchFilter by remember { mutableStateOf(SearchFilter.MEDIA) }
 
     Column(
         modifier = modifier.imePadding(),
         verticalArrangement = spacedBy(0.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        AnimatedVisibility(
-            visible = isSearch,
-            enter = fadeIn(tween(delayMillis = 200)) + expandVertically(),
-            exit = fadeOut(tween(200)) + shrinkVertically(),
-        ) {
-            Column(
-                verticalArrangement = spacedBy(16.dp, Alignment.CenterVertically),
-                modifier = Modifier
-                    .padding(horizontal = 24.dp)
-                    .padding(top = 16.dp),
-            ) {
-                SearchFiltersList(
-                    onFilterClick = {
-                        searchFilter = it
-                        onSearchInput(SearchInput(filter = it))
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                )
-                InputField(
-                    placeholder = stringResource(searchFilter.placeholderRes),
-                    icon = painterResource(R.drawable.ic_search),
-                    loading = false,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .focusRequester(searchFocusRequester),
-                )
-            }
-        }
+        SearchContent(
+            visible = searching,
+            searchFocusRequester = searchFocusRequester,
+            onSearchInput = onSearchInput,
+        )
 
         Row(
             modifier = Modifier
@@ -134,7 +110,7 @@ private fun TraktNavigationBarContent(
 
                         if (currentDestination?.hasRoute(item.destination::class) == true) {
                             onReselected()
-                            if (isSearch) {
+                            if (searching) {
                                 runCatching {
                                     searchFocusRequester.requestFocus()
                                 }
@@ -163,6 +139,52 @@ private fun TraktNavigationBarContent(
     }
 }
 
+@Composable
+private fun SearchContent(
+    visible: Boolean,
+    searchFocusRequester: FocusRequester,
+    onSearchInput: (SearchInput) -> Unit,
+) {
+    var searchInput by remember { mutableStateOf(SearchInput()) }
+    val searchQuery = rememberTextFieldState("")
+
+    LaunchedEffect(searchQuery.text) {
+        searchInput = searchInput.copy(query = searchQuery.text.toString())
+        onSearchInput(searchInput)
+    }
+
+    AnimatedVisibility(
+        visible = visible,
+        enter = fadeIn(tween(delayMillis = 200)) + expandVertically(),
+        exit = fadeOut(tween(200)) + shrinkVertically(),
+    ) {
+        Column(
+            verticalArrangement = spacedBy(16.dp, Alignment.CenterVertically),
+            modifier = Modifier
+                .padding(horizontal = 24.dp)
+                .padding(top = 16.dp),
+        ) {
+            SearchFiltersList(
+                onFilterClick = {
+                    searchInput = searchInput.copy(filter = it)
+                    onSearchInput(searchInput)
+                },
+                modifier = Modifier
+                    .fillMaxWidth(),
+            )
+            InputField(
+                state = searchQuery,
+                placeholder = stringResource(searchInput.filter.placeholderRes),
+                icon = painterResource(R.drawable.ic_search),
+                loading = false,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .focusRequester(searchFocusRequester),
+            )
+        }
+    }
+}
+
 @Preview(
     device = "id:pixel_9",
     showBackground = true,
@@ -173,7 +195,7 @@ private fun Preview1() {
     TraktTheme {
         TraktNavigationBarContent(
             currentDestination = null,
-            isSearch = false,
+            searching = false,
         )
     }
 }
@@ -188,7 +210,7 @@ private fun Preview2() {
     TraktTheme {
         TraktNavigationBarContent(
             currentDestination = null,
-            isSearch = true,
+            searching = true,
         )
     }
 }

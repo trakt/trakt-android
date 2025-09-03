@@ -13,8 +13,8 @@ import tv.trakt.trakt.core.search.model.SearchItem
 internal data class SearchState(
     val input: SearchInput = SearchInput(),
     val state: State = State.IDLE,
-    val popularResults: SearchResult2? = null,
-    val recentsResult: SearchResult2? = null,
+    val popularResults: SearchResult? = null,
+    val recentsResult: SearchResult? = null,
     val searchResult: SearchResult? = null,
     val navigateShow: Show? = null,
     val navigateMovie: Movie? = null,
@@ -32,11 +32,6 @@ internal data class SearchState(
     }
 
     data class SearchResult(
-        val shows: ImmutableList<Show>? = null,
-        val movies: ImmutableList<Movie>? = null,
-    )
-
-    data class SearchResult2(
         val items: ImmutableList<SearchItem>? = null,
     )
 

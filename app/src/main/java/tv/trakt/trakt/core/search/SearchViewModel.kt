@@ -24,9 +24,9 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.movies.sections.trending.usecase.GetTrendingMoviesUseCase
 import tv.trakt.trakt.core.search.SearchState.SearchResult
-import tv.trakt.trakt.core.search.SearchState.SearchResult2
 import tv.trakt.trakt.core.search.SearchState.State
 import tv.trakt.trakt.core.search.SearchState.UserState
 import tv.trakt.trakt.core.search.model.SearchFilter.MEDIA
@@ -113,7 +113,7 @@ internal class SearchViewModel(
                 }
 
                 recentsResultState.update {
-                    SearchResult2(
+                    SearchResult(
                         items = buildList {
                             val showItems = recentShows.asyncMap {
                                 SearchItem.Show(
@@ -163,7 +163,7 @@ internal class SearchViewModel(
                 }
 
                 popularResultState.update {
-                    SearchResult2(
+                    SearchResult(
                         items = buildList {
                             val showItems = shows.asyncMap {
                                 SearchItem.Show(it.watchers.toLong(), it.show)
@@ -197,45 +197,60 @@ internal class SearchViewModel(
 
     fun updateSearch(searchInput: SearchInput) {
         val currentFilter = inputState.value.filter
+        val currentQuery = inputState.value.query
         inputState.update { searchInput }
 
         if (currentFilter != searchInput.filter) {
-            initialJob?.cancel()
+            clearJobs()
             initialJob = viewModelScope.launch {
                 loadRecentlySearched()
                 loadPopularSearches()
             }
         }
+
+        if (currentQuery != searchInput.query) {
+            clearJobs()
+            onSearchQuery(searchInput.query)
+        }
     }
 
-    fun searchQuery(query: String) {
-        clearSearchJob()
+    private fun onSearchQuery(query: String) {
         if (query.isBlank()) {
             searchingState.update { false }
+            searchResultState.update { null }
             return
         }
 
         searchJob = viewModelScope.launch {
             try {
                 searchingState.update { true }
-
                 delay(500) // Throttle user input
-                getSearchResultsUseCase.getSearchResults(query).run {
-                    searchResultState.update {
-                        SearchResult(
-                            shows = shows,
-                            movies = movies,
-                        )
-                    }
+
+                val results = getSearchResultsUseCase.getSearchResults(query)
+                searchResultState.update {
+                    SearchResult(
+                        items = results
+                            .map {
+                                when {
+                                    it.show != null -> SearchItem.Show(
+                                        rank = it.score,
+                                        show = Show.fromDto(it.show!!),
+                                    )
+                                    it.movie != null -> SearchItem.Movie(
+                                        rank = it.score,
+                                        movie = Movie.fromDto(it.movie!!),
+                                    )
+                                    else -> throw Error("Unexpected null show and movie")
+                                }
+                            }.toImmutableList(),
+                    )
                 }
 
                 searchingState.update { false }
-                screenState.update { State.SEARCH_RESULTS }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.value = error
                     searchingState.update { false }
-                    screenState.update { State.ERROR }
                     Timber.e(error, "Error!")
                 }
             }
@@ -271,9 +286,12 @@ internal class SearchViewModel(
         navigateMovie.update { null }
     }
 
-    private fun clearSearchJob() {
+    private fun clearJobs() {
         searchJob?.cancel()
         searchJob = null
+
+        initialJob?.cancel()
+        initialJob = null
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -292,8 +310,8 @@ internal class SearchViewModel(
         SearchState(
             state = state[0] as State,
             searchResult = state[1] as SearchResult?,
-            recentsResult = state[2] as SearchResult2?,
-            popularResults = state[3] as SearchResult2?,
+            recentsResult = state[2] as SearchResult?,
+            popularResults = state[3] as SearchResult?,
             navigateShow = state[4] as Show?,
             navigateMovie = state[5] as Movie?,
             backgroundUrl = state[6] as String?,
