@@ -253,7 +253,7 @@ internal fun MovieHeader(
                         horizontalArrangement = spacedBy(6.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        if (movieCollection.historyCount > 0) {
+                        if (movieCollection.historyCount > 1) {
                             InfoChip(
                                 text = stringResource(
                                     R.string.tag_text_watch_count,

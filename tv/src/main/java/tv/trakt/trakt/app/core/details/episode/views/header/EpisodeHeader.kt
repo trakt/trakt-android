@@ -271,7 +271,7 @@ internal fun EpisodeHeader(
                         horizontalArrangement = spacedBy(6.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        if (episodePlays > 0) {
+                        if (episodePlays > 1) {
                             InfoChip(
                                 text = stringResource(R.string.tag_text_watch_count, episodePlays).uppercase(),
                                 containerColor = TraktTheme.colors.accent,
