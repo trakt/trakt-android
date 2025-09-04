@@ -5,7 +5,6 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.openapitools.client.apis.WatchnowApi
-import tv.trakt.trakt.app.Config.API_BASE_URL
 import tv.trakt.trakt.app.core.streamings.AllStreamingsViewModel
 import tv.trakt.trakt.app.core.streamings.data.local.StreamingLocalDataSource
 import tv.trakt.trakt.app.core.streamings.data.local.StreamingStorage
@@ -13,6 +12,7 @@ import tv.trakt.trakt.app.core.streamings.data.remote.StreamingApiClient
 import tv.trakt.trakt.app.core.streamings.data.remote.StreamingRemoteDataSource
 import tv.trakt.trakt.app.core.streamings.usecase.GetAllStreamingsUseCase
 import tv.trakt.trakt.app.core.streamings.utilities.PriorityStreamingServiceProvider
+import tv.trakt.trakt.common.Config.API_BASE_URL
 
 internal val streamingsDataModule = module {
     single<StreamingRemoteDataSource> {

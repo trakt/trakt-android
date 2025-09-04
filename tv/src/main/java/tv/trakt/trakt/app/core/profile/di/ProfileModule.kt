@@ -9,7 +9,6 @@ import org.koin.dsl.module
 import org.openapitools.client.apis.CalendarsApi
 import org.openapitools.client.apis.HistoryApi
 import org.openapitools.client.apis.UsersApi
-import tv.trakt.trakt.app.Config.API_BASE_URL
 import tv.trakt.trakt.app.core.profile.ProfileViewModel
 import tv.trakt.trakt.app.core.profile.data.remote.ProfileApiClient
 import tv.trakt.trakt.app.core.profile.data.remote.ProfileRemoteDataSource
@@ -24,6 +23,7 @@ import tv.trakt.trakt.app.core.profile.sections.history.usecases.GetProfileHisto
 import tv.trakt.trakt.app.core.profile.sections.history.usecases.SyncProfileHistoryUseCase
 import tv.trakt.trakt.app.core.profile.sections.history.viewall.ProfileHistoryViewAllViewModel
 import tv.trakt.trakt.app.core.profile.usecases.LogoutProfileUseCase
+import tv.trakt.trakt.common.Config.API_BASE_URL
 
 internal val profileDataModule = module {
     single<ProfileRemoteDataSource> {

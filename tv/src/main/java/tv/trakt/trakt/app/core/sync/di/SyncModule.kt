@@ -8,7 +8,6 @@ import org.openapitools.client.apis.CollectionApi
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
 import org.openapitools.client.apis.WatchedApi
-import tv.trakt.trakt.app.Config.API_BASE_URL
 import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncLocalDataSource
 import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncStorage
 import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalDataSource
@@ -21,6 +20,7 @@ import tv.trakt.trakt.app.core.sync.data.remote.movies.MoviesSyncApiClient
 import tv.trakt.trakt.app.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
 import tv.trakt.trakt.app.core.sync.data.remote.shows.ShowsSyncApiClient
 import tv.trakt.trakt.app.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
+import tv.trakt.trakt.common.Config.API_BASE_URL
 
 internal val syncModule = module {
     single<ShowsSyncRemoteDataSource> {

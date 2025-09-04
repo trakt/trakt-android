@@ -1,7 +1,6 @@
 package tv.trakt.trakt.app.core.details.episode.usecases.streamings
 
 import android.icu.util.Currency
-import tv.trakt.trakt.app.Config
 import tv.trakt.trakt.app.common.model.StreamingService
 import tv.trakt.trakt.app.core.episodes.data.remote.EpisodesRemoteDataSource
 import tv.trakt.trakt.app.core.episodes.model.Episode
@@ -10,8 +9,8 @@ import tv.trakt.trakt.app.core.streamings.data.remote.StreamingRemoteDataSource
 import tv.trakt.trakt.app.core.streamings.model.StreamingSource
 import tv.trakt.trakt.app.core.streamings.model.fromDto
 import tv.trakt.trakt.app.core.streamings.utilities.PriorityStreamingServiceProvider
+import tv.trakt.trakt.common.Config.DEFAULT_COUNTRY_CODE
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
-import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 
@@ -34,7 +33,7 @@ internal class GetStreamingsUseCase(
             localStreamingSource.upsertStreamingSources(sources)
         }
 
-        val userCountry = user.streamings?.country ?: Config.DEFAULT_COUNTRY_CODE
+        val userCountry = user.streamings?.country ?: DEFAULT_COUNTRY_CODE
         val streamings = remoteEpisodesSource.getEpisodeStreamings(
             showId = showId,
             season = episode.season,

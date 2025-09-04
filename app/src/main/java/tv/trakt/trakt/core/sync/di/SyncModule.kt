@@ -6,7 +6,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
-import tv.trakt.trakt.app.Config.API_BASE_URL
+import tv.trakt.trakt.common.Config.API_BASE_URL
 import tv.trakt.trakt.core.sync.data.remote.movies.MoviesSyncApiClient
 import tv.trakt.trakt.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
 import tv.trakt.trakt.core.sync.data.remote.shows.ShowsSyncApiClient

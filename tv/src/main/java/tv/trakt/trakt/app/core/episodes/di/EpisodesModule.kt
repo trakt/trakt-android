@@ -4,11 +4,11 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.openapitools.client.apis.ShowsApi
 import org.openapitools.client.apis.UsersApi
-import tv.trakt.trakt.app.Config.API_BASE_URL
 import tv.trakt.trakt.app.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.app.core.episodes.data.local.EpisodeStorage
 import tv.trakt.trakt.app.core.episodes.data.remote.EpisodesApiClient
 import tv.trakt.trakt.app.core.episodes.data.remote.EpisodesRemoteDataSource
+import tv.trakt.trakt.common.Config.API_BASE_URL
 
 internal val episodesDataModule = module {
     single<EpisodesRemoteDataSource> {

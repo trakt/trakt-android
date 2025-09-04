@@ -8,7 +8,7 @@ import org.koin.dsl.module
 import org.openapitools.client.apis.CalendarsApi
 import org.openapitools.client.apis.HistoryApi
 import org.openapitools.client.apis.UsersApi
-import tv.trakt.trakt.app.Config.API_BASE_URL
+import tv.trakt.trakt.common.Config.API_BASE_URL
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
 import tv.trakt.trakt.core.profile.ProfileViewModel
 import tv.trakt.trakt.core.profile.data.remote.UserApiClient

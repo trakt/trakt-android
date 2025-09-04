@@ -5,7 +5,6 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.openapitools.client.apis.MoviesApi
 import org.openapitools.client.apis.RecommendationsApi
-import tv.trakt.trakt.app.Config.API_BASE_URL
 import tv.trakt.trakt.app.core.movies.MoviesViewModel
 import tv.trakt.trakt.app.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.app.core.movies.data.local.MovieStorage
@@ -19,6 +18,7 @@ import tv.trakt.trakt.app.core.movies.usecase.GetAnticipatedMoviesUseCase
 import tv.trakt.trakt.app.core.movies.usecase.GetPopularMoviesUseCase
 import tv.trakt.trakt.app.core.movies.usecase.GetRecommendedMoviesUseCase
 import tv.trakt.trakt.app.core.movies.usecase.GetTrendingMoviesUseCase
+import tv.trakt.trakt.common.Config.API_BASE_URL
 
 internal val moviesDataModule = module {
     single<MoviesRemoteDataSource> {

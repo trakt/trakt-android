@@ -3,7 +3,6 @@ package tv.trakt.trakt.app.core.streamings.usecase
 import android.icu.util.Currency
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
-import tv.trakt.trakt.app.Config.DEFAULT_COUNTRY_CODE
 import tv.trakt.trakt.app.common.model.StreamingService
 import tv.trakt.trakt.app.core.episodes.data.remote.EpisodesRemoteDataSource
 import tv.trakt.trakt.app.core.movies.data.remote.MoviesRemoteDataSource
@@ -19,6 +18,7 @@ import tv.trakt.trakt.app.core.streamings.model.StreamingType.PURCHASE
 import tv.trakt.trakt.app.core.streamings.model.StreamingType.RENT
 import tv.trakt.trakt.app.core.streamings.model.StreamingType.SUBSCRIPTION
 import tv.trakt.trakt.app.core.streamings.model.fromDto
+import tv.trakt.trakt.common.Config.DEFAULT_COUNTRY_CODE
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId

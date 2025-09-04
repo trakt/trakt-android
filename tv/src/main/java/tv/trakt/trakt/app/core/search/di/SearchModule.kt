@@ -10,7 +10,6 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.openapitools.client.apis.SearchApi
-import tv.trakt.trakt.app.Config.API_BASE_URL
 import tv.trakt.trakt.app.core.main.di.createStore
 import tv.trakt.trakt.app.core.search.SearchViewModel
 import tv.trakt.trakt.app.core.search.data.local.RecentSearchLocalDataSource
@@ -20,6 +19,7 @@ import tv.trakt.trakt.app.core.search.data.remote.SearchRemoteDataSource
 import tv.trakt.trakt.app.core.search.usecase.GetSearchResultsUseCase
 import tv.trakt.trakt.app.core.search.usecase.recents.AddRecentSearchUseCase
 import tv.trakt.trakt.app.core.search.usecase.recents.GetRecentSearchUseCase
+import tv.trakt.trakt.common.Config.API_BASE_URL
 
 private const val SEARCH_PREFERENCES = "search_preferences"
 
