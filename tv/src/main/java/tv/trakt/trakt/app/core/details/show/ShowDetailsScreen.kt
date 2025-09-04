@@ -58,7 +58,6 @@ import tv.trakt.trakt.app.common.model.Comment
 import tv.trakt.trakt.app.common.model.CustomList
 import tv.trakt.trakt.app.common.model.ExternalRating
 import tv.trakt.trakt.app.common.model.ExtraVideo
-import tv.trakt.trakt.app.common.model.Person
 import tv.trakt.trakt.app.common.ui.ConfirmationDialog
 import tv.trakt.trakt.app.core.details.comments.CommentDetailsDialog
 import tv.trakt.trakt.app.core.details.show.views.content.ShowCastCrewList
@@ -77,6 +76,7 @@ import tv.trakt.trakt.app.core.people.navigation.PersonDestination
 import tv.trakt.trakt.app.helpers.preview.PreviewData
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.Images.Size
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.resources.R

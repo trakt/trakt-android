@@ -3,6 +3,12 @@ package tv.trakt.trakt.core.search.data.remote
 import tv.trakt.trakt.common.networking.SearchItemDto
 
 internal interface SearchRemoteDataSource {
+    suspend fun getPeople(
+        query: String,
+        limit: Int,
+        extended: String = "full,cloud9",
+    ): List<SearchItemDto>
+
     suspend fun getShows(
         query: String,
         limit: Int,

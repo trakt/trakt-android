@@ -12,15 +12,18 @@ import kotlinx.serialization.decodeFromByteArray
 import kotlinx.serialization.encodeToByteArray
 import kotlinx.serialization.protobuf.ProtoBuf
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.search.data.local.model.RecentMovieEntity
+import tv.trakt.trakt.core.search.data.local.model.RecentPersonEntity
 import tv.trakt.trakt.core.search.data.local.model.RecentShowEntity
 import tv.trakt.trakt.core.search.data.local.model.create
 import java.time.Instant
 
 private val KEY_RECENT_SEARCH_SHOWS = byteArrayPreferencesKey("key_recent_search_shows")
 private val KEY_RECENT_SEARCH_MOVIES = byteArrayPreferencesKey("key_recent_search_movies")
+private val KEY_RECENT_SEARCH_PEOPLE = byteArrayPreferencesKey("key_recent_search_people")
 
 @OptIn(ExperimentalSerializationApi::class)
 internal class RecentSearchStorage(
@@ -31,6 +34,7 @@ internal class RecentSearchStorage(
 
     private val showsCache = mutableMapOf<TraktId, RecentShowEntity>()
     private val moviesCache = mutableMapOf<TraktId, RecentMovieEntity>()
+    private val personsCache = mutableMapOf<TraktId, RecentPersonEntity>()
 
     override suspend fun addShow(
         show: Show,
@@ -78,6 +82,29 @@ internal class RecentSearchStorage(
         }
     }
 
+    override suspend fun addPerson(
+        person: Person,
+        limit: Int,
+        addedAt: Instant,
+    ) {
+        ensureInitialized()
+        val entity = RecentPersonEntity.create(
+            person = person,
+            createdAt = addedAt,
+        )
+        mutex.withLock {
+            if (personsCache.size >= limit) {
+                personsCache.values.minByOrNull { it.createdAt }?.let {
+                    personsCache.remove(it.person.ids.trakt)
+                }
+            }
+            personsCache[person.ids.trakt] = entity
+            dataStore.edit {
+                it[KEY_RECENT_SEARCH_PEOPLE] = ProtoBuf.encodeToByteArray(personsCache)
+            }
+        }
+    }
+
     override suspend fun getShows(): List<RecentShowEntity> {
         ensureInitialized()
         return mutex.withLock {
@@ -92,10 +119,18 @@ internal class RecentSearchStorage(
         }
     }
 
+    override suspend fun getPeople(): List<RecentPersonEntity> {
+        ensureInitialized()
+        return mutex.withLock {
+            personsCache.values.sortedByDescending { it.createdAt }
+        }
+    }
+
     override suspend fun clear() {
         mutex.withLock {
             showsCache.clear()
             moviesCache.clear()
+            personsCache.clear()
             dataStore.edit { it.clear() }
         }
     }
@@ -110,6 +145,9 @@ internal class RecentSearchStorage(
                         }
                         get(KEY_RECENT_SEARCH_MOVIES)?.let {
                             moviesCache.putAll(ProtoBuf.decodeFromByteArray(it))
+                        }
+                        get(KEY_RECENT_SEARCH_PEOPLE)?.let {
+                            personsCache.putAll(ProtoBuf.decodeFromByteArray(it))
                         }
                     }
                 }

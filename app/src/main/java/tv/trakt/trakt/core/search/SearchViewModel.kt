@@ -23,6 +23,7 @@ import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.movies.sections.trending.usecase.GetTrendingMoviesUseCase
@@ -31,6 +32,7 @@ import tv.trakt.trakt.core.search.SearchState.State
 import tv.trakt.trakt.core.search.SearchState.UserState
 import tv.trakt.trakt.core.search.model.SearchFilter.MEDIA
 import tv.trakt.trakt.core.search.model.SearchFilter.MOVIES
+import tv.trakt.trakt.core.search.model.SearchFilter.PEOPLE
 import tv.trakt.trakt.core.search.model.SearchFilter.SHOWS
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.model.SearchItem
@@ -98,6 +100,7 @@ internal class SearchViewModel(
             try {
                 val recentShowsAsync = async { getRecentSearchUseCase.getRecentShows() }
                 val recentMoviesAsync = async { getRecentSearchUseCase.getRecentMovies() }
+                val recentPeopleAsync = async { getRecentSearchUseCase.getRecentPeople() }
 
                 val recentShows = when (inputState.value.filter) {
                     in arrayOf(MEDIA, SHOWS) -> recentShowsAsync.await()
@@ -107,9 +110,18 @@ internal class SearchViewModel(
                     in arrayOf(MEDIA, MOVIES) -> recentMoviesAsync.await()
                     else -> emptyList()
                 }
+                val recentPeople = when (inputState.value.filter) {
+                    in arrayOf(PEOPLE) -> recentPeopleAsync.await()
+                    else -> emptyList()
+                }
 
                 if (searchingState.value || screenState.value == State.SEARCH_RESULTS) {
                     return@coroutineScope
+                }
+
+                val limit = when {
+                    inputState.value.filter == PEOPLE -> 15
+                    else -> 3
                 }
 
                 recentsResultState.update {
@@ -127,11 +139,19 @@ internal class SearchViewModel(
                                     movie = it.movie,
                                 )
                             }
+                            val peopleItems = recentPeople.asyncMap {
+                                SearchItem.Person(
+                                    rank = it.createdAt.toInstant().toEpochMilli(),
+                                    person = it.person,
+                                )
+                            }
+
                             addAll(showItems)
                             addAll(movieItems)
+                            addAll(peopleItems)
                         }
                             .sortedByDescending { it.rank }
-                            .take(3)
+                            .take(limit)
                             .toImmutableList(),
                     )
                 }
@@ -237,6 +257,7 @@ internal class SearchViewModel(
                     MEDIA -> getSearchResultsUseCase.getSearchResults(query)
                     SHOWS -> getSearchResultsUseCase.getShowsSearchResults(query)
                     MOVIES -> getSearchResultsUseCase.getMoviesSearchResults(query)
+                    PEOPLE -> getSearchResultsUseCase.getPeopleSearchResults(query)
                 }
 
                 searchResultState.update {
@@ -251,6 +272,10 @@ internal class SearchViewModel(
                                     it.movie != null -> SearchItem.Movie(
                                         rank = it.score,
                                         movie = Movie.fromDto(it.movie!!),
+                                    )
+                                    it.person != null -> SearchItem.Person(
+                                        rank = it.score,
+                                        person = Person.fromDto(it.person!!),
                                     )
                                     else -> throw Error("Unexpected null show and movie")
                                 }
@@ -290,6 +315,18 @@ internal class SearchViewModel(
             // This functionality might need to be adapted based on app module architecture
             addRecentSearchUseCase.addRecentSearchMovie(movie)
             navigateMovie.update { movie }
+        }
+    }
+
+    fun navigateToPerson(person: Person) {
+        if (navigateShow.value != null || navigateMovie.value != null) {
+            return
+        }
+        viewModelScope.launch {
+            // Note: In app module, we don't have movieLocalSource
+            // This functionality might need to be adapted based on app module architecture
+            addRecentSearchUseCase.addRecentSearchPerson(person)
+//            navigateMovie.update { movie }
         }
     }
 

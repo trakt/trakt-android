@@ -14,12 +14,12 @@ import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.app.common.model.CastPerson
-import tv.trakt.trakt.app.common.model.Person
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.Images.Size.THUMB
+import tv.trakt.trakt.common.model.Person
 
 @Composable
 internal fun EpisodeCastCrewList(

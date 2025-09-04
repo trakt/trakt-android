@@ -4,7 +4,6 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.common.model.Comment
 import tv.trakt.trakt.app.common.model.CustomList
 import tv.trakt.trakt.app.common.model.CustomList.Type
-import tv.trakt.trakt.app.common.model.Person
 import tv.trakt.trakt.app.common.model.sorting.SortOrder
 import tv.trakt.trakt.app.common.model.sorting.SortType
 import tv.trakt.trakt.app.core.episodes.model.Episode
@@ -12,6 +11,7 @@ import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.ImdbId
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Rating
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.SlugId
@@ -133,6 +133,7 @@ internal object PreviewData {
             tmdb = TmdbId(67890),
             tvdb = TvdbId(112233),
         ),
+        knownForDepartment = "Acting",
         biography = "John Doe is a fictional character often used as a placeholder name in various contexts. " +
             "He represents an average person and is commonly used in legal cases, examples, and discussions.",
         images = Images(

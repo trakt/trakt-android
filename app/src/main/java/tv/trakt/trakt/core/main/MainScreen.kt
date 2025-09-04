@@ -90,6 +90,7 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
                 TraktNavigationBar(
                     currentDestination = currentDestination.value?.destination,
                     enabled = localBottomBarVisibility.value,
+                    searchInput = searchInput,
                     searchLoading = searchLoading,
                     onSelected = {
                         navController.navigateToMainDestination(it.destination)

@@ -23,6 +23,7 @@
     <string name="input_placeholder_search">Search shows &amp; movies…</string>
     <string name="input_placeholder_search_movies">Search movies…</string>
     <string name="input_placeholder_search_shows">Search shows…</string>
+    <string name="input_placeholder_search_people">Search people…</string>
     <string name="link_text_view_profile">View profile</string>
     <string name="list_placeholder_comments">No comments yet.</string>
     <string name="list_placeholder_empty">There is nothing in this list.</string>
@@ -94,7 +95,7 @@
     <string name="button_text_social">Social</string>
     <string name="button_text_personal">Personal</string>
     <string name="button_text_toggle_search_media">Media</string>
-    <string name="button_label_toggle_search_people">People</string>
+    <string name="button_text_toggle_search_people">People</string>
     <string name="button_text_browse_shows">Browse shows</string>
     <string name="button_text_browse_movies">Browse movies</string>
     <string name="button_text_meet_team">Meet the team</string>

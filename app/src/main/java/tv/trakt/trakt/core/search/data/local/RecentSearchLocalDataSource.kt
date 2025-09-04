@@ -1,8 +1,10 @@
 package tv.trakt.trakt.core.search.data.local
 
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.search.data.local.model.RecentMovieEntity
+import tv.trakt.trakt.core.search.data.local.model.RecentPersonEntity
 import tv.trakt.trakt.core.search.data.local.model.RecentShowEntity
 import java.time.Instant
 
@@ -36,6 +38,18 @@ internal interface RecentSearchLocalDataSource {
     )
 
     /**
+     * Adds a person to the recent searches.
+     *
+     * @param person The [tv.trakt.trakt.common.model.Person] to add.
+     * @param addedAt The [Instant] the person was added. Defaults to the current time.
+     */
+    suspend fun addPerson(
+        person: Person,
+        limit: Int = 10,
+        addedAt: Instant = Instant.now(),
+    )
+
+    /**
      * Retrieves a list of recently searched shows.
      *
      * @return A list of [RecentShowEntity] representing the recently searched shows.
@@ -48,6 +62,13 @@ internal interface RecentSearchLocalDataSource {
      * @return A list of [RecentMovieEntity] representing the recently searched movies.
      */
     suspend fun getMovies(): List<RecentMovieEntity>
+
+    /**
+     * Retrieves a list of recently searched people.
+     *
+     * @return A list of [RecentPersonEntity] representing the recently searched people.
+     */
+    suspend fun getPeople(): List<RecentPersonEntity>
 
     /**
      * Clears all recent searches.

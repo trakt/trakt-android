@@ -39,9 +39,11 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.search.model.SearchFilter
+import tv.trakt.trakt.core.search.model.SearchFilter.PEOPLE
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.model.SearchItem
 import tv.trakt.trakt.core.search.views.SearchGridItem
@@ -51,6 +53,8 @@ import tv.trakt.trakt.ui.components.BackdropImage
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
+
+private val fadeSpec = tween<Float>(200)
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -106,6 +110,7 @@ internal fun SearchScreen(
         contentGridState = contentGridState,
         onShowClick = { viewModel.navigateToShow(it) },
         onMovieClick = { viewModel.navigateToMovie(it) },
+        onPersonClick = { viewModel.navigateToPerson(it) },
         onProfileClick = onProfileClick,
     )
 }
@@ -119,9 +124,9 @@ private fun SearchScreenContent(
     modifier: Modifier = Modifier,
     onShowClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
+    onPersonClick: (Person) -> Unit = {},
     onProfileClick: () -> Unit = {},
 ) {
-
     val isScrolledToTop by remember {
         derivedStateOf {
             contentGridState.firstVisibleItemIndex == 0 &&
@@ -161,6 +166,7 @@ private fun SearchScreenContent(
             resultItems = (state.searchResult?.items ?: emptyList()).toImmutableList(),
             onShowClick = onShowClick,
             onMovieClick = onMovieClick,
+            onPersonClick = onPersonClick,
         )
 
         SearchScreenHeader(
@@ -182,6 +188,7 @@ private fun ContentList(
     resultItems: ImmutableList<SearchItem>,
     onShowClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
+    onPersonClick: (Person) -> Unit = {},
 ) {
     val topPadding = WindowInsets.statusBars.asPaddingValues()
         .calculateTopPadding()
@@ -208,13 +215,19 @@ private fun ContentList(
         contentPadding = contentPadding,
         overscrollEffect = null,
     ) {
+
         if (!isSearching && recentItems.isNotEmpty()) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
                     text = "Recently Searched", // TODO
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.heading5,
-                    modifier = Modifier.padding(top = topPadding),
+                    modifier = Modifier
+                        .padding(top = topPadding)
+                        .animateItem(
+                            fadeInSpec = fadeSpec,
+                            fadeOutSpec = fadeSpec,
+                        ),
                 )
             }
 
@@ -226,23 +239,29 @@ private fun ContentList(
                     item = recentItems[index],
                     onShowClick = onShowClick,
                     onMovieClick = onMovieClick,
+                    onPersonClick = onPersonClick,
                     modifier = Modifier
                         .padding(bottom = 6.dp)
                         .animateItem(
-                            fadeInSpec = tween(200),
-                            fadeOutSpec = tween(200),
+                            fadeInSpec = fadeSpec,
+                            fadeOutSpec = fadeSpec,
                         ),
                 )
             }
         }
 
-        if (!isSearching) {
+        if (!isSearching && filter != PEOPLE) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
                     text = "Popular Searches", // TODO
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.heading5,
-                    modifier = Modifier.padding(top = if (recentItems.isEmpty()) topPadding else 10.dp),
+                    modifier = Modifier
+                        .padding(top = if (recentItems.isEmpty()) topPadding else 10.dp)
+                        .animateItem(
+                            fadeInSpec = fadeSpec,
+                            fadeOutSpec = fadeSpec,
+                        ),
                 )
             }
 
@@ -254,11 +273,12 @@ private fun ContentList(
                     item = popularItems[index],
                     onShowClick = onShowClick,
                     onMovieClick = onMovieClick,
+                    onPersonClick = onPersonClick,
                     modifier = Modifier
                         .padding(bottom = 6.dp)
                         .animateItem(
-                            fadeInSpec = tween(200),
-                            fadeOutSpec = tween(200),
+                            fadeInSpec = fadeSpec,
+                            fadeOutSpec = fadeSpec,
                         ),
                 )
             }
@@ -270,7 +290,12 @@ private fun ContentList(
                     text = stringResource(filter.displayRes),
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.heading5,
-                    modifier = Modifier.padding(top = topPadding),
+                    modifier = Modifier
+                        .padding(top = topPadding)
+                        .animateItem(
+                            fadeInSpec = fadeSpec,
+                            fadeOutSpec = fadeSpec,
+                        ),
                 )
             }
             if (resultItems.isNotEmpty()) {
@@ -282,11 +307,12 @@ private fun ContentList(
                         item = resultItems[index],
                         onShowClick = onShowClick,
                         onMovieClick = onMovieClick,
+                        onPersonClick = onPersonClick,
                         modifier = Modifier
                             .padding(bottom = 6.dp)
                             .animateItem(
-                                fadeInSpec = tween(200),
-                                fadeOutSpec = tween(200),
+                                fadeInSpec = fadeSpec,
+                                fadeOutSpec = fadeSpec,
                             ),
                     )
                 }
@@ -296,8 +322,8 @@ private fun ContentList(
                         modifier = Modifier
                             .padding(bottom = 6.dp)
                             .animateItem(
-                                fadeInSpec = tween(200),
-                                fadeOutSpec = tween(200),
+                                fadeInSpec = fadeSpec,
+                                fadeOutSpec = fadeSpec,
                             ),
                     )
                 }

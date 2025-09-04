@@ -1,10 +1,10 @@
 package tv.trakt.trakt.app.core.people.usecases
 
-import tv.trakt.trakt.app.common.model.Person
-import tv.trakt.trakt.app.common.model.fromDto
 import tv.trakt.trakt.app.core.people.data.local.PeopleLocalDataSource
 import tv.trakt.trakt.app.core.people.data.remote.PeopleRemoteDataSource
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.fromDto
 
 internal class GetPersonUseCase(
     private val peopleLocalSource: PeopleLocalDataSource,

@@ -6,6 +6,26 @@ import tv.trakt.trakt.common.networking.SearchItemDto
 internal class SearchApiClient(
     private val api: SearchApi,
 ) : SearchRemoteDataSource {
+    override suspend fun getPeople(
+        query: String,
+        limit: Int,
+        extended: String,
+    ): List<SearchItemDto> {
+        if (query.trim().isBlank()) {
+            return emptyList()
+        }
+        val response = api.getSearchQuery(
+            type = "person",
+            query = query,
+            page = 1,
+            limit = limit,
+            extended = extended,
+            engine = "typesense",
+        )
+
+        return response.body()
+    }
+
     override suspend fun getShows(
         query: String,
         limit: Int,

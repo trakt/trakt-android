@@ -20,10 +20,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -53,8 +50,9 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun TraktNavigationBar(
     currentDestination: NavDestination?,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true,
+    searchInput: SearchInput,
     searchLoading: Boolean = false,
+    enabled: Boolean = true,
     onSelected: (NavigationItem) -> Unit = {},
     onReselected: () -> Unit = {},
     onSearchInput: (SearchInput) -> Unit = {},
@@ -66,6 +64,7 @@ internal fun TraktNavigationBar(
     TraktNavigationBarContent(
         currentDestination = currentDestination,
         modifier = modifier,
+        searchInput = searchInput,
         searchVisible = searchVisible,
         searchLoading = searchLoading,
         enabled = enabled,
@@ -79,6 +78,7 @@ internal fun TraktNavigationBar(
 private fun TraktNavigationBarContent(
     currentDestination: NavDestination?,
     modifier: Modifier = Modifier,
+    searchInput: SearchInput,
     searchVisible: Boolean = false,
     searchLoading: Boolean = false,
     enabled: Boolean = true,
@@ -94,6 +94,7 @@ private fun TraktNavigationBarContent(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         SearchContent(
+            searchInput = searchInput,
             visible = searchVisible,
             enabled = enabled,
             loading = searchLoading,
@@ -153,14 +154,14 @@ private fun SearchContent(
     enabled: Boolean,
     loading: Boolean,
     searchFocusRequester: FocusRequester,
+    searchInput: SearchInput,
     onSearchInput: (SearchInput) -> Unit,
 ) {
-    var searchInput by remember { mutableStateOf(SearchInput()) }
     val searchQuery = rememberTextFieldState("")
 
     fun clearSearch() {
-        searchInput = SearchInput()
         searchQuery.clearText()
+        onSearchInput(SearchInput())
     }
 
     LaunchedEffect(visible) {
@@ -171,8 +172,9 @@ private fun SearchContent(
     }
 
     LaunchedEffect(searchQuery.text) {
-        searchInput = searchInput.copy(query = searchQuery.text.toString())
-        onSearchInput(searchInput)
+        onSearchInput(
+            searchInput.copy(query = searchQuery.text.toString()),
+        )
     }
 
     AnimatedVisibility(
@@ -188,9 +190,10 @@ private fun SearchContent(
         ) {
             SearchFiltersList(
                 onFilterClick = {
-                    if (!visible) return@SearchFiltersList
-                    searchInput = searchInput.copy(filter = it)
-                    onSearchInput(searchInput)
+                    if (!visible) {
+                        return@SearchFiltersList
+                    }
+                    onSearchInput(searchInput.copy(filter = it))
                 },
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -232,6 +235,7 @@ private fun Preview1() {
         TraktNavigationBarContent(
             currentDestination = null,
             searchVisible = false,
+            searchInput = SearchInput(),
         )
     }
 }
@@ -247,6 +251,7 @@ private fun Preview2() {
         TraktNavigationBarContent(
             currentDestination = null,
             searchVisible = true,
+            searchInput = SearchInput(),
         )
     }
 }

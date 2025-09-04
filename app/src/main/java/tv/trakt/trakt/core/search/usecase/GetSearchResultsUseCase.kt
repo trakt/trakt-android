@@ -28,4 +28,11 @@ internal class GetSearchResultsUseCase(
         }
         return remoteSource.getMovies(query, DEFAULT_SEARCH_LIMIT)
     }
+
+    suspend fun getPeopleSearchResults(query: String): List<SearchItemDto> {
+        if (query.trim().isBlank()) {
+            return emptyList()
+        }
+        return remoteSource.getPeople(query, DEFAULT_SEARCH_LIMIT)
+    }
 }

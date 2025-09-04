@@ -20,15 +20,23 @@ internal sealed class SearchItem(
         val show: tv.trakt.trakt.common.model.Show,
     ) : SearchItem(rank)
 
+    @Immutable
+    internal data class Person(
+        override val rank: Long,
+        val person: tv.trakt.trakt.common.model.Person,
+    ) : SearchItem(rank)
+
     val key: String
         get() = when (this) {
             is Movie -> "movie_${movie.ids.trakt.value}"
             is Show -> "show_${show.ids.trakt.value}"
+            is Person -> "person_${person.ids.trakt.value}"
         }
 
     val images: Images?
         get() = when (this) {
             is Movie -> movie.images
             is Show -> show.images
+            is Person -> person.images
         }
 }

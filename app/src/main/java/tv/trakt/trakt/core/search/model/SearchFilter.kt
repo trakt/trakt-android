@@ -24,8 +24,9 @@ enum class SearchFilter(
         displayRes = R.string.button_text_movies,
         placeholderRes = R.string.input_placeholder_search_movies,
     ),
-//    PEOPLE(
-//        iconRes = R.drawable.ic_person_trakt,
-//        displayRes = R.string.button_label_toggle_search_people,
-//    ),
+    PEOPLE(
+        iconRes = R.drawable.ic_person_trakt,
+        displayRes = R.string.button_text_toggle_search_people,
+        placeholderRes = R.string.input_placeholder_search_people,
+    ),
 }
