@@ -118,26 +118,38 @@ internal fun HomeWatchlistContent(
                     )
                 }
                 DONE -> {
-                    if (state.items?.isEmpty() == true) {
-                        val imageUrl = remember {
-                            Firebase.remoteConfig.getString("mobile_empty_image_2").ifBlank { null }
+                    when {
+                        state.error != null -> {
+                            Text(
+                                text =
+                                    "${stringResource(R.string.error_text_unexpected_error_short)}\n\n${state.error}",
+                                color = TraktTheme.colors.textSecondary,
+                                style = TraktTheme.typography.meta,
+                                modifier = Modifier.padding(contentPadding),
+                            )
                         }
-                        HomeEmptyView(
-                            text = stringResource(R.string.text_empty_watchlist),
-                            icon = R.drawable.ic_empty_watchlist,
-                            buttonText = stringResource(R.string.button_text_browse_movies),
-                            backgroundImageUrl = imageUrl,
-                            backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
-                            onClick = onMoviesClick,
-                            height = 224.dp,
-                            modifier = Modifier
-                                .padding(contentPadding),
-                        )
-                    } else {
-                        ContentList(
-                            listItems = (state.items ?: emptyList()).toImmutableList(),
-                            contentPadding = contentPadding,
-                        )
+                        state.items?.isEmpty() == true -> {
+                            val imageUrl = remember {
+                                Firebase.remoteConfig.getString("mobile_empty_image_2").ifBlank { null }
+                            }
+                            HomeEmptyView(
+                                text = stringResource(R.string.text_empty_watchlist),
+                                icon = R.drawable.ic_empty_watchlist,
+                                buttonText = stringResource(R.string.button_text_browse_movies),
+                                backgroundImageUrl = imageUrl,
+                                backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
+                                onClick = onMoviesClick,
+                                height = 224.dp,
+                                modifier = Modifier
+                                    .padding(contentPadding),
+                            )
+                        }
+                        else -> {
+                            ContentList(
+                                listItems = (state.items ?: emptyList()).toImmutableList(),
+                                contentPadding = contentPadding,
+                            )
+                        }
                     }
                 }
             }

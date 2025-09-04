@@ -111,25 +111,37 @@ internal fun HomeUpNextContent(
                     )
                 }
                 DONE -> {
-                    if (state.items?.isEmpty() == true) {
-                        val imageUrl = remember {
-                            Firebase.remoteConfig.getString("mobile_empty_image_1").ifBlank { null }
+                    when {
+                        state.error != null -> {
+                            Text(
+                                text =
+                                    "${stringResource(R.string.error_text_unexpected_error_short)}\n\n${state.error}",
+                                color = TraktTheme.colors.textSecondary,
+                                style = TraktTheme.typography.meta,
+                                modifier = Modifier.padding(contentPadding),
+                            )
                         }
-                        HomeEmptyView(
-                            text = stringResource(R.string.text_empty_upnext),
-                            icon = R.drawable.ic_empty_upnext,
-                            buttonText = stringResource(R.string.button_text_browse_shows),
-                            backgroundImageUrl = imageUrl,
-                            backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
-                            modifier = Modifier
-                                .padding(contentPadding),
-                            onClick = onShowsClick,
-                        )
-                    } else {
-                        ContentList(
-                            listItems = (state.items ?: emptyList()).toImmutableList(),
-                            contentPadding = contentPadding,
-                        )
+                        state.items?.isEmpty() == true -> {
+                            val imageUrl = remember {
+                                Firebase.remoteConfig.getString("mobile_empty_image_1").ifBlank { null }
+                            }
+                            HomeEmptyView(
+                                text = stringResource(R.string.text_empty_upnext),
+                                icon = R.drawable.ic_empty_upnext,
+                                buttonText = stringResource(R.string.button_text_browse_shows),
+                                backgroundImageUrl = imageUrl,
+                                backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
+                                modifier = Modifier
+                                    .padding(contentPadding),
+                                onClick = onShowsClick,
+                            )
+                        }
+                        else -> {
+                            ContentList(
+                                listItems = (state.items ?: emptyList()).toImmutableList(),
+                                contentPadding = contentPadding,
+                            )
+                        }
                     }
                 }
             }

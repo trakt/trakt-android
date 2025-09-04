@@ -49,6 +49,7 @@ import tv.trakt.trakt.core.search.model.SearchItem
 import tv.trakt.trakt.core.search.views.SearchGridItem
 import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
+import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.BackdropImage
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
@@ -167,6 +168,7 @@ private fun SearchScreenContent(
             onShowClick = onShowClick,
             onMovieClick = onMovieClick,
             onPersonClick = onPersonClick,
+            error = state.error,
         )
 
         SearchScreenHeader(
@@ -189,6 +191,7 @@ private fun ContentList(
     onShowClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
     onPersonClick: (Person) -> Unit = {},
+    error: Exception? = null,
 ) {
     val topPadding = WindowInsets.statusBars.asPaddingValues()
         .calculateTopPadding()
@@ -264,22 +267,24 @@ private fun ContentList(
                 )
             }
 
-            items(
-                count = popularItems.size,
-                key = { index -> "${popularItems[index].key}_popular" },
-            ) { index ->
-                SearchGridItem(
-                    item = popularItems[index],
-                    onShowClick = onShowClick,
-                    onMovieClick = onMovieClick,
-                    onPersonClick = onPersonClick,
-                    modifier = Modifier
-                        .padding(bottom = 6.dp)
-                        .animateItem(
-                            fadeInSpec = fadeSpec,
-                            fadeOutSpec = fadeSpec,
-                        ),
-                )
+            if (error != null) {
+                items(
+                    count = popularItems.size,
+                    key = { index -> "${popularItems[index].key}_popular" },
+                ) { index ->
+                    SearchGridItem(
+                        item = popularItems[index],
+                        onShowClick = onShowClick,
+                        onMovieClick = onMovieClick,
+                        onPersonClick = onPersonClick,
+                        modifier = Modifier
+                            .padding(bottom = 6.dp)
+                            .animateItem(
+                                fadeInSpec = fadeSpec,
+                                fadeOutSpec = fadeSpec,
+                            ),
+                    )
+                }
             }
         }
 
@@ -297,35 +302,48 @@ private fun ContentList(
                         ),
                 )
             }
-            if (resultItems.isNotEmpty()) {
-                items(
-                    count = resultItems.size,
-                    key = { index -> resultItems[index].key },
-                ) { index ->
-                    SearchGridItem(
-                        item = resultItems[index],
-                        onShowClick = onShowClick,
-                        onMovieClick = onMovieClick,
-                        onPersonClick = onPersonClick,
-                        modifier = Modifier
-                            .padding(bottom = 6.dp)
-                            .animateItem(
-                                fadeInSpec = fadeSpec,
-                                fadeOutSpec = fadeSpec,
-                            ),
-                    )
+            when {
+                resultItems.isNotEmpty() -> {
+                    items(
+                        count = resultItems.size,
+                        key = { index -> resultItems[index].key },
+                    ) { index ->
+                        SearchGridItem(
+                            item = resultItems[index],
+                            onShowClick = onShowClick,
+                            onMovieClick = onMovieClick,
+                            onPersonClick = onPersonClick,
+                            modifier = Modifier
+                                .padding(bottom = 6.dp)
+                                .animateItem(
+                                    fadeInSpec = fadeSpec,
+                                    fadeOutSpec = fadeSpec,
+                                ),
+                        )
+                    }
                 }
-            } else {
-                items(count = 12) { index ->
-                    VerticalMediaSkeletonCard(
-                        modifier = Modifier
-                            .padding(bottom = 6.dp)
-                            .animateItem(
-                                fadeInSpec = fadeSpec,
-                                fadeOutSpec = fadeSpec,
-                            ),
-                    )
+                else -> {
+                    items(count = 12) { index ->
+                        VerticalMediaSkeletonCard(
+                            modifier = Modifier
+                                .padding(bottom = 6.dp)
+                                .animateItem(
+                                    fadeInSpec = fadeSpec,
+                                    fadeOutSpec = fadeSpec,
+                                ),
+                        )
+                    }
                 }
+            }
+        }
+
+        if (error != null && filter != PEOPLE) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                Text(
+                    text = "${stringResource(R.string.error_text_unexpected_error_short)}\n\n$error",
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.meta,
+                )
             }
         }
     }

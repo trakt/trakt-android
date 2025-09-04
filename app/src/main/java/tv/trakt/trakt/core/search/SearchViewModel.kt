@@ -71,8 +71,16 @@ internal class SearchViewModel(
         loadBackground()
 
         initialJob = viewModelScope.launch {
-            loadRecentlySearched()
-            loadPopularSearches()
+            try {
+                loadRecentlySearched()
+                loadPopularSearches()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    searchingState.update { false }
+                    Timber.w(error, "Error during initial load!")
+                }
+            }
         }
     }
 
@@ -97,68 +105,62 @@ internal class SearchViewModel(
 
     private suspend fun loadRecentlySearched() {
         return coroutineScope {
-            try {
-                val recentShowsAsync = async { getRecentSearchUseCase.getRecentShows() }
-                val recentMoviesAsync = async { getRecentSearchUseCase.getRecentMovies() }
-                val recentPeopleAsync = async { getRecentSearchUseCase.getRecentPeople() }
+            val recentShowsAsync = async { getRecentSearchUseCase.getRecentShows() }
+            val recentMoviesAsync = async { getRecentSearchUseCase.getRecentMovies() }
+            val recentPeopleAsync = async { getRecentSearchUseCase.getRecentPeople() }
 
-                val recentShows = when (inputState.value.filter) {
-                    in arrayOf(MEDIA, SHOWS) -> recentShowsAsync.await()
-                    else -> emptyList()
-                }
-                val recentMovies = when (inputState.value.filter) {
-                    in arrayOf(MEDIA, MOVIES) -> recentMoviesAsync.await()
-                    else -> emptyList()
-                }
-                val recentPeople = when (inputState.value.filter) {
-                    in arrayOf(PEOPLE) -> recentPeopleAsync.await()
-                    else -> emptyList()
-                }
+            val recentShows = when (inputState.value.filter) {
+                in arrayOf(MEDIA, SHOWS) -> recentShowsAsync.await()
+                else -> emptyList()
+            }
+            val recentMovies = when (inputState.value.filter) {
+                in arrayOf(MEDIA, MOVIES) -> recentMoviesAsync.await()
+                else -> emptyList()
+            }
+            val recentPeople = when (inputState.value.filter) {
+                in arrayOf(PEOPLE) -> recentPeopleAsync.await()
+                else -> emptyList()
+            }
 
-                if (searchingState.value || screenState.value == State.SEARCH_RESULTS) {
-                    return@coroutineScope
-                }
+            if (searchingState.value || screenState.value == State.SEARCH_RESULTS) {
+                return@coroutineScope
+            }
 
-                val limit = when {
-                    inputState.value.filter == PEOPLE -> 15
-                    else -> 3
-                }
+            val limit = when {
+                inputState.value.filter == PEOPLE -> 15
+                else -> 3
+            }
 
-                recentsResultState.update {
-                    SearchResult(
-                        items = buildList {
-                            val showItems = recentShows.asyncMap {
-                                SearchItem.Show(
-                                    rank = it.createdAt.toInstant().toEpochMilli(),
-                                    show = it.show,
-                                )
-                            }
-                            val movieItems = recentMovies.asyncMap {
-                                SearchItem.Movie(
-                                    rank = it.createdAt.toInstant().toEpochMilli(),
-                                    movie = it.movie,
-                                )
-                            }
-                            val peopleItems = recentPeople.asyncMap {
-                                SearchItem.Person(
-                                    rank = it.createdAt.toInstant().toEpochMilli(),
-                                    person = it.person,
-                                )
-                            }
-
-                            addAll(showItems)
-                            addAll(movieItems)
-                            addAll(peopleItems)
+            recentsResultState.update {
+                SearchResult(
+                    items = buildList {
+                        val showItems = recentShows.asyncMap {
+                            SearchItem.Show(
+                                rank = it.createdAt.toInstant().toEpochMilli(),
+                                show = it.show,
+                            )
                         }
-                            .sortedByDescending { it.rank }
-                            .take(limit)
-                            .toImmutableList(),
-                    )
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.w(error, "Error loading recent searches!")
-                }
+                        val movieItems = recentMovies.asyncMap {
+                            SearchItem.Movie(
+                                rank = it.createdAt.toInstant().toEpochMilli(),
+                                movie = it.movie,
+                            )
+                        }
+                        val peopleItems = recentPeople.asyncMap {
+                            SearchItem.Person(
+                                rank = it.createdAt.toInstant().toEpochMilli(),
+                                person = it.person,
+                            )
+                        }
+
+                        addAll(showItems)
+                        addAll(movieItems)
+                        addAll(peopleItems)
+                    }
+                        .sortedByDescending { it.rank }
+                        .take(limit)
+                        .toImmutableList(),
+                )
             }
         }
     }
@@ -169,48 +171,42 @@ internal class SearchViewModel(
                 return@coroutineScope
             }
 
-            try {
-                val showsAsync = async { getTrendingShowsUseCase.getShows() }
-                val moviesAsync = async { getTrendingMoviesUseCase.getMovies() }
+            val showsAsync = async { getTrendingShowsUseCase.getShows() }
+            val moviesAsync = async { getTrendingMoviesUseCase.getMovies() }
 
-                val shows = when (inputState.value.filter) {
-                    in arrayOf(MEDIA, SHOWS) -> showsAsync.await()
-                    else -> emptyList()
-                }
-                val movies = when (inputState.value.filter) {
-                    in arrayOf(MEDIA, MOVIES) -> moviesAsync.await()
-                    else -> emptyList()
-                }
+            val shows = when (inputState.value.filter) {
+                in arrayOf(MEDIA, SHOWS) -> showsAsync.await()
+                else -> emptyList()
+            }
+            val movies = when (inputState.value.filter) {
+                in arrayOf(MEDIA, MOVIES) -> moviesAsync.await()
+                else -> emptyList()
+            }
 
-                popularResultState.update {
-                    SearchResult(
-                        items = buildList {
-                            val showItems = shows.asyncMap {
-                                SearchItem.Show(it.watchers.toLong(), it.show)
+            popularResultState.update {
+                SearchResult(
+                    items = buildList {
+                        val showItems = shows.asyncMap {
+                            SearchItem.Show(it.watchers.toLong(), it.show)
+                        }
+                        val movieItems = movies.asyncMap {
+                            SearchItem.Movie(it.watchers.toLong(), it.movie)
+                        }
+
+                        // Interleave shows and movies, taking one from each list at a time
+                        val maxSize = maxOf(showItems.size, movieItems.size)
+                        for (i in 0 until maxSize) {
+                            if (i < showItems.size) {
+                                add(showItems[i])
                             }
-                            val movieItems = movies.asyncMap {
-                                SearchItem.Movie(it.watchers.toLong(), it.movie)
-                            }
-
-                            // Interleave shows and movies, taking one from each list at a time
-                            val maxSize = maxOf(showItems.size, movieItems.size)
-                            for (i in 0 until maxSize) {
-                                if (i < showItems.size) {
-                                    add(showItems[i])
-                                }
-                                if (i < movieItems.size) {
-                                    add(movieItems[i])
-                                }
+                            if (i < movieItems.size) {
+                                add(movieItems[i])
                             }
                         }
-                            .take(if (shows.isEmpty() || movies.isEmpty()) 18 else 36)
-                            .toImmutableList(),
-                    )
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.w(error, "Error loading trending searches!")
-                }
+                    }
+                        .take(if (shows.isEmpty() || movies.isEmpty()) 18 else 36)
+                        .toImmutableList(),
+                )
             }
         }
     }
@@ -226,8 +222,15 @@ internal class SearchViewModel(
                 onSearchQuery(searchInput.query, 0)
             } else {
                 initialJob = viewModelScope.launch {
-                    loadRecentlySearched()
-                    loadPopularSearches()
+                    try {
+                        loadRecentlySearched()
+                        loadPopularSearches()
+                    } catch (error: Exception) {
+                        error.rethrowCancellation {
+                            errorState.update { error }
+                            Timber.w(error, "Error during initial load!")
+                        }
+                    }
                 }
             }
         }
@@ -286,7 +289,7 @@ internal class SearchViewModel(
                 searchingState.update { false }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.value = error
+                    errorState.update { error }
                     searchingState.update { false }
                     Timber.e(error, "Error!")
                 }

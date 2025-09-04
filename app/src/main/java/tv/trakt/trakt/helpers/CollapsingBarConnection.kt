@@ -29,11 +29,12 @@ internal class CollapsingBarConnection(
         barOffset = 0F
     }
 
-    override fun onPreScroll(
+    override fun onPostScroll(
+        consumed: Offset,
         available: Offset,
         source: NestedScrollSource,
     ): Offset {
-        val delta = available.y
+        val delta = consumed.y
 
         val newBarOffset = barOffset + delta
         barOffset = newBarOffset.coerceIn(-barMaxHeight, 0F)
