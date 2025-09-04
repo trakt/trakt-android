@@ -25,6 +25,10 @@ internal class CollapsingBarConnection(
         scrolledUp = false
     }
 
+    fun resetOffset() {
+        barOffset = 0F
+    }
+
     override fun onPreScroll(
         available: Offset,
         source: NestedScrollSource,

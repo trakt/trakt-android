@@ -32,6 +32,10 @@ internal class ScreenHeaderState(
         connection.resetScrolled()
         scrolled = false
     }
+
+    fun resetOffset() {
+        connection.resetOffset()
+    }
 }
 
 @Composable

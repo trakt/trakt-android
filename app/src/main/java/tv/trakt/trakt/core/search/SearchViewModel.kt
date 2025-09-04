@@ -309,6 +309,7 @@ internal class SearchViewModel(
     @Suppress("UNCHECKED_CAST")
     val state: StateFlow<SearchState> = combine(
         screenState,
+        inputState,
         searchResultState,
         recentsResultState,
         popularResultState,
@@ -321,15 +322,16 @@ internal class SearchViewModel(
     ) { state ->
         SearchState(
             state = state[0] as State,
-            searchResult = state[1] as SearchResult?,
-            recentsResult = state[2] as SearchResult?,
-            popularResults = state[3] as SearchResult?,
-            navigateShow = state[4] as Show?,
-            navigateMovie = state[5] as Movie?,
-            backgroundUrl = state[6] as String?,
-            searching = state[7] as Boolean,
-            user = state[8] as UserState,
-            error = state[9] as Exception?,
+            input = state[1] as SearchInput,
+            searchResult = state[2] as SearchResult?,
+            recentsResult = state[3] as SearchResult?,
+            popularResults = state[4] as SearchResult?,
+            navigateShow = state[5] as Show?,
+            navigateMovie = state[6] as Movie?,
+            backgroundUrl = state[7] as String?,
+            searching = state[8] as Boolean,
+            user = state[9] as UserState,
+            error = state[10] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -52,6 +52,7 @@ import tv.trakt.trakt.ui.components.headerbar.HeaderBar
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun SearchScreen(
     viewModel: SearchViewModel,
@@ -62,6 +63,14 @@ internal fun SearchScreen(
     onProfileClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    val headerState = rememberHeaderState()
+    val contentGridState = rememberLazyGridState(
+        cacheWindow = LazyLayoutCacheWindow(
+            aheadFraction = 0.5F,
+            behindFraction = 0.5F,
+        ),
+    )
 
     val localBottomBarVisibility = LocalBottomBarVisibility.current
     LaunchedEffect(Unit) {
@@ -81,6 +90,10 @@ internal fun SearchScreen(
 
     LaunchedEffect(searchInput) {
         viewModel.updateSearch(searchInput)
+
+        contentGridState.scrollToItem(0)
+        headerState.resetScrolled()
+        headerState.resetOffset()
     }
 
     LaunchedEffect(state.searching) {
@@ -88,7 +101,9 @@ internal fun SearchScreen(
     }
 
     SearchScreenContent(
+        headerState = headerState,
         state = state,
+        contentGridState = contentGridState,
         onShowClick = { viewModel.navigateToShow(it) },
         onMovieClick = { viewModel.navigateToMovie(it) },
         onProfileClick = onProfileClick,
@@ -98,24 +113,19 @@ internal fun SearchScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun SearchScreenContent(
+    headerState: ScreenHeaderState,
     state: SearchState,
+    contentGridState: LazyGridState,
     modifier: Modifier = Modifier,
     onShowClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
     onProfileClick: () -> Unit = {},
 ) {
-    val headerState = rememberHeaderState()
-    val lazyListState = rememberLazyGridState(
-        cacheWindow = LazyLayoutCacheWindow(
-            aheadFraction = 0.5F,
-            behindFraction = 0.5F,
-        ),
-    )
 
     val isScrolledToTop by remember {
         derivedStateOf {
-            lazyListState.firstVisibleItemIndex == 0 &&
-                lazyListState.firstVisibleItemScrollOffset == 0
+            contentGridState.firstVisibleItemIndex == 0 &&
+                contentGridState.firstVisibleItemScrollOffset == 0
         }
     }
 
@@ -134,8 +144,8 @@ private fun SearchScreenContent(
         BackdropImage(
             imageUrl = state.backgroundUrl,
             modifier = Modifier.graphicsLayer {
-                if (lazyListState.firstVisibleItemIndex == 0) {
-                    translationY = (-0.75F * lazyListState.firstVisibleItemScrollOffset)
+                if (contentGridState.firstVisibleItemIndex == 0) {
+                    translationY = (-0.75F * contentGridState.firstVisibleItemScrollOffset)
                 } else {
                     alpha = 0F
                 }
@@ -143,7 +153,7 @@ private fun SearchScreenContent(
         )
 
         ContentList(
-            listState = lazyListState,
+            listState = contentGridState,
             searching = state.searching,
             filter = state.input.filter,
             recentItems = (state.recentsResult?.items ?: emptyList()).toImmutableList(),
@@ -164,7 +174,7 @@ private fun SearchScreenContent(
 
 @Composable
 private fun ContentList(
-    listState: LazyGridState = rememberLazyGridState(),
+    listState: LazyGridState,
     searching: Boolean,
     filter: SearchFilter,
     recentItems: ImmutableList<SearchItem>,
@@ -334,6 +344,8 @@ private fun Preview() {
     TraktTheme {
         SearchScreenContent(
             state = SearchState(),
+            headerState = rememberHeaderState(),
+            contentGridState = rememberLazyGridState(),
         )
     }
 }
