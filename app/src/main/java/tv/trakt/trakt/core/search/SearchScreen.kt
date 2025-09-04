@@ -215,7 +215,6 @@ private fun ContentList(
         contentPadding = contentPadding,
         overscrollEffect = null,
     ) {
-
         if (!isSearching && recentItems.isNotEmpty()) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
