@@ -159,15 +159,11 @@ private fun SearchContent(
 ) {
     val searchQuery = rememberTextFieldState("")
 
-    fun clearSearch() {
-        searchQuery.clearText()
-        onSearchInput(SearchInput())
-    }
-
     LaunchedEffect(visible) {
         if (!visible) {
             delay(300)
-            clearSearch()
+            searchQuery.clearText()
+            onSearchInput(SearchInput())
         }
     }
 
@@ -179,8 +175,8 @@ private fun SearchContent(
 
     AnimatedVisibility(
         visible = visible,
-        enter = fadeIn(tween(delayMillis = 200)) + expandVertically(),
-        exit = fadeOut(tween(200)) + shrinkVertically(),
+        enter = fadeIn(tween(durationMillis = 200, delayMillis = 200)) + expandVertically(),
+        exit = fadeOut(tween(durationMillis = 200)) + shrinkVertically(),
     ) {
         Column(
             verticalArrangement = spacedBy(16.dp, Alignment.CenterVertically),
@@ -211,7 +207,7 @@ private fun SearchContent(
                             contentDescription = null,
                             tint = TraktTheme.colors.textSecondary,
                             modifier = Modifier.onClick {
-                                clearSearch()
+                                searchQuery.clearText()
                             },
                         )
                     }
