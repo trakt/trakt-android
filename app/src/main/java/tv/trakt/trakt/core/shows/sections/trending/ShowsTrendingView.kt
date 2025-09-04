@@ -99,10 +99,19 @@ internal fun ShowsTrendingContent(
                     )
                 }
                 DONE -> {
-                    ContentList(
-                        listItems = (state.items ?: emptyList()).toImmutableList(),
-                        contentPadding = contentPadding,
-                    )
+                    if (state.error != null) {
+                        Text(
+                            text = "${stringResource(R.string.error_text_unexpected_error_short)}\n\n${state.error}",
+                            color = TraktTheme.colors.textSecondary,
+                            style = TraktTheme.typography.meta,
+                            modifier = Modifier.padding(contentPadding),
+                        )
+                    } else {
+                        ContentList(
+                            listItems = (state.items ?: emptyList()).toImmutableList(),
+                            contentPadding = contentPadding,
+                        )
+                    }
                 }
             }
         }

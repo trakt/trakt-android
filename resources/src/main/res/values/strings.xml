@@ -15,7 +15,7 @@
     <string name="button_text_watchlist">Watchlist</string>
     <string name="button_text_where_to_watch">Where to watch</string>
     <string name="button_text_yes">Yes</string>
-    <string name="error_text_unexpected_error_short">Uh oh… Something unexpected happened. If this keeps happening, please contact Trakt support.</string>
+    <string name="error_text_unexpected_error_short">Uh oh… this wasn\'t planned. If this keeps happening, please contact Trakt support.</string>
     <string name="header_device_auth_code_instruction">and enter the following code:</string>
     <string name="header_device_auth_qr_instruction">Scan the QR code, or sign in at:</string>
     <string name="header_device_auth_try_again">The activation was denied, expired, or something unforeseeable happened. Please try again.</string>

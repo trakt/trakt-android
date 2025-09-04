@@ -99,10 +99,19 @@ internal fun MoviesAnticipatedContent(
                     )
                 }
                 DONE -> {
-                    ContentList(
-                        items = state.items ?: emptyList<WatchersMovie>().toImmutableList(),
-                        contentPadding = contentPadding,
-                    )
+                    if (state.error != null) {
+                        Text(
+                            text = "${stringResource(R.string.error_text_unexpected_error_short)}\n\n${state.error}",
+                            color = TraktTheme.colors.textSecondary,
+                            style = TraktTheme.typography.meta,
+                            modifier = Modifier.padding(contentPadding),
+                        )
+                    } else {
+                        ContentList(
+                            items = (state.items ?: emptyList()).toImmutableList(),
+                            contentPadding = contentPadding,
+                        )
+                    }
                 }
             }
         }
