@@ -110,45 +110,12 @@ internal fun HomeActivityContent(
             }
         }
 
-        if (!state.items.isNullOrEmpty() || state.loading.isLoading) {
-            Row(
-                modifier = Modifier
-                    .padding(headerPadding)
-                    .padding(
-                        top = 12.dp,
-                        bottom = 14.dp,
-                    ),
-                horizontalArrangement = spacedBy(6.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                FilterChip(
-                    selected = state.filter == SOCIAL,
-                    text = stringResource(SOCIAL.displayRes),
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Rounded.Done,
-                            contentDescription = null,
-                            tint = TraktTheme.colors.textPrimary,
-                            modifier = Modifier.size(FilterChipDefaults.IconSize),
-                        )
-                    },
-                    onClick = { onFilterClick(SOCIAL) },
-                )
-
-                FilterChip(
-                    selected = state.filter == PERSONAL,
-                    text = stringResource(PERSONAL.displayRes),
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Rounded.Done,
-                            contentDescription = null,
-                            tint = TraktTheme.colors.textPrimary,
-                            modifier = Modifier.size(FilterChipDefaults.IconSize),
-                        )
-                    },
-                    onClick = { onFilterClick(PERSONAL) },
-                )
-            }
+        if (!state.items.isNullOrEmpty() || state.loading.isLoading || state.user != null) {
+            ContentFilters(
+                state = state,
+                headerPadding = headerPadding,
+                onFilterClick = onFilterClick
+            )
         } else {
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -193,6 +160,52 @@ internal fun HomeActivityContent(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun ContentFilters(
+    headerPadding: PaddingValues,
+    state: HomeActivityState,
+    onFilterClick: (HomeActivityFilter) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .padding(headerPadding)
+            .padding(
+                top = 12.dp,
+                bottom = 14.dp,
+            ),
+        horizontalArrangement = spacedBy(6.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        FilterChip(
+            selected = state.filter == SOCIAL,
+            text = stringResource(SOCIAL.displayRes),
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Rounded.Done,
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier.size(FilterChipDefaults.IconSize),
+                )
+            },
+            onClick = { onFilterClick(SOCIAL) },
+        )
+
+        FilterChip(
+            selected = state.filter == PERSONAL,
+            text = stringResource(PERSONAL.displayRes),
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Rounded.Done,
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier.size(FilterChipDefaults.IconSize),
+                )
+            },
+            onClick = { onFilterClick(PERSONAL) },
+        )
     }
 }
 
@@ -265,6 +278,8 @@ private fun ContentList(
         }
     }
 }
+
+// Previews
 
 @Preview(
     device = "id:pixel_5",
