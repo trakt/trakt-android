@@ -32,7 +32,7 @@ internal val DarkColors: TraktColors = TraktColors(
     primaryButtonContainerDisabled = Shade700,
     primaryButtonContent = Color.White,
     primaryButtonContentDisabled = Color.White,
-    // Snackbars
+    // Snackbar
     snackbarContainer = White,
     snackbarContent = Shade940,
 )

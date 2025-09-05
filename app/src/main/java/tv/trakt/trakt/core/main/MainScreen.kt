@@ -17,6 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -80,12 +83,24 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
                 contentColor = TraktTheme.colors.accent,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .dropShadow(
+                        shape = RoundedCornerShape(
+                            topStart = 24.dp,
+                            topEnd = 24.dp,
+                        ),
+                        shadow = Shadow(
+                            radius = 6.dp,
+                            color = Color.Black,
+                            spread = 2.dp,
+                            alpha = 0.25F,
+                        ),
+                    )
                     .clip(
                         RoundedCornerShape(
                             topStart = 24.dp,
                             topEnd = 24.dp,
                         ),
-                    ),
+                    )
             ) {
                 TraktMenuBar(
                     currentDestination = currentDestination.value?.destination,
