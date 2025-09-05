@@ -7,6 +7,7 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -251,7 +252,7 @@ private fun SearchContent(
 @Preview(
     device = "id:pixel_9",
     showBackground = true,
-    backgroundColor = 0xFF212427,
+    backgroundColor = 0xFFFFFF,
 )
 @Composable
 private fun Preview1() {
@@ -260,6 +261,8 @@ private fun Preview1() {
             destination = null,
             searchVisible = false,
             searchInput = SearchInput(),
+            modifier = Modifier
+                .background(TraktTheme.colors.navigationContainer)
         )
     }
 }
@@ -267,7 +270,7 @@ private fun Preview1() {
 @Preview(
     device = "id:pixel_9",
     showBackground = true,
-    backgroundColor = 0xFF212427,
+    backgroundColor = 0xFFFFFF,
 )
 @Composable
 private fun Preview2() {
@@ -276,6 +279,8 @@ private fun Preview2() {
             destination = null,
             searchVisible = true,
             searchInput = SearchInput(),
+            modifier = Modifier
+                .background(TraktTheme.colors.navigationContainer)
         )
     }
 }

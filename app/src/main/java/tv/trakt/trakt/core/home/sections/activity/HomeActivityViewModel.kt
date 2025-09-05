@@ -16,7 +16,6 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.PERSONAL
@@ -34,12 +33,12 @@ internal class HomeActivityViewModel(
 ) : ViewModel() {
     private val initialState = HomeActivityState()
 
+    private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialState.filter)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
-    private var user: User? = null
     private var loadDataJob: Job? = null
 
     init {
@@ -49,11 +48,11 @@ internal class HomeActivityViewModel(
 
     private fun observeUser() {
         viewModelScope.launch {
-            user = sessionManager.getProfile()
+            userState.update { sessionManager.getProfile() }
             sessionManager.observeProfile()
-                .collect {
-                    if (user != it) {
-                        user = it
+                .collect { user ->
+                    if (userState.value != user) {
+                        userState.update { user }
                         loadData()
                     }
                 }
@@ -132,12 +131,14 @@ internal class HomeActivityViewModel(
         itemsState,
         filterState,
         errorState,
-    ) { s1, s2, s3, s4 ->
+        userState,
+    ) { s0, s1, s2, s3, s4 ->
         HomeActivityState(
-            loading = s1,
-            items = s2,
-            filter = s3,
-            error = s4,
+            loading = s0,
+            items = s1,
+            filter = s2,
+            error = s3,
+            user = s4,
         )
     }.stateIn(
         scope = viewModelScope,

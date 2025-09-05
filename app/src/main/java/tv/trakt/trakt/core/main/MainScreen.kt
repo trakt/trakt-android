@@ -17,6 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,6 +28,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import tv.trakt.trakt.LocalBottomBarVisibility
+import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.core.home.navigation.HomeDestination
 import tv.trakt.trakt.core.home.navigation.homeScreen
 import tv.trakt.trakt.core.lists.navigation.listsScreen
@@ -40,11 +44,13 @@ import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.searchScreen
 import tv.trakt.trakt.core.shows.navigation.ShowsDestination
 import tv.trakt.trakt.core.shows.navigation.showsScreen
+import tv.trakt.trakt.ui.snackbar.MainSnackbarHost
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 internal fun MainScreen(modifier: Modifier = Modifier) {
     val localContext = LocalContext.current
+    val localSnackbar = LocalSnackbarState.current
     val localBottomBarVisibility = LocalBottomBarVisibility.current
 
     val navController = rememberNavController()
@@ -77,12 +83,24 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
                 contentColor = TraktTheme.colors.accent,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .dropShadow(
+                        shape = RoundedCornerShape(
+                            topStart = 24.dp,
+                            topEnd = 24.dp,
+                        ),
+                        shadow = Shadow(
+                            radius = 6.dp,
+                            color = Color.Black,
+                            spread = 2.dp,
+                            alpha = 0.25F,
+                        ),
+                    )
                     .clip(
                         RoundedCornerShape(
                             topStart = 24.dp,
                             topEnd = 24.dp,
                         ),
-                    ),
+                    )
             ) {
                 TraktMenuBar(
                     currentDestination = currentDestination.value?.destination,
@@ -97,6 +115,10 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
                 )
             }
         }
+
+        MainSnackbarHost(
+            snackbarHostState = localSnackbar,
+        )
     }
 
     BackHandler {
