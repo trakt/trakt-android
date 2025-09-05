@@ -10,6 +10,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.mutableStateOf
@@ -30,6 +31,7 @@ import tv.trakt.trakt.core.main.MainScreen
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 internal val LocalBottomBarVisibility = compositionLocalOf { mutableStateOf(true) }
+internal val LocalSnackbarState = compositionLocalOf { SnackbarHostState() }
 
 internal class MainActivity : ComponentActivity() {
     private val authPreferences: DataStore<Preferences> by inject(named(AUTH_PREFERENCES))
@@ -49,10 +51,12 @@ internal class MainActivity : ComponentActivity() {
 
         setContent {
             val bottomBarVisibility = remember { mutableStateOf(true) }
+            val snackbarState = remember { SnackbarHostState() }
 
             TraktTheme {
                 CompositionLocalProvider(
                     LocalBottomBarVisibility provides bottomBarVisibility,
+                    LocalSnackbarState provides snackbarState,
                 ) {
                     MainScreen()
                 }

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarDuration.Short
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,6 +23,7 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -29,6 +31,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.LocalBottomBarVisibility
+import tv.trakt.trakt.LocalSnackbarState
+import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.helpers.preview.PreviewData
@@ -42,12 +46,29 @@ internal fun ProfileScreen(
     viewModel: ProfileViewModel,
     onNavigateBack: () -> Unit,
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    val localContext = LocalContext.current
+    val localSnack = LocalSnackbarState.current
     val localBottomBarVisibility = LocalBottomBarVisibility.current
+
     LaunchedEffect(Unit) {
         localBottomBarVisibility.value = false
     }
 
-    val state by viewModel.state.collectAsStateWithLifecycle()
+    LaunchedEffect(state.loading) {
+        if (state.loading == DONE && state.isSignedIn) {
+            localSnack.showSnackbar(
+                message = localContext.getString(R.string.text_info_signed_in),
+                duration = Short,
+            )
+        } else if (state.loading == DONE) {
+            localSnack.showSnackbar(
+                message = localContext.getString(R.string.text_info_signed_out),
+                duration = Short,
+            )
+        }
+    }
 
     ProfileScreenContent(
         state = state,

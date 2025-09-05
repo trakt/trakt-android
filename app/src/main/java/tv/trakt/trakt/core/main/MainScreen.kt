@@ -25,6 +25,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import tv.trakt.trakt.LocalBottomBarVisibility
+import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.core.home.navigation.HomeDestination
 import tv.trakt.trakt.core.home.navigation.homeScreen
 import tv.trakt.trakt.core.lists.navigation.listsScreen
@@ -40,11 +41,13 @@ import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.searchScreen
 import tv.trakt.trakt.core.shows.navigation.ShowsDestination
 import tv.trakt.trakt.core.shows.navigation.showsScreen
+import tv.trakt.trakt.ui.snackbar.MainSnackbarHost
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 internal fun MainScreen(modifier: Modifier = Modifier) {
     val localContext = LocalContext.current
+    val localSnackbar = LocalSnackbarState.current
     val localBottomBarVisibility = LocalBottomBarVisibility.current
 
     val navController = rememberNavController()
@@ -97,6 +100,10 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
                 )
             }
         }
+
+        MainSnackbarHost(
+            snackbarHostState = localSnackbar,
+        )
     }
 
     BackHandler {

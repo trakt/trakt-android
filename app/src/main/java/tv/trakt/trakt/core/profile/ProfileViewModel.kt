@@ -82,7 +82,7 @@ internal class ProfileViewModel(
                     Timber.e(error)
                 }
             } finally {
-                loadingState.update { LoadingState.IDLE }
+                loadingState.update { LoadingState.DONE }
             }
         }
     }
@@ -90,11 +90,15 @@ internal class ProfileViewModel(
     fun logoutUser() {
         viewModelScope.launch {
             try {
+                loadingState.update { LOADING }
+
                 logoutUseCase.logoutUser()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.e(error)
                 }
+            } finally {
+                loadingState.update { LoadingState.DONE }
             }
         }
     }

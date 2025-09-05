@@ -114,7 +114,7 @@ internal fun HomeActivityContent(
             ContentFilters(
                 state = state,
                 headerPadding = headerPadding,
-                onFilterClick = onFilterClick
+                onFilterClick = onFilterClick,
             )
         } else {
             Spacer(modifier = Modifier.height(16.dp))
@@ -167,7 +167,7 @@ internal fun HomeActivityContent(
 private fun ContentFilters(
     headerPadding: PaddingValues,
     state: HomeActivityState,
-    onFilterClick: (HomeActivityFilter) -> Unit
+    onFilterClick: (HomeActivityFilter) -> Unit,
 ) {
     Row(
         modifier = Modifier

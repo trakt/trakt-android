@@ -32,6 +32,9 @@ internal val DarkColors: TraktColors = TraktColors(
     primaryButtonContainerDisabled = Shade700,
     primaryButtonContent = Color.White,
     primaryButtonContentDisabled = Color.White,
+    // Snackbars
+    snackbarContainer = White,
+    snackbarContent = Shade940,
 )
 
 @Immutable
@@ -57,4 +60,7 @@ internal data class TraktColors(
     val primaryButtonContainerDisabled: Color = Color.Unspecified,
     val primaryButtonContent: Color = Color.Unspecified,
     val primaryButtonContentDisabled: Color = Color.Unspecified,
+    // Snackbar
+    val snackbarContainer: Color = Color.Unspecified,
+    val snackbarContent: Color = Color.Unspecified,
 )
