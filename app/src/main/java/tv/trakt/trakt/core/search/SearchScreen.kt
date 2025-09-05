@@ -267,7 +267,7 @@ private fun ContentList(
                 )
             }
 
-            if (error != null) {
+            if (error == null) {
                 items(
                     count = popularItems.size,
                     key = { index -> "${popularItems[index].key}_popular" },
@@ -337,12 +337,13 @@ private fun ContentList(
             }
         }
 
-        if (error != null && filter != PEOPLE) {
+        if (error != null) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
                     text = "${stringResource(R.string.error_text_unexpected_error_short)}\n\n$error",
                     color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.meta,
+                    maxLines = 10,
                 )
             }
         }

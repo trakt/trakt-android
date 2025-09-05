@@ -104,6 +104,7 @@ internal fun MoviesTrendingContent(
                             text = "${stringResource(R.string.error_text_unexpected_error_short)}\n\n${state.error}",
                             color = TraktTheme.colors.textSecondary,
                             style = TraktTheme.typography.meta,
+                            maxLines = 10,
                             modifier = Modifier.padding(contentPadding),
                         )
                     } else {
@@ -186,7 +187,7 @@ private fun ContentListItem(
         chipContent = {
             InfoChip(
                 text = item.watchers.thousandsFormat(),
-                iconPainter = painterResource(R.drawable.ic_person),
+                iconPainter = painterResource(R.drawable.ic_person_trakt),
             )
         },
         modifier = modifier,
