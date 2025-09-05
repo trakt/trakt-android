@@ -15,49 +15,45 @@ import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.SearchDestination
 
 @Immutable
-internal data class SearchState(
+internal data class MainSearchState(
     val searchInput: SearchInput = SearchInput(),
     val searchLoading: Boolean = false,
 )
 
 @Composable
-internal fun rememberSearchState(currentDestination: NavDestination?): SearchStateManager {
-    var searchState by remember { mutableStateOf(SearchState()) }
+internal fun rememberSearchState(currentDestination: NavDestination?): SearchStateHolder {
+    var searchState by remember { mutableStateOf(MainSearchState()) }
     val searchVisible = remember(currentDestination) {
         currentDestination?.hasRoute(SearchDestination::class) == true
     }
 
     LaunchedEffect(currentDestination) {
         if (isNonSearchDestination(currentDestination)) {
-            delay(300)
-            searchState = SearchState()
+            delay(200)
+            searchState = MainSearchState()
         }
     }
 
     return remember(searchState, searchVisible) {
-        SearchStateManager(
-            state = searchState,
+        SearchStateHolder(
+            searchState = searchState,
             searchVisible = searchVisible,
-            updateSearchInput = { newInput ->
-                searchState = searchState.copy(searchInput = newInput)
+            onSearchInput = {
+                searchState = searchState.copy(searchInput = it)
             },
-            updateSearchLoading = { loading ->
-                searchState = searchState.copy(searchLoading = loading)
-            },
-            resetSearchState = {
-                searchState = SearchState()
+            onSearchLoading = {
+                searchState = searchState.copy(searchLoading = it)
             },
         )
     }
 }
 
-internal data class SearchStateManager(
-    val state: SearchState,
+internal data class SearchStateHolder(
+    val searchState: MainSearchState,
     val searchVisible: Boolean,
-    val updateSearchInput: (SearchInput) -> Unit,
-    val updateSearchLoading: (Boolean) -> Unit,
-    val resetSearchState: () -> Unit,
+    val onSearchInput: (SearchInput) -> Unit,
+    val onSearchLoading: (Boolean) -> Unit,
 ) {
-    val searchInput: SearchInput get() = state.searchInput
-    val searchLoading: Boolean get() = state.searchLoading
+    val searchInput: SearchInput get() = searchState.searchInput
+    val searchLoading: Boolean get() = searchState.searchLoading
 }

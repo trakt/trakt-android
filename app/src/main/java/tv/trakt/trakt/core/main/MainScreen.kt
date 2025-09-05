@@ -62,7 +62,7 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
         MainNavHost(
             navController = navController,
             searchInput = searchState.searchInput,
-            onSearchLoading = searchState.updateSearchLoading,
+            onSearchLoading = searchState.onSearchLoading,
         )
 
         AnimatedVisibility(
@@ -93,7 +93,7 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
                     onSelected = {
                         navController.navigateToMainDestination(it.destination)
                     },
-                    onSearchInput = searchState.updateSearchInput,
+                    onSearchInput = searchState.onSearchInput,
                 )
             }
         }

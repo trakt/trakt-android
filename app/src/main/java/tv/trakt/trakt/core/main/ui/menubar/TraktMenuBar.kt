@@ -188,18 +188,16 @@ private fun SearchContent(
 ) {
     val searchQuery = rememberTextFieldState(searchInput.query)
 
-//    LaunchedEffect(visible) {
-//        if (!visible) {
-//            delay(300)
-//            searchQuery.clearText()
-//            onSearchInput(SearchInput())
-//        }
-//    }
-
     LaunchedEffect(searchQuery.text) {
         onSearchInput(
             searchInput.copy(query = searchQuery.text.toString()),
         )
+    }
+
+    LaunchedEffect(searchInput.query) {
+        if (searchInput.query.isEmpty()) {
+            searchQuery.clearText()
+        }
     }
 
     AnimatedVisibility(
