@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
-import kotlinx.coroutines.delay
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.core.home.navigation.HomeDestination
 import tv.trakt.trakt.core.lists.navigation.ListsDestination
@@ -46,10 +45,44 @@ import tv.trakt.trakt.core.shows.navigation.ShowsDestination
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
+private val navigationItems = listOf(
+    NavigationItem(
+        destination = HomeDestination,
+        label = R.string.page_title_home,
+        iconOn = R.drawable.ic_home_on,
+        iconOff = R.drawable.ic_home_off,
+    ),
+    NavigationItem(
+        destination = ShowsDestination,
+        label = R.string.page_title_shows,
+        iconOn = R.drawable.ic_shows_on,
+        iconOff = R.drawable.ic_shows_off,
+    ),
+    NavigationItem(
+        destination = MoviesDestination,
+        label = R.string.page_title_movies,
+        iconOn = R.drawable.ic_movies_on,
+        iconOff = R.drawable.ic_movies_off,
+    ),
+    NavigationItem(
+        destination = ListsDestination,
+        label = R.string.page_title_lists,
+        iconOn = R.drawable.ic_lists_on,
+        iconOff = R.drawable.ic_lists_off,
+    ),
+    NavigationItem(
+        destination = SearchDestination,
+        label = R.string.page_title_search,
+        iconOn = R.drawable.ic_search,
+        iconOff = R.drawable.ic_search,
+    ),
+)
+
 @Composable
-internal fun TraktNavigationBar(
+internal fun TraktMenuBar(
     currentDestination: NavDestination?,
     modifier: Modifier = Modifier,
+    searchVisible: Boolean = false,
     searchInput: SearchInput,
     searchLoading: Boolean = false,
     enabled: Boolean = true,
@@ -57,12 +90,8 @@ internal fun TraktNavigationBar(
     onReselected: () -> Unit = {},
     onSearchInput: (SearchInput) -> Unit = {},
 ) {
-    val searchVisible = remember(currentDestination) {
-        currentDestination?.hasRoute(SearchDestination::class) == true
-    }
-
-    TraktNavigationBarContent(
-        currentDestination = currentDestination,
+    TraktMenuBarContent(
+        destination = currentDestination,
         modifier = modifier,
         searchInput = searchInput,
         searchVisible = searchVisible,
@@ -75,8 +104,8 @@ internal fun TraktNavigationBar(
 }
 
 @Composable
-private fun TraktNavigationBarContent(
-    currentDestination: NavDestination?,
+private fun TraktMenuBarContent(
+    destination: NavDestination?,
     modifier: Modifier = Modifier,
     searchInput: SearchInput,
     searchVisible: Boolean = false,
@@ -107,7 +136,7 @@ private fun TraktNavigationBarContent(
                 .padding(horizontal = 12.dp),
         ) {
             navigationItems.forEachIndexed { index, item ->
-                val isSelected = currentDestination
+                val isSelected = destination
                     ?.hierarchy
                     ?.any { it.hasRoute(item.destination::class) } == true
 
@@ -117,7 +146,7 @@ private fun TraktNavigationBarContent(
                     onClick = {
                         if (!enabled) return@NavigationBarItem
 
-                        if (currentDestination?.hasRoute(item.destination::class) == true) {
+                        if (destination?.hasRoute(item.destination::class) == true) {
                             onReselected()
                             if (searchVisible) {
                                 runCatching {
@@ -157,15 +186,15 @@ private fun SearchContent(
     searchInput: SearchInput,
     onSearchInput: (SearchInput) -> Unit,
 ) {
-    val searchQuery = rememberTextFieldState("")
+    val searchQuery = rememberTextFieldState(searchInput.query)
 
-    LaunchedEffect(visible) {
-        if (!visible) {
-            delay(300)
-            searchQuery.clearText()
-            onSearchInput(SearchInput())
-        }
-    }
+//    LaunchedEffect(visible) {
+//        if (!visible) {
+//            delay(300)
+//            searchQuery.clearText()
+//            onSearchInput(SearchInput())
+//        }
+//    }
 
     LaunchedEffect(searchQuery.text) {
         onSearchInput(
@@ -185,6 +214,7 @@ private fun SearchContent(
                 .padding(top = 16.dp),
         ) {
             SearchFiltersList(
+                selectedFilter = searchInput.filter,
                 onFilterClick = {
                     if (!visible) {
                         return@SearchFiltersList
@@ -228,8 +258,8 @@ private fun SearchContent(
 @Composable
 private fun Preview1() {
     TraktTheme {
-        TraktNavigationBarContent(
-            currentDestination = null,
+        TraktMenuBarContent(
+            destination = null,
             searchVisible = false,
             searchInput = SearchInput(),
         )
@@ -244,43 +274,10 @@ private fun Preview1() {
 @Composable
 private fun Preview2() {
     TraktTheme {
-        TraktNavigationBarContent(
-            currentDestination = null,
+        TraktMenuBarContent(
+            destination = null,
             searchVisible = true,
             searchInput = SearchInput(),
         )
     }
 }
-
-private val navigationItems = listOf(
-    NavigationItem(
-        destination = HomeDestination,
-        label = R.string.page_title_home,
-        iconOn = R.drawable.ic_home_on,
-        iconOff = R.drawable.ic_home_off,
-    ),
-    NavigationItem(
-        destination = ShowsDestination,
-        label = R.string.page_title_shows,
-        iconOn = R.drawable.ic_shows_on,
-        iconOff = R.drawable.ic_shows_off,
-    ),
-    NavigationItem(
-        destination = MoviesDestination,
-        label = R.string.page_title_movies,
-        iconOn = R.drawable.ic_movies_on,
-        iconOff = R.drawable.ic_movies_off,
-    ),
-    NavigationItem(
-        destination = ListsDestination,
-        label = R.string.page_title_lists,
-        iconOn = R.drawable.ic_lists_on,
-        iconOff = R.drawable.ic_lists_off,
-    ),
-    NavigationItem(
-        destination = SearchDestination,
-        label = R.string.page_title_search,
-        iconOn = R.drawable.ic_search,
-        iconOff = R.drawable.ic_search,
-    ),
-)

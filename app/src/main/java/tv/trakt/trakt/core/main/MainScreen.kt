@@ -14,10 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.NavigationBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,7 +31,7 @@ import tv.trakt.trakt.core.lists.navigation.listsScreen
 import tv.trakt.trakt.core.main.navigation.isMainDestination
 import tv.trakt.trakt.core.main.navigation.isStartDestination
 import tv.trakt.trakt.core.main.navigation.navigateToMainDestination
-import tv.trakt.trakt.core.main.ui.menubar.TraktNavigationBar
+import tv.trakt.trakt.core.main.ui.menubar.TraktMenuBar
 import tv.trakt.trakt.core.movies.navigation.MoviesDestination
 import tv.trakt.trakt.core.movies.navigation.moviesScreen
 import tv.trakt.trakt.core.profile.navigation.navigateToProfile
@@ -56,16 +52,17 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
         .currentBackStackEntryFlow
         .collectAsStateWithLifecycle(initialValue = null)
 
-    var searchInput by remember { mutableStateOf(SearchInput()) }
-    var searchLoading by remember { mutableStateOf(false) }
+    val searchStateManager = rememberSearchState(
+        currentDestination = currentDestination.value?.destination,
+    )
 
     Box(
         modifier = modifier.fillMaxSize(),
     ) {
         MainNavHost(
             navController = navController,
-            searchInput = searchInput,
-            onSearchLoading = { searchLoading = it },
+            searchInput = searchStateManager.searchInput,
+            onSearchLoading = searchStateManager.updateSearchLoading,
         )
 
         AnimatedVisibility(
@@ -87,17 +84,16 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
                         ),
                     ),
             ) {
-                TraktNavigationBar(
+                TraktMenuBar(
                     currentDestination = currentDestination.value?.destination,
                     enabled = localBottomBarVisibility.value,
-                    searchInput = searchInput,
-                    searchLoading = searchLoading,
+                    searchVisible = searchStateManager.searchVisible,
+                    searchInput = searchStateManager.searchInput,
+                    searchLoading = searchStateManager.searchLoading,
                     onSelected = {
                         navController.navigateToMainDestination(it.destination)
                     },
-                    onSearchInput = {
-                        searchInput = it
-                    },
+                    onSearchInput = searchStateManager.updateSearchInput,
                 )
             }
         }
