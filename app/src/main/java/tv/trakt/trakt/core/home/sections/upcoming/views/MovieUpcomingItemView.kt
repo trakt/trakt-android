@@ -11,7 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import tv.trakt.trakt.app.helpers.extensions.relativeDateTimeString
+import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem

@@ -10,8 +10,8 @@ import tv.trakt.trakt.app.core.auth.model.AuthDeviceTokenCode
 import tv.trakt.trakt.app.core.auth.model.AuthDeviceTokenState
 import tv.trakt.trakt.app.core.auth.model.AuthDeviceTokenState.Failure
 import tv.trakt.trakt.app.core.auth.model.AuthDeviceTokenState.Success
-import tv.trakt.trakt.app.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.auth.model.TraktAccessToken
+import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import kotlin.time.Duration.Companion.seconds
 
 internal class AuthApiClient(

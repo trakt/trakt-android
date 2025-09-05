@@ -47,9 +47,9 @@ import tv.trakt.trakt.app.common.model.ExternalRating
 import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.core.details.ui.PosterImage
 import tv.trakt.trakt.app.core.episodes.model.Episode
-import tv.trakt.trakt.app.helpers.extensions.nowUtc
-import tv.trakt.trakt.app.helpers.longDateTimeFormat
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
+import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal

@@ -21,7 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import tv.trakt.trakt.app.helpers.extensions.relativePastDateString
+import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem

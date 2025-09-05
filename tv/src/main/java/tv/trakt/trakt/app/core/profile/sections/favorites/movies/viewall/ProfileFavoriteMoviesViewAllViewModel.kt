@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.app.core.profile.ProfileConfig.FAVORITES_ALL_PAGE_LIMIT
 import tv.trakt.trakt.app.core.profile.sections.favorites.movies.usecases.GetFavoriteMoviesUseCase
-import tv.trakt.trakt.app.helpers.extensions.nowUtc
+import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import java.time.ZonedDateTime
 

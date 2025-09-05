@@ -21,7 +21,7 @@ import tv.trakt.trakt.app.core.lists.usecases.GetListsPersonalUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsShowsWatchlistUseCase
 import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalDataSource
 import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalDataSource
-import tv.trakt.trakt.app.helpers.extensions.nowUtc
+import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show

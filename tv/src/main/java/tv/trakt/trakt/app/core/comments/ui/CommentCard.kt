@@ -45,9 +45,9 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.app.common.model.Comment
 import tv.trakt.trakt.app.common.ui.TvVipChip
-import tv.trakt.trakt.app.helpers.longDateTimeFormat
 import tv.trakt.trakt.app.helpers.preview.PreviewData
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.resources.R
 

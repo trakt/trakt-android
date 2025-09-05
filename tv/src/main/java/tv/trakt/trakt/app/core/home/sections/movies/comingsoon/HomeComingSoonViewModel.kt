@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.app.core.home.sections.movies.comingsoon.usecases.GetComingSoonMoviesUseCase
 import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalDataSource
-import tv.trakt.trakt.app.helpers.extensions.nowUtc
+import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import java.time.ZonedDateTime
 

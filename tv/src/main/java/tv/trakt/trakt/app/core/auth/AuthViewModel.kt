@@ -22,8 +22,8 @@ import tv.trakt.trakt.app.core.auth.model.AuthDeviceTokenState.Success
 import tv.trakt.trakt.app.core.auth.usecases.GetDeviceCodeUseCase
 import tv.trakt.trakt.app.core.auth.usecases.GetDeviceTokenUseCase
 import tv.trakt.trakt.app.core.auth.usecases.LoadUserProfileUseCase
-import tv.trakt.trakt.app.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import kotlin.time.Duration
 

@@ -11,11 +11,11 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import tv.trakt.trakt.app.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.sections.watchlist.model.WatchlistMovie

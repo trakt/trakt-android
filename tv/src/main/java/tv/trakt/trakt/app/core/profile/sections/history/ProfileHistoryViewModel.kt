@@ -13,7 +13,7 @@ import timber.log.Timber
 import tv.trakt.trakt.app.core.profile.ProfileConfig.PROFILE_SECTION_LIMIT
 import tv.trakt.trakt.app.core.profile.sections.history.usecases.GetProfileHistoryUseCase
 import tv.trakt.trakt.app.core.profile.sections.history.usecases.SyncProfileHistoryUseCase
-import tv.trakt.trakt.app.helpers.extensions.nowUtc
+import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import java.time.ZonedDateTime
 

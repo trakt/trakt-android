@@ -52,7 +52,7 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
         .currentBackStackEntryFlow
         .collectAsStateWithLifecycle(initialValue = null)
 
-    val searchStateManager = rememberSearchState(
+    val searchState = rememberSearchState(
         currentDestination = currentDestination.value?.destination,
     )
 
@@ -61,8 +61,8 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
     ) {
         MainNavHost(
             navController = navController,
-            searchInput = searchStateManager.searchInput,
-            onSearchLoading = searchStateManager.updateSearchLoading,
+            searchInput = searchState.searchInput,
+            onSearchLoading = searchState.updateSearchLoading,
         )
 
         AnimatedVisibility(
@@ -87,13 +87,13 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
                 TraktMenuBar(
                     currentDestination = currentDestination.value?.destination,
                     enabled = localBottomBarVisibility.value,
-                    searchVisible = searchStateManager.searchVisible,
-                    searchInput = searchStateManager.searchInput,
-                    searchLoading = searchStateManager.searchLoading,
+                    searchVisible = searchState.searchVisible,
+                    searchInput = searchState.searchInput,
+                    searchLoading = searchState.searchLoading,
                     onSelected = {
                         navController.navigateToMainDestination(it.destination)
                     },
-                    onSearchInput = searchStateManager.updateSearchInput,
+                    onSearchInput = searchState.updateSearchInput,
                 )
             }
         }

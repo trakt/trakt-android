@@ -5,7 +5,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.CircleShape
@@ -27,10 +26,10 @@ import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.app.core.home.sections.social.model.SocialActivityItem
-import tv.trakt.trakt.app.helpers.extensions.nowUtc
-import tv.trakt.trakt.app.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.app.helpers.preview.PreviewData
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.nowUtc
+import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.resources.R
@@ -95,6 +94,12 @@ internal fun EpisodeSocialItemView(
                     }
                 }
             },
+            cardContent = {
+                InfoChip(
+                    text = item.activityAt.toLocal().relativePastDateString(),
+                    iconPainter = painterResource(R.drawable.ic_calendar_check),
+                )
+            },
             footerContent = {
                 Column(
                     verticalArrangement = Arrangement.spacedBy((1).dp),
@@ -113,12 +118,6 @@ internal fun EpisodeSocialItemView(
                         color = TraktTheme.colors.textSecondary,
                         maxLines = 1,
                         overflow = TextOverflow.Companion.Ellipsis,
-                    )
-
-                    InfoChip(
-                        text = item.activityAt.toLocal().relativePastDateString(),
-                        iconPainter = painterResource(R.drawable.ic_calendar_check),
-                        modifier = Modifier.padding(top = 7.dp),
                     )
                 }
             },

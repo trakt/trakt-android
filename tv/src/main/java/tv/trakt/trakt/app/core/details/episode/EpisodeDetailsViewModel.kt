@@ -39,8 +39,8 @@ import tv.trakt.trakt.app.core.tutorials.model.TutorialKey.WATCH_NOW_MORE
 import tv.trakt.trakt.app.helpers.DynamicStringResource
 import tv.trakt.trakt.app.helpers.StaticStringResource
 import tv.trakt.trakt.app.helpers.StringResource
-import tv.trakt.trakt.app.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.SeasonEpisode

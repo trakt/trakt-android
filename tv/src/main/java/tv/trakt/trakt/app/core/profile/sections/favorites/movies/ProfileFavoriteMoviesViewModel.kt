@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.app.core.profile.ProfileConfig.PROFILE_FAVORITES_SECTION_LIMIT
 import tv.trakt.trakt.app.core.profile.sections.favorites.movies.usecases.GetFavoriteMoviesUseCase
-import tv.trakt.trakt.app.helpers.extensions.nowUtc
+import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import java.time.ZonedDateTime
 

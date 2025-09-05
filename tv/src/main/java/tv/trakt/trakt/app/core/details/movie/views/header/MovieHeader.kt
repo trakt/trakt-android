@@ -47,8 +47,8 @@ import tv.trakt.trakt.app.common.model.ExternalRating
 import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.core.details.movie.MovieDetailsState.CollectionState
 import tv.trakt.trakt.app.core.details.ui.PosterImage
-import tv.trakt.trakt.app.helpers.longDateFormat
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.longDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.common.model.Images.Size.MEDIUM
