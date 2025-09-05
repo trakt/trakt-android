@@ -67,6 +67,12 @@ internal val Typography: TraktTypography = TraktTypography(
         fontWeight = FontWeight.W700,
         fontSize = 15.sp,
     ),
+    buttonSecondary = TextStyle(
+        fontFamily = SplineFamily,
+        fontWeight = FontWeight.W600,
+        fontSize = 14.sp,
+        letterSpacing = 0.04.em,
+    ),
     buttonTertiary = TextStyle(
         fontFamily = SplineFamily,
         fontWeight = FontWeight.W600,
@@ -111,6 +117,7 @@ internal data class TraktTypography(
     val heading6: TextStyle = TextStyle.Default,
     val meta: TextStyle = TextStyle.Default,
     val buttonPrimary: TextStyle = TextStyle.Default,
+    val buttonSecondary: TextStyle = TextStyle.Default,
     val buttonTertiary: TextStyle = TextStyle.Default,
     val paragraph: TextStyle = TextStyle.Default,
     val paragraphSmall: TextStyle = TextStyle.Default,

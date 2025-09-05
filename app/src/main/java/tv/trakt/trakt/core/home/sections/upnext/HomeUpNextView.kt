@@ -94,7 +94,7 @@ internal fun HomeUpNextContent(
                 Text(
                     text = stringResource(R.string.button_text_view_all),
                     color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.buttonTertiary,
+                    style = TraktTheme.typography.buttonSecondary,
                 )
             }
         }
