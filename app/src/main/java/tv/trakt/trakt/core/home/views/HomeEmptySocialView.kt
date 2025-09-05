@@ -97,7 +97,7 @@ internal fun HomeEmptySocialView(modifier: Modifier = Modifier) {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = stringResource(R.string.text_empty_social),
+                    text = stringResource(R.string.text_cta_activity_list),
                     style = TraktTheme.typography.paragraphSmall
                         .copy(fontWeight = W400),
                     color = TraktTheme.colors.textPrimary,

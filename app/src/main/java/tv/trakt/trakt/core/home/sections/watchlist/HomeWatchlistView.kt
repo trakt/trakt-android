@@ -133,7 +133,7 @@ internal fun HomeWatchlistContent(
                                 Firebase.remoteConfig.getString("mobile_empty_image_2").ifBlank { null }
                             }
                             HomeEmptyView(
-                                text = stringResource(R.string.text_empty_watchlist),
+                                text = stringResource(R.string.text_cta_watchlist_released),
                                 icon = R.drawable.ic_empty_watchlist,
                                 buttonText = stringResource(R.string.button_text_browse_movies),
                                 backgroundImageUrl = imageUrl,

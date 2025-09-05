@@ -22,11 +22,12 @@
     <string name="header_profile_banner_greeting">Hello, %s</string>
     <string name="input_placeholder_search">Search shows &amp; movies…</string>
     <string name="input_placeholder_search_movies">Search movies…</string>
-    <string name="input_placeholder_search_shows">Search shows…</string>
     <string name="input_placeholder_search_people">Search people…</string>
+    <string name="input_placeholder_search_shows">Search shows…</string>
     <string name="link_text_view_profile">View profile</string>
     <string name="list_placeholder_comments">No comments yet.</string>
     <string name="list_placeholder_empty">There is nothing in this list.</string>
+    <string name="list_title_activity">Activity</string>
     <string name="list_title_actors">Actors</string>
     <string name="list_title_available_now">Available Now</string>
     <string name="list_title_coming_soon">Coming Soon</string>
@@ -45,7 +46,6 @@
     <string name="list_title_related_movies">Related Movies</string>
     <string name="list_title_related_shows">Related Shows</string>
     <string name="list_title_seasons">Seasons</string>
-    <string name="list_title_activity">Activity</string>
     <string name="list_title_social_activity">Social Activity</string>
     <string name="list_title_streaming_favorite">Favorite</string>
     <string name="list_title_streaming_free">Free</string>
@@ -65,6 +65,7 @@
     <string name="page_title_search">Search</string>
     <string name="page_title_shows">Shows</string>
     <string name="page_title_unexpected_error">Something went wrong</string>
+    <string name="page_title_watchlist">Watchlist</string>
     <string name="page_title_where_to_watch">Where to Watch</string>
     <string name="tag_text_number_of_episodes">%d episodes</string>
     <string name="tag_text_remaining_episodes">%d remaining</string>
@@ -86,21 +87,20 @@
     <string name="translated_value_type_movie">Movie</string>
     <string name="warning_prompt_mark_as_watched_show">Are you sure you want to mark %s as watched? This will mark all episodes as watched.</string>
     <string name="warning_prompt_remove_single_watched">Are you sure you want to remove this play of %s from your Watched list?</string>
-    <string name="page_title_watchlist">Watchlist</string>
 
     <!-- Migrate to generator -->
-    <string name="translated_value_type_show">Show</string>
-    <string name="button_text_shows">Shows</string>
+    <string name="button_text_browse_movies">Movies</string>
+    <string name="button_text_browse_shows">Shows</string>
+    <string name="button_text_meet_team">Meet the team</string>
     <string name="button_text_movies">Movies</string>
-    <string name="button_text_social">Social</string>
     <string name="button_text_personal">Personal</string>
+    <string name="button_text_shows">Shows</string>
+    <string name="button_text_social">Social</string>
     <string name="button_text_toggle_search_media">Media</string>
     <string name="button_text_toggle_search_people">People</string>
-    <string name="button_text_browse_shows">Browse shows</string>
-    <string name="button_text_browse_movies">Browse movies</string>
-    <string name="button_text_meet_team">Meet the team</string>
-    <string name="text_empty_upnext">Your shows. Your pace. Jump back in exactly where you left off. What are you currently watching?</string>
-    <string name="text_empty_watchlist">See it. Save it. Watch it later. Start curating your personal movie queue.</string>
-    <string name="text_empty_upcoming">Your timeline. See what\'s dropping next with a full list of upcoming episodes you care about.</string>
-    <string name="text_empty_social">Kick off your social activity by following Trakt members and exploring what they watch.</string>
+    <string name="text_cta_activity_list">Kick off your social activity by following Trakt members and exploring what they watch.</string>
+    <string name="text_cta_up_next">Your shows. Your pace. Jump back in exactly where you left off. What are you currently watching?</string>
+    <string name="text_cta_upcoming">Your timeline. See what\'s dropping next with a full list of upcoming episodes you care about.</string>
+    <string name="text_cta_watchlist_released">See it. Save it. Watch it later. Start curating your personal movie queue.</string>
+    <string name="translated_value_type_show">Show</string>
 </resources>

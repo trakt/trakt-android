@@ -120,7 +120,7 @@ internal fun HomeUpcomingContent(
                                 Firebase.remoteConfig.getString("mobile_empty_image_3").ifBlank { null }
                             }
                             HomeEmptyView(
-                                text = stringResource(R.string.text_empty_upcoming),
+                                text = stringResource(R.string.text_cta_upcoming),
                                 icon = R.drawable.ic_empty_upcoming,
                                 buttonText = stringResource(R.string.button_text_browse_shows),
                                 backgroundImageUrl = imageUrl,
