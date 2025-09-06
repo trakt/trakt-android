@@ -2,10 +2,10 @@
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_shortcut_search"
+        android:icon="@mipmap/ic_shortcut_search"
         android:shortcutId="shortcutSearch"
         android:shortcutLongLabel="@string/page_title_search"
-        android:shortcutShortLabel="@string/input_placeholder_search"
+        android:shortcutShortLabel="@string/page_title_search"
         >
         <intent
             android:action="android.intent.action.VIEW"
@@ -21,7 +21,7 @@
 
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_shortcut_shows"
+        android:icon="@mipmap/ic_shortcut_shows"
         android:shortcutId="shortcutShows"
         android:shortcutLongLabel="@string/page_title_shows"
         android:shortcutShortLabel="@string/page_title_shows"
@@ -40,7 +40,7 @@
 
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_shortcut_movies"
+        android:icon="@mipmap/ic_shortcut_movies"
         android:shortcutId="shortcutMovies"
         android:shortcutLongLabel="@string/page_title_movies"
         android:shortcutShortLabel="@string/page_title_movies"
@@ -59,7 +59,7 @@
 
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_shortcut_lists"
+        android:icon="@mipmap/ic_shortcut_lists"
         android:shortcutId="shortcutLists"
         android:shortcutLongLabel="@string/page_title_lists"
         android:shortcutShortLabel="@string/page_title_lists"
