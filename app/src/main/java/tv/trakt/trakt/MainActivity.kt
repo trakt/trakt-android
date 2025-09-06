@@ -58,7 +58,9 @@ internal class MainActivity : ComponentActivity() {
                     LocalBottomBarVisibility provides bottomBarVisibility,
                     LocalSnackbarState provides snackbarState,
                 ) {
-                    MainScreen()
+                    MainScreen(
+                        intent = intent,
+                    )
                 }
             }
         }

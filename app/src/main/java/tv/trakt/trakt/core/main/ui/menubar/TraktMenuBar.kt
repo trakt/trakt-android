@@ -37,6 +37,8 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.core.home.navigation.HomeDestination
 import tv.trakt.trakt.core.lists.navigation.ListsDestination
+import tv.trakt.trakt.core.main.MainSearchState
+import tv.trakt.trakt.core.main.MainSearchStateHolder
 import tv.trakt.trakt.core.main.model.NavigationItem
 import tv.trakt.trakt.core.movies.navigation.MoviesDestination
 import tv.trakt.trakt.core.search.model.SearchInput
@@ -83,10 +85,8 @@ private val navigationItems = listOf(
 internal fun TraktMenuBar(
     currentDestination: NavDestination?,
     modifier: Modifier = Modifier,
-    searchVisible: Boolean = false,
-    searchInput: SearchInput,
-    searchLoading: Boolean = false,
     enabled: Boolean = true,
+    searchState: MainSearchStateHolder,
     onSelected: (NavigationItem) -> Unit = {},
     onReselected: () -> Unit = {},
     onSearchInput: (SearchInput) -> Unit = {},
@@ -94,10 +94,8 @@ internal fun TraktMenuBar(
     TraktMenuBarContent(
         destination = currentDestination,
         modifier = modifier,
-        searchInput = searchInput,
-        searchVisible = searchVisible,
-        searchLoading = searchLoading,
         enabled = enabled,
+        stateHolder = searchState,
         onSelected = onSelected,
         onReselected = onReselected,
         onSearchInput = onSearchInput,
@@ -108,9 +106,7 @@ internal fun TraktMenuBar(
 private fun TraktMenuBarContent(
     destination: NavDestination?,
     modifier: Modifier = Modifier,
-    searchInput: SearchInput,
-    searchVisible: Boolean = false,
-    searchLoading: Boolean = false,
+    stateHolder: MainSearchStateHolder,
     enabled: Boolean = true,
     onSelected: (NavigationItem) -> Unit = {},
     onReselected: () -> Unit = {},
@@ -118,16 +114,24 @@ private fun TraktMenuBarContent(
 ) {
     val searchFocusRequester = remember { FocusRequester() }
 
+    LaunchedEffect(stateHolder.searchState.requestFocus) {
+        if (stateHolder.searchState.requestFocus) {
+            runCatching {
+                searchFocusRequester.requestFocus()
+            }
+        }
+    }
+
     Column(
         modifier = modifier.imePadding(),
         verticalArrangement = spacedBy(0.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         SearchContent(
-            searchInput = searchInput,
-            visible = searchVisible,
             enabled = enabled,
-            loading = searchLoading,
+            searchInput = stateHolder.searchInput,
+            visible = stateHolder.searchVisible,
+            loading = stateHolder.searchLoading,
             searchFocusRequester = searchFocusRequester,
             onSearchInput = onSearchInput,
         )
@@ -149,7 +153,7 @@ private fun TraktMenuBarContent(
 
                         if (destination?.hasRoute(item.destination::class) == true) {
                             onReselected()
-                            if (searchVisible) {
+                            if (stateHolder.searchVisible) {
                                 runCatching {
                                     searchFocusRequester.requestFocus()
                                 }
@@ -259,10 +263,9 @@ private fun Preview1() {
     TraktTheme {
         TraktMenuBarContent(
             destination = null,
-            searchVisible = false,
-            searchInput = SearchInput(),
+            stateHolder = MainSearchStateHolder(),
             modifier = Modifier
-                .background(TraktTheme.colors.navigationContainer)
+                .background(TraktTheme.colors.navigationContainer),
         )
     }
 }
@@ -277,10 +280,13 @@ private fun Preview2() {
     TraktTheme {
         TraktMenuBarContent(
             destination = null,
-            searchVisible = true,
-            searchInput = SearchInput(),
+            stateHolder = MainSearchStateHolder(
+                searchState = MainSearchState(
+                    searchVisible = true,
+                ),
+            ),
             modifier = Modifier
-                .background(TraktTheme.colors.navigationContainer)
+                .background(TraktTheme.colors.navigationContainer),
         )
     }
 }

@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.main
 
 import android.app.Activity
+import android.content.Intent
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.NavigationBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,6 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
@@ -32,23 +35,30 @@ import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.core.home.navigation.HomeDestination
 import tv.trakt.trakt.core.home.navigation.homeScreen
 import tv.trakt.trakt.core.lists.navigation.listsScreen
+import tv.trakt.trakt.core.lists.navigation.navigateToLists
 import tv.trakt.trakt.core.main.navigation.isMainDestination
 import tv.trakt.trakt.core.main.navigation.isStartDestination
 import tv.trakt.trakt.core.main.navigation.navigateToMainDestination
 import tv.trakt.trakt.core.main.ui.menubar.TraktMenuBar
 import tv.trakt.trakt.core.movies.navigation.MoviesDestination
 import tv.trakt.trakt.core.movies.navigation.moviesScreen
+import tv.trakt.trakt.core.movies.navigation.navigateToMovies
 import tv.trakt.trakt.core.profile.navigation.navigateToProfile
 import tv.trakt.trakt.core.profile.navigation.profileScreen
 import tv.trakt.trakt.core.search.model.SearchInput
+import tv.trakt.trakt.core.search.navigation.navigateToSearch
 import tv.trakt.trakt.core.search.navigation.searchScreen
 import tv.trakt.trakt.core.shows.navigation.ShowsDestination
+import tv.trakt.trakt.core.shows.navigation.navigateToShows
 import tv.trakt.trakt.core.shows.navigation.showsScreen
 import tv.trakt.trakt.ui.snackbar.MainSnackbarHost
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun MainScreen(modifier: Modifier = Modifier) {
+internal fun MainScreen(
+    modifier: Modifier = Modifier,
+    intent: Intent? = null,
+) {
     val localContext = LocalContext.current
     val localSnackbar = LocalSnackbarState.current
     val localBottomBarVisibility = LocalBottomBarVisibility.current
@@ -61,6 +71,16 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
     val searchState = rememberSearchState(
         currentDestination = currentDestination.value?.destination,
     )
+
+    LaunchedEffect(intent) {
+        if (intent != null) {
+            handleShortcutIntent(
+                intent = intent,
+                navController = navController,
+                onRequestFocus = searchState.onRequestFocus,
+            )
+        }
+    }
 
     Box(
         modifier = modifier.fillMaxSize(),
@@ -100,14 +120,12 @@ internal fun MainScreen(modifier: Modifier = Modifier) {
                             topStart = 24.dp,
                             topEnd = 24.dp,
                         ),
-                    )
+                    ),
             ) {
                 TraktMenuBar(
                     currentDestination = currentDestination.value?.destination,
                     enabled = localBottomBarVisibility.value,
-                    searchVisible = searchState.searchVisible,
-                    searchInput = searchState.searchInput,
-                    searchLoading = searchState.searchLoading,
+                    searchState = searchState,
                     onSelected = {
                         navController.navigateToMainDestination(it.destination)
                     },
@@ -175,6 +193,34 @@ private fun MainNavHost(
             profileScreen(
                 onNavigateBack = { popBackStack() },
             )
+        }
+    }
+}
+
+private fun handleShortcutIntent(
+    intent: Intent,
+    navController: NavController,
+    onRequestFocus: () -> Unit = {},
+) {
+    with(intent.extras ?: return) {
+        when {
+            containsKey("shortcutSearchExtra") -> {
+                intent.removeExtra("shortcutSearchExtra")
+                navController.navigateToSearch()
+                onRequestFocus()
+            }
+            containsKey("shortcutShowsExtra") -> {
+                intent.removeExtra("shortcutShowsExtra")
+                navController.navigateToShows()
+            }
+            containsKey("shortcutMoviesExtra") -> {
+                intent.removeExtra("shortcutMoviesExtra")
+                navController.navigateToMovies()
+            }
+            containsKey("shortcutListsExtra") -> {
+                intent.removeExtra("shortcutListsExtra")
+                navController.navigateToLists()
+            }
         }
     }
 }
