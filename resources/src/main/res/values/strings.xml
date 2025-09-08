@@ -89,6 +89,7 @@
     <string name="warning_prompt_remove_single_watched">Are you sure you want to remove this play of %s from your Watched list?</string>
 
     <!-- Migrate to generator -->
+    <string name="tag_text_number_of_episodes_short">%d eps.</string>
     <string name="button_text_browse_movies">Movies</string>
     <string name="button_text_browse_shows">Shows</string>
     <string name="button_text_meet_team">Meet the team</string>

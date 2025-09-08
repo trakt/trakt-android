@@ -241,6 +241,7 @@ private fun ContentList(
             ) { index ->
                 SearchGridItem(
                     item = recentItems[index],
+                    filter = filter,
                     onShowClick = onShowClick,
                     onMovieClick = onMovieClick,
                     onPersonClick = onPersonClick,
@@ -276,6 +277,7 @@ private fun ContentList(
                 ) { index ->
                     SearchGridItem(
                         item = popularItems[index],
+                        filter = filter,
                         onShowClick = onShowClick,
                         onMovieClick = onMovieClick,
                         onPersonClick = onPersonClick,
@@ -312,6 +314,7 @@ private fun ContentList(
                     ) { index ->
                         SearchGridItem(
                             item = resultItems[index],
+                            filter = filter,
                             onShowClick = onShowClick,
                             onMovieClick = onMovieClick,
                             onPersonClick = onPersonClick,
