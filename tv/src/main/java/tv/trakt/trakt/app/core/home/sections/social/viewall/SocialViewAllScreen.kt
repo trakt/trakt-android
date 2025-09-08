@@ -132,7 +132,7 @@ private fun SocialViewAllContent(
             } else if (!state.items.isNullOrEmpty()) {
                 items(
                     count = state.items.size,
-                    key = { index -> state.items[index].id },
+                    key = { index -> "${state.items[index].id}_${state.items[index].type}" },
                 ) { index ->
                     val item = state.items[index]
                     val focusRequester = focusRequesters.getOrPut(item.id) {

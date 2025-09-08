@@ -45,4 +45,10 @@ internal sealed class SocialActivityItem(
             is MovieItem -> movie.released?.toEpochDay()
             is EpisodeItem -> episode.seasonEpisode.id
         }
+
+    val type: String
+        get() = when (this) {
+            is MovieItem -> "movie"
+            is EpisodeItem -> "episode"
+        }
 }
