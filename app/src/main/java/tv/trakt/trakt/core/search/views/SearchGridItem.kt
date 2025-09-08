@@ -5,7 +5,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -46,11 +50,19 @@ private fun ShowGridItem(
     onShowClick: (Show) -> Unit,
     modifier: Modifier,
 ) {
+    var currentFilter by remember { mutableStateOf(filter) }
+
+    LaunchedEffect(filter) {
+        if (filter != SearchFilter.PEOPLE) {
+            currentFilter = filter
+        }
+    }
+
     VerticalMediaCard(
         title = item.show.title,
         imageUrl = item.show.images?.getPosterUrl(),
         chipContent = {
-            if (filter == SearchFilter.MEDIA) {
+            if (currentFilter == SearchFilter.MEDIA) {
                 InfoChip(
                     text = item.show.released?.year?.toString()
                         ?: stringResource(R.string.translated_value_type_show),
@@ -84,11 +96,19 @@ private fun MovieGridItem(
     onMovieClick: (Movie) -> Unit,
     modifier: Modifier,
 ) {
+    var currentFilter by remember { mutableStateOf(filter) }
+
+    LaunchedEffect(filter) {
+        if (filter != SearchFilter.PEOPLE) {
+            currentFilter = filter
+        }
+    }
+
     VerticalMediaCard(
         title = item.movie.title,
         imageUrl = item.movie.images?.getPosterUrl(),
         chipContent = {
-            if (filter == SearchFilter.MEDIA) {
+            if (currentFilter == SearchFilter.MEDIA) {
                 InfoChip(
                     text = item.movie.released?.year?.toString()
                         ?: stringResource(R.string.translated_value_type_movie),
