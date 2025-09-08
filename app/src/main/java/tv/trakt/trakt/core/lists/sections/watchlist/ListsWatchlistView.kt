@@ -207,7 +207,7 @@ private fun ContentLoadingList(
             .alpha(if (visible) 1F else 0F),
     ) {
         items(count = 6) {
-            VerticalMediaSkeletonCard()
+            VerticalMediaSkeletonCard(chipRatio = 0.5F)
         }
     }
 }

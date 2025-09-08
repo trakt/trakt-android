@@ -32,6 +32,7 @@ internal fun VerticalMediaSkeletonCard(
     modifier: Modifier = Modifier,
     width: Dp = Dp.Unspecified,
     corner: Dp = 12.dp,
+    chipRatio: Float = 0.33F,
     shimmer: Boolean = true,
     chip: Boolean = true,
 ) {
@@ -75,7 +76,7 @@ internal fun VerticalMediaSkeletonCard(
             InfoChip(
                 text = "",
                 containerColor = shimmerTransition,
-                modifier = Modifier.fillMaxWidth(0.33F),
+                modifier = Modifier.fillMaxWidth(chipRatio),
             )
         }
     }
