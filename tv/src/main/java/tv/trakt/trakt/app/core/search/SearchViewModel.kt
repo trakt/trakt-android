@@ -7,6 +7,7 @@ import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -100,11 +101,15 @@ internal class SearchViewModel(
     private fun loadTrendingSearches() {
         viewModelScope.launch {
             try {
-                val showsAsync = async { getTrendingShowsUseCase.getTrendingShows(10) }
-                val moviesAsync = async { getTrendingMoviesUseCase.getTrendingMovies(10) }
+                val (shows, movies) = coroutineScope {
+                    val showsAsync = async { getTrendingShowsUseCase.getTrendingShows(10) }
+                    val moviesAsync = async { getTrendingMoviesUseCase.getTrendingMovies(10) }
 
-                val shows = showsAsync.await()
-                val movies = moviesAsync.await()
+                    val shows = showsAsync.await()
+                    val movies = moviesAsync.await()
+
+                    return@coroutineScope (shows to movies)
+                }
 
                 if (searchingState.value || screenState.value == State.SEARCH_RESULTS) {
                     return@launch
