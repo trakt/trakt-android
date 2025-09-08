@@ -23,6 +23,11 @@ internal val syncModule = module {
                 httpClientEngine = httpClientEngine,
                 httpClientConfig = httpClientConfig,
             ),
+            usersApi = UsersApi(
+                baseUrl = API_BASE_URL,
+                httpClientEngine = httpClientEngine,
+                httpClientConfig = httpClientConfig,
+            ),
         )
     }
 

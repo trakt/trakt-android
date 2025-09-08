@@ -33,7 +33,7 @@ internal class GetWatchlistMoviesUseCase(
             page = page,
             limit = limit,
             sort = "released",
-            extended = "full,cloud9,colors",
+            extended = "full,cloud9",
         ).filter {
             !it.movie.released.isNullOrBlank() && it.movie.released!! <= nowDay
         }.asyncMap {

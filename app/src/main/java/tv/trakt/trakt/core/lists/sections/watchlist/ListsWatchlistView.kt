@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.home.sections.activity
+package tv.trakt.trakt.core.lists.sections.watchlist
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
@@ -16,8 +16,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Done
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -29,7 +27,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -39,28 +39,22 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
-import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.episodes.model.Episode
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.PERSONAL
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.SOCIAL
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
-import tv.trakt.trakt.core.home.sections.activity.views.EpisodeSocialItemView
-import tv.trakt.trakt.core.home.sections.activity.views.MovieSocialItemView
-import tv.trakt.trakt.core.home.views.HomeEmptySocialView
+import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter
+import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.FilterChip
-import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
+import tv.trakt.trakt.ui.components.InfoChip
+import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
+import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun HomeActivityView(
+internal fun ListsWatchlistView(
     modifier: Modifier = Modifier,
-    viewModel: HomeActivityViewModel = koinViewModel(),
+    viewModel: ListsWatchlistViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
-    onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
-    onNavigateToMovie: (movieId: TraktId) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -69,21 +63,17 @@ internal fun HomeActivityView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        onEpisodeClick = onNavigateToEpisode,
-        onMovieClick = onNavigateToMovie,
         onFilterClick = viewModel::setFilter,
     )
 }
 
 @Composable
 internal fun HomeActivityContent(
-    state: HomeActivityState,
+    state: ListsWatchlistState,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onEpisodeClick: (TraktId, Episode) -> Unit = { _, _ -> },
-    onMovieClick: (TraktId) -> Unit = {},
-    onFilterClick: (HomeActivityFilter) -> Unit = {},
+    onFilterClick: (WatchlistFilter) -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -96,11 +86,20 @@ internal fun HomeActivityContent(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
-                text = stringResource(R.string.list_title_activity),
-                color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.heading5,
-            )
+            Column(
+                verticalArrangement = Arrangement.Center,
+            ) {
+                Text(
+                    text = stringResource(R.string.page_title_watchlist),
+                    color = TraktTheme.colors.textPrimary,
+                    style = TraktTheme.typography.heading5,
+                )
+                Text(
+                    text = "Recently added", // TODO String
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.meta.copy(fontWeight = W400),
+                )
+            }
             if (!state.items.isNullOrEmpty() || state.loading != DONE) {
                 Text(
                     text = stringResource(R.string.button_text_view_all),
@@ -143,17 +142,15 @@ internal fun HomeActivityContent(
                             )
                         }
                         state.items?.isEmpty() == true -> {
-                            HomeEmptySocialView(
-                                modifier = Modifier
-                                    .padding(contentPadding),
-                            )
+//                            HomeEmptySocialView(
+//                                modifier = Modifier
+//                                    .padding(contentPadding),
+//                            )
                         }
                         else -> {
                             ContentList(
                                 listItems = (state.items ?: emptyList()).toImmutableList(),
                                 contentPadding = contentPadding,
-                                onEpisodeClick = onEpisodeClick,
-                                onMovieClick = onMovieClick,
                             )
                         }
                     }
@@ -166,8 +163,8 @@ internal fun HomeActivityContent(
 @Composable
 private fun ContentFilters(
     headerPadding: PaddingValues,
-    state: HomeActivityState,
-    onFilterClick: (HomeActivityFilter) -> Unit,
+    state: ListsWatchlistState,
+    onFilterClick: (WatchlistFilter) -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -179,33 +176,21 @@ private fun ContentFilters(
         horizontalArrangement = spacedBy(6.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        FilterChip(
-            selected = state.filter == SOCIAL,
-            text = stringResource(SOCIAL.displayRes),
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Rounded.Done,
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier.size(FilterChipDefaults.IconSize),
-                )
-            },
-            onClick = { onFilterClick(SOCIAL) },
-        )
-
-        FilterChip(
-            selected = state.filter == PERSONAL,
-            text = stringResource(PERSONAL.displayRes),
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Rounded.Done,
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier.size(FilterChipDefaults.IconSize),
-                )
-            },
-            onClick = { onFilterClick(PERSONAL) },
-        )
+        for (filter in WatchlistFilter.entries) {
+            FilterChip(
+                selected = state.filter == filter,
+                text = stringResource(filter.displayRes),
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(filter.iconRes),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier.size(FilterChipDefaults.IconSize),
+                    )
+                },
+                onClick = { onFilterClick(filter) },
+            )
+        }
     }
 }
 
@@ -222,18 +207,18 @@ private fun ContentLoadingList(
             .alpha(if (visible) 1F else 0F),
     ) {
         items(count = 6) {
-            EpisodeSkeletonCard()
+            VerticalMediaSkeletonCard()
         }
     }
 }
 
 @Composable
 private fun ContentList(
-    listItems: ImmutableList<HomeActivityItem>,
+    listItems: ImmutableList<WatchlistItem>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
-    onEpisodeClick: (TraktId, Episode) -> Unit,
-    onMovieClick: (TraktId) -> Unit,
+//    onEpisodeClick: (TraktId, Episode) -> Unit,
+//    onMovieClick: (TraktId) -> Unit,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
@@ -253,27 +238,50 @@ private fun ContentList(
     ) {
         items(
             items = listItems,
-            key = { it.id },
+            key = { it.key },
         ) { item ->
             when (item) {
-                is HomeActivityItem.MovieItem ->
-                    MovieSocialItemView(
-                        item = item,
-                        onClick = onMovieClick,
-                        modifier = Modifier.animateItem(
-                            fadeInSpec = null,
-                            fadeOutSpec = null,
-                        ),
+                is WatchlistItem.ShowItem -> {
+                    VerticalMediaCard(
+                        title = item.show.title,
+                        imageUrl = item.images?.getPosterUrl(),
+                        chipContent = {
+                            if (item.show.airedEpisodes > 0) {
+                                InfoChip(
+                                    text = stringResource(
+                                        R.string.tag_text_number_of_episodes,
+                                        item.show.airedEpisodes,
+                                    ),
+                                )
+                            }
+                        },
                     )
-                is HomeActivityItem.EpisodeItem ->
-                    EpisodeSocialItemView(
-                        item = item,
-                        onClick = onEpisodeClick,
-                        modifier = Modifier.animateItem(
-                            fadeInSpec = null,
-                            fadeOutSpec = null,
-                        ),
+                }
+                is WatchlistItem.MovieItem -> {
+                    VerticalMediaCard(
+                        title = item.movie.title,
+                        imageUrl = item.images?.getPosterUrl(),
+                        chipContent = {
+                            Row(
+                                horizontalArrangement = spacedBy(5.dp),
+                            ) {
+                                if ((item.movie.year ?: 0) > 0) {
+                                    InfoChip(
+                                        text = item.movie.year.toString(),
+                                    )
+                                }
+                                item.movie.runtime?.inWholeMinutes?.let {
+                                    val runtimeString = remember(item.movie.runtime) {
+                                        it.durationFormat()
+                                    }
+                                    InfoChip(
+                                        text = runtimeString,
+                                    )
+                                }
+                            }
+                        },
                     )
+                }
             }
         }
     }
@@ -290,7 +298,7 @@ private fun ContentList(
 private fun Preview() {
     TraktTheme {
         HomeActivityContent(
-            state = HomeActivityState(
+            state = ListsWatchlistState(
                 loading = IDLE,
             ),
         )
@@ -306,7 +314,7 @@ private fun Preview() {
 private fun Preview2() {
     TraktTheme {
         HomeActivityContent(
-            state = HomeActivityState(
+            state = ListsWatchlistState(
                 loading = LOADING,
             ),
         )
@@ -322,9 +330,9 @@ private fun Preview2() {
 private fun Preview3() {
     TraktTheme {
         HomeActivityContent(
-            state = HomeActivityState(
+            state = ListsWatchlistState(
                 loading = DONE,
-                items = emptyList<HomeActivityItem>().toImmutableList(),
+                items = emptyList<WatchlistItem>().toImmutableList(),
             ),
         )
     }

@@ -10,6 +10,7 @@ import tv.trakt.trakt.common.networking.CalendarShowDto
 import tv.trakt.trakt.common.networking.SocialActivityItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
+import tv.trakt.trakt.common.networking.WatchlistItemDto
 import java.time.LocalDate
 
 internal class UserApiClient(
@@ -23,6 +24,29 @@ internal class UserApiClient(
         ).body()
 
         return User.fromDto(response)
+    }
+
+    override suspend fun getWatchlist(
+        page: Int,
+        limit: Int,
+        sort: String,
+        extended: String,
+    ): List<WatchlistItemDto> {
+        val response = usersApi.getUsersWatchlistAll(
+            id = "me",
+            sort = sort,
+            extended = extended,
+            page = page,
+            limit = limit,
+            watchnow = null,
+            genres = null,
+            years = null,
+            ratings = null,
+            startDate = null,
+            endDate = null,
+        )
+
+        return response.body()
     }
 
     override suspend fun getSocialActivity(

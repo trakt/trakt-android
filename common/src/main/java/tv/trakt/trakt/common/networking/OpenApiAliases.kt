@@ -40,6 +40,7 @@ import org.openapitools.client.models.GetUsersSettings200Response
 import org.openapitools.client.models.GetUsersSettings200ResponseUser
 import org.openapitools.client.models.GetUsersWatchedMovies200ResponseInner
 import org.openapitools.client.models.GetUsersWatchedShows200ResponseInner
+import org.openapitools.client.models.GetUsersWatchlistAll200ResponseInner
 import org.openapitools.client.models.GetUsersWatchlistMovies200ResponseInner
 import org.openapitools.client.models.GetUsersWatchlistShows200ResponseInner
 import org.openapitools.client.models.GetWatchnowSourcesAll200ResponseInnerValueInner
@@ -83,6 +84,7 @@ typealias StreamingSourceDto = GetWatchnowSourcesAll200ResponseInnerValueInner
 typealias StreamingServiceDto = GetMoviesWatchnow200ResponseValueCableInner
 typealias WatchlistShowDto = GetUsersWatchlistShows200ResponseInner
 typealias WatchlistMovieDto = GetUsersWatchlistMovies200ResponseInner
+typealias WatchlistItemDto = GetUsersWatchlistAll200ResponseInner
 typealias CalendarShowDto = GetCalendarsShows200ResponseInner
 typealias CalendarMovieDto = GetCalendarsMovies200ResponseInner
 typealias ProgressShowDto = GetSyncProgressUpNextStandard200ResponseInner

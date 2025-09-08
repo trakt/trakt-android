@@ -17,7 +17,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -82,7 +81,6 @@ private fun ShowsScreenContent(
     }
 
     Box(
-        contentAlignment = Alignment.TopStart,
         modifier = modifier
             .fillMaxSize()
             .background(TraktTheme.colors.backgroundPrimary)

@@ -90,8 +90,8 @@
 
     <!-- Migrate to generator -->
     <string name="tag_text_number_of_episodes_short">%d eps.</string>
-    <string name="button_text_browse_movies">Movies</string>
-    <string name="button_text_browse_shows">Shows</string>
+    <string name="button_text_browse_movies">Browse Movies</string>
+    <string name="button_text_browse_shows">Browse Shows</string>
     <string name="button_text_meet_team">Meet the team</string>
     <string name="button_text_movies">Movies</string>
     <string name="button_text_personal">Personal</string>

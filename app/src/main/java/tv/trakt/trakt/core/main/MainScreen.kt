@@ -182,7 +182,9 @@ private fun MainNavHost(
                 onNavigateToProfile = { navigateToProfile() },
                 onNavigateToMovie = {},
             )
-            listsScreen(onNavigateToList = {})
+            listsScreen(
+                onNavigateToProfile = { navigateToProfile() },
+            )
             searchScreen(
                 searchInput = searchInput,
                 onSearchLoading = onSearchLoading,

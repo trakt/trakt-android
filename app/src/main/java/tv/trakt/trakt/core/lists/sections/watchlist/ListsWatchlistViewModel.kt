@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.home.sections.activity
+package tv.trakt.trakt.core.lists.sections.watchlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,22 +16,25 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.PERSONAL
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.SOCIAL
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
-import tv.trakt.trakt.core.home.sections.activity.usecases.GetActivityFilterUseCase
-import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
-import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
+import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter
+import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.MEDIA
+import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.MOVIES
+import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.SHOWS
+import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
+import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistUseCase
+import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetShowsWatchlistUseCase
+import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetWatchlistUseCase
+import tv.trakt.trakt.core.lists.sections.watchlist.usecases.filters.GetWatchlistFilterUseCase
 
-internal class HomeActivityViewModel(
-    private val getActivityFilterUseCase: GetActivityFilterUseCase,
-    private val getSocialActivityUseCase: GetSocialActivityUseCase,
-    private val getPersonalActivityUseCase: GetPersonalActivityUseCase,
+internal class ListsWatchlistViewModel(
+    private val getWatchlistUseCase: GetWatchlistUseCase,
+    private val getShowsWatchlistUseCase: GetShowsWatchlistUseCase,
+    private val getMoviesWatchlistUseCase: GetMoviesWatchlistUseCase,
+    private val getFilterUseCase: GetWatchlistFilterUseCase,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
-    private val initialState = HomeActivityState()
+    private val initialState = ListsWatchlistState()
 
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
@@ -39,6 +42,7 @@ internal class HomeActivityViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
+    private var user: User? = null
     private var loadDataJob: Job? = null
 
     init {
@@ -48,11 +52,11 @@ internal class HomeActivityViewModel(
 
     private fun observeUser() {
         viewModelScope.launch {
-            userState.update { sessionManager.getProfile() }
+            user = sessionManager.getProfile()
             sessionManager.observeProfile()
-                .collect { user ->
-                    if (userState.value != user) {
-                        userState.update { user }
+                .collect {
+                    if (user != it) {
+                        user = it
                         loadData()
                     }
                 }
@@ -68,28 +72,28 @@ internal class HomeActivityViewModel(
                 }
 
                 val filter = loadFilter()
-                val localItems = when (filter) {
-                    SOCIAL -> getSocialActivityUseCase.getLocalSocialActivity()
-                    PERSONAL -> getPersonalActivityUseCase.getLocalPersonalActivity()
-                }
 
-                if (localItems.isNotEmpty()) {
-                    itemsState.update { localItems }
-                    loadingState.update { DONE }
-                } else {
-                    loadingState.update { LOADING }
-                }
+//                val localItems = getWatchlistUseCase.getLocalWatchlist()
+//                if (localItems.isNotEmpty()) {
+//                    itemsState.update { localItems }
+//                    loadingState.update { DONE }
+//                } else {
+//                    loadingState.update { LOADING }
+//                }
+
+                loadingState.update { LOADING }
 
                 itemsState.update {
                     when (filter) {
-                        SOCIAL -> getSocialActivityUseCase.getSocialActivity(HOME_SECTION_LIMIT)
-                        PERSONAL -> getPersonalActivityUseCase.getPersonalActivity(1, HOME_SECTION_LIMIT)
+                        MEDIA -> getWatchlistUseCase.getWatchlist()
+                        SHOWS -> getShowsWatchlistUseCase.getWatchlist()
+                        MOVIES -> getMoviesWatchlistUseCase.getWatchlist()
                     }
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error, "Error loading social activity")
+                    Timber.w(error, "Failed to load data")
                 }
             } finally {
                 loadingState.update { DONE }
@@ -97,10 +101,16 @@ internal class HomeActivityViewModel(
         }
     }
 
+    private suspend fun loadFilter(): WatchlistFilter {
+        val filter = getFilterUseCase.getFilter()
+        filterState.update { filter }
+        return filter
+    }
+
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {
             itemsState.update {
-                emptyList<HomeActivityItem>().toImmutableList()
+                emptyList<WatchlistItem>().toImmutableList()
             }
             loadingState.update { DONE }
             return true
@@ -109,31 +119,25 @@ internal class HomeActivityViewModel(
         return false
     }
 
-    private suspend fun loadFilter(): HomeActivityFilter {
-        val filter = getActivityFilterUseCase.getFilter()
-        filterState.update { filter }
-        return filter
-    }
-
-    fun setFilter(newFilter: HomeActivityFilter) {
+    fun setFilter(newFilter: WatchlistFilter) {
         if (newFilter == filterState.value || loadingState.value.isLoading) {
             return
         }
         viewModelScope.launch {
-            getActivityFilterUseCase.setFilter(newFilter)
+            getFilterUseCase.setFilter(newFilter)
             loadFilter()
             loadData()
         }
     }
 
-    val state: StateFlow<HomeActivityState> = combine(
+    val state: StateFlow<ListsWatchlistState> = combine(
         loadingState,
         itemsState,
         filterState,
         errorState,
         userState,
     ) { s0, s1, s2, s3, s4 ->
-        HomeActivityState(
+        ListsWatchlistState(
             loading = s0,
             items = s1,
             filter = s2,

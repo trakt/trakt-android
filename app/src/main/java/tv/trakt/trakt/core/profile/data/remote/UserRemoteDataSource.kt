@@ -6,10 +6,18 @@ import tv.trakt.trakt.common.networking.CalendarShowDto
 import tv.trakt.trakt.common.networking.SocialActivityItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
+import tv.trakt.trakt.common.networking.WatchlistItemDto
 import java.time.LocalDate
 
 internal interface UserRemoteDataSource {
     suspend fun getProfile(): User
+
+    suspend fun getWatchlist(
+        page: Int = 1,
+        limit: Int,
+        sort: String = "rank",
+        extended: String,
+    ): List<WatchlistItemDto>
 
     suspend fun getSocialActivity(
         limit: Int,
