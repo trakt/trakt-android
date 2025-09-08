@@ -57,6 +57,7 @@ internal val profileModule = module {
             localUpcoming = get(),
             localSocial = get(),
             localPersonal = get(),
+            localRecentSearch = get(),
         )
     }
 

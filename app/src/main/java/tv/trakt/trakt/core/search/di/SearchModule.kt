@@ -63,6 +63,7 @@ internal val searchModule = module {
 
     factory {
         AddRecentSearchUseCase(
+            sessionManager = get(),
             recentsLocalSource = get(),
         )
     }

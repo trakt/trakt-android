@@ -6,6 +6,7 @@ import tv.trakt.trakt.core.home.sections.activity.data.local.social.HomeSocialLo
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
+import tv.trakt.trakt.core.search.data.local.RecentSearchLocalDataSource
 
 internal class LogoutUserUseCase(
     private val sessionManager: SessionManager,
@@ -14,6 +15,7 @@ internal class LogoutUserUseCase(
     private val localUpcoming: HomeUpcomingLocalDataSource,
     private val localSocial: HomeSocialLocalDataSource,
     private val localPersonal: HomePersonalLocalDataSource,
+    private val localRecentSearch: RecentSearchLocalDataSource,
 ) {
     suspend fun logoutUser() {
         sessionManager.clear()
@@ -22,5 +24,6 @@ internal class LogoutUserUseCase(
         localUpcoming.clear()
         localSocial.clear()
         localPersonal.clear()
+        localRecentSearch.clear()
     }
 }
