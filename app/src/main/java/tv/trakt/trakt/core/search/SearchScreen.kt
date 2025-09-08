@@ -161,6 +161,7 @@ private fun SearchScreenContent(
         ContentList(
             listState = contentGridState,
             searching = state.searching,
+            query = state.input.query,
             filter = state.input.filter,
             recentItems = (state.recentsResult?.items ?: emptyList()).toImmutableList(),
             popularItems = (state.popularResults?.items ?: emptyList()).toImmutableList(),
@@ -184,6 +185,7 @@ private fun SearchScreenContent(
 private fun ContentList(
     listState: LazyGridState,
     searching: Boolean,
+    query: String,
     filter: SearchFilter,
     recentItems: ImmutableList<SearchItem>,
     popularItems: ImmutableList<SearchItem>,
@@ -218,7 +220,7 @@ private fun ContentList(
         contentPadding = contentPadding,
         overscrollEffect = null,
     ) {
-        if (!isSearching && recentItems.isNotEmpty()) {
+        if (!isSearching && recentItems.isNotEmpty() && query.isBlank()) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
                     text = "Recently Searched", // TODO
@@ -252,7 +254,7 @@ private fun ContentList(
             }
         }
 
-        if (!isSearching && filter != PEOPLE) {
+        if (!isSearching && filter != PEOPLE && query.isBlank()) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
                     text = "Popular Searches", // TODO
