@@ -350,7 +350,6 @@ private fun ShowCreditsList(
                         if (episodes > 0) {
                             InfoChip(
                                 text = stringResource(R.string.tag_text_number_of_episodes, show.airedEpisodes),
-                                modifier = Modifier.padding(end = 8.dp),
                             )
                         }
                     },
@@ -411,7 +410,6 @@ private fun MovieCreditsList(
                         if (runtime != null) {
                             InfoChip(
                                 text = runtime.durationFormat(),
-                                modifier = Modifier.padding(end = 8.dp),
                             )
                         }
                     },

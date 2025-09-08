@@ -63,7 +63,6 @@ internal fun MovieRelatedList(
                         if (runtime != null) {
                             InfoChip(
                                 text = runtime.durationFormat(),
-                                modifier = Modifier.padding(end = 8.dp),
                             )
                         }
                     },

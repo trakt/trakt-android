@@ -197,7 +197,6 @@ private fun ContentListItem(
                     }
                     InfoChip(
                         text = runtimeString,
-                        modifier = Modifier.padding(end = 8.dp),
                     )
                 }
             }

@@ -143,7 +143,6 @@ private fun MoviesWatchlistContent(
                             if (runtime != null) {
                                 InfoChip(
                                     text = runtime.durationFormat(),
-                                    modifier = Modifier.padding(end = 8.dp),
                                 )
                             }
                         },

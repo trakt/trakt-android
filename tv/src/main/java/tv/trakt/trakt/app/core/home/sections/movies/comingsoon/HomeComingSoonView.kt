@@ -13,7 +13,6 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle.Event.ON_CREATE
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -144,7 +143,6 @@ private fun ContentList(
                         InfoChip(
                             text = it,
                             iconPainter = painterResource(R.drawable.ic_calendar_upcoming),
-                            modifier = Modifier.padding(end = 8.dp),
                         )
                     }
                 },

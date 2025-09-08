@@ -64,7 +64,6 @@ internal fun EpisodeRelatedList(
                         if (episodes > 0) {
                             InfoChip(
                                 text = stringResource(R.string.tag_text_number_of_episodes, show.airedEpisodes),
-                                modifier = Modifier.padding(end = 8.dp),
                             )
                         }
                     },

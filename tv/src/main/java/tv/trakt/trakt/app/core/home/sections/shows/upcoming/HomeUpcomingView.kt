@@ -180,7 +180,6 @@ private fun ContentListItem(
                 text = dateString,
                 iconPainter = painterResource(R.drawable.ic_calendar_upcoming),
                 containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
-                modifier = Modifier.padding(end = 8.dp),
             )
         },
         footerContent = {
