@@ -19,7 +19,7 @@ import tv.trakt.trakt.app.core.search.data.remote.SearchRemoteDataSource
 import tv.trakt.trakt.app.core.search.usecase.GetSearchResultsUseCase
 import tv.trakt.trakt.app.core.search.usecase.recents.AddRecentSearchUseCase
 import tv.trakt.trakt.app.core.search.usecase.recents.GetRecentSearchUseCase
-import tv.trakt.trakt.common.Config.API_BASE_URL
+import tv.trakt.trakt.common.Config.API_HD_BASE_URL
 
 private const val SEARCH_PREFERENCES = "search_preferences"
 
@@ -30,7 +30,7 @@ internal val searchDataModule = module {
 
         SearchApiClient(
             api = SearchApi(
-                baseUrl = API_BASE_URL,
+                baseUrl = API_HD_BASE_URL,
                 httpClientEngine = httpClientEngine,
                 httpClientConfig = httpClientConfig,
             ),
