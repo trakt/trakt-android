@@ -1,4 +1,4 @@
-package tv.trakt.trakt.app.common.model.sorting
+package tv.trakt.trakt.common.model.sorting
 
 enum class SortType(
     val value: String,

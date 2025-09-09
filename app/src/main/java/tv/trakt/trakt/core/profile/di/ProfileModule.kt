@@ -10,6 +10,9 @@ import org.openapitools.client.apis.HistoryApi
 import org.openapitools.client.apis.UsersApi
 import tv.trakt.trakt.common.Config.API_BASE_URL
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
+import tv.trakt.trakt.core.lists.di.LISTS_MOVIES_WATCHLIST_STORAGE
+import tv.trakt.trakt.core.lists.di.LISTS_SHOWS_WATCHLIST_STORAGE
+import tv.trakt.trakt.core.lists.di.LISTS_WATCHLIST_STORAGE
 import tv.trakt.trakt.core.profile.ProfileViewModel
 import tv.trakt.trakt.core.profile.data.remote.UserApiClient
 import tv.trakt.trakt.core.profile.data.remote.UserRemoteDataSource
@@ -58,6 +61,10 @@ internal val profileModule = module {
             localSocial = get(),
             localPersonal = get(),
             localRecentSearch = get(),
+            localListsPersonal = get(),
+            localListsWatchlist = get(named(LISTS_WATCHLIST_STORAGE)),
+            localListsShowsWatchlist = get(named(LISTS_SHOWS_WATCHLIST_STORAGE)),
+            localListsMoviesWatchlist = get(named(LISTS_MOVIES_WATCHLIST_STORAGE)),
         )
     }
 

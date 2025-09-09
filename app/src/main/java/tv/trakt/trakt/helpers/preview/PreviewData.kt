@@ -1,6 +1,8 @@
 package tv.trakt.trakt.helpers.preview
 
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.CustomList.Type
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.ImdbId
@@ -12,6 +14,8 @@ import tv.trakt.trakt.common.model.TmdbId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.TvdbId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.sorting.SortOrder
+import tv.trakt.trakt.common.model.sorting.SortType
 import tv.trakt.trakt.core.episodes.model.Episode
 import java.time.LocalDate
 import java.time.ZonedDateTime
@@ -135,5 +139,29 @@ internal object PreviewData {
         ),
         firstAired = ZonedDateTime.now(),
         updatedAt = ZonedDateTime.now(),
+    )
+
+    val customList1 = CustomList(
+        ids = Ids(
+            trakt = TraktId(1),
+            slug = SlugId("my-custom-list"),
+        ),
+        name = "My Custom List",
+        description = "This is a custom list that contains movies and shows curated by the user. " +
+            "It allows for personalized organization of content.",
+        privacy = "public",
+        displayNumbers = true,
+        allowComments = true,
+        sortType = SortType.RANK,
+        sortOrder = SortOrder.ASCENDING,
+        createdAt = ZonedDateTime.now(),
+        updatedAt = ZonedDateTime.now(),
+        itemCount = 10,
+        shareLink = "",
+        type = Type.OFFICIAL,
+        commentCount = 123,
+        likes = 12,
+        images = null,
+        user = PreviewData.user1,
     )
 }

@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.networking.CalendarMovieDto
 import tv.trakt.trakt.common.networking.CalendarShowDto
+import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.SocialActivityItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
@@ -116,6 +117,14 @@ internal class UserApiClient(
             startDate = startDate.toString(),
             days = days,
             extended = "full,cloud9,colors",
+        )
+        return response.body()
+    }
+
+    override suspend fun getPersonalLists(): List<ListDto> {
+        val response = usersApi.getUsersListsPersonal(
+            id = "me",
+            extended = "cloud9",
         )
         return response.body()
     }

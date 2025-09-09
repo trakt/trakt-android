@@ -16,6 +16,9 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.core.lists.ListsViewModel
+import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
+import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalStorage
+import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistViewModel
 import tv.trakt.trakt.core.lists.sections.watchlist.data.local.ListsWatchlistLocalDataSource
 import tv.trakt.trakt.core.lists.sections.watchlist.data.local.ListsWatchlistStorage
@@ -35,6 +38,10 @@ internal val listsDataModule = module {
         createStore(
             context = androidContext(),
         )
+    }
+
+    single<ListsPersonalLocalDataSource> {
+        ListsPersonalStorage()
     }
 
     arrayOf(
@@ -77,9 +84,17 @@ internal val listsModule = module {
         )
     }
 
+    factory {
+        GetPersonalListsUseCase(
+            remoteSource = get(),
+            localSource = get(),
+        )
+    }
+
     viewModel {
         ListsViewModel(
             sessionManager = get(),
+            getPersonalListsUseCase = get(),
         )
     }
 

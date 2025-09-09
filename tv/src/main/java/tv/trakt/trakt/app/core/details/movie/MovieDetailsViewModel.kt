@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.app.common.model.CastPerson
 import tv.trakt.trakt.app.common.model.Comment
-import tv.trakt.trakt.app.common.model.CustomList
 import tv.trakt.trakt.app.common.model.ExternalRating
 import tv.trakt.trakt.app.common.model.ExtraVideo
 import tv.trakt.trakt.app.core.details.movie.MovieDetailsState.CollectionState
@@ -44,6 +43,7 @@ import tv.trakt.trakt.app.helpers.StaticStringResource
 import tv.trakt.trakt.app.helpers.StringResource
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId

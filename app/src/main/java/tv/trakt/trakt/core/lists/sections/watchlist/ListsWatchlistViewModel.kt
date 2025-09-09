@@ -16,7 +16,6 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.MEDIA
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.MOVIES
@@ -42,7 +41,6 @@ internal class ListsWatchlistViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
-    private var user: User? = null
     private var loadDataJob: Job? = null
 
     init {
@@ -52,11 +50,11 @@ internal class ListsWatchlistViewModel(
 
     private fun observeUser() {
         viewModelScope.launch {
-            user = sessionManager.getProfile()
+            userState.update { sessionManager.getProfile() }
             sessionManager.observeProfile()
-                .collect {
-                    if (user != it) {
-                        user = it
+                .collect { user ->
+                    if (userState.value != user) {
+                        userState.update { user }
                         loadData()
                     }
                 }

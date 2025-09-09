@@ -26,6 +26,7 @@ import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.core.lists.sections.personal.ListsPersonalView
 import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistView
 import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
@@ -117,7 +118,9 @@ private fun ListsScreenContent(
             verticalArrangement = spacedBy(TraktTheme.spacing.mainSectionVerticalSpace),
             contentPadding = listPadding,
         ) {
-            item {
+            item(
+                key = "watchlist",
+            ) {
                 ListsWatchlistView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
@@ -125,6 +128,16 @@ private fun ListsScreenContent(
                     onMoviesClick = onMoviesClick,
                     onProfileClick = onProfileClick,
                 )
+            }
+
+            state.lists?.forEach { list ->
+                item(key = list.ids.trakt.value) {
+                    ListsPersonalView(
+                        list = list,
+                        headerPadding = sectionPadding,
+                        contentPadding = sectionPadding,
+                    )
+                }
             }
         }
 

@@ -5,9 +5,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
-import tv.trakt.trakt.app.common.model.CustomList
 import tv.trakt.trakt.app.core.details.movie.MovieDetailsScreen
 import tv.trakt.trakt.app.core.people.navigation.PersonDestination
+import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.TraktId
 
 @Serializable
