@@ -17,12 +17,18 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.core.lists.ListsViewModel
 import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistViewModel
+import tv.trakt.trakt.core.lists.sections.watchlist.data.local.ListsWatchlistLocalDataSource
+import tv.trakt.trakt.core.lists.sections.watchlist.data.local.ListsWatchlistStorage
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetShowsWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.filters.GetWatchlistFilterUseCase
 
 internal const val LISTS_PREFERENCES = "lists_preferences_mobile"
+
+internal const val LISTS_WATCHLIST_STORAGE = "lists_watchlist_storage"
+internal const val LISTS_SHOWS_WATCHLIST_STORAGE = "lists_shows_watchlist_storage"
+internal const val LISTS_MOVIES_WATCHLIST_STORAGE = "lists_movies_watchlist_storage"
 
 internal val listsDataModule = module {
     single<DataStore<Preferences>>(named(LISTS_PREFERENCES)) {
@@ -31,55 +37,37 @@ internal val listsDataModule = module {
         )
     }
 
-//
-//    single<ShowsRemoteDataSource> {
-//        ShowsApiClient(
-//            showsApi = ShowsApi(
-//                baseUrl = API_BASE_URL,
-//                httpClientEngine = get(),
-//                httpClientConfig = get(named("clientConfig")),
-//            ),
-//            recommendationsApi = RecommendationsApi(
-//                baseUrl = API_BASE_URL,
-//                httpClientEngine = get(),
-//                httpClientConfig = get(named("authorizedClientConfig")),
-//            ),
-//        )
-//    }
-//
-//    single<TrendingShowsLocalDataSource> {
-//        TrendingShowsStorage()
-//    }
-//
-//    single<RecommendedShowsLocalDataSource> {
-//        RecommendedShowsStorage()
-//    }
-//
-//    single<PopularShowsLocalDataSource> {
-//        PopularShowsStorage()
-//    }
-//
-//    single<AnticipatedShowsLocalDataSource> {
-//        AnticipatedShowsStorage()
-//    }
+    arrayOf(
+        LISTS_WATCHLIST_STORAGE,
+        LISTS_SHOWS_WATCHLIST_STORAGE,
+        LISTS_MOVIES_WATCHLIST_STORAGE,
+    ).forEach {
+        single<ListsWatchlistLocalDataSource>(named(it)) {
+            ListsWatchlistStorage()
+        }
+    }
 }
 
+@Suppress("UndeclaredKoinUsage")
 internal val listsModule = module {
     factory {
         GetWatchlistUseCase(
             remoteSource = get(),
+            localSource = get(named(LISTS_WATCHLIST_STORAGE)),
         )
     }
 
     factory {
         GetShowsWatchlistUseCase(
             remoteSyncSource = get(),
+            localSource = get(named(LISTS_SHOWS_WATCHLIST_STORAGE)),
         )
     }
 
     factory {
         GetMoviesWatchlistUseCase(
             remoteSyncSource = get(),
+            localSource = get(named(LISTS_MOVIES_WATCHLIST_STORAGE)),
         )
     }
 

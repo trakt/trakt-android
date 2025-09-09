@@ -72,16 +72,18 @@ internal class ListsWatchlistViewModel(
                 }
 
                 val filter = loadFilter()
+                val localItems = when (filter) {
+                    MEDIA -> getWatchlistUseCase.getLocalWatchlist()
+                    SHOWS -> getShowsWatchlistUseCase.getLocalWatchlist()
+                    MOVIES -> getMoviesWatchlistUseCase.getLocalWatchlist()
+                }
 
-//                val localItems = getWatchlistUseCase.getLocalWatchlist()
-//                if (localItems.isNotEmpty()) {
-//                    itemsState.update { localItems }
-//                    loadingState.update { DONE }
-//                } else {
-//                    loadingState.update { LOADING }
-//                }
-
-                loadingState.update { LOADING }
+                if (localItems.isNotEmpty()) {
+                    itemsState.update { localItems }
+                    loadingState.update { DONE }
+                } else {
+                    loadingState.update { LOADING }
+                }
 
                 itemsState.update {
                     when (filter) {

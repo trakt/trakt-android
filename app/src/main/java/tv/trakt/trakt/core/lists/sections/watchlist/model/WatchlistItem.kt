@@ -5,18 +5,23 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import java.time.Instant
 
 @Immutable
-internal sealed class WatchlistItem {
+internal sealed class WatchlistItem(
+    open val listedAt: Instant,
+) {
     @Immutable
     internal data class MovieItem(
         val movie: Movie,
-    ) : WatchlistItem()
+        override val listedAt: Instant,
+    ) : WatchlistItem(listedAt)
 
     @Immutable
     internal data class ShowItem(
         val show: Show,
-    ) : WatchlistItem()
+        override val listedAt: Instant,
+    ) : WatchlistItem(listedAt)
 
     val id: TraktId
         get() = when (this) {
