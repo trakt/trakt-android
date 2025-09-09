@@ -11,11 +11,17 @@ import tv.trakt.trakt.core.lists.ListsScreen
 @Serializable
 internal data object ListsDestination
 
-internal fun NavGraphBuilder.listsScreen(onNavigateToProfile: () -> Unit) {
+internal fun NavGraphBuilder.listsScreen(
+    onNavigateToProfile: () -> Unit,
+    onNavigateToShows: () -> Unit,
+    onNavigateToMovies: () -> Unit,
+) {
     composable<ListsDestination> {
         ListsScreen(
             viewModel = koinViewModel(),
             onNavigateToProfile = onNavigateToProfile,
+            onNavigateToShows = onNavigateToShows,
+            onNavigateToMovies = onNavigateToMovies,
         )
     }
 }

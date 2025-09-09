@@ -33,6 +33,8 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.firebase.Firebase
+import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
@@ -40,7 +42,11 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter
+import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.MEDIA
+import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.MOVIES
+import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.SHOWS
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.FilterChip
@@ -55,6 +61,9 @@ internal fun ListsWatchlistView(
     viewModel: ListsWatchlistViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
+    onProfileClick: () -> Unit,
+    onShowsClick: () -> Unit,
+    onMoviesClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -64,6 +73,9 @@ internal fun ListsWatchlistView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onFilterClick = viewModel::setFilter,
+        onShowsClick = onShowsClick,
+        onMoviesClick = onMoviesClick,
+        onProfileClick = onProfileClick,
     )
 }
 
@@ -74,6 +86,9 @@ internal fun HomeActivityContent(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onFilterClick: (WatchlistFilter) -> Unit = {},
+    onShowsClick: () -> Unit = {},
+    onMoviesClick: () -> Unit = {},
+    onProfileClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -142,10 +157,21 @@ internal fun HomeActivityContent(
                             )
                         }
                         state.items?.isEmpty() == true -> {
-//                            HomeEmptySocialView(
-//                                modifier = Modifier
-//                                    .padding(contentPadding),
-//                            )
+                            ContentEmptyView(
+                                authenticated = (state.user != null),
+                                filter = state.filter,
+                                onActionClick = {
+                                    if (state.user == null) {
+                                        onProfileClick()
+                                        return@ContentEmptyView
+                                    }
+                                    when (it) {
+                                        MEDIA, SHOWS -> onShowsClick()
+                                        MOVIES -> onMoviesClick()
+                                    }
+                                },
+                                modifier = Modifier.padding(contentPadding),
+                            )
                         }
                         else -> {
                             ContentList(
@@ -217,8 +243,6 @@ private fun ContentList(
     listItems: ImmutableList<WatchlistItem>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
-//    onEpisodeClick: (TraktId, Episode) -> Unit,
-//    onMovieClick: (TraktId) -> Unit,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
@@ -255,6 +279,10 @@ private fun ContentList(
                                 )
                             }
                         },
+                        modifier = Modifier.animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
                     )
                 }
                 is WatchlistItem.MovieItem -> {
@@ -280,11 +308,60 @@ private fun ContentList(
                                 }
                             }
                         },
+                        modifier = Modifier.animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
                     )
                 }
             }
         }
     }
+}
+
+@Composable
+private fun ContentEmptyView(
+    filter: WatchlistFilter,
+    authenticated: Boolean,
+    modifier: Modifier = Modifier,
+    onActionClick: (WatchlistFilter) -> Unit = {},
+) {
+    val imageUrl = remember(filter) {
+        val key = when (filter) {
+            MEDIA, SHOWS -> "mobile_empty_image_1"
+            MOVIES -> "mobile_empty_image_2"
+        }
+        Firebase.remoteConfig.getString(key).ifBlank { null }
+    }
+
+    val buttonText = remember(filter, authenticated) {
+        if (!authenticated) {
+            return@remember R.string.button_text_join_trakt
+        }
+        when (filter) {
+            MEDIA, SHOWS -> R.string.button_text_browse_shows
+            MOVIES -> R.string.button_text_browse_movies
+        }
+    }
+
+    val buttonIcon = remember(authenticated) {
+        when {
+            authenticated -> R.drawable.ic_empty_watchlist
+            else -> R.drawable.ic_plus_round
+        }
+    }
+
+    HomeEmptyView(
+        text = stringResource(R.string.text_cta_watchlist_unreleased),
+        icon = R.drawable.ic_empty_watchlist,
+        buttonText = stringResource(buttonText),
+        buttonIcon = buttonIcon,
+        backgroundImageUrl = imageUrl,
+        backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
+        height = 224.dp,
+        onClick = { onActionClick(filter) },
+        modifier = modifier,
+    )
 }
 
 // Previews

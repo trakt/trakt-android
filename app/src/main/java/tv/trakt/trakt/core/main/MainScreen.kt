@@ -40,7 +40,6 @@ import tv.trakt.trakt.core.main.navigation.isMainDestination
 import tv.trakt.trakt.core.main.navigation.isStartDestination
 import tv.trakt.trakt.core.main.navigation.navigateToMainDestination
 import tv.trakt.trakt.core.main.ui.menubar.TraktMenuBar
-import tv.trakt.trakt.core.movies.navigation.MoviesDestination
 import tv.trakt.trakt.core.movies.navigation.moviesScreen
 import tv.trakt.trakt.core.movies.navigation.navigateToMovies
 import tv.trakt.trakt.core.profile.navigation.navigateToProfile
@@ -48,7 +47,6 @@ import tv.trakt.trakt.core.profile.navigation.profileScreen
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.navigateToSearch
 import tv.trakt.trakt.core.search.navigation.searchScreen
-import tv.trakt.trakt.core.shows.navigation.ShowsDestination
 import tv.trakt.trakt.core.shows.navigation.navigateToShows
 import tv.trakt.trakt.core.shows.navigation.showsScreen
 import tv.trakt.trakt.ui.snackbar.MainSnackbarHost
@@ -171,8 +169,8 @@ private fun MainNavHost(
         with(navController) {
             homeScreen(
                 onNavigateToProfile = { navigateToProfile() },
-                onNavigateToShows = { navigateToMainDestination(ShowsDestination) },
-                onNavigateToMovies = { navigateToMainDestination(MoviesDestination) },
+                onNavigateToShows = { navigateToShows() },
+                onNavigateToMovies = { navigateToMovies() },
             )
             showsScreen(
                 onNavigateToProfile = { navigateToProfile() },
@@ -184,6 +182,8 @@ private fun MainNavHost(
             )
             listsScreen(
                 onNavigateToProfile = { navigateToProfile() },
+                onNavigateToShows = { navigateToShows() },
+                onNavigateToMovies = { navigateToMovies() },
             )
             searchScreen(
                 searchInput = searchInput,

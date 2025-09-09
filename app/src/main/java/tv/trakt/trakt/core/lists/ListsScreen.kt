@@ -37,6 +37,8 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun ListsScreen(
     viewModel: ListsViewModel,
     onNavigateToProfile: () -> Unit,
+    onNavigateToShows: () -> Unit,
+    onNavigateToMovies: () -> Unit,
 ) {
     val localBottomBarVisibility = LocalBottomBarVisibility.current
     LaunchedEffect(Unit) {
@@ -48,6 +50,8 @@ internal fun ListsScreen(
     ListsScreenContent(
         state = state,
         onProfileClick = onNavigateToProfile,
+        onShowsClick = onNavigateToShows,
+        onMoviesClick = onNavigateToMovies,
     )
 }
 
@@ -56,6 +60,8 @@ private fun ListsScreenContent(
     state: ListsState,
     modifier: Modifier = Modifier,
     onProfileClick: () -> Unit = {},
+    onShowsClick: () -> Unit = {},
+    onMoviesClick: () -> Unit = {},
 ) {
     val lazyListState = rememberLazyListState()
     val headerState = rememberHeaderState()
@@ -115,6 +121,9 @@ private fun ListsScreenContent(
                 ListsWatchlistView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
+                    onShowsClick = onShowsClick,
+                    onMoviesClick = onMoviesClick,
+                    onProfileClick = onProfileClick,
                 )
             }
         }
@@ -166,7 +175,6 @@ private fun Preview() {
     TraktTheme {
         ListsScreenContent(
             state = ListsState(),
-            onProfileClick = {},
         )
     }
 }
