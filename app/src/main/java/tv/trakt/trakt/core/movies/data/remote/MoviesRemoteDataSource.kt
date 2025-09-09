@@ -4,6 +4,7 @@ import tv.trakt.trakt.common.networking.MovieDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
 import tv.trakt.trakt.core.movies.data.remote.model.AnticipatedMovieDto
 import tv.trakt.trakt.core.movies.data.remote.model.TrendingMovieDto
+import java.time.Instant
 
 internal interface MoviesRemoteDataSource {
     suspend fun getTrending(limit: Int): List<TrendingMovieDto>
@@ -17,5 +18,8 @@ internal interface MoviesRemoteDataSource {
 
     suspend fun getRecommended(limit: Int): List<RecommendedMovieDto>
 
-    suspend fun getAnticipated(limit: Int): List<AnticipatedMovieDto>
+    suspend fun getAnticipated(
+        limit: Int,
+        endDate: Instant,
+    ): List<AnticipatedMovieDto>
 }

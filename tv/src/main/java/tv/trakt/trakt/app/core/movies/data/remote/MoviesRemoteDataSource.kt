@@ -11,6 +11,7 @@ import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.MovieDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
 import tv.trakt.trakt.common.networking.StreamingDto
+import java.time.Instant
 
 internal interface MoviesRemoteDataSource {
     suspend fun getTrendingMovies(
@@ -27,6 +28,7 @@ internal interface MoviesRemoteDataSource {
     suspend fun getAnticipatedMovies(
         limit: Int,
         page: Int,
+        endDate: Instant,
     ): List<AnticipatedMovieDto>
 
     suspend fun getRecommendedMovies(

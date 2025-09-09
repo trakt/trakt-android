@@ -14,6 +14,7 @@ import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.SeasonDto
 import tv.trakt.trakt.common.networking.ShowDto
 import tv.trakt.trakt.common.networking.StreamingDto
+import java.time.Instant
 
 internal class ShowsApiClient(
     private val api: ShowsApi,
@@ -73,6 +74,7 @@ internal class ShowsApiClient(
     override suspend fun getAnticipatedShows(
         limit: Int,
         page: Int,
+        endDate: Instant,
     ): List<AnticipatedShowDto> {
         val response = api.getShowsAnticipated(
             extended = "full,streaming_ids,cloud9,colors",
@@ -86,7 +88,7 @@ internal class ShowsApiClient(
             ignoreCollected = null,
             ignoreWatchlisted = null,
             startDate = null,
-            endDate = null,
+            endDate = endDate.toString(),
         )
 
         return response.body()

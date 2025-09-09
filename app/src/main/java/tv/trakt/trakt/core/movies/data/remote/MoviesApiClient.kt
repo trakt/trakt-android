@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.networking.MovieDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
 import tv.trakt.trakt.core.movies.data.remote.model.AnticipatedMovieDto
 import tv.trakt.trakt.core.movies.data.remote.model.TrendingMovieDto
+import java.time.Instant
 
 internal class MoviesApiClient(
     private val moviesApi: MoviesApi,
@@ -102,7 +103,10 @@ internal class MoviesApiClient(
         return response.body()
     }
 
-    override suspend fun getAnticipated(limit: Int): List<AnticipatedMovieDto> {
+    override suspend fun getAnticipated(
+        limit: Int,
+        endDate: Instant,
+    ): List<AnticipatedMovieDto> {
         val response = moviesApi.getMoviesAnticipated(
             extended = "full,streaming_ids,cloud9,colors",
             limit = limit,
@@ -115,7 +119,7 @@ internal class MoviesApiClient(
             ignoreCollected = null,
             ignoreWatchlisted = null,
             startDate = null,
-            endDate = null,
+            endDate = endDate.toString(),
         )
 
         return response.body()

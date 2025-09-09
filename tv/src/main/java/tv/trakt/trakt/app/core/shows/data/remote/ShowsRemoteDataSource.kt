@@ -12,6 +12,7 @@ import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.SeasonDto
 import tv.trakt.trakt.common.networking.ShowDto
 import tv.trakt.trakt.common.networking.StreamingDto
+import java.time.Instant
 
 internal interface ShowsRemoteDataSource {
     suspend fun getTrendingShows(
@@ -28,6 +29,7 @@ internal interface ShowsRemoteDataSource {
     suspend fun getAnticipatedShows(
         limit: Int,
         page: Int,
+        endDate: Instant,
     ): List<AnticipatedShowDto>
 
     suspend fun getRecommendedShows(

@@ -25,6 +25,8 @@ val longDateTimeFormat: DateTimeFormatter = DateTimeFormatter
 
 fun nowUtc(): ZonedDateTime = ZonedDateTime.now(UTC)
 
+fun nowUtcInstant(): Instant = Instant.now()
+
 // Local time functions
 
 fun nowLocal(): ZonedDateTime = ZonedDateTime.now()

@@ -7,8 +7,10 @@ import tv.trakt.trakt.app.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.app.core.shows.model.AnticipatedShow
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+import java.time.temporal.ChronoUnit.DAYS
 
 internal class GetAnticipatedShowsUseCase(
     private val remoteSource: ShowsRemoteDataSource,
@@ -18,7 +20,11 @@ internal class GetAnticipatedShowsUseCase(
         limit: Int = SHOWS_SECTION_LIMIT,
         page: Int = 1,
     ): ImmutableList<AnticipatedShow> {
-        return remoteSource.getAnticipatedShows(limit, page)
+        return remoteSource.getAnticipatedShows(
+            limit = limit,
+            page = page,
+            endDate = nowUtcInstant().plus(365, DAYS).truncatedTo(DAYS),
+        )
             .asyncMap {
                 AnticipatedShow(
                     listCount = it.listCount,
