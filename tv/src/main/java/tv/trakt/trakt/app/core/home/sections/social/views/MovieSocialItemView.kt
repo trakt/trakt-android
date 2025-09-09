@@ -51,7 +51,7 @@ internal fun MovieSocialItemView(
                 modifier = Modifier.sizeIn(maxHeight = 22.dp),
             ) {
                 InfoChip(
-                    text = (item.user.name ?: "").ifBlank { item.user.username },
+                    text = item.user.displayName,
                     containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
                     endPadding = 19.dp,
                 )

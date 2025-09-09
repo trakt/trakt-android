@@ -123,9 +123,7 @@ private fun ProfileScreenContent(
         }
 
         val headerName = remember(state.profile) {
-            state.profile?.name?.ifBlank {
-                state.profile.username
-            }
+            state.profile?.displayName
         }
 
         Column(

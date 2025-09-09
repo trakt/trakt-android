@@ -64,7 +64,7 @@ internal fun EpisodeSocialItemView(
                     modifier = Modifier.sizeIn(maxHeight = 26.dp),
                 ) {
                     InfoChip(
-                        text = (user.name ?: "").ifBlank { user.username },
+                        text = user.displayName,
                         containerColor = TraktTheme.colors.chipContainerOnContent,
                         endPadding = 22.dp,
                     )

@@ -28,6 +28,9 @@ data class User(
     val hasAvatar: Boolean
         get() = images?.avatar?.full != null
 
+    val displayName: String
+        get() = (name ?: "").ifBlank { username }
+
     @Immutable
     @Serializable
     data class Images(

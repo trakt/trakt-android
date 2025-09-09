@@ -154,7 +154,7 @@ internal object PreviewData {
             tmdb = TmdbId(67890),
             tvdb = TvdbId(112233),
         ),
-        name = "John",
+        name = "John Doe",
         username = "johndoe69",
         location = "New York, USA",
         isVip = false,

@@ -271,7 +271,7 @@ private fun CommentHeader(
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(
-                    text = comment.user.username,
+                    text = comment.user.displayName,
                     style = TraktTheme.typography.paragraph.copy(fontWeight = FontWeight.W600),
                     color = TraktTheme.colors.textPrimary,
                     maxLines = 1,

@@ -244,9 +244,7 @@ private fun ProfileHeader(
         modifier = modifier,
     ) {
         val headerName = remember(state.user) {
-            state.user?.name?.ifBlank {
-                state.user.username
-            }
+            state.user?.displayName
         }
 
         ProfileAvatar(

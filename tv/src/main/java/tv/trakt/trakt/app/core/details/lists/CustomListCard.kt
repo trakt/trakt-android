@@ -215,7 +215,7 @@ private fun CustomListHeader(
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(
-                    text = list.user.username,
+                    text = list.user.displayName,
                     style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
                     color = TraktTheme.colors.textPrimary,
                     maxLines = 1,
