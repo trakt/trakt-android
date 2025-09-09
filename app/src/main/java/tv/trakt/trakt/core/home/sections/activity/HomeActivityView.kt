@@ -42,14 +42,13 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.episodes.model.Episode
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.PERSONAL
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.SOCIAL
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.views.EpisodeSocialItemView
 import tv.trakt.trakt.core.home.sections.activity.views.MovieSocialItemView
 import tv.trakt.trakt.core.home.views.HomeEmptySocialView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.FilterChip
+import tv.trakt.trakt.ui.components.FilterChipGroup
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -169,43 +168,24 @@ private fun ContentFilters(
     state: HomeActivityState,
     onFilterClick: (HomeActivityFilter) -> Unit,
 ) {
-    Row(
-        modifier = Modifier
-            .padding(headerPadding)
-            .padding(
-                top = 13.dp,
-                bottom = 15.dp,
-            ),
-        horizontalArrangement = spacedBy(6.dp),
-        verticalAlignment = Alignment.CenterVertically,
+    FilterChipGroup(
+        paddingHorizontal = headerPadding,
     ) {
-        FilterChip(
-            selected = state.filter == SOCIAL,
-            text = stringResource(SOCIAL.displayRes),
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Rounded.Done,
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier.size(FilterChipDefaults.IconSize),
-                )
-            },
-            onClick = { onFilterClick(SOCIAL) },
-        )
-
-        FilterChip(
-            selected = state.filter == PERSONAL,
-            text = stringResource(PERSONAL.displayRes),
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Rounded.Done,
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier.size(FilterChipDefaults.IconSize),
-                )
-            },
-            onClick = { onFilterClick(PERSONAL) },
-        )
+        for (filter in HomeActivityFilter.entries) {
+            FilterChip(
+                selected = state.filter == filter,
+                text = stringResource(filter.displayRes),
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Rounded.Done,
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier.size(FilterChipDefaults.IconSize),
+                    )
+                },
+                onClick = { onFilterClick(filter) },
+            )
+        }
     }
 }
 

@@ -1,12 +1,12 @@
 package tv.trakt.trakt.core.search.views
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Arrangement.spacedBy
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.core.search.model.SearchFilter
 import tv.trakt.trakt.ui.components.FilterChip
+import tv.trakt.trakt.ui.components.FilterChipGroup
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -22,26 +23,27 @@ internal fun SearchFiltersList(
     selectedFilter: SearchFilter = SearchFilter.MEDIA,
     onFilterClick: (SearchFilter) -> Unit = {},
 ) {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally),
-        verticalAlignment = Alignment.CenterVertically,
+    FilterChipGroup(
+        horizontalArrangement = spacedBy(6.dp, CenterHorizontally),
+        paddingHorizontal = PaddingValues.Zero,
+        paddingVertical = PaddingValues.Zero,
         modifier = modifier,
     ) {
-        SearchFilter.entries.forEach {
+        for (filter in SearchFilter.entries) {
             FilterChip(
-                selected = selectedFilter == it,
-                text = stringResource(it.displayRes),
+                selected = selectedFilter == filter,
+                text = stringResource(filter.displayRes),
                 leadingIcon = {
                     Icon(
-                        painter = painterResource(it.iconRes),
+                        painter = painterResource(filter.iconRes),
                         contentDescription = null,
                         tint = TraktTheme.colors.textPrimary,
                         modifier = Modifier.size(FilterChipDefaults.IconSize),
                     )
                 },
                 onClick = {
-                    if (selectedFilter != it) {
-                        onFilterClick(it)
+                    if (selectedFilter != filter) {
+                        onFilterClick(filter)
                     }
                 },
             )

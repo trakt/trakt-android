@@ -50,6 +50,7 @@ import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.SHOWS
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.FilterChip
+import tv.trakt.trakt.ui.components.FilterChipGroup
 import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
@@ -67,7 +68,7 @@ internal fun ListsWatchlistView(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    HomeActivityContent(
+    ListWatchlistContent(
         state = state,
         modifier = modifier,
         headerPadding = headerPadding,
@@ -80,7 +81,7 @@ internal fun ListsWatchlistView(
 }
 
 @Composable
-internal fun HomeActivityContent(
+internal fun ListWatchlistContent(
     state: ListsWatchlistState,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
@@ -192,15 +193,8 @@ private fun ContentFilters(
     state: ListsWatchlistState,
     onFilterClick: (WatchlistFilter) -> Unit,
 ) {
-    Row(
-        modifier = Modifier
-            .padding(headerPadding)
-            .padding(
-                top = 13.dp,
-                bottom = 15.dp,
-            ),
-        horizontalArrangement = spacedBy(6.dp),
-        verticalAlignment = Alignment.CenterVertically,
+    FilterChipGroup(
+        paddingHorizontal = headerPadding,
     ) {
         for (filter in WatchlistFilter.entries) {
             FilterChip(
@@ -374,7 +368,7 @@ private fun ContentEmptyView(
 @Composable
 private fun Preview() {
     TraktTheme {
-        HomeActivityContent(
+        ListWatchlistContent(
             state = ListsWatchlistState(
                 loading = IDLE,
             ),
@@ -390,7 +384,7 @@ private fun Preview() {
 @Composable
 private fun Preview2() {
     TraktTheme {
-        HomeActivityContent(
+        ListWatchlistContent(
             state = ListsWatchlistState(
                 loading = LOADING,
             ),
@@ -406,7 +400,7 @@ private fun Preview2() {
 @Composable
 private fun Preview3() {
     TraktTheme {
-        HomeActivityContent(
+        ListWatchlistContent(
             state = ListsWatchlistState(
                 loading = DONE,
                 items = emptyList<WatchlistItem>().toImmutableList(),
