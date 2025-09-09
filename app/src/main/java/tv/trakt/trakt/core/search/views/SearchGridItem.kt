@@ -79,7 +79,7 @@ private fun ShowGridItem(
                         )
                     }
                     InfoChip(
-                        text = stringResource(R.string.tag_text_number_of_episodes_short, item.show.airedEpisodes),
+                        text = stringResource(R.string.tag_text_number_of_episodes, item.show.airedEpisodes),
                     )
                 }
             }
