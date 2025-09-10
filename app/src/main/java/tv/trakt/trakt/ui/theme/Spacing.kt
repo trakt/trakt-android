@@ -13,6 +13,7 @@ internal val Spacing: TraktSpacing = TraktSpacing(
     mainPageTopSpace = 88.dp,
     mainPageBottomSpace = 64.dp,
     mainSectionVerticalSpace = 30.dp,
+    chipsSpacing = 5.dp,
 )
 
 @Immutable
@@ -25,4 +26,5 @@ internal data class TraktSpacing(
     val mainPageTopSpace: Dp = Dp.Unspecified,
     val mainPageBottomSpace: Dp = Dp.Unspecified,
     val mainSectionVerticalSpace: Dp = Dp.Unspecified,
+    val chipsSpacing: Dp = Dp.Unspecified,
 )

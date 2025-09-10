@@ -226,7 +226,7 @@ private fun ContentListItem(
         onClick = onClick,
         chipContent = {
             Row(
-                horizontalArrangement = spacedBy(5.dp),
+                horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpacing),
             ) {
                 InfoChip(
                     text = item.movie.year.toString(),

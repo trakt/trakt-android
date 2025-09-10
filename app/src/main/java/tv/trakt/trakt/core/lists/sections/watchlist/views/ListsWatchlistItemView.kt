@@ -40,7 +40,7 @@ internal fun ListsWatchlistItemView(
                 chipContent = {
                     if (isReleased) {
                         Row(
-                            horizontalArrangement = spacedBy(5.dp),
+                            horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpacing),
                         ) {
                             item.show.released?.let {
                                 InfoChip(
@@ -82,7 +82,7 @@ internal fun ListsWatchlistItemView(
                 chipContent = {
                     if (isReleased) {
                         Row(
-                            horizontalArrangement = spacedBy(5.dp),
+                            horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpacing),
                         ) {
                             item.movie.released?.let {
                                 InfoChip(

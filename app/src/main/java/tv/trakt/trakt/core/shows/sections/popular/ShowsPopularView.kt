@@ -183,15 +183,19 @@ private fun ContentListItem(
         imageUrl = item.images?.getPosterUrl(),
         onClick = onClick,
         chipContent = {
-            item.released?.let {
-                InfoChip(
-                    text = it.year.toString(),
-                )
-            }
-            if (item.airedEpisodes > 0) {
-                InfoChip(
-                    text = stringResource(R.string.tag_text_number_of_episodes, item.airedEpisodes),
-                )
+            Row(
+                horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpacing),
+            ) {
+                item.released?.let {
+                    InfoChip(
+                        text = it.year.toString(),
+                    )
+                }
+                if (item.airedEpisodes > 0) {
+                    InfoChip(
+                        text = stringResource(R.string.tag_text_number_of_episodes, item.airedEpisodes),
+                    )
+                }
             }
         },
         modifier = modifier,
