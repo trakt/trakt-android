@@ -62,7 +62,7 @@ internal fun EpisodeUpcomingItemView(
                         item.episode.season,
                     )
 
-                    else -> item.episode.seasonEpisodeString
+                    else -> item.episode.seasonEpisodeString()
                 }
 
                 Text(

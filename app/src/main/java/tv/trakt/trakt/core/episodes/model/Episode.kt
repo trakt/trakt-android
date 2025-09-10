@@ -1,6 +1,8 @@
 package tv.trakt.trakt.core.episodes.model
 
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.ui.res.stringResource
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.Ids
@@ -10,8 +12,8 @@ import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.networking.EpisodeDto
 import tv.trakt.trakt.common.networking.EpisodeLikesDto
 import tv.trakt.trakt.common.networking.LastEpisodeDto
+import tv.trakt.trakt.resources.R
 import java.time.ZonedDateTime
-import java.util.Locale.ROOT
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 
@@ -40,14 +42,14 @@ internal data class Episode(
             episode = number,
         )
 
-    val seasonEpisodeString: String
-        get() = String.format(
-            ROOT,
-            "%01dx%02d • %s",
-            this.season,
-            this.number,
-            this.title.ifBlank { "TBA" },
-        )
+    @Composable
+    fun seasonEpisodeString(): String {
+        val string = stringResource(R.string.episode_footer_season_episode, this.season, this.number)
+        return when {
+            title.isNotBlank() -> "$string - $title"
+            else -> string
+        }
+    }
 }
 
 internal fun Episode.Companion.fromDto(dto: EpisodeDto): Episode {

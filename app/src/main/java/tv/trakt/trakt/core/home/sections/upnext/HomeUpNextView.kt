@@ -261,7 +261,7 @@ private fun ContentListItem(
                 )
 
                 Text(
-                    text = item.progress.nextEpisode.seasonEpisodeString,
+                    text = item.progress.nextEpisode.seasonEpisodeString(),
                     style = TraktTheme.typography.cardSubtitle,
                     color = TraktTheme.colors.textSecondary,
                     maxLines = 1,

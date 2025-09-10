@@ -107,7 +107,7 @@ internal fun EpisodeSeasonEpisodesList(
                             )
 
                             Text(
-                                text = episode.seasonEpisode.toString(),
+                                text = episode.seasonEpisode.toDisplayString(),
                                 style = TraktTheme.typography.cardSubtitle,
                                 color = TraktTheme.colors.textSecondary,
                                 maxLines = 1,

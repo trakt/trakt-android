@@ -1,8 +1,10 @@
 package tv.trakt.trakt.common.model
 
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.ui.res.stringResource
 import kotlinx.serialization.Serializable
-import java.util.Locale.ROOT
+import tv.trakt.trakt.resources.R
 
 @Immutable
 @Serializable
@@ -16,12 +18,13 @@ data class SeasonEpisode(
         require(episode > 0) { "Episode number must be > 0" }
     }
 
-    override fun toString(): String {
-        return String.format(
-            ROOT,
-            "%01dx%02d",
+    @Composable
+    fun toDisplayString(): String {
+        return stringResource(
+            R.string.episode_footer_season_episode,
             this.season,
-            this.episode,
+            this.episode
         )
+
     }
 }
