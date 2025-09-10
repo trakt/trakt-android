@@ -41,18 +41,16 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.MEDIA
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.MOVIES
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.SHOWS
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
+import tv.trakt.trakt.core.lists.sections.watchlist.views.ListsWatchlistItemView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.FilterChip
 import tv.trakt.trakt.ui.components.FilterChipGroup
-import tv.trakt.trakt.ui.components.InfoChip
-import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -176,6 +174,7 @@ internal fun ListWatchlistContent(
                         }
                         else -> {
                             ContentList(
+                                filter = state.filter,
                                 listItems = (state.items ?: emptyList()).toImmutableList(),
                                 contentPadding = contentPadding,
                             )
@@ -236,6 +235,7 @@ private fun ContentLoadingList(
 private fun ContentList(
     listItems: ImmutableList<WatchlistItem>,
     listState: LazyListState = rememberLazyListState(),
+    filter: WatchlistFilter,
     contentPadding: PaddingValues,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
@@ -258,57 +258,14 @@ private fun ContentList(
             items = listItems,
             key = { it.key },
         ) { item ->
-            when (item) {
-                is WatchlistItem.ShowItem -> {
-                    VerticalMediaCard(
-                        title = item.show.title,
-                        imageUrl = item.images?.getPosterUrl(),
-                        chipContent = {
-                            if (item.show.airedEpisodes > 0) {
-                                InfoChip(
-                                    text = stringResource(
-                                        R.string.tag_text_number_of_episodes,
-                                        item.show.airedEpisodes,
-                                    ),
-                                )
-                            }
-                        },
-                        modifier = Modifier.animateItem(
-                            fadeInSpec = null,
-                            fadeOutSpec = null,
-                        ),
-                    )
-                }
-                is WatchlistItem.MovieItem -> {
-                    VerticalMediaCard(
-                        title = item.movie.title,
-                        imageUrl = item.images?.getPosterUrl(),
-                        chipContent = {
-                            Row(
-                                horizontalArrangement = spacedBy(5.dp),
-                            ) {
-                                if ((item.movie.year ?: 0) > 0) {
-                                    InfoChip(
-                                        text = item.movie.year.toString(),
-                                    )
-                                }
-                                item.movie.runtime?.inWholeMinutes?.let {
-                                    val runtimeString = remember(item.movie.runtime) {
-                                        it.durationFormat()
-                                    }
-                                    InfoChip(
-                                        text = runtimeString,
-                                    )
-                                }
-                            }
-                        },
-                        modifier = Modifier.animateItem(
-                            fadeInSpec = null,
-                            fadeOutSpec = null,
-                        ),
-                    )
-                }
-            }
+            ListsWatchlistItemView(
+                item = item,
+                showMediaIcon = (filter == MEDIA),
+                modifier = Modifier.animateItem(
+                    fadeInSpec = null,
+                    fadeOutSpec = null,
+                ),
+            )
         }
     }
 }

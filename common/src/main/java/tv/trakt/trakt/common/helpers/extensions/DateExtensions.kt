@@ -35,6 +35,11 @@ fun ZonedDateTime.toLocal(): ZonedDateTime = this.withZoneSameInstant(ZoneId.sys
 
 fun Instant.toLocal(): ZonedDateTime = this.atZone(ZoneId.systemDefault())
 
+fun LocalDate.isTodayOrBefore(): Boolean {
+    val today = LocalDate.now()
+    return this.isEqual(today) || this.isBefore(today)
+}
+
 // Strings functions
 
 fun String.toInstant(): Instant {

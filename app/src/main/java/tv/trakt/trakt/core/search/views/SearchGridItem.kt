@@ -73,9 +73,9 @@ private fun ShowGridItem(
                 Row(
                     horizontalArrangement = spacedBy(5.dp),
                 ) {
-                    if ((item.show.year ?: 0) > 0) {
+                    item.show.released?.let {
                         InfoChip(
-                            text = item.show.year.toString(),
+                            text = it.year.toString(),
                         )
                     }
                     InfoChip(
@@ -119,9 +119,9 @@ private fun MovieGridItem(
                 Row(
                     horizontalArrangement = spacedBy(5.dp),
                 ) {
-                    if ((item.movie.year ?: 0) > 0) {
+                    item.movie.released?.let {
                         InfoChip(
-                            text = item.movie.year.toString(),
+                            text = it.year.toString(),
                         )
                     }
                     item.movie.runtime?.inWholeMinutes?.let {

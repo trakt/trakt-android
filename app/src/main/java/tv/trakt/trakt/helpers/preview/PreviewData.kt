@@ -34,7 +34,7 @@ internal object PreviewData {
         overview = "This is a sample movie overview that provides a brief description of the movie's plot " +
             "and main themes. It is intended to give viewers an idea of what to expect without revealing too much.",
         year = 2024,
-        released = ZonedDateTime.now(),
+        released = ZonedDateTime.now().plusDays(5),
         genres = listOf("Comedy", "Drama").toImmutableList(),
         images = Images(
             fanart = listOf(
