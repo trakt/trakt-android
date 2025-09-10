@@ -181,7 +181,9 @@ private fun ContentFilters(
                         modifier = Modifier.size(14.dp),
                     )
                 },
-                onClick = { onFilterClick(filter) },
+                onClick = {
+                    onFilterClick(filter)
+                },
             )
         }
     }
