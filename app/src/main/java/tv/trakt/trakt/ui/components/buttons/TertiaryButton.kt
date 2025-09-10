@@ -19,7 +19,7 @@ internal fun TertiaryButton(
     icon: Painter? = null,
     enabled: Boolean = true,
     loading: Boolean = false,
-    height: Dp = 36.dp,
+    height: Dp = 34.dp,
     containerColor: Color = TraktTheme.colors.primaryButtonContainer,
     contentColor: Color = TraktTheme.colors.primaryButtonContent,
     disabledContainerColor: Color = TraktTheme.colors.primaryButtonContainerDisabled,

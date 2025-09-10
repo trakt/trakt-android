@@ -125,6 +125,7 @@ internal fun HomeWatchlistContent(
                                     "${stringResource(R.string.error_text_unexpected_error_short)}\n\n${state.error}",
                                 color = TraktTheme.colors.textSecondary,
                                 style = TraktTheme.typography.meta,
+                                maxLines = 10,
                                 modifier = Modifier.padding(contentPadding),
                             )
                         }

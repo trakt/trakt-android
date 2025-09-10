@@ -76,6 +76,7 @@ typealias SeasonDto = GetUsersComments200ResponseInnerOneOf2Season
 typealias ListDto = GetUsersListsPersonal200ResponseInner
 typealias ListMovieItemDto = GetUsersWatchlistMovies200ResponseInner
 typealias ListShowItemDto = GetUsersWatchlistShows200ResponseInner
+typealias ListItemDto = GetUsersWatchlistAll200ResponseInner
 typealias UserDto = GetUsersSettings200ResponseUser
 typealias UserSettingsDto = GetUsersSettings200Response
 typealias UserCommentsDto = GetUsersReactionsComments200ResponseInnerCommentUser

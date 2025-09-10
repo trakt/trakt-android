@@ -114,6 +114,7 @@ internal fun ListWatchlistContent(
                     style = TraktTheme.typography.meta.copy(fontWeight = W400),
                 )
             }
+
             if (!state.items.isNullOrEmpty() || state.loading != DONE) {
                 Text(
                     text = stringResource(R.string.button_text_view_all),
@@ -152,6 +153,7 @@ internal fun ListWatchlistContent(
                                     "${stringResource(R.string.error_text_unexpected_error_short)}\n\n${state.error}",
                                 color = TraktTheme.colors.textSecondary,
                                 style = TraktTheme.typography.meta,
+                                maxLines = 10,
                                 modifier = Modifier.padding(contentPadding),
                             )
                         }

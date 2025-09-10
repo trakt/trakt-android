@@ -1,5 +1,7 @@
 package tv.trakt.trakt.core.lists.sections.personal
 
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
@@ -9,9 +11,16 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -20,7 +29,15 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.LoadingState.IDLE
+import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.core.lists.model.PersonalListItem
+import tv.trakt.trakt.core.lists.sections.personal.views.ListsPersonalItemView
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
@@ -29,15 +46,15 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun ListsPersonalView(
     list: CustomList,
-    modifier: Modifier = Modifier,
-//    viewModel: ListsWatchlistViewModel = koinViewModel(),
+    viewModel: ListsPersonalViewModel,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
+    modifier: Modifier = Modifier,
 ) {
-//    val state by viewModel.state.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     ListsPersonalContent(
-//        state = state,
+        state = state,
         list = list,
         modifier = modifier,
         headerPadding = headerPadding,
@@ -47,7 +64,7 @@ internal fun ListsPersonalView(
 
 @Composable
 internal fun ListsPersonalContent(
-//    state: ListsWatchlistState,
+    state: ListsPersonalState,
     list: CustomList,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
@@ -85,22 +102,69 @@ internal fun ListsPersonalContent(
                     )
                 }
             }
-//            if (!state.items.isNullOrEmpty() || state.loading != DONE) {
-            Text(
-                text = stringResource(R.string.button_text_view_all),
-                color = TraktTheme.colors.textSecondary,
-                style = TraktTheme.typography.buttonSecondary,
-                modifier = Modifier,
-            )
-//            }
+
+            if (!state.items.isNullOrEmpty() || state.loading != DONE) {
+                Text(
+                    text = stringResource(R.string.button_text_view_all),
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.buttonSecondary,
+                    modifier = Modifier,
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ContentLoadingList(
-            visible = true,
-            contentPadding = contentPadding,
-        )
+        Crossfade(
+            targetState = state.loading,
+            animationSpec = tween(200),
+        ) { loading ->
+            when (loading) {
+                IDLE, LOADING -> {
+                    ContentLoadingList(
+                        visible = loading.isLoading,
+                        contentPadding = contentPadding,
+                    )
+                }
+                DONE -> {
+                    when {
+                        state.error != null -> {
+                            Text(
+                                text =
+                                    "${stringResource(R.string.error_text_unexpected_error_short)}\n\n${state.error}",
+                                color = TraktTheme.colors.textSecondary,
+                                style = TraktTheme.typography.meta,
+                                maxLines = 10,
+                                modifier = Modifier.padding(contentPadding),
+                            )
+                        }
+                        state.items?.isEmpty() == true -> {
+//                            ContentEmptyView(
+//                                authenticated = (state.user != null),
+//                                filter = state.filter,
+//                                onActionClick = {
+//                                    if (state.user == null) {
+//                                        onProfileClick()
+//                                        return@ContentEmptyView
+//                                    }
+//                                    when (it) {
+//                                        MEDIA, SHOWS -> onShowsClick()
+//                                        MOVIES -> onMoviesClick()
+//                                    }
+//                                },
+//                                modifier = Modifier.padding(contentPadding),
+//                            )
+                        }
+                        else -> {
+                            ContentList(
+                                listItems = (state.items ?: emptyList()).toImmutableList(),
+                                contentPadding = contentPadding,
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -122,6 +186,44 @@ private fun ContentLoadingList(
     }
 }
 
+@Composable
+private fun ContentList(
+    listItems: ImmutableList<PersonalListItem>,
+    listState: LazyListState = rememberLazyListState(),
+    contentPadding: PaddingValues,
+) {
+    val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
+
+    LaunchedEffect(listItems) {
+        val hashCode = listItems.hashCode()
+        if (currentList.intValue != hashCode) {
+            currentList.intValue = hashCode
+            listState.animateScrollToItem(0)
+        }
+    }
+
+    LazyRow(
+        state = listState,
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
+        contentPadding = contentPadding,
+    ) {
+        items(
+            items = listItems,
+            key = { it.key },
+        ) { item ->
+            ListsPersonalItemView(
+                item = item,
+                showMediaIcon = true,
+                modifier = Modifier.animateItem(
+                    fadeInSpec = null,
+                    fadeOutSpec = null,
+                ),
+            )
+        }
+    }
+}
+
 // Previews
 
 @Preview(
@@ -134,6 +236,7 @@ private fun Preview() {
     TraktTheme {
         ListsPersonalContent(
             list = PreviewData.customList1,
+            state = ListsPersonalState(loading = IDLE),
         )
     }
 }
@@ -148,6 +251,7 @@ private fun Preview2() {
     TraktTheme {
         ListsPersonalContent(
             list = PreviewData.customList1,
+            state = ListsPersonalState(loading = LOADING),
         )
     }
 }
@@ -162,6 +266,7 @@ private fun Preview3() {
     TraktTheme {
         ListsPersonalContent(
             list = PreviewData.customList1,
+            state = ListsPersonalState(loading = DONE),
         )
     }
 }

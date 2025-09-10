@@ -2,12 +2,15 @@ package tv.trakt.trakt.core.profile.data.remote
 
 import org.openapitools.client.apis.CalendarsApi
 import org.openapitools.client.apis.HistoryApi
+import org.openapitools.client.apis.ListsApi
 import org.openapitools.client.apis.UsersApi
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.networking.CalendarMovieDto
 import tv.trakt.trakt.common.networking.CalendarShowDto
 import tv.trakt.trakt.common.networking.ListDto
+import tv.trakt.trakt.common.networking.ListItemDto
 import tv.trakt.trakt.common.networking.SocialActivityItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
@@ -18,6 +21,7 @@ internal class UserApiClient(
     private val usersApi: UsersApi,
     private val historyApi: HistoryApi,
     private val calendarsApi: CalendarsApi,
+    private val listsApi: ListsApi,
 ) : UserRemoteDataSource {
     override suspend fun getProfile(): User {
         val response = usersApi.getUsersSettings(
@@ -126,6 +130,31 @@ internal class UserApiClient(
             id = "me",
             extended = "cloud9",
         )
+        return response.body()
+    }
+
+    override suspend fun getPersonalListItems(
+        listId: TraktId,
+        limit: Int,
+        page: Int,
+        extended: String,
+    ): List<ListItemDto> {
+        val response = usersApi.getUsersListsListItemsAll(
+            id = "me",
+            listId = listId.value.toString(),
+            extended = extended,
+            sortBy = null,
+            sortHow = null,
+            watchnow = null,
+            genres = null,
+            years = null,
+            ratings = null,
+            startDate = null,
+            endDate = null,
+            page = page,
+            limit = limit.toString(),
+        )
+
         return response.body()
     }
 }

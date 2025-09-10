@@ -15,9 +15,14 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.ListsViewModel
+import tv.trakt.trakt.core.lists.sections.personal.ListsPersonalViewModel
+import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
+import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsStorage
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalStorage
+import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistViewModel
 import tv.trakt.trakt.core.lists.sections.watchlist.data.local.ListsWatchlistLocalDataSource
@@ -42,6 +47,10 @@ internal val listsDataModule = module {
 
     single<ListsPersonalLocalDataSource> {
         ListsPersonalStorage()
+    }
+
+    single<ListsPersonalItemsLocalDataSource> {
+        ListsPersonalItemsStorage()
     }
 
     arrayOf(
@@ -91,6 +100,13 @@ internal val listsModule = module {
         )
     }
 
+    factory {
+        GetPersonalListItemsUseCase(
+            remoteSource = get(),
+            localSource = get(),
+        )
+    }
+
     viewModel {
         ListsViewModel(
             sessionManager = get(),
@@ -105,6 +121,13 @@ internal val listsModule = module {
             getMoviesWatchlistUseCase = get(),
             getFilterUseCase = get(),
             sessionManager = get(),
+        )
+    }
+
+    viewModel { (listId: TraktId) ->
+        ListsPersonalViewModel(
+            listId = listId,
+            getListItemsUseCase = get(),
         )
     }
 }

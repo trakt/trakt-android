@@ -2,37 +2,51 @@ package tv.trakt.trakt.core.lists
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.core.lists.sections.personal.ListsPersonalView
 import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistView
 import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
+import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.BackdropImage
+import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -138,10 +152,51 @@ private fun ListsScreenContent(
                 )
             }
 
+            if (state.user.user != null) {
+                item(
+                    key = "personal_lists_header",
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(sectionPadding),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Column(
+                            verticalArrangement = Arrangement.Center,
+                        ) {
+                            Text(
+                                text = stringResource(R.string.list_title_personal_lists),
+                                color = TraktTheme.colors.textPrimary,
+                                style = TraktTheme.typography.heading5,
+                            )
+                            Text(
+                                text = "Recently updated", // TODO String
+                                color = TraktTheme.colors.textSecondary,
+                                style = TraktTheme.typography.meta.copy(fontWeight = W400),
+                            )
+                        }
+
+                        TertiaryButton(
+                            text = stringResource(R.string.button_text_create_list),
+                            icon = painterResource(R.drawable.ic_plus_round),
+                            onClick = { },
+                        )
+                    }
+                }
+            }
+
             state.lists?.forEach { list ->
                 item(key = list.ids.trakt.value) {
                     ListsPersonalView(
                         list = list,
+                        viewModel = koinViewModel(
+                            key = list.ids.trakt.value.toString(),
+                            parameters = {
+                                parametersOf(list.ids.trakt)
+                            },
+                        ),
                         headerPadding = sectionPadding,
                         contentPadding = sectionPadding,
                     )
