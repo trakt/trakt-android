@@ -6,7 +6,7 @@ import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.fromDto
-import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
+import tv.trakt.trakt.core.home.HomeConfig.HOME_WATCHLIST_LIMIT
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.core.home.sections.watchlist.model.WatchlistMovie
 import tv.trakt.trakt.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
@@ -25,7 +25,7 @@ internal class GetWatchlistMoviesUseCase(
     }
 
     suspend fun getWatchlist(
-        limit: Int = HOME_SECTION_LIMIT,
+        limit: Int = HOME_WATCHLIST_LIMIT,
         page: Int = 1,
     ): ImmutableList<WatchlistMovie> {
         val nowDay = LocalDate.now().toString()
