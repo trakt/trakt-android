@@ -200,7 +200,7 @@ private fun ContentListItem(
                         item.episode.season,
                     )
 
-                    else -> item.episode.seasonEpisodeString
+                    else -> item.episode.seasonEpisodeString()
                 }
 
                 Text(

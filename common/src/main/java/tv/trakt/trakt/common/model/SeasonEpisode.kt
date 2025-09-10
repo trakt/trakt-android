@@ -23,8 +23,7 @@ data class SeasonEpisode(
         return stringResource(
             R.string.episode_footer_season_episode,
             this.season,
-            this.episode
+            this.episode,
         )
-
     }
 }

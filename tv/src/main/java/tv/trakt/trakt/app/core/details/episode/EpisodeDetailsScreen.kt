@@ -120,7 +120,7 @@ internal fun EpisodeDetailsScreen(
 
     if (historyConfirmationDialog != null) {
         HistoryConfirmationOverlay(
-            title = state.episodeDetails?.seasonEpisodeString
+            title = state.episodeDetails?.seasonEpisodeString()
                 ?: stringResource(R.string.list_title_recently_watched),
             episodePlayId = historyConfirmationDialog ?: -1L,
             onConfirm = viewModel::removeFromHistory,

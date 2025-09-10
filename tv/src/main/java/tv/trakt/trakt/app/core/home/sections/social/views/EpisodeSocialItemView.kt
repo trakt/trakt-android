@@ -113,7 +113,7 @@ internal fun EpisodeSocialItemView(
                     )
 
                     Text(
-                        text = item.episode.seasonEpisodeString,
+                        text = item.episode.seasonEpisodeString(),
                         style = TraktTheme.typography.cardSubtitle,
                         color = TraktTheme.colors.textSecondary,
                         maxLines = 1,

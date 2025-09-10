@@ -165,12 +165,13 @@ private fun ProfileHistoryViewAllContent(
                             Column(
                                 verticalArrangement = spacedBy(1.dp),
                             ) {
+                                val seString = item.episode?.seasonEpisodeString() ?: ""
                                 Text(
                                     text = remember(item.type) {
                                         when (item.type) {
                                             "show" -> item.show!!.title
                                             "movie" -> item.movie!!.title
-                                            "episode" -> item.episode!!.seasonEpisodeString
+                                            "episode" -> seString
                                             else -> "TBA"
                                         }
                                     },

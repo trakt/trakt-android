@@ -86,7 +86,7 @@ internal fun ListsPersonalContent(
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .weight(1F, fill = false)
-                    .fillMaxWidth(0.75F)
+                    .fillMaxWidth(0.75F),
             ) {
                 Text(
                     text = list.name,
@@ -99,7 +99,7 @@ internal fun ListsPersonalContent(
                         color = TraktTheme.colors.textSecondary,
                         style = TraktTheme.typography.meta.copy(
                             fontWeight = W400,
-                            lineHeight = 1.em
+                            lineHeight = 1.em,
                         ),
                         maxLines = 2,
                         overflow = Ellipsis,

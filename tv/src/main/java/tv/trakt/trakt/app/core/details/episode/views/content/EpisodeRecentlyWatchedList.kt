@@ -67,7 +67,7 @@ internal fun EpisodeRecentlyWatchedList(
                             verticalArrangement = Arrangement.spacedBy(1.dp),
                         ) {
                             Text(
-                                text = item.episode.seasonEpisodeString,
+                                text = item.episode.seasonEpisodeString(),
                                 style = TraktTheme.typography.cardTitle,
                                 color = TraktTheme.colors.textPrimary,
                                 maxLines = 1,
