@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -85,7 +86,7 @@ internal fun ListsPersonalContent(
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .weight(1F, fill = false)
-                    .padding(end = 48.dp),
+                    .fillMaxWidth(0.75F)
             ) {
                 Text(
                     text = list.name,
@@ -96,7 +97,10 @@ internal fun ListsPersonalContent(
                     Text(
                         text = list.description ?: "",
                         color = TraktTheme.colors.textSecondary,
-                        style = TraktTheme.typography.meta.copy(fontWeight = W400),
+                        style = TraktTheme.typography.meta.copy(
+                            fontWeight = W400,
+                            lineHeight = 1.em
+                        ),
                         maxLines = 2,
                         overflow = Ellipsis,
                     )
@@ -139,21 +143,12 @@ internal fun ListsPersonalContent(
                             )
                         }
                         state.items?.isEmpty() == true -> {
-//                            ContentEmptyView(
-//                                authenticated = (state.user != null),
-//                                filter = state.filter,
-//                                onActionClick = {
-//                                    if (state.user == null) {
-//                                        onProfileClick()
-//                                        return@ContentEmptyView
-//                                    }
-//                                    when (it) {
-//                                        MEDIA, SHOWS -> onShowsClick()
-//                                        MOVIES -> onMoviesClick()
-//                                    }
-//                                },
-//                                modifier = Modifier.padding(contentPadding),
-//                            )
+                            Text(
+                                text = stringResource(R.string.list_placeholder_empty),
+                                color = TraktTheme.colors.textSecondary,
+                                style = TraktTheme.typography.heading6,
+                                modifier = Modifier.padding(contentPadding),
+                            )
                         }
                         else -> {
                             ContentList(

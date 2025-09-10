@@ -5,7 +5,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.openapitools.client.apis.MoviesApi
 import org.openapitools.client.apis.RecommendationsApi
-import tv.trakt.trakt.common.Config.API_BASE_URL
+import tv.trakt.trakt.common.Config.API_HD_BASE_URL
 import tv.trakt.trakt.core.movies.MoviesViewModel
 import tv.trakt.trakt.core.movies.data.remote.MoviesApiClient
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
@@ -31,12 +31,12 @@ internal val moviesDataModule = module {
     single<MoviesRemoteDataSource> {
         MoviesApiClient(
             moviesApi = MoviesApi(
-                baseUrl = API_BASE_URL,
+                baseUrl = API_HD_BASE_URL,
                 httpClientEngine = get(),
                 httpClientConfig = get(named("clientConfig")),
             ),
             recommendationsApi = RecommendationsApi(
-                baseUrl = API_BASE_URL,
+                baseUrl = API_HD_BASE_URL,
                 httpClientEngine = get(),
                 httpClientConfig = get(named("authorizedClientConfig")),
             ),
