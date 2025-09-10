@@ -36,6 +36,7 @@ internal fun TertiaryButton(
         loading = loading,
         height = height,
         textStyle = TraktTheme.typography.buttonTertiary,
+        contentPadding = 10.dp,
         containerColor = containerColor,
         contentColor = contentColor,
         disabledContainerColor = disabledContainerColor,

@@ -40,6 +40,7 @@ internal fun PrimaryButton(
     enabled: Boolean = true,
     loading: Boolean = false,
     height: Dp = 40.dp,
+    contentPadding: Dp = 12.dp,
     containerColor: Color = TraktTheme.colors.primaryButtonContainer,
     contentColor: Color = TraktTheme.colors.primaryButtonContent,
     disabledContainerColor: Color = TraktTheme.colors.primaryButtonContainerDisabled,
@@ -47,8 +48,8 @@ internal fun PrimaryButton(
 ) {
     Button(
         contentPadding = PaddingValues(
-            start = 12.dp,
-            end = 12.dp,
+            start = contentPadding,
+            end = contentPadding,
         ),
         modifier = modifier.height(height),
         shape = RoundedCornerShape(12.dp),

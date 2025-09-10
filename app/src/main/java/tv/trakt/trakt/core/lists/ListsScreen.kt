@@ -34,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
@@ -179,6 +180,7 @@ private fun ListsScreenContent(
                         }
 
                         TertiaryButton(
+                            height = 32.dp,
                             text = stringResource(R.string.button_text_create_list),
                             icon = painterResource(R.drawable.ic_plus_round),
                             onClick = { },
