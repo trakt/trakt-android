@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -183,9 +184,20 @@ private fun ContentListItem(
         imageUrl = item.images?.getPosterUrl(),
         onClick = onClick,
         chipContent = {
-            InfoChip(
-                text = stringResource(R.string.tag_text_number_of_episodes, item.airedEpisodes),
-            )
+            Row(
+                horizontalArrangement = spacedBy(5.dp),
+            ) {
+                item.released?.let {
+                    InfoChip(
+                        text = it.year.toString(),
+                    )
+                }
+                if (item.airedEpisodes > 0) {
+                    InfoChip(
+                        text = stringResource(R.string.tag_text_number_of_episodes, item.airedEpisodes),
+                    )
+                }
+            }
         },
         modifier = modifier,
     )

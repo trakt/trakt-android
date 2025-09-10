@@ -188,16 +188,14 @@ private fun ContentListItem(
             Row(
                 horizontalArrangement = spacedBy(5.dp),
             ) {
-                InfoChip(
-                    text = item.year.toString(),
-                )
+                item.released?.let {
+                    InfoChip(text = it.year.toString())
+                }
                 item.runtime?.inWholeMinutes?.let {
                     val runtimeString = remember(item.runtime) {
                         it.durationFormat()
                     }
-                    InfoChip(
-                        text = runtimeString,
-                    )
+                    InfoChip(text = runtimeString)
                 }
             }
         },
