@@ -49,7 +49,7 @@ internal fun ListsWatchlistItemView(
                                         showMediaIcon -> painterResource(R.drawable.ic_shows_off)
                                         else -> null
                                     },
-                                    iconPadding = 2.dp,
+                                    iconPadding = 1.dp,
                                 )
                             }
                             if (item.show.airedEpisodes > 0) {

@@ -16,9 +16,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Done
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -177,10 +175,10 @@ private fun ContentFilters(
                 text = stringResource(filter.displayRes),
                 leadingIcon = {
                     Icon(
-                        imageVector = Icons.Rounded.Done,
+                        painter = painterResource(filter.iconRes),
                         contentDescription = null,
                         tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier.size(FilterChipDefaults.IconSize),
+                        modifier = Modifier.size(14.dp),
                     )
                 },
                 onClick = { onFilterClick(filter) },
