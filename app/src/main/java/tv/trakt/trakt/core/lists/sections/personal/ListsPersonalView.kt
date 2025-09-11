@@ -186,7 +186,7 @@ private fun ContentEmptyList(contentPadding: PaddingValues) {
             VerticalMediaSkeletonCard(
                 chipRatio = 0.5F,
                 shimmer = false,
-                containerColor = TraktTheme.colors.skeletonContainer.copy(alpha = 0.1F),
+                containerColor = TraktTheme.colors.skeletonContainer.copy(alpha = 0.5F),
             )
         }
     }

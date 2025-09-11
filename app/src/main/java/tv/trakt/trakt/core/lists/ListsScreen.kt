@@ -120,6 +120,7 @@ private fun CreateListSheet(
                     key = nextInt().toString(),
                 ),
                 onListCreated = {
+                    onListCreated()
                     onDismiss()
                     sheetScope.launch {
                         localSnack.showSnackbar(localContext.getString(R.string.text_info_list_created))
