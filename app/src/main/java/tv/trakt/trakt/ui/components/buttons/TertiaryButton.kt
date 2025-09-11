@@ -39,6 +39,7 @@ internal fun TertiaryButton(
         contentPadding = 10.dp,
         containerColor = containerColor,
         contentColor = contentColor,
+        corner = 10.dp,
         disabledContainerColor = disabledContainerColor,
         disabledContentColor = disabledContentColor,
     )

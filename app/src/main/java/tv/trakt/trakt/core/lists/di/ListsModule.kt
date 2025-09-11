@@ -21,8 +21,6 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.ListsViewModel
 import tv.trakt.trakt.core.lists.data.remote.ListsApiClient
 import tv.trakt.trakt.core.lists.data.remote.ListsRemoteDataSource
-import tv.trakt.trakt.core.lists.sections.create.CreateListViewModel
-import tv.trakt.trakt.core.lists.sections.create.usecases.CreateListUseCase
 import tv.trakt.trakt.core.lists.sections.personal.ListsPersonalViewModel
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsStorage
@@ -37,6 +35,10 @@ import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistU
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetShowsWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.filters.GetWatchlistFilterUseCase
+import tv.trakt.trakt.core.lists.sheets.create.CreateListViewModel
+import tv.trakt.trakt.core.lists.sheets.create.usecases.CreateListUseCase
+import tv.trakt.trakt.core.lists.sheets.edit.EditListViewModel
+import tv.trakt.trakt.core.lists.sheets.edit.usecases.EditListUseCase
 
 internal const val LISTS_PREFERENCES = "lists_preferences_mobile"
 
@@ -130,6 +132,12 @@ internal val listsModule = module {
         )
     }
 
+    factory {
+        EditListUseCase(
+            remoteSource = get(),
+        )
+    }
+
     viewModel {
         ListsViewModel(
             sessionManager = get(),
@@ -157,6 +165,12 @@ internal val listsModule = module {
     viewModel {
         CreateListViewModel(
             createListUseCase = get(),
+        )
+    }
+
+    viewModel {
+        EditListViewModel(
+            editListUseCase = get(),
         )
     }
 }

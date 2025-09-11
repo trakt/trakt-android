@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.lists.sections.create.usecases
+package tv.trakt.trakt.core.lists.sheets.create.usecases
 
 import tv.trakt.trakt.core.lists.data.remote.ListsRemoteDataSource
 

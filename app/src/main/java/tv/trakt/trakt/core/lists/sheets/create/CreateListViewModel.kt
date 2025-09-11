@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.lists.sections.create
+package tv.trakt.trakt.core.lists.sheets.create
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,7 +14,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.getHttpErrorCode
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.core.lists.sections.create.usecases.CreateListUseCase
+import tv.trakt.trakt.core.lists.sheets.create.usecases.CreateListUseCase
 
 private const val HTTP_ERROR_CODE_LISTS_LIMIT = 420
 

@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.lists.sections.create
+package tv.trakt.trakt.core.lists.sheets.create
 
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.helpers.LoadingState

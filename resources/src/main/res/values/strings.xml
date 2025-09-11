@@ -92,9 +92,15 @@
     <!-- Migrate to generator -->
     <string name="error_text_lists_limit">Uh oh… You have reached the limit of your personal lists. Upgrade to VIP for unlimited amount of lists!</string>
     <string name="text_info_list_created">List has been created.</string>
+    <string name="text_info_list_deleted">List has been deleted.</string>
+    <string name="text_info_list_updated">List has been updated.</string>
     <string name="button_text_create">Create</string>
+    <string name="button_text_apply">Apply</string>
+    <string name="button_text_delete">Delete</string>
     <string name="page_title_create_list">Create List</string>
+    <string name="page_title_edit_list">Edit List</string>
     <string name="page_subtitle_create_list">Enter a name and description for your list.</string>
+    <string name="page_subtitle_edit_list">Edit your list details.</string>
     <string name="button_text_create_list">Create list</string>
     <string name="button_text_browse_movies">Browse Movies</string>
     <string name="button_text_browse_shows">Browse Shows</string>

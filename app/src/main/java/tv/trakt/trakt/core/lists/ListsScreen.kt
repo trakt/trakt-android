@@ -21,20 +21,17 @@ import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
@@ -43,24 +40,22 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalBottomBarVisibility
-import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.core.lists.sections.create.CreateListView
+import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.core.lists.sections.personal.ListsPersonalView
 import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistView
+import tv.trakt.trakt.core.lists.sheets.CreateListSheet
+import tv.trakt.trakt.core.lists.sheets.EditListSheet
 import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.BackdropImage
-import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
 import tv.trakt.trakt.ui.theme.TraktTheme
-import kotlin.random.Random.Default.nextInt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -76,67 +71,31 @@ internal fun ListsScreen(
     }
 
     val state by viewModel.state.collectAsStateWithLifecycle()
-    var sheetActive by remember { mutableStateOf(false) }
+    var createListSheet by remember { mutableStateOf(false) }
+    var editListSheet: CustomList? by remember { mutableStateOf(null) }
 
     ListsScreenContent(
         state = state,
         onProfileClick = onNavigateToProfile,
         onShowsClick = onNavigateToShows,
         onMoviesClick = onNavigateToMovies,
-        onCreateListClick = { sheetActive = true },
+        onCreateListClick = { createListSheet = true },
+        onEditListClick = { editListSheet = it },
     )
 
     CreateListSheet(
-        sheetActive = sheetActive,
+        sheetActive = createListSheet,
         onListCreated = viewModel::loadData,
-        onDismiss = { sheetActive = false },
+        onDismiss = { createListSheet = false },
     )
-}
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun CreateListSheet(
-    sheetActive: Boolean,
-    onListCreated: () -> Unit,
-    onDismiss: () -> Unit,
-) {
-    val localSnack = LocalSnackbarState.current
-    val localContext = LocalContext.current
-
-    val sheetScope = rememberCoroutineScope()
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-
-    if (sheetActive) {
-        TraktBottomSheet(
-            sheetState = sheetState,
-            onDismiss = onDismiss,
-        ) {
-            CreateListView(
-                viewModel = koinViewModel(
-                    key = nextInt().toString(),
-                ),
-                onListCreated = {
-                    onListCreated()
-                    onDismiss()
-                    sheetScope.launch {
-                        localSnack.showSnackbar(localContext.getString(R.string.text_info_list_created))
-                    }
-                },
-                onError = {
-                    onDismiss()
-                    sheetScope.launch {
-                        localSnack.showSnackbar(localContext.getString(R.string.error_text_unexpected_error_short))
-                    }
-                },
-                onListLimitError = {
-                    onDismiss()
-                    sheetScope.launch {
-                        localSnack.showSnackbar(localContext.getString(R.string.error_text_lists_limit))
-                    }
-                },
-            )
-        }
-    }
+    EditListSheet(
+        sheetActive = editListSheet != null,
+        list = editListSheet,
+        onListEdited = viewModel::loadData,
+        onListDeleted = viewModel::loadData,
+        onDismiss = { editListSheet = null },
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -148,6 +107,7 @@ private fun ListsScreenContent(
     onShowsClick: () -> Unit = {},
     onMoviesClick: () -> Unit = {},
     onCreateListClick: () -> Unit = {},
+    onEditListClick: (CustomList) -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
     val lazyListState = rememberLazyListState(
@@ -268,6 +228,7 @@ private fun ListsScreenContent(
                         ),
                         headerPadding = sectionPadding,
                         contentPadding = sectionPadding,
+                        onMoreClick = { onEditListClick(list) },
                     )
                 }
             }

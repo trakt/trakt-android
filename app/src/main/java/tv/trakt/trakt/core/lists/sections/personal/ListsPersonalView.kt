@@ -11,10 +11,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
@@ -36,6 +39,7 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 import tv.trakt.trakt.core.lists.sections.personal.views.ListsPersonalItemView
@@ -50,6 +54,7 @@ internal fun ListsPersonalView(
     viewModel: ListsPersonalViewModel,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
+    onMoreClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -60,6 +65,7 @@ internal fun ListsPersonalView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
+        onMoreClick = onMoreClick,
     )
 }
 
@@ -70,6 +76,7 @@ internal fun ListsPersonalContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
+    onMoreClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -88,11 +95,28 @@ internal fun ListsPersonalContent(
                     .weight(1F, fill = false)
                     .fillMaxWidth(0.75F),
             ) {
-                Text(
-                    text = list.name,
-                    color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.heading5,
-                )
+                Row(
+                    horizontalArrangement = spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = list.name,
+                        color = TraktTheme.colors.textPrimary,
+                        style = TraktTheme.typography.heading5,
+                        maxLines = 1,
+                        overflow = Ellipsis,
+                        modifier = Modifier.weight(1F, fill = false),
+                    )
+
+                    Icon(
+                        painter = painterResource(R.drawable.ic_more_vertical),
+                        contentDescription = "Genres",
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier
+                            .onClick(onMoreClick)
+                            .size(14.dp),
+                    )
+                }
                 if (!list.description.isNullOrBlank()) {
                     Text(
                         text = list.description ?: "",
@@ -101,7 +125,7 @@ internal fun ListsPersonalContent(
                             fontWeight = W400,
                             lineHeight = 1.em,
                         ),
-                        maxLines = 2,
+                        maxLines = 1,
                         overflow = Ellipsis,
                     )
                 }

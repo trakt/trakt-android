@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.lists.sections.create
+package tv.trakt.trakt.core.lists.sheets.create
 
 import InputField
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -15,13 +14,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -75,23 +74,15 @@ private fun CreateListContent(
             .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
             .padding(bottom = 32.dp),
     ) {
-        Column(
-            modifier = Modifier.padding(bottom = 12.dp),
-        ) {
-            Text(
-                text = stringResource(R.string.page_title_create_list),
-                color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.heading5,
-            )
-            Text(
-                text = stringResource(R.string.page_subtitle_create_list),
-                color = TraktTheme.colors.textSecondary,
-                style = TraktTheme.typography.meta.copy(fontWeight = W400),
-            )
-        }
+        TraktHeader(
+            title = stringResource(R.string.page_title_create_list),
+            subtitle = stringResource(R.string.page_subtitle_create_list),
+            modifier = Modifier.padding(bottom = 19.dp),
+        )
 
         InputField(
             state = nameInputState,
+            enabled = !state.loading.isLoading,
             placeholder = stringResource(R.string.input_placeholder_lists_name),
             containerColor = Color.Transparent,
             modifier = Modifier.fillMaxWidth(),
@@ -99,6 +90,7 @@ private fun CreateListContent(
 
         InputField(
             state = descriptionInputState,
+            enabled = !state.loading.isLoading,
             placeholder = stringResource(R.string.input_placeholder_lists_description),
             containerColor = Color.Transparent,
             modifier = Modifier.fillMaxWidth(),
@@ -108,6 +100,7 @@ private fun CreateListContent(
             text = stringResource(R.string.button_text_create),
             enabled = inputValid && !state.loading.isLoading,
             loading = state.loading.isLoading,
+            height = 48.dp,
             onClick = {
                 onCreateClick(
                     nameInputState.text.toString(),
@@ -116,7 +109,7 @@ private fun CreateListContent(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp),
+                .padding(top = 24.dp),
         )
     }
 }

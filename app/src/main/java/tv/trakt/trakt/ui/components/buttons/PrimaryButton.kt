@@ -39,7 +39,8 @@ internal fun PrimaryButton(
     iconSpace: Dp = 8.dp,
     enabled: Boolean = true,
     loading: Boolean = false,
-    height: Dp = 40.dp,
+    height: Dp = 48.dp,
+    corner: Dp = 14.dp,
     contentPadding: Dp = 12.dp,
     containerColor: Color = TraktTheme.colors.primaryButtonContainer,
     contentColor: Color = TraktTheme.colors.primaryButtonContent,
@@ -52,7 +53,7 @@ internal fun PrimaryButton(
             end = contentPadding,
         ),
         modifier = modifier.height(height),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(corner),
         colors = buttonColors(
             containerColor = containerColor,
             contentColor = contentColor,
@@ -78,7 +79,7 @@ internal fun PrimaryButton(
             when {
                 loading -> {
                     FilmProgressIndicator(
-                        size = iconSize - 4.dp,
+                        size = iconSize - 2.dp,
                         color = if (enabled) contentColor else disabledContentColor,
                         modifier = Modifier
                             .padding(start = 8.dp),
