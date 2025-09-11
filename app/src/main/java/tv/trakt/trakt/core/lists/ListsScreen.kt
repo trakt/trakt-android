@@ -20,7 +20,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -33,7 +32,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -58,6 +56,7 @@ import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.BackdropImage
+import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -108,12 +107,9 @@ private fun CreateListSheet(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     if (sheetActive) {
-        ModalBottomSheet(
+        TraktBottomSheet(
             sheetState = sheetState,
-            containerColor = TraktTheme.colors.dialogContainer,
-            contentColor = TraktTheme.colors.textPrimary,
-            scrimColor = Color.Black.copy(alpha = 0.55F),
-            onDismissRequest = onDismiss,
+            onDismiss = onDismiss,
         ) {
             CreateListView(
                 viewModel = koinViewModel(
