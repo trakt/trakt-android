@@ -45,6 +45,7 @@ import tv.trakt.trakt.core.lists.model.PersonalListItem
 import tv.trakt.trakt.core.lists.sections.personal.views.ListsPersonalItemView
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -99,12 +100,8 @@ internal fun ListsPersonalContent(
                     horizontalArrangement = spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text(
-                        text = list.name,
-                        color = TraktTheme.colors.textPrimary,
-                        style = TraktTheme.typography.heading5,
-                        maxLines = 1,
-                        overflow = Ellipsis,
+                    TraktHeader(
+                        title = list.name,
                         modifier = Modifier.weight(1F, fill = false),
                     )
 

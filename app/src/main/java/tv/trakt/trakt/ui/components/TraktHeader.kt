@@ -26,6 +26,8 @@ internal fun TraktHeader(
             text = title,
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.heading5,
+            maxLines = 1,
+            overflow = Ellipsis,
         )
         subtitle?.let {
             Text(

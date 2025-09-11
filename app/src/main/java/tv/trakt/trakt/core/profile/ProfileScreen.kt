@@ -116,7 +116,7 @@ private fun ProfileScreenContent(
                     ),
             )
             Text(
-                text = "Profile", // TODO
+                text = "Profile",
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading5,
             )

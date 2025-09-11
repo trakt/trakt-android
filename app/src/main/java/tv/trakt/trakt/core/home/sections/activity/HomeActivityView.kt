@@ -47,6 +47,7 @@ import tv.trakt.trakt.core.home.views.HomeEmptySocialView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.FilterChip
 import tv.trakt.trakt.ui.components.FilterChipGroup
+import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -93,11 +94,10 @@ internal fun HomeActivityContent(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
-                text = stringResource(R.string.list_title_activity),
-                color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.heading5,
+            TraktHeader(
+                title = stringResource(R.string.list_title_activity),
             )
+
             if (!state.items.isNullOrEmpty() || state.loading != DONE) {
                 Text(
                     text = stringResource(R.string.button_text_view_all),

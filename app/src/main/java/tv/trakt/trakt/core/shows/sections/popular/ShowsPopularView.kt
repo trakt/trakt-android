@@ -34,6 +34,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
+import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -73,10 +74,8 @@ internal fun ShowsPopularContent(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
-                text = stringResource(R.string.list_title_most_popular),
-                color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.heading5,
+            TraktHeader(
+                title = stringResource(R.string.list_title_most_popular),
             )
             Text(
                 text = stringResource(R.string.button_text_view_all),

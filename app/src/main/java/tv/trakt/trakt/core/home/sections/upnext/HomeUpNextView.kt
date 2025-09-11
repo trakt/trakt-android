@@ -87,7 +87,7 @@ internal fun HomeUpNextContent(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             TraktHeader(
-                title = stringResource(R.string.list_title_up_next)
+                title = stringResource(R.string.list_title_up_next),
             )
             if (!state.items.isNullOrEmpty() || state.loading != DONE) {
                 Text(
