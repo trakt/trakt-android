@@ -90,7 +90,7 @@ internal fun ListsPersonalContent(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(
-                verticalArrangement = Arrangement.Center,
+                verticalArrangement = spacedBy(1.dp),
                 modifier = Modifier
                     .weight(1F, fill = false)
                     .fillMaxWidth(0.75F),
@@ -202,11 +202,12 @@ private fun ContentLoadingList(
 @Composable
 private fun ContentEmptyList(contentPadding: PaddingValues) {
     LazyRow(
+        userScrollEnabled = false,
         horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
         contentPadding = contentPadding,
         modifier = Modifier.fillMaxWidth(),
     ) {
-        items(count = 3) {
+        items(count = 5) {
             VerticalMediaSkeletonCard(
                 chipRatio = 0.5F,
                 shimmer = false,

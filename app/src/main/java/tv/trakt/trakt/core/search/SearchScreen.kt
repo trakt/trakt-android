@@ -51,6 +51,7 @@ import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.BackdropImage
+import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -222,10 +223,8 @@ private fun ContentList(
     ) {
         if (!isSearching && recentItems.isNotEmpty() && query.isBlank()) {
             item(span = { GridItemSpan(maxLineSpan) }) {
-                Text(
-                    text = "Recently Searched", // TODO
-                    color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.heading5,
+                TraktHeader(
+                    title = "Recently Searched", // TODO
                     modifier = Modifier
                         .padding(top = topPadding)
                         .animateItem(
@@ -257,10 +256,8 @@ private fun ContentList(
 
         if (!isSearching && filter != PEOPLE && query.isBlank()) {
             item(span = { GridItemSpan(maxLineSpan) }) {
-                Text(
-                    text = "Popular Searches", // TODO
-                    color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.heading5,
+                TraktHeader(
+                    title = "Popular Searches", // TODO
                     modifier = Modifier
                         .padding(top = if (recentItems.isEmpty()) topPadding else 10.dp)
                         .animateItem(
@@ -294,10 +291,8 @@ private fun ContentList(
 
         if (isSearching) {
             item(span = { GridItemSpan(maxLineSpan) }) {
-                Text(
-                    text = stringResource(filter.displayRes),
-                    color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.heading5,
+                TraktHeader(
+                    title = stringResource(filter.displayRes),
                     modifier = Modifier
                         .padding(top = topPadding)
                         .animateItem(

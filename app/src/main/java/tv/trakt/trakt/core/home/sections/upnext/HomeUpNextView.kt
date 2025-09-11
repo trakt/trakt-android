@@ -43,6 +43,7 @@ import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EpisodeProgressBar
 import tv.trakt.trakt.ui.components.InfoChip
+import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -85,10 +86,8 @@ internal fun HomeUpNextContent(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
-                text = stringResource(R.string.list_title_up_next),
-                color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.heading5,
+            TraktHeader(
+                title = stringResource(R.string.list_title_up_next)
             )
             if (!state.items.isNullOrEmpty() || state.loading != DONE) {
                 Text(
