@@ -1,5 +1,6 @@
 package tv.trakt.trakt.common.helpers.extensions
 
+import io.ktor.client.plugins.ClientRequestException
 import kotlin.coroutines.cancellation.CancellationException
 
 fun Exception.rethrowCancellation(action: () -> Unit = {}) {
@@ -7,5 +8,12 @@ fun Exception.rethrowCancellation(action: () -> Unit = {}) {
         throw this
     } else {
         action()
+    }
+}
+
+fun Exception.getHttpErrorCode(): Int? {
+    return when (this) {
+        is ClientRequestException -> response.status.value
+        else -> null
     }
 }

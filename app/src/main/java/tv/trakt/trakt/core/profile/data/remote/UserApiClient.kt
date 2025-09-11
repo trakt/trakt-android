@@ -2,7 +2,6 @@ package tv.trakt.trakt.core.profile.data.remote
 
 import org.openapitools.client.apis.CalendarsApi
 import org.openapitools.client.apis.HistoryApi
-import org.openapitools.client.apis.ListsApi
 import org.openapitools.client.apis.UsersApi
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
@@ -21,7 +20,6 @@ internal class UserApiClient(
     private val usersApi: UsersApi,
     private val historyApi: HistoryApi,
     private val calendarsApi: CalendarsApi,
-    private val listsApi: ListsApi,
 ) : UserRemoteDataSource {
     override suspend fun getProfile(): User {
         val response = usersApi.getUsersSettings(

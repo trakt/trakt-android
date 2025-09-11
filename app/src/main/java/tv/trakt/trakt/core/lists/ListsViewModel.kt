@@ -59,7 +59,7 @@ internal class ListsViewModel(
         backgroundState.update { configUrl }
     }
 
-    private fun loadData() {
+    fun loadData() {
         viewModelScope.launch {
             if (loadEmptyIfNeeded()) {
                 return@launch

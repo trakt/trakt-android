@@ -90,6 +90,11 @@
     <string name="warning_prompt_remove_single_watched">Are you sure you want to remove this play of %s from your Watched list?</string>
 
     <!-- Migrate to generator -->
+    <string name="error_text_lists_limit">Uh oh… You have reached the limit of your personal lists. Upgrade to VIP for unlimited amount of lists!</string>
+    <string name="text_info_list_created">List has been created.</string>
+    <string name="button_text_create">Create</string>
+    <string name="page_title_create_list">Create List</string>
+    <string name="page_subtitle_create_list">Enter a name and description for your list.</string>
     <string name="button_text_create_list">Create list</string>
     <string name="button_text_browse_movies">Browse Movies</string>
     <string name="button_text_browse_shows">Browse Shows</string>
@@ -106,4 +111,6 @@
     <string name="text_cta_watchlist_released">See it. Save it. Watch it later. Start curating your personal movie queue.</string>
     <string name="text_cta_watchlist_unreleased">Lights, camera… nothing? Add titles to your watchlist and let the binge begin.</string>
     <string name="translated_value_type_show">Show</string>
+    <string name="input_placeholder_lists_name">Name</string>
+    <string name="input_placeholder_lists_description">Description (optional)</string>
 </resources>

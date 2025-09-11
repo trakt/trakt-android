@@ -107,14 +107,11 @@ internal fun ListsPersonalContent(
                 }
             }
 
-            if (!state.items.isNullOrEmpty() || state.loading != DONE) {
-                Text(
-                    text = stringResource(R.string.button_text_view_all),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.buttonSecondary,
-                    modifier = Modifier,
-                )
-            }
+            Text(
+                text = stringResource(R.string.button_text_view_all),
+                color = TraktTheme.colors.textSecondary,
+                style = TraktTheme.typography.buttonSecondary,
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -143,11 +140,8 @@ internal fun ListsPersonalContent(
                             )
                         }
                         state.items?.isEmpty() == true -> {
-                            Text(
-                                text = stringResource(R.string.list_placeholder_empty),
-                                color = TraktTheme.colors.textSecondary,
-                                style = TraktTheme.typography.heading6,
-                                modifier = Modifier.padding(contentPadding),
+                            ContentEmptyList(
+                                contentPadding = contentPadding,
                             )
                         }
                         else -> {
@@ -177,6 +171,23 @@ private fun ContentLoadingList(
     ) {
         items(count = 6) {
             VerticalMediaSkeletonCard(chipRatio = 0.5F)
+        }
+    }
+}
+
+@Composable
+private fun ContentEmptyList(contentPadding: PaddingValues) {
+    LazyRow(
+        horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
+        contentPadding = contentPadding,
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        items(count = 3) {
+            VerticalMediaSkeletonCard(
+                chipRatio = 0.5F,
+                shimmer = false,
+                containerColor = TraktTheme.colors.skeletonContainer.copy(alpha = 0.1F),
+            )
         }
     }
 }

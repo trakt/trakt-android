@@ -7,7 +7,6 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.openapitools.client.apis.CalendarsApi
 import org.openapitools.client.apis.HistoryApi
-import org.openapitools.client.apis.ListsApi
 import org.openapitools.client.apis.UsersApi
 import tv.trakt.trakt.common.Config.API_BASE_URL
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
@@ -37,11 +36,6 @@ internal val profileDataModule = module {
                 httpClientConfig = httpClientConfig,
             ),
             calendarsApi = CalendarsApi(
-                baseUrl = API_BASE_URL,
-                httpClientEngine = httpClientEngine,
-                httpClientConfig = httpClientConfig,
-            ),
-            listsApi = ListsApi(
                 baseUrl = API_BASE_URL,
                 httpClientEngine = httpClientEngine,
                 httpClientConfig = httpClientConfig,

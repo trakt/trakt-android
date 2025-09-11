@@ -20,6 +20,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -35,14 +36,16 @@ internal fun VerticalMediaSkeletonCard(
     chipRatio: Float = 0.33F,
     shimmer: Boolean = true,
     chip: Boolean = true,
+    containerColor: Color = TraktTheme.colors.skeletonContainer,
+    shimmerColor: Color = TraktTheme.colors.skeletonShimmer,
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "infiniteTransition")
     val shimmerTransition by infiniteTransition
         .animateColor(
-            initialValue = TraktTheme.colors.skeletonContainer,
-            targetValue = TraktTheme.colors.skeletonShimmer,
+            initialValue = containerColor,
+            targetValue = shimmerColor,
             animationSpec = infiniteRepeatable(
-                animation = tween(durationMillis = if (shimmer) 1000 else 0),
+                animation = tween(durationMillis = 1000),
                 repeatMode = RepeatMode.Reverse,
             ),
             label = "shimmerTransition",
@@ -64,7 +67,10 @@ internal fun VerticalMediaSkeletonCard(
                 .fillMaxWidth()
                 .aspectRatio(VerticalImageAspectRatio),
             colors = CardDefaults.cardColors(
-                containerColor = shimmerTransition,
+                containerColor = when {
+                    shimmer -> shimmerTransition
+                    else -> containerColor
+                },
             ),
             shape = RoundedCornerShape(corner),
             content = {
@@ -75,7 +81,10 @@ internal fun VerticalMediaSkeletonCard(
         if (chip) {
             InfoChip(
                 text = "",
-                containerColor = shimmerTransition,
+                containerColor = when {
+                    shimmer -> shimmerTransition
+                    else -> containerColor
+                },
                 modifier = Modifier.fillMaxWidth(chipRatio),
             )
         }

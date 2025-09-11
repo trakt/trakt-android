@@ -46,6 +46,7 @@ internal fun InputField(
     placeholder: String? = null,
     loading: Boolean = false,
     enabled: Boolean = true,
+    containerColor: Color = TraktTheme.colors.inputContainer.copy(alpha = 0.8F),
     endSlot: @Composable (() -> Unit)? = null,
 ) {
     var isFocused by remember { mutableStateOf(false) }
@@ -56,6 +57,7 @@ internal fun InputField(
         textStyle = TraktTheme.typography.paragraph.copy(
             color = when {
                 isFocused -> TraktTheme.colors.textPrimary
+                state.text.isNotBlank() -> TraktTheme.colors.textPrimary
                 else -> TraktTheme.colors.textSecondary
             },
         ),
@@ -75,7 +77,7 @@ internal fun InputField(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .background(
-                        color = TraktTheme.colors.inputContainer.copy(alpha = 0.8F),
+                        color = containerColor,
                         shape = RoundedCornerShape(16.dp),
                     )
                     .border(

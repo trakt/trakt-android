@@ -19,16 +19,24 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
@@ -37,10 +45,13 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalBottomBarVisibility
+import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.core.lists.sections.create.CreateListView
 import tv.trakt.trakt.core.lists.sections.personal.ListsPersonalView
 import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistView
 import tv.trakt.trakt.helpers.ScreenHeaderState
@@ -50,7 +61,9 @@ import tv.trakt.trakt.ui.components.BackdropImage
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
 import tv.trakt.trakt.ui.theme.TraktTheme
+import kotlin.random.Random.Default.nextInt
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ListsScreen(
     viewModel: ListsViewModel,
@@ -64,13 +77,69 @@ internal fun ListsScreen(
     }
 
     val state by viewModel.state.collectAsStateWithLifecycle()
+    var sheetActive by remember { mutableStateOf(false) }
 
     ListsScreenContent(
         state = state,
         onProfileClick = onNavigateToProfile,
         onShowsClick = onNavigateToShows,
         onMoviesClick = onNavigateToMovies,
+        onCreateListClick = { sheetActive = true },
     )
+
+    CreateListSheet(
+        sheetActive = sheetActive,
+        onListCreated = viewModel::loadData,
+        onDismiss = { sheetActive = false },
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun CreateListSheet(
+    sheetActive: Boolean,
+    onListCreated: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    val localSnack = LocalSnackbarState.current
+    val localContext = LocalContext.current
+
+    val sheetScope = rememberCoroutineScope()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    if (sheetActive) {
+        ModalBottomSheet(
+            sheetState = sheetState,
+            containerColor = TraktTheme.colors.dialogContainer,
+            contentColor = TraktTheme.colors.textPrimary,
+            scrimColor = Color.Black.copy(alpha = 0.55F),
+            onDismissRequest = onDismiss,
+        ) {
+            CreateListView(
+                viewModel = koinViewModel(
+                    key = nextInt().toString(),
+                ),
+                onListCreated = {
+                    onDismiss()
+                    sheetScope.launch {
+                        localSnack.showSnackbar(localContext.getString(R.string.text_info_list_created))
+                    }
+                },
+                onError = {
+                    onDismiss()
+                    sheetScope.launch {
+                        localSnack.showSnackbar(localContext.getString(R.string.error_text_unexpected_error_short))
+                    }
+                },
+                onListLimitError = {
+                    onDismiss()
+                    sheetScope.launch {
+                        localSnack.showSnackbar(localContext.getString(R.string.error_text_lists_limit))
+                    }
+                },
+            )
+        }
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -81,6 +150,7 @@ private fun ListsScreenContent(
     onProfileClick: () -> Unit = {},
     onShowsClick: () -> Unit = {},
     onMoviesClick: () -> Unit = {},
+    onCreateListClick: () -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
     val lazyListState = rememberLazyListState(
@@ -183,7 +253,7 @@ private fun ListsScreenContent(
                             height = 32.dp,
                             text = stringResource(R.string.button_text_create_list),
                             icon = painterResource(R.drawable.ic_plus_round),
-                            onClick = { },
+                            onClick = onCreateListClick,
                         )
                     }
                 }
