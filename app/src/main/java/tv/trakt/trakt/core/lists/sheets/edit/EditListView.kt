@@ -88,13 +88,13 @@ private fun EditListContent(
     Column(
         verticalArrangement = spacedBy(8.dp),
         modifier = Modifier
-            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
-            .padding(bottom = 32.dp),
+            .padding(horizontal = 24.dp)
+            .padding(bottom = 24.dp),
     ) {
         TraktHeader(
             title = stringResource(R.string.page_title_edit_list),
             subtitle = stringResource(R.string.page_subtitle_edit_list),
-            modifier = Modifier.padding(bottom = 19.dp),
+            modifier = Modifier.padding(bottom = 16.dp),
         )
 
         InputField(
@@ -117,7 +117,7 @@ private fun EditListContent(
             verticalArrangement = spacedBy(10.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 24.dp),
+                .padding(top = 20.dp),
         ) {
             PrimaryButton(
                 text = stringResource(R.string.button_text_delete),

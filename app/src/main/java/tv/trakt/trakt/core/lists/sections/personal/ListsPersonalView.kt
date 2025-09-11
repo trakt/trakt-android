@@ -97,7 +97,7 @@ internal fun ListsPersonalContent(
                     .fillMaxWidth(0.75F),
             ) {
                 Row(
-                    horizontalArrangement = spacedBy(8.dp),
+                    horizontalArrangement = spacedBy(10.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     TraktHeader(
