@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Shade300
 import tv.trakt.trakt.common.ui.theme.colors.Shade600
 import tv.trakt.trakt.common.ui.theme.colors.Shade700
 import tv.trakt.trakt.common.ui.theme.colors.Shade800
+import tv.trakt.trakt.common.ui.theme.colors.Shade900
 import tv.trakt.trakt.common.ui.theme.colors.Shade920
 import tv.trakt.trakt.common.ui.theme.colors.Shade940
 import tv.trakt.trakt.common.ui.theme.colors.White
@@ -16,8 +17,8 @@ internal val DarkColors: TraktColors = TraktColors(
     backgroundPrimary = Shade940,
     textPrimary = White,
     textSecondary = Shade300,
-    skeletonContainer = Shade800,
-    skeletonShimmer = Shade700,
+    skeletonContainer = Shade920,
+    skeletonShimmer = Shade900,
     placeholderContainer = Shade800,
     placeholderContent = Shade600,
     chipContainer = Shade800,

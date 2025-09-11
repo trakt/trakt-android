@@ -59,7 +59,7 @@ internal fun EpisodeSkeletonCard(
                 .aspectRatio(HorizontalImageAspectRatio),
             shape = RoundedCornerShape(12.dp),
             colors = cardColors(
-                containerColor = TraktTheme.colors.placeholderContainer,
+                containerColor = shimmerTransition,
             ),
             content = {
                 Box(modifier = Modifier.fillMaxSize()) {
