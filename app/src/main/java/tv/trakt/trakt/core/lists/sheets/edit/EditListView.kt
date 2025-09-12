@@ -138,16 +138,6 @@ private fun EditListContent(
                 .padding(top = 20.dp),
         ) {
             PrimaryButton(
-                text = stringResource(R.string.button_text_delete),
-                enabled = !state.loadingEdit.isLoading && !state.loadingDelete.isLoading,
-                loading = state.loadingDelete.isLoading,
-                containerColor = Red500,
-                onClick = onDeleteClick,
-                modifier = Modifier
-                    .fillMaxWidth(),
-            )
-
-            PrimaryButton(
                 text = stringResource(R.string.button_text_apply),
                 enabled = inputValid && !state.loadingEdit.isLoading && !state.loadingDelete.isLoading,
                 loading = state.loadingEdit.isLoading,
@@ -157,6 +147,16 @@ private fun EditListContent(
                         descriptionInputState.text.toString(),
                     )
                 },
+                modifier = Modifier
+                    .fillMaxWidth(),
+            )
+
+            PrimaryButton(
+                text = stringResource(R.string.button_text_delete),
+                enabled = !state.loadingEdit.isLoading && !state.loadingDelete.isLoading,
+                loading = state.loadingDelete.isLoading,
+                containerColor = Red500,
+                onClick = onDeleteClick,
                 modifier = Modifier
                     .fillMaxWidth(),
             )

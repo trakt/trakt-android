@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -166,7 +167,9 @@ private fun ListsScreenContent(
             verticalArrangement = spacedBy(TraktTheme.spacing.mainSectionVerticalSpace),
             contentPadding = listPadding,
         ) {
-            item {
+            item(
+                key = "watchlist",
+            ) {
                 ListsWatchlistView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
@@ -177,7 +180,9 @@ private fun ListsScreenContent(
             }
 
             if (state.user.user != null) {
-                item {
+                item(
+                    key = "personal_header",
+                ) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -200,21 +205,24 @@ private fun ListsScreenContent(
                 }
             }
 
-            state.lists?.forEach { list ->
-                item(key = list.ids.trakt.value) {
-                    ListsPersonalView(
-                        list = list,
-                        viewModel = koinViewModel(
-                            key = list.ids.trakt.value.toString(),
-                            parameters = {
-                                parametersOf(list.ids.trakt)
-                            },
-                        ),
-                        headerPadding = sectionPadding,
-                        contentPadding = sectionPadding,
-                        onMoreClick = { onEditListClick(list) },
-                    )
-                }
+            items(
+                items = state.lists ?: emptyList(),
+                key = { list -> list.ids.trakt.value },
+            ) { list ->
+                ListsPersonalView(
+                    list = list,
+                    viewModel = koinViewModel(
+                        key = list.ids.trakt.value.toString(),
+                        parameters = { parametersOf(list.ids.trakt) },
+                    ),
+                    headerPadding = sectionPadding,
+                    contentPadding = sectionPadding,
+                    onMoreClick = { onEditListClick(list) },
+                    modifier = Modifier.animateItem(
+                        fadeInSpec = null,
+                        fadeOutSpec = null,
+                    ),
+                )
             }
         }
 

@@ -54,18 +54,16 @@ internal fun ConfirmationView(
                 .padding(top = 34.dp),
         ) {
             PrimaryButton(
-                text = noText,
-                containerColor = TraktTheme.colors.primaryButtonContainerDisabled,
-                onClick = onNo,
-                modifier = Modifier
-                    .fillMaxWidth(),
+                text = yesText,
+                onClick = onYes,
+                modifier = Modifier.fillMaxWidth(),
             )
 
             PrimaryButton(
-                text = yesText,
-                onClick = onYes,
-                modifier = Modifier
-                    .fillMaxWidth(),
+                text = noText,
+                containerColor = TraktTheme.colors.primaryButtonContainerDisabled,
+                onClick = onNo,
+                modifier = Modifier.fillMaxWidth(),
             )
         }
     }
