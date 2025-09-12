@@ -175,7 +175,7 @@ private fun PersonGridItem(
                                 (today.year - date.year) - when {
                                     date.dayOfYear <= today.dayOfYear -> 0
                                     else -> 1
-                                }
+                                },
                             )
                         }
 
@@ -192,7 +192,7 @@ private fun PersonGridItem(
                                 )
                             }
                             Text(
-                                text = "${date.format(mediumDateFormat)} (${age})",
+                                text = "${date.format(mediumDateFormat)} ($age)",
                                 style = TraktTheme.typography.cardSubtitle,
                                 color = TraktTheme.colors.textSecondary,
                                 maxLines = 1,
