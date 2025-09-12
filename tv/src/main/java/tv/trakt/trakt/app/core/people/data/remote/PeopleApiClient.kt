@@ -2,14 +2,14 @@ package tv.trakt.trakt.app.core.people.data.remote
 
 import org.openapitools.client.apis.PeopleApi
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.networking.PersonDetailsDto
+import tv.trakt.trakt.common.networking.PersonDto
 import tv.trakt.trakt.common.networking.PersonMoviesDto
 import tv.trakt.trakt.common.networking.PersonShowsDto
 
 internal class PeopleApiClient(
     private val api: PeopleApi,
 ) : PeopleRemoteDataSource {
-    override suspend fun getPersonDetails(personId: TraktId): PersonDetailsDto {
+    override suspend fun getPersonDetails(personId: TraktId): PersonDto {
         val response = api.getPeopleSummary(
             id = personId.value.toString(),
             extended = "full,cloud9",

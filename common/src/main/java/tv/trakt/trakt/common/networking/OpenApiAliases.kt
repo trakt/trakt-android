@@ -17,7 +17,6 @@ import org.openapitools.client.models.GetMoviesWatchnow200ResponseValue
 import org.openapitools.client.models.GetMoviesWatchnow200ResponseValueCableInner
 import org.openapitools.client.models.GetPeopleMovies200Response
 import org.openapitools.client.models.GetPeopleShows200Response
-import org.openapitools.client.models.GetPeopleSummary200Response
 import org.openapitools.client.models.GetRecommendationsMoviesRecommend200ResponseInner
 import org.openapitools.client.models.GetRecommendationsShowsRecommend200ResponseInner
 import org.openapitools.client.models.GetSearchQuery200ResponseInner
@@ -67,7 +66,6 @@ typealias ExtraVideoDto = GetMoviesVideos200ResponseInner
 typealias CastCrewDto = GetMoviesPeople200Response
 typealias ExternalRatingsDto = GetMoviesRatings200Response
 typealias PersonDto = GetMoviesPeople200ResponseCastInnerPerson
-typealias PersonDetailsDto = GetPeopleSummary200Response
 typealias PersonShowsDto = GetPeopleShows200Response
 typealias PersonMoviesDto = GetPeopleMovies200Response
 typealias PersonSearchDto = GetSearchQuery200ResponseInnerOneOf2Person

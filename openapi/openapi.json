@@ -686,6 +686,13 @@
                             },
                             "nullable": true
                           },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
                           "original_title": {
                             "type": "string",
                             "nullable": true
@@ -1119,6 +1126,13 @@
                             "nullable": true
                           },
                           "genres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "subgenres": {
                             "type": "array",
                             "items": {
                               "type": "string"
@@ -1564,6 +1578,13 @@
                             },
                             "nullable": true
                           },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
                           "original_title": {
                             "type": "string",
                             "nullable": true
@@ -2003,6 +2024,13 @@
                             },
                             "nullable": true
                           },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
                           "original_title": {
                             "type": "string",
                             "nullable": true
@@ -2265,6 +2293,13 @@
                             "nullable": true
                           },
                           "genres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "subgenres": {
                             "type": "array",
                             "items": {
                               "type": "string"
@@ -2544,6 +2579,13 @@
                             "nullable": true
                           },
                           "genres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "subgenres": {
                             "type": "array",
                             "items": {
                               "type": "string"
@@ -3166,6 +3208,7 @@
                                 "sort": {
                                   "type": "string",
                                   "enum": [
+                                    "activity",
                                     "added",
                                     "completed",
                                     "episodes",
@@ -4486,6 +4529,13 @@
                                     },
                                     "nullable": true
                                   },
+                                  "subgenres": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "nullable": true
+                                  },
                                   "certification": {
                                     "type": "string",
                                     "nullable": true
@@ -4732,6 +4782,13 @@
                                     "nullable": true
                                   },
                                   "genres": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "nullable": true
+                                  },
+                                  "subgenres": {
                                     "type": "array",
                                     "items": {
                                       "type": "string"
@@ -5121,6 +5178,13 @@
                                     "nullable": true
                                   },
                                   "genres": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "nullable": true
+                                  },
+                                  "subgenres": {
                                     "type": "array",
                                     "items": {
                                       "type": "string"
@@ -6235,6 +6299,13 @@
                                 },
                                 "nullable": true
                               },
+                              "subgenres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
                               "original_title": {
                                 "type": "string",
                                 "nullable": true
@@ -6555,6 +6626,13 @@
                                 "nullable": true
                               },
                               "genres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "subgenres": {
                                 "type": "array",
                                 "items": {
                                   "type": "string"
@@ -7296,6 +7374,13 @@
                                 },
                                 "nullable": true
                               },
+                              "subgenres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
                               "certification": {
                                 "type": "string",
                                 "nullable": true
@@ -7721,6 +7806,13 @@
                                 "nullable": true
                               },
                               "genres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "subgenres": {
                                 "type": "array",
                                 "items": {
                                   "type": "string"
@@ -8598,6 +8690,13 @@
                               },
                               "nullable": true
                             },
+                            "subgenres": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              },
+                              "nullable": true
+                            },
                             "certification": {
                               "type": "string",
                               "nullable": true
@@ -8996,6 +9095,13 @@
                               "nullable": true
                             },
                             "genres": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              },
+                              "nullable": true
+                            },
+                            "subgenres": {
                               "type": "array",
                               "items": {
                                 "type": "string"
@@ -10601,6 +10707,13 @@
                                   },
                                   "nullable": true
                                 },
+                                "subgenres": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "nullable": true
+                                },
                                 "original_title": {
                                   "type": "string",
                                   "nullable": true
@@ -10809,6 +10922,13 @@
                                   "nullable": true
                                 },
                                 "genres": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "nullable": true
+                                },
+                                "subgenres": {
                                   "type": "array",
                                   "items": {
                                     "type": "string"
@@ -11219,6 +11339,13 @@
                                   },
                                   "nullable": true
                                 },
+                                "subgenres": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "nullable": true
+                                },
                                 "original_title": {
                                   "type": "string",
                                   "nullable": true
@@ -11427,6 +11554,13 @@
                                   "nullable": true
                                 },
                                 "genres": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "nullable": true
+                                },
+                                "subgenres": {
                                   "type": "array",
                                   "items": {
                                     "type": "string"
@@ -12055,6 +12189,13 @@
                                 },
                                 "nullable": true
                               },
+                              "subgenres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
                               "certification": {
                                 "type": "string",
                                 "nullable": true
@@ -12465,6 +12606,13 @@
                                 },
                                 "nullable": true
                               },
+                              "subgenres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
                               "original_title": {
                                 "type": "string",
                                 "nullable": true
@@ -12765,6 +12913,13 @@
                             "nullable": true
                           },
                           "genres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "subgenres": {
                             "type": "array",
                             "items": {
                               "type": "string"
@@ -13257,6 +13412,13 @@
                             },
                             "nullable": true
                           },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
                           "original_title": {
                             "type": "string",
                             "nullable": true
@@ -13732,6 +13894,13 @@
                             },
                             "nullable": true
                           },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
                           "original_title": {
                             "type": "string",
                             "nullable": true
@@ -14038,6 +14207,13 @@
                             "nullable": true
                           },
                           "genres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "subgenres": {
                             "type": "array",
                             "items": {
                               "type": "string"
@@ -14538,6 +14714,13 @@
                             },
                             "nullable": true
                           },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
                           "original_title": {
                             "type": "string",
                             "nullable": true
@@ -15021,6 +15204,13 @@
                             },
                             "nullable": true
                           },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
                           "original_title": {
                             "type": "string",
                             "nullable": true
@@ -15365,6 +15555,13 @@
                             "nullable": true
                           },
                           "genres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "subgenres": {
                             "type": "array",
                             "items": {
                               "type": "string"
@@ -15766,6 +15963,13 @@
                             },
                             "nullable": true
                           },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
                           "original_title": {
                             "type": "string",
                             "nullable": true
@@ -16117,6 +16321,13 @@
                                 },
                                 "nullable": true
                               },
+                              "subgenres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
                               "certification": {
                                 "type": "string",
                                 "nullable": true
@@ -16382,6 +16593,13 @@
                                 "nullable": true
                               },
                               "genres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "subgenres": {
                                 "type": "array",
                                 "items": {
                                   "type": "string"
@@ -17039,6 +17257,13 @@
                                 },
                                 "nullable": true
                               },
+                              "subgenres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
                               "certification": {
                                 "type": "string",
                                 "nullable": true
@@ -17298,6 +17523,13 @@
                                 "nullable": true
                               },
                               "genres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "subgenres": {
                                 "type": "array",
                                 "items": {
                                   "type": "string"
@@ -17714,6 +17946,13 @@
                                 },
                                 "nullable": true
                               },
+                              "subgenres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
                               "certification": {
                                 "type": "string",
                                 "nullable": true
@@ -17973,6 +18212,13 @@
                                 "nullable": true
                               },
                               "genres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "subgenres": {
                                 "type": "array",
                                 "items": {
                                   "type": "string"
@@ -18389,6 +18635,13 @@
                                 },
                                 "nullable": true
                               },
+                              "subgenres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
                               "certification": {
                                 "type": "string",
                                 "nullable": true
@@ -18648,6 +18901,13 @@
                                 "nullable": true
                               },
                               "genres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "subgenres": {
                                 "type": "array",
                                 "items": {
                                   "type": "string"
@@ -18940,6 +19200,13 @@
                             "nullable": true
                           },
                           "genres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "subgenres": {
                             "type": "array",
                             "items": {
                               "type": "string"
@@ -19277,6 +19544,13 @@
                             "nullable": true
                           },
                           "genres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "subgenres": {
                             "type": "array",
                             "items": {
                               "type": "string"
@@ -21295,6 +21569,13 @@
                             },
                             "nullable": true
                           },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
                           "certification": {
                             "type": "string",
                             "nullable": true
@@ -21714,6 +21995,13 @@
                             },
                             "nullable": true
                           },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
                           "original_title": {
                             "type": "string",
                             "nullable": true
@@ -22089,6 +22377,13 @@
                                 },
                                 "nullable": true
                               },
+                              "subgenres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
                               "certification": {
                                 "type": "string",
                                 "nullable": true
@@ -22354,6 +22649,13 @@
                                 "nullable": true
                               },
                               "genres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "subgenres": {
                                 "type": "array",
                                 "items": {
                                   "type": "string"
@@ -28202,6 +28504,13 @@
                             "nullable": true
                           },
                           "genres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "subgenres": {
                             "type": "array",
                             "items": {
                               "type": "string"
@@ -35663,6 +35972,13 @@
                             },
                             "nullable": true
                           },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
                           "original_title": {
                             "type": "string",
                             "nullable": true
@@ -36267,6 +36583,13 @@
                             "nullable": true
                           },
                           "genres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "subgenres": {
                             "type": "array",
                             "items": {
                               "type": "string"
@@ -42007,6 +42330,13 @@
                         },
                         "nullable": true
                       },
+                      "subgenres": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "nullable": true
+                      },
                       "certification": {
                         "type": "string",
                         "nullable": true
@@ -42642,6 +42972,13 @@
                         },
                         "nullable": true
                       },
+                      "subgenres": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "nullable": true
+                      },
                       "original_title": {
                         "type": "string",
                         "nullable": true
@@ -43167,6 +43504,13 @@
                         "nullable": true
                       },
                       "genres": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "nullable": true
+                      },
+                      "subgenres": {
                         "type": "array",
                         "items": {
                           "type": "string"
@@ -43713,6 +44057,13 @@
                         },
                         "nullable": true
                       },
+                      "subgenres": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "nullable": true
+                      },
                       "original_title": {
                         "type": "string",
                         "nullable": true
@@ -44162,6 +44513,13 @@
                       "nullable": true
                     },
                     "genres": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "nullable": true
+                    },
+                    "subgenres": {
                       "type": "array",
                       "items": {
                         "type": "string"
@@ -44755,6 +45113,13 @@
                         "nullable": true
                       },
                       "genres": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "nullable": true
+                      },
+                      "subgenres": {
                         "type": "array",
                         "items": {
                           "type": "string"
@@ -45500,11 +45865,15 @@
                               "ids": {
                                 "type": "object",
                                 "properties": {
+                                  "slug": {
+                                    "type": "string"
+                                  },
                                   "trakt": {
                                     "type": "integer"
                                   },
-                                  "slug": {
-                                    "type": "string"
+                                  "tvdb": {
+                                    "type": "integer",
+                                    "nullable": true
                                   },
                                   "imdb": {
                                     "type": "string",
@@ -45516,9 +45885,63 @@
                                   }
                                 },
                                 "required": [
-                                  "trakt",
-                                  "slug"
+                                  "slug",
+                                  "trakt"
                                 ]
+                              },
+                              "social_ids": {
+                                "type": "object",
+                                "properties": {
+                                  "twitter": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "facebook": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "instagram": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "wikipedia": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              },
+                              "biography": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "birthday": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "death": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "birthplace": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "homepage": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "gender": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "known_for_department": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "nullable": true
                               },
                               "images": {
                                 "type": "object",
@@ -45597,11 +46020,15 @@
                                 "ids": {
                                   "type": "object",
                                   "properties": {
+                                    "slug": {
+                                      "type": "string"
+                                    },
                                     "trakt": {
                                       "type": "integer"
                                     },
-                                    "slug": {
-                                      "type": "string"
+                                    "tvdb": {
+                                      "type": "integer",
+                                      "nullable": true
                                     },
                                     "imdb": {
                                       "type": "string",
@@ -45613,9 +46040,63 @@
                                     }
                                   },
                                   "required": [
-                                    "trakt",
-                                    "slug"
+                                    "slug",
+                                    "trakt"
                                   ]
+                                },
+                                "social_ids": {
+                                  "type": "object",
+                                  "properties": {
+                                    "twitter": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "facebook": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "instagram": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "wikipedia": {
+                                      "type": "string",
+                                      "nullable": true
+                                    }
+                                  },
+                                  "nullable": true
+                                },
+                                "biography": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "birthday": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "death": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "birthplace": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "homepage": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "gender": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "known_for_department": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "updated_at": {
+                                  "type": "string",
+                                  "nullable": true
                                 },
                                 "images": {
                                   "type": "object",
@@ -46695,6 +47176,13 @@
                             },
                             "nullable": true
                           },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
                           "certification": {
                             "type": "string",
                             "nullable": true
@@ -47003,6 +47491,13 @@
                             "nullable": true
                           },
                           "genres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "subgenres": {
                             "type": "array",
                             "items": {
                               "type": "string"
@@ -47362,6 +47857,13 @@
                             },
                             "nullable": true
                           },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
                           "certification": {
                             "type": "string",
                             "nullable": true
@@ -47713,6 +48215,13 @@
                             },
                             "nullable": true
                           },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
                           "certification": {
                             "type": "string",
                             "nullable": true
@@ -48052,6 +48561,13 @@
                         "nullable": true
                       },
                       "genres": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "nullable": true
+                      },
+                      "subgenres": {
                         "type": "array",
                         "items": {
                           "type": "string"
@@ -48420,6 +48936,13 @@
                             },
                             "nullable": true
                           },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
                           "certification": {
                             "type": "string",
                             "nullable": true
@@ -48697,6 +49220,13 @@
                       "nullable": true
                     },
                     "genres": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "nullable": true
+                    },
+                    "subgenres": {
                       "type": "array",
                       "items": {
                         "type": "string"
@@ -49851,6 +50381,13 @@
                         },
                         "nullable": true
                       },
+                      "subgenres": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "nullable": true
+                      },
                       "original_title": {
                         "type": "string",
                         "nullable": true
@@ -50578,11 +51115,15 @@
                               "ids": {
                                 "type": "object",
                                 "properties": {
+                                  "slug": {
+                                    "type": "string"
+                                  },
                                   "trakt": {
                                     "type": "integer"
                                   },
-                                  "slug": {
-                                    "type": "string"
+                                  "tvdb": {
+                                    "type": "integer",
+                                    "nullable": true
                                   },
                                   "imdb": {
                                     "type": "string",
@@ -50594,9 +51135,63 @@
                                   }
                                 },
                                 "required": [
-                                  "trakt",
-                                  "slug"
+                                  "slug",
+                                  "trakt"
                                 ]
+                              },
+                              "social_ids": {
+                                "type": "object",
+                                "properties": {
+                                  "twitter": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "facebook": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "instagram": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "wikipedia": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              },
+                              "biography": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "birthday": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "death": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "birthplace": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "homepage": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "gender": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "known_for_department": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "nullable": true
                               },
                               "images": {
                                 "type": "object",
@@ -50675,11 +51270,15 @@
                                 "ids": {
                                   "type": "object",
                                   "properties": {
+                                    "slug": {
+                                      "type": "string"
+                                    },
                                     "trakt": {
                                       "type": "integer"
                                     },
-                                    "slug": {
-                                      "type": "string"
+                                    "tvdb": {
+                                      "type": "integer",
+                                      "nullable": true
                                     },
                                     "imdb": {
                                       "type": "string",
@@ -50691,9 +51290,63 @@
                                     }
                                   },
                                   "required": [
-                                    "trakt",
-                                    "slug"
+                                    "slug",
+                                    "trakt"
                                   ]
+                                },
+                                "social_ids": {
+                                  "type": "object",
+                                  "properties": {
+                                    "twitter": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "facebook": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "instagram": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "wikipedia": {
+                                      "type": "string",
+                                      "nullable": true
+                                    }
+                                  },
+                                  "nullable": true
+                                },
+                                "biography": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "birthday": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "death": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "birthplace": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "homepage": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "gender": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "known_for_department": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "updated_at": {
+                                  "type": "string",
+                                  "nullable": true
                                 },
                                 "images": {
                                   "type": "object",
@@ -52952,11 +53605,15 @@
                               "ids": {
                                 "type": "object",
                                 "properties": {
+                                  "slug": {
+                                    "type": "string"
+                                  },
                                   "trakt": {
                                     "type": "integer"
                                   },
-                                  "slug": {
-                                    "type": "string"
+                                  "tvdb": {
+                                    "type": "integer",
+                                    "nullable": true
                                   },
                                   "imdb": {
                                     "type": "string",
@@ -52968,9 +53625,63 @@
                                   }
                                 },
                                 "required": [
-                                  "trakt",
-                                  "slug"
+                                  "slug",
+                                  "trakt"
                                 ]
+                              },
+                              "social_ids": {
+                                "type": "object",
+                                "properties": {
+                                  "twitter": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "facebook": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "instagram": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "wikipedia": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              },
+                              "biography": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "birthday": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "death": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "birthplace": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "homepage": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "gender": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "known_for_department": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "nullable": true
                               },
                               "images": {
                                 "type": "object",
@@ -53049,11 +53760,15 @@
                                 "ids": {
                                   "type": "object",
                                   "properties": {
+                                    "slug": {
+                                      "type": "string"
+                                    },
                                     "trakt": {
                                       "type": "integer"
                                     },
-                                    "slug": {
-                                      "type": "string"
+                                    "tvdb": {
+                                      "type": "integer",
+                                      "nullable": true
                                     },
                                     "imdb": {
                                       "type": "string",
@@ -53065,9 +53780,63 @@
                                     }
                                   },
                                   "required": [
-                                    "trakt",
-                                    "slug"
+                                    "slug",
+                                    "trakt"
                                   ]
+                                },
+                                "social_ids": {
+                                  "type": "object",
+                                  "properties": {
+                                    "twitter": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "facebook": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "instagram": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "wikipedia": {
+                                      "type": "string",
+                                      "nullable": true
+                                    }
+                                  },
+                                  "nullable": true
+                                },
+                                "biography": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "birthday": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "death": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "birthplace": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "homepage": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "gender": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "known_for_department": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "updated_at": {
+                                  "type": "string",
+                                  "nullable": true
                                 },
                                 "images": {
                                   "type": "object",
@@ -53939,6 +54708,13 @@
                             },
                             "nullable": true
                           },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
                           "original_title": {
                             "type": "string",
                             "nullable": true
@@ -54336,6 +55112,13 @@
                             },
                             "nullable": true
                           },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
                           "original_title": {
                             "type": "string",
                             "nullable": true
@@ -54706,6 +55489,13 @@
                             "nullable": true
                           },
                           "genres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "subgenres": {
                             "type": "array",
                             "items": {
                               "type": "string"
@@ -55085,6 +55875,13 @@
                             },
                             "nullable": true
                           },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
                           "original_title": {
                             "type": "string",
                             "nullable": true
@@ -55446,6 +56243,13 @@
                         "nullable": true
                       },
                       "genres": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "nullable": true
+                      },
+                      "subgenres": {
                         "type": "array",
                         "items": {
                           "type": "string"
@@ -55836,6 +56640,13 @@
                             },
                             "nullable": true
                           },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
                           "original_title": {
                             "type": "string",
                             "nullable": true
@@ -56131,6 +56942,13 @@
                                 },
                                 "nullable": true
                               },
+                              "subgenres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
                               "certification": {
                                 "type": "string",
                                 "nullable": true
@@ -56385,6 +57203,13 @@
                                 "nullable": true
                               },
                               "genres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "subgenres": {
                                 "type": "array",
                                 "items": {
                                   "type": "string"
@@ -56925,6 +57750,13 @@
                                 },
                                 "nullable": true
                               },
+                              "subgenres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
                               "certification": {
                                 "type": "string",
                                 "nullable": true
@@ -57150,6 +57982,13 @@
                                   "nullable": true
                                 },
                                 "genres": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "nullable": true
+                                },
+                                "subgenres": {
                                   "type": "array",
                                   "items": {
                                     "type": "string"
@@ -57461,6 +58300,13 @@
                                 },
                                 "nullable": true
                               },
+                              "subgenres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
                               "original_title": {
                                 "type": "string",
                                 "nullable": true
@@ -57716,6 +58562,13 @@
                                   "nullable": true
                                 },
                                 "genres": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "nullable": true
+                                },
+                                "subgenres": {
                                   "type": "array",
                                   "items": {
                                     "type": "string"
@@ -59631,6 +60484,13 @@
                             },
                             "nullable": true
                           },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
                           "certification": {
                             "type": "string",
                             "nullable": true
@@ -60018,6 +60878,13 @@
                             },
                             "nullable": true
                           },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
                           "original_title": {
                             "type": "string",
                             "nullable": true
@@ -60361,6 +61228,13 @@
                                 },
                                 "nullable": true
                               },
+                              "subgenres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
                               "certification": {
                                 "type": "string",
                                 "nullable": true
@@ -60626,6 +61500,13 @@
                                 "nullable": true
                               },
                               "genres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "subgenres": {
                                 "type": "array",
                                 "items": {
                                   "type": "string"
@@ -63069,6 +63950,13 @@
                           },
                           "nullable": true
                         },
+                        "subgenres": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "nullable": true
+                        },
                         "original_title": {
                           "type": "string",
                           "nullable": true
@@ -63542,6 +64430,13 @@
                           },
                           "nullable": true
                         },
+                        "subgenres": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "nullable": true
+                        },
                         "original_title": {
                           "type": "string",
                           "nullable": true
@@ -64009,6 +64904,13 @@
                           "nullable": true
                         },
                         "genres": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "nullable": true
+                        },
+                        "subgenres": {
                           "type": "array",
                           "items": {
                             "type": "string"
