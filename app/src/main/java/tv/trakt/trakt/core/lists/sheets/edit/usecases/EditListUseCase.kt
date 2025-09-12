@@ -2,9 +2,11 @@ package tv.trakt.trakt.core.lists.sheets.edit.usecases
 
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.data.remote.ListsRemoteDataSource
+import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 
 internal class EditListUseCase(
     private val remoteSource: ListsRemoteDataSource,
+    private val localSource: ListsPersonalLocalDataSource,
 ) {
     suspend fun editList(
         listId: TraktId,
@@ -22,5 +24,6 @@ internal class EditListUseCase(
         remoteSource.deleteList(
             listId = listId,
         )
+        localSource.deleteItem(listId)
     }
 }

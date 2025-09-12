@@ -22,11 +22,12 @@ internal fun CreateListSheet(
     val localSnack = LocalSnackbarState.current
     val localContext = LocalContext.current
 
+    val sheetScope = rememberCoroutineScope()
+
     if (sheetActive) {
         TraktBottomSheet(
             onDismiss = onDismiss,
         ) {
-            val sheetScope = rememberCoroutineScope()
             CreateListView(
                 viewModel = koinViewModel(
                     key = Random.Default.nextInt().toString(),

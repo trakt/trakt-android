@@ -166,9 +166,7 @@ private fun ListsScreenContent(
             verticalArrangement = spacedBy(TraktTheme.spacing.mainSectionVerticalSpace),
             contentPadding = listPadding,
         ) {
-            item(
-                key = "watchlist",
-            ) {
+            item {
                 ListsWatchlistView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
@@ -179,9 +177,7 @@ private fun ListsScreenContent(
             }
 
             if (state.user.user != null) {
-                item(
-                    key = "personal_lists_header",
-                ) {
+                item {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()

@@ -135,6 +135,7 @@ internal val listsModule = module {
     factory {
         EditListUseCase(
             remoteSource = get(),
+            localSource = get(),
         )
     }
 

@@ -25,11 +25,12 @@ internal fun EditListSheet(
     val localSnack = LocalSnackbarState.current
     val localContext = LocalContext.current
 
+    val sheetScope = rememberCoroutineScope()
+
     if (sheetActive && list != null) {
         TraktBottomSheet(
             onDismiss = onDismiss,
         ) {
-            val sheetScope = rememberCoroutineScope()
             EditListView(
                 initialList = list,
                 viewModel = koinViewModel(

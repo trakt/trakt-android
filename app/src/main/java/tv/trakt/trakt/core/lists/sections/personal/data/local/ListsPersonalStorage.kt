@@ -24,6 +24,12 @@ internal class ListsPersonalStorage : ListsPersonalLocalDataSource {
         }
     }
 
+    override suspend fun deleteItem(id: TraktId) {
+        mutex.withLock {
+            storage.remove(id)
+        }
+    }
+
     override fun clear() {
         storage.clear()
     }
