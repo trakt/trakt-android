@@ -168,9 +168,17 @@ private fun PersonGridItem(
 
                 if (item.showBirthday) {
                     item.person.birthday?.let { date ->
-                        val isToday = remember(date) {
-                            date.dayOfYear == nowLocalDay().dayOfYear
+                        val (isToday, age) = remember(date) {
+                            val today = nowLocalDay()
+                            Pair(
+                                date.dayOfYear == today.dayOfYear,
+                                (today.year - date.year) - when {
+                                    date.dayOfYear <= today.dayOfYear -> 0
+                                    else -> 1
+                                }
+                            )
                         }
+
                         Row(
                             horizontalArrangement = spacedBy(4.dp),
                             verticalAlignment = CenterVertically,
@@ -184,7 +192,7 @@ private fun PersonGridItem(
                                 )
                             }
                             Text(
-                                text = date.format(mediumDateFormat),
+                                text = "${date.format(mediumDateFormat)} (${age})",
                                 style = TraktTheme.typography.cardSubtitle,
                                 color = TraktTheme.colors.textSecondary,
                                 maxLines = 1,
