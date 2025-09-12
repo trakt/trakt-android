@@ -139,6 +139,7 @@ private fun EditListContent(
         ) {
             PrimaryButton(
                 text = stringResource(R.string.button_text_apply),
+//                icon = painterResource(R.drawable.ic_edit),
                 enabled = inputValid && !state.loadingEdit.isLoading && !state.loadingDelete.isLoading,
                 loading = state.loadingEdit.isLoading,
                 onClick = {
@@ -153,6 +154,9 @@ private fun EditListContent(
 
             PrimaryButton(
                 text = stringResource(R.string.button_text_delete),
+//                icon = painterResource(R.drawable.ic_trash), // TODO Ask Alex about icon.
+//                iconSize = 20.dp,
+//                iconSpace = 4.dp,
                 enabled = !state.loadingEdit.isLoading && !state.loadingDelete.isLoading,
                 loading = state.loadingDelete.isLoading,
                 containerColor = Red500,
