@@ -100,7 +100,6 @@ private fun CreateListContent(
             text = stringResource(R.string.button_text_create),
             enabled = inputValid && !state.loading.isLoading,
             loading = state.loading.isLoading,
-            height = 48.dp,
             onClick = {
                 onCreateClick(
                     nameInputState.text.toString(),

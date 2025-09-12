@@ -31,7 +31,7 @@ internal fun TertiaryButton(
         text = text,
         icon = icon,
         iconSize = 16.dp,
-        iconSpace = 8.dp,
+        iconSpace = 7.dp,
         enabled = enabled,
         loading = loading,
         height = height,

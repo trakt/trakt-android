@@ -39,9 +39,9 @@ internal fun PrimaryButton(
     iconSpace: Dp = 8.dp,
     enabled: Boolean = true,
     loading: Boolean = false,
-    height: Dp = 48.dp,
+    height: Dp = 44.dp,
     corner: Dp = 14.dp,
-    contentPadding: Dp = 12.dp,
+    contentPadding: Dp = 14.dp,
     containerColor: Color = TraktTheme.colors.primaryButtonContainer,
     contentColor: Color = TraktTheme.colors.primaryButtonContent,
     disabledContainerColor: Color = TraktTheme.colors.primaryButtonContainerDisabled,
@@ -66,23 +66,13 @@ internal fun PrimaryButton(
         Row(
             verticalAlignment = CenterVertically,
         ) {
-            Text(
-                text = text.uppercase(),
-                color = if (enabled) contentColor else disabledContentColor,
-                style = textStyle,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                textAlign = if (icon != null || loading) TextAlign.Start else TextAlign.Center,
-                modifier = Modifier,
-            )
-
             when {
                 loading -> {
                     FilmProgressIndicator(
-                        size = iconSize - 2.dp,
+                        size = iconSize,
                         color = if (enabled) contentColor else disabledContentColor,
                         modifier = Modifier
-                            .padding(start = 8.dp),
+                            .padding(end = iconSpace),
                     )
                 }
 
@@ -93,11 +83,21 @@ internal fun PrimaryButton(
                         contentScale = ContentScale.Fit,
                         colorFilter = ColorFilter.tint(if (enabled) contentColor else disabledContentColor),
                         modifier = Modifier
-                            .padding(start = iconSpace)
+                            .padding(end = iconSpace)
                             .requiredSize(iconSize),
                     )
                 }
             }
+
+            Text(
+                text = text.uppercase(),
+                color = if (enabled) contentColor else disabledContentColor,
+                style = textStyle,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = if (icon != null || loading) TextAlign.Start else TextAlign.Center,
+                modifier = Modifier,
+            )
         }
     }
 }

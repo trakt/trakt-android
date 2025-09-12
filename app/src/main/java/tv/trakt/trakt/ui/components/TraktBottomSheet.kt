@@ -25,7 +25,9 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun TraktBottomSheet(
-    sheetState: SheetState,
+    sheetState: SheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+    ),
     containerColor: Color = TraktTheme.colors.dialogContainer,
     contentColor: Color = TraktTheme.colors.dialogContent,
     onDismiss: () -> Unit = {},
@@ -70,7 +72,9 @@ internal fun TraktBottomSheet(
 private fun TraktBottomSheetPreview() {
     TraktTheme {
         TraktBottomSheet(
-            sheetState = rememberModalBottomSheetState(),
+            sheetState = rememberModalBottomSheetState(
+                skipPartiallyExpanded = true,
+            ),
         ) {
             Text(text = "Sample bottom sheet")
         }

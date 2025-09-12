@@ -124,7 +124,6 @@ private fun EditListContent(
                 enabled = !state.loadingEdit.isLoading && !state.loadingDelete.isLoading,
                 loading = state.loadingDelete.isLoading,
                 containerColor = Red500,
-                height = 48.dp,
                 onClick = onDeleteClick,
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -140,7 +139,6 @@ private fun EditListContent(
                         descriptionInputState.text.toString(),
                     )
                 },
-                height = 48.dp,
                 modifier = Modifier
                     .fillMaxWidth(),
             )
