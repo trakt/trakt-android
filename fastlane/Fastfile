@@ -16,6 +16,12 @@ platform :android do
 
   desc "Distribute a new version to Internal Testers group"
   lane :firebase_distribute_internal do
+    # Ask for optional release notes
+    release_notes = prompt(
+      text: "Enter release notes (optional, press Enter to skip): ",
+      ci_input: ""
+    )
+
     gradle(
       task: "assembleRelease"
     )
@@ -23,7 +29,7 @@ platform :android do
     firebase_app_distribution(
       app: "1:213753735103:android:13d79e31e4663aea06230a",
       groups: "trakt-internal-testers",
-      release_notes: ""
+      release_notes: release_notes
     )
   end
 end
