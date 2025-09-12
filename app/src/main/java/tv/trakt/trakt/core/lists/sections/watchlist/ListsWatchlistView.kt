@@ -102,7 +102,7 @@ internal fun ListWatchlistContent(
         ) {
             TraktHeader(
                 title = stringResource(R.string.page_title_watchlist),
-                subtitle = "Recently added", // TODO
+                subtitle = stringResource(R.string.text_sort_recently_added),
             )
 
             if (!state.items.isNullOrEmpty() || state.loading != DONE) {

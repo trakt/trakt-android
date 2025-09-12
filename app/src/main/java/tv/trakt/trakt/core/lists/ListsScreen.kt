@@ -192,7 +192,7 @@ private fun ListsScreenContent(
                     ) {
                         TraktHeader(
                             title = stringResource(R.string.list_title_personal_lists),
-                            subtitle = "Recently updated", // TODO String
+                            subtitle = stringResource(R.string.text_sort_recently_updated),
                         )
 
                         TertiaryButton(

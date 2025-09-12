@@ -84,7 +84,7 @@ internal fun HomeWatchlistContent(
         ) {
             TraktHeader(
                 title = stringResource(R.string.page_title_watchlist),
-                subtitle = "Released movies", // TODO
+                subtitle = stringResource(R.string.list_subtitle_released_movies),
             )
             if (!state.items.isNullOrEmpty() || state.loading != DONE) {
                 Text(

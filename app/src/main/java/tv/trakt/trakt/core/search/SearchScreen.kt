@@ -43,7 +43,10 @@ import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.search.model.SearchFilter
+import tv.trakt.trakt.core.search.model.SearchFilter.MEDIA
+import tv.trakt.trakt.core.search.model.SearchFilter.MOVIES
 import tv.trakt.trakt.core.search.model.SearchFilter.PEOPLE
+import tv.trakt.trakt.core.search.model.SearchFilter.SHOWS
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.model.SearchItem
 import tv.trakt.trakt.core.search.views.SearchGridItem
@@ -224,7 +227,7 @@ private fun ContentList(
         if (!isSearching && recentItems.isNotEmpty() && query.isBlank()) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 TraktHeader(
-                    title = "Recently Searched", // TODO
+                    title = stringResource(R.string.list_title_recently_searched),
                     modifier = Modifier
                         .padding(top = topPadding)
                         .animateItem(
@@ -257,7 +260,12 @@ private fun ContentList(
         if (!isSearching && filter != PEOPLE && query.isBlank()) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 TraktHeader(
-                    title = "Popular Searches", // TODO
+                    title = when (filter) {
+                        MEDIA -> stringResource(R.string.list_title_most_searched_media)
+                        SHOWS -> stringResource(R.string.list_title_most_searched_shows)
+                        MOVIES -> stringResource(R.string.list_title_most_searched_movies)
+                        else -> ""
+                    },
                     modifier = Modifier
                         .padding(top = if (recentItems.isEmpty()) topPadding else 10.dp)
                         .animateItem(
