@@ -90,6 +90,8 @@
     <string name="warning_prompt_remove_single_watched">Are you sure you want to remove this play of %s from your Watched list?</string>
 
     <!-- Migrate to generator -->
+    <string name="warning_prompt_title_delete_list">Delete list</string>
+    <string name="warning_prompt_delete_list">Are you sure you want to delete the list \"%s?\"</string>
     <string name="error_text_lists_limit">Uh oh… You have reached the limit of your personal lists. Upgrade to VIP for unlimited amount of lists!</string>
     <string name="text_info_list_created">List has been created.</string>
     <string name="text_info_list_deleted">List has been deleted.</string>

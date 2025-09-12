@@ -6,11 +6,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -25,6 +28,7 @@ import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
+import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -36,6 +40,8 @@ internal fun EditListView(
     onError: () -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    var confirmationSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(state.loadingEdit, state.loadingDelete) {
         when {
@@ -61,8 +67,20 @@ internal fun EditListView(
             )
         },
         onDeleteClick = {
+            confirmationSheet = true
+        },
+    )
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    ConfirmationSheet(
+        active = confirmationSheet,
+        onYes = {
+            confirmationSheet = false
             viewModel.deleteList(id = initialList.ids.trakt)
         },
+        onNo = { confirmationSheet = false },
+        title = stringResource(R.string.warning_prompt_title_delete_list),
+        message = stringResource(R.string.warning_prompt_delete_list, initialList.name),
     )
 }
 

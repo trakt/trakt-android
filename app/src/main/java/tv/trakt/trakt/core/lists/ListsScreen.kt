@@ -70,7 +70,7 @@ internal fun ListsScreen(
 
     val state by viewModel.state.collectAsStateWithLifecycle()
     var createListSheet by remember { mutableStateOf(false) }
-    var editListSheet: CustomList? by remember { mutableStateOf(null) }
+    var editListSheet by remember { mutableStateOf<CustomList?>(null) }
 
     ListsScreenContent(
         state = state,
