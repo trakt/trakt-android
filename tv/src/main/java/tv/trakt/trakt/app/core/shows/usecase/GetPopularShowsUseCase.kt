@@ -6,9 +6,9 @@ import tv.trakt.trakt.app.core.shows.ShowsConfig.SHOWS_SECTION_LIMIT
 import tv.trakt.trakt.app.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
-import java.time.LocalDate
 import java.time.Year
 
 internal class GetPopularShowsUseCase(
@@ -35,7 +35,7 @@ internal class GetPopularShowsUseCase(
 
     private fun getYearsRange(): Int {
         val currentYear = Year.now().value
-        val currentMonth = LocalDate.now().monthValue
+        val currentMonth = nowLocalDay().monthValue
         return if (currentMonth <= 3) {
             currentYear - 1
         } else {

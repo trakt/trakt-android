@@ -24,6 +24,7 @@ internal sealed class SearchItem(
     internal data class Person(
         override val rank: Long,
         val person: tv.trakt.trakt.common.model.Person,
+        val showBirthday: Boolean = false,
     ) : SearchItem(rank)
 
     val key: String

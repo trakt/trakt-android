@@ -36,6 +36,7 @@ import tv.trakt.trakt.core.search.model.SearchFilter.PEOPLE
 import tv.trakt.trakt.core.search.model.SearchFilter.SHOWS
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.model.SearchItem
+import tv.trakt.trakt.core.search.usecase.GetBirthdayPeopleUseCase
 import tv.trakt.trakt.core.search.usecase.GetSearchResultsUseCase
 import tv.trakt.trakt.core.search.usecase.recents.AddRecentSearchUseCase
 import tv.trakt.trakt.core.search.usecase.recents.GetRecentSearchUseCase
@@ -47,6 +48,7 @@ internal class SearchViewModel(
     private val getRecentSearchUseCase: GetRecentSearchUseCase,
     private val getTrendingShowsUseCase: GetTrendingShowsUseCase,
     private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
+    private val getBirthdayPeopleUseCase: GetBirthdayPeopleUseCase,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = SearchState()
@@ -126,11 +128,6 @@ internal class SearchViewModel(
                 return@coroutineScope
             }
 
-            val limit = when {
-                inputState.value.filter == PEOPLE -> 15
-                else -> 3
-            }
-
             recentsResultState.update {
                 SearchResult(
                     items = buildList {
@@ -158,7 +155,7 @@ internal class SearchViewModel(
                         addAll(peopleItems)
                     }
                         .sortedByDescending { it.rank }
-                        .take(limit)
+                        .take(3)
                         .toImmutableList(),
                 )
             }
@@ -171,43 +168,78 @@ internal class SearchViewModel(
                 return@coroutineScope
             }
 
-            val showsAsync = async { getTrendingShowsUseCase.getShows() }
-            val moviesAsync = async { getTrendingMoviesUseCase.getMovies() }
+            val showsAsync = async {
+                getTrendingShowsUseCase.getLocalShows().ifEmpty {
+                    getTrendingShowsUseCase.getShows()
+                }
+            }
+            val moviesAsync = async {
+                getTrendingMoviesUseCase.getLocalMovies().ifEmpty {
+                    getTrendingMoviesUseCase.getMovies()
+                }
+            }
+            val peopleAsync = async {
+                getBirthdayPeopleUseCase.getLocalPeople().ifEmpty {
+                    getBirthdayPeopleUseCase.getPeople()
+                }
+            }
 
-            val shows = when (inputState.value.filter) {
+            val filter = inputState.value.filter
+            val shows = when (filter) {
                 in arrayOf(MEDIA, SHOWS) -> showsAsync.await()
                 else -> emptyList()
             }
-            val movies = when (inputState.value.filter) {
+            val movies = when (filter) {
                 in arrayOf(MEDIA, MOVIES) -> moviesAsync.await()
                 else -> emptyList()
             }
-
-            popularResultState.update {
-                SearchResult(
-                    items = buildList {
-                        val showItems = shows.asyncMap {
-                            SearchItem.Show(it.watchers.toLong(), it.show)
-                        }
-                        val movieItems = movies.asyncMap {
-                            SearchItem.Movie(it.watchers.toLong(), it.movie)
-                        }
-
-                        // Interleave shows and movies, taking one from each list at a time
-                        val maxSize = maxOf(showItems.size, movieItems.size)
-                        for (i in 0 until maxSize) {
-                            if (i < showItems.size) {
-                                add(showItems[i])
-                            }
-                            if (i < movieItems.size) {
-                                add(movieItems[i])
-                            }
-                        }
-                    }
-                        .take(if (shows.isEmpty() || movies.isEmpty()) 18 else 36)
-                        .toImmutableList(),
-                )
+            val people = when (filter) {
+                in arrayOf(PEOPLE) -> peopleAsync.await()
+                else -> emptyList()
             }
+
+            val results = when (filter) {
+                PEOPLE -> {
+                    SearchResult(
+                        items = people
+                            .asyncMap {
+                                SearchItem.Person(
+                                    rank = 0,
+                                    person = it,
+                                    showBirthday = true,
+                                )
+                            }
+                            .toImmutableList(),
+                    )
+                }
+                else -> {
+                    SearchResult(
+                        items = buildList {
+                            val showItems = shows.asyncMap {
+                                SearchItem.Show(it.watchers.toLong(), it.show)
+                            }
+                            val movieItems = movies.asyncMap {
+                                SearchItem.Movie(it.watchers.toLong(), it.movie)
+                            }
+
+                            // Interleave shows and movies, taking one from each list at a time
+                            val maxSize = maxOf(showItems.size, movieItems.size)
+                            for (i in 0 until maxSize) {
+                                if (i < showItems.size) {
+                                    add(showItems[i])
+                                }
+                                if (i < movieItems.size) {
+                                    add(movieItems[i])
+                                }
+                            }
+                        }
+                            .take(if (shows.isEmpty() || movies.isEmpty()) 18 else 36)
+                            .toImmutableList(),
+                    )
+                }
+            }
+
+            popularResultState.update { results }
         }
     }
 

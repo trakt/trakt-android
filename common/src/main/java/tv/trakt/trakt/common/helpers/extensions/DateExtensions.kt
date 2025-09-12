@@ -13,6 +13,10 @@ import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalAdjusters
 import java.util.Locale
 
+val mediumDateFormat: DateTimeFormatter = DateTimeFormatter
+    .ofLocalizedDate(FormatStyle.MEDIUM)
+    .withLocale(Locale.US)
+
 val longDateFormat: DateTimeFormatter = DateTimeFormatter
     .ofLocalizedDate(FormatStyle.LONG)
     .withLocale(Locale.US)
@@ -30,6 +34,8 @@ fun nowUtcInstant(): Instant = Instant.now()
 // Local time functions
 
 fun nowLocal(): ZonedDateTime = ZonedDateTime.now()
+
+fun nowLocalDay(): LocalDate = LocalDate.now()
 
 fun ZonedDateTime.toLocal(): ZonedDateTime = this.withZoneSameInstant(ZoneId.systemDefault())
 

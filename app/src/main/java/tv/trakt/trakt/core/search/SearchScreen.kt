@@ -257,14 +257,14 @@ private fun ContentList(
             }
         }
 
-        if (!isSearching && filter != PEOPLE && query.isBlank()) {
+        if (!isSearching && query.isBlank()) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 TraktHeader(
                     title = when (filter) {
                         MEDIA -> stringResource(R.string.list_title_most_searched_media)
                         SHOWS -> stringResource(R.string.list_title_most_searched_shows)
                         MOVIES -> stringResource(R.string.list_title_most_searched_movies)
-                        else -> ""
+                        PEOPLE -> stringResource(R.string.list_title_birthdays_this_month)
                     },
                     modifier = Modifier
                         .padding(top = if (recentItems.isEmpty()) topPadding else 10.dp)

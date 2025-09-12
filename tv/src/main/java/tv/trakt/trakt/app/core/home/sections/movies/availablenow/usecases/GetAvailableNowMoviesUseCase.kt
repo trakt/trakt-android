@@ -6,10 +6,10 @@ import tv.trakt.trakt.app.core.home.sections.movies.availablenow.model.Watchlist
 import tv.trakt.trakt.app.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.app.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.fromDto
-import java.time.LocalDate
 
 internal const val PAGE_LIMIT = 100
 
@@ -21,7 +21,7 @@ internal class GetAvailableNowMoviesUseCase(
         limit: Int = 100,
         page: Int = 1,
     ): ImmutableList<WatchlistMovie> {
-        val nowDay = LocalDate.now().toString()
+        val nowDay = nowLocalDay().toString()
         val response = remoteSyncSource.getWatchlist(
             page = page,
             limit = PAGE_LIMIT,

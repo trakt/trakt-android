@@ -21,6 +21,7 @@ import tv.trakt.trakt.core.lists.di.listsDataModule
 import tv.trakt.trakt.core.lists.di.listsModule
 import tv.trakt.trakt.core.movies.di.moviesDataModule
 import tv.trakt.trakt.core.movies.di.moviesModule
+import tv.trakt.trakt.core.people.di.peopleDataModule
 import tv.trakt.trakt.core.profile.di.profileDataModule
 import tv.trakt.trakt.core.profile.di.profileModule
 import tv.trakt.trakt.core.search.di.searchDataModule
@@ -76,6 +77,7 @@ internal class TraktApplication : Application() {
                 moviesDataModule,
                 profileModule,
                 profileDataModule,
+                peopleDataModule,
                 searchModule,
                 searchDataModule,
                 listsModule,

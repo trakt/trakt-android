@@ -3,6 +3,7 @@ package tv.trakt.trakt.app.helpers.preview
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.common.model.Comment
 import tv.trakt.trakt.app.core.episodes.model.Episode
+import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.CustomList.Type
 import tv.trakt.trakt.common.model.Ids
@@ -72,7 +73,7 @@ internal object PreviewData {
         overview = "This is a sample movie overview that provides a brief description of the movie's plot " +
             "and main themes. It is intended to give viewers an idea of what to expect without revealing too much.",
         year = 2024,
-        released = LocalDate.now(),
+        released = nowLocalDay(),
         genres = listOf("Comedy", "Drama").toImmutableList(),
         images = Images(
             poster = listOf(
@@ -134,6 +135,7 @@ internal object PreviewData {
             tvdb = TvdbId(112233),
         ),
         knownForDepartment = "Acting",
+        birthday = LocalDate.of(1980, 5, 15),
         biography = "John Doe is a fictional character often used as a placeholder name in various contexts. " +
             "He represents an average person and is commonly used in legal cases, examples, and discussions.",
         images = Images(

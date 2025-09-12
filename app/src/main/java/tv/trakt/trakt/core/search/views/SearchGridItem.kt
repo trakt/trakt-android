@@ -3,6 +3,8 @@ package tv.trakt.trakt.core.search.views
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -10,12 +12,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
+import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
@@ -161,14 +166,42 @@ private fun PersonGridItem(
                     overflow = TextOverflow.Ellipsis,
                 )
 
-                item.person.knownForDepartment?.let { string ->
-                    Text(
-                        text = string.replaceFirstChar {
-                            it.uppercaseChar()
-                        },
-                        style = TraktTheme.typography.cardSubtitle,
-                        color = TraktTheme.colors.textSecondary,
-                    )
+                if (item.showBirthday) {
+                    item.person.birthday?.let { date ->
+                        val isToday = remember(date) {
+                            date.dayOfYear == nowLocalDay().dayOfYear
+                        }
+                        Row(
+                            horizontalArrangement = spacedBy(4.dp),
+                            verticalAlignment = CenterVertically,
+                        ) {
+                            if (isToday) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_celebration),
+                                    contentDescription = null,
+                                    tint = TraktTheme.colors.textSecondary,
+                                    modifier = Modifier.size(13.dp),
+                                )
+                            }
+                            Text(
+                                text = date.format(mediumDateFormat),
+                                style = TraktTheme.typography.cardSubtitle,
+                                color = TraktTheme.colors.textSecondary,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        }
+                    }
+                } else {
+                    item.person.knownForDepartment?.let { string ->
+                        Text(
+                            text = string.replaceFirstChar { it.uppercaseChar() },
+                            style = TraktTheme.typography.cardSubtitle,
+                            color = TraktTheme.colors.textSecondary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
                 }
             }
         },

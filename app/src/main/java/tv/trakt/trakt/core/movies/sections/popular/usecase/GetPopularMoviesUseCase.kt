@@ -3,12 +3,12 @@ package tv.trakt.trakt.core.movies.sections.popular.usecase
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
 import tv.trakt.trakt.core.movies.sections.popular.data.local.PopularMoviesLocalDataSource
 import java.time.Instant
-import java.time.LocalDate
 import java.time.Year
 
 internal class GetPopularMoviesUseCase(
@@ -39,7 +39,7 @@ internal class GetPopularMoviesUseCase(
 
     private fun getYearsRange(): Int {
         val currentYear = Year.now().value
-        val currentMonth = LocalDate.now().monthValue
+        val currentMonth = nowLocalDay().monthValue
         return if (currentMonth <= 3) {
             currentYear - 1
         } else {

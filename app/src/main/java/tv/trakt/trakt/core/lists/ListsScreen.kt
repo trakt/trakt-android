@@ -218,10 +218,6 @@ private fun ListsScreenContent(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     onMoreClick = { onEditListClick(list) },
-                    modifier = Modifier.animateItem(
-                        fadeInSpec = null,
-                        fadeOutSpec = null,
-                    ),
                 )
             }
         }

@@ -21,8 +21,11 @@ import tv.trakt.trakt.common.Config.API_HD_BASE_URL
 import tv.trakt.trakt.core.search.SearchViewModel
 import tv.trakt.trakt.core.search.data.local.RecentSearchLocalDataSource
 import tv.trakt.trakt.core.search.data.local.RecentSearchStorage
+import tv.trakt.trakt.core.search.data.local.people.SearchPeopleLocalDataSource
+import tv.trakt.trakt.core.search.data.local.people.SearchPeopleStorage
 import tv.trakt.trakt.core.search.data.remote.SearchApiClient
 import tv.trakt.trakt.core.search.data.remote.SearchRemoteDataSource
+import tv.trakt.trakt.core.search.usecase.GetBirthdayPeopleUseCase
 import tv.trakt.trakt.core.search.usecase.GetSearchResultsUseCase
 import tv.trakt.trakt.core.search.usecase.recents.AddRecentSearchUseCase
 import tv.trakt.trakt.core.search.usecase.recents.GetRecentSearchUseCase
@@ -38,6 +41,10 @@ internal val searchDataModule = module {
                 httpClientConfig = get(named("clientConfig")),
             ),
         )
+    }
+
+    single<SearchPeopleLocalDataSource> {
+        SearchPeopleStorage()
     }
 
     single<RecentSearchLocalDataSource> {
@@ -74,6 +81,13 @@ internal val searchModule = module {
         )
     }
 
+    factory {
+        GetBirthdayPeopleUseCase(
+            remoteSource = get(),
+            localSource = get(),
+        )
+    }
+
     viewModel { (_: SavedStateHandle) ->
         SearchViewModel(
             getSearchResultsUseCase = get(),
@@ -81,6 +95,7 @@ internal val searchModule = module {
             getRecentSearchUseCase = get(),
             getTrendingShowsUseCase = get(),
             getTrendingMoviesUseCase = get(),
+            getBirthdayPeopleUseCase = get(),
             sessionManager = get(),
         )
     }

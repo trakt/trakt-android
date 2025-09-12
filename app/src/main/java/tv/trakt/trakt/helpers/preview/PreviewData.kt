@@ -1,6 +1,7 @@
 package tv.trakt.trakt.helpers.preview
 
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.CustomList.Type
 import tv.trakt.trakt.common.model.Ids
@@ -17,7 +18,6 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.sorting.SortOrder
 import tv.trakt.trakt.common.model.sorting.SortType
 import tv.trakt.trakt.core.episodes.model.Episode
-import java.time.LocalDate
 import java.time.ZonedDateTime
 import kotlin.time.Duration.Companion.minutes
 
@@ -70,7 +70,7 @@ internal object PreviewData {
         overview = "This is a sample movie overview that provides a brief description of the movie's plot " +
             "and main themes. It is intended to give viewers an idea of what to expect without revealing too much.",
         year = 2024,
-        released = LocalDate.now(),
+        released = nowLocalDay(),
         genres = listOf("Comedy", "Drama").toImmutableList(),
         images = Images(
             poster = listOf(

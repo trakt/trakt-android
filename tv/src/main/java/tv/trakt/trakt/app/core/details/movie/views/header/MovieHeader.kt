@@ -49,13 +49,13 @@ import tv.trakt.trakt.app.core.details.movie.MovieDetailsState.CollectionState
 import tv.trakt.trakt.app.core.details.ui.PosterImage
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
+import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.common.model.Images.Size.MEDIUM
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.resources.R
-import java.time.LocalDate
 
 @Composable
 internal fun MovieHeader(
@@ -185,7 +185,7 @@ internal fun MovieHeader(
                     modifier = Modifier.horizontalScroll(rememberScrollState()),
                 ) {
                     val hidden = remember(movie.released) {
-                        movie.released == null || movie.released?.isAfter(LocalDate.now()) == true
+                        movie.released == null || movie.released?.isAfter(nowLocalDay()) == true
                     }
 
                     Row(
