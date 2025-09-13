@@ -8,6 +8,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -24,13 +27,15 @@ import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetActivityFilterUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
+import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
 
 internal class HomeActivityViewModel(
     private val getActivityFilterUseCase: GetActivityFilterUseCase,
     private val getSocialActivityUseCase: GetSocialActivityUseCase,
     private val getPersonalActivityUseCase: GetPersonalActivityUseCase,
-    private val homeWatchlistLocalDataSource: HomeWatchlistLocalDataSource,
+    private val homeUpNextSource: HomeUpNextLocalDataSource,
+    private val homeWatchlistSource: HomeWatchlistLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = HomeActivityState()
@@ -46,7 +51,7 @@ internal class HomeActivityViewModel(
     init {
         loadData()
         observeUser()
-        observeHomeWatchlist()
+        observeHome()
     }
 
     private fun observeUser() {
@@ -62,13 +67,13 @@ internal class HomeActivityViewModel(
         }
     }
 
-    private fun observeHomeWatchlist() {
-        viewModelScope.launch {
-            homeWatchlistLocalDataSource.observeUpdated()
-                .collect {
-                    loadData(ignoreErrors = true)
-                }
-        }
+    private fun observeHome() {
+        merge(
+            homeUpNextSource.observeUpdated(),
+            homeWatchlistSource.observeUpdated(),
+        ).onEach {
+            loadData(ignoreErrors = true)
+        }.launchIn(viewModelScope)
     }
 
     private fun loadData(ignoreErrors: Boolean = false) {

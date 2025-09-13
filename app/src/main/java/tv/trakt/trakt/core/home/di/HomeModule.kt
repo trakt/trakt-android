@@ -119,6 +119,7 @@ internal val homeModule = module {
     viewModel {
         HomeUpNextViewModel(
             getUpNextUseCase = get(),
+            updateHistoryUseCase = get(),
             sessionManager = get(),
         )
     }
@@ -126,7 +127,7 @@ internal val homeModule = module {
     viewModel {
         HomeWatchlistViewModel(
             getWatchlistUseCase = get(),
-            changeHistoryUseCase = get(),
+            updateHistoryUseCase = get(),
             sessionManager = get(),
         )
     }
@@ -136,7 +137,8 @@ internal val homeModule = module {
             getSocialActivityUseCase = get(),
             getPersonalActivityUseCase = get(),
             getActivityFilterUseCase = get(),
-            homeWatchlistLocalDataSource = get(),
+            homeUpNextSource = get(),
+            homeWatchlistSource = get(),
             sessionManager = get(),
         )
     }

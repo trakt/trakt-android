@@ -11,9 +11,13 @@ import java.time.ZonedDateTime
 internal data class ProgressShow(
     val progress: Progress,
     val show: Show,
+    val loading: Boolean = false,
 ) {
     val id: TraktId
         get() = progress.nextEpisode.ids.trakt
+
+    val key: String
+        get() = "up_next_${id.value}_${show.ids.trakt.value}"
 }
 
 @Immutable

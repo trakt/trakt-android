@@ -268,10 +268,10 @@ private fun ContentListItem(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .padding(start = 8.dp, end = 2.dp)
-                        .size(18.dp),
+                        .size(19.dp),
                 ) {
                     if (item.loading) {
-                        FilmProgressIndicator(size = 16.dp)
+                        FilmProgressIndicator(size = 18.dp)
                     } else {
                         Icon(
                             painter = painterResource(R.drawable.ic_check_round),

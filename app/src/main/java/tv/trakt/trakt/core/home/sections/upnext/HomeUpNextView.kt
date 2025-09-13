@@ -4,6 +4,7 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -21,9 +22,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -32,15 +35,17 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.episodes.model.Episode
+import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.resources.R
@@ -59,6 +64,9 @@ internal fun HomeUpNextView(
     contentPadding: PaddingValues,
     onShowsClick: () -> Unit,
 ) {
+    val localSnack = LocalSnackbarState.current
+    val localContext = LocalContext.current
+
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     HomeUpNextContent(
@@ -67,7 +75,17 @@ internal fun HomeUpNextView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onShowsClick = onShowsClick,
+        onCheckClick = {
+            viewModel.addToHistory(it.id)
+        },
     )
+
+    LaunchedEffect(state.info) {
+        state.info?.let {
+            localSnack.showSnackbar(it.get(localContext))
+            viewModel.clearInfo()
+        }
+    }
 }
 
 @Composable
@@ -76,7 +94,8 @@ internal fun HomeUpNextContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onShowsClick: () -> Unit,
+    onShowsClick: () -> Unit = {},
+    onCheckClick: (ProgressShow) -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
@@ -92,7 +111,7 @@ internal fun HomeUpNextContent(
             TraktHeader(
                 title = stringResource(R.string.list_title_up_next),
             )
-            if (!state.items.isNullOrEmpty() || state.loading != DONE) {
+            if (!state.items.items.isNullOrEmpty() || state.loading != DONE) {
                 Text(
                     text = stringResource(R.string.button_text_view_all),
                     color = TraktTheme.colors.textSecondary,
@@ -124,7 +143,7 @@ internal fun HomeUpNextContent(
                                 modifier = Modifier.padding(contentPadding),
                             )
                         }
-                        state.items?.isEmpty() == true -> {
+                        state.items.items?.isEmpty() == true -> {
                             val imageUrl = remember {
                                 Firebase.remoteConfig.getString("mobile_empty_image_1").ifBlank { null }
                             }
@@ -141,8 +160,9 @@ internal fun HomeUpNextContent(
                         }
                         else -> {
                             ContentList(
-                                listItems = (state.items ?: emptyList()).toImmutableList(),
+                                listItems = state.items,
                                 contentPadding = contentPadding,
+                                onCheckClick = onCheckClick,
                             )
                         }
                     }
@@ -172,17 +192,20 @@ private fun ContentLoadingList(
 
 @Composable
 private fun ContentList(
-    listItems: ImmutableList<ProgressShow>,
+    listItems: ItemsState,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
+    onCheckClick: (ProgressShow) -> Unit,
 ) {
-    val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
+    val currentList = remember { mutableIntStateOf(listItems.items.hashCode()) }
 
-    LaunchedEffect(listItems) {
+    LaunchedEffect(listItems.items, listItems.resetScroll) {
         val hashCode = listItems.hashCode()
         if (currentList.intValue != hashCode) {
             currentList.intValue = hashCode
-            listState.animateScrollToItem(0)
+            if (listItems.resetScroll) {
+                listState.animateScrollToItem(0)
+            }
         }
     }
 
@@ -193,12 +216,13 @@ private fun ContentList(
         contentPadding = contentPadding,
     ) {
         items(
-            items = listItems,
-            key = { it.show.ids.trakt.value },
+            items = listItems.items ?: emptyList(),
+            key = { it.key },
         ) { item ->
             ContentListItem(
                 item = item,
                 onClick = { _, _ -> },
+                onCheckClick = { onCheckClick(item) },
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
                     fadeOutSpec = null,
@@ -213,6 +237,7 @@ private fun ContentListItem(
     item: ProgressShow,
     modifier: Modifier = Modifier,
     onClick: (Show, Episode) -> Unit,
+    onCheckClick: () -> Unit,
 ) {
     HorizontalMediaCard(
         title = "",
@@ -277,14 +302,25 @@ private fun ContentListItem(
                     )
                 }
 
-                Icon(
-                    painter = painterResource(R.drawable.ic_check_round),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.accent,
+                Box(
+                    contentAlignment = Alignment.Center,
                     modifier = Modifier
-                        .padding(start = 8.dp, end = 2.dp)
+                        .padding(start = 12.dp, end = 4.dp)
                         .size(19.dp),
-                )
+                ) {
+                    if (item.loading) {
+                        FilmProgressIndicator(size = 18.dp)
+                    } else {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_check_round),
+                            contentDescription = null,
+                            tint = TraktTheme.colors.accent,
+                            modifier = Modifier
+                                .size(19.dp)
+                                .onClick(onCheckClick),
+                        )
+                    }
+                }
             }
         },
         modifier = modifier,
@@ -303,7 +339,6 @@ private fun Preview() {
             state = HomeUpNextState(
                 loading = IDLE,
             ),
-            onShowsClick = {},
         )
     }
 }
@@ -320,7 +355,6 @@ private fun Preview2() {
             state = HomeUpNextState(
                 loading = LOADING,
             ),
-            onShowsClick = {},
         )
     }
 }

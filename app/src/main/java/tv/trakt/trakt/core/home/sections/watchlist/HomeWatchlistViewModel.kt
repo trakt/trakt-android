@@ -22,13 +22,13 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.sections.watchlist.model.WatchlistMovie
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetWatchlistMoviesUseCase
-import tv.trakt.trakt.core.sync.usecases.ChangeMovieHistoryUseCase
+import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.resources.R
 import java.time.Instant
 
 internal class HomeWatchlistViewModel(
     private val getWatchlistUseCase: GetWatchlistMoviesUseCase,
-    private val changeHistoryUseCase: ChangeMovieHistoryUseCase,
+    private val updateHistoryUseCase: UpdateMovieHistoryUseCase,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = HomeWatchlistState()
@@ -122,7 +122,7 @@ internal class HomeWatchlistViewModel(
                     currentItems.toImmutableList()
                 }
 
-                changeHistoryUseCase.addToHistory(movieId)
+                updateHistoryUseCase.addToHistory(movieId)
                 itemsState.update {
                     getWatchlistUseCase.getWatchlist()
                 }
