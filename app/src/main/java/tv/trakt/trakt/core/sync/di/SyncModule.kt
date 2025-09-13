@@ -6,11 +6,12 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
-import tv.trakt.trakt.common.Config.API_BASE_URL
+import tv.trakt.trakt.common.Config.API_HD_BASE_URL
 import tv.trakt.trakt.core.sync.data.remote.movies.MoviesSyncApiClient
 import tv.trakt.trakt.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
 import tv.trakt.trakt.core.sync.data.remote.shows.ShowsSyncApiClient
 import tv.trakt.trakt.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
+import tv.trakt.trakt.core.sync.usecases.ChangeMovieHistoryUseCase
 
 internal val syncModule = module {
     single<ShowsSyncRemoteDataSource> {
@@ -19,12 +20,12 @@ internal val syncModule = module {
 
         ShowsSyncApiClient(
             syncApi = SyncApi(
-                baseUrl = API_BASE_URL,
+                baseUrl = API_HD_BASE_URL,
                 httpClientEngine = httpClientEngine,
                 httpClientConfig = httpClientConfig,
             ),
             usersApi = UsersApi(
-                baseUrl = API_BASE_URL,
+                baseUrl = API_HD_BASE_URL,
                 httpClientEngine = httpClientEngine,
                 httpClientConfig = httpClientConfig,
             ),
@@ -37,10 +38,21 @@ internal val syncModule = module {
 
         MoviesSyncApiClient(
             usersApi = UsersApi(
-                baseUrl = API_BASE_URL,
+                baseUrl = API_HD_BASE_URL,
                 httpClientEngine = httpClientEngine,
                 httpClientConfig = httpClientConfig,
             ),
+            syncApi = SyncApi(
+                baseUrl = API_HD_BASE_URL,
+                httpClientEngine = httpClientEngine,
+                httpClientConfig = httpClientConfig,
+            ),
+        )
+    }
+
+    factory {
+        ChangeMovieHistoryUseCase(
+            remoteSource = get(),
         )
     }
 }

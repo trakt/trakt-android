@@ -24,11 +24,13 @@ import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetActivityFilterUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
+import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
 
 internal class HomeActivityViewModel(
     private val getActivityFilterUseCase: GetActivityFilterUseCase,
     private val getSocialActivityUseCase: GetSocialActivityUseCase,
     private val getPersonalActivityUseCase: GetPersonalActivityUseCase,
+    private val homeWatchlistLocalDataSource: HomeWatchlistLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = HomeActivityState()
@@ -44,6 +46,7 @@ internal class HomeActivityViewModel(
     init {
         loadData()
         observeUser()
+        observeHomeWatchlist()
     }
 
     private fun observeUser() {
@@ -59,7 +62,16 @@ internal class HomeActivityViewModel(
         }
     }
 
-    private fun loadData() {
+    private fun observeHomeWatchlist() {
+        viewModelScope.launch {
+            homeWatchlistLocalDataSource.observeUpdated()
+                .collect {
+                    loadData(ignoreErrors = true)
+                }
+        }
+    }
+
+    private fun loadData(ignoreErrors: Boolean = false) {
         loadDataJob?.cancel()
         loadDataJob = viewModelScope.launch {
             try {
@@ -88,7 +100,9 @@ internal class HomeActivityViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.update { error }
+                    if (!ignoreErrors) {
+                        errorState.update { error }
+                    }
                     Timber.w(error, "Error loading social activity")
                 }
             } finally {

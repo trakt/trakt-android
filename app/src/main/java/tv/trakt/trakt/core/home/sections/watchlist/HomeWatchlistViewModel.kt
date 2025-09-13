@@ -12,28 +12,35 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
-import tv.trakt.trakt.common.helpers.extensions.nowUtc
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.sections.watchlist.model.WatchlistMovie
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetWatchlistMoviesUseCase
-import java.time.ZonedDateTime
+import tv.trakt.trakt.core.sync.usecases.ChangeMovieHistoryUseCase
+import tv.trakt.trakt.resources.R
+import java.time.Instant
 
 internal class HomeWatchlistViewModel(
     private val getWatchlistUseCase: GetWatchlistMoviesUseCase,
+    private val changeHistoryUseCase: ChangeMovieHistoryUseCase,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = HomeWatchlistState()
 
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
+    private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var user: User? = null
-    private var loadedAt: ZonedDateTime? = null
+    private var loadedAt: Instant? = null
+    private var processingJob: kotlinx.coroutines.Job? = null
 
     init {
         loadData()
@@ -72,7 +79,7 @@ internal class HomeWatchlistViewModel(
                     getWatchlistUseCase.getWatchlist()
                 }
 
-                loadedAt = nowUtc()
+                loadedAt = nowUtcInstant()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -99,15 +106,62 @@ internal class HomeWatchlistViewModel(
         return false
     }
 
+    fun addToHistory(movieId: TraktId) {
+        if (processingJob != null) {
+            return
+        }
+        processingJob = viewModelScope.launch {
+            try {
+                val currentItems = itemsState.value?.toMutableList() ?: return@launch
+
+                val itemIndex = currentItems.indexOfFirst { it.movie.ids.trakt == movieId }
+                val itemLoading = currentItems[itemIndex].copy(loading = true)
+                currentItems[itemIndex] = itemLoading
+
+                itemsState.update {
+                    currentItems.toImmutableList()
+                }
+
+                changeHistoryUseCase.addToHistory(movieId)
+                itemsState.update {
+                    getWatchlistUseCase.getWatchlist()
+                }
+                infoState.update {
+                    DynamicStringResource(R.string.text_info_history_added)
+                }
+
+                loadedAt = nowUtcInstant()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.d(error, "Failed to add movie to history")
+                }
+            } finally {
+                processingJob = null
+            }
+        }
+    }
+
+    override fun onCleared() {
+        processingJob?.cancel()
+        super.onCleared()
+    }
+
+    fun clearInfo() {
+        infoState.update { null }
+    }
+
     val state: StateFlow<HomeWatchlistState> = combine(
         itemsState,
         loadingState,
+        infoState,
         errorState,
-    ) { s1, s2, s3 ->
+    ) { s1, s2, s3, s4 ->
         HomeWatchlistState(
             items = s1,
             loading = s2,
-            error = s3,
+            info = s3,
+            error = s4,
         )
     }.stateIn(
         scope = viewModelScope,

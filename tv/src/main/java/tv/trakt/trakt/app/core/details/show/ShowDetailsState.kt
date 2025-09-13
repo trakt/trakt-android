@@ -8,7 +8,7 @@ import tv.trakt.trakt.app.common.model.ExternalRating
 import tv.trakt.trakt.app.common.model.ExtraVideo
 import tv.trakt.trakt.app.common.model.StreamingService
 import tv.trakt.trakt.app.core.details.show.models.ShowSeasons
-import tv.trakt.trakt.app.helpers.StringResource
+import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.SlugId

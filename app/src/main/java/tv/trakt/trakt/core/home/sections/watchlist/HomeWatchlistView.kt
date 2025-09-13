@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,6 +37,7 @@ import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
@@ -60,6 +62,9 @@ internal fun HomeWatchlistView(
     contentPadding: PaddingValues,
     onMoviesClick: () -> Unit,
 ) {
+    val localSnack = LocalSnackbarState.current
+    val localContext = LocalContext.current
+
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     HomeWatchlistContent(
@@ -68,7 +73,17 @@ internal fun HomeWatchlistView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onMoviesClick = onMoviesClick,
+        onCheckClick = {
+            viewModel.addToHistory(it.ids.trakt)
+        },
     )
+
+    LaunchedEffect(state.info) {
+        state.info?.let {
+            localSnack.showSnackbar(it.get(localContext))
+            viewModel.clearInfo()
+        }
+    }
 }
 
 @Composable
@@ -78,6 +93,7 @@ internal fun HomeWatchlistContent(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onMoviesClick: () -> Unit = {},
+    onCheckClick: (Movie) -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
@@ -146,7 +162,7 @@ internal fun HomeWatchlistContent(
                             ContentList(
                                 listItems = (state.items ?: emptyList()).toImmutableList(),
                                 contentPadding = contentPadding,
-                                onCheckClick = { TODO() },
+                                onCheckClick = onCheckClick,
                             )
                         }
                     }
@@ -183,13 +199,13 @@ private fun ContentList(
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
-    LaunchedEffect(listItems) {
-        val hashCode = listItems.hashCode()
-        if (currentList.intValue != hashCode) {
-            currentList.intValue = hashCode
-            listState.animateScrollToItem(0)
-        }
-    }
+//    LaunchedEffect(listItems) {
+//        val hashCode = listItems.hashCode()
+//        if (currentList.intValue != hashCode) {
+//            currentList.intValue = hashCode
+//            listState.animateScrollToItem(0)
+//        }
+//    }
 
     LazyRow(
         state = listState,
