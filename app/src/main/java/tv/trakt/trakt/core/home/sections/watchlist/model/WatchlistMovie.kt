@@ -6,7 +6,8 @@ import java.time.Instant
 
 @Immutable
 internal data class WatchlistMovie(
+    val rank: Int?,
     val movie: Movie,
     val listedAt: Instant,
-    val rank: Int?,
+    val loading: Boolean = false,
 )

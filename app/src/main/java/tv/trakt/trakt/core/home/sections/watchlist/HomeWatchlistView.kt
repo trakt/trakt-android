@@ -2,17 +2,20 @@ package tv.trakt.trakt.core.home.sections.watchlist
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Arrangement.SpaceBetween
 import androidx.compose.foundation.layout.Arrangement.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,8 +23,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,6 +40,9 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.home.sections.watchlist.model.WatchlistMovie
 import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.resources.R
@@ -79,8 +87,8 @@ internal fun HomeWatchlistContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(headerPadding),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = SpaceBetween,
+            verticalAlignment = CenterVertically,
         ) {
             TraktHeader(
                 title = stringResource(R.string.page_title_watchlist),
@@ -138,6 +146,7 @@ internal fun HomeWatchlistContent(
                             ContentList(
                                 listItems = (state.items ?: emptyList()).toImmutableList(),
                                 contentPadding = contentPadding,
+                                onCheckClick = { TODO() },
                             )
                         }
                     }
@@ -170,6 +179,7 @@ private fun ContentList(
     listItems: ImmutableList<WatchlistMovie>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
+    onCheckClick: (Movie) -> Unit,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
@@ -194,6 +204,7 @@ private fun ContentList(
             ContentListItem(
                 item = item,
                 onClick = {},
+                onCheckClick = { onCheckClick(item.movie) },
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
                     fadeOutSpec = null,
@@ -208,6 +219,7 @@ private fun ContentListItem(
     item: WatchlistMovie,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
+    onCheckClick: () -> Unit = {},
 ) {
     VerticalMediaCard(
         title = item.movie.title,
@@ -215,18 +227,45 @@ private fun ContentListItem(
         onClick = onClick,
         chipContent = {
             Row(
-                horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpacing),
+                verticalAlignment = CenterVertically,
+                horizontalArrangement = SpaceBetween,
+                modifier = Modifier.fillMaxWidth(),
             ) {
-                InfoChip(
-                    text = item.movie.year.toString(),
-                )
-                item.movie.runtime?.inWholeMinutes?.let {
-                    val runtimeString = remember(item.movie.runtime) {
-                        it.durationFormat()
-                    }
+                Row(
+                    horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpacing),
+                    modifier = Modifier.weight(1F, fill = false),
+                ) {
                     InfoChip(
-                        text = runtimeString,
+                        text = item.movie.year.toString(),
                     )
+                    item.movie.runtime?.inWholeMinutes?.let {
+                        val runtimeString = remember(item.movie.runtime) {
+                            it.durationFormat()
+                        }
+                        InfoChip(
+                            text = runtimeString,
+                        )
+                    }
+                }
+
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .padding(start = 8.dp, end = 2.dp)
+                        .size(18.dp),
+                ) {
+                    if (item.loading) {
+                        FilmProgressIndicator(size = 16.dp)
+                    } else {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_check_round),
+                            contentDescription = null,
+                            tint = TraktTheme.colors.accent,
+                            modifier = Modifier
+                                .size(19.dp)
+                                .onClick(onCheckClick),
+                        )
+                    }
                 }
             }
         },

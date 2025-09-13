@@ -13,7 +13,7 @@ internal val Spacing: TraktSpacing = TraktSpacing(
     mainPageTopSpace = 88.dp,
     mainPageBottomSpace = 64.dp,
     mainSectionVerticalSpace = 30.dp,
-    chipsSpacing = 5.dp,
+    chipsSpacing = 4.dp,
 )
 
 @Immutable

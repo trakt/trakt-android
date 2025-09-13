@@ -9,19 +9,22 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -84,7 +87,7 @@ internal fun HomeUpNextContent(
                 .fillMaxWidth()
                 .padding(headerPadding),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = CenterVertically,
         ) {
             TraktHeader(
                 title = stringResource(R.string.list_title_up_next),
@@ -248,23 +251,39 @@ private fun ContentListItem(
             }
         },
         footerContent = {
-            Column(
-                verticalArrangement = spacedBy(1.dp),
+            Row(
+                verticalAlignment = CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth(),
             ) {
-                Text(
-                    text = item.show.title,
-                    style = TraktTheme.typography.cardTitle,
-                    color = TraktTheme.colors.textPrimary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
+                Column(
+                    verticalArrangement = spacedBy(1.dp),
+                    modifier = Modifier.weight(1F, fill = false),
+                ) {
+                    Text(
+                        text = item.show.title,
+                        style = TraktTheme.typography.cardTitle,
+                        color = TraktTheme.colors.textPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
 
-                Text(
-                    text = item.progress.nextEpisode.seasonEpisodeString(),
-                    style = TraktTheme.typography.cardSubtitle,
-                    color = TraktTheme.colors.textSecondary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
+                    Text(
+                        text = item.progress.nextEpisode.seasonEpisodeString(),
+                        style = TraktTheme.typography.cardSubtitle,
+                        color = TraktTheme.colors.textSecondary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+
+                Icon(
+                    painter = painterResource(R.drawable.ic_check_round),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.accent,
+                    modifier = Modifier
+                        .padding(start = 8.dp, end = 2.dp)
+                        .size(19.dp),
                 )
             }
         },

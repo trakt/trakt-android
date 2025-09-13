@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,6 +27,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.Brush.Companion.verticalGradient
@@ -263,10 +265,85 @@ private fun Preview() {
                 )
 
                 HorizontalMediaCard(
-                    title = "The Witcher",
-                    containerImageUrl = null,
-                    contentImageUrl = null,
-                    onClick = {},
+                    title = "The Last of Us",
+                    footerContent = {
+                        Row(
+                            verticalAlignment = CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                        ) {
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(1.dp),
+                                modifier = Modifier.weight(1F, fill = false),
+                            ) {
+                                Text(
+                                    text = "The Last of Us",
+                                    style = TraktTheme.typography.cardTitle,
+                                    color = TraktTheme.colors.textPrimary,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+
+                                Text(
+                                    text = "S2 • E3 - Episode",
+                                    style = TraktTheme.typography.cardSubtitle,
+                                    color = TraktTheme.colors.textSecondary,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                            }
+
+                            Icon(
+                                painter = painterResource(R.drawable.ic_check_round),
+                                contentDescription = null,
+                                tint = TraktTheme.colors.accent,
+                                modifier = Modifier.size(18.dp),
+                            )
+                        }
+                    },
+                )
+
+                HorizontalMediaCard(
+                    title = "The Last of Us",
+                    footerContent = {
+                        Row(
+                            verticalAlignment = CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                        ) {
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(1.dp),
+                                modifier = Modifier.weight(1F, fill = false),
+                            ) {
+                                Text(
+                                    text = "The Last of Us",
+                                    style = TraktTheme.typography.cardTitle,
+                                    color = TraktTheme.colors.textPrimary,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+
+                                Text(
+                                    text = "S2 • E3 - Long Long Long Episode Title",
+                                    style = TraktTheme.typography.cardSubtitle,
+                                    color = TraktTheme.colors.textSecondary,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                            }
+
+                            Icon(
+                                painter = painterResource(R.drawable.ic_check_round),
+                                contentDescription = null,
+                                tint = TraktTheme.colors.accent,
+                                modifier = Modifier
+                                    .padding(start = 8.dp)
+                                    .size(18.dp),
+                            )
+                        }
+                    },
                 )
             }
         }

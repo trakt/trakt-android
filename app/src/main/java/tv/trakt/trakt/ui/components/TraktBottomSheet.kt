@@ -37,7 +37,7 @@ internal fun TraktBottomSheet(
         sheetState = sheetState,
         containerColor = containerColor,
         contentColor = contentColor,
-        scrimColor = Color.Black.copy(alpha = 0.55F),
+        scrimColor = Color.Black.copy(alpha = 0.66F),
         onDismissRequest = onDismiss,
         dragHandle = {
             Box(
