@@ -85,10 +85,10 @@
     <string name="text_season_specials">Specials</string>
     <string name="text_shout_by">Shout by</string>
     <string name="translated_value_type_movie">Movie</string>
-    <string name="list_title_most_searched_media">Most searched media</string>
-    <string name="list_title_most_searched_shows">Most searched shows</string>
-    <string name="list_title_most_searched_movies">Most searched movies</string>
-    <string name="list_title_birthdays_this_month">Birthdays this month</string>
+    <string name="list_title_most_searched_media">Most Searched Media</string>
+    <string name="list_title_most_searched_shows">Most Searched Shows</string>
+    <string name="list_title_most_searched_movies">Most Searched Movies</string>
+    <string name="list_title_birthdays_this_month">Birthdays This Month</string>
     <string name="episode_footer_season_episode">S%1$d • E%2$d</string>
     <string name="warning_prompt_mark_as_watched_show">Are you sure you want to mark %s as watched? This will mark all episodes as watched.</string>
     <string name="warning_prompt_remove_single_watched">Are you sure you want to remove this play of %s from your Watched list?</string>

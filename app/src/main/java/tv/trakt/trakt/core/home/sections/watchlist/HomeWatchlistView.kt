@@ -153,7 +153,7 @@ internal fun HomeWatchlistContent(
                                 backgroundImageUrl = imageUrl,
                                 backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
                                 onClick = onMoviesClick,
-                                height = 224.dp,
+                                height = (226.25).dp,
                                 modifier = Modifier
                                     .padding(contentPadding),
                             )

@@ -301,7 +301,7 @@ private fun ContentEmptyView(
         buttonIcon = buttonIcon,
         backgroundImageUrl = imageUrl,
         backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
-        height = 224.dp,
+        height = (226.25).dp,
         onClick = { onActionClick(filter) },
         modifier = modifier,
     )

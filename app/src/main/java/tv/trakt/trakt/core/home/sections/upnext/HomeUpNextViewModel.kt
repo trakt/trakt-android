@@ -73,7 +73,7 @@ internal class HomeUpNextViewModel(
                     itemsState.update {
                         ItemsState(
                             items = localItems,
-                            resetScroll = resetScroll,
+                            resetScroll = false,
                         )
                     }
                     loadingState.update { DONE }
