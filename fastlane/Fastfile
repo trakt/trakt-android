@@ -7,6 +7,13 @@ platform :android do
       task: "assembleRelease"
     )
 
+    # Ensure using mike@trakt.tv for this project
+    begin
+      sh("firebase login:use mike@trakt.tv")
+    rescue
+      # Already using this account, ignore error
+    end
+
     firebase_app_distribution(
       app: "1:213753735103:android:13d79e31e4663aea06230a",
       testers: "mike@trakt.tv",
@@ -25,6 +32,13 @@ platform :android do
     gradle(
       task: "assembleRelease"
     )
+
+    # Ensure using mike@trakt.tv for this project
+    begin
+      sh("firebase login:use mike@trakt.tv")
+    rescue
+      # Already using this account, ignore error
+    end
 
     firebase_app_distribution(
       app: "1:213753735103:android:13d79e31e4663aea06230a",

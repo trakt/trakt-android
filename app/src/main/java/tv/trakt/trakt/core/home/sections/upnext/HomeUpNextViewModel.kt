@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
@@ -24,7 +23,6 @@ import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
-import tv.trakt.trakt.resources.R
 import java.time.Instant
 
 internal class HomeUpNextViewModel(
@@ -108,7 +106,7 @@ internal class HomeUpNextViewModel(
             loadingState.update { DONE }
             return true
         } else {
-            itemsState.update { ItemsState() }
+            itemsState.update { ItemsState(resetScroll = false) }
             loadingState.update { IDLE }
         }
 
@@ -141,9 +139,6 @@ internal class HomeUpNextViewModel(
                         resetScroll = false,
                     )
                 }
-                infoState.update {
-                    DynamicStringResource(R.string.text_info_history_added)
-                }
 
                 loadedAt = nowUtcInstant()
             } catch (error: Exception) {
@@ -155,10 +150,6 @@ internal class HomeUpNextViewModel(
                 processingJob = null
             }
         }
-    }
-
-    fun clearInfo() {
-        infoState.update { null }
     }
 
     val state: StateFlow<HomeUpNextState> = combine(

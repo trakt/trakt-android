@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
@@ -23,7 +22,6 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.sections.watchlist.model.WatchlistMovie
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetWatchlistMoviesUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
-import tv.trakt.trakt.resources.R
 import java.time.Instant
 
 internal class HomeWatchlistViewModel(
@@ -126,9 +124,6 @@ internal class HomeWatchlistViewModel(
                 itemsState.update {
                     getWatchlistUseCase.getWatchlist()
                 }
-                infoState.update {
-                    DynamicStringResource(R.string.text_info_history_added)
-                }
 
                 loadedAt = nowUtcInstant()
             } catch (error: Exception) {
@@ -145,10 +140,6 @@ internal class HomeWatchlistViewModel(
     override fun onCleared() {
         processingJob?.cancel()
         super.onCleared()
-    }
-
-    fun clearInfo() {
-        infoState.update { null }
     }
 
     val state: StateFlow<HomeWatchlistState> = combine(

@@ -18,7 +18,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -26,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,7 +35,6 @@ import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
-import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
@@ -62,9 +59,6 @@ internal fun HomeWatchlistView(
     contentPadding: PaddingValues,
     onMoviesClick: () -> Unit,
 ) {
-    val localSnack = LocalSnackbarState.current
-    val localContext = LocalContext.current
-
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     HomeWatchlistContent(
@@ -77,13 +71,6 @@ internal fun HomeWatchlistView(
             viewModel.addToHistory(it.ids.trakt)
         },
     )
-
-    LaunchedEffect(state.info) {
-        state.info?.let {
-            localSnack.showSnackbar(it.get(localContext))
-            viewModel.clearInfo()
-        }
-    }
 }
 
 @Composable

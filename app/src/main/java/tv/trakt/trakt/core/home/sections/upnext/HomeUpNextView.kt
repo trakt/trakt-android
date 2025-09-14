@@ -22,11 +22,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -36,7 +36,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import org.koin.androidx.compose.koinViewModel
-import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
@@ -64,9 +63,6 @@ internal fun HomeUpNextView(
     contentPadding: PaddingValues,
     onShowsClick: () -> Unit,
 ) {
-    val localSnack = LocalSnackbarState.current
-    val localContext = LocalContext.current
-
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     HomeUpNextContent(
@@ -79,13 +75,6 @@ internal fun HomeUpNextView(
             viewModel.addToHistory(it.id)
         },
     )
-
-    LaunchedEffect(state.info) {
-        state.info?.let {
-            localSnack.showSnackbar(it.get(localContext))
-            viewModel.clearInfo()
-        }
-    }
 }
 
 @Composable
@@ -197,12 +186,12 @@ private fun ContentList(
     contentPadding: PaddingValues,
     onCheckClick: (ProgressShow) -> Unit,
 ) {
-    val currentList = remember { mutableIntStateOf(listItems.items.hashCode()) }
+    val listHash = rememberSaveable { mutableIntStateOf(listItems.items.hashCode()) }
 
     LaunchedEffect(listItems.items, listItems.resetScroll) {
-        val hashCode = listItems.hashCode()
-        if (currentList.intValue != hashCode) {
-            currentList.intValue = hashCode
+        val hash = listItems.hashCode()
+        if (listHash.intValue != hash) {
+            listHash.intValue = hash
             if (listItems.resetScroll) {
                 listState.animateScrollToItem(0)
             }
