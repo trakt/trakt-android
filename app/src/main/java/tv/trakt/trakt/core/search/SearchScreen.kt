@@ -261,9 +261,7 @@ private fun ContentList(
             item(span = { GridItemSpan(maxLineSpan) }) {
                 TraktHeader(
                     title = when (filter) {
-                        MEDIA -> stringResource(R.string.list_title_most_searched_media)
-                        SHOWS -> stringResource(R.string.list_title_most_searched_shows)
-                        MOVIES -> stringResource(R.string.list_title_most_searched_movies)
+                        MEDIA, SHOWS, MOVIES -> stringResource(R.string.list_title_most_popular_searches)
                         PEOPLE -> stringResource(R.string.list_title_birthdays_this_month)
                     },
                     modifier = Modifier
