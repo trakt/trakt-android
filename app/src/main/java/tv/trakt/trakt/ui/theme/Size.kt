@@ -10,6 +10,7 @@ internal const val VerticalImageAspectRatio = 2f / 3
 internal const val HorizontalImageAspectRatio = 16f / 9
 
 internal val Size: TraktSize = TraktSize(
+    titleBarHeight = 56.dp,
     navigationBarHeight = 80.dp,
     navigationHeaderHeight = 64.dp,
     verticalMediaCardSize = 130.dp,
@@ -18,6 +19,7 @@ internal val Size: TraktSize = TraktSize(
 
 @Immutable
 internal data class TraktSize(
+    val titleBarHeight: Dp = Dp.Unspecified,
     val navigationBarHeight: Dp = Dp.Unspecified,
     val navigationHeaderHeight: Dp = Dp.Unspecified,
     val horizontalMediaCardSize: Dp = Dp.Unspecified,

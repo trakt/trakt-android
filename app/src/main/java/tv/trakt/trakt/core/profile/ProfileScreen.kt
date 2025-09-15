@@ -103,7 +103,7 @@ private fun ProfileScreenContent(
             horizontalArrangement = spacedBy(12.dp),
             modifier = Modifier
                 .padding(top = topInset)
-                .height(56.dp)
+                .height(TraktTheme.size.titleBarHeight)
                 .onClick(onBackClick),
         ) {
             Icon(

@@ -35,6 +35,7 @@ import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_2
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
@@ -131,7 +132,7 @@ internal fun HomeWatchlistContent(
                         }
                         state.items?.isEmpty() == true -> {
                             val imageUrl = remember {
-                                Firebase.remoteConfig.getString("mobile_empty_image_2").ifBlank { null }
+                                Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_2).ifBlank { null }
                             }
                             HomeEmptyView(
                                 text = stringResource(R.string.text_cta_watchlist_released),

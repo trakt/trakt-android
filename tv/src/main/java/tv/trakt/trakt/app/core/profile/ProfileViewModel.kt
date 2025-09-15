@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.app.core.profile.usecases.LogoutProfileUseCase
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.BACKGROUND_IMAGE_URL
 
 internal class ProfileViewModel(
     private val sessionManager: SessionManager,
@@ -39,7 +40,7 @@ internal class ProfileViewModel(
     }
 
     private fun loadBackground() {
-        val configUrl = Firebase.remoteConfig.getString("background_image_url")
+        val configUrl = Firebase.remoteConfig.getString(BACKGROUND_IMAGE_URL)
         backgroundState.update { configUrl }
     }
 

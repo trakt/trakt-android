@@ -42,6 +42,8 @@ import tv.trakt.trakt.core.main.navigation.navigateToMainDestination
 import tv.trakt.trakt.core.main.ui.menubar.TraktMenuBar
 import tv.trakt.trakt.core.movies.navigation.moviesScreen
 import tv.trakt.trakt.core.movies.navigation.navigateToMovies
+import tv.trakt.trakt.core.movies.sections.trending.all.navigation.moviesTrendingScreen
+import tv.trakt.trakt.core.movies.sections.trending.all.navigation.navigateToTrendingMovies
 import tv.trakt.trakt.core.profile.navigation.navigateToProfile
 import tv.trakt.trakt.core.profile.navigation.profileScreen
 import tv.trakt.trakt.core.search.model.SearchInput
@@ -179,6 +181,10 @@ private fun MainNavHost(
             moviesScreen(
                 onNavigateToProfile = { navigateToProfile() },
                 onNavigateToMovie = {},
+                onNavigateToAllTrending = { navigateToTrendingMovies() },
+            )
+            moviesTrendingScreen(
+                onNavigateBack = { popBackStack() },
             )
             listsScreen(
                 onNavigateToProfile = { navigateToProfile() },

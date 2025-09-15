@@ -36,6 +36,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_1
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
@@ -134,7 +135,7 @@ internal fun HomeUpNextContent(
                         }
                         state.items.items?.isEmpty() == true -> {
                             val imageUrl = remember {
-                                Firebase.remoteConfig.getString("mobile_empty_image_1").ifBlank { null }
+                                Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_1).ifBlank { null }
                             }
                             HomeEmptyView(
                                 text = stringResource(R.string.text_cta_up_next),

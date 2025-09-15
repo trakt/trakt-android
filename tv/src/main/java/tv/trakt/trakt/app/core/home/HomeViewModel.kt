@@ -15,6 +15,7 @@ import tv.trakt.trakt.app.core.home.HomeState.AuthenticationState.AUTHENTICATED
 import tv.trakt.trakt.app.core.home.HomeState.AuthenticationState.LOADING
 import tv.trakt.trakt.app.core.home.HomeState.AuthenticationState.UNAUTHENTICATED
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.BACKGROUND_IMAGE_URL
 
 internal class HomeViewModel(
     private val sessionManager: SessionManager,
@@ -50,7 +51,7 @@ internal class HomeViewModel(
     }
 
     private fun loadBackground() {
-        val configUrl = Firebase.remoteConfig.getString("background_image_url")
+        val configUrl = Firebase.remoteConfig.getString(BACKGROUND_IMAGE_URL)
         backgroundState.update { configUrl }
     }
 

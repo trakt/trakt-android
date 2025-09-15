@@ -43,6 +43,7 @@ internal fun MoviesScreen(
     viewModel: MoviesViewModel,
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToProfile: () -> Unit,
+    onNavigateToAllTrending: () -> Unit,
 ) {
     val localBottomBarVisibility = LocalBottomBarVisibility.current
     LaunchedEffect(Unit) {
@@ -55,6 +56,7 @@ internal fun MoviesScreen(
         state = state,
         onMovieClick = onNavigateToMovie,
         onProfileClick = onNavigateToProfile,
+        onMoreTrendingClick = onNavigateToAllTrending,
     )
 }
 
@@ -64,6 +66,7 @@ private fun MoviesScreenContent(
     modifier: Modifier = Modifier,
     onMovieClick: (TraktId) -> Unit,
     onProfileClick: () -> Unit = {},
+    onMoreTrendingClick: () -> Unit = {},
 ) {
     val lazyListState = rememberLazyListState()
     val headerState = rememberHeaderState()
@@ -124,6 +127,7 @@ private fun MoviesScreenContent(
                 MoviesTrendingView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
+                    onMoreClick = onMoreTrendingClick,
                 )
             }
 

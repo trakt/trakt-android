@@ -23,6 +23,7 @@ import tv.trakt.trakt.app.core.auth.usecases.GetDeviceCodeUseCase
 import tv.trakt.trakt.app.core.auth.usecases.GetDeviceTokenUseCase
 import tv.trakt.trakt.app.core.auth.usecases.LoadUserProfileUseCase
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import kotlin.time.Duration
@@ -46,7 +47,7 @@ internal class AuthViewModel(
     }
 
     private fun loadBackground() {
-        val configUrl = Firebase.remoteConfig.getString("background_image_url")
+        val configUrl = Firebase.remoteConfig.getString(BACKGROUND_IMAGE_URL)
         backgroundState.update { configUrl }
     }
 

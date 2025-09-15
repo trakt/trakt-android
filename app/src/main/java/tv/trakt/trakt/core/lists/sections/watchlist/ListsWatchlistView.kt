@@ -37,6 +37,8 @@ import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_1
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_2
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
@@ -271,8 +273,8 @@ private fun ContentEmptyView(
 ) {
     val imageUrl = remember(filter) {
         val key = when (filter) {
-            MEDIA, SHOWS -> "mobile_empty_image_1"
-            MOVIES -> "mobile_empty_image_2"
+            MEDIA, SHOWS -> MOBILE_EMPTY_IMAGE_1
+            MOVIES -> MOBILE_EMPTY_IMAGE_2
         }
         Firebase.remoteConfig.getString(key).ifBlank { null }
     }

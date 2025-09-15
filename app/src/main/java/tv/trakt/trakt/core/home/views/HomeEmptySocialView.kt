@@ -35,6 +35,7 @@ import coil3.request.crossfade
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import tv.trakt.trakt.common.Config.WEB_ABOUT_US_URL
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_4
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.common.ui.theme.colors.Shade900
 import tv.trakt.trakt.resources.R
@@ -47,7 +48,7 @@ internal fun HomeEmptySocialView(modifier: Modifier = Modifier) {
     val uriHandler = LocalUriHandler.current
 
     val imageUrl = remember {
-        Firebase.remoteConfig.getString("mobile_empty_image_4").ifBlank { null }
+        Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_4).ifBlank { null }
     }
 
     BoxWithConstraints(

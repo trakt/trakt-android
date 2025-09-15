@@ -26,6 +26,7 @@ import tv.trakt.trakt.app.core.search.usecase.recents.AddRecentSearchUseCase
 import tv.trakt.trakt.app.core.search.usecase.recents.GetRecentSearchUseCase
 import tv.trakt.trakt.app.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.app.core.shows.usecase.GetTrendingShowsUseCase
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
@@ -60,7 +61,7 @@ internal class SearchViewModel(
     }
 
     private fun loadBackground() {
-        val configUrl = Firebase.remoteConfig.getString("background_image_url")
+        val configUrl = Firebase.remoteConfig.getString(BACKGROUND_IMAGE_URL)
         backgroundState.update { configUrl }
     }
 
