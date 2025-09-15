@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.search.usecase
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.fromDto
@@ -15,6 +16,7 @@ internal class GetBirthdayPeopleUseCase(
 ) {
     suspend fun getLocalPeople(): ImmutableList<Person> {
         return localSource.getPeople()
+            .sortedByDescending { it.birthday?.dayOfYear == nowLocalDay().dayOfYear }
             .toImmutableList()
     }
 
@@ -24,6 +26,7 @@ internal class GetBirthdayPeopleUseCase(
                 Person.fromDto(it)
             }
             .take(limit)
+            .sortedByDescending { it.birthday?.dayOfYear == nowLocalDay().dayOfYear }
             .toImmutableList()
             .also { people ->
                 localSource.addPeople(
