@@ -63,9 +63,7 @@ internal class MoviesApiClient(
         return response.body()
     }
 
-    override suspend fun getRecommended(
-        limit: Int
-    ): List<RecommendedMovieDto> {
+    override suspend fun getRecommended(limit: Int): List<RecommendedMovieDto> {
         val response = recommendationsApi.getRecommendationsMoviesRecommend(
             extended = "full,streaming_ids,cloud9,colors",
             limit = limit,

@@ -18,9 +18,7 @@ internal interface MoviesRemoteDataSource {
         years: Int,
     ): List<MovieDto>
 
-    suspend fun getRecommended(
-        limit: Int
-    ): List<RecommendedMovieDto>
+    suspend fun getRecommended(limit: Int): List<RecommendedMovieDto>
 
     suspend fun getAnticipated(
         page: Int = 1,
