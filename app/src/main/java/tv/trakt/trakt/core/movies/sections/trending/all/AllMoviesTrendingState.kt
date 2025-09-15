@@ -8,7 +8,8 @@ import tv.trakt.trakt.core.movies.model.WatchersMovie
 @Immutable
 internal data class AllMoviesTrendingState(
     val items: ImmutableList<WatchersMovie>? = null,
-    val loading: LoadingState = LoadingState.LOADING,
+    val loading: LoadingState = LoadingState.IDLE,
+    val loadingMore: LoadingState = LoadingState.IDLE,
     val backgroundUrl: String? = null,
     val error: Exception? = null,
 )

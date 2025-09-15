@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -13,9 +14,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
+import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.core.movies.sections.trending.usecase.DEFAULT_ALL_LIMIT
 import tv.trakt.trakt.core.movies.sections.trending.usecase.GetTrendingMoviesUseCase
 
 internal class AllMoviesTrendingViewModel(
@@ -26,7 +29,10 @@ internal class AllMoviesTrendingViewModel(
     private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
+    private val loadingMoreState = MutableStateFlow(LoadingState.IDLE)
     private val errorState = MutableStateFlow(initialState.error)
+
+    private var pages: Int = 1
 
     init {
         loadBackground()
@@ -50,12 +56,15 @@ internal class AllMoviesTrendingViewModel(
                 }
 
                 itemsState.update {
-                    getTrendingUseCase.getMovies(limit = 102)
+                    getTrendingUseCase.getMovies(
+                        page = 1,
+                        limit = DEFAULT_ALL_LIMIT,
+                    )
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error, "Failed to load data")
+                    Timber.w(error, "Failed to load data")
                 }
             } finally {
                 loadingState.update { DONE }
@@ -64,20 +73,49 @@ internal class AllMoviesTrendingViewModel(
     }
 
     fun loadMoreData() {
-        // TODO
+        if (loadingMoreState.value.isLoading) {
+            return
+        }
+
+        viewModelScope.launch {
+            try {
+                loadingMoreState.update { LOADING }
+
+                val nextData = getTrendingUseCase.getMovies(
+                    page = pages + 1,
+                    limit = DEFAULT_ALL_LIMIT,
+                    skipLocal = true,
+                )
+
+                itemsState.update {
+                    it?.plus(nextData)?.toImmutableList()
+                }
+
+                pages += 1
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.w(error, "Failed to load more page data")
+                }
+            } finally {
+                loadingMoreState.update { DONE }
+            }
+        }
     }
 
     val state: StateFlow<AllMoviesTrendingState> = combine(
-        loadingState,
         backgroundState,
         itemsState,
+        loadingState,
+        loadingMoreState,
         errorState,
-    ) { s1, s2, s3, s4 ->
+    ) { s1, s2, s3, s4, s5 ->
         AllMoviesTrendingState(
-            loading = s1,
-            backgroundUrl = s2,
-            items = s3,
-            error = s4,
+            backgroundUrl = s1,
+            items = s2,
+            loading = s3,
+            loadingMore = s4,
+            error = s5,
         )
     }.stateIn(
         scope = viewModelScope,

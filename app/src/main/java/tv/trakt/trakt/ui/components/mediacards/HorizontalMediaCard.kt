@@ -95,7 +95,10 @@ internal fun HorizontalMediaCard(
 
                     if (!isErrorContainer) {
                         AsyncImage(
-                            model = containerImageUrl,
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(containerImageUrl)
+                                .crossfade(true)
+                                .build(),
                             contentDescription = title,
                             contentScale = ContentScale.Crop,
                             onError = { isContainerError = true },

@@ -55,6 +55,7 @@ import tv.trakt.trakt.ui.components.BackdropImage
 import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
+import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -67,6 +68,9 @@ internal fun AllMoviesScreen(
     AllMoviesScreenContent(
         state = state,
         onBackClick = onNavigateBack,
+        onLoadMoreData = {
+            viewModel.loadMoreData()
+        },
     )
 }
 
@@ -74,6 +78,7 @@ internal fun AllMoviesScreen(
 private fun AllMoviesScreenContent(
     state: AllMoviesTrendingState,
     modifier: Modifier = Modifier,
+    onLoadMoreData: () -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
@@ -91,9 +96,22 @@ private fun AllMoviesScreenContent(
         }
     }
 
+    val isScrolledToBottom by remember(state.items?.size) {
+        derivedStateOf {
+            state.items?.size != null &&
+                gridState.firstVisibleItemIndex >= (state.items.size - 18)
+        }
+    }
+
     LaunchedEffect(isScrolledToTop) {
         if (isScrolledToTop) {
             headerState.resetScrolled()
+        }
+    }
+
+    LaunchedEffect(isScrolledToBottom) {
+        if (isScrolledToBottom) {
+            onLoadMoreData()
         }
     }
 
@@ -110,6 +128,7 @@ private fun AllMoviesScreenContent(
         ContentList(
             gridState = gridState,
             items = state.items ?: emptyList<WatchersMovie>().toImmutableList(),
+            loading = state.loadingMore.isLoading || state.loading.isLoading,
             onBackClick = onBackClick,
         )
     }
@@ -119,7 +138,8 @@ private fun AllMoviesScreenContent(
 private fun ContentList(
     gridState: LazyGridState,
     items: ImmutableList<WatchersMovie>,
-    onBackClick: () -> Unit
+    loading: Boolean,
+    onBackClick: () -> Unit,
 ) {
     var viewType by remember { mutableIntStateOf(0) }
 
@@ -130,7 +150,7 @@ private fun ContentList(
             .calculateTopPadding(),
         bottom = WindowInsets.navigationBars.asPaddingValues()
             .calculateBottomPadding()
-            .plus(TraktTheme.size.navigationBarHeight * 2)
+            .plus(TraktTheme.size.navigationBarHeight * 2),
     )
 
     LazyVerticalGrid(
@@ -139,7 +159,7 @@ private fun ContentList(
             when (viewType) {
                 1 -> 2
                 else -> 3
-            }
+            },
         ),
         horizontalArrangement = spacedBy(TraktTheme.spacing.mainGridHorizontalSpace),
         verticalArrangement = spacedBy(0.dp),
@@ -160,28 +180,41 @@ private fun ContentList(
             0 -> contentListItems1(items)
             1 -> contentListItems2(items)
         }
+
+        if (loading) {
+            items(count = 3) { index ->
+                VerticalMediaSkeletonCard(
+                    modifier = Modifier
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
+                )
+            }
+        }
     }
 }
 
 private fun LazyGridScope.contentListItems1(items: ImmutableList<WatchersMovie>) {
     items(
-        items = items,
-        key = { it.movie.ids.trakt.value },
-    ) { item ->
+        count = items.size,
+        key = { items[it].movie.ids.trakt.value },
+    ) { index ->
+        val movie = items[index].movie
         VerticalMediaCard(
-            title = item.movie.title,
-            imageUrl = item.movie.images?.getPosterUrl(),
+            title = movie.title,
+            imageUrl = movie.images?.getPosterUrl(),
             chipContent = {
                 Row(
                     horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpacing),
                 ) {
-                    item.movie.released?.let {
+                    movie.released?.let {
                         InfoChip(
                             text = it.year.toString(),
                         )
                     }
-                    item.movie.runtime?.inWholeMinutes?.let {
-                        val runtimeString = remember(item.movie.runtime) {
+                    movie.runtime?.inWholeMinutes?.let {
+                        val runtimeString = remember(movie.runtime) {
                             it.durationFormat()
                         }
                         InfoChip(

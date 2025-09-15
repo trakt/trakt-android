@@ -7,18 +7,23 @@ import tv.trakt.trakt.core.movies.data.remote.model.TrendingMovieDto
 import java.time.Instant
 
 internal interface MoviesRemoteDataSource {
-    suspend fun getTrending(limit: Int): List<TrendingMovieDto>
-
-    suspend fun getHot(limit: Int): List<TrendingMovieDto>
+    suspend fun getTrending(
+        page: Int = 1,
+        limit: Int,
+    ): List<TrendingMovieDto>
 
     suspend fun getPopular(
+        page: Int = 1,
         limit: Int,
         years: Int,
     ): List<MovieDto>
 
-    suspend fun getRecommended(limit: Int): List<RecommendedMovieDto>
+    suspend fun getRecommended(
+        limit: Int
+    ): List<RecommendedMovieDto>
 
     suspend fun getAnticipated(
+        page: Int = 1,
         limit: Int,
         endDate: Instant,
     ): List<AnticipatedMovieDto>
