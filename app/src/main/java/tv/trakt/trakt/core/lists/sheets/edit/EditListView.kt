@@ -30,6 +30,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -126,14 +127,20 @@ private fun EditListContent(
                 title = stringResource(R.string.page_title_edit_list),
                 subtitle = stringResource(R.string.page_subtitle_edit_list),
             )
-            Icon(
-                painter = painterResource(R.drawable.ic_trash),
-                contentDescription = null,
-                tint = TraktTheme.colors.textSecondary,
-                modifier = Modifier
-                    .size(23.dp)
-                    .onClick(onDeleteClick),
-            )
+            if (state.loadingDelete.isLoading) {
+                FilmProgressIndicator(
+                    size = 22.dp,
+                )
+            } else {
+                Icon(
+                    painter = painterResource(R.drawable.ic_trash),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .size(22.dp)
+                        .onClick(onDeleteClick),
+                )
+            }
         }
 
         InputField(
