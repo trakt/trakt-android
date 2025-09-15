@@ -131,7 +131,7 @@ private fun EditListContent(
                 contentDescription = null,
                 tint = TraktTheme.colors.textSecondary,
                 modifier = Modifier
-                    .size(22.dp)
+                    .size(23.dp)
                     .onClick(onDeleteClick),
             )
         }
