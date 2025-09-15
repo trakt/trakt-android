@@ -15,8 +15,6 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import org.openapitools.client.apis.ListsApi
-import tv.trakt.trakt.common.Config.API_HD_BASE_URL
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.ListsViewModel
 import tv.trakt.trakt.core.lists.data.remote.ListsApiClient
@@ -50,11 +48,7 @@ internal val listsDataModule = module {
 
     single<ListsRemoteDataSource> {
         ListsApiClient(
-            listsApi = ListsApi(
-                baseUrl = API_HD_BASE_URL,
-                httpClientEngine = get(),
-                httpClientConfig = get(named("authorizedClientConfig")),
-            ),
+            listsApi = get(),
         )
     }
 

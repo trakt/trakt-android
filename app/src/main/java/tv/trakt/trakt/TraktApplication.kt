@@ -13,6 +13,7 @@ import org.koin.core.context.startKoin
 import timber.log.Timber
 import tv.trakt.trakt.app.TvActivity
 import tv.trakt.trakt.common.auth.di.commonAuthModule
+import tv.trakt.trakt.common.networking.di.networkingApiModule
 import tv.trakt.trakt.common.networking.di.networkingModule
 import tv.trakt.trakt.core.auth.di.authModule
 import tv.trakt.trakt.core.home.di.homeDataModule
@@ -66,8 +67,9 @@ internal class TraktApplication : Application() {
             androidContext(applicationContext)
             androidLogger()
             modules(
-                authModule,
                 networkingModule,
+                networkingApiModule,
+                authModule,
                 commonAuthModule,
                 homeModule,
                 homeDataModule,

@@ -1,5 +1,8 @@
 package tv.trakt.trakt.core.profile.usecase
 
+import io.ktor.client.plugins.auth.authProvider
+import io.ktor.client.plugins.auth.providers.BearerAuthProvider
+import org.openapitools.client.infrastructure.ApiClient
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.data.local.social.HomeSocialLocalDataSource
@@ -13,6 +16,7 @@ import tv.trakt.trakt.core.search.data.local.RecentSearchLocalDataSource
 
 internal class LogoutUserUseCase(
     private val sessionManager: SessionManager,
+    private val apiClients: Array<ApiClient>,
     private val localUpNext: HomeUpNextLocalDataSource,
     private val localWatchlist: HomeWatchlistLocalDataSource,
     private val localUpcoming: HomeUpcomingLocalDataSource,
@@ -27,6 +31,10 @@ internal class LogoutUserUseCase(
 ) {
     suspend fun logoutUser() {
         sessionManager.clear()
+        apiClients.forEach { api ->
+            api.client.authProvider<BearerAuthProvider>()?.clearToken()
+        }
+
         localUpNext.clear()
         localWatchlist.clear()
         localUpcoming.clear()

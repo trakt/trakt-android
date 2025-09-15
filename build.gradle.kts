@@ -39,6 +39,16 @@ tasks.register<ReplaceInFilesTask>("dedupeSerializable") {
     replacementString.set("interface")
 }
 
+// Make APiClient HttpClient public
+tasks.register<ReplaceInFilesTask>("publicApiClient") {
+    group = "Custom"
+    description = "Makes ApiClient class and its HttpClient property public"
+
+    sourceDir.set(file("build/generate-resources/main/src"))
+    targetString.set("private val client: HttpClient by lazy")
+    replacementString.set("val client: HttpClient by lazy")
+}
+
 abstract class ReplaceInFilesTask : DefaultTask() {
     @get:InputDirectory
     abstract val sourceDir: DirectoryProperty
@@ -72,4 +82,8 @@ abstract class ReplaceInFilesTask : DefaultTask() {
     }
 }
 
-tasks.getByName("openApiGenerate").finalizedBy("dedupeSerializable")
+tasks.getByName("openApiGenerate")
+    .finalizedBy(
+        "dedupeSerializable",
+        "publicApiClient"
+    )
