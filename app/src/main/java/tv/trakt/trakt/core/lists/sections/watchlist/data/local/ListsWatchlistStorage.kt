@@ -24,6 +24,14 @@ internal class ListsWatchlistStorage : ListsWatchlistLocalDataSource {
         }
     }
 
+    override suspend fun deleteItems(ids: Set<TraktId>) {
+        mutex.withLock {
+            ids.forEach {
+                storage.remove(it)
+            }
+        }
+    }
+
     override fun clear() {
         storage.clear()
     }

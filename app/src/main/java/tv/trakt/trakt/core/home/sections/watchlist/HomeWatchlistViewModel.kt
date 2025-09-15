@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.home.sections.watchlist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -20,13 +21,13 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.sections.watchlist.model.WatchlistMovie
+import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddWatchlistHistoryUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetWatchlistMoviesUseCase
-import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import java.time.Instant
 
 internal class HomeWatchlistViewModel(
     private val getWatchlistUseCase: GetWatchlistMoviesUseCase,
-    private val updateHistoryUseCase: UpdateMovieHistoryUseCase,
+    private val addHistoryUseCase: AddWatchlistHistoryUseCase,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = HomeWatchlistState()
@@ -38,7 +39,7 @@ internal class HomeWatchlistViewModel(
 
     private var user: User? = null
     private var loadedAt: Instant? = null
-    private var processingJob: kotlinx.coroutines.Job? = null
+    private var processingJob: Job? = null
 
     init {
         loadData()
@@ -120,7 +121,8 @@ internal class HomeWatchlistViewModel(
                     currentItems.toImmutableList()
                 }
 
-                updateHistoryUseCase.addToHistory(movieId)
+                addHistoryUseCase.addToHistory(movieId)
+
                 itemsState.update {
                     getWatchlistUseCase.getWatchlist()
                 }

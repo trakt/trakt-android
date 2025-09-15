@@ -1,13 +1,17 @@
+@file:OptIn(FlowPreview::class)
+
 package tv.trakt.trakt.core.home.sections.activity
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
@@ -71,9 +75,10 @@ internal class HomeActivityViewModel(
         merge(
             homeUpNextSource.observeUpdated(),
             homeWatchlistSource.observeUpdated(),
-        ).onEach {
-            loadData(ignoreErrors = true)
-        }.launchIn(viewModelScope)
+        ).debounce(200)
+            .onEach {
+                loadData(ignoreErrors = true)
+            }.launchIn(viewModelScope)
     }
 
     private fun loadData(ignoreErrors: Boolean = false) {

@@ -35,7 +35,10 @@ import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.HomeWatchlistViewModel
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistStorage
+import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddWatchlistHistoryUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetWatchlistMoviesUseCase
+import tv.trakt.trakt.core.lists.di.LISTS_MOVIES_WATCHLIST_STORAGE
+import tv.trakt.trakt.core.lists.di.LISTS_WATCHLIST_STORAGE
 
 internal const val HOME_PREFERENCES = "home_preferences_mobile"
 
@@ -84,6 +87,14 @@ internal val homeModule = module {
     }
 
     factory {
+        AddWatchlistHistoryUseCase(
+            updateHistoryUseCase = get(),
+            listsWatchlistLocalSource = get(named(LISTS_WATCHLIST_STORAGE)),
+            listsWatchlistMoviesLocalSource = get(named(LISTS_MOVIES_WATCHLIST_STORAGE)),
+        )
+    }
+
+    factory {
         GetSocialActivityUseCase(
             remoteSource = get(),
             localDataSource = get(),
@@ -127,7 +138,7 @@ internal val homeModule = module {
     viewModel {
         HomeWatchlistViewModel(
             getWatchlistUseCase = get(),
-            updateHistoryUseCase = get(),
+            addHistoryUseCase = get(),
             sessionManager = get(),
         )
     }
