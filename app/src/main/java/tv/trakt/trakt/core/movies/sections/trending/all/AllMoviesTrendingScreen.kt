@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -24,11 +25,14 @@ import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,6 +42,7 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.core.movies.model.WatchersMovie
+import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.BackdropImage
 import tv.trakt.trakt.ui.components.InfoChip
@@ -63,10 +68,32 @@ private fun AllMoviesScreenContent(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
 ) {
+    val headerState = rememberHeaderState()
+    val gridState = rememberLazyGridState(
+        cacheWindow = LazyLayoutCacheWindow(
+            aheadFraction = 0.5F,
+            behindFraction = 0.5F,
+        ),
+    )
+
+    val isScrolledToTop by remember {
+        derivedStateOf {
+            gridState.firstVisibleItemIndex == 0 &&
+                gridState.firstVisibleItemScrollOffset == 0
+        }
+    }
+
+    LaunchedEffect(isScrolledToTop) {
+        if (isScrolledToTop) {
+            headerState.resetScrolled()
+        }
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(TraktTheme.colors.backgroundPrimary),
+            .background(TraktTheme.colors.backgroundPrimary)
+            .nestedScroll(headerState.connection),
     ) {
         BackdropImage(
             imageUrl = state.backgroundUrl,
@@ -85,24 +112,19 @@ private fun AllMoviesScreenContent(
                 .plus(TraktTheme.spacing.mainPageBottomSpace),
         )
 
-        val gridState = rememberLazyGridState(
-            cacheWindow = LazyLayoutCacheWindow(
-                aheadFraction = 0.5F,
-                behindFraction = 0.5F,
-            ),
-        )
-
         LazyVerticalGrid(
             state = gridState,
             columns = GridCells.Fixed(3),
-            horizontalArrangement = Arrangement.spacedBy(TraktTheme.spacing.mainGridHorizontalSpace),
-            verticalArrangement = Arrangement.spacedBy(TraktTheme.spacing.mainGridVerticalSpace),
+            horizontalArrangement = spacedBy(TraktTheme.spacing.mainGridHorizontalSpace),
+            verticalArrangement = spacedBy(0.dp),
             contentPadding = contentPadding,
             overscrollEffect = null,
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 TitleBar(
-                    modifier = Modifier.onClick(onBackClick),
+                    modifier = Modifier
+                        .padding(bottom = 2.dp)
+                        .onClick(onBackClick),
                 )
             }
 
@@ -132,10 +154,12 @@ private fun AllMoviesScreenContent(
                             }
                         }
                     },
-                    modifier = Modifier.animateItem(
-                        fadeInSpec = null,
-                        fadeOutSpec = null,
-                    ),
+                    modifier = Modifier
+                        .padding(bottom = TraktTheme.spacing.mainGridHorizontalSpace * 2)
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
                 )
             }
         }
