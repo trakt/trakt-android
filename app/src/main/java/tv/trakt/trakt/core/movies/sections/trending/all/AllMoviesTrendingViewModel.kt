@@ -41,10 +41,16 @@ internal class AllMoviesTrendingViewModel(
     private fun loadData() {
         viewModelScope.launch {
             try {
-                loadingState.update { LOADING }
+                val localMovies = getTrendingUseCase.getLocalMovies()
+                if (localMovies.isNotEmpty()) {
+                    itemsState.update { localMovies }
+                    loadingState.update { DONE }
+                } else {
+                    loadingState.update { LOADING }
+                }
 
                 itemsState.update {
-                    getTrendingUseCase.getMovies(limit = 54)
+                    getTrendingUseCase.getMovies(limit = 102)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -55,6 +61,10 @@ internal class AllMoviesTrendingViewModel(
                 loadingState.update { DONE }
             }
         }
+    }
+
+    fun loadMoreData() {
+        // TODO
     }
 
     val state: StateFlow<AllMoviesTrendingState> = combine(
