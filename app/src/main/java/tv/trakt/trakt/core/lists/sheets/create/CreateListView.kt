@@ -13,7 +13,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -99,7 +98,6 @@ private fun CreateListContent(
 
         PrimaryButton(
             text = stringResource(R.string.button_text_create),
-            icon = painterResource(R.drawable.ic_plus_round),
             enabled = inputValid && !state.loading.isLoading,
             loading = state.loading.isLoading,
             onClick = {

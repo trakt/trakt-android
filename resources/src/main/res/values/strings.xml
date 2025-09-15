@@ -107,7 +107,7 @@
     <string name="page_title_edit_list">Edit List</string>
     <string name="page_subtitle_create_list">Enter a name and description for your list.</string>
     <string name="page_subtitle_edit_list">Edit your list details.</string>
-    <string name="button_text_create_list">Create list</string>
+    <string name="button_text_create_list">List</string>
     <string name="button_text_browse_movies">Browse Movies</string>
     <string name="button_text_browse_shows">Browse Shows</string>
     <string name="button_text_meet_team">Meet the team</string>

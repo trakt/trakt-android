@@ -1,12 +1,16 @@
 package tv.trakt.trakt.core.lists.sheets.edit
 
 import InputField
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -14,16 +18,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.CustomList
-import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -109,11 +115,26 @@ private fun EditListContent(
             .padding(horizontal = 24.dp)
             .padding(bottom = 24.dp),
     ) {
-        TraktHeader(
-            title = stringResource(R.string.page_title_edit_list),
-            subtitle = stringResource(R.string.page_subtitle_edit_list),
-            modifier = Modifier.padding(bottom = 16.dp),
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+        ) {
+            TraktHeader(
+                title = stringResource(R.string.page_title_edit_list),
+                subtitle = stringResource(R.string.page_subtitle_edit_list),
+            )
+            Icon(
+                painter = painterResource(R.drawable.ic_trash),
+                contentDescription = null,
+                tint = TraktTheme.colors.textSecondary,
+                modifier = Modifier
+                    .size(22.dp)
+                    .onClick(onDeleteClick),
+            )
+        }
 
         InputField(
             state = nameInputState,
@@ -139,7 +160,6 @@ private fun EditListContent(
         ) {
             PrimaryButton(
                 text = stringResource(R.string.button_text_apply),
-//                icon = painterResource(R.drawable.ic_edit),
                 enabled = inputValid && !state.loadingEdit.isLoading && !state.loadingDelete.isLoading,
                 loading = state.loadingEdit.isLoading,
                 onClick = {
@@ -148,19 +168,6 @@ private fun EditListContent(
                         descriptionInputState.text.toString(),
                     )
                 },
-                modifier = Modifier
-                    .fillMaxWidth(),
-            )
-
-            PrimaryButton(
-                text = stringResource(R.string.button_text_delete),
-//                icon = painterResource(R.drawable.ic_trash), // TODO Ask Alex about icon.
-//                iconSize = 20.dp,
-//                iconSpace = 4.dp,
-                enabled = !state.loadingEdit.isLoading && !state.loadingDelete.isLoading,
-                loading = state.loadingDelete.isLoading,
-                containerColor = Red500,
-                onClick = onDeleteClick,
                 modifier = Modifier
                     .fillMaxWidth(),
             )

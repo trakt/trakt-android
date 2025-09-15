@@ -75,7 +75,7 @@ internal class HomeActivityViewModel(
         merge(
             homeUpNextSource.observeUpdated(),
             homeWatchlistSource.observeUpdated(),
-        ).debounce(200)
+        ).debounce(250)
             .onEach {
                 loadData(ignoreErrors = true)
             }.launchIn(viewModelScope)
