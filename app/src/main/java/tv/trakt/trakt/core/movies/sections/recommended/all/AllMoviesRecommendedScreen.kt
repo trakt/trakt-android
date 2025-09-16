@@ -67,6 +67,13 @@ private fun AllMoviesRecommendedScreenContent(
     ) {
         BackdropImage(
             imageUrl = state.backgroundUrl,
+            modifier = Modifier.graphicsLayer {
+                if (listState.firstVisibleItemIndex == 0) {
+                    translationY = (-0.75F * listState.firstVisibleItemScrollOffset)
+                } else {
+                    alpha = 0F
+                }
+            },
         )
 
         AllMoviesListView(

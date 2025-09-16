@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.home.sections.upnext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +17,6 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.StaticStringResource
-import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
@@ -24,7 +24,6 @@ import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
-import java.time.Instant
 
 internal class HomeUpNextViewModel(
     private val getUpNextUseCase: GetUpNextUseCase,
@@ -39,8 +38,8 @@ internal class HomeUpNextViewModel(
     private val errorState = MutableStateFlow(initialState.error)
 
     private var user: User? = null
-    private var loadedAt: Instant? = null
-    private var processingJob: kotlinx.coroutines.Job? = null
+    private var itemsOrder: List<Int>? = null
+    private var processingJob: Job? = null
 
     init {
         loadData()
@@ -87,7 +86,7 @@ internal class HomeUpNextViewModel(
                     )
                 }
 
-                loadedAt = nowUtcInstant()
+                itemsOrder = itemsState.value.items?.map { it.show.ids.trakt.value }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -135,8 +134,15 @@ internal class HomeUpNextViewModel(
 
                 updateHistoryUseCase.addToHistory(episodeId)
                 itemsState.update {
+                    val items = getUpNextUseCase.getUpNext()
                     ItemsState(
-                        items = getUpNextUseCase.getUpNext(),
+                        items = itemsOrder?.let { order ->
+                            items
+                                .sortedBy {
+                                    order.indexOf(it.show.ids.trakt.value)
+                                }
+                                .toImmutableList()
+                        } ?: items,
                         resetScroll = false,
                     )
                 }
@@ -144,7 +150,7 @@ internal class HomeUpNextViewModel(
                 infoState.update {
                     StaticStringResource("Added to history")
                 }
-                loadedAt = nowUtcInstant()
+                itemsOrder = itemsState.value.items?.map { it.show.ids.trakt.value }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

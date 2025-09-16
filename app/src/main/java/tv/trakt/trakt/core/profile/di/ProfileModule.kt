@@ -46,6 +46,8 @@ internal val profileModule = module {
             localListsWatchlist = get(named(LISTS_WATCHLIST_STORAGE)),
             localListsShowsWatchlist = get(named(LISTS_SHOWS_WATCHLIST_STORAGE)),
             localListsMoviesWatchlist = get(named(LISTS_MOVIES_WATCHLIST_STORAGE)),
+            localRecommendedShows = get(),
+            localRecommendedMovies = get(),
         )
     }
 
