@@ -8,6 +8,9 @@ class FirebaseConfig {
         const val MOBILE_EMPTY_IMAGE_3 = "mobile_empty_image_3"
         const val MOBILE_EMPTY_IMAGE_4 = "mobile_empty_image_4"
 
+        const val MOBILE_HEADER_NEWS = "mobile_header_news"
+        const val MOBILE_HEADER_NEWS_URL = "mobile_header_news_url"
+
         const val BACKGROUND_IMAGE_URL = "background_image_url"
     }
 }

@@ -6,11 +6,11 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,6 +34,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -41,7 +42,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.google.firebase.Firebase
+import com.google.firebase.remoteconfig.remoteConfig
 import tv.trakt.trakt.common.Config
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HEADER_NEWS
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HEADER_NEWS_URL
 import tv.trakt.trakt.common.helpers.GreetingQuotes
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -71,6 +76,8 @@ internal fun HeaderBar(
     onJoinClick: () -> Unit = {},
     onProfileClick: () -> Unit = {},
 ) {
+    val localMode = LocalInspectionMode.current
+
     val contentHeight = 34.dp
     val headerBarHeight = WindowInsets.statusBars.asPaddingValues()
         .calculateTopPadding()
@@ -84,6 +91,16 @@ internal fun HeaderBar(
         targetValue = containerAlpha,
         animationSpec = tween(),
     )
+
+    val news = remember {
+        if (localMode) {
+            "Welcome to Trakt " to "https://trakt.tv"
+        } else {
+            val remoteConfig = Firebase.remoteConfig
+            remoteConfig.getString(MOBILE_HEADER_NEWS) to
+                remoteConfig.getString(MOBILE_HEADER_NEWS_URL)
+        }
+    }
 
     Box(
         modifier = modifier
@@ -107,19 +124,21 @@ internal fun HeaderBar(
                 )
                 .sizeIn(minHeight = contentHeight),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = spacedBy(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             val uriHandler = LocalUriHandler.current
             Crossfade(
                 targetState = showVip && !userVip,
                 label = "HeaderBarVipCrossfade",
-            ) { state ->
+                modifier = Modifier
+                    .weight(1F, fill = false),
+            ) { vip ->
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .heightIn(min = contentHeight),
                 ) {
-                    if (state) {
+                    if (vip) {
                         VipChip(
                             onClick = {
                                 uriHandler.openUri(Config.WEB_VIP_URL)
@@ -127,12 +146,26 @@ internal fun HeaderBar(
                             modifier = Modifier.align(Alignment.Center),
                         )
                     } else {
+                        val isNewsTitle = remember(news) {
+                            news.first.isNotBlank() && news.second.isNotBlank()
+                        }
                         Column(
                             verticalArrangement = spacedBy(2.dp, Alignment.CenterVertically),
-                            modifier = Modifier.align(Alignment.Center),
+                            modifier = Modifier
+                                .padding(end = 16.dp)
+                                .align(Alignment.Center)
+                                .onClick {
+                                    if (isNewsTitle) {
+                                        uriHandler.openUri(news.second)
+                                    }
+                                },
                         ) {
                             Text(
-                                text = title ?: GreetingQuotes.getTodayQuote(), // TODO
+                                text = when {
+                                    isNewsTitle -> news.first
+                                    !title.isNullOrBlank() -> title
+                                    else -> GreetingQuotes.getTodayQuote()
+                                },
                                 color = TraktTheme.colors.textPrimary,
                                 style = TraktTheme.typography.paragraphSmall,
                                 maxLines = 1,
@@ -150,7 +183,7 @@ internal fun HeaderBar(
                 }
             }
 
-            Spacer(modifier = Modifier.weight(1F))
+//            Spacer(modifier = Modifier.weight(1F))
 
             when {
                 showProfile -> {
