@@ -37,11 +37,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.firebase.Firebase
+import com.google.firebase.remoteconfig.remoteConfig
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalBottomBarVisibility
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_3
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.core.lists.sections.personal.ListsPersonalView
 import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistView
 import tv.trakt.trakt.core.lists.sheets.CreateListSheet
@@ -178,22 +182,22 @@ private fun ListsScreenContent(
                 )
             }
 
-            if (state.user.user != null) {
-                item(
-                    key = "personal_header",
+            item(
+                key = "personal_header",
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(sectionPadding),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(sectionPadding),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        TraktHeader(
-                            title = stringResource(R.string.list_title_personal_lists),
-                            subtitle = stringResource(R.string.text_sort_recently_updated),
-                        )
+                    TraktHeader(
+                        title = stringResource(R.string.list_title_personal_lists),
+                        subtitle = stringResource(R.string.text_sort_recently_updated),
+                    )
 
+                    if (!state.lists.isNullOrEmpty()) {
                         TertiaryButton(
                             text = stringResource(R.string.button_text_create_list),
                             icon = painterResource(R.drawable.ic_plus_round),
@@ -217,6 +221,20 @@ private fun ListsScreenContent(
                     contentPadding = sectionPadding,
                     onMoreClick = { onEditListClick(list) },
                 )
+            }
+
+            if (state.lists.isNullOrEmpty()) {
+                item(key = "empty") {
+                    ContentEmptyView(
+                        authenticated = state.user.user != null,
+                        modifier = Modifier.padding(sectionPadding),
+                        onActionClick = if (state.user.user == null) {
+                            onProfileClick
+                        } else {
+                            onCreateListClick
+                        },
+                    )
+                }
             }
         }
 
@@ -254,6 +272,35 @@ private fun ListsScreenHeader(
         modifier = Modifier.offset {
             IntOffset(0, headerState.connection.barOffset.fastRoundToInt())
         },
+    )
+}
+
+@Composable
+private fun ContentEmptyView(
+    authenticated: Boolean,
+    modifier: Modifier = Modifier,
+    onActionClick: () -> Unit = {},
+) {
+    val imageUrl = remember {
+        Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_3).ifBlank { null }
+    }
+
+    val buttonText = remember(authenticated) {
+        if (!authenticated) {
+            return@remember R.string.button_text_join_trakt
+        }
+        R.string.page_title_create_list
+    }
+
+    HomeEmptyView(
+        text = stringResource(R.string.text_cta_personal_lists),
+        icon = R.drawable.ic_empty_upnext,
+        buttonText = stringResource(buttonText),
+        buttonIcon = R.drawable.ic_plus_round,
+        backgroundImageUrl = imageUrl,
+        backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
+        onClick = onActionClick,
+        modifier = modifier,
     )
 }
 
