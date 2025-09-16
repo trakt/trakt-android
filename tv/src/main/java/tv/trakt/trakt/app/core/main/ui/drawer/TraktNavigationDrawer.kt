@@ -256,7 +256,7 @@ private fun NavigationProfileItem(
         if (isOpen) {
             PrimaryButton(
                 text = stringResource(R.string.button_text_join_trakt).uppercase(),
-                icon = painterResource(R.drawable.ic_plus),
+                icon = painterResource(R.drawable.ic_trakt_icon),
                 onClick = onProfileSelected,
                 focusedScale = 1.01f,
                 modifier = Modifier
@@ -276,7 +276,7 @@ private fun NavigationProfileItem(
                     .size(36.dp),
             ) {
                 Icon(
-                    painterResource(R.drawable.ic_plus),
+                    painterResource(R.drawable.ic_trakt_icon),
                     contentDescription = null,
                     tint = Color.White,
                     modifier = Modifier

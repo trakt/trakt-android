@@ -292,11 +292,18 @@ private fun ContentEmptyView(
         R.string.page_title_create_list
     }
 
+    val buttonIcon = remember(authenticated) {
+        when {
+            authenticated -> R.drawable.ic_plus_round
+            else -> R.drawable.ic_trakt_icon
+        }
+    }
+
     HomeEmptyView(
         text = stringResource(R.string.text_cta_personal_lists),
         icon = R.drawable.ic_empty_upnext,
         buttonText = stringResource(buttonText),
-        buttonIcon = R.drawable.ic_plus_round,
+        buttonIcon = buttonIcon,
         backgroundImageUrl = imageUrl,
         backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
         onClick = onActionClick,

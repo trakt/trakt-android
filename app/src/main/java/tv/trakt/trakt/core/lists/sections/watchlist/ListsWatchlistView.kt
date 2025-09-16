@@ -292,7 +292,7 @@ private fun ContentEmptyView(
     val buttonIcon = remember(authenticated) {
         when {
             authenticated -> R.drawable.ic_search
-            else -> R.drawable.ic_plus_round
+            else -> R.drawable.ic_trakt_icon
         }
     }
 

@@ -107,7 +107,7 @@ internal fun HomeEmptySocialView(modifier: Modifier = Modifier) {
 
             PrimaryButton(
                 text = stringResource(R.string.button_text_meet_team),
-                icon = painterResource(R.drawable.ic_star),
+                icon = painterResource(R.drawable.ic_trakt_icon),
                 onClick = {
                     uriHandler.openUri(WEB_ABOUT_US_URL)
                 },
