@@ -15,6 +15,7 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.StaticStringResource
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
@@ -140,6 +141,9 @@ internal class HomeUpNextViewModel(
                     )
                 }
 
+                infoState.update {
+                    StaticStringResource("Added to history")
+                }
                 loadedAt = nowUtcInstant()
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -150,6 +154,10 @@ internal class HomeUpNextViewModel(
                 processingJob = null
             }
         }
+    }
+
+    fun clearInfo() {
+        infoState.update { null }
     }
 
     val state: StateFlow<HomeUpNextState> = combine(
