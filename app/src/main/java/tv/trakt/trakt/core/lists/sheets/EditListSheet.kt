@@ -1,6 +1,8 @@
 package tv.trakt.trakt.core.lists.sheets
 
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SheetState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
@@ -18,7 +20,10 @@ import kotlin.random.Random
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun EditListSheet(
-    sheetActive: Boolean,
+    state: SheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+    ),
+    active: Boolean,
     list: CustomList?,
     onListEdited: () -> Unit,
     onListDeleted: () -> Unit,
@@ -29,8 +34,9 @@ internal fun EditListSheet(
 
     val sheetScope = rememberCoroutineScope()
 
-    if (sheetActive && list != null) {
+    if (active && list != null) {
         TraktBottomSheet(
+            sheetState = state,
             onDismiss = onDismiss,
         ) {
             EditListView(
@@ -39,8 +45,15 @@ internal fun EditListSheet(
                     key = Random.Default.nextInt().toString(),
                 ),
                 onListEdited = {
-                    onListEdited()
-                    onDismiss()
+                    sheetScope
+                        .launch { state.hide() }
+                        .invokeOnCompletion {
+                            if (!state.isVisible) {
+                                onListEdited()
+                                onDismiss()
+                            }
+                        }
+
                     sheetScope.launch {
                         val job = sheetScope.launch {
                             localSnack.showSnackbar(localContext.getString(R.string.text_info_list_updated))
@@ -50,8 +63,15 @@ internal fun EditListSheet(
                     }
                 },
                 onListDeleted = {
-                    onListDeleted()
-                    onDismiss()
+                    sheetScope
+                        .launch { state.hide() }
+                        .invokeOnCompletion {
+                            if (!state.isVisible) {
+                                onListDeleted()
+                                onDismiss()
+                            }
+                        }
+
                     sheetScope.launch {
                         val job = sheetScope.launch {
                             localSnack.showSnackbar(localContext.getString(R.string.text_info_list_deleted))
@@ -61,7 +81,14 @@ internal fun EditListSheet(
                     }
                 },
                 onError = {
-                    onDismiss()
+                    sheetScope
+                        .launch { state.hide() }
+                        .invokeOnCompletion {
+                            if (!state.isVisible) {
+                                onDismiss()
+                            }
+                        }
+
                     sheetScope.launch {
                         val job = sheetScope.launch {
                             localSnack.showSnackbar(localContext.getString(R.string.error_text_unexpected_error_short))

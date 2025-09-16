@@ -85,13 +85,13 @@ internal fun ListsScreen(
     )
 
     CreateListSheet(
-        sheetActive = createListSheet,
+        active = createListSheet,
         onListCreated = viewModel::loadData,
         onDismiss = { createListSheet = false },
     )
 
     EditListSheet(
-        sheetActive = editListSheet != null,
+        active = editListSheet != null,
         list = editListSheet,
         onListEdited = viewModel::loadData,
         onListDeleted = viewModel::loadData,
