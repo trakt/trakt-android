@@ -122,17 +122,19 @@ internal fun ListsPersonalContent(
                             fontWeight = W400,
                             lineHeight = 1.em,
                         ),
-                        maxLines = 1,
+                        maxLines = 2,
                         overflow = Ellipsis,
                     )
                 }
             }
 
-            Text(
-                text = stringResource(R.string.button_text_view_all),
-                color = TraktTheme.colors.textSecondary,
-                style = TraktTheme.typography.buttonSecondary,
-            )
+            if (!state.items.isNullOrEmpty()) {
+                Text(
+                    text = stringResource(R.string.button_text_view_all),
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.buttonSecondary,
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))

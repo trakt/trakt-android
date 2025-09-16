@@ -216,7 +216,7 @@ private fun ListsScreenContent(
                 )
             }
 
-            if (state.lists.isNullOrEmpty()) {
+            if (state.lists.isNullOrEmpty() && state.listsLoading == DONE) {
                 item(key = "empty") {
                     ContentEmptyView(
                         authenticated = state.user.user != null,
