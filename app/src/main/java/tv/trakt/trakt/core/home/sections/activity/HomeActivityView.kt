@@ -22,7 +22,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -40,7 +42,9 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.episodes.model.Episode
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter
+import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.PERSONAL
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
+import tv.trakt.trakt.core.home.sections.activity.sheets.HomeActivityItemSheet
 import tv.trakt.trakt.core.home.sections.activity.views.EpisodeSocialItemView
 import tv.trakt.trakt.core.home.sections.activity.views.MovieSocialItemView
 import tv.trakt.trakt.core.home.views.HomeEmptySocialView
@@ -62,14 +66,30 @@ internal fun HomeActivityView(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    var contextSheet by remember { mutableStateOf<HomeActivityItem?>(null) }
+
     HomeActivityContent(
         state = state,
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        onEpisodeClick = onNavigateToEpisode,
-        onMovieClick = onNavigateToMovie,
+        onEpisodeClick = {},
+        onEpisodeLongClick = {
+            if (state.filter == PERSONAL) {
+                contextSheet = it
+            }
+        },
+        onMovieLongClick = {
+            if (state.filter == PERSONAL) {
+                contextSheet = it
+            }
+        },
         onFilterClick = viewModel::setFilter,
+    )
+
+    HomeActivityItemSheet(
+        sheetItem = contextSheet,
+        onDismiss = { contextSheet = null },
     )
 }
 
@@ -79,8 +99,9 @@ internal fun HomeActivityContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onEpisodeClick: (TraktId, Episode) -> Unit = { _, _ -> },
-    onMovieClick: (TraktId) -> Unit = {},
+    onEpisodeClick: (HomeActivityItem.EpisodeItem) -> Unit = {},
+    onEpisodeLongClick: (HomeActivityItem.EpisodeItem) -> Unit = {},
+    onMovieLongClick: (HomeActivityItem.MovieItem) -> Unit = {},
     onFilterClick: (HomeActivityFilter) -> Unit = {},
 ) {
     Column(
@@ -151,7 +172,8 @@ internal fun HomeActivityContent(
                                 listItems = (state.items ?: emptyList()).toImmutableList(),
                                 contentPadding = contentPadding,
                                 onEpisodeClick = onEpisodeClick,
-                                onMovieClick = onMovieClick,
+                                onEpisodeLongClick = onEpisodeLongClick,
+                                onMovieLongClick = onMovieLongClick,
                             )
                         }
                     }
@@ -213,8 +235,9 @@ private fun ContentList(
     listItems: ImmutableList<HomeActivityItem>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
-    onEpisodeClick: (TraktId, Episode) -> Unit,
-    onMovieClick: (TraktId) -> Unit,
+    onEpisodeClick: (HomeActivityItem.EpisodeItem) -> Unit,
+    onEpisodeLongClick: (HomeActivityItem.EpisodeItem) -> Unit,
+    onMovieLongClick: (HomeActivityItem.MovieItem) -> Unit,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
@@ -240,20 +263,24 @@ private fun ContentList(
                 is HomeActivityItem.MovieItem ->
                     MovieSocialItemView(
                         item = item,
-                        onClick = onMovieClick,
-                        modifier = Modifier.animateItem(
-                            fadeInSpec = null,
-                            fadeOutSpec = null,
-                        ),
+                        onClick = {},
+                        onLongClick = { onMovieLongClick(item) },
+                        modifier = Modifier
+                            .animateItem(
+                                fadeInSpec = null,
+                                fadeOutSpec = null,
+                            ),
                     )
                 is HomeActivityItem.EpisodeItem ->
                     EpisodeSocialItemView(
                         item = item,
-                        onClick = onEpisodeClick,
-                        modifier = Modifier.animateItem(
-                            fadeInSpec = null,
-                            fadeOutSpec = null,
-                        ),
+                        onClick = { onEpisodeClick(item) },
+                        onLongClick = { onEpisodeLongClick(item) },
+                        modifier = Modifier
+                            .animateItem(
+                                fadeInSpec = null,
+                                fadeOutSpec = null,
+                            ),
                     )
             }
         }

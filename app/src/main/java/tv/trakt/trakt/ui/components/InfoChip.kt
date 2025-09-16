@@ -45,7 +45,7 @@ internal fun InfoChip(
                 color = containerColor,
             )
             .padding(
-                horizontal = if (hasIcon) 6.dp else 8.dp,
+                horizontal = if (hasIcon) 6.dp else 7.dp,
                 vertical = 5.dp,
             )
             .padding(end = endPadding),

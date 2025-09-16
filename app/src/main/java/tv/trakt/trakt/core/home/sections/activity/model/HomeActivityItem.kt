@@ -34,10 +34,16 @@ internal sealed class HomeActivityItem(
         val show: Show,
     ) : HomeActivityItem(id, user, activity, activityAt)
 
+    val title: String
+        get() = when (this) {
+            is MovieItem -> movie.title
+            is EpisodeItem -> show.title
+        }
+
     val images: Images?
         get() = when (this) {
             is MovieItem -> movie.images
-            is EpisodeItem -> show.images
+            is EpisodeItem -> episode.images
         }
 
     val sortId: Long?

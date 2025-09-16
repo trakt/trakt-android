@@ -23,8 +23,6 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
-import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.episodes.model.Episode
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
@@ -36,20 +34,17 @@ import java.time.Instant
 @Composable
 internal fun EpisodeSocialItemView(
     item: HomeActivityItem.EpisodeItem,
-    onClick: (TraktId, Episode) -> Unit,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
+    onLongClick: () -> Unit = {},
 ) {
     HorizontalMediaCard(
         title = "",
+        onClick = onClick,
+        onLongClick = onLongClick,
         containerImageUrl =
             item.episode.images?.getScreenshotUrl()
                 ?: item.show.images?.getFanartUrl(),
-        onClick = {
-            onClick(
-                item.show.ids.trakt,
-                item.episode,
-            )
-        },
         cardContent = {
             InfoChip(
                 text = item.activityAt.toLocal().relativePastDateString(),
@@ -134,7 +129,6 @@ private fun EpisodeSocialItemViewPreview() {
                 show = PreviewData.show1,
                 episode = PreviewData.episode1,
             ),
-            onClick = { _, _ -> },
         )
     }
 }

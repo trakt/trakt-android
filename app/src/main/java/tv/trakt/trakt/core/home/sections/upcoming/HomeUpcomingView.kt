@@ -194,7 +194,6 @@ private fun ContentList(
                 is HomeUpcomingItem.MovieItem ->
                     MovieUpcomingItemView(
                         item = item,
-                        onClick = onClick,
                         modifier = Modifier.animateItem(
                             fadeInSpec = null,
                             fadeOutSpec = null,
@@ -203,7 +202,6 @@ private fun ContentList(
                 is HomeUpcomingItem.EpisodeItem ->
                     EpisodeUpcomingItemView(
                         item = item,
-                        onClick = onClick,
                         modifier = Modifier.animateItem(
                             fadeInSpec = null,
                             fadeOutSpec = null,

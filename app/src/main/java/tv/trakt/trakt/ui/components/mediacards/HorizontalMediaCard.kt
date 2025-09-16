@@ -1,6 +1,8 @@
 package tv.trakt.trakt.ui.components.mediacards
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -20,6 +22,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults.cardColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -63,11 +66,13 @@ internal fun HorizontalMediaCard(
     containerImageUrl: String? = null,
     contentImageUrl: String? = null,
     paletteColor: Color? = null,
+    width: Dp = TraktTheme.size.horizontalMediaCardSize,
     corner: Dp = 12.dp,
     onClick: () -> Unit = {},
-    footerContent: @Composable () -> Unit = {},
-    cardContent: @Composable () -> Unit = {},
-    cardTopContent: @Composable () -> Unit = {},
+    onLongClick: () -> Unit = {},
+    footerContent: @Composable (() -> Unit)? = null,
+    cardContent: @Composable (() -> Unit)? = null,
+    cardTopContent: @Composable (() -> Unit)? = null,
 ) {
     var isContainerError by remember(containerImageUrl) { mutableStateOf(false) }
     var isContentError by remember(contentImageUrl) { mutableStateOf(false) }
@@ -78,9 +83,8 @@ internal fun HorizontalMediaCard(
             .sizeIn(maxWidth = TraktTheme.size.horizontalMediaCardSize),
     ) {
         Card(
-            onClick = onClick,
             modifier = Modifier
-                .width(TraktTheme.size.horizontalMediaCardSize)
+                .width(width)
                 .aspectRatio(HorizontalImageAspectRatio),
             shape = RoundedCornerShape(corner),
             colors = cardColors(
@@ -88,7 +92,14 @@ internal fun HorizontalMediaCard(
             ),
             content = {
                 Box(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .combinedClickable(
+                            onClick = onClick,
+                            onLongClick = onLongClick,
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = ripple(),
+                        ),
                 ) {
                     val isErrorContainer = containerImageUrl == null || isContainerError
                     val isErrorContent = contentImageUrl == null || isContentError
@@ -199,29 +210,35 @@ internal fun HorizontalMediaCard(
                         )
                     }
 
-                    Box(
-                        modifier = Modifier
-                            .padding(6.dp)
-                            .align(Alignment.BottomStart),
-                    ) {
-                        cardContent()
+                    cardContent?.let {
+                        Box(
+                            modifier = Modifier
+                                .padding(6.dp)
+                                .align(Alignment.BottomStart),
+                        ) {
+                            cardContent()
+                        }
                     }
 
-                    Box(
-                        modifier = Modifier
-                            .padding(6.dp)
-                            .align(Alignment.TopEnd),
-                    ) {
-                        cardTopContent()
+                    cardTopContent?.let {
+                        Box(
+                            modifier = Modifier
+                                .padding(6.dp)
+                                .align(Alignment.TopEnd),
+                        ) {
+                            cardTopContent()
+                        }
                     }
                 }
             },
         )
 
-        Column(
-            verticalArrangement = Arrangement.spacedBy(2.dp),
-        ) {
-            footerContent()
+        footerContent?.let {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+            ) {
+                footerContent()
+            }
         }
     }
 }
@@ -242,7 +259,6 @@ private fun Preview() {
                     title = "The Mandalorian",
                     containerImageUrl = PreviewData.show1.images?.getFanartUrl(),
                     contentImageUrl = PreviewData.show1.images?.getLogoUrl(),
-                    onClick = {},
                     cardContent = {
                         InfoChip(
                             text = "1h 45m",
@@ -264,7 +280,6 @@ private fun Preview() {
                     containerImageUrl = PreviewData.show1.images?.getFanartUrl(),
                     contentImageUrl = PreviewData.show1.images?.getLogoUrl(),
                     paletteColor = Color(0xFF292525),
-                    onClick = {},
                 )
 
                 HorizontalMediaCard(

@@ -44,9 +44,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.core.episodes.model.Episode
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.core.home.views.HomeEmptyView
@@ -221,7 +219,6 @@ private fun ContentList(
         ) { item ->
             ContentListItem(
                 item = item,
-                onClick = { _, _ -> },
                 onCheckClick = { onCheckClick(item) },
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
@@ -236,7 +233,6 @@ private fun ContentList(
 private fun ContentListItem(
     item: ProgressShow,
     modifier: Modifier = Modifier,
-    onClick: (Show, Episode) -> Unit,
     onCheckClick: () -> Unit,
 ) {
     HorizontalMediaCard(
@@ -244,12 +240,6 @@ private fun ContentListItem(
         containerImageUrl =
             item.progress.nextEpisode.images?.getScreenshotUrl()
                 ?: item.show.images?.getFanartUrl(),
-        onClick = {
-            onClick(
-                item.show,
-                item.progress.nextEpisode,
-            )
-        },
         cardContent = {
             Row(
                 horizontalArrangement = spacedBy(4.dp),

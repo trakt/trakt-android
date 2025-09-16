@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
-import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
@@ -33,13 +32,15 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun MovieSocialItemView(
     item: HomeActivityItem.MovieItem,
-    onClick: (TraktId) -> Unit,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
+    onLongClick: () -> Unit = {},
 ) {
     HorizontalMediaCard(
         title = "",
+        onClick = onClick,
+        onLongClick = onLongClick,
         containerImageUrl = item.movie.images?.getFanartUrl(),
-        onClick = { onClick(item.movie.ids.trakt) },
         cardContent = {
             InfoChip(
                 text = item.activityAt.toLocal().relativePastDateString(),

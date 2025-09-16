@@ -25,7 +25,6 @@ import java.time.Instant
 @Composable
 internal fun EpisodeUpcomingItemView(
     item: HomeUpcomingItem.EpisodeItem,
-    onClick: (HomeUpcomingItem.EpisodeItem) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     HorizontalMediaCard(
@@ -33,7 +32,6 @@ internal fun EpisodeUpcomingItemView(
         containerImageUrl =
             item.episode.images?.getScreenshotUrl()
                 ?: item.show.images?.getFanartUrl(),
-        onClick = { onClick(item) },
         cardContent = {
             val dateString = remember(item.releasedAt) {
                 item.releasedAt.toLocal().relativeDateTimeString()
@@ -89,7 +87,6 @@ private fun Preview() {
                 show = PreviewData.show1,
                 episode = PreviewData.episode1,
             ),
-            onClick = {},
         )
     }
 }
