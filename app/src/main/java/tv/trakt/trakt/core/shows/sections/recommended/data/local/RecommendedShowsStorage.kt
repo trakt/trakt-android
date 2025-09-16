@@ -27,4 +27,10 @@ internal class RecommendedShowsStorage : RecommendedShowsLocalDataSource {
             showsCache.values.toList()
         }
     }
+
+    override suspend fun clear() {
+        mutex.withLock {
+            showsCache.clear()
+        }
+    }
 }

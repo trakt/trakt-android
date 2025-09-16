@@ -27,4 +27,10 @@ internal class RecommendedMoviesStorage : RecommendedMoviesLocalDataSource {
             moviesCache.values.toList()
         }
     }
+
+    override suspend fun clear() {
+        mutex.withLock {
+            moviesCache.clear()
+        }
+    }
 }

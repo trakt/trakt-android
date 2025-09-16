@@ -10,4 +10,6 @@ internal interface RecommendedShowsLocalDataSource {
     )
 
     suspend fun getShows(): List<Show>
+
+    suspend fun clear()
 }

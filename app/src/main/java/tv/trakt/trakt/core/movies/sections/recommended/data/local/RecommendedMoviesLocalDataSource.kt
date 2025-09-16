@@ -10,4 +10,6 @@ internal interface RecommendedMoviesLocalDataSource {
     )
 
     suspend fun getMovies(): List<Movie>
+
+    suspend fun clear()
 }
