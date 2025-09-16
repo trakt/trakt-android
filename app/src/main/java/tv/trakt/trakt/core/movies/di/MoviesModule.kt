@@ -6,10 +6,12 @@ import tv.trakt.trakt.core.movies.MoviesViewModel
 import tv.trakt.trakt.core.movies.data.remote.MoviesApiClient
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
 import tv.trakt.trakt.core.movies.sections.anticipated.MoviesAnticipatedViewModel
+import tv.trakt.trakt.core.movies.sections.anticipated.all.AllMoviesAnticipatedViewModel
 import tv.trakt.trakt.core.movies.sections.anticipated.data.local.AnticipatedMoviesLocalDataSource
 import tv.trakt.trakt.core.movies.sections.anticipated.data.local.AnticipatedMoviesStorage
 import tv.trakt.trakt.core.movies.sections.anticipated.usecase.GetAnticipatedMoviesUseCase
 import tv.trakt.trakt.core.movies.sections.popular.MoviesPopularViewModel
+import tv.trakt.trakt.core.movies.sections.popular.all.AllMoviesPopularViewModel
 import tv.trakt.trakt.core.movies.sections.popular.data.local.PopularMoviesLocalDataSource
 import tv.trakt.trakt.core.movies.sections.popular.data.local.PopularMoviesStorage
 import tv.trakt.trakt.core.movies.sections.popular.usecase.GetPopularMoviesUseCase
@@ -97,6 +99,12 @@ internal val moviesModule = module {
     }
 
     viewModel {
+        AllMoviesAnticipatedViewModel(
+            getAnticipatedUseCase = get(),
+        )
+    }
+
+    viewModel {
         MoviesAnticipatedViewModel(
             getAnticipatedUseCase = get(),
         )
@@ -110,6 +118,12 @@ internal val moviesModule = module {
 
     viewModel {
         MoviesPopularViewModel(
+            getPopularUseCase = get(),
+        )
+    }
+
+    viewModel {
+        AllMoviesPopularViewModel(
             getPopularUseCase = get(),
         )
     }

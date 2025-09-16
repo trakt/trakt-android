@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalFoundationApi::class)
 
-package tv.trakt.trakt.core.movies.sections.trending.all
+package tv.trakt.trakt.core.movies.sections.anticipated.all
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -35,13 +35,13 @@ import tv.trakt.trakt.ui.components.BackdropImage
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun AllMoviesScreen(
-    viewModel: AllMoviesTrendingViewModel,
+internal fun AllMoviesAnticipatedScreen(
+    viewModel: AllMoviesAnticipatedViewModel,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    AllMoviesScreenContent(
+    AllMoviesAnticipatedScreenContent(
         state = state,
         onBackClick = onNavigateBack,
         onLoadMoreData = {
@@ -51,8 +51,8 @@ internal fun AllMoviesScreen(
 }
 
 @Composable
-private fun AllMoviesScreenContent(
-    state: AllMoviesTrendingState,
+private fun AllMoviesAnticipatedScreenContent(
+    state: AllMoviesAnticipatedState,
     modifier: Modifier = Modifier,
     onLoadMoreData: () -> Unit = {},
     onBackClick: () -> Unit = {},
@@ -122,7 +122,7 @@ private fun TitleBar(modifier: Modifier = Modifier) {
             contentDescription = null,
         )
         Text(
-            text = stringResource(R.string.list_title_trending_movies),
+            text = stringResource(R.string.list_title_anticipated_movies),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.heading5,
         )
@@ -137,8 +137,8 @@ private fun TitleBar(modifier: Modifier = Modifier) {
 @Composable
 private fun Preview() {
     TraktTheme {
-        AllMoviesScreenContent(
-            state = AllMoviesTrendingState(),
+        AllMoviesAnticipatedScreenContent(
+            state = AllMoviesAnticipatedState(),
         )
     }
 }

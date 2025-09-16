@@ -1,4 +1,4 @@
-package tv.trakt.trakt.ui.lists
+package tv.trakt.trakt.core.movies.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -13,12 +13,14 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridScope
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
@@ -29,23 +31,20 @@ import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
-import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
+import tv.trakt.trakt.ui.components.mediacards.skeletons.HorizontalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun AllMoviesListView(
+internal fun AllMoviesListView(
     title: @Composable () -> Unit,
-    loading: Boolean,
+    state: LazyGridState,
     items: ImmutableList<Movie>,
+    modifier: Modifier = Modifier,
+    loading: Boolean = false,
+    onTopOfList: () -> Unit = {},
+    onEndOfList: () -> Unit = {},
 ) {
-    val gridState = rememberLazyGridState(
-        cacheWindow = LazyLayoutCacheWindow(
-            aheadFraction = 0.5F,
-            behindFraction = 0.5F,
-        ),
-    )
-
     val contentPadding = PaddingValues(
         start = TraktTheme.spacing.mainPageHorizontalSpace,
         end = TraktTheme.spacing.mainPageHorizontalSpace,
@@ -56,13 +55,39 @@ fun AllMoviesListView(
             .plus(TraktTheme.size.navigationBarHeight * 2),
     )
 
+    val isScrolledToBottom by remember(items.size) {
+        derivedStateOf {
+            state.firstVisibleItemIndex >= (items.size - 10)
+        }
+    }
+
+    val isScrolledToTop by remember {
+        derivedStateOf {
+            state.firstVisibleItemIndex == 0 &&
+                state.firstVisibleItemScrollOffset == 0
+        }
+    }
+
+    LaunchedEffect(isScrolledToTop) {
+        if (isScrolledToTop) {
+            onTopOfList()
+        }
+    }
+
+    LaunchedEffect(isScrolledToBottom) {
+        if (isScrolledToBottom) {
+            onEndOfList()
+        }
+    }
+
     LazyVerticalGrid(
-        state = gridState,
+        state = state,
         columns = GridCells.Fixed(2),
         horizontalArrangement = spacedBy(TraktTheme.spacing.mainGridHorizontalSpace),
         verticalArrangement = spacedBy(0.dp),
         contentPadding = contentPadding,
         overscrollEffect = null,
+        modifier = modifier,
     ) {
         item(span = { GridItemSpan(maxLineSpan) }) {
             title()
@@ -71,8 +96,8 @@ fun AllMoviesListView(
         gridItems(items)
 
         if (loading) {
-            items(count = 3) { index ->
-                VerticalMediaSkeletonCard(
+            items(count = 2) { index ->
+                HorizontalMediaSkeletonCard(
                     modifier = Modifier
                         .animateItem(
                             fadeInSpec = null,

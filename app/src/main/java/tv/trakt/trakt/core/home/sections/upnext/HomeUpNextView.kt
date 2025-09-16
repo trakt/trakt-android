@@ -242,7 +242,7 @@ private fun ContentListItem(
         },
         cardContent = {
             Row(
-                horizontalArrangement = spacedBy(2.dp),
+                horizontalArrangement = spacedBy(4.dp),
             ) {
                 val runtime = item.progress.nextEpisode.runtime?.inWholeMinutes
                 if (runtime != null) {

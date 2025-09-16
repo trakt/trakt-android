@@ -16,6 +16,8 @@ internal fun NavGraphBuilder.moviesScreen(
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToProfile: () -> Unit = {},
     onNavigateToAllTrending: () -> Unit = {},
+    onNavigateToAllPopular: () -> Unit = {},
+    onNavigateToAllAnticipated: () -> Unit = {},
 ) {
     composable<MoviesDestination> {
         MoviesScreen(
@@ -23,6 +25,8 @@ internal fun NavGraphBuilder.moviesScreen(
             onNavigateToMovie = onNavigateToMovie,
             onNavigateToProfile = onNavigateToProfile,
             onNavigateToAllTrending = onNavigateToAllTrending,
+            onNavigateToAllPopular = onNavigateToAllPopular,
+            onNavigateToAllAnticipated = onNavigateToAllAnticipated,
         )
     }
 }

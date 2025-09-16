@@ -11,6 +11,9 @@ import tv.trakt.trakt.core.movies.model.WatchersMovie
 import tv.trakt.trakt.core.movies.sections.anticipated.data.local.AnticipatedMoviesLocalDataSource
 import java.time.temporal.ChronoUnit.DAYS
 
+private const val DEFAULT_LIMIT = 24
+internal const val DEFAULT_ALL_LIMIT = 102
+
 internal class GetAnticipatedMoviesUseCase(
     private val remoteSource: MoviesRemoteDataSource,
     private val localAnticipatedSource: AnticipatedMoviesLocalDataSource,
@@ -21,10 +24,15 @@ internal class GetAnticipatedMoviesUseCase(
             .toImmutableList()
     }
 
-    suspend fun getMovies(): ImmutableList<WatchersMovie> {
+    suspend fun getMovies(
+        limit: Int = DEFAULT_LIMIT,
+        page: Int = 1,
+        skipLocal: Boolean = false,
+    ): ImmutableList<WatchersMovie> {
         return remoteSource.getAnticipated(
-            limit = 20,
+            limit = limit,
             endDate = nowUtcInstant().plus(365, DAYS).truncatedTo(DAYS),
+            page = page,
         )
             .asyncMap {
                 WatchersMovie(
@@ -34,8 +42,9 @@ internal class GetAnticipatedMoviesUseCase(
             }
             .toImmutableList()
             .also { movies ->
+                if (skipLocal) return@also
                 localAnticipatedSource.addMovies(
-                    movies = movies,
+                    movies = movies.take(DEFAULT_LIMIT),
                     addedAt = nowUtcInstant(),
                 )
             }
