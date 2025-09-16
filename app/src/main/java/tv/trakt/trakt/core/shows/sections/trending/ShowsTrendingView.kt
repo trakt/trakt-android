@@ -32,6 +32,7 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.core.shows.model.WatchersShow
 import tv.trakt.trakt.resources.R
@@ -47,6 +48,7 @@ internal fun ShowsTrendingView(
     viewModel: ShowsTrendingViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
+    onMoreClick: () -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -55,6 +57,11 @@ internal fun ShowsTrendingView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
+        onMoreClick = {
+            if (!state.loading.isLoading) {
+                onMoreClick()
+            }
+        },
     )
 }
 
@@ -64,6 +71,7 @@ internal fun ShowsTrendingContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
+    onMoreClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
@@ -83,6 +91,7 @@ internal fun ShowsTrendingContent(
                 text = stringResource(R.string.button_text_view_all),
                 color = TraktTheme.colors.textSecondary,
                 style = TraktTheme.typography.buttonSecondary,
+                modifier = Modifier.onClick(onMoreClick),
             )
         }
 

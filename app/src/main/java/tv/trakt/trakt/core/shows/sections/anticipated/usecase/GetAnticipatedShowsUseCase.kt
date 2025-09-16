@@ -12,6 +12,9 @@ import tv.trakt.trakt.core.shows.sections.anticipated.data.local.AnticipatedShow
 import java.time.Instant
 import java.time.temporal.ChronoUnit.DAYS
 
+private const val DEFAULT_LIMIT = 24
+internal const val DEFAULT_ALL_LIMIT = 102
+
 internal class GetAnticipatedShowsUseCase(
     private val remoteSource: ShowsRemoteDataSource,
     private val localAnticipatedSource: AnticipatedShowsLocalDataSource,
@@ -22,9 +25,14 @@ internal class GetAnticipatedShowsUseCase(
             .toImmutableList()
     }
 
-    suspend fun getShows(): ImmutableList<WatchersShow> {
+    suspend fun getShows(
+        limit: Int = DEFAULT_LIMIT,
+        page: Int = 1,
+        skipLocal: Boolean = false,
+    ): ImmutableList<WatchersShow> {
         return remoteSource.getAnticipated(
-            limit = 20,
+            page = page,
+            limit = limit,
             endDate = nowUtcInstant().plus(365, DAYS).truncatedTo(DAYS),
         )
             .asyncMap {
@@ -35,8 +43,9 @@ internal class GetAnticipatedShowsUseCase(
             }
             .toImmutableList()
             .also { shows ->
+                if (skipLocal) return@also
                 localAnticipatedSource.addShows(
-                    shows = shows,
+                    shows = shows.take(DEFAULT_LIMIT),
                     addedAt = Instant.now(),
                 )
             }

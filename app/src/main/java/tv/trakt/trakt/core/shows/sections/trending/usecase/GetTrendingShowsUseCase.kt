@@ -10,6 +10,9 @@ import tv.trakt.trakt.core.shows.model.WatchersShow
 import tv.trakt.trakt.core.shows.sections.trending.data.local.TrendingShowsLocalDataSource
 import java.time.Instant
 
+private const val DEFAULT_LIMIT = 24
+internal const val DEFAULT_ALL_LIMIT = 102
+
 internal class GetTrendingShowsUseCase(
     private val remoteSource: ShowsRemoteDataSource,
     private val localTrendingSource: TrendingShowsLocalDataSource,
@@ -26,8 +29,15 @@ internal class GetTrendingShowsUseCase(
             .toImmutableList()
     }
 
-    suspend fun getShows(limit: Int = 20): ImmutableList<WatchersShow> {
-        return remoteSource.getTrending(limit)
+    suspend fun getShows(
+        limit: Int = DEFAULT_LIMIT,
+        page: Int = 1,
+        skipLocal: Boolean = false,
+    ): ImmutableList<WatchersShow> {
+        return remoteSource.getTrending(
+            page = page,
+            limit = limit,
+        )
             .asyncMap {
                 WatchersShow(
                     watchers = it.watchers,
@@ -36,8 +46,9 @@ internal class GetTrendingShowsUseCase(
             }
             .toImmutableList()
             .also { shows ->
+                if (skipLocal) return@also
                 localTrendingSource.addShows(
-                    shows = shows,
+                    shows = shows.take(DEFAULT_LIMIT),
                     addedAt = Instant.now(),
                 )
             }

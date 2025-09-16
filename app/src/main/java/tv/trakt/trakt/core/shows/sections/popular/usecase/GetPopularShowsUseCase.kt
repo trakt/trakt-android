@@ -11,6 +11,9 @@ import tv.trakt.trakt.core.shows.sections.popular.data.local.PopularShowsLocalDa
 import java.time.Instant
 import java.time.Year
 
+private const val DEFAULT_LIMIT = 24
+internal const val DEFAULT_ALL_LIMIT = 102
+
 internal class GetPopularShowsUseCase(
     private val remoteSource: ShowsRemoteDataSource,
     private val localPopularSource: PopularShowsLocalDataSource,
@@ -20,9 +23,14 @@ internal class GetPopularShowsUseCase(
             .toImmutableList()
     }
 
-    suspend fun getShows(): ImmutableList<Show> {
+    suspend fun getShows(
+        limit: Int = DEFAULT_LIMIT,
+        page: Int = 1,
+        skipLocal: Boolean = false,
+    ): ImmutableList<Show> {
         return remoteSource.getPopular(
-            limit = 20,
+            page = page,
+            limit = limit,
             years = getYearsRange(),
         )
             .asyncMap {
@@ -30,8 +38,9 @@ internal class GetPopularShowsUseCase(
             }
             .toImmutableList()
             .also { shows ->
+                if (skipLocal) return@also
                 localPopularSource.addShows(
-                    shows = shows,
+                    shows = shows.take(DEFAULT_LIMIT),
                     addedAt = Instant.now(),
                 )
             }

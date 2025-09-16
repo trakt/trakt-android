@@ -9,6 +9,9 @@ import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.core.shows.sections.recommended.data.local.RecommendedShowsLocalDataSource
 import java.time.Instant
 
+private const val DEFAULT_LIMIT = 24
+internal const val DEFAULT_ALL_LIMIT = 102
+
 internal class GetRecommendedShowsUseCase(
     private val remoteSource: ShowsRemoteDataSource,
     private val localRecommendedSource: RecommendedShowsLocalDataSource,
@@ -18,15 +21,19 @@ internal class GetRecommendedShowsUseCase(
             .toImmutableList()
     }
 
-    suspend fun getShows(): ImmutableList<Show> {
-        return remoteSource.getRecommended(20)
+    suspend fun getShows(
+        limit: Int = DEFAULT_LIMIT,
+        skipLocal: Boolean = false,
+    ): ImmutableList<Show> {
+        return remoteSource.getRecommended(limit)
             .asyncMap {
                 Show.fromDto(it)
             }
             .toImmutableList()
             .also { shows ->
+                if (skipLocal) return@also
                 localRecommendedSource.addShows(
-                    shows = shows,
+                    shows = shows.take(DEFAULT_LIMIT),
                     addedAt = Instant.now(),
                 )
             }

@@ -33,30 +33,21 @@ import androidx.navigation.compose.rememberNavController
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.core.home.navigation.HomeDestination
-import tv.trakt.trakt.core.home.navigation.homeScreen
-import tv.trakt.trakt.core.lists.navigation.listsScreen
 import tv.trakt.trakt.core.lists.navigation.navigateToLists
+import tv.trakt.trakt.core.main.navigation.homeScreens
 import tv.trakt.trakt.core.main.navigation.isMainDestination
 import tv.trakt.trakt.core.main.navigation.isStartDestination
+import tv.trakt.trakt.core.main.navigation.listsScreens
+import tv.trakt.trakt.core.main.navigation.moviesScreens
 import tv.trakt.trakt.core.main.navigation.navigateToMainDestination
+import tv.trakt.trakt.core.main.navigation.profileScreens
+import tv.trakt.trakt.core.main.navigation.searchScreens
+import tv.trakt.trakt.core.main.navigation.showsScreens
 import tv.trakt.trakt.core.main.ui.menubar.TraktMenuBar
-import tv.trakt.trakt.core.movies.navigation.moviesScreen
 import tv.trakt.trakt.core.movies.navigation.navigateToMovies
-import tv.trakt.trakt.core.movies.sections.anticipated.all.navigation.moviesAnticipatedScreen
-import tv.trakt.trakt.core.movies.sections.anticipated.all.navigation.navigateToAnticipatedMovies
-import tv.trakt.trakt.core.movies.sections.popular.all.navigation.moviesPopularScreen
-import tv.trakt.trakt.core.movies.sections.popular.all.navigation.navigateToPopularMovies
-import tv.trakt.trakt.core.movies.sections.recommended.all.navigation.moviesRecommendedScreen
-import tv.trakt.trakt.core.movies.sections.recommended.all.navigation.navigateToRecommendedMovies
-import tv.trakt.trakt.core.movies.sections.trending.all.navigation.moviesTrendingScreen
-import tv.trakt.trakt.core.movies.sections.trending.all.navigation.navigateToTrendingMovies
-import tv.trakt.trakt.core.profile.navigation.navigateToProfile
-import tv.trakt.trakt.core.profile.navigation.profileScreen
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.navigateToSearch
-import tv.trakt.trakt.core.search.navigation.searchScreen
 import tv.trakt.trakt.core.shows.navigation.navigateToShows
-import tv.trakt.trakt.core.shows.navigation.showsScreen
 import tv.trakt.trakt.ui.snackbar.MainSnackbarHost
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -174,52 +165,16 @@ private fun MainNavHost(
         enterTransition = { fadeIn(animationSpec = tween(250)) },
         exitTransition = { fadeOut(animationSpec = tween(250)) },
     ) {
-        with(navController) {
-            homeScreen(
-                onNavigateToProfile = { navigateToProfile() },
-                onNavigateToShows = { navigateToShows() },
-                onNavigateToMovies = { navigateToMovies() },
-            )
-            showsScreen(
-                onNavigateToProfile = { navigateToProfile() },
-                onNavigateToShow = {},
-            )
-            moviesScreen(
-                onNavigateToProfile = { navigateToProfile() },
-                onNavigateToMovie = {},
-                onNavigateToAllTrending = { navigateToTrendingMovies() },
-                onNavigateToAllPopular = { navigateToPopularMovies() },
-                onNavigateToAllAnticipated = { navigateToAnticipatedMovies() },
-                onNavigateToAllRecommended = { navigateToRecommendedMovies() },
-            )
-            moviesTrendingScreen(
-                onNavigateBack = { popBackStack() },
-            )
-            moviesPopularScreen(
-                onNavigateBack = { popBackStack() },
-            )
-            moviesAnticipatedScreen(
-                onNavigateBack = { popBackStack() },
-            )
-            moviesRecommendedScreen(
-                onNavigateBack = { popBackStack() },
-            )
-            listsScreen(
-                onNavigateToProfile = { navigateToProfile() },
-                onNavigateToShows = { navigateToShows() },
-                onNavigateToMovies = { navigateToMovies() },
-            )
-            searchScreen(
-                searchInput = searchInput,
-                onSearchLoading = onSearchLoading,
-                onNavigateToShow = { },
-                onNavigateToMovie = { },
-                onNavigateToProfile = { navigateToProfile() },
-            )
-            profileScreen(
-                onNavigateBack = { popBackStack() },
-            )
-        }
+        homeScreens(navController)
+        showsScreens(navController)
+        moviesScreens(navController)
+        listsScreens(navController)
+        profileScreens(navController)
+        searchScreens(
+            controller = navController,
+            searchInput = searchInput,
+            onSearchLoading = onSearchLoading,
+        )
     }
 }
 

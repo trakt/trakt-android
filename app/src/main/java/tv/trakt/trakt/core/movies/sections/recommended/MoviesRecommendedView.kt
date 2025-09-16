@@ -56,7 +56,11 @@ internal fun MoviesRecommendedView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        onMoreClick = onMoreClick,
+        onMoreClick = {
+            if (!state.loading.isLoading) {
+                onMoreClick()
+            }
+        },
     )
 }
 

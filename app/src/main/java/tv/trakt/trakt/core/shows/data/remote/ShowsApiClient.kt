@@ -12,7 +12,10 @@ internal class ShowsApiClient(
     private val showsApi: ShowsApi,
     private val recommendationsApi: RecommendationsApi,
 ) : ShowsRemoteDataSource {
-    override suspend fun getTrending(limit: Int): List<TrendingShowDto> {
+    override suspend fun getTrending(
+        page: Int,
+        limit: Int,
+    ): List<TrendingShowDto> {
         val response = showsApi.getShowsTrending(
             extended = "full,streaming_ids,cloud9,colors",
             limit = limit,
@@ -20,7 +23,7 @@ internal class ShowsApiClient(
             genres = null,
             years = null,
             ratings = null,
-            page = null,
+            page = page,
             ignoreWatched = null,
             ignoreCollected = null,
             ignoreWatchlisted = null,
@@ -63,6 +66,7 @@ internal class ShowsApiClient(
     }
 
     override suspend fun getPopular(
+        page: Int,
         limit: Int,
         years: Int,
     ): List<ShowDto> {
@@ -73,7 +77,7 @@ internal class ShowsApiClient(
             genres = null,
             years = years.toString(),
             ratings = null,
-            page = null,
+            page = page,
             ignoreWatched = null,
             ignoreCollected = null,
             ignoreWatchlisted = null,
@@ -104,6 +108,7 @@ internal class ShowsApiClient(
     }
 
     override suspend fun getAnticipated(
+        page: Int,
         limit: Int,
         endDate: Instant,
     ): List<AnticipatedShowDto> {
@@ -114,7 +119,7 @@ internal class ShowsApiClient(
             genres = null,
             years = null,
             ratings = null,
-            page = null,
+            page = page,
             ignoreWatched = null,
             ignoreCollected = null,
             ignoreWatchlisted = null,

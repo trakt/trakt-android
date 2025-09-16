@@ -42,6 +42,10 @@ internal fun ShowsScreen(
     viewModel: ShowsViewModel,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToProfile: () -> Unit,
+    onNavigateToAllTrending: () -> Unit,
+    onNavigateToAllPopular: () -> Unit,
+    onNavigateToAllAnticipated: () -> Unit,
+    onNavigateToAllRecommended: () -> Unit,
 ) {
     val localBottomBarVisibility = LocalBottomBarVisibility.current
     LaunchedEffect(Unit) {
@@ -54,6 +58,10 @@ internal fun ShowsScreen(
         state = state,
         onShowClick = onNavigateToShow,
         onProfileClick = onNavigateToProfile,
+        onMoreTrendingClick = onNavigateToAllTrending,
+        onMorePopularClick = onNavigateToAllPopular,
+        onMoreAnticipatedClick = onNavigateToAllAnticipated,
+        onMoreRecommendedClick = onNavigateToAllRecommended,
     )
 }
 
@@ -63,6 +71,10 @@ private fun ShowsScreenContent(
     modifier: Modifier = Modifier,
     onShowClick: (TraktId) -> Unit,
     onProfileClick: () -> Unit = {},
+    onMoreTrendingClick: () -> Unit = {},
+    onMorePopularClick: () -> Unit = {},
+    onMoreAnticipatedClick: () -> Unit = {},
+    onMoreRecommendedClick: () -> Unit = {},
 ) {
     val lazyListState = rememberLazyListState()
     val headerState = rememberHeaderState()
@@ -122,6 +134,7 @@ private fun ShowsScreenContent(
                 ShowsTrendingView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
+                    onMoreClick = onMoreTrendingClick,
                 )
             }
 
@@ -129,6 +142,7 @@ private fun ShowsScreenContent(
                 ShowsAnticipatedView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
+                    onMoreClick = onMoreAnticipatedClick,
                 )
             }
 
@@ -136,6 +150,7 @@ private fun ShowsScreenContent(
                 ShowsPopularView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
+                    onMoreClick = onMorePopularClick,
                 )
             }
 
@@ -144,6 +159,7 @@ private fun ShowsScreenContent(
                     ShowsRecommendedView(
                         headerPadding = sectionPadding,
                         contentPadding = sectionPadding,
+                        onMoreClick = onMoreRecommendedClick,
                     )
                 }
             }

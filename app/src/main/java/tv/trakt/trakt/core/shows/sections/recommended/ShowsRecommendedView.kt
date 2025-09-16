@@ -31,6 +31,7 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
@@ -45,6 +46,7 @@ internal fun ShowsRecommendedView(
     viewModel: ShowsRecommendedViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
+    onMoreClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -53,6 +55,11 @@ internal fun ShowsRecommendedView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
+        onMoreClick = {
+            if (!state.loading.isLoading) {
+                onMoreClick()
+            }
+        },
     )
 }
 
@@ -62,6 +69,7 @@ internal fun ShowsRecommendedContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
+    onMoreClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
@@ -81,6 +89,7 @@ internal fun ShowsRecommendedContent(
                 text = stringResource(R.string.button_text_view_all),
                 color = TraktTheme.colors.textSecondary,
                 style = TraktTheme.typography.buttonSecondary,
+                modifier = Modifier.onClick { onMoreClick() },
             )
         }
 

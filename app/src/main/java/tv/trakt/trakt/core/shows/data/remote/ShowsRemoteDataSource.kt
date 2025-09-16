@@ -7,11 +7,15 @@ import tv.trakt.trakt.core.shows.data.remote.model.TrendingShowDto
 import java.time.Instant
 
 internal interface ShowsRemoteDataSource {
-    suspend fun getTrending(limit: Int): List<TrendingShowDto>
+    suspend fun getTrending(
+        page: Int = 1,
+        limit: Int,
+    ): List<TrendingShowDto>
 
     suspend fun getHot(limit: Int): List<TrendingShowDto>
 
     suspend fun getPopular(
+        page: Int = 1,
         limit: Int,
         years: Int,
     ): List<ShowDto>
@@ -19,6 +23,7 @@ internal interface ShowsRemoteDataSource {
     suspend fun getRecommended(limit: Int): List<RecommendedShowDto>
 
     suspend fun getAnticipated(
+        page: Int = 1,
         limit: Int,
         endDate: Instant,
     ): List<AnticipatedShowDto>

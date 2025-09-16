@@ -6,18 +6,22 @@ import tv.trakt.trakt.core.shows.ShowsViewModel
 import tv.trakt.trakt.core.shows.data.remote.ShowsApiClient
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.core.shows.sections.anticipated.ShowsAnticipatedViewModel
+import tv.trakt.trakt.core.shows.sections.anticipated.all.AllShowsAnticipatedViewModel
 import tv.trakt.trakt.core.shows.sections.anticipated.data.local.AnticipatedShowsLocalDataSource
 import tv.trakt.trakt.core.shows.sections.anticipated.data.local.AnticipatedShowsStorage
 import tv.trakt.trakt.core.shows.sections.anticipated.usecase.GetAnticipatedShowsUseCase
 import tv.trakt.trakt.core.shows.sections.popular.ShowsPopularViewModel
+import tv.trakt.trakt.core.shows.sections.popular.all.AllShowsPopularViewModel
 import tv.trakt.trakt.core.shows.sections.popular.data.local.PopularShowsLocalDataSource
 import tv.trakt.trakt.core.shows.sections.popular.data.local.PopularShowsStorage
 import tv.trakt.trakt.core.shows.sections.popular.usecase.GetPopularShowsUseCase
 import tv.trakt.trakt.core.shows.sections.recommended.ShowsRecommendedViewModel
+import tv.trakt.trakt.core.shows.sections.recommended.all.AllShowsRecommendedViewModel
 import tv.trakt.trakt.core.shows.sections.recommended.data.local.RecommendedShowsLocalDataSource
 import tv.trakt.trakt.core.shows.sections.recommended.data.local.RecommendedShowsStorage
 import tv.trakt.trakt.core.shows.sections.recommended.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.core.shows.sections.trending.ShowsTrendingViewModel
+import tv.trakt.trakt.core.shows.sections.trending.all.AllShowsTrendingViewModel
 import tv.trakt.trakt.core.shows.sections.trending.data.local.TrendingShowsLocalDataSource
 import tv.trakt.trakt.core.shows.sections.trending.data.local.TrendingShowsStorage
 import tv.trakt.trakt.core.shows.sections.trending.usecase.GetTrendingShowsUseCase
@@ -103,6 +107,30 @@ internal val showsModule = module {
     viewModel {
         ShowsPopularViewModel(
             getPopularUseCase = get(),
+        )
+    }
+
+    viewModel {
+        AllShowsTrendingViewModel(
+            getTrendingUseCase = get(),
+        )
+    }
+
+    viewModel {
+        AllShowsPopularViewModel(
+            getPopularUseCase = get(),
+        )
+    }
+
+    viewModel {
+        AllShowsAnticipatedViewModel(
+            getAnticipatedUseCase = get(),
+        )
+    }
+
+    viewModel {
+        AllShowsRecommendedViewModel(
+            getRecommendedUseCase = get(),
         )
     }
 }
