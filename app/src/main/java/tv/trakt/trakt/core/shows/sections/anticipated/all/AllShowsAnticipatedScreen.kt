@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,7 +29,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.shows.ui.AllShowsListView
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.BackdropImage
+import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -54,15 +55,21 @@ private fun AllShowsAnticipatedScreenContent(
     onLoadMoreData: () -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
-    val gridState = rememberLazyGridState()
+    val gridState = rememberLazyGridState(
+        cacheWindow = LazyLayoutCacheWindow(
+            aheadFraction = 0.5F,
+            behindFraction = 0.5F,
+        ),
+    )
 
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(TraktTheme.colors.backgroundPrimary),
     ) {
-        BackdropImage(
+        ScrollableBackdropImage(
             imageUrl = state.backgroundUrl,
+            scrollState = gridState,
         )
 
         AllShowsListView(

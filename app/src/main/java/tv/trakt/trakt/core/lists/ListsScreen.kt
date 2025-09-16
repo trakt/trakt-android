@@ -29,7 +29,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -53,7 +52,7 @@ import tv.trakt.trakt.core.lists.sheets.EditListSheet
 import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.BackdropImage
+import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
@@ -138,15 +137,9 @@ private fun ListsScreenContent(
             .background(TraktTheme.colors.backgroundPrimary)
             .nestedScroll(headerState.connection),
     ) {
-        BackdropImage(
+        ScrollableBackdropImage(
             imageUrl = state.backgroundUrl,
-            modifier = Modifier.graphicsLayer {
-                if (lazyListState.firstVisibleItemIndex == 0) {
-                    translationY = (-0.75F * lazyListState.firstVisibleItemScrollOffset)
-                } else {
-                    alpha = 0F
-                }
-            },
+            scrollState = lazyListState,
         )
 
         val listPadding = PaddingValues(

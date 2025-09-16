@@ -31,7 +31,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.movies.ui.AllMoviesListView
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.BackdropImage
+import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -71,15 +71,9 @@ private fun AllMoviesScreenContent(
             .background(TraktTheme.colors.backgroundPrimary)
             .nestedScroll(headerState.connection),
     ) {
-        BackdropImage(
+        ScrollableBackdropImage(
             imageUrl = state.backgroundUrl,
-            modifier = Modifier.graphicsLayer {
-                if (listState.firstVisibleItemIndex == 0) {
-                    translationY = (-0.75F * listState.firstVisibleItemScrollOffset)
-                } else {
-                    alpha = 0F
-                }
-            },
+            scrollState = listState,
         )
 
         AllMoviesListView(

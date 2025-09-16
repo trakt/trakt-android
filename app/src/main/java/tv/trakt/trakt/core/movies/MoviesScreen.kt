@@ -19,7 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
@@ -34,7 +33,7 @@ import tv.trakt.trakt.core.movies.sections.recommended.MoviesRecommendedView
 import tv.trakt.trakt.core.movies.sections.trending.MoviesTrendingView
 import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
-import tv.trakt.trakt.ui.components.BackdropImage
+import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -100,15 +99,9 @@ private fun MoviesScreenContent(
             .background(TraktTheme.colors.backgroundPrimary)
             .nestedScroll(headerState.connection),
     ) {
-        BackdropImage(
+        ScrollableBackdropImage(
             imageUrl = state.backgroundUrl,
-            modifier = Modifier.graphicsLayer {
-                if (lazyListState.firstVisibleItemIndex == 0) {
-                    translationY = (-0.75F * lazyListState.firstVisibleItemScrollOffset)
-                } else {
-                    alpha = 0F
-                }
-            },
+            scrollState = lazyListState,
         )
 
         val listPadding = PaddingValues(

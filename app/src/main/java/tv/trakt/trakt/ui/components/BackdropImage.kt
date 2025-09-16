@@ -6,8 +6,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -15,6 +19,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
@@ -30,6 +35,8 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
+
+private const val PARALLAX_RATIO = 0.75F
 
 @SuppressLint("ConfigurationScreenWidthHeight")
 @Composable
@@ -83,6 +90,50 @@ internal fun BackdropImage(
                 .background(linearGradient),
         )
     }
+}
+
+@Composable
+internal fun ScrollableBackdropImage(
+    scrollState: LazyListState,
+    imageUrl: String?,
+    modifier: Modifier = Modifier,
+) {
+    val firstItemVisible by remember {
+        derivedStateOf { scrollState.firstVisibleItemIndex == 0 }
+    }
+    BackdropImage(
+        imageUrl = imageUrl,
+        imageAlpha = 0.375F,
+        modifier = modifier.graphicsLayer {
+            if (firstItemVisible) {
+                translationY = (-PARALLAX_RATIO * scrollState.firstVisibleItemScrollOffset)
+            } else {
+                alpha = 0F
+            }
+        },
+    )
+}
+
+@Composable
+internal fun ScrollableBackdropImage(
+    scrollState: LazyGridState,
+    imageUrl: String?,
+    modifier: Modifier = Modifier,
+) {
+    val firstItemVisible by remember {
+        derivedStateOf { scrollState.firstVisibleItemIndex == 0 }
+    }
+    BackdropImage(
+        imageUrl = imageUrl,
+        imageAlpha = 0.375F,
+        modifier = modifier.graphicsLayer {
+            if (firstItemVisible) {
+                translationY = (-PARALLAX_RATIO * scrollState.firstVisibleItemScrollOffset)
+            } else {
+                alpha = 0F
+            }
+        },
+    )
 }
 
 @OptIn(ExperimentalCoilApi::class)
