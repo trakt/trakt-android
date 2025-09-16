@@ -1,0 +1,151 @@
+package tv.trakt.trakt.ui.lists
+
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyGridScope
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableList
+import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.model.Images.Size.THUMB
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.ui.components.InfoChip
+import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
+import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
+import tv.trakt.trakt.ui.theme.TraktTheme
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun AllMoviesListView(
+    title: @Composable () -> Unit,
+    loading: Boolean,
+    items: ImmutableList<Movie>,
+) {
+    val gridState = rememberLazyGridState(
+        cacheWindow = LazyLayoutCacheWindow(
+            aheadFraction = 0.5F,
+            behindFraction = 0.5F,
+        ),
+    )
+
+    val contentPadding = PaddingValues(
+        start = TraktTheme.spacing.mainPageHorizontalSpace,
+        end = TraktTheme.spacing.mainPageHorizontalSpace,
+        top = WindowInsets.statusBars.asPaddingValues()
+            .calculateTopPadding(),
+        bottom = WindowInsets.navigationBars.asPaddingValues()
+            .calculateBottomPadding()
+            .plus(TraktTheme.size.navigationBarHeight * 2),
+    )
+
+    LazyVerticalGrid(
+        state = gridState,
+        columns = GridCells.Fixed(2),
+        horizontalArrangement = spacedBy(TraktTheme.spacing.mainGridHorizontalSpace),
+        verticalArrangement = spacedBy(0.dp),
+        contentPadding = contentPadding,
+        overscrollEffect = null,
+    ) {
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            title()
+        }
+
+        gridItems(items)
+
+        if (loading) {
+            items(count = 3) { index ->
+                VerticalMediaSkeletonCard(
+                    modifier = Modifier
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
+                )
+            }
+        }
+    }
+}
+
+private fun LazyGridScope.gridItems(items: ImmutableList<Movie>) {
+    items(
+        items = items,
+        key = { it.ids.trakt.value },
+    ) { item ->
+        HorizontalMediaCard(
+            title = "",
+            containerImageUrl = item.images?.getFanartUrl(THUMB),
+            cardContent = {
+                Row(
+                    horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpacing),
+                ) {
+                    item.released?.let {
+                        InfoChip(
+                            text = it.year.toString(),
+                            containerColor = TraktTheme.colors.chipContainerOnContent,
+                        )
+                    }
+                    item.runtime?.inWholeMinutes?.let {
+                        val runtimeString = remember(item.runtime) {
+                            it.durationFormat()
+                        }
+                        InfoChip(
+                            text = runtimeString,
+                            containerColor = TraktTheme.colors.chipContainerOnContent,
+                        )
+                    }
+                }
+            },
+            footerContent = {
+                Column(
+                    verticalArrangement = spacedBy(1.dp),
+                ) {
+                    Text(
+                        text = item.title,
+                        style = TraktTheme.typography.cardTitle,
+                        color = TraktTheme.colors.textPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+
+                    Text(
+                        text = remember(item.genres.size) {
+                            item.genres
+                                .take(2)
+                                .joinToString(", ") { genre ->
+                                    genre.replaceFirstChar { it.titlecase() }
+                                }
+                        },
+                        style = TraktTheme.typography.cardSubtitle,
+                        color = TraktTheme.colors.textSecondary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+            },
+            modifier = Modifier
+                .padding(bottom = TraktTheme.spacing.mainGridHorizontalSpace * 2)
+                .animateItem(
+                    fadeInSpec = null,
+                    fadeOutSpec = null,
+                ),
+        )
+    }
+}

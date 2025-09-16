@@ -17,6 +17,7 @@ import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.movies.sections.trending.usecase.DEFAULT_ALL_LIMIT
 import tv.trakt.trakt.core.movies.sections.trending.usecase.GetTrendingMoviesUseCase
@@ -49,7 +50,11 @@ internal class AllMoviesTrendingViewModel(
             try {
                 val localMovies = getTrendingUseCase.getLocalMovies()
                 if (localMovies.isNotEmpty()) {
-                    itemsState.update { localMovies }
+                    itemsState.update {
+                        localMovies
+                            .asyncMap { it.movie }
+                            .toImmutableList()
+                    }
                     loadingState.update { DONE }
                 } else {
                     loadingState.update { LOADING }
@@ -59,7 +64,9 @@ internal class AllMoviesTrendingViewModel(
                     getTrendingUseCase.getMovies(
                         page = 1,
                         limit = DEFAULT_ALL_LIMIT,
-                    )
+                    ).asyncMap {
+                        it.movie
+                    }.toImmutableList()
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -85,7 +92,9 @@ internal class AllMoviesTrendingViewModel(
                     page = pages + 1,
                     limit = DEFAULT_ALL_LIMIT,
                     skipLocal = true,
-                )
+                ).asyncMap {
+                    it.movie
+                }
 
                 itemsState.update {
                     it?.plus(nextData)?.toImmutableList()
