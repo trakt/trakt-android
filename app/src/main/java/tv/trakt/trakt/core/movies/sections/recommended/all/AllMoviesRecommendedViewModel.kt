@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.movies.sections.popular.all
+package tv.trakt.trakt.core.movies.sections.recommended.all
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,25 +14,21 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
-import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.core.movies.sections.popular.usecase.DEFAULT_ALL_LIMIT
-import tv.trakt.trakt.core.movies.sections.popular.usecase.GetPopularMoviesUseCase
+import tv.trakt.trakt.core.movies.sections.recommended.usecase.DEFAULT_ALL_LIMIT
+import tv.trakt.trakt.core.movies.sections.recommended.usecase.GetRecommendedMoviesUseCase
 
-internal class AllMoviesPopularViewModel(
-    private val getPopularUseCase: GetPopularMoviesUseCase,
+internal class AllMoviesRecommendedViewModel(
+    private val getRecommendedUseCase: GetRecommendedMoviesUseCase,
 ) : ViewModel() {
-    private val initialState = AllMoviesPopularState()
+    private val initialState = AllMoviesRecommendedState()
 
     private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val loadingMoreState = MutableStateFlow(LoadingState.IDLE)
     private val errorState = MutableStateFlow(initialState.error)
-
-    private var pages: Int = 1
 
     init {
         loadBackground()
@@ -47,7 +43,7 @@ internal class AllMoviesPopularViewModel(
     private fun loadData() {
         viewModelScope.launch {
             try {
-                val localMovies = getPopularUseCase.getLocalMovies()
+                val localMovies = getRecommendedUseCase.getLocalMovies()
                 if (localMovies.isNotEmpty()) {
                     itemsState.update {
                         localMovies.toImmutableList()
@@ -58,8 +54,7 @@ internal class AllMoviesPopularViewModel(
                 }
 
                 itemsState.update {
-                    getPopularUseCase.getMovies(
-                        page = 1,
+                    getRecommendedUseCase.getMovies(
                         limit = DEFAULT_ALL_LIMIT,
                     ).toImmutableList()
                 }
@@ -74,50 +69,17 @@ internal class AllMoviesPopularViewModel(
         }
     }
 
-    fun loadMoreData() {
-        if (loadingMoreState.value.isLoading) {
-            return
-        }
-
-        viewModelScope.launch {
-            try {
-                loadingMoreState.update { LOADING }
-
-                val nextData = getPopularUseCase.getMovies(
-                    page = pages + 1,
-                    limit = DEFAULT_ALL_LIMIT,
-                    skipLocal = true,
-                )
-
-                itemsState.update {
-                    it?.plus(nextData)?.toImmutableList()
-                }
-
-                pages += 1
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    errorState.update { error }
-                    Timber.w(error, "Failed to load more page data")
-                }
-            } finally {
-                loadingMoreState.update { DONE }
-            }
-        }
-    }
-
-    val state: StateFlow<AllMoviesPopularState> = combine(
+    val state: StateFlow<AllMoviesRecommendedState> = combine(
         backgroundState,
         itemsState,
         loadingState,
-        loadingMoreState,
         errorState,
-    ) { s1, s2, s3, s4, s5 ->
-        AllMoviesPopularState(
+    ) { s1, s2, s3, s4 ->
+        AllMoviesRecommendedState(
             backgroundUrl = s1,
             items = s2,
             loading = s3,
-            loadingMore = s4,
-            error = s5,
+            error = s4,
         )
     }.stateIn(
         scope = viewModelScope,

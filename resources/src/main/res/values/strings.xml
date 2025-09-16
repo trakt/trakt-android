@@ -94,6 +94,7 @@
     <!-- Migrate to generator -->
     <string name="list_title_popular_movies">Popular Movies</string>
     <string name="list_title_anticipated_movies">Anticipated Movies</string>
+    <string name="list_title_recommended_movies">Recommended Movies</string>
     <string name="warning_prompt_title_delete_list">Delete list</string>
     <string name="warning_prompt_delete_list">Are you sure you want to delete the list \"%s?\"</string>
     <string name="error_text_lists_limit">Uh oh… You have reached the limit of your personal lists. Upgrade to VIP for unlimited amount of lists!</string>

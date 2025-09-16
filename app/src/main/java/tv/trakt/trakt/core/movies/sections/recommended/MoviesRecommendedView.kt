@@ -32,6 +32,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
@@ -46,6 +47,7 @@ internal fun MoviesRecommendedView(
     viewModel: MoviesRecommendedViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
+    onMoreClick: () -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -54,6 +56,7 @@ internal fun MoviesRecommendedView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
+        onMoreClick = onMoreClick,
     )
 }
 
@@ -63,6 +66,7 @@ internal fun MoviesRecommendedContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
+    onMoreClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
@@ -82,6 +86,7 @@ internal fun MoviesRecommendedContent(
                 text = stringResource(R.string.button_text_view_all),
                 color = TraktTheme.colors.textSecondary,
                 style = TraktTheme.typography.buttonSecondary,
+                modifier = Modifier.onClick(onMoreClick),
             )
         }
 

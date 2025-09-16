@@ -46,6 +46,8 @@ import tv.trakt.trakt.core.movies.sections.anticipated.all.navigation.moviesAnti
 import tv.trakt.trakt.core.movies.sections.anticipated.all.navigation.navigateToAnticipatedMovies
 import tv.trakt.trakt.core.movies.sections.popular.all.navigation.moviesPopularScreen
 import tv.trakt.trakt.core.movies.sections.popular.all.navigation.navigateToPopularMovies
+import tv.trakt.trakt.core.movies.sections.recommended.all.navigation.moviesRecommendedScreen
+import tv.trakt.trakt.core.movies.sections.recommended.all.navigation.navigateToRecommendedMovies
 import tv.trakt.trakt.core.movies.sections.trending.all.navigation.moviesTrendingScreen
 import tv.trakt.trakt.core.movies.sections.trending.all.navigation.navigateToTrendingMovies
 import tv.trakt.trakt.core.profile.navigation.navigateToProfile
@@ -188,6 +190,7 @@ private fun MainNavHost(
                 onNavigateToAllTrending = { navigateToTrendingMovies() },
                 onNavigateToAllPopular = { navigateToPopularMovies() },
                 onNavigateToAllAnticipated = { navigateToAnticipatedMovies() },
+                onNavigateToAllRecommended = { navigateToRecommendedMovies() },
             )
             moviesTrendingScreen(
                 onNavigateBack = { popBackStack() },
@@ -196,6 +199,9 @@ private fun MainNavHost(
                 onNavigateBack = { popBackStack() },
             )
             moviesAnticipatedScreen(
+                onNavigateBack = { popBackStack() },
+            )
+            moviesRecommendedScreen(
                 onNavigateBack = { popBackStack() },
             )
             listsScreen(

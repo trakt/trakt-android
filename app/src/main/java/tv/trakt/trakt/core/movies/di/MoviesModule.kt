@@ -16,6 +16,7 @@ import tv.trakt.trakt.core.movies.sections.popular.data.local.PopularMoviesLocal
 import tv.trakt.trakt.core.movies.sections.popular.data.local.PopularMoviesStorage
 import tv.trakt.trakt.core.movies.sections.popular.usecase.GetPopularMoviesUseCase
 import tv.trakt.trakt.core.movies.sections.recommended.MoviesRecommendedViewModel
+import tv.trakt.trakt.core.movies.sections.recommended.all.AllMoviesRecommendedViewModel
 import tv.trakt.trakt.core.movies.sections.recommended.data.local.RecommendedMoviesLocalDataSource
 import tv.trakt.trakt.core.movies.sections.recommended.data.local.RecommendedMoviesStorage
 import tv.trakt.trakt.core.movies.sections.recommended.usecase.GetRecommendedMoviesUseCase
@@ -111,7 +112,19 @@ internal val moviesModule = module {
     }
 
     viewModel {
+        AllMoviesAnticipatedViewModel(
+            getAnticipatedUseCase = get(),
+        )
+    }
+
+    viewModel {
         MoviesRecommendedViewModel(
+            getRecommendedUseCase = get(),
+        )
+    }
+
+    viewModel {
+        AllMoviesRecommendedViewModel(
             getRecommendedUseCase = get(),
         )
     }
