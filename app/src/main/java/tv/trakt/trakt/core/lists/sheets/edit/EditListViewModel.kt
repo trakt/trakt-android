@@ -36,7 +36,7 @@ internal class EditListViewModel(
 
         viewModelScope.launch {
             try {
-                loadingEditState.value = LOADING
+                loadingEditState.update { LOADING }
 
                 editListUseCase.editList(
                     listId = id,

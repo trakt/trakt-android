@@ -37,7 +37,7 @@ internal class CreateListViewModel(
 
         viewModelScope.launch {
             try {
-                loadingState.value = LOADING
+                loadingState.update { LOADING }
                 createListUseCase.createList(
                     name = name,
                     description = description,

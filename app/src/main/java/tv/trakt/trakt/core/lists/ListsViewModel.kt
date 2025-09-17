@@ -68,7 +68,6 @@ internal class ListsViewModel(
 
             try {
                 val localItems = getPersonalListsUseCase.getLocalLists()
-
                 if (localItems.isNotEmpty()) {
                     listsState.update { localItems }
                     listsLoadingState.update { DONE }
@@ -76,7 +75,6 @@ internal class ListsViewModel(
                     listsLoadingState.update { LOADING }
                 }
 
-                listsLoadingState.update { LOADING }
                 val lists = getPersonalListsUseCase.getLists()
                 listsState.update { lists }
             } catch (error: Exception) {

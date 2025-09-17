@@ -117,6 +117,7 @@
     <string name="button_text_meet_team">Meet the team</string>
     <string name="button_text_movies">Movies</string>
     <string name="button_text_personal">Personal</string>
+    <string name="button_text_remove_from_history">Remove from Watched</string>
     <string name="button_text_shows">Shows</string>
     <string name="button_text_social">Social</string>
     <string name="button_text_toggle_search_media">Media</string>

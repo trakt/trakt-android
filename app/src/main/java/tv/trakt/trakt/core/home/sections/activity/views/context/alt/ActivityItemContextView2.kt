@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.home.sections.activity.views.context
+package tv.trakt.trakt.core.home.sections.activity.views.context.alt
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -79,7 +79,7 @@ private fun ActivityItemContextViewContent(
         )
 
         GhostButton(
-            text = "Remove from watched",
+            text = stringResource(R.string.button_text_remove_from_history),
             icon = painterResource(R.drawable.ic_trash),
             onClick = onRemoveWatchedClick,
             modifier = Modifier

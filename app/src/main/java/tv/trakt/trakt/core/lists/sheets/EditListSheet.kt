@@ -15,7 +15,7 @@ import tv.trakt.trakt.core.lists.sheets.edit.EditListView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
-import kotlin.random.Random
+import kotlin.random.Random.Default.nextInt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,7 +42,7 @@ internal fun EditListSheet(
             EditListView(
                 initialList = list,
                 viewModel = koinViewModel(
-                    key = Random.Default.nextInt().toString(),
+                    key = nextInt().toString(),
                 ),
                 onListEdited = {
                     sheetScope

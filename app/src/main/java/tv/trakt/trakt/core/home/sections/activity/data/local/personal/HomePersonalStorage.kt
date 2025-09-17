@@ -23,6 +23,14 @@ internal class HomePersonalStorage : HomePersonalLocalDataSource {
         }
     }
 
+    override suspend fun removeItems(ids: Set<Long>) {
+        mutex.withLock {
+            ids.forEach {
+                storage.remove(it)
+            }
+        }
+    }
+
     override fun clear() {
         storage.clear()
     }

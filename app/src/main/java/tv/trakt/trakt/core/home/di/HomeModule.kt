@@ -24,6 +24,7 @@ import tv.trakt.trakt.core.home.sections.activity.data.local.social.HomeSocialSt
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetActivityFilterUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
+import tv.trakt.trakt.core.home.sections.activity.views.context.ActivityItemContextViewModel
 import tv.trakt.trakt.core.home.sections.upcoming.HomeUpcomingViewModel
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingStorage
@@ -158,6 +159,13 @@ internal val homeModule = module {
         HomeUpcomingViewModel(
             getUpcomingUseCase = get(),
             sessionManager = get(),
+        )
+    }
+
+    viewModel {
+        ActivityItemContextViewModel(
+            updateMovieHistoryUseCase = get(),
+            activityLocalSource = get(),
         )
     }
 }

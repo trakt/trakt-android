@@ -23,12 +23,13 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.HorizontalMediaSkeletonCard
@@ -127,12 +128,9 @@ private fun LazyGridScope.gridItems(items: ImmutableList<Show>) {
                             containerColor = TraktTheme.colors.chipContainerOnContent,
                         )
                     }
-                    item.runtime?.inWholeMinutes?.let {
-                        val runtimeString = remember(item.runtime) {
-                            it.durationFormat()
-                        }
+                    if (item.airedEpisodes > 0) {
                         InfoChip(
-                            text = runtimeString,
+                            text = stringResource(R.string.tag_text_number_of_episodes, item.airedEpisodes),
                             containerColor = TraktTheme.colors.chipContainerOnContent,
                         )
                     }

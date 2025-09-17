@@ -7,5 +7,7 @@ internal interface HomePersonalLocalDataSource {
 
     suspend fun getItems(): List<HomeActivityItem>
 
+    suspend fun removeItems(ids: Set<Long>)
+
     fun clear()
 }

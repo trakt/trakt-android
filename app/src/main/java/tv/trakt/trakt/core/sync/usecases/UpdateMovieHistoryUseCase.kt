@@ -13,4 +13,10 @@ internal class UpdateMovieHistoryUseCase(
             watchedAt = nowUtcInstant(),
         )
     }
+
+    suspend fun removePlayFromHistory(play: Long) {
+        remoteSource.removeSingleFromHistory(
+            playId = play,
+        )
+    }
 }

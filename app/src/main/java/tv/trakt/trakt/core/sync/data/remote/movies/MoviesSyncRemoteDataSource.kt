@@ -10,6 +10,8 @@ internal interface MoviesSyncRemoteDataSource {
         watchedAt: Instant,
     )
 
+    suspend fun removeSingleFromHistory(playId: Long)
+
     suspend fun getWatchlist(
         sort: String = "rank",
         page: Int? = null,

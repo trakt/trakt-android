@@ -29,7 +29,7 @@ internal val DarkColors: TraktColors = TraktColors(
     navigationContent = White,
     inputContainer = Shade940,
     dialogContainer = Shade920,
-    dialogContent = Shade700,
+    dialogContent = Shade800,
     // Buttons
     primaryButtonContainer = Purple500,
     primaryButtonContainerDisabled = Shade700,

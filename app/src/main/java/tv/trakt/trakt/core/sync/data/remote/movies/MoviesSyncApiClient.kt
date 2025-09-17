@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.sync.data.remote.movies
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
 import org.openapitools.client.models.PostCheckinMovieRequestMovieIds
+import org.openapitools.client.models.PostSyncHistoryRemoveRequest
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInner
 import tv.trakt.trakt.common.model.TraktId
@@ -33,6 +34,13 @@ internal class MoviesSyncApiClient(
             ),
         )
         syncApi.postSyncHistoryAdd(request)
+    }
+
+    override suspend fun removeSingleFromHistory(playId: Long) {
+        val request = PostSyncHistoryRemoveRequest(
+            ids = listOf(playId),
+        )
+        syncApi.postSyncHistoryRemove(request)
     }
 
     override suspend fun getWatchlist(

@@ -35,7 +35,7 @@ internal fun GhostButton(
     text: String,
     textStyle: TextStyle = TraktTheme.typography.buttonSecondary,
     icon: Painter? = null,
-    iconSize: Dp = 20.dp,
+    iconSize: Dp = 22.dp,
     iconSpace: Dp = 10.dp,
     enabled: Boolean = true,
     loading: Boolean = false,
@@ -43,7 +43,7 @@ internal fun GhostButton(
     containerColor: Color = Color.Transparent,
     contentColor: Color = TraktTheme.colors.primaryButtonContent,
     disabledContainerColor: Color = Color.Transparent,
-    disabledContentColor: Color = TraktTheme.colors.primaryButtonContentDisabled,
+    disabledContentColor: Color = TraktTheme.colors.primaryButtonContent.copy(alpha = 0.25F),
 ) {
     Button(
         modifier = modifier

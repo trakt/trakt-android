@@ -9,9 +9,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -23,10 +29,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
+import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.EpisodeItem
@@ -34,6 +42,7 @@ import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.MovieIt
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
+import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Instant
@@ -41,19 +50,54 @@ import java.time.Instant
 @Composable
 internal fun ActivityItemContextView(
     item: HomeActivityItem,
+    viewModel: ActivityItemContextViewModel,
     modifier: Modifier = Modifier,
-    onRemoveWatchedClick: () -> Unit,
+    onPlayRemove: () -> Unit,
+    onAddWatchlist: () -> Unit,
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    var confirmRemoveSheet by remember { mutableStateOf(false) }
+
+    LaunchedEffect(state.loadingRemove, state.loadingWatchlist) {
+        when {
+            state.loadingRemove == DONE -> onPlayRemove()
+            state.loadingWatchlist == DONE -> onAddWatchlist()
+        }
+    }
+
     ActivityItemContextViewContent(
         item = item,
+        state = state,
         modifier = modifier,
-        onRemoveWatchedClick = onRemoveWatchedClick,
+        onRemoveWatchedClick = {
+            confirmRemoveSheet = true
+        },
+    )
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    ConfirmationSheet(
+        active = confirmRemoveSheet,
+        onYes = {
+            confirmRemoveSheet = false
+            viewModel.removePlayFromHistory(item.id)
+        },
+        onNo = { confirmRemoveSheet = false },
+        title = stringResource(R.string.button_text_remove_from_history),
+        message = stringResource(
+            R.string.warning_prompt_remove_single_watched,
+            when (item) {
+                is EpisodeItem -> item.episode.title
+                is MovieItem -> item.movie.title
+            },
+        ),
     )
 }
 
 @Composable
 private fun ActivityItemContextViewContent(
     item: HomeActivityItem,
+    state: ActivityItemContextState,
     modifier: Modifier = Modifier,
     onRemoveWatchedClick: () -> Unit = {},
 ) {
@@ -80,6 +124,7 @@ private fun ActivityItemContextViewContent(
 
             Column(
                 verticalArrangement = spacedBy(2.dp),
+                modifier = Modifier.weight(1f),
             ) {
                 Text(
                     text = item.title,
@@ -100,6 +145,13 @@ private fun ActivityItemContextViewContent(
                     overflow = TextOverflow.Ellipsis,
                 )
             }
+
+//            if (state.loadingRemove.isLoading) {
+//                FilmProgressIndicator(
+//                    size = 16.dp,
+//                    color = TraktTheme.colors.textSecondary,
+//                )
+//            }
         }
 
         Spacer(
@@ -110,16 +162,38 @@ private fun ActivityItemContextViewContent(
                 .background(Shade910),
         )
 
-        GhostButton(
-            text = "Remove from watched",
-            onClick = onRemoveWatchedClick,
-            icon = painterResource(R.drawable.ic_trash),
+        Column(
+            verticalArrangement = spacedBy(16.dp),
             modifier = Modifier
-                .padding(top = 2.dp)
-                .graphicsLayer {
-                    translationX = -6.dp.toPx()
-                },
-        )
+                .padding(top = 4.dp),
+        ) {
+            GhostButton(
+                enabled = !state.loadingRemove.isLoading,
+                loading = state.loadingRemove.isLoading,
+                text = stringResource(R.string.button_text_remove_from_history),
+                onClick = onRemoveWatchedClick,
+                icon = painterResource(R.drawable.ic_trash),
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationX = -6.dp.toPx()
+                    },
+            )
+
+//            if (item is MovieItem) {
+//                GhostButton(
+//                    enabled = !state.loadingRemove.isLoading,
+//                    text = stringResource(R.string.button_text_watchlist),
+//                    onClick = onRemoveWatchedClick,
+//                    icon = painterResource(R.drawable.ic_plus_round),
+//                    iconSpace = 12.dp,
+//                    iconSize = 20.dp,
+//                    modifier = Modifier
+//                        .graphicsLayer {
+//                            translationX = -5.dp.toPx()
+//                        },
+//                )
+//            }
+        }
     }
 }
 
@@ -137,13 +211,41 @@ private fun Preview() {
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             ActivityItemContextViewContent(
-                item = HomeActivityItem.EpisodeItem(
+                state = ActivityItemContextState(),
+                item = EpisodeItem(
                     id = 1L,
                     user = PreviewData.user1,
                     activity = "watched",
                     activityAt = Instant.now(),
                     episode = PreviewData.episode1,
                     show = PreviewData.show1,
+                ),
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalCoilApi::class)
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun Preview2() {
+    TraktTheme {
+        val previewHandler = AsyncImagePreviewHandler {
+            ColorImage(Color.Blue.toArgb())
+        }
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            ActivityItemContextViewContent(
+                state = ActivityItemContextState(),
+                item = MovieItem(
+                    id = 1L,
+                    user = PreviewData.user1,
+                    activity = "watched",
+                    activityAt = Instant.now(),
+                    movie = PreviewData.movie1,
                 ),
             )
         }

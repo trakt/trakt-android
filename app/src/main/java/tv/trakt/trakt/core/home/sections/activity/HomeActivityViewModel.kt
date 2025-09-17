@@ -81,7 +81,7 @@ internal class HomeActivityViewModel(
             }.launchIn(viewModelScope)
     }
 
-    private fun loadData(ignoreErrors: Boolean = false) {
+    fun loadData(ignoreErrors: Boolean = false) {
         loadDataJob?.cancel()
         loadDataJob = viewModelScope.launch {
             try {
