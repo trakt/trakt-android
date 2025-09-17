@@ -84,13 +84,6 @@ internal fun HomeUpcomingContent(
             TraktHeader(
                 title = stringResource(R.string.list_title_upcoming_schedule),
             )
-            if (!state.items.isNullOrEmpty() || state.loading != DONE) {
-                Text(
-                    text = stringResource(R.string.button_text_view_all),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.buttonSecondary,
-                )
-            }
         }
 
         Crossfade(
