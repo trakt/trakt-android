@@ -79,6 +79,7 @@ internal class GetPersonalActivityUseCase(
                 .also {
                     localDataSource.addItems(
                         items = it,
+                        ignoreUpdate = true,
                     )
                 }
         }

@@ -33,6 +33,7 @@ import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextViewModel
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextStorage
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
+import tv.trakt.trakt.core.home.sections.upnext.views.UpNextItemContextViewModel
 import tv.trakt.trakt.core.home.sections.watchlist.HomeWatchlistViewModel
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistStorage
@@ -133,6 +134,7 @@ internal val homeModule = module {
         HomeUpNextViewModel(
             getUpNextUseCase = get(),
             updateHistoryUseCase = get(),
+            homePersonalActivitySource = get(),
             sessionManager = get(),
         )
     }
@@ -167,6 +169,13 @@ internal val homeModule = module {
         ActivityItemContextViewModel(
             updateMovieHistoryUseCase = get(),
             activityLocalSource = get(),
+        )
+    }
+
+    viewModel {
+        UpNextItemContextViewModel(
+            updateShowHistoryUseCase = get(),
+            upNextLocalDataSource = get(),
         )
     }
 

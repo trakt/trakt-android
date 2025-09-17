@@ -12,7 +12,7 @@ internal interface HomeWatchlistLocalDataSource {
 
     suspend fun removeItems(ids: Set<TraktId>)
 
-    fun observeUpdated(): Flow<Instant?>
+    fun observeUpdates(): Flow<Instant?>
 
     fun clear()
 }

@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package tv.trakt.trakt.core.home.sections.upnext
 
 import androidx.compose.animation.Crossfade
@@ -15,14 +17,17 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -47,6 +52,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
+import tv.trakt.trakt.core.home.sections.upnext.views.sheets.UpNextItemContextSheet
 import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EpisodeProgressBar
@@ -67,6 +73,8 @@ internal fun HomeUpNextView(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val haptic = LocalHapticFeedback.current
 
+    var contextSheet by remember { mutableStateOf<ProgressShow?>(null) }
+
     LaunchedEffect(state.info) {
         if (state.info != null) {
             haptic.performHapticFeedback(Confirm)
@@ -80,8 +88,27 @@ internal fun HomeUpNextView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onShowsClick = onShowsClick,
+        onLongClick = {
+            if (!it.loading) {
+                contextSheet = it
+            }
+        },
         onCheckClick = {
             viewModel.addToHistory(it.id)
+        },
+    )
+
+    UpNextItemContextSheet(
+        sheetItem = contextSheet,
+        onDismiss = { contextSheet = null },
+        onAddWatched = {
+            viewModel.addToHistory(it.id)
+        },
+        onDropShow = {
+            viewModel.loadData(
+                resetScroll = false,
+                ignoreErrors = false,
+            )
         },
     )
 }
@@ -93,6 +120,7 @@ internal fun HomeUpNextContent(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onShowsClick: () -> Unit = {},
+    onLongClick: (ProgressShow) -> Unit = {},
     onCheckClick: (ProgressShow) -> Unit = {},
 ) {
     Column(
@@ -160,6 +188,7 @@ internal fun HomeUpNextContent(
                             ContentList(
                                 listItems = state.items,
                                 contentPadding = contentPadding,
+                                onLongClick = onLongClick,
                                 onCheckClick = onCheckClick,
                             )
                         }
@@ -193,6 +222,7 @@ private fun ContentList(
     listItems: ItemsState,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
+    onLongClick: (ProgressShow) -> Unit,
     onCheckClick: (ProgressShow) -> Unit,
 ) {
     val listHash = rememberSaveable { mutableIntStateOf(listItems.items.hashCode()) }
@@ -219,6 +249,7 @@ private fun ContentList(
         ) { item ->
             ContentListItem(
                 item = item,
+                onLongClick = { onLongClick(item) },
                 onCheckClick = { onCheckClick(item) },
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
@@ -233,10 +264,12 @@ private fun ContentList(
 private fun ContentListItem(
     item: ProgressShow,
     modifier: Modifier = Modifier,
+    onLongClick: () -> Unit,
     onCheckClick: () -> Unit,
 ) {
     HorizontalMediaCard(
         title = "",
+        onLongClick = onLongClick,
         containerImageUrl =
             item.progress.nextEpisode.images?.getScreenshotUrl()
                 ?: item.show.images?.getFanartUrl(),

@@ -73,8 +73,8 @@ internal class HomeActivityViewModel(
 
     private fun observeHome() {
         merge(
-            homeUpNextSource.observeUpdated(),
-            homeWatchlistSource.observeUpdated(),
+            homeUpNextSource.observeUpdates(),
+            homeWatchlistSource.observeUpdates(),
         ).debounce(250)
             .onEach {
                 loadData(ignoreErrors = true)

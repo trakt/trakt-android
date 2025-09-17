@@ -3,11 +3,16 @@ package tv.trakt.trakt.core.home.sections.upnext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -20,6 +25,7 @@ import tv.trakt.trakt.common.helpers.StaticStringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
@@ -28,6 +34,7 @@ import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 internal class HomeUpNextViewModel(
     private val getUpNextUseCase: GetUpNextUseCase,
     private val updateHistoryUseCase: UpdateEpisodeHistoryUseCase,
+    private val homePersonalActivitySource: HomePersonalLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = HomeUpNextState()
@@ -44,6 +51,7 @@ internal class HomeUpNextViewModel(
     init {
         loadData()
         observeUser()
+        observeHome()
     }
 
     private fun observeUser() {
@@ -59,7 +67,20 @@ internal class HomeUpNextViewModel(
         }
     }
 
-    private fun loadData(resetScroll: Boolean = true) {
+    @OptIn(FlowPreview::class)
+    private fun observeHome() {
+        merge(
+            homePersonalActivitySource.observeUpdates(),
+        ).debounce(250)
+            .onEach {
+                loadData(ignoreErrors = true)
+            }.launchIn(viewModelScope)
+    }
+
+    fun loadData(
+        resetScroll: Boolean = true,
+        ignoreErrors: Boolean = false,
+    ) {
         viewModelScope.launch {
             if (loadEmptyIfNeeded()) {
                 return@launch
@@ -81,7 +102,9 @@ internal class HomeUpNextViewModel(
 
                 itemsState.update {
                     ItemsState(
-                        items = getUpNextUseCase.getUpNext(),
+                        items = getUpNextUseCase.getUpNext(
+                            ignoreUpdate = true,
+                        ),
                         resetScroll = resetScroll,
                     )
                 }
@@ -89,7 +112,9 @@ internal class HomeUpNextViewModel(
                 itemsOrder = itemsState.value.items?.map { it.show.ids.trakt.value }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.update { error }
+                    if (!ignoreErrors) {
+                        errorState.update { error }
+                    }
                     Timber.d(error, "Failed to load data")
                 }
             } finally {
@@ -134,7 +159,9 @@ internal class HomeUpNextViewModel(
 
                 updateHistoryUseCase.addToHistory(episodeId)
                 itemsState.update {
-                    val items = getUpNextUseCase.getUpNext()
+                    val items = getUpNextUseCase.getUpNext(
+                        ignoreUpdate = false,
+                    )
                     ItemsState(
                         items = itemsOrder?.let { order ->
                             items

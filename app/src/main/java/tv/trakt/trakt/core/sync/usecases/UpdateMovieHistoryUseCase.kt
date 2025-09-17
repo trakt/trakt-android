@@ -14,9 +14,9 @@ internal class UpdateMovieHistoryUseCase(
         )
     }
 
-    suspend fun removePlayFromHistory(play: Long) {
+    suspend fun removePlayFromHistory(playId: Long) {
         remoteSource.removeSingleFromHistory(
-            playId = play,
+            playId = playId,
         )
     }
 }

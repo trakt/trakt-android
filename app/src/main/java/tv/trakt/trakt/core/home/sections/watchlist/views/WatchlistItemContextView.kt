@@ -52,6 +52,7 @@ internal fun WatchlistItemContextView(
     modifier: Modifier = Modifier,
     onAddWatched: (Movie) -> Unit,
     onRemoveWatchlist: () -> Unit,
+    onError: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -61,6 +62,12 @@ internal fun WatchlistItemContextView(
         when {
             state.loadingWatched == DONE -> onAddWatched(item)
             state.loadingWatchlist == DONE -> onRemoveWatchlist()
+        }
+    }
+
+    LaunchedEffect(state.error) {
+        if (state.error != null) {
+            onError()
         }
     }
 
@@ -154,8 +161,12 @@ private fun WatchlistItemContextViewContent(
             modifier = Modifier
                 .padding(top = 10.dp),
         ) {
+            val isLoading =
+                state.loadingWatched.isLoading ||
+                    state.loadingWatchlist.isLoading
+
             GhostButton(
-                enabled = !state.loadingWatched.isLoading,
+                enabled = !isLoading,
                 loading = state.loadingWatched.isLoading,
                 text = stringResource(R.string.button_text_mark_as_watched),
                 iconSize = 20.dp,
@@ -169,7 +180,7 @@ private fun WatchlistItemContextViewContent(
             )
 
             GhostButton(
-                enabled = !state.loadingWatchlist.isLoading,
+                enabled = !isLoading,
                 loading = state.loadingWatchlist.isLoading,
                 text = stringResource(R.string.button_text_watchlist),
                 onClick = onRemoveWatchlist,

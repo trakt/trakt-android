@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.home.sections.activity.views.context
+package tv.trakt.trakt.core.home.sections.upnext.views
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,31 +14,29 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
-import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
+import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
+import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 
-internal class ActivityItemContextViewModel(
-    private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
-    private val activityLocalSource: HomePersonalLocalDataSource,
+internal class UpNextItemContextViewModel(
+    private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
+    private val upNextLocalDataSource: HomeUpNextLocalDataSource,
 ) : ViewModel() {
-    private val initialState = ActivityItemContextState()
+    private val initialState = UpNextItemContextState()
 
-    private val loadingRemoveState = MutableStateFlow(initialState.loadingRemove)
-    private val loadingWatchlistState = MutableStateFlow(initialState.loadingWatchlist)
+    private val loadingWatchedState = MutableStateFlow(initialState.loadingWatched)
+    private val loadingDropState = MutableStateFlow(initialState.loadingDrop)
     private val errorState = MutableStateFlow(initialState.error)
 
-    fun removePlayFromHistory(playId: Long) {
+    fun dropShow(showId: TraktId) {
         if (isLoading()) return
         viewModelScope.launch {
             clear()
             try {
-                loadingRemoveState.update { LOADING }
-
-                updateMovieHistoryUseCase.removePlayFromHistory(
-                    playId = playId,
-                )
-                activityLocalSource.removeItems(
-                    ids = setOf(playId),
+                loadingDropState.update { LOADING }
+                updateShowHistoryUseCase.dropShow(showId)
+                upNextLocalDataSource.removeItems(
+                    showIds = listOf(showId),
                     ignoreUpdate = false,
                 )
             } catch (error: Exception) {
@@ -47,29 +45,29 @@ internal class ActivityItemContextViewModel(
                     Timber.w(error)
                 }
             } finally {
-                loadingRemoveState.update { DONE }
+                loadingDropState.update { DONE }
             }
         }
     }
 
     fun clear() {
-        loadingRemoveState.update { IDLE }
-        loadingWatchlistState.update { IDLE }
+        loadingWatchedState.update { IDLE }
+        loadingDropState.update { IDLE }
         errorState.update { null }
     }
 
     private fun isLoading(): Boolean {
-        return loadingRemoveState.value.isLoading || loadingWatchlistState.value.isLoading
+        return loadingWatchedState.value.isLoading || loadingDropState.value.isLoading
     }
 
-    val state: StateFlow<ActivityItemContextState> = combine(
-        loadingRemoveState,
-        loadingWatchlistState,
+    val state: StateFlow<UpNextItemContextState> = combine(
+        loadingWatchedState,
+        loadingDropState,
         errorState,
     ) { s1, s2, s3 ->
-        ActivityItemContextState(
-            loadingRemove = s1,
-            loadingWatchlist = s2,
+        UpNextItemContextState(
+            loadingWatched = s1,
+            loadingDrop = s2,
             error = s3,
         )
     }.stateIn(

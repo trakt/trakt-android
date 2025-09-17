@@ -26,6 +26,7 @@ internal class GetUpNextUseCase(
     suspend fun getUpNext(
         page: Int = 1,
         limit: Int = HOME_SECTION_LIMIT,
+        ignoreUpdate: Boolean = false,
     ): ImmutableList<ProgressShow> {
         val remoteItems = remoteSyncSource.getUpNext(
             limit = limit,
@@ -59,6 +60,7 @@ internal class GetUpNextUseCase(
             .also {
                 localDataSource.addItems(
                     items = it,
+                    ignoreUpdate = ignoreUpdate,
                 )
             }
     }

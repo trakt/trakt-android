@@ -81,6 +81,25 @@ internal fun HomeActivityItemSheet(
                         }
                     }
                 },
+                onError = {
+                    sheetScope.run {
+                        launch { state.hide() }
+                            .invokeOnCompletion {
+                                if (!state.isVisible) {
+                                    onDismiss()
+                                }
+                            }
+                        launch {
+                            val job = sheetScope.launch {
+                                localSnack.showSnackbar(
+                                    localContext.getString(R.string.error_text_unexpected_error_short),
+                                )
+                            }
+                            delay(SNACK_DURATION_SHORT)
+                            job.cancel()
+                        }
+                    }
+                },
                 modifier = Modifier
                     .padding(top = 4.dp)
                     .padding(bottom = 24.dp)

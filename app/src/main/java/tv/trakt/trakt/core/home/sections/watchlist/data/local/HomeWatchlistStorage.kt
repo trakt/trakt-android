@@ -45,7 +45,7 @@ internal class HomeWatchlistStorage : HomeWatchlistLocalDataSource {
         }
     }
 
-    override fun observeUpdated(): Flow<Instant?> {
+    override fun observeUpdates(): Flow<Instant?> {
         return updatedAt.asSharedFlow()
     }
 

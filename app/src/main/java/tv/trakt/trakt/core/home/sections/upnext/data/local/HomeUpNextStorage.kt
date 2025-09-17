@@ -20,13 +20,32 @@ internal class HomeUpNextStorage : HomeUpNextLocalDataSource {
         onBufferOverflow = BufferOverflow.DROP_OLDEST,
     )
 
-    override suspend fun addItems(items: List<ProgressShow>) {
+    override suspend fun addItems(
+        items: List<ProgressShow>,
+        ignoreUpdate: Boolean,
+    ) {
         mutex.withLock {
             with(storage) {
                 clear()
                 putAll(items.associateBy { it.show.ids.trakt })
             }
-            updatedAt.tryEmit(nowUtcInstant())
+            if (!ignoreUpdate) {
+                updatedAt.tryEmit(nowUtcInstant())
+            }
+        }
+    }
+
+    override suspend fun removeItems(
+        showIds: List<TraktId>,
+        ignoreUpdate: Boolean,
+    ) {
+        mutex.withLock {
+            showIds.forEach { id ->
+                storage.remove(id)
+            }
+            if (!ignoreUpdate) {
+                updatedAt.tryEmit(nowUtcInstant())
+            }
         }
     }
 
@@ -36,7 +55,7 @@ internal class HomeUpNextStorage : HomeUpNextLocalDataSource {
         }
     }
 
-    override fun observeUpdated(): Flow<Instant?> {
+    override fun observeUpdates(): Flow<Instant?> {
         return updatedAt.asSharedFlow()
     }
 
