@@ -36,7 +36,7 @@ internal fun EpisodeSocialItemView(
     item: HomeActivityItem.EpisodeItem,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
-    onLongClick: () -> Unit = {},
+    onLongClick: (() -> Unit)? = null,
 ) {
     HorizontalMediaCard(
         title = "",

@@ -40,7 +40,7 @@ internal fun ListsPersonalItemView(
                 chipContent = {
                     if (isReleased) {
                         Row(
-                            horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpacing),
+                            horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpace),
                         ) {
                             item.show.released?.let {
                                 InfoChip(
@@ -82,7 +82,7 @@ internal fun ListsPersonalItemView(
                 chipContent = {
                     if (isReleased) {
                         Row(
-                            horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpacing),
+                            horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpace),
                         ) {
                             item.movie.released?.let {
                                 InfoChip(

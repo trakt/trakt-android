@@ -135,4 +135,5 @@
     <string name="list_subtitle_released_movies">Released movies</string>
     <string name="text_sort_recently_updated">Recently updated</string>
     <string name="text_sort_recently_added">Recently added</string>
+    <string name="warning_prompt_remove_from_watchlist">Are you sure you want to remove %s from your Watchlist?</string>
 </resources>

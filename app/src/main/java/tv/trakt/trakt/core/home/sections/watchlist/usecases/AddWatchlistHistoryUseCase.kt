@@ -12,7 +12,7 @@ internal class AddWatchlistHistoryUseCase(
     suspend fun addToHistory(movieId: TraktId) {
         updateHistoryUseCase.addToHistory(movieId)
 
-        listsWatchlistLocalSource.deleteItems(setOf(movieId))
-        listsWatchlistMoviesLocalSource.deleteItems(setOf(movieId))
+        listsWatchlistLocalSource.removeItems(setOf(movieId))
+        listsWatchlistMoviesLocalSource.removeItems(setOf(movieId))
     }
 }

@@ -76,7 +76,7 @@ private fun ShowGridItem(
                 )
             } else {
                 Row(
-                    horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpacing),
+                    horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpace),
                 ) {
                     item.show.released?.let {
                         InfoChip(
@@ -122,7 +122,7 @@ private fun MovieGridItem(
                 )
             } else {
                 Row(
-                    horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpacing),
+                    horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpace),
                 ) {
                     item.movie.released?.let {
                         InfoChip(

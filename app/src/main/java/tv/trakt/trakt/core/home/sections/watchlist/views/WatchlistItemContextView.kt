@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.home.sections.activity.views.context
+package tv.trakt.trakt.core.home.sections.watchlist.views
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -35,42 +36,42 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.EpisodeItem
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.MovieItem
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
-import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
+import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
-import java.time.Instant
 
 @Composable
-internal fun ActivityItemContextView(
-    item: HomeActivityItem,
-    viewModel: ActivityItemContextViewModel,
+internal fun WatchlistItemContextView(
+    item: Movie,
+    viewModel: WatchlistItemContextViewModel,
     modifier: Modifier = Modifier,
-    onPlayRemove: () -> Unit,
-    onAddWatchlist: () -> Unit,
+    onAddWatched: (Movie) -> Unit,
+    onRemoveWatchlist: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var confirmRemoveSheet by remember { mutableStateOf(false) }
 
-    LaunchedEffect(state.loadingRemove, state.loadingWatchlist) {
+    LaunchedEffect(state.loadingWatched, state.loadingWatchlist) {
         when {
-            state.loadingRemove == DONE -> onPlayRemove()
-            state.loadingWatchlist == DONE -> onAddWatchlist()
+            state.loadingWatched == DONE -> onAddWatched(item)
+            state.loadingWatchlist == DONE -> onRemoveWatchlist()
         }
     }
 
-    ActivityItemContextViewContent(
+    WatchlistItemContextViewContent(
         item = item,
         state = state,
         modifier = modifier,
-        onRemoveWatchedClick = {
+        onAddWatched = {
+            onAddWatched(item)
+        },
+        onRemoveWatchlist = {
             confirmRemoveSheet = true
         },
     )
@@ -80,42 +81,38 @@ internal fun ActivityItemContextView(
         active = confirmRemoveSheet,
         onYes = {
             confirmRemoveSheet = false
-            viewModel.removePlayFromHistory(item.id)
+            viewModel.removeFromWatchlist(item.ids.trakt)
         },
         onNo = { confirmRemoveSheet = false },
-        title = stringResource(R.string.button_text_remove_from_history),
+        title = stringResource(R.string.button_text_watchlist),
         message = stringResource(
-            R.string.warning_prompt_remove_single_watched,
-            when (item) {
-                is EpisodeItem -> item.episode.title
-                is MovieItem -> item.movie.title
-            },
+            R.string.warning_prompt_remove_from_watchlist,
+            item.title,
         ),
     )
 }
 
 @Composable
-private fun ActivityItemContextViewContent(
-    item: HomeActivityItem,
-    state: ActivityItemContextState,
+private fun WatchlistItemContextViewContent(
+    item: Movie,
+    state: WatchlistItemContextState,
     modifier: Modifier = Modifier,
-    onRemoveWatchedClick: () -> Unit = {},
+    onAddWatched: () -> Unit = {},
+    onRemoveWatchlist: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
         modifier = modifier,
     ) {
         Row(
-            verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = spacedBy(12.dp),
         ) {
-            HorizontalMediaCard(
+            VerticalMediaCard(
                 title = "",
                 corner = 12.dp,
-                width = TraktTheme.size.horizontalSmallMediaCardSize,
-                containerImageUrl =
-                    item.images?.getScreenshotUrl()
-                        ?: item.images?.getFanartUrl(),
+                width = TraktTheme.size.verticalSmallMediaCardSize,
+                imageUrl = item.images?.getPosterUrl(),
                 modifier = Modifier.shadow(
                     elevation = 2.dp,
                     shape = RoundedCornerShape(12.dp),
@@ -135,10 +132,7 @@ private fun ActivityItemContextViewContent(
                 )
 
                 Text(
-                    text = when (item) {
-                        is EpisodeItem -> item.episode.seasonEpisodeString()
-                        is MovieItem -> stringResource(R.string.translated_value_type_movie)
-                    },
+                    text = stringResource(R.string.translated_value_type_movie),
                     style = TraktTheme.typography.cardSubtitle.copy(fontSize = 13.sp),
                     color = TraktTheme.colors.textSecondary,
                     maxLines = 1,
@@ -161,32 +155,32 @@ private fun ActivityItemContextViewContent(
                 .padding(top = 10.dp),
         ) {
             GhostButton(
-                enabled = !state.loadingRemove.isLoading,
-                loading = state.loadingRemove.isLoading,
-                text = stringResource(R.string.button_text_remove_from_history),
-                onClick = onRemoveWatchedClick,
-                icon = painterResource(R.drawable.ic_trash),
-                iconSize = 24.dp,
+                enabled = !state.loadingWatched.isLoading,
+                loading = state.loadingWatched.isLoading,
+                text = stringResource(R.string.button_text_mark_as_watched),
+                iconSize = 20.dp,
+                iconSpace = 16.dp,
+                onClick = onAddWatched,
+                icon = painterResource(R.drawable.ic_check_round),
                 modifier = Modifier
                     .graphicsLayer {
-                        translationX = -6.dp.toPx()
+                        translationX = -3.dp.toPx()
                     },
             )
 
-//            if (item is MovieItem) {
-//                GhostButton(
-//                    enabled = !state.loadingRemove.isLoading,
-//                    text = stringResource(R.string.button_text_watchlist),
-//                    onClick = onRemoveWatchedClick,
-//                    icon = painterResource(R.drawable.ic_plus_round),
-//                    iconSpace = 12.dp,
-//                    iconSize = 20.dp,
-//                    modifier = Modifier
-//                        .graphicsLayer {
-//                            translationX = -5.dp.toPx()
-//                        },
-//                )
-//            }
+            GhostButton(
+                enabled = !state.loadingWatchlist.isLoading,
+                loading = state.loadingWatchlist.isLoading,
+                text = stringResource(R.string.button_text_watchlist),
+                onClick = onRemoveWatchlist,
+                iconSize = 22.dp,
+                iconSpace = 16.dp,
+                icon = painterResource(R.drawable.ic_minus),
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationX = -5.dp.toPx()
+                    },
+            )
         }
     }
 }
@@ -204,43 +198,9 @@ private fun Preview() {
             ColorImage(Color.Blue.toArgb())
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            ActivityItemContextViewContent(
-                state = ActivityItemContextState(),
-                item = EpisodeItem(
-                    id = 1L,
-                    user = PreviewData.user1,
-                    activity = "watched",
-                    activityAt = Instant.now(),
-                    episode = PreviewData.episode1,
-                    show = PreviewData.show1,
-                ),
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalCoilApi::class)
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
-@Composable
-private fun Preview2() {
-    TraktTheme {
-        val previewHandler = AsyncImagePreviewHandler {
-            ColorImage(Color.Blue.toArgb())
-        }
-        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            ActivityItemContextViewContent(
-                state = ActivityItemContextState(),
-                item = MovieItem(
-                    id = 1L,
-                    user = PreviewData.user1,
-                    activity = "watched",
-                    activityAt = Instant.now(),
-                    movie = PreviewData.movie1,
-                ),
+            WatchlistItemContextViewContent(
+                state = WatchlistItemContextState(),
+                item = PreviewData.movie1,
             )
         }
     }

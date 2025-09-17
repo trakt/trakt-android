@@ -10,7 +10,7 @@ internal interface HomeWatchlistLocalDataSource {
 
     suspend fun getItems(): List<WatchlistMovie>
 
-    suspend fun deleteItems(ids: Set<TraktId>)
+    suspend fun removeItems(ids: Set<TraktId>)
 
     fun observeUpdated(): Flow<Instant?>
 

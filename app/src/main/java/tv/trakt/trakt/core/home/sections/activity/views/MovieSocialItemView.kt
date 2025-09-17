@@ -34,7 +34,7 @@ internal fun MovieSocialItemView(
     item: HomeActivityItem.MovieItem,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
-    onLongClick: () -> Unit = {},
+    onLongClick: (() -> Unit)? = null,
 ) {
     HorizontalMediaCard(
         title = "",

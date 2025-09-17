@@ -1,6 +1,8 @@
 package tv.trakt.trakt.ui.components.mediacards
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +18,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults.cardColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -59,6 +62,7 @@ internal fun VerticalMediaCard(
     corner: Dp = 12.dp,
     chipContent: @Composable () -> Unit = {},
     onClick: () -> Unit = {},
+    onLongClick: () -> Unit = {},
 ) {
     val cardWidth = when {
         width != Dp.Unspecified -> width
@@ -73,7 +77,6 @@ internal fun VerticalMediaCard(
             .widthIn(max = cardWidth),
     ) {
         Card(
-            onClick = onClick,
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(VerticalImageAspectRatio),
@@ -83,7 +86,14 @@ internal fun VerticalMediaCard(
             ),
             content = {
                 Box(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .combinedClickable(
+                            onClick = onClick,
+                            onLongClick = onLongClick,
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = ripple(),
+                        ),
                 ) {
                     if (imageUrl != null && !isError) {
                         AsyncImage(

@@ -12,6 +12,8 @@ internal interface MoviesSyncRemoteDataSource {
 
     suspend fun removeSingleFromHistory(playId: Long)
 
+    suspend fun removeFromWatchlist(movieId: TraktId)
+
     suspend fun getWatchlist(
         sort: String = "rank",
         page: Int? = null,

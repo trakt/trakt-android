@@ -8,7 +8,7 @@ internal interface ListsWatchlistLocalDataSource {
 
     suspend fun getItems(): List<WatchlistItem>
 
-    suspend fun deleteItems(ids: Set<TraktId>)
+    suspend fun removeItems(ids: Set<TraktId>)
 
     fun clear()
 }

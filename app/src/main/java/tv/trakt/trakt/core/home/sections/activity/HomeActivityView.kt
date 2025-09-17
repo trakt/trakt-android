@@ -176,6 +176,7 @@ internal fun HomeActivityContent(
                         else -> {
                             ContentList(
                                 listItems = (state.items ?: emptyList()).toImmutableList(),
+                                listFilter = state.filter,
                                 contentPadding = contentPadding,
                                 onEpisodeClick = onEpisodeClick,
                                 onEpisodeLongClick = onEpisodeLongClick,
@@ -240,6 +241,7 @@ private fun ContentLoadingList(
 private fun ContentList(
     listItems: ImmutableList<HomeActivityItem>,
     listState: LazyListState = rememberLazyListState(),
+    listFilter: HomeActivityFilter?,
     contentPadding: PaddingValues,
     onEpisodeClick: (HomeActivityItem.EpisodeItem) -> Unit,
     onEpisodeLongClick: (HomeActivityItem.EpisodeItem) -> Unit,
@@ -270,7 +272,12 @@ private fun ContentList(
                     MovieSocialItemView(
                         item = item,
                         onClick = {},
-                        onLongClick = { onMovieLongClick(item) },
+                        onLongClick = when (listFilter) {
+                            PERSONAL -> {
+                                { onMovieLongClick(item) }
+                            }
+                            else -> null
+                        },
                         modifier = Modifier
                             .animateItem(
                                 fadeInSpec = null,
@@ -281,7 +288,12 @@ private fun ContentList(
                     EpisodeSocialItemView(
                         item = item,
                         onClick = { onEpisodeClick(item) },
-                        onLongClick = { onEpisodeLongClick(item) },
+                        onLongClick = when (listFilter) {
+                            PERSONAL -> {
+                                { onEpisodeLongClick(item) }
+                            }
+                            else -> null
+                        },
                         modifier = Modifier
                             .animateItem(
                                 fadeInSpec = null,

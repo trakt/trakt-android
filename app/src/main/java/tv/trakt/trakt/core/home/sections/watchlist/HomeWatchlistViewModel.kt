@@ -60,7 +60,7 @@ internal class HomeWatchlistViewModel(
         }
     }
 
-    private fun loadData() {
+    fun loadData(ignoreErrors: Boolean = false) {
         viewModelScope.launch {
             if (loadEmptyIfNeeded()) {
                 return@launch
@@ -82,7 +82,9 @@ internal class HomeWatchlistViewModel(
                 loadedAt = nowUtcInstant()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.update { error }
+                    if (!ignoreErrors) {
+                        errorState.update { error }
+                    }
                     Timber.d(error, "Failed to load data")
                 }
             } finally {

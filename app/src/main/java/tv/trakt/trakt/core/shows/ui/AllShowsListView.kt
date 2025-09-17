@@ -120,7 +120,7 @@ private fun LazyGridScope.gridItems(items: ImmutableList<Show>) {
             containerImageUrl = item.images?.getFanartUrl(THUMB),
             cardContent = {
                 Row(
-                    horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpacing),
+                    horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpace),
                 ) {
                     item.released?.let {
                         InfoChip(

@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package tv.trakt.trakt.core.home.sections.watchlist
 
 import androidx.compose.animation.Crossfade
@@ -15,13 +17,15 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -47,6 +51,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.home.sections.watchlist.model.WatchlistMovie
+import tv.trakt.trakt.core.home.sections.watchlist.sheets.HomeWatchlistItemSheet
 import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
@@ -61,10 +66,12 @@ internal fun HomeWatchlistView(
     viewModel: HomeWatchlistViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
-    onMoviesClick: () -> Unit,
+    onMovieClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val haptic = LocalHapticFeedback.current
+
+    var contextSheet by remember { mutableStateOf<Movie?>(null) }
 
     LaunchedEffect(state.info) {
         if (state.info != null) {
@@ -78,8 +85,22 @@ internal fun HomeWatchlistView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        onMoviesClick = onMoviesClick,
+        onClick = onMovieClick,
+        onLongClick = {
+            contextSheet = it
+        },
         onCheckClick = {
+            viewModel.addToHistory(it.ids.trakt)
+        },
+    )
+
+    HomeWatchlistItemSheet(
+        sheetItem = contextSheet,
+        onDismiss = { contextSheet = null },
+        onRemoveWatchlist = {
+            viewModel.loadData(ignoreErrors = true)
+        },
+        onAddWatched = {
             viewModel.addToHistory(it.ids.trakt)
         },
     )
@@ -91,7 +112,8 @@ internal fun HomeWatchlistContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onMoviesClick: () -> Unit = {},
+    onClick: () -> Unit = {},
+    onLongClick: (Movie) -> Unit = {},
     onCheckClick: (Movie) -> Unit = {},
 ) {
     Column(
@@ -151,7 +173,7 @@ internal fun HomeWatchlistContent(
                                 buttonText = stringResource(R.string.button_text_browse_movies),
                                 backgroundImageUrl = imageUrl,
                                 backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
-                                onClick = onMoviesClick,
+                                onClick = onClick,
                                 height = (226.25).dp,
                                 modifier = Modifier
                                     .padding(contentPadding),
@@ -161,6 +183,7 @@ internal fun HomeWatchlistContent(
                             ContentList(
                                 listItems = (state.items ?: emptyList()).toImmutableList(),
                                 contentPadding = contentPadding,
+                                onLongClick = onLongClick,
                                 onCheckClick = onCheckClick,
                             )
                         }
@@ -194,18 +217,9 @@ private fun ContentList(
     listItems: ImmutableList<WatchlistMovie>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
+    onLongClick: (Movie) -> Unit,
     onCheckClick: (Movie) -> Unit,
 ) {
-    val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
-
-//    LaunchedEffect(listItems) {
-//        val hashCode = listItems.hashCode()
-//        if (currentList.intValue != hashCode) {
-//            currentList.intValue = hashCode
-//            listState.animateScrollToItem(0)
-//        }
-//    }
-
     LazyRow(
         state = listState,
         modifier = Modifier.fillMaxWidth(),
@@ -219,6 +233,7 @@ private fun ContentList(
             ContentListItem(
                 item = item,
                 onClick = {},
+                onLongClick = { onLongClick(item.movie) },
                 onCheckClick = { onCheckClick(item.movie) },
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
@@ -234,12 +249,14 @@ private fun ContentListItem(
     item: WatchlistMovie,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
+    onLongClick: () -> Unit = {},
     onCheckClick: () -> Unit = {},
 ) {
     VerticalMediaCard(
         title = item.movie.title,
         imageUrl = item.movie.images?.getPosterUrl(),
         onClick = onClick,
+        onLongClick = onLongClick,
         chipContent = {
             Row(
                 verticalAlignment = CenterVertically,
@@ -247,7 +264,7 @@ private fun ContentListItem(
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Row(
-                    horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpacing),
+                    horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpace),
                     modifier = Modifier.weight(1F, fill = false),
                 ) {
                     InfoChip(

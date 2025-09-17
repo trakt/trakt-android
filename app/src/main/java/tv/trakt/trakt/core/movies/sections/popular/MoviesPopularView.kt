@@ -193,7 +193,7 @@ private fun ContentListItem(
         onClick = onClick,
         chipContent = {
             Row(
-                horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpacing),
+                horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpace),
             ) {
                 item.released?.let {
                     InfoChip(text = it.year.toString())

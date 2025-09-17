@@ -127,7 +127,7 @@ private fun HomeScreenContent(
                 HomeWatchlistView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
-                    onMoviesClick = onMoviesClick,
+                    onMovieClick = onMoviesClick,
                 )
             }
 

@@ -38,6 +38,7 @@ import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocal
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistStorage
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddWatchlistHistoryUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetWatchlistMoviesUseCase
+import tv.trakt.trakt.core.home.sections.watchlist.views.WatchlistItemContextViewModel
 import tv.trakt.trakt.core.lists.di.LISTS_MOVIES_WATCHLIST_STORAGE
 import tv.trakt.trakt.core.lists.di.LISTS_WATCHLIST_STORAGE
 
@@ -166,6 +167,15 @@ internal val homeModule = module {
         ActivityItemContextViewModel(
             updateMovieHistoryUseCase = get(),
             activityLocalSource = get(),
+        )
+    }
+
+    viewModel {
+        WatchlistItemContextViewModel(
+            updateMovieWatchlistUseCase = get(),
+            homeWatchlistLocalSource = get(),
+            listsWatchlistLocalSource = get(named(LISTS_WATCHLIST_STORAGE)),
+            listsWatchlistMoviesLocalSource = get(named(LISTS_MOVIES_WATCHLIST_STORAGE)),
         )
     }
 }

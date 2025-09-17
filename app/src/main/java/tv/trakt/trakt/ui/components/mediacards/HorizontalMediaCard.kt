@@ -68,8 +68,8 @@ internal fun HorizontalMediaCard(
     paletteColor: Color? = null,
     width: Dp = TraktTheme.size.horizontalMediaCardSize,
     corner: Dp = 12.dp,
-    onClick: () -> Unit = {},
-    onLongClick: () -> Unit = {},
+    onClick: (() -> Unit)? = null,
+    onLongClick: (() -> Unit)? = null,
     footerContent: @Composable (() -> Unit)? = null,
     cardContent: @Composable (() -> Unit)? = null,
     cardTopContent: @Composable (() -> Unit)? = null,
@@ -95,7 +95,7 @@ internal fun HorizontalMediaCard(
                     modifier = Modifier
                         .fillMaxSize()
                         .combinedClickable(
-                            onClick = onClick,
+                            onClick = onClick ?: {},
                             onLongClick = onLongClick,
                             interactionSource = remember { MutableInteractionSource() },
                             indication = ripple(),

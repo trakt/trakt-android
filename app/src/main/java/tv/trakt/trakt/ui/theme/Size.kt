@@ -14,6 +14,7 @@ internal val Size: TraktSize = TraktSize(
     navigationBarHeight = 80.dp,
     navigationHeaderHeight = 64.dp,
     verticalMediaCardSize = 130.dp,
+    verticalSmallMediaCardSize = 72.dp,
     horizontalMediaCardSize = 200.dp,
     horizontalSmallMediaCardSize = 128.dp,
 )
@@ -26,4 +27,5 @@ internal data class TraktSize(
     val horizontalMediaCardSize: Dp = Dp.Unspecified,
     val horizontalSmallMediaCardSize: Dp = Dp.Unspecified,
     val verticalMediaCardSize: Dp = Dp.Unspecified,
+    val verticalSmallMediaCardSize: Dp = Dp.Unspecified,
 )
