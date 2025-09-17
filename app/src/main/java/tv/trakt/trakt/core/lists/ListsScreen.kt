@@ -1,5 +1,9 @@
 package tv.trakt.trakt.core.lists
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -217,8 +221,12 @@ private fun ListsScreenContent(
                 )
             }
 
-            if (state.lists.isNullOrEmpty() && state.listsLoading == DONE) {
-                item(key = "empty") {
+            item(key = "empty") {
+                AnimatedVisibility(
+                    visible = state.lists.isNullOrEmpty() && state.listsLoading == DONE,
+                    enter = fadeIn(tween()),
+                    exit = fadeOut(tween()),
+                ) {
                     ContentEmptyView(
                         authenticated = state.user.user != null,
                         modifier = Modifier.padding(sectionPadding),
