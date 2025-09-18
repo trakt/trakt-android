@@ -12,10 +12,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -28,11 +32,13 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.movies.ui.AllMoviesListView
+import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.theme.TraktTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun AllMoviesRecommendedScreen(
     viewModel: AllMoviesRecommendedViewModel,
@@ -40,9 +46,21 @@ internal fun AllMoviesRecommendedScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    var contextSheet by remember { mutableStateOf<Movie?>(null) }
+
     AllMoviesRecommendedScreenContent(
         state = state,
+        onItemLongClick = {
+            if (!state.loading.isLoading) {
+                contextSheet = it
+            }
+        },
         onBackClick = onNavigateBack,
+    )
+
+    MovieContextSheet(
+        movie = contextSheet,
+        onDismiss = { contextSheet = null },
     )
 }
 
@@ -50,6 +68,7 @@ internal fun AllMoviesRecommendedScreen(
 private fun AllMoviesRecommendedScreenContent(
     state: AllMoviesRecommendedState,
     modifier: Modifier = Modifier,
+    onItemLongClick: (Movie) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
@@ -81,6 +100,7 @@ private fun AllMoviesRecommendedScreenContent(
                         .onClick(onBackClick),
                 )
             },
+            onItemLongClick = onItemLongClick,
             onTopOfList = {
                 headerState.resetScrolled()
             },

@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 
 package tv.trakt.trakt.core.movies.sections.popular.all
 
@@ -12,10 +12,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -29,6 +33,7 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.movies.ui.AllMoviesListView
+import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
@@ -41,12 +46,24 @@ internal fun AllMoviesPopularScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    var contextSheet by remember { mutableStateOf<Movie?>(null) }
+
     AllMoviesPopularScreenContent(
         state = state,
+        onItemLongClick = {
+            if (!state.loading.isLoading) {
+                contextSheet = it
+            }
+        },
         onBackClick = onNavigateBack,
         onLoadMoreData = {
             viewModel.loadMoreData()
         },
+    )
+
+    MovieContextSheet(
+        movie = contextSheet,
+        onDismiss = { contextSheet = null },
     )
 }
 
@@ -55,6 +72,7 @@ private fun AllMoviesPopularScreenContent(
     state: AllMoviesPopularState,
     modifier: Modifier = Modifier,
     onLoadMoreData: () -> Unit = {},
+    onItemLongClick: (Movie) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
@@ -87,6 +105,7 @@ private fun AllMoviesPopularScreenContent(
                         .onClick(onBackClick),
                 )
             },
+            onItemLongClick = onItemLongClick,
             onTopOfList = {
                 headerState.resetScrolled()
             },

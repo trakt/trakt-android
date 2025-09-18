@@ -3,6 +3,8 @@ package tv.trakt.trakt.core.movies.ui
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -28,6 +30,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -77,6 +80,7 @@ internal fun AllMoviesListView(
     modifier: Modifier = Modifier,
     title: @Composable (() -> Unit)? = null,
     loading: Boolean = false,
+    onItemLongClick: (Movie) -> Unit = {},
     onTopOfList: () -> Unit = {},
     onEndOfList: () -> Unit = {},
 ) {
@@ -126,7 +130,10 @@ internal fun AllMoviesListView(
             item { title() }
         }
 
-        listItems(items)
+        listItems(
+            items = items,
+            onLongClick = onItemLongClick,
+        )
 
         if (loading) {
             item {
@@ -139,7 +146,10 @@ internal fun AllMoviesListView(
     }
 }
 
-private fun LazyListScope.listItems(items: ImmutableList<Movie>) {
+private fun LazyListScope.listItems(
+    items: ImmutableList<Movie>,
+    onLongClick: ((Movie) -> Unit)? = null,
+) {
     items(
         items = items,
         key = { it.ids.trakt.value },
@@ -155,7 +165,18 @@ private fun LazyListScope.listItems(items: ImmutableList<Movie>) {
                 .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
                 .clip(RoundedCornerShape(12.dp))
                 .background(TraktTheme.colors.listItemContainer)
-                .height(TraktTheme.size.verticalMediumMediaCardSize / VerticalImageAspectRatio),
+                .height(TraktTheme.size.verticalMediumMediaCardSize / VerticalImageAspectRatio)
+                .combinedClickable(
+                    onClick = {},
+                    onLongClick = when {
+                        onLongClick != null -> {
+                            { onLongClick(item) }
+                        }
+                        else -> null
+                    },
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = ripple(),
+                ),
         ) {
             if (!item.images?.getPosterUrl().isNullOrBlank() && !isPosterError) {
                 AsyncImage(
