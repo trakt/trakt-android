@@ -10,8 +10,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,7 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.core.shows.ui.AllShowsListView
+import tv.trakt.trakt.core.shows.ui.AllShowsListView2
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -55,7 +55,7 @@ private fun AllShowsTrendingScreenContent(
     onLoadMoreData: () -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
-    val gridState = rememberLazyGridState(
+    val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
             aheadFraction = 0.5F,
             behindFraction = 0.5F,
@@ -69,10 +69,10 @@ private fun AllShowsTrendingScreenContent(
     ) {
         ScrollableBackdropImage(
             imageUrl = state.backgroundUrl,
-            scrollState = gridState,
+            scrollState = listState,
         )
 
-        AllShowsListView(
+        AllShowsListView2(
             title = {
                 TitleBar(
                     modifier = Modifier
@@ -80,13 +80,29 @@ private fun AllShowsTrendingScreenContent(
                         .onClick(onBackClick),
                 )
             },
-            state = gridState,
+            state = listState,
             loading = state.loadingMore.isLoading || state.loading.isLoading,
             items = state.items ?: emptyList<Show>().toImmutableList(),
             onEndOfList = {
                 onLoadMoreData()
             },
         )
+
+//        AllShowsListView(
+//            title = {
+//                TitleBar(
+//                    modifier = Modifier
+//                        .padding(bottom = 2.dp)
+//                        .onClick(onBackClick),
+//                )
+//            },
+//            state = listState,
+//            loading = state.loadingMore.isLoading || state.loading.isLoading,
+//            items = state.items ?: emptyList<Show>().toImmutableList(),
+//            onEndOfList = {
+//                onLoadMoreData()
+//            },
+//        )
     }
 }
 

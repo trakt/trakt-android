@@ -97,7 +97,7 @@ internal fun AllShowsListView(
             title()
         }
 
-        gridItems(items)
+        listItems(items)
 
         if (loading) {
             items(count = 2) { index ->
@@ -113,7 +113,7 @@ internal fun AllShowsListView(
     }
 }
 
-private fun LazyGridScope.gridItems(items: ImmutableList<Show>) {
+private fun LazyGridScope.listItems(items: ImmutableList<Show>) {
     items(
         items = items,
         key = { it.ids.trakt.value },

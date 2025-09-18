@@ -6,6 +6,7 @@ import androidx.compose.ui.unit.dp
 
 internal val Spacing: TraktSpacing = TraktSpacing(
     mainRowSpace = 10.dp,
+    mainListVerticalSpace = 16.dp,
     mainGridHorizontalSpace = 10.dp,
     mainGridVerticalSpace = 14.dp,
     mainRowHeaderSpace = 14.dp,
@@ -19,6 +20,7 @@ internal val Spacing: TraktSpacing = TraktSpacing(
 
 @Immutable
 internal data class TraktSpacing(
+    val mainListVerticalSpace: Dp = Dp.Unspecified,
     val mainGridHorizontalSpace: Dp = Dp.Unspecified,
     val mainGridVerticalSpace: Dp = Dp.Unspecified,
     val mainRowSpace: Dp = Dp.Unspecified,

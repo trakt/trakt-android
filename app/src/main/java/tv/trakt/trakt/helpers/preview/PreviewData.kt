@@ -31,6 +31,7 @@ internal object PreviewData {
             imdb = ImdbId("tt1234562"),
         ),
         title = "Show Title",
+        titleOriginal = "Original Show Title",
         overview = "This is a sample movie overview that provides a brief description of the movie's plot " +
             "and main themes. It is intended to give viewers an idea of what to expect without revealing too much.",
         year = 2024,
@@ -56,6 +57,7 @@ internal object PreviewData {
 
     val show2 = show1.copy(
         ids = show1.ids.copy(trakt = TraktId(2)),
+        titleOriginal = null
     )
 
     val movie1 = Movie(

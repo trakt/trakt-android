@@ -22,6 +22,7 @@ import kotlin.time.Duration.Companion.minutes
 data class Show(
     val ids: Ids,
     val title: String,
+    val titleOriginal: String?,
     val overview: String?,
     @Serializable(ZonedDateTimeSerializer::class)
     val released: ZonedDateTime?,
@@ -42,6 +43,7 @@ fun Companion.fromDto(dto: ShowDto): Show {
     return Show(
         ids = Ids.fromDto(dto.ids),
         title = dto.title,
+        titleOriginal = dto.originalTitle,
         overview = dto.overview,
         year = dto.year,
         released = dto.firstAired?.toZonedDateTime(),
@@ -69,6 +71,7 @@ fun Companion.fromDto(dto: RecommendedShowDto): Show {
     return Show(
         ids = Ids.fromDto(dto.ids),
         title = dto.title,
+        titleOriginal = dto.originalTitle,
         overview = dto.overview,
         year = dto.year,
         released = dto.firstAired?.toZonedDateTime(),
@@ -96,6 +99,7 @@ fun Companion.fromDto(dto: ShowLikesDto): Show {
     return Show(
         ids = Ids.fromDto(dto.ids),
         title = dto.title,
+        titleOriginal = dto.originalTitle,
         overview = dto.overview,
         year = dto.year,
         released = dto.firstAired?.toZonedDateTime(),
