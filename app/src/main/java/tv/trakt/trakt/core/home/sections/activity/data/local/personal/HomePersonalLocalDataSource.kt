@@ -7,14 +7,14 @@ import java.time.Instant
 internal interface HomePersonalLocalDataSource {
     suspend fun addItems(
         items: List<HomeActivityItem>,
-        ignoreUpdate: Boolean,
+        notify: Boolean,
     )
 
     suspend fun getItems(): List<HomeActivityItem>
 
     suspend fun removeItems(
         ids: Set<Long>,
-        ignoreUpdate: Boolean,
+        notify: Boolean,
     )
 
     fun observeUpdates(): Flow<Instant?>

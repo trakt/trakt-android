@@ -21,14 +21,14 @@ internal class HomePersonalStorage : HomePersonalLocalDataSource {
 
     override suspend fun addItems(
         items: List<HomeActivityItem>,
-        ignoreUpdate: Boolean,
+        notify: Boolean,
     ) {
         mutex.withLock {
             with(storage) {
                 clear()
                 putAll(items.associateBy { it.id })
             }
-            if (!ignoreUpdate) {
+            if (notify) {
                 updatedAt.tryEmit(nowUtcInstant())
             }
         }
@@ -42,13 +42,13 @@ internal class HomePersonalStorage : HomePersonalLocalDataSource {
 
     override suspend fun removeItems(
         ids: Set<Long>,
-        ignoreUpdate: Boolean,
+        notify: Boolean,
     ) {
         mutex.withLock {
             ids.forEach {
                 storage.remove(it)
             }
-            if (!ignoreUpdate) {
+            if (notify) {
                 updatedAt.tryEmit(nowUtcInstant())
             }
         }

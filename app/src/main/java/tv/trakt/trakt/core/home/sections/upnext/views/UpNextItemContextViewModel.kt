@@ -37,7 +37,7 @@ internal class UpNextItemContextViewModel(
                 updateShowHistoryUseCase.dropShow(showId)
                 upNextLocalDataSource.removeItems(
                     showIds = listOf(showId),
-                    ignoreUpdate = false,
+                    notify = true,
                 )
             } catch (error: Exception) {
                 error.rethrowCancellation {

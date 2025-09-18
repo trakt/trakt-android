@@ -102,9 +102,7 @@ internal class HomeUpNextViewModel(
 
                 itemsState.update {
                     ItemsState(
-                        items = getUpNextUseCase.getUpNext(
-                            ignoreUpdate = true,
-                        ),
+                        items = getUpNextUseCase.getUpNext(notify = false),
                         resetScroll = resetScroll,
                     )
                 }
@@ -160,7 +158,7 @@ internal class HomeUpNextViewModel(
                 updateHistoryUseCase.addToHistory(episodeId)
                 itemsState.update {
                     val items = getUpNextUseCase.getUpNext(
-                        ignoreUpdate = false,
+                        notify = true,
                     )
                     ItemsState(
                         items = itemsOrder?.let { order ->

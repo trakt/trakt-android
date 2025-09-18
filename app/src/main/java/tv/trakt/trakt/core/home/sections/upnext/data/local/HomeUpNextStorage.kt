@@ -22,14 +22,14 @@ internal class HomeUpNextStorage : HomeUpNextLocalDataSource {
 
     override suspend fun addItems(
         items: List<ProgressShow>,
-        ignoreUpdate: Boolean,
+        notify: Boolean,
     ) {
         mutex.withLock {
             with(storage) {
                 clear()
                 putAll(items.associateBy { it.show.ids.trakt })
             }
-            if (!ignoreUpdate) {
+            if (notify) {
                 updatedAt.tryEmit(nowUtcInstant())
             }
         }
@@ -37,13 +37,13 @@ internal class HomeUpNextStorage : HomeUpNextLocalDataSource {
 
     override suspend fun removeItems(
         showIds: List<TraktId>,
-        ignoreUpdate: Boolean,
+        notify: Boolean,
     ) {
         mutex.withLock {
             showIds.forEach { id ->
                 storage.remove(id)
             }
-            if (!ignoreUpdate) {
+            if (notify) {
                 updatedAt.tryEmit(nowUtcInstant())
             }
         }

@@ -39,7 +39,7 @@ internal class ActivityItemContextViewModel(
                 )
                 activityLocalSource.removeItems(
                     ids = setOf(playId),
-                    ignoreUpdate = false,
+                    notify = true,
                 )
             } catch (error: Exception) {
                 error.rethrowCancellation {
