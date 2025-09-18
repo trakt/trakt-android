@@ -27,7 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.core.shows.ui.AllShowsListView2
+import tv.trakt.trakt.core.shows.ui.AllShowsListView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -72,7 +72,7 @@ private fun AllShowsTrendingScreenContent(
             scrollState = listState,
         )
 
-        AllShowsListView2(
+        AllShowsListView(
             title = {
                 TitleBar(
                     modifier = Modifier

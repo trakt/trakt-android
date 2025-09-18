@@ -10,8 +10,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -51,7 +51,7 @@ private fun AllShowsRecommendedScreenContent(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
 ) {
-    val gridState = rememberLazyGridState(
+    val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
             aheadFraction = 0.5F,
             behindFraction = 0.5F,
@@ -65,7 +65,7 @@ private fun AllShowsRecommendedScreenContent(
     ) {
         ScrollableBackdropImage(
             imageUrl = state.backgroundUrl,
-            scrollState = gridState,
+            scrollState = listState,
         )
 
         AllShowsListView(
@@ -76,7 +76,7 @@ private fun AllShowsRecommendedScreenContent(
                         .onClick(onBackClick),
                 )
             },
-            state = gridState,
+            state = listState,
             loading = state.loading.isLoading,
             items = state.items ?: emptyList<Show>().toImmutableList(),
             onEndOfList = {
