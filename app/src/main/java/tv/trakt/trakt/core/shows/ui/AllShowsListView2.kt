@@ -28,7 +28,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -164,13 +166,15 @@ private fun LazyListScope.listItems(items: ImmutableList<Show>) {
                     ),
             )
 
+            var isContainerError by remember { mutableStateOf(false) }
+
             Box {
-                if (!item.images?.getFanartUrl().isNullOrBlank()) {
+                if (!item.images?.getFanartUrl().isNullOrBlank() && !isContainerError) {
                     val inspection = LocalInspectionMode.current
                     val gradientColor = TraktTheme.colors.listItemContainer
                     val gradientColor2 = when {
                         inspection -> Purple500
-                        else -> gradientColor.copy(alpha = 0.55F)
+                        else -> gradientColor.copy(alpha = 0F)
                     }
 
                     AsyncImage(
@@ -180,9 +184,9 @@ private fun LazyListScope.listItems(items: ImmutableList<Show>) {
                             .build(),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
-//                        onError = { isContainerError = true },
+                        onError = { isContainerError = true },
                         modifier = Modifier
-                            .padding(start = TraktTheme.size.verticalMediumMediaCardSize / 2)
+                            .padding(start = TraktTheme.size.verticalMediumMediaCardSize)
                             .fillMaxSize()
                             .drawWithContent {
                                 drawContent()
@@ -192,29 +196,13 @@ private fun LazyListScope.listItems(items: ImmutableList<Show>) {
                                             gradientColor,
                                             gradientColor2,
                                         ),
-                                        start = Offset(size.width / 1.25F, size.height),
-                                        end = Offset(size.width * 1.1F, 0F),
+                                        start = Offset(size.width / 1.66F, size.height),
+                                        end = Offset(size.width * 1.655F, -size.height),
                                     ),
                                     size = size,
                                 )
                             },
                     )
-
-//                    Box(
-//                        modifier = Modifier
-//                            .align(Alignment.Center)
-//                            .fillMaxSize()
-//                            .background(
-//                                brush = linearGradient(
-//                                    start = Offset(200f, Float.POSITIVE_INFINITY),
-//                                    end = Offset(Float.POSITIVE_INFINITY, 0f),
-//                                    colors = listOf(
-//                                        TraktTheme.colors.listItemContainer,
-//                                        Purple500,
-//                                    )
-//                                )
-//                            )
-//                    )
                 }
 
                 Column(
@@ -285,7 +273,7 @@ private fun LazyListScope.listItems(items: ImmutableList<Show>) {
 
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = spacedBy(2.dp),
+                            horizontalArrangement = spacedBy(3.dp),
                         ) {
                             val grayFilter = remember {
                                 ColorFilter.colorMatrix(
