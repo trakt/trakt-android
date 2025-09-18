@@ -57,7 +57,7 @@ internal object PreviewData {
 
     val show2 = show1.copy(
         ids = show1.ids.copy(trakt = TraktId(2)),
-        titleOriginal = null
+        titleOriginal = null,
     )
 
     val movie1 = Movie(

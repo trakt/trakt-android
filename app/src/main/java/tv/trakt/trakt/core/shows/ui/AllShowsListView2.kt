@@ -150,7 +150,7 @@ private fun LazyListScope.listItems(items: ImmutableList<Show>) {
                 .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
                 .clip(RoundedCornerShape(12.dp))
                 .background(TraktTheme.colors.listItemContainer)
-                .height(TraktTheme.size.verticalMediumMediaCardSize / VerticalImageAspectRatio)
+                .height(TraktTheme.size.verticalMediumMediaCardSize / VerticalImageAspectRatio),
         ) {
             VerticalMediaCard(
                 title = "",
@@ -193,9 +193,9 @@ private fun LazyListScope.listItems(items: ImmutableList<Show>) {
                                             gradientColor2,
                                         ),
                                         start = Offset(size.width / 1.25F, size.height),
-                                        end = Offset(size.width * 1.1F, 0F)
+                                        end = Offset(size.width * 1.1F, 0F),
                                     ),
-                                    size = size
+                                    size = size,
                                 )
                             },
                     )
@@ -223,7 +223,7 @@ private fun LazyListScope.listItems(items: ImmutableList<Show>) {
                         .padding(vertical = 12.dp)
                         .padding(start = 12.dp)
                         .padding(end = 16.dp)
-                        .fillMaxSize()
+                        .fillMaxSize(),
                 ) {
                     Column(
                         verticalArrangement = Arrangement.spacedBy(1.dp),
@@ -243,7 +243,7 @@ private fun LazyListScope.listItems(items: ImmutableList<Show>) {
                                 color = TraktTheme.colors.textPrimary,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
-                                modifier = Modifier.padding(bottom = 2.dp)
+                                modifier = Modifier.padding(bottom = 2.dp),
                             )
                         }
 
@@ -319,29 +319,32 @@ private fun LazyListScope.listItems(items: ImmutableList<Show>) {
     }
 }
 
-fun Modifier.gradientBackground(colors: List<Color>, angle: Float) = this.then(
+fun Modifier.gradientBackground(
+    colors: List<Color>,
+    angle: Float,
+) = this.then(
     Modifier.drawBehind {
         val angleRad = angle / 180f * PI
-        val x = cos(angleRad).toFloat() //Fractional x
-        val y = sin(angleRad).toFloat() //Fractional y
+        val x = cos(angleRad).toFloat() // Fractional x
+        val y = sin(angleRad).toFloat() // Fractional y
 
         val radius = sqrt(size.width.pow(2) + size.height.pow(2)) / 2f
         val offset = center + Offset(x * radius, y * radius)
 
         val exactOffset = Offset(
             x = min(offset.x.coerceAtLeast(0f), size.width),
-            y = size.height - min(offset.y.coerceAtLeast(0f), size.height)
+            y = size.height - min(offset.y.coerceAtLeast(0f), size.height),
         )
 
         drawRect(
             brush = linearGradient(
                 colors = colors,
                 start = Offset(size.width, size.height) - exactOffset,
-                end = exactOffset
+                end = exactOffset,
             ),
-            size = size
+            size = size,
         )
-    }
+    },
 )
 
 @Preview(
