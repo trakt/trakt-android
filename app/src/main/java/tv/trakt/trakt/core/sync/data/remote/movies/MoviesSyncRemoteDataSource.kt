@@ -11,5 +11,7 @@ internal interface MoviesSyncRemoteDataSource {
 
     suspend fun removeSingleFromHistory(playId: Long)
 
+    suspend fun addToWatchlist(movieId: TraktId)
+
     suspend fun removeFromWatchlist(movieId: TraktId)
 }

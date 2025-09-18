@@ -47,6 +47,40 @@ internal fun MovieContextSheet(
                     key = nextInt().toString(),
                     parameters = { parametersOf(movie) },
                 ),
+                onAddWatchlist = {
+                    sheetScope.run {
+                        launch { state.hide() }
+                            .invokeOnCompletion {
+                                if (!state.isVisible) {
+                                    onDismiss()
+                                }
+                            }
+                        launch {
+                            val job = sheetScope.launch {
+                                localSnack.showSnackbar(localContext.getString(R.string.text_info_watchlist_added))
+                            }
+                            delay(SNACK_DURATION_SHORT)
+                            job.cancel()
+                        }
+                    }
+                },
+                onRemoveWatchlist = {
+                    sheetScope.run {
+                        launch { state.hide() }
+                            .invokeOnCompletion {
+                                if (!state.isVisible) {
+                                    onDismiss()
+                                }
+                            }
+                        launch {
+                            val job = sheetScope.launch {
+                                localSnack.showSnackbar(localContext.getString(R.string.text_info_watchlist_removed))
+                            }
+                            delay(SNACK_DURATION_SHORT)
+                            job.cancel()
+                        }
+                    }
+                },
                 onError = {
                     sheetScope.run {
                         launch { state.hide() }

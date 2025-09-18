@@ -42,6 +42,24 @@ internal class MoviesSyncApiClient(
         syncApi.postSyncHistoryRemove(request)
     }
 
+    override suspend fun addToWatchlist(movieId: TraktId) {
+        val request = PostUsersListsListAddRequest(
+            movies = listOf(
+                PostUsersListsListAddRequestMoviesInner(
+                    ids = PostCheckinMovieRequestMovieIds(
+                        trakt = movieId.value,
+                        slug = null,
+                        imdb = null,
+                        tmdb = 0,
+                    ),
+                    title = "",
+                    year = 0,
+                ),
+            ),
+        )
+        syncApi.postSyncWatchlistAdd(request)
+    }
+
     override suspend fun removeFromWatchlist(movieId: TraktId) {
         val request = PostUsersListsListAddRequest(
             movies = listOf(

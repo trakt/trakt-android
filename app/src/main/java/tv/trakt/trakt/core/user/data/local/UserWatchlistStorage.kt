@@ -60,6 +60,42 @@ internal class UserWatchlistStorage : UserWatchlistLocalDataSource {
         }
     }
 
+    override suspend fun addMovies(
+        movies: List<WatchlistItem.MovieItem>,
+        notify: Boolean,
+    ) {
+        mutex.withLock {
+            if (moviesStorage == null) {
+                moviesStorage = mutableMapOf()
+            }
+            moviesStorage?.let { storage ->
+                storage.putAll(movies.associateBy { it.id })
+            }
+
+            if (notify) {
+                updatedAt.tryEmit(Instant.now())
+            }
+        }
+    }
+
+    override suspend fun addShows(
+        shows: List<WatchlistItem.ShowItem>,
+        notify: Boolean,
+    ) {
+        mutex.withLock {
+            if (showsStorage == null) {
+                showsStorage = mutableMapOf()
+            }
+            showsStorage?.let { storage ->
+                storage.putAll(shows.associateBy { it.id })
+            }
+
+            if (notify) {
+                updatedAt.tryEmit(Instant.now())
+            }
+        }
+    }
+
     override fun observeUpdates(): Flow<Instant?> {
         return updatedAt.asSharedFlow()
     }

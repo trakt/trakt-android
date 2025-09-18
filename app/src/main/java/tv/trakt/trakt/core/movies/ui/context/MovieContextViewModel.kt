@@ -10,15 +10,20 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
+import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.usecase.watchlist.LoadUserWatchlistUseCase
 
 internal class MovieContextViewModel(
     private val movie: Movie,
+    private val updateMovieWatchlistUseCase: UpdateMovieWatchlistUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
 ) : ViewModel() {
@@ -61,10 +66,65 @@ internal class MovieContextViewModel(
         }
     }
 
-    fun clear() {
-        isWatchlistState.update { false }
-        isWatchedState.update { false }
+    fun addToWatchlist() {
+        if (isLoading()) {
+            return
+        }
 
+        viewModelScope.launch {
+            clear()
+            try {
+                loadingWatchlistState.update { LOADING }
+
+                updateMovieWatchlistUseCase.addToWatchlist(movieId = movie.ids.trakt)
+                userWatchlistLocalSource.addMovies(
+                    listOf(
+                        WatchlistItem.MovieItem(
+                            rank = 0,
+                            movie = movie,
+                            listedAt = nowUtcInstant(),
+                        ),
+                    ),
+                )
+
+                isWatchlistState.update { true }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.w(error)
+                }
+            } finally {
+                loadingWatchlistState.update { DONE }
+            }
+        }
+    }
+
+    fun removeFromWatchlist() {
+        if (isLoading()) {
+            return
+        }
+
+        viewModelScope.launch {
+            clear()
+            try {
+                loadingWatchlistState.update { LOADING }
+
+                updateMovieWatchlistUseCase.removeFromWatchlist(movieId = movie.ids.trakt)
+                userWatchlistLocalSource.removeMovies(setOf(movie.ids.trakt))
+
+                isWatchlistState.update { false }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.w(error)
+                }
+            } finally {
+                loadingWatchlistState.update { DONE }
+            }
+        }
+    }
+
+    fun clear() {
         loadingWatchedState.update { IDLE }
         loadingWatchlistState.update { IDLE }
 

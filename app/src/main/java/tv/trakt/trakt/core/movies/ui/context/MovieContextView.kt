@@ -35,6 +35,7 @@ import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
+import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.helpers.preview.PreviewData
@@ -49,16 +50,20 @@ internal fun MovieContextView(
     movie: Movie,
     viewModel: MovieContextViewModel,
     modifier: Modifier = Modifier,
+    onAddWatchlist: (Movie) -> Unit,
+    onRemoveWatchlist: (Movie) -> Unit,
     onError: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    var confirmRemoveSheet by remember { mutableStateOf(false) }
+    var confirmRemoveWatchlistSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(state.loadingWatched, state.loadingWatchlist) {
         when {
-//            state.loadingWatched == DONE -> onAddWatched(item)
-//            state.loadingWatchlist == DONE -> onRemoveWatchlist()
+            state.loadingWatchlist == LoadingState.DONE -> when {
+                state.isWatchlist -> onAddWatchlist(movie)
+                else -> onRemoveWatchlist(movie)
+            }
         }
     }
 
@@ -72,22 +77,23 @@ internal fun MovieContextView(
         item = movie,
         state = state,
         modifier = modifier,
-        onAddWatched = {
-//            onAddWatched(item)
-        },
         onWatchlistClick = {
-            confirmRemoveSheet = true
+            if (state.isWatchlist) {
+                confirmRemoveWatchlistSheet = true
+            } else {
+                viewModel.addToWatchlist()
+            }
         },
     )
 
     @OptIn(ExperimentalMaterial3Api::class)
     ConfirmationSheet(
-        active = confirmRemoveSheet,
+        active = confirmRemoveWatchlistSheet,
         onYes = {
-            confirmRemoveSheet = false
-//            viewModel.removeFromWatchlist(item.ids.trakt)
+            confirmRemoveWatchlistSheet = false
+            viewModel.removeFromWatchlist()
         },
-        onNo = { confirmRemoveSheet = false },
+        onNo = { confirmRemoveWatchlistSheet = false },
         title = stringResource(R.string.button_text_watchlist),
         message = stringResource(
             R.string.warning_prompt_remove_from_watchlist,
@@ -101,7 +107,6 @@ private fun MovieContextViewContent(
     item: Movie,
     state: MovieContextState,
     modifier: Modifier = Modifier,
-    onAddWatched: () -> Unit = {},
     onWatchlistClick: () -> Unit = {},
 ) {
     Column(
@@ -153,52 +158,65 @@ private fun MovieContextViewContent(
                 .background(Shade910),
         )
 
-        Column(
-            verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
+        MovieActionButtons(
+            state = state,
+            onWatchlistClick = onWatchlistClick,
+        )
+    }
+}
+
+@Composable
+private fun MovieActionButtons(
+    state: MovieContextState,
+    onWatchlistClick: () -> Unit,
+) {
+    Column(
+        verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
+        modifier = Modifier
+            .padding(top = 10.dp),
+    ) {
+        val isLoadingOrDone =
+            state.loadingWatched.isLoading ||
+                state.loadingWatchlist.isLoading ||
+                state.loadingWatchlist.isDone ||
+                state.loadingWatched.isDone
+
+        GhostButton(
+            enabled = !isLoadingOrDone,
+            loading = state.loadingWatched.isLoading || state.loadingWatched.isDone,
+            text = when {
+                state.isWatched -> stringResource(R.string.button_text_remove_from_history)
+                else -> stringResource(R.string.button_text_mark_as_watched)
+            },
+            iconSize = 20.dp,
+            iconSpace = 16.dp,
+            onClick = {},
+            icon = when {
+                state.isWatched -> painterResource(R.drawable.ic_trash)
+                else -> painterResource(R.drawable.ic_check_round)
+            },
             modifier = Modifier
-                .padding(top = 10.dp),
-        ) {
-            val isLoading =
-                state.loadingWatched.isLoading ||
-                    state.loadingWatchlist.isLoading
+                .graphicsLayer {
+                    translationX = -3.dp.toPx()
+                },
+        )
 
-            GhostButton(
-                enabled = !isLoading,
-                loading = state.loadingWatched.isLoading,
-                text = when {
-                    state.isWatched -> stringResource(R.string.button_text_remove_from_history)
-                    else -> stringResource(R.string.button_text_mark_as_watched)
+        GhostButton(
+            enabled = !isLoadingOrDone,
+            loading = state.loadingWatchlist.isLoading || state.loadingWatchlist.isDone,
+            text = stringResource(R.string.button_text_watchlist),
+            onClick = onWatchlistClick,
+            iconSize = 22.dp,
+            iconSpace = 16.dp,
+            icon = when {
+                state.isWatchlist -> painterResource(R.drawable.ic_minus)
+                else -> painterResource(R.drawable.ic_plus)
+            },
+            modifier = Modifier
+                .graphicsLayer {
+                    translationX = -5.dp.toPx()
                 },
-                iconSize = 20.dp,
-                iconSpace = 16.dp,
-                onClick = onAddWatched,
-                icon = when {
-                    state.isWatched -> painterResource(R.drawable.ic_trash)
-                    else -> painterResource(R.drawable.ic_check_round)
-                },
-                modifier = Modifier
-                    .graphicsLayer {
-                        translationX = -3.dp.toPx()
-                    },
-            )
-
-            GhostButton(
-                enabled = !isLoading,
-                loading = state.loadingWatchlist.isLoading,
-                text = stringResource(R.string.button_text_watchlist),
-                onClick = onWatchlistClick,
-                iconSize = 22.dp,
-                iconSpace = 16.dp,
-                icon = when {
-                    state.isWatchlist -> painterResource(R.drawable.ic_minus)
-                    else -> painterResource(R.drawable.ic_plus)
-                },
-                modifier = Modifier
-                    .graphicsLayer {
-                        translationX = -5.dp.toPx()
-                    },
-            )
-        }
+        )
     }
 }
 

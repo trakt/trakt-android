@@ -16,6 +16,16 @@ internal interface UserWatchlistLocalDataSource {
         notify: Boolean = false,
     )
 
+    suspend fun addMovies(
+        movies: List<WatchlistItem.MovieItem>,
+        notify: Boolean = false,
+    )
+
+    suspend fun addShows(
+        shows: List<WatchlistItem.ShowItem>,
+        notify: Boolean = false,
+    )
+
     suspend fun containsMovie(id: TraktId): Boolean
 
     suspend fun containsShow(id: TraktId): Boolean
