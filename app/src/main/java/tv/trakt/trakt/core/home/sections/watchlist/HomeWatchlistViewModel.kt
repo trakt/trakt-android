@@ -21,9 +21,9 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.core.home.sections.watchlist.model.WatchlistMovie
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddWatchlistHistoryUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetWatchlistMoviesUseCase
+import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import java.time.Instant
 
 internal class HomeWatchlistViewModel(
@@ -96,7 +96,7 @@ internal class HomeWatchlistViewModel(
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {
             itemsState.update {
-                emptyList<WatchlistMovie>().toImmutableList()
+                emptyList<WatchlistItem.MovieItem>().toImmutableList()
             }
             loadingState.update { DONE }
             return true

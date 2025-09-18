@@ -13,20 +13,23 @@ import java.time.ZonedDateTime
 internal sealed class WatchlistItem(
     open val rank: Int,
     open val listedAt: Instant,
+    open val loading: Boolean,
 ) {
     @Immutable
     internal data class MovieItem(
         val movie: Movie,
         override val rank: Int,
         override val listedAt: Instant,
-    ) : WatchlistItem(rank, listedAt)
+        override val loading: Boolean = false,
+    ) : WatchlistItem(rank, listedAt, loading)
 
     @Immutable
     internal data class ShowItem(
         val show: Show,
         override val rank: Int,
         override val listedAt: Instant,
-    ) : WatchlistItem(rank, listedAt)
+        override val loading: Boolean = false,
+    ) : WatchlistItem(rank, listedAt, loading)
 
     val id: TraktId
         get() = when (this) {

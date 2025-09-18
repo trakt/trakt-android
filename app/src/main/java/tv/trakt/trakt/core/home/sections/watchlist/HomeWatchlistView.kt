@@ -50,9 +50,9 @@ import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.core.home.sections.watchlist.model.WatchlistMovie
 import tv.trakt.trakt.core.home.sections.watchlist.sheets.HomeWatchlistItemSheet
 import tv.trakt.trakt.core.home.views.HomeEmptyView
+import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -214,7 +214,7 @@ private fun ContentLoadingList(
 
 @Composable
 private fun ContentList(
-    listItems: ImmutableList<WatchlistMovie>,
+    listItems: ImmutableList<WatchlistItem.MovieItem>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
     onLongClick: (Movie) -> Unit,
@@ -246,7 +246,7 @@ private fun ContentList(
 
 @Composable
 private fun ContentListItem(
-    item: WatchlistMovie,
+    item: WatchlistItem.MovieItem,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
