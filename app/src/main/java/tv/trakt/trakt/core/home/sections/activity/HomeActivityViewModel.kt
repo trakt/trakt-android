@@ -32,14 +32,14 @@ import tv.trakt.trakt.core.home.sections.activity.usecases.GetActivityFilterUseC
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
-import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
+import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 
 internal class HomeActivityViewModel(
     private val getActivityFilterUseCase: GetActivityFilterUseCase,
     private val getSocialActivityUseCase: GetSocialActivityUseCase,
     private val getPersonalActivityUseCase: GetPersonalActivityUseCase,
     private val homeUpNextSource: HomeUpNextLocalDataSource,
-    private val homeWatchlistSource: HomeWatchlistLocalDataSource,
+    private val userWatchlistSource: UserWatchlistLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = HomeActivityState()
@@ -74,7 +74,7 @@ internal class HomeActivityViewModel(
     private fun observeHome() {
         merge(
             homeUpNextSource.observeUpdates(),
-            homeWatchlistSource.observeUpdates(),
+            userWatchlistSource.observeUpdates(),
         ).debounce(250)
             .onEach {
                 loadData(ignoreErrors = true)

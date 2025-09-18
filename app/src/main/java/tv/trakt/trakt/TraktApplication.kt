@@ -23,13 +23,13 @@ import tv.trakt.trakt.core.lists.di.listsModule
 import tv.trakt.trakt.core.movies.di.moviesDataModule
 import tv.trakt.trakt.core.movies.di.moviesModule
 import tv.trakt.trakt.core.people.di.peopleDataModule
-import tv.trakt.trakt.core.profile.di.profileDataModule
-import tv.trakt.trakt.core.profile.di.profileModule
 import tv.trakt.trakt.core.search.di.searchDataModule
 import tv.trakt.trakt.core.search.di.searchModule
 import tv.trakt.trakt.core.shows.di.showsDataModule
 import tv.trakt.trakt.core.shows.di.showsModule
 import tv.trakt.trakt.core.sync.di.syncModule
+import tv.trakt.trakt.core.user.di.profileDataModule
+import tv.trakt.trakt.core.user.di.profileModule
 import java.util.concurrent.TimeUnit.MINUTES
 
 internal class TraktApplication : Application() {

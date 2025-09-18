@@ -35,13 +35,9 @@ import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextStorage
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.home.sections.upnext.views.UpNextItemContextViewModel
 import tv.trakt.trakt.core.home.sections.watchlist.HomeWatchlistViewModel
-import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
-import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistStorage
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddWatchlistHistoryUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetWatchlistMoviesUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.views.WatchlistItemContextViewModel
-import tv.trakt.trakt.core.lists.di.LISTS_MOVIES_WATCHLIST_STORAGE
-import tv.trakt.trakt.core.lists.di.LISTS_WATCHLIST_STORAGE
 
 internal const val HOME_PREFERENCES = "home_preferences_mobile"
 
@@ -54,10 +50,6 @@ internal val homeDataModule = module {
 
     single<HomeUpNextLocalDataSource> {
         HomeUpNextStorage()
-    }
-
-    single<HomeWatchlistLocalDataSource> {
-        HomeWatchlistStorage()
     }
 
     single<HomeSocialLocalDataSource> {
@@ -84,16 +76,14 @@ internal val homeModule = module {
 
     factory {
         GetWatchlistMoviesUseCase(
-            remoteSyncSource = get(),
-            localDataSource = get(),
+            loadUserWatchlistUseCase = get(),
         )
     }
 
     factory {
         AddWatchlistHistoryUseCase(
             updateHistoryUseCase = get(),
-            listsWatchlistLocalSource = get(named(LISTS_WATCHLIST_STORAGE)),
-            listsWatchlistMoviesLocalSource = get(named(LISTS_MOVIES_WATCHLIST_STORAGE)),
+            userWatchlistLocalSource = get(),
         )
     }
 
@@ -153,7 +143,7 @@ internal val homeModule = module {
             getPersonalActivityUseCase = get(),
             getActivityFilterUseCase = get(),
             homeUpNextSource = get(),
-            homeWatchlistSource = get(),
+            userWatchlistSource = get(),
             sessionManager = get(),
         )
     }
@@ -182,9 +172,7 @@ internal val homeModule = module {
     viewModel {
         WatchlistItemContextViewModel(
             updateMovieWatchlistUseCase = get(),
-            homeWatchlistLocalSource = get(),
-            listsWatchlistLocalSource = get(named(LISTS_WATCHLIST_STORAGE)),
-            listsWatchlistMoviesLocalSource = get(named(LISTS_MOVIES_WATCHLIST_STORAGE)),
+            userWatchlistLocalSource = get(),
         )
     }
 }

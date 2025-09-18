@@ -27,8 +27,6 @@ import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalStora
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistViewModel
-import tv.trakt.trakt.core.lists.sections.watchlist.data.local.ListsWatchlistLocalDataSource
-import tv.trakt.trakt.core.lists.sections.watchlist.data.local.ListsWatchlistStorage
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetShowsWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetWatchlistUseCase
@@ -39,10 +37,6 @@ import tv.trakt.trakt.core.lists.sheets.edit.EditListViewModel
 import tv.trakt.trakt.core.lists.sheets.edit.usecases.EditListUseCase
 
 internal const val LISTS_PREFERENCES = "lists_preferences_mobile"
-
-internal const val LISTS_WATCHLIST_STORAGE = "lists_watchlist_storage"
-internal const val LISTS_SHOWS_WATCHLIST_STORAGE = "lists_shows_watchlist_storage"
-internal const val LISTS_MOVIES_WATCHLIST_STORAGE = "lists_movies_watchlist_storage"
 
 internal val listsDataModule = module {
 
@@ -65,38 +59,24 @@ internal val listsDataModule = module {
     single<ListsPersonalItemsLocalDataSource> {
         ListsPersonalItemsStorage()
     }
-
-    arrayOf(
-        LISTS_WATCHLIST_STORAGE,
-        LISTS_SHOWS_WATCHLIST_STORAGE,
-        LISTS_MOVIES_WATCHLIST_STORAGE,
-    ).forEach {
-        single<ListsWatchlistLocalDataSource>(named(it)) {
-            ListsWatchlistStorage()
-        }
-    }
 }
 
-@Suppress("UndeclaredKoinUsage")
 internal val listsModule = module {
     factory {
         GetWatchlistUseCase(
-            remoteSource = get(),
-            localSource = get(named(LISTS_WATCHLIST_STORAGE)),
+            loadUserWatchlistUseCase = get(),
         )
     }
 
     factory {
         GetShowsWatchlistUseCase(
-            remoteSyncSource = get(),
-            localSource = get(named(LISTS_SHOWS_WATCHLIST_STORAGE)),
+            loadUserWatchlistUseCase = get(),
         )
     }
 
     factory {
         GetMoviesWatchlistUseCase(
-            remoteSyncSource = get(),
-            localSource = get(named(LISTS_MOVIES_WATCHLIST_STORAGE)),
+            loadUserWatchlistUseCase = get(),
         )
     }
 

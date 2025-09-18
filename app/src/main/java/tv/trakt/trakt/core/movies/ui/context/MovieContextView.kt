@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.home.sections.watchlist.views
+package tv.trakt.trakt.core.movies.ui.context
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -35,7 +35,6 @@ import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.helpers.preview.PreviewData
@@ -46,12 +45,10 @@ import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun WatchlistItemContextView(
-    item: Movie,
-    viewModel: WatchlistItemContextViewModel,
+internal fun MovieContextView(
+    movie: Movie,
+    viewModel: MovieContextViewModel,
     modifier: Modifier = Modifier,
-    onAddWatched: (Movie) -> Unit,
-    onRemoveWatchlist: () -> Unit,
     onError: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -60,8 +57,8 @@ internal fun WatchlistItemContextView(
 
     LaunchedEffect(state.loadingWatched, state.loadingWatchlist) {
         when {
-            state.loadingWatched == DONE -> onAddWatched(item)
-            state.loadingWatchlist == DONE -> onRemoveWatchlist()
+//            state.loadingWatched == DONE -> onAddWatched(item)
+//            state.loadingWatchlist == DONE -> onRemoveWatchlist()
         }
     }
 
@@ -71,14 +68,14 @@ internal fun WatchlistItemContextView(
         }
     }
 
-    WatchlistItemContextViewContent(
-        item = item,
+    MovieContextViewContent(
+        item = movie,
         state = state,
         modifier = modifier,
         onAddWatched = {
-            onAddWatched(item)
+//            onAddWatched(item)
         },
-        onRemoveWatchlist = {
+        onWatchlistClick = {
             confirmRemoveSheet = true
         },
     )
@@ -88,24 +85,24 @@ internal fun WatchlistItemContextView(
         active = confirmRemoveSheet,
         onYes = {
             confirmRemoveSheet = false
-            viewModel.removeFromWatchlist(item.ids.trakt)
+//            viewModel.removeFromWatchlist(item.ids.trakt)
         },
         onNo = { confirmRemoveSheet = false },
         title = stringResource(R.string.button_text_watchlist),
         message = stringResource(
             R.string.warning_prompt_remove_from_watchlist,
-            item.title,
+            movie.title,
         ),
     )
 }
 
 @Composable
-private fun WatchlistItemContextViewContent(
+private fun MovieContextViewContent(
     item: Movie,
-    state: WatchlistItemContextState,
+    state: MovieContextState,
     modifier: Modifier = Modifier,
     onAddWatched: () -> Unit = {},
-    onRemoveWatchlist: () -> Unit = {},
+    onWatchlistClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -168,11 +165,17 @@ private fun WatchlistItemContextViewContent(
             GhostButton(
                 enabled = !isLoading,
                 loading = state.loadingWatched.isLoading,
-                text = stringResource(R.string.button_text_mark_as_watched),
+                text = when {
+                    state.isWatched -> stringResource(R.string.button_text_remove_from_history)
+                    else -> stringResource(R.string.button_text_mark_as_watched)
+                },
                 iconSize = 20.dp,
                 iconSpace = 16.dp,
                 onClick = onAddWatched,
-                icon = painterResource(R.drawable.ic_check_round),
+                icon = when {
+                    state.isWatched -> painterResource(R.drawable.ic_trash)
+                    else -> painterResource(R.drawable.ic_check_round)
+                },
                 modifier = Modifier
                     .graphicsLayer {
                         translationX = -3.dp.toPx()
@@ -183,10 +186,13 @@ private fun WatchlistItemContextViewContent(
                 enabled = !isLoading,
                 loading = state.loadingWatchlist.isLoading,
                 text = stringResource(R.string.button_text_watchlist),
-                onClick = onRemoveWatchlist,
-                iconSize = 23.dp,
+                onClick = onWatchlistClick,
+                iconSize = 22.dp,
                 iconSpace = 16.dp,
-                icon = painterResource(R.drawable.ic_minus),
+                icon = when {
+                    state.isWatchlist -> painterResource(R.drawable.ic_minus)
+                    else -> painterResource(R.drawable.ic_plus)
+                },
                 modifier = Modifier
                     .graphicsLayer {
                         translationX = -5.dp.toPx()
@@ -209,8 +215,8 @@ private fun Preview() {
             ColorImage(Color.Blue.toArgb())
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            WatchlistItemContextViewContent(
-                state = WatchlistItemContextState(),
+            MovieContextViewContent(
+                state = MovieContextState(),
                 item = PreviewData.movie1,
             )
         }

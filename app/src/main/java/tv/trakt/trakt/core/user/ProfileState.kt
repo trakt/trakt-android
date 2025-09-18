@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.profile
+package tv.trakt.trakt.core.user
 
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.helpers.LoadingState

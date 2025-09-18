@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.profile
+package tv.trakt.trakt.core.user
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -22,8 +22,8 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.auth.usecase.AuthorizeUserUseCase
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
-import tv.trakt.trakt.core.profile.usecase.GetUserProfileUseCase
-import tv.trakt.trakt.core.profile.usecase.LogoutUserUseCase
+import tv.trakt.trakt.core.user.usecase.GetUserProfileUseCase
+import tv.trakt.trakt.core.user.usecase.LogoutUserUseCase
 
 internal class ProfileViewModel(
     private val sessionManager: SessionManager,

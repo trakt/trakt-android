@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.profile.data.remote
+package tv.trakt.trakt.core.user.data.remote
 
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
@@ -16,10 +16,10 @@ internal interface UserRemoteDataSource {
     suspend fun getProfile(): User
 
     suspend fun getWatchlist(
-        page: Int = 1,
-        limit: Int,
-        sort: String = "rank",
-        extended: String,
+        page: Int? = null,
+        limit: Int? = null,
+        extended: String? = null,
+        sort: String? = null,
     ): List<WatchlistItemDto>
 
     suspend fun getSocialActivity(

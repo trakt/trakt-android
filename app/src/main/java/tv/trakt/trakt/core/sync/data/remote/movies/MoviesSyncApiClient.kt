@@ -7,7 +7,6 @@ import org.openapitools.client.models.PostSyncHistoryRemoveRequest
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInner
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.networking.WatchlistMovieDto
 import java.time.Instant
 
 internal class MoviesSyncApiClient(
@@ -59,28 +58,5 @@ internal class MoviesSyncApiClient(
             ),
         )
         syncApi.postSyncWatchlistRemove(request)
-    }
-
-    override suspend fun getWatchlist(
-        sort: String,
-        page: Int?,
-        limit: Int?,
-        extended: String?,
-    ): List<WatchlistMovieDto> {
-        val response = usersApi.getUsersWatchlistMovies(
-            id = "me",
-            sort = sort,
-            extended = extended,
-            page = page,
-            limit = limit,
-            watchnow = null,
-            genres = null,
-            years = null,
-            ratings = null,
-            startDate = null,
-            endDate = null,
-        )
-
-        return response.body()
     }
 }

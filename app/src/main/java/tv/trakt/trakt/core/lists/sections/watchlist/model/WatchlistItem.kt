@@ -6,22 +6,27 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import java.time.Instant
+import java.time.ZoneOffset.UTC
+import java.time.ZonedDateTime
 
 @Immutable
 internal sealed class WatchlistItem(
+    open val rank: Int,
     open val listedAt: Instant,
 ) {
     @Immutable
     internal data class MovieItem(
         val movie: Movie,
+        override val rank: Int,
         override val listedAt: Instant,
-    ) : WatchlistItem(listedAt)
+    ) : WatchlistItem(rank, listedAt)
 
     @Immutable
     internal data class ShowItem(
         val show: Show,
+        override val rank: Int,
         override val listedAt: Instant,
-    ) : WatchlistItem(listedAt)
+    ) : WatchlistItem(rank, listedAt)
 
     val id: TraktId
         get() = when (this) {
@@ -39,5 +44,11 @@ internal sealed class WatchlistItem(
         get() = when (this) {
             is ShowItem -> show.images
             is MovieItem -> movie.images
+        }
+
+    val released: ZonedDateTime?
+        get() = when (this) {
+            is ShowItem -> show.released
+            is MovieItem -> movie.released?.atStartOfDay(UTC)
         }
 }

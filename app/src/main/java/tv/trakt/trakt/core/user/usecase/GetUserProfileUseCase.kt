@@ -1,7 +1,7 @@
-package tv.trakt.trakt.core.profile.usecase
+package tv.trakt.trakt.core.user.usecase
 
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.core.profile.data.remote.UserRemoteDataSource
+import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 
 internal class GetUserProfileUseCase(
     private val remoteSource: UserRemoteDataSource,

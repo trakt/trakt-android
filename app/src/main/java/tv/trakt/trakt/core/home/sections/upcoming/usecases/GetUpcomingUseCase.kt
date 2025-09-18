@@ -16,7 +16,7 @@ import tv.trakt.trakt.core.episodes.model.fromDto
 import tv.trakt.trakt.core.home.HomeConfig.HOME_UPCOMING_DAYS_LIMIT
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
-import tv.trakt.trakt.core.profile.data.remote.UserRemoteDataSource
+import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId

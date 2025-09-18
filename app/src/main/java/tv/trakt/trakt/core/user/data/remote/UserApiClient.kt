@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.profile.data.remote
+package tv.trakt.trakt.core.user.data.remote
 
 import org.openapitools.client.apis.CalendarsApi
 import org.openapitools.client.apis.HistoryApi
@@ -30,14 +30,14 @@ internal class UserApiClient(
     }
 
     override suspend fun getWatchlist(
-        page: Int,
-        limit: Int,
-        sort: String,
-        extended: String,
+        page: Int?,
+        limit: Int?,
+        extended: String?,
+        sort: String?,
     ): List<WatchlistItemDto> {
         val response = usersApi.getUsersWatchlistAll(
             id = "me",
-            sort = sort,
+            sort = sort ?: "rank",
             extended = extended,
             page = page,
             limit = limit,

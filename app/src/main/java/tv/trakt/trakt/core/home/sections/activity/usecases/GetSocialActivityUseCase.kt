@@ -14,7 +14,7 @@ import tv.trakt.trakt.core.episodes.model.Episode
 import tv.trakt.trakt.core.episodes.model.fromDto
 import tv.trakt.trakt.core.home.sections.activity.data.local.social.HomeSocialLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
-import tv.trakt.trakt.core.profile.data.remote.UserRemoteDataSource
+import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 
 internal class GetSocialActivityUseCase(
     private val remoteSource: UserRemoteDataSource,

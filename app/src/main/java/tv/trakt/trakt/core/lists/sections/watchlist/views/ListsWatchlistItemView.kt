@@ -123,6 +123,7 @@ private fun PreviewShow() {
         ListsWatchlistItemView(
             item = WatchlistItem.ShowItem(
                 show = PreviewData.show1,
+                rank = 0,
                 listedAt = nowUtcInstant().minus(3, DAYS),
             ),
         )
@@ -136,6 +137,7 @@ private fun PreviewMovie() {
         ListsWatchlistItemView(
             item = WatchlistItem.MovieItem(
                 movie = PreviewData.movie1,
+                rank = 0,
                 listedAt = nowUtcInstant().minus(3, DAYS),
             ),
         )

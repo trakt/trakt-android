@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.movies.di
 
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.movies.MoviesViewModel
 import tv.trakt.trakt.core.movies.data.remote.MoviesApiClient
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
@@ -25,6 +26,7 @@ import tv.trakt.trakt.core.movies.sections.trending.all.AllMoviesTrendingViewMod
 import tv.trakt.trakt.core.movies.sections.trending.data.local.TrendingMoviesLocalDataSource
 import tv.trakt.trakt.core.movies.sections.trending.data.local.TrendingMoviesStorage
 import tv.trakt.trakt.core.movies.sections.trending.usecase.GetTrendingMoviesUseCase
+import tv.trakt.trakt.core.movies.ui.context.MovieContextViewModel
 
 internal val moviesDataModule = module {
 
@@ -138,6 +140,14 @@ internal val moviesModule = module {
     viewModel {
         AllMoviesPopularViewModel(
             getPopularUseCase = get(),
+        )
+    }
+
+    viewModel { (movie: Movie) ->
+        MovieContextViewModel(
+            movie = movie,
+            userWatchlistLocalSource = get(),
+            loadWatchlistUseCase = get(),
         )
     }
 }

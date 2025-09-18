@@ -2,45 +2,26 @@ package tv.trakt.trakt.core.lists.sections.watchlist.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.helpers.extensions.asyncMap
-import tv.trakt.trakt.common.helpers.extensions.toInstant
-import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_SECTION_LIMIT
-import tv.trakt.trakt.core.lists.sections.watchlist.data.local.ListsWatchlistLocalDataSource
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
-import tv.trakt.trakt.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
+import tv.trakt.trakt.core.user.usecase.watchlist.LoadUserWatchlistUseCase
 
 internal class GetMoviesWatchlistUseCase(
-    private val remoteSyncSource: MoviesSyncRemoteDataSource,
-    private val localSource: ListsWatchlistLocalDataSource,
+    private val loadUserWatchlistUseCase: LoadUserWatchlistUseCase,
 ) {
-    suspend fun getLocalWatchlist(): ImmutableList<WatchlistItem> {
-        return localSource.getItems()
+    suspend fun getLocalWatchlist(limit: Int = LISTS_SECTION_LIMIT): ImmutableList<WatchlistItem> {
+        return loadUserWatchlistUseCase
+            .loadLocalMovies()
             .sortedByDescending { it.listedAt }
+            .take(limit)
             .toImmutableList()
     }
 
-    suspend fun getWatchlist(
-        limit: Int = LISTS_SECTION_LIMIT,
-        page: Int = 1,
-    ): ImmutableList<WatchlistItem> {
-        val response = remoteSyncSource.getWatchlist(
-            page = page,
-            limit = limit,
-            sort = "added",
-            extended = "full,cloud9",
-        ).asyncMap {
-            WatchlistItem.MovieItem(
-                movie = Movie.fromDto(it.movie),
-                listedAt = it.listedAt.toInstant(),
-            )
-        }
-
-        return response
+    suspend fun getWatchlist(limit: Int = LISTS_SECTION_LIMIT): ImmutableList<WatchlistItem> {
+        return loadUserWatchlistUseCase.loadWatchlist()
+            .filterIsInstance<WatchlistItem.MovieItem>()
+            .sortedByDescending { it.listedAt }
+            .take(limit)
             .toImmutableList()
-            .also {
-                localSource.addItems(it)
-            }
     }
 }

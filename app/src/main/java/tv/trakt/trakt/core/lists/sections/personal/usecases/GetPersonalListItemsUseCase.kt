@@ -11,7 +11,7 @@ import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_SECTION_LIMIT
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
-import tv.trakt.trakt.core.profile.data.remote.UserRemoteDataSource
+import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 
 internal class GetPersonalListItemsUseCase(
     private val remoteSource: UserRemoteDataSource,
