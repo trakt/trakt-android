@@ -69,6 +69,7 @@ internal object PreviewData {
             imdb = ImdbId("tt1234562"),
         ),
         title = "Movie Title",
+        titleOriginal = "Original Movie Title",
         overview = "This is a sample movie overview that provides a brief description of the movie's plot " +
             "and main themes. It is intended to give viewers an idea of what to expect without revealing too much.",
         year = 2024,

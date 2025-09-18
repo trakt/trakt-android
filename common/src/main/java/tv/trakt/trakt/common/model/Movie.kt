@@ -21,6 +21,7 @@ import kotlin.time.Duration.Companion.minutes
 data class Movie(
     val ids: Ids,
     val title: String,
+    val titleOriginal: String?,
     val overview: String?,
     @Serializable(LocalDateSerializer::class)
     val released: LocalDate?,
@@ -40,6 +41,7 @@ fun Companion.fromDto(dto: MovieDto): Movie {
     return Movie(
         ids = Ids.fromDto(dto.ids),
         title = dto.title,
+        titleOriginal = dto.originalTitle,
         overview = dto.overview,
         year = dto.year,
         released = dto.released?.let { LocalDate.parse(it) },
@@ -66,6 +68,7 @@ fun Companion.fromDto(dto: RecommendedMovieDto): Movie {
     return Movie(
         ids = Ids.fromDto(dto.ids),
         title = dto.title,
+        titleOriginal = dto.originalTitle,
         overview = dto.overview,
         year = dto.year,
         released = dto.released?.let { LocalDate.parse(it) },
@@ -92,6 +95,7 @@ fun Companion.fromDto(dto: MovieLikesDto): Movie {
     return Movie(
         ids = Ids.fromDto(dto.ids),
         title = dto.title,
+        titleOriginal = dto.originalTitle,
         overview = dto.overview,
         year = dto.year,
         released = dto.released?.let { LocalDate.parse(it) },
