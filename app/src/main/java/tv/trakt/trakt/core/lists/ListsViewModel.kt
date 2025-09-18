@@ -36,7 +36,6 @@ internal class ListsViewModel(
 
     init {
         loadBackground()
-        loadData()
         observeUser()
     }
 
@@ -44,13 +43,13 @@ internal class ListsViewModel(
         viewModelScope.launch {
             sessionManager.observeProfile()
                 .collect { user ->
+                    loadData()
                     userState.update {
                         UserState(
                             user = user,
                             loading = DONE,
                         )
                     }
-                    loadData()
                 }
         }
     }
