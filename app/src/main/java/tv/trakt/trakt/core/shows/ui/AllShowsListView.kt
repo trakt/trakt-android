@@ -25,10 +25,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
@@ -169,6 +172,28 @@ private fun LazyGridScope.gridItems(items: ImmutableList<Show>) {
                     fadeInSpec = null,
                     fadeOutSpec = null,
                 ),
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun AllShowsListViewPreview() {
+    TraktTheme {
+        AllShowsListView(
+            title = {
+                Text(
+                    text = "Trending",
+                    style = TraktTheme.typography.heading6,
+                    color = TraktTheme.colors.textPrimary,
+                    modifier = Modifier.padding(bottom = 12.dp),
+                )
+            },
+            state = LazyGridState(),
+            items = listOf(
+                PreviewData.show1,
+                PreviewData.show2,
+            ).toImmutableList(),
         )
     }
 }
