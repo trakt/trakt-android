@@ -138,7 +138,7 @@ private fun UpNextItemContextViewContent(
                     text = item.show.title,
                     style = TraktTheme.typography.cardTitle.copy(fontSize = 13.sp),
                     color = TraktTheme.colors.textPrimary,
-                    maxLines = 1,
+                    maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
 
@@ -146,7 +146,7 @@ private fun UpNextItemContextViewContent(
                     text = item.progress.nextEpisode.seasonEpisodeString(),
                     style = TraktTheme.typography.cardSubtitle.copy(fontSize = 13.sp),
                     color = TraktTheme.colors.textSecondary,
-                    maxLines = 1,
+                    maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
             }

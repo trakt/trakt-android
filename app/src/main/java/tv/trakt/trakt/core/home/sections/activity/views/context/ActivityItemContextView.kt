@@ -137,7 +137,7 @@ private fun ActivityItemContextViewContent(
                     text = item.title,
                     style = TraktTheme.typography.cardTitle.copy(fontSize = 13.sp),
                     color = TraktTheme.colors.textPrimary,
-                    maxLines = 1,
+                    maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
 
@@ -148,7 +148,7 @@ private fun ActivityItemContextViewContent(
                     },
                     style = TraktTheme.typography.cardSubtitle.copy(fontSize = 13.sp),
                     color = TraktTheme.colors.textSecondary,
-                    maxLines = 1,
+                    maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
             }

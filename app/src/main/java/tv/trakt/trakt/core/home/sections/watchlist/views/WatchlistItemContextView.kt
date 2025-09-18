@@ -134,7 +134,7 @@ private fun WatchlistItemContextViewContent(
                     text = item.title,
                     style = TraktTheme.typography.cardTitle.copy(fontSize = 13.sp),
                     color = TraktTheme.colors.textPrimary,
-                    maxLines = 1,
+                    maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
 
@@ -142,7 +142,7 @@ private fun WatchlistItemContextViewContent(
                     text = stringResource(R.string.translated_value_type_movie),
                     style = TraktTheme.typography.cardSubtitle.copy(fontSize = 13.sp),
                     color = TraktTheme.colors.textSecondary,
-                    maxLines = 1,
+                    maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
             }
