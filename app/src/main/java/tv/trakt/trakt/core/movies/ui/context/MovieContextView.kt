@@ -1,14 +1,13 @@
 package tv.trakt.trakt.core.movies.ui.context
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,29 +19,32 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
-import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
+import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -113,50 +115,83 @@ private fun MovieContextViewContent(
         verticalArrangement = spacedBy(0.dp),
         modifier = modifier,
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = spacedBy(12.dp),
-        ) {
-            VerticalMediaCard(
-                title = "",
-                corner = 12.dp,
-                width = TraktTheme.size.verticalSmallMediaCardSize,
-                imageUrl = item.images?.getPosterUrl(),
-                modifier = Modifier.shadow(
-                    elevation = 2.dp,
-                    shape = RoundedCornerShape(12.dp),
-                ),
-            )
-
-            Column(
-                verticalArrangement = spacedBy(1.dp),
-                modifier = Modifier.weight(1f),
-            ) {
-                Text(
-                    text = item.title,
-                    style = TraktTheme.typography.cardTitle.copy(fontSize = 13.sp),
-                    color = TraktTheme.colors.textPrimary,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
-
-                Text(
-                    text = stringResource(R.string.translated_value_type_movie),
-                    style = TraktTheme.typography.cardSubtitle.copy(fontSize = 13.sp),
-                    color = TraktTheme.colors.textSecondary,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
+        val genresText = remember(item.genres) {
+            item.genres.take(2).joinToString(", ") { genre ->
+                genre.replaceFirstChar {
+                    it.uppercaseChar()
+                }
             }
         }
 
-        Spacer(
-            modifier = Modifier
-                .padding(top = 24.dp, bottom = 8.dp)
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(Shade910),
+        PanelMediaCard(
+            title = item.title,
+            titleOriginal = item.titleOriginal,
+            subtitle = genresText,
+            shadow = 4.dp,
+            containerColor = Shade910,
+            contentImageUrl = item.images?.getPosterUrl(),
+            containerImageUrl = item.images?.getFanartUrl(THUMB),
+            footerContent = {
+                Row(
+                    horizontalArrangement = Arrangement.Absolute.spacedBy(TraktTheme.spacing.chipsSpace),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    item.released?.let {
+                        InfoChip(
+                            text = it.year.toString(),
+                        )
+                    }
+                    item.runtime?.let {
+                        InfoChip(
+                            text = it.inWholeMinutes.durationFormat(),
+                        )
+                    }
+                    if (!item.certification.isNullOrBlank()) {
+                        InfoChip(
+                            text = item.certification ?: "NR",
+                        )
+                    }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Absolute.spacedBy(3.dp),
+                    ) {
+                        val grayFilter = remember {
+                            ColorFilter.colorMatrix(
+                                ColorMatrix().apply {
+                                    setToSaturation(0F)
+                                },
+                            )
+                        }
+                        val redFilter = remember {
+                            ColorFilter.tint(Red500)
+                        }
+
+                        Spacer(modifier = Modifier.weight(1F))
+
+                        Image(
+                            painter = painterResource(R.drawable.ic_heart),
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp),
+                            colorFilter = if (item.rating.rating > 0) redFilter else grayFilter,
+                        )
+                        Text(
+                            text = if (item.rating.rating > 0) "${item.rating.ratingPercent}%" else "-",
+                            color = TraktTheme.colors.textPrimary,
+                            style = TraktTheme.typography.meta,
+                        )
+                    }
+                }
+            },
         )
+
+//        Spacer(
+//            modifier = Modifier
+//                .padding(top = 24.dp, bottom = 8.dp)
+//                .fillMaxWidth()
+//                .height(1.dp)
+//                .background(Shade910),
+//        )
 
         MovieActionButtons(
             state = state,
@@ -173,7 +208,7 @@ private fun MovieActionButtons(
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
         modifier = Modifier
-            .padding(top = 10.dp),
+            .padding(top = 24.dp),
     ) {
         val isLoadingOrDone =
             state.loadingWatched.isLoading ||
@@ -224,7 +259,7 @@ private fun MovieActionButtons(
 @Preview(
     device = "id:pixel_5",
     showBackground = true,
-    backgroundColor = 0xFF131517,
+    backgroundColor = 0xFF212427,
 )
 @Composable
 private fun Preview() {
