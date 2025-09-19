@@ -8,7 +8,7 @@ internal val mainModule = module {
     viewModel {
         MainViewModel(
             sessionManager = get(),
-            loadUserProgressUseCase = get()
+            loadUserProgressUseCase = get(),
         )
     }
 }

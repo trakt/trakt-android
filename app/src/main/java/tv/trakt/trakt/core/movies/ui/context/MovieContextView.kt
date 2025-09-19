@@ -30,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
@@ -40,11 +41,10 @@ import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
+import tv.trakt.trakt.common.ui.theme.colors.White
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
@@ -163,25 +163,31 @@ private fun MovieContextViewContent(
                     horizontalArrangement = Arrangement.Absolute.spacedBy(TraktTheme.spacing.chipsSpace),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    if (!movie.certification.isNullOrBlank()) {
-                        InfoChip(
-                            text = movie.certification ?: "",
-                        )
+                    val metaString = remember {
+                        val separator = "  •  "
+                        buildString {
+                            movie.released?.let {
+                                append(it.year)
+                            }
+                            movie.runtime?.let {
+                                if (isNotEmpty()) append(separator)
+                                append(it.inWholeMinutes.durationFormat())
+                            }
+                            if (!movie.certification.isNullOrBlank()) {
+                                if (isNotEmpty()) append(separator)
+                                append(movie.certification)
+                            }
+                        }
                     }
-                    movie.released?.let {
-                        InfoChip(
-                            text = it.year.toString(),
-                        )
-                    }
-                    movie.runtime?.let {
-                        InfoChip(
-                            text = it.inWholeMinutes.durationFormat(),
-                        )
-                    }
+                    Text(
+                        text = metaString,
+                        color = TraktTheme.colors.textSecondary,
+                        style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
+                    )
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Absolute.spacedBy(3.dp),
+                        horizontalArrangement = Arrangement.Absolute.spacedBy(4.dp),
                     ) {
                         val grayFilter = remember {
                             ColorFilter.colorMatrix(
@@ -190,22 +196,22 @@ private fun MovieContextViewContent(
                                 },
                             )
                         }
-                        val redFilter = remember {
-                            ColorFilter.tint(Red500)
+                        val whiteFilter = remember {
+                            ColorFilter.tint(White)
                         }
 
                         Spacer(modifier = Modifier.weight(1F))
 
                         Image(
-                            painter = painterResource(R.drawable.ic_heart),
+                            painter = painterResource(R.drawable.ic_trakt_icon),
                             contentDescription = null,
-                            modifier = Modifier.size(16.dp),
-                            colorFilter = if (movie.rating.rating > 0) redFilter else grayFilter,
+                            modifier = Modifier.size(14.dp),
+                            colorFilter = if (movie.rating.rating > 0) whiteFilter else grayFilter,
                         )
                         Text(
                             text = if (movie.rating.rating > 0) "${movie.rating.ratingPercent}%" else "-",
                             color = TraktTheme.colors.textPrimary,
-                            style = TraktTheme.typography.meta,
+                            style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
                         )
                     }
                 }

@@ -37,7 +37,7 @@ internal class MovieContextViewModel(
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
-    private val sessionManager: SessionManager
+    private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = MovieContextState()
 
