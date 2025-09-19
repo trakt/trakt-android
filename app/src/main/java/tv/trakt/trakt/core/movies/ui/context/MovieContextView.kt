@@ -90,17 +90,15 @@ internal fun MovieContextView(
         state = state,
         modifier = modifier,
         onWatchedClick = {
-            if (state.isWatched) {
-                confirmRemoveWatchedSheet = true
-            } else {
-                viewModel.addToWatched()
+            when {
+                state.isWatched -> confirmRemoveWatchedSheet = true
+                else -> viewModel.addToWatched()
             }
         },
         onWatchlistClick = {
-            if (state.isWatchlist) {
-                confirmRemoveWatchlistSheet = true
-            } else {
-                viewModel.addToWatchlist()
+            when {
+                state.isWatchlist -> confirmRemoveWatchlistSheet = true
+                else -> viewModel.addToWatchlist()
             }
         },
     )
@@ -242,29 +240,38 @@ private fun MovieActionButtons(
 
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
-        modifier = Modifier
-            .padding(top = 24.dp),
+        modifier = Modifier.padding(top = 24.dp),
     ) {
         if (isReleased) {
-            GhostButton(
-                enabled = !isLoadingOrDone,
-                loading = state.loadingWatched.isLoading || state.loadingWatched.isDone,
-                text = when {
-                    state.isWatched -> stringResource(R.string.button_text_remove_from_history)
-                    else -> stringResource(R.string.button_text_mark_as_watched)
-                },
-                iconSize = 20.dp,
-                iconSpace = 16.dp,
-                onClick = onWatchedClick,
-                icon = when {
-                    state.isWatched -> painterResource(R.drawable.ic_trash)
-                    else -> painterResource(R.drawable.ic_check_round)
-                },
-                modifier = Modifier
-                    .graphicsLayer {
-                        translationX = -3.dp.toPx()
-                    },
-            )
+            if (state.isWatched) {
+                GhostButton(
+                    enabled = !isLoadingOrDone,
+                    loading = state.loadingWatched.isLoading || state.loadingWatched.isDone,
+                    text = stringResource(R.string.button_text_remove_from_history),
+                    onClick = onWatchedClick,
+                    icon = painterResource(R.drawable.ic_trash),
+                    iconSize = 22.dp,
+                    iconSpace = 16.dp,
+                    modifier = Modifier
+                        .graphicsLayer {
+                            translationX = -3.dp.toPx()
+                        },
+                )
+            } else {
+                GhostButton(
+                    enabled = !isLoadingOrDone,
+                    loading = state.loadingWatched.isLoading || state.loadingWatched.isDone,
+                    text = stringResource(R.string.button_text_mark_as_watched),
+                    iconSize = 22.dp,
+                    iconSpace = 16.dp,
+                    onClick = onWatchedClick,
+                    icon = painterResource(R.drawable.ic_check_round),
+                    modifier = Modifier
+                        .graphicsLayer {
+                            translationX = -3.dp.toPx()
+                        },
+                )
+            }
         }
 
         GhostButton(
@@ -273,14 +280,14 @@ private fun MovieActionButtons(
             text = stringResource(R.string.button_text_watchlist),
             onClick = onWatchlistClick,
             iconSize = 22.dp,
-            iconSpace = 16.dp,
+            iconSpace = 17.dp,
             icon = when {
                 state.isWatchlist -> painterResource(R.drawable.ic_minus)
                 else -> painterResource(R.drawable.ic_plus)
             },
             modifier = Modifier
                 .graphicsLayer {
-                    translationX = -5.dp.toPx()
+                    translationX = -3.dp.toPx()
                 },
         )
     }

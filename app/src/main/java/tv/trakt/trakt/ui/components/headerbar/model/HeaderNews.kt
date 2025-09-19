@@ -4,5 +4,5 @@ data class HeaderNews(
     val enabled: Boolean = false,
     val news1: String = "",
     val news2: String = "",
-    val newsUrl: String = ""
+    val newsUrl: String = "",
 )

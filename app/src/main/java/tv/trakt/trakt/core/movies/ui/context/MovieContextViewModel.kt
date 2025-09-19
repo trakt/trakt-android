@@ -109,8 +109,6 @@ internal class MovieContextViewModel(
                         ),
                     ),
                 )
-
-                isWatchlistState.update { true }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -134,8 +132,6 @@ internal class MovieContextViewModel(
 
                 updateMovieWatchlistUseCase.removeFromWatchlist(movieId = movie.ids.trakt)
                 userWatchlistLocalSource.removeMovies(setOf(movie.ids.trakt))
-
-                isWatchlistState.update { false }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -160,9 +156,6 @@ internal class MovieContextViewModel(
                 updateMovieHistoryUseCase.addToWatched(movie.ids.trakt)
                 loadProgressUseCase.loadMoviesProgress()
                 userWatchlistLocalSource.removeMovies(setOf(movie.ids.trakt))
-
-                isWatchedState.update { true }
-                isWatchlistState.update { false }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -186,8 +179,6 @@ internal class MovieContextViewModel(
 
                 updateMovieHistoryUseCase.removeAllFromHistory(movie.ids.trakt)
                 userProgressLocalSource.removeMovies(setOf(movie.ids.trakt))
-
-                isWatchedState.update { false }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
