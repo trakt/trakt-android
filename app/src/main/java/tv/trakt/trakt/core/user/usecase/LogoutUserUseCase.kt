@@ -13,6 +13,7 @@ import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocal
 import tv.trakt.trakt.core.movies.sections.recommended.data.local.RecommendedMoviesLocalDataSource
 import tv.trakt.trakt.core.search.data.local.RecentSearchLocalDataSource
 import tv.trakt.trakt.core.shows.sections.recommended.data.local.RecommendedShowsLocalDataSource
+import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 
 internal class LogoutUserUseCase(
@@ -27,6 +28,7 @@ internal class LogoutUserUseCase(
     private val localListsItemsPersonal: ListsPersonalItemsLocalDataSource,
     private val localRecommendedShows: RecommendedShowsLocalDataSource,
     private val localRecommendedMovies: RecommendedMoviesLocalDataSource,
+    private val localUserProgress: UserProgressLocalDataSource,
     private val localUserWatchlist: UserWatchlistLocalDataSource,
 ) {
     suspend fun logoutUser() {
@@ -43,6 +45,7 @@ internal class LogoutUserUseCase(
         localListsPersonal.clear()
         localListsItemsPersonal.clear()
         localUserWatchlist.clear()
+        localUserProgress.clear()
 
         localRecommendedShows.clear()
         localRecommendedMovies.clear()
