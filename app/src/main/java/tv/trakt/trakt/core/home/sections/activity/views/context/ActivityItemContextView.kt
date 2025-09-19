@@ -4,7 +4,10 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -12,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -20,6 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
@@ -35,7 +40,6 @@ import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.Episode
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.MovieItem
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
@@ -124,12 +128,19 @@ private fun ActivityItemContextViewContent(
             },
             footerContent = {
                 Row(
-                    horizontalArrangement = spacedBy(4.dp),
+                    horizontalArrangement = spacedBy(3.dp),
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    InfoChip(
+                    Icon(
+                        painter = painterResource(R.drawable.ic_calendar_check),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textSecondary,
+                        modifier = Modifier.size(14.dp),
+                    )
+                    Text(
                         text = item.activityAt.toLocal().relativePastDateString(),
-                        iconPainter = painterResource(R.drawable.ic_calendar_check),
-                        containerColor = TraktTheme.colors.chipContainerOnContent,
+                        color = TraktTheme.colors.textSecondary,
+                        style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
                     )
                 }
             },

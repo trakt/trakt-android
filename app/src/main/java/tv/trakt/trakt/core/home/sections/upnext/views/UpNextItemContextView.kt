@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -12,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -20,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
@@ -34,8 +37,6 @@ import tv.trakt.trakt.core.home.sections.upnext.model.Progress
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.EpisodeProgressBar
-import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
@@ -119,25 +120,37 @@ private fun UpNextItemContextViewContent(
             footerContent = {
                 Row(
                     horizontalArrangement = spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    val runtime = item.progress.nextEpisode.runtime?.inWholeMinutes
-                    if (runtime != null) {
-                        InfoChip(
-                            text = runtime.durationFormat(),
-                        )
+                    val remainingEpisodesString = stringResource(
+                        R.string.tag_text_remaining_episodes,
+                        item.progress.remainingEpisodes,
+                    )
+                    val metaString = remember {
+                        val separator = "  •  "
+                        buildString {
+                            val runtime = item.progress.nextEpisode.runtime?.inWholeMinutes
+                            if (runtime != null) {
+                                append(runtime.durationFormat())
+                            }
+
+                            val remainingEpisodes = item.progress.remainingEpisodes
+                            if (remainingEpisodes > 0) {
+                                if (isNotEmpty()) append(separator)
+                                append(remainingEpisodesString)
+                            }
+
+                            val remainingTime = item.progress.remainingMinutesString
+                            if (remainingTime != null) {
+                                append(" ($remainingTime)")
+                            }
+                        }
                     }
 
-                    val remainingEpisodes = remember(item.progress.completed, item.progress.aired) {
-                        item.progress.remainingEpisodes
-                    }
-                    val remainingPercent = remember(item.progress.completed, item.progress.aired) {
-                        item.progress.remainingPercent
-                    }
-
-                    EpisodeProgressBar(
-                        startText = stringResource(R.string.tag_text_remaining_episodes, remainingEpisodes),
-                        progress = remainingPercent,
-                        containerColor = TraktTheme.colors.chipContainer,
+                    Text(
+                        text = metaString,
+                        color = TraktTheme.colors.textSecondary,
+                        style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
                     )
                 }
             },
