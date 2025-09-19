@@ -141,6 +141,12 @@ private fun LazyListScope.listItems(
                     horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpace),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
+                    if (!item.certification.isNullOrBlank()) {
+                        InfoChip(
+                            text = item.certification ?: "",
+                            containerColor = TraktTheme.colors.chipContainerOnContent,
+                        )
+                    }
                     item.released?.let {
                         InfoChip(
                             text = it.year.toString(),
@@ -153,12 +159,6 @@ private fun LazyListScope.listItems(
                                 R.string.tag_text_number_of_episodes,
                                 item.airedEpisodes,
                             ),
-                            containerColor = TraktTheme.colors.chipContainerOnContent,
-                        )
-                    }
-                    if (!item.certification.isNullOrBlank()) {
-                        InfoChip(
-                            text = item.certification ?: "NR",
                             containerColor = TraktTheme.colors.chipContainerOnContent,
                         )
                     }

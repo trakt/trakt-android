@@ -163,7 +163,7 @@ internal fun PanelMediaCard(
                     contentScale = ContentScale.Crop,
                     onError = { isContainerError = true },
                     modifier = Modifier
-                        .padding(start = TraktTheme.size.verticalMediumMediaCardSize)
+                        .padding(start = TraktTheme.size.verticalMediumMediaCardSize / 1.25F)
                         .fillMaxSize()
                         .drawWithContent {
                             drawContent()

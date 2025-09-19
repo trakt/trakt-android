@@ -145,6 +145,12 @@ private fun LazyListScope.listItems(
                     horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpace),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
+                    if (!item.certification.isNullOrBlank()) {
+                        InfoChip(
+                            text = item.certification ?: "",
+                            containerColor = TraktTheme.colors.chipContainerOnContent,
+                        )
+                    }
                     item.released?.let {
                         InfoChip(
                             text = it.year.toString(),
@@ -154,12 +160,6 @@ private fun LazyListScope.listItems(
                     item.runtime?.let {
                         InfoChip(
                             text = it.inWholeMinutes.durationFormat(),
-                            containerColor = TraktTheme.colors.chipContainerOnContent,
-                        )
-                    }
-                    if (!item.certification.isNullOrBlank()) {
-                        InfoChip(
-                            text = item.certification ?: "NR",
                             containerColor = TraktTheme.colors.chipContainerOnContent,
                         )
                     }

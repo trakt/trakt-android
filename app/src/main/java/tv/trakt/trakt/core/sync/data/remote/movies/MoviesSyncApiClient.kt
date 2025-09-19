@@ -53,7 +53,7 @@ internal class MoviesSyncApiClient(
                         tmdb = 0,
                     ),
                     title = "",
-                    year = 0
+                    year = 0,
                 ),
             ),
         )

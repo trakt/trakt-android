@@ -152,6 +152,11 @@ private fun MovieContextViewContent(
                     horizontalArrangement = Arrangement.Absolute.spacedBy(TraktTheme.spacing.chipsSpace),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
+                    if (!movie.certification.isNullOrBlank()) {
+                        InfoChip(
+                            text = movie.certification ?: "",
+                        )
+                    }
                     movie.released?.let {
                         InfoChip(
                             text = it.year.toString(),
@@ -160,11 +165,6 @@ private fun MovieContextViewContent(
                     movie.runtime?.let {
                         InfoChip(
                             text = it.inWholeMinutes.durationFormat(),
-                        )
-                    }
-                    if (!movie.certification.isNullOrBlank()) {
-                        InfoChip(
-                            text = movie.certification ?: "NR",
                         )
                     }
 
