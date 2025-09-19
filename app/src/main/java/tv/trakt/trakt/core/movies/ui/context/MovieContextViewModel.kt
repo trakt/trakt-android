@@ -17,6 +17,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
+import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.usecase.watchlist.LoadUserWatchlistUseCase
@@ -24,6 +25,7 @@ import tv.trakt.trakt.core.user.usecase.watchlist.LoadUserWatchlistUseCase
 internal class MovieContextViewModel(
     private val movie: Movie,
     private val updateMovieWatchlistUseCase: UpdateMovieWatchlistUseCase,
+    private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
 ) : ViewModel() {
@@ -120,6 +122,32 @@ internal class MovieContextViewModel(
                 }
             } finally {
                 loadingWatchlistState.update { DONE }
+            }
+        }
+    }
+
+    fun addToWatched() {
+        if (isLoading()) {
+            return
+        }
+
+        viewModelScope.launch {
+            clear()
+            try {
+                loadingWatchedState.update { LOADING }
+
+                updateMovieHistoryUseCase.addToWatched(movie.ids.trakt)
+                userWatchlistLocalSource.removeMovies(setOf(movie.ids.trakt))
+
+                isWatchedState.update { true }
+                isWatchlistState.update { false }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.w(error)
+                }
+            } finally {
+                loadingWatchedState.update { DONE }
             }
         }
     }

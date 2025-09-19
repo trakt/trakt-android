@@ -9,7 +9,7 @@ internal class AddWatchlistHistoryUseCase(
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
 ) {
     suspend fun addToHistory(movieId: TraktId) {
-        updateHistoryUseCase.addToHistory(movieId)
+        updateHistoryUseCase.addToWatched(movieId)
         userWatchlistLocalSource.removeMovies(
             ids = setOf(movieId),
             notify = true,

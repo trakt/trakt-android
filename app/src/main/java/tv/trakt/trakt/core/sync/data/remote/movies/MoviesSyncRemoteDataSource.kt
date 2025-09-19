@@ -4,10 +4,12 @@ import tv.trakt.trakt.common.model.TraktId
 import java.time.Instant
 
 internal interface MoviesSyncRemoteDataSource {
-    suspend fun addToHistory(
+    suspend fun addToWatched(
         movieId: TraktId,
         watchedAt: Instant,
     )
+
+    suspend fun removeAllFromHistory(movieId: TraktId)
 
     suspend fun removeSingleFromHistory(playId: Long)
 

@@ -13,7 +13,7 @@ internal class MoviesSyncApiClient(
     private val usersApi: UsersApi,
     private val syncApi: SyncApi,
 ) : MoviesSyncRemoteDataSource {
-    override suspend fun addToHistory(
+    override suspend fun addToWatched(
         movieId: TraktId,
         watchedAt: Instant,
     ) {
@@ -38,6 +38,24 @@ internal class MoviesSyncApiClient(
     override suspend fun removeSingleFromHistory(playId: Long) {
         val request = PostSyncHistoryRemoveRequest(
             ids = listOf(playId),
+        )
+        syncApi.postSyncHistoryRemove(request)
+    }
+
+    override suspend fun removeAllFromHistory(movieId: TraktId) {
+        val request = PostSyncHistoryRemoveRequest(
+            movies = listOf(
+                PostUsersListsListAddRequestMoviesInner(
+                    ids = PostCheckinMovieRequestMovieIds(
+                        trakt = movieId.value,
+                        slug = null,
+                        imdb = null,
+                        tmdb = 0,
+                    ),
+                    title = "",
+                    year = 0
+                ),
+            ),
         )
         syncApi.postSyncHistoryRemove(request)
     }

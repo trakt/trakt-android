@@ -146,6 +146,7 @@ internal val moviesModule = module {
     viewModel { (movie: Movie) ->
         MovieContextViewModel(
             movie = movie,
+            updateMovieHistoryUseCase = get(),
             updateMovieWatchlistUseCase = get(),
             userWatchlistLocalSource = get(),
             loadWatchlistUseCase = get(),

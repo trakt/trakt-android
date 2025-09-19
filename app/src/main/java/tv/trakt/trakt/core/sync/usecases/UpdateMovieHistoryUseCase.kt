@@ -7,10 +7,16 @@ import tv.trakt.trakt.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
 internal class UpdateMovieHistoryUseCase(
     private val remoteSource: MoviesSyncRemoteDataSource,
 ) {
-    suspend fun addToHistory(movieId: TraktId) {
-        remoteSource.addToHistory(
+    suspend fun addToWatched(movieId: TraktId) {
+        remoteSource.addToWatched(
             movieId = movieId,
             watchedAt = nowUtcInstant(),
+        )
+    }
+
+    suspend fun removeAllFromHistory(movieId: TraktId) {
+        remoteSource.removeAllFromHistory(
+            movieId = movieId,
         )
     }
 

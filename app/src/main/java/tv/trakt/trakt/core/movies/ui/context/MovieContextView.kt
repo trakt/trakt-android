@@ -52,6 +52,7 @@ internal fun MovieContextView(
     movie: Movie,
     viewModel: MovieContextViewModel,
     modifier: Modifier = Modifier,
+    onAddWatched: (Movie) -> Unit,
     onAddWatchlist: (Movie) -> Unit,
     onRemoveWatchlist: (Movie) -> Unit,
     onError: () -> Unit,
@@ -62,6 +63,12 @@ internal fun MovieContextView(
 
     LaunchedEffect(state.loadingWatched, state.loadingWatchlist) {
         when {
+            state.loadingWatched == LoadingState.DONE -> when {
+                state.isWatched -> onAddWatched(movie)
+                else -> {
+                    TODO()
+                }
+            }
             state.loadingWatchlist == LoadingState.DONE -> when {
                 state.isWatchlist -> onAddWatchlist(movie)
                 else -> onRemoveWatchlist(movie)
@@ -79,6 +86,13 @@ internal fun MovieContextView(
         item = movie,
         state = state,
         modifier = modifier,
+        onWatchedClick = {
+            if (state.isWatched) {
+                // Removing from history is not supported in this context
+            } else {
+                viewModel.addToWatched()
+            }
+        },
         onWatchlistClick = {
             if (state.isWatchlist) {
                 confirmRemoveWatchlistSheet = true
@@ -109,6 +123,7 @@ private fun MovieContextViewContent(
     item: Movie,
     state: MovieContextState,
     modifier: Modifier = Modifier,
+    onWatchedClick: () -> Unit = {},
     onWatchlistClick: () -> Unit = {},
 ) {
     Column(
@@ -185,16 +200,9 @@ private fun MovieContextViewContent(
             },
         )
 
-//        Spacer(
-//            modifier = Modifier
-//                .padding(top = 24.dp, bottom = 8.dp)
-//                .fillMaxWidth()
-//                .height(1.dp)
-//                .background(Shade910),
-//        )
-
         MovieActionButtons(
             state = state,
+            onWatchedClick = onWatchedClick,
             onWatchlistClick = onWatchlistClick,
         )
     }
@@ -203,6 +211,7 @@ private fun MovieContextViewContent(
 @Composable
 private fun MovieActionButtons(
     state: MovieContextState,
+    onWatchedClick: () -> Unit,
     onWatchlistClick: () -> Unit,
 ) {
     Column(
@@ -225,7 +234,7 @@ private fun MovieActionButtons(
             },
             iconSize = 20.dp,
             iconSpace = 16.dp,
-            onClick = {},
+            onClick = onWatchedClick,
             icon = when {
                 state.isWatched -> painterResource(R.drawable.ic_trash)
                 else -> painterResource(R.drawable.ic_check_round)
