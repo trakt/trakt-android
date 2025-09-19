@@ -31,15 +31,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.common.ui.theme.colors.Red500
+import tv.trakt.trakt.common.ui.theme.colors.White
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -141,31 +141,33 @@ private fun LazyListScope.listItems(
                     horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpace),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    if (!item.certification.isNullOrBlank()) {
-                        InfoChip(
-                            text = item.certification ?: "",
-                            containerColor = TraktTheme.colors.chipContainerOnContent,
-                        )
+                    val epsString = stringResource(R.string.tag_text_number_of_episodes, item.airedEpisodes)
+                    val metaString = remember {
+                        val separator = "  •  "
+                        buildString {
+                            item.released?.let {
+                                append(it.year)
+                            }
+                            if (item.airedEpisodes > 0) {
+                                if (isNotEmpty()) append(separator)
+                                append(epsString)
+                            }
+                            if (!item.certification.isNullOrBlank()) {
+                                if (isNotEmpty()) append(separator)
+                                append(item.certification)
+                            }
+                        }
                     }
-                    item.released?.let {
-                        InfoChip(
-                            text = it.year.toString(),
-                            containerColor = TraktTheme.colors.chipContainerOnContent,
-                        )
-                    }
-                    if (item.airedEpisodes > 0) {
-                        InfoChip(
-                            text = stringResource(
-                                R.string.tag_text_number_of_episodes,
-                                item.airedEpisodes,
-                            ),
-                            containerColor = TraktTheme.colors.chipContainerOnContent,
-                        )
-                    }
+
+                    Text(
+                        text = metaString,
+                        color = TraktTheme.colors.textSecondary,
+                        style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
+                    )
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = spacedBy(3.dp),
+                        horizontalArrangement = spacedBy(4.dp),
                     ) {
                         val grayFilter = remember {
                             ColorFilter.colorMatrix(
@@ -174,22 +176,22 @@ private fun LazyListScope.listItems(
                                 },
                             )
                         }
-                        val redFilter = remember {
-                            ColorFilter.tint(Red500)
+                        val whiteFilter = remember {
+                            ColorFilter.tint(White)
                         }
 
                         Spacer(modifier = Modifier.weight(1F))
 
                         Image(
-                            painter = painterResource(R.drawable.ic_heart),
+                            painter = painterResource(R.drawable.ic_trakt_icon),
                             contentDescription = null,
-                            modifier = Modifier.size(16.dp),
-                            colorFilter = if (item.rating.rating > 0) redFilter else grayFilter,
+                            modifier = Modifier.size(14.dp),
+                            colorFilter = if (item.rating.rating > 0) whiteFilter else grayFilter,
                         )
                         Text(
                             text = if (item.rating.rating > 0) "${item.rating.ratingPercent}%" else "-",
                             color = TraktTheme.colors.textPrimary,
-                            style = TraktTheme.typography.meta,
+                            style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
                         )
                     }
                 }

@@ -69,11 +69,11 @@ internal fun MovieContextView(
     LaunchedEffect(state.loadingWatched, state.loadingWatchlist) {
         when {
             state.loadingWatched == LoadingState.DONE -> when {
-                state.isWatched -> onAddWatched(movie)
+                !state.isWatched -> onAddWatched(movie)
                 else -> onRemoveWatched(movie)
             }
             state.loadingWatchlist == LoadingState.DONE -> when {
-                state.isWatchlist -> onAddWatchlist(movie)
+                !state.isWatchlist -> onAddWatchlist(movie)
                 else -> onRemoveWatchlist(movie)
             }
         }

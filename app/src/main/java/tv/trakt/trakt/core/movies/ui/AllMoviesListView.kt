@@ -30,16 +30,16 @@ import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.common.ui.theme.colors.Red500
+import tv.trakt.trakt.common.ui.theme.colors.White
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -145,28 +145,31 @@ private fun LazyListScope.listItems(
                     horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpace),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    if (!item.certification.isNullOrBlank()) {
-                        InfoChip(
-                            text = item.certification ?: "",
-                            containerColor = TraktTheme.colors.chipContainerOnContent,
-                        )
+                    val metaString = remember {
+                        val separator = "  •  "
+                        buildString {
+                            item.released?.let {
+                                append(it.year)
+                            }
+                            item.runtime?.let {
+                                if (isNotEmpty()) append(separator)
+                                append(it.inWholeMinutes.durationFormat())
+                            }
+                            if (!item.certification.isNullOrBlank()) {
+                                if (isNotEmpty()) append(separator)
+                                append(item.certification)
+                            }
+                        }
                     }
-                    item.released?.let {
-                        InfoChip(
-                            text = it.year.toString(),
-                            containerColor = TraktTheme.colors.chipContainerOnContent,
-                        )
-                    }
-                    item.runtime?.let {
-                        InfoChip(
-                            text = it.inWholeMinutes.durationFormat(),
-                            containerColor = TraktTheme.colors.chipContainerOnContent,
-                        )
-                    }
+                    Text(
+                        text = metaString,
+                        color = TraktTheme.colors.textSecondary,
+                        style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
+                    )
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = spacedBy(3.dp),
+                        horizontalArrangement = spacedBy(4.dp),
                     ) {
                         val grayFilter = remember {
                             ColorFilter.colorMatrix(
@@ -175,22 +178,22 @@ private fun LazyListScope.listItems(
                                 },
                             )
                         }
-                        val redFilter = remember {
-                            ColorFilter.tint(Red500)
+                        val whiteFilter = remember {
+                            ColorFilter.tint(White)
                         }
 
                         Spacer(modifier = Modifier.weight(1F))
 
                         Image(
-                            painter = painterResource(R.drawable.ic_heart),
+                            painter = painterResource(R.drawable.ic_trakt_icon),
                             contentDescription = null,
-                            modifier = Modifier.size(16.dp),
-                            colorFilter = if (item.rating.rating > 0) redFilter else grayFilter,
+                            modifier = Modifier.size(14.dp),
+                            colorFilter = if (item.rating.rating > 0) whiteFilter else grayFilter,
                         )
                         Text(
                             text = if (item.rating.rating > 0) "${item.rating.ratingPercent}%" else "-",
                             color = TraktTheme.colors.textPrimary,
-                            style = TraktTheme.typography.meta,
+                            style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
                         )
                     }
                 }

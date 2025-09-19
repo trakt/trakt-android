@@ -128,6 +128,17 @@ internal fun VerticalMediaCard(
                                     translationY = -8.dp.toPx()
                                 },
                         )
+                        Icon(
+                            painter = painterResource(R.drawable.ic_trakt_logo),
+                            contentDescription = null,
+                            tint = TraktTheme.colors.placeholderContent,
+                            modifier = Modifier
+                                .size(64.dp)
+                                .align(Alignment.Center)
+                                .graphicsLayer {
+                                    translationY = 6.dp.toPx()
+                                },
+                        )
 
                         if ((imageUrl == null || isError) && title.isNotBlank()) {
                             Box(
