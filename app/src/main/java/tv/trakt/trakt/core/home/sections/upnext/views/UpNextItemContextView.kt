@@ -1,16 +1,10 @@
 package tv.trakt.trakt.core.home.sections.upnext.views
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -18,33 +12,33 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
+import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.core.home.sections.upnext.model.Progress
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.EpisodeProgressBar
+import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
-import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
+import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -113,57 +107,47 @@ private fun UpNextItemContextViewContent(
         verticalArrangement = spacedBy(0.dp),
         modifier = modifier,
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = spacedBy(12.dp),
-        ) {
-            HorizontalMediaCard(
-                title = "",
-                corner = 12.dp,
-                width = TraktTheme.size.horizontalSmallMediaCardSize,
-                containerImageUrl =
-                    item.progress.nextEpisode.images?.getScreenshotUrl()
-                        ?: item.show.images?.getFanartUrl(),
-                modifier = Modifier.shadow(
-                    elevation = 2.dp,
-                    shape = RoundedCornerShape(12.dp),
-                ),
-            )
 
-            Column(
-                verticalArrangement = spacedBy(1.dp),
-                modifier = Modifier.weight(1f),
-            ) {
-                Text(
-                    text = item.show.title,
-                    style = TraktTheme.typography.cardTitle.copy(fontSize = 13.sp),
-                    color = TraktTheme.colors.textPrimary,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
+        PanelMediaCard(
+            title = item.show.title,
+            titleOriginal = item.show.titleOriginal,
+            subtitle = item.progress.nextEpisode.seasonEpisodeString(),
+            shadow = 4.dp,
+            containerColor = Shade910,
+            contentImageUrl = item.show.images?.getPosterUrl(),
+            containerImageUrl = item.progress.nextEpisode.images?.getScreenshotUrl()
+                ?: item.show.images?.getFanartUrl(THUMB),
+            footerContent = {
+                Row(
+                    horizontalArrangement = spacedBy(4.dp),
+                ) {
+                    val runtime = item.progress.nextEpisode.runtime?.inWholeMinutes
+                    if (runtime != null) {
+                        InfoChip(
+                            text = runtime.durationFormat(),
+                        )
+                    }
 
-                Text(
-                    text = item.progress.nextEpisode.seasonEpisodeString(),
-                    style = TraktTheme.typography.cardSubtitle.copy(fontSize = 13.sp),
-                    color = TraktTheme.colors.textSecondary,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
-        }
+                    val remainingEpisodes = remember(item.progress.completed, item.progress.aired) {
+                        item.progress.remainingEpisodes
+                    }
+                    val remainingPercent = remember(item.progress.completed, item.progress.aired) {
+                        item.progress.remainingPercent
+                    }
 
-        Spacer(
-            modifier = Modifier
-                .padding(top = 24.dp, bottom = 8.dp)
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(Shade910),
+                    EpisodeProgressBar(
+                        startText = stringResource(R.string.tag_text_remaining_episodes, remainingEpisodes),
+                        progress = remainingPercent,
+                        containerColor = TraktTheme.colors.chipContainer
+                    )
+                }
+            },
         )
 
         Column(
             verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
             modifier = Modifier
-                .padding(top = 10.dp),
+                .padding(top = 24.dp),
         ) {
             val isLoading =
                 state.loadingWatched.isLoading ||

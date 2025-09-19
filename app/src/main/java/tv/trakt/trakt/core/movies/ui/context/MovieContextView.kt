@@ -146,18 +146,16 @@ private fun MovieContextViewContent(
         verticalArrangement = spacedBy(0.dp),
         modifier = modifier,
     ) {
-        val genresText = remember(movie.genres) {
-            movie.genres.take(2).joinToString(", ") { genre ->
-                genre.replaceFirstChar {
-                    it.uppercaseChar()
-                }
-            }
-        }
-
         PanelMediaCard(
             title = movie.title,
             titleOriginal = movie.titleOriginal,
-            subtitle = genresText,
+            subtitle = remember(movie.genres) {
+                movie.genres.take(2).joinToString(", ") { genre ->
+                    genre.replaceFirstChar {
+                        it.uppercaseChar()
+                    }
+                }
+            },
             shadow = 4.dp,
             containerColor = Shade910,
             contentImageUrl = movie.images?.getPosterUrl(),

@@ -96,7 +96,6 @@ internal fun HomeWatchlistItemSheet(
                     }
                 },
                 modifier = Modifier
-                    .padding(top = 4.dp)
                     .padding(bottom = 24.dp)
                     .padding(horizontal = 24.dp),
             )

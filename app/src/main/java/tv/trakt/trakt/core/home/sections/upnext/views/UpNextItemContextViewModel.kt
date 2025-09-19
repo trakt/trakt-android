@@ -39,6 +39,7 @@ internal class UpNextItemContextViewModel(
                     showIds = listOf(showId),
                     notify = true,
                 )
+                loadUserProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -46,6 +47,19 @@ internal class UpNextItemContextViewModel(
                 }
             } finally {
                 loadingDropState.update { DONE }
+            }
+        }
+    }
+
+    fun loadUserProgress() {
+        viewModelScope.launch {
+            try {
+                // TODO Load user progress for shows as well
+//                loadUserProgressUseCase.loadMoviesProgress()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.w(error)
+                }
             }
         }
     }
