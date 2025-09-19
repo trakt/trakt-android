@@ -22,6 +22,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.inject
+import org.koin.androidx.compose.koinViewModel
 import org.koin.core.qualifier.named
 import timber.log.Timber
 import tv.trakt.trakt.core.auth.ConfigAuth.OAUTH_REDIRECT_URI
@@ -59,6 +60,7 @@ internal class MainActivity : ComponentActivity() {
                     LocalSnackbarState provides snackbarState,
                 ) {
                     MainScreen(
+                        viewModel = koinViewModel(),
                         intent = intent,
                     )
                 }

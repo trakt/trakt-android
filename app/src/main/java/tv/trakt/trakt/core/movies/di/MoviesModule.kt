@@ -152,6 +152,7 @@ internal val moviesModule = module {
             userWatchlistLocalSource = get(),
             loadProgressUseCase = get(),
             loadWatchlistUseCase = get(),
+            sessionManager = get(),
         )
     }
 }

@@ -20,6 +20,7 @@ import tv.trakt.trakt.core.home.di.homeDataModule
 import tv.trakt.trakt.core.home.di.homeModule
 import tv.trakt.trakt.core.lists.di.listsDataModule
 import tv.trakt.trakt.core.lists.di.listsModule
+import tv.trakt.trakt.core.main.di.mainModule
 import tv.trakt.trakt.core.movies.di.moviesDataModule
 import tv.trakt.trakt.core.movies.di.moviesModule
 import tv.trakt.trakt.core.people.di.peopleDataModule
@@ -69,6 +70,7 @@ internal class TraktApplication : Application() {
             modules(
                 networkingModule,
                 networkingApiModule,
+                mainModule,
                 authModule,
                 commonAuthModule,
                 homeModule,

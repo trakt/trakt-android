@@ -212,12 +212,14 @@ private fun MovieContextViewContent(
             },
         )
 
-        MovieActionButtons(
-            movie = movie,
-            state = state,
-            onWatchedClick = onWatchedClick,
-            onWatchlistClick = onWatchlistClick,
-        )
+        if (state.user != null) {
+            MovieActionButtons(
+                movie = movie,
+                state = state,
+                onWatchedClick = onWatchedClick,
+                onWatchlistClick = onWatchlistClick,
+            )
+        }
     }
 }
 

@@ -23,7 +23,6 @@ import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -53,6 +52,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 internal fun MainScreen(
+    viewModel: MainViewModel,
     modifier: Modifier = Modifier,
     intent: Intent? = null,
 ) {
@@ -203,13 +203,5 @@ private fun handleShortcutIntent(
                 navController.navigateToLists()
             }
         }
-    }
-}
-
-@Preview
-@Composable
-private fun MainScreenPreview() {
-    TraktTheme {
-        MainScreen()
     }
 }
