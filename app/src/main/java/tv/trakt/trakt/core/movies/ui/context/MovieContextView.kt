@@ -35,6 +35,7 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.theme.colors.Red500
@@ -83,7 +84,7 @@ internal fun MovieContextView(
     }
 
     MovieContextViewContent(
-        item = movie,
+        movie = movie,
         state = state,
         modifier = modifier,
         onWatchedClick = {
@@ -120,7 +121,7 @@ internal fun MovieContextView(
 
 @Composable
 private fun MovieContextViewContent(
-    item: Movie,
+    movie: Movie,
     state: MovieContextState,
     modifier: Modifier = Modifier,
     onWatchedClick: () -> Unit = {},
@@ -130,8 +131,8 @@ private fun MovieContextViewContent(
         verticalArrangement = spacedBy(0.dp),
         modifier = modifier,
     ) {
-        val genresText = remember(item.genres) {
-            item.genres.take(2).joinToString(", ") { genre ->
+        val genresText = remember(movie.genres) {
+            movie.genres.take(2).joinToString(", ") { genre ->
                 genre.replaceFirstChar {
                     it.uppercaseChar()
                 }
@@ -139,31 +140,31 @@ private fun MovieContextViewContent(
         }
 
         PanelMediaCard(
-            title = item.title,
-            titleOriginal = item.titleOriginal,
+            title = movie.title,
+            titleOriginal = movie.titleOriginal,
             subtitle = genresText,
             shadow = 4.dp,
             containerColor = Shade910,
-            contentImageUrl = item.images?.getPosterUrl(),
-            containerImageUrl = item.images?.getFanartUrl(THUMB),
+            contentImageUrl = movie.images?.getPosterUrl(),
+            containerImageUrl = movie.images?.getFanartUrl(THUMB),
             footerContent = {
                 Row(
                     horizontalArrangement = Arrangement.Absolute.spacedBy(TraktTheme.spacing.chipsSpace),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    item.released?.let {
+                    movie.released?.let {
                         InfoChip(
                             text = it.year.toString(),
                         )
                     }
-                    item.runtime?.let {
+                    movie.runtime?.let {
                         InfoChip(
                             text = it.inWholeMinutes.durationFormat(),
                         )
                     }
-                    if (!item.certification.isNullOrBlank()) {
+                    if (!movie.certification.isNullOrBlank()) {
                         InfoChip(
-                            text = item.certification ?: "NR",
+                            text = movie.certification ?: "NR",
                         )
                     }
 
@@ -188,10 +189,10 @@ private fun MovieContextViewContent(
                             painter = painterResource(R.drawable.ic_heart),
                             contentDescription = null,
                             modifier = Modifier.size(16.dp),
-                            colorFilter = if (item.rating.rating > 0) redFilter else grayFilter,
+                            colorFilter = if (movie.rating.rating > 0) redFilter else grayFilter,
                         )
                         Text(
-                            text = if (item.rating.rating > 0) "${item.rating.ratingPercent}%" else "-",
+                            text = if (movie.rating.rating > 0) "${movie.rating.ratingPercent}%" else "-",
                             color = TraktTheme.colors.textPrimary,
                             style = TraktTheme.typography.meta,
                         )
@@ -201,6 +202,7 @@ private fun MovieContextViewContent(
         )
 
         MovieActionButtons(
+            movie = movie,
             state = state,
             onWatchedClick = onWatchedClick,
             onWatchlistClick = onWatchlistClick,
@@ -210,40 +212,47 @@ private fun MovieContextViewContent(
 
 @Composable
 private fun MovieActionButtons(
+    movie: Movie,
     state: MovieContextState,
     onWatchedClick: () -> Unit,
     onWatchlistClick: () -> Unit,
 ) {
+    val isReleased = remember {
+        movie.released?.isTodayOrBefore() ?: false
+    }
+
+    val isLoadingOrDone =
+        state.loadingWatched.isLoading ||
+            state.loadingWatchlist.isLoading ||
+            state.loadingWatchlist.isDone ||
+            state.loadingWatched.isDone
+
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
         modifier = Modifier
             .padding(top = 24.dp),
     ) {
-        val isLoadingOrDone =
-            state.loadingWatched.isLoading ||
-                state.loadingWatchlist.isLoading ||
-                state.loadingWatchlist.isDone ||
-                state.loadingWatched.isDone
-
-        GhostButton(
-            enabled = !isLoadingOrDone,
-            loading = state.loadingWatched.isLoading || state.loadingWatched.isDone,
-            text = when {
-                state.isWatched -> stringResource(R.string.button_text_remove_from_history)
-                else -> stringResource(R.string.button_text_mark_as_watched)
-            },
-            iconSize = 20.dp,
-            iconSpace = 16.dp,
-            onClick = onWatchedClick,
-            icon = when {
-                state.isWatched -> painterResource(R.drawable.ic_trash)
-                else -> painterResource(R.drawable.ic_check_round)
-            },
-            modifier = Modifier
-                .graphicsLayer {
-                    translationX = -3.dp.toPx()
+        if (isReleased) {
+            GhostButton(
+                enabled = !isLoadingOrDone,
+                loading = state.loadingWatched.isLoading || state.loadingWatched.isDone,
+                text = when {
+                    state.isWatched -> stringResource(R.string.button_text_remove_from_history)
+                    else -> stringResource(R.string.button_text_mark_as_watched)
                 },
-        )
+                iconSize = 20.dp,
+                iconSpace = 16.dp,
+                onClick = onWatchedClick,
+                icon = when {
+                    state.isWatched -> painterResource(R.drawable.ic_trash)
+                    else -> painterResource(R.drawable.ic_check_round)
+                },
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationX = -3.dp.toPx()
+                    },
+            )
+        }
 
         GhostButton(
             enabled = !isLoadingOrDone,
@@ -279,7 +288,7 @@ private fun Preview() {
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             MovieContextViewContent(
                 state = MovieContextState(),
-                item = PreviewData.movie1,
+                movie = PreviewData.movie1,
             )
         }
     }
