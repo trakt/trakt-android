@@ -107,7 +107,6 @@ private fun UpNextItemContextViewContent(
         verticalArrangement = spacedBy(0.dp),
         modifier = modifier,
     ) {
-
         PanelMediaCard(
             title = item.show.title,
             titleOriginal = item.show.titleOriginal,
@@ -138,7 +137,7 @@ private fun UpNextItemContextViewContent(
                     EpisodeProgressBar(
                         startText = stringResource(R.string.tag_text_remaining_episodes, remainingEpisodes),
                         progress = remainingPercent,
-                        containerColor = TraktTheme.colors.chipContainer
+                        containerColor = TraktTheme.colors.chipContainer,
                     )
                 }
             },

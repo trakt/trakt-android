@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.episodes.model.Episode
 import java.time.Instant
+import kotlin.time.Duration
 
 @Immutable
 internal sealed class HomeActivityItem(
@@ -40,10 +41,22 @@ internal sealed class HomeActivityItem(
             is EpisodeItem -> show.title
         }
 
+    val titleOriginal: String?
+        get() = when (this) {
+            is MovieItem -> movie.titleOriginal
+            is EpisodeItem -> show.titleOriginal
+        }
+
     val images: Images?
         get() = when (this) {
             is MovieItem -> movie.images
-            is EpisodeItem -> episode.images
+            is EpisodeItem -> show.images
+        }
+
+    val runtime: Duration?
+        get() = when (this) {
+            is MovieItem -> movie.runtime
+            is EpisodeItem -> episode.runtime
         }
 
     val sortId: Long?
