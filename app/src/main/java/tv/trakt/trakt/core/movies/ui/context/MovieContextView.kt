@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package tv.trakt.trakt.core.movies.ui.context
 
 import androidx.compose.foundation.Image
@@ -55,20 +57,20 @@ internal fun MovieContextView(
     modifier: Modifier = Modifier,
     onAddWatched: (Movie) -> Unit,
     onAddWatchlist: (Movie) -> Unit,
+    onRemoveWatched: (Movie) -> Unit,
     onRemoveWatchlist: (Movie) -> Unit,
     onError: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var confirmRemoveWatchlistSheet by remember { mutableStateOf(false) }
+    var confirmRemoveWatchedSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(state.loadingWatched, state.loadingWatchlist) {
         when {
             state.loadingWatched == LoadingState.DONE -> when {
                 state.isWatched -> onAddWatched(movie)
-                else -> {
-                    TODO()
-                }
+                else -> onRemoveWatched(movie)
             }
             state.loadingWatchlist == LoadingState.DONE -> when {
                 state.isWatchlist -> onAddWatchlist(movie)
@@ -89,7 +91,7 @@ internal fun MovieContextView(
         modifier = modifier,
         onWatchedClick = {
             if (state.isWatched) {
-                // Removing from history is not supported in this context
+                confirmRemoveWatchedSheet = true
             } else {
                 viewModel.addToWatched()
             }
@@ -103,7 +105,6 @@ internal fun MovieContextView(
         },
     )
 
-    @OptIn(ExperimentalMaterial3Api::class)
     ConfirmationSheet(
         active = confirmRemoveWatchlistSheet,
         onYes = {
@@ -114,6 +115,20 @@ internal fun MovieContextView(
         title = stringResource(R.string.button_text_watchlist),
         message = stringResource(
             R.string.warning_prompt_remove_from_watchlist,
+            movie.title,
+        ),
+    )
+
+    ConfirmationSheet(
+        active = confirmRemoveWatchedSheet,
+        onYes = {
+            confirmRemoveWatchedSheet = false
+            viewModel.removeFromWatched()
+        },
+        onNo = { confirmRemoveWatchedSheet = false },
+        title = stringResource(R.string.button_text_remove_from_history),
+        message = stringResource(
+            R.string.warning_prompt_remove_from_watched,
             movie.title,
         ),
     )

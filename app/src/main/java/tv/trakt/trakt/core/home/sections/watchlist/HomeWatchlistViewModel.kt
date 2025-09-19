@@ -24,11 +24,13 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddWatchlistHistoryUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetWatchlistMoviesUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
+import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
 import java.time.Instant
 
 internal class HomeWatchlistViewModel(
     private val getWatchlistUseCase: GetWatchlistMoviesUseCase,
     private val addHistoryUseCase: AddWatchlistHistoryUseCase,
+    private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = HomeWatchlistState()
@@ -128,10 +130,9 @@ internal class HomeWatchlistViewModel(
                 itemsState.update {
                     getWatchlistUseCase.getWatchlist()
                 }
+                loadUserProgress()
 
-                infoState.update {
-                    StaticStringResource("Added to history")
-                }
+                infoState.update { StaticStringResource("Added to history") }
                 loadedAt = nowUtcInstant()
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -140,6 +141,18 @@ internal class HomeWatchlistViewModel(
                 }
             } finally {
                 processingJob = null
+            }
+        }
+    }
+
+    fun loadUserProgress() {
+        viewModelScope.launch {
+            try {
+                loadUserProgressUseCase.loadMoviesProgress()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.w(error)
+                }
             }
         }
     }

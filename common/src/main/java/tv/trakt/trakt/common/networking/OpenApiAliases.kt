@@ -43,6 +43,7 @@ import org.openapitools.client.models.GetUsersWatchlistAll200ResponseInner
 import org.openapitools.client.models.GetUsersWatchlistMovies200ResponseInner
 import org.openapitools.client.models.GetUsersWatchlistShows200ResponseInner
 import org.openapitools.client.models.GetWatchnowSourcesAll200ResponseInnerValueInner
+import org.openapitools.client.models.PostCheckinMovie200ResponseMovie
 import org.openapitools.client.models.PostSyncHistoryAdd200Response
 
 /**
@@ -55,6 +56,7 @@ typealias ShowLikesDto = GetUsersLikesComments200ResponseInnerAllOfOneOf1Show
 typealias MovieDto = GetCalendarsMovies200ResponseInnerMovie
 typealias MovieIdsDto = GetCalendarsMovies200ResponseInnerMovieIds
 typealias MovieLikesDto = GetUsersLikesComments200ResponseInnerAllOfOneOfMovie
+typealias MovieProgressDto = PostCheckinMovie200ResponseMovie
 
 typealias EpisodeDto = GetCalendarsShows200ResponseInnerEpisode
 typealias LastEpisodeDto = GetSyncProgressUpNextStandard200ResponseInnerProgressLastEpisode

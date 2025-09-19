@@ -5,12 +5,14 @@ package tv.trakt.trakt.core.movies.ui.context.sheet
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -48,79 +50,70 @@ internal fun MovieContextSheet(
                     parameters = { parametersOf(movie) },
                 ),
                 onAddWatched = {
-                    sheetScope.run {
-                        launch { state.hide() }
-                            .invokeOnCompletion {
-                                if (!state.isVisible) {
-                                    onDismiss()
-                                }
-                            }
-                        launch {
-                            val job = sheetScope.launch {
-                                localSnack.showSnackbar(localContext.getString(R.string.text_info_history_added))
-                            }
-                            delay(SNACK_DURATION_SHORT)
-                            job.cancel()
-                        }
-                    }
+                    sheetScope.dismissWithMessage(
+                        state = state,
+                        snackHost = localSnack,
+                        onDismiss = onDismiss,
+                        message = localContext.getString(R.string.text_info_history_added),
+                    )
                 },
                 onAddWatchlist = {
-                    sheetScope.run {
-                        launch { state.hide() }
-                            .invokeOnCompletion {
-                                if (!state.isVisible) {
-                                    onDismiss()
-                                }
-                            }
-                        launch {
-                            val job = sheetScope.launch {
-                                localSnack.showSnackbar(localContext.getString(R.string.text_info_watchlist_added))
-                            }
-                            delay(SNACK_DURATION_SHORT)
-                            job.cancel()
-                        }
-                    }
+                    sheetScope.dismissWithMessage(
+                        state = state,
+                        snackHost = localSnack,
+                        onDismiss = onDismiss,
+                        message = localContext.getString(R.string.text_info_watchlist_added),
+                    )
+                },
+                onRemoveWatched = {
+                    sheetScope.dismissWithMessage(
+                        state = state,
+                        snackHost = localSnack,
+                        onDismiss = onDismiss,
+                        message = localContext.getString(R.string.text_info_history_removed),
+                    )
                 },
                 onRemoveWatchlist = {
-                    sheetScope.run {
-                        launch { state.hide() }
-                            .invokeOnCompletion {
-                                if (!state.isVisible) {
-                                    onDismiss()
-                                }
-                            }
-                        launch {
-                            val job = sheetScope.launch {
-                                localSnack.showSnackbar(localContext.getString(R.string.text_info_watchlist_removed))
-                            }
-                            delay(SNACK_DURATION_SHORT)
-                            job.cancel()
-                        }
-                    }
+                    sheetScope.dismissWithMessage(
+                        state = state,
+                        snackHost = localSnack,
+                        onDismiss = onDismiss,
+                        message = localContext.getString(R.string.text_info_watchlist_removed),
+                    )
                 },
                 onError = {
-                    sheetScope.run {
-                        launch { state.hide() }
-                            .invokeOnCompletion {
-                                if (!state.isVisible) {
-                                    onDismiss()
-                                }
-                            }
-                        launch {
-                            val job = sheetScope.launch {
-                                localSnack.showSnackbar(
-                                    localContext.getString(R.string.error_text_unexpected_error_short),
-                                )
-                            }
-                            delay(SNACK_DURATION_SHORT)
-                            job.cancel()
-                        }
-                    }
+                    sheetScope.dismissWithMessage(
+                        state = state,
+                        snackHost = localSnack,
+                        onDismiss = onDismiss,
+                        message = localContext.getString(R.string.error_text_unexpected_error_short),
+                    )
                 },
                 modifier = Modifier
                     .padding(bottom = 24.dp)
                     .padding(horizontal = 24.dp),
             )
         }
+    }
+}
+
+private fun CoroutineScope.dismissWithMessage(
+    state: SheetState,
+    onDismiss: () -> Unit,
+    snackHost: SnackbarHostState,
+    message: String,
+) {
+    launch { state.hide() }
+        .invokeOnCompletion {
+            if (!state.isVisible) {
+                onDismiss()
+            }
+        }
+    launch {
+        val job = this@dismissWithMessage.launch {
+            snackHost.showSnackbar(message)
+        }
+        delay(SNACK_DURATION_SHORT)
+        job.cancel()
     }
 }

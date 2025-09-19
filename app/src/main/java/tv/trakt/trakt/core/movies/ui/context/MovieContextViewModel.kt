@@ -2,6 +2,8 @@ package tv.trakt.trakt.core.movies.ui.context
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -19,14 +21,18 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
+import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
+import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.core.user.usecase.watchlist.LoadUserWatchlistUseCase
 
 internal class MovieContextViewModel(
     private val movie: Movie,
     private val updateMovieWatchlistUseCase: UpdateMovieWatchlistUseCase,
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
+    private val userProgressLocalSource: UserProgressLocalDataSource,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
+    private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
 ) : ViewModel() {
     private val initialState = MovieContextState()
@@ -49,12 +55,27 @@ internal class MovieContextViewModel(
                 loadingWatchedState.update { LOADING }
                 loadingWatchlistState.update { LOADING }
 
-                if (!userWatchlistLocalSource.isMoviesLoaded()) {
-                    loadWatchlistUseCase.loadWatchlist()
-                }
+                coroutineScope {
+                    val watchlistAsync = async {
+                        if (!userWatchlistLocalSource.isMoviesLoaded()) {
+                            loadWatchlistUseCase.loadWatchlist()
+                        }
+                    }
+                    val progressAsync = async {
+                        if (!userProgressLocalSource.isMoviesLoaded()) {
+                            loadProgressUseCase.loadMoviesProgress()
+                        }
+                    }
 
-                isWatchlistState.update {
-                    userWatchlistLocalSource.containsMovie(movie.ids.trakt)
+                    watchlistAsync.await()
+                    progressAsync.await()
+
+                    isWatchlistState.update {
+                        userWatchlistLocalSource.containsMovie(movie.ids.trakt)
+                    }
+                    isWatchedState.update {
+                        userProgressLocalSource.containsMovie(movie.ids.trakt)
+                    }
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -137,10 +158,36 @@ internal class MovieContextViewModel(
                 loadingWatchedState.update { LOADING }
 
                 updateMovieHistoryUseCase.addToWatched(movie.ids.trakt)
+                loadProgressUseCase.loadMoviesProgress()
                 userWatchlistLocalSource.removeMovies(setOf(movie.ids.trakt))
 
                 isWatchedState.update { true }
                 isWatchlistState.update { false }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.w(error)
+                }
+            } finally {
+                loadingWatchedState.update { DONE }
+            }
+        }
+    }
+
+    fun removeFromWatched() {
+        if (isLoading()) {
+            return
+        }
+
+        viewModelScope.launch {
+            clear()
+            try {
+                loadingWatchedState.update { LOADING }
+
+                updateMovieHistoryUseCase.removeAllFromHistory(movie.ids.trakt)
+                userProgressLocalSource.removeMovies(setOf(movie.ids.trakt))
+
+                isWatchedState.update { false }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

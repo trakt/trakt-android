@@ -228,9 +228,9 @@ private fun ListsScreenContent(
                     exit = fadeOut(tween()),
                 ) {
                     ContentEmptyView(
-                        authenticated = state.user != null,
+                        authenticated = state.user.user != null,
                         modifier = Modifier.padding(sectionPadding),
-                        onActionClick = if (state.user == null) {
+                        onActionClick = if (state.user.user == null) {
                             onProfileClick
                         } else {
                             onCreateListClick

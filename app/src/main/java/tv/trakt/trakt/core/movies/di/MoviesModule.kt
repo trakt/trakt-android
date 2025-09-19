@@ -148,7 +148,9 @@ internal val moviesModule = module {
             movie = movie,
             updateMovieHistoryUseCase = get(),
             updateMovieWatchlistUseCase = get(),
+            userProgressLocalSource = get(),
             userWatchlistLocalSource = get(),
+            loadProgressUseCase = get(),
             loadWatchlistUseCase = get(),
         )
     }

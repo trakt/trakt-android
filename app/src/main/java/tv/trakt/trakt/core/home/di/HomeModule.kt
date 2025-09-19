@@ -133,6 +133,7 @@ internal val homeModule = module {
         HomeWatchlistViewModel(
             getWatchlistUseCase = get(),
             addHistoryUseCase = get(),
+            loadUserProgressUseCase = get(),
             sessionManager = get(),
         )
     }
@@ -159,6 +160,7 @@ internal val homeModule = module {
         ActivityItemContextViewModel(
             updateMovieHistoryUseCase = get(),
             activityLocalSource = get(),
+            loadUserProgressUseCase = get(),
         )
     }
 

@@ -16,10 +16,12 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
+import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
 
 internal class ActivityItemContextViewModel(
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
     private val activityLocalSource: HomePersonalLocalDataSource,
+    private val loadUserProgressUseCase: LoadUserProgressUseCase,
 ) : ViewModel() {
     private val initialState = ActivityItemContextState()
 
@@ -34,13 +36,10 @@ internal class ActivityItemContextViewModel(
             try {
                 loadingRemoveState.update { LOADING }
 
-                updateMovieHistoryUseCase.removePlayFromHistory(
-                    playId = playId,
-                )
-                activityLocalSource.removeItems(
-                    ids = setOf(playId),
-                    notify = true,
-                )
+                updateMovieHistoryUseCase.removePlayFromHistory(playId = playId)
+                activityLocalSource.removeItems(ids = setOf(playId), notify = true)
+
+                loadUserProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -48,6 +47,18 @@ internal class ActivityItemContextViewModel(
                 }
             } finally {
                 loadingRemoveState.update { DONE }
+            }
+        }
+    }
+
+    fun loadUserProgress() {
+        viewModelScope.launch {
+            try {
+                loadUserProgressUseCase.loadMoviesProgress()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.w(error)
+                }
             }
         }
     }
