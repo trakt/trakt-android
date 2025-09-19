@@ -45,7 +45,9 @@ import coil3.compose.AsyncImage
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import tv.trakt.trakt.common.Config
-import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HEADER_NEWS
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HEADER_NEWS_1
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HEADER_NEWS_2
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HEADER_NEWS_ENABLED
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HEADER_NEWS_URL
 import tv.trakt.trakt.common.helpers.GreetingQuotes
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
@@ -53,6 +55,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.VipChip
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
+import tv.trakt.trakt.ui.components.headerbar.model.HeaderNews
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -94,11 +97,15 @@ internal fun HeaderBar(
 
     val news = remember {
         if (localMode) {
-            "Welcome to Trakt " to "https://trakt.tv"
+            HeaderNews()
         } else {
             val remoteConfig = Firebase.remoteConfig
-            remoteConfig.getString(MOBILE_HEADER_NEWS) to
-                remoteConfig.getString(MOBILE_HEADER_NEWS_URL)
+            HeaderNews(
+                enabled = remoteConfig.getBoolean(MOBILE_HEADER_NEWS_ENABLED),
+                news1 = remoteConfig.getString(MOBILE_HEADER_NEWS_1),
+                news2 = remoteConfig.getString(MOBILE_HEADER_NEWS_2),
+                newsUrl = remoteConfig.getString(MOBILE_HEADER_NEWS_URL),
+            )
         }
     }
 
@@ -146,8 +153,8 @@ internal fun HeaderBar(
                             modifier = Modifier.align(Alignment.Center),
                         )
                     } else {
-                        val isNewsTitle = remember(news) {
-                            news.first.isNotBlank() && news.second.isNotBlank()
+                        val isNewsHeader = remember(news) {
+                            news.enabled && news.newsUrl.isNotBlank()
                         }
                         Column(
                             verticalArrangement = spacedBy(2.dp, Alignment.CenterVertically),
@@ -155,14 +162,14 @@ internal fun HeaderBar(
                                 .padding(end = 16.dp)
                                 .align(Alignment.Center)
                                 .onClick {
-                                    if (isNewsTitle) {
-                                        uriHandler.openUri(news.second)
+                                    if (isNewsHeader) {
+                                        uriHandler.openUri(news.newsUrl)
                                     }
                                 },
                         ) {
                             Text(
                                 text = when {
-                                    isNewsTitle -> news.first
+                                    isNewsHeader -> news.news1
                                     !title.isNullOrBlank() -> title
                                     else -> GreetingQuotes.getTodayQuote()
                                 },
@@ -172,7 +179,10 @@ internal fun HeaderBar(
                                 overflow = TextOverflow.Ellipsis,
                             )
                             Text(
-                                text = todayLabel,
+                                text = when {
+                                    isNewsHeader -> news.news2
+                                    else -> todayLabel
+                                },
                                 color = TraktTheme.colors.textSecondary,
                                 style = TraktTheme.typography.meta,
                                 maxLines = 1,
