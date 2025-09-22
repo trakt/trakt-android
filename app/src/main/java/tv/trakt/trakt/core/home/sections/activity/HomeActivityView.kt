@@ -125,13 +125,13 @@ internal fun HomeActivityContent(
                 title = stringResource(R.string.list_title_activity),
             )
 
-            if (!state.items.isNullOrEmpty() || state.loading != DONE) {
-                Text(
-                    text = stringResource(R.string.button_text_view_all),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.buttonSecondary,
-                )
-            }
+//            if (!state.items.isNullOrEmpty() || state.loading != DONE) {
+//                Text(
+//                    text = stringResource(R.string.button_text_view_all),
+//                    color = TraktTheme.colors.textSecondary,
+//                    style = TraktTheme.typography.buttonSecondary,
+//                )
+//            }
         }
 
         if (!state.items.isNullOrEmpty() || state.loading.isLoading || state.user != null) {

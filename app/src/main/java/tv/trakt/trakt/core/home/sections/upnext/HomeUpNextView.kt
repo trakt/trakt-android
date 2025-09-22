@@ -137,13 +137,13 @@ internal fun HomeUpNextContent(
             TraktHeader(
                 title = stringResource(R.string.list_title_up_next),
             )
-            if (!state.items.items.isNullOrEmpty() || state.loading != DONE) {
-                Text(
-                    text = stringResource(R.string.button_text_view_all),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.buttonSecondary,
-                )
-            }
+//            if (!state.items.items.isNullOrEmpty() || state.loading != DONE) {
+//                Text(
+//                    text = stringResource(R.string.button_text_view_all),
+//                    color = TraktTheme.colors.textSecondary,
+//                    style = TraktTheme.typography.buttonSecondary,
+//                )
+//            }
         }
 
         Crossfade(

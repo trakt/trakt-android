@@ -131,13 +131,13 @@ internal fun HomeWatchlistContent(
                 title = stringResource(R.string.page_title_watchlist),
                 subtitle = stringResource(R.string.list_subtitle_released_movies),
             )
-            if (!state.items.isNullOrEmpty() || state.loading != DONE) {
-                Text(
-                    text = stringResource(R.string.button_text_view_all),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.buttonSecondary,
-                )
-            }
+//            if (!state.items.isNullOrEmpty() || state.loading != DONE) {
+//                Text(
+//                    text = stringResource(R.string.button_text_view_all),
+//                    color = TraktTheme.colors.textSecondary,
+//                    style = TraktTheme.typography.buttonSecondary,
+//                )
+//            }
         }
 
         Crossfade(
