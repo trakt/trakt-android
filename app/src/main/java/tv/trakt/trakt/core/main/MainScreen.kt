@@ -24,6 +24,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle.Event.ON_RESUME
+import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -68,6 +70,10 @@ internal fun MainScreen(
     val searchState = rememberSearchState(
         currentDestination = currentDestination.value?.destination,
     )
+
+    LifecycleEventEffect(ON_RESUME) {
+        viewModel.loadData()
+    }
 
     LaunchedEffect(intent) {
         if (intent != null) {
