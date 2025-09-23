@@ -41,8 +41,9 @@ internal class UserApiClient(
         return response.body()
     }
 
-    override suspend fun getWatchedShows(limit: Int): List<SyncProgressItemDto> {
+    override suspend fun getWatchedShows(limit: Int?): List<SyncProgressItemDto> {
         val allResults = mutableListOf<SyncProgressItemDto>()
+        val defaultLimit = 200
 
         var page = 1
         var hasMorePages = true
@@ -59,7 +60,7 @@ internal class UserApiClient(
                 page++
             }
 
-            if (body.size < limit) {
+            if (limit == null || body.size < defaultLimit) {
                 hasMorePages = false
             }
         }

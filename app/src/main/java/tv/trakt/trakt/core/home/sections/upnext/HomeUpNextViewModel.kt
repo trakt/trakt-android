@@ -30,10 +30,12 @@ import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
+import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
 
 internal class HomeUpNextViewModel(
     private val getUpNextUseCase: GetUpNextUseCase,
     private val updateHistoryUseCase: UpdateEpisodeHistoryUseCase,
+    private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val homePersonalActivitySource: HomePersonalLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
@@ -171,6 +173,7 @@ internal class HomeUpNextViewModel(
                         resetScroll = false,
                     )
                 }
+                loadUserProgress()
 
                 infoState.update {
                     StaticStringResource("Added to history")
@@ -183,6 +186,18 @@ internal class HomeUpNextViewModel(
                 }
             } finally {
                 processingJob = null
+            }
+        }
+    }
+
+    fun loadUserProgress() {
+        viewModelScope.launch {
+            try {
+                loadUserProgressUseCase.loadShowsProgress(limit = 3)
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.w(error)
+                }
             }
         }
     }

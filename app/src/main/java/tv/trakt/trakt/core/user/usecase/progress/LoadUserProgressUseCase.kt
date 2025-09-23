@@ -52,8 +52,8 @@ internal class LoadUserProgressUseCase(
         return response.toImmutableList()
     }
 
-    suspend fun loadShowsProgress(): ImmutableList<ProgressItem.ShowItem> {
-        val response = remoteSource.getWatchedShows(limit = 100)
+    suspend fun loadShowsProgress(limit: Int? = null): ImmutableList<ProgressItem.ShowItem> {
+        val response = remoteSource.getWatchedShows(limit = limit)
             .asyncMap {
                 ProgressItem.ShowItem(
                     show = Show.fromDto(it.show),
@@ -67,7 +67,10 @@ internal class LoadUserProgressUseCase(
             }
 
         with(localSource) {
-            setShows(response)
+            when (limit) {
+                null -> setShows(response)
+                else -> addShows(response)
+            }
         }
 
         return response.toImmutableList()

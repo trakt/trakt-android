@@ -19,7 +19,7 @@ internal interface UserRemoteDataSource {
 
     suspend fun getWatchedMovies(): List<WatchedMovieDto>
 
-    suspend fun getWatchedShows(limit: Int): List<SyncProgressItemDto>
+    suspend fun getWatchedShows(limit: Int?): List<SyncProgressItemDto>
 
     suspend fun getWatchlist(
         page: Int? = null,

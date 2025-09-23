@@ -125,6 +125,7 @@ internal val homeModule = module {
             getUpNextUseCase = get(),
             updateHistoryUseCase = get(),
             homePersonalActivitySource = get(),
+            loadUserProgressUseCase = get(),
             sessionManager = get(),
         )
     }
