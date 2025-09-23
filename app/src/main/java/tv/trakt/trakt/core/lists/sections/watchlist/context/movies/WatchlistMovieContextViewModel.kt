@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.home.sections.watchlist.views
+package tv.trakt.trakt.core.lists.sections.watchlist.context.movies
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,18 +15,46 @@ import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
+import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
 
-internal class WatchlistItemContextViewModel(
+internal class WatchlistMovieContextViewModel(
+    private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
     private val updateMovieWatchlistUseCase: UpdateMovieWatchlistUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
+    private val loadProgressUseCase: LoadUserProgressUseCase,
 ) : ViewModel() {
-    private val initialState = WatchlistItemContextState()
+    private val initialState = WatchlistMovieContextState()
 
     private val loadingWatchedState = MutableStateFlow(initialState.loadingWatched)
     private val loadingWatchlistState = MutableStateFlow(initialState.loadingWatchlist)
     private val errorState = MutableStateFlow(initialState.error)
+
+    fun addToWatched(movieId: TraktId) {
+        if (isLoading()) {
+            return
+        }
+
+        viewModelScope.launch {
+            clear()
+            try {
+                loadingWatchedState.update { LOADING }
+
+                updateMovieHistoryUseCase.addToWatched(movieId)
+                userWatchlistLocalSource.removeMovies(setOf(movieId))
+                loadProgressUseCase.loadMoviesProgress()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.w(error)
+                }
+            } finally {
+                loadingWatchedState.update { DONE }
+            }
+        }
+    }
 
     fun removeFromWatchlist(movieId: TraktId) {
         if (isLoading()) return
@@ -58,12 +86,12 @@ internal class WatchlistItemContextViewModel(
         return loadingWatchedState.value.isLoading || loadingWatchlistState.value.isLoading
     }
 
-    val state: StateFlow<WatchlistItemContextState> = combine(
+    val state: StateFlow<WatchlistMovieContextState> = combine(
         loadingWatchedState,
         loadingWatchlistState,
         errorState,
     ) { s1, s2, s3 ->
-        WatchlistItemContextState(
+        WatchlistMovieContextState(
             loadingWatched = s1,
             loadingWatchlist = s2,
             error = s3,

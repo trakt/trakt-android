@@ -61,7 +61,7 @@ internal class ListsWatchlistViewModel(
         }
     }
 
-    private fun loadData() {
+    fun loadData(ignoreErrors: Boolean = false) {
         loadDataJob?.cancel()
         loadDataJob = viewModelScope.launch {
             try {
@@ -92,7 +92,9 @@ internal class ListsWatchlistViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.update { error }
+                    if (!ignoreErrors) {
+                        errorState.update { error }
+                    }
                     Timber.w(error, "Failed to load data")
                 }
             } finally {

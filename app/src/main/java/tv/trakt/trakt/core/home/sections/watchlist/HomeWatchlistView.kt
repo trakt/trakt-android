@@ -50,8 +50,8 @@ import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.core.home.sections.watchlist.sheets.HomeWatchlistItemSheet
 import tv.trakt.trakt.core.home.views.HomeEmptyView
+import tv.trakt.trakt.core.lists.sections.watchlist.context.movies.sheets.WatchlistMovieSheet
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
@@ -94,7 +94,8 @@ internal fun HomeWatchlistView(
         },
     )
 
-    HomeWatchlistItemSheet(
+    WatchlistMovieSheet(
+        addLocally = false,
         sheetItem = contextSheet,
         onDismiss = { contextSheet = null },
         onRemoveWatchlist = {

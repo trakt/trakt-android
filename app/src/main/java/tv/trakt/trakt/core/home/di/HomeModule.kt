@@ -37,7 +37,6 @@ import tv.trakt.trakt.core.home.sections.upnext.views.UpNextItemContextViewModel
 import tv.trakt.trakt.core.home.sections.watchlist.HomeWatchlistViewModel
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeWatchlistUseCase
-import tv.trakt.trakt.core.home.sections.watchlist.views.WatchlistItemContextViewModel
 
 internal const val HOME_PREFERENCES = "home_preferences_mobile"
 
@@ -169,13 +168,6 @@ internal val homeModule = module {
         UpNextItemContextViewModel(
             updateShowHistoryUseCase = get(),
             upNextLocalDataSource = get(),
-        )
-    }
-
-    viewModel {
-        WatchlistItemContextViewModel(
-            updateMovieWatchlistUseCase = get(),
-            userWatchlistLocalSource = get(),
         )
     }
 }

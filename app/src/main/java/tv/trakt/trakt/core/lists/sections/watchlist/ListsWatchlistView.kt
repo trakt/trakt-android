@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package tv.trakt.trakt.core.lists.sections.watchlist
 
 import androidx.compose.animation.Crossfade
@@ -16,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -23,7 +26,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -42,7 +47,11 @@ import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAG
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.home.views.HomeEmptyView
+import tv.trakt.trakt.core.lists.sections.watchlist.context.movies.sheets.WatchlistMovieSheet
+import tv.trakt.trakt.core.lists.sections.watchlist.context.shows.sheets.WatchlistShowSheet
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.MEDIA
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.MOVIES
@@ -68,6 +77,9 @@ internal fun ListsWatchlistView(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    var showContextSheet by remember { mutableStateOf<Show?>(null) }
+    var movieContextSheet by remember { mutableStateOf<Movie?>(null) }
+
     ListWatchlistContent(
         state = state,
         modifier = modifier,
@@ -76,7 +88,32 @@ internal fun ListsWatchlistView(
         onFilterClick = viewModel::setFilter,
         onShowsClick = onShowsClick,
         onMoviesClick = onMoviesClick,
+        onShowLongClick = { showContextSheet = it },
+        onMovieLongClick = { movieContextSheet = it },
         onProfileClick = onProfileClick,
+    )
+
+    WatchlistShowSheet(
+        sheetItem = showContextSheet,
+        onDismiss = { showContextSheet = null },
+        onRemoveWatchlist = {
+            viewModel.loadData(ignoreErrors = true)
+        },
+        onAddWatched = {
+            viewModel.loadData(ignoreErrors = true)
+        },
+    )
+
+    WatchlistMovieSheet(
+        addLocally = true,
+        sheetItem = movieContextSheet,
+        onDismiss = { movieContextSheet = null },
+        onRemoveWatchlist = {
+            viewModel.loadData(ignoreErrors = true)
+        },
+        onAddWatched = {
+            viewModel.loadData(ignoreErrors = true)
+        },
     )
 }
 
@@ -89,6 +126,8 @@ internal fun ListWatchlistContent(
     onFilterClick: (WatchlistFilter) -> Unit = {},
     onShowsClick: () -> Unit = {},
     onMoviesClick: () -> Unit = {},
+    onShowLongClick: (Show) -> Unit = {},
+    onMovieLongClick: (Movie) -> Unit = {},
     onProfileClick: () -> Unit = {},
 ) {
     Column(
@@ -171,6 +210,8 @@ internal fun ListWatchlistContent(
                                 filter = state.filter,
                                 listItems = (state.items ?: emptyList()).toImmutableList(),
                                 contentPadding = contentPadding,
+                                onShowLongClick = onShowLongClick,
+                                onMovieLongClick = onMovieLongClick,
                             )
                         }
                     }
@@ -231,6 +272,8 @@ private fun ContentList(
     listState: LazyListState = rememberLazyListState(),
     filter: WatchlistFilter,
     contentPadding: PaddingValues,
+    onShowLongClick: (Show) -> Unit = {},
+    onMovieLongClick: (Movie) -> Unit = {},
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
@@ -255,6 +298,16 @@ private fun ContentList(
             ListsWatchlistItemView(
                 item = item,
                 showMediaIcon = (filter == MEDIA),
+                onShowLongClick = {
+                    if (item is WatchlistItem.ShowItem && !item.loading) {
+                        onShowLongClick(item.show)
+                    }
+                },
+                onMovieLongClick = {
+                    if (item is WatchlistItem.MovieItem && !item.loading) {
+                        onMovieLongClick(item.movie)
+                    }
+                },
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
                     fadeOutSpec = null,

@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.home.sections.watchlist.views
+package tv.trakt.trakt.core.lists.sections.watchlist.context.movies
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -36,6 +36,7 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
@@ -48,9 +49,10 @@ import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun WatchlistItemContextView(
+internal fun WatchlistMovieContextView(
     item: Movie,
-    viewModel: WatchlistItemContextViewModel,
+    viewModel: WatchlistMovieContextViewModel,
+    addLocally: Boolean,
     modifier: Modifier = Modifier,
     onAddWatched: (Movie) -> Unit,
     onRemoveWatchlist: () -> Unit,
@@ -73,12 +75,16 @@ internal fun WatchlistItemContextView(
         }
     }
 
-    WatchlistItemContextViewContent(
+    WatchlistMovieContextViewContent(
         movie = item,
         state = state,
         modifier = modifier,
         onAddWatched = {
-            onAddWatched(item)
+            if (addLocally) {
+                viewModel.addToWatched(item.ids.trakt)
+            } else {
+                onAddWatched(item)
+            }
         },
         onRemoveWatchlist = {
             confirmRemoveSheet = true
@@ -102,9 +108,9 @@ internal fun WatchlistItemContextView(
 }
 
 @Composable
-private fun WatchlistItemContextViewContent(
+private fun WatchlistMovieContextViewContent(
     movie: Movie,
-    state: WatchlistItemContextState,
+    state: WatchlistMovieContextState,
     modifier: Modifier = Modifier,
     onAddWatched: () -> Unit = {},
     onRemoveWatchlist: () -> Unit = {},
@@ -195,19 +201,25 @@ private fun WatchlistItemContextViewContent(
                 state.loadingWatched.isLoading ||
                     state.loadingWatchlist.isLoading
 
-            GhostButton(
-                enabled = !isLoading,
-                loading = state.loadingWatched.isLoading,
-                text = stringResource(R.string.button_text_mark_as_watched),
-                iconSize = 20.dp,
-                iconSpace = 16.dp,
-                onClick = onAddWatched,
-                icon = painterResource(R.drawable.ic_check_round),
-                modifier = Modifier
-                    .graphicsLayer {
-                        translationX = -3.dp.toPx()
-                    },
-            )
+            val isReleased = remember {
+                movie.released?.isTodayOrBefore() ?: false
+            }
+
+            if (isReleased) {
+                GhostButton(
+                    enabled = !isLoading,
+                    loading = state.loadingWatched.isLoading,
+                    text = stringResource(R.string.button_text_mark_as_watched),
+                    iconSize = 20.dp,
+                    iconSpace = 16.dp,
+                    onClick = onAddWatched,
+                    icon = painterResource(R.drawable.ic_check_round),
+                    modifier = Modifier
+                        .graphicsLayer {
+                            translationX = -3.dp.toPx()
+                        },
+                )
+            }
 
             GhostButton(
                 enabled = !isLoading,
@@ -239,8 +251,8 @@ private fun Preview() {
             ColorImage(Color.Blue.toArgb())
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            WatchlistItemContextViewContent(
-                state = WatchlistItemContextState(),
+            WatchlistMovieContextViewContent(
+                state = WatchlistMovieContextState(),
                 movie = PreviewData.movie1,
             )
         }

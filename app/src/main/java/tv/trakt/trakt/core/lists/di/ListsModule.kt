@@ -15,6 +15,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.ListsViewModel
 import tv.trakt.trakt.core.lists.data.remote.ListsApiClient
@@ -27,6 +28,8 @@ import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalStora
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistViewModel
+import tv.trakt.trakt.core.lists.sections.watchlist.context.movies.WatchlistMovieContextViewModel
+import tv.trakt.trakt.core.lists.sections.watchlist.context.shows.WatchlistShowContextViewModel
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetShowsWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetWatchlistUseCase
@@ -146,6 +149,27 @@ internal val listsModule = module {
     viewModel {
         EditListViewModel(
             editListUseCase = get(),
+        )
+    }
+
+    viewModel {
+        WatchlistMovieContextViewModel(
+            updateMovieWatchlistUseCase = get(),
+            userWatchlistLocalSource = get(),
+            updateMovieHistoryUseCase = get(),
+            loadProgressUseCase = get(),
+        )
+    }
+
+    viewModel { (show: Show) ->
+        WatchlistShowContextViewModel(
+            show = show,
+            updateWatchlistUseCase = get(),
+            updateHistoryUseCase = get(),
+            userProgressLocalSource = get(),
+            userWatchlistLocalSource = get(),
+            loadProgressUseCase = get(),
+            sessionManager = get(),
         )
     }
 }

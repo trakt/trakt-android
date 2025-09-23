@@ -207,7 +207,7 @@ internal fun PanelMediaCard(
                                         containerColor,
                                         gradientColor2,
                                     ),
-                                    start = Offset(size.width / 1.66F, size.height),
+                                    start = Offset(size.width / 1.75F, size.height),
                                     end = Offset(size.width * 1.655F, -size.height),
                                 ),
                                 size = size,

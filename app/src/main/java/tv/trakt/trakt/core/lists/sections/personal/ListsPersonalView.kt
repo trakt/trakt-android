@@ -128,13 +128,13 @@ internal fun ListsPersonalContent(
                 }
             }
 
-            if (!state.items.isNullOrEmpty()) {
-                Text(
-                    text = stringResource(R.string.button_text_view_all),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.buttonSecondary,
-                )
-            }
+//            if (!state.items.isNullOrEmpty()) {
+//                Text(
+//                    text = stringResource(R.string.button_text_view_all),
+//                    color = TraktTheme.colors.textSecondary,
+//                    style = TraktTheme.typography.buttonSecondary,
+//                )
+//            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))

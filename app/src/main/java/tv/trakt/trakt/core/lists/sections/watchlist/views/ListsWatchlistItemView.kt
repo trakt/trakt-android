@@ -28,6 +28,8 @@ internal fun ListsWatchlistItemView(
     item: WatchlistItem,
     modifier: Modifier = Modifier,
     showMediaIcon: Boolean = false,
+    onShowLongClick: () -> Unit = {},
+    onMovieLongClick: () -> Unit = {},
 ) {
     when (item) {
         is WatchlistItem.ShowItem -> {
@@ -37,6 +39,7 @@ internal fun ListsWatchlistItemView(
             VerticalMediaCard(
                 title = item.show.title,
                 imageUrl = item.images?.getPosterUrl(),
+                onLongClick = onShowLongClick,
                 chipContent = {
                     if (isReleased) {
                         Row(
@@ -79,6 +82,7 @@ internal fun ListsWatchlistItemView(
             VerticalMediaCard(
                 title = item.movie.title,
                 imageUrl = item.images?.getPosterUrl(),
+                onLongClick = onMovieLongClick,
                 chipContent = {
                     if (isReleased) {
                         Row(

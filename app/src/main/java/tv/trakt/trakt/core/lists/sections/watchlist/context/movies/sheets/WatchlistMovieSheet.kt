@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package tv.trakt.trakt.core.home.sections.watchlist.sheets
+package tv.trakt.trakt.core.lists.sections.watchlist.context.movies.sheets
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -16,18 +16,19 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.core.home.sections.watchlist.views.WatchlistItemContextView
+import tv.trakt.trakt.core.lists.sections.watchlist.context.movies.WatchlistMovieContextView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
 import kotlin.random.Random.Default.nextInt
 
 @Composable
-internal fun HomeWatchlistItemSheet(
+internal fun WatchlistMovieSheet(
     state: SheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true,
     ),
     sheetItem: Movie?,
+    addLocally: Boolean,
     onAddWatched: (Movie) -> Unit,
     onRemoveWatchlist: () -> Unit,
     onDismiss: () -> Unit,
@@ -42,11 +43,12 @@ internal fun HomeWatchlistItemSheet(
             sheetState = state,
             onDismiss = onDismiss,
         ) {
-            WatchlistItemContextView(
+            WatchlistMovieContextView(
                 item = sheetItem,
                 viewModel = koinViewModel(
                     key = nextInt().toString(),
                 ),
+                addLocally = addLocally,
                 onRemoveWatchlist = {
                     onRemoveWatchlist()
                     sheetScope.run {
@@ -74,6 +76,17 @@ internal fun HomeWatchlistItemSheet(
                                     onDismiss()
                                 }
                             }
+                        if (addLocally) {
+                            launch {
+                                val job = sheetScope.launch {
+                                    localSnack.showSnackbar(
+                                        localContext.getString(R.string.text_info_history_added),
+                                    )
+                                }
+                                delay(SNACK_DURATION_SHORT)
+                                job.cancel()
+                            }
+                        }
                     }
                 },
                 onError = {
