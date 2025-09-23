@@ -19,6 +19,7 @@ import tv.trakt.trakt.core.user.usecase.watchlist.LoadUserWatchlistUseCase
 internal val profileDataModule = module {
     single<UserRemoteDataSource> {
         UserApiClient(
+            syncApi = get(),
             usersApi = get(),
             historyApi = get(),
             calendarsApi = get(),

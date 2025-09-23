@@ -8,28 +8,31 @@ import java.time.Instant
 
 @Immutable
 internal sealed class ProgressItem(
-    open val plays: Int,
-    open val lastWatchedAt: Instant,
-    open val lastUpdatedAt: Instant,
     open val loading: Boolean,
 ) {
     @Immutable
     internal data class MovieItem(
-        override val plays: Int,
-        override val lastWatchedAt: Instant,
-        override val lastUpdatedAt: Instant,
-        override val loading: Boolean = false,
         val movie: MovieProgress,
-    ) : ProgressItem(plays, lastWatchedAt, lastUpdatedAt, loading)
+        val plays: Int,
+        override val loading: Boolean = false,
+    ) : ProgressItem(loading)
 
     @Immutable
     internal data class ShowItem(
-        override val plays: Int,
-        override val lastWatchedAt: Instant,
-        override val lastUpdatedAt: Instant,
-        override val loading: Boolean = false,
         val show: Show,
-    ) : ProgressItem(plays, lastWatchedAt, lastUpdatedAt, loading)
+        val progress: Progress,
+        override val loading: Boolean = false,
+    ) : ProgressItem(loading) {
+        data class Progress(
+            val aired: Int,
+            val completed: Int,
+            val lastWatchedAt: Instant?,
+            val resetAt: Instant?,
+        )
+
+        val isCompleted: Boolean
+            get() = progress.completed >= progress.aired
+    }
 
     val mediaId: TraktId
         get() = when (this) {

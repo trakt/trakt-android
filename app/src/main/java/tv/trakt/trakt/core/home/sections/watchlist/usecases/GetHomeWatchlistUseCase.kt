@@ -7,7 +7,7 @@ import tv.trakt.trakt.core.home.HomeConfig.HOME_WATCHLIST_LIMIT
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.user.usecase.watchlist.LoadUserWatchlistUseCase
 
-internal class GetWatchlistMoviesUseCase(
+internal class GetHomeWatchlistUseCase(
     val loadUserWatchlistUseCase: LoadUserWatchlistUseCase,
 ) {
     suspend fun getLocalWatchlist(limit: Int = HOME_WATCHLIST_LIMIT): ImmutableList<WatchlistItem.MovieItem> {

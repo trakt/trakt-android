@@ -15,10 +15,13 @@ import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
 import tv.trakt.trakt.common.networking.WatchedMovieDto
 import tv.trakt.trakt.common.networking.WatchlistItemDto
+import tv.trakt.trakt.common.networking.api.SyncExtrasApi
+import tv.trakt.trakt.common.networking.api.model.SyncProgressItemDto
 import java.time.LocalDate
 
 internal class UserApiClient(
     private val usersApi: UsersApi,
+    private val syncApi: SyncExtrasApi,
     private val historyApi: HistoryApi,
     private val calendarsApi: CalendarsApi,
 ) : UserRemoteDataSource {
@@ -36,6 +39,32 @@ internal class UserApiClient(
         )
 
         return response.body()
+    }
+
+    override suspend fun getWatchedShows(limit: Int): List<SyncProgressItemDto> {
+        val allResults = mutableListOf<SyncProgressItemDto>()
+
+        var page = 1
+        var hasMorePages = true
+
+        while (hasMorePages) {
+            val response = syncApi.getProgressWatched(
+                limit = limit,
+                page = page,
+            )
+
+            val body = response.body()
+            if (body.isNotEmpty()) {
+                allResults.addAll(body)
+                page++
+            }
+
+            if (body.size < limit) {
+                hasMorePages = false
+            }
+        }
+
+        return allResults
     }
 
     override suspend fun getWatchlist(

@@ -1,7 +1,6 @@
 package tv.trakt.trakt.core.sync.data.remote.movies
 
 import org.openapitools.client.apis.SyncApi
-import org.openapitools.client.apis.UsersApi
 import org.openapitools.client.models.PostCheckinMovieRequestMovieIds
 import org.openapitools.client.models.PostSyncHistoryRemoveRequest
 import org.openapitools.client.models.PostUsersListsListAddRequest
@@ -10,7 +9,6 @@ import tv.trakt.trakt.common.model.TraktId
 import java.time.Instant
 
 internal class MoviesSyncApiClient(
-    private val usersApi: UsersApi,
     private val syncApi: SyncApi,
 ) : MoviesSyncRemoteDataSource {
     override suspend fun addToWatched(

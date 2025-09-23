@@ -13,8 +13,8 @@ import java.time.Instant
 internal class UserProgressStorage : UserProgressLocalDataSource {
     private val mutex = Mutex()
 
-    private var moviesStorage: MutableMap<TraktId, ProgressItem>? = null
-    private var showsStorage: MutableMap<TraktId, ProgressItem>? = null
+    private var moviesStorage: MutableMap<TraktId, ProgressItem.MovieItem>? = null
+    private var showsStorage: MutableMap<TraktId, ProgressItem.ShowItem>? = null
 
     private val updatedAt = MutableSharedFlow<Instant?>(
         replay = 1,
@@ -132,19 +132,17 @@ internal class UserProgressStorage : UserProgressLocalDataSource {
         }
     }
 
-    override suspend fun getShows(): List<ProgressItem.ShowItem> {
+    override suspend fun getShows(ids: Set<TraktId>?): List<ProgressItem.ShowItem> {
         return mutex.withLock {
-            showsStorage?.values
-                ?.filterIsInstance<ProgressItem.ShowItem>()
-                ?: emptyList()
+            showsStorage?.let { storage ->
+                ids?.mapNotNull { id -> storage[id] } ?: storage.values.toList()
+            } ?: emptyList()
         }
     }
 
     override suspend fun getMovies(): List<ProgressItem.MovieItem> {
         return mutex.withLock {
-            moviesStorage?.values
-                ?.filterIsInstance<ProgressItem.MovieItem>()
-                ?: emptyList()
+            moviesStorage?.values?.toList() ?: emptyList()
         }
     }
 

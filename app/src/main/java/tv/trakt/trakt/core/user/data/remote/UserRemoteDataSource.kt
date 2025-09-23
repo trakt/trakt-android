@@ -11,12 +11,15 @@ import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
 import tv.trakt.trakt.common.networking.WatchedMovieDto
 import tv.trakt.trakt.common.networking.WatchlistItemDto
+import tv.trakt.trakt.common.networking.api.model.SyncProgressItemDto
 import java.time.LocalDate
 
 internal interface UserRemoteDataSource {
     suspend fun getProfile(): User
 
     suspend fun getWatchedMovies(): List<WatchedMovieDto>
+
+    suspend fun getWatchedShows(limit: Int): List<SyncProgressItemDto>
 
     suspend fun getWatchlist(
         page: Int? = null,

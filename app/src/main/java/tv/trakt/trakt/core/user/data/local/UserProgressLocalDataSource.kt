@@ -36,7 +36,7 @@ internal interface UserProgressLocalDataSource {
 
     suspend fun getMovies(): List<ProgressItem.MovieItem>
 
-    suspend fun getShows(): List<ProgressItem.ShowItem>
+    suspend fun getShows(ids: Set<TraktId>? = null): List<ProgressItem.ShowItem>
 
     suspend fun getAll(): List<ProgressItem>
 

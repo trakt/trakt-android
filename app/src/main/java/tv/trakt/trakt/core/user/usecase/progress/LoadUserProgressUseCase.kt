@@ -2,17 +2,17 @@ package tv.trakt.trakt.core.user.usecase.progress
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.sync.model.ProgressItem
 import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
 import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 
-/**
- * Loads the user's watchlist from the remote source and updates the local cache.
- */
 internal class LoadUserProgressUseCase(
     private val remoteSource: UserRemoteDataSource,
     private val localSource: UserProgressLocalDataSource,
@@ -37,20 +37,49 @@ internal class LoadUserProgressUseCase(
     }
 
     suspend fun loadMoviesProgress(): ImmutableList<ProgressItem.MovieItem> {
-        val response = remoteSource.getWatchedMovies().asyncMap {
-            ProgressItem.MovieItem(
-                plays = it.plays,
-                lastWatchedAt = it.lastWatchedAt.toInstant(),
-                lastUpdatedAt = it.lastUpdatedAt.toInstant(),
-                movie = Movie.fromDto(it.movie),
-            )
-        }
+        val response = remoteSource.getWatchedMovies()
+            .asyncMap {
+                ProgressItem.MovieItem(
+                    plays = it.plays,
+                    movie = Movie.fromDto(it.movie),
+                )
+            }
 
         with(localSource) {
-//            setShows(response.filterIsInstance<ProgressItem.ShowItem>())
             setMovies(response)
         }
 
         return response.toImmutableList()
+    }
+
+    suspend fun loadShowsProgress(): ImmutableList<ProgressItem.ShowItem> {
+        val response = remoteSource.getWatchedShows(limit = 100)
+            .asyncMap {
+                ProgressItem.ShowItem(
+                    show = Show.fromDto(it.show),
+                    progress = ProgressItem.ShowItem.Progress(
+                        aired = it.progress.aired,
+                        completed = it.progress.completed,
+                        lastWatchedAt = it.progress.lastWatchedAt?.toInstant(),
+                        resetAt = it.progress.resetAt?.toInstant(),
+                    ),
+                )
+            }
+
+        with(localSource) {
+            setShows(response)
+        }
+
+        return response.toImmutableList()
+    }
+
+    suspend fun loadAllProgress() {
+        return coroutineScope {
+            val showsAsync = async { loadShowsProgress() }
+            val moviesAsync = async { loadMoviesProgress() }
+
+            showsAsync.await()
+            moviesAsync.await()
+        }
     }
 }

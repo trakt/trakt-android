@@ -50,7 +50,7 @@ internal class TraktApplication : Application() {
                 remoteConfigSettings {
                     minimumFetchIntervalInSeconds = when {
                         BuildConfig.DEBUG -> 0
-                        else -> MINUTES.toSeconds(30)
+                        else -> MINUTES.toSeconds(10)
                     }
                 },
             )

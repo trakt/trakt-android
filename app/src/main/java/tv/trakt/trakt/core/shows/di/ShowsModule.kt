@@ -140,8 +140,11 @@ internal val showsModule = module {
         ShowContextViewModel(
             show = show,
             updateWatchlistUseCase = get(),
-            loadWatchlistUseCase = get(),
+            updateHistoryUseCase = get(),
+            userProgressLocalSource = get(),
             userWatchlistLocalSource = get(),
+            loadProgressUseCase = get(),
+            loadWatchlistUseCase = get(),
             sessionManager = get(),
         )
     }

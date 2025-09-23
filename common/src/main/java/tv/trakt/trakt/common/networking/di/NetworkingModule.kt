@@ -18,6 +18,7 @@ import org.openapitools.client.apis.UsersApi
 import tv.trakt.trakt.common.Config.API_BASE_URL
 import tv.trakt.trakt.common.Config.API_HD_BASE_URL
 import tv.trakt.trakt.common.auth.TokenProvider
+import tv.trakt.trakt.common.networking.api.SyncExtrasApi
 import tv.trakt.trakt.common.networking.client.KtorClientFactory
 
 val networkingModule = module {
@@ -57,6 +58,7 @@ val networkingApiModule = module {
             get<SearchApi>(),
             get<ShowsApi>(),
             get<SyncApi>(),
+            get<SyncExtrasApi>(),
             get<UsersApi>(),
         )
     }
@@ -103,6 +105,14 @@ val networkingApiModule = module {
 
     single<SyncApi> {
         SyncApi(
+            baseUrl = API_HD_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
+        )
+    }
+
+    single<SyncExtrasApi> {
+        SyncExtrasApi(
             baseUrl = API_HD_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),

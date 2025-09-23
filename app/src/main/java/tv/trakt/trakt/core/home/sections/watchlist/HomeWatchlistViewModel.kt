@@ -21,15 +21,15 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddWatchlistHistoryUseCase
-import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetWatchlistMoviesUseCase
+import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
+import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
 import java.time.Instant
 
 internal class HomeWatchlistViewModel(
-    private val getWatchlistUseCase: GetWatchlistMoviesUseCase,
-    private val addHistoryUseCase: AddWatchlistHistoryUseCase,
+    private val getWatchlistUseCase: GetHomeWatchlistUseCase,
+    private val addHistoryUseCase: AddHomeHistoryUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val sessionManager: SessionManager,
 ) : ViewModel() {

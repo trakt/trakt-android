@@ -23,7 +23,6 @@ internal val syncModule = module {
 
     single<MoviesSyncRemoteDataSource> {
         MoviesSyncApiClient(
-            usersApi = get(),
             syncApi = get(),
         )
     }

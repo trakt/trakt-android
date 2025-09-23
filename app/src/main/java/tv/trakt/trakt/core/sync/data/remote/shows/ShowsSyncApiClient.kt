@@ -4,12 +4,13 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
+import org.openapitools.client.models.PostSyncHistoryRemoveRequest
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerOneOfIds
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.ProgressShowDto
-import tv.trakt.trakt.common.networking.WatchlistShowDto
+import java.time.Instant
 
 internal class ShowsSyncApiClient(
     private val syncApi: SyncApi,
@@ -26,26 +27,46 @@ internal class ShowsSyncApiClient(
         return response.body()
     }
 
-    override suspend fun getWatchlist(
-        sort: String,
-        page: Int?,
-        limit: Int?,
-        extended: String?,
-    ): List<WatchlistShowDto> {
-        val response = usersApi.getUsersWatchlistShows(
-            id = "me",
-            sort = sort,
-            extended = extended,
-            page = page,
-            limit = limit,
-            watchnow = null,
-            genres = null,
-            years = null,
-            ratings = null,
-            startDate = null,
-            endDate = null,
+    override suspend fun addToWatched(
+        showId: TraktId,
+        watchedAt: Instant,
+    ) {
+        val request = PostUsersListsListAddRequest(
+            shows = listOf(
+                PostUsersListsListAddRequestShowsInner(
+                    ids = PostUsersListsListAddRequestShowsInnerOneOfIds(
+                        trakt = showId.value,
+                        slug = null,
+                        imdb = null,
+                        tmdb = 0,
+                        tvdb = 0,
+                    ),
+                    title = "",
+                    year = 0,
+                    watchedAt = watchedAt.toString(),
+                ),
+            ),
         )
-        return response.body()
+        syncApi.postSyncHistoryAdd(request)
+    }
+
+    override suspend fun removeAllFromHistory(showId: TraktId) {
+        val request = PostSyncHistoryRemoveRequest(
+            shows = listOf(
+                PostUsersListsListAddRequestShowsInner(
+                    ids = PostUsersListsListAddRequestShowsInnerOneOfIds(
+                        trakt = showId.value,
+                        slug = null,
+                        imdb = null,
+                        tmdb = 0,
+                        tvdb = 0,
+                    ),
+                    title = "",
+                    year = 0,
+                ),
+            ),
+        )
+        syncApi.postSyncHistoryRemove(request)
     }
 
     override suspend fun addToWatchlist(showId: TraktId) {

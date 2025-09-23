@@ -22,17 +22,20 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
+import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowWatchlistUseCase
+import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
+import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.core.user.usecase.watchlist.LoadUserWatchlistUseCase
 
 internal class ShowContextViewModel(
     private val show: Show,
     private val updateWatchlistUseCase: UpdateShowWatchlistUseCase,
-//    private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
-//    private val userProgressLocalSource: UserProgressLocalDataSource,
+    private val updateHistoryUseCase: UpdateShowHistoryUseCase,
+    private val userProgressLocalSource: UserProgressLocalDataSource,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
-//    private val loadProgressUseCase: LoadUserProgressUseCase,
+    private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
@@ -76,21 +79,26 @@ internal class ShowContextViewModel(
                             loadWatchlistUseCase.loadWatchlist()
                         }
                     }
-//                    val progressAsync = async {
-//                        if (!userProgressLocalSource.isMoviesLoaded()) {
-//                            loadProgressUseCase.loadMoviesProgress()
-//                        }
-//                    }
-//
+                    val progressAsync = async {
+                        if (!userProgressLocalSource.isShowsLoaded()) {
+                            loadProgressUseCase.loadShowsProgress()
+                        }
+                    }
+
                     watchlistAsync.await()
-//                    progressAsync.await()
-//
+                    progressAsync.await()
+
                     isWatchlistState.update {
                         userWatchlistLocalSource.containsShow(show.ids.trakt)
                     }
-//                    isWatchedState.update {
-//                        userProgressLocalSource.containsMovie(show.ids.trakt)
-//                    }
+                    isWatchedState.update {
+                        val containsShow = userProgressLocalSource.containsShow(show.ids.trakt)
+                        if (containsShow) {
+                            val show = userProgressLocalSource.getShows(setOf(show.ids.trakt)).firstOrNull()
+                            return@update show?.isCompleted == true
+                        }
+                        return@update false
+                    }
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -164,21 +172,21 @@ internal class ShowContextViewModel(
         }
 
         viewModelScope.launch {
-//            clear()
-//            try {
-//                loadingWatchedState.update { LOADING }
-//
-//                updateMovieHistoryUseCase.addToWatched(show.ids.trakt)
-//                loadProgressUseCase.loadMoviesProgress()
-//                userWatchlistLocalSource.removeMovies(setOf(show.ids.trakt))
-//            } catch (error: Exception) {
-//                error.rethrowCancellation {
-//                    errorState.update { error }
-//                    Timber.w(error)
-//                }
-//            } finally {
-//                loadingWatchedState.update { DONE }
-//            }
+            clear()
+            try {
+                loadingWatchedState.update { LOADING }
+
+                updateHistoryUseCase.addToWatched(show.ids.trakt)
+                loadProgressUseCase.loadShowsProgress()
+                userWatchlistLocalSource.removeShows(setOf(show.ids.trakt))
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.w(error)
+                }
+            } finally {
+                loadingWatchedState.update { DONE }
+            }
         }
     }
 
@@ -189,19 +197,19 @@ internal class ShowContextViewModel(
 
         viewModelScope.launch {
             clear()
-//            try {
-//                loadingWatchedState.update { LOADING }
-//
-//                updateMovieHistoryUseCase.removeAllFromHistory(show.ids.trakt)
-//                userProgressLocalSource.removeMovies(setOf(show.ids.trakt))
-//            } catch (error: Exception) {
-//                error.rethrowCancellation {
-//                    errorState.update { error }
-//                    Timber.w(error)
-//                }
-//            } finally {
-//                loadingWatchedState.update { DONE }
-//            }
+            try {
+                loadingWatchedState.update { LOADING }
+
+                updateHistoryUseCase.removeAllFromHistory(show.ids.trakt)
+                userProgressLocalSource.removeShows(setOf(show.ids.trakt))
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.w(error)
+                }
+            } finally {
+                loadingWatchedState.update { DONE }
+            }
         }
     }
 

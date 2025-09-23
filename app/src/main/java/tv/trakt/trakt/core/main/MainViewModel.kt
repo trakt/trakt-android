@@ -28,7 +28,7 @@ internal class MainViewModel(
                 if (!sessionManager.isAuthenticated()) {
                     return@launch
                 }
-                loadUserProgressUseCase.loadMoviesProgress()
+                loadUserProgressUseCase.loadAllProgress()
                 lastLoadTime = nowUtcInstant()
             } catch (error: Exception) {
                 error.rethrowCancellation {

@@ -4,7 +4,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 
-internal class AddWatchlistHistoryUseCase(
+internal class AddHomeHistoryUseCase(
     private val updateHistoryUseCase: UpdateMovieHistoryUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
 ) {
