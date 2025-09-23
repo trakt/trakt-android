@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package tv.trakt.trakt.core.search
 
 import androidx.compose.animation.core.tween
@@ -19,12 +21,15 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
@@ -41,6 +46,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.search.model.SearchFilter
 import tv.trakt.trakt.core.search.model.SearchFilter.MEDIA
 import tv.trakt.trakt.core.search.model.SearchFilter.MOVIES
@@ -49,6 +55,7 @@ import tv.trakt.trakt.core.search.model.SearchFilter.SHOWS
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.model.SearchItem
 import tv.trakt.trakt.core.search.views.SearchGridItem
+import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
@@ -79,6 +86,9 @@ internal fun SearchScreen(
             behindFraction = 0.5F,
         ),
     )
+
+    var showContextSheet by remember { mutableStateOf<Show?>(null) }
+    var movieContextSheet by remember { mutableStateOf<Movie?>(null) }
 
     val localBottomBarVisibility = LocalBottomBarVisibility.current
     LaunchedEffect(Unit) {
@@ -113,9 +123,29 @@ internal fun SearchScreen(
         state = state,
         contentGridState = contentGridState,
         onShowClick = { viewModel.navigateToShow(it) },
+        onShowLongClick = {
+            if (!state.searching) {
+                showContextSheet = it
+            }
+        },
         onMovieClick = { viewModel.navigateToMovie(it) },
+        onMovieLongClick = {
+            if (!state.searching) {
+                movieContextSheet = it
+            }
+        },
         onPersonClick = { viewModel.navigateToPerson(it) },
         onProfileClick = onProfileClick,
+    )
+
+    ShowContextSheet(
+        show = showContextSheet,
+        onDismiss = { showContextSheet = null },
+    )
+
+    MovieContextSheet(
+        movie = movieContextSheet,
+        onDismiss = { movieContextSheet = null },
     )
 }
 
@@ -127,7 +157,9 @@ private fun SearchScreenContent(
     contentGridState: LazyGridState,
     modifier: Modifier = Modifier,
     onShowClick: (Show) -> Unit = {},
+    onShowLongClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
+    onMovieLongClick: (Movie) -> Unit = {},
     onPersonClick: (Person) -> Unit = {},
     onProfileClick: () -> Unit = {},
 ) {
@@ -164,7 +196,9 @@ private fun SearchScreenContent(
             popularItems = (state.popularResults?.items ?: emptyList()).toImmutableList(),
             resultItems = (state.searchResult?.items ?: emptyList()).toImmutableList(),
             onShowClick = onShowClick,
+            onShowLongClick = onShowLongClick,
             onMovieClick = onMovieClick,
+            onMovieLongClick = onMovieLongClick,
             onPersonClick = onPersonClick,
             error = state.error,
         )
@@ -189,6 +223,8 @@ private fun ContentList(
     resultItems: ImmutableList<SearchItem>,
     onShowClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
+    onShowLongClick: (Show) -> Unit = {},
+    onMovieLongClick: (Movie) -> Unit = {},
     onPersonClick: (Person) -> Unit = {},
     error: Exception? = null,
 ) {
@@ -238,7 +274,9 @@ private fun ContentList(
                     item = recentItems[index],
                     filter = filter,
                     onShowClick = onShowClick,
+                    onShowLongClick = onShowLongClick,
                     onMovieClick = onMovieClick,
+                    onMovieLongClick = onMovieLongClick,
                     onPersonClick = onPersonClick,
                     modifier = Modifier
                         .padding(bottom = 6.dp)
@@ -275,7 +313,9 @@ private fun ContentList(
                         item = popularItems[index],
                         filter = filter,
                         onShowClick = onShowClick,
+                        onShowLongClick = onShowLongClick,
                         onMovieClick = onMovieClick,
+                        onMovieLongClick = onMovieLongClick,
                         onPersonClick = onPersonClick,
                         modifier = Modifier
                             .padding(bottom = 6.dp)
@@ -310,7 +350,9 @@ private fun ContentList(
                             item = resultItems[index],
                             filter = filter,
                             onShowClick = onShowClick,
+                            onShowLongClick = onShowLongClick,
                             onMovieClick = onMovieClick,
+                            onMovieLongClick = onMovieLongClick,
                             onPersonClick = onPersonClick,
                             modifier = Modifier
                                 .padding(bottom = 6.dp)

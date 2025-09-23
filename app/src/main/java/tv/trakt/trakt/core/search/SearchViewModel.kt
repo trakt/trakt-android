@@ -251,6 +251,7 @@ internal class SearchViewModel(
 
         if (currentFilter != searchInput.filter) {
             clearJobs()
+
             if (searchInput.query.isNotBlank()) {
                 onSearchQuery(searchInput.query, 0)
             } else {
@@ -263,6 +264,8 @@ internal class SearchViewModel(
                             errorState.update { error }
                             Timber.w(error, "Error during initial load!")
                         }
+                    } finally {
+                        searchingState.update { false }
                     }
                 }
             }
@@ -318,14 +321,13 @@ internal class SearchViewModel(
                             }.toImmutableList(),
                     )
                 }
-
-                searchingState.update { false }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    searchingState.update { false }
                     Timber.e(error, "Error!")
                 }
+            } finally {
+                searchingState.update { false }
             }
         }
     }

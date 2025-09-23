@@ -39,11 +39,13 @@ internal fun SearchGridItem(
     modifier: Modifier = Modifier,
     onShowClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
+    onShowLongClick: (Show) -> Unit = {},
+    onMovieLongClick: (Movie) -> Unit = {},
     onPersonClick: (Person) -> Unit = {},
 ) {
     when (item) {
-        is SearchItem.Show -> ShowGridItem(item, filter, onShowClick, modifier)
-        is SearchItem.Movie -> MovieGridItem(item, filter, onMovieClick, modifier)
+        is SearchItem.Show -> ShowGridItem(item, filter, onShowClick, onShowLongClick, modifier)
+        is SearchItem.Movie -> MovieGridItem(item, filter, onMovieClick, onMovieLongClick, modifier)
         is SearchItem.Person -> PersonGridItem(item, onPersonClick, modifier)
     }
 }
@@ -53,6 +55,7 @@ private fun ShowGridItem(
     item: SearchItem.Show,
     filter: SearchFilter,
     onShowClick: (Show) -> Unit,
+    onShowLongClick: (Show) -> Unit,
     modifier: Modifier,
 ) {
     var currentFilter by remember { mutableStateOf(filter) }
@@ -90,6 +93,7 @@ private fun ShowGridItem(
             }
         },
         onClick = { onShowClick(item.show) },
+        onLongClick = { onShowLongClick(item.show) },
         modifier = modifier,
     )
 }
@@ -99,6 +103,7 @@ private fun MovieGridItem(
     item: SearchItem.Movie,
     filter: SearchFilter,
     onMovieClick: (Movie) -> Unit,
+    onMovieLongClick: (Movie) -> Unit = {},
     modifier: Modifier,
 ) {
     var currentFilter by remember { mutableStateOf(filter) }
@@ -141,6 +146,7 @@ private fun MovieGridItem(
             }
         },
         onClick = { onMovieClick(item.movie) },
+        onLongClick = { onMovieLongClick(item.movie) },
         modifier = modifier,
     )
 }

@@ -15,7 +15,6 @@ internal class MainViewModel(
     private val sessionManager: SessionManager,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
 ) : ViewModel() {
-
     private var lastLoadTime: Instant? = null
 
     fun loadData() {
