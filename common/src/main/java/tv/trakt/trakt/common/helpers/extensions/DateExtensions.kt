@@ -5,6 +5,7 @@ import java.time.DayOfWeek
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.ZoneOffset.UTC
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -30,6 +31,11 @@ val longDateTimeFormat: DateTimeFormatter = DateTimeFormatter
 fun nowUtc(): ZonedDateTime = ZonedDateTime.now(UTC)
 
 fun nowUtcInstant(): Instant = Instant.now()
+
+fun ZonedDateTime.isNowOrBefore(zone: ZoneOffset = UTC): Boolean {
+    val today = ZonedDateTime.now(zone)
+    return this.isEqual(today) || this.isBefore(today)
+}
 
 // Local time functions
 

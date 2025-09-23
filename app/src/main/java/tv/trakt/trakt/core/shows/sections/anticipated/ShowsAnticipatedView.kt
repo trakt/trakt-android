@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package tv.trakt.trakt.core.shows.sections.anticipated
 
 import androidx.compose.animation.Crossfade
@@ -13,12 +15,15 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -34,7 +39,9 @@ import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.shows.model.WatchersShow
+import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -52,6 +59,8 @@ internal fun ShowsAnticipatedView(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    var contextSheet by remember { mutableStateOf<Show?>(null) }
+
     ShowsAnticipatedContent(
         state = state,
         modifier = modifier,
@@ -62,6 +71,16 @@ internal fun ShowsAnticipatedView(
                 onMoreClick()
             }
         },
+        onLongClick = {
+            if (!state.loading.isLoading) {
+                contextSheet = it
+            }
+        },
+    )
+
+    ShowContextSheet(
+        show = contextSheet,
+        onDismiss = { contextSheet = null },
     )
 }
 
@@ -71,6 +90,7 @@ internal fun ShowsAnticipatedContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
+    onLongClick: (Show) -> Unit = {},
     onMoreClick: () -> Unit = {},
 ) {
     Column(
@@ -119,6 +139,7 @@ internal fun ShowsAnticipatedContent(
                         ContentList(
                             items = (state.items ?: emptyList()).toImmutableList(),
                             contentPadding = contentPadding,
+                            onLongClick = onLongClick,
                         )
                     }
                 }
@@ -150,6 +171,7 @@ private fun ContentList(
     items: ImmutableList<WatchersShow>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
+    onLongClick: (Show) -> Unit,
 ) {
     val currentList = remember { mutableIntStateOf(items.hashCode()) }
 
@@ -173,6 +195,7 @@ private fun ContentList(
         ) { item ->
             ContentListItem(
                 item = item,
+                onLongClick = { onLongClick(item.show) },
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
                     fadeOutSpec = null,
@@ -187,11 +210,13 @@ private fun ContentListItem(
     item: WatchersShow,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
+    onLongClick: () -> Unit = {},
 ) {
     VerticalMediaCard(
         title = item.show.title,
         imageUrl = item.show.images?.getPosterUrl(),
         onClick = onClick,
+        onLongClick = onLongClick,
         chipContent = {
             InfoChip(
                 text = item.watchers.thousandsFormat(),

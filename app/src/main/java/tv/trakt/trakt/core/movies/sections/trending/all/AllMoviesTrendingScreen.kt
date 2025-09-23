@@ -40,7 +40,7 @@ import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun AllMoviesScreen(
+internal fun AllMoviesTrendingScreen(
     viewModel: AllMoviesTrendingViewModel,
     onNavigateBack: () -> Unit,
 ) {
@@ -48,7 +48,7 @@ internal fun AllMoviesScreen(
 
     var contextSheet by remember { mutableStateOf<Movie?>(null) }
 
-    AllMoviesScreenContent(
+    AllMoviesTrendingScreenContent(
         state = state,
         onItemLongClick = {
             if (!state.loading.isLoading) {
@@ -68,7 +68,7 @@ internal fun AllMoviesScreen(
 }
 
 @Composable
-private fun AllMoviesScreenContent(
+private fun AllMoviesTrendingScreenContent(
     state: AllMoviesTrendingState,
     modifier: Modifier = Modifier,
     onLoadMoreData: () -> Unit = {},
@@ -145,7 +145,7 @@ private fun TitleBar(modifier: Modifier = Modifier) {
 @Composable
 private fun Preview() {
     TraktTheme {
-        AllMoviesScreenContent(
+        AllMoviesTrendingScreenContent(
             state = AllMoviesTrendingState(),
         )
     }

@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package tv.trakt.trakt.core.shows.sections.recommended
 
 import androidx.compose.animation.Crossfade
@@ -13,12 +15,15 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -33,6 +38,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -50,6 +56,8 @@ internal fun ShowsRecommendedView(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    var contextSheet by remember { mutableStateOf<Show?>(null) }
+
     ShowsRecommendedContent(
         state = state,
         modifier = modifier,
@@ -60,6 +68,16 @@ internal fun ShowsRecommendedView(
                 onMoreClick()
             }
         },
+        onLongClick = {
+            if (!state.loading.isLoading) {
+                contextSheet = it
+            }
+        },
+    )
+
+    ShowContextSheet(
+        show = contextSheet,
+        onDismiss = { contextSheet = null },
     )
 }
 
@@ -69,6 +87,7 @@ internal fun ShowsRecommendedContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
+    onLongClick: (Show) -> Unit = {},
     onMoreClick: () -> Unit = {},
 ) {
     Column(
@@ -117,6 +136,7 @@ internal fun ShowsRecommendedContent(
                         ContentList(
                             items = state.items ?: emptyList<Show>().toImmutableList(),
                             contentPadding = contentPadding,
+                            onLongClick = onLongClick,
                         )
                     }
                 }
@@ -148,6 +168,7 @@ private fun ContentList(
     items: ImmutableList<Show>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
+    onLongClick: (Show) -> Unit,
 ) {
     val currentList = remember { mutableIntStateOf(items.hashCode()) }
 
@@ -175,6 +196,7 @@ private fun ContentList(
                     fadeInSpec = null,
                     fadeOutSpec = null,
                 ),
+                onLongClick = { onLongClick(item) },
             )
         }
     }
@@ -185,11 +207,13 @@ private fun ContentListItem(
     item: Show,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
+    onLongClick: () -> Unit = {},
 ) {
     VerticalMediaCard(
         title = item.title,
         imageUrl = item.images?.getPosterUrl(),
         onClick = onClick,
+        onLongClick = onLongClick,
         chipContent = {
             Row(
                 horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpace),

@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.shows.di
 
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.shows.ShowsViewModel
 import tv.trakt.trakt.core.shows.data.remote.ShowsApiClient
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
@@ -25,6 +26,7 @@ import tv.trakt.trakt.core.shows.sections.trending.all.AllShowsTrendingViewModel
 import tv.trakt.trakt.core.shows.sections.trending.data.local.TrendingShowsLocalDataSource
 import tv.trakt.trakt.core.shows.sections.trending.data.local.TrendingShowsStorage
 import tv.trakt.trakt.core.shows.sections.trending.usecase.GetTrendingShowsUseCase
+import tv.trakt.trakt.core.shows.ui.context.ShowContextViewModel
 
 internal val showsDataModule = module {
     single<ShowsRemoteDataSource> {
@@ -131,6 +133,16 @@ internal val showsModule = module {
     viewModel {
         AllShowsRecommendedViewModel(
             getRecommendedUseCase = get(),
+        )
+    }
+
+    viewModel { (show: Show) ->
+        ShowContextViewModel(
+            show = show,
+            updateWatchlistUseCase = get(),
+            loadWatchlistUseCase = get(),
+            userWatchlistLocalSource = get(),
+            sessionManager = get(),
         )
     }
 }

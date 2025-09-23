@@ -51,6 +51,7 @@ internal fun AllShowsListView(
     modifier: Modifier = Modifier,
     title: @Composable (() -> Unit)? = null,
     loading: Boolean = false,
+    onItemLongClick: (Show) -> Unit = {},
     onTopOfList: () -> Unit = {},
     onEndOfList: () -> Unit = {},
 ) {
@@ -100,7 +101,10 @@ internal fun AllShowsListView(
             item { title() }
         }
 
-        listItems(items)
+        listItems(
+            items = items,
+            onLongClick = onItemLongClick,
+        )
 
         if (loading) {
             item {

@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 
 package tv.trakt.trakt.core.shows.sections.recommended.all
 
@@ -12,13 +12,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,6 +33,8 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.shows.ui.AllShowsListView
+import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
+import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -39,9 +46,21 @@ internal fun AllShowsRecommendedScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    var contextSheet by remember { mutableStateOf<Show?>(null) }
+
     AllShowsRecommendedScreenContent(
         state = state,
+        onItemLongClick = {
+            if (!state.loading.isLoading) {
+                contextSheet = it
+            }
+        },
         onBackClick = onNavigateBack,
+    )
+
+    ShowContextSheet(
+        show = contextSheet,
+        onDismiss = { contextSheet = null },
     )
 }
 
@@ -49,8 +68,10 @@ internal fun AllShowsRecommendedScreen(
 private fun AllShowsRecommendedScreenContent(
     state: AllShowsRecommendedState,
     modifier: Modifier = Modifier,
+    onItemLongClick: (Show) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
+    val headerState = rememberHeaderState()
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
             aheadFraction = 0.5F,
@@ -61,7 +82,8 @@ private fun AllShowsRecommendedScreenContent(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(TraktTheme.colors.backgroundPrimary),
+            .background(TraktTheme.colors.backgroundPrimary)
+            .nestedScroll(headerState.connection),
     ) {
         ScrollableBackdropImage(
             imageUrl = state.backgroundUrl,
@@ -69,6 +91,9 @@ private fun AllShowsRecommendedScreenContent(
         )
 
         AllShowsListView(
+            state = listState,
+            items = state.items ?: emptyList<Show>().toImmutableList(),
+            loading = state.loading.isLoading,
             title = {
                 TitleBar(
                     modifier = Modifier
@@ -76,12 +101,12 @@ private fun AllShowsRecommendedScreenContent(
                         .onClick(onBackClick),
                 )
             },
-            state = listState,
-            loading = state.loading.isLoading,
-            items = state.items ?: emptyList<Show>().toImmutableList(),
+            onItemLongClick = onItemLongClick,
+            onTopOfList = { headerState.resetScrolled() },
             onEndOfList = {
-                // No pagination support for recommended shows
+                // No pagination available
             },
+            modifier = Modifier.fillMaxSize(),
         )
     }
 }

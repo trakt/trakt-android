@@ -17,5 +17,9 @@ internal interface ShowsSyncRemoteDataSource {
         extended: String? = null,
     ): List<WatchlistShowDto>
 
+    suspend fun addToWatchlist(showId: TraktId)
+
+    suspend fun removeFromWatchlist(showId: TraktId)
+
     suspend fun dropShow(showId: TraktId)
 }

@@ -48,6 +48,44 @@ internal class ShowsSyncApiClient(
         return response.body()
     }
 
+    override suspend fun addToWatchlist(showId: TraktId) {
+        val request = PostUsersListsListAddRequest(
+            shows = listOf(
+                PostUsersListsListAddRequestShowsInner(
+                    ids = PostUsersListsListAddRequestShowsInnerOneOfIds(
+                        trakt = showId.value,
+                        slug = null,
+                        imdb = null,
+                        tmdb = null,
+                        tvdb = 0,
+                    ),
+                    title = "",
+                    year = 0,
+                ),
+            ),
+        )
+        syncApi.postSyncWatchlistAdd(request)
+    }
+
+    override suspend fun removeFromWatchlist(showId: TraktId) {
+        val request = PostUsersListsListAddRequest(
+            shows = listOf(
+                PostUsersListsListAddRequestShowsInner(
+                    ids = PostUsersListsListAddRequestShowsInnerOneOfIds(
+                        trakt = showId.value,
+                        slug = null,
+                        imdb = null,
+                        tmdb = null,
+                        tvdb = 0,
+                    ),
+                    title = "",
+                    year = 0,
+                ),
+            ),
+        )
+        syncApi.postSyncWatchlistRemove(request)
+    }
+
     override suspend fun dropShow(showId: TraktId) {
         val request = PostUsersListsListAddRequest(
             shows = listOf(
