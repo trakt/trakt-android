@@ -28,6 +28,7 @@ internal fun ListsPersonalItemView(
     item: PersonalListItem,
     modifier: Modifier = Modifier,
     showMediaIcon: Boolean = false,
+    onLongClick: () -> Unit = { },
 ) {
     when (item) {
         is PersonalListItem.ShowItem -> {
@@ -37,6 +38,7 @@ internal fun ListsPersonalItemView(
             VerticalMediaCard(
                 title = item.show.title,
                 imageUrl = item.images?.getPosterUrl(),
+                onLongClick = onLongClick,
                 chipContent = {
                     if (isReleased) {
                         Row(
@@ -79,6 +81,7 @@ internal fun ListsPersonalItemView(
             VerticalMediaCard(
                 title = item.movie.title,
                 imageUrl = item.images?.getPosterUrl(),
+                onLongClick = onLongClick,
                 chipContent = {
                     if (isReleased) {
                         Row(

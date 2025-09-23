@@ -16,13 +16,16 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -41,7 +44,11 @@ import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.lists.model.PersonalListItem
+import tv.trakt.trakt.core.lists.model.PersonalListItem.MovieItem
+import tv.trakt.trakt.core.lists.model.PersonalListItem.ShowItem
 import tv.trakt.trakt.core.lists.sections.personal.views.ListsPersonalItemView
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
@@ -49,6 +56,7 @@ import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ListsPersonalView(
     list: CustomList,
@@ -60,14 +68,37 @@ internal fun ListsPersonalView(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    var showContextSheet by remember { mutableStateOf<Show?>(null) }
+    var movieContextSheet by remember { mutableStateOf<Movie?>(null) }
+
     ListsPersonalContent(
         state = state,
         list = list,
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
+        onShowLongClick = {
+            if (!state.loading.isLoading) {
+                showContextSheet = it
+            }
+        },
+        onMovieLongClick = {
+            if (!state.loading.isLoading) {
+                movieContextSheet = it
+            }
+        },
         onMoreClick = onMoreClick,
     )
+
+//    ShowContextSheet(
+//        show = showContextSheet,
+//        onDismiss = { showContextSheet = null },
+//    )
+//
+//    MovieContextSheet(
+//        movie = movieContextSheet,
+//        onDismiss = { movieContextSheet = null },
+//    )
 }
 
 @Composable
@@ -77,6 +108,8 @@ internal fun ListsPersonalContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
+    onShowLongClick: (Show) -> Unit = {},
+    onMovieLongClick: (Movie) -> Unit = {},
     onMoreClick: () -> Unit = {},
 ) {
     Column(
@@ -171,6 +204,8 @@ internal fun ListsPersonalContent(
                             ContentList(
                                 listItems = (state.items ?: emptyList()).toImmutableList(),
                                 contentPadding = contentPadding,
+                                onShowLongClick = onShowLongClick,
+                                onMovieLongClick = onMovieLongClick,
                             )
                         }
                     }
@@ -224,6 +259,8 @@ private fun ContentList(
     listItems: ImmutableList<PersonalListItem>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
+    onShowLongClick: (Show) -> Unit = {},
+    onMovieLongClick: (Movie) -> Unit = {},
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
@@ -248,6 +285,12 @@ private fun ContentList(
             ListsPersonalItemView(
                 item = item,
                 showMediaIcon = true,
+                onLongClick = {
+                    when (item) {
+                        is ShowItem -> onShowLongClick(item.show)
+                        is MovieItem -> onMovieLongClick(item.movie)
+                    }
+                },
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
                     fadeOutSpec = null,

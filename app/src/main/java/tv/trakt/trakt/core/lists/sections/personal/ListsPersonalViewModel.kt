@@ -30,7 +30,7 @@ internal class ListsPersonalViewModel(
         loadData()
     }
 
-    private fun loadData() {
+    fun loadData() {
         viewModelScope.launch {
             try {
                 val localItems = getListItemsUseCase.getLocalItems(listId)
