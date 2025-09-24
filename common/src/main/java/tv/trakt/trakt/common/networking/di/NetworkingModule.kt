@@ -24,7 +24,6 @@ import tv.trakt.trakt.common.networking.client.KtorClientFactory
 val networkingModule = module {
     single<KtorClientFactory> {
         KtorClientFactory(
-            baseUrl = API_HD_BASE_URL,
             tokenProvider = get<TokenProvider>(),
             sessionManager = get(),
         )

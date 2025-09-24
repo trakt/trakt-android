@@ -4,6 +4,7 @@ import android.content.Context
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.api.createClientPlugin
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
@@ -16,10 +17,12 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.header
+import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType.Application
 import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpMethod
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -31,6 +34,7 @@ import tv.trakt.trakt.common.auth.TokenProvider
 import tv.trakt.trakt.common.auth.model.TraktAccessToken
 import tv.trakt.trakt.common.auth.model.TraktRefreshToken
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import java.nio.file.Files
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.time.Duration.Companion.seconds
@@ -48,10 +52,7 @@ private val jsonNegotiation = Json {
 
 private val mutex = Mutex()
 
-internal fun HttpClientConfig<*>.applyConfig(
-    baseUrl: String,
-    context: Context,
-) {
+internal fun HttpClientConfig<*>.applyConfig(context: Context) {
     expectSuccess = true
 
     install(HttpCache) {
@@ -75,8 +76,9 @@ internal fun HttpClientConfig<*>.applyConfig(
         level = if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.NONE
     }
 
+    install(CacheBusterPlugin)
+
     defaultRequest {
-        url(baseUrl)
         header(HttpHeaders.ContentType, Application.Json)
         header(HEADER_TRAKT_API_KEY, BuildConfig.TRAKT_API_KEY)
         header(HEADER_TRAKT_API_VERSION, TRAKT_API_VERSION_VALUE)
@@ -151,6 +153,17 @@ internal fun HttpClientConfig<*>.applyAuthorizationConfig(
                     }
                 }
             }
+        }
+    }
+}
+
+private val CacheBusterPlugin = createClientPlugin("CacheBusterPlugin") {
+    onRequest { request, _ ->
+        if (request.method == HttpMethod.Get) {
+            request.parameter(
+                "cacheBuster",
+                nowUtcInstant().toEpochMilli().toString(),
+            )
         }
     }
 }

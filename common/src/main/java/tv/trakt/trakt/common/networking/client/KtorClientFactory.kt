@@ -8,19 +8,18 @@ import tv.trakt.trakt.common.auth.TokenProvider
 import tv.trakt.trakt.common.auth.session.SessionManager
 
 internal class KtorClientFactory(
-    private val baseUrl: String,
     private val tokenProvider: TokenProvider,
     private val sessionManager: SessionManager,
 ) {
     fun createClientConfig(context: Context): (HttpClientConfig<*>) -> Unit {
         return {
-            it.applyConfig(baseUrl, context)
+            it.applyConfig(context)
         }
     }
 
     fun createAuthorizedClientConfig(context: Context): (HttpClientConfig<*>) -> Unit {
         return {
-            it.applyConfig(baseUrl, context)
+            it.applyConfig(context)
             it.applyAuthorizationConfig(
                 tokenProvider = tokenProvider,
                 sessionManager = sessionManager,
