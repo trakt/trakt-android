@@ -1,7 +1,12 @@
 package tv.trakt.trakt.core.lists.data.remote
 
 import org.openapitools.client.apis.ListsApi
+import org.openapitools.client.models.PostCheckinMovieRequestMovieIds
 import org.openapitools.client.models.PostUsersListsCreateRequest
+import org.openapitools.client.models.PostUsersListsListAddRequest
+import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInner
+import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
+import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerOneOfIds
 import org.openapitools.client.models.PutUsersListsListUpdateRequest
 import tv.trakt.trakt.common.model.TraktId
 
@@ -44,6 +49,55 @@ internal class ListsApiClient(
         listsApi.deleteUsersListsListDelete(
             id = "me",
             listId = listId.value.toString(),
+        )
+    }
+
+    override suspend fun removeShowFromList(
+        listId: TraktId,
+        showId: TraktId,
+    ) {
+        listsApi.postUsersListsListRemove(
+            id = "me",
+            listId = listId.value.toString(),
+            postUsersListsListAddRequest = PostUsersListsListAddRequest(
+                shows = listOf(
+                    PostUsersListsListAddRequestShowsInner(
+                        ids = PostUsersListsListAddRequestShowsInnerOneOfIds(
+                            trakt = showId.value,
+                            slug = null,
+                            imdb = null,
+                            tmdb = null,
+                            tvdb = 0,
+                        ),
+                        title = "",
+                        year = 0,
+                    ),
+                ),
+            ),
+        )
+    }
+
+    override suspend fun removeMovieFromList(
+        listId: TraktId,
+        movieId: TraktId,
+    ) {
+        listsApi.postUsersListsListRemove(
+            id = "me",
+            listId = listId.value.toString(),
+            postUsersListsListAddRequest = PostUsersListsListAddRequest(
+                movies = listOf(
+                    PostUsersListsListAddRequestMoviesInner(
+                        ids = PostCheckinMovieRequestMovieIds(
+                            trakt = movieId.value,
+                            slug = null,
+                            imdb = null,
+                            tmdb = 0,
+                        ),
+                        title = "",
+                        year = 0,
+                    ),
+                ),
+            ),
         )
     }
 }

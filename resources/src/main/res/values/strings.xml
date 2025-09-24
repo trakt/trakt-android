@@ -117,10 +117,12 @@
     <string name="button_text_browse_shows">Browse Shows</string>
     <string name="button_text_meet_team">Meet the team</string>
     <string name="button_text_movies">Movies</string>
+    <string name="button_text_remove_from_list">Remove from list</string>
     <string name="button_text_personal">Personal</string>
     <string name="button_text_remove_from_history">Remove from Watched</string>
     <string name="button_text_shows">Shows</string>
     <string name="button_text_social">Social</string>
+    <string name="text_info_list_removed">Removed from list.</string>
     <string name="button_text_drop_show">Drop show</string>
     <string name="button_text_toggle_search_media">Media</string>
     <string name="button_text_toggle_search_people">People</string>
@@ -139,5 +141,6 @@
     <string name="text_sort_recently_added">Recently added</string>
     <string name="text_info_show_dropped">Show has been dropped.</string>
     <string name="warning_prompt_remove_from_watchlist">Are you sure you want to remove %s from your Watchlist?</string>
+    <string name="warning_prompt_remove_from_personal_list">Are you sure you want to remove %1$s from %2$s?</string>
     <string name="warning_prompt_drop_show">Are you sure you want to drop %s show? This will remove it from your up next list.</string>
 </resources>

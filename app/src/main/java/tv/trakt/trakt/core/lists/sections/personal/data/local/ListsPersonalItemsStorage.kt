@@ -24,20 +24,29 @@ internal class ListsPersonalItemsStorage : ListsPersonalItemsLocalDataSource {
         }
     }
 
-//    override suspend fun addItems(items: List<CustomList>) {
-//        mutex.withLock {
-//            with(storage) {
-//                clear()
-//                putAll(items.associateBy { it.ids.trakt })
-//            }
-//        }
-//    }
-//
-//    override suspend fun getItems(): List<CustomList> {
-//        return mutex.withLock {
-//            storage.values.toList()
-//        }
-//    }
+    override suspend fun removeShows(
+        listId: TraktId,
+        showsIds: List<TraktId>,
+    ) {
+        mutex.withLock {
+            val currentItems = storage[listId] ?: return
+            storage[listId] = currentItems
+                .filterIsInstance<PersonalListItem.ShowItem>()
+                .filterNot { it.show.ids.trakt in showsIds }
+        }
+    }
+
+    override suspend fun removeMovies(
+        listId: TraktId,
+        moviesIds: List<TraktId>,
+    ) {
+        mutex.withLock {
+            val currentItems = storage[listId] ?: return
+            storage[listId] = currentItems
+                .filterIsInstance<PersonalListItem.MovieItem>()
+                .filterNot { it.movie.ids.trakt in moviesIds }
+        }
+    }
 
     override fun clear() {
         storage.clear()

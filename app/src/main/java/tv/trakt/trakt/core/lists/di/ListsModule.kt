@@ -15,18 +15,22 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.ListsViewModel
 import tv.trakt.trakt.core.lists.data.remote.ListsApiClient
 import tv.trakt.trakt.core.lists.data.remote.ListsRemoteDataSource
 import tv.trakt.trakt.core.lists.sections.personal.ListsPersonalViewModel
+import tv.trakt.trakt.core.lists.sections.personal.context.ListMovieContextViewModel
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsStorage
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalStorage
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
+import tv.trakt.trakt.core.lists.sections.personal.usecases.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistViewModel
 import tv.trakt.trakt.core.lists.sections.watchlist.context.movies.WatchlistMovieContextViewModel
 import tv.trakt.trakt.core.lists.sections.watchlist.context.shows.WatchlistShowContextViewModel
@@ -116,6 +120,13 @@ internal val listsModule = module {
         )
     }
 
+    factory {
+        RemovePersonalListItemUseCase(
+            remoteSource = get(),
+            localSource = get(),
+        )
+    }
+
     viewModel {
         ListsViewModel(
             sessionManager = get(),
@@ -129,6 +140,7 @@ internal val listsModule = module {
             getShowsWatchlistUseCase = get(),
             getMoviesWatchlistUseCase = get(),
             getFilterUseCase = get(),
+            userWatchlistSource = get(),
             sessionManager = get(),
         )
     }
@@ -169,6 +181,21 @@ internal val listsModule = module {
             userProgressLocalSource = get(),
             userWatchlistLocalSource = get(),
             loadProgressUseCase = get(),
+            sessionManager = get(),
+        )
+    }
+
+    viewModel { (movie: Movie, list: CustomList) ->
+        ListMovieContextViewModel(
+            movie = movie,
+            list = list,
+            updateMovieWatchlistUseCase = get(),
+            updateMovieHistoryUseCase = get(),
+            removeListItemUseCase = get(),
+            userProgressLocalSource = get(),
+            userWatchlistLocalSource = get(),
+            loadProgressUseCase = get(),
+            loadWatchlistUseCase = get(),
             sessionManager = get(),
         )
     }

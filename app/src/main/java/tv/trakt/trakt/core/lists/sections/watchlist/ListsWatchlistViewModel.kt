@@ -3,11 +3,17 @@ package tv.trakt.trakt.core.lists.sections.watchlist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -25,12 +31,14 @@ import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistU
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetShowsWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.filters.GetWatchlistFilterUseCase
+import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 
 internal class ListsWatchlistViewModel(
     private val getWatchlistUseCase: GetWatchlistUseCase,
     private val getShowsWatchlistUseCase: GetShowsWatchlistUseCase,
     private val getMoviesWatchlistUseCase: GetMoviesWatchlistUseCase,
     private val getFilterUseCase: GetWatchlistFilterUseCase,
+    private val userWatchlistSource: UserWatchlistLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = ListsWatchlistState()
@@ -46,6 +54,7 @@ internal class ListsWatchlistViewModel(
     init {
         loadData()
         observeUser()
+        observeWatchlist()
     }
 
     private fun observeUser() {
@@ -59,6 +68,16 @@ internal class ListsWatchlistViewModel(
                     }
                 }
         }
+    }
+
+    @OptIn(FlowPreview::class)
+    private fun observeWatchlist() {
+        merge(userWatchlistSource.observeUpdates())
+            .debounce(250)
+            .distinctUntilChanged()
+            .onEach {
+                loadData(ignoreErrors = true)
+            }.launchIn(viewModelScope)
     }
 
     fun loadData(ignoreErrors: Boolean = false) {

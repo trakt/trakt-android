@@ -49,6 +49,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 import tv.trakt.trakt.core.lists.model.PersonalListItem.MovieItem
 import tv.trakt.trakt.core.lists.model.PersonalListItem.ShowItem
+import tv.trakt.trakt.core.lists.sections.personal.context.sheet.ListMovieContextSheet
 import tv.trakt.trakt.core.lists.sections.personal.views.ListsPersonalItemView
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
@@ -95,10 +96,12 @@ internal fun ListsPersonalView(
 //        onDismiss = { showContextSheet = null },
 //    )
 //
-//    MovieContextSheet(
-//        movie = movieContextSheet,
-//        onDismiss = { movieContextSheet = null },
-//    )
+    ListMovieContextSheet(
+        movie = movieContextSheet,
+        list = list,
+        onRemoveListItem = { viewModel.loadData() },
+        onDismiss = { movieContextSheet = null },
+    )
 }
 
 @Composable

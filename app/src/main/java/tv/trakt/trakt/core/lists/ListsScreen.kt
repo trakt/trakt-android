@@ -87,6 +87,7 @@ internal fun ListsScreen(
         onMoviesClick = onNavigateToMovies,
         onCreateListClick = { createListSheet = true },
         onEditListClick = { editListSheet = it },
+        onWatchlistUpdate = { viewModel.loadData() },
     )
 
     CreateListSheet(
@@ -114,6 +115,7 @@ private fun ListsScreenContent(
     onMoviesClick: () -> Unit = {},
     onCreateListClick: () -> Unit = {},
     onEditListClick: (CustomList) -> Unit = {},
+    onWatchlistUpdate: () -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
     val lazyListState = rememberLazyListState(
