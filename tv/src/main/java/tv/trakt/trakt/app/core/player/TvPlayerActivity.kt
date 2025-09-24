@@ -144,7 +144,7 @@ private fun TvVideoPlayer(
                 enableAutomaticInitialization = false
                 lifecycleOwner.lifecycle.addObserver(this)
 
-                val options = IFramePlayerOptions.Builder()
+                val options = IFramePlayerOptions.Builder(context)
                     .controls(0)
                     .rel(0)
                     .ivLoadPolicy(3)
