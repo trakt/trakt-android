@@ -239,8 +239,8 @@ internal fun PanelMediaCard(
                     if (!titleOriginal.isNullOrBlank() && titleOriginal != title) {
                         Text(
                             text = "($titleOriginal)",
-                            style = TraktTheme.typography.cardTitle.copy(fontSize = 16.sp),
-                            color = TraktTheme.colors.textPrimary,
+                            style = TraktTheme.typography.cardSubtitle.copy(fontSize = 12.sp),
+                            color = TraktTheme.colors.textSecondary,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier.padding(bottom = 2.dp),
@@ -288,7 +288,7 @@ private fun PosterPreviewPlaceholder() {
     TraktTheme {
         PanelMediaCard(
             title = "Lorem",
-            titleOriginal = null,
+            titleOriginal = "Original Lorem",
             subtitle = "Action, Adventure",
             contentImageUrl = null,
             containerImageUrl = null,
