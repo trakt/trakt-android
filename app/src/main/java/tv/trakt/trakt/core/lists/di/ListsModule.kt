@@ -23,7 +23,8 @@ import tv.trakt.trakt.core.lists.ListsViewModel
 import tv.trakt.trakt.core.lists.data.remote.ListsApiClient
 import tv.trakt.trakt.core.lists.data.remote.ListsRemoteDataSource
 import tv.trakt.trakt.core.lists.sections.personal.ListsPersonalViewModel
-import tv.trakt.trakt.core.lists.sections.personal.context.ListMovieContextViewModel
+import tv.trakt.trakt.core.lists.sections.personal.context.movie.ListMovieContextViewModel
+import tv.trakt.trakt.core.lists.sections.personal.context.show.ListShowContextViewModel
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsStorage
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
@@ -191,6 +192,21 @@ internal val listsModule = module {
             list = list,
             updateMovieWatchlistUseCase = get(),
             updateMovieHistoryUseCase = get(),
+            removeListItemUseCase = get(),
+            userProgressLocalSource = get(),
+            userWatchlistLocalSource = get(),
+            loadProgressUseCase = get(),
+            loadWatchlistUseCase = get(),
+            sessionManager = get(),
+        )
+    }
+
+    viewModel { (show: Show, list: CustomList) ->
+        ListShowContextViewModel(
+            show = show,
+            list = list,
+            updateShowWatchlistUseCase = get(),
+            updateShowHistoryUseCase = get(),
             removeListItemUseCase = get(),
             userProgressLocalSource = get(),
             userWatchlistLocalSource = get(),

@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package tv.trakt.trakt.core.lists.sections.personal.context
+package tv.trakt.trakt.core.lists.sections.personal.context.show
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -38,10 +38,10 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
-import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
+import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Images.Size.THUMB
-import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.common.ui.theme.colors.White
 import tv.trakt.trakt.helpers.preview.PreviewData
@@ -52,16 +52,16 @@ import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun ListMovieContextView(
-    movie: Movie,
+internal fun ListShowContextView(
+    show: Show,
     list: CustomList,
-    viewModel: ListMovieContextViewModel,
+    viewModel: ListShowContextViewModel,
     modifier: Modifier = Modifier,
-    onAddWatched: (Movie) -> Unit,
-    onAddWatchlist: (Movie) -> Unit,
-    onRemoveWatched: (Movie) -> Unit,
-    onRemoveWatchlist: (Movie) -> Unit,
-    onRemoveList: (Movie) -> Unit,
+    onAddWatched: (Show) -> Unit,
+    onAddWatchlist: (Show) -> Unit,
+    onRemoveWatched: (Show) -> Unit,
+    onRemoveWatchlist: (Show) -> Unit,
+    onRemoveList: (Show) -> Unit,
     onError: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -77,15 +77,15 @@ internal fun ListMovieContextView(
     ) {
         when {
             state.loadingWatched == LoadingState.DONE -> when {
-                !state.isWatched || state.isWatchlist -> onAddWatched(movie)
-                else -> onRemoveWatched(movie)
+                !state.isWatched || state.isWatchlist -> onAddWatched(show)
+                else -> onRemoveWatched(show)
             }
             state.loadingWatchlist == LoadingState.DONE -> when {
-                !state.isWatchlist -> onAddWatchlist(movie)
-                else -> onRemoveWatchlist(movie)
+                !state.isWatchlist -> onAddWatchlist(show)
+                else -> onRemoveWatchlist(show)
             }
             state.loadingList == LoadingState.DONE -> {
-                onRemoveList(movie)
+                onRemoveList(show)
             }
         }
     }
@@ -96,8 +96,8 @@ internal fun ListMovieContextView(
         }
     }
 
-    ListMovieContextViewContent(
-        movie = movie,
+    ListShowContextViewContent(
+        show = show,
         state = state,
         modifier = modifier,
         onWatchedClick = {
@@ -127,7 +127,7 @@ internal fun ListMovieContextView(
         title = stringResource(R.string.button_text_watchlist),
         message = stringResource(
             R.string.warning_prompt_remove_from_watchlist,
-            movie.title,
+            show.title,
         ),
     )
 
@@ -141,7 +141,7 @@ internal fun ListMovieContextView(
         title = stringResource(R.string.button_text_remove_from_history),
         message = stringResource(
             R.string.warning_prompt_remove_from_watched,
-            movie.title,
+            show.title,
         ),
     )
 
@@ -155,16 +155,16 @@ internal fun ListMovieContextView(
         title = stringResource(R.string.button_text_remove_from_list),
         message = stringResource(
             R.string.warning_prompt_remove_from_personal_list,
-            movie.title,
+            show.title,
             list.name,
         ),
     )
 }
 
 @Composable
-private fun ListMovieContextViewContent(
-    movie: Movie,
-    state: ListMovieContextState,
+private fun ListShowContextViewContent(
+    show: Show,
+    state: ListShowContextState,
     modifier: Modifier = Modifier,
     onWatchedClick: () -> Unit = {},
     onWatchlistClick: () -> Unit = {},
@@ -175,10 +175,10 @@ private fun ListMovieContextViewContent(
         modifier = modifier,
     ) {
         PanelMediaCard(
-            title = movie.title,
-            titleOriginal = movie.titleOriginal,
-            subtitle = remember(movie.genres) {
-                movie.genres.take(2).joinToString(", ") { genre ->
+            title = show.title,
+            titleOriginal = show.titleOriginal,
+            subtitle = remember(show.genres) {
+                show.genres.take(2).joinToString(", ") { genre ->
                     genre.replaceFirstChar {
                         it.uppercaseChar()
                     }
@@ -186,8 +186,8 @@ private fun ListMovieContextViewContent(
             },
             shadow = 4.dp,
             containerColor = Shade910,
-            contentImageUrl = movie.images?.getPosterUrl(),
-            containerImageUrl = movie.images?.getFanartUrl(THUMB),
+            contentImageUrl = show.images?.getPosterUrl(),
+            containerImageUrl = show.images?.getFanartUrl(THUMB),
             footerContent = {
                 Row(
                     horizontalArrangement = Arrangement.Absolute.spacedBy(TraktTheme.spacing.chipsSpace),
@@ -196,16 +196,16 @@ private fun ListMovieContextViewContent(
                     val metaString = remember {
                         val separator = "  •  "
                         buildString {
-                            movie.released?.let {
+                            show.released?.let {
                                 append(it.year)
                             }
-                            movie.runtime?.let {
+                            show.runtime?.let {
                                 if (isNotEmpty()) append(separator)
                                 append(it.inWholeMinutes.durationFormat())
                             }
-                            if (!movie.certification.isNullOrBlank()) {
+                            if (!show.certification.isNullOrBlank()) {
                                 if (isNotEmpty()) append(separator)
-                                append(movie.certification)
+                                append(show.certification)
                             }
                         }
                     }
@@ -236,10 +236,10 @@ private fun ListMovieContextViewContent(
                             painter = painterResource(R.drawable.ic_trakt_icon),
                             contentDescription = null,
                             modifier = Modifier.size(14.dp),
-                            colorFilter = if (movie.rating.rating > 0) whiteFilter else grayFilter,
+                            colorFilter = if (show.rating.rating > 0) whiteFilter else grayFilter,
                         )
                         Text(
-                            text = if (movie.rating.rating > 0) "${movie.rating.ratingPercent}%" else "-",
+                            text = if (show.rating.rating > 0) "${show.rating.ratingPercent}%" else "-",
                             color = TraktTheme.colors.textPrimary,
                             style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
                         )
@@ -249,7 +249,7 @@ private fun ListMovieContextViewContent(
         )
 
         ActionButtons(
-            movie = movie,
+            show = show,
             state = state,
             onWatchedClick = onWatchedClick,
             onWatchlistClick = onWatchlistClick,
@@ -260,14 +260,14 @@ private fun ListMovieContextViewContent(
 
 @Composable
 private fun ActionButtons(
-    movie: Movie,
-    state: ListMovieContextState,
+    show: Show,
+    state: ListShowContextState,
     onWatchedClick: () -> Unit,
     onWatchlistClick: () -> Unit,
     onRemoveListClick: () -> Unit,
 ) {
     val isReleased = remember {
-        movie.released?.isTodayOrBefore() ?: false
+        show.released?.isNowOrBefore() ?: false
     }
 
     val isLoadingOrDone =
@@ -360,9 +360,9 @@ private fun Preview() {
             ColorImage(Color.Blue.toArgb())
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            ListMovieContextViewContent(
-                state = ListMovieContextState(),
-                movie = PreviewData.movie1,
+            ListShowContextViewContent(
+                state = ListShowContextState(),
+                show = PreviewData.show1,
             )
         }
     }

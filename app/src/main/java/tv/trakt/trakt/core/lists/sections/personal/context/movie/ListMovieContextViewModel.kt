@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.lists.sections.personal.context
+package tv.trakt.trakt.core.lists.sections.personal.context.movie
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

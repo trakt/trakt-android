@@ -49,7 +49,8 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 import tv.trakt.trakt.core.lists.model.PersonalListItem.MovieItem
 import tv.trakt.trakt.core.lists.model.PersonalListItem.ShowItem
-import tv.trakt.trakt.core.lists.sections.personal.context.sheet.ListMovieContextSheet
+import tv.trakt.trakt.core.lists.sections.personal.context.movie.sheet.ListMovieContextSheet
+import tv.trakt.trakt.core.lists.sections.personal.context.show.sheet.ListShowContextSheet
 import tv.trakt.trakt.core.lists.sections.personal.views.ListsPersonalItemView
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
@@ -91,15 +92,17 @@ internal fun ListsPersonalView(
         onMoreClick = onMoreClick,
     )
 
-//    ShowContextSheet(
-//        show = showContextSheet,
-//        onDismiss = { showContextSheet = null },
-//    )
-//
+    ListShowContextSheet(
+        show = showContextSheet,
+        list = list,
+        onRemoveListItem = { viewModel.loadLocalData() },
+        onDismiss = { showContextSheet = null },
+    )
+
     ListMovieContextSheet(
         movie = movieContextSheet,
         list = list,
-        onRemoveListItem = { viewModel.loadData() },
+        onRemoveListItem = { viewModel.loadLocalData() },
         onDismiss = { movieContextSheet = null },
     )
 }

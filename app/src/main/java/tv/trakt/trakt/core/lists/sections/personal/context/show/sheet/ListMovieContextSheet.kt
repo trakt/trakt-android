@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package tv.trakt.trakt.core.lists.sections.personal.context.sheet
+package tv.trakt.trakt.core.lists.sections.personal.context.show.sheet
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -19,26 +19,26 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.model.CustomList
-import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.core.lists.sections.personal.context.ListMovieContextView
+import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.core.lists.sections.personal.context.show.ListShowContextView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
 import kotlin.random.Random.Default.nextInt
 
 @Composable
-internal fun ListMovieContextSheet(
+internal fun ListShowContextSheet(
     state: SheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true,
     ),
-    movie: Movie?,
+    show: Show?,
     list: CustomList,
     onRemoveListItem: () -> Unit,
     onDismiss: () -> Unit,
 ) {
     val sheetScope = rememberCoroutineScope()
 
-    if (movie != null) {
+    if (show != null) {
         val localSnack = LocalSnackbarState.current
         val localContext = LocalContext.current
 
@@ -46,12 +46,12 @@ internal fun ListMovieContextSheet(
             sheetState = state,
             onDismiss = onDismiss,
         ) {
-            ListMovieContextView(
-                movie = movie,
+            ListShowContextView(
+                show = show,
                 list = list,
                 viewModel = koinViewModel(
                     key = nextInt().toString(),
-                    parameters = { parametersOf(movie, list) },
+                    parameters = { parametersOf(show, list) },
                 ),
                 onAddWatched = {
                     sheetScope.dismissWithMessage(

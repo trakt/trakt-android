@@ -30,6 +30,19 @@ internal class ListsPersonalViewModel(
         loadData()
     }
 
+    fun loadLocalData() {
+        viewModelScope.launch {
+            try {
+                val localItems = getListItemsUseCase.getLocalItems(listId)
+                itemsState.update { localItems }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                }
+            }
+        }
+    }
+
     fun loadData(ignoreErrors: Boolean = false) {
         viewModelScope.launch {
             try {

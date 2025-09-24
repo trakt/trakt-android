@@ -31,8 +31,10 @@ internal class ListsPersonalItemsStorage : ListsPersonalItemsLocalDataSource {
         mutex.withLock {
             val currentItems = storage[listId] ?: return
             storage[listId] = currentItems
-                .filterIsInstance<PersonalListItem.ShowItem>()
-                .filterNot { it.show.ids.trakt in showsIds }
+                .filterNot {
+                    it is PersonalListItem.ShowItem &&
+                        it.show.ids.trakt in showsIds
+                }
         }
     }
 
@@ -43,8 +45,10 @@ internal class ListsPersonalItemsStorage : ListsPersonalItemsLocalDataSource {
         mutex.withLock {
             val currentItems = storage[listId] ?: return
             storage[listId] = currentItems
-                .filterIsInstance<PersonalListItem.MovieItem>()
-                .filterNot { it.movie.ids.trakt in moviesIds }
+                .filterNot {
+                    it is PersonalListItem.MovieItem &&
+                        it.movie.ids.trakt in moviesIds
+                }
         }
     }
 
