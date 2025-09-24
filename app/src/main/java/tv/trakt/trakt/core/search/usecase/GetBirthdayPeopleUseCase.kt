@@ -15,18 +15,26 @@ internal class GetBirthdayPeopleUseCase(
     private val localSource: SearchPeopleLocalDataSource,
 ) {
     suspend fun getLocalPeople(): ImmutableList<Person> {
+        val today = nowLocalDay()
         return localSource.getPeople()
-            .sortedByDescending { it.birthday?.dayOfYear == nowLocalDay().dayOfYear }
+            .sortedByDescending {
+                it.birthday?.monthValue == today.monthValue &&
+                    it.birthday?.dayOfMonth == today.dayOfMonth
+            }
             .toImmutableList()
     }
 
     suspend fun getPeople(limit: Int = 36): ImmutableList<Person> {
+        val today = nowLocalDay()
         return remoteSource.getBirthdayPeople()
             .asyncMap {
                 Person.fromDto(it)
             }
             .take(limit)
-            .sortedByDescending { it.birthday?.dayOfYear == nowLocalDay().dayOfYear }
+            .sortedByDescending {
+                it.birthday?.monthValue == today.monthValue &&
+                    it.birthday?.dayOfMonth == today.dayOfMonth
+            }
             .toImmutableList()
             .also { people ->
                 localSource.addPeople(

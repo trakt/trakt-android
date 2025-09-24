@@ -177,7 +177,8 @@ private fun PersonGridItem(
                         val (isToday, age) = remember(date) {
                             val today = nowLocalDay()
                             Pair(
-                                date.dayOfYear == today.dayOfYear,
+                                date.monthValue == today.monthValue &&
+                                    date.dayOfMonth == today.dayOfMonth,
                                 (today.year - date.year) - when {
                                     date.dayOfYear <= today.dayOfYear -> 0
                                     else -> 1
