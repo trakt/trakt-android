@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package tv.trakt.trakt.core.home.sections.upnext.views.sheets
+package tv.trakt.trakt.core.home.sections.upnext.context.sheets
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -15,8 +15,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.LocalSnackbarState
+import tv.trakt.trakt.core.home.sections.upnext.context.UpNextItemContextView
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
-import tv.trakt.trakt.core.home.sections.upnext.views.UpNextItemContextView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT

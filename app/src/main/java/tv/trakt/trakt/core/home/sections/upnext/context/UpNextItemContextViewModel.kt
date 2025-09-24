@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.home.sections.upnext.views
+package tv.trakt.trakt.core.home.sections.upnext.context
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,12 +15,16 @@ import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
+import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
 
 internal class UpNextItemContextViewModel(
     private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
     private val upNextLocalDataSource: HomeUpNextLocalDataSource,
+    private val upcomingLocalDataSource: HomeUpcomingLocalDataSource,
+    private val loadUserProgressUseCase: LoadUserProgressUseCase,
 ) : ViewModel() {
     private val initialState = UpNextItemContextState()
 
@@ -35,10 +39,17 @@ internal class UpNextItemContextViewModel(
             try {
                 loadingDropState.update { LOADING }
                 updateShowHistoryUseCase.dropShow(showId)
+
                 upNextLocalDataSource.removeItems(
                     showIds = listOf(showId),
                     notify = true,
                 )
+
+                upcomingLocalDataSource.removeShowItems(
+                    showIds = listOf(showId),
+                    notify = true,
+                )
+
                 loadUserProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -54,8 +65,7 @@ internal class UpNextItemContextViewModel(
     fun loadUserProgress() {
         viewModelScope.launch {
             try {
-                // TODO Load user progress for shows as well
-//                loadUserProgressUseCase.loadMoviesProgress()
+                loadUserProgressUseCase.loadShowsProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.w(error)

@@ -24,7 +24,7 @@ import tv.trakt.trakt.common.networking.client.KtorClientFactory
 val networkingModule = module {
     single<KtorClientFactory> {
         KtorClientFactory(
-            baseUrl = API_BASE_URL,
+            baseUrl = API_HD_BASE_URL,
             tokenProvider = get<TokenProvider>(),
             sessionManager = get(),
         )
@@ -129,7 +129,7 @@ val networkingApiModule = module {
 
     single<CalendarsApi> {
         CalendarsApi(
-            baseUrl = API_BASE_URL,
+            baseUrl = API_HD_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
         )
@@ -137,7 +137,7 @@ val networkingApiModule = module {
 
     single<HistoryApi> {
         HistoryApi(
-            baseUrl = API_BASE_URL,
+            baseUrl = API_HD_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
         )

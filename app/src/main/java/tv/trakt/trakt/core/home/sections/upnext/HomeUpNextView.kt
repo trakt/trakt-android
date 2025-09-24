@@ -51,8 +51,8 @@ import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
+import tv.trakt.trakt.core.home.sections.upnext.context.sheets.UpNextItemContextSheet
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
-import tv.trakt.trakt.core.home.sections.upnext.views.sheets.UpNextItemContextSheet
 import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EpisodeProgressBar

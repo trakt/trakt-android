@@ -6,6 +6,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
+import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -55,7 +56,7 @@ internal class GetUpcomingUseCase(
 
     private suspend fun getShows(): List<HomeUpcomingItem.EpisodeItem> {
         val remoteShows = remoteUserSource.getShowsCalendar(
-            startDate = nowLocal().toLocalDate(),
+            startDate = nowLocalDay(),
             days = HOME_UPCOMING_DAYS_LIMIT,
         )
 
