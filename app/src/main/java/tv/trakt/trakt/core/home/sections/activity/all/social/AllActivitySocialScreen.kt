@@ -44,10 +44,12 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.home.sections.activity.all.AllActivityState
 import tv.trakt.trakt.core.home.sections.activity.all.views.AllActivityEpisodeItem
 import tv.trakt.trakt.core.home.sections.activity.all.views.AllActivityMovieItem
+import tv.trakt.trakt.core.home.sections.activity.all.views.UserFilterChip
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.EpisodeItem
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.MovieItem
@@ -55,6 +57,7 @@ import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextConten
 import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextState
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.FilterChipGroup
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -122,8 +125,6 @@ internal fun AllActivitySocialContent(
             .nestedScroll(headerState.connection),
     ) {
         val contentPadding = PaddingValues(
-            start = TraktTheme.spacing.mainPageHorizontalSpace,
-            end = TraktTheme.spacing.mainPageHorizontalSpace,
             top = WindowInsets.statusBars.asPaddingValues()
                 .calculateTopPadding(),
             bottom = WindowInsets.navigationBars.asPaddingValues()
@@ -139,6 +140,7 @@ internal fun AllActivitySocialContent(
         ContentList(
             listState = listState,
             listItems = (state.items ?: emptyList()).toImmutableList(),
+            listFilters = state.usersFilter,
             contentPadding = contentPadding,
             loadingMore = state.loadingMore.isLoading,
             onTopOfList = { headerState.resetScrolled() },
@@ -152,6 +154,7 @@ internal fun AllActivitySocialContent(
 private fun ContentList(
     modifier: Modifier = Modifier,
     listItems: ImmutableList<HomeActivityItem>,
+    listFilters: AllActivityState.UsersFilter,
     listState: LazyListState,
     contentPadding: PaddingValues,
     loadingMore: Boolean,
@@ -194,9 +197,22 @@ private fun ContentList(
         item {
             TitleBar(
                 modifier = Modifier
-                    .padding(bottom = 2.dp)
+                    .padding(
+                        start = TraktTheme.spacing.mainPageHorizontalSpace,
+                        end = TraktTheme.spacing.mainPageHorizontalSpace,
+                        bottom = 2.dp
+                    )
                     .onClick(onBackClick),
             )
+        }
+
+        if (listItems.isNotEmpty() && listFilters.users.isNotEmpty()) {
+            item {
+                ContentFilters(
+                    state = listFilters,
+                    onFilterClick = {}
+                )
+            }
         }
 
         items(
@@ -208,7 +224,11 @@ private fun ContentList(
                     AllActivityMovieItem(
                         item = item,
                         modifier = Modifier
-                            .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                            .padding(
+                                start = TraktTheme.spacing.mainPageHorizontalSpace,
+                                end = TraktTheme.spacing.mainPageHorizontalSpace,
+                                bottom = TraktTheme.spacing.mainListVerticalSpace
+                            )
                             .animateItem(
                                 fadeInSpec = null,
                                 fadeOutSpec = null,
@@ -219,7 +239,11 @@ private fun ContentList(
                     AllActivityEpisodeItem(
                         item = item,
                         modifier = Modifier
-                            .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                            .padding(
+                                start = TraktTheme.spacing.mainPageHorizontalSpace,
+                                end = TraktTheme.spacing.mainPageHorizontalSpace,
+                                bottom = TraktTheme.spacing.mainListVerticalSpace
+                            )
                             .animateItem(
                                 fadeInSpec = null,
                                 fadeOutSpec = null,
@@ -236,6 +260,29 @@ private fun ContentList(
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
+        }
+    }
+}
+
+@Composable
+private fun ContentFilters(
+    state: AllActivityState.UsersFilter,
+    onFilterClick: (User) -> Unit,
+) {
+    FilterChipGroup(
+        paddingHorizontal = PaddingValues(
+            start = TraktTheme.spacing.mainPageHorizontalSpace,
+            end = TraktTheme.spacing.mainPageHorizontalSpace,
+        ),
+        paddingVertical = PaddingValues(bottom = 16.dp),
+    ) {
+        for (user in state.users) {
+            UserFilterChip(
+                user = user,
+                selected = state.selectedUser?.ids?.trakt == user.ids.trakt,
+                text = user.displayName,
+                onClick = { onFilterClick(user) },
+            )
         }
     }
 }

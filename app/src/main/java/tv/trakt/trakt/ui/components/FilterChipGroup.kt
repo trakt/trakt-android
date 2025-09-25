@@ -1,10 +1,12 @@
 package tv.trakt.trakt.ui.components
 
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,8 +20,14 @@ internal fun FilterChipGroup(
     horizontalArrangement: Arrangement.Horizontal = spacedBy(6.dp),
     content: @Composable () -> Unit = {},
 ) {
+    val scrollState = rememberScrollState()
+
     Row(
         modifier = modifier
+            .horizontalScroll(
+                state = scrollState,
+                overscrollEffect = null
+            )
             .padding(paddingVertical)
             .padding(paddingHorizontal),
         horizontalArrangement = horizontalArrangement,

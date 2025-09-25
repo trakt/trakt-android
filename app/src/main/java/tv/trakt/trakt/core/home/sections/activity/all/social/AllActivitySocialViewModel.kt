@@ -34,6 +34,7 @@ internal class AllActivitySocialViewModel(
 
     private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val itemsState = MutableStateFlow(initialState.items)
+    private val usersFilterState = MutableStateFlow(initialState.usersFilter)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMoreState = MutableStateFlow(IDLE)
     private val errorState = MutableStateFlow(initialState.error)
@@ -64,6 +65,7 @@ internal class AllActivitySocialViewModel(
                 )
                 if (localItems.isNotEmpty()) {
                     itemsState.update { localItems }
+                    loadUsersFilter(localItems)
                     loadingState.update { DONE }
                 } else {
                     loadingState.update { LOADING }
@@ -74,6 +76,7 @@ internal class AllActivitySocialViewModel(
                     limit = HOME_ALL_ACTIVITY_LIMIT,
                 )
                 itemsState.update { remoteItems }
+                loadUsersFilter(remoteItems)
 
                 hasMoreData = remoteItems.size >= HOME_ALL_ACTIVITY_LIMIT
             } catch (error: Exception) {
@@ -86,6 +89,27 @@ internal class AllActivitySocialViewModel(
             } finally {
                 loadingState.update { DONE }
             }
+        }
+    }
+
+    private fun loadUsersFilter(items: List<HomeActivityItem>) {
+        val users = items
+            .groupBy { it.user }
+            .map { (user, items) -> user to items.size }
+            .sortedByDescending { it.second }
+            .mapNotNull { it.first }
+            .take(10)
+            .toImmutableList()
+
+        if (users.size < 3) {
+            return
+        }
+
+        usersFilterState.update {
+            AllActivityState.UsersFilter(
+                users = users,
+                selectedUser = null,
+            )
         }
     }
 
@@ -151,6 +175,7 @@ internal class AllActivitySocialViewModel(
     val state: StateFlow<AllActivityState> = combine(
         backgroundState,
         itemsState,
+        usersFilterState,
         loadingState,
         loadingMoreState,
         errorState,
@@ -158,9 +183,10 @@ internal class AllActivitySocialViewModel(
         AllActivityState(
             backgroundUrl = state[0] as String,
             items = state[1] as ImmutableList<HomeActivityItem>?,
-            loading = state[2] as LoadingState,
-            loadingMore = state[3] as LoadingState,
-            error = state[4] as Exception?,
+            usersFilter = state[2] as AllActivityState.UsersFilter,
+            loading = state[3] as LoadingState,
+            loadingMore = state[4] as LoadingState,
+            error = state[5] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,
