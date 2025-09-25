@@ -225,7 +225,7 @@ internal fun PanelMediaCard(
                     .fillMaxSize(),
             ) {
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(0.dp),
+                    verticalArrangement = Arrangement.spacedBy(2.dp),
                 ) {
                     Text(
                         text = title,
@@ -233,7 +233,6 @@ internal fun PanelMediaCard(
                         color = TraktTheme.colors.textPrimary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.padding(bottom = 2.dp),
                     )
 
                     if (!titleOriginal.isNullOrBlank() && titleOriginal != title) {
@@ -243,7 +242,7 @@ internal fun PanelMediaCard(
                             color = TraktTheme.colors.textSecondary,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier.padding(bottom = 4.dp),
+                            modifier = Modifier.padding(bottom = 2.dp),
                         )
                     }
 
