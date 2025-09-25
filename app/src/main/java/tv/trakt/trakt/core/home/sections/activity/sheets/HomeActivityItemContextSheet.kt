@@ -28,7 +28,7 @@ internal fun HomeActivityItemSheet(
         skipPartiallyExpanded = true,
     ),
     sheetItem: HomeActivityItem?,
-    onPlayRemoved: () -> Unit,
+    onPlayRemoved: (HomeActivityItem) -> Unit,
     onDismiss: () -> Unit,
 ) {
     val localSnack = LocalSnackbarState.current
@@ -47,7 +47,7 @@ internal fun HomeActivityItemSheet(
                     key = nextInt().toString(),
                 ),
                 onPlayRemove = {
-                    onPlayRemoved()
+                    onPlayRemoved(sheetItem)
                     sheetScope.run {
                         launch { state.hide() }
                             .invokeOnCompletion {

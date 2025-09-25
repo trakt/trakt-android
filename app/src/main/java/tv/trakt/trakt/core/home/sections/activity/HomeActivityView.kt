@@ -42,10 +42,12 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.episodes.model.Episode
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.PERSONAL
+import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.SOCIAL
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.sheets.HomeActivityItemSheet
 import tv.trakt.trakt.core.home.sections.activity.views.EpisodeSocialItemView
@@ -66,6 +68,8 @@ internal fun HomeActivityView(
     contentPadding: PaddingValues,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
     onNavigateToMovie: (movieId: TraktId) -> Unit = {},
+    onMorePersonalClick: () -> Unit = {},
+    onMoreSocialClick: () -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -85,6 +89,13 @@ internal fun HomeActivityView(
         onMovieLongClick = {
             if (state.filter == PERSONAL) {
                 contextSheet = it
+            }
+        },
+        onMoreClick = {
+            when (state.filter) {
+                PERSONAL -> onMorePersonalClick()
+                SOCIAL -> onMoreSocialClick()
+                null -> Unit
             }
         },
         onFilterClick = viewModel::setFilter,
@@ -109,6 +120,7 @@ internal fun HomeActivityContent(
     onEpisodeLongClick: (HomeActivityItem.EpisodeItem) -> Unit = {},
     onMovieLongClick: (HomeActivityItem.MovieItem) -> Unit = {},
     onFilterClick: (HomeActivityFilter) -> Unit = {},
+    onMoreClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -125,13 +137,14 @@ internal fun HomeActivityContent(
                 title = stringResource(R.string.list_title_activity),
             )
 
-//            if (!state.items.isNullOrEmpty() || state.loading != DONE) {
-//                Text(
-//                    text = stringResource(R.string.button_text_view_all),
-//                    color = TraktTheme.colors.textSecondary,
-//                    style = TraktTheme.typography.buttonSecondary,
-//                )
-//            }
+            if (!state.items.isNullOrEmpty() && state.loading == DONE) {
+                Text(
+                    text = stringResource(R.string.button_text_view_all),
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.buttonSecondary,
+                    modifier = Modifier.onClick(onMoreClick),
+                )
+            }
         }
 
         if (!state.items.isNullOrEmpty() || state.loading.isLoading || state.user != null) {

@@ -1,11 +1,11 @@
-package tv.trakt.trakt.core.home.sections.upnext.all.navigation
+package tv.trakt.trakt.core.home.sections.upnext.features.all.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
-import tv.trakt.trakt.core.home.sections.upnext.all.AllHomeUpNextScreen
+import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextScreen
 
 @Serializable
 internal data object HomeUpNextDestination

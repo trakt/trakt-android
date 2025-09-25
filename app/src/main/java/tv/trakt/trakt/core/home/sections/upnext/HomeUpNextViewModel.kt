@@ -26,9 +26,10 @@ import tv.trakt.trakt.common.helpers.StaticStringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
-import tv.trakt.trakt.core.home.sections.upnext.all.data.local.AllUpNextLocalDataSource
+import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.AllUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
@@ -104,7 +105,9 @@ internal class HomeUpNextViewModel(
             }
 
             try {
-                val localItems = getUpNextUseCase.getLocalUpNext()
+                val localItems = getUpNextUseCase.getLocalUpNext(
+                    limit = HOME_SECTION_LIMIT,
+                )
                 if (localItems.isNotEmpty()) {
                     itemsState.update {
                         ItemsState(
@@ -124,7 +127,11 @@ internal class HomeUpNextViewModel(
 
                 itemsState.update {
                     ItemsState(
-                        items = getUpNextUseCase.getUpNext(notify = false),
+                        items = getUpNextUseCase.getUpNext(
+                            page = 1,
+                            limit = HOME_SECTION_LIMIT,
+                            notify = false,
+                        ),
                         resetScroll = resetScroll,
                     )
                 }
@@ -184,6 +191,8 @@ internal class HomeUpNextViewModel(
 
                 itemsState.update {
                     val items = getUpNextUseCase.getUpNext(
+                        page = 1,
+                        limit = HOME_SECTION_LIMIT,
                         notify = true,
                     )
                     ItemsState(

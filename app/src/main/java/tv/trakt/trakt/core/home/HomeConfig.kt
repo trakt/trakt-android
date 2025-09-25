@@ -5,5 +5,5 @@ internal object HomeConfig {
     const val HOME_WATCHLIST_LIMIT = 30
     const val HOME_UPCOMING_DAYS_LIMIT = 14
 
-    const val HOME_ALL_LIMIT = 100
+    const val HOME_ALL_LIMIT = 50
 }

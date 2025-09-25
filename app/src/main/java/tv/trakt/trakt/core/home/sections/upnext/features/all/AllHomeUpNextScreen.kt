@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 
-package tv.trakt.trakt.core.home.sections.upnext.all
+package tv.trakt.trakt.core.home.sections.upnext.features.all
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -56,7 +56,7 @@ import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.core.home.sections.upnext.context.sheets.UpNextItemContextSheet
+import tv.trakt.trakt.core.home.sections.upnext.features.context.sheets.UpNextItemContextSheet
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
@@ -104,9 +104,7 @@ internal fun AllHomeUpNextScreen(
             viewModel.addToHistory(it.id)
         },
         onDropShow = {
-            viewModel.loadData(
-                ignoreErrors = false,
-            )
+            viewModel.removeShow(it.show.ids.trakt)
         },
     )
 }
@@ -234,7 +232,7 @@ private fun ContentList(
         if (loadingMore) {
             item {
                 FilmProgressIndicator(
-                    size = 36.dp,
+                    size = 32.dp,
                     modifier = Modifier.fillMaxWidth(),
                 )
             }

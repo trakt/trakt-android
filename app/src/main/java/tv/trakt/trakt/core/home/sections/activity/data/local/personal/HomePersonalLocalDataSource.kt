@@ -10,6 +10,11 @@ internal interface HomePersonalLocalDataSource {
         notify: Boolean,
     )
 
+    suspend fun setItems(
+        items: List<HomeActivityItem>,
+        notify: Boolean,
+    )
+
     suspend fun getItems(): List<HomeActivityItem>
 
     suspend fun removeItems(

@@ -20,9 +20,10 @@ internal class GetPersonalActivityUseCase(
     private val remoteUserSource: UserRemoteDataSource,
     private val localDataSource: HomePersonalLocalDataSource,
 ) {
-    suspend fun getLocalPersonalActivity(): ImmutableList<HomeActivityItem> {
+    suspend fun getLocalPersonalActivity(limit: Int): ImmutableList<HomeActivityItem> {
         return localDataSource.getItems()
             .sortedByDescending { it.activityAt }
+            .take(limit)
             .toImmutableList()
     }
 
@@ -77,10 +78,17 @@ internal class GetPersonalActivityUseCase(
                 .sortedByDescending { it.activityAt }
                 .toImmutableList()
                 .also {
-                    localDataSource.addItems(
-                        items = it,
-                        notify = false,
-                    )
+                    if (page == 1) {
+                        localDataSource.setItems(
+                            items = it,
+                            notify = false,
+                        )
+                    } else {
+                        localDataSource.addItems(
+                            items = it,
+                            notify = false,
+                        )
+                    }
                 }
         }
     }

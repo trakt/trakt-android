@@ -235,7 +235,7 @@ internal fun PanelMediaCard(
                         overflow = TextOverflow.Ellipsis,
                     )
 
-                    if (!titleOriginal.isNullOrBlank() && titleOriginal != title) {
+                    if (!titleOriginal.isNullOrBlank() && !titleOriginal.equals(title, ignoreCase = true)) {
                         Text(
                             text = "($titleOriginal)",
                             style = TraktTheme.typography.cardSubtitle.copy(fontSize = 12.sp),

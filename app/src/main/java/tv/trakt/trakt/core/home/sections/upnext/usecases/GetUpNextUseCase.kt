@@ -8,7 +8,6 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.episodes.model.Episode
 import tv.trakt.trakt.core.episodes.model.fromDto
-import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.model.Progress
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
@@ -18,15 +17,15 @@ internal class GetUpNextUseCase(
     private val remoteSyncSource: ShowsSyncRemoteDataSource,
     private val localDataSource: HomeUpNextLocalDataSource,
 ) {
-    suspend fun getLocalUpNext(limit: Int = HOME_SECTION_LIMIT): ImmutableList<ProgressShow> {
+    suspend fun getLocalUpNext(limit: Int): ImmutableList<ProgressShow> {
         return localDataSource.getItems()
             .take(limit)
             .toImmutableList()
     }
 
     suspend fun getUpNext(
-        page: Int = 1,
-        limit: Int = HOME_SECTION_LIMIT,
+        page: Int,
+        limit: Int,
         notify: Boolean,
     ): ImmutableList<ProgressShow> {
         val remoteItems = remoteSyncSource.getUpNext(
@@ -59,10 +58,17 @@ internal class GetUpNextUseCase(
             }
             .toImmutableList()
             .also {
-                localDataSource.addItems(
-                    items = it.take(limit),
-                    notify = notify,
-                )
+                if (page == 1) {
+                    localDataSource.setItems(
+                        items = it,
+                        notify = notify,
+                    )
+                } else {
+                    localDataSource.addItems(
+                        items = it,
+                        notify = notify,
+                    )
+                }
             }
     }
 }

@@ -25,6 +25,20 @@ internal class HomePersonalStorage : HomePersonalLocalDataSource {
     ) {
         mutex.withLock {
             with(storage) {
+                putAll(items.associateBy { it.id })
+            }
+            if (notify) {
+                updatedAt.tryEmit(nowUtcInstant())
+            }
+        }
+    }
+
+    override suspend fun setItems(
+        items: List<HomeActivityItem>,
+        notify: Boolean,
+    ) {
+        mutex.withLock {
+            with(storage) {
                 clear()
                 putAll(items.associateBy { it.id })
             }

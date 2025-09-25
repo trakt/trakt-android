@@ -137,6 +137,7 @@
     <string name="input_placeholder_lists_description">Description (optional)</string>
     <string name="list_title_recently_searched">Recently Searched</string>
     <string name="list_subtitle_released_movies">Released movies</string>
+    <string name="page_title_recently_watched">Recently Watched</string>
     <string name="text_sort_recently_updated">Recently updated</string>
     <string name="text_sort_recently_added">Recently added</string>
     <string name="text_info_show_dropped">Show has been dropped.</string>

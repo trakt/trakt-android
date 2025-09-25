@@ -17,6 +17,9 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.core.home.HomeViewModel
 import tv.trakt.trakt.core.home.sections.activity.HomeActivityViewModel
+import tv.trakt.trakt.core.home.sections.activity.all.data.local.AllActivityLocalDataSource
+import tv.trakt.trakt.core.home.sections.activity.all.data.local.AllActivityStorage
+import tv.trakt.trakt.core.home.sections.activity.all.personal.AllActivityPersonalViewModel
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalStorage
 import tv.trakt.trakt.core.home.sections.activity.data.local.social.HomeSocialLocalDataSource
@@ -30,12 +33,12 @@ import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDa
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingStorage
 import tv.trakt.trakt.core.home.sections.upcoming.usecases.GetUpcomingUseCase
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextViewModel
-import tv.trakt.trakt.core.home.sections.upnext.all.AllHomeUpNextViewModel
-import tv.trakt.trakt.core.home.sections.upnext.all.data.local.AllUpNextLocalDataSource
-import tv.trakt.trakt.core.home.sections.upnext.all.data.local.AllUpNextStorage
-import tv.trakt.trakt.core.home.sections.upnext.context.UpNextItemContextViewModel
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextStorage
+import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextViewModel
+import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.AllUpNextLocalDataSource
+import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.AllUpNextStorage
+import tv.trakt.trakt.core.home.sections.upnext.features.context.UpNextItemContextViewModel
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.HomeWatchlistViewModel
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
@@ -64,6 +67,10 @@ internal val homeDataModule = module {
 
     single<HomePersonalLocalDataSource> {
         HomePersonalStorage()
+    }
+
+    single<AllActivityLocalDataSource> {
+        AllActivityStorage()
     }
 
     single<HomeUpcomingLocalDataSource> {
@@ -163,6 +170,15 @@ internal val homeModule = module {
             getActivityFilterUseCase = get(),
             homeUpNextSource = get(),
             userWatchlistSource = get(),
+            allActivitySource = get(),
+            sessionManager = get(),
+        )
+    }
+
+    viewModel {
+        AllActivityPersonalViewModel(
+            getPersonalActivityUseCase = get(),
+            loadUserProgressUseCase = get(),
             sessionManager = get(),
         )
     }
@@ -179,6 +195,7 @@ internal val homeModule = module {
         ActivityItemContextViewModel(
             updateMovieHistoryUseCase = get(),
             activityLocalSource = get(),
+            allActivityLocalSource = get(),
             loadUserProgressUseCase = get(),
         )
     }

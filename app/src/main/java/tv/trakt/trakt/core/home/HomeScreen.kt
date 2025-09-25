@@ -44,6 +44,8 @@ internal fun HomeScreen(
     onNavigateToShows: () -> Unit,
     onNavigateToMovies: () -> Unit,
     onNavigateToAllUpNext: () -> Unit,
+    onNavigateToAllPersonal: () -> Unit,
+    onNavigateToAllSocial: () -> Unit,
 ) {
     val localBottomBarVisibility = LocalBottomBarVisibility.current
     LaunchedEffect(Unit) {
@@ -55,9 +57,11 @@ internal fun HomeScreen(
     HomeScreenContent(
         state = state,
         onProfileClick = onNavigateToProfile,
-        onMoreClick = onNavigateToShows,
+        onShowsClick = onNavigateToShows,
         onMoviesClick = onNavigateToMovies,
         onMoreUpNextClick = onNavigateToAllUpNext,
+        onMorePersonalClick = onNavigateToAllPersonal,
+        onMoreSocialClick = onNavigateToAllSocial,
     )
 }
 
@@ -68,7 +72,9 @@ private fun HomeScreenContent(
     modifier: Modifier = Modifier,
     onProfileClick: () -> Unit = {},
     onMoreUpNextClick: () -> Unit = {},
-    onMoreClick: () -> Unit = {},
+    onMorePersonalClick: () -> Unit = {},
+    onMoreSocialClick: () -> Unit = {},
+    onShowsClick: () -> Unit = {},
     onMoviesClick: () -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
@@ -138,7 +144,7 @@ private fun HomeScreenContent(
                 HomeUpcomingView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
-                    onShowsClick = onMoreClick,
+                    onShowsClick = onShowsClick,
                 )
             }
 
@@ -146,6 +152,8 @@ private fun HomeScreenContent(
                 HomeActivityView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
+                    onMorePersonalClick = onMorePersonalClick,
+                    onMoreSocialClick = onMoreSocialClick,
                 )
             }
         }

@@ -109,7 +109,7 @@ internal fun AllShowsListView(
         if (loading) {
             item {
                 FilmProgressIndicator(
-                    size = 36.dp,
+                    size = 32.dp,
                     modifier = Modifier.fillMaxWidth(),
                 )
             }

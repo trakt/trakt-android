@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.home.sections.upnext.all
+package tv.trakt.trakt.core.home.sections.upnext.features.all
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,7 +27,7 @@ import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_LIMIT
-import tv.trakt.trakt.core.home.sections.upnext.all.data.local.AllUpNextLocalDataSource
+import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.AllUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
@@ -65,7 +65,7 @@ internal class AllHomeUpNextViewModel(
         backgroundState.update { configUrl }
     }
 
-    fun loadData(ignoreErrors: Boolean = false) {
+    private fun loadData(ignoreErrors: Boolean = false) {
         clear()
         viewModelScope.launch {
             if (loadEmptyIfNeeded()) {
@@ -84,6 +84,7 @@ internal class AllHomeUpNextViewModel(
                 }
 
                 val remoteItems = getUpNextUseCase.getUpNext(
+                    page = 1,
                     limit = HOME_ALL_LIMIT,
                     notify = false,
                 )
@@ -123,8 +124,9 @@ internal class AllHomeUpNextViewModel(
                     notify = false,
                 )
 
-                itemsState.update {
-                    it?.plus(nextData)
+                itemsState.update { items ->
+                    items
+                        ?.plus(nextData)
                         ?.distinctBy { it.key }
                         ?.toImmutableList()
                 }
@@ -181,6 +183,7 @@ internal class AllHomeUpNextViewModel(
 
                 itemsState.update {
                     val items = getUpNextUseCase.getUpNext(
+                        page = 1,
                         limit = HOME_ALL_LIMIT,
                         notify = true,
                     )
@@ -221,6 +224,17 @@ internal class AllHomeUpNextViewModel(
         }
     }
 
+    fun removeShow(showId: TraktId) {
+        itemsState.update { items ->
+            items
+                ?.filter { it.show.ids.trakt != showId }
+                ?.toImmutableList()
+        }
+        itemsOrder = itemsState.value?.map {
+            it.show.ids.trakt.value
+        }
+    }
+
     fun clearInfo() {
         infoState.update { null }
     }
@@ -230,6 +244,7 @@ internal class AllHomeUpNextViewModel(
         hasMoreData = true
     }
 
+    @Suppress("UNCHECKED_CAST")
     val state: StateFlow<AllHomeUpNextState> = combine(
         backgroundState,
         itemsState,
@@ -238,7 +253,6 @@ internal class AllHomeUpNextViewModel(
         infoState,
         errorState,
     ) { state ->
-        @Suppress("UNCHECKED_CAST")
         AllHomeUpNextState(
             backgroundUrl = state[0] as String,
             items = state[1] as ImmutableList<ProgressShow>?,

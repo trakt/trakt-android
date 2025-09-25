@@ -11,6 +11,11 @@ internal interface HomeUpNextLocalDataSource {
         notify: Boolean,
     )
 
+    suspend fun setItems(
+        items: List<ProgressShow>,
+        notify: Boolean,
+    )
+
     suspend fun getItems(): List<ProgressShow>
 
     suspend fun removeItems(

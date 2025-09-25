@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.home.sections.upnext.context
+package tv.trakt.trakt.core.home.sections.upnext.features.context
 
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.helpers.LoadingState

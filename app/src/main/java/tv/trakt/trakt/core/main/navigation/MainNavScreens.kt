@@ -3,8 +3,12 @@ package tv.trakt.trakt.core.main.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import tv.trakt.trakt.core.home.navigation.homeScreen
-import tv.trakt.trakt.core.home.sections.upnext.all.navigation.homeUpNextScreen
-import tv.trakt.trakt.core.home.sections.upnext.all.navigation.navigateToAllUpNext
+import tv.trakt.trakt.core.home.sections.activity.all.navigation.homeActivityPersonalScreen
+import tv.trakt.trakt.core.home.sections.activity.all.navigation.homeActivitySocialScreen
+import tv.trakt.trakt.core.home.sections.activity.all.navigation.navigateToAllActivityPersonal
+import tv.trakt.trakt.core.home.sections.activity.all.navigation.navigateToAllActivitySocial
+import tv.trakt.trakt.core.home.sections.upnext.features.all.navigation.homeUpNextScreen
+import tv.trakt.trakt.core.home.sections.upnext.features.all.navigation.navigateToAllUpNext
 import tv.trakt.trakt.core.lists.navigation.listsScreen
 import tv.trakt.trakt.core.movies.navigation.moviesScreen
 import tv.trakt.trakt.core.movies.navigation.navigateToMovies
@@ -38,9 +42,19 @@ internal fun NavGraphBuilder.homeScreens(controller: NavHostController) {
             onNavigateToShows = { navigateToShows() },
             onNavigateToMovies = { navigateToMovies() },
             onNavigateToAllUpNext = { navigateToAllUpNext() },
+            onNavigateToAllPersonal = { navigateToAllActivityPersonal() },
+            onNavigateToAllSocial = { navigateToAllActivitySocial() },
         )
 
         homeUpNextScreen(
+            onNavigateBack = { popBackStack() },
+        )
+
+        homeActivityPersonalScreen(
+            onNavigateBack = { popBackStack() },
+        )
+
+        homeActivitySocialScreen(
             onNavigateBack = { popBackStack() },
         )
     }

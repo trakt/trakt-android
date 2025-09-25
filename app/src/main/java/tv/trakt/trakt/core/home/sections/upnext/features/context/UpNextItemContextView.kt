@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.home.sections.upnext.context
+package tv.trakt.trakt.core.home.sections.upnext.features.context
 
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column

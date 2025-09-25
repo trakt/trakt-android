@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.home.sections.upnext.all
+package tv.trakt.trakt.core.home.sections.upnext.features.all
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList

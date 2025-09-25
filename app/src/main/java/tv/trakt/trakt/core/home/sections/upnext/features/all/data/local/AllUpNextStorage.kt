@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.home.sections.upnext.all.data.local
+package tv.trakt.trakt.core.home.sections.upnext.features.all.data.local
 
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow

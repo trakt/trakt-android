@@ -14,6 +14,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.core.home.sections.activity.all.data.local.AllActivityLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
@@ -21,6 +22,7 @@ import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
 internal class ActivityItemContextViewModel(
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
     private val activityLocalSource: HomePersonalLocalDataSource,
+    private val allActivityLocalSource: AllActivityLocalDataSource,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
 ) : ViewModel() {
     private val initialState = ActivityItemContextState()
@@ -39,6 +41,7 @@ internal class ActivityItemContextViewModel(
                 updateMovieHistoryUseCase.removePlayFromHistory(playId = playId)
                 activityLocalSource.removeItems(ids = setOf(playId), notify = true)
 
+                allActivityLocalSource.notifyUpdate()
                 loadUserProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {

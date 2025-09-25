@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
@@ -24,6 +25,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
+import tv.trakt.trakt.core.home.sections.activity.all.data.local.AllActivityLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.PERSONAL
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.SOCIAL
@@ -40,6 +42,7 @@ internal class HomeActivityViewModel(
     private val getPersonalActivityUseCase: GetPersonalActivityUseCase,
     private val homeUpNextSource: HomeUpNextLocalDataSource,
     private val userWatchlistSource: UserWatchlistLocalDataSource,
+    private val allActivitySource: AllActivityLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = HomeActivityState()
@@ -75,7 +78,10 @@ internal class HomeActivityViewModel(
         merge(
             homeUpNextSource.observeUpdates(),
             userWatchlistSource.observeUpdates(),
-        ).debounce(250)
+            allActivitySource.observeUpdates(),
+        )
+            .distinctUntilChanged()
+            .debounce(250)
             .onEach {
                 loadData(ignoreErrors = true)
             }.launchIn(viewModelScope)
@@ -92,7 +98,9 @@ internal class HomeActivityViewModel(
                 val filter = loadFilter()
                 val localItems = when (filter) {
                     SOCIAL -> getSocialActivityUseCase.getLocalSocialActivity()
-                    PERSONAL -> getPersonalActivityUseCase.getLocalPersonalActivity()
+                    PERSONAL -> getPersonalActivityUseCase.getLocalPersonalActivity(
+                        limit = HOME_SECTION_LIMIT,
+                    )
                 }
 
                 if (localItems.isNotEmpty()) {

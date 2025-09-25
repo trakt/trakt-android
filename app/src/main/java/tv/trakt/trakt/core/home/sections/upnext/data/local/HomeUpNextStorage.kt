@@ -26,6 +26,20 @@ internal class HomeUpNextStorage : HomeUpNextLocalDataSource {
     ) {
         mutex.withLock {
             with(storage) {
+                putAll(items.associateBy { it.show.ids.trakt })
+            }
+            if (notify) {
+                updatedAt.tryEmit(nowUtcInstant())
+            }
+        }
+    }
+
+    override suspend fun setItems(
+        items: List<ProgressShow>,
+        notify: Boolean,
+    ) {
+        mutex.withLock {
+            with(storage) {
                 clear()
                 putAll(items.associateBy { it.show.ids.trakt })
             }
