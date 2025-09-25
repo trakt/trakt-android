@@ -30,6 +30,9 @@ import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDa
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingStorage
 import tv.trakt.trakt.core.home.sections.upcoming.usecases.GetUpcomingUseCase
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextViewModel
+import tv.trakt.trakt.core.home.sections.upnext.all.AllHomeUpNextViewModel
+import tv.trakt.trakt.core.home.sections.upnext.all.data.local.AllUpNextLocalDataSource
+import tv.trakt.trakt.core.home.sections.upnext.all.data.local.AllUpNextStorage
 import tv.trakt.trakt.core.home.sections.upnext.context.UpNextItemContextViewModel
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextStorage
@@ -49,6 +52,10 @@ internal val homeDataModule = module {
 
     single<HomeUpNextLocalDataSource> {
         HomeUpNextStorage()
+    }
+
+    single<AllUpNextLocalDataSource> {
+        AllUpNextStorage()
     }
 
     single<HomeSocialLocalDataSource> {
@@ -124,7 +131,18 @@ internal val homeModule = module {
             getUpNextUseCase = get(),
             updateHistoryUseCase = get(),
             homePersonalActivitySource = get(),
+            allUpNextSource = get(),
             loadUserProgressUseCase = get(),
+            sessionManager = get(),
+        )
+    }
+
+    viewModel {
+        AllHomeUpNextViewModel(
+            getUpNextUseCase = get(),
+            updateHistoryUseCase = get(),
+            loadUserProgressUseCase = get(),
+            allUpNextSource = get(),
             sessionManager = get(),
         )
     }

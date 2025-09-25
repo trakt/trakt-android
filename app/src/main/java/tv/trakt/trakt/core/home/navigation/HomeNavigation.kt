@@ -15,10 +15,12 @@ internal fun NavGraphBuilder.homeScreen(
     onNavigateToProfile: () -> Unit,
     onNavigateToShows: () -> Unit,
     onNavigateToMovies: () -> Unit,
+    onNavigateToAllUpNext: () -> Unit,
 ) {
     composable<HomeDestination> {
         HomeScreen(
             viewModel = koinViewModel(),
+            onNavigateToAllUpNext = onNavigateToAllUpNext,
             onNavigateToProfile = onNavigateToProfile,
             onNavigateToShows = onNavigateToShows,
             onNavigateToMovies = onNavigateToMovies,

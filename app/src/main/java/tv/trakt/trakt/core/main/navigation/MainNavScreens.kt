@@ -3,6 +3,8 @@ package tv.trakt.trakt.core.main.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import tv.trakt.trakt.core.home.navigation.homeScreen
+import tv.trakt.trakt.core.home.sections.upnext.all.navigation.homeUpNextScreen
+import tv.trakt.trakt.core.home.sections.upnext.all.navigation.navigateToAllUpNext
 import tv.trakt.trakt.core.lists.navigation.listsScreen
 import tv.trakt.trakt.core.movies.navigation.moviesScreen
 import tv.trakt.trakt.core.movies.navigation.navigateToMovies
@@ -35,6 +37,11 @@ internal fun NavGraphBuilder.homeScreens(controller: NavHostController) {
             onNavigateToProfile = { navigateToProfile() },
             onNavigateToShows = { navigateToShows() },
             onNavigateToMovies = { navigateToMovies() },
+            onNavigateToAllUpNext = { navigateToAllUpNext() },
+        )
+
+        homeUpNextScreen(
+            onNavigateBack = { popBackStack() },
         )
     }
 }

@@ -18,8 +18,9 @@ internal class GetUpNextUseCase(
     private val remoteSyncSource: ShowsSyncRemoteDataSource,
     private val localDataSource: HomeUpNextLocalDataSource,
 ) {
-    suspend fun getLocalUpNext(): ImmutableList<ProgressShow> {
+    suspend fun getLocalUpNext(limit: Int = HOME_SECTION_LIMIT): ImmutableList<ProgressShow> {
         return localDataSource.getItems()
+            .take(limit)
             .toImmutableList()
     }
 
@@ -59,7 +60,7 @@ internal class GetUpNextUseCase(
             .toImmutableList()
             .also {
                 localDataSource.addItems(
-                    items = it,
+                    items = it.take(limit),
                     notify = notify,
                 )
             }

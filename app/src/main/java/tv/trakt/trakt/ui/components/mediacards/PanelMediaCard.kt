@@ -243,7 +243,7 @@ internal fun PanelMediaCard(
                             color = TraktTheme.colors.textSecondary,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier.padding(bottom = 2.dp),
+                            modifier = Modifier.padding(bottom = 4.dp),
                         )
                     }
 

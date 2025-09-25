@@ -68,7 +68,7 @@ internal fun HomeUpNextView(
     viewModel: HomeUpNextViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
-    onShowsClick: () -> Unit,
+    onMoreClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val haptic = LocalHapticFeedback.current
@@ -87,7 +87,7 @@ internal fun HomeUpNextView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        onShowsClick = onShowsClick,
+        onMoreClick = onMoreClick,
         onLongClick = {
             if (!it.loading) {
                 contextSheet = it
@@ -119,7 +119,7 @@ internal fun HomeUpNextContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onShowsClick: () -> Unit = {},
+    onMoreClick: () -> Unit = {},
     onLongClick: (ProgressShow) -> Unit = {},
     onCheckClick: (ProgressShow) -> Unit = {},
 ) {
@@ -137,13 +137,14 @@ internal fun HomeUpNextContent(
             TraktHeader(
                 title = stringResource(R.string.list_title_up_next),
             )
-//            if (!state.items.items.isNullOrEmpty() || state.loading != DONE) {
-//                Text(
-//                    text = stringResource(R.string.button_text_view_all),
-//                    color = TraktTheme.colors.textSecondary,
-//                    style = TraktTheme.typography.buttonSecondary,
-//                )
-//            }
+            if (!state.items.items.isNullOrEmpty() || state.loading != DONE) {
+                Text(
+                    text = stringResource(R.string.button_text_view_all),
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.buttonSecondary,
+                    modifier = Modifier.onClick(onMoreClick),
+                )
+            }
         }
 
         Crossfade(
@@ -181,7 +182,7 @@ internal fun HomeUpNextContent(
                                 backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
                                 modifier = Modifier
                                     .padding(contentPadding),
-                                onClick = onShowsClick,
+                                onClick = onMoreClick,
                             )
                         }
                         else -> {
