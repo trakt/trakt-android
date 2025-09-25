@@ -26,7 +26,7 @@ internal fun FilterChipGroup(
         modifier = modifier
             .horizontalScroll(
                 state = scrollState,
-                overscrollEffect = null
+                overscrollEffect = null,
             )
             .padding(paddingVertical)
             .padding(paddingHorizontal),

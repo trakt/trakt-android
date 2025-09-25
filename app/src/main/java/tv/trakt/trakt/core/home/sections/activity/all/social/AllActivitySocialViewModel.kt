@@ -21,6 +21,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_ACTIVITY_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.all.AllActivityState
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
@@ -52,7 +53,10 @@ internal class AllActivitySocialViewModel(
         backgroundState.update { configUrl }
     }
 
-    private fun loadData(ignoreErrors: Boolean = false) {
+    private fun loadData(
+        ignoreErrors: Boolean = false,
+        localOnly: Boolean = false,
+    ) {
         clear()
         viewModelScope.launch {
             if (loadEmptyIfNeeded()) {
@@ -64,9 +68,18 @@ internal class AllActivitySocialViewModel(
                     limit = HOME_ALL_ACTIVITY_LIMIT,
                 )
                 if (localItems.isNotEmpty()) {
-                    itemsState.update { localItems }
                     loadUsersFilter(localItems)
+                    itemsState.update {
+                        val selectedUser = usersFilterState.value.selectedUser
+                        localItems.filter { items ->
+                            selectedUser?.let { items.user == it } ?: true
+                        }.toImmutableList()
+                    }
                     loadingState.update { DONE }
+
+                    if (localOnly) {
+                        return@launch
+                    }
                 } else {
                     loadingState.update { LOADING }
                 }
@@ -75,8 +88,8 @@ internal class AllActivitySocialViewModel(
                     page = 1,
                     limit = HOME_ALL_ACTIVITY_LIMIT,
                 )
-                itemsState.update { remoteItems }
                 loadUsersFilter(remoteItems)
+                itemsState.update { remoteItems }
 
                 hasMoreData = remoteItems.size >= HOME_ALL_ACTIVITY_LIMIT
             } catch (error: Exception) {
@@ -101,16 +114,27 @@ internal class AllActivitySocialViewModel(
             .take(10)
             .toImmutableList()
 
-        if (users.size < 3) {
+        if (users.size <= 1) {
             return
         }
 
         usersFilterState.update {
             AllActivityState.UsersFilter(
                 users = users,
-                selectedUser = null,
+                selectedUser = it.selectedUser,
             )
         }
+    }
+
+    fun setUserFilter(user: User) {
+        val currentFilter = usersFilterState.value
+        val newFilter = when (currentFilter.selectedUser) {
+            user -> currentFilter.copy(selectedUser = null)
+            else -> currentFilter.copy(selectedUser = user)
+        }
+
+        usersFilterState.update { newFilter }
+        loadData(localOnly = true)
     }
 
 //    fun loadMoreData() {

@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
@@ -45,7 +44,6 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.home.sections.activity.all.AllActivityState
 import tv.trakt.trakt.core.home.sections.activity.all.views.AllActivityEpisodeItem
 import tv.trakt.trakt.core.home.sections.activity.all.views.AllActivityMovieItem
@@ -72,6 +70,9 @@ internal fun AllActivitySocialScreen(
     AllActivitySocialContent(
         state = state,
         modifier = modifier,
+        onFilterClick = { user ->
+            viewModel.setUserFilter(user)
+        },
         onBackClick = onNavigateBack,
         onLoadMore = {
             // No pagination at the moment.
@@ -107,6 +108,7 @@ private fun TitleBar(modifier: Modifier = Modifier) {
 internal fun AllActivitySocialContent(
     state: AllActivityState,
     modifier: Modifier = Modifier,
+    onFilterClick: (User) -> Unit = {},
     onBackClick: () -> Unit = {},
     onLoadMore: () -> Unit = {},
 ) {
@@ -142,9 +144,9 @@ internal fun AllActivitySocialContent(
             listItems = (state.items ?: emptyList()).toImmutableList(),
             listFilters = state.usersFilter,
             contentPadding = contentPadding,
-            loadingMore = state.loadingMore.isLoading,
             onTopOfList = { headerState.resetScrolled() },
             onEndOfList = onLoadMore,
+            onFilterClick = onFilterClick,
             onBackClick = onBackClick,
         )
     }
@@ -157,7 +159,7 @@ private fun ContentList(
     listFilters: AllActivityState.UsersFilter,
     listState: LazyListState,
     contentPadding: PaddingValues,
-    loadingMore: Boolean,
+    onFilterClick: (User) -> Unit,
     onTopOfList: () -> Unit,
     onEndOfList: () -> Unit,
     onBackClick: () -> Unit,
@@ -200,17 +202,17 @@ private fun ContentList(
                     .padding(
                         start = TraktTheme.spacing.mainPageHorizontalSpace,
                         end = TraktTheme.spacing.mainPageHorizontalSpace,
-                        bottom = 2.dp
+                        bottom = 2.dp,
                     )
                     .onClick(onBackClick),
             )
         }
 
-        if (listItems.isNotEmpty() && listFilters.users.isNotEmpty()) {
+        if (listFilters.users.isNotEmpty()) {
             item {
                 ContentFilters(
                     state = listFilters,
-                    onFilterClick = {}
+                    onFilterClick = onFilterClick,
                 )
             }
         }
@@ -227,7 +229,7 @@ private fun ContentList(
                             .padding(
                                 start = TraktTheme.spacing.mainPageHorizontalSpace,
                                 end = TraktTheme.spacing.mainPageHorizontalSpace,
-                                bottom = TraktTheme.spacing.mainListVerticalSpace
+                                bottom = TraktTheme.spacing.mainListVerticalSpace,
                             )
                             .animateItem(
                                 fadeInSpec = null,
@@ -242,7 +244,7 @@ private fun ContentList(
                             .padding(
                                 start = TraktTheme.spacing.mainPageHorizontalSpace,
                                 end = TraktTheme.spacing.mainPageHorizontalSpace,
-                                bottom = TraktTheme.spacing.mainListVerticalSpace
+                                bottom = TraktTheme.spacing.mainListVerticalSpace,
                             )
                             .animateItem(
                                 fadeInSpec = null,
@@ -250,15 +252,6 @@ private fun ContentList(
                             ),
                     )
                 }
-            }
-        }
-
-        if (loadingMore) {
-            item {
-                FilmProgressIndicator(
-                    size = 32.dp,
-                    modifier = Modifier.fillMaxWidth(),
-                )
             }
         }
     }
@@ -274,13 +267,12 @@ private fun ContentFilters(
             start = TraktTheme.spacing.mainPageHorizontalSpace,
             end = TraktTheme.spacing.mainPageHorizontalSpace,
         ),
-        paddingVertical = PaddingValues(bottom = 16.dp),
+        paddingVertical = PaddingValues(bottom = 22.dp),
     ) {
         for (user in state.users) {
             UserFilterChip(
                 user = user,
                 selected = state.selectedUser?.ids?.trakt == user.ids.trakt,
-                text = user.displayName,
                 onClick = { onFilterClick(user) },
             )
         }

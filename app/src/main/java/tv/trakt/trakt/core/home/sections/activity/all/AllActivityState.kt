@@ -16,7 +16,6 @@ internal data class AllActivityState(
     val backgroundUrl: String? = null,
     val error: Exception? = null,
 ) {
-
     data class UsersFilter(
         val users: ImmutableList<User> = emptyList<User>().toImmutableList(),
         val selectedUser: User? = null,
