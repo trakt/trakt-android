@@ -102,7 +102,7 @@ private fun ShowCardChipPainterPreview() {
 private fun ShowCardChipPainterNullPreview() {
     TraktTheme {
         InfoChip(
-            text = "12K",
+            text = "12K Carat Gold",
             iconPainter = null,
         )
     }

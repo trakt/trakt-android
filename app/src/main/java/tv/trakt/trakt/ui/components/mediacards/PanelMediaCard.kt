@@ -221,7 +221,7 @@ internal fun PanelMediaCard(
                 modifier = Modifier
                     .padding(vertical = 12.dp)
                     .padding(start = 12.dp)
-                    .padding(end = 16.dp)
+                    .padding(end = 12.dp)
                     .fillMaxSize(),
             ) {
                 Column(

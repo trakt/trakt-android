@@ -92,15 +92,16 @@ internal class UserApiClient(
     }
 
     override suspend fun getSocialActivity(
+        page: Int?,
         limit: Int,
         type: String,
     ): List<SocialActivityItemDto> {
         val response = usersApi.getUsersActivities(
             id = "me", // or use the current user ID
             type = type,
+            page = page,
             limit = limit,
             extended = "full,cloud9",
-            page = 1,
         ).body()
 
         return response

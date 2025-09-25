@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.home.sections.activity.all.personal
+package tv.trakt.trakt.core.home.sections.activity.all.social
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,13 +21,13 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_LIMIT
+import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_ACTIVITY_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.all.AllActivityState
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
-import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
+import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
 
-internal class AllActivityPersonalViewModel(
-    private val getActivityUseCase: GetPersonalActivityUseCase,
+internal class AllActivitySocialViewModel(
+    private val getActivityUseCase: GetSocialActivityUseCase,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = AllActivityState()
@@ -59,8 +59,8 @@ internal class AllActivityPersonalViewModel(
             }
 
             try {
-                val localItems = getActivityUseCase.getLocalPersonalActivity(
-                    limit = HOME_ALL_LIMIT,
+                val localItems = getActivityUseCase.getLocalSocialActivity(
+                    limit = HOME_ALL_ACTIVITY_LIMIT,
                 )
                 if (localItems.isNotEmpty()) {
                     itemsState.update { localItems }
@@ -69,13 +69,13 @@ internal class AllActivityPersonalViewModel(
                     loadingState.update { LOADING }
                 }
 
-                val remoteItems = getActivityUseCase.getPersonalActivity(
+                val remoteItems = getActivityUseCase.getSocialActivity(
                     page = 1,
-                    limit = HOME_ALL_LIMIT,
+                    limit = HOME_ALL_ACTIVITY_LIMIT,
                 )
                 itemsState.update { remoteItems }
 
-                hasMoreData = remoteItems.size >= HOME_ALL_LIMIT
+                hasMoreData = remoteItems.size >= HOME_ALL_ACTIVITY_LIMIT
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     if (!ignoreErrors) {
@@ -89,50 +89,43 @@ internal class AllActivityPersonalViewModel(
         }
     }
 
-    fun loadMoreData() {
-        if (itemsState.value.isNullOrEmpty() || !hasMoreData) {
-            return
-        }
-
-        if (loadingMoreState.value.isLoading || loadingState.value.isLoading) {
-            return
-        }
-
-        viewModelScope.launch {
-            try {
-                loadingMoreState.update { LOADING }
-
-                val nextData = getActivityUseCase.getPersonalActivity(
-                    page = pages + 1,
-                    limit = HOME_ALL_LIMIT,
-                )
-
-                itemsState.update { items ->
-                    items
-                        ?.plus(nextData)
-                        ?.distinctBy { it.id }
-                        ?.toImmutableList()
-                }
-
-                pages += 1
-                hasMoreData = nextData.size >= HOME_ALL_LIMIT
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    errorState.update { error }
-                    Timber.w(error, "Failed to load more page data")
-                }
-            } finally {
-                loadingMoreState.update { DONE }
-            }
-        }
-    }
-
-    fun removeItem(item: HomeActivityItem) {
-        itemsState.update {
-            it?.filterNot { existingItem -> existingItem.id == item.id }
-                ?.toImmutableList()
-        }
-    }
+//    fun loadMoreData() {
+//        if (itemsState.value.isNullOrEmpty() || !hasMoreData) {
+//            return
+//        }
+//
+//        if (loadingMoreState.value.isLoading || loadingState.value.isLoading) {
+//            return
+//        }
+//
+//        viewModelScope.launch {
+//            try {
+//                loadingMoreState.update { LOADING }
+//
+//                val nextData = getActivityUseCase.getSocialActivity(
+//                    page = pages + 1,
+//                    limit = HOME_ALL_ACTIVITY_LIMIT,
+//                )
+//
+//                itemsState.update { items ->
+//                    items
+//                        ?.plus(nextData)
+//                        ?.distinctBy { it.id }
+//                        ?.toImmutableList()
+//                }
+//
+//                pages += 1
+//                hasMoreData = nextData.size >= HOME_ALL_ACTIVITY_LIMIT
+//            } catch (error: Exception) {
+//                error.rethrowCancellation {
+//                    errorState.update { error }
+//                    Timber.w(error, "Failed to load more page data")
+//                }
+//            } finally {
+//                loadingMoreState.update { DONE }
+//            }
+//        }
+//    }
 
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {

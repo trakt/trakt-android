@@ -92,6 +92,9 @@ internal fun HomeActivityView(
             }
         },
         onMoreClick = {
+            if (state.loading.isLoading) {
+                return@HomeActivityContent
+            }
             when (state.filter) {
                 PERSONAL -> onMorePersonalClick()
                 SOCIAL -> onMoreSocialClick()
@@ -137,12 +140,13 @@ internal fun HomeActivityContent(
                 title = stringResource(R.string.list_title_activity),
             )
 
-            if (!state.items.isNullOrEmpty() && state.loading == DONE) {
+            if (!state.items.isNullOrEmpty() || state.loading.isLoading) {
                 Text(
                     text = stringResource(R.string.button_text_view_all),
                     color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.buttonSecondary,
-                    modifier = Modifier.onClick(onMoreClick),
+                    modifier = Modifier
+                        .onClick(onMoreClick),
                 )
             }
         }

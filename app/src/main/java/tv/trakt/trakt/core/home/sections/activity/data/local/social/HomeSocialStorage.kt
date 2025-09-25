@@ -11,6 +11,14 @@ internal class HomeSocialStorage : HomeSocialLocalDataSource {
     override suspend fun addItems(items: List<HomeActivityItem>) {
         mutex.withLock {
             with(storage) {
+                putAll(items.associateBy { it.id })
+            }
+        }
+    }
+
+    override suspend fun setItems(items: List<HomeActivityItem>) {
+        mutex.withLock {
+            with(storage) {
                 clear()
                 putAll(items.associateBy { it.id })
             }

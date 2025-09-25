@@ -97,7 +97,9 @@ internal class HomeActivityViewModel(
 
                 val filter = loadFilter()
                 val localItems = when (filter) {
-                    SOCIAL -> getSocialActivityUseCase.getLocalSocialActivity()
+                    SOCIAL -> getSocialActivityUseCase.getLocalSocialActivity(
+                        limit = HOME_SECTION_LIMIT,
+                    )
                     PERSONAL -> getPersonalActivityUseCase.getLocalPersonalActivity(
                         limit = HOME_SECTION_LIMIT,
                     )
@@ -112,7 +114,7 @@ internal class HomeActivityViewModel(
 
                 itemsState.update {
                     when (filter) {
-                        SOCIAL -> getSocialActivityUseCase.getSocialActivity(HOME_SECTION_LIMIT)
+                        SOCIAL -> getSocialActivityUseCase.getSocialActivity(1, HOME_SECTION_LIMIT)
                         PERSONAL -> getPersonalActivityUseCase.getPersonalActivity(1, HOME_SECTION_LIMIT)
                     }
                 }

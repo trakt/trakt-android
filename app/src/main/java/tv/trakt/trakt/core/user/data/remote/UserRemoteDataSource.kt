@@ -29,6 +29,7 @@ internal interface UserRemoteDataSource {
     ): List<WatchlistItemDto>
 
     suspend fun getSocialActivity(
+        page: Int? = null,
         limit: Int,
         type: String,
     ): List<SocialActivityItemDto>

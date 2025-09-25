@@ -20,6 +20,7 @@ import tv.trakt.trakt.core.home.sections.activity.HomeActivityViewModel
 import tv.trakt.trakt.core.home.sections.activity.all.data.local.AllActivityLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.all.data.local.AllActivityStorage
 import tv.trakt.trakt.core.home.sections.activity.all.personal.AllActivityPersonalViewModel
+import tv.trakt.trakt.core.home.sections.activity.all.social.AllActivitySocialViewModel
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalStorage
 import tv.trakt.trakt.core.home.sections.activity.data.local.social.HomeSocialLocalDataSource
@@ -177,8 +178,14 @@ internal val homeModule = module {
 
     viewModel {
         AllActivityPersonalViewModel(
-            getPersonalActivityUseCase = get(),
-            loadUserProgressUseCase = get(),
+            getActivityUseCase = get(),
+            sessionManager = get(),
+        )
+    }
+
+    viewModel {
+        AllActivitySocialViewModel(
+            getActivityUseCase = get(),
             sessionManager = get(),
         )
     }

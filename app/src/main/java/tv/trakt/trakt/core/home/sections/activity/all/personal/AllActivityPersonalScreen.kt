@@ -4,7 +4,6 @@ package tv.trakt.trakt.core.home.sections.activity.all.personal
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -41,7 +39,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -49,11 +46,10 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
-import tv.trakt.trakt.common.helpers.extensions.toLocal
-import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.home.sections.activity.all.AllActivityState
+import tv.trakt.trakt.core.home.sections.activity.all.views.AllActivityEpisodeItem
+import tv.trakt.trakt.core.home.sections.activity.all.views.AllActivityMovieItem
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.EpisodeItem
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.MovieItem
@@ -63,7 +59,6 @@ import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextState
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
-import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -229,7 +224,7 @@ private fun ContentList(
         ) { item ->
             when (item) {
                 is MovieItem -> {
-                    ContentListMovieItem(
+                    AllActivityMovieItem(
                         item = item,
                         onLongClick = { onLongClick(item) },
                         modifier = Modifier
@@ -241,7 +236,7 @@ private fun ContentList(
                     )
                 }
                 is EpisodeItem -> {
-                    ContentListEpisodeItem(
+                    AllActivityEpisodeItem(
                         item = item,
                         onLongClick = { onLongClick(item) },
                         modifier = Modifier
@@ -264,77 +259,6 @@ private fun ContentList(
             }
         }
     }
-}
-
-@Composable
-private fun ContentListEpisodeItem(
-    item: EpisodeItem,
-    onLongClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    PanelMediaCard(
-        title = item.show.title,
-        titleOriginal = item.show.titleOriginal,
-        subtitle = item.episode.seasonEpisodeString(),
-        contentImageUrl = item.show.images?.getPosterUrl(),
-        containerImageUrl = item.episode.images?.getScreenshotUrl(THUMB)
-            ?: item.episode.images?.getFanartUrl(THUMB),
-        onLongClick = onLongClick,
-        footerContent = {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(3.dp),
-                verticalAlignment = CenterVertically,
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_calendar_check),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textSecondary,
-                    modifier = Modifier.size(14.dp),
-                )
-                Text(
-                    text = item.activityAt.toLocal().relativePastDateString(),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
-                )
-            }
-        },
-        modifier = modifier,
-    )
-}
-
-@Composable
-private fun ContentListMovieItem(
-    item: MovieItem,
-    onLongClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    PanelMediaCard(
-        title = item.title,
-        titleOriginal = item.titleOriginal,
-        subtitle = stringResource(R.string.translated_value_type_movie),
-        contentImageUrl = item.movie.images?.getPosterUrl(),
-        containerImageUrl = item.movie.images?.getFanartUrl(THUMB),
-        onLongClick = onLongClick,
-        footerContent = {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(3.dp),
-                verticalAlignment = CenterVertically,
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_calendar_check),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textSecondary,
-                    modifier = Modifier.size(14.dp),
-                )
-                Text(
-                    text = item.activityAt.toLocal().relativePastDateString(),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
-                )
-            }
-        },
-        modifier = modifier,
-    )
 }
 
 @Preview(

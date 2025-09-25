@@ -57,7 +57,7 @@ internal fun MovieSocialItemView(
                     InfoChip(
                         text = user.displayName,
                         containerColor = TraktTheme.colors.chipContainerOnContent,
-                        endPadding = 22.dp,
+                        endPadding = 24.dp,
                     )
 
                     val borderColor = remember(user.isAnyVip) {

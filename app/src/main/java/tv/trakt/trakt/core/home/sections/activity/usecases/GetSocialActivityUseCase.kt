@@ -20,7 +20,20 @@ internal class GetSocialActivityUseCase(
     private val remoteSource: UserRemoteDataSource,
     private val localDataSource: HomeSocialLocalDataSource,
 ) {
-    suspend fun getSocialActivity(limit: Int): ImmutableList<HomeActivityItem> {
+    suspend fun getLocalSocialActivity(limit: Int): ImmutableList<HomeActivityItem> {
+        return localDataSource.getItems()
+            .sortedWith(
+                compareByDescending<HomeActivityItem> { it.activityAt }
+                    .thenByDescending { it.sortId },
+            )
+            .take(limit)
+            .toImmutableList()
+    }
+
+    suspend fun getSocialActivity(
+        page: Int,
+        limit: Int,
+    ): ImmutableList<HomeActivityItem> {
         val items = remoteSource.getSocialActivity(
             limit = limit,
             type = "following",
@@ -65,18 +78,15 @@ internal class GetSocialActivityUseCase(
             )
             .toImmutableList()
             .also {
-                localDataSource.addItems(
-                    items = it,
-                )
+                if (page == 1) {
+                    localDataSource.setItems(
+                        items = it,
+                    )
+                } else {
+                    localDataSource.addItems(
+                        items = it,
+                    )
+                }
             }
-    }
-
-    suspend fun getLocalSocialActivity(): ImmutableList<HomeActivityItem> {
-        return localDataSource.getItems()
-            .sortedWith(
-                compareByDescending<HomeActivityItem> { it.activityAt }
-                    .thenByDescending { it.sortId },
-            )
-            .toImmutableList()
     }
 }
