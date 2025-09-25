@@ -66,6 +66,7 @@ internal class AllHomeUpNextViewModel(
     }
 
     fun loadData(ignoreErrors: Boolean = false) {
+        clear()
         viewModelScope.launch {
             if (loadEmptyIfNeeded()) {
                 return@launch
@@ -222,6 +223,11 @@ internal class AllHomeUpNextViewModel(
 
     fun clearInfo() {
         infoState.update { null }
+    }
+
+    private fun clear() {
+        pages = 1
+        hasMoreData = true
     }
 
     val state: StateFlow<AllHomeUpNextState> = combine(

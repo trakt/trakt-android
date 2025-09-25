@@ -113,7 +113,9 @@ internal class HomeUpNextViewModel(
                         )
                     }
                     loadingState.update { DONE }
+
                     if (localOnly) {
+                        itemsState.update { it.copy(resetScroll = resetScroll) }
                         return@launch
                     }
                 } else {

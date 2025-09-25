@@ -187,6 +187,7 @@ internal val homeModule = module {
         UpNextItemContextViewModel(
             updateShowHistoryUseCase = get(),
             upNextLocalDataSource = get(),
+            allUpNextLocalDataSource = get(),
             upcomingLocalDataSource = get(),
             loadUserProgressUseCase = get(),
         )

@@ -224,6 +224,10 @@ private fun ContentList(
                 item = item,
                 onLongClick = { onLongClick(item) },
                 onCheckClick = { onCheckClick(item) },
+                modifier = Modifier.animateItem(
+                    fadeInSpec = null,
+                    fadeOutSpec = null,
+                ),
             )
         }
 
@@ -243,6 +247,7 @@ private fun ContentListItem(
     item: ProgressShow,
     onLongClick: () -> Unit,
     onCheckClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     PanelMediaCard(
         title = item.show.title,
@@ -310,7 +315,7 @@ private fun ContentListItem(
                 }
             }
         },
-        modifier = Modifier
+        modifier = modifier
             .padding(bottom = TraktTheme.spacing.mainListVerticalSpace),
     )
 }
