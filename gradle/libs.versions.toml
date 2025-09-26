@@ -18,6 +18,7 @@ composeNavigation = "2.9.5"
 coreKtx = "1.17.0"
 datastore = "1.1.7"
 firebaseBom = "34.3.0"
+firebaseCrashlytics = "3.0.6"
 flagkit = "1.0.5"
 googleServices = "4.4.3"
 immutableCollections = "0.4.0"
@@ -91,6 +92,7 @@ koin-android-compose = { module = "io.insert-koin:koin-androidx-compose" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-config = { group = "com.google.firebase", name = "firebase-config" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 
@@ -102,4 +104,4 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 openapi-generator = { id = "org.openapi.generator", version.ref = "openapi" }
-
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlytics" }

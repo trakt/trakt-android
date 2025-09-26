@@ -5,6 +5,7 @@ import android.app.UiModeManager
 import android.content.res.Configuration.UI_MODE_TYPE_TELEVISION
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
+import com.google.firebase.crashlytics.crashlytics
 import com.google.firebase.remoteconfig.remoteConfig
 import com.google.firebase.remoteconfig.remoteConfigSettings
 import org.koin.android.ext.koin.androidContext
@@ -41,6 +42,11 @@ internal class TraktApplication : Application() {
 
         FirebaseApp.initializeApp(this)
         setupFirebaseConfig()
+        setupFirebaseCrashlytics()
+    }
+
+    fun setupFirebaseCrashlytics() {
+        Firebase.crashlytics.isCrashlyticsCollectionEnabled = !BuildConfig.DEBUG
     }
 
     fun setupFirebaseConfig() {
