@@ -28,7 +28,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -43,6 +45,8 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.views.AllWatchlistMovieView
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.views.AllWatchlistShowView
+import tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies.sheets.WatchlistMovieSheet
+import tv.trakt.trakt.core.lists.sections.watchlist.features.context.shows.sheets.WatchlistShowSheet
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.MovieItem
@@ -63,11 +67,48 @@ internal fun AllWatchlistScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    var contextMovieSheet by remember { mutableStateOf<MovieItem?>(null) }
+    var contextShowSheet by remember { mutableStateOf<ShowItem?>(null) }
+
     AllWatchlistContent(
         state = state,
         modifier = modifier,
+        onLongClick = {
+            when (it) {
+                is MovieItem -> contextMovieSheet = it
+                is ShowItem -> contextShowSheet = it
+            }
+        },
+        onCheckClick = {
+            if (it is MovieItem) {
+                viewModel.addMovieToHistory(it.id)
+            }
+        },
         onFilterClick = { viewModel.setFilter(it) },
         onBackClick = onNavigateBack,
+    )
+
+    WatchlistMovieSheet(
+        addLocally = true,
+        sheetItem = contextMovieSheet?.movie,
+        onDismiss = { contextMovieSheet = null },
+        onRemoveWatchlist = {
+            viewModel.removeItem(contextMovieSheet)
+        },
+        onAddWatched = {
+            viewModel.removeItem(contextMovieSheet)
+        },
+    )
+
+    WatchlistShowSheet(
+        sheetItem = contextShowSheet?.show,
+        onDismiss = { contextShowSheet = null },
+        onRemoveWatchlist = {
+            viewModel.removeItem(contextShowSheet)
+        },
+        onAddWatched = {
+            viewModel.removeItem(contextShowSheet)
+        },
     )
 }
 
@@ -76,6 +117,7 @@ internal fun AllWatchlistContent(
     state: AllWatchlistState,
     modifier: Modifier = Modifier,
     onTopOfList: () -> Unit = {},
+    onCheckClick: (WatchlistItem) -> Unit = {},
     onLongClick: (WatchlistItem) -> Unit = {},
     onFilterClick: (WatchlistFilter) -> Unit = {},
     onBackClick: () -> Unit = {},
@@ -121,6 +163,8 @@ internal fun AllWatchlistContent(
             loading = state.loading.isLoading,
             contentPadding = contentPadding,
             onFilterClick = onFilterClick,
+            onCheckClick = onCheckClick,
+            onLongClick = onLongClick,
             onTopOfList = onTopOfList,
             onBackClick = onBackClick,
         )
@@ -163,6 +207,8 @@ private fun ContentList(
     loading: Boolean,
     homeWatchlist: Boolean,
     contentPadding: PaddingValues,
+    onCheckClick: (WatchlistItem) -> Unit,
+    onLongClick: (WatchlistItem) -> Unit,
     onFilterClick: (WatchlistFilter) -> Unit,
     onTopOfList: () -> Unit,
     onBackClick: () -> Unit,
@@ -212,8 +258,7 @@ private fun ContentList(
             when (item) {
                 is ShowItem -> AllWatchlistShowView(
                     item = item,
-                    onLongClick = { },
-                    onCheckClick = { },
+                    onLongClick = { onLongClick(item) },
                     modifier = Modifier
                         .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
                         .animateItem(
@@ -226,8 +271,8 @@ private fun ContentList(
                     showMediaIcon = !homeWatchlist,
                     showRating = !homeWatchlist,
                     showCheck = homeWatchlist,
-                    onLongClick = { },
-                    onCheckClick = { },
+                    onLongClick = { onLongClick(item) },
+                    onCheckClick = { onCheckClick(item) },
                     modifier = Modifier
                         .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
                         .animateItem(

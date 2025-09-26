@@ -3,11 +3,16 @@ package tv.trakt.trakt.core.home.sections.watchlist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -24,14 +29,17 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.HomeConfig.HOME_WATCHLIST_LIMIT
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeWatchlistUseCase
+import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
 import java.time.Instant
 
+@OptIn(FlowPreview::class)
 internal class HomeWatchlistViewModel(
     private val getWatchlistUseCase: GetHomeWatchlistUseCase,
     private val addHistoryUseCase: AddHomeHistoryUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
+    private val allWatchlistSource: AllWatchlistLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = HomeWatchlistState()
@@ -48,6 +56,7 @@ internal class HomeWatchlistViewModel(
     init {
         loadData()
         observeUser()
+        observeAllWatchlist()
     }
 
     private fun observeUser() {
@@ -63,7 +72,23 @@ internal class HomeWatchlistViewModel(
         }
     }
 
-    fun loadData(ignoreErrors: Boolean = false) {
+    private fun observeAllWatchlist() {
+        allWatchlistSource.observeUpdates()
+            .distinctUntilChanged()
+            .debounce(250)
+            .onEach {
+                loadData(
+                    ignoreErrors = true,
+                    localOnly = true,
+                )
+            }
+            .launchIn(viewModelScope)
+    }
+
+    fun loadData(
+        ignoreErrors: Boolean = false,
+        localOnly: Boolean = false,
+    ) {
         viewModelScope.launch {
             if (loadEmptyIfNeeded()) {
                 return@launch
@@ -74,6 +99,9 @@ internal class HomeWatchlistViewModel(
                 if (localItems.isNotEmpty()) {
                     itemsState.update { localItems }
                     loadingState.update { DONE }
+                    if (localOnly) {
+                        return@launch
+                    }
                 } else {
                     loadingState.update { LOADING }
                 }

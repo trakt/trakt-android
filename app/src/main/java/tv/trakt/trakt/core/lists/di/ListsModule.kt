@@ -34,6 +34,8 @@ import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseC
 import tv.trakt.trakt.core.lists.sections.personal.usecases.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistViewModel
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.AllWatchlistViewModel
+import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource
+import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistStorage
 import tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies.WatchlistMovieContextViewModel
 import tv.trakt.trakt.core.lists.sections.watchlist.features.context.shows.WatchlistShowContextViewModel
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistUseCase
@@ -59,6 +61,10 @@ internal val listsDataModule = module {
         createStore(
             context = androidContext(),
         )
+    }
+
+    single<AllWatchlistLocalDataSource> {
+        AllWatchlistStorage()
     }
 
     single<ListsPersonalLocalDataSource> {
@@ -143,6 +149,7 @@ internal val listsModule = module {
             getMoviesWatchlistUseCase = get(),
             getFilterUseCase = get(),
             userWatchlistSource = get(),
+            allWatchlistSource = get(),
             sessionManager = get(),
         )
     }
@@ -155,6 +162,9 @@ internal val listsModule = module {
             getShowsWatchlistUseCase = get(),
             getMoviesWatchlistUseCase = get(),
             getFilterUseCase = get(),
+            allWatchlistLocalDataSource = get(),
+            loadUserProgressUseCase = get(),
+            updateMovieHistoryUseCase = get(),
             sessionManager = get(),
         )
     }

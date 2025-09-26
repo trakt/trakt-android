@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -38,6 +39,7 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
+import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
@@ -144,66 +146,91 @@ private fun WatchlistShowContextViewContent(
             contentImageUrl = show.images?.getPosterUrl(),
             containerImageUrl = show.images?.getFanartUrl(THUMB),
             footerContent = {
-                Row(
-                    horizontalArrangement = Arrangement.Absolute.spacedBy(TraktTheme.spacing.chipsSpace),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    val epsString = stringResource(
-                        R.string.tag_text_number_of_episodes,
-                        show.airedEpisodes,
-                    )
+                val isReleased = remember {
+                    show.released?.isNowOrBefore() ?: false
+                }
 
-                    val metaString = remember {
-                        val separator = "  •  "
-                        buildString {
-                            show.released?.let {
-                                append(it.year)
-                            }
-                            if (show.airedEpisodes > 0) {
-                                if (isNotEmpty()) append(separator)
-                                append(epsString)
-                            }
-                            if (!show.certification.isNullOrBlank()) {
-                                if (isNotEmpty()) append(separator)
-                                append(show.certification)
-                            }
-                        }
-                    }
-
-                    Text(
-                        text = metaString,
-                        color = TraktTheme.colors.textSecondary,
-                        style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
-                    )
-
+                if (!isReleased) {
                     Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Absolute.spacedBy(4.dp),
+                        horizontalArrangement = spacedBy(4.dp),
+                        verticalAlignment = Alignment.Companion.CenterVertically,
                     ) {
-                        val grayFilter = remember {
-                            ColorFilter.colorMatrix(
-                                ColorMatrix().apply {
-                                    setToSaturation(0F)
-                                },
-                            )
-                        }
-                        val whiteFilter = remember {
-                            ColorFilter.tint(White)
-                        }
-
-                        Spacer(modifier = Modifier.weight(1F))
-
-                        Image(
-                            painter = painterResource(R.drawable.ic_trakt_icon),
+                        Icon(
+                            painter = painterResource(R.drawable.ic_calendar_upcoming),
                             contentDescription = null,
-                            modifier = Modifier.size(14.dp),
-                            colorFilter = if (show.rating.rating > 0) whiteFilter else grayFilter,
+                            tint = TraktTheme.colors.textSecondary,
+                            modifier = Modifier.Companion.size(14.dp),
                         )
                         Text(
-                            text = if (show.rating.rating > 0) "${show.rating.ratingPercent}%" else "-",
-                            color = TraktTheme.colors.textPrimary,
+                            text = show.released?.relativeDateTimeString() ?: "",
+                            color = TraktTheme.colors.textSecondary,
                             style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
                         )
+                    }
+                } else {
+                    Row(
+                        horizontalArrangement = Arrangement.Absolute.spacedBy(TraktTheme.spacing.chipsSpace),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        val epsString = stringResource(
+                            R.string.tag_text_number_of_episodes,
+                            show.airedEpisodes,
+                        )
+
+                        val metaString = remember {
+                            val separator = "  •  "
+                            buildString {
+                                show.released?.let {
+                                    append(it.year)
+                                }
+                                if (show.airedEpisodes > 0) {
+                                    if (isNotEmpty()) append(separator)
+                                    append(epsString)
+                                }
+                                if (!show.certification.isNullOrBlank()) {
+                                    if (isNotEmpty()) append(separator)
+                                    append(show.certification)
+                                }
+                            }
+                        }
+
+                        Text(
+                            text = metaString,
+                            color = TraktTheme.colors.textSecondary,
+                            style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
+                        )
+
+                        if (isReleased) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Absolute.spacedBy(4.dp),
+                            ) {
+                                val grayFilter = remember {
+                                    ColorFilter.colorMatrix(
+                                        ColorMatrix().apply {
+                                            setToSaturation(0F)
+                                        },
+                                    )
+                                }
+                                val whiteFilter = remember {
+                                    ColorFilter.tint(White)
+                                }
+
+                                Spacer(modifier = Modifier.weight(1F))
+
+                                Image(
+                                    painter = painterResource(R.drawable.ic_trakt_icon),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(14.dp),
+                                    colorFilter = if (show.rating.rating > 0) whiteFilter else grayFilter,
+                                )
+                                Text(
+                                    text = if (show.rating.rating > 0) "${show.rating.ratingPercent}%" else "-",
+                                    color = TraktTheme.colors.textPrimary,
+                                    style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
+                                )
+                            }
+                        }
                     }
                 }
             },

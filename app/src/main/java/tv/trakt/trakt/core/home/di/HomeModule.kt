@@ -160,6 +160,7 @@ internal val homeModule = module {
             getWatchlistUseCase = get(),
             addHistoryUseCase = get(),
             loadUserProgressUseCase = get(),
+            allWatchlistSource = get(),
             sessionManager = get(),
         )
     }

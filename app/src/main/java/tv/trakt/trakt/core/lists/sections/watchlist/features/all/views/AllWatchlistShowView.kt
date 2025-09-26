@@ -31,7 +31,6 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun AllWatchlistShowView(
     item: WatchlistItem.ShowItem,
     onLongClick: () -> Unit,
-    onCheckClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val genresText = remember(item.show.genres) {

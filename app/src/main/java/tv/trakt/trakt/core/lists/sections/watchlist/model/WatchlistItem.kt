@@ -43,6 +43,12 @@ internal sealed class WatchlistItem(
             is MovieItem -> "${movie.ids.trakt.value}-movie"
         }
 
+    val type: String
+        get() = when (this) {
+            is ShowItem -> "show"
+            is MovieItem -> "movie"
+        }
+
     val images: Images?
         get() = when (this) {
             is ShowItem -> show.images

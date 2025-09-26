@@ -23,17 +23,22 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeWatchlistUseCase
+import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.ListsWatchlistDestination
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.MEDIA
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.MOVIES
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.SHOWS
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
+import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.MovieItem
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetShowsWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.filters.GetWatchlistFilterUseCase
+import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
 
 internal class AllWatchlistViewModel(
     savedStateHandle: SavedStateHandle,
@@ -42,6 +47,9 @@ internal class AllWatchlistViewModel(
     private val getShowsWatchlistUseCase: GetShowsWatchlistUseCase,
     private val getMoviesWatchlistUseCase: GetMoviesWatchlistUseCase,
     private val getFilterUseCase: GetWatchlistFilterUseCase,
+    private val loadUserProgressUseCase: LoadUserProgressUseCase,
+    private val updateMovieHistoryUseCase: AddHomeHistoryUseCase,
+    private val allWatchlistLocalDataSource: AllWatchlistLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<ListsWatchlistDestination>()
@@ -56,6 +64,7 @@ internal class AllWatchlistViewModel(
     private val errorState = MutableStateFlow(initialState.error)
 
     private var loadDataJob: Job? = null
+    private var processingJob: Job? = null
 
     init {
         loadBackground()
@@ -158,6 +167,70 @@ internal class AllWatchlistViewModel(
             loadFilter()
             loadData(localOnly = true)
         }
+    }
+
+    fun addMovieToHistory(movieId: TraktId) {
+        if (processingJob != null) {
+            return
+        }
+        processingJob = viewModelScope.launch {
+            try {
+                val currentItems = itemsState.value?.toMutableList() ?: return@launch
+
+                val itemIndex = currentItems.indexOfFirst { it.id == movieId && (it is MovieItem) }
+                val itemLoading = (currentItems[itemIndex] as MovieItem).copy(loading = true)
+                currentItems[itemIndex] = itemLoading
+
+                itemsState.update {
+                    currentItems.toImmutableList()
+                }
+
+                updateMovieHistoryUseCase.addToHistory(movieId)
+                removeItem(currentItems[itemIndex])
+
+                loadUserProgress()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.d(error, "Failed to add movie to history")
+                }
+            } finally {
+                processingJob = null
+            }
+        }
+    }
+
+    fun removeItem(item: WatchlistItem?) {
+        val currentItems = itemsState.value ?: return
+
+        itemsState.update {
+            currentItems
+                .filterNot {
+                    it.id == item?.id &&
+                        it.type == item.type
+                }
+                .toImmutableList()
+        }
+
+        allWatchlistLocalDataSource.notifyUpdate()
+    }
+
+    fun loadUserProgress() {
+        viewModelScope.launch {
+            try {
+                loadUserProgressUseCase.loadMoviesProgress()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.w(error)
+                }
+            }
+        }
+    }
+
+    override fun onCleared() {
+        loadDataJob?.cancel()
+        processingJob?.cancel()
+        super.onCleared()
     }
 
     @Suppress("UNCHECKED_CAST")

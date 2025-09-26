@@ -23,6 +23,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_SECTION_LIMIT
+import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.MEDIA
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.MOVIES
@@ -40,6 +41,7 @@ internal class ListsWatchlistViewModel(
     private val getMoviesWatchlistUseCase: GetMoviesWatchlistUseCase,
     private val getFilterUseCase: GetWatchlistFilterUseCase,
     private val userWatchlistSource: UserWatchlistLocalDataSource,
+    private val allWatchlistSource: AllWatchlistLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = ListsWatchlistState()
@@ -73,9 +75,12 @@ internal class ListsWatchlistViewModel(
 
     @OptIn(FlowPreview::class)
     private fun observeWatchlist() {
-        merge(userWatchlistSource.observeUpdates())
-            .debounce(250)
+        merge(
+            userWatchlistSource.observeUpdates(),
+            allWatchlistSource.observeUpdates(),
+        )
             .distinctUntilChanged()
+            .debounce(250)
             .onEach {
                 loadData(ignoreErrors = true)
             }.launchIn(viewModelScope)
