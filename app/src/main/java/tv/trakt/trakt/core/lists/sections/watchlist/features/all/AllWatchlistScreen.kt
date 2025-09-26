@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,6 +33,7 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -81,6 +81,8 @@ internal fun AllWatchlistContent(
     onFilterClick: (WatchlistFilter) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
+    val context = LocalContext.current
+
     val headerState = rememberHeaderState()
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
@@ -111,6 +113,7 @@ internal fun AllWatchlistContent(
         )
 
         ContentList(
+            subtitle = state.title?.get(context) ?: "",
             listItems = (state.items ?: emptyList()).toImmutableList(),
             listState = listState,
             listFilter = state.filter,
@@ -124,7 +127,10 @@ internal fun AllWatchlistContent(
 }
 
 @Composable
-private fun TitleBar(modifier: Modifier = Modifier) {
+private fun TitleBar(
+    subtitle: String,
+    modifier: Modifier = Modifier,
+) {
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = spacedBy(12.dp),
@@ -141,7 +147,7 @@ private fun TitleBar(modifier: Modifier = Modifier) {
         )
         TraktHeader(
             title = stringResource(R.string.page_title_watchlist),
-            subtitle = stringResource(R.string.text_sort_recently_added),
+            subtitle = subtitle,
         )
     }
 }
@@ -151,7 +157,8 @@ private fun ContentList(
     modifier: Modifier = Modifier,
     listState: LazyListState,
     listItems: ImmutableList<WatchlistItem>,
-    listFilter: WatchlistFilter,
+    listFilter: WatchlistFilter?,
+    subtitle: String,
     loading: Boolean,
     contentPadding: PaddingValues,
     onFilterClick: (WatchlistFilter) -> Unit,
@@ -180,20 +187,19 @@ private fun ContentList(
     ) {
         item {
             TitleBar(
+                subtitle = subtitle,
                 modifier = Modifier
                     .padding(bottom = 8.dp)
-                    .onClick(onBackClick),
+                    .onClick { onBackClick() },
             )
         }
 
-        item {
-            if (listItems.isNotEmpty() && !loading) {
+        if (listFilter != null && listItems.isNotEmpty() && !loading) {
+            item {
                 ContentFilters(
                     watchlistFilter = listFilter,
                     onFilterClick = onFilterClick,
                 )
-            } else {
-                Spacer(Modifier.height(TraktTheme.spacing.mainListVerticalSpace))
             }
         }
 

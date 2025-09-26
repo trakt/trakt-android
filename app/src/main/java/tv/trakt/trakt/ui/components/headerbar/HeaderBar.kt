@@ -200,7 +200,7 @@ internal fun HeaderBar(
                     Box(
                         modifier = Modifier
                             .size(contentHeight)
-                            .onClick(onProfileClick),
+                            .onClick(onClick = onProfileClick),
                     ) {
                         val borderColor = remember(userVip) {
                             if (userVip) Color.Red else Color.White

@@ -21,6 +21,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.home.HomeConfig.HOME_WATCHLIST_LIMIT
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
@@ -69,7 +70,7 @@ internal class HomeWatchlistViewModel(
             }
 
             try {
-                val localItems = getWatchlistUseCase.getLocalWatchlist()
+                val localItems = getWatchlistUseCase.getLocalWatchlist(HOME_WATCHLIST_LIMIT)
                 if (localItems.isNotEmpty()) {
                     itemsState.update { localItems }
                     loadingState.update { DONE }
@@ -78,7 +79,7 @@ internal class HomeWatchlistViewModel(
                 }
 
                 itemsState.update {
-                    getWatchlistUseCase.getWatchlist()
+                    getWatchlistUseCase.getWatchlist(HOME_WATCHLIST_LIMIT)
                 }
 
                 loadedAt = nowUtcInstant()

@@ -44,6 +44,7 @@ internal fun HomeScreen(
     onNavigateToShows: () -> Unit,
     onNavigateToMovies: () -> Unit,
     onNavigateToAllUpNext: () -> Unit,
+    onNavigateToAllWatchlist: () -> Unit,
     onNavigateToAllPersonal: () -> Unit,
     onNavigateToAllSocial: () -> Unit,
 ) {
@@ -60,6 +61,7 @@ internal fun HomeScreen(
         onShowsClick = onNavigateToShows,
         onMoviesClick = onNavigateToMovies,
         onMoreUpNextClick = onNavigateToAllUpNext,
+        onMoreWatchlistClick = onNavigateToAllWatchlist,
         onMorePersonalClick = onNavigateToAllPersonal,
         onMoreSocialClick = onNavigateToAllSocial,
     )
@@ -72,6 +74,7 @@ private fun HomeScreenContent(
     modifier: Modifier = Modifier,
     onProfileClick: () -> Unit = {},
     onMoreUpNextClick: () -> Unit = {},
+    onMoreWatchlistClick: () -> Unit = {},
     onMorePersonalClick: () -> Unit = {},
     onMoreSocialClick: () -> Unit = {},
     onShowsClick: () -> Unit = {},
@@ -137,6 +140,7 @@ private fun HomeScreenContent(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     onMovieClick = onMoviesClick,
+                    onMoreClick = onMoreWatchlistClick,
                 )
             }
 

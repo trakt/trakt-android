@@ -146,7 +146,7 @@ internal fun HomeActivityContent(
                     color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.buttonSecondary,
                     modifier = Modifier
-                        .onClick(onMoreClick),
+                        .onClick { onMoreClick() },
                 )
             }
         }

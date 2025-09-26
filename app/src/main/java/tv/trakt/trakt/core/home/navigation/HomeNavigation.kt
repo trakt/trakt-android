@@ -16,6 +16,7 @@ internal fun NavGraphBuilder.homeScreen(
     onNavigateToShows: () -> Unit,
     onNavigateToMovies: () -> Unit,
     onNavigateToAllUpNext: () -> Unit,
+    onNavigateToAllWatchlist: () -> Unit,
     onNavigateToAllPersonal: () -> Unit,
     onNavigateToAllSocial: () -> Unit,
 ) {
@@ -26,6 +27,7 @@ internal fun NavGraphBuilder.homeScreen(
             onNavigateToShows = onNavigateToShows,
             onNavigateToMovies = onNavigateToMovies,
             onNavigateToAllUpNext = onNavigateToAllUpNext,
+            onNavigateToAllWatchlist = onNavigateToAllWatchlist,
             onNavigateToAllPersonal = onNavigateToAllPersonal,
             onNavigateToAllSocial = onNavigateToAllSocial,
         )

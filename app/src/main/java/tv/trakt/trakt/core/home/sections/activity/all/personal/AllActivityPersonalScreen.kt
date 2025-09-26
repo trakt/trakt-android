@@ -214,7 +214,9 @@ private fun ContentList(
             TitleBar(
                 modifier = Modifier
                     .padding(bottom = 2.dp)
-                    .onClick(onBackClick),
+                    .onClick {
+                        onBackClick()
+                    },
             )
         }
 

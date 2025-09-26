@@ -8,7 +8,9 @@ import org.koin.compose.viewmodel.koinViewModel
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.AllWatchlistScreen
 
 @Serializable
-internal data object ListsWatchlistDestination
+internal data class ListsWatchlistDestination(
+    val homeWatchlist: Boolean = false,
+)
 
 internal fun NavGraphBuilder.allWatchlistScreen(onNavigateBack: () -> Unit) {
     composable<ListsWatchlistDestination> {
@@ -20,5 +22,11 @@ internal fun NavGraphBuilder.allWatchlistScreen(onNavigateBack: () -> Unit) {
 }
 
 internal fun NavController.navigateToWatchlist() {
-    navigate(route = ListsWatchlistDestination)
+    navigate(route = ListsWatchlistDestination())
+}
+
+internal fun NavController.navigateToHomeWatchlist() {
+    navigate(
+        route = ListsWatchlistDestination(homeWatchlist = true),
+    )
 }

@@ -204,7 +204,9 @@ private fun ContentList(
                         end = TraktTheme.spacing.mainPageHorizontalSpace,
                         bottom = 2.dp,
                     )
-                    .onClick(onBackClick),
+                    .onClick {
+                        onBackClick()
+                    },
             )
         }
 

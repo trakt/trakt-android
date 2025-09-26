@@ -3,14 +3,13 @@ package tv.trakt.trakt.core.home.sections.watchlist.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
-import tv.trakt.trakt.core.home.HomeConfig.HOME_WATCHLIST_LIMIT
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.user.usecase.watchlist.LoadUserWatchlistUseCase
 
 internal class GetHomeWatchlistUseCase(
     val loadUserWatchlistUseCase: LoadUserWatchlistUseCase,
 ) {
-    suspend fun getLocalWatchlist(limit: Int = HOME_WATCHLIST_LIMIT): ImmutableList<WatchlistItem.MovieItem> {
+    suspend fun getLocalWatchlist(limit: Int? = null): ImmutableList<WatchlistItem.MovieItem> {
         val nowDay = nowLocalDay()
 
         return loadUserWatchlistUseCase.loadLocalMovies()
@@ -21,11 +20,11 @@ internal class GetHomeWatchlistUseCase(
                 compareByDescending<WatchlistItem.MovieItem> { it.movie.released }
                     .thenByDescending { it.rank },
             )
-            .take(limit)
+            .take(limit ?: Int.MAX_VALUE)
             .toImmutableList()
     }
 
-    suspend fun getWatchlist(limit: Int = HOME_WATCHLIST_LIMIT): ImmutableList<WatchlistItem.MovieItem> {
+    suspend fun getWatchlist(limit: Int? = null): ImmutableList<WatchlistItem.MovieItem> {
         val nowDay = nowLocalDay()
 
         return loadUserWatchlistUseCase.loadWatchlist()
@@ -37,7 +36,7 @@ internal class GetHomeWatchlistUseCase(
                 compareByDescending<WatchlistItem.MovieItem> { it.movie.released }
                     .thenByDescending { it.rank },
             )
-            .take(limit)
+            .take(limit ?: Int.MAX_VALUE)
             .toImmutableList()
     }
 }

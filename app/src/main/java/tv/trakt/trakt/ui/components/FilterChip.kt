@@ -42,7 +42,7 @@ internal fun FilterChip(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = spacedBy(0.dp),
         modifier = modifier
-            .onClick(onClick)
+            .onClick(onClick = onClick)
             .height(28.dp)
             .border(
                 width = 1.dp,

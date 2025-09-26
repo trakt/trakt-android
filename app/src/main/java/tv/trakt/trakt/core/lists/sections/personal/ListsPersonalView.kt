@@ -149,7 +149,7 @@ internal fun ListsPersonalContent(
                         contentDescription = "Genres",
                         tint = TraktTheme.colors.textPrimary,
                         modifier = Modifier
-                            .onClick(onMoreClick)
+                            .onClick { onMoreClick() }
                             .size(14.dp),
                     )
                 }

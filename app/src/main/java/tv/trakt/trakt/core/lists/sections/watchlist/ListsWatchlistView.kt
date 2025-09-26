@@ -161,7 +161,7 @@ internal fun ListWatchlistContent(
                     style = TraktTheme.typography.buttonSecondary,
                     modifier = Modifier
                         .padding(start = 8.dp)
-                        .onClick(onWatchlistClick),
+                        .onClick { onWatchlistClick() },
                 )
             }
         }

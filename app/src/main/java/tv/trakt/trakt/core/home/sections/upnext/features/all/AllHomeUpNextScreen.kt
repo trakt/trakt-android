@@ -210,7 +210,7 @@ private fun ContentList(
             TitleBar(
                 modifier = Modifier
                     .padding(bottom = 2.dp)
-                    .onClick(onBackClick),
+                    .onClick { onBackClick() },
             )
         }
 
@@ -307,7 +307,7 @@ private fun ContentListItem(
                             tint = TraktTheme.colors.accent,
                             modifier = Modifier
                                 .size(19.dp)
-                                .onClick(onCheckClick),
+                                .onClick { onCheckClick() },
                         )
                     }
                 }

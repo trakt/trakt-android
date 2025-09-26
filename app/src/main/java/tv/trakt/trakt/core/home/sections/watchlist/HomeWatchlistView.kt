@@ -67,6 +67,7 @@ internal fun HomeWatchlistView(
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     onMovieClick: () -> Unit,
+    onMoreClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val haptic = LocalHapticFeedback.current
@@ -92,6 +93,7 @@ internal fun HomeWatchlistView(
         onCheckClick = {
             viewModel.addToHistory(it.ids.trakt)
         },
+        onMoreClick = onMoreClick,
     )
 
     WatchlistMovieSheet(
@@ -116,6 +118,7 @@ internal fun HomeWatchlistContent(
     onClick: () -> Unit = {},
     onLongClick: (Movie) -> Unit = {},
     onCheckClick: (Movie) -> Unit = {},
+    onMoreClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
@@ -132,13 +135,18 @@ internal fun HomeWatchlistContent(
                 title = stringResource(R.string.page_title_watchlist),
                 subtitle = stringResource(R.string.list_subtitle_released_movies),
             )
-//            if (!state.items.isNullOrEmpty() || state.loading != DONE) {
-//                Text(
-//                    text = stringResource(R.string.button_text_view_all),
-//                    color = TraktTheme.colors.textSecondary,
-//                    style = TraktTheme.typography.buttonSecondary,
-//                )
-//            }
+            if (!state.items.isNullOrEmpty() || state.loading != DONE) {
+                Text(
+                    text = stringResource(R.string.button_text_view_all),
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.buttonSecondary,
+                    modifier = Modifier
+                        .onClick(
+                            enabled = !state.loading.isLoading,
+                            onClick = onMoreClick,
+                        ),
+                )
+            }
         }
 
         Crossfade(
@@ -296,7 +304,7 @@ private fun ContentListItem(
                             tint = TraktTheme.colors.accent,
                             modifier = Modifier
                                 .size(19.dp)
-                                .onClick(onCheckClick),
+                                .onClick { onCheckClick() },
                         )
                     }
                 }

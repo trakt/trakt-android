@@ -13,10 +13,14 @@ fun Modifier.ifOrElse(
     elseModifier: Modifier = Modifier,
 ): Modifier = then(if (condition) ifTrueModifier else elseModifier)
 
-fun Modifier.onClick(onClick: () -> Unit): Modifier {
+fun Modifier.onClick(
+    enabled: Boolean = true,
+    onClick: () -> Unit,
+): Modifier {
     return composed {
         val lastClickMs = remember { mutableLongStateOf(0L) }
         clickable(
+            enabled = enabled,
             indication = null,
             interactionSource = null,
             onClick = {

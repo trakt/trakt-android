@@ -104,7 +104,7 @@ private fun ProfileScreenContent(
             modifier = Modifier
                 .padding(top = topInset)
                 .height(TraktTheme.size.titleBarHeight)
-                .onClick(onBackClick),
+                .onClick { onBackClick() },
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_back_arrow),

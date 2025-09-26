@@ -102,7 +102,7 @@ private fun AllMoviesPopularScreenContent(
                 TitleBar(
                     modifier = Modifier
                         .padding(bottom = 2.dp)
-                        .onClick(onBackClick),
+                        .onClick { onBackClick() },
                 )
             },
             onItemLongClick = onItemLongClick,
