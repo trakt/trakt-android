@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.lists.sections.watchlist.all
+package tv.trakt.trakt.core.lists.sections.watchlist.features.all
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -49,7 +49,6 @@ internal class AllWatchlistViewModel(
     init {
         loadBackground()
         loadData()
-//        observeWatchlist()
     }
 
     private fun loadBackground() {
@@ -57,7 +56,10 @@ internal class AllWatchlistViewModel(
         backgroundState.update { configUrl }
     }
 
-    fun loadData(ignoreErrors: Boolean = false) {
+    fun loadData(
+        ignoreErrors: Boolean = false,
+        localOnly: Boolean = false,
+    ) {
         loadDataJob?.cancel()
         loadDataJob = viewModelScope.launch {
             try {
@@ -65,7 +67,7 @@ internal class AllWatchlistViewModel(
                     return@launch
                 }
 
-                val filter = filterState.value
+                val filter = loadFilter()
                 val localItems = when (filterState.value) {
                     MEDIA -> getWatchlistUseCase.getLocalWatchlist()
                     SHOWS -> getShowsWatchlistUseCase.getLocalWatchlist()
@@ -75,6 +77,9 @@ internal class AllWatchlistViewModel(
                 if (localItems.isNotEmpty()) {
                     itemsState.update { localItems }
                     loadingState.update { DONE }
+                    if (localOnly) {
+                        return@launch
+                    }
                 } else {
                     loadingState.update { LOADING }
                 }
@@ -99,11 +104,11 @@ internal class AllWatchlistViewModel(
         }
     }
 
-//    private suspend fun loadFilter(): WatchlistFilter {
-//        val filter = getFilterUseCase.getFilter()
-//        filterState.update { filter }
-//        return filter
-//    }
+    private suspend fun loadFilter(): WatchlistFilter {
+        val filter = getFilterUseCase.getFilter()
+        filterState.update { filter }
+        return filter
+    }
 
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {
@@ -123,8 +128,8 @@ internal class AllWatchlistViewModel(
         }
         viewModelScope.launch {
             getFilterUseCase.setFilter(newFilter)
-//            loadFilter()
-            loadData()
+            loadFilter()
+            loadData(localOnly = true)
         }
     }
 

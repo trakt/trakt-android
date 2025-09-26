@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package tv.trakt.trakt.core.lists.sections.watchlist.context.shows
+package tv.trakt.trakt.core.lists.sections.watchlist.features.context.shows
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

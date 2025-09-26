@@ -51,8 +51,8 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.home.views.HomeEmptyView
-import tv.trakt.trakt.core.lists.sections.watchlist.context.movies.sheets.WatchlistMovieSheet
-import tv.trakt.trakt.core.lists.sections.watchlist.context.shows.sheets.WatchlistShowSheet
+import tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies.sheets.WatchlistMovieSheet
+import tv.trakt.trakt.core.lists.sections.watchlist.features.context.shows.sheets.WatchlistShowSheet
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.MEDIA
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.MOVIES

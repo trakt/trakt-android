@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.lists.sections.watchlist.all
+package tv.trakt.trakt.core.lists.sections.watchlist.features.all
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList

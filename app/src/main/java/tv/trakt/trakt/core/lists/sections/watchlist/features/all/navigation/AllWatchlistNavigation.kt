@@ -1,11 +1,11 @@
-package tv.trakt.trakt.core.lists.sections.watchlist.all.navigation
+package tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
-import tv.trakt.trakt.core.lists.sections.watchlist.all.AllWatchlistScreen
+import tv.trakt.trakt.core.lists.sections.watchlist.features.all.AllWatchlistScreen
 
 @Serializable
 internal data object ListsWatchlistDestination

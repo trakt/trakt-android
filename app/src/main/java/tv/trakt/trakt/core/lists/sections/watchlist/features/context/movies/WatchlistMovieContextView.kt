@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.lists.sections.watchlist.context.movies
+package tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

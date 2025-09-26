@@ -33,9 +33,9 @@ import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItems
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistViewModel
-import tv.trakt.trakt.core.lists.sections.watchlist.all.AllWatchlistViewModel
-import tv.trakt.trakt.core.lists.sections.watchlist.context.movies.WatchlistMovieContextViewModel
-import tv.trakt.trakt.core.lists.sections.watchlist.context.shows.WatchlistShowContextViewModel
+import tv.trakt.trakt.core.lists.sections.watchlist.features.all.AllWatchlistViewModel
+import tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies.WatchlistMovieContextViewModel
+import tv.trakt.trakt.core.lists.sections.watchlist.features.context.shows.WatchlistShowContextViewModel
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetShowsWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetWatchlistUseCase
