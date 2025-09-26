@@ -3105,7 +3105,8 @@
                             "now",
                             "ask",
                             "released"
-                          ]
+                          ],
+                          "nullable": true
                         },
                         "hide_watching_now": {
                           "type": "boolean"
@@ -3549,7 +3550,6 @@
                         }
                       },
                       "required": [
-                        "watch_popup_action",
                         "hide_watching_now",
                         "list_popup_action",
                         "watch_only_once",
