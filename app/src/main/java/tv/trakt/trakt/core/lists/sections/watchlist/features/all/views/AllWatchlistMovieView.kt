@@ -1,10 +1,13 @@
 package tv.trakt.trakt.core.lists.sections.watchlist.features.all.views
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,8 +21,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.relativeDateString
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.White
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.resources.R
@@ -29,9 +34,12 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun AllWatchlistMovieView(
     item: WatchlistItem.MovieItem,
+    modifier: Modifier = Modifier,
+    showMediaIcon: Boolean = true,
+    showRating: Boolean = true,
+    showCheck: Boolean = false,
     onLongClick: () -> Unit,
     onCheckClick: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     val genresText = remember(item.movie.genres) {
         item.movie.genres.take(2).joinToString(", ") { genre ->
@@ -73,8 +81,12 @@ internal fun AllWatchlistMovieView(
                 }
             } else {
                 Row(
-                    horizontalArrangement = Arrangement.Absolute.spacedBy(TraktTheme.spacing.chipsSpace),
-                    verticalAlignment = Alignment.Companion.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = when {
+                        showCheck -> Alignment.Bottom
+                        else -> Alignment.CenterVertically
+                    },
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     val metaString = remember {
                         val separator = "  •  "
@@ -95,14 +107,16 @@ internal fun AllWatchlistMovieView(
 
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(3.dp),
-                        verticalAlignment = Alignment.Companion.CenterVertically,
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_movies_off),
-                            contentDescription = null,
-                            tint = TraktTheme.colors.textSecondary,
-                            modifier = Modifier.Companion.size(14.dp),
-                        )
+                        if (showMediaIcon) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_movies_off),
+                                contentDescription = null,
+                                tint = TraktTheme.colors.textSecondary,
+                                modifier = Modifier.Companion.size(14.dp),
+                            )
+                        }
                         Text(
                             text = metaString,
                             color = TraktTheme.colors.textSecondary,
@@ -110,34 +124,56 @@ internal fun AllWatchlistMovieView(
                         )
                     }
 
-                    Row(
-                        verticalAlignment = Alignment.Companion.CenterVertically,
-                        horizontalArrangement = Arrangement.Absolute.spacedBy(4.dp),
-                    ) {
-                        val grayFilter = remember {
-                            ColorFilter.Companion.colorMatrix(
-                                ColorMatrix().apply {
-                                    setToSaturation(0F)
-                                },
+                    if (showRating) {
+                        Row(
+                            verticalAlignment = Alignment.Companion.CenterVertically,
+                            horizontalArrangement = Arrangement.Absolute.spacedBy(4.dp),
+                        ) {
+                            val grayFilter = remember {
+                                ColorFilter.Companion.colorMatrix(
+                                    ColorMatrix().apply {
+                                        setToSaturation(0F)
+                                    },
+                                )
+                            }
+                            val whiteFilter = remember {
+                                ColorFilter.Companion.tint(White)
+                            }
+
+                            Image(
+                                painter = painterResource(R.drawable.ic_trakt_icon),
+                                contentDescription = null,
+                                modifier = Modifier.Companion.size(14.dp),
+                                colorFilter = if (item.movie.rating.rating > 0) whiteFilter else grayFilter,
+                            )
+                            Text(
+                                text = if (item.movie.rating.rating > 0) "${item.movie.rating.ratingPercent}%" else "-",
+                                color = TraktTheme.colors.textPrimary,
+                                style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
                             )
                         }
-                        val whiteFilter = remember {
-                            ColorFilter.Companion.tint(White)
+                    }
+
+                    if (showCheck) {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .background(TraktTheme.colors.chipContainerOnContent, RoundedCornerShape(10.dp))
+                                .size(30.dp),
+                        ) {
+                            if (item.loading) {
+                                FilmProgressIndicator(size = 18.dp)
+                            } else {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_check_round),
+                                    contentDescription = null,
+                                    tint = TraktTheme.colors.accent,
+                                    modifier = Modifier
+                                        .size(19.dp)
+                                        .onClick { onCheckClick() },
+                                )
+                            }
                         }
-
-                        Spacer(modifier = Modifier.Companion.weight(1F))
-
-                        Image(
-                            painter = painterResource(R.drawable.ic_trakt_icon),
-                            contentDescription = null,
-                            modifier = Modifier.Companion.size(14.dp),
-                            colorFilter = if (item.movie.rating.rating > 0) whiteFilter else grayFilter,
-                        )
-                        Text(
-                            text = if (item.movie.rating.rating > 0) "${item.movie.rating.ratingPercent}%" else "-",
-                            color = TraktTheme.colors.textPrimary,
-                            style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
-                        )
                     }
                 }
             }

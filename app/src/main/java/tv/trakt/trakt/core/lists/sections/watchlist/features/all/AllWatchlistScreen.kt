@@ -33,7 +33,6 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -81,8 +80,6 @@ internal fun AllWatchlistContent(
     onFilterClick: (WatchlistFilter) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
-    val context = LocalContext.current
-
     val headerState = rememberHeaderState()
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
@@ -113,10 +110,14 @@ internal fun AllWatchlistContent(
         )
 
         ContentList(
-            subtitle = state.title?.get(context) ?: "",
+            subtitle = when (state.isHomeWatchlist) {
+                true -> stringResource(R.string.list_subtitle_released_movies)
+                else -> stringResource(R.string.text_sort_recently_added)
+            },
             listItems = (state.items ?: emptyList()).toImmutableList(),
             listState = listState,
             listFilter = state.filter,
+            homeWatchlist = state.isHomeWatchlist,
             loading = state.loading.isLoading,
             contentPadding = contentPadding,
             onFilterClick = onFilterClick,
@@ -160,6 +161,7 @@ private fun ContentList(
     listFilter: WatchlistFilter?,
     subtitle: String,
     loading: Boolean,
+    homeWatchlist: Boolean,
     contentPadding: PaddingValues,
     onFilterClick: (WatchlistFilter) -> Unit,
     onTopOfList: () -> Unit,
@@ -221,6 +223,9 @@ private fun ContentList(
                 )
                 is MovieItem -> AllWatchlistMovieView(
                     item = item,
+                    showMediaIcon = !homeWatchlist,
+                    showRating = !homeWatchlist,
+                    showCheck = homeWatchlist,
                     onLongClick = { },
                     onCheckClick = { },
                     modifier = Modifier

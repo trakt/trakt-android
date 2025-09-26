@@ -19,7 +19,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
-import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
@@ -35,7 +34,6 @@ import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistU
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetShowsWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.filters.GetWatchlistFilterUseCase
-import tv.trakt.trakt.resources.R
 
 internal class AllWatchlistViewModel(
     savedStateHandle: SavedStateHandle,
@@ -50,7 +48,7 @@ internal class AllWatchlistViewModel(
 
     private val initialState = AllWatchlistState()
 
-    private val titleState = MutableStateFlow(initialState.title)
+    private val isHomeWatchlist = MutableStateFlow(destination.homeWatchlist)
     private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialState.filter)
@@ -60,18 +58,8 @@ internal class AllWatchlistViewModel(
     private var loadDataJob: Job? = null
 
     init {
-        loadTitle()
         loadBackground()
         loadData()
-    }
-
-    private fun loadTitle() {
-        titleState.update {
-            when {
-                destination.homeWatchlist -> DynamicStringResource(R.string.list_subtitle_released_movies)
-                else -> DynamicStringResource(R.string.text_sort_recently_added)
-            }
-        }
     }
 
     private fun loadBackground() {
@@ -179,7 +167,7 @@ internal class AllWatchlistViewModel(
         filterState,
         errorState,
         backgroundState,
-        titleState,
+        isHomeWatchlist,
     ) { state ->
         AllWatchlistState(
             loading = state[0] as LoadingState,
@@ -187,7 +175,7 @@ internal class AllWatchlistViewModel(
             filter = state[2] as? WatchlistFilter,
             error = state[3] as? Exception,
             backgroundUrl = state[4] as? String,
-            title = state[5] as? DynamicStringResource,
+            isHomeWatchlist = state[5] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,
