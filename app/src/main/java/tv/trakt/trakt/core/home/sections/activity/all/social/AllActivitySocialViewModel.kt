@@ -6,6 +6,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -109,10 +110,12 @@ internal class AllActivitySocialViewModel(
         val users = items
             .groupBy { it.user }
             .map { (user, items) -> user to items.size }
-            .sortedByDescending { it.second }
+            .sortedWith(
+                compareByDescending<Pair<User?, Int>> { it.second }
+                    .thenBy { it.first?.username?.lowercase() },
+            )
             .mapNotNull { it.first }
             .take(10)
-            .toImmutableList()
 
         if (users.size <= 1) {
             return
@@ -120,7 +123,7 @@ internal class AllActivitySocialViewModel(
 
         usersFilterState.update {
             AllActivityState.UsersFilter(
-                users = users,
+                users = it.users.plus(users).toImmutableSet(),
                 selectedUser = it.selectedUser,
             )
         }
