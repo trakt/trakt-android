@@ -44,7 +44,7 @@ internal class DefaultSessionManager(
         }
     }
 
-    override suspend fun observeProfile(): Flow<User?> {
+    override fun observeProfile(): Flow<User?> {
         return dataStore.data.map { preferences ->
             val data = preferences[KEY_USER_PROFILE]
             if (data.isNullOrEmpty()) {

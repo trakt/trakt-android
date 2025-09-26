@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.NavigationBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,13 +29,16 @@ import androidx.lifecycle.Lifecycle.Event.ON_RESUME
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.core.home.navigation.HomeDestination
+import tv.trakt.trakt.core.lists.navigation.ListsDestination
 import tv.trakt.trakt.core.lists.navigation.navigateToLists
+import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.navigateToWatchlist
 import tv.trakt.trakt.core.main.navigation.homeScreens
 import tv.trakt.trakt.core.main.navigation.isMainDestination
 import tv.trakt.trakt.core.main.navigation.isStartDestination
@@ -58,6 +62,8 @@ internal fun MainScreen(
     modifier: Modifier = Modifier,
     intent: Intent? = null,
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
     val localContext = LocalContext.current
     val localSnackbar = LocalSnackbarState.current
     val localBottomBarVisibility = LocalBottomBarVisibility.current
@@ -131,6 +137,13 @@ internal fun MainScreen(
                     searchState = searchState,
                     onSelected = {
                         navController.navigateToMainDestination(it.destination)
+                    },
+                    onReselected = {
+                        currentDestination.value?.destination?.let {
+                            if (it.hasRoute(ListsDestination::class) && state.user != null) {
+                                navController.navigateToWatchlist()
+                            }
+                        }
                     },
                     onSearchInput = searchState.onSearchInput,
                 )
