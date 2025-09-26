@@ -15,6 +15,7 @@ internal fun NavGraphBuilder.listsScreen(
     onNavigateToProfile: () -> Unit,
     onNavigateToShows: () -> Unit,
     onNavigateToMovies: () -> Unit,
+    onNavigateToWatchlist: () -> Unit,
 ) {
     composable<ListsDestination> {
         ListsScreen(
@@ -22,6 +23,7 @@ internal fun NavGraphBuilder.listsScreen(
             onNavigateToProfile = onNavigateToProfile,
             onNavigateToShows = onNavigateToShows,
             onNavigateToMovies = onNavigateToMovies,
+            onNavigateToWatchlist = onNavigateToWatchlist,
         )
     }
 }

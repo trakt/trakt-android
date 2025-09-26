@@ -47,6 +47,7 @@ import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAG
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.home.views.HomeEmptyView
@@ -74,6 +75,7 @@ internal fun ListsWatchlistView(
     onProfileClick: () -> Unit,
     onShowsClick: () -> Unit,
     onMoviesClick: () -> Unit,
+    onWatchlistClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -91,6 +93,11 @@ internal fun ListsWatchlistView(
         onShowLongClick = { showContextSheet = it },
         onMovieLongClick = { movieContextSheet = it },
         onProfileClick = onProfileClick,
+        onWatchlistClick = {
+            if (!state.loading.isLoading) {
+                onWatchlistClick()
+            }
+        },
     )
 
     WatchlistShowSheet(
@@ -129,6 +136,7 @@ internal fun ListWatchlistContent(
     onShowLongClick: (Show) -> Unit = {},
     onMovieLongClick: (Movie) -> Unit = {},
     onProfileClick: () -> Unit = {},
+    onWatchlistClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -146,13 +154,16 @@ internal fun ListWatchlistContent(
                 subtitle = stringResource(R.string.text_sort_recently_added),
             )
 
-//            if (!state.items.isNullOrEmpty() || state.loading != DONE) {
-//                Text(
-//                    text = stringResource(R.string.button_text_view_all),
-//                    color = TraktTheme.colors.textSecondary,
-//                    style = TraktTheme.typography.buttonSecondary,
-//                )
-//            }
+            if (!state.items.isNullOrEmpty() || state.loading != DONE) {
+                Text(
+                    text = stringResource(R.string.button_text_view_all),
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.buttonSecondary,
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .onClick(onWatchlistClick),
+                )
+            }
         }
 
         if (!state.items.isNullOrEmpty() || state.loading.isLoading || state.user != null) {

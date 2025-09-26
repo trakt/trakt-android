@@ -33,6 +33,7 @@ import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItems
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistViewModel
+import tv.trakt.trakt.core.lists.sections.watchlist.all.AllWatchlistViewModel
 import tv.trakt.trakt.core.lists.sections.watchlist.context.movies.WatchlistMovieContextViewModel
 import tv.trakt.trakt.core.lists.sections.watchlist.context.shows.WatchlistShowContextViewModel
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistUseCase
@@ -142,6 +143,16 @@ internal val listsModule = module {
             getMoviesWatchlistUseCase = get(),
             getFilterUseCase = get(),
             userWatchlistSource = get(),
+            sessionManager = get(),
+        )
+    }
+
+    viewModel {
+        AllWatchlistViewModel(
+            getWatchlistUseCase = get(),
+            getShowsWatchlistUseCase = get(),
+            getMoviesWatchlistUseCase = get(),
+            getFilterUseCase = get(),
             sessionManager = get(),
         )
     }

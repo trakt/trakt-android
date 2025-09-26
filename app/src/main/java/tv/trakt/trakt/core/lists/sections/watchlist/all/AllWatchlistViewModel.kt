@@ -1,28 +1,24 @@
-package tv.trakt.trakt.core.lists.sections.watchlist
+package tv.trakt.trakt.core.lists.sections.watchlist.all
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.Firebase
+import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.core.lists.ListsConfig.LISTS_SECTION_LIMIT
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.MEDIA
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.MOVIES
@@ -32,19 +28,17 @@ import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistU
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetShowsWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.filters.GetWatchlistFilterUseCase
-import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 
-internal class ListsWatchlistViewModel(
+internal class AllWatchlistViewModel(
     private val getWatchlistUseCase: GetWatchlistUseCase,
     private val getShowsWatchlistUseCase: GetShowsWatchlistUseCase,
     private val getMoviesWatchlistUseCase: GetMoviesWatchlistUseCase,
     private val getFilterUseCase: GetWatchlistFilterUseCase,
-    private val userWatchlistSource: UserWatchlistLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
-    private val initialState = ListsWatchlistState()
+    private val initialState = AllWatchlistState()
 
-    private val userState = MutableStateFlow(initialState.user)
+    private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialState.filter)
     private val loadingState = MutableStateFlow(initialState.loading)
@@ -53,32 +47,14 @@ internal class ListsWatchlistViewModel(
     private var loadDataJob: Job? = null
 
     init {
+        loadBackground()
         loadData()
-        observeUser()
-        observeWatchlist()
+//        observeWatchlist()
     }
 
-    private fun observeUser() {
-        viewModelScope.launch {
-            userState.update { sessionManager.getProfile() }
-            sessionManager.observeProfile()
-                .collect { user ->
-                    if (userState.value != user) {
-                        userState.update { user }
-                        loadData()
-                    }
-                }
-        }
-    }
-
-    @OptIn(FlowPreview::class)
-    private fun observeWatchlist() {
-        merge(userWatchlistSource.observeUpdates())
-            .debounce(250)
-            .distinctUntilChanged()
-            .onEach {
-                loadData(ignoreErrors = true)
-            }.launchIn(viewModelScope)
+    private fun loadBackground() {
+        val configUrl = Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL)
+        backgroundState.update { configUrl }
     }
 
     fun loadData(ignoreErrors: Boolean = false) {
@@ -89,11 +65,11 @@ internal class ListsWatchlistViewModel(
                     return@launch
                 }
 
-                val filter = loadFilter()
-                val localItems = when (filter) {
-                    MEDIA -> getWatchlistUseCase.getLocalWatchlist(LISTS_SECTION_LIMIT)
-                    SHOWS -> getShowsWatchlistUseCase.getLocalWatchlist(LISTS_SECTION_LIMIT)
-                    MOVIES -> getMoviesWatchlistUseCase.getLocalWatchlist(LISTS_SECTION_LIMIT)
+                val filter = filterState.value
+                val localItems = when (filterState.value) {
+                    MEDIA -> getWatchlistUseCase.getLocalWatchlist()
+                    SHOWS -> getShowsWatchlistUseCase.getLocalWatchlist()
+                    MOVIES -> getMoviesWatchlistUseCase.getLocalWatchlist()
                 }
 
                 if (localItems.isNotEmpty()) {
@@ -105,9 +81,9 @@ internal class ListsWatchlistViewModel(
 
                 itemsState.update {
                     when (filter) {
-                        MEDIA -> getWatchlistUseCase.getWatchlist(LISTS_SECTION_LIMIT)
-                        SHOWS -> getShowsWatchlistUseCase.getWatchlist(LISTS_SECTION_LIMIT)
-                        MOVIES -> getMoviesWatchlistUseCase.getWatchlist(LISTS_SECTION_LIMIT)
+                        MEDIA -> getWatchlistUseCase.getWatchlist()
+                        SHOWS -> getShowsWatchlistUseCase.getWatchlist()
+                        MOVIES -> getMoviesWatchlistUseCase.getWatchlist()
                     }
                 }
             } catch (error: Exception) {
@@ -123,11 +99,11 @@ internal class ListsWatchlistViewModel(
         }
     }
 
-    private suspend fun loadFilter(): WatchlistFilter {
-        val filter = getFilterUseCase.getFilter()
-        filterState.update { filter }
-        return filter
-    }
+//    private suspend fun loadFilter(): WatchlistFilter {
+//        val filter = getFilterUseCase.getFilter()
+//        filterState.update { filter }
+//        return filter
+//    }
 
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {
@@ -147,24 +123,24 @@ internal class ListsWatchlistViewModel(
         }
         viewModelScope.launch {
             getFilterUseCase.setFilter(newFilter)
-            loadFilter()
+//            loadFilter()
             loadData()
         }
     }
 
-    val state: StateFlow<ListsWatchlistState> = combine(
+    val state: StateFlow<AllWatchlistState> = combine(
         loadingState,
         itemsState,
         filterState,
         errorState,
-        userState,
+        backgroundState,
     ) { s0, s1, s2, s3, s4 ->
-        ListsWatchlistState(
+        AllWatchlistState(
             loading = s0,
             items = s1,
             filter = s2,
             error = s3,
-            user = s4,
+            backgroundUrl = s4,
         )
     }.stateIn(
         scope = viewModelScope,
