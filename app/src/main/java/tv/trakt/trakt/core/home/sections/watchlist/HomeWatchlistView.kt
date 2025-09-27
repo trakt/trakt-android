@@ -66,7 +66,7 @@ internal fun HomeWatchlistView(
     viewModel: HomeWatchlistViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
-    onMovieClick: () -> Unit,
+    onMoviesClick: () -> Unit,
     onMoreClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -86,7 +86,7 @@ internal fun HomeWatchlistView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        onClick = onMovieClick,
+        onMoviesClick = onMoviesClick,
         onLongClick = {
             contextSheet = it
         },
@@ -115,7 +115,7 @@ internal fun HomeWatchlistContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onClick: () -> Unit = {},
+    onMoviesClick: () -> Unit = {},
     onLongClick: (Movie) -> Unit = {},
     onCheckClick: (Movie) -> Unit = {},
     onMoreClick: () -> Unit = {},
@@ -182,7 +182,7 @@ internal fun HomeWatchlistContent(
                                 buttonText = stringResource(R.string.button_text_browse_movies),
                                 backgroundImageUrl = imageUrl,
                                 backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
-                                onClick = onClick,
+                                onClick = onMoviesClick,
                                 height = (226.25).dp,
                                 modifier = Modifier
                                     .padding(contentPadding),

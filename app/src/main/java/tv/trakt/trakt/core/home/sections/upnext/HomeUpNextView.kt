@@ -68,6 +68,7 @@ internal fun HomeUpNextView(
     viewModel: HomeUpNextViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
+    onShowsClick: () -> Unit,
     onMoreClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -87,6 +88,7 @@ internal fun HomeUpNextView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
+        onShowsClick = onShowsClick,
         onMoreClick = onMoreClick,
         onLongClick = {
             if (!it.loading) {
@@ -119,6 +121,7 @@ internal fun HomeUpNextContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
+    onShowsClick: () -> Unit = {},
     onMoreClick: () -> Unit = {},
     onLongClick: (ProgressShow) -> Unit = {},
     onCheckClick: (ProgressShow) -> Unit = {},
@@ -180,9 +183,8 @@ internal fun HomeUpNextContent(
                                 buttonText = stringResource(R.string.button_text_browse_shows),
                                 backgroundImageUrl = imageUrl,
                                 backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
-                                modifier = Modifier
-                                    .padding(contentPadding),
-                                onClick = onMoreClick,
+                                modifier = Modifier.padding(contentPadding),
+                                onClick = onShowsClick,
                             )
                         }
                         else -> {

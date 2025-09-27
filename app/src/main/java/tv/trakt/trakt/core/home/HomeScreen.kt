@@ -131,6 +131,7 @@ private fun HomeScreenContent(
                 HomeUpNextView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
+                    onShowsClick = onShowsClick,
                     onMoreClick = onMoreUpNextClick,
                 )
             }
@@ -139,7 +140,7 @@ private fun HomeScreenContent(
                 HomeWatchlistView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
-                    onMovieClick = onMoviesClick,
+                    onMoviesClick = onMoviesClick,
                     onMoreClick = onMoreWatchlistClick,
                 )
             }
