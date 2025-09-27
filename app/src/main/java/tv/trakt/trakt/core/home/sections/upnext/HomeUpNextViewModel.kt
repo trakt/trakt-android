@@ -60,11 +60,13 @@ internal class HomeUpNextViewModel(
         observeHome()
     }
 
+    @OptIn(FlowPreview::class)
     private fun observeUser() {
         viewModelScope.launch {
             user = sessionManager.getProfile()
             sessionManager.observeProfile()
                 .distinctUntilChanged()
+                .debounce(250)
                 .collect {
                     if (user != it) {
                         user = it

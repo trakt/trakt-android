@@ -65,6 +65,8 @@ internal class HomeActivityViewModel(
         viewModelScope.launch {
             userState.update { sessionManager.getProfile() }
             sessionManager.observeProfile()
+                .distinctUntilChanged()
+                .debounce(250)
                 .collect { user ->
                     if (userState.value != user) {
                         userState.update { user }

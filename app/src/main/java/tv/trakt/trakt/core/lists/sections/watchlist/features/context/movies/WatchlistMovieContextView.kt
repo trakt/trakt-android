@@ -1,16 +1,9 @@
 package tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -18,31 +11,25 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
-import tv.trakt.trakt.common.helpers.extensions.relativeDateString
 import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
-import tv.trakt.trakt.common.ui.theme.colors.White
+import tv.trakt.trakt.core.movies.ui.MovieMetaFooter
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
@@ -136,88 +123,7 @@ private fun WatchlistMovieContextViewContent(
             contentImageUrl = movie.images?.getPosterUrl(),
             containerImageUrl = movie.images?.getFanartUrl(THUMB),
             footerContent = {
-                val isReleased = remember {
-                    movie.released?.isTodayOrBefore() ?: false
-                }
-
-                if (!isReleased) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        verticalAlignment = Alignment.Companion.CenterVertically,
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_calendar_upcoming),
-                            contentDescription = null,
-                            tint = TraktTheme.colors.textSecondary,
-                            modifier = Modifier.Companion.size(14.dp),
-                        )
-                        Text(
-                            text = movie.released?.relativeDateString() ?: "",
-                            color = TraktTheme.colors.textSecondary,
-                            style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
-                        )
-                    }
-                } else {
-                    Row(
-                        horizontalArrangement = Arrangement.Absolute.spacedBy(TraktTheme.spacing.chipsSpace),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        val metaString = remember {
-                            val separator = "  •  "
-                            buildString {
-                                movie.released?.let {
-                                    append(it.year)
-                                }
-                                movie.runtime?.let {
-                                    if (isNotEmpty()) append(separator)
-                                    append(it.inWholeMinutes.durationFormat())
-                                }
-                                if (!movie.certification.isNullOrBlank()) {
-                                    if (isNotEmpty()) append(separator)
-                                    append(movie.certification)
-                                }
-                            }
-                        }
-
-                        Text(
-                            text = metaString,
-                            color = TraktTheme.colors.textSecondary,
-                            style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
-                        )
-
-                        if (isReleased) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Absolute.spacedBy(4.dp),
-                            ) {
-                                val grayFilter = remember {
-                                    ColorFilter.colorMatrix(
-                                        ColorMatrix().apply {
-                                            setToSaturation(0F)
-                                        },
-                                    )
-                                }
-                                val whiteFilter = remember {
-                                    ColorFilter.tint(White)
-                                }
-
-                                Spacer(modifier = Modifier.weight(1F))
-
-                                Image(
-                                    painter = painterResource(R.drawable.ic_trakt_icon),
-                                    contentDescription = null,
-                                    modifier = Modifier.size(14.dp),
-                                    colorFilter = if (movie.rating.rating > 0) whiteFilter else grayFilter,
-                                )
-                                Text(
-                                    text = if (movie.rating.rating > 0) "${movie.rating.ratingPercent}%" else "-",
-                                    color = TraktTheme.colors.textPrimary,
-                                    style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
-                                )
-                            }
-                        }
-                    }
-                }
+                MovieMetaFooter(movie)
             },
         )
 

@@ -268,9 +268,8 @@ private fun ContentList(
                 )
                 is MovieItem -> AllWatchlistMovieView(
                     item = item,
-                    showMediaIcon = !homeWatchlist,
-                    showRating = !homeWatchlist,
                     showCheck = homeWatchlist,
+                    showIcon = !homeWatchlist,
                     onLongClick = { onLongClick(item) },
                     onCheckClick = { onCheckClick(item) },
                     modifier = Modifier
