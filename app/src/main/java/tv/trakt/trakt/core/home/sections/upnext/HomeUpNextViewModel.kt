@@ -160,7 +160,7 @@ internal class HomeUpNextViewModel(
             loadingState.update { DONE }
             return true
         } else {
-            itemsState.update { ItemsState(resetScroll = false) }
+//            itemsState.update { ItemsState(resetScroll = false) }
             loadingState.update { IDLE }
         }
 

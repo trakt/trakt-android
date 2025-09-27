@@ -134,7 +134,7 @@ internal class HomeWatchlistViewModel(
             loadingState.update { DONE }
             return true
         } else {
-            itemsState.update { null }
+//            itemsState.update { null }
             loadingState.update { IDLE }
         }
 
