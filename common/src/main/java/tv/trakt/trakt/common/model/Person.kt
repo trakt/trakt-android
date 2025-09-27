@@ -3,11 +3,12 @@ package tv.trakt.trakt.common.model
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.Serializable
-import tv.trakt.trakt.common.helpers.serializers.LocalDateSerializer
+import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
+import tv.trakt.trakt.common.helpers.serializers.ZonedDateTimeSerializer
 import tv.trakt.trakt.common.model.Person.Companion
 import tv.trakt.trakt.common.networking.PersonDto
 import tv.trakt.trakt.common.networking.PersonSearchDto
-import java.time.LocalDate
+import java.time.ZonedDateTime
 
 @Immutable
 @Serializable
@@ -15,8 +16,8 @@ data class Person(
     val ids: Ids,
     val name: String,
     val biography: String?,
-    @Serializable(LocalDateSerializer::class)
-    val birthday: LocalDate?,
+    @Serializable(ZonedDateTimeSerializer::class)
+    val birthday: ZonedDateTime?,
     val images: Images?,
     val knownForDepartment: String?,
 ) {
@@ -33,7 +34,7 @@ fun Companion.fromDto(dto: PersonDto): Person {
         ),
         name = dto.name,
         biography = dto.biography,
-        birthday = dto.birthday?.let { LocalDate.parse(it) },
+        birthday = dto.birthday?.toZonedDateTime(),
         knownForDepartment = dto.knownForDepartment,
         images = dto.images?.let {
             Images(
@@ -53,7 +54,7 @@ fun Companion.fromDto(dto: PersonSearchDto): Person {
         ),
         name = dto.name,
         biography = dto.biography,
-        birthday = dto.birthday?.let { LocalDate.parse(it) },
+        birthday = dto.birthday?.toZonedDateTime(),
         knownForDepartment = dto.knownForDepartment,
         images = dto.images?.let {
             Images(
