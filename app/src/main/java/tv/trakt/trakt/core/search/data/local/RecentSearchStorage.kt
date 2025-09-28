@@ -15,8 +15,8 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.search.data.local.model.PersonEntity
 import tv.trakt.trakt.core.search.data.local.model.RecentMovieEntity
-import tv.trakt.trakt.core.search.data.local.model.RecentPersonEntity
 import tv.trakt.trakt.core.search.data.local.model.RecentShowEntity
 import tv.trakt.trakt.core.search.data.local.model.create
 import java.time.Instant
@@ -34,7 +34,7 @@ internal class RecentSearchStorage(
 
     private val showsCache = mutableMapOf<TraktId, RecentShowEntity>()
     private val moviesCache = mutableMapOf<TraktId, RecentMovieEntity>()
-    private val personsCache = mutableMapOf<TraktId, RecentPersonEntity>()
+    private val personsCache = mutableMapOf<TraktId, PersonEntity>()
 
     override suspend fun addShow(
         show: Show,
@@ -88,7 +88,7 @@ internal class RecentSearchStorage(
         addedAt: Instant,
     ) {
         ensureInitialized()
-        val entity = RecentPersonEntity.create(
+        val entity = PersonEntity.create(
             person = person,
             createdAt = addedAt,
         )
@@ -119,7 +119,7 @@ internal class RecentSearchStorage(
         }
     }
 
-    override suspend fun getPeople(): List<RecentPersonEntity> {
+    override suspend fun getPeople(): List<PersonEntity> {
         ensureInitialized()
         return mutex.withLock {
             personsCache.values.sortedByDescending { it.createdAt }

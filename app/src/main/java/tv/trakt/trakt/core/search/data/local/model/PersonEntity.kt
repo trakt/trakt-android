@@ -5,18 +5,18 @@ import tv.trakt.trakt.common.model.Person
 import java.time.Instant
 
 @Serializable
-internal data class RecentPersonEntity(
+internal data class PersonEntity(
     val person: Person,
     val createdAt: String, // Format: "2022-12-03T10:15:30Z"
 ) {
-    companion object
+    companion object Companion
 }
 
-internal fun RecentPersonEntity.Companion.create(
+internal fun PersonEntity.Companion.create(
     person: Person,
     createdAt: Instant,
-): RecentPersonEntity {
-    return RecentPersonEntity(
+): PersonEntity {
+    return PersonEntity(
         person = person,
         createdAt = createdAt.toString(),
     )

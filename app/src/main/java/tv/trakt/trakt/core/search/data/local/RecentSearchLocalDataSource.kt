@@ -3,8 +3,8 @@ package tv.trakt.trakt.core.search.data.local
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.core.search.data.local.model.PersonEntity
 import tv.trakt.trakt.core.search.data.local.model.RecentMovieEntity
-import tv.trakt.trakt.core.search.data.local.model.RecentPersonEntity
 import tv.trakt.trakt.core.search.data.local.model.RecentShowEntity
 import java.time.Instant
 
@@ -66,9 +66,9 @@ internal interface RecentSearchLocalDataSource {
     /**
      * Retrieves a list of recently searched people.
      *
-     * @return A list of [RecentPersonEntity] representing the recently searched people.
+     * @return A list of [PersonEntity] representing the recently searched people.
      */
-    suspend fun getPeople(): List<RecentPersonEntity>
+    suspend fun getPeople(): List<PersonEntity>
 
     /**
      * Clears all recent searches.

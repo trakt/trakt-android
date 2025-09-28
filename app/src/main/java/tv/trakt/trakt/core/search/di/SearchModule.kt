@@ -38,7 +38,9 @@ internal val searchDataModule = module {
     }
 
     single<SearchPeopleLocalDataSource> {
-        SearchPeopleStorage()
+        SearchPeopleStorage(
+            dataStore = get(named(SEARCH_PREFERENCES)),
+        )
     }
 
     single<RecentSearchLocalDataSource> {

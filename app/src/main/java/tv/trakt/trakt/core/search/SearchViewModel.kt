@@ -21,6 +21,7 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Movie
@@ -180,7 +181,13 @@ internal class SearchViewModel(
                 }
             }
             val peopleAsync = async {
-                getBirthdayPeopleUseCase.getLocalPeople().ifEmpty {
+                var localPeople = getBirthdayPeopleUseCase.getLocalPeople()
+                if (localPeople.firstOrNull()?.birthday?.monthValue != nowUtc().monthValue) {
+                    // If the month of the first person's birthday is not the current month, local data is outdated.
+                    // Clear it to fetch fresh.
+                    localPeople = emptyList<Person>().toImmutableList()
+                }
+                localPeople.ifEmpty {
                     getBirthdayPeopleUseCase.getPeople()
                 }
             }
