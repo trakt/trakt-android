@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
@@ -60,15 +61,17 @@ internal class ListsWatchlistViewModel(
         observeWatchlist()
     }
 
+    @OptIn(FlowPreview::class)
     private fun observeUser() {
         viewModelScope.launch {
             userState.update { sessionManager.getProfile() }
             sessionManager.observeProfile()
+                .drop(1)
+                .distinctUntilChanged()
+                .debounce(250)
                 .collect { user ->
-                    if (userState.value != user) {
-                        userState.update { user }
-                        loadData()
-                    }
+                    userState.update { user }
+                    loadData()
                 }
         }
     }

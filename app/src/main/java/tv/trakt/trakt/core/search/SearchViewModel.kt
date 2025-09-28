@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -44,6 +46,7 @@ import tv.trakt.trakt.core.search.usecase.recents.AddRecentSearchUseCase
 import tv.trakt.trakt.core.search.usecase.recents.GetRecentSearchUseCase
 import tv.trakt.trakt.core.shows.sections.trending.usecase.GetTrendingShowsUseCase
 
+@OptIn(FlowPreview::class)
 internal class SearchViewModel(
     private val getSearchResultsUseCase: GetSearchResultsUseCase,
     private val addRecentSearchUseCase: AddRecentSearchUseCase,
@@ -91,6 +94,7 @@ internal class SearchViewModel(
     private fun observeUser() {
         viewModelScope.launch {
             sessionManager.observeProfile()
+                .distinctUntilChanged()
                 .collect { user ->
                     userState.update {
                         UserState(

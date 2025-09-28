@@ -5,10 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -22,6 +24,7 @@ import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.core.lists.ListsState.UserState
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
 
+@OptIn(FlowPreview::class)
 internal class ListsViewModel(
     private val sessionManager: SessionManager,
     private val getPersonalListsUseCase: GetPersonalListsUseCase,
@@ -42,14 +45,15 @@ internal class ListsViewModel(
     private fun observeUser() {
         viewModelScope.launch {
             sessionManager.observeProfile()
+                .distinctUntilChanged()
                 .collect { user ->
-                    loadData()
                     userState.update {
                         UserState(
                             user = user,
                             loading = DONE,
                         )
                     }
+                    loadData()
                 }
         }
     }

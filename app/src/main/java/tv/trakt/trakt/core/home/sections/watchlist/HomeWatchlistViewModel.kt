@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -63,13 +64,12 @@ internal class HomeWatchlistViewModel(
         viewModelScope.launch {
             user = sessionManager.getProfile()
             sessionManager.observeProfile()
+                .drop(1)
                 .distinctUntilChanged()
                 .debounce(250)
                 .collect {
-                    if (user != it) {
-                        user = it
-                        loadData()
-                    }
+                    user = it
+                    loadData()
                 }
         }
     }

@@ -4,10 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -16,6 +18,7 @@ import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.core.movies.MoviesState.UserState
 
+@OptIn(FlowPreview::class)
 internal class MoviesViewModel(
     private val sessionManager: SessionManager,
 ) : ViewModel() {
@@ -37,6 +40,7 @@ internal class MoviesViewModel(
     private fun observeUser() {
         viewModelScope.launch {
             sessionManager.observeProfile()
+                .distinctUntilChanged()
                 .collect { user ->
                     userState.update {
                         UserState(

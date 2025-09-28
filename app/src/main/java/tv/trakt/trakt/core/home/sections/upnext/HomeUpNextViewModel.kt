@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -35,6 +36,7 @@ import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
 
+@OptIn(FlowPreview::class)
 internal class HomeUpNextViewModel(
     private val getUpNextUseCase: GetUpNextUseCase,
     private val updateHistoryUseCase: UpdateEpisodeHistoryUseCase,
@@ -60,18 +62,16 @@ internal class HomeUpNextViewModel(
         observeHome()
     }
 
-    @OptIn(FlowPreview::class)
     private fun observeUser() {
         viewModelScope.launch {
             user = sessionManager.getProfile()
             sessionManager.observeProfile()
+                .drop(1)
                 .distinctUntilChanged()
                 .debounce(250)
                 .collect {
-                    if (user != it) {
-                        user = it
-                        loadData()
-                    }
+                    user = it
+                    loadData()
                 }
         }
     }
