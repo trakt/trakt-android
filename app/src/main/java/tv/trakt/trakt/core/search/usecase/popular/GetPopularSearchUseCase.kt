@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.search.usecase.popular
 
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
+import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
@@ -10,6 +11,8 @@ import tv.trakt.trakt.core.search.data.local.model.PopularShowEntity
 import tv.trakt.trakt.core.search.data.local.model.create
 import tv.trakt.trakt.core.search.data.local.popular.PopularSearchLocalDataSource
 import tv.trakt.trakt.core.search.data.remote.SearchRemoteDataSource
+import java.time.Instant
+import java.time.temporal.ChronoUnit.DAYS
 
 private const val TRENDING_SEARCH_LIMIT = 36
 
@@ -19,12 +22,22 @@ internal class GetPopularSearchUseCase(
 ) {
     suspend fun getLocalShows(): List<PopularShowEntity> {
         val localShows = localSource.getShows()
-        return localShows
+        val timestamp = localShows.firstOrNull()?.createdAt?.toInstant()
+
+        return when {
+            isTimestampValid(timestamp) -> localShows
+            else -> emptyList()
+        }
     }
 
     suspend fun getLocalMovies(): List<PopularMovieEntity> {
-        val movies = localSource.getMovies()
-        return movies
+        val localMovies = localSource.getMovies()
+        val timestamp = localMovies.firstOrNull()?.createdAt?.toInstant()
+
+        return when {
+            isTimestampValid(timestamp) -> localMovies
+            else -> emptyList()
+        }
     }
 
     suspend fun getShows(): List<PopularShowEntity> {
@@ -53,5 +66,9 @@ internal class GetPopularSearchUseCase(
         }.also {
             localSource.setMovies(it)
         }
+    }
+
+    private fun isTimestampValid(timestamp: Instant?): Boolean {
+        return timestamp?.plus(1, DAYS)?.isAfter(nowUtcInstant()) == true
     }
 }
