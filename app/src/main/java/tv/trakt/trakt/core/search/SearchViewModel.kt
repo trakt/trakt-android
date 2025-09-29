@@ -30,7 +30,6 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
-import tv.trakt.trakt.core.movies.sections.trending.usecase.GetTrendingMoviesUseCase
 import tv.trakt.trakt.core.search.SearchState.SearchResult
 import tv.trakt.trakt.core.search.SearchState.State
 import tv.trakt.trakt.core.search.SearchState.UserState
@@ -42,17 +41,16 @@ import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.model.SearchItem
 import tv.trakt.trakt.core.search.usecase.GetBirthdayPeopleUseCase
 import tv.trakt.trakt.core.search.usecase.GetSearchResultsUseCase
+import tv.trakt.trakt.core.search.usecase.popular.GetPopularSearchUseCase
 import tv.trakt.trakt.core.search.usecase.recents.AddRecentSearchUseCase
 import tv.trakt.trakt.core.search.usecase.recents.GetRecentSearchUseCase
-import tv.trakt.trakt.core.shows.sections.trending.usecase.GetTrendingShowsUseCase
 
 @OptIn(FlowPreview::class)
 internal class SearchViewModel(
+    private val getPopularSearchesUseCase: GetPopularSearchUseCase,
     private val getSearchResultsUseCase: GetSearchResultsUseCase,
     private val addRecentSearchUseCase: AddRecentSearchUseCase,
     private val getRecentSearchUseCase: GetRecentSearchUseCase,
-    private val getTrendingShowsUseCase: GetTrendingShowsUseCase,
-    private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
     private val getBirthdayPeopleUseCase: GetBirthdayPeopleUseCase,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
@@ -175,14 +173,10 @@ internal class SearchViewModel(
             }
 
             val showsAsync = async {
-                getTrendingShowsUseCase.getLocalShows().ifEmpty {
-                    getTrendingShowsUseCase.getShows()
-                }
+                getPopularSearchesUseCase.getShows()
             }
             val moviesAsync = async {
-                getTrendingMoviesUseCase.getLocalMovies().ifEmpty {
-                    getTrendingMoviesUseCase.getMovies()
-                }
+                getPopularSearchesUseCase.getMovies()
             }
             val peopleAsync = async {
                 var localPeople = getBirthdayPeopleUseCase.getLocalPeople()
@@ -228,24 +222,21 @@ internal class SearchViewModel(
                     SearchResult(
                         items = buildList {
                             val showItems = shows.asyncMap {
-                                SearchItem.Show(it.watchers.toLong(), it.show)
+                                SearchItem.Show(
+                                    rank = it.count.toLong(),
+                                    show = Show.fromDto(it.show!!),
+                                )
                             }
                             val movieItems = movies.asyncMap {
-                                SearchItem.Movie(it.watchers.toLong(), it.movie)
+                                SearchItem.Movie(
+                                    rank = it.count.toLong(),
+                                    movie = Movie.fromDto(it.movie!!),
+                                )
                             }
-
-                            // Interleave shows and movies, taking one from each list at a time
-                            val maxSize = maxOf(showItems.size, movieItems.size)
-                            for (i in 0 until maxSize) {
-                                if (i < showItems.size) {
-                                    add(showItems[i])
-                                }
-                                if (i < movieItems.size) {
-                                    add(movieItems[i])
-                                }
-                            }
+                            addAll(showItems)
+                            addAll(movieItems)
                         }
-                            .take(if (shows.isEmpty() || movies.isEmpty()) 18 else 36)
+                            .sortedByDescending { it.rank }
                             .toImmutableList(),
                     )
                 }

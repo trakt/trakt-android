@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.search.data.remote
 
 import tv.trakt.trakt.common.networking.SearchItemDto
+import tv.trakt.trakt.common.networking.TrendingSearchDto
 
 internal interface SearchRemoteDataSource {
     suspend fun getPeople(
@@ -26,4 +27,8 @@ internal interface SearchRemoteDataSource {
         limit: Int,
         extended: String = "full,cloud9,colors,streaming_ids",
     ): List<SearchItemDto>
+
+    suspend fun getPopularShows(limit: Int): List<TrendingSearchDto>
+
+    suspend fun getPopularMovies(limit: Int): List<TrendingSearchDto>
 }

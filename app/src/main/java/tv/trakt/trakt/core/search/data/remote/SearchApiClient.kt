@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.search.data.remote
 
 import org.openapitools.client.apis.SearchApi
 import tv.trakt.trakt.common.networking.SearchItemDto
+import tv.trakt.trakt.common.networking.TrendingSearchDto
 
 internal class SearchApiClient(
     private val api: SearchApi,
@@ -83,6 +84,28 @@ internal class SearchApiClient(
             limit = limit,
             extended = extended,
             engine = "typesense",
+        )
+
+        return response.body()
+    }
+
+    override suspend fun getPopularShows(limit: Int): List<TrendingSearchDto> {
+        val response = api.getSearchTrending(
+            type = "shows",
+            page = 1,
+            limit = limit,
+            extended = "full,cloud9",
+        )
+
+        return response.body()
+    }
+
+    override suspend fun getPopularMovies(limit: Int): List<TrendingSearchDto> {
+        val response = api.getSearchTrending(
+            type = "movies",
+            page = 1,
+            limit = limit,
+            extended = "full,cloud9",
         )
 
         return response.body()

@@ -21,6 +21,7 @@ import org.openapitools.client.models.GetRecommendationsMoviesRecommend200Respon
 import org.openapitools.client.models.GetRecommendationsShowsRecommend200ResponseInner
 import org.openapitools.client.models.GetSearchQuery200ResponseInner
 import org.openapitools.client.models.GetSearchQuery200ResponseInnerOneOf2Person
+import org.openapitools.client.models.GetSearchTrending200ResponseInner
 import org.openapitools.client.models.GetSyncProgressUpNextStandard200ResponseInner
 import org.openapitools.client.models.GetSyncProgressUpNextStandard200ResponseInnerProgressLastEpisode
 import org.openapitools.client.models.GetUsersActivities200ResponseInner
@@ -71,6 +72,7 @@ typealias PersonDto = GetMoviesPeople200ResponseCastInnerPerson
 typealias PersonShowsDto = GetPeopleShows200Response
 typealias PersonMoviesDto = GetPeopleMovies200Response
 typealias PersonSearchDto = GetSearchQuery200ResponseInnerOneOf2Person
+typealias TrendingSearchDto = GetSearchTrending200ResponseInner
 typealias CommentDto = GetUsersComments200ResponseInnerOneOfComment
 typealias SeasonDto = GetUsersComments200ResponseInnerOneOf2Season
 typealias ListDto = GetUsersListsPersonal200ResponseInner
