@@ -28,6 +28,7 @@ import tv.trakt.trakt.core.search.data.remote.SearchRemoteDataSource
 import tv.trakt.trakt.core.search.usecase.GetBirthdayPeopleUseCase
 import tv.trakt.trakt.core.search.usecase.GetSearchResultsUseCase
 import tv.trakt.trakt.core.search.usecase.popular.GetPopularSearchUseCase
+import tv.trakt.trakt.core.search.usecase.popular.PostUserSearchUseCase
 import tv.trakt.trakt.core.search.usecase.recents.AddRecentSearchUseCase
 import tv.trakt.trakt.core.search.usecase.recents.GetRecentSearchUseCase
 
@@ -94,6 +95,12 @@ internal val searchModule = module {
     }
 
     factory {
+        PostUserSearchUseCase(
+            remoteSource = get(),
+        )
+    }
+
+    factory {
         GetBirthdayPeopleUseCase(
             remoteSource = get(),
             localSource = get(),
@@ -102,6 +109,7 @@ internal val searchModule = module {
 
     viewModel { (_: SavedStateHandle) ->
         SearchViewModel(
+            postUserSearchUseCase = get(),
             getPopularSearchesUseCase = get(),
             getSearchResultsUseCase = get(),
             addRecentSearchUseCase = get(),

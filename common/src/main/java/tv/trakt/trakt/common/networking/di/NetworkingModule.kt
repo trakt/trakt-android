@@ -98,7 +98,7 @@ val networkingApiModule = module {
         SearchApi(
             baseUrl = API_HD_BASE_URL,
             httpClientEngine = get(),
-            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("clientConfig")),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
         )
     }
 

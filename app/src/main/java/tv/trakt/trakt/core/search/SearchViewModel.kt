@@ -42,12 +42,14 @@ import tv.trakt.trakt.core.search.model.SearchItem
 import tv.trakt.trakt.core.search.usecase.GetBirthdayPeopleUseCase
 import tv.trakt.trakt.core.search.usecase.GetSearchResultsUseCase
 import tv.trakt.trakt.core.search.usecase.popular.GetPopularSearchUseCase
+import tv.trakt.trakt.core.search.usecase.popular.PostUserSearchUseCase
 import tv.trakt.trakt.core.search.usecase.recents.AddRecentSearchUseCase
 import tv.trakt.trakt.core.search.usecase.recents.GetRecentSearchUseCase
 
 @OptIn(FlowPreview::class)
 internal class SearchViewModel(
     private val getPopularSearchesUseCase: GetPopularSearchUseCase,
+    private val postUserSearchUseCase: PostUserSearchUseCase,
     private val getSearchResultsUseCase: GetSearchResultsUseCase,
     private val addRecentSearchUseCase: AddRecentSearchUseCase,
     private val getRecentSearchUseCase: GetRecentSearchUseCase,
@@ -343,10 +345,9 @@ internal class SearchViewModel(
             return
         }
         viewModelScope.launch {
-            // Note: In app module, we don't have showLocalSource
-            // This functionality might need to be adapted based on app module architecture
             addRecentSearchUseCase.addRecentSearchShow(show)
             navigateShow.update { show }
+            postUserSearch(show)
         }
     }
 
@@ -355,10 +356,9 @@ internal class SearchViewModel(
             return
         }
         viewModelScope.launch {
-            // Note: In app module, we don't have movieLocalSource
-            // This functionality might need to be adapted based on app module architecture
             addRecentSearchUseCase.addRecentSearchMovie(movie)
             navigateMovie.update { movie }
+            postUserSearch(movie)
         }
     }
 
@@ -367,10 +367,39 @@ internal class SearchViewModel(
             return
         }
         viewModelScope.launch {
-            // Note: In app module, we don't have movieLocalSource
-            // This functionality might need to be adapted based on app module architecture
             addRecentSearchUseCase.addRecentSearchPerson(person)
-//            navigateMovie.update { movie }
+        }
+    }
+
+    private fun postUserSearch(show: Show) {
+        viewModelScope.launch {
+            try {
+                if (inputState.value.query.isBlank() || !sessionManager.isAuthenticated()) {
+                    return@launch
+                }
+                postUserSearchUseCase.postShowUserSearch(
+                    showId = show.ids.trakt,
+                    query = inputState.value.query,
+                )
+            } catch (error: Exception) {
+                Timber.w(error, "Error posting user search")
+            }
+        }
+    }
+
+    private fun postUserSearch(movie: Movie) {
+        viewModelScope.launch {
+            try {
+                if (inputState.value.query.isBlank() || !sessionManager.isAuthenticated()) {
+                    return@launch
+                }
+                postUserSearchUseCase.postMovieUserSearch(
+                    movieId = movie.ids.trakt,
+                    query = inputState.value.query,
+                )
+            } catch (error: Exception) {
+                Timber.w(error, "Error posting user search")
+            }
         }
     }
 

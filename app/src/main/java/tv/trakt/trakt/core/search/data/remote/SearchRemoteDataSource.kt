@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.search.data.remote
 
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.SearchItemDto
 import tv.trakt.trakt.common.networking.TrendingSearchDto
 
@@ -31,4 +32,14 @@ internal interface SearchRemoteDataSource {
     suspend fun getPopularShows(limit: Int): List<TrendingSearchDto>
 
     suspend fun getPopularMovies(limit: Int): List<TrendingSearchDto>
+
+    suspend fun postShowUserSearch(
+        showId: TraktId,
+        query: String,
+    )
+
+    suspend fun postMovieUserSearch(
+        movieId: TraktId,
+        query: String,
+    )
 }

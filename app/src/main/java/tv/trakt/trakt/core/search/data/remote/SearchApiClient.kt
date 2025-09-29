@@ -1,6 +1,9 @@
 package tv.trakt.trakt.core.search.data.remote
 
 import org.openapitools.client.apis.SearchApi
+import org.openapitools.client.models.PostSearchRecentAddRequest
+import org.openapitools.client.models.PostSearchRecentAddRequest.Type
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.SearchItemDto
 import tv.trakt.trakt.common.networking.TrendingSearchDto
 
@@ -109,5 +112,31 @@ internal class SearchApiClient(
         )
 
         return response.body()
+    }
+
+    override suspend fun postShowUserSearch(
+        showId: TraktId,
+        query: String,
+    ) {
+        api.postSearchRecentAdd(
+            postSearchRecentAddRequest = PostSearchRecentAddRequest(
+                query = query,
+                id = showId.value,
+                type = Type.SHOWS,
+            ),
+        )
+    }
+
+    override suspend fun postMovieUserSearch(
+        movieId: TraktId,
+        query: String,
+    ) {
+        api.postSearchRecentAdd(
+            postSearchRecentAddRequest = PostSearchRecentAddRequest(
+                query = query,
+                id = movieId.value,
+                type = Type.MOVIES,
+            ),
+        )
     }
 }
