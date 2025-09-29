@@ -4,7 +4,6 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.common.model.Comment
 import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
-import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.CustomList.Type
 import tv.trakt.trakt.common.model.Ids
@@ -137,7 +136,7 @@ internal object PreviewData {
             tvdb = TvdbId(112233),
         ),
         knownForDepartment = "Acting",
-        birthday = nowUtc(),
+        birthday = nowLocalDay(),
         biography = "John Doe is a fictional character often used as a placeholder name in various contexts. " +
             "He represents an average person and is commonly used in legal cases, examples, and discussions.",
         images = Images(

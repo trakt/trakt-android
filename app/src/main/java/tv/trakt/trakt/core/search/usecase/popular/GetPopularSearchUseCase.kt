@@ -1,22 +1,57 @@
 package tv.trakt.trakt.core.search.usecase.popular
 
-import tv.trakt.trakt.common.networking.TrendingSearchDto
+import tv.trakt.trakt.common.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.core.search.data.local.model.PopularMovieEntity
+import tv.trakt.trakt.core.search.data.local.model.PopularShowEntity
+import tv.trakt.trakt.core.search.data.local.model.create
+import tv.trakt.trakt.core.search.data.local.popular.PopularSearchLocalDataSource
 import tv.trakt.trakt.core.search.data.remote.SearchRemoteDataSource
 
 private const val TRENDING_SEARCH_LIMIT = 36
 
 internal class GetPopularSearchUseCase(
     private val remoteSource: SearchRemoteDataSource,
+    private val localSource: PopularSearchLocalDataSource,
 ) {
-    suspend fun getShows(): List<TrendingSearchDto> {
-        return remoteSource.getPopularShows(
-            limit = TRENDING_SEARCH_LIMIT,
-        )
+    suspend fun getLocalShows(): List<PopularShowEntity> {
+        val localShows = localSource.getShows()
+        return localShows
     }
 
-    suspend fun getMovies(): List<TrendingSearchDto> {
+    suspend fun getLocalMovies(): List<PopularMovieEntity> {
+        val movies = localSource.getMovies()
+        return movies
+    }
+
+    suspend fun getShows(): List<PopularShowEntity> {
+        return remoteSource.getPopularShows(
+            limit = TRENDING_SEARCH_LIMIT,
+        ).asyncMap {
+            PopularShowEntity.create(
+                show = Show.fromDto(it.show!!),
+                rank = it.count.toInt(),
+                createdAt = nowUtcInstant(),
+            )
+        }.also {
+            localSource.setShows(it)
+        }
+    }
+
+    suspend fun getMovies(): List<PopularMovieEntity> {
         return remoteSource.getPopularMovies(
             limit = TRENDING_SEARCH_LIMIT,
-        )
+        ).asyncMap {
+            PopularMovieEntity.create(
+                movie = Movie.fromDto(it.movie!!),
+                rank = it.count.toInt(),
+                createdAt = nowUtcInstant(),
+            )
+        }.also {
+            localSource.setMovies(it)
+        }
     }
 }

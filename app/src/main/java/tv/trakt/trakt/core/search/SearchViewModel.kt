@@ -173,10 +173,14 @@ internal class SearchViewModel(
             }
 
             val showsAsync = async {
-                getPopularSearchesUseCase.getShows()
+                getPopularSearchesUseCase.getLocalShows().ifEmpty {
+                    getPopularSearchesUseCase.getShows()
+                }
             }
             val moviesAsync = async {
-                getPopularSearchesUseCase.getMovies()
+                getPopularSearchesUseCase.getLocalMovies().ifEmpty {
+                    getPopularSearchesUseCase.getMovies()
+                }
             }
             val peopleAsync = async {
                 var localPeople = getBirthdayPeopleUseCase.getLocalPeople()
@@ -223,14 +227,14 @@ internal class SearchViewModel(
                         items = buildList {
                             val showItems = shows.asyncMap {
                                 SearchItem.Show(
-                                    rank = it.count.toLong(),
-                                    show = Show.fromDto(it.show!!),
+                                    rank = it.rank.toLong(),
+                                    show = it.show,
                                 )
                             }
                             val movieItems = movies.asyncMap {
                                 SearchItem.Movie(
-                                    rank = it.count.toLong(),
-                                    movie = Movie.fromDto(it.movie!!),
+                                    rank = it.rank.toLong(),
+                                    movie = it.movie,
                                 )
                             }
                             addAll(showItems)

@@ -21,6 +21,8 @@ import tv.trakt.trakt.core.search.data.local.RecentSearchLocalDataSource
 import tv.trakt.trakt.core.search.data.local.RecentSearchStorage
 import tv.trakt.trakt.core.search.data.local.people.SearchPeopleLocalDataSource
 import tv.trakt.trakt.core.search.data.local.people.SearchPeopleStorage
+import tv.trakt.trakt.core.search.data.local.popular.PopularSearchLocalDataSource
+import tv.trakt.trakt.core.search.data.local.popular.PopularSearchStorage
 import tv.trakt.trakt.core.search.data.remote.SearchApiClient
 import tv.trakt.trakt.core.search.data.remote.SearchRemoteDataSource
 import tv.trakt.trakt.core.search.usecase.GetBirthdayPeopleUseCase
@@ -46,6 +48,12 @@ internal val searchDataModule = module {
 
     single<RecentSearchLocalDataSource> {
         RecentSearchStorage(
+            dataStore = get(named(SEARCH_PREFERENCES)),
+        )
+    }
+
+    single<PopularSearchLocalDataSource> {
+        PopularSearchStorage(
             dataStore = get(named(SEARCH_PREFERENCES)),
         )
     }
@@ -81,6 +89,7 @@ internal val searchModule = module {
     factory {
         GetPopularSearchUseCase(
             remoteSource = get(),
+            localSource = get(),
         )
     }
 
