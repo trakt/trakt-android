@@ -4,6 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 
@@ -11,6 +12,12 @@ internal class GetPersonalListsUseCase(
     private val remoteSource: UserRemoteDataSource,
     private val localSource: ListsPersonalLocalDataSource,
 ) {
+    suspend fun getLocalList(listId: TraktId): CustomList? {
+        return localSource
+            .getItems()
+            .firstOrNull { it.ids.trakt == listId }
+    }
+
     suspend fun getLocalLists(): ImmutableList<CustomList> {
         return localSource.getItems()
             .sortedByDescending { it.updatedAt }
@@ -25,7 +32,7 @@ internal class GetPersonalListsUseCase(
             .sortedByDescending { it.updatedAt }
             .toImmutableList()
             .also {
-                localSource.addItems(it)
+                localSource.setItems(it)
             }
     }
 }

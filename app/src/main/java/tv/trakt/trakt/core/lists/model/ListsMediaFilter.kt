@@ -1,10 +1,10 @@
-package tv.trakt.trakt.core.lists.sections.watchlist.model
+package tv.trakt.trakt.core.lists.model
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import tv.trakt.trakt.resources.R
 
-enum class WatchlistFilter(
+enum class ListsMediaFilter(
     @param:StringRes val displayRes: Int,
     @param:DrawableRes val iconRes: Int,
 ) {

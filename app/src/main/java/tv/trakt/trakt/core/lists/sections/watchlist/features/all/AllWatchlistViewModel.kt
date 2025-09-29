@@ -26,12 +26,12 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeWatchlistUseCase
+import tv.trakt.trakt.core.lists.model.ListsMediaFilter
+import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MEDIA
+import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MOVIES
+import tv.trakt.trakt.core.lists.model.ListsMediaFilter.SHOWS
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.ListsWatchlistDestination
-import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter
-import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.MEDIA
-import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.MOVIES
-import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.SHOWS
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.MovieItem
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistUseCase
@@ -140,7 +140,7 @@ internal class AllWatchlistViewModel(
         }
     }
 
-    private suspend fun loadFilter(): WatchlistFilter {
+    private suspend fun loadFilter(): ListsMediaFilter {
         val filter = getFilterUseCase.getFilter()
         filterState.update { filter }
         return filter
@@ -158,7 +158,7 @@ internal class AllWatchlistViewModel(
         return false
     }
 
-    fun setFilter(newFilter: WatchlistFilter) {
+    fun setFilter(newFilter: ListsMediaFilter) {
         if (newFilter == filterState.value || loadingState.value.isLoading) {
             return
         }
@@ -245,7 +245,7 @@ internal class AllWatchlistViewModel(
         AllWatchlistState(
             loading = state[0] as LoadingState,
             items = state[1] as? ImmutableList<WatchlistItem>,
-            filter = state[2] as? WatchlistFilter,
+            filter = state[2] as? ListsMediaFilter,
             error = state[3] as? Exception,
             backgroundUrl = state[4] as? String,
             isHomeWatchlist = state[5] as Boolean,

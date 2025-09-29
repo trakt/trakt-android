@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.lists.sections.watchlist.model
 
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -43,10 +44,10 @@ internal sealed class WatchlistItem(
             is MovieItem -> "${movie.ids.trakt.value}-movie"
         }
 
-    val type: String
+    val type: MediaType
         get() = when (this) {
-            is ShowItem -> "show"
-            is MovieItem -> "movie"
+            is ShowItem -> MediaType.SHOW
+            is MovieItem -> MediaType.MOVIE
         }
 
     val images: Images?

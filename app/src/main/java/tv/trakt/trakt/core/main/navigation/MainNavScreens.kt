@@ -10,6 +10,8 @@ import tv.trakt.trakt.core.home.sections.activity.all.navigation.navigateToAllAc
 import tv.trakt.trakt.core.home.sections.upnext.features.all.navigation.homeUpNextScreen
 import tv.trakt.trakt.core.home.sections.upnext.features.all.navigation.navigateToAllUpNext
 import tv.trakt.trakt.core.lists.navigation.listsScreen
+import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.allPersonalListScreen
+import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.navigateToPersonalList
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.allWatchlistScreen
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.navigateToHomeWatchlist
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.navigateToWatchlist
@@ -121,8 +123,18 @@ internal fun NavGraphBuilder.listsScreens(controller: NavHostController) {
             onNavigateToShows = { navigateToShows() },
             onNavigateToMovies = { navigateToMovies() },
             onNavigateToWatchlist = { navigateToWatchlist() },
+            onNavigateToList = {
+                navigateToPersonalList(
+                    listId = it.ids.trakt.value,
+                    listTitle = it.name,
+                    listDescription = it.description,
+                )
+            },
         )
         allWatchlistScreen(
+            onNavigateBack = { popBackStack() },
+        )
+        allPersonalListScreen(
             onNavigateBack = { popBackStack() },
         )
     }

@@ -8,7 +8,6 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
-import tv.trakt.trakt.core.lists.ListsConfig.LISTS_SECTION_LIMIT
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
@@ -22,10 +21,13 @@ internal class GetPersonalListItemsUseCase(
             .toImmutableList()
     }
 
-    suspend fun getItems(listId: TraktId): ImmutableList<PersonalListItem> {
+    suspend fun getItems(
+        listId: TraktId,
+        limit: Int,
+    ): ImmutableList<PersonalListItem> {
         return remoteSource.getPersonalListItems(
             listId = listId,
-            limit = LISTS_SECTION_LIMIT,
+            limit = limit,
             extended = "full,cloud9",
         ).asyncMap {
             val listedAt = it.listedAt.toInstant()
@@ -50,7 +52,7 @@ internal class GetPersonalListItemsUseCase(
         }
             .toImmutableList()
             .also {
-                localSource.addItems(
+                localSource.setItems(
                     listId = listId,
                     items = it,
                 )

@@ -70,6 +70,7 @@ internal fun ListsScreen(
     onNavigateToShows: () -> Unit,
     onNavigateToMovies: () -> Unit,
     onNavigateToWatchlist: () -> Unit,
+    onNavigateToList: (CustomList) -> Unit,
 ) {
     val localBottomBarVisibility = LocalBottomBarVisibility.current
     LaunchedEffect(Unit) {
@@ -89,6 +90,7 @@ internal fun ListsScreen(
         onMoviesClick = onNavigateToMovies,
         onCreateListClick = { createListSheet = true },
         onEditListClick = { editListSheet = it },
+        onListClick = onNavigateToList,
     )
 
     CreateListSheet(
@@ -100,8 +102,6 @@ internal fun ListsScreen(
     EditListSheet(
         active = editListSheet != null,
         list = editListSheet,
-        onListEdited = viewModel::loadData,
-        onListDeleted = viewModel::loadData,
         onDismiss = { editListSheet = null },
     )
 }
@@ -117,6 +117,7 @@ private fun ListsScreenContent(
     onCreateListClick: () -> Unit = {},
     onEditListClick: (CustomList) -> Unit = {},
     onWatchlistClick: () -> Unit = {},
+    onListClick: (CustomList) -> Unit = { _ -> },
 ) {
     val headerState = rememberHeaderState()
     val lazyListState = rememberLazyListState(
@@ -214,7 +215,6 @@ private fun ListsScreenContent(
                 key = { list -> list.ids.trakt.value },
             ) { list ->
                 ListsPersonalView(
-                    list = list,
                     viewModel = koinViewModel(
                         key = list.ids.trakt.value.toString(),
                         parameters = { parametersOf(list.ids.trakt) },
@@ -222,6 +222,7 @@ private fun ListsScreenContent(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     onMoreClick = { onEditListClick(list) },
+                    onAllClick = { onListClick(list) },
                 )
             }
 

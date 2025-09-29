@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.extensions.popUpToTop
+import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.core.lists.ListsScreen
 
 @Serializable
@@ -16,6 +17,7 @@ internal fun NavGraphBuilder.listsScreen(
     onNavigateToShows: () -> Unit,
     onNavigateToMovies: () -> Unit,
     onNavigateToWatchlist: () -> Unit,
+    onNavigateToList: (CustomList) -> Unit,
 ) {
     composable<ListsDestination> {
         ListsScreen(
@@ -24,6 +26,7 @@ internal fun NavGraphBuilder.listsScreen(
             onNavigateToShows = onNavigateToShows,
             onNavigateToMovies = onNavigateToMovies,
             onNavigateToWatchlist = onNavigateToWatchlist,
+            onNavigateToList = onNavigateToList,
         )
     }
 }

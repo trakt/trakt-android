@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package tv.trakt.trakt.core.lists.sections.personal.context.show.sheet
+package tv.trakt.trakt.core.lists.sections.personal.features.context.show.sheet
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,7 +20,7 @@ import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.core.lists.sections.personal.context.show.ListShowContextView
+import tv.trakt.trakt.core.lists.sections.personal.features.context.show.ListShowContextView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
@@ -32,13 +32,13 @@ internal fun ListShowContextSheet(
         skipPartiallyExpanded = true,
     ),
     show: Show?,
-    list: CustomList,
-    onRemoveListItem: () -> Unit,
+    list: CustomList?,
+    onRemoveListItem: (() -> Unit)? = null,
     onDismiss: () -> Unit,
 ) {
     val sheetScope = rememberCoroutineScope()
 
-    if (show != null) {
+    if (show != null && list != null) {
         val localSnack = LocalSnackbarState.current
         val localContext = LocalContext.current
 
@@ -86,7 +86,7 @@ internal fun ListShowContextSheet(
                     )
                 },
                 onRemoveList = {
-                    onRemoveListItem()
+                    onRemoveListItem?.invoke()
                     sheetScope.dismissWithMessage(
                         state = state,
                         snackHost = localSnack,

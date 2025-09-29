@@ -1,15 +1,26 @@
 package tv.trakt.trakt.core.lists.sections.personal.data.local
 
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.model.PersonalListItem
+import java.time.Instant
 
 internal class ListsPersonalItemsStorage : ListsPersonalItemsLocalDataSource {
     private val mutex = Mutex()
-    private val storage = mutableMapOf<TraktId, List<PersonalListItem>>()
 
-    override suspend fun addItems(
+    private val storage = mutableMapOf<TraktId, List<PersonalListItem>>()
+    private val updatedAt = MutableSharedFlow<Instant?>(
+        replay = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST,
+    )
+
+    override suspend fun setItems(
         listId: TraktId,
         items: List<PersonalListItem>,
     ) {
@@ -27,6 +38,7 @@ internal class ListsPersonalItemsStorage : ListsPersonalItemsLocalDataSource {
     override suspend fun removeShows(
         listId: TraktId,
         showsIds: List<TraktId>,
+        notify: Boolean,
     ) {
         mutex.withLock {
             val currentItems = storage[listId] ?: return
@@ -36,11 +48,15 @@ internal class ListsPersonalItemsStorage : ListsPersonalItemsLocalDataSource {
                         it.show.ids.trakt in showsIds
                 }
         }
+        if (notify) {
+            updatedAt.tryEmit(nowUtcInstant())
+        }
     }
 
     override suspend fun removeMovies(
         listId: TraktId,
         moviesIds: List<TraktId>,
+        notify: Boolean,
     ) {
         mutex.withLock {
             val currentItems = storage[listId] ?: return
@@ -50,9 +66,17 @@ internal class ListsPersonalItemsStorage : ListsPersonalItemsLocalDataSource {
                         it.movie.ids.trakt in moviesIds
                 }
         }
+        if (notify) {
+            updatedAt.tryEmit(nowUtcInstant())
+        }
+    }
+
+    override fun observeUpdates(): Flow<Instant?> {
+        return updatedAt.asSharedFlow()
     }
 
     override fun clear() {
         storage.clear()
+        updatedAt.tryEmit(null)
     }
 }

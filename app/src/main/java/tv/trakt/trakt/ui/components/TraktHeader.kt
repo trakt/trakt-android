@@ -29,7 +29,7 @@ internal fun TraktHeader(
             maxLines = 1,
             overflow = Ellipsis,
         )
-        subtitle?.let {
+        if (!subtitle.isNullOrBlank()) {
             Text(
                 text = subtitle,
                 color = TraktTheme.colors.textSecondary,

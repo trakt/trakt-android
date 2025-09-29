@@ -1,18 +1,16 @@
-package tv.trakt.trakt.core.lists.sections.personal
+package tv.trakt.trakt.core.lists.sections.personal.features.all
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.model.CustomList
-import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 
 @Immutable
-internal data class ListsPersonalState(
-    val user: User? = null,
+internal data class AllPersonalListState(
+    val backgroundUrl: String? = null,
     val list: CustomList? = null,
     val items: ImmutableList<PersonalListItem>? = null,
-    val loading: LoadingState = IDLE,
+    val loading: LoadingState = LoadingState.IDLE,
     val error: Exception? = null,
 )

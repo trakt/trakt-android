@@ -25,8 +25,8 @@ internal fun EditListSheet(
     ),
     active: Boolean,
     list: CustomList?,
-    onListEdited: () -> Unit,
-    onListDeleted: () -> Unit,
+    onListEdited: (() -> Unit)? = null,
+    onListDeleted: (() -> Unit)? = null,
     onDismiss: () -> Unit,
 ) {
     val localSnack = LocalSnackbarState.current
@@ -49,7 +49,7 @@ internal fun EditListSheet(
                         .launch { state.hide() }
                         .invokeOnCompletion {
                             if (!state.isVisible) {
-                                onListEdited()
+                                onListEdited?.invoke()
                                 onDismiss()
                             }
                         }
@@ -67,7 +67,7 @@ internal fun EditListSheet(
                         .launch { state.hide() }
                         .invokeOnCompletion {
                             if (!state.isVisible) {
-                                onListDeleted()
+                                onListDeleted?.invoke()
                                 onDismiss()
                             }
                         }

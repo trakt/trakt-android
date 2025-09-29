@@ -51,12 +51,12 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.home.views.HomeEmptyView
+import tv.trakt.trakt.core.lists.model.ListsMediaFilter
+import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MEDIA
+import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MOVIES
+import tv.trakt.trakt.core.lists.model.ListsMediaFilter.SHOWS
 import tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies.sheets.WatchlistMovieSheet
 import tv.trakt.trakt.core.lists.sections.watchlist.features.context.shows.sheets.WatchlistShowSheet
-import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter
-import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.MEDIA
-import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.MOVIES
-import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.SHOWS
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.lists.sections.watchlist.views.ListsWatchlistItemView
 import tv.trakt.trakt.resources.R
@@ -130,7 +130,7 @@ internal fun ListWatchlistContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onFilterClick: (WatchlistFilter) -> Unit = {},
+    onFilterClick: (ListsMediaFilter) -> Unit = {},
     onShowsClick: () -> Unit = {},
     onMoviesClick: () -> Unit = {},
     onShowLongClick: (Show) -> Unit = {},
@@ -236,12 +236,12 @@ internal fun ListWatchlistContent(
 private fun ContentFilters(
     headerPadding: PaddingValues,
     state: ListsWatchlistState,
-    onFilterClick: (WatchlistFilter) -> Unit,
+    onFilterClick: (ListsMediaFilter) -> Unit,
 ) {
     FilterChipGroup(
         paddingHorizontal = headerPadding,
     ) {
-        for (filter in WatchlistFilter.entries) {
+        for (filter in ListsMediaFilter.entries) {
             FilterChip(
                 selected = state.filter == filter,
                 text = stringResource(filter.displayRes),
@@ -281,7 +281,7 @@ private fun ContentLoadingList(
 private fun ContentList(
     listItems: ImmutableList<WatchlistItem>,
     listState: LazyListState = rememberLazyListState(),
-    filter: WatchlistFilter,
+    filter: ListsMediaFilter,
     contentPadding: PaddingValues,
     onShowLongClick: (Show) -> Unit = {},
     onMovieLongClick: (Movie) -> Unit = {},
@@ -330,10 +330,10 @@ private fun ContentList(
 
 @Composable
 private fun ContentEmptyView(
-    filter: WatchlistFilter,
+    filter: ListsMediaFilter,
     authenticated: Boolean,
     modifier: Modifier = Modifier,
-    onActionClick: (WatchlistFilter) -> Unit = {},
+    onActionClick: (ListsMediaFilter) -> Unit = {},
 ) {
     val imageUrl = remember(filter) {
         val key = when (filter) {

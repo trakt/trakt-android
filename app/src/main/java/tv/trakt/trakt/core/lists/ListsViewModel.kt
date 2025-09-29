@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -22,12 +23,14 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.core.lists.ListsState.UserState
+import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
 
 @OptIn(FlowPreview::class)
 internal class ListsViewModel(
     private val sessionManager: SessionManager,
     private val getPersonalListsUseCase: GetPersonalListsUseCase,
+    private val localListsSource: ListsPersonalLocalDataSource,
 ) : ViewModel() {
     private val initialState = ListsState()
 
@@ -40,6 +43,7 @@ internal class ListsViewModel(
     init {
         loadBackground()
         observeUser()
+        observeLists()
     }
 
     private fun observeUser() {
@@ -58,9 +62,33 @@ internal class ListsViewModel(
         }
     }
 
+    private fun observeLists() {
+        viewModelScope.launch {
+            localListsSource.observeUpdates()
+                .distinctUntilChanged()
+                .debounce(250)
+                .collect {
+                    loadLocalData()
+                }
+        }
+    }
+
     private fun loadBackground() {
         val configUrl = Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL)
         backgroundState.update { configUrl }
+    }
+
+    private fun loadLocalData() {
+        viewModelScope.launch {
+            try {
+                val localItems = getPersonalListsUseCase.getLocalLists()
+                listsState.update { localItems }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.value = error
+                }
+            }
+        }
     }
 
     fun loadData() {

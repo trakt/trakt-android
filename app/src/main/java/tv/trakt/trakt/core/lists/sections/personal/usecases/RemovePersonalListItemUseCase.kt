@@ -19,6 +19,7 @@ internal class RemovePersonalListItemUseCase(
         localSource.removeShows(
             listId = listId,
             showsIds = listOf(showId),
+            notify = true,
         )
     }
 
@@ -33,6 +34,7 @@ internal class RemovePersonalListItemUseCase(
         localSource.removeMovies(
             listId = listId,
             moviesIds = listOf(movieId),
+            notify = true,
         )
     }
 }

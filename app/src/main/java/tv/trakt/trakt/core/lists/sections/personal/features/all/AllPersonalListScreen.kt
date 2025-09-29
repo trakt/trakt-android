@@ -1,16 +1,19 @@
 @file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 
-package tv.trakt.trakt.core.lists.sections.watchlist.features.all
+package tv.trakt.trakt.core.lists.sections.personal.features.all
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
@@ -22,7 +25,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,91 +38,93 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.core.lists.model.ListsMediaFilter
-import tv.trakt.trakt.core.lists.sections.watchlist.features.all.views.AllWatchlistMovieView
-import tv.trakt.trakt.core.lists.sections.watchlist.features.all.views.AllWatchlistShowView
-import tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies.sheets.WatchlistMovieSheet
-import tv.trakt.trakt.core.lists.sections.watchlist.features.context.shows.sheets.WatchlistShowSheet
-import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
-import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.MovieItem
-import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.ShowItem
+import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.core.lists.model.PersonalListItem
+import tv.trakt.trakt.core.lists.model.PersonalListItem.MovieItem
+import tv.trakt.trakt.core.lists.model.PersonalListItem.ShowItem
+import tv.trakt.trakt.core.lists.sections.personal.features.all.views.AllPersonalListMovieView
+import tv.trakt.trakt.core.lists.sections.personal.features.all.views.AllPersonalListShowView
+import tv.trakt.trakt.core.lists.sections.personal.features.context.movie.sheet.ListMovieContextSheet
+import tv.trakt.trakt.core.lists.sections.personal.features.context.show.sheet.ListShowContextSheet
+import tv.trakt.trakt.core.lists.sheets.EditListSheet
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.FilterChip
-import tv.trakt.trakt.ui.components.FilterChipGroup
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun AllWatchlistScreen(
+internal fun AllPersonalListScreen(
     modifier: Modifier = Modifier,
-    viewModel: AllWatchlistViewModel,
+    viewModel: AllPersonalListViewModel,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    var contextMovieSheet by remember { mutableStateOf<MovieItem?>(null) }
-    var contextShowSheet by remember { mutableStateOf<ShowItem?>(null) }
+    var showContextSheet by remember { mutableStateOf<ShowItem?>(null) }
+    var movieContextSheet by remember { mutableStateOf<MovieItem?>(null) }
+    var editListSheet by remember { mutableStateOf<CustomList?>(null) }
 
-    AllWatchlistContent(
+    AllPersonalListContent(
         state = state,
         modifier = modifier,
         onLongClick = {
             when (it) {
-                is MovieItem -> contextMovieSheet = it
-                is ShowItem -> contextShowSheet = it
+                is MovieItem -> movieContextSheet = it
+                is ShowItem -> showContextSheet = it
             }
         },
-        onCheckClick = {
-            if (it is MovieItem) {
-                viewModel.addMovieToHistory(it.id)
-            }
+        onMoreClick = {
+            editListSheet = state.list
         },
-        onFilterClick = { viewModel.setFilter(it) },
         onBackClick = onNavigateBack,
     )
 
-    WatchlistMovieSheet(
-        addLocally = true,
-        sheetItem = contextMovieSheet?.movie,
-        onDismiss = { contextMovieSheet = null },
-        onRemoveWatchlist = {
-            viewModel.removeItem(contextMovieSheet)
+    ListShowContextSheet(
+        show = showContextSheet?.show,
+        list = state.list,
+        onRemoveListItem = {
+            viewModel.removeItem(showContextSheet)
         },
-        onAddWatched = {
-            viewModel.removeItem(contextMovieSheet)
+        onDismiss = {
+            showContextSheet = null
         },
     )
 
-    WatchlistShowSheet(
-        sheetItem = contextShowSheet?.show,
-        onDismiss = { contextShowSheet = null },
-        onRemoveWatchlist = {
-            viewModel.removeItem(contextShowSheet)
+    ListMovieContextSheet(
+        movie = movieContextSheet?.movie,
+        list = state.list,
+        onRemoveListItem = {
+            viewModel.removeItem(movieContextSheet)
         },
-        onAddWatched = {
-            viewModel.removeItem(contextShowSheet)
+        onDismiss = {
+            movieContextSheet = null
         },
+    )
+
+    EditListSheet(
+        active = editListSheet != null,
+        list = editListSheet,
+        onListEdited = viewModel::loadDetails,
+        onListDeleted = onNavigateBack,
+        onDismiss = { editListSheet = null },
     )
 }
 
 @Composable
-internal fun AllWatchlistContent(
-    state: AllWatchlistState,
+internal fun AllPersonalListContent(
+    state: AllPersonalListState,
     modifier: Modifier = Modifier,
     onTopOfList: () -> Unit = {},
-    onCheckClick: (WatchlistItem) -> Unit = {},
-    onLongClick: (WatchlistItem) -> Unit = {},
-    onFilterClick: (ListsMediaFilter) -> Unit = {},
+    onLongClick: (PersonalListItem) -> Unit = {},
     onBackClick: () -> Unit = {},
+    onMoreClick: () -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
     val listState = rememberLazyListState(
@@ -152,47 +156,66 @@ internal fun AllWatchlistContent(
         )
 
         ContentList(
-            subtitle = when (state.isHomeWatchlist) {
-                true -> stringResource(R.string.list_subtitle_released_movies)
-                else -> stringResource(R.string.text_sort_recently_added)
-            },
+            title = state.list?.name ?: "",
+            subtitle = state.list?.description,
             listItems = (state.items ?: emptyList()).toImmutableList(),
             listState = listState,
-            listFilter = state.filter,
-            homeWatchlist = state.isHomeWatchlist,
-            loading = state.loading.isLoading,
             contentPadding = contentPadding,
-            onFilterClick = onFilterClick,
-            onCheckClick = onCheckClick,
             onLongClick = onLongClick,
             onTopOfList = onTopOfList,
             onBackClick = onBackClick,
+            onMoreClick = onMoreClick,
         )
     }
 }
 
 @Composable
 private fun TitleBar(
-    subtitle: String,
+    title: String,
+    subtitle: String?,
     modifier: Modifier = Modifier,
+    onBackClick: () -> Unit = {},
+    onMoreClick: () -> Unit = {},
 ) {
     Row(
         verticalAlignment = CenterVertically,
-        horizontalArrangement = spacedBy(12.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
-            .height(TraktTheme.size.titleBarHeight)
-            .graphicsLayer {
-                translationX = -2.dp.toPx()
-            },
+            .fillMaxWidth()
+            .height(TraktTheme.size.titleBarHeight),
     ) {
+        Row(
+            verticalAlignment = CenterVertically,
+            horizontalArrangement = spacedBy(12.dp),
+            modifier = Modifier
+                .weight(1F, fill = false)
+                .graphicsLayer {
+                    translationX = -2.dp.toPx()
+                }
+                .onClick {
+                    onBackClick()
+                },
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_back_arrow),
+                tint = TraktTheme.colors.textPrimary,
+                contentDescription = null,
+            )
+            TraktHeader(
+                title = title,
+                subtitle = subtitle,
+            )
+        }
+
         Icon(
-            painter = painterResource(R.drawable.ic_back_arrow),
+            painter = painterResource(R.drawable.ic_more_vertical),
+            contentDescription = "Genres",
             tint = TraktTheme.colors.textPrimary,
-            contentDescription = null,
-        )
-        TraktHeader(
-            title = stringResource(R.string.page_title_watchlist),
-            subtitle = subtitle,
+            modifier = Modifier
+                .padding(start = 16.dp)
+                .fillMaxHeight()
+                .onClick { onMoreClick() }
+                .size(16.dp),
         )
     }
 }
@@ -200,18 +223,15 @@ private fun TitleBar(
 @Composable
 private fun ContentList(
     modifier: Modifier = Modifier,
+    title: String,
+    subtitle: String?,
     listState: LazyListState,
-    listItems: ImmutableList<WatchlistItem>,
-    listFilter: ListsMediaFilter?,
-    subtitle: String,
-    loading: Boolean,
-    homeWatchlist: Boolean,
+    listItems: ImmutableList<PersonalListItem>,
     contentPadding: PaddingValues,
-    onCheckClick: (WatchlistItem) -> Unit,
-    onLongClick: (WatchlistItem) -> Unit,
-    onFilterClick: (ListsMediaFilter) -> Unit,
+    onLongClick: (PersonalListItem) -> Unit,
     onTopOfList: () -> Unit,
     onBackClick: () -> Unit,
+    onMoreClick: () -> Unit,
 ) {
     val isScrolledToTop by remember {
         derivedStateOf {
@@ -235,20 +255,13 @@ private fun ContentList(
     ) {
         item {
             TitleBar(
+                title = title,
                 subtitle = subtitle,
+                onBackClick = onBackClick,
+                onMoreClick = onMoreClick,
                 modifier = Modifier
-                    .padding(bottom = 8.dp)
-                    .onClick { onBackClick() },
+                    .padding(bottom = 8.dp),
             )
-        }
-
-        if (listFilter != null && listItems.isNotEmpty() && !loading) {
-            item {
-                ContentFilters(
-                    watchlistFilter = listFilter,
-                    onFilterClick = onFilterClick,
-                )
-            }
         }
 
         items(
@@ -256,8 +269,9 @@ private fun ContentList(
             key = { it.key },
         ) { item ->
             when (item) {
-                is ShowItem -> AllWatchlistShowView(
+                is ShowItem -> AllPersonalListShowView(
                     item = item,
+                    showIcon = true,
                     onLongClick = { onLongClick(item) },
                     modifier = Modifier
                         .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
@@ -266,12 +280,10 @@ private fun ContentList(
                             fadeOutSpec = null,
                         ),
                 )
-                is MovieItem -> AllWatchlistMovieView(
+                is MovieItem -> AllPersonalListMovieView(
                     item = item,
-                    showCheck = homeWatchlist,
-                    showIcon = !homeWatchlist,
+                    showIcon = true,
                     onLongClick = { onLongClick(item) },
-                    onCheckClick = { onCheckClick(item) },
                     modifier = Modifier
                         .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
                         .animateItem(
@@ -280,36 +292,6 @@ private fun ContentList(
                         ),
                 )
             }
-        }
-    }
-}
-
-@Composable
-private fun ContentFilters(
-    watchlistFilter: ListsMediaFilter,
-    onFilterClick: (ListsMediaFilter) -> Unit,
-) {
-    FilterChipGroup(
-        paddingHorizontal = PaddingValues.Zero,
-        paddingVertical = PaddingValues(
-            top = 0.dp,
-            bottom = 20.dp,
-        ),
-    ) {
-        for (filter in ListsMediaFilter.entries) {
-            FilterChip(
-                selected = watchlistFilter == filter,
-                text = stringResource(filter.displayRes),
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(filter.iconRes),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier.size(FilterChipDefaults.IconSize),
-                    )
-                },
-                onClick = { onFilterClick(filter) },
-            )
         }
     }
 }
@@ -322,8 +304,8 @@ private fun ContentFilters(
 @Composable
 private fun Preview() {
     TraktTheme {
-        AllWatchlistContent(
-            state = AllWatchlistState(),
+        AllPersonalListContent(
+            state = AllPersonalListState(),
         )
     }
 }
@@ -336,8 +318,8 @@ private fun Preview() {
 @Composable
 private fun Preview2() {
     TraktTheme {
-        AllWatchlistContent(
-            state = AllWatchlistState(),
+        AllPersonalListContent(
+            state = AllPersonalListState(),
         )
     }
 }

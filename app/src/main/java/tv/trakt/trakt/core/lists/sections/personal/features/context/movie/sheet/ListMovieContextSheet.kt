@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package tv.trakt.trakt.core.lists.sections.personal.context.movie.sheet
+package tv.trakt.trakt.core.lists.sections.personal.features.context.movie.sheet
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,6 +20,7 @@ import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.core.lists.sections.personal.features.context.movie.ListMovieContextView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
@@ -31,13 +32,13 @@ internal fun ListMovieContextSheet(
         skipPartiallyExpanded = true,
     ),
     movie: Movie?,
-    list: CustomList,
-    onRemoveListItem: () -> Unit,
+    list: CustomList?,
+    onRemoveListItem: (() -> Unit)? = null,
     onDismiss: () -> Unit,
 ) {
     val sheetScope = rememberCoroutineScope()
 
-    if (movie != null) {
+    if (movie != null && list != null) {
         val localSnack = LocalSnackbarState.current
         val localContext = LocalContext.current
 
@@ -45,7 +46,7 @@ internal fun ListMovieContextSheet(
             sheetState = state,
             onDismiss = onDismiss,
         ) {
-            _root_ide_package_.tv.trakt.trakt.core.lists.sections.personal.context.movie.ListMovieContextView(
+            ListMovieContextView(
                 movie = movie,
                 list = list,
                 viewModel = koinViewModel(
@@ -85,7 +86,7 @@ internal fun ListMovieContextSheet(
                     )
                 },
                 onRemoveList = {
-                    onRemoveListItem()
+                    onRemoveListItem?.invoke()
                     sheetScope.dismissWithMessage(
                         state = state,
                         snackHost = localSnack,

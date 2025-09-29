@@ -20,9 +20,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -49,8 +47,8 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 import tv.trakt.trakt.core.lists.model.PersonalListItem.MovieItem
 import tv.trakt.trakt.core.lists.model.PersonalListItem.ShowItem
-import tv.trakt.trakt.core.lists.sections.personal.context.movie.sheet.ListMovieContextSheet
-import tv.trakt.trakt.core.lists.sections.personal.context.show.sheet.ListShowContextSheet
+import tv.trakt.trakt.core.lists.sections.personal.features.context.movie.sheet.ListMovieContextSheet
+import tv.trakt.trakt.core.lists.sections.personal.features.context.show.sheet.ListShowContextSheet
 import tv.trakt.trakt.core.lists.sections.personal.views.ListsPersonalItemView
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
@@ -61,11 +59,11 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ListsPersonalView(
-    list: CustomList,
     viewModel: ListsPersonalViewModel,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     onMoreClick: () -> Unit,
+    onAllClick: (CustomList) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -75,7 +73,7 @@ internal fun ListsPersonalView(
 
     ListsPersonalContent(
         state = state,
-        list = list,
+        list = state.list,
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
@@ -89,20 +87,23 @@ internal fun ListsPersonalView(
                 movieContextSheet = it
             }
         },
+        onAllClick = {
+            state.list?.let {
+                onAllClick(it)
+            }
+        },
         onMoreClick = onMoreClick,
     )
 
     ListShowContextSheet(
         show = showContextSheet,
-        list = list,
-        onRemoveListItem = { viewModel.loadLocalData() },
+        list = state.list,
         onDismiss = { showContextSheet = null },
     )
 
     ListMovieContextSheet(
         movie = movieContextSheet,
-        list = list,
-        onRemoveListItem = { viewModel.loadLocalData() },
+        list = state.list,
         onDismiss = { movieContextSheet = null },
     )
 }
@@ -110,13 +111,14 @@ internal fun ListsPersonalView(
 @Composable
 internal fun ListsPersonalContent(
     state: ListsPersonalState,
-    list: CustomList,
+    list: CustomList?,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onShowLongClick: (Show) -> Unit = {},
     onMovieLongClick: (Movie) -> Unit = {},
     onMoreClick: () -> Unit = {},
+    onAllClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -140,7 +142,7 @@ internal fun ListsPersonalContent(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     TraktHeader(
-                        title = list.name,
+                        title = list?.name ?: "",
                         modifier = Modifier.weight(1F, fill = false),
                     )
 
@@ -153,7 +155,8 @@ internal fun ListsPersonalContent(
                             .size(14.dp),
                     )
                 }
-                if (!list.description.isNullOrBlank()) {
+
+                if (!list?.description.isNullOrBlank()) {
                     Text(
                         text = list.description ?: "",
                         color = TraktTheme.colors.textSecondary,
@@ -167,13 +170,14 @@ internal fun ListsPersonalContent(
                 }
             }
 
-//            if (!state.items.isNullOrEmpty()) {
-//                Text(
-//                    text = stringResource(R.string.button_text_view_all),
-//                    color = TraktTheme.colors.textSecondary,
-//                    style = TraktTheme.typography.buttonSecondary,
-//                )
-//            }
+            if (!state.items.isNullOrEmpty()) {
+                Text(
+                    text = stringResource(R.string.button_text_view_all),
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.buttonSecondary,
+                    modifier = Modifier.onClick { onAllClick() },
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -268,16 +272,6 @@ private fun ContentList(
     onShowLongClick: (Show) -> Unit = {},
     onMovieLongClick: (Movie) -> Unit = {},
 ) {
-    val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
-
-    LaunchedEffect(listItems) {
-        val hashCode = listItems.hashCode()
-        if (currentList.intValue != hashCode) {
-            currentList.intValue = hashCode
-            listState.animateScrollToItem(0)
-        }
-    }
-
     LazyRow(
         state = listState,
         modifier = Modifier.fillMaxWidth(),

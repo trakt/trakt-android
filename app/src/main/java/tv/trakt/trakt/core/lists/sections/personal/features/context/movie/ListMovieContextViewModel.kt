@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.lists.sections.personal.context.show
+package tv.trakt.trakt.core.lists.sections.personal.features.context.movie
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,21 +20,21 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
-import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.lists.sections.personal.usecases.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
-import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
-import tv.trakt.trakt.core.sync.usecases.UpdateShowWatchlistUseCase
+import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
+import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
 import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.core.user.usecase.watchlist.LoadUserWatchlistUseCase
 
-internal class ListShowContextViewModel(
-    private val show: Show,
+internal class ListMovieContextViewModel(
+    private val movie: Movie,
     private val list: CustomList,
-    private val updateShowWatchlistUseCase: UpdateShowWatchlistUseCase,
-    private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
+    private val updateMovieWatchlistUseCase: UpdateMovieWatchlistUseCase,
+    private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
     private val userProgressLocalSource: UserProgressLocalDataSource,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
@@ -42,7 +42,7 @@ internal class ListShowContextViewModel(
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
-    private val initialState = ListShowContextState()
+    private val initialState = ListMovieContextState()
 
     private val isWatchlistState = MutableStateFlow(initialState.isWatchlist)
     private val isWatchedState = MutableStateFlow(initialState.isWatched)
@@ -69,13 +69,13 @@ internal class ListShowContextViewModel(
 
                 coroutineScope {
                     val watchlistAsync = async {
-                        if (!userWatchlistLocalSource.isShowsLoaded()) {
+                        if (!userWatchlistLocalSource.isMoviesLoaded()) {
                             loadWatchlistUseCase.loadWatchlist()
                         }
                     }
                     val progressAsync = async {
-                        if (!userProgressLocalSource.isShowsLoaded()) {
-                            loadProgressUseCase.loadShowsProgress()
+                        if (!userProgressLocalSource.isMoviesLoaded()) {
+                            loadProgressUseCase.loadMoviesProgress()
                         }
                     }
 
@@ -83,15 +83,10 @@ internal class ListShowContextViewModel(
                     progressAsync.await()
 
                     isWatchlistState.update {
-                        userWatchlistLocalSource.containsShow(show.ids.trakt)
+                        userWatchlistLocalSource.containsMovie(movie.ids.trakt)
                     }
                     isWatchedState.update {
-                        val containsShow = userProgressLocalSource.containsShow(show.ids.trakt)
-                        if (containsShow) {
-                            val show = userProgressLocalSource.getShows(setOf(show.ids.trakt)).firstOrNull()
-                            return@update show?.isCompleted == true
-                        }
-                        return@update false
+                        userProgressLocalSource.containsMovie(movie.ids.trakt)
                     }
                 }
             } catch (error: Exception) {
@@ -117,14 +112,14 @@ internal class ListShowContextViewModel(
             try {
                 loadingWatchlistState.update { LOADING }
 
-                updateShowWatchlistUseCase.addToWatchlist(
-                    showId = show.ids.trakt,
+                updateMovieWatchlistUseCase.addToWatchlist(
+                    movieId = movie.ids.trakt,
                 )
-                userWatchlistLocalSource.addShows(
-                    shows = listOf(
-                        WatchlistItem.ShowItem(
+                userWatchlistLocalSource.addMovies(
+                    movies = listOf(
+                        WatchlistItem.MovieItem(
                             rank = 0,
-                            show = show,
+                            movie = movie,
                             listedAt = nowUtcInstant(),
                         ),
                     ),
@@ -151,11 +146,11 @@ internal class ListShowContextViewModel(
             try {
                 loadingWatchlistState.update { LOADING }
 
-                updateShowWatchlistUseCase.removeFromWatchlist(
-                    showId = show.ids.trakt,
+                updateMovieWatchlistUseCase.removeFromWatchlist(
+                    movieId = movie.ids.trakt,
                 )
-                userWatchlistLocalSource.removeShows(
-                    ids = setOf(show.ids.trakt),
+                userWatchlistLocalSource.removeMovies(
+                    ids = setOf(movie.ids.trakt),
                     notify = true,
                 )
             } catch (error: Exception) {
@@ -179,10 +174,10 @@ internal class ListShowContextViewModel(
             try {
                 loadingWatchedState.update { LOADING }
 
-                updateShowHistoryUseCase.addToWatched(show.ids.trakt)
-                loadProgressUseCase.loadShowsProgress()
-                userWatchlistLocalSource.removeShows(
-                    ids = setOf(show.ids.trakt),
+                updateMovieHistoryUseCase.addToWatched(movie.ids.trakt)
+                loadProgressUseCase.loadMoviesProgress()
+                userWatchlistLocalSource.removeMovies(
+                    ids = setOf(movie.ids.trakt),
                     notify = true,
                 )
             } catch (error: Exception) {
@@ -206,8 +201,8 @@ internal class ListShowContextViewModel(
             try {
                 loadingWatchedState.update { LOADING }
 
-                updateShowHistoryUseCase.removeAllFromHistory(show.ids.trakt)
-                userProgressLocalSource.removeShows(setOf(show.ids.trakt))
+                updateMovieHistoryUseCase.removeAllFromHistory(movie.ids.trakt)
+                userProgressLocalSource.removeMovies(setOf(movie.ids.trakt))
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -229,9 +224,9 @@ internal class ListShowContextViewModel(
             try {
                 loadingListState.update { LOADING }
 
-                removeListItemUseCase.removeShow(
+                removeListItemUseCase.removeMovie(
                     listId = list.ids.trakt,
-                    showId = show.ids.trakt,
+                    movieId = movie.ids.trakt,
                 )
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -258,7 +253,7 @@ internal class ListShowContextViewModel(
             loadingListState.value.isLoading
     }
 
-    val state: StateFlow<ListShowContextState> = combine(
+    val state: StateFlow<ListMovieContextState> = combine(
         isWatchlistState,
         isWatchedState,
         loadingWatchedState,
@@ -266,7 +261,7 @@ internal class ListShowContextViewModel(
         loadingListState,
         errorState,
     ) { state ->
-        ListShowContextState(
+        ListMovieContextState(
             isWatchlist = state[0] as Boolean,
             isWatched = state[1] as Boolean,
             loadingWatched = state[2] as LoadingState,

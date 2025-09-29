@@ -18,12 +18,21 @@ internal class EditListUseCase(
             name = name.trim(),
             description = description?.trim(),
         )
+        localSource.editItem(
+            listId = listId,
+            name = name.trim(),
+            description = description?.trim(),
+            notify = true,
+        )
     }
 
     suspend fun deleteList(listId: TraktId) {
         remoteSource.deleteList(
             listId = listId,
         )
-        localSource.deleteItem(listId)
+        localSource.deleteItem(
+            id = listId,
+            notify = true,
+        )
     }
 }

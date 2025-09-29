@@ -24,11 +24,11 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_SECTION_LIMIT
+import tv.trakt.trakt.core.lists.model.ListsMediaFilter
+import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MEDIA
+import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MOVIES
+import tv.trakt.trakt.core.lists.model.ListsMediaFilter.SHOWS
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource
-import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter
-import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.MEDIA
-import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.MOVIES
-import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistFilter.SHOWS
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetShowsWatchlistUseCase
@@ -100,8 +100,12 @@ internal class ListsWatchlistViewModel(
                 val filter = loadFilter()
                 val localItems = when (filter) {
                     MEDIA -> getWatchlistUseCase.getLocalWatchlist(LISTS_SECTION_LIMIT)
-                    SHOWS -> getShowsWatchlistUseCase.getLocalWatchlist(LISTS_SECTION_LIMIT)
-                    MOVIES -> getMoviesWatchlistUseCase.getLocalWatchlist(LISTS_SECTION_LIMIT)
+                    SHOWS -> getShowsWatchlistUseCase.getLocalWatchlist(
+                        LISTS_SECTION_LIMIT,
+                    )
+                    MOVIES -> getMoviesWatchlistUseCase.getLocalWatchlist(
+                        LISTS_SECTION_LIMIT,
+                    )
                 }
 
                 if (localItems.isNotEmpty()) {
@@ -114,8 +118,12 @@ internal class ListsWatchlistViewModel(
                 itemsState.update {
                     when (filter) {
                         MEDIA -> getWatchlistUseCase.getWatchlist(LISTS_SECTION_LIMIT)
-                        SHOWS -> getShowsWatchlistUseCase.getWatchlist(LISTS_SECTION_LIMIT)
-                        MOVIES -> getMoviesWatchlistUseCase.getWatchlist(LISTS_SECTION_LIMIT)
+                        SHOWS -> getShowsWatchlistUseCase.getWatchlist(
+                            LISTS_SECTION_LIMIT,
+                        )
+                        MOVIES -> getMoviesWatchlistUseCase.getWatchlist(
+                            LISTS_SECTION_LIMIT,
+                        )
                     }
                 }
             } catch (error: Exception) {
@@ -131,7 +139,7 @@ internal class ListsWatchlistViewModel(
         }
     }
 
-    private suspend fun loadFilter(): WatchlistFilter {
+    private suspend fun loadFilter(): ListsMediaFilter {
         val filter = getFilterUseCase.getFilter()
         filterState.update { filter }
         return filter
@@ -149,7 +157,7 @@ internal class ListsWatchlistViewModel(
         return false
     }
 
-    fun setFilter(newFilter: WatchlistFilter) {
+    fun setFilter(newFilter: ListsMediaFilter) {
         if (newFilter == filterState.value || loadingState.value.isLoading) {
             return
         }

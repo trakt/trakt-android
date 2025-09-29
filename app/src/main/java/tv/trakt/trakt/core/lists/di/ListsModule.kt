@@ -23,12 +23,13 @@ import tv.trakt.trakt.core.lists.ListsViewModel
 import tv.trakt.trakt.core.lists.data.remote.ListsApiClient
 import tv.trakt.trakt.core.lists.data.remote.ListsRemoteDataSource
 import tv.trakt.trakt.core.lists.sections.personal.ListsPersonalViewModel
-import tv.trakt.trakt.core.lists.sections.personal.context.movie.ListMovieContextViewModel
-import tv.trakt.trakt.core.lists.sections.personal.context.show.ListShowContextViewModel
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsStorage
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalStorage
+import tv.trakt.trakt.core.lists.sections.personal.features.all.AllPersonalListViewModel
+import tv.trakt.trakt.core.lists.sections.personal.features.context.movie.ListMovieContextViewModel
+import tv.trakt.trakt.core.lists.sections.personal.features.context.show.ListShowContextViewModel
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.RemovePersonalListItemUseCase
@@ -139,6 +140,7 @@ internal val listsModule = module {
         ListsViewModel(
             sessionManager = get(),
             getPersonalListsUseCase = get(),
+            localListsSource = get(),
         )
     }
 
@@ -172,7 +174,19 @@ internal val listsModule = module {
     viewModel { (listId: TraktId) ->
         ListsPersonalViewModel(
             listId = listId,
+            getListUseCase = get(),
             getListItemsUseCase = get(),
+            localListsSource = get(),
+            localListsItemsSource = get(),
+        )
+    }
+
+    viewModel {
+        AllPersonalListViewModel(
+            savedStateHandle = get(),
+            getListUseCase = get(),
+            getListItemsUseCase = get(),
+            sessionManager = get(),
         )
     }
 
