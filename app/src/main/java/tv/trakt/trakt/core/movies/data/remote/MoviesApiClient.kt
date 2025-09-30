@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.movies.data.remote
 
 import org.openapitools.client.apis.MoviesApi
 import org.openapitools.client.apis.RecommendationsApi
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.MovieDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
 import tv.trakt.trakt.core.movies.data.remote.model.AnticipatedMovieDto
@@ -109,5 +110,14 @@ internal class MoviesApiClient(
                     movie = it.movie,
                 )
             }
+    }
+
+    override suspend fun getDetails(movieId: TraktId): MovieDto {
+        val response = moviesApi.getMoviesSummary(
+            id = movieId.value.toString(),
+            extended = "full,streaming_ids,cloud9,colors",
+        )
+
+        return response.body()
     }
 }

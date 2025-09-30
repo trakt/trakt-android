@@ -26,12 +26,14 @@ data class Movie(
     @Serializable(LocalDateSerializer::class)
     val released: LocalDate?,
     val year: Int?,
+    val trailer: String?,
     @Serializable(ImmutableListSerializer::class)
     val genres: ImmutableList<String>,
     val images: Images?,
     val colors: MediaColors?,
     val rating: Rating,
     val certification: String?,
+    val status: String?,
     val runtime: Duration?,
 ) {
     companion object
@@ -60,7 +62,9 @@ fun Companion.fromDto(dto: MovieDto): Movie {
             rating = dto.rating ?: 0F,
             votes = dto.votes ?: 0,
         ),
+        status = dto.status,
         runtime = dto.runtime?.minutes,
+        trailer = dto.trailer,
     )
 }
 
@@ -87,6 +91,8 @@ fun Companion.fromDto(dto: RecommendedMovieDto): Movie {
             rating = dto.rating ?: 0F,
             votes = dto.votes ?: 0,
         ),
+        status = dto.status,
+        trailer = dto.trailer,
         runtime = dto.runtime?.minutes,
     )
 }
@@ -114,6 +120,8 @@ fun Companion.fromDto(dto: MovieLikesDto): Movie {
             rating = dto.rating ?: 0F,
             votes = dto.votes ?: 0,
         ),
+        status = dto.status,
         runtime = dto.runtime?.minutes,
+        trailer = dto.trailer,
     )
 }

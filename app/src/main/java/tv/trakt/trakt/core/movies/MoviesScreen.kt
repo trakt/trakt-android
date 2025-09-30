@@ -69,7 +69,7 @@ internal fun MoviesScreen(
 private fun MoviesScreenContent(
     state: MoviesState,
     modifier: Modifier = Modifier,
-    onMovieClick: (TraktId) -> Unit,
+    onMovieClick: (TraktId) -> Unit = {},
     onProfileClick: () -> Unit = {},
     onMoreTrendingClick: () -> Unit = {},
     onMorePopularClick: () -> Unit = {},
@@ -129,6 +129,7 @@ private fun MoviesScreenContent(
                 MoviesTrendingView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
+                    onMovieClick = onMovieClick,
                     onMoreClick = onMoreTrendingClick,
                 )
             }

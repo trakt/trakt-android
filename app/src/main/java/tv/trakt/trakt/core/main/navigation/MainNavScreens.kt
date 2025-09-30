@@ -37,6 +37,8 @@ import tv.trakt.trakt.core.shows.sections.recommended.all.navigation.navigateToR
 import tv.trakt.trakt.core.shows.sections.recommended.all.navigation.showsRecommendedScreen
 import tv.trakt.trakt.core.shows.sections.trending.all.navigation.navigateToTrendingShows
 import tv.trakt.trakt.core.shows.sections.trending.all.navigation.showsTrendingScreen
+import tv.trakt.trakt.core.summary.movies.navigation.movieDetailsScreen
+import tv.trakt.trakt.core.summary.movies.navigation.navigateToMovie
 import tv.trakt.trakt.core.user.navigation.navigateToProfile
 import tv.trakt.trakt.core.user.navigation.profileScreen
 
@@ -95,7 +97,7 @@ internal fun NavGraphBuilder.moviesScreens(controller: NavHostController) {
     with(controller) {
         moviesScreen(
             onNavigateToProfile = { navigateToProfile() },
-            onNavigateToMovie = {},
+            onNavigateToMovie = { navigateToMovie(it) },
             onNavigateToAllTrending = { navigateToTrendingMovies() },
             onNavigateToAllPopular = { navigateToPopularMovies() },
             onNavigateToAllAnticipated = { navigateToAnticipatedMovies() },
@@ -111,6 +113,9 @@ internal fun NavGraphBuilder.moviesScreens(controller: NavHostController) {
             onNavigateBack = { popBackStack() },
         )
         moviesRecommendedScreen(
+            onNavigateBack = { popBackStack() },
+        )
+        movieDetailsScreen(
             onNavigateBack = { popBackStack() },
         )
     }

@@ -6,9 +6,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONAL_LIST_PAGE_LIMIT
 import tv.trakt.trakt.app.core.lists.details.personal.model.PersonalListItem
-import tv.trakt.trakt.app.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.app.core.profile.data.remote.ProfileRemoteDataSource
 import tv.trakt.trakt.app.core.shows.data.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId

@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import tv.trakt.trakt.app.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.app.core.movies.usecase.GetTrendingMoviesUseCase
 import tv.trakt.trakt.app.core.search.SearchState.SearchResult
 import tv.trakt.trakt.app.core.search.SearchState.State
@@ -26,6 +25,7 @@ import tv.trakt.trakt.app.core.search.usecase.recents.AddRecentSearchUseCase
 import tv.trakt.trakt.app.core.search.usecase.recents.GetRecentSearchUseCase
 import tv.trakt.trakt.app.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.app.core.shows.usecase.GetTrendingShowsUseCase
+import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation

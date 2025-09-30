@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.core.details.lists.data.remote.ListsRemoteDataSource
 import tv.trakt.trakt.app.core.details.lists.details.CustomListDetailsConfig.CUSTOM_LIST_PAGE_LIMIT
-import tv.trakt.trakt.app.core.movies.data.local.MovieLocalDataSource
+import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto

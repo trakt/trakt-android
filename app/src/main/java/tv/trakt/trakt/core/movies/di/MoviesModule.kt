@@ -59,6 +59,7 @@ internal val moviesModule = module {
         GetTrendingMoviesUseCase(
             remoteSource = get(),
             localTrendingSource = get(),
+            localMovieSource = get(),
         )
     }
 

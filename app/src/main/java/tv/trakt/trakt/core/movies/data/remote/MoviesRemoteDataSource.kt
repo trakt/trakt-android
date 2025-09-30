@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.movies.data.remote
 
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.MovieDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
 import tv.trakt.trakt.core.movies.data.remote.model.AnticipatedMovieDto
@@ -25,4 +26,6 @@ internal interface MoviesRemoteDataSource {
         limit: Int,
         endDate: Instant,
     ): List<AnticipatedMovieDto>
+
+    suspend fun getDetails(movieId: TraktId): MovieDto
 }

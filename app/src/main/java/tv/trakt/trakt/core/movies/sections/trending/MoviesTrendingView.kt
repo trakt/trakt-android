@@ -40,6 +40,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.movies.model.WatchersMovie
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.resources.R
@@ -55,6 +56,7 @@ internal fun MoviesTrendingView(
     viewModel: MoviesTrendingViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
+    onMovieClick: (TraktId) -> Unit,
     onMoreClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -66,6 +68,7 @@ internal fun MoviesTrendingView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
+        onClick = { onMovieClick(it.ids.trakt) },
         onLongClick = {
             if (!state.loading.isLoading) {
                 contextSheet = it
@@ -90,6 +93,7 @@ internal fun MoviesTrendingContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
+    onClick: (Movie) -> Unit = {},
     onLongClick: (Movie) -> Unit = {},
     onMoreClick: () -> Unit = {},
 ) {
@@ -139,6 +143,7 @@ internal fun MoviesTrendingContent(
                         ContentList(
                             items = (state.items ?: emptyList()).toImmutableList(),
                             contentPadding = contentPadding,
+                            onClick = onClick,
                             onLongClick = onLongClick,
                         )
                     }
@@ -171,6 +176,7 @@ private fun ContentList(
     items: ImmutableList<WatchersMovie>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
+    onClick: (Movie) -> Unit = {},
     onLongClick: (Movie) -> Unit,
 ) {
     val currentList = remember { mutableIntStateOf(items.hashCode()) }
@@ -195,6 +201,7 @@ private fun ContentList(
         ) { item ->
             ContentListItem(
                 item = item,
+                onClick = { onClick(item.movie) },
                 onLongClick = { onLongClick(item.movie) },
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
