@@ -9,6 +9,7 @@ import tv.trakt.trakt.common.networking.TrendingSearchDto
 
 internal class SearchApiClient(
     private val api: SearchApi,
+    private val authorizedApi: SearchApi,
 ) : SearchRemoteDataSource {
     override suspend fun getPeople(
         query: String,
@@ -118,7 +119,7 @@ internal class SearchApiClient(
         showId: TraktId,
         query: String,
     ) {
-        api.postSearchRecentAdd(
+        authorizedApi.postSearchRecentAdd(
             postSearchRecentAddRequest = PostSearchRecentAddRequest(
                 query = query,
                 id = showId.value,
@@ -131,7 +132,7 @@ internal class SearchApiClient(
         movieId: TraktId,
         query: String,
     ) {
-        api.postSearchRecentAdd(
+        authorizedApi.postSearchRecentAdd(
             postSearchRecentAddRequest = PostSearchRecentAddRequest(
                 query = query,
                 id = movieId.value,

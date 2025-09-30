@@ -93,7 +93,8 @@ internal fun HttpClientConfig<*>.applyAuthorizationConfig(
         bearer {
             loadTokens {
                 Timber.d("Loading auth tokens")
-                val token = tokenProvider.getToken()!!
+                val token = tokenProvider.getToken()
+                    ?: throw IllegalStateException("No auth token available")
                 BearerTokens(
                     accessToken = token.accessToken,
                     refreshToken = token.refreshToken,

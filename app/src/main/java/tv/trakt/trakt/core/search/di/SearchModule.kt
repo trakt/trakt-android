@@ -38,6 +38,7 @@ internal val searchDataModule = module {
     single<SearchRemoteDataSource> {
         SearchApiClient(
             api = get(),
+            authorizedApi = get(named("authorizedSearchApi")),
         )
     }
 
