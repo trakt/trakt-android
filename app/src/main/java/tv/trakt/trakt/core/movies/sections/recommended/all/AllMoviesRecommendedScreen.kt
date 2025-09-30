@@ -31,6 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.movies.ui.AllMoviesListView
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.helpers.rememberHeaderState
@@ -43,6 +44,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun AllMoviesRecommendedScreen(
     viewModel: AllMoviesRecommendedViewModel,
     onNavigateBack: () -> Unit,
+    onMovieClick: (TraktId) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -50,6 +52,7 @@ internal fun AllMoviesRecommendedScreen(
 
     AllMoviesRecommendedScreenContent(
         state = state,
+        onItemClick = { onMovieClick(it.ids.trakt) },
         onItemLongClick = {
             if (!state.loading.isLoading) {
                 contextSheet = it
@@ -68,6 +71,7 @@ internal fun AllMoviesRecommendedScreen(
 private fun AllMoviesRecommendedScreenContent(
     state: AllMoviesRecommendedState,
     modifier: Modifier = Modifier,
+    onItemClick: (Movie) -> Unit = {},
     onItemLongClick: (Movie) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
@@ -100,6 +104,7 @@ private fun AllMoviesRecommendedScreenContent(
                         .onClick { onBackClick() },
                 )
             },
+            onItemClick = onItemClick,
             onItemLongClick = onItemLongClick,
             onTopOfList = {
                 headerState.resetScrolled()

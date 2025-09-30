@@ -105,15 +105,19 @@ internal fun NavGraphBuilder.moviesScreens(controller: NavHostController) {
         )
         moviesTrendingScreen(
             onNavigateBack = { popBackStack() },
+            onNavigateToMovie = { navigateToMovie(it) },
         )
         moviesPopularScreen(
             onNavigateBack = { popBackStack() },
+            onNavigateToMovie = { navigateToMovie(it) },
         )
         moviesAnticipatedScreen(
             onNavigateBack = { popBackStack() },
+            onNavigateToMovie = { navigateToMovie(it) },
         )
         moviesRecommendedScreen(
             onNavigateBack = { popBackStack() },
+            onNavigateToMovie = { navigateToMovie(it) },
         )
         movieDetailsScreen(
             onNavigateBack = { popBackStack() },

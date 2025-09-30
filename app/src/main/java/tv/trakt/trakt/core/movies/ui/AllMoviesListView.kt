@@ -38,6 +38,7 @@ internal fun AllMoviesListView(
     modifier: Modifier = Modifier,
     title: @Composable (() -> Unit)? = null,
     loading: Boolean = false,
+    onItemClick: (Movie) -> Unit = {},
     onItemLongClick: (Movie) -> Unit = {},
     onTopOfList: () -> Unit = {},
     onEndOfList: () -> Unit = {},
@@ -90,6 +91,7 @@ internal fun AllMoviesListView(
 
         listItems(
             items = items,
+            onClick = onItemClick,
             onLongClick = onItemLongClick,
         )
 
@@ -106,6 +108,7 @@ internal fun AllMoviesListView(
 
 private fun LazyListScope.listItems(
     items: ImmutableList<Movie>,
+    onClick: ((Movie) -> Unit)? = null,
     onLongClick: ((Movie) -> Unit)? = null,
 ) {
     items(
@@ -126,6 +129,7 @@ private fun LazyListScope.listItems(
             subtitle = genresText,
             contentImageUrl = item.images?.getPosterUrl(),
             containerImageUrl = item.images?.getFanartUrl(THUMB),
+            onClick = onClick?.let { { onClick(item) } },
             onLongClick = onLongClick?.let { { onLongClick(item) } },
             footerContent = {
                 MovieMetaFooter(item)
