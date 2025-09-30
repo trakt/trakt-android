@@ -67,6 +67,7 @@ internal val moviesModule = module {
         GetPopularMoviesUseCase(
             remoteSource = get(),
             localPopularSource = get(),
+            localMovieSource = get(),
         )
     }
 
@@ -74,6 +75,7 @@ internal val moviesModule = module {
         GetAnticipatedMoviesUseCase(
             remoteSource = get(),
             localAnticipatedSource = get(),
+            localMovieSource = get(),
         )
     }
 
@@ -81,6 +83,7 @@ internal val moviesModule = module {
         GetRecommendedMoviesUseCase(
             remoteSource = get(),
             localRecommendedSource = get(),
+            localMovieSource = get(),
         )
     }
 

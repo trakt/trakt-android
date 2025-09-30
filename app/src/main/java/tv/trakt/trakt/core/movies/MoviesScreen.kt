@@ -138,6 +138,7 @@ private fun MoviesScreenContent(
                 MoviesAnticipatedView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
+                    onMovieClick = onMovieClick,
                     onMoreClick = onMoreAnticipatedClick,
                 )
             }
@@ -146,6 +147,7 @@ private fun MoviesScreenContent(
                 MoviesPopularView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
+                    onMovieClick = onMovieClick,
                     onMoreClick = onMorePopularClick,
                 )
             }
@@ -155,6 +157,7 @@ private fun MoviesScreenContent(
                     MoviesRecommendedView(
                         headerPadding = sectionPadding,
                         contentPadding = sectionPadding,
+                        onMovieClick = onMovieClick,
                         onMoreClick = onMoreRecommendedClick,
                     )
                 }

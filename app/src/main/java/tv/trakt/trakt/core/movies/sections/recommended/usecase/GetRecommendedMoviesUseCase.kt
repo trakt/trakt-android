@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.movies.sections.recommended.usecase
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.fromDto
@@ -15,10 +16,14 @@ internal const val DEFAULT_ALL_LIMIT = 200
 internal class GetRecommendedMoviesUseCase(
     private val remoteSource: MoviesRemoteDataSource,
     private val localRecommendedSource: RecommendedMoviesLocalDataSource,
+    private val localMovieSource: MovieLocalDataSource,
 ) {
     suspend fun getLocalMovies(): ImmutableList<Movie> {
         return localRecommendedSource.getMovies()
             .toImmutableList()
+            .also {
+                localMovieSource.upsertMovies(it)
+            }
     }
 
     suspend fun getMovies(
@@ -31,11 +36,14 @@ internal class GetRecommendedMoviesUseCase(
             }
             .toImmutableList()
             .also { movies ->
-                if (skipLocal) return@also
-                localRecommendedSource.addMovies(
-                    movies = movies.take(DEFAULT_LIMIT),
-                    addedAt = Instant.now(),
-                )
+                if (!skipLocal) {
+                    localRecommendedSource.addMovies(
+                        movies = movies.take(DEFAULT_LIMIT),
+                        addedAt = Instant.now(),
+                    )
+                }
+
+                localMovieSource.upsertMovies(movies)
             }
     }
 }
