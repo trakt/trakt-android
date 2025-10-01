@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -45,9 +46,10 @@ internal fun DetailsRatings(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier,
     ) {
-        val textStyle = TraktTheme.typography.meta
+        val textStyle = TraktTheme.typography.meta.copy(fontSize = 12.sp)
         val iconSpace = spacedBy(4.dp, Alignment.Start)
-        val emptyText = "-"
+        val emptyText = "0%"
+        val emptyText2 = "0.0"
 
         // Trakt Rating
         val traktRating = traktRatings ?: 0
@@ -102,13 +104,13 @@ internal fun DetailsRatings(
                 Box {
                     if (hasRating) {
                         Text(
-                            text = externalRatings?.imdb?.ratingString ?: emptyText,
+                            text = externalRatings?.imdb?.ratingString ?: emptyText2,
                             color = TraktTheme.colors.textPrimary,
                             style = textStyle,
                         )
                     } else {
                         Text(
-                            text = emptyText,
+                            text = emptyText2,
                             color = TraktTheme.colors.textSecondary,
                             style = textStyle,
                         )

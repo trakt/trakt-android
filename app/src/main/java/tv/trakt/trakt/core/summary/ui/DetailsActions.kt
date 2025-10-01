@@ -79,7 +79,7 @@ internal fun DetailsActions(
                         painter = painterResource(R.drawable.ic_check_double),
                         tint = TraktTheme.colors.primaryButtonContent,
                         contentDescription = null,
-                        modifier = Modifier.size(22.dp),
+                        modifier = Modifier.size(23.dp),
                     )
                 } else {
                     FilmProgressIndicator(
@@ -98,9 +98,9 @@ internal fun DetailsActions(
                         enabled = enabled,
                         onClick = onSecondaryClick ?: {},
                     )
-                    .size(22.dp)
+                    .size(21.dp)
                     .graphicsLayer {
-                        translationX = -1.dp.toPx()
+                        translationX = -(0.5).dp.toPx()
                     },
             )
 
