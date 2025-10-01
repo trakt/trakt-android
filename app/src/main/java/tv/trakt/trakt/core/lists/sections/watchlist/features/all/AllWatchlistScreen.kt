@@ -43,6 +43,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.model.ListsMediaFilter
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.views.AllWatchlistMovieView
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.views.AllWatchlistShowView
@@ -64,15 +65,28 @@ internal fun AllWatchlistScreen(
     modifier: Modifier = Modifier,
     viewModel: AllWatchlistViewModel,
     onNavigateBack: () -> Unit,
+    onMovieClick: (TraktId) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var contextMovieSheet by remember { mutableStateOf<MovieItem?>(null) }
     var contextShowSheet by remember { mutableStateOf<ShowItem?>(null) }
 
+    LaunchedEffect(state) {
+        state.navigateMovie?.let {
+            viewModel.clearNavigation()
+            onMovieClick(it)
+        }
+    }
+
     AllWatchlistContent(
         state = state,
         modifier = modifier,
+        onClick = {
+            if (it is MovieItem) {
+                viewModel.navigateToMovie(it.movie)
+            }
+        },
         onLongClick = {
             when (it) {
                 is MovieItem -> contextMovieSheet = it
@@ -117,6 +131,7 @@ internal fun AllWatchlistContent(
     state: AllWatchlistState,
     modifier: Modifier = Modifier,
     onTopOfList: () -> Unit = {},
+    onClick: (WatchlistItem) -> Unit = {},
     onCheckClick: (WatchlistItem) -> Unit = {},
     onLongClick: (WatchlistItem) -> Unit = {},
     onFilterClick: (ListsMediaFilter) -> Unit = {},
@@ -163,6 +178,7 @@ internal fun AllWatchlistContent(
             loading = state.loading.isLoading,
             contentPadding = contentPadding,
             onFilterClick = onFilterClick,
+            onClick = onClick,
             onCheckClick = onCheckClick,
             onLongClick = onLongClick,
             onTopOfList = onTopOfList,
@@ -207,6 +223,7 @@ private fun ContentList(
     loading: Boolean,
     homeWatchlist: Boolean,
     contentPadding: PaddingValues,
+    onClick: (WatchlistItem) -> Unit,
     onCheckClick: (WatchlistItem) -> Unit,
     onLongClick: (WatchlistItem) -> Unit,
     onFilterClick: (ListsMediaFilter) -> Unit,
@@ -270,6 +287,7 @@ private fun ContentList(
                     item = item,
                     showCheck = homeWatchlist,
                     showIcon = !homeWatchlist,
+                    onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
                     onCheckClick = { onCheckClick(item) },
                     modifier = Modifier

@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.AllWatchlistScreen
 
 @Serializable
@@ -12,10 +13,14 @@ internal data class ListsWatchlistDestination(
     val homeWatchlist: Boolean = false,
 )
 
-internal fun NavGraphBuilder.allWatchlistScreen(onNavigateBack: () -> Unit) {
+internal fun NavGraphBuilder.allWatchlistScreen(
+    onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateBack: () -> Unit,
+) {
     composable<ListsWatchlistDestination> {
         AllWatchlistScreen(
             viewModel = koinViewModel(),
+            onMovieClick = onNavigateToMovie,
             onNavigateBack = onNavigateBack,
         )
     }

@@ -14,6 +14,7 @@ internal fun AllWatchlistMovieView(
     modifier: Modifier = Modifier,
     showCheck: Boolean = false,
     showIcon: Boolean = false,
+    onClick: () -> Unit = {},
     onCheckClick: () -> Unit,
     onLongClick: () -> Unit,
 ) {
@@ -32,6 +33,7 @@ internal fun AllWatchlistMovieView(
         subtitle = genresText,
         contentImageUrl = item.movie.images?.getPosterUrl(),
         containerImageUrl = item.images?.getFanartUrl(Images.Size.THUMB),
+        onClick = onClick,
         onLongClick = onLongClick,
         footerContent = {
             MovieMetaFooter(

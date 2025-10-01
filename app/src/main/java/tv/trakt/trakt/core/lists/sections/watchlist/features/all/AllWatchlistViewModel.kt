@@ -18,11 +18,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeWatchlistUseCase
@@ -50,6 +52,7 @@ internal class AllWatchlistViewModel(
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val updateMovieHistoryUseCase: AddHomeHistoryUseCase,
     private val allWatchlistLocalDataSource: AllWatchlistLocalDataSource,
+    private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<ListsWatchlistDestination>()
@@ -60,6 +63,7 @@ internal class AllWatchlistViewModel(
     private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialState.filter)
+    private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -227,9 +231,27 @@ internal class AllWatchlistViewModel(
         }
     }
 
+    fun navigateToMovie(movie: Movie) {
+        if (navigateMovie.value != null || processingJob?.isActive == true) {
+            return
+        }
+        processingJob = viewModelScope.launch {
+            movieLocalDataSource.upsertMovies(listOf(movie))
+            navigateMovie.update { movie.ids.trakt }
+        }
+    }
+
+    fun clearNavigation() {
+        navigateMovie.update { null }
+    }
+
     override fun onCleared() {
         loadDataJob?.cancel()
+        loadDataJob = null
+
         processingJob?.cancel()
+        processingJob = null
+
         super.onCleared()
     }
 
@@ -238,6 +260,7 @@ internal class AllWatchlistViewModel(
         loadingState,
         itemsState,
         filterState,
+        navigateMovie,
         errorState,
         backgroundState,
         isHomeWatchlist,
@@ -246,9 +269,10 @@ internal class AllWatchlistViewModel(
             loading = state[0] as LoadingState,
             items = state[1] as? ImmutableList<WatchlistItem>,
             filter = state[2] as? ListsMediaFilter,
-            error = state[3] as? Exception,
-            backgroundUrl = state[4] as? String,
-            isHomeWatchlist = state[5] as Boolean,
+            navigateMovie = state[3] as? TraktId,
+            error = state[4] as? Exception,
+            backgroundUrl = state[5] as? String,
+            isHomeWatchlist = state[6] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,
