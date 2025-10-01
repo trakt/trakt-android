@@ -69,7 +69,7 @@ internal fun AllActivityPersonalScreen(
     onMovieClick: (tv.trakt.trakt.common.model.TraktId) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    
+
     // Handle navigation
     LaunchedEffect(state.navigateMovie) {
         state.navigateMovie?.let { movieId ->
