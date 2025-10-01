@@ -162,7 +162,7 @@ internal fun NavGraphBuilder.searchScreens(
             searchInput = searchInput,
             onSearchLoading = onSearchLoading,
             onNavigateToShow = { },
-            onNavigateToMovie = { },
+            onNavigateToMovie = { navigateToMovie(it) },
             onNavigateToProfile = { navigateToProfile() },
         )
     }
