@@ -49,6 +49,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies.sheets.WatchlistMovieSheet
@@ -66,6 +67,7 @@ internal fun HomeWatchlistView(
     viewModel: HomeWatchlistViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
+    onMovieClick: (TraktId) -> Unit,
     onMoviesClick: () -> Unit,
     onMoreClick: () -> Unit,
 ) {
@@ -73,6 +75,13 @@ internal fun HomeWatchlistView(
     val haptic = LocalHapticFeedback.current
 
     var contextSheet by remember { mutableStateOf<Movie?>(null) }
+
+    LaunchedEffect(state) {
+        state.navigateMovie?.let {
+            viewModel.clearNavigation()
+            onMovieClick(it)
+        }
+    }
 
     LaunchedEffect(state.info) {
         if (state.info != null) {
@@ -87,6 +96,9 @@ internal fun HomeWatchlistView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onMoviesClick = onMoviesClick,
+        onClick = {
+            viewModel.navigateToMovie(it)
+        },
         onLongClick = {
             contextSheet = it
         },
@@ -116,6 +128,7 @@ internal fun HomeWatchlistContent(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onMoviesClick: () -> Unit = {},
+    onClick: (Movie) -> Unit = {},
     onLongClick: (Movie) -> Unit = {},
     onCheckClick: (Movie) -> Unit = {},
     onMoreClick: () -> Unit = {},
@@ -192,6 +205,7 @@ internal fun HomeWatchlistContent(
                             ContentList(
                                 listItems = (state.items ?: emptyList()).toImmutableList(),
                                 contentPadding = contentPadding,
+                                onClick = onClick,
                                 onLongClick = onLongClick,
                                 onCheckClick = onCheckClick,
                             )
@@ -226,6 +240,7 @@ private fun ContentList(
     listItems: ImmutableList<WatchlistItem.MovieItem>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
+    onClick: (Movie) -> Unit,
     onLongClick: (Movie) -> Unit,
     onCheckClick: (Movie) -> Unit,
 ) {
@@ -241,7 +256,7 @@ private fun ContentList(
         ) { item ->
             ContentListItem(
                 item = item,
-                onClick = {},
+                onClick = { onClick(item.movie) },
                 onLongClick = { onLongClick(item.movie) },
                 onCheckClick = { onCheckClick(item.movie) },
                 modifier = Modifier.animateItem(

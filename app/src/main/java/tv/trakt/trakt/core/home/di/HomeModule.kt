@@ -161,6 +161,7 @@ internal val homeModule = module {
             addHistoryUseCase = get(),
             loadUserProgressUseCase = get(),
             allWatchlistSource = get(),
+            movieLocalDataSource = get(),
             sessionManager = get(),
         )
     }

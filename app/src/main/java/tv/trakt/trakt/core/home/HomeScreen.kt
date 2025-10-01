@@ -27,6 +27,7 @@ import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.activity.HomeActivityView
 import tv.trakt.trakt.core.home.sections.upcoming.HomeUpcomingView
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextView
@@ -42,6 +43,7 @@ internal fun HomeScreen(
     viewModel: HomeViewModel,
     onNavigateToProfile: () -> Unit,
     onNavigateToShows: () -> Unit,
+    onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToMovies: () -> Unit,
     onNavigateToAllUpNext: () -> Unit,
     onNavigateToAllWatchlist: () -> Unit,
@@ -60,6 +62,7 @@ internal fun HomeScreen(
         onProfileClick = onNavigateToProfile,
         onShowsClick = onNavigateToShows,
         onMoviesClick = onNavigateToMovies,
+        onMovieClick = onNavigateToMovie,
         onMoreUpNextClick = onNavigateToAllUpNext,
         onMoreWatchlistClick = onNavigateToAllWatchlist,
         onMorePersonalClick = onNavigateToAllPersonal,
@@ -79,6 +82,7 @@ private fun HomeScreenContent(
     onMoreSocialClick: () -> Unit = {},
     onShowsClick: () -> Unit = {},
     onMoviesClick: () -> Unit = {},
+    onMovieClick: (TraktId) -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
     val lazyListState = rememberLazyListState(
@@ -140,6 +144,7 @@ private fun HomeScreenContent(
                 HomeWatchlistView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
+                    onMovieClick = onMovieClick,
                     onMoviesClick = onMoviesClick,
                     onMoreClick = onMoreWatchlistClick,
                 )

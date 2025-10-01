@@ -47,6 +47,7 @@ internal fun NavGraphBuilder.homeScreens(controller: NavHostController) {
         homeScreen(
             onNavigateToProfile = { navigateToProfile() },
             onNavigateToShows = { navigateToShows() },
+            onNavigateToMovie = { navigateToMovie(it) },
             onNavigateToMovies = { navigateToMovies() },
             onNavigateToAllUpNext = { navigateToAllUpNext() },
             onNavigateToAllPersonal = { navigateToAllActivityPersonal() },

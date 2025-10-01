@@ -36,7 +36,7 @@ internal class LoadUserWatchlistUseCase(
     suspend fun loadWatchlist(): ImmutableList<WatchlistItem> {
         val response = remoteSource.getWatchlist(
             sort = "rank",
-            extended = "full,cloud9",
+            extended = "full,cloud9,colors",
         ).asyncMap {
             val listedAt = it.listedAt.toInstant()
 

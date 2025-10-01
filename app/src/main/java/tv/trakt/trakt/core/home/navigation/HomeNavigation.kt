@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.extensions.popUpToTop
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.HomeScreen
 
 @Serializable
@@ -15,6 +16,7 @@ internal fun NavGraphBuilder.homeScreen(
     onNavigateToProfile: () -> Unit,
     onNavigateToShows: () -> Unit,
     onNavigateToMovies: () -> Unit,
+    onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToAllUpNext: () -> Unit,
     onNavigateToAllWatchlist: () -> Unit,
     onNavigateToAllPersonal: () -> Unit,
@@ -26,6 +28,7 @@ internal fun NavGraphBuilder.homeScreen(
             onNavigateToProfile = onNavigateToProfile,
             onNavigateToShows = onNavigateToShows,
             onNavigateToMovies = onNavigateToMovies,
+            onNavigateToMovie = onNavigateToMovie,
             onNavigateToAllUpNext = onNavigateToAllUpNext,
             onNavigateToAllWatchlist = onNavigateToAllWatchlist,
             onNavigateToAllPersonal = onNavigateToAllPersonal,
