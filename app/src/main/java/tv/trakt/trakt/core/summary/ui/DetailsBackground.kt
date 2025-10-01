@@ -10,8 +10,11 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush.Companion.verticalGradient
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
@@ -28,7 +31,7 @@ import coil3.request.crossfade
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.VerticalImageAspectRatio
 
-private const val PARALLAX_RATIO = 0.75F
+private const val PARALLAX_RATIO = 0.7F
 
 @SuppressLint("ConfigurationScreenWidthHeight")
 @Composable
@@ -36,6 +39,7 @@ internal fun DetailsBackground(
     imageUrl: String?,
     modifier: Modifier = Modifier,
     color: Color? = null,
+    translation: Float = 0F,
 ) {
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
@@ -62,7 +66,10 @@ internal fun DetailsBackground(
     Box(
         modifier = modifier
             .width(screenWidth)
-            .aspectRatio(VerticalImageAspectRatio),
+            .aspectRatio(VerticalImageAspectRatio)
+            .graphicsLayer {
+                translationY = translation * PARALLAX_RATIO
+            },
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
@@ -71,41 +78,26 @@ internal fun DetailsBackground(
                 .build(),
             contentDescription = null,
             contentScale = ContentScale.FillHeight,
-//            colorFilter = grayscaleColorFilter,
             modifier = Modifier
                 .fillMaxSize()
                 .drawWithContent {
                     drawContent()
+
                     drawRect(grayGradient)
                     if (color != null) {
                         drawRect(colorGradient)
                     }
+
+                    // Mitigate for a thin line at the bottom of the image when using scrolling.
+                    drawRect(
+                        color = background,
+                        topLeft = Offset(0F, size.height - 1.dp.toPx()),
+                        size = Size(size.width, 3.dp.toPx()),
+                    )
                 },
         )
     }
 }
-
-// @Composable
-// internal fun ScrollableDetailsBackground(
-//    scrollState: LazyListState,
-//    imageUrl: String?,
-//    modifier: Modifier = Modifier,
-// ) {
-//    val firstItemVisible by remember {
-//        derivedStateOf { scrollState.firstVisibleItemIndex == 0 }
-//    }
-//    DetailsBackground(
-//        imageUrl = imageUrl,
-//        imageAlpha = 0.375F,
-//        modifier = modifier.graphicsLayer {
-//            if (firstItemVisible) {
-//                translationY = (-PARALLAX_RATIO * scrollState.firstVisibleItemScrollOffset)
-//            } else {
-//                alpha = 0F
-//            }
-//        },
-//    )
-// }
 
 @OptIn(ExperimentalCoilApi::class)
 @Preview(
