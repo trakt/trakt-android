@@ -30,6 +30,7 @@ import java.time.Instant
 internal fun AllActivityMovieItem(
     item: HomeActivityItem.MovieItem,
     modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
 ) {
     PanelMediaCard(
@@ -38,6 +39,7 @@ internal fun AllActivityMovieItem(
         subtitle = stringResource(R.string.translated_value_type_movie),
         contentImageUrl = item.movie.images?.getPosterUrl(),
         containerImageUrl = item.movie.images?.getFanartUrl(Images.Size.THUMB),
+        onClick = onClick,
         onLongClick = onLongClick,
         footerContent = {
             Row(

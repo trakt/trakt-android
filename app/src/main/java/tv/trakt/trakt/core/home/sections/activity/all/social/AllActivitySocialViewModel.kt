@@ -16,12 +16,15 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_ACTIVITY_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.all.AllActivityState
@@ -30,6 +33,7 @@ import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseC
 
 internal class AllActivitySocialViewModel(
     private val getActivityUseCase: GetSocialActivityUseCase,
+    private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = AllActivityState()
@@ -37,12 +41,14 @@ internal class AllActivitySocialViewModel(
     private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val itemsState = MutableStateFlow(initialState.items)
     private val usersFilterState = MutableStateFlow(initialState.usersFilter)
+    private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMoreState = MutableStateFlow(IDLE)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var pages: Int = 1
     private var hasMoreData: Boolean = false
+    private var processingJob: kotlinx.coroutines.Job? = null
 
     init {
         loadBackground()
@@ -198,11 +204,26 @@ internal class AllActivitySocialViewModel(
         hasMoreData = true
     }
 
+    fun navigateToMovie(movie: Movie) {
+        if (navigateMovie.value != null || processingJob?.isActive == true) {
+            return
+        }
+        processingJob = viewModelScope.launch {
+            movieLocalDataSource.upsertMovies(listOf(movie))
+            navigateMovie.update { movie.ids.trakt }
+        }
+    }
+
+    fun clearNavigation() {
+        navigateMovie.update { null }
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state: StateFlow<AllActivityState> = combine(
         backgroundState,
         itemsState,
         usersFilterState,
+        navigateMovie,
         loadingState,
         loadingMoreState,
         errorState,
@@ -211,9 +232,10 @@ internal class AllActivitySocialViewModel(
             backgroundUrl = state[0] as String,
             items = state[1] as ImmutableList<HomeActivityItem>?,
             usersFilter = state[2] as AllActivityState.UsersFilter,
-            loading = state[3] as LoadingState,
-            loadingMore = state[4] as LoadingState,
-            error = state[5] as Exception?,
+            navigateMovie = state[3] as TraktId?,
+            loading = state[4] as LoadingState,
+            loadingMore = state[5] as LoadingState,
+            error = state[6] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

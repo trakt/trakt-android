@@ -43,6 +43,7 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.sections.activity.all.AllActivityState
 import tv.trakt.trakt.core.home.sections.activity.all.views.AllActivityEpisodeItem
@@ -64,8 +65,17 @@ internal fun AllActivitySocialScreen(
     modifier: Modifier = Modifier,
     viewModel: AllActivitySocialViewModel = koinViewModel(),
     onNavigateBack: () -> Unit,
+    onMovieClick: (TraktId) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    // Handle navigation
+    LaunchedEffect(state.navigateMovie) {
+        state.navigateMovie?.let { movieId ->
+            onMovieClick(movieId)
+            viewModel.clearNavigation()
+        }
+    }
 
     AllActivitySocialContent(
         state = state,
@@ -76,6 +86,9 @@ internal fun AllActivitySocialScreen(
         onBackClick = onNavigateBack,
         onLoadMore = {
             // No pagination at the moment.
+        },
+        onMovieClick = { movie ->
+            viewModel.navigateToMovie(movie)
         },
     )
 }
@@ -111,6 +124,7 @@ internal fun AllActivitySocialContent(
     onFilterClick: (User) -> Unit = {},
     onBackClick: () -> Unit = {},
     onLoadMore: () -> Unit = {},
+    onMovieClick: (tv.trakt.trakt.common.model.Movie) -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
     val listState = rememberLazyListState(
@@ -148,6 +162,7 @@ internal fun AllActivitySocialContent(
             onEndOfList = onLoadMore,
             onFilterClick = onFilterClick,
             onBackClick = onBackClick,
+            onMovieClick = onMovieClick,
         )
     }
 }
@@ -163,6 +178,7 @@ private fun ContentList(
     onTopOfList: () -> Unit,
     onEndOfList: () -> Unit,
     onBackClick: () -> Unit,
+    onMovieClick: (tv.trakt.trakt.common.model.Movie) -> Unit,
 ) {
     val isScrolledToBottom by remember(listItems.size) {
         derivedStateOf {
@@ -227,6 +243,9 @@ private fun ContentList(
                 is MovieItem -> {
                     AllActivityMovieItem(
                         item = item,
+                        onClick = {
+                            onMovieClick(item.movie)
+                        },
                         modifier = Modifier
                             .padding(
                                 start = TraktTheme.spacing.mainPageHorizontalSpace,

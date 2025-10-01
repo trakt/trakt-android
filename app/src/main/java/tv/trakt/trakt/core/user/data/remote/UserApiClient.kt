@@ -101,7 +101,7 @@ internal class UserApiClient(
             type = type,
             page = page,
             limit = limit,
-            extended = "full,cloud9",
+            extended = "full,cloud9,colors",
         ).body()
 
         return response
@@ -113,7 +113,7 @@ internal class UserApiClient(
     ): List<SyncHistoryEpisodeItemDto> {
         val response = historyApi.getUsersHistoryEpisodes(
             id = "me",
-            extended = "full,cloud9",
+            extended = "full,cloud9,colors",
             startAt = null,
             endAt = null,
             page = page,
@@ -128,7 +128,7 @@ internal class UserApiClient(
     ): List<SyncHistoryMovieItemDto> {
         val response = historyApi.getUsersHistoryMovies(
             id = "me",
-            extended = "full,cloud9",
+            extended = "full,cloud9,colors",
             startAt = null,
             endAt = null,
             page = page,

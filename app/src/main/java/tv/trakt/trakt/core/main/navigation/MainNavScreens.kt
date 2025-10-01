@@ -61,10 +61,12 @@ internal fun NavGraphBuilder.homeScreens(controller: NavHostController) {
 
         homeActivityPersonalScreen(
             onNavigateBack = { popBackStack() },
+            onMovieClick = { navigateToMovie(it) },
         )
 
         homeActivitySocialScreen(
             onNavigateBack = { popBackStack() },
+            onMovieClick = { navigateToMovie(it) },
         )
     }
 }

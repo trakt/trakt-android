@@ -182,6 +182,7 @@ internal val homeModule = module {
     viewModel {
         AllActivityPersonalViewModel(
             getActivityUseCase = get(),
+            movieLocalDataSource = get(),
             sessionManager = get(),
         )
     }
@@ -189,6 +190,7 @@ internal val homeModule = module {
     viewModel {
         AllActivitySocialViewModel(
             getActivityUseCase = get(),
+            movieLocalDataSource = get(),
             sessionManager = get(),
         )
     }

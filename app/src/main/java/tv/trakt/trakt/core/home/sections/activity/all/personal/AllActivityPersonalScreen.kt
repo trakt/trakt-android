@@ -66,8 +66,17 @@ internal fun AllActivityPersonalScreen(
     modifier: Modifier = Modifier,
     viewModel: AllActivityPersonalViewModel = koinViewModel(),
     onNavigateBack: () -> Unit,
+    onMovieClick: (tv.trakt.trakt.common.model.TraktId) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    
+    // Handle navigation
+    LaunchedEffect(state.navigateMovie) {
+        state.navigateMovie?.let { movieId ->
+            onMovieClick(movieId)
+            viewModel.clearNavigation()
+        }
+    }
 
     var contextSheet by remember { mutableStateOf<HomeActivityItem?>(null) }
 
@@ -82,6 +91,9 @@ internal fun AllActivityPersonalScreen(
             if (!state.loading.isLoading && !state.loadingMore.isLoading) {
                 contextSheet = it
             }
+        },
+        onMovieClick = { movie ->
+            viewModel.navigateToMovie(movie)
         },
     )
 
@@ -123,6 +135,7 @@ internal fun AllActivityPersonalContent(
     onLongClick: (HomeActivityItem) -> Unit = {},
     onBackClick: () -> Unit = {},
     onLoadMore: () -> Unit = {},
+    onMovieClick: (tv.trakt.trakt.common.model.Movie) -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
     val listState = rememberLazyListState(
@@ -162,6 +175,7 @@ internal fun AllActivityPersonalContent(
             onEndOfList = onLoadMore,
             onLongClick = onLongClick,
             onBackClick = onBackClick,
+            onMovieClick = onMovieClick,
         )
     }
 }
@@ -177,6 +191,7 @@ private fun ContentList(
     onEndOfList: () -> Unit,
     onLongClick: (HomeActivityItem) -> Unit,
     onBackClick: () -> Unit,
+    onMovieClick: (tv.trakt.trakt.common.model.Movie) -> Unit,
 ) {
     val isScrolledToBottom by remember(listItems.size) {
         derivedStateOf {
@@ -228,6 +243,9 @@ private fun ContentList(
                 is MovieItem -> {
                     AllActivityMovieItem(
                         item = item,
+                        onClick = {
+                            onMovieClick(item.movie)
+                        },
                         onLongClick = { onLongClick(item) },
                         modifier = Modifier
                             .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
