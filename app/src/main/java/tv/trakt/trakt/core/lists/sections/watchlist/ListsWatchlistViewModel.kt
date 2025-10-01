@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.lists.sections.watchlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
@@ -20,9 +21,14 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
+import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_SECTION_LIMIT
 import tv.trakt.trakt.core.lists.model.ListsMediaFilter
 import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MEDIA
@@ -43,6 +49,7 @@ internal class ListsWatchlistViewModel(
     private val getFilterUseCase: GetWatchlistFilterUseCase,
     private val userWatchlistSource: UserWatchlistLocalDataSource,
     private val allWatchlistSource: AllWatchlistLocalDataSource,
+    private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = ListsWatchlistState()
@@ -50,10 +57,12 @@ internal class ListsWatchlistViewModel(
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialState.filter)
+    private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var loadDataJob: Job? = null
+    private var processingJob: Job? = null
 
     init {
         loadData()
@@ -168,19 +177,36 @@ internal class ListsWatchlistViewModel(
         }
     }
 
+    fun navigateToMovie(movie: Movie) {
+        if (navigateMovie.value != null || processingJob?.isActive == true) {
+            return
+        }
+        processingJob = viewModelScope.launch {
+            movieLocalDataSource.upsertMovies(listOf(movie))
+            navigateMovie.update { movie.ids.trakt }
+        }
+    }
+
+    fun clearNavigation() {
+        navigateMovie.update { null }
+    }
+
+    @Suppress("UNCHECKED_CAST")
     val state: StateFlow<ListsWatchlistState> = combine(
         loadingState,
         itemsState,
         filterState,
+        navigateMovie,
         errorState,
         userState,
-    ) { s0, s1, s2, s3, s4 ->
+    ) { states ->
         ListsWatchlistState(
-            loading = s0,
-            items = s1,
-            filter = s2,
-            error = s3,
-            user = s4,
+            loading = states[0] as LoadingState,
+            items = states[1] as ImmutableList<WatchlistItem>?,
+            filter = states[2] as ListsMediaFilter,
+            navigateMovie = states[3] as TraktId?,
+            error = states[4] as Exception?,
+            user = states[5] as User?,
         )
     }.stateIn(
         scope = viewModelScope,

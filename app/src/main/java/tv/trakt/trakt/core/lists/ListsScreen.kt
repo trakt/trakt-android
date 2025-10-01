@@ -48,6 +48,7 @@ import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_3
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.core.lists.sections.personal.ListsPersonalView
 import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistView
@@ -69,6 +70,7 @@ internal fun ListsScreen(
     onNavigateToProfile: () -> Unit,
     onNavigateToShows: () -> Unit,
     onNavigateToMovies: () -> Unit,
+    onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToWatchlist: () -> Unit,
     onNavigateToList: (CustomList) -> Unit,
 ) {
@@ -88,6 +90,7 @@ internal fun ListsScreen(
         onWatchlistClick = onNavigateToWatchlist,
         onShowsClick = onNavigateToShows,
         onMoviesClick = onNavigateToMovies,
+        onMovieClick = onNavigateToMovie,
         onCreateListClick = { createListSheet = true },
         onEditListClick = { editListSheet = it },
         onListClick = onNavigateToList,
@@ -114,6 +117,7 @@ private fun ListsScreenContent(
     onProfileClick: () -> Unit = {},
     onShowsClick: () -> Unit = {},
     onMoviesClick: () -> Unit = {},
+    onMovieClick: (TraktId) -> Unit = {},
     onCreateListClick: () -> Unit = {},
     onEditListClick: (CustomList) -> Unit = {},
     onWatchlistClick: () -> Unit = {},
@@ -180,6 +184,7 @@ private fun ListsScreenContent(
                     contentPadding = sectionPadding,
                     onShowsClick = onShowsClick,
                     onMoviesClick = onMoviesClick,
+                    onMovieClick = onMovieClick,
                     onProfileClick = onProfileClick,
                     onWatchlistClick = onWatchlistClick,
                 )

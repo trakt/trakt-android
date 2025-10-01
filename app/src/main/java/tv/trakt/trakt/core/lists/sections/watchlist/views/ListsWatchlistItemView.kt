@@ -28,6 +28,8 @@ internal fun ListsWatchlistItemView(
     item: WatchlistItem,
     modifier: Modifier = Modifier,
     showMediaIcon: Boolean = false,
+    onShowClick: () -> Unit = {},
+    onMovieClick: () -> Unit = {},
     onShowLongClick: () -> Unit = {},
     onMovieLongClick: () -> Unit = {},
 ) {
@@ -39,6 +41,7 @@ internal fun ListsWatchlistItemView(
             VerticalMediaCard(
                 title = item.show.title,
                 imageUrl = item.images?.getPosterUrl(),
+                onClick = onShowClick,
                 onLongClick = onShowLongClick,
                 chipContent = {
                     if (isReleased) {
@@ -82,6 +85,7 @@ internal fun ListsWatchlistItemView(
             VerticalMediaCard(
                 title = item.movie.title,
                 imageUrl = item.images?.getPosterUrl(),
+                onClick = onMovieClick,
                 onLongClick = onMovieLongClick,
                 chipContent = {
                     if (isReleased) {

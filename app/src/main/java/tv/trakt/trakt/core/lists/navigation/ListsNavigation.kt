@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.extensions.popUpToTop
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.ListsScreen
 
 @Serializable
@@ -15,6 +16,7 @@ internal data object ListsDestination
 internal fun NavGraphBuilder.listsScreen(
     onNavigateToProfile: () -> Unit,
     onNavigateToShows: () -> Unit,
+    onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToMovies: () -> Unit,
     onNavigateToWatchlist: () -> Unit,
     onNavigateToList: (CustomList) -> Unit,
@@ -24,6 +26,7 @@ internal fun NavGraphBuilder.listsScreen(
             viewModel = koinViewModel(),
             onNavigateToProfile = onNavigateToProfile,
             onNavigateToShows = onNavigateToShows,
+            onNavigateToMovie = onNavigateToMovie,
             onNavigateToMovies = onNavigateToMovies,
             onNavigateToWatchlist = onNavigateToWatchlist,
             onNavigateToList = onNavigateToList,

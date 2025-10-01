@@ -131,6 +131,7 @@ internal fun NavGraphBuilder.listsScreens(controller: NavHostController) {
         listsScreen(
             onNavigateToProfile = { navigateToProfile() },
             onNavigateToShows = { navigateToShows() },
+            onNavigateToMovie = { navigateToMovie(it) },
             onNavigateToMovies = { navigateToMovies() },
             onNavigateToWatchlist = { navigateToWatchlist() },
             onNavigateToList = {
