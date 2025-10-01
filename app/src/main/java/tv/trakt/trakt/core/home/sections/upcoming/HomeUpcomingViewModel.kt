@@ -19,9 +19,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.core.home.sections.upcoming.usecases.GetUpcomingUseCase
@@ -31,15 +33,18 @@ import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSo
 internal class HomeUpcomingViewModel(
     private val getUpcomingUseCase: GetUpcomingUseCase,
     private val homeUpNextSource: HomeUpNextLocalDataSource,
+    private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = HomeUpcomingState()
 
     private val itemsState = MutableStateFlow(initialState.items)
+    private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var user: User? = null
+    private var processingJob: kotlinx.coroutines.Job? = null
 
     init {
         loadData()
@@ -110,22 +115,37 @@ internal class HomeUpcomingViewModel(
             loadingState.update { DONE }
             return true
         } else {
-//            itemsState.update { null }
             loadingState.update { IDLE }
         }
 
         return false
     }
 
+    fun navigateToMovie(movie: Movie) {
+        if (navigateMovie.value != null || processingJob?.isActive == true) {
+            return
+        }
+        processingJob = viewModelScope.launch {
+            movieLocalDataSource.upsertMovies(listOf(movie))
+            navigateMovie.update { movie.ids.trakt }
+        }
+    }
+
+    fun clearNavigation() {
+        navigateMovie.update { null }
+    }
+
     val state: StateFlow<HomeUpcomingState> = combine(
         loadingState,
         itemsState,
+        navigateMovie,
         errorState,
-    ) { s1, s2, s3 ->
+    ) { s1, s2, s3, s4 ->
         HomeUpcomingState(
             loading = s1,
             items = s2,
-            error = s3,
+            navigateMovie = s3,
+            error = s4,
         )
     }.stateIn(
         scope = viewModelScope,

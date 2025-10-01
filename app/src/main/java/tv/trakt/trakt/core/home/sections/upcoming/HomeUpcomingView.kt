@@ -23,7 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
@@ -34,6 +33,8 @@ import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAG
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.core.home.sections.upcoming.views.EpisodeUpcomingItemView
 import tv.trakt.trakt.core.home.sections.upcoming.views.MovieUpcomingItemView
@@ -50,8 +51,16 @@ internal fun HomeUpcomingView(
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     onShowsClick: () -> Unit,
+    onMovieClick: (TraktId) -> Unit = { },
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(state.navigateMovie) {
+        state.navigateMovie?.let {
+            onMovieClick(it)
+            viewModel.clearNavigation()
+        }
+    }
 
     HomeUpcomingContent(
         state = state,
@@ -59,6 +68,9 @@ internal fun HomeUpcomingView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onShowsClick = onShowsClick,
+        onMovieClick = {
+            viewModel.navigateToMovie(it)
+        },
     )
 }
 
@@ -69,6 +81,7 @@ internal fun HomeUpcomingContent(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onShowsClick: () -> Unit = {},
+    onMovieClick: (Movie) -> Unit = {},
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
@@ -128,7 +141,7 @@ internal fun HomeUpcomingContent(
                             ContentList(
                                 listItems = (state.items ?: emptyList()).toImmutableList(),
                                 contentPadding = contentPadding,
-                                onClick = {},
+                                onMovieClick = onMovieClick,
                             )
                         }
                     }
@@ -161,7 +174,7 @@ private fun ContentList(
     listItems: ImmutableList<HomeUpcomingItem>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
-    onClick: (HomeUpcomingItem) -> Unit,
+    onMovieClick: (Movie) -> Unit,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
@@ -187,6 +200,7 @@ private fun ContentList(
                 is HomeUpcomingItem.MovieItem ->
                     MovieUpcomingItemView(
                         item = item,
+                        onClick = { onMovieClick(item.movie) },
                         modifier = Modifier.animateItem(
                             fadeInSpec = null,
                             fadeOutSpec = null,
@@ -202,37 +216,5 @@ private fun ContentList(
                     )
             }
         }
-    }
-}
-
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
-@Composable
-private fun Preview() {
-    TraktTheme {
-        HomeUpcomingContent(
-            state = HomeUpcomingState(
-                loading = IDLE,
-            ),
-        )
-    }
-}
-
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
-@Composable
-private fun Preview2() {
-    TraktTheme {
-        HomeUpcomingContent(
-            state = HomeUpcomingState(
-                loading = LOADING,
-            ),
-        )
     }
 }

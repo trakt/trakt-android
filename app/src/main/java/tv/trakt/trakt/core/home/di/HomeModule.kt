@@ -196,6 +196,7 @@ internal val homeModule = module {
         HomeUpcomingViewModel(
             getUpcomingUseCase = get(),
             homeUpNextSource = get(),
+            movieLocalDataSource = get(),
             sessionManager = get(),
         )
     }

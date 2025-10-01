@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.helpers.preview.PreviewData
@@ -26,10 +27,12 @@ import java.time.Instant
 internal fun MovieUpcomingItemView(
     item: HomeUpcomingItem.MovieItem,
     modifier: Modifier = Modifier,
+    onClick: (TraktId) -> Unit = { },
 ) {
     HorizontalMediaCard(
         title = "",
         containerImageUrl = item.movie.images?.getFanartUrl(),
+        onClick = { onClick(item.movie.ids.trakt) },
         cardContent = {
             val dateString = remember(item.releasedAt) {
                 item.releasedAt.toLocal().relativeDateTimeString()

@@ -155,6 +155,7 @@ private fun HomeScreenContent(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     onShowsClick = onShowsClick,
+                    onMovieClick = onMovieClick,
                 )
             }
 

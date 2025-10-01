@@ -104,7 +104,7 @@ internal fun DetailsHeader(
                     contentDescription = null,
                     modifier = Modifier
                         .alpha(if (trailer != null) 1F else 0.25F)
-                        .size(22.dp)
+                        .size(21.dp)
                         .onClick(
                             enabled = trailer != null,
                             onClick = onTrailerClick,
