@@ -28,7 +28,7 @@ internal class GetPersonalListItemsUseCase(
         return remoteSource.getPersonalListItems(
             listId = listId,
             limit = limit,
-            extended = "full,cloud9",
+            extended = "full,cloud9,colors",
         ).asyncMap {
             val listedAt = it.listedAt.toInstant()
 

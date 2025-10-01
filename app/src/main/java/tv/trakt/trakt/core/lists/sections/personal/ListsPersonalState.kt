@@ -5,6 +5,7 @@ import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 
@@ -13,6 +14,7 @@ internal data class ListsPersonalState(
     val user: User? = null,
     val list: CustomList? = null,
     val items: ImmutableList<PersonalListItem>? = null,
+    val navigateMovie: TraktId? = null,
     val loading: LoadingState = IDLE,
     val error: Exception? = null,
 )

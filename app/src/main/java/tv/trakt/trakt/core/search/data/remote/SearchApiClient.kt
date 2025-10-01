@@ -98,7 +98,7 @@ internal class SearchApiClient(
             type = "shows",
             page = 1,
             limit = limit,
-            extended = "full,cloud9",
+            extended = "full,cloud9,colors",
         )
 
         return response.body()
@@ -109,7 +109,7 @@ internal class SearchApiClient(
             type = "movies",
             page = 1,
             limit = limit,
-            extended = "full,cloud9",
+            extended = "full,cloud9,colors",
         )
 
         return response.body()

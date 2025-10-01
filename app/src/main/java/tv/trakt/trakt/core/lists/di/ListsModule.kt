@@ -180,6 +180,7 @@ internal val listsModule = module {
             getListItemsUseCase = get(),
             localListsSource = get(),
             localListsItemsSource = get(),
+            movieLocalDataSource = get(),
         )
     }
 

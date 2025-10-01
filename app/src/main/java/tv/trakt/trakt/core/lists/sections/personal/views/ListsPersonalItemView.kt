@@ -15,6 +15,8 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.relativeDateString
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
@@ -28,6 +30,8 @@ internal fun ListsPersonalItemView(
     item: PersonalListItem,
     modifier: Modifier = Modifier,
     showMediaIcon: Boolean = false,
+    onMovieClick: (Movie) -> Unit = { },
+    onShowClick: (Show) -> Unit = { },
     onLongClick: () -> Unit = { },
 ) {
     when (item) {
@@ -38,6 +42,7 @@ internal fun ListsPersonalItemView(
             VerticalMediaCard(
                 title = item.show.title,
                 imageUrl = item.images?.getPosterUrl(),
+                onClick = { onShowClick(item.show) },
                 onLongClick = onLongClick,
                 chipContent = {
                     if (isReleased) {
@@ -81,6 +86,7 @@ internal fun ListsPersonalItemView(
             VerticalMediaCard(
                 title = item.movie.title,
                 imageUrl = item.images?.getPosterUrl(),
+                onClick = { onMovieClick(item.movie) },
                 onLongClick = onLongClick,
                 chipContent = {
                     if (isReleased) {

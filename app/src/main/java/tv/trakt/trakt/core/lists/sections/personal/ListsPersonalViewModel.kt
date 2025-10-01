@@ -2,7 +2,9 @@ package tv.trakt.trakt.core.lists.sections.personal
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -13,11 +15,17 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
+import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_SECTION_LIMIT
+import tv.trakt.trakt.core.lists.model.PersonalListItem
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
@@ -30,14 +38,18 @@ internal class ListsPersonalViewModel(
     private val getListItemsUseCase: GetPersonalListItemsUseCase,
     private val localListsSource: ListsPersonalLocalDataSource,
     private val localListsItemsSource: ListsPersonalItemsLocalDataSource,
+    private val movieLocalDataSource: MovieLocalDataSource,
 ) : ViewModel() {
     private val initialState = ListsPersonalState()
 
     private val userState = MutableStateFlow(initialState.user)
     private val listState = MutableStateFlow(initialState.list)
     private val itemsState = MutableStateFlow(initialState.items)
+    private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
+
+    private var processingJob: Job? = null
 
     init {
         loadData()
@@ -109,19 +121,36 @@ internal class ListsPersonalViewModel(
         }
     }
 
+    fun navigateToMovie(movie: Movie) {
+        if (navigateMovie.value != null || processingJob?.isActive == true) {
+            return
+        }
+        processingJob = viewModelScope.launch {
+            movieLocalDataSource.upsertMovies(listOf(movie))
+            navigateMovie.update { movie.ids.trakt }
+        }
+    }
+
+    fun clearNavigation() {
+        navigateMovie.update { null }
+    }
+
+    @Suppress("UNCHECKED_CAST")
     val state: StateFlow<ListsPersonalState> = combine(
         listState,
         userState,
         itemsState,
+        navigateMovie,
         loadingState,
         errorState,
-    ) { s1, s2, s3, s4, s5 ->
+    ) { states ->
         ListsPersonalState(
-            list = s1,
-            user = s2,
-            items = s3,
-            loading = s4,
-            error = s5,
+            list = states[0] as CustomList?,
+            user = states[1] as User?,
+            items = states[2] as ImmutableList<PersonalListItem>?,
+            navigateMovie = states[3] as TraktId?,
+            loading = states[4] as LoadingState,
+            error = states[5] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

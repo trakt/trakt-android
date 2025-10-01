@@ -20,6 +20,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,13 +45,13 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 import tv.trakt.trakt.core.lists.model.PersonalListItem.MovieItem
 import tv.trakt.trakt.core.lists.model.PersonalListItem.ShowItem
 import tv.trakt.trakt.core.lists.sections.personal.features.context.movie.sheet.ListMovieContextSheet
 import tv.trakt.trakt.core.lists.sections.personal.features.context.show.sheet.ListShowContextSheet
 import tv.trakt.trakt.core.lists.sections.personal.views.ListsPersonalItemView
-import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
@@ -64,9 +65,18 @@ internal fun ListsPersonalView(
     contentPadding: PaddingValues,
     onMoreClick: () -> Unit,
     onAllClick: (CustomList) -> Unit,
+    onMovieClick: (TraktId) -> Unit,
+    onShowClick: (TraktId) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(state.navigateMovie) {
+        state.navigateMovie?.let {
+            onMovieClick(it)
+            viewModel.clearNavigation()
+        }
+    }
 
     var showContextSheet by remember { mutableStateOf<Show?>(null) }
     var movieContextSheet by remember { mutableStateOf<Movie?>(null) }
@@ -85,6 +95,16 @@ internal fun ListsPersonalView(
         onMovieLongClick = {
             if (!state.loading.isLoading) {
                 movieContextSheet = it
+            }
+        },
+        onMovieClick = {
+            if (!state.loading.isLoading) {
+                viewModel.navigateToMovie(it)
+            }
+        },
+        onShowClick = { showId ->
+            if (!state.loading.isLoading) {
+                // TODO
             }
         },
         onAllClick = {
@@ -117,6 +137,8 @@ internal fun ListsPersonalContent(
     contentPadding: PaddingValues = PaddingValues(),
     onShowLongClick: (Show) -> Unit = {},
     onMovieLongClick: (Movie) -> Unit = {},
+    onShowClick: (Show) -> Unit = {},
+    onMovieClick: (Movie) -> Unit = {},
     onMoreClick: () -> Unit = {},
     onAllClick: () -> Unit = {},
 ) {
@@ -216,6 +238,8 @@ internal fun ListsPersonalContent(
                                 contentPadding = contentPadding,
                                 onShowLongClick = onShowLongClick,
                                 onMovieLongClick = onMovieLongClick,
+                                onMovieClick = onMovieClick,
+                                onShowClick = onShowClick,
                             )
                         }
                     }
@@ -269,6 +293,8 @@ private fun ContentList(
     listItems: ImmutableList<PersonalListItem>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
+    onShowClick: (Show) -> Unit = {},
+    onMovieClick: (Movie) -> Unit = {},
     onShowLongClick: (Show) -> Unit = {},
     onMovieLongClick: (Movie) -> Unit = {},
 ) {
@@ -285,6 +311,8 @@ private fun ContentList(
             ListsPersonalItemView(
                 item = item,
                 showMediaIcon = true,
+                onMovieClick = onMovieClick,
+                onShowClick = onShowClick,
                 onLongClick = {
                     when (item) {
                         is ShowItem -> onShowLongClick(item.show)
@@ -308,11 +336,11 @@ private fun ContentList(
     backgroundColor = 0xFF131517,
 )
 @Composable
-private fun Preview() {
+private fun PreviewLoadingState() {
     TraktTheme {
-        ListsPersonalContent(
-            list = PreviewData.customList1,
-            state = ListsPersonalState(loading = IDLE),
+        ContentLoadingList(
+            visible = true,
+            contentPadding = PaddingValues(16.dp),
         )
     }
 }
@@ -323,26 +351,10 @@ private fun Preview() {
     backgroundColor = 0xFF131517,
 )
 @Composable
-private fun Preview2() {
+private fun PreviewEmptyState() {
     TraktTheme {
-        ListsPersonalContent(
-            list = PreviewData.customList1,
-            state = ListsPersonalState(loading = LOADING),
-        )
-    }
-}
-
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
-@Composable
-private fun Preview3() {
-    TraktTheme {
-        ListsPersonalContent(
-            list = PreviewData.customList1,
-            state = ListsPersonalState(loading = DONE),
+        ContentEmptyList(
+            contentPadding = PaddingValues(16.dp),
         )
     }
 }

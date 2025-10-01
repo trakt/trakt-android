@@ -226,6 +226,8 @@ private fun ListsScreenContent(
                     ),
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
+                    onShowClick = {},
+                    onMovieClick = onMovieClick,
                     onMoreClick = { onEditListClick(list) },
                     onAllClick = { onListClick(list) },
                 )
