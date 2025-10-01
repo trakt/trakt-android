@@ -119,6 +119,7 @@
     <string name="button_text_movies">Movies</string>
     <string name="button_text_remove_from_list">Remove from list</string>
     <string name="button_text_personal">Personal</string>
+    <string name="header_post_credits">Post Credits</string>
     <string name="button_text_remove_from_history">Remove from Watched</string>
     <string name="button_text_shows">Shows</string>
     <string name="button_text_social">Social</string>

@@ -93,6 +93,7 @@ internal object PreviewData {
         runtime = 90.minutes,
         trailer = null,
         status = "Canceled",
+        credits = 2,
     )
 
     val movie2 = movie1.copy(

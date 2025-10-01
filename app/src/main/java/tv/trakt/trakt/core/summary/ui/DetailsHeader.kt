@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.summary.ui
 
 import android.net.Uri
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -19,7 +21,10 @@ import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,6 +41,34 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 internal fun DetailsHeader(
+    movie: Movie,
+    ratings: ExternalRating?,
+    onShareClick: () -> Unit,
+    onTrailerClick: () -> Unit,
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    DetailsHeader(
+        title = movie.title,
+        status = movie.status,
+        year = movie.released?.year ?: movie.year,
+        genres = movie.genres,
+        images = movie.images,
+        trailer = movie.trailer?.toUri(),
+        accentColor = movie.colors?.colors?.first,
+        credits = movie.credits,
+        traktRatings = movie.rating.ratingPercent,
+        ratings = ratings,
+        watchCount = null,
+        onBackClick = onBackClick,
+        onTrailerClick = onTrailerClick,
+        onShareClick = onShareClick,
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun DetailsHeader(
     title: String,
     genres: List<String>,
     year: Int?,
@@ -45,6 +78,8 @@ internal fun DetailsHeader(
     accentColor: Color?,
     traktRatings: Int?,
     ratings: ExternalRating?,
+    credits: Int?,
+    watchCount: Int?,
     onShareClick: () -> Unit,
     onTrailerClick: () -> Unit,
     onBackClick: () -> Unit,
@@ -78,13 +113,42 @@ internal fun DetailsHeader(
                 )
             }
 
-            DetailsPoster(
-                imageUrl = images?.getPosterUrl(Images.Size.MEDIUM),
-                color = accentColor,
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth()
                     .padding(horizontal = posterSpace),
-            )
+            ) {
+                DetailsPoster(
+                    imageUrl = images?.getPosterUrl(Images.Size.MEDIUM),
+                    color = accentColor,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                )
+
+                Row(
+                    horizontalArrangement = spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .graphicsLayer {
+                            translationY = 11.dp.toPx()
+                        },
+                ) {
+                    if (credits != null && credits > 0) {
+                        PosterChip(
+                            text = "${stringResource(R.string.header_post_credits)} • $credits".uppercase(),
+                            modifier = Modifier,
+                        )
+                    }
+
+                    if (watchCount != null && watchCount > 0) {
+                        PosterChip(
+                            text = watchCount.toString(),
+                            icon = painterResource(R.drawable.ic_check_round),
+                            modifier = Modifier,
+                        )
+                    }
+                }
+            }
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -122,7 +186,13 @@ internal fun DetailsHeader(
             traktRatings = traktRatings,
             externalRatings = ratings,
             modifier = Modifier
-                .padding(top = 18.dp),
+                .padding(
+                    top = when {
+                        (credits != null && credits > 0) -> 26.dp
+                        (watchCount != null && watchCount > 0) -> 26.dp
+                        else -> 18.dp
+                    },
+                ),
         )
 
         Column(
@@ -190,29 +260,35 @@ internal fun DetailsHeader(
 }
 
 @Composable
-internal fun DetailsHeader(
-    movie: Movie,
-    ratings: ExternalRating?,
-    onShareClick: () -> Unit,
-    onTrailerClick: () -> Unit,
-    onBackClick: () -> Unit,
+private fun PosterChip(
     modifier: Modifier = Modifier,
+    text: String,
+    icon: Painter? = null,
 ) {
-    DetailsHeader(
-        title = movie.title,
-        status = movie.status,
-        year = movie.released?.year ?: movie.year,
-        genres = movie.genres,
-        images = movie.images,
-        trailer = movie.trailer?.toUri(),
-        accentColor = movie.colors?.colors?.first,
-        traktRatings = movie.rating.ratingPercent,
-        ratings = ratings,
-        onBackClick = onBackClick,
-        onTrailerClick = onTrailerClick,
-        onShareClick = onShareClick,
-        modifier = modifier,
-    )
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = spacedBy(5.dp),
+        modifier = modifier
+            .background(Color.White, RoundedCornerShape(100))
+            .padding(
+                horizontal = 9.dp,
+                vertical = 5.dp,
+            ),
+    ) {
+        icon?.let {
+            Icon(
+                painter = it,
+                tint = Color.Black,
+                contentDescription = null,
+                modifier = Modifier.size(12.dp),
+            )
+        }
+        Text(
+            text = text,
+            color = Color.Black,
+            style = TraktTheme.typography.meta,
+        )
+    }
 }
 
 @Preview
@@ -228,6 +304,8 @@ private fun DetailsHeaderPreview() {
             trailer = null,
             accentColor = null,
             traktRatings = 72,
+            credits = 1,
+            watchCount = 2,
             ratings = ExternalRating(
                 imdb = ExternalRating.ImdbRating(
                     rating = 7.5F,

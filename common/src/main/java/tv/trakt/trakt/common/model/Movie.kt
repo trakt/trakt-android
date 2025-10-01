@@ -35,6 +35,7 @@ data class Movie(
     val certification: String?,
     val status: String?,
     val runtime: Duration?,
+    val credits: Int?,
 ) {
     companion object
 }
@@ -65,6 +66,11 @@ fun Companion.fromDto(dto: MovieDto): Movie {
         status = dto.status,
         runtime = dto.runtime?.minutes,
         trailer = dto.trailer,
+        credits = when {
+            dto.afterCredits == true && dto.duringCredits == true -> 2
+            dto.afterCredits == true || dto.duringCredits == true -> 1
+            else -> null
+        },
     )
 }
 
@@ -94,6 +100,11 @@ fun Companion.fromDto(dto: RecommendedMovieDto): Movie {
         status = dto.status,
         trailer = dto.trailer,
         runtime = dto.runtime?.minutes,
+        credits = when {
+            dto.afterCredits == true && dto.duringCredits == true -> 2
+            dto.afterCredits == true || dto.duringCredits == true -> 1
+            else -> null
+        },
     )
 }
 
@@ -123,5 +134,10 @@ fun Companion.fromDto(dto: MovieLikesDto): Movie {
         status = dto.status,
         runtime = dto.runtime?.minutes,
         trailer = dto.trailer,
+        credits = when {
+            dto.afterCredits == true && dto.duringCredits == true -> 2
+            dto.afterCredits == true || dto.duringCredits == true -> 1
+            else -> null
+        },
     )
 }
