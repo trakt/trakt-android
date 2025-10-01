@@ -4,6 +4,7 @@ package tv.trakt.trakt.core.home.sections.activity
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
@@ -22,9 +23,14 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
+import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.all.data.local.AllActivityLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter
@@ -44,6 +50,7 @@ internal class HomeActivityViewModel(
     private val homeUpNextSource: HomeUpNextLocalDataSource,
     private val userWatchlistSource: UserWatchlistLocalDataSource,
     private val allActivitySource: AllActivityLocalDataSource,
+    private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = HomeActivityState()
@@ -51,10 +58,12 @@ internal class HomeActivityViewModel(
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialState.filter)
+    private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var loadDataJob: Job? = null
+    private var processingJob: Job? = null
 
     init {
         loadData()
@@ -162,19 +171,44 @@ internal class HomeActivityViewModel(
         }
     }
 
+    fun navigateToMovie(movie: Movie) {
+        if (navigateMovie.value != null || processingJob?.isActive == true) {
+            return
+        }
+        processingJob = viewModelScope.launch {
+            try {
+                movieLocalDataSource.upsertMovies(listOf(movie))
+                navigateMovie.update { movie.ids.trakt }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.w(error, "Failed to navigate to movie")
+                }
+            } finally {
+                processingJob = null
+            }
+        }
+    }
+
+    fun clearNavigation() {
+        navigateMovie.update { null }
+    }
+
+    @Suppress("UNCHECKED_CAST")
     val state: StateFlow<HomeActivityState> = combine(
         loadingState,
         itemsState,
         filterState,
+        navigateMovie,
         errorState,
         userState,
-    ) { s0, s1, s2, s3, s4 ->
+    ) { states ->
         HomeActivityState(
-            loading = s0,
-            items = s1,
-            filter = s2,
-            error = s3,
-            user = s4,
+            loading = states[0] as LoadingState,
+            items = states[1] as? ImmutableList<HomeActivityItem>,
+            filter = states[2] as? HomeActivityFilter,
+            navigateMovie = states[3] as? TraktId,
+            error = states[4] as? Exception,
+            user = states[5] as? User,
         )
     }.stateIn(
         scope = viewModelScope,

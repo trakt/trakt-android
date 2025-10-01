@@ -43,8 +43,8 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.episodes.model.Episode
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.PERSONAL
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.SOCIAL
@@ -66,12 +66,18 @@ internal fun HomeActivityView(
     viewModel: HomeActivityViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
-    onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
-    onNavigateToMovie: (movieId: TraktId) -> Unit = {},
-    onMorePersonalClick: () -> Unit = {},
-    onMoreSocialClick: () -> Unit = {},
+    onMorePersonalClick: () -> Unit,
+    onMoreSocialClick: () -> Unit,
+    onMovieClick: (TraktId) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(state.navigateMovie) {
+        state.navigateMovie?.let {
+            onMovieClick(it)
+            viewModel.clearNavigation()
+        }
+    }
 
     var contextSheet by remember { mutableStateOf<HomeActivityItem?>(null) }
 
@@ -85,6 +91,9 @@ internal fun HomeActivityView(
             if (state.filter == PERSONAL) {
                 contextSheet = it
             }
+        },
+        onMovieClick = {
+            viewModel.navigateToMovie(it)
         },
         onMovieLongClick = {
             if (state.filter == PERSONAL) {
@@ -121,6 +130,7 @@ internal fun HomeActivityContent(
     contentPadding: PaddingValues = PaddingValues(),
     onEpisodeClick: (HomeActivityItem.EpisodeItem) -> Unit = {},
     onEpisodeLongClick: (HomeActivityItem.EpisodeItem) -> Unit = {},
+    onMovieClick: (Movie) -> Unit = { },
     onMovieLongClick: (HomeActivityItem.MovieItem) -> Unit = {},
     onFilterClick: (HomeActivityFilter) -> Unit = {},
     onMoreClick: () -> Unit = {},
@@ -197,6 +207,7 @@ internal fun HomeActivityContent(
                                 contentPadding = contentPadding,
                                 onEpisodeClick = onEpisodeClick,
                                 onEpisodeLongClick = onEpisodeLongClick,
+                                onMovieClick = onMovieClick,
                                 onMovieLongClick = onMovieLongClick,
                             )
                         }
@@ -262,6 +273,7 @@ private fun ContentList(
     contentPadding: PaddingValues,
     onEpisodeClick: (HomeActivityItem.EpisodeItem) -> Unit,
     onEpisodeLongClick: (HomeActivityItem.EpisodeItem) -> Unit,
+    onMovieClick: (Movie) -> Unit,
     onMovieLongClick: (HomeActivityItem.MovieItem) -> Unit,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
@@ -288,7 +300,7 @@ private fun ContentList(
                 is HomeActivityItem.MovieItem ->
                     MovieSocialItemView(
                         item = item,
-                        onClick = {},
+                        onClick = { onMovieClick(item.movie) },
                         onLongClick = when (listFilter) {
                             PERSONAL -> {
                                 { onMovieLongClick(item) }

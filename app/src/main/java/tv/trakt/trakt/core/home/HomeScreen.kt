@@ -165,6 +165,7 @@ private fun HomeScreenContent(
                     contentPadding = sectionPadding,
                     onMorePersonalClick = onMorePersonalClick,
                     onMoreSocialClick = onMoreSocialClick,
+                    onMovieClick = onMovieClick,
                 )
             }
         }
