@@ -189,6 +189,7 @@ internal val listsModule = module {
             savedStateHandle = get(),
             getListUseCase = get(),
             getListItemsUseCase = get(),
+            movieLocalDataSource = get(),
             sessionManager = get(),
         )
     }

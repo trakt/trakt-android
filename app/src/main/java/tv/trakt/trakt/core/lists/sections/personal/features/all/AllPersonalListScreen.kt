@@ -38,13 +38,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 import tv.trakt.trakt.core.lists.model.PersonalListItem.MovieItem
 import tv.trakt.trakt.core.lists.model.PersonalListItem.ShowItem
@@ -63,9 +63,17 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun AllPersonalListScreen(
     modifier: Modifier = Modifier,
     viewModel: AllPersonalListViewModel,
+    onMovieClick: (TraktId) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(state.navigateMovie) {
+        state.navigateMovie?.let {
+            onMovieClick(it)
+            viewModel.clearNavigation()
+        }
+    }
 
     var showContextSheet by remember { mutableStateOf<ShowItem?>(null) }
     var movieContextSheet by remember { mutableStateOf<MovieItem?>(null) }
@@ -74,6 +82,12 @@ internal fun AllPersonalListScreen(
     AllPersonalListContent(
         state = state,
         modifier = modifier,
+        onClick = {
+            when (it) {
+                is MovieItem -> viewModel.navigateToMovie(it.movie)
+                is ShowItem -> {} // No-op for shows
+            }
+        },
         onLongClick = {
             when (it) {
                 is MovieItem -> movieContextSheet = it
@@ -122,6 +136,7 @@ internal fun AllPersonalListContent(
     state: AllPersonalListState,
     modifier: Modifier = Modifier,
     onTopOfList: () -> Unit = {},
+    onClick: (PersonalListItem) -> Unit = {},
     onLongClick: (PersonalListItem) -> Unit = {},
     onBackClick: () -> Unit = {},
     onMoreClick: () -> Unit = {},
@@ -161,6 +176,7 @@ internal fun AllPersonalListContent(
             listItems = (state.items ?: emptyList()).toImmutableList(),
             listState = listState,
             contentPadding = contentPadding,
+            onClick = onClick,
             onLongClick = onLongClick,
             onTopOfList = onTopOfList,
             onBackClick = onBackClick,
@@ -228,6 +244,7 @@ private fun ContentList(
     listState: LazyListState,
     listItems: ImmutableList<PersonalListItem>,
     contentPadding: PaddingValues,
+    onClick: (PersonalListItem) -> Unit,
     onLongClick: (PersonalListItem) -> Unit,
     onTopOfList: () -> Unit,
     onBackClick: () -> Unit,
@@ -283,6 +300,7 @@ private fun ContentList(
                 is MovieItem -> AllPersonalListMovieView(
                     item = item,
                     showIcon = true,
+                    onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
                     modifier = Modifier
                         .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
@@ -293,33 +311,5 @@ private fun ContentList(
                 )
             }
         }
-    }
-}
-
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
-@Composable
-private fun Preview() {
-    TraktTheme {
-        AllPersonalListContent(
-            state = AllPersonalListState(),
-        )
-    }
-}
-
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
-@Composable
-private fun Preview2() {
-    TraktTheme {
-        AllPersonalListContent(
-            state = AllPersonalListState(),
-        )
     }
 }
