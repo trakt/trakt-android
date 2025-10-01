@@ -5,11 +5,18 @@ import org.koin.dsl.module
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.movies.data.local.MovieStorage
 import tv.trakt.trakt.core.summary.movies.MovieDetailsViewModel
+import tv.trakt.trakt.core.summary.movies.data.local.MovieRatingsLocalDataSource
+import tv.trakt.trakt.core.summary.movies.data.local.MovieRatingsStorage
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
+import tv.trakt.trakt.core.summary.movies.usecases.GetMovieRatingsUseCase
 
 internal val movieDetailsDataModule = module {
     single<MovieLocalDataSource> {
         MovieStorage()
+    }
+
+    single<MovieRatingsLocalDataSource> {
+        MovieRatingsStorage()
     }
 }
 
@@ -21,10 +28,18 @@ internal val movieDetailsModule = module {
         )
     }
 
+    factory {
+        GetMovieRatingsUseCase(
+            remoteSource = get(),
+            localSource = get(),
+        )
+    }
+
     viewModel {
         MovieDetailsViewModel(
             savedStateHandle = get(),
-            getMovieDetailsUseCase = get(),
+            getDetailsUseCase = get(),
+            getExternalRatingsUseCase = get(),
         )
     }
 }

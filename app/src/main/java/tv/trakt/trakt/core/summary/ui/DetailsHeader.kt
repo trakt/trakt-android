@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.ui.theme.colors.Purple300
 import tv.trakt.trakt.common.ui.theme.colors.Red500
@@ -40,6 +41,8 @@ internal fun DetailsHeader(
     status: String?,
     trailer: Uri?,
     accentColor: Color?,
+    traktRatings: Int?,
+    ratings: ExternalRating?,
     onShareClick: () -> Unit,
     onTrailerClick: () -> Unit,
     onBackClick: () -> Unit,
@@ -113,12 +116,19 @@ internal fun DetailsHeader(
             }
         }
 
+        DetailsRatings(
+            traktRatings = traktRatings,
+            externalRatings = ratings,
+            modifier = Modifier
+                .padding(top = 18.dp),
+        )
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    top = 24.dp,
+                    top = 16.dp,
                     start = TraktTheme.spacing.mainPageHorizontalSpace,
                     end = TraktTheme.spacing.mainPageHorizontalSpace,
                 ),
@@ -189,6 +199,25 @@ private fun DetailsHeaderPreview() {
             status = "Released",
             trailer = null,
             accentColor = null,
+            traktRatings = 72,
+            ratings = ExternalRating(
+                imdb = ExternalRating.ImdbRating(
+                    rating = 7.5F,
+                    votes = 12345,
+                    link = "https://www.imdb.com/title/tt1234567/",
+                ),
+                meta = ExternalRating.MetaRating(
+                    rating = 75,
+                    link = "https://www.metacritic.com/movie/sample-movie",
+                ),
+                rotten = ExternalRating.RottenRating(
+                    rating = 85F,
+                    state = "fresh",
+                    userRating = 90,
+                    userState = "upright",
+                    link = "https://www.rottentomatoes.com/m/sample_movie",
+                ),
+            ),
             onShareClick = {},
             onTrailerClick = {},
             onBackClick = {},

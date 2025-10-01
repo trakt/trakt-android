@@ -58,7 +58,6 @@ import tv.trakt.trakt.app.LocalDrawerVisibility
 import tv.trakt.trakt.app.LocalSnackbarState
 import tv.trakt.trakt.app.common.model.CastPerson
 import tv.trakt.trakt.app.common.model.Comment
-import tv.trakt.trakt.app.common.model.ExternalRating
 import tv.trakt.trakt.app.common.model.ExtraVideo
 import tv.trakt.trakt.app.core.details.comments.CommentDetailsDialog
 import tv.trakt.trakt.app.core.details.movie.views.content.MovieCastCrewList
@@ -73,6 +72,7 @@ import tv.trakt.trakt.app.core.people.navigation.PersonDestination
 import tv.trakt.trakt.app.helpers.preview.PreviewData
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
@@ -477,11 +477,6 @@ private fun Preview() {
             state = MovieDetailsState(
                 movieDetails = PreviewData.movie1,
                 movieRatings = ExternalRating(
-                    tmdb = ExternalRating.TmdbRating(
-                        rating = 8.5F,
-                        votes = 123456,
-                        link = "https://www.themoviedb.org/movie/123456",
-                    ),
                     imdb = ExternalRating.ImdbRating(
                         rating = 7.9F,
                         votes = 1_267_356,

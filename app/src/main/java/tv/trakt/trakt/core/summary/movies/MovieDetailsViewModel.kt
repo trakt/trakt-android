@@ -16,20 +16,25 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.summary.movies.navigation.MovieDetailsDestination
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
+import tv.trakt.trakt.core.summary.movies.usecases.GetMovieRatingsUseCase
 
 internal class MovieDetailsViewModel(
     savedStateHandle: SavedStateHandle,
-    private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
+    private val getDetailsUseCase: GetMovieDetailsUseCase,
+    private val getExternalRatingsUseCase: GetMovieRatingsUseCase,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<MovieDetailsDestination>()
+    private val movieId = destination.movieId.toTraktId()
 
     private val initialState = MovieDetailsState()
 
     private val movieState = MutableStateFlow(initialState.movie)
+    private val movieRatingsState = MutableStateFlow(initialState.movieRatings)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -40,18 +45,19 @@ internal class MovieDetailsViewModel(
     private fun loadMovie() {
         viewModelScope.launch {
             try {
-                var movie = getMovieDetailsUseCase.getLocalMovie(
-                    movieId = destination.movieId.toTraktId(),
+                var movie = getDetailsUseCase.getLocalMovie(
+                    movieId = movieId,
                 )
 
                 if (movie == null) {
                     loadingState.update { LOADING }
-                    movie = getMovieDetailsUseCase.getMovie(
-                        movieId = destination.movieId.toTraktId(),
+                    movie = getDetailsUseCase.getMovie(
+                        movieId = movieId,
                     )
                 }
 
                 movieState.update { movie }
+                loadRatings()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -63,15 +69,31 @@ internal class MovieDetailsViewModel(
         }
     }
 
+    private fun loadRatings() {
+        viewModelScope.launch {
+            try {
+                movieRatingsState.update {
+                    getExternalRatingsUseCase.getExternalRatings(movieId)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.w(error)
+                }
+            }
+        }
+    }
+
     val state: StateFlow<MovieDetailsState> = combine(
         movieState,
+        movieRatingsState,
         loadingState,
         errorState,
     ) { state ->
         MovieDetailsState(
             movie = state[0] as Movie?,
-            loading = state[1] as LoadingState,
-            error = state[2] as? Exception,
+            movieRatings = state[1] as ExternalRating?,
+            loading = state[2] as LoadingState,
+            error = state[3] as? Exception,
         )
     }.stateIn(
         scope = viewModelScope,

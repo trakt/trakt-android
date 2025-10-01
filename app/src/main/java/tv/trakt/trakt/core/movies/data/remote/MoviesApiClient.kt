@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.movies.data.remote
 import org.openapitools.client.apis.MoviesApi
 import org.openapitools.client.apis.RecommendationsApi
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.MovieDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
 import tv.trakt.trakt.core.movies.data.remote.model.AnticipatedMovieDto
@@ -116,6 +117,15 @@ internal class MoviesApiClient(
         val response = moviesApi.getMoviesSummary(
             id = movieId.value.toString(),
             extended = "full,streaming_ids,cloud9,colors",
+        )
+
+        return response.body()
+    }
+
+    override suspend fun getExternalRatings(movieId: TraktId): ExternalRatingsDto {
+        val response = moviesApi.getMoviesRatings(
+            id = movieId.value.toString(),
+            extended = "all",
         )
 
         return response.body()

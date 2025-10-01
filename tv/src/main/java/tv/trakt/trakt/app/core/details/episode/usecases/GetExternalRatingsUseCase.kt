@@ -1,7 +1,7 @@
 package tv.trakt.trakt.app.core.details.episode.usecases
 
-import tv.trakt.trakt.app.common.model.ExternalRating
 import tv.trakt.trakt.app.core.episodes.data.remote.EpisodesRemoteDataSource
+import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
 
@@ -19,11 +19,6 @@ internal class GetExternalRatingsUseCase(
         )
 
         return ExternalRating(
-            tmdb = ExternalRating.TmdbRating(
-                rating = ratings.tmdb?.rating ?: 0F,
-                votes = ratings.tmdb?.votes ?: 0,
-                link = ratings.tmdb?.link,
-            ),
             imdb = ExternalRating.ImdbRating(
                 rating = ratings.imdb?.rating ?: 0F,
                 votes = ratings.imdb?.votes ?: 0,

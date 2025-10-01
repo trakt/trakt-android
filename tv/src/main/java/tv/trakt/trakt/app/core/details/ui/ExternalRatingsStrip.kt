@@ -17,9 +17,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
-import tv.trakt.trakt.app.common.model.ExternalRating
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
+import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.resources.R
 
 @Composable
@@ -129,11 +129,6 @@ private fun ExternalRatingsStripPreview() {
         ExternalRatingsStrip(
             hidden = false,
             externalRating = ExternalRating(
-                tmdb = ExternalRating.TmdbRating(
-                    rating = 8.5F,
-                    votes = 123456,
-                    link = "https://www.themoviedb.org/movie/123456",
-                ),
                 imdb = ExternalRating.ImdbRating(
                     rating = 7.9F,
                     votes = 1_267_356,
@@ -162,11 +157,6 @@ private fun ExternalRatingsStripPreview2() {
         ExternalRatingsStrip(
             hidden = true,
             externalRating = ExternalRating(
-                tmdb = ExternalRating.TmdbRating(
-                    rating = 8.5F,
-                    votes = 123456,
-                    link = "https://www.themoviedb.org/movie/123456",
-                ),
                 imdb = ExternalRating.ImdbRating(
                     rating = 7.9F,
                     votes = 1_267_356,

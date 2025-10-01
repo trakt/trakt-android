@@ -101,6 +101,8 @@ internal fun MovieDetailsContent(
                         images = movie.images,
                         trailer = movie.trailer?.toUri(),
                         accentColor = movie.colors?.colors?.first,
+                        traktRatings = movie.rating.ratingPercent,
+                        ratings = state.movieRatings,
                         onBackClick = onBackClick,
                         onTrailerClick = {
                             movie.trailer?.let { uriHandler.openUri(it) }

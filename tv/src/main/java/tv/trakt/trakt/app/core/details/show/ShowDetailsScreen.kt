@@ -55,7 +55,6 @@ import tv.trakt.trakt.app.LocalDrawerVisibility
 import tv.trakt.trakt.app.LocalSnackbarState
 import tv.trakt.trakt.app.common.model.CastPerson
 import tv.trakt.trakt.app.common.model.Comment
-import tv.trakt.trakt.app.common.model.ExternalRating
 import tv.trakt.trakt.app.common.model.ExtraVideo
 import tv.trakt.trakt.app.common.ui.ConfirmationDialog
 import tv.trakt.trakt.app.core.details.comments.CommentDetailsDialog
@@ -75,6 +74,7 @@ import tv.trakt.trakt.app.core.people.navigation.PersonDestination
 import tv.trakt.trakt.app.helpers.preview.PreviewData
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
@@ -553,11 +553,6 @@ private fun MainScreenPreview() {
             state = ShowDetailsState(
                 showDetails = PreviewData.show1,
                 showRatings = ExternalRating(
-                    tmdb = ExternalRating.TmdbRating(
-                        rating = 8.5F,
-                        votes = 123456,
-                        link = "https://www.theshowdb.org/show/123456",
-                    ),
                     imdb = ExternalRating.ImdbRating(
                         rating = 7.9F,
                         votes = 1_267_356,

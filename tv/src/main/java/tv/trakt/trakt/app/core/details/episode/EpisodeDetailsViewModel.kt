@@ -17,7 +17,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.app.common.model.CastPerson
 import tv.trakt.trakt.app.common.model.Comment
-import tv.trakt.trakt.app.common.model.ExternalRating
 import tv.trakt.trakt.app.core.details.episode.EpisodeDetailsState.HistoryState
 import tv.trakt.trakt.app.core.details.episode.EpisodeDetailsState.StreamingsState
 import tv.trakt.trakt.app.core.details.episode.navigation.EpisodeDestination
@@ -42,6 +41,7 @@ import tv.trakt.trakt.common.helpers.StaticStringResource
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.Show

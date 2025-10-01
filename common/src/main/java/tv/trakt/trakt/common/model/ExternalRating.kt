@@ -1,26 +1,15 @@
-package tv.trakt.trakt.app.common.model
+package tv.trakt.trakt.common.model
 
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.resources.R
-import java.util.Locale.ROOT
+import java.util.Locale
 
 @Immutable
-internal data class ExternalRating(
-    val tmdb: TmdbRating?,
+data class ExternalRating(
     val imdb: ImdbRating?,
     val meta: MetaRating?,
     val rotten: RottenRating?,
 ) {
-    @Immutable
-    data class TmdbRating(
-        val rating: Float,
-        val votes: Int,
-        val link: String?,
-    ) {
-        val ratingString: String
-            get() = "${(rating * 10).toInt()}%"
-    }
-
     @Immutable
     data class ImdbRating(
         val rating: Float,
@@ -28,7 +17,7 @@ internal data class ExternalRating(
         val link: String?,
     ) {
         val ratingString: String
-            get() = String.format(ROOT, "%.1f", rating)
+            get() = String.Companion.format(Locale.ROOT, "%.1f", rating)
     }
 
     @Immutable
