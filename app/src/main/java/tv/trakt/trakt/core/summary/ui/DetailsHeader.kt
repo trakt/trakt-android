@@ -24,9 +24,11 @@ import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.theme.colors.Purple300
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.resources.R
@@ -185,6 +187,32 @@ internal fun DetailsHeader(
             }
         }
     }
+}
+
+@Composable
+internal fun DetailsHeader(
+    movie: Movie,
+    ratings: ExternalRating?,
+    onShareClick: () -> Unit,
+    onTrailerClick: () -> Unit,
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    DetailsHeader(
+        title = movie.title,
+        status = movie.status,
+        year = movie.released?.year ?: movie.year,
+        genres = movie.genres,
+        images = movie.images,
+        trailer = movie.trailer?.toUri(),
+        accentColor = movie.colors?.colors?.first,
+        traktRatings = movie.rating.ratingPercent,
+        ratings = ratings,
+        onBackClick = onBackClick,
+        onTrailerClick = onTrailerClick,
+        onShareClick = onShareClick,
+        modifier = modifier,
+    )
 }
 
 @Preview

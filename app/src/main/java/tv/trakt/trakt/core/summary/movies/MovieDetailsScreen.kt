@@ -2,6 +2,8 @@
 
 package tv.trakt.trakt.core.summary.movies
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -21,16 +23,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.DetailsHeader
 import tv.trakt.trakt.helpers.preview.PreviewData
+import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -54,11 +58,10 @@ internal fun MovieDetailsContent(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
 ) {
+    val context = LocalContext.current
     val uriHandler = LocalUriHandler.current
 
     val contentPadding = PaddingValues(
-//        start = TraktTheme.spacing.mainPageHorizontalSpace,
-//        end = TraktTheme.spacing.mainPageHorizontalSpace,
         top = WindowInsets.statusBars.asPaddingValues()
             .calculateTopPadding()
             .plus(16.dp),
@@ -94,28 +97,35 @@ internal fun MovieDetailsContent(
             ) {
                 item {
                     DetailsHeader(
-                        title = movie.title,
-                        status = movie.status,
-                        year = movie.released?.year ?: movie.year,
-                        genres = movie.genres,
-                        images = movie.images,
-                        trailer = movie.trailer?.toUri(),
-                        accentColor = movie.colors?.colors?.first,
-                        traktRatings = movie.rating.ratingPercent,
+                        movie = movie,
                         ratings = state.movieRatings,
                         onBackClick = onBackClick,
                         onTrailerClick = {
                             movie.trailer?.let { uriHandler.openUri(it) }
                         },
-                        onShareClick = {
-                            uriHandler.openUri("${WEB_V3_BASE_URL}movies/${movie.ids.slug.value}")
-                        },
+                        onShareClick = { shareMovie(movie, context) },
                         modifier = Modifier.align(Alignment.Center),
                     )
                 }
             }
         }
     }
+}
+
+private fun shareMovie(
+    movie: Movie,
+    context: Context,
+) {
+    val shareText = "${context.getString(R.string.text_share_movie, movie.title)} " +
+        "${WEB_V3_BASE_URL}movies/${movie.ids.slug.value}"
+
+    val intent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_TEXT, shareText)
+        type = "text/plain"
+    }
+
+    context.startActivity(Intent.createChooser(intent, movie.title))
 }
 
 @Preview(
