@@ -124,6 +124,8 @@ internal fun MovieDetailsContent(
 
                 item {
                     DetailsActions(
+                        onPrimaryClick = {
+                        },
                         modifier = Modifier
                             .align(Alignment.Center)
                             .fillMaxWidth()
@@ -136,7 +138,7 @@ internal fun MovieDetailsContent(
                     Spacer(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(1000.dp),
+                            .height(500.dp),
                     )
                 }
             }

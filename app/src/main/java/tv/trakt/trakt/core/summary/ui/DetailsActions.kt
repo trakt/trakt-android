@@ -18,16 +18,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Shade920
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun DetailsActions(modifier: Modifier = Modifier) {
+internal fun DetailsActions(
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    loading: Boolean = false,
+    onPrimaryClick: (() -> Unit)? = null,
+    onSecondaryClick: (() -> Unit)? = null,
+    onMoreClick: (() -> Unit)? = null,
+) {
     Box(
         modifier = modifier
             .background(
@@ -61,14 +71,22 @@ internal fun DetailsActions(modifier: Modifier = Modifier) {
                     disabledContainerColor = TraktTheme.colors.primaryButtonContainerDisabled,
                     disabledContentColor = TraktTheme.colors.primaryButtonContentDisabled,
                 ),
-                onClick = {},
+                enabled = enabled,
+                onClick = onPrimaryClick ?: {},
             ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_check_double),
-                    tint = TraktTheme.colors.primaryButtonContent,
-                    contentDescription = null,
-                    modifier = Modifier.size(22.dp),
-                )
+                if (!loading) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_check_double),
+                        tint = TraktTheme.colors.primaryButtonContent,
+                        contentDescription = null,
+                        modifier = Modifier.size(22.dp),
+                    )
+                } else {
+                    FilmProgressIndicator(
+                        size = 20.dp,
+                        color = Color.White,
+                    )
+                }
             }
 
             Icon(
@@ -76,6 +94,10 @@ internal fun DetailsActions(modifier: Modifier = Modifier) {
                 tint = TraktTheme.colors.primaryButtonContent,
                 contentDescription = null,
                 modifier = Modifier
+                    .onClick(
+                        enabled = enabled,
+                        onClick = onSecondaryClick ?: {},
+                    )
                     .size(22.dp)
                     .graphicsLayer {
                         translationX = -1.dp.toPx()
@@ -87,6 +109,10 @@ internal fun DetailsActions(modifier: Modifier = Modifier) {
                 tint = TraktTheme.colors.primaryButtonContent,
                 contentDescription = null,
                 modifier = Modifier
+                    .onClick(
+                        enabled = enabled,
+                        onClick = onMoreClick ?: {},
+                    )
                     .rotate(90F)
                     .size(21.dp),
             )
@@ -109,7 +135,14 @@ private fun Preview() {
         ) {
             DetailsActions()
 
-            DetailsActions()
+            DetailsActions(
+                enabled = false,
+            )
+
+            DetailsActions(
+                enabled = false,
+                loading = true,
+            )
         }
     }
 }
