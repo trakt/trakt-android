@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
+import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
@@ -138,7 +139,11 @@ internal fun MovieDetailsContent(
                 }
 
                 item {
+                    val isReleased = remember {
+                        movie.released?.isTodayOrBefore() ?: false
+                    }
                     DetailsActions(
+                        primaryEnabled = isReleased,
                         onPrimaryClick = {
                         },
                         modifier = Modifier
