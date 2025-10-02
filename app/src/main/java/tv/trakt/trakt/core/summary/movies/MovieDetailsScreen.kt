@@ -158,7 +158,7 @@ internal fun MovieDetailsContent(
                         movie = movie,
                         ratings = state.movieRatings,
                         creditsCount = when {
-                            state.movieProgress?.plays != null -> null
+                            (state.movieProgress?.plays ?: 0) > 0 -> null
                             else -> movie.credits
                         },
                         playsCount = state.movieProgress?.plays,
@@ -175,7 +175,7 @@ internal fun MovieDetailsContent(
                     }
                     DetailsActions(
                         primaryEnabled = isReleased,
-                        enabled = !state.loadingProgress.isLoading,
+                        enabled = state.user != null && !state.loadingProgress.isLoading,
                         loading = state.loadingProgress.isLoading,
                         hasLists = state.movieProgress?.watchlist,
                         onPrimaryClick = {

@@ -37,6 +37,7 @@ data class Movie(
     val runtime: Duration?,
     val credits: Int?,
     val country: String?,
+    @Serializable(ImmutableListSerializer::class)
     val languages: ImmutableList<String>,
 ) {
     companion object

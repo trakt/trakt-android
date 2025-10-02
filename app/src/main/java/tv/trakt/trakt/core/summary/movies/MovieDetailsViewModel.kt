@@ -22,6 +22,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.summary.movies.navigation.MovieDetailsDestination
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
@@ -51,10 +52,26 @@ internal class MovieDetailsViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingProgress = MutableStateFlow(initialState.loadingProgress)
     private val errorState = MutableStateFlow(initialState.error)
+    private val userState = MutableStateFlow(initialState.user)
 
     init {
+        loadUser()
         loadData()
         loadProgressData()
+    }
+
+    private fun loadUser() {
+        viewModelScope.launch {
+            try {
+                userState.update {
+                    sessionManager.getProfile()
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.w(error)
+                }
+            }
+        }
     }
 
     private fun loadData() {
@@ -176,6 +193,7 @@ internal class MovieDetailsViewModel(
         loadingState,
         loadingProgress,
         errorState,
+        userState,
     ) { state ->
         MovieDetailsState(
             movie = state[0] as Movie?,
@@ -184,7 +202,8 @@ internal class MovieDetailsViewModel(
             movieProgress = state[3] as MovieDetailsState.ProgressState?,
             loading = state[4] as LoadingState,
             loadingProgress = state[5] as LoadingState,
-            error = state[6] as? Exception,
+            error = state[6] as Exception?,
+            user = state[7] as User?,
         )
     }.stateIn(
         scope = viewModelScope,

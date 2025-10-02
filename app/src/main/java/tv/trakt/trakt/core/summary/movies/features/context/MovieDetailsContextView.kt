@@ -142,6 +142,7 @@ private fun ActionButtons(
             text = stringResource(R.string.button_text_share),
             icon = painterResource(R.drawable.ic_share),
             iconSize = 26.dp,
+            iconSpace = 14.dp,
             modifier = Modifier.graphicsLayer {
                 translationX = -3.dp.toPx()
             },
@@ -151,7 +152,7 @@ private fun ActionButtons(
             text = stringResource(R.string.button_text_trailer),
             icon = painterResource(R.drawable.ic_trailer),
             iconSize = 21.dp,
-            iconSpace = 12.dp,
+            iconSpace = 16.dp,
             onClick = onTrailerClick ?: {},
         )
     }

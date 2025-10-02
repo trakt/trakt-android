@@ -5,6 +5,7 @@ import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.User
 
 @Immutable
 internal data class MovieDetailsState(
@@ -15,6 +16,7 @@ internal data class MovieDetailsState(
     val loading: LoadingState = LoadingState.IDLE,
     val loadingProgress: LoadingState = LoadingState.IDLE,
     val error: Exception? = null,
+    val user: User? = null,
 ) {
     data class ProgressState(
         val plays: Int,
