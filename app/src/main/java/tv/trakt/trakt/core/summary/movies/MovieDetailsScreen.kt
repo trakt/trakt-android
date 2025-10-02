@@ -52,6 +52,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
+import tv.trakt.trakt.core.summary.movies.features.context.MovieDetailsContextSheet
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.DetailsHeader
@@ -67,12 +68,39 @@ internal fun MovieDetailsScreen(
     viewModel: MovieDetailsViewModel,
     onNavigateBack: () -> Unit,
 ) {
+    val context = LocalContext.current
+    val uriHandler = LocalUriHandler.current
+
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    var contextSheet by remember { mutableStateOf<Movie?>(null) }
 
     MovieDetailsContent(
         state = state,
         modifier = modifier,
+        onShareClick = {
+            state.movie?.let { shareMovie(it, context) }
+        },
+        onTrailerClick = {
+            state.movie?.trailer?.let { uriHandler.openUri(it) }
+        },
+        onMoreClick = {
+            contextSheet = state.movie
+        },
         onBackClick = onNavigateBack,
+    )
+
+    MovieDetailsContextSheet(
+        movie = contextSheet,
+        onShareClick = {
+            state.movie?.let { shareMovie(it, context) }
+        },
+        onTrailerClick = {
+            state.movie?.trailer?.let { uriHandler.openUri(it) }
+        },
+        onDismiss = {
+            contextSheet = null
+        },
     )
 }
 
@@ -80,11 +108,11 @@ internal fun MovieDetailsScreen(
 internal fun MovieDetailsContent(
     state: MovieDetailsState,
     modifier: Modifier = Modifier,
-    onBackClick: () -> Unit = {},
+    onShareClick: (() -> Unit)? = null,
+    onTrailerClick: (() -> Unit)? = null,
+    onMoreClick: (() -> Unit)? = null,
+    onBackClick: (() -> Unit)? = null,
 ) {
-    val context = LocalContext.current
-    val uriHandler = LocalUriHandler.current
-
     val contentPadding = PaddingValues(
         top = WindowInsets.statusBars.asPaddingValues()
             .calculateTopPadding()
@@ -134,11 +162,9 @@ internal fun MovieDetailsContent(
                             else -> movie.credits
                         },
                         playsCount = state.movieProgress?.plays,
-                        onBackClick = onBackClick,
-                        onTrailerClick = {
-                            movie.trailer?.let { uriHandler.openUri(it) }
-                        },
-                        onShareClick = { shareMovie(movie, context) },
+                        onBackClick = onBackClick ?: {},
+                        onTrailerClick = onTrailerClick ?: {},
+                        onShareClick = onShareClick ?: {},
                         modifier = Modifier.align(Alignment.Center),
                     )
                 }
@@ -154,6 +180,7 @@ internal fun MovieDetailsContent(
                         hasLists = state.movieProgress?.watchlist,
                         onPrimaryClick = {
                         },
+                        onMoreClick = onMoreClick,
                         modifier = Modifier
                             .align(Alignment.Center)
                             .fillMaxWidth()

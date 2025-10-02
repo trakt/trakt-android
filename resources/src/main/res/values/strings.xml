@@ -131,6 +131,8 @@
     <string name="header_original_title">Original Title</string>
     <string name="header_studio">Studio</string>
     <string name="header_genre">Genre</string>
+    <string name="button_text_trailer">Trailer</string>
+    <string name="button_text_share">Share</string>
     <string name="text_info_list_removed">Removed from list.</string>
     <string name="button_text_drop_show">Drop show</string>
     <string name="button_text_toggle_search_media">Media</string>
