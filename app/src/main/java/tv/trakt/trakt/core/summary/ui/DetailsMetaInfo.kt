@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -18,6 +19,7 @@ import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.helpers.preview.PreviewData
+import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.LocalDate
 import java.util.Locale
@@ -85,12 +87,12 @@ internal fun DetailsMetaInfo(
             horizontalArrangement = spacedBy(16.dp),
         ) {
             DetailsMeta(
-                title = "Released",
+                title = stringResource(R.string.header_premiered),
                 values = listOf(released?.format(longDateFormat) ?: "N/A"),
                 modifier = Modifier.weight(1F),
             )
             DetailsMeta(
-                title = "Runtime",
+                title = stringResource(R.string.header_runtime),
                 values = listOf(runtimeString ?: "N/A"),
                 modifier = Modifier.weight(1F),
             )
@@ -100,12 +102,12 @@ internal fun DetailsMetaInfo(
             horizontalArrangement = spacedBy(16.dp),
         ) {
             DetailsMeta(
-                title = "Status",
+                title = stringResource(R.string.header_status),
                 values = listOf(status ?: "N/A"),
                 modifier = Modifier.weight(1F),
             )
             DetailsMeta(
-                title = "Language",
+                title = stringResource(R.string.header_language),
                 values = languagesStrings.ifEmpty { listOf("N/A") },
                 modifier = Modifier.weight(1F),
             )
@@ -115,12 +117,12 @@ internal fun DetailsMetaInfo(
             horizontalArrangement = spacedBy(16.dp),
         ) {
             DetailsMeta(
-                title = "Country",
+                title = stringResource(R.string.header_country),
                 values = listOf(countryString ?: "N/A"),
                 modifier = Modifier.weight(1F),
             )
             DetailsMeta(
-                title = "Original Title",
+                title = stringResource(R.string.header_original_title),
                 values = listOf(titleOriginal ?: "N/A"),
                 modifier = Modifier.weight(1F),
             )
@@ -130,14 +132,14 @@ internal fun DetailsMetaInfo(
             horizontalArrangement = spacedBy(16.dp),
         ) {
             DetailsMeta(
-                title = "Studio",
+                title = stringResource(R.string.header_studio),
                 values = studios
                     .take(5)
                     .ifEmpty { listOf("N/A") },
                 modifier = Modifier.weight(1F),
             )
             DetailsMeta(
-                title = "Genre",
+                title = stringResource(R.string.header_genre),
                 values = genres
                     .take(5)
                     .ifEmpty { listOf("N/A") },

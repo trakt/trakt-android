@@ -123,6 +123,14 @@
     <string name="button_text_remove_from_history">Remove from Watched</string>
     <string name="button_text_shows">Shows</string>
     <string name="button_text_social">Social</string>
+    <string name="header_premiered">Premiered</string>
+    <string name="header_runtime">Runtime</string>
+    <string name="header_country">Country</string>
+    <string name="header_language">Language</string>
+    <string name="header_status">Status</string>
+    <string name="header_original_title">Original Title</string>
+    <string name="header_studio">Studio</string>
+    <string name="header_genre">Genre</string>
     <string name="text_info_list_removed">Removed from list.</string>
     <string name="button_text_drop_show">Drop show</string>
     <string name="button_text_toggle_search_media">Media</string>
