@@ -129,6 +129,7 @@ internal fun MovieDetailsContent(
                     DetailsHeader(
                         movie = movie,
                         ratings = state.movieRatings,
+                        playsCount = state.movieProgress?.plays,
                         onBackClick = onBackClick,
                         onTrailerClick = {
                             movie.trailer?.let { uriHandler.openUri(it) }
@@ -144,6 +145,9 @@ internal fun MovieDetailsContent(
                     }
                     DetailsActions(
                         primaryEnabled = isReleased,
+                        enabled = !state.loadingProgress.isLoading,
+                        loading = state.loadingProgress.isLoading,
+                        hasLists = state.movieProgress?.watchlist,
                         onPrimaryClick = {
                         },
                         modifier = Modifier
@@ -160,7 +164,7 @@ internal fun MovieDetailsContent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 18.dp)
-                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
                     )
                 }
 
@@ -171,7 +175,7 @@ internal fun MovieDetailsContent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 22.dp)
-                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
                     )
                 }
 
@@ -203,7 +207,7 @@ private fun DetailsOverview(
         modifier = modifier
             .onClick {
                 isCollapsed = !isCollapsed
-            }
+            },
     )
 }
 
@@ -216,7 +220,7 @@ private fun DetailsMeta(
     var isCollapsed by remember { mutableStateOf(true) }
     Box(
         modifier = modifier
-            .animateContentSize()
+            .animateContentSize(),
     ) {
         if (isCollapsed) {
             Text(
@@ -239,7 +243,7 @@ private fun DetailsMeta(
                     .padding(vertical = 9.dp)
                     .onClick {
                         isCollapsed = false
-                    }
+                    },
             )
         } else {
             DetailsMetaInfo(

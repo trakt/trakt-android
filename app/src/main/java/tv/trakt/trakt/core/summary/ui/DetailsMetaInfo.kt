@@ -40,7 +40,7 @@ internal fun DetailsMetaInfo(
         titleOriginal = movie.titleOriginal,
         country = movie.country,
         genres = movie.genres,
-        studios = movieStudios ?: EmptyList
+        studios = movieStudios ?: EmptyList,
     )
 }
 
@@ -54,7 +54,7 @@ internal fun DetailsMetaInfo(
     titleOriginal: String? = null,
     languages: ImmutableList<String> = EmptyList,
     genres: ImmutableList<String> = EmptyList,
-    studios: ImmutableList<String> = EmptyList
+    studios: ImmutableList<String> = EmptyList,
 ) {
     val runtimeString = remember(runtime) {
         runtime?.inWholeMinutes?.durationFormat()
@@ -92,7 +92,7 @@ internal fun DetailsMetaInfo(
             DetailsMeta(
                 title = "Runtime",
                 values = listOf(runtimeString ?: "N/A"),
-                modifier = Modifier.weight(1F)
+                modifier = Modifier.weight(1F),
             )
         }
 
@@ -107,7 +107,7 @@ internal fun DetailsMetaInfo(
             DetailsMeta(
                 title = "Language",
                 values = languagesStrings.ifEmpty { listOf("N/A") },
-                modifier = Modifier.weight(1F)
+                modifier = Modifier.weight(1F),
             )
         }
 
@@ -122,7 +122,7 @@ internal fun DetailsMetaInfo(
             DetailsMeta(
                 title = "Original Title",
                 values = listOf(titleOriginal ?: "N/A"),
-                modifier = Modifier.weight(1F)
+                modifier = Modifier.weight(1F),
             )
         }
 
@@ -141,10 +141,9 @@ internal fun DetailsMetaInfo(
                 values = genres
                     .take(5)
                     .ifEmpty { listOf("N/A") },
-                modifier = Modifier.weight(1F)
+                modifier = Modifier.weight(1F),
             )
         }
-
     }
 }
 
@@ -187,7 +186,7 @@ internal fun DetailsMeta(
 private fun Preview() {
     TraktTheme {
         DetailsMetaInfo(
-            movie = PreviewData.movie1
+            movie = PreviewData.movie1,
         )
     }
 }

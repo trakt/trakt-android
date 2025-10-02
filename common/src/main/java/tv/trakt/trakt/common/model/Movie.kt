@@ -74,7 +74,7 @@ fun Companion.fromDto(dto: MovieDto): Movie {
             else -> null
         },
         country = dto.country,
-        languages = (dto.languages ?: emptyList()).toImmutableList()
+        languages = (dto.languages ?: emptyList()).toImmutableList(),
     )
 }
 

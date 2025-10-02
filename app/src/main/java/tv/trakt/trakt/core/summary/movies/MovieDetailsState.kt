@@ -11,6 +11,13 @@ internal data class MovieDetailsState(
     val movie: Movie? = null,
     val movieRatings: ExternalRating? = null,
     val movieStudios: ImmutableList<String>? = null,
+    val movieProgress: ProgressState? = null,
     val loading: LoadingState = LoadingState.IDLE,
+    val loadingProgress: LoadingState = LoadingState.IDLE,
     val error: Exception? = null,
-)
+) {
+    data class ProgressState(
+        val plays: Int,
+        val watchlist: Boolean,
+    )
+}

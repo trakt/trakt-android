@@ -94,7 +94,7 @@ internal object PreviewData {
         status = "Canceled",
         credits = 2,
         country = "us",
-        languages = listOf("en", "de").toImmutableList()
+        languages = listOf("en", "de").toImmutableList(),
     )
 
     val movie2 = movie1.copy(

@@ -145,7 +145,7 @@ internal class HomeWatchlistViewModel(
     }
 
     fun addToHistory(movieId: TraktId) {
-        if (processingJob != null) {
+        if (processingJob?.isActive == true) {
             return
         }
         processingJob = viewModelScope.launch {

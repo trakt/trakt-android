@@ -35,6 +35,7 @@ internal fun DetailsActions(
     enabled: Boolean = true,
     primaryEnabled: Boolean = true,
     loading: Boolean = false,
+    hasLists: Boolean? = false,
     onPrimaryClick: (() -> Unit)? = null,
     onSecondaryClick: (() -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
@@ -91,7 +92,10 @@ internal fun DetailsActions(
             }
 
             Icon(
-                painter = painterResource(R.drawable.ic_plus_round),
+                painter = when {
+                    hasLists == true -> painterResource(R.drawable.ic_lists_check)
+                    else -> painterResource(R.drawable.ic_plus_round)
+                },
                 tint = TraktTheme.colors.primaryButtonContent,
                 contentDescription = null,
                 modifier = Modifier
@@ -102,6 +106,10 @@ internal fun DetailsActions(
                     .size(21.dp)
                     .graphicsLayer {
                         translationX = -(0.5).dp.toPx()
+                        if (hasLists == true) {
+                            scaleX = 1.15F
+                            scaleY = 1.15F
+                        }
                     },
             )
 
@@ -135,6 +143,10 @@ private fun Preview() {
             modifier = Modifier.padding(16.dp),
         ) {
             DetailsActions()
+
+            DetailsActions(
+                hasLists = true,
+            )
 
             DetailsActions(
                 enabled = false,

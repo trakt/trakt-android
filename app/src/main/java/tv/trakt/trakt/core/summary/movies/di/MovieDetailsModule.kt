@@ -48,6 +48,9 @@ internal val movieDetailsModule = module {
             getDetailsUseCase = get(),
             getExternalRatingsUseCase = get(),
             getMovieStudiosUseCase = get(),
+            loadProgressUseCase = get(),
+            loadWatchlistUseCase = get(),
+            sessionManager = get(),
         )
     }
 }

@@ -43,6 +43,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun DetailsHeader(
     movie: Movie,
     ratings: ExternalRating?,
+    playsCount: Int?,
     onShareClick: () -> Unit,
     onTrailerClick: () -> Unit,
     onBackClick: () -> Unit,
@@ -59,7 +60,7 @@ internal fun DetailsHeader(
         credits = movie.credits,
         traktRatings = movie.rating.ratingPercent,
         ratings = ratings,
-        watchCount = null,
+        playsCount = playsCount,
         onBackClick = onBackClick,
         onTrailerClick = onTrailerClick,
         onShareClick = onShareClick,
@@ -79,7 +80,7 @@ private fun DetailsHeader(
     traktRatings: Int?,
     ratings: ExternalRating?,
     credits: Int?,
-    watchCount: Int?,
+    playsCount: Int?,
     onShareClick: () -> Unit,
     onTrailerClick: () -> Unit,
     onBackClick: () -> Unit,
@@ -125,7 +126,7 @@ private fun DetailsHeader(
                 )
 
                 Row(
-                    horizontalArrangement = spacedBy(4.dp),
+                    horizontalArrangement = spacedBy(6.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
@@ -140,9 +141,9 @@ private fun DetailsHeader(
                         )
                     }
 
-                    if (watchCount != null && watchCount > 0) {
+                    if (playsCount != null && playsCount > 0) {
                         PosterChip(
-                            text = watchCount.toString(),
+                            text = playsCount.toString(),
                             icon = painterResource(R.drawable.ic_check_round),
                             modifier = Modifier,
                         )
@@ -189,7 +190,7 @@ private fun DetailsHeader(
                 .padding(
                     top = when {
                         (credits != null && credits > 0) -> 26.dp
-                        (watchCount != null && watchCount > 0) -> 26.dp
+                        (playsCount != null && playsCount > 0) -> 26.dp
                         else -> 18.dp
                     },
                 ),
@@ -305,7 +306,7 @@ private fun DetailsHeaderPreview() {
             accentColor = null,
             traktRatings = 72,
             credits = 1,
-            watchCount = 2,
+            playsCount = 2,
             ratings = ExternalRating(
                 imdb = ExternalRating.ImdbRating(
                     rating = 7.5F,

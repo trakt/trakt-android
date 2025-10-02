@@ -36,6 +36,14 @@ internal class LoadUserProgressUseCase(
         return localSource.isMoviesLoaded() && localSource.isShowsLoaded()
     }
 
+    suspend fun isShowsLoaded(): Boolean {
+        return localSource.isShowsLoaded()
+    }
+
+    suspend fun isMoviesLoaded(): Boolean {
+        return localSource.isMoviesLoaded()
+    }
+
     suspend fun loadMoviesProgress(): ImmutableList<ProgressItem.MovieItem> {
         val response = remoteSource.getWatchedMovies()
             .asyncMap {
