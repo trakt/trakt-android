@@ -33,6 +33,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun DetailsActions(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    primaryEnabled: Boolean = true,
     loading: Boolean = false,
     onPrimaryClick: (() -> Unit)? = null,
     onSecondaryClick: (() -> Unit)? = null,
@@ -71,7 +72,7 @@ internal fun DetailsActions(
                     disabledContainerColor = TraktTheme.colors.primaryButtonContainerDisabled,
                     disabledContentColor = TraktTheme.colors.primaryButtonContentDisabled,
                 ),
-                enabled = enabled,
+                enabled = enabled && primaryEnabled,
                 onClick = onPrimaryClick ?: {},
             ) {
                 if (!loading) {

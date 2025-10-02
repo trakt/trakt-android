@@ -22,19 +22,27 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight.Companion.W400
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.summary.ui.DetailsActions
@@ -135,6 +143,10 @@ internal fun MovieDetailsContent(
                 }
 
                 item {
+                    DetailsDescription(movie.overview)
+                }
+
+                item {
                     Spacer(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -144,6 +156,28 @@ internal fun MovieDetailsContent(
             }
         }
     }
+}
+
+@Composable
+private fun DetailsDescription(
+    description: String? = null
+) {
+    var isCollapsed by remember { mutableStateOf(true) }
+    Text(
+        text = description ?: stringResource(R.string.text_overview_placeholder),
+        style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W400),
+        color = TraktTheme.colors.textSecondary,
+        maxLines = if (isCollapsed) 6 else Int.MAX_VALUE,
+        textAlign = TextAlign.Start,
+        overflow = Ellipsis,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 18.dp)
+            .padding(horizontal = 20.dp)
+            .onClick {
+                isCollapsed = !isCollapsed
+            }
+    )
 }
 
 private fun shareMovie(
