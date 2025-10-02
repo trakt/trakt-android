@@ -129,6 +129,10 @@ internal fun MovieDetailsContent(
                     DetailsHeader(
                         movie = movie,
                         ratings = state.movieRatings,
+                        creditsCount = when {
+                            state.movieProgress?.plays != null -> null
+                            else -> movie.credits
+                        },
                         playsCount = state.movieProgress?.plays,
                         onBackClick = onBackClick,
                         onTrailerClick = {
@@ -174,7 +178,7 @@ internal fun MovieDetailsContent(
                         movieStudios = state.movieStudios,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 22.dp)
+                            .padding(top = 21.dp)
                             .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
                     )
                 }

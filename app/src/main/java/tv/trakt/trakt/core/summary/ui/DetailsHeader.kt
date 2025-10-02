@@ -44,6 +44,7 @@ internal fun DetailsHeader(
     movie: Movie,
     ratings: ExternalRating?,
     playsCount: Int?,
+    creditsCount: Int?,
     onShareClick: () -> Unit,
     onTrailerClick: () -> Unit,
     onBackClick: () -> Unit,
@@ -57,10 +58,10 @@ internal fun DetailsHeader(
         images = movie.images,
         trailer = movie.trailer?.toUri(),
         accentColor = movie.colors?.colors?.first,
-        credits = movie.credits,
         traktRatings = movie.rating.ratingPercent,
         ratings = ratings,
         playsCount = playsCount,
+        creditsCount = creditsCount,
         onBackClick = onBackClick,
         onTrailerClick = onTrailerClick,
         onShareClick = onShareClick,
@@ -79,7 +80,7 @@ private fun DetailsHeader(
     accentColor: Color?,
     traktRatings: Int?,
     ratings: ExternalRating?,
-    credits: Int?,
+    creditsCount: Int?,
     playsCount: Int?,
     onShareClick: () -> Unit,
     onTrailerClick: () -> Unit,
@@ -134,16 +135,19 @@ private fun DetailsHeader(
                             translationY = 11.dp.toPx()
                         },
                 ) {
-                    if (credits != null && credits > 0) {
+                    if (creditsCount != null && creditsCount > 0) {
                         PosterChip(
-                            text = "${stringResource(R.string.header_post_credits)} • $credits".uppercase(),
+                            text = "${stringResource(R.string.header_post_credits)} • $creditsCount".uppercase(),
                             modifier = Modifier,
                         )
                     }
 
                     if (playsCount != null && playsCount > 0) {
                         PosterChip(
-                            text = playsCount.toString(),
+                            text = when {
+                                playsCount > 1 -> playsCount.toString()
+                                else -> ""
+                            },
                             icon = painterResource(R.drawable.ic_check_round),
                             modifier = Modifier,
                         )
@@ -189,7 +193,7 @@ private fun DetailsHeader(
             modifier = Modifier
                 .padding(
                     top = when {
-                        (credits != null && credits > 0) -> 26.dp
+                        (creditsCount != null && creditsCount > 0) -> 26.dp
                         (playsCount != null && playsCount > 0) -> 26.dp
                         else -> 18.dp
                     },
@@ -284,11 +288,13 @@ private fun PosterChip(
                 modifier = Modifier.size(12.dp),
             )
         }
-        Text(
-            text = text,
-            color = Color.Black,
-            style = TraktTheme.typography.meta,
-        )
+        if (text.isNotBlank()) {
+            Text(
+                text = text,
+                color = Color.Black,
+                style = TraktTheme.typography.meta,
+            )
+        }
     }
 }
 
@@ -305,8 +311,8 @@ private fun DetailsHeaderPreview() {
             trailer = null,
             accentColor = null,
             traktRatings = 72,
-            credits = 1,
             playsCount = 2,
+            creditsCount = 2,
             ratings = ExternalRating(
                 imdb = ExternalRating.ImdbRating(
                     rating = 7.5F,
