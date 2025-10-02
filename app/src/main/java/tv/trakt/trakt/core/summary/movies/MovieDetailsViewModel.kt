@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -22,11 +23,13 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.summary.movies.navigation.MovieDetailsDestination
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieRatingsUseCase
+import tv.trakt.trakt.core.summary.movies.usecases.GetMovieStudiosUseCase
 
 internal class MovieDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val getDetailsUseCase: GetMovieDetailsUseCase,
     private val getExternalRatingsUseCase: GetMovieRatingsUseCase,
+    private val getMovieStudiosUseCase: GetMovieStudiosUseCase
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<MovieDetailsDestination>()
     private val movieId = destination.movieId.toTraktId()
@@ -35,6 +38,7 @@ internal class MovieDetailsViewModel(
 
     private val movieState = MutableStateFlow(initialState.movie)
     private val movieRatingsState = MutableStateFlow(initialState.movieRatings)
+    private val movieStudiosState = MutableStateFlow(initialState.movieStudios)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -45,19 +49,17 @@ internal class MovieDetailsViewModel(
     private fun loadMovie() {
         viewModelScope.launch {
             try {
-                var movie = getDetailsUseCase.getLocalMovie(
-                    movieId = movieId,
-                )
-
+                var movie = getDetailsUseCase.getLocalMovie(movieId)
                 if (movie == null) {
                     loadingState.update { LOADING }
                     movie = getDetailsUseCase.getMovie(
                         movieId = movieId,
                     )
                 }
-
                 movieState.update { movie }
+
                 loadRatings()
+                loadStudios()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -83,17 +85,35 @@ internal class MovieDetailsViewModel(
         }
     }
 
+    private fun loadStudios() {
+        viewModelScope.launch {
+            try {
+                movieStudiosState.update {
+                    getMovieStudiosUseCase.getStudios(movieId)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.w(error)
+                }
+            }
+        }
+    }
+
+
+    @Suppress("UNCHECKED_CAST")
     val state: StateFlow<MovieDetailsState> = combine(
         movieState,
         movieRatingsState,
+        movieStudiosState,
         loadingState,
         errorState,
     ) { state ->
         MovieDetailsState(
             movie = state[0] as Movie?,
             movieRatings = state[1] as ExternalRating?,
-            loading = state[2] as LoadingState,
-            error = state[3] as? Exception,
+            movieStudios = state[2] as ImmutableList<String>?,
+            loading = state[3] as LoadingState,
+            error = state[4] as? Exception,
         )
     }.stateIn(
         scope = viewModelScope,

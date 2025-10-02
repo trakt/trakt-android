@@ -4,8 +4,10 @@ package tv.trakt.trakt.core.summary.movies
 
 import android.content.Context
 import android.content.Intent
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,6 +23,7 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,14 +43,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.DetailsHeader
+import tv.trakt.trakt.core.summary.ui.DetailsMetaInfo
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
@@ -143,7 +150,24 @@ internal fun MovieDetailsContent(
                 }
 
                 item {
-                    DetailsDescription(movie.overview)
+                    DetailsOverview(
+                        overview = movie.overview,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 18.dp)
+                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+                    )
+                }
+
+                item {
+                    DetailsMeta(
+                        movie = movie,
+                        movieStudios = state.movieStudios,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 22.dp)
+                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+                    )
                 }
 
                 item {
@@ -159,25 +183,66 @@ internal fun MovieDetailsContent(
 }
 
 @Composable
-private fun DetailsDescription(
-    description: String? = null
+private fun DetailsOverview(
+    modifier: Modifier = Modifier,
+    overview: String? = null,
 ) {
     var isCollapsed by remember { mutableStateOf(true) }
     Text(
-        text = description ?: stringResource(R.string.text_overview_placeholder),
+        text = overview ?: stringResource(R.string.text_overview_placeholder),
         style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W400),
         color = TraktTheme.colors.textSecondary,
         maxLines = if (isCollapsed) 6 else Int.MAX_VALUE,
         textAlign = TextAlign.Start,
         overflow = Ellipsis,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 18.dp)
-            .padding(horizontal = 20.dp)
+        modifier = modifier
             .onClick {
                 isCollapsed = !isCollapsed
             }
     )
+}
+
+@Composable
+private fun DetailsMeta(
+    modifier: Modifier = Modifier,
+    movie: Movie,
+    movieStudios: ImmutableList<String>?,
+) {
+    var isCollapsed by remember { mutableStateOf(true) }
+    Box(
+        modifier = modifier
+            .animateContentSize()
+    ) {
+        if (isCollapsed) {
+            Text(
+                text = "View Details".uppercase(),
+                textAlign = TextAlign.Center,
+                style = TraktTheme.typography.buttonPrimary
+                    .copy(fontSize = 14.sp),
+                color = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = TraktTheme.colors.backgroundPrimary,
+                        shape = RoundedCornerShape(100),
+                    )
+                    .border(
+                        width = (1.5).dp,
+                        color = Shade500,
+                        shape = RoundedCornerShape(100),
+                    )
+                    .padding(vertical = 9.dp)
+                    .onClick {
+                        isCollapsed = false
+                    }
+            )
+        } else {
+            DetailsMetaInfo(
+                movie = movie,
+                movieStudios = movieStudios,
+            )
+        }
+    }
 }
 
 private fun shareMovie(

@@ -130,4 +130,12 @@ internal class MoviesApiClient(
 
         return response.body()
     }
+
+    override suspend fun getStudios(movieId: TraktId): List<String> {
+        val response = moviesApi.getMoviesStudios(
+            id = movieId.value.toString(),
+        )
+
+        return response.body().map { it.name }
+    }
 }

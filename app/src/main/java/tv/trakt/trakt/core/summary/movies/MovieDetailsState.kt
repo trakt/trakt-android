@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.summary.movies
 
 import androidx.compose.runtime.Immutable
+import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Movie
@@ -9,6 +10,7 @@ import tv.trakt.trakt.common.model.Movie
 internal data class MovieDetailsState(
     val movie: Movie? = null,
     val movieRatings: ExternalRating? = null,
+    val movieStudios: ImmutableList<String>? = null,
     val loading: LoadingState = LoadingState.IDLE,
     val error: Exception? = null,
 )

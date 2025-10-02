@@ -36,6 +36,8 @@ data class Movie(
     val status: String?,
     val runtime: Duration?,
     val credits: Int?,
+    val country: String?,
+    val languages: ImmutableList<String>,
 ) {
     companion object
 }
@@ -71,6 +73,8 @@ fun Companion.fromDto(dto: MovieDto): Movie {
             dto.afterCredits == true || dto.duringCredits == true -> 1
             else -> null
         },
+        country = dto.country,
+        languages = (dto.languages ?: emptyList()).toImmutableList()
     )
 }
 
@@ -100,6 +104,8 @@ fun Companion.fromDto(dto: RecommendedMovieDto): Movie {
         status = dto.status,
         trailer = dto.trailer,
         runtime = dto.runtime?.minutes,
+        languages = (dto.languages ?: emptyList()).toImmutableList(),
+        country = dto.country,
         credits = when {
             dto.afterCredits == true && dto.duringCredits == true -> 2
             dto.afterCredits == true || dto.duringCredits == true -> 1
@@ -134,6 +140,8 @@ fun Companion.fromDto(dto: MovieLikesDto): Movie {
         status = dto.status,
         runtime = dto.runtime?.minutes,
         trailer = dto.trailer,
+        languages = (dto.languages ?: emptyList()).toImmutableList(),
+        country = dto.country,
         credits = when {
             dto.afterCredits == true && dto.duringCredits == true -> 2
             dto.afterCredits == true || dto.duringCredits == true -> 1

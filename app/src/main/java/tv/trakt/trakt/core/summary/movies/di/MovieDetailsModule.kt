@@ -9,6 +9,7 @@ import tv.trakt.trakt.core.summary.movies.data.local.MovieRatingsLocalDataSource
 import tv.trakt.trakt.core.summary.movies.data.local.MovieRatingsStorage
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieRatingsUseCase
+import tv.trakt.trakt.core.summary.movies.usecases.GetMovieStudiosUseCase
 
 internal val movieDetailsDataModule = module {
     single<MovieLocalDataSource> {
@@ -35,11 +36,18 @@ internal val movieDetailsModule = module {
         )
     }
 
+    factory {
+        GetMovieStudiosUseCase(
+            remoteSource = get(),
+        )
+    }
+
     viewModel {
         MovieDetailsViewModel(
             savedStateHandle = get(),
             getDetailsUseCase = get(),
             getExternalRatingsUseCase = get(),
+            getMovieStudiosUseCase = get(),
         )
     }
 }

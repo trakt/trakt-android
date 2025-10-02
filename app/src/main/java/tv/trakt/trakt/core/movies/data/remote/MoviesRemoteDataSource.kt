@@ -31,4 +31,6 @@ internal interface MoviesRemoteDataSource {
     suspend fun getDetails(movieId: TraktId): MovieDto
 
     suspend fun getExternalRatings(movieId: TraktId): ExternalRatingsDto
+
+    suspend fun getStudios(movieId: TraktId): List<String>
 }

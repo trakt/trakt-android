@@ -93,6 +93,8 @@ internal object PreviewData {
         trailer = "https://youtube.com/watch?v=abcdefg",
         status = "Canceled",
         credits = 2,
+        country = "us",
+        languages = listOf("en", "de").toImmutableList()
     )
 
     val movie2 = movie1.copy(

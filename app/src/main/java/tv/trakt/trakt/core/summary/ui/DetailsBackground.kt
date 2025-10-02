@@ -48,7 +48,7 @@ internal fun DetailsBackground(
     val grayGradient = remember {
         verticalGradient(
             colors = listOf(
-                background.copy(alpha = 0.64F),
+                background.copy(alpha = 0.63F),
                 background,
             ),
         )
@@ -57,7 +57,7 @@ internal fun DetailsBackground(
     val colorGradient = remember {
         verticalGradient(
             colors = listOf(
-                color?.copy(alpha = 0.64F) ?: Color.Transparent,
+                color?.copy(alpha = 0.63F) ?: Color.Transparent,
                 background,
             ),
         )
