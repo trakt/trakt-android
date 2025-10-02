@@ -27,15 +27,19 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
@@ -46,6 +50,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -60,6 +67,7 @@ import tv.trakt.trakt.core.summary.ui.DetailsMetaInfo
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -70,14 +78,20 @@ internal fun MovieDetailsScreen(
 ) {
     val context = LocalContext.current
     val uriHandler = LocalUriHandler.current
+    val haptic = LocalHapticFeedback.current
+    val snack = LocalSnackbarState.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    val scope = rememberCoroutineScope()
     var contextSheet by remember { mutableStateOf<Movie?>(null) }
 
     MovieDetailsContent(
         state = state,
         modifier = modifier,
+        onTrackClick = {
+            viewModel.addToWatched()
+        },
         onShareClick = {
             state.movie?.let { shareMovie(it, context) }
         },
@@ -102,12 +116,30 @@ internal fun MovieDetailsScreen(
             contextSheet = null
         },
     )
+
+    LaunchedEffect(state.info) {
+        if (state.info == null) {
+            return@LaunchedEffect
+        }
+        with(scope) {
+            val job = launch {
+                state.info?.get(context)?.let {
+                    snack.showSnackbar(it)
+                }
+            }
+            delay(SNACK_DURATION_SHORT)
+            job.cancel()
+        }
+        haptic.performHapticFeedback(Confirm)
+        viewModel.clearInfo()
+    }
 }
 
 @Composable
 internal fun MovieDetailsContent(
     state: MovieDetailsState,
     modifier: Modifier = Modifier,
+    onTrackClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onTrailerClick: (() -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
@@ -178,8 +210,7 @@ internal fun MovieDetailsContent(
                         enabled = state.user != null && !state.loadingProgress.isLoading,
                         loading = state.loadingProgress.isLoading,
                         hasLists = state.movieProgress?.watchlist,
-                        onPrimaryClick = {
-                        },
+                        onPrimaryClick = onTrackClick,
                         onMoreClick = onMoreClick,
                         modifier = Modifier
                             .align(Alignment.Center)

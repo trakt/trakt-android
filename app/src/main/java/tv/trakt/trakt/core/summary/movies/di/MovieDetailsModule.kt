@@ -50,6 +50,8 @@ internal val movieDetailsModule = module {
             getMovieStudiosUseCase = get(),
             loadProgressUseCase = get(),
             loadWatchlistUseCase = get(),
+            updateMovieHistoryUseCase = get(),
+            userWatchlistLocalSource = get(),
             sessionManager = get(),
         )
     }

@@ -117,6 +117,7 @@ private fun MovieDetailsContextViewContent(
         )
 
         ActionButtons(
+            trailerEnabled = !movie.trailer.isNullOrBlank(),
             onShareClick = onShareClick,
             onTrailerClick = onTrailerClick,
             modifier = Modifier
@@ -128,6 +129,7 @@ private fun MovieDetailsContextViewContent(
 @Composable
 private fun ActionButtons(
     modifier: Modifier = Modifier,
+    trailerEnabled: Boolean = true,
     onShareClick: (() -> Unit)? = null,
     onTrailerClick: (() -> Unit)? = null,
 ) {
@@ -149,10 +151,11 @@ private fun ActionButtons(
             onClick = onShareClick ?: {},
         )
         GhostButton(
+            enabled = trailerEnabled,
             text = stringResource(R.string.button_text_trailer),
             icon = painterResource(R.drawable.ic_trailer),
             iconSize = 21.dp,
-            iconSpace = 16.dp,
+            iconSpace = 15.dp,
             onClick = onTrailerClick ?: {},
         )
     }

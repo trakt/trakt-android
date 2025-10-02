@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -34,6 +35,7 @@ import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCas
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
+import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
 import java.time.Instant
 
@@ -43,6 +45,7 @@ internal class HomeWatchlistViewModel(
     private val addHistoryUseCase: AddHomeHistoryUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val allWatchlistSource: AllWatchlistLocalDataSource,
+    private val userWatchlistSource: UserWatchlistLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
@@ -61,7 +64,7 @@ internal class HomeWatchlistViewModel(
     init {
         loadData()
         observeUser()
-        observeAllWatchlist()
+        observeWatchlist()
     }
 
     private fun observeUser() {
@@ -78,8 +81,11 @@ internal class HomeWatchlistViewModel(
         }
     }
 
-    private fun observeAllWatchlist() {
-        allWatchlistSource.observeUpdates()
+    private fun observeWatchlist() {
+        merge(
+            allWatchlistSource.observeUpdates(),
+            userWatchlistSource.observeUpdates(),
+        )
             .distinctUntilChanged()
             .debounce(250)
             .onEach {
