@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.user.usecase.watchlist
+package tv.trakt.trakt.core.user.usecase.lists
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList

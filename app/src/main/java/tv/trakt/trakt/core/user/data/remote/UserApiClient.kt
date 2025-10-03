@@ -173,7 +173,7 @@ internal class UserApiClient(
 
     override suspend fun getPersonalListItems(
         listId: TraktId,
-        limit: Int,
+        limit: Int?,
         page: Int,
         extended: String,
     ): List<ListItemDto> {
@@ -190,7 +190,10 @@ internal class UserApiClient(
             startDate = null,
             endDate = null,
             page = page,
-            limit = limit.toString(),
+            limit = when {
+                limit == null -> "all"
+                else -> limit.toString()
+            },
         )
 
         return response.body()

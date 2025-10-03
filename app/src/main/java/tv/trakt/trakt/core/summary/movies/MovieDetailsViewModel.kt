@@ -24,6 +24,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.ExternalRating
+import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
@@ -33,8 +34,9 @@ import tv.trakt.trakt.core.summary.movies.usecases.GetMovieRatingsUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieStudiosUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
+import tv.trakt.trakt.core.user.usecase.lists.LoadUserListsUseCase
+import tv.trakt.trakt.core.user.usecase.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
-import tv.trakt.trakt.core.user.usecase.watchlist.LoadUserWatchlistUseCase
 import tv.trakt.trakt.resources.R
 
 internal class MovieDetailsViewModel(
@@ -44,6 +46,7 @@ internal class MovieDetailsViewModel(
     private val getMovieStudiosUseCase: GetMovieStudiosUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
+    private val loadListsUseCase: LoadUserListsUseCase,
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
     private val sessionManager: SessionManager,
@@ -115,6 +118,7 @@ internal class MovieDetailsViewModel(
             }
             try {
                 loadingProgress.update { LOADING }
+
                 coroutineScope {
                     val progressAsync = async {
                         if (!loadProgressUseCase.isMoviesLoaded()) {
@@ -126,8 +130,14 @@ internal class MovieDetailsViewModel(
                             loadWatchlistUseCase.loadWatchlist()
                         }
                     }
+                    val listsAsync = async {
+                        if (!loadListsUseCase.isLoaded()) {
+                            loadListsUseCase.loadLists()
+                        }
+                    }
                     progressAsync.await()
                     watchlistAsync.await()
+                    listsAsync.await()
                 }
 
                 coroutineScope {
@@ -145,13 +155,24 @@ internal class MovieDetailsViewModel(
                             }
                     }
 
+                    val listsAsync = async {
+                        loadListsUseCase.loadLocalLists()
+                            .values
+                            .flatten()
+                            .firstOrNull {
+                                it.type == MOVIE && it.id == movieId
+                            }
+                    }
+
                     val progress = progressAsync.await()
                     val watchlist = watchlistAsync.await()
+                    val lists = listsAsync.await()
 
                     movieProgressState.update {
                         MovieDetailsState.ProgressState(
                             plays = progress?.plays ?: 0,
-                            watchlist = watchlist != null,
+                            inWatchlist = watchlist != null,
+                            inLists = lists != null,
                         )
                     }
                 }
@@ -213,7 +234,7 @@ internal class MovieDetailsViewModel(
                 movieProgressState.update {
                     it?.copy(
                         plays = it.plays + 1,
-                        watchlist = false,
+                        inWatchlist = false,
                     )
                 }
                 infoState.update {

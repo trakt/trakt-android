@@ -209,7 +209,7 @@ internal fun MovieDetailsContent(
                         primaryEnabled = isReleased,
                         enabled = state.user != null && !state.loadingProgress.isLoading,
                         loading = state.loadingProgress.isLoading,
-                        hasLists = state.movieProgress?.watchlist,
+                        hasLists = state.movieProgress?.inAnyList,
                         onPrimaryClick = onTrackClick,
                         onMoreClick = onMoreClick,
                         modifier = Modifier

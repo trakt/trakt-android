@@ -132,7 +132,7 @@ private fun DetailsHeader(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .graphicsLayer {
-                            translationY = 11.dp.toPx()
+                            translationY = 10.dp.toPx()
                         },
                 ) {
                     if (creditsCount != null && creditsCount > 0) {
@@ -191,13 +191,7 @@ private fun DetailsHeader(
             traktRatings = traktRatings,
             externalRatings = ratings,
             modifier = Modifier
-                .padding(
-                    top = when {
-                        (creditsCount != null && creditsCount > 0) -> 26.dp
-                        (playsCount != null && playsCount > 0) -> 26.dp
-                        else -> 18.dp
-                    },
-                ),
+                .padding(top = 20.dp),
         )
 
         Column(
@@ -211,7 +205,7 @@ private fun DetailsHeader(
                 ),
         ) {
             val genresText = remember(genres) {
-                genres.take(3).joinToString(", ") { genre ->
+                genres.take(3).joinToString(" / ") { genre ->
                     genre.replaceFirstChar {
                         it.uppercaseChar()
                     }

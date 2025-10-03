@@ -58,7 +58,7 @@ internal interface UserRemoteDataSource {
 
     suspend fun getPersonalListItems(
         listId: TraktId,
-        limit: Int,
+        limit: Int?,
         page: Int = 1,
         extended: String,
     ): List<ListItemDto>

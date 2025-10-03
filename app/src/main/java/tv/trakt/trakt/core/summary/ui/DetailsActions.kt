@@ -96,7 +96,10 @@ internal fun DetailsActions(
                     hasLists == true -> painterResource(R.drawable.ic_lists_check)
                     else -> painterResource(R.drawable.ic_plus_round)
                 },
-                tint = TraktTheme.colors.primaryButtonContent,
+                tint = when {
+                    enabled -> TraktTheme.colors.primaryButtonContent
+                    else -> TraktTheme.colors.primaryButtonContainerDisabled
+                },
                 contentDescription = null,
                 modifier = Modifier
                     .onClick(
@@ -115,7 +118,10 @@ internal fun DetailsActions(
 
             Icon(
                 painter = painterResource(R.drawable.ic_more_vertical),
-                tint = TraktTheme.colors.primaryButtonContent,
+                tint = when {
+                    enabled -> TraktTheme.colors.primaryButtonContent
+                    else -> TraktTheme.colors.primaryButtonContainerDisabled
+                },
                 contentDescription = null,
                 modifier = Modifier
                     .onClick(

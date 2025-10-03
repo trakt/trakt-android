@@ -26,8 +26,8 @@ import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowWatchlistUseCase
 import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
+import tv.trakt.trakt.core.user.usecase.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
-import tv.trakt.trakt.core.user.usecase.watchlist.LoadUserWatchlistUseCase
 
 internal class ShowContextViewModel(
     private val show: Show,

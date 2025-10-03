@@ -5,6 +5,8 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
 import tv.trakt.trakt.core.user.ProfileViewModel
+import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
+import tv.trakt.trakt.core.user.data.local.UserListsStorage
 import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserProgressStorage
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
@@ -13,8 +15,9 @@ import tv.trakt.trakt.core.user.data.remote.UserApiClient
 import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 import tv.trakt.trakt.core.user.usecase.GetUserProfileUseCase
 import tv.trakt.trakt.core.user.usecase.LogoutUserUseCase
+import tv.trakt.trakt.core.user.usecase.lists.LoadUserListsUseCase
+import tv.trakt.trakt.core.user.usecase.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
-import tv.trakt.trakt.core.user.usecase.watchlist.LoadUserWatchlistUseCase
 
 internal val profileDataModule = module {
     single<UserRemoteDataSource> {
@@ -33,6 +36,10 @@ internal val profileDataModule = module {
     single<UserProgressLocalDataSource> {
         UserProgressStorage()
     }
+
+    single<UserListsLocalDataSource> {
+        UserListsStorage()
+    }
 }
 
 internal val profileModule = module {
@@ -45,6 +52,13 @@ internal val profileModule = module {
 
     factory {
         LoadUserWatchlistUseCase(
+            remoteSource = get(),
+            localSource = get(),
+        )
+    }
+
+    factory {
+        LoadUserListsUseCase(
             remoteSource = get(),
             localSource = get(),
         )
