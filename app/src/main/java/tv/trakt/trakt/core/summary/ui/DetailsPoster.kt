@@ -72,7 +72,7 @@ internal fun DetailsPoster(
                             radius = 48.dp,
                             spread = 8.dp,
                             offset = DpOffset(0.dp, 12.dp),
-                            color = color?.copy(alpha = 0.22F) ?: Color.Transparent,
+                            color = color?.copy(alpha = 0.24F) ?: Color.Transparent,
                         ),
                     )
                     .fillMaxSize()
