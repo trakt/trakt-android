@@ -280,7 +280,6 @@ internal class MovieDetailsViewModel(
             }
             try {
                 loadingProgress.update { LOADING }
-                delay(5000)
 
                 updateMovieWatchlistUseCase.addToWatchlist(movieId)
                 userWatchlistLocalSource.addMovies(
@@ -320,7 +319,6 @@ internal class MovieDetailsViewModel(
             }
             try {
                 loadingProgress.update { LOADING }
-                delay(5000)
 
                 updateMovieWatchlistUseCase.removeFromWatchlist(movieId)
                 userWatchlistLocalSource.removeMovies(
