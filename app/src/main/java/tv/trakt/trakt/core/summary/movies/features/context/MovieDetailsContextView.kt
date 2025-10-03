@@ -143,11 +143,12 @@ private fun ActionButtons(
         GhostButton(
             text = stringResource(R.string.button_text_share),
             icon = painterResource(R.drawable.ic_share),
-            iconSize = 26.dp,
+            iconSize = 25.dp,
             iconSpace = 14.dp,
-            modifier = Modifier.graphicsLayer {
-                translationX = -3.dp.toPx()
-            },
+            modifier = Modifier
+                .graphicsLayer {
+                    translationX = -6.dp.toPx()
+                },
             onClick = onShareClick ?: {},
         )
         GhostButton(
@@ -156,6 +157,10 @@ private fun ActionButtons(
             icon = painterResource(R.drawable.ic_trailer),
             iconSize = 21.dp,
             iconSpace = 15.dp,
+            modifier = Modifier
+                .graphicsLayer {
+                    translationX = -3.dp.toPx()
+                },
             onClick = onTrailerClick ?: {},
         )
     }

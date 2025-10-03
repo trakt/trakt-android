@@ -3,6 +3,7 @@ package tv.trakt.trakt.ui.components.buttons
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
@@ -40,6 +41,7 @@ internal fun GhostButton(
     enabled: Boolean = true,
     loading: Boolean = false,
     corner: Dp = 8.dp,
+    fillWidth: Boolean = true,
     containerColor: Color = Color.Transparent,
     contentColor: Color = TraktTheme.colors.primaryButtonContent,
     disabledContainerColor: Color = Color.Transparent,
@@ -47,10 +49,10 @@ internal fun GhostButton(
 ) {
     Button(
         modifier = modifier
-            .height(iconSize + 8.dp),
+            .height(iconSize + 16.dp),
         enabled = enabled,
         contentPadding = PaddingValues(
-            horizontal = 4.dp,
+            horizontal = 8.dp,
             vertical = 0.dp,
         ),
         shape = RoundedCornerShape(corner),
@@ -65,6 +67,8 @@ internal fun GhostButton(
     ) {
         Row(
             verticalAlignment = CenterVertically,
+            modifier = Modifier
+                .then(if (fillWidth) Modifier.fillMaxWidth() else Modifier),
         ) {
             when {
                 loading -> {
@@ -129,7 +133,7 @@ private fun PreviewIcon() {
     TraktTheme {
         GhostButton(
             text = "Mark as something long",
-            icon = painterResource(id = R.drawable.ic_check),
+            icon = painterResource(id = R.drawable.ic_trailer),
         )
     }
 }

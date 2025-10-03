@@ -196,7 +196,7 @@ private fun MovieActionButtons(
                     iconSpace = 16.dp,
                     modifier = Modifier
                         .graphicsLayer {
-                            translationX = -3.dp.toPx()
+                            translationX = -6.dp.toPx()
                         },
                 )
             } else {
@@ -210,7 +210,7 @@ private fun MovieActionButtons(
                     icon = painterResource(R.drawable.ic_check_round),
                     modifier = Modifier
                         .graphicsLayer {
-                            translationX = -3.dp.toPx()
+                            translationX = -6.dp.toPx()
                         },
                 )
             }
@@ -229,7 +229,7 @@ private fun MovieActionButtons(
             },
             modifier = Modifier
                 .graphicsLayer {
-                    translationX = -3.dp.toPx()
+                    translationX = -6.dp.toPx()
                 },
         )
     }

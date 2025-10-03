@@ -228,7 +228,7 @@ private fun ActionButtons(
                     iconSpace = 16.dp,
                     modifier = Modifier
                         .graphicsLayer {
-                            translationX = -3.dp.toPx()
+                            translationX = -6.dp.toPx()
                         },
                 )
             } else {
@@ -242,7 +242,7 @@ private fun ActionButtons(
                     icon = painterResource(R.drawable.ic_check_round),
                     modifier = Modifier
                         .graphicsLayer {
-                            translationX = -3.dp.toPx()
+                            translationX = -6.dp.toPx()
                         },
                 )
             }
@@ -258,7 +258,7 @@ private fun ActionButtons(
             icon = painterResource(R.drawable.ic_minus),
             modifier = Modifier
                 .graphicsLayer {
-                    translationX = -3.dp.toPx()
+                    translationX = -6.dp.toPx()
                 },
         )
 
@@ -275,7 +275,7 @@ private fun ActionButtons(
             },
             modifier = Modifier
                 .graphicsLayer {
-                    translationX = -3.dp.toPx()
+                    translationX = -6.dp.toPx()
                 },
         )
     }

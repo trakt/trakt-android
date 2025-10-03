@@ -175,7 +175,7 @@ private fun UpNextItemContextViewContent(
                 icon = painterResource(R.drawable.ic_check_round),
                 modifier = Modifier
                     .graphicsLayer {
-                        translationX = -3.dp.toPx()
+                        translationX = -6.dp.toPx()
                     },
             )
 
@@ -189,7 +189,7 @@ private fun UpNextItemContextViewContent(
                 icon = painterResource(R.drawable.ic_drop),
                 modifier = Modifier
                     .graphicsLayer {
-                        translationX = -5.dp.toPx()
+                        translationX = -8.dp.toPx()
                     },
             )
         }
