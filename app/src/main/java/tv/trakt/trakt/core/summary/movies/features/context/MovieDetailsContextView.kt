@@ -84,7 +84,7 @@ private fun MovieDetailsContextViewContent(
         )
 
         Text(
-            text = "${movie.released?.year ?: movie.year} •  $genresText",
+            text = "${movie.released?.year ?: movie.year}  •  $genresText",
             color = TraktTheme.colors.textSecondary,
             style = TraktTheme.typography.paragraphSmaller,
             maxLines = 1,
