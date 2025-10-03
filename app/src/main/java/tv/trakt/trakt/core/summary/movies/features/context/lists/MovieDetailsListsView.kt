@@ -77,7 +77,6 @@ internal fun MovieDetailsListsView(
             movie.title,
         ),
     )
-
 }
 
 @Composable

@@ -25,11 +25,14 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight.Companion.W700
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
+import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
+import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Images
@@ -50,10 +53,32 @@ internal fun DetailsHeader(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val isReleased = remember {
+        movie.released?.isTodayOrBefore() ?: false
+    }
     DetailsHeader(
         title = movie.title,
         status = movie.status,
-        year = movie.released?.year ?: movie.year,
+        date = {
+            Text(
+                text = when {
+                    isReleased -> (movie.released?.year ?: movie.year).toString()
+                    else -> movie.released?.format(mediumDateFormat) ?: movie.year.toString()
+                },
+                color = when {
+                    isReleased -> TraktTheme.colors.textSecondary
+                    else -> TraktTheme.colors.textPrimary
+                },
+                style = when {
+                    isReleased -> TraktTheme.typography.paragraphSmaller
+                    else -> TraktTheme.typography.paragraphSmaller.copy(fontWeight = W700)
+                },
+                maxLines = 1,
+                modifier = Modifier.padding(
+                    end = if (!isReleased) 1.dp else 0.dp,
+                ),
+            )
+        },
         genres = movie.genres,
         images = movie.images,
         trailer = movie.trailer?.toUri(),
@@ -73,7 +98,7 @@ internal fun DetailsHeader(
 private fun DetailsHeader(
     title: String,
     genres: List<String>,
-    year: Int?,
+    date: @Composable (() -> Unit)?,
     images: Images?,
     status: String?,
     trailer: Uri?,
@@ -225,15 +250,30 @@ private fun DetailsHeader(
                 ),
             )
 
-            Text(
-                text = "$year  •  $genresText",
-                color = TraktTheme.colors.textSecondary,
-                style = TraktTheme.typography.paragraphSmaller,
-                maxLines = 1,
-                overflow = Ellipsis,
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = spacedBy(0.dp),
                 modifier = Modifier
                     .padding(top = 5.dp),
-            )
+            ) {
+                date?.let {
+                    date()
+                    Text(
+                        text = "  •  ",
+                        color = TraktTheme.colors.textSecondary,
+                        style = TraktTheme.typography.paragraphSmaller,
+                        modifier = Modifier
+                            .padding(horizontal = 1.dp),
+                    )
+                }
+                Text(
+                    text = genresText,
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.paragraphSmaller,
+                    maxLines = 1,
+                    overflow = Ellipsis,
+                )
+            }
 
             status?.let {
                 Row(
@@ -299,7 +339,7 @@ private fun DetailsHeaderPreview() {
         DetailsHeader(
             title = "Movie Title",
             genres = listOf("Action", "Adventure", "Sci-Fi"),
-            year = 2023,
+            date = null,
             images = null,
             status = "Released",
             trailer = null,

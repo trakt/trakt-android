@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.common.ui.theme.colors.Shade920
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -78,13 +79,17 @@ internal fun DetailsActions(
                 if (!loading) {
                     Icon(
                         painter = painterResource(R.drawable.ic_check_double),
-                        tint = TraktTheme.colors.primaryButtonContent,
+                        tint = when {
+                            enabled && primaryEnabled -> TraktTheme.colors.primaryButtonContent
+                            else -> Shade500
+                        },
                         contentDescription = null,
                         modifier = Modifier.size(23.dp),
                     )
                 } else {
                     FilmProgressIndicator(
                         size = 20.dp,
+                        color = Shade500,
                     )
                 }
             }
