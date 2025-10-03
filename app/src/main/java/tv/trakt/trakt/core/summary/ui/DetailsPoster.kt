@@ -69,10 +69,10 @@ internal fun DetailsPoster(
                     .dropShadow(
                         shape = cardShape,
                         shadow = Shadow(
-                            radius = 48.dp,
+                            radius = 46.dp,
                             spread = 8.dp,
                             offset = DpOffset(0.dp, 12.dp),
-                            color = color?.copy(alpha = 0.24F) ?: Color.Transparent,
+                            color = color?.copy(alpha = 0.25F) ?: Color.Transparent,
                         ),
                     )
                     .fillMaxSize()

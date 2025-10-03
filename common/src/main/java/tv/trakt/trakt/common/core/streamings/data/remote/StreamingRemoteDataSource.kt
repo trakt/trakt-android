@@ -1,7 +1,7 @@
-package tv.trakt.trakt.app.core.streamings.data.remote
+package tv.trakt.trakt.common.core.streamings.data.remote
 
 import tv.trakt.trakt.common.networking.StreamingSourceDto
 
-internal interface StreamingRemoteDataSource {
+interface StreamingRemoteDataSource {
     suspend fun getStreamingSources(): List<StreamingSourceDto>
 }

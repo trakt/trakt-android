@@ -1,20 +1,20 @@
-package tv.trakt.trakt.app.core.streamings.model
+package tv.trakt.trakt.common.model.streamings
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import androidx.core.graphics.toColorInt
-import tv.trakt.trakt.app.core.streamings.model.StreamingSource.Companion
+import tv.trakt.trakt.common.model.streamings.StreamingSource.Companion
 import tv.trakt.trakt.common.networking.StreamingSourceDto
 
 @Immutable
-internal data class StreamingSource(
+data class StreamingSource(
     val source: String,
     val name: String,
     val color: Color?,
     val images: Images,
 ) {
     @Immutable
-    internal data class Images(
+    data class Images(
         val logo: String?,
         val channel: String?,
     )
@@ -22,7 +22,7 @@ internal data class StreamingSource(
     companion object
 }
 
-internal fun Companion.fromDto(dto: StreamingSourceDto): StreamingSource {
+fun Companion.fromDto(dto: StreamingSourceDto): StreamingSource {
     return StreamingSource(
         source = dto.source,
         name = dto.name,

@@ -4,11 +4,14 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.movies.data.local.MovieStorage
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.summary.movies.MovieDetailsViewModel
 import tv.trakt.trakt.core.summary.movies.data.local.MovieRatingsLocalDataSource
 import tv.trakt.trakt.core.summary.movies.data.local.MovieRatingsStorage
+import tv.trakt.trakt.core.summary.movies.features.context.more.MovieDetailsContextViewModel
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieRatingsUseCase
+import tv.trakt.trakt.core.summary.movies.usecases.GetMovieStreamingsUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieStudiosUseCase
 
 internal val movieDetailsDataModule = module {
@@ -42,6 +45,15 @@ internal val movieDetailsModule = module {
         )
     }
 
+    factory {
+        GetMovieStreamingsUseCase(
+            remoteMovieSource = get(),
+            remoteStreamingSource = get(),
+            localStreamingSource = get(),
+            priorityStreamingProvider = get(),
+        )
+    }
+
     viewModel {
         MovieDetailsViewModel(
             savedStateHandle = get(),
@@ -55,6 +67,14 @@ internal val movieDetailsModule = module {
             updateMovieWatchlistUseCase = get(),
             userWatchlistLocalSource = get(),
             sessionManager = get(),
+        )
+    }
+
+    viewModel { (movie: Movie) ->
+        MovieDetailsContextViewModel(
+            movie = movie,
+            sessionManager = get(),
+            getStreamingsUseCase = get(),
         )
     }
 }

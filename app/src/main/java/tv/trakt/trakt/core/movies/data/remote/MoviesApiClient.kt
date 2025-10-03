@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.MovieDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
+import tv.trakt.trakt.common.networking.StreamingDto
 import tv.trakt.trakt.core.movies.data.remote.model.AnticipatedMovieDto
 import tv.trakt.trakt.core.movies.data.remote.model.TrendingMovieDto
 import java.time.Instant
@@ -137,5 +138,18 @@ internal class MoviesApiClient(
         )
 
         return response.body().map { it.name }
+    }
+
+    override suspend fun getStreamings(
+        movieId: TraktId,
+        countryCode: String?,
+    ): Map<String, StreamingDto> {
+        val response = moviesApi.getMoviesWatchnow(
+            country = countryCode ?: "",
+            id = movieId.value.toString(),
+            links = "direct",
+        )
+
+        return response.body()
     }
 }

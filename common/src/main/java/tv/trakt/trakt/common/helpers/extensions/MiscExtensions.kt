@@ -1,4 +1,4 @@
-package tv.trakt.trakt.app.helpers.extensions
+package tv.trakt.trakt.common.helpers.extensions
 
 import android.content.Context
 import android.content.Intent
@@ -6,10 +6,10 @@ import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import androidx.compose.ui.platform.UriHandler
 import androidx.core.net.toUri
-import tv.trakt.trakt.app.Config.PLEX_BASE_URL
+import tv.trakt.trakt.common.Config.PLEX_BASE_URL
 import tv.trakt.trakt.common.model.SeasonEpisode
 
-internal fun openWatchNowLink(
+fun openWatchNowLink(
     context: Context,
     uriHandler: UriHandler,
     link: String?,
@@ -30,7 +30,7 @@ internal fun openWatchNowLink(
     uriHandler.openUri(link)
 }
 
-internal fun openPlexLink(
+fun openPlexLink(
     uriHandler: UriHandler,
     type: String,
     slug: String?,

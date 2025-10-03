@@ -5,7 +5,6 @@ import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.app.common.model.CastPerson
 import tv.trakt.trakt.app.common.model.Comment
 import tv.trakt.trakt.app.common.model.ExtraVideo
-import tv.trakt.trakt.app.common.model.StreamingService
 import tv.trakt.trakt.app.core.details.show.models.ShowSeasons
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.model.CustomList
@@ -13,6 +12,7 @@ import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.streamings.StreamingService
 
 @Immutable
 internal data class ShowDetailsState(

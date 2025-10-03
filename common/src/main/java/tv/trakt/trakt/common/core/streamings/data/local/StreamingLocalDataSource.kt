@@ -1,8 +1,8 @@
-package tv.trakt.trakt.app.core.streamings.data.local
+package tv.trakt.trakt.common.core.streamings.data.local
 
-import tv.trakt.trakt.app.core.streamings.model.StreamingSource
+import tv.trakt.trakt.common.model.streamings.StreamingSource
 
-internal interface StreamingLocalDataSource {
+interface StreamingLocalDataSource {
     suspend fun getAllStreamingSources(): Map<String, StreamingSource>
 
     suspend fun getStreamingSource(sourceId: String): StreamingSource?

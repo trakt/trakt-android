@@ -1,10 +1,10 @@
-package tv.trakt.trakt.app.core.streamings.data.local
+package tv.trakt.trakt.common.core.streamings.data.local
 
 import kotlinx.collections.immutable.persistentMapOf
-import tv.trakt.trakt.app.core.streamings.model.StreamingSource
+import tv.trakt.trakt.common.model.streamings.StreamingSource
 import java.util.concurrent.ConcurrentHashMap
 
-internal class StreamingStorage : StreamingLocalDataSource {
+class StreamingStorage : StreamingLocalDataSource {
     private val cache = ConcurrentHashMap<String, StreamingSource>(persistentMapOf())
 
     override suspend fun getAllStreamingSources(): Map<String, StreamingSource> {

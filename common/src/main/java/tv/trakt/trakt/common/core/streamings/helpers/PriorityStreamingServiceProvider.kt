@@ -1,13 +1,13 @@
-package tv.trakt.trakt.app.core.streamings.utilities
+package tv.trakt.trakt.common.core.streamings.helpers
 
 import androidx.compose.ui.util.fastAny
-import tv.trakt.trakt.app.common.model.StreamingService
+import tv.trakt.trakt.common.model.streamings.StreamingService
 
 /**
  * A utility class responsible for determining the priority streaming service for a given user
  * among a list of available streaming services.
  */
-internal class PriorityStreamingServiceProvider {
+class PriorityStreamingServiceProvider {
     /**
      * Finds the priority streaming service from a list of available services based on user favorites.
      *
@@ -18,7 +18,7 @@ internal class PriorityStreamingServiceProvider {
      *
      * @param favoriteServices A list of the user's favorite streaming services.
      * @param streamingServices A list of available streaming services to choose from.
-     * @return The highest priority [StreamingService] based on the criteria,
+     * @return The highest priority [tv.trakt.trakt.common.model.streamings.StreamingService] based on the criteria,
      *         or `null` if no suitable service is found or the input `streamingServices` list is empty.
      */
     fun findPriorityStreamingService(

@@ -216,7 +216,7 @@ private fun DetailsHeader(
             traktRatings = traktRatings,
             externalRatings = ratings,
             modifier = Modifier
-                .padding(top = 20.dp),
+                .padding(top = 18.dp),
         )
 
         Column(

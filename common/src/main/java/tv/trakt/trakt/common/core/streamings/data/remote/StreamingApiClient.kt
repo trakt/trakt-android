@@ -1,9 +1,9 @@
-package tv.trakt.trakt.app.core.streamings.data.remote
+package tv.trakt.trakt.common.core.streamings.data.remote
 
 import org.openapitools.client.apis.WatchnowApi
 import tv.trakt.trakt.common.networking.StreamingSourceDto
 
-internal class StreamingApiClient(
+class StreamingApiClient(
     private val api: WatchnowApi,
 ) : StreamingRemoteDataSource {
     override suspend fun getStreamingSources(): List<StreamingSourceDto> {

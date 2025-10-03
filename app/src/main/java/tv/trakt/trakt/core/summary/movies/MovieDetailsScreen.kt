@@ -61,8 +61,8 @@ import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
-import tv.trakt.trakt.core.summary.movies.features.context.MovieDetailsContextSheet
 import tv.trakt.trakt.core.summary.movies.features.context.lists.MovieDetailsListsSheet
+import tv.trakt.trakt.core.summary.movies.features.context.more.MovieDetailsContextSheet
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.DetailsHeader

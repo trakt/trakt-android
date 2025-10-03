@@ -89,7 +89,7 @@ private fun MovieDetailsListsContent(
     onListClick: ((TraktId) -> Unit)? = null,
 ) {
     val genresText = remember(movie.genres) {
-        movie.genres.take(3).joinToString(", ") { genre ->
+        movie.genres.take(3).joinToString(" / ") { genre ->
             genre.replaceFirstChar {
                 it.uppercaseChar()
             }

@@ -1,9 +1,9 @@
-package tv.trakt.trakt.app.core.streamings.model
+package tv.trakt.trakt.common.model.streamings
 
 import androidx.annotation.StringRes
 import tv.trakt.trakt.resources.R
 
-internal enum class StreamingType(
+enum class StreamingType(
     val order: Int,
     val type: String,
     @param:StringRes val labelRes: Int,

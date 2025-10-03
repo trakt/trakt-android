@@ -33,17 +33,17 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
-import tv.trakt.trakt.app.common.model.StreamingService
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.streamings.model.StreamingServiceRow
-import tv.trakt.trakt.app.core.streamings.model.StreamingType
-import tv.trakt.trakt.app.core.streamings.model.StreamingType.PURCHASE
-import tv.trakt.trakt.app.core.streamings.model.StreamingType.RENT
 import tv.trakt.trakt.app.core.streamings.views.AllStreamingItemView
-import tv.trakt.trakt.app.helpers.extensions.openWatchNowLink
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.openWatchNowLink
+import tv.trakt.trakt.common.model.streamings.StreamingService
+import tv.trakt.trakt.common.model.streamings.StreamingType
+import tv.trakt.trakt.common.model.streamings.StreamingType.PURCHASE
+import tv.trakt.trakt.common.model.streamings.StreamingType.RENT
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 

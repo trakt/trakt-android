@@ -20,9 +20,9 @@ import tv.trakt.trakt.app.common.ui.buttons.PrimaryButton
 import tv.trakt.trakt.app.common.ui.buttons.WatchNowButton
 import tv.trakt.trakt.app.core.details.movie.MovieDetailsState.CollectionState
 import tv.trakt.trakt.app.core.details.movie.MovieDetailsState.StreamingsState
-import tv.trakt.trakt.app.helpers.extensions.openPlexLink
-import tv.trakt.trakt.app.helpers.extensions.openWatchNowLink
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.openPlexLink
+import tv.trakt.trakt.common.helpers.extensions.openWatchNowLink
 import tv.trakt.trakt.common.ui.theme.colors.Blue50
 import tv.trakt.trakt.common.ui.theme.colors.Blue500
 import tv.trakt.trakt.common.ui.theme.colors.Purple50
@@ -133,7 +133,7 @@ private fun WatchButton(
         loading = loading,
         containerColor = when {
             plex -> Color(0xFFE8AE0A)
-            service?.color != null -> service.color
+            (service?.color != null) -> service.color ?: TraktTheme.colors.primaryButtonContainer
             else -> TraktTheme.colors.primaryButtonContainerDisabled
         },
         onLongClick = onLongClick,

@@ -1,8 +1,6 @@
-package tv.trakt.trakt.app.core.details.episode.usecases.streamings
+package tv.trakt.trakt.core.summary.movies.usecases
 
 import android.icu.util.Currency
-import tv.trakt.trakt.app.core.episodes.data.remote.EpisodesRemoteDataSource
-import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.common.Config.DEFAULT_COUNTRY_CODE
 import tv.trakt.trakt.common.core.streamings.data.local.StreamingLocalDataSource
 import tv.trakt.trakt.common.core.streamings.data.remote.StreamingRemoteDataSource
@@ -13,31 +11,29 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.StreamingSource
 import tv.trakt.trakt.common.model.streamings.fromDto
+import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
 
-internal class GetStreamingsUseCase(
-    private val remoteEpisodesSource: EpisodesRemoteDataSource,
+internal class GetMovieStreamingsUseCase(
+    private val remoteMovieSource: MoviesRemoteDataSource,
     private val remoteStreamingSource: StreamingRemoteDataSource,
     private val localStreamingSource: StreamingLocalDataSource,
     private val priorityStreamingProvider: PriorityStreamingServiceProvider,
 ) {
-    suspend fun getStreamingService(
+    suspend fun getStreamingServices(
         user: User,
-        showId: TraktId,
-        episode: Episode,
+        movieId: TraktId,
     ): Result {
         if (!localStreamingSource.isValid()) {
             val sources = remoteStreamingSource
                 .getStreamingSources()
-                .asyncMap { StreamingSource.Companion.fromDto(it) }
+                .asyncMap { StreamingSource.fromDto(it) }
 
             localStreamingSource.upsertStreamingSources(sources)
         }
 
         val userCountry = user.streamings?.country ?: DEFAULT_COUNTRY_CODE
-        val streamings = remoteEpisodesSource.getEpisodeStreamings(
-            showId = showId,
-            season = episode.season,
-            episode = episode.number,
+        val streamings = remoteMovieSource.getStreamings(
+            movieId = movieId,
             countryCode = null,
         )
 
@@ -68,15 +64,15 @@ internal class GetStreamingsUseCase(
             streamingServices = result,
         )
 
-        val noService = streamings.run {
-            values.flatMap { it.free }.isEmpty() &&
-                values.flatMap { it.subscription }.isEmpty() &&
-                filter { it.key == userCountry }.values.flatMap { it.purchase }.isEmpty()
-        }
+//        val noService = streamings.run {
+//            values.flatMap { it.free }.isEmpty() &&
+//                values.flatMap { it.subscription }.isEmpty() &&
+//                filter { it.key == userCountry }.values.flatMap { it.purchase }.isEmpty()
+//        }
 
         return Result(
             streamingService = priorityService,
-            noServices = noService,
+            noServices = priorityService == null,
         )
     }
 
