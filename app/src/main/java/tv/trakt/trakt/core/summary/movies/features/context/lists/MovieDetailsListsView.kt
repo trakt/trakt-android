@@ -13,7 +13,10 @@ import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
@@ -32,6 +35,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
+import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -43,14 +47,37 @@ internal fun MovieDetailsListsView(
     onWatchlistClick: (() -> Unit)? = null,
     onListClick: ((TraktId) -> Unit)? = null,
 ) {
+    var confirmRemoveWatchlistSheet by remember { mutableStateOf(false) }
+
     MovieDetailsListsContent(
         movie = movie,
         lists = lists,
         inWatchlist = inWatchlist,
-        onWatchlistClick = onWatchlistClick,
+        onWatchlistClick = {
+            if (inWatchlist) {
+                confirmRemoveWatchlistSheet = true
+            } else {
+                onWatchlistClick?.invoke()
+            }
+        },
         onListClick = onListClick,
         modifier = modifier,
     )
+
+    ConfirmationSheet(
+        active = confirmRemoveWatchlistSheet,
+        onYes = {
+            confirmRemoveWatchlistSheet = false
+            onWatchlistClick?.invoke()
+        },
+        onNo = { confirmRemoveWatchlistSheet = false },
+        title = stringResource(R.string.button_text_watchlist),
+        message = stringResource(
+            R.string.warning_prompt_remove_from_watchlist,
+            movie.title,
+        ),
+    )
+
 }
 
 @Composable
