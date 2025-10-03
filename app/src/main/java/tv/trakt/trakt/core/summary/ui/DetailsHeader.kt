@@ -132,7 +132,7 @@ private fun DetailsHeader(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .graphicsLayer {
-                            translationY = 10.dp.toPx()
+                            translationY = 8.dp.toPx()
                         },
                 ) {
                     if (creditsCount != null && creditsCount > 0) {

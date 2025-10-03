@@ -50,16 +50,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.core.summary.movies.features.context.MovieDetailsContextSheet
+import tv.trakt.trakt.core.summary.movies.features.context.lists.MovieDetailsListsSheet
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.DetailsHeader
@@ -85,6 +88,7 @@ internal fun MovieDetailsScreen(
 
     val scope = rememberCoroutineScope()
     var contextSheet by remember { mutableStateOf<Movie?>(null) }
+    var listsSheet by remember { mutableStateOf<Movie?>(null) }
 
     MovieDetailsContent(
         state = state,
@@ -98,10 +102,25 @@ internal fun MovieDetailsScreen(
         onTrailerClick = {
             state.movie?.trailer?.let { uriHandler.openUri(it) }
         },
+        onListsClick = {
+            listsSheet = state.movie
+        },
         onMoreClick = {
             contextSheet = state.movie
         },
         onBackClick = onNavigateBack,
+    )
+
+    MovieDetailsListsSheet(
+        movie = listsSheet,
+        inWatchlist = state.movieProgress?.inWatchlist == true,
+        lists = emptyList<Pair<CustomList, Boolean>>().toImmutableList(),
+        onWatchlistClick = {
+            viewModel.toggleWatchlist()
+        },
+        onDismiss = {
+            listsSheet = null
+        },
     )
 
     MovieDetailsContextSheet(
@@ -121,6 +140,7 @@ internal fun MovieDetailsScreen(
         if (state.info == null) {
             return@LaunchedEffect
         }
+        haptic.performHapticFeedback(Confirm)
         with(scope) {
             val job = launch {
                 state.info?.get(context)?.let {
@@ -130,7 +150,6 @@ internal fun MovieDetailsScreen(
             delay(SNACK_DURATION_SHORT)
             job.cancel()
         }
-        haptic.performHapticFeedback(Confirm)
         viewModel.clearInfo()
     }
 }
@@ -142,6 +161,7 @@ internal fun MovieDetailsContent(
     onTrackClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onTrailerClick: (() -> Unit)? = null,
+    onListsClick: (() -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
@@ -211,6 +231,7 @@ internal fun MovieDetailsContent(
                         loading = state.loadingProgress.isLoading,
                         hasLists = state.movieProgress?.inAnyList,
                         onPrimaryClick = onTrackClick,
+                        onSecondaryClick = onListsClick,
                         onMoreClick = onMoreClick,
                         modifier = Modifier
                             .align(Alignment.Center)

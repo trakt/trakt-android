@@ -22,17 +22,20 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.StringResource
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.summary.movies.navigation.MovieDetailsDestination
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieRatingsUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieStudiosUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
+import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.usecase.lists.LoadUserListsUseCase
 import tv.trakt.trakt.core.user.usecase.lists.LoadUserWatchlistUseCase
@@ -48,6 +51,7 @@ internal class MovieDetailsViewModel(
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
     private val loadListsUseCase: LoadUserListsUseCase,
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
+    private val updateMovieWatchlistUseCase: UpdateMovieWatchlistUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
@@ -178,6 +182,7 @@ internal class MovieDetailsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
+                    errorState.update { error }
                     Timber.w(error)
                 }
             } finally {
@@ -242,6 +247,95 @@ internal class MovieDetailsViewModel(
                 }
 
                 refreshProgress()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.w(error)
+                }
+            } finally {
+                loadingProgress.update { DONE }
+            }
+        }
+    }
+
+    fun toggleWatchlist() {
+        if (movieState.value == null ||
+            loadingState.value.isLoading ||
+            loadingProgress.value.isLoading
+        ) {
+            return
+        }
+
+        if (movieProgressState.value?.inWatchlist == true) {
+            removeFromWatchlist()
+        } else {
+            addToWatchlist()
+        }
+    }
+
+    private fun addToWatchlist() {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                loadingProgress.update { LOADING }
+                delay(5000)
+
+                updateMovieWatchlistUseCase.addToWatchlist(movieId)
+                userWatchlistLocalSource.addMovies(
+                    movies = listOf(
+                        WatchlistItem.MovieItem(
+                            rank = 0,
+                            movie = movieState.value!!,
+                            listedAt = nowUtcInstant(),
+                        ),
+                    ),
+                    notify = true,
+                )
+
+                movieProgressState.update {
+                    it?.copy(
+                        inWatchlist = true,
+                    )
+                }
+                infoState.update {
+                    DynamicStringResource(R.string.text_info_watchlist_added)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.w(error)
+                }
+            } finally {
+                loadingProgress.update { DONE }
+            }
+        }
+    }
+
+    private fun removeFromWatchlist() {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                loadingProgress.update { LOADING }
+                delay(5000)
+
+                updateMovieWatchlistUseCase.removeFromWatchlist(movieId)
+                userWatchlistLocalSource.removeMovies(
+                    ids = setOf(movieId),
+                    notify = true,
+                )
+
+                movieProgressState.update {
+                    it?.copy(
+                        inWatchlist = false,
+                    )
+                }
+                infoState.update {
+                    DynamicStringResource(R.string.text_info_watchlist_removed)
+                }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
