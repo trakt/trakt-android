@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.annotation.ExperimentalCoilApi
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -41,17 +42,19 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun MovieDetailsListsView(
     movie: Movie,
+    viewModel: MovieDetailsListsViewModel,
     inWatchlist: Boolean,
-    lists: ImmutableList<Pair<CustomList, Boolean>>,
     modifier: Modifier = Modifier,
     onWatchlistClick: (() -> Unit)? = null,
     onListClick: ((TraktId) -> Unit)? = null,
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
     var confirmRemoveWatchlistSheet by remember { mutableStateOf(false) }
 
     MovieDetailsListsContent(
         movie = movie,
-        lists = lists,
+        lists = state.lists,
         inWatchlist = inWatchlist,
         onWatchlistClick = {
             if (inWatchlist) {

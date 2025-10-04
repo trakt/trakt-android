@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
+import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 import java.time.Instant
@@ -13,7 +14,7 @@ import java.time.Instant
 internal class UserListsStorage : UserListsLocalDataSource {
     private val mutex = Mutex()
 
-    private var storage: MutableMap<TraktId, List<PersonalListItem>>? = null
+    private var storage: MutableMap<TraktId, Pair<CustomList, List<PersonalListItem>>>? = null
     private val updatedAt = MutableSharedFlow<Instant?>(
         replay = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST,
@@ -26,14 +27,16 @@ internal class UserListsStorage : UserListsLocalDataSource {
     }
 
     override suspend fun setLists(
-        lists: Map<TraktId, List<PersonalListItem>>,
+        lists: Map<CustomList, List<PersonalListItem>>,
         notify: Boolean,
     ) {
         mutex.withLock {
             ensureInitialized()
             storage?.let { storage ->
                 storage.clear()
-                storage.putAll(lists)
+                lists.forEach { (list, items) ->
+                    storage[list.ids.trakt] = list to items
+                }
             }
 
             if (notify) {
@@ -43,12 +46,16 @@ internal class UserListsStorage : UserListsLocalDataSource {
     }
 
     override suspend fun addLists(
-        lists: Map<TraktId, List<PersonalListItem>>,
+        lists: Map<CustomList, List<PersonalListItem>>,
         notify: Boolean,
     ) {
         mutex.withLock {
             ensureInitialized()
-            storage?.putAll(lists)
+            storage?.let { storage ->
+                lists.forEach { (list, items) ->
+                    storage[list.ids.trakt] = list to items
+                }
+            }
 
             if (notify) {
                 updatedAt.tryEmit(nowUtcInstant())
@@ -62,15 +69,15 @@ internal class UserListsStorage : UserListsLocalDataSource {
         }
     }
 
-    override suspend fun getList(listId: TraktId): List<PersonalListItem>? {
+    override suspend fun getListItems(listId: TraktId): List<PersonalListItem>? {
         return mutex.withLock {
-            storage?.get(listId)
+            storage?.get(listId)?.second
         }
     }
 
-    override suspend fun getLists(): Map<TraktId, List<PersonalListItem>> {
+    override suspend fun getLists(): Map<CustomList, List<PersonalListItem>> {
         return mutex.withLock {
-            storage ?: emptyMap()
+            storage?.values?.associate { it.first to it.second } ?: emptyMap()
         }
     }
 

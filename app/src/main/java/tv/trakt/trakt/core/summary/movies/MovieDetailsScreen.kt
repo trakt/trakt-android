@@ -50,14 +50,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
@@ -114,7 +112,6 @@ internal fun MovieDetailsScreen(
     MovieDetailsListsSheet(
         movie = listsSheet,
         inWatchlist = state.movieProgress?.inWatchlist == true,
-        lists = emptyList<Pair<CustomList, Boolean>>().toImmutableList(),
         onWatchlistClick = {
             viewModel.toggleWatchlist()
         },
@@ -230,7 +227,7 @@ internal fun MovieDetailsContent(
                         primaryEnabled = isReleased,
                         enabled = state.user != null && !state.loadingProgress.isLoading,
                         loading = state.loadingProgress.isLoading,
-                        hasLists = state.movieProgress?.inAnyList,
+                        inLists = state.movieProgress?.inAnyList,
                         onPrimaryClick = onTrackClick,
                         onSecondaryClick = onListsClick,
                         onMoreClick = onMoreClick,

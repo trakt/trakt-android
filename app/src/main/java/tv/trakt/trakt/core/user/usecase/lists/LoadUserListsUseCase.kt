@@ -7,9 +7,9 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
+import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.ListDto
@@ -29,12 +29,12 @@ internal class LoadUserListsUseCase(
         return localSource.isLoaded()
     }
 
-    suspend fun loadLocalLists(): ImmutableMap<TraktId, List<PersonalListItem>> {
+    suspend fun loadLocalLists(): ImmutableMap<CustomList, List<PersonalListItem>> {
         return localSource.getLists()
             .toImmutableMap()
     }
 
-    suspend fun loadLists(): ImmutableMap<TraktId, List<PersonalListItem>> =
+    suspend fun loadLists(): ImmutableMap<CustomList, List<PersonalListItem>> =
         coroutineScope {
             val listsResponse = remoteSource.getPersonalLists()
             val listsItemsResponse: List<Pair<ListDto, List<ListItemDto>>> = listsResponse
@@ -51,7 +51,7 @@ internal class LoadUserListsUseCase(
 
             val itemsResponse = listsItemsResponse
                 .asyncMap { (list, items) ->
-                    val listId = list.ids.trakt.toTraktId()
+                    val list = CustomList.fromDto(list)
                     val listItems = items.asyncMap {
                         val listedAt = it.listedAt.toInstant()
                         when {
@@ -70,7 +70,7 @@ internal class LoadUserListsUseCase(
                             else -> throw IllegalStateException("Personal list item unknown type!")
                         }
                     }
-                    listId to listItems
+                    list to listItems
                 }.toMap()
 
             localSource.setLists(lists = itemsResponse)

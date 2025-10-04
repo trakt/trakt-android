@@ -10,12 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
-import tv.trakt.trakt.common.model.CustomList
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.ui.components.TraktBottomSheet
+import kotlin.random.Random.Default.nextInt
 
 @Composable
 internal fun MovieDetailsListsSheet(
@@ -24,7 +25,6 @@ internal fun MovieDetailsListsSheet(
     ),
     movie: Movie?,
     inWatchlist: Boolean,
-    lists: ImmutableList<Pair<CustomList, Boolean>>,
     onWatchlistClick: (() -> Unit)? = null,
     onListClick: ((TraktId) -> Unit)? = null,
     onDismiss: () -> Unit,
@@ -38,8 +38,11 @@ internal fun MovieDetailsListsSheet(
         ) {
             MovieDetailsListsView(
                 movie = movie,
+                viewModel = koinViewModel(
+                    key = nextInt().toString(),
+                    parameters = { parametersOf(movie) },
+                ),
                 inWatchlist = inWatchlist,
-                lists = lists,
                 onWatchlistClick = {
                     onWatchlistClick?.invoke()
                     sheetScope.launch { state.hide() }

@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.common.ui.theme.colors.Shade500
+import tv.trakt.trakt.common.ui.theme.colors.Shade400
 import tv.trakt.trakt.common.ui.theme.colors.Shade920
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -35,7 +35,7 @@ internal fun DetailsActions(
     enabled: Boolean = true,
     primaryEnabled: Boolean = true,
     loading: Boolean = false,
-    hasLists: Boolean? = false,
+    inLists: Boolean? = false,
     onPrimaryClick: (() -> Unit)? = null,
     onSecondaryClick: (() -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
@@ -81,7 +81,7 @@ internal fun DetailsActions(
                         painter = painterResource(R.drawable.ic_check_double),
                         tint = when {
                             enabled && primaryEnabled -> TraktTheme.colors.primaryButtonContent
-                            else -> Shade500
+                            else -> Shade400
                         },
                         contentDescription = null,
                         modifier = Modifier.size(23.dp),
@@ -89,14 +89,14 @@ internal fun DetailsActions(
                 } else {
                     FilmProgressIndicator(
                         size = 20.dp,
-                        color = Shade500,
+                        color = Shade400,
                     )
                 }
             }
 
             Icon(
                 painter = when {
-                    hasLists == true -> painterResource(R.drawable.ic_lists_check)
+                    inLists == true -> painterResource(R.drawable.ic_lists_check)
                     else -> painterResource(R.drawable.ic_plus_round)
                 },
                 tint = when {
@@ -112,7 +112,7 @@ internal fun DetailsActions(
                     .size(21.dp)
                     .graphicsLayer {
                         translationX = -(0.5).dp.toPx()
-                        if (hasLists == true) {
+                        if (inLists == true) {
                             scaleX = 1.15F
                             scaleY = 1.15F
                         }
@@ -154,7 +154,7 @@ private fun Preview() {
             DetailsActions()
 
             DetailsActions(
-                hasLists = true,
+                inLists = true,
             )
 
             DetailsActions(

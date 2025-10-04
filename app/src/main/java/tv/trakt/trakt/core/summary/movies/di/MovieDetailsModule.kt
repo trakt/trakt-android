@@ -8,6 +8,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.summary.movies.MovieDetailsViewModel
 import tv.trakt.trakt.core.summary.movies.data.local.MovieRatingsLocalDataSource
 import tv.trakt.trakt.core.summary.movies.data.local.MovieRatingsStorage
+import tv.trakt.trakt.core.summary.movies.features.context.lists.MovieDetailsListsViewModel
 import tv.trakt.trakt.core.summary.movies.features.context.more.MovieDetailsContextViewModel
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieRatingsUseCase
@@ -75,6 +76,14 @@ internal val movieDetailsModule = module {
             movie = movie,
             sessionManager = get(),
             getStreamingsUseCase = get(),
+        )
+    }
+
+    viewModel { (movie: Movie) ->
+        MovieDetailsListsViewModel(
+            movie = movie,
+            sessionManager = get(),
+            loadListsUseCase = get(),
         )
     }
 }
