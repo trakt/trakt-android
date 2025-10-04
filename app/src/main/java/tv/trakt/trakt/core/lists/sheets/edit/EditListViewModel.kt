@@ -15,9 +15,11 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.sheets.edit.usecases.EditListUseCase
+import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
 
 internal class EditListViewModel(
     private val editListUseCase: EditListUseCase,
+    private val userListsLocalDataSource: UserListsLocalDataSource,
 ) : ViewModel() {
     private val initialState = EditListState()
 
@@ -66,6 +68,9 @@ internal class EditListViewModel(
                 editListUseCase.deleteList(
                     listId = id,
                 )
+
+                // Clear cached lists to force refresh next time lists are accessed.
+                userListsLocalDataSource.clear()
 
                 loadingDeleteState.update { DONE }
             } catch (error: Exception) {

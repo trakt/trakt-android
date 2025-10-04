@@ -208,12 +208,14 @@ internal val listsModule = module {
     viewModel {
         CreateListViewModel(
             createListUseCase = get(),
+            userListsLocalDataSource = get(),
         )
     }
 
     viewModel {
         EditListViewModel(
             editListUseCase = get(),
+            userListsLocalDataSource = get(),
         )
     }
 

@@ -166,6 +166,7 @@ internal class UserListsStorage : UserListsLocalDataSource {
 
     override fun clear() {
         storage?.clear()
+        storage = null
         updatedAt.tryEmit(null)
     }
 }

@@ -15,11 +15,13 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.getHttpErrorCode
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.lists.sheets.create.usecases.CreateListUseCase
+import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
 
 private const val HTTP_ERROR_CODE_LISTS_LIMIT = 420
 
 internal class CreateListViewModel(
     private val createListUseCase: CreateListUseCase,
+    private val userListsLocalDataSource: UserListsLocalDataSource,
 ) : ViewModel() {
     private val initialState = CreateListState()
 
@@ -42,6 +44,10 @@ internal class CreateListViewModel(
                     name = name,
                     description = description,
                 )
+
+                // Clear cached lists to force refresh next time lists are accessed.
+                userListsLocalDataSource.clear()
+
                 loadingState.update { DONE }
             } catch (error: Exception) {
                 error.rethrowCancellation {
