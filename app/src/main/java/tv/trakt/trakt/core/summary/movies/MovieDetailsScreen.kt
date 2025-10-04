@@ -115,8 +115,11 @@ internal fun MovieDetailsScreen(
         onWatchlistClick = {
             viewModel.toggleWatchlist()
         },
-        onListClick = { listId ->
-            viewModel.toggleList(listId)
+        onAddListClick = {
+            viewModel.toggleList(it, true)
+        },
+        onRemoveListClick = {
+            viewModel.toggleList(it, false)
         },
         onDismiss = {
             listsSheet = null

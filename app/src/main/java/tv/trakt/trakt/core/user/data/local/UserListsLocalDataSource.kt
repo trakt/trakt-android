@@ -31,6 +31,12 @@ internal interface UserListsLocalDataSource {
 
     suspend fun getListItems(listId: TraktId): List<PersonalListItem>?
 
+    suspend fun addListItem(
+        listId: TraktId,
+        item: PersonalListItem,
+        notify: Boolean = false,
+    )
+
     suspend fun removeListItem(
         listId: TraktId,
         itemId: TraktId,

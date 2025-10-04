@@ -18,6 +18,7 @@ internal class GetPersonalListItemsUseCase(
 ) {
     suspend fun getLocalItems(listId: TraktId): ImmutableList<PersonalListItem> {
         return localSource.getItems(listId)
+            .sortedByDescending { it.listedAt }
             .toImmutableList()
     }
 

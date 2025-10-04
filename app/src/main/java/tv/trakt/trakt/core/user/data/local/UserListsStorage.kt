@@ -10,6 +10,7 @@ import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.model.PersonalListItem
+import tv.trakt.trakt.core.lists.model.PersonalListItem.MovieItem
 import java.time.Instant
 
 internal class UserListsStorage : UserListsLocalDataSource {
@@ -96,6 +97,35 @@ internal class UserListsStorage : UserListsLocalDataSource {
             storage?.let { storage ->
                 listsIds.forEach { id ->
                     storage.remove(id)
+                }
+            }
+
+            if (notify) {
+                updatedAt.tryEmit(nowUtcInstant())
+            }
+        }
+    }
+
+    override suspend fun addListItem(
+        listId: TraktId,
+        item: PersonalListItem,
+        notify: Boolean,
+    ) {
+        mutex.withLock {
+            storage?.let { storage ->
+                val entry = storage[listId]
+                if (entry != null) {
+                    val (list, items) = entry
+                    val updatedItems = items
+                        .plus(item)
+                        .distinctBy {
+                            if (it is MovieItem) {
+                                it.movie.ids.trakt
+                            } else {
+                                null
+                            }
+                        }
+                    storage[listId] = list to updatedItems
                 }
             }
 

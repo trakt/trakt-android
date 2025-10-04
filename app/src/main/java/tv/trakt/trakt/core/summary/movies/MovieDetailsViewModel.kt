@@ -30,6 +30,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.lists.sections.personal.usecases.AddPersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.summary.movies.navigation.MovieDetailsDestination
@@ -54,6 +55,7 @@ internal class MovieDetailsViewModel(
     private val loadListsUseCase: LoadUserListsUseCase,
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
     private val updateMovieWatchlistUseCase: UpdateMovieWatchlistUseCase,
+    private val addListItemUseCase: AddPersonalListItemUseCase,
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
     private val sessionManager: SessionManager,
@@ -285,7 +287,10 @@ internal class MovieDetailsViewModel(
         }
     }
 
-    fun toggleList(listId: TraktId) {
+    fun toggleList(
+        listId: TraktId,
+        add: Boolean,
+    ) {
         if (movieState.value == null ||
             loadingState.value.isLoading ||
             loadingProgress.value.isLoading ||
@@ -294,10 +299,9 @@ internal class MovieDetailsViewModel(
             return
         }
 
-        if (movieProgressState.value?.inLists == true) {
-            removeFromList(listId)
-        } else {
-            // Adding to lists is handled in MovieDetailsListsView
+        when {
+            add -> addToList(listId)
+            else -> removeFromList(listId)
         }
     }
 
@@ -354,13 +358,40 @@ internal class MovieDetailsViewModel(
                     notify = true,
                 )
 
-                movieProgressState.update {
-                    it?.copy(
-                        inWatchlist = false,
-                    )
-                }
+                refreshLists()
                 infoState.update {
                     DynamicStringResource(R.string.text_info_watchlist_removed)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.w(error)
+                }
+            } finally {
+                loadingLists.update { DONE }
+            }
+        }
+    }
+
+    private fun addToList(listId: TraktId) {
+        viewModelScope.launch {
+            val movie = movieState.value
+            if (!sessionManager.isAuthenticated() || movie == null) {
+                return@launch
+            }
+            try {
+                loadingLists.update { LOADING }
+
+                addListItemUseCase.addMovie(
+                    listId = listId,
+                    movie = movie,
+                )
+
+                movieProgressState.update {
+                    it?.copy(inLists = true)
+                }
+                infoState.update {
+                    DynamicStringResource(R.string.text_info_list_added)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -386,16 +417,7 @@ internal class MovieDetailsViewModel(
                     movieId = movieId,
                 )
 
-                val inLists = loadListsUseCase.loadLocalLists()
-                    .values
-                    .flatten()
-                    .firstOrNull {
-                        it.type == MOVIE && it.id == movieId
-                    }
-
-                movieProgressState.update {
-                    it?.copy(inLists = (inLists != null))
-                }
+                refreshLists()
                 infoState.update {
                     DynamicStringResource(R.string.text_info_list_removed)
                 }
@@ -406,6 +428,36 @@ internal class MovieDetailsViewModel(
                 }
             } finally {
                 loadingLists.update { DONE }
+            }
+        }
+    }
+
+    private suspend fun refreshLists() {
+        return coroutineScope {
+            val watchlistAsync = async {
+                loadWatchlistUseCase.loadLocalMovies()
+                    .firstOrNull {
+                        it.movie.ids.trakt == movieId
+                    }
+            }
+
+            val listsAsync = async {
+                loadListsUseCase.loadLocalLists()
+                    .values
+                    .flatten()
+                    .firstOrNull {
+                        it.type == MOVIE && it.id == movieId
+                    }
+            }
+
+            val watchlist = watchlistAsync.await()
+            val lists = listsAsync.await()
+
+            movieProgressState.update {
+                it?.copy(
+                    inWatchlist = watchlist != null,
+                    inLists = lists != null,
+                )
             }
         }
     }

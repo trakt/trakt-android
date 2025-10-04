@@ -52,6 +52,31 @@ internal class ListsApiClient(
         )
     }
 
+    override suspend fun addShowToList(
+        listId: TraktId,
+        movieId: TraktId,
+    ) {
+        listsApi.postUsersListsListAdd(
+            id = "me",
+            listId = listId.value.toString(),
+            postUsersListsListAddRequest = PostUsersListsListAddRequest(
+                shows = listOf(
+                    PostUsersListsListAddRequestShowsInner(
+                        ids = PostUsersListsListAddRequestShowsInnerOneOfIds(
+                            trakt = movieId.value,
+                            slug = null,
+                            imdb = null,
+                            tmdb = null,
+                            tvdb = 0,
+                        ),
+                        title = "",
+                        year = 0,
+                    ),
+                ),
+            ),
+        )
+    }
+
     override suspend fun removeShowFromList(
         listId: TraktId,
         showId: TraktId,
@@ -68,6 +93,30 @@ internal class ListsApiClient(
                             imdb = null,
                             tmdb = null,
                             tvdb = 0,
+                        ),
+                        title = "",
+                        year = 0,
+                    ),
+                ),
+            ),
+        )
+    }
+
+    override suspend fun addMovieToList(
+        listId: TraktId,
+        movieId: TraktId,
+    ) {
+        listsApi.postUsersListsListAdd(
+            id = "me",
+            listId = listId.value.toString(),
+            postUsersListsListAddRequest = PostUsersListsListAddRequest(
+                movies = listOf(
+                    PostUsersListsListAddRequestMoviesInner(
+                        ids = PostCheckinMovieRequestMovieIds(
+                            trakt = movieId.value,
+                            slug = null,
+                            imdb = null,
+                            tmdb = 0,
                         ),
                         title = "",
                         year = 0,

@@ -30,6 +30,7 @@ import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalStora
 import tv.trakt.trakt.core.lists.sections.personal.features.all.AllPersonalListViewModel
 import tv.trakt.trakt.core.lists.sections.personal.features.context.movie.ListMovieContextViewModel
 import tv.trakt.trakt.core.lists.sections.personal.features.context.show.ListShowContextViewModel
+import tv.trakt.trakt.core.lists.sections.personal.usecases.AddPersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.RemovePersonalListItemUseCase
@@ -131,6 +132,14 @@ internal val listsModule = module {
 
     factory {
         RemovePersonalListItemUseCase(
+            remoteSource = get(),
+            listsItemsLocalDataSource = get(),
+            listsLocalDataSource = get(),
+        )
+    }
+
+    factory {
+        AddPersonalListItemUseCase(
             remoteSource = get(),
             listsItemsLocalDataSource = get(),
             listsLocalDataSource = get(),

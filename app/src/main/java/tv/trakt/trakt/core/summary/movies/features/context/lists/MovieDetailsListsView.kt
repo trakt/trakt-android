@@ -46,7 +46,8 @@ internal fun MovieDetailsListsView(
     inWatchlist: Boolean,
     modifier: Modifier = Modifier,
     onWatchlistClick: (() -> Unit)? = null,
-    onListClick: ((TraktId) -> Unit)? = null,
+    onAddListClick: ((TraktId) -> Unit)? = null,
+    onRemoveListClick: ((TraktId) -> Unit)? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -68,7 +69,7 @@ internal fun MovieDetailsListsView(
             if (viewModel.isInList(it.ids.trakt)) {
                 confirmRemoveListSheet = it
             } else {
-                onListClick?.invoke(it.ids.trakt)
+                onAddListClick?.invoke(it.ids.trakt)
             }
         },
         modifier = modifier,
@@ -92,7 +93,7 @@ internal fun MovieDetailsListsView(
         active = confirmRemoveListSheet != null,
         onYes = {
             confirmRemoveListSheet?.let {
-                onListClick?.invoke(it.ids.trakt)
+                onRemoveListClick?.invoke(it.ids.trakt)
                 confirmRemoveListSheet = null
             }
         },

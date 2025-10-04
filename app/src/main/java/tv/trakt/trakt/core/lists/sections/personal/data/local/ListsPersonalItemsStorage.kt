@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 import java.time.Instant
@@ -48,6 +49,35 @@ internal class ListsPersonalItemsStorage : ListsPersonalItemsLocalDataSource {
                         it.show.ids.trakt in showsIds
                 }
         }
+        if (notify) {
+            updatedAt.tryEmit(nowUtcInstant())
+        }
+    }
+
+    override suspend fun addMovies(
+        listId: TraktId,
+        movies: List<Movie>,
+        notify: Boolean,
+    ) {
+        mutex.withLock {
+            val currentItems = storage[listId] ?: emptyList()
+            val newItems = movies.map {
+                PersonalListItem.MovieItem(
+                    movie = it,
+                    listedAt = nowUtcInstant(),
+                )
+            }
+
+            storage[listId] = (newItems + currentItems)
+                .distinctBy {
+                    if (it is PersonalListItem.MovieItem) {
+                        it.movie.ids.trakt
+                    } else {
+                        null
+                    }
+                }
+        }
+
         if (notify) {
             updatedAt.tryEmit(nowUtcInstant())
         }

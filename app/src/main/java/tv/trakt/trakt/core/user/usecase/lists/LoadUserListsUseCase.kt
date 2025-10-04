@@ -69,7 +69,10 @@ internal class LoadUserListsUseCase(
                             }
                             else -> throw IllegalStateException("Personal list item unknown type!")
                         }
+                    }.sortedByDescending {
+                        it.listedAt
                     }
+
                     list to listItems
                 }.toMap()
 
