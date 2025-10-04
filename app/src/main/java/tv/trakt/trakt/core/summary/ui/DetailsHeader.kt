@@ -1,6 +1,10 @@
 package tv.trakt.trakt.core.summary.ui
 
 import android.net.Uri
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -48,6 +52,7 @@ internal fun DetailsHeader(
     ratings: ExternalRating?,
     playsCount: Int?,
     creditsCount: Int?,
+    loading: Boolean,
     onShareClick: () -> Unit,
     onTrailerClick: () -> Unit,
     onBackClick: () -> Unit,
@@ -56,6 +61,7 @@ internal fun DetailsHeader(
     val isReleased = remember {
         movie.released?.isTodayOrBefore() ?: false
     }
+
     DetailsHeader(
         title = movie.title,
         status = movie.status,
@@ -83,10 +89,14 @@ internal fun DetailsHeader(
         images = movie.images,
         trailer = movie.trailer?.toUri(),
         accentColor = movie.colors?.colors?.first,
-        traktRatings = movie.rating.ratingPercent,
+        traktRatings = when {
+            isReleased -> movie.rating.ratingPercent
+            else -> null
+        },
         ratings = ratings,
         playsCount = playsCount,
         creditsCount = creditsCount,
+        loading = loading,
         onBackClick = onBackClick,
         onTrailerClick = onTrailerClick,
         onShareClick = onShareClick,
@@ -107,6 +117,7 @@ private fun DetailsHeader(
     ratings: ExternalRating?,
     creditsCount: Int?,
     playsCount: Int?,
+    loading: Boolean,
     onShareClick: () -> Unit,
     onTrailerClick: () -> Unit,
     onBackClick: () -> Unit,
@@ -151,31 +162,35 @@ private fun DetailsHeader(
                         .fillMaxWidth(),
                 )
 
-                Row(
-                    horizontalArrangement = spacedBy(6.dp),
-                    verticalAlignment = Alignment.CenterVertically,
+                this@Column.AnimatedVisibility(
+                    visible = !loading,
+                    enter = fadeIn(tween(200)),
+                    exit = fadeOut(tween(200)),
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .graphicsLayer {
                             translationY = 8.dp.toPx()
                         },
                 ) {
-                    if (creditsCount != null && creditsCount > 0) {
-                        PosterChip(
-                            text = "${stringResource(R.string.header_post_credits)} • $creditsCount".uppercase(),
-                            modifier = Modifier,
-                        )
-                    }
+                    Row(
+                        horizontalArrangement = spacedBy(6.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        if (creditsCount != null && creditsCount > 0) {
+                            PosterChip(
+                                text = "${stringResource(R.string.header_post_credits)} • $creditsCount".uppercase(),
+                            )
+                        }
 
-                    if (playsCount != null && playsCount > 0) {
-                        PosterChip(
-                            text = when {
-                                playsCount > 1 -> playsCount.toString()
-                                else -> ""
-                            },
-                            icon = painterResource(R.drawable.ic_check_round),
-                            modifier = Modifier,
-                        )
+                        if (playsCount != null && playsCount > 0) {
+                            PosterChip(
+                                text = when {
+                                    playsCount > 1 -> playsCount.toString()
+                                    else -> ""
+                                },
+                                icon = painterResource(R.drawable.ic_check_round),
+                            )
+                        }
                     }
                 }
             }
@@ -347,6 +362,7 @@ private fun DetailsHeaderPreview() {
             traktRatings = 72,
             playsCount = 2,
             creditsCount = 2,
+            loading = true,
             ratings = ExternalRating(
                 imdb = ExternalRating.ImdbRating(
                     rating = 7.5F,

@@ -210,10 +210,11 @@ internal fun MovieDetailsContent(
                         movie = movie,
                         ratings = state.movieRatings,
                         creditsCount = when {
-                            (state.movieProgress?.plays ?: 0) > 0 -> null
+                            (state.movieProgress?.plays ?: 0) > 0 || state.loadingProgress.isLoading -> null
                             else -> movie.credits
                         },
                         playsCount = state.movieProgress?.plays,
+                        loading = state.loading.isLoading || state.loadingProgress.isLoading,
                         onBackClick = onBackClick ?: {},
                         onTrailerClick = onTrailerClick ?: {},
                         onShareClick = onShareClick ?: {},
