@@ -171,12 +171,14 @@ private fun WatchButton(
 
     WatchNowButton(
         text = when {
+            streamingState.loading -> stringResource(R.string.button_text_stream_on)
             streamingState.noServices -> stringResource(R.string.button_text_no_services)
             directLink != null -> service.name
             else -> ""
         },
         textStyle = when {
-            streamingState.noServices -> TraktTheme.typography.buttonPrimary.copy(fontSize = 13.sp)
+            streamingState.loading -> TraktTheme.typography.buttonPrimary.copy(fontSize = 12.sp)
+            streamingState.noServices -> TraktTheme.typography.buttonPrimary.copy(fontSize = 12.sp)
             else -> TraktTheme.typography.buttonPrimary
         },
         logo = when {
