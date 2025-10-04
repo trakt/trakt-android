@@ -8,11 +8,15 @@ import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -34,12 +38,15 @@ import tv.trakt.trakt.core.lists.model.PersonalListItem
 import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.ListsPersonalDestination
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
+import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
 
+@OptIn(FlowPreview::class)
 internal class AllPersonalListViewModel(
     savedStateHandle: SavedStateHandle,
     private val getListUseCase: GetPersonalListsUseCase,
     private val getListItemsUseCase: GetPersonalListItemsUseCase,
     private val movieLocalDataSource: MovieLocalDataSource,
+    private val userListLocalDataSource: UserListsLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<ListsPersonalDestination>()
@@ -60,6 +67,23 @@ internal class AllPersonalListViewModel(
         loadBackground()
         loadDetails()
         loadData()
+        observeLists()
+    }
+
+    private fun observeLists() {
+        viewModelScope.launch {
+            merge(
+                userListLocalDataSource.observeUpdates(),
+            )
+                .distinctUntilChanged()
+                .debounce(250)
+                .collect {
+                    loadData(
+                        ignoreErrors = true,
+                        localOnly = true,
+                    )
+                }
+        }
     }
 
     private fun loadBackground() {

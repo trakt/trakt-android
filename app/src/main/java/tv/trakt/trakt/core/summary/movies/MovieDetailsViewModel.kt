@@ -27,8 +27,10 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.lists.sections.personal.usecases.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.summary.movies.navigation.MovieDetailsDestination
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
@@ -52,6 +54,7 @@ internal class MovieDetailsViewModel(
     private val loadListsUseCase: LoadUserListsUseCase,
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
     private val updateMovieWatchlistUseCase: UpdateMovieWatchlistUseCase,
+    private val removeListItemUseCase: RemovePersonalListItemUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
@@ -66,6 +69,7 @@ internal class MovieDetailsViewModel(
     private val movieProgressState = MutableStateFlow(initialState.movieProgress)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingProgress = MutableStateFlow(initialState.loadingProgress)
+    private val loadingLists = MutableStateFlow(initialState.loadingLists)
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
     private val userState = MutableStateFlow(initialState.user)
@@ -122,6 +126,7 @@ internal class MovieDetailsViewModel(
             }
             try {
                 loadingProgress.update { LOADING }
+                loadingLists.update { LOADING }
 
                 coroutineScope {
                     val progressAsync = async {
@@ -187,6 +192,7 @@ internal class MovieDetailsViewModel(
                 }
             } finally {
                 loadingProgress.update { DONE }
+                loadingLists.update { DONE }
             }
         }
     }
@@ -220,9 +226,14 @@ internal class MovieDetailsViewModel(
     }
 
     fun addToWatched() {
-        if (loadingState.value.isLoading || loadingProgress.value.isLoading) {
+        if (movieState.value == null ||
+            loadingState.value.isLoading ||
+            loadingProgress.value.isLoading ||
+            loadingLists.value.isLoading
+        ) {
             return
         }
+
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) {
                 return@launch
@@ -261,7 +272,8 @@ internal class MovieDetailsViewModel(
     fun toggleWatchlist() {
         if (movieState.value == null ||
             loadingState.value.isLoading ||
-            loadingProgress.value.isLoading
+            loadingProgress.value.isLoading ||
+            loadingLists.value.isLoading
         ) {
             return
         }
@@ -273,13 +285,29 @@ internal class MovieDetailsViewModel(
         }
     }
 
+    fun toggleList(listId: TraktId) {
+        if (movieState.value == null ||
+            loadingState.value.isLoading ||
+            loadingProgress.value.isLoading ||
+            loadingLists.value.isLoading
+        ) {
+            return
+        }
+
+        if (movieProgressState.value?.inLists == true) {
+            removeFromList(listId)
+        } else {
+            // Adding to lists is handled in MovieDetailsListsView
+        }
+    }
+
     private fun addToWatchlist() {
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) {
                 return@launch
             }
             try {
-                loadingProgress.update { LOADING }
+                loadingLists.update { LOADING }
 
                 updateMovieWatchlistUseCase.addToWatchlist(movieId)
                 userWatchlistLocalSource.addMovies(
@@ -307,7 +335,7 @@ internal class MovieDetailsViewModel(
                     Timber.w(error)
                 }
             } finally {
-                loadingProgress.update { DONE }
+                loadingLists.update { DONE }
             }
         }
     }
@@ -318,7 +346,7 @@ internal class MovieDetailsViewModel(
                 return@launch
             }
             try {
-                loadingProgress.update { LOADING }
+                loadingLists.update { LOADING }
 
                 updateMovieWatchlistUseCase.removeFromWatchlist(movieId)
                 userWatchlistLocalSource.removeMovies(
@@ -340,7 +368,44 @@ internal class MovieDetailsViewModel(
                     Timber.w(error)
                 }
             } finally {
-                loadingProgress.update { DONE }
+                loadingLists.update { DONE }
+            }
+        }
+    }
+
+    private fun removeFromList(listId: TraktId) {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                loadingLists.update { LOADING }
+
+                removeListItemUseCase.removeMovie(
+                    listId = listId,
+                    movieId = movieId,
+                )
+
+                val inLists = loadListsUseCase.loadLocalLists()
+                    .values
+                    .flatten()
+                    .firstOrNull {
+                        it.type == MOVIE && it.id == movieId
+                    }
+
+                movieProgressState.update {
+                    it?.copy(inLists = (inLists != null))
+                }
+                infoState.update {
+                    DynamicStringResource(R.string.text_info_list_removed)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.w(error)
+                }
+            } finally {
+                loadingLists.update { DONE }
             }
         }
     }
@@ -373,6 +438,7 @@ internal class MovieDetailsViewModel(
         movieProgressState,
         loadingState,
         loadingProgress,
+        loadingLists,
         infoState,
         errorState,
         userState,
@@ -384,9 +450,10 @@ internal class MovieDetailsViewModel(
             movieProgress = state[3] as MovieDetailsState.ProgressState?,
             loading = state[4] as LoadingState,
             loadingProgress = state[5] as LoadingState,
-            info = state[6] as StringResource?,
-            error = state[7] as Exception?,
-            user = state[8] as User?,
+            loadingLists = state[6] as LoadingState,
+            info = state[7] as StringResource?,
+            error = state[8] as Exception?,
+            user = state[9] as User?,
         )
     }.stateIn(
         scope = viewModelScope,

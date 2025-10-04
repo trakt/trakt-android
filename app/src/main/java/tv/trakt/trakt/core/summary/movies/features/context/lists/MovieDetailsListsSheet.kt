@@ -45,21 +45,17 @@ internal fun MovieDetailsListsSheet(
                 inWatchlist = inWatchlist,
                 onWatchlistClick = {
                     onWatchlistClick?.invoke()
-                    sheetScope.launch { state.hide() }
-                        .invokeOnCompletion {
-                            if (!state.isVisible) {
-                                onDismiss()
-                            }
-                        }
+                    sheetScope.launch {
+                        state.hide()
+                        onDismiss()
+                    }
                 },
                 onListClick = { listId: TraktId ->
                     onListClick?.invoke(listId)
-                    sheetScope.launch { state.hide() }
-                        .invokeOnCompletion {
-                            if (!state.isVisible) {
-                                onDismiss()
-                            }
-                        }
+                    sheetScope.launch {
+                        state.hide()
+                        onDismiss()
+                    }
                 },
                 modifier = Modifier
                     .padding(bottom = 24.dp)

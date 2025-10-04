@@ -115,6 +115,9 @@ internal fun MovieDetailsScreen(
         onWatchlistClick = {
             viewModel.toggleWatchlist()
         },
+        onListClick = { listId ->
+            viewModel.toggleList(listId)
+        },
         onDismiss = {
             listsSheet = null
         },
@@ -211,7 +214,8 @@ internal fun MovieDetailsContent(
                             else -> movie.credits
                         },
                         playsCount = state.movieProgress?.plays,
-                        loading = state.loading.isLoading || state.loadingProgress.isLoading,
+                        loading = state.loading.isLoading ||
+                            state.loadingProgress.isLoading,
                         onBackClick = onBackClick ?: {},
                         onTrailerClick = onTrailerClick ?: {},
                         onShareClick = onShareClick ?: {},
@@ -225,8 +229,11 @@ internal fun MovieDetailsContent(
                     }
                     DetailsActions(
                         primaryEnabled = isReleased,
-                        enabled = state.user != null && !state.loadingProgress.isLoading,
-                        loading = state.loadingProgress.isLoading,
+                        enabled = state.user != null &&
+                            !state.loadingProgress.isLoading &&
+                            !state.loadingLists.isLoading,
+                        loading = state.loadingProgress.isLoading ||
+                            state.loadingLists.isLoading,
                         inLists = state.movieProgress?.inAnyList,
                         onPrimaryClick = onTrackClick,
                         onSecondaryClick = onListsClick,

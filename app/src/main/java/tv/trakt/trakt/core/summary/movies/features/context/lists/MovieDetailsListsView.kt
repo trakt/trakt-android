@@ -51,6 +51,7 @@ internal fun MovieDetailsListsView(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var confirmRemoveWatchlistSheet by remember { mutableStateOf(false) }
+    var confirmRemoveListSheet by remember { mutableStateOf<CustomList?>(null) }
 
     MovieDetailsListsContent(
         movie = movie,
@@ -63,7 +64,13 @@ internal fun MovieDetailsListsView(
                 onWatchlistClick?.invoke()
             }
         },
-        onListClick = onListClick,
+        onListClick = {
+            if (viewModel.isInList(it.ids.trakt)) {
+                confirmRemoveListSheet = it
+            } else {
+                onListClick?.invoke(it.ids.trakt)
+            }
+        },
         modifier = modifier,
     )
 
@@ -80,6 +87,23 @@ internal fun MovieDetailsListsView(
             movie.title,
         ),
     )
+
+    ConfirmationSheet(
+        active = confirmRemoveListSheet != null,
+        onYes = {
+            confirmRemoveListSheet?.let {
+                onListClick?.invoke(it.ids.trakt)
+                confirmRemoveListSheet = null
+            }
+        },
+        onNo = { confirmRemoveListSheet = null },
+        title = stringResource(R.string.button_text_remove_from_list),
+        message = stringResource(
+            R.string.warning_prompt_remove_from_personal_list,
+            movie.title,
+            confirmRemoveListSheet?.name ?: "",
+        ),
+    )
 }
 
 @Composable
@@ -89,7 +113,7 @@ private fun MovieDetailsListsContent(
     lists: ImmutableList<Pair<CustomList, Boolean>>,
     modifier: Modifier = Modifier,
     onWatchlistClick: (() -> Unit)? = null,
-    onListClick: ((TraktId) -> Unit)? = null,
+    onListClick: ((CustomList) -> Unit)? = null,
 ) {
     val genresText = remember(movie.genres) {
         movie.genres.take(3).joinToString(" / ") { genre ->
@@ -151,7 +175,7 @@ private fun ActionButtons(
     inWatchlist: Boolean,
     lists: ImmutableList<Pair<CustomList, Boolean>>,
     onWatchlistClick: (() -> Unit)? = null,
-    onListClick: ((TraktId) -> Unit)? = null,
+    onListClick: ((CustomList) -> Unit)? = null,
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
@@ -175,7 +199,7 @@ private fun ActionButtons(
             GhostButton(
                 text = list.first.name,
                 onClick = {
-                    onListClick?.invoke(list.first.ids.trakt)
+                    onListClick?.invoke(list.first)
                 },
                 iconSize = 22.dp,
                 iconSpace = 16.dp,

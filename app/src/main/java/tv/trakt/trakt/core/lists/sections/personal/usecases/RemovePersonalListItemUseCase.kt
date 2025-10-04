@@ -1,12 +1,15 @@
 package tv.trakt.trakt.core.lists.sections.personal.usecases
 
+import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.data.remote.ListsRemoteDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
+import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
 
 internal class RemovePersonalListItemUseCase(
     private val remoteSource: ListsRemoteDataSource,
-    private val localSource: ListsPersonalItemsLocalDataSource,
+    private val listsItemsLocalDataSource: ListsPersonalItemsLocalDataSource,
+    private val listsLocalDataSource: UserListsLocalDataSource,
 ) {
     suspend fun removeShow(
         listId: TraktId,
@@ -16,7 +19,7 @@ internal class RemovePersonalListItemUseCase(
             listId = listId,
             showId = showId,
         )
-        localSource.removeShows(
+        listsItemsLocalDataSource.removeShows(
             listId = listId,
             showsIds = listOf(showId),
             notify = true,
@@ -31,9 +34,17 @@ internal class RemovePersonalListItemUseCase(
             listId = listId,
             movieId = movieId,
         )
-        localSource.removeMovies(
+
+        listsItemsLocalDataSource.removeMovies(
             listId = listId,
             moviesIds = listOf(movieId),
+            notify = true,
+        )
+
+        listsLocalDataSource.removeListItem(
+            listId = listId,
+            itemId = movieId,
+            itemType = MOVIE,
             notify = true,
         )
     }

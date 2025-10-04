@@ -132,7 +132,8 @@ internal val listsModule = module {
     factory {
         RemovePersonalListItemUseCase(
             remoteSource = get(),
-            localSource = get(),
+            listsItemsLocalDataSource = get(),
+            listsLocalDataSource = get(),
         )
     }
 
@@ -190,6 +191,7 @@ internal val listsModule = module {
             getListUseCase = get(),
             getListItemsUseCase = get(),
             movieLocalDataSource = get(),
+            userListLocalDataSource = get(),
             sessionManager = get(),
         )
     }

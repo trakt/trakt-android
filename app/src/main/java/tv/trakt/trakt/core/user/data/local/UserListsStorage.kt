@@ -7,6 +7,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 import java.time.Instant
@@ -99,7 +100,32 @@ internal class UserListsStorage : UserListsLocalDataSource {
             }
 
             if (notify) {
-                updatedAt.tryEmit(Instant.now())
+                updatedAt.tryEmit(nowUtcInstant())
+            }
+        }
+    }
+
+    override suspend fun removeListItem(
+        listId: TraktId,
+        itemId: TraktId,
+        itemType: MediaType,
+        notify: Boolean,
+    ) {
+        mutex.withLock {
+            storage?.let { storage ->
+                val entry = storage[listId]
+                if (entry != null) {
+                    val (list, items) = entry
+                    val updatedItems = items.filterNot {
+                        it.id == itemId &&
+                            it.type == itemType
+                    }
+                    storage[listId] = list to updatedItems
+                }
+            }
+
+            if (notify) {
+                updatedAt.tryEmit(nowUtcInstant())
             }
         }
     }

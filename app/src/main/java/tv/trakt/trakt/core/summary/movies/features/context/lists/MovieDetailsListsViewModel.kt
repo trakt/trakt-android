@@ -15,6 +15,7 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.user.usecase.lists.LoadUserListsUseCase
 
 internal class MovieDetailsListsViewModel(
@@ -66,6 +67,12 @@ internal class MovieDetailsListsViewModel(
                     Timber.w(error, "Failed to load user lists for movie details.")
                 }
             }
+        }
+    }
+
+    fun isInList(listId: TraktId): Boolean {
+        return listsState.value.any { (list, inList) ->
+            list.ids.trakt == listId && inList
         }
     }
 
