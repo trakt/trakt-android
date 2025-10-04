@@ -86,6 +86,7 @@ internal val profileModule = module {
             localRecommendedMovies = get(),
             localUserWatchlist = get(),
             localUserProgress = get(),
+            localUserLists = get(),
         )
     }
 
