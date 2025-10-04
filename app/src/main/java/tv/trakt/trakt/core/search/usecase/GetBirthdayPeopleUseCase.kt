@@ -16,10 +16,12 @@ internal class GetBirthdayPeopleUseCase(
     suspend fun getLocalPeople(): ImmutableList<Person> {
         val today = nowLocalDay()
         return localSource.getPeople()
-            .sortedByDescending {
-                it.birthday?.monthValue == today.monthValue &&
-                    it.birthday?.dayOfMonth == today.dayOfMonth
-            }
+            .sortedWith(
+                compareByDescending<Person> {
+                    it.birthday?.monthValue == today.monthValue &&
+                        it.birthday?.dayOfMonth == today.dayOfMonth
+                }.thenBy { it.birthday?.dayOfYear },
+            )
             .toImmutableList()
     }
 
@@ -30,10 +32,12 @@ internal class GetBirthdayPeopleUseCase(
                 Person.fromDto(it)
             }
             .take(limit)
-            .sortedByDescending {
-                it.birthday?.monthValue == today.monthValue &&
-                    it.birthday?.dayOfMonth == today.dayOfMonth
-            }
+            .sortedWith(
+                compareByDescending<Person> {
+                    it.birthday?.monthValue == today.monthValue &&
+                        it.birthday?.dayOfMonth == today.dayOfMonth
+                }.thenBy { it.birthday?.dayOfYear },
+            )
             .toImmutableList()
             .also { people ->
                 localSource.setPeople(people = people)
