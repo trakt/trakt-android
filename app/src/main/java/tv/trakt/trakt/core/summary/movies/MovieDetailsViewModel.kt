@@ -243,6 +243,7 @@ internal class MovieDetailsViewModel(
                 loadingProgress.update { LOADING }
 
                 updateMovieHistoryUseCase.addToWatched(movieId)
+                loadProgressUseCase.loadMoviesProgress()
                 userWatchlistLocalSource.removeMovies(
                     ids = setOf(movieId),
                     notify = true,
@@ -257,8 +258,6 @@ internal class MovieDetailsViewModel(
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_added)
                 }
-
-                refreshProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -461,20 +460,20 @@ internal class MovieDetailsViewModel(
         }
     }
 
-    private fun refreshProgress() {
-        viewModelScope.launch {
-            if (!sessionManager.isAuthenticated()) {
-                return@launch
-            }
-            try {
-                loadProgressUseCase.loadMoviesProgress()
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.w(error)
-                }
-            }
-        }
-    }
+//    private fun refreshProgress() {
+//        viewModelScope.launch {
+//            if (!sessionManager.isAuthenticated()) {
+//                return@launch
+//            }
+//            try {
+//                loadProgressUseCase.loadMoviesProgress()
+//            } catch (error: Exception) {
+//                error.rethrowCancellation {
+//                    Timber.w(error)
+//                }
+//            }
+//        }
+//    }
 
     fun clearInfo() {
         infoState.update { null }
