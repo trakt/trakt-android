@@ -12,7 +12,7 @@ import tv.trakt.trakt.core.search.data.local.model.create
 import tv.trakt.trakt.core.search.data.local.popular.PopularSearchLocalDataSource
 import tv.trakt.trakt.core.search.data.remote.SearchRemoteDataSource
 import java.time.Instant
-import java.time.temporal.ChronoUnit.DAYS
+import java.time.temporal.ChronoUnit.HOURS
 
 private const val TRENDING_SEARCH_LIMIT = 36
 
@@ -69,6 +69,6 @@ internal class GetPopularSearchUseCase(
     }
 
     private fun isTimestampValid(timestamp: Instant?): Boolean {
-        return timestamp?.plus(1, DAYS)?.isAfter(nowUtcInstant()) == true
+        return timestamp?.plus(12, HOURS)?.isAfter(nowUtcInstant()) == true
     }
 }
