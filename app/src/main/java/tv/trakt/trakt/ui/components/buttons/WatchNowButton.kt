@@ -75,7 +75,7 @@ internal fun WatchNowButton(
                         size = 18.dp,
                         color = if (enabled) contentColor else disabledContentColor,
                         modifier = Modifier
-                            .padding(end = 10.dp),
+                            .padding(end = 8.dp),
                     )
                 }
                 else ->
@@ -84,7 +84,7 @@ internal fun WatchNowButton(
                         contentDescription = null,
                         colorFilter = ColorFilter.tint(if (enabled) contentColor else disabledContentColor),
                         modifier = Modifier
-                            .padding(end = 10.dp)
+                            .padding(end = 8.dp)
                             .requiredSize(18.dp),
                     )
             }
@@ -95,7 +95,7 @@ internal fun WatchNowButton(
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
-                        .padding(vertical = 2.dp)
+                        .padding(vertical = 5.dp)
                         .fillMaxWidth(),
                 )
             } else {
@@ -103,7 +103,7 @@ internal fun WatchNowButton(
                     text = text.uppercase(),
                     color = if (enabled) contentColor else disabledContentColor,
                     style = textStyle,
-                    maxLines = 2,
+                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     textAlign = TextAlign.Start,
                     autoSize = TextAutoSize.StepBased(
