@@ -64,6 +64,7 @@ import tv.trakt.trakt.core.summary.movies.features.actors.MovieActorsView
 import tv.trakt.trakt.core.summary.movies.features.context.lists.MovieDetailsListsSheet
 import tv.trakt.trakt.core.summary.movies.features.context.more.MovieDetailsContextSheet
 import tv.trakt.trakt.core.summary.movies.features.extras.MovieExtrasView
+import tv.trakt.trakt.core.summary.movies.features.related.MovieRelatedView
 import tv.trakt.trakt.core.summary.movies.features.streaming.MovieStreamingsView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
@@ -79,6 +80,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun MovieDetailsScreen(
     modifier: Modifier = Modifier,
     viewModel: MovieDetailsViewModel,
+    onMovieClick: ((Movie) -> Unit),
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -95,6 +97,7 @@ internal fun MovieDetailsScreen(
     MovieDetailsContent(
         state = state,
         modifier = modifier,
+        onMovieClick = onMovieClick,
         onTrackClick = {
             viewModel.addToWatched()
         },
@@ -165,6 +168,7 @@ internal fun MovieDetailsScreen(
 internal fun MovieDetailsContent(
     state: MovieDetailsState,
     modifier: Modifier = Modifier,
+    onMovieClick: ((Movie) -> Unit)? = null,
     onTrackClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onTrailerClick: (() -> Unit)? = null,
@@ -189,8 +193,8 @@ internal fun MovieDetailsContent(
 
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
-            aheadFraction = 0.66F,
-            behindFraction = 0.66F,
+            aheadFraction = 0.5F,
+            behindFraction = 0.5F,
         ),
     )
 
@@ -322,6 +326,19 @@ internal fun MovieDetailsContent(
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
+                            modifier = Modifier
+                                .padding(top = 32.dp),
+                        )
+                    }
+
+                    item {
+                        MovieRelatedView(
+                            viewModel = koinViewModel(
+                                parameters = { parametersOf(movie) },
+                            ),
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            onClick = onMovieClick,
                             modifier = Modifier
                                 .padding(top = 32.dp),
                         )

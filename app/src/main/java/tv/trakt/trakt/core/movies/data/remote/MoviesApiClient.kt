@@ -169,4 +169,14 @@ internal class MoviesApiClient(
         )
         return response.body()
     }
+
+    override suspend fun getRelated(movieId: TraktId): List<MovieDto> {
+        val response = moviesApi.getMoviesRelated(
+            id = movieId.value.toString(),
+            extended = "full,streaming_ids,cloud9,colors",
+            limit = 30,
+            page = null,
+        )
+        return response.body()
+    }
 }

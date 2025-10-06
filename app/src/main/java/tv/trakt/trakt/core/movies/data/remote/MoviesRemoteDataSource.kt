@@ -45,4 +45,6 @@ internal interface MoviesRemoteDataSource {
     suspend fun getExtras(movieId: TraktId): List<ExtraVideoDto>
 
     suspend fun getCastCrew(movieId: TraktId): CastCrewDto
+
+    suspend fun getRelated(movieId: TraktId): List<MovieDto>
 }

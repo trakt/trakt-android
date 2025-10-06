@@ -123,6 +123,7 @@ internal fun NavGraphBuilder.moviesScreens(controller: NavHostController) {
             onNavigateToMovie = { navigateToMovie(it) },
         )
         movieDetailsScreen(
+            onNavigateToMovie = { navigateToMovie(it) },
             onNavigateBack = { popBackStack() },
         )
     }

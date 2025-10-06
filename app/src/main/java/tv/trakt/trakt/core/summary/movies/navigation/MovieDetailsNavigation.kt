@@ -13,10 +13,14 @@ internal data class MovieDetailsDestination(
     val movieId: Int,
 )
 
-internal fun NavGraphBuilder.movieDetailsScreen(onNavigateBack: () -> Unit) {
+internal fun NavGraphBuilder.movieDetailsScreen(
+    onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateBack: () -> Unit,
+) {
     composable<MovieDetailsDestination> {
         MovieDetailsScreen(
             viewModel = koinViewModel(),
+            onMovieClick = { onNavigateToMovie(it.ids.trakt) },
             onNavigateBack = onNavigateBack,
         )
     }
