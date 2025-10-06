@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.movies.data.remote
 import org.openapitools.client.apis.MoviesApi
 import org.openapitools.client.apis.RecommendationsApi
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.MovieDto
@@ -157,6 +158,14 @@ internal class MoviesApiClient(
     override suspend fun getExtras(movieId: TraktId): List<ExtraVideoDto> {
         val response = moviesApi.getMoviesVideos(
             id = movieId.value.toString(),
+        )
+        return response.body()
+    }
+
+    override suspend fun getCastCrew(movieId: TraktId): CastCrewDto {
+        val response = moviesApi.getMoviesPeople(
+            id = movieId.value.toString(),
+            extended = "cloud9",
         )
         return response.body()
     }

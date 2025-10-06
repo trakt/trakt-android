@@ -60,6 +60,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
+import tv.trakt.trakt.core.summary.movies.features.actors.MovieActorsView
 import tv.trakt.trakt.core.summary.movies.features.context.lists.MovieDetailsListsSheet
 import tv.trakt.trakt.core.summary.movies.features.context.more.MovieDetailsContextSheet
 import tv.trakt.trakt.core.summary.movies.features.extras.MovieExtrasView
@@ -279,7 +280,7 @@ internal fun MovieDetailsContent(
                         val padding = PaddingValues(
                             horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
                         )
-                        MovieExtrasView(
+                        MovieActorsView(
                             viewModel = koinViewModel(
                                 parameters = { parametersOf(movie) },
                             ),
@@ -287,6 +288,21 @@ internal fun MovieDetailsContent(
                             contentPadding = padding,
                             modifier = Modifier
                                 .padding(top = 24.dp),
+                        )
+                    }
+
+                    item {
+                        val padding = PaddingValues(
+                            horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
+                        )
+                        MovieExtrasView(
+                            viewModel = koinViewModel(
+                                parameters = { parametersOf(movie) },
+                            ),
+                            headerPadding = padding,
+                            contentPadding = padding,
+                            modifier = Modifier
+                                .padding(top = 32.dp),
                         )
                     }
                 }

@@ -2,9 +2,9 @@ package tv.trakt.trakt.app.core.details.movie
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
-import tv.trakt.trakt.app.common.model.CastPerson
 import tv.trakt.trakt.app.common.model.Comment
 import tv.trakt.trakt.common.helpers.StringResource
+import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.ExtraVideo

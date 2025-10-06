@@ -2,9 +2,9 @@ package tv.trakt.trakt.app.core.details.episode.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.app.common.model.CastPerson
 import tv.trakt.trakt.app.core.episodes.data.remote.EpisodesRemoteDataSource
 import tv.trakt.trakt.app.core.people.data.local.PeopleLocalDataSource
+import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId

@@ -21,8 +21,7 @@ internal class GetMovieExtrasUseCase(
             }
             .sortedWith(
                 compareByDescending<ExtraVideo> { it.type == "trailer" }
-                    .thenBy { it.type }
-                    .thenByDescending { it.publishedAt }, // Then by publish date within each type
+                    .thenBy { it.type.length },
             )
             .toImmutableList()
     }

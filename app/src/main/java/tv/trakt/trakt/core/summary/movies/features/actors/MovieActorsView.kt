@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 
-package tv.trakt.trakt.core.summary.movies.features.extras
+package tv.trakt.trakt.core.summary.movies.features.actors
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
@@ -29,7 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,44 +43,37 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
-import tv.trakt.trakt.common.model.ExtraVideo
+import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.FilterChip
-import tv.trakt.trakt.ui.components.FilterChipGroup
 import tv.trakt.trakt.ui.components.TraktHeader
-import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
-import tv.trakt.trakt.ui.components.mediacards.skeletons.HorizontalMediaSkeletonCard
+import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
+import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun MovieExtrasView(
-    viewModel: MovieExtrasViewModel,
+internal fun MovieActorsView(
+    viewModel: MovieActorsViewModel,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
-    val uriHandler = LocalUriHandler.current
-
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    MovieExtrasContent(
+    MovieActorsContent(
         state = state,
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        onClick = { uriHandler.openUri(it.url) },
-        onFilterClick = { viewModel.toggleFilter(it) },
     )
 }
 
 @Composable
-private fun MovieExtrasContent(
-    state: MovieExtrasState,
+private fun MovieActorsContent(
+    state: MovieActorsState,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onClick: ((ExtraVideo) -> Unit)? = null,
-    onFilterClick: ((String) -> Unit)? = null,
+    onClick: ((CastPerson) -> Unit)? = null,
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
@@ -95,7 +87,7 @@ private fun MovieExtrasContent(
             verticalAlignment = CenterVertically,
         ) {
             TraktHeader(
-                title = stringResource(R.string.list_title_extras),
+                title = stringResource(R.string.list_title_actors),
             )
         }
 
@@ -111,27 +103,16 @@ private fun MovieExtrasContent(
                     )
                 }
                 DONE -> {
-                    Column(
-                        verticalArrangement = spacedBy(0.dp),
-                    ) {
-                        if (state.filters.filters.size > 1) {
-                            ContentFilters(
-                                state = state.filters,
-                                onFilterClick = onFilterClick ?: {},
-                            )
-                        }
-
-                        if (state.items?.isEmpty() == true) {
-                            ContentEmpty(
-                                contentPadding = headerPadding,
-                            )
-                        } else {
-                            ContentList(
-                                listItems = (state.items ?: emptyList()).toImmutableList(),
-                                contentPadding = contentPadding,
-                                onClick = onClick,
-                            )
-                        }
+                    if (state.items?.isEmpty() == true) {
+                        ContentEmpty(
+                            contentPadding = headerPadding,
+                        )
+                    } else {
+                        ContentList(
+                            listItems = (state.items ?: emptyList()).toImmutableList(),
+                            contentPadding = contentPadding,
+                            onClick = onClick,
+                        )
                     }
                 }
             }
@@ -141,10 +122,10 @@ private fun MovieExtrasContent(
 
 @Composable
 private fun ContentList(
-    listItems: ImmutableList<ExtraVideo>,
+    listItems: ImmutableList<CastPerson>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
-    onClick: ((ExtraVideo) -> Unit)? = null,
+    onClick: ((CastPerson) -> Unit)? = null,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
@@ -164,64 +145,39 @@ private fun ContentList(
     ) {
         items(
             items = listItems,
-            key = { it.url },
+            key = { it.person.ids.trakt.value },
         ) { item ->
-            HorizontalMediaCard(
+            VerticalMediaCard(
                 title = "",
-                containerImageUrl = item.getYoutubeImageUrl,
+                imageUrl = item.person.images?.getHeadshotUrl(),
                 onClick = { onClick?.invoke(item) },
-                footerContent = {
+                chipContent = {
                     Column(
                         verticalArrangement = Arrangement.Absolute.spacedBy(1.dp),
                     ) {
                         Text(
-                            text = item.title,
+                            text = item.person.name,
                             style = TraktTheme.typography.cardTitle,
                             color = TraktTheme.colors.textPrimary,
                             maxLines = 1,
                             overflow = Ellipsis,
                         )
 
-                        Text(
-                            text = item.type.replaceFirstChar { it.uppercaseChar() },
-                            style = TraktTheme.typography.cardSubtitle,
-                            color = TraktTheme.colors.textSecondary,
-                            maxLines = 1,
-                            overflow = Ellipsis,
-                        )
+                        item.characters.firstOrNull()?.let {
+                            Text(
+                                text = it,
+                                style = TraktTheme.typography.cardSubtitle,
+                                color = TraktTheme.colors.textSecondary,
+                                maxLines = 1,
+                                overflow = Ellipsis,
+                            )
+                        }
                     }
                 },
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
                     fadeOutSpec = null,
                 ),
-            )
-        }
-    }
-}
-
-@Composable
-private fun ContentFilters(
-    state: MovieExtrasState.FiltersState,
-    onFilterClick: (String) -> Unit,
-) {
-    FilterChipGroup(
-        paddingHorizontal = PaddingValues(
-            start = TraktTheme.spacing.mainPageHorizontalSpace,
-            end = TraktTheme.spacing.mainPageHorizontalSpace,
-        ),
-        paddingVertical = PaddingValues(
-            bottom = 18.dp,
-        ),
-    ) {
-        for (filter in state.filters) {
-            FilterChip(
-                text = filter
-                    .replaceFirstChar {
-                        it.uppercaseChar()
-                    },
-                selected = state.selectedFilter == filter,
-                onClick = { onFilterClick(filter) },
             )
         }
     }
@@ -240,8 +196,8 @@ private fun ContentLoading(
             .fillMaxWidth()
             .alpha(if (visible) 1F else 0F),
     ) {
-        items(count = 3) {
-            HorizontalMediaSkeletonCard()
+        items(count = 6) {
+            VerticalMediaSkeletonCard()
         }
     }
 }
@@ -269,8 +225,8 @@ private fun Preview() {
             ColorImage(Color.Blue.toArgb())
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            MovieExtrasContent(
-                state = MovieExtrasState(),
+            MovieActorsContent(
+                state = MovieActorsState(),
             )
         }
     }
@@ -289,9 +245,9 @@ private fun Preview2() {
             ColorImage(Color.Blue.toArgb())
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            MovieExtrasContent(
-                state = MovieExtrasState(
-                    items = emptyList<ExtraVideo>().toImmutableList(),
+            MovieActorsContent(
+                state = MovieActorsState(
+                    items = emptyList<CastPerson>().toImmutableList(),
                     loading = LOADING,
                 ),
             )
@@ -312,9 +268,9 @@ private fun Preview3() {
             ColorImage(Color.Blue.toArgb())
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            MovieExtrasContent(
-                state = MovieExtrasState(
-                    items = emptyList<ExtraVideo>().toImmutableList(),
+            MovieActorsContent(
+                state = MovieActorsState(
+                    items = emptyList<CastPerson>().toImmutableList(),
                     loading = DONE,
                 ),
             )
