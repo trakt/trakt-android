@@ -4,6 +4,7 @@ import org.openapitools.client.apis.MoviesApi
 import org.openapitools.client.apis.RecommendationsApi
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
+import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.MovieDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
 import tv.trakt.trakt.common.networking.StreamingDto
@@ -150,6 +151,13 @@ internal class MoviesApiClient(
             links = "direct",
         )
 
+        return response.body()
+    }
+
+    override suspend fun getExtras(movieId: TraktId): List<ExtraVideoDto> {
+        val response = moviesApi.getMoviesVideos(
+            id = movieId.value.toString(),
+        )
         return response.body()
     }
 }

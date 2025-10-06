@@ -460,21 +460,6 @@ internal class MovieDetailsViewModel(
         }
     }
 
-//    private fun refreshProgress() {
-//        viewModelScope.launch {
-//            if (!sessionManager.isAuthenticated()) {
-//                return@launch
-//            }
-//            try {
-//                loadProgressUseCase.loadMoviesProgress()
-//            } catch (error: Exception) {
-//                error.rethrowCancellation {
-//                    Timber.w(error)
-//                }
-//            }
-//        }
-//    }
-
     fun clearInfo() {
         infoState.update { null }
     }

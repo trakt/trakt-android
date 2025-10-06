@@ -13,13 +13,13 @@ import tv.trakt.trakt.common.model.streamings.StreamingSource
 import tv.trakt.trakt.common.model.streamings.fromDto
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
 
-internal class GetMovieStreamingsUseCase(
+internal class GetStreamOnUseCase(
     private val remoteMovieSource: MoviesRemoteDataSource,
     private val remoteStreamingSource: StreamingRemoteDataSource,
     private val localStreamingSource: StreamingLocalDataSource,
     private val priorityStreamingProvider: PriorityStreamingServiceProvider,
 ) {
-    suspend fun getStreamingServices(
+    suspend fun getStreamingService(
         user: User,
         movieId: TraktId,
     ): Result {

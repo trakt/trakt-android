@@ -1,20 +1,24 @@
-package tv.trakt.trakt.app.core.details.movie.usecases
+package tv.trakt.trakt.core.summary.movies.features.extras.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.app.core.movies.data.remote.MoviesRemoteDataSource
 import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
 
-internal class GetExtraVideosUseCase(
+internal class GetMovieExtrasUseCase(
     private val remoteSource: MoviesRemoteDataSource,
 ) {
     suspend fun getExtraVideos(movieId: TraktId): ImmutableList<ExtraVideo> {
-        val remoteVideos = remoteSource.getMovieExtras(movieId)
-            .map { ExtraVideo.fromDto(it) }
-
-        return remoteVideos
-            .filter { it.official && it.site == "youtube" && it.url.isNotBlank() }
+        return remoteSource.getExtras(movieId)
+            .map {
+                ExtraVideo.fromDto(it)
+            }
+            .filter {
+                it.official &&
+                    it.site == "youtube" &&
+                    it.url.isNotBlank()
+            }
             .sortedWith(
                 compareByDescending<ExtraVideo> { it.type == "trailer" }
                     .thenBy { it.type }

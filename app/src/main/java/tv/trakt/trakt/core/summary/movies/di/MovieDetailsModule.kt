@@ -10,10 +10,13 @@ import tv.trakt.trakt.core.summary.movies.data.local.MovieRatingsLocalDataSource
 import tv.trakt.trakt.core.summary.movies.data.local.MovieRatingsStorage
 import tv.trakt.trakt.core.summary.movies.features.context.lists.MovieDetailsListsViewModel
 import tv.trakt.trakt.core.summary.movies.features.context.more.MovieDetailsContextViewModel
+import tv.trakt.trakt.core.summary.movies.features.extras.MovieExtrasViewModel
+import tv.trakt.trakt.core.summary.movies.features.extras.usecases.GetMovieExtrasUseCase
+import tv.trakt.trakt.core.summary.movies.features.watching.MovieWatchingViewModel
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieRatingsUseCase
-import tv.trakt.trakt.core.summary.movies.usecases.GetMovieStreamingsUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieStudiosUseCase
+import tv.trakt.trakt.core.summary.movies.usecases.GetStreamOnUseCase
 
 internal val movieDetailsDataModule = module {
     single<MovieLocalDataSource> {
@@ -47,7 +50,13 @@ internal val movieDetailsModule = module {
     }
 
     factory {
-        GetMovieStreamingsUseCase(
+        GetMovieExtrasUseCase(
+            remoteSource = get(),
+        )
+    }
+
+    factory {
+        GetStreamOnUseCase(
             remoteMovieSource = get(),
             remoteStreamingSource = get(),
             localStreamingSource = get(),
@@ -70,6 +79,20 @@ internal val movieDetailsModule = module {
             removeListItemUseCase = get(),
             userWatchlistLocalSource = get(),
             sessionManager = get(),
+        )
+    }
+
+    viewModel { (movie: Movie) ->
+        MovieWatchingViewModel(
+            movie = movie,
+            sessionManager = get(),
+        )
+    }
+
+    viewModel { (movie: Movie) ->
+        MovieExtrasViewModel(
+            movie = movie,
+            getExtrasUseCase = get(),
         )
     }
 

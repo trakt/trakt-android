@@ -11,12 +11,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
@@ -40,6 +38,7 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
@@ -52,6 +51,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
@@ -61,6 +62,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.core.summary.movies.features.context.lists.MovieDetailsListsSheet
 import tv.trakt.trakt.core.summary.movies.features.context.more.MovieDetailsContextSheet
+import tv.trakt.trakt.core.summary.movies.features.extras.MovieExtrasView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.DetailsHeader
@@ -168,6 +170,8 @@ internal fun MovieDetailsContent(
     onMoreClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
+    val previewMode = LocalInspectionMode.current
+
     val contentPadding = PaddingValues(
         top = WindowInsets.statusBars.asPaddingValues()
             .calculateTopPadding()
@@ -179,8 +183,8 @@ internal fun MovieDetailsContent(
 
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
-            aheadFraction = 0.5F,
-            behindFraction = 0.5F,
+            aheadFraction = 0.66F,
+            behindFraction = 0.66F,
         ),
     )
 
@@ -265,17 +269,26 @@ internal fun MovieDetailsContent(
                         movieStudios = state.movieStudios,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 21.dp)
+                            .padding(top = 22.dp)
                             .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
                     )
                 }
 
-                item {
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(500.dp),
-                    )
+                if (!previewMode) {
+                    item {
+                        val padding = PaddingValues(
+                            horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
+                        )
+                        MovieExtrasView(
+                            viewModel = koinViewModel(
+                                parameters = { parametersOf(movie) },
+                            ),
+                            headerPadding = padding,
+                            contentPadding = padding,
+                            modifier = Modifier
+                                .padding(top = 24.dp),
+                        )
+                    }
                 }
             }
         }

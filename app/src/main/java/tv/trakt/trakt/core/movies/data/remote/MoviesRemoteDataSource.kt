@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.movies.data.remote
 
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
+import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.MovieDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
 import tv.trakt.trakt.common.networking.StreamingDto
@@ -39,4 +40,6 @@ internal interface MoviesRemoteDataSource {
         movieId: TraktId,
         countryCode: String?,
     ): Map<String, StreamingDto>
+
+    suspend fun getExtras(movieId: TraktId): List<ExtraVideoDto>
 }

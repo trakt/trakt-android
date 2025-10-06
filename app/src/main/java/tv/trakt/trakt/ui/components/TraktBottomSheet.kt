@@ -25,9 +25,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun TraktBottomSheet(
-    sheetState: SheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true,
-    ),
+    sheetState: SheetState,
     containerColor: Color = TraktTheme.colors.dialogContainer,
     contentColor: Color = TraktTheme.colors.dialogContent,
     onDismiss: () -> Unit = {},
