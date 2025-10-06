@@ -8,6 +8,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -17,6 +21,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.core.home.sections.activity.all.data.local.AllActivityLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.summary.movies.features.history.usecases.GetMovieHistoryUseCase
 
@@ -24,6 +29,7 @@ import tv.trakt.trakt.core.summary.movies.features.history.usecases.GetMovieHist
 internal class MovieHistoryViewModel(
     private val movie: Movie,
     private val getHistoryUseCase: GetMovieHistoryUseCase,
+    private val allActivityLocalSource: AllActivityLocalDataSource,
 ) : ViewModel() {
     private val initialState = MovieHistoryState()
 
@@ -33,6 +39,17 @@ internal class MovieHistoryViewModel(
 
     init {
         loadData()
+        observeLists()
+    }
+
+    private fun observeLists() {
+        allActivityLocalSource.observeUpdates()
+            .distinctUntilChanged()
+            .debounce(250)
+            .onEach {
+                loadData(ignoreErrors = true)
+            }
+            .launchIn(viewModelScope)
     }
 
     fun loadData(ignoreErrors: Boolean = false) {

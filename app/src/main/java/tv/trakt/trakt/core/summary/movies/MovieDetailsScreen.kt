@@ -62,6 +62,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.summary.movies.features.actors.MovieActorsView
+import tv.trakt.trakt.core.summary.movies.features.context.history.MovieDetailsHistorySheet
 import tv.trakt.trakt.core.summary.movies.features.context.lists.MovieDetailsListsSheet
 import tv.trakt.trakt.core.summary.movies.features.context.more.MovieDetailsContextSheet
 import tv.trakt.trakt.core.summary.movies.features.extras.MovieExtrasView
@@ -149,6 +150,16 @@ internal fun MovieDetailsScreen(
         },
         onDismiss = {
             contextSheet = null
+        },
+    )
+
+    MovieDetailsHistorySheet(
+        sheetItem = historySheet,
+        onRemovePlay = {
+            viewModel.removeFromWatched(playId = it.id)
+        },
+        onDismiss = {
+            historySheet = null
         },
     )
 
@@ -432,7 +443,11 @@ private fun DetailsMeta(
             DetailsMetaInfo(
                 movie = movie,
                 movieStudios = movieStudios,
-                modifier = Modifier.padding(top = 57.dp),
+                modifier = Modifier
+                    .padding(
+                        top = 57.dp,
+                        bottom = 8.dp,
+                    ),
             )
         }
     }

@@ -112,6 +112,7 @@ internal val movieDetailsModule = module {
             addListItemUseCase = get(),
             removeListItemUseCase = get(),
             userWatchlistLocalSource = get(),
+            allActivityLocalSource = get(),
             sessionManager = get(),
         )
     }
@@ -149,6 +150,7 @@ internal val movieDetailsModule = module {
         MovieHistoryViewModel(
             movie = movie,
             getHistoryUseCase = get(),
+            allActivityLocalSource = get(),
         )
     }
 
