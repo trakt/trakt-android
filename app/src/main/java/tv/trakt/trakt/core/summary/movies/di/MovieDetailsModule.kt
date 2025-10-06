@@ -14,6 +14,8 @@ import tv.trakt.trakt.core.summary.movies.features.context.lists.MovieDetailsLis
 import tv.trakt.trakt.core.summary.movies.features.context.more.MovieDetailsContextViewModel
 import tv.trakt.trakt.core.summary.movies.features.extras.MovieExtrasViewModel
 import tv.trakt.trakt.core.summary.movies.features.extras.usecases.GetMovieExtrasUseCase
+import tv.trakt.trakt.core.summary.movies.features.history.MovieHistoryViewModel
+import tv.trakt.trakt.core.summary.movies.features.history.usecases.GetMovieHistoryUseCase
 import tv.trakt.trakt.core.summary.movies.features.related.MovieRelatedViewModel
 import tv.trakt.trakt.core.summary.movies.features.related.usecases.GetMovieRelatedUseCase
 import tv.trakt.trakt.core.summary.movies.features.streaming.MovieStreamingsViewModel
@@ -90,6 +92,12 @@ internal val movieDetailsModule = module {
         )
     }
 
+    factory {
+        GetMovieHistoryUseCase(
+            remoteSource = get(),
+        )
+    }
+
     viewModel {
         MovieDetailsViewModel(
             savedStateHandle = get(),
@@ -134,6 +142,13 @@ internal val movieDetailsModule = module {
         MovieRelatedViewModel(
             movie = movie,
             getRelatedMoviesUseCase = get(),
+        )
+    }
+
+    viewModel { (movie: Movie) ->
+        MovieHistoryViewModel(
+            movie = movie,
+            getHistoryUseCase = get(),
         )
     }
 

@@ -137,6 +137,23 @@ internal class UserApiClient(
         return response.body()
     }
 
+    override suspend fun getMovieHistory(
+        movieId: TraktId,
+        page: Int,
+        limit: Int,
+    ): List<SyncHistoryMovieItemDto> {
+        val response = historyApi.getUsersHistoryMovie(
+            id = "me",
+            itemId = movieId.value.toString(),
+            extended = "full,cloud9,colors",
+            startAt = null,
+            endAt = null,
+            page = page,
+            limit = limit,
+        )
+        return response.body()
+    }
+
     override suspend fun getShowsCalendar(
         startDate: LocalDate,
         days: Int,

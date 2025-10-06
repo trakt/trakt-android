@@ -133,9 +133,12 @@
     <string name="header_genre">Genre</string>
     <string name="button_text_trailer">Trailer</string>
     <string name="button_text_share">Share</string>
+    <string name="button_text_view_details">View Details</string>
+    <string name="button_text_hide_details">Hide Details</string>
     <string name="text_info_list_removed">Removed from list.</string>
     <string name="text_info_list_added">Added to list.</string>
     <string name="button_text_drop_show">Drop show</string>
+    <string name="list_title_watch_history">Watch History</string>
     <string name="button_text_toggle_search_media">Media</string>
     <string name="button_text_toggle_search_people">People</string>
     <string name="text_cta_activity_list">Kick off your social activity by following Trakt members and exploring what they watch.</string>

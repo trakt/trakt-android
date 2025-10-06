@@ -60,10 +60,12 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
+import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.summary.movies.features.actors.MovieActorsView
 import tv.trakt.trakt.core.summary.movies.features.context.lists.MovieDetailsListsSheet
 import tv.trakt.trakt.core.summary.movies.features.context.more.MovieDetailsContextSheet
 import tv.trakt.trakt.core.summary.movies.features.extras.MovieExtrasView
+import tv.trakt.trakt.core.summary.movies.features.history.MovieHistoryView
 import tv.trakt.trakt.core.summary.movies.features.related.MovieRelatedView
 import tv.trakt.trakt.core.summary.movies.features.streaming.MovieStreamingsView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
@@ -93,6 +95,7 @@ internal fun MovieDetailsScreen(
     val scope = rememberCoroutineScope()
     var contextSheet by remember { mutableStateOf<Movie?>(null) }
     var listsSheet by remember { mutableStateOf<Movie?>(null) }
+    var historySheet by remember { mutableStateOf<HomeActivityItem.MovieItem?>(null) }
 
     MovieDetailsContent(
         state = state,
@@ -112,6 +115,9 @@ internal fun MovieDetailsScreen(
         },
         onMoreClick = {
             contextSheet = state.movie
+        },
+        onHistoryClick = {
+            historySheet = it
         },
         onBackClick = onNavigateBack,
     )
@@ -173,6 +179,7 @@ internal fun MovieDetailsContent(
     onShareClick: (() -> Unit)? = null,
     onTrailerClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
+    onHistoryClick: ((HomeActivityItem.MovieItem) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
@@ -343,6 +350,21 @@ internal fun MovieDetailsContent(
                                 .padding(top = 32.dp),
                         )
                     }
+
+                    if ((state.movieProgress?.plays ?: 0) > 0) {
+                        item {
+                            MovieHistoryView(
+                                viewModel = koinViewModel(
+                                    parameters = { parametersOf(movie) },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onClick = onHistoryClick,
+                                modifier = Modifier
+                                    .padding(top = 32.dp),
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -380,33 +402,37 @@ private fun DetailsMeta(
         modifier = modifier
             .animateContentSize(),
     ) {
-        if (isCollapsed) {
-            Text(
-                text = "View Details".uppercase(),
-                textAlign = TextAlign.Center,
-                style = TraktTheme.typography.buttonPrimary
-                    .copy(fontSize = 14.sp),
-                color = TraktTheme.colors.textPrimary,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        color = TraktTheme.colors.backgroundPrimary,
-                        shape = RoundedCornerShape(100),
-                    )
-                    .border(
-                        width = (1.5).dp,
-                        color = Shade500,
-                        shape = RoundedCornerShape(100),
-                    )
-                    .padding(vertical = 9.dp)
-                    .onClick {
-                        isCollapsed = false
-                    },
-            )
-        } else {
+        Text(
+            text = when {
+                isCollapsed -> stringResource(R.string.button_text_view_details)
+                else -> stringResource(R.string.button_text_hide_details)
+            }.uppercase(),
+            textAlign = TextAlign.Center,
+            style = TraktTheme.typography.buttonPrimary
+                .copy(fontSize = 14.sp),
+            color = TraktTheme.colors.textPrimary,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = TraktTheme.colors.backgroundPrimary,
+                    shape = RoundedCornerShape(100),
+                )
+                .border(
+                    width = (1.5).dp,
+                    color = Shade500,
+                    shape = RoundedCornerShape(100),
+                )
+                .padding(vertical = 9.dp)
+                .onClick {
+                    isCollapsed = !isCollapsed
+                },
+        )
+
+        if (!isCollapsed) {
             DetailsMetaInfo(
                 movie = movie,
                 movieStudios = movieStudios,
+                modifier = Modifier.padding(top = 57.dp),
             )
         }
     }
