@@ -118,13 +118,14 @@ internal class MovieContextViewModel(
 
                 updateMovieWatchlistUseCase.addToWatchlist(movieId = movie.ids.trakt)
                 userWatchlistLocalSource.addMovies(
-                    listOf(
+                    movies = listOf(
                         WatchlistItem.MovieItem(
                             rank = 0,
                             movie = movie,
                             listedAt = nowUtcInstant(),
                         ),
                     ),
+                    notify = true,
                 )
             } catch (error: Exception) {
                 error.rethrowCancellation {

@@ -21,7 +21,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -41,6 +43,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -58,12 +61,20 @@ internal fun MovieRelatedView(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    var contextSheet by remember { mutableStateOf<Movie?>(null) }
+
     MovieRelatedContent(
         state = state,
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onClick = onClick,
+        onLongClick = { contextSheet = it },
+    )
+
+    MovieContextSheet(
+        movie = contextSheet,
+        onDismiss = { contextSheet = null },
     )
 }
 
@@ -74,6 +85,7 @@ private fun MovieRelatedContent(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onClick: ((Movie) -> Unit)? = null,
+    onLongClick: ((Movie) -> Unit)? = null,
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
@@ -112,6 +124,7 @@ private fun MovieRelatedContent(
                             listItems = (state.items ?: emptyList()).toImmutableList(),
                             contentPadding = contentPadding,
                             onClick = onClick,
+                            onLongClick = onLongClick,
                         )
                     }
                 }
@@ -126,6 +139,7 @@ private fun ContentList(
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
     onClick: ((Movie) -> Unit)? = null,
+    onLongClick: ((Movie) -> Unit)? = null,
 ) {
     LazyRow(
         state = listState,
@@ -141,6 +155,7 @@ private fun ContentList(
                 title = item.title,
                 imageUrl = item.images?.getPosterUrl(),
                 onClick = { onClick?.invoke(item) },
+                onLongClick = { onLongClick?.invoke(item) },
                 chipContent = {
                     Row(
                         horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpace),
