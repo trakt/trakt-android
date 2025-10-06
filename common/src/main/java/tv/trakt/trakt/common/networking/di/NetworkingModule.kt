@@ -17,14 +17,16 @@ import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
 import tv.trakt.trakt.common.Config.API_BASE_URL
 import tv.trakt.trakt.common.Config.API_HD_BASE_URL
-import tv.trakt.trakt.common.auth.TokenProvider
 import tv.trakt.trakt.common.networking.api.SyncExtrasApi
 import tv.trakt.trakt.common.networking.client.KtorClientFactory
+import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
+import tv.trakt.trakt.common.networking.helpers.DefaultCacheMarkerProvider
 
 val networkingModule = module {
     single<KtorClientFactory> {
         KtorClientFactory(
-            tokenProvider = get<TokenProvider>(),
+            cacheMarkerProvider = get(),
+            tokenProvider = get(),
             sessionManager = get(),
         )
     }
@@ -42,6 +44,10 @@ val networkingModule = module {
     single<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")) {
         val factory = get<KtorClientFactory>()
         factory.createAuthorizedClientConfig(androidContext())
+    }
+
+    single<CacheMarkerProvider> {
+        DefaultCacheMarkerProvider()
     }
 }
 

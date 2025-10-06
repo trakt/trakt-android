@@ -10,11 +10,13 @@ import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerOneOfIds
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.ProgressShowDto
+import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import java.time.Instant
 
 internal class ShowsSyncApiClient(
     private val syncApi: SyncApi,
     private val usersApi: UsersApi,
+    private val cacheMarker: CacheMarkerProvider,
 ) : ShowsSyncRemoteDataSource {
     override suspend fun getUpNext(
         limit: Int,
@@ -48,6 +50,7 @@ internal class ShowsSyncApiClient(
             ),
         )
         syncApi.postSyncHistoryAdd(request)
+        cacheMarker.invalidate()
     }
 
     override suspend fun removeAllFromHistory(showId: TraktId) {
@@ -67,6 +70,7 @@ internal class ShowsSyncApiClient(
             ),
         )
         syncApi.postSyncHistoryRemove(request)
+        cacheMarker.invalidate()
     }
 
     override suspend fun addToWatchlist(showId: TraktId) {
@@ -86,6 +90,7 @@ internal class ShowsSyncApiClient(
             ),
         )
         syncApi.postSyncWatchlistAdd(request)
+        cacheMarker.invalidate()
     }
 
     override suspend fun removeFromWatchlist(showId: TraktId) {
@@ -105,6 +110,7 @@ internal class ShowsSyncApiClient(
             ),
         )
         syncApi.postSyncWatchlistRemove(request)
+        cacheMarker.invalidate()
     }
 
     override suspend fun dropShow(showId: TraktId) {
@@ -140,5 +146,7 @@ internal class ShowsSyncApiClient(
             droppedAsync.await()
             calendarAsync.await()
         }
+
+        cacheMarker.invalidate()
     }
 }

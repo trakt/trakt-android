@@ -289,8 +289,8 @@ internal class MovieDetailsViewModel(
                 loadingProgress.update { LOADING }
 
                 updateMovieHistoryUseCase.removePlayFromHistory(playId)
-                loadProgressUseCase.loadMoviesProgress()
                 allActivityLocalSource.notifyUpdate()
+                loadProgressUseCase.loadMoviesProgress()
 
                 val plays = movieProgressState.value?.plays?.minus(1) ?: 0
                 movieProgressState.update {

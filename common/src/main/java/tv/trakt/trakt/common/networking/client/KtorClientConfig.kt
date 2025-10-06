@@ -34,7 +34,7 @@ import tv.trakt.trakt.common.auth.TokenProvider
 import tv.trakt.trakt.common.auth.model.TraktAccessToken
 import tv.trakt.trakt.common.auth.model.TraktRefreshToken
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
+import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import java.nio.file.Files
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.time.Duration.Companion.seconds
@@ -52,7 +52,10 @@ private val jsonNegotiation = Json {
 
 private val mutex = Mutex()
 
-internal fun HttpClientConfig<*>.applyConfig(context: Context) {
+internal fun HttpClientConfig<*>.applyConfig(
+    context: Context,
+    cacheMarkerProvider: CacheMarkerProvider,
+) {
     expectSuccess = true
 
     install(HttpCache) {
@@ -76,7 +79,9 @@ internal fun HttpClientConfig<*>.applyConfig(context: Context) {
         level = if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.NONE
     }
 
-    install(CacheBusterPlugin)
+    install(CacheBusterPlugin) {
+        this.cacheMarkerProvider = cacheMarkerProvider
+    }
 
     defaultRequest {
         header(HttpHeaders.ContentType, Application.Json)
@@ -158,12 +163,18 @@ internal fun HttpClientConfig<*>.applyAuthorizationConfig(
     }
 }
 
-private val CacheBusterPlugin = createClientPlugin("CacheBusterPlugin") {
+private class CacheBusterPluginConfig {
+    var cacheMarkerProvider: CacheMarkerProvider? = null
+}
+
+private val CacheBusterPlugin = createClientPlugin("CacheBusterPlugin", ::CacheBusterPluginConfig) {
+    val cacheMarkerProvider = pluginConfig.cacheMarkerProvider
+
     onRequest { request, _ ->
         if (request.method == HttpMethod.Get) {
             request.parameter(
-                "cacheBuster",
-                nowUtcInstant().toEpochMilli().toString(),
+                "cache_buster",
+                cacheMarkerProvider?.getMarker(),
             )
         }
     }

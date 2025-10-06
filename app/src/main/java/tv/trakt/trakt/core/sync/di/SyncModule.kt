@@ -18,18 +18,21 @@ internal val syncModule = module {
         ShowsSyncApiClient(
             syncApi = get(),
             usersApi = get(),
+            cacheMarker = get(),
         )
     }
 
     single<MoviesSyncRemoteDataSource> {
         MoviesSyncApiClient(
             syncApi = get(),
+            cacheMarker = get(),
         )
     }
 
     single<EpisodesSyncRemoteDataSource> {
         EpisodesSyncApiClient(
             syncApi = get(),
+            cacheMarker = get(),
         )
     }
 

@@ -5,10 +5,12 @@ import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestEpisodesInner
 import org.openapitools.client.models.PostUsersListsListAddRequestEpisodesInnerIds
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import java.time.Instant
 
 internal class EpisodesSyncApiClient(
     private val syncApi: SyncApi,
+    private val cacheMarker: CacheMarkerProvider,
 ) : EpisodesSyncRemoteDataSource {
     override suspend fun addToHistory(
         episodeId: TraktId,
@@ -26,5 +28,6 @@ internal class EpisodesSyncApiClient(
             ),
         )
         syncApi.postSyncHistoryAdd(request)
+        cacheMarker.invalidate()
     }
 }
