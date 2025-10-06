@@ -64,6 +64,7 @@ import tv.trakt.trakt.core.summary.movies.features.actors.MovieActorsView
 import tv.trakt.trakt.core.summary.movies.features.context.lists.MovieDetailsListsSheet
 import tv.trakt.trakt.core.summary.movies.features.context.more.MovieDetailsContextSheet
 import tv.trakt.trakt.core.summary.movies.features.extras.MovieExtrasView
+import tv.trakt.trakt.core.summary.movies.features.streaming.MovieStreamingsView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.DetailsHeader
@@ -182,6 +183,10 @@ internal fun MovieDetailsContent(
             .plus(TraktTheme.size.navigationBarHeight * 2),
     )
 
+    val sectionPadding = PaddingValues(
+        horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
+    )
+
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
             aheadFraction = 0.66F,
@@ -201,6 +206,10 @@ internal fun MovieDetailsContent(
             .nestedScroll(listScrollConnection),
     ) {
         state.movie?.let { movie ->
+            val isReleased = remember {
+                movie.released?.isTodayOrBefore() ?: false
+            }
+
             DetailsBackground(
                 imageUrl = movie.images?.getFanartUrl(Images.Size.THUMB),
                 color = movie.colors?.colors?.second,
@@ -232,9 +241,6 @@ internal fun MovieDetailsContent(
                 }
 
                 item {
-                    val isReleased = remember {
-                        movie.released?.isTodayOrBefore() ?: false
-                    }
                     DetailsActions(
                         primaryEnabled = isReleased,
                         enabled = state.user != null &&
@@ -276,31 +282,46 @@ internal fun MovieDetailsContent(
                 }
 
                 if (!previewMode) {
+                    val showStreamings = (state.user != null) && isReleased
+
+                    if (showStreamings) {
+                        item {
+                            MovieStreamingsView(
+                                viewModel = koinViewModel(
+                                    parameters = { parametersOf(movie) },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                modifier = Modifier
+                                    .padding(top = 24.dp),
+                            )
+                        }
+                    }
+
                     item {
-                        val padding = PaddingValues(
-                            horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
-                        )
                         MovieActorsView(
                             viewModel = koinViewModel(
                                 parameters = { parametersOf(movie) },
                             ),
-                            headerPadding = padding,
-                            contentPadding = padding,
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
                             modifier = Modifier
-                                .padding(top = 24.dp),
+                                .padding(
+                                    top = when {
+                                        showStreamings -> 32.dp
+                                        else -> 24.dp
+                                    },
+                                ),
                         )
                     }
 
                     item {
-                        val padding = PaddingValues(
-                            horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
-                        )
                         MovieExtrasView(
                             viewModel = koinViewModel(
                                 parameters = { parametersOf(movie) },
                             ),
-                            headerPadding = padding,
-                            contentPadding = padding,
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
                             modifier = Modifier
                                 .padding(top = 32.dp),
                         )
