@@ -55,7 +55,7 @@ internal class MovieHistoryViewModel(
     fun loadData(ignoreErrors: Boolean = false) {
         viewModelScope.launch {
             try {
-                if (itemsState.value?.isEmpty() == true) {
+                if (itemsState.value == initialState.items) {
                     loadingState.update { LOADING }
                 }
 
