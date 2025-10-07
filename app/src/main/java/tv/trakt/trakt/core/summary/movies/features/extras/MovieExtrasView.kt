@@ -48,6 +48,7 @@ import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.FilterChip
 import tv.trakt.trakt.ui.components.FilterChipGroup
+import tv.trakt.trakt.ui.components.FilterChipSkeleton
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.HorizontalMediaSkeletonCard
@@ -232,16 +233,36 @@ private fun ContentLoading(
     visible: Boolean = true,
     contentPadding: PaddingValues,
 ) {
-    LazyRow(
-        horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
-        contentPadding = contentPadding,
-        userScrollEnabled = false,
-        modifier = Modifier
-            .fillMaxWidth()
-            .alpha(if (visible) 1F else 0F),
+    Column(
+        verticalArrangement = spacedBy(0.dp),
     ) {
-        items(count = 3) {
-            HorizontalMediaSkeletonCard()
+        LazyRow(
+            horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
+            contentPadding = contentPadding,
+            userScrollEnabled = false,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 18.dp)
+                .alpha(if (visible) 1F else 0F),
+        ) {
+            items(count = 10) {
+                FilterChipSkeleton()
+            }
+        }
+
+        LazyRow(
+            horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
+            contentPadding = contentPadding,
+            userScrollEnabled = false,
+            modifier = Modifier
+                .fillMaxWidth()
+                .alpha(if (visible) 1F else 0F),
+        ) {
+            items(count = 3) {
+                HorizontalMediaSkeletonCard(
+                    modifier = Modifier.padding(bottom = 6.dp),
+                )
+            }
         }
     }
 }

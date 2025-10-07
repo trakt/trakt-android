@@ -63,7 +63,7 @@ internal fun VipChip(
 
 @Preview
 @Composable
-private fun ShowCardChipPreview() {
+private fun Preview() {
     TraktTheme {
         VipChip()
     }

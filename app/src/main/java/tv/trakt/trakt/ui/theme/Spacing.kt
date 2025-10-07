@@ -15,6 +15,7 @@ internal val Spacing: TraktSpacing = TraktSpacing(
     mainPageBottomSpace = 48.dp,
     mainSectionVerticalSpace = 30.dp,
     chipsSpace = 4.dp,
+    filterChipsSpace = 6.dp,
     contextItemsSpace = 12.dp,
 )
 
@@ -30,5 +31,6 @@ internal data class TraktSpacing(
     val mainPageBottomSpace: Dp = Dp.Unspecified,
     val mainSectionVerticalSpace: Dp = Dp.Unspecified,
     val chipsSpace: Dp = Dp.Unspecified,
+    val filterChipsSpace: Dp = Dp.Unspecified,
     val contextItemsSpace: Dp = Dp.Unspecified,
 )

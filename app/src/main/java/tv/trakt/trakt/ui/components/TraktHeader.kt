@@ -2,6 +2,7 @@ package tv.trakt.trakt.ui.components
 
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,26 +19,42 @@ internal fun TraktHeader(
     modifier: Modifier = Modifier,
     subtitle: String? = null,
 ) {
-    Column(
-        verticalArrangement = spacedBy(1.dp, Alignment.CenterVertically),
+    Row(
+        horizontalArrangement = spacedBy(6.dp),
+        verticalAlignment = Alignment.CenterVertically,
         modifier = modifier,
     ) {
-        Text(
-            text = title,
-            color = TraktTheme.colors.textPrimary,
-            style = TraktTheme.typography.heading5,
-            maxLines = 1,
-            overflow = Ellipsis,
-        )
-        if (!subtitle.isNullOrBlank()) {
+        Column(
+            verticalArrangement = spacedBy(1.dp, Alignment.CenterVertically),
+        ) {
             Text(
-                text = subtitle,
-                color = TraktTheme.colors.textSecondary,
-                style = TraktTheme.typography.meta.copy(fontWeight = W400),
+                text = title,
+                color = TraktTheme.colors.textPrimary,
+                style = TraktTheme.typography.heading5,
                 maxLines = 1,
                 overflow = Ellipsis,
             )
+            if (!subtitle.isNullOrBlank()) {
+                Text(
+                    text = subtitle,
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.meta.copy(fontWeight = W400),
+                    maxLines = 1,
+                    overflow = Ellipsis,
+                )
+            }
         }
+
+//        Icon(
+//            painter = painterResource(R.drawable.ic_cheveron_down),
+//            contentDescription = null,
+//            tint = TraktTheme.colors.textSecondary,
+//            modifier = Modifier
+//                .size(16.dp)
+//                .graphicsLayer {
+//                    translationY = 1.dp.toPx()
+//                },
+//        )
     }
 }
 

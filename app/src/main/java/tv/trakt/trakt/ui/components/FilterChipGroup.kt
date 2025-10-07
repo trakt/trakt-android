@@ -11,21 +11,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 internal fun FilterChipGroup(
     modifier: Modifier = Modifier,
     paddingVertical: PaddingValues = PaddingValues(top = 13.dp, bottom = 15.dp),
     paddingHorizontal: PaddingValues = PaddingValues(start = 0.dp, end = 0.dp),
-    horizontalArrangement: Arrangement.Horizontal = spacedBy(6.dp),
+    horizontalArrangement: Arrangement.Horizontal = spacedBy(TraktTheme.spacing.filterChipsSpace),
     content: @Composable () -> Unit = {},
 ) {
-    val scrollState = rememberScrollState()
-
     Row(
         modifier = modifier
             .horizontalScroll(
-                state = scrollState,
+                state = rememberScrollState(),
                 overscrollEffect = null,
             )
             .padding(paddingVertical)

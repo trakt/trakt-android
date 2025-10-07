@@ -190,7 +190,9 @@ private fun ContentLoading(
             .alpha(if (visible) 1F else 0F),
     ) {
         items(count = 6) {
-            VerticalMediaSkeletonCard()
+            VerticalMediaSkeletonCard(
+                modifier = Modifier.padding(bottom = 6.dp),
+            )
         }
     }
 }

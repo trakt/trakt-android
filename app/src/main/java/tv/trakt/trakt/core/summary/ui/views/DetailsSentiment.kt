@@ -170,7 +170,7 @@ internal fun DetailsSentimentSkeleton(modifier: Modifier = Modifier) {
 
     Box(
         modifier = modifier
-            .heightIn(min = 164.dp)
+            .heightIn(min = 192.dp)
             .background(
                 color = shimmerTransition,
                 shape = sentimentShape,

@@ -77,7 +77,7 @@ internal fun InfoChip(
 
 @Preview
 @Composable
-private fun ShowCardChipPreview() {
+private fun Preview() {
     TraktTheme {
         InfoChip(
             text = "12K",
@@ -88,7 +88,7 @@ private fun ShowCardChipPreview() {
 
 @Preview
 @Composable
-private fun ShowCardChipPainterPreview() {
+private fun Preview2() {
     TraktTheme {
         InfoChip(
             text = "12K",
