@@ -56,7 +56,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun CommentReplyCard(
     comment: Comment,
     modifier: Modifier = Modifier,
-    maxLines: Int = 4,
+    maxLines: Int = 10,
     onClick: (() -> Unit)? = null,
 ) {
     Card(
