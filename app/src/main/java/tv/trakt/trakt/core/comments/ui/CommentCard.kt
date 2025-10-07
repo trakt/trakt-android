@@ -124,7 +124,10 @@ private fun CommentHeader(
         Box(
             modifier = Modifier.size(36.dp),
         ) {
-            val avatarBorder = if (comment.user.isAnyVip) Color.Red else Color.Transparent
+            val avatarBorder = when {
+                comment.user.isAnyVip -> Color.Red
+                else -> Color.Transparent
+            }
             val avatar = comment.user.images?.avatar?.full
             if (avatar != null) {
                 AsyncImage(
