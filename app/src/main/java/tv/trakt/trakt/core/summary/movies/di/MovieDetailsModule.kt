@@ -10,6 +10,8 @@ import tv.trakt.trakt.core.summary.movies.data.local.MovieRatingsLocalDataSource
 import tv.trakt.trakt.core.summary.movies.data.local.MovieRatingsStorage
 import tv.trakt.trakt.core.summary.movies.features.actors.MovieActorsViewModel
 import tv.trakt.trakt.core.summary.movies.features.actors.usecases.GetMovieActorsUseCase
+import tv.trakt.trakt.core.summary.movies.features.comments.MovieCommentsViewModel
+import tv.trakt.trakt.core.summary.movies.features.comments.usecases.GetMovieCommentsUseCase
 import tv.trakt.trakt.core.summary.movies.features.context.lists.MovieDetailsListsViewModel
 import tv.trakt.trakt.core.summary.movies.features.context.more.MovieDetailsContextViewModel
 import tv.trakt.trakt.core.summary.movies.features.extras.MovieExtrasViewModel
@@ -106,6 +108,12 @@ internal val movieDetailsModule = module {
         )
     }
 
+    factory {
+        GetMovieCommentsUseCase(
+            remoteSource = get(),
+        )
+    }
+
     viewModel {
         MovieDetailsViewModel(
             savedStateHandle = get(),
@@ -166,6 +174,13 @@ internal val movieDetailsModule = module {
         MovieSentimentViewModel(
             movie = movie,
             getSentimentUseCase = get(),
+        )
+    }
+
+    viewModel { (movie: Movie) ->
+        MovieCommentsViewModel(
+            movie = movie,
+            getCommentsUseCase = get(),
         )
     }
 

@@ -41,7 +41,6 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
@@ -62,6 +61,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.summary.movies.features.actors.MovieActorsView
+import tv.trakt.trakt.core.summary.movies.features.comments.MovieCommentsView
 import tv.trakt.trakt.core.summary.movies.features.context.history.MovieDetailsHistorySheet
 import tv.trakt.trakt.core.summary.movies.features.context.lists.MovieDetailsListsSheet
 import tv.trakt.trakt.core.summary.movies.features.context.more.MovieDetailsContextSheet
@@ -341,6 +341,18 @@ internal fun MovieDetailsContent(
                     }
 
                     item {
+                        MovieCommentsView(
+                            viewModel = koinViewModel(
+                                parameters = { parametersOf(movie) },
+                            ),
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            modifier = Modifier
+                                .padding(top = 32.dp),
+                        )
+                    }
+
+                    item {
                         MovieActorsView(
                             viewModel = koinViewModel(
                                 parameters = { parametersOf(movie) },
@@ -405,7 +417,7 @@ private fun DetailsOverview(
     var isCollapsed by remember { mutableStateOf(true) }
     Text(
         text = overview ?: stringResource(R.string.text_overview_placeholder),
-        style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W400),
+        style = TraktTheme.typography.paragraphSmall,
         color = TraktTheme.colors.textSecondary,
         maxLines = if (isCollapsed) 6 else Int.MAX_VALUE,
         textAlign = TextAlign.Start,

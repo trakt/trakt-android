@@ -31,6 +31,8 @@ internal val DarkColors: TraktColors = TraktColors(
     dialogContainer = Shade920,
     dialogContent = Shade800,
     panelCardContainer = Shade920,
+    commentContainer = Shade920,
+    commentReplyContainer = Shade900,
     // Buttons
     primaryButtonContainer = Purple500,
     primaryButtonContainerDisabled = Shade700,
@@ -58,6 +60,8 @@ internal data class TraktColors(
     val dialogContainer: Color = Color.Unspecified,
     val dialogContent: Color = Color.Unspecified,
     val panelCardContainer: Color = Color.Unspecified,
+    val commentContainer: Color = Color.Unspecified,
+    val commentReplyContainer: Color = Color.Unspecified,
     // Nav
     val navigationHeaderContainer: Color = Color.Unspecified,
     val navigationContainer: Color = Color.Unspecified,

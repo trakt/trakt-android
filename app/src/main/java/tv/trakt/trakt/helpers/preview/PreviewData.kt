@@ -2,6 +2,7 @@ package tv.trakt.trakt.helpers.preview
 
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
+import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.CustomList.Type
 import tv.trakt.trakt.common.model.Ids
@@ -170,6 +171,21 @@ internal object PreviewData {
         commentCount = 123,
         likes = 12,
         images = null,
+        user = PreviewData.user1,
+    )
+
+    val comment1 = Comment(
+        id = 1,
+        parentId = 0,
+        createdAt = ZonedDateTime.now(),
+        updatedAt = ZonedDateTime.now(),
+        comment = "This is a sample comment that provides feedback or discussion about a movie, show, or episode. " +
+            "It is intended to give viewers an idea of what others think without revealing too much.",
+        isSpoiler = false,
+        isReview = false,
+        replies = 23,
+        likes = 12450,
+        userRating = 2,
         user = PreviewData.user1,
     )
 }
