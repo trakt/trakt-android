@@ -68,6 +68,7 @@ import tv.trakt.trakt.core.summary.movies.features.context.more.MovieDetailsCont
 import tv.trakt.trakt.core.summary.movies.features.extras.MovieExtrasView
 import tv.trakt.trakt.core.summary.movies.features.history.MovieHistoryView
 import tv.trakt.trakt.core.summary.movies.features.related.MovieRelatedView
+import tv.trakt.trakt.core.summary.movies.features.sentiment.MovieSentimentView
 import tv.trakt.trakt.core.summary.movies.features.streaming.MovieStreamingsView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
@@ -320,6 +321,25 @@ internal fun MovieDetailsContent(
                         }
                     }
 
+                    if (isReleased) {
+                        item {
+                            MovieSentimentView(
+                                viewModel = koinViewModel(
+                                    parameters = { parametersOf(movie) },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                modifier = Modifier
+                                    .padding(
+                                        top = when {
+                                            showStreamings -> 32.dp
+                                            else -> 24.dp
+                                        },
+                                    ),
+                            )
+                        }
+                    }
+
                     item {
                         MovieActorsView(
                             viewModel = koinViewModel(
@@ -328,12 +348,7 @@ internal fun MovieDetailsContent(
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             modifier = Modifier
-                                .padding(
-                                    top = when {
-                                        showStreamings -> 32.dp
-                                        else -> 24.dp
-                                    },
-                                ),
+                                .padding(top = 32.dp),
                         )
                     }
 

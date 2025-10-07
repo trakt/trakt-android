@@ -1,7 +1,9 @@
 package tv.trakt.trakt.core.movies.data.remote
 
+import kotlinx.collections.immutable.toImmutableList
 import org.openapitools.client.apis.MoviesApi
 import org.openapitools.client.apis.RecommendationsApi
+import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
@@ -178,5 +180,20 @@ internal class MoviesApiClient(
             page = null,
         )
         return response.body()
+    }
+
+    override suspend fun getSentiments(movieId: TraktId): Sentiments {
+        val response = moviesApi.getMoviesSentiments(
+            id = movieId.value.toString(),
+        ).body()
+
+        return Sentiments(
+            good = response.good
+                .map { Sentiments.Sentiment(it.sentiment) }
+                .toImmutableList(),
+            bad = response.bad
+                .map { Sentiments.Sentiment(it.sentiment) }
+                .toImmutableList(),
+        )
     }
 }

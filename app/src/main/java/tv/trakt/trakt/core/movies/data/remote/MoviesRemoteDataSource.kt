@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.movies.data.remote
 
+import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
@@ -47,4 +48,6 @@ internal interface MoviesRemoteDataSource {
     suspend fun getCastCrew(movieId: TraktId): CastCrewDto
 
     suspend fun getRelated(movieId: TraktId): List<MovieDto>
+
+    suspend fun getSentiments(movieId: TraktId): Sentiments
 }
