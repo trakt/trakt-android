@@ -13,9 +13,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import tv.trakt.trakt.app.common.model.Comment
 import tv.trakt.trakt.app.core.details.comments.usecases.GetCommentRepliesUseCase
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.Comment
 
 internal class CommentDetailsViewModel(
     private val getCommentRepliesUseCase: GetCommentRepliesUseCase,

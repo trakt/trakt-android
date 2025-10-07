@@ -1,9 +1,9 @@
 package tv.trakt.trakt.app.helpers.preview
 
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.app.common.model.Comment
 import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
+import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.CustomList.Type
 import tv.trakt.trakt.common.model.Ids

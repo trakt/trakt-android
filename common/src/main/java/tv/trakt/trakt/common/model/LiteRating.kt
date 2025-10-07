@@ -1,4 +1,4 @@
-package tv.trakt.trakt.app.helpers
+package tv.trakt.trakt.common.model
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
@@ -9,8 +9,8 @@ enum class LiteRating(
     @param:DrawableRes val iconRes: Int,
     val tint: Color,
 ) {
-    LIKE(R.drawable.ic_thumb_up_fill, Color.White),
-    DISLIKE(R.drawable.ic_thumb_down_fill, Color.White),
+    LIKE(R.drawable.ic_thumb_up_fill, Color.Companion.White),
+    DISLIKE(R.drawable.ic_thumb_down_fill, Color.Companion.White),
     LOVE(R.drawable.ic_heart, Red500),
     ;
 

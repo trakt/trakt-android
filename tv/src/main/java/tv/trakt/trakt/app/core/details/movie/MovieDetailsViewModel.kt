@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import tv.trakt.trakt.app.common.model.Comment
 import tv.trakt.trakt.app.core.details.movie.MovieDetailsState.CollectionState
 import tv.trakt.trakt.app.core.details.movie.MovieDetailsState.StreamingsState
 import tv.trakt.trakt.app.core.details.movie.navigation.MovieDestination
@@ -41,6 +40,7 @@ import tv.trakt.trakt.common.helpers.StaticStringResource
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CastPerson
+import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.ExtraVideo
