@@ -18,6 +18,11 @@ android {
 
         buildConfigField("String", "TRAKT_API_KEY", localProperties.getProperty("TRAKT_API_KEY"))
         buildConfigField("String", "TRAKT_API_SECRET", localProperties.getProperty("TRAKT_API_SECRET"))
+        buildConfigField(
+            "Boolean",
+            "DEBUG_DELAY_ENABLED",
+            localProperties.getProperty("DEBUG_DELAY_ENABLED", false.toString())
+        )
 
         consumerProguardFiles("consumer-rules.pro")
     }

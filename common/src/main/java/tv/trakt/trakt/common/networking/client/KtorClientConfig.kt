@@ -24,6 +24,7 @@ import io.ktor.http.ContentType.Application
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.json.Json
@@ -81,6 +82,10 @@ internal fun HttpClientConfig<*>.applyConfig(
 
     install(CacheBusterPlugin) {
         this.cacheMarkerProvider = cacheMarkerProvider
+    }
+
+    if (BuildConfig.DEBUG && BuildConfig.DEBUG_DELAY_ENABLED) {
+        install(NetworkDelayPlugin)
     }
 
     defaultRequest {
@@ -167,6 +172,9 @@ private class CacheBusterPluginConfig {
     var cacheMarkerProvider: CacheMarkerProvider? = null
 }
 
+/**
+ * Plugin that adds a cache buster parameter to GET requests to avoid caching issues.
+ */
 private val CacheBusterPlugin = createClientPlugin("CacheBusterPlugin", ::CacheBusterPluginConfig) {
     val cacheMarkerProvider = pluginConfig.cacheMarkerProvider
 
@@ -177,5 +185,14 @@ private val CacheBusterPlugin = createClientPlugin("CacheBusterPlugin", ::CacheB
                 cacheMarkerProvider?.getMarker(),
             )
         }
+    }
+}
+
+/**
+ * Plugin that adds a fixed delay to each request to simulate network delay for debugging purposes.
+ */
+private val NetworkDelayPlugin = createClientPlugin("DebugDelayPlugin") {
+    onRequest { request, _ ->
+        delay(3000)
     }
 }
