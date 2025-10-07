@@ -106,13 +106,13 @@ internal fun DetailsSentiment(
                         Text(
                             text = "•",
                             color = Purple100,
-                            style = TraktTheme.typography.paragraphSmaller,
+                            style = TraktTheme.typography.paragraphSmall,
                         )
 
                         Text(
                             text = sentiment.sentiment.replaceFirstChar { it.titlecase() },
                             color = Purple100,
-                            style = TraktTheme.typography.paragraphSmaller,
+                            style = TraktTheme.typography.paragraphSmall,
                         )
                     }
                 }
@@ -139,13 +139,13 @@ internal fun DetailsSentiment(
                         Text(
                             text = "•",
                             color = Red100,
-                            style = TraktTheme.typography.paragraphSmaller,
+                            style = TraktTheme.typography.paragraphSmall,
                         )
 
                         Text(
                             text = sentiment.sentiment.replaceFirstChar { it.titlecase() },
                             color = Red100,
-                            style = TraktTheme.typography.paragraphSmaller,
+                            style = TraktTheme.typography.paragraphSmall,
                         )
                     }
                 }
