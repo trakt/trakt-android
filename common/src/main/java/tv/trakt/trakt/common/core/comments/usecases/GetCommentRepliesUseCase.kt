@@ -1,11 +1,11 @@
-package tv.trakt.trakt.app.core.details.comments.usecases
+package tv.trakt.trakt.common.core.comments.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.app.core.comments.data.remote.CommentsRemoteDataSource
+import tv.trakt.trakt.common.core.comments.data.remote.CommentsRemoteDataSource
 import tv.trakt.trakt.common.model.Comment
 
-internal class GetCommentRepliesUseCase(
+class GetCommentRepliesUseCase(
     private val remoteSource: CommentsRemoteDataSource,
 ) {
     suspend fun getCommentReplies(commentId: Int): ImmutableList<Comment> {

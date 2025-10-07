@@ -25,7 +25,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -45,7 +47,9 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.core.comments.details.CommentDetailsSheet
 import tv.trakt.trakt.core.comments.ui.CommentCard
+import tv.trakt.trakt.core.comments.ui.CommentCardSkeleton
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
@@ -60,11 +64,23 @@ internal fun MovieCommentsView(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    var commentSheet by remember { mutableStateOf<Comment?>(null) }
+
     MovieCommentsContent(
         state = state,
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
+        onCommentClick = {
+            commentSheet = it
+        },
+    )
+
+    CommentDetailsSheet(
+        comment = commentSheet,
+        onDismiss = {
+            commentSheet = null
+        },
     )
 }
 
@@ -74,6 +90,7 @@ private fun MovieCommentsContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
+    onCommentClick: ((Comment) -> Unit)? = null,
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
@@ -114,6 +131,7 @@ private fun MovieCommentsContent(
                             ContentList(
                                 listItems = (state.items ?: emptyList()).toImmutableList(),
                                 contentPadding = contentPadding,
+                                onCommentClick = onCommentClick,
                             )
                         }
                     }
@@ -128,6 +146,7 @@ private fun ContentList(
     listItems: ImmutableList<Comment>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
+    onCommentClick: ((Comment) -> Unit)? = null,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
@@ -151,7 +170,7 @@ private fun ContentList(
         ) { comment ->
             CommentCard(
                 comment = comment,
-                onClick = { },
+                onClick = { onCommentClick?.invoke(comment) },
                 modifier = Modifier
                     .height(TraktTheme.size.commentCardSize)
                     .aspectRatio(HorizontalImageAspectRatio),
@@ -174,7 +193,11 @@ private fun ContentLoading(
             .alpha(if (visible) 1F else 0F),
     ) {
         items(count = 3) {
-//            HorizontalMediaSkeletonCard()
+            CommentCardSkeleton(
+                modifier = Modifier
+                    .height(TraktTheme.size.commentCardSize)
+                    .aspectRatio(HorizontalImageAspectRatio),
+            )
         }
     }
 }

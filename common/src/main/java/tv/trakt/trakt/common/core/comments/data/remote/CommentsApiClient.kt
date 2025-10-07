@@ -1,9 +1,9 @@
-package tv.trakt.trakt.app.core.comments.data.remote
+package tv.trakt.trakt.common.core.comments.data.remote
 
 import org.openapitools.client.apis.CommentsApi
 import tv.trakt.trakt.common.networking.CommentDto
 
-internal class CommentsApiClient(
+class CommentsApiClient(
     private val api: CommentsApi,
 ) : CommentsRemoteDataSource {
     override suspend fun getCommentReplies(commentId: Int): List<CommentDto> {

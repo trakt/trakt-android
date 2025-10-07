@@ -1,21 +1,21 @@
-package tv.trakt.trakt.app.core.comments.di
+package tv.trakt.trakt.core.comments.di
 
-import androidx.lifecycle.SavedStateHandle
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.openapitools.client.apis.CommentsApi
-import tv.trakt.trakt.app.core.details.comments.CommentDetailsViewModel
-import tv.trakt.trakt.common.Config.API_BASE_URL
+import tv.trakt.trakt.common.Config.API_HD_BASE_URL
 import tv.trakt.trakt.common.core.comments.data.remote.CommentsApiClient
 import tv.trakt.trakt.common.core.comments.data.remote.CommentsRemoteDataSource
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentRepliesUseCase
+import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.core.comments.details.CommentDetailsViewModel
 
 internal val commentsDataModule = module {
     single<CommentsRemoteDataSource> {
         CommentsApiClient(
             api = CommentsApi(
-                baseUrl = API_BASE_URL,
+                baseUrl = API_HD_BASE_URL,
                 httpClientEngine = get(),
                 httpClientConfig = get(named("clientConfig")),
             ),
@@ -24,16 +24,17 @@ internal val commentsDataModule = module {
 }
 
 internal val commentsModule = module {
-
     factory {
         GetCommentRepliesUseCase(
             remoteSource = get(),
         )
     }
 
-    viewModel { (_: SavedStateHandle) ->
+    viewModel { (comment: Comment) ->
         CommentDetailsViewModel(
-            getCommentRepliesUseCase = get(),
+            comment = comment,
+            sessionManager = get(),
+            getRepliseUseCase = get(),
         )
     }
 }

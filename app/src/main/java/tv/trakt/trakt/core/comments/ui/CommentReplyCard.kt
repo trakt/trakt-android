@@ -7,11 +7,7 @@ import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -22,6 +18,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -43,30 +43,31 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
+import tv.trakt.trakt.common.helpers.extensions.highlightMentions
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun CommentCard(
+internal fun CommentReplyCard(
     comment: Comment,
     modifier: Modifier = Modifier,
     maxLines: Int = 4,
-    onClick: () -> Unit,
+    onClick: (() -> Unit)? = null,
 ) {
     Card(
-        onClick = onClick,
+        onClick = onClick ?: {},
         modifier = modifier,
-        shape = RoundedCornerShape(24.dp),
+        shape = RoundedCornerShape(22.dp),
         colors = cardColors(
-            containerColor = TraktTheme.colors.commentContainer,
+            containerColor = TraktTheme.colors.commentReplyContainer,
         ),
         content = {
-            CommentCardContent(
+            CommentReplyCardContent(
                 comment = comment,
                 maxLines = maxLines,
             )
@@ -75,46 +76,55 @@ internal fun CommentCard(
 }
 
 @Composable
-private fun CommentCardContent(
+private fun CommentReplyCardContent(
     comment: Comment,
     maxLines: Int,
     modifier: Modifier = Modifier,
 ) {
+    var isCollapsed by remember { mutableStateOf(true) }
+    var showSpoilers by remember { mutableStateOf(false) }
+
     Column(
         verticalArrangement = spacedBy(0.dp),
         modifier = modifier
-            .padding(vertical = 16.dp)
-            .fillMaxSize(),
+            .padding(vertical = 16.dp),
     ) {
         CommentHeader(
             comment = comment,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
+        val mentionsColor = TraktTheme.colors.textPrimary
+        val mentionsText = remember(comment) {
+            comment.commentNoSpoilers.highlightMentions(mentionsColor)
+        }
+
         Text(
-            text = comment.commentNoSpoilers,
+            text = mentionsText,
             style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.3.em),
             color = TraktTheme.colors.textSecondary,
-            maxLines = maxLines,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.then(
-                if (comment.hasSpoilers) {
-                    Modifier
-                        .blur(4.dp)
-                        .padding(horizontal = 16.dp, vertical = 12.dp)
-                } else {
-                    Modifier
-                        .padding(horizontal = 16.dp, vertical = 12.dp)
-                },
-            ),
-        )
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        CommentFooter(
-            comment = comment,
+            overflow = if (isCollapsed) TextOverflow.Ellipsis else TextOverflow.Clip,
+            maxLines = if (isCollapsed) maxLines else Int.MAX_VALUE,
             modifier = Modifier
-                .padding(end = 20.dp),
+                .onClick {
+                    if (comment.hasSpoilers && !showSpoilers) {
+                        showSpoilers = true
+                    } else {
+                        isCollapsed = !isCollapsed
+                    }
+                }
+                .then(
+                    if (comment.hasSpoilers && !showSpoilers) {
+                        Modifier
+                            .blur(4.dp)
+                            .padding(top = 12.dp)
+                            .padding(horizontal = 16.dp)
+                    } else {
+                        Modifier
+                            .padding(top = 12.dp)
+                            .padding(horizontal = 16.dp)
+                    },
+                ),
         )
     }
 }
@@ -181,13 +191,7 @@ private fun CommentHeader(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = stringResource(
-                        if (comment.isReview) {
-                            R.string.text_review_by
-                        } else {
-                            R.string.text_shout_by
-                        },
-                    ),
+                    text = stringResource(R.string.text_reply_by),
                     style = TraktTheme.typography.paragraph,
                     color = TraktTheme.colors.textSecondary,
                     maxLines = 1,
@@ -246,20 +250,16 @@ private fun CommentFooter(
             horizontalArrangement = spacedBy(4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            val tint = when (comment.replies) {
-                0 -> TraktTheme.colors.textSecondary
-                else -> TraktTheme.colors.textPrimary
-            }
             Icon(
                 painter = painterResource(R.drawable.ic_comment),
                 contentDescription = "Replies",
-                tint = tint,
+                tint = TraktTheme.colors.textPrimary,
                 modifier = Modifier.size(18.dp),
             )
             Text(
                 text = "${comment.replies}",
                 style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
-                color = tint,
+                color = TraktTheme.colors.textPrimary,
             )
         }
     }
@@ -268,7 +268,7 @@ private fun CommentFooter(
 @OptIn(ExperimentalCoilApi::class)
 @Preview
 @Composable
-fun CommentPreview() {
+private fun Preview() {
     TraktTheme {
         val previewHandler = AsyncImagePreviewHandler {
             ColorImage(Color.LightGray.toArgb())
@@ -277,27 +277,19 @@ fun CommentPreview() {
             Column(
                 verticalArrangement = spacedBy(16.dp),
             ) {
-                CommentCard(
+                CommentReplyCard(
                     onClick = {},
-                    comment = PreviewData.comment1.copy(userRating = 1, comment = "Lorem Ipsum"),
-                    modifier = Modifier
-                        .height(TraktTheme.size.commentCardSize)
-                        .aspectRatio(HorizontalImageAspectRatio),
+                    comment = PreviewData.comment1
+                        .copy(userRating = 1, comment = "Lorem Ipsum with @johnlegend"),
                 )
-                CommentCard(
+                CommentReplyCard(
                     onClick = {},
                     comment = PreviewData.comment1.copy(userRating = 10),
-                    modifier = Modifier
-                        .height(TraktTheme.size.commentCardSize)
-                        .aspectRatio(HorizontalImageAspectRatio),
                 )
 
-                CommentCard(
+                CommentReplyCard(
                     onClick = {},
-                    comment = PreviewData.comment1.copy(userRating = 7, replies = 0),
-                    modifier = Modifier
-                        .height(TraktTheme.size.commentCardSize)
-                        .aspectRatio(HorizontalImageAspectRatio),
+                    comment = PreviewData.comment1.copy(userRating = 7),
                 )
             }
         }

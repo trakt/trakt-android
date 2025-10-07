@@ -158,6 +158,7 @@
     <string name="text_sort_recently_added">Recently added</string>
     <string name="text_info_show_dropped">Show has been dropped.</string>
     <string name="header_community_sentiment">Community Sentiment</string>
+    <string name="list_placeholder_replies">No replies yet.</string>
     <string name="warning_prompt_remove_from_watchlist">Are you sure you want to remove %s from your Watchlist?</string>
     <string name="warning_prompt_remove_from_personal_list">Are you sure you want to remove %1$s from %2$s?</string>
     <string name="warning_prompt_drop_show">Are you sure you want to drop %s show? This will remove it from your up next list.</string>

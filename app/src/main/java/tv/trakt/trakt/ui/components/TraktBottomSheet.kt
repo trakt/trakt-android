@@ -1,6 +1,7 @@
 package tv.trakt.trakt.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
@@ -26,12 +27,14 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun TraktBottomSheet(
     sheetState: SheetState,
+    modifier: Modifier = Modifier,
     containerColor: Color = TraktTheme.colors.dialogContainer,
     contentColor: Color = TraktTheme.colors.dialogContent,
     onDismiss: () -> Unit = {},
     content: @Composable ColumnScope.() -> Unit,
 ) {
     ModalBottomSheet(
+        modifier = modifier,
         sheetState = sheetState,
         containerColor = containerColor,
         contentColor = contentColor,
@@ -45,7 +48,12 @@ internal fun TraktBottomSheet(
                         color = TraktTheme.colors.dialogContent,
                         shape = RoundedCornerShape(100),
                     )
-                    .size(36.dp, 4.dp),
+                    .size(36.dp, 4.dp)
+                    .clickable(
+                        onClick = { },
+                        indication = null,
+                        interactionSource = null,
+                    ),
             )
         },
     ) {

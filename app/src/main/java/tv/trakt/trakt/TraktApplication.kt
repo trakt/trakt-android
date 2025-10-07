@@ -17,6 +17,8 @@ import tv.trakt.trakt.common.auth.di.commonAuthModule
 import tv.trakt.trakt.common.networking.di.networkingApiModule
 import tv.trakt.trakt.common.networking.di.networkingModule
 import tv.trakt.trakt.core.auth.di.authModule
+import tv.trakt.trakt.core.comments.di.commentsDataModule
+import tv.trakt.trakt.core.comments.di.commentsModule
 import tv.trakt.trakt.core.home.di.homeDataModule
 import tv.trakt.trakt.core.home.di.homeModule
 import tv.trakt.trakt.core.lists.di.listsDataModule
@@ -96,6 +98,8 @@ internal class TraktApplication : Application() {
                 searchModule,
                 searchDataModule,
                 streamingsDataModule,
+                commentsDataModule,
+                commentsModule,
                 listsModule,
                 listsDataModule,
                 syncModule,

@@ -4,6 +4,12 @@ import android.icu.text.MeasureFormat
 import android.icu.text.MeasureFormat.FormatWidth
 import android.icu.util.Measure
 import android.icu.util.MeasureUnit
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight.Companion.W500
+import androidx.compose.ui.text.withStyle
 import java.util.Locale
 import java.util.Locale.ROOT
 
@@ -38,4 +44,35 @@ fun Long.durationFormat(locale: Locale = Locale.US): String {
 
     val format = MeasureFormat.getInstance(locale, FormatWidth.NARROW)
     return format.formatMeasures(*measures.toTypedArray())
+}
+
+/**
+ * Highlights people mentions (e.g., @johnlegend) in the string with the specified color.
+ * Returns an AnnotatedString with mentions styled in the given color.
+ */
+fun String.highlightMentions(color: Color): AnnotatedString {
+    return buildAnnotatedString {
+        val mentionRegex = "@[a-zA-Z0-9_]+".toRegex()
+        val matches = mentionRegex.findAll(this@highlightMentions)
+
+        var lastIndex = 0
+
+        matches.forEach { match ->
+            // Add text before the mention
+            if (match.range.first > lastIndex) {
+                append(this@highlightMentions.substring(lastIndex, match.range.first))
+            }
+
+            // Add the highlighted mention
+            withStyle(style = SpanStyle(color = color, fontWeight = W500)) {
+                append(match.value)
+            }
+
+            lastIndex = match.range.last + 1
+        }
+
+        if (lastIndex < this@highlightMentions.length) {
+            append(this@highlightMentions.substring(lastIndex))
+        }
+    }
 }
