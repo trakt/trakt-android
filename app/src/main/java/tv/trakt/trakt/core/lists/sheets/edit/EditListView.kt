@@ -86,7 +86,7 @@ internal fun EditListView(
             viewModel.deleteList(id = initialList.ids.trakt)
         },
         onNo = { confirmationSheet = false },
-        title = stringResource(R.string.warning_prompt_title_delete_list),
+        title = stringResource(R.string.button_text_delete_list),
         message = stringResource(R.string.warning_prompt_delete_list, initialList.name),
     )
 }
@@ -125,7 +125,7 @@ private fun EditListContent(
         ) {
             TraktHeader(
                 title = stringResource(R.string.page_title_edit_list),
-                subtitle = stringResource(R.string.page_subtitle_edit_list),
+                subtitle = stringResource(R.string.page_description_edit_list),
             )
             if (state.loadingDelete.isLoading) {
                 FilmProgressIndicator(

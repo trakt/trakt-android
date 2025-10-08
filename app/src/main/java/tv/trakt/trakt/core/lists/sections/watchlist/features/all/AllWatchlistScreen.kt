@@ -168,7 +168,7 @@ internal fun AllWatchlistContent(
 
         ContentList(
             subtitle = when (state.isHomeWatchlist) {
-                true -> stringResource(R.string.list_subtitle_released_movies)
+                true -> stringResource(R.string.list_description_released_movies)
                 else -> stringResource(R.string.text_sort_recently_added)
             },
             listItems = (state.items ?: emptyList()).toImmutableList(),

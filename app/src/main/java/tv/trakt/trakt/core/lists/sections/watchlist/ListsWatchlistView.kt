@@ -368,8 +368,8 @@ private fun ContentEmptyView(
             return@remember R.string.button_text_join_trakt
         }
         when (filter) {
-            MEDIA, SHOWS -> R.string.button_text_browse_shows
-            MOVIES -> R.string.button_text_browse_movies
+            MEDIA, SHOWS -> R.string.button_label_browse_shows
+            MOVIES -> R.string.button_label_browse_movies
         }
     }
 

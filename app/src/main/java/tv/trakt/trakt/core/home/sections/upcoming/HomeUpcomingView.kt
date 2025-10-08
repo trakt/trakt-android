@@ -129,7 +129,7 @@ internal fun HomeUpcomingContent(
                             HomeEmptyView(
                                 text = stringResource(R.string.text_cta_upcoming),
                                 icon = R.drawable.ic_empty_upcoming,
-                                buttonText = stringResource(R.string.button_text_browse_shows),
+                                buttonText = stringResource(R.string.button_label_browse_shows),
                                 backgroundImageUrl = imageUrl,
                                 backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
                                 onClick = onShowsClick,

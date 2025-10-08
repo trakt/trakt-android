@@ -146,7 +146,7 @@ internal fun HomeWatchlistContent(
         ) {
             TraktHeader(
                 title = stringResource(R.string.page_title_watchlist),
-                subtitle = stringResource(R.string.list_subtitle_released_movies),
+                subtitle = stringResource(R.string.list_description_released_movies),
             )
             if (!state.items.isNullOrEmpty() || state.loading != DONE) {
                 Text(
@@ -192,7 +192,7 @@ internal fun HomeWatchlistContent(
                             HomeEmptyView(
                                 text = stringResource(R.string.text_cta_watchlist_released),
                                 icon = R.drawable.ic_empty_watchlist,
-                                buttonText = stringResource(R.string.button_text_browse_movies),
+                                buttonText = stringResource(R.string.button_label_browse_movies),
                                 backgroundImageUrl = imageUrl,
                                 backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
                                 onClick = onMoviesClick,

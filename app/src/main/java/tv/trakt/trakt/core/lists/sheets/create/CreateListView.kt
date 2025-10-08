@@ -76,7 +76,7 @@ private fun CreateListContent(
     ) {
         TraktHeader(
             title = stringResource(R.string.page_title_create_list),
-            subtitle = stringResource(R.string.page_subtitle_create_list),
+            subtitle = stringResource(R.string.page_description_create_list),
             modifier = Modifier.padding(bottom = 16.dp),
         )
 
