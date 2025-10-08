@@ -191,7 +191,7 @@ private fun ContentList(
         }
 
         if (loading) {
-            items(6) {
+            items(3) {
                 CommentCardSkeleton(
                     modifier = Modifier
                         .height(TraktTheme.size.commentCardSize)

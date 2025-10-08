@@ -30,7 +30,7 @@ internal class SimpleScrollConnection : NestedScrollConnection {
                 SimpleScrollConnection().apply {
                     resultOffset = it
                 }
-            }
+            },
         )
     }
 }
