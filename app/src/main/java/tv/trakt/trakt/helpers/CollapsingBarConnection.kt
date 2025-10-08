@@ -16,7 +16,7 @@ internal class CollapsingBarConnection(
     val onScrollUp: () -> Unit = {},
 ) : NestedScrollConnection {
     var barOffset: Float by mutableFloatStateOf(0F)
-        private set
+        internal set
 
     private var startScrolledUp: Boolean = false
     private var scrolledUp: Boolean = false

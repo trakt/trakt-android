@@ -6,7 +6,8 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.mapSaver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalDensity
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -36,17 +37,47 @@ internal class ScreenHeaderState(
     fun resetOffset() {
         connection.resetOffset()
     }
+
+    companion object {
+        val Saver = run {
+            val keyBarOffset = "barOffset"
+            val keyBarMaxHeight = "barMaxHeight"
+            val keyScrolled = "scrolled"
+            val keyStartScrolled = "startScrolled"
+            mapSaver(
+                save = {
+                    mapOf(
+                        keyBarOffset to it.connection.barOffset,
+                        keyBarMaxHeight to it.connection.barMaxHeight.toInt(),
+                        keyScrolled to it.scrolled,
+                        keyStartScrolled to it.startScrolled,
+                    )
+                },
+                restore = {
+                    ScreenHeaderState(
+                        it[keyBarMaxHeight] as Int,
+                    ).apply {
+                        scrolled = it[keyScrolled] as Boolean
+                        startScrolled = it[keyStartScrolled] as Boolean
+                        connection.barOffset = it[keyBarOffset] as Float
+                    }
+                },
+            )
+        }
+    }
 }
 
 @Composable
 internal fun rememberHeaderState(): ScreenHeaderState {
     val density = LocalDensity.current
-
     val headerHeight = WindowInsets.statusBars.asPaddingValues()
         .calculateTopPadding()
         .plus(TraktTheme.size.navigationHeaderHeight)
 
-    return remember(headerHeight) {
+    return rememberSaveable(
+        headerHeight,
+        saver = ScreenHeaderState.Saver,
+    ) {
         ScreenHeaderState(
             maxHeaderHeightPx = with(density) {
                 headerHeight.roundToPx()
