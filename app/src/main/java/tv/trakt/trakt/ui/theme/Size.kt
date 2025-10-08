@@ -19,6 +19,7 @@ internal val Size: TraktSize = TraktSize(
     horizontalMediaCardSize = 200.dp,
     horizontalSmallMediaCardSize = 128.dp,
     commentCardSize = 192.dp,
+    customListCardSize = 192.dp,
 )
 
 @Immutable
@@ -32,4 +33,5 @@ internal data class TraktSize(
     val verticalMediumMediaCardSize: Dp = Dp.Unspecified,
     val verticalSmallMediaCardSize: Dp = Dp.Unspecified,
     val commentCardSize: Dp = Dp.Unspecified,
+    val customListCardSize: Dp = Dp.Unspecified,
 )

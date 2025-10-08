@@ -9,6 +9,7 @@ import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.ExtraVideoDto
+import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.MovieDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
 import tv.trakt.trakt.common.networking.StreamingDto
@@ -209,6 +210,23 @@ internal class MoviesApiClient(
             extended = "images",
             page = null,
             limit = limit.toString(),
+        )
+
+        return response.body()
+    }
+
+    override suspend fun getLists(
+        movieId: TraktId,
+        type: String,
+        limit: Int,
+    ): List<ListDto> {
+        val response = moviesApi.getMoviesLists(
+            id = movieId.value.toString(),
+            type = type,
+            extended = "images",
+            page = null,
+            limit = limit,
+            sort = "popular",
         )
 
         return response.body()

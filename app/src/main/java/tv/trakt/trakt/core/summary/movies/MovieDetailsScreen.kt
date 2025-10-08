@@ -68,6 +68,7 @@ import tv.trakt.trakt.core.summary.movies.features.context.lists.MovieDetailsLis
 import tv.trakt.trakt.core.summary.movies.features.context.more.MovieDetailsContextSheet
 import tv.trakt.trakt.core.summary.movies.features.extras.MovieExtrasView
 import tv.trakt.trakt.core.summary.movies.features.history.MovieHistoryView
+import tv.trakt.trakt.core.summary.movies.features.lists.MovieListsView
 import tv.trakt.trakt.core.summary.movies.features.related.MovieRelatedView
 import tv.trakt.trakt.core.summary.movies.features.sentiment.MovieSentimentView
 import tv.trakt.trakt.core.summary.movies.features.streaming.MovieStreamingsView
@@ -393,6 +394,21 @@ internal fun MovieDetailsContent(
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             onClick = onMovieClick,
+                            modifier = Modifier
+                                .padding(top = 32.dp),
+                        )
+                    }
+
+                    item {
+                        MovieListsView(
+                            viewModel = koinViewModel(
+                                parameters = { parametersOf(movie) },
+                            ),
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            onClick = {
+                                // TODO
+                            },
                             modifier = Modifier
                                 .padding(top = 32.dp),
                         )

@@ -3,6 +3,7 @@ package tv.trakt.trakt.ui.theme.colors
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
+import tv.trakt.trakt.common.ui.theme.colors.Purple900
 import tv.trakt.trakt.common.ui.theme.colors.Shade300
 import tv.trakt.trakt.common.ui.theme.colors.Shade600
 import tv.trakt.trakt.common.ui.theme.colors.Shade700
@@ -33,6 +34,8 @@ internal val DarkColors: TraktColors = TraktColors(
     panelCardContainer = Shade920,
     commentContainer = Shade920,
     commentReplyContainer = Shade900,
+    customListContainer = Shade920,
+    customTraktListContainer = Purple900,
     // Buttons
     primaryButtonContainer = Purple500,
     primaryButtonContainerDisabled = Shade700,
@@ -62,6 +65,8 @@ internal data class TraktColors(
     val panelCardContainer: Color = Color.Unspecified,
     val commentContainer: Color = Color.Unspecified,
     val commentReplyContainer: Color = Color.Unspecified,
+    val customListContainer: Color = Color.Unspecified,
+    val customTraktListContainer: Color = Color.Unspecified,
     // Nav
     val navigationHeaderContainer: Color = Color.Unspecified,
     val navigationContainer: Color = Color.Unspecified,

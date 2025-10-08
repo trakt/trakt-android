@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.ExtraVideoDto
+import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.MovieDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
 import tv.trakt.trakt.common.networking.StreamingDto
@@ -57,4 +58,10 @@ internal interface MoviesRemoteDataSource {
         limit: Int,
         sort: String,
     ): List<CommentDto>
+
+    suspend fun getLists(
+        movieId: TraktId,
+        type: String,
+        limit: Int,
+    ): List<ListDto>
 }
