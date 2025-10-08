@@ -41,12 +41,16 @@ import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun CommentCardSkeleton(modifier: Modifier = Modifier) {
+internal fun CommentCardSkeleton(
+    modifier: Modifier = Modifier,
+    containerColor: Color = TraktTheme.colors.skeletonContainer,
+    shimmerColor: Color = TraktTheme.colors.skeletonShimmer,
+) {
     val infiniteTransition = rememberInfiniteTransition(label = "infiniteTransition")
     val shimmerTransition by infiniteTransition
         .animateColor(
-            initialValue = TraktTheme.colors.skeletonContainer,
-            targetValue = TraktTheme.colors.skeletonShimmer,
+            initialValue = containerColor,
+            targetValue = shimmerColor,
             animationSpec = infiniteRepeatable(
                 animation = tween(1000),
                 repeatMode = RepeatMode.Reverse,
@@ -62,13 +66,16 @@ internal fun CommentCardSkeleton(modifier: Modifier = Modifier) {
             containerColor = shimmerTransition,
         ),
         content = {
-            CommentCardContent()
+            CommentCardContent(shimmerColor)
         },
     )
 }
 
 @Composable
-private fun CommentCardContent(modifier: Modifier = Modifier) {
+private fun CommentCardContent(
+    shimmerColor: Color,
+    modifier: Modifier = Modifier,
+) {
     Column(
         verticalArrangement = spacedBy(0.dp),
         modifier = modifier
@@ -76,6 +83,7 @@ private fun CommentCardContent(modifier: Modifier = Modifier) {
             .fillMaxSize(),
     ) {
         CommentHeader(
+            shimmerColor = shimmerColor,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
@@ -85,7 +93,7 @@ private fun CommentCardContent(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .clip(RoundedCornerShape(100))
-                .background(TraktTheme.colors.skeletonShimmer)
+                .background(shimmerColor)
                 .fillMaxWidth()
                 .height(16.dp),
         )
@@ -93,7 +101,10 @@ private fun CommentCardContent(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun CommentHeader(modifier: Modifier = Modifier) {
+private fun CommentHeader(
+    shimmerColor: Color,
+    modifier: Modifier = Modifier,
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = spacedBy(12.dp),
@@ -103,7 +114,7 @@ private fun CommentHeader(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .size(36.dp)
                 .clip(CircleShape)
-                .background(TraktTheme.colors.skeletonShimmer),
+                .background(shimmerColor),
         )
 
         Column(verticalArrangement = spacedBy(2.dp)) {
@@ -120,7 +131,7 @@ private fun CommentHeader(modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .fillMaxWidth(fraction = 0.5F)
                         .background(
-                            color = TraktTheme.colors.skeletonShimmer,
+                            color = shimmerColor,
                             shape = RoundedCornerShape(100),
                         ),
                 )
@@ -132,7 +143,7 @@ private fun CommentHeader(modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .fillMaxWidth(fraction = 0.75F)
                     .background(
-                        color = TraktTheme.colors.skeletonShimmer,
+                        color = shimmerColor,
                         shape = RoundedCornerShape(100),
                     ),
             )

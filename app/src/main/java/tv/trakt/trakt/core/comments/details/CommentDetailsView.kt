@@ -53,12 +53,14 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Comment
-import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
+import tv.trakt.trakt.common.ui.theme.colors.Shade800
+import tv.trakt.trakt.core.comments.ui.CommentCardSkeleton
 import tv.trakt.trakt.core.comments.ui.CommentReplyCard
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
@@ -99,9 +101,11 @@ private fun CommentDetailsViewContent(
         when {
             state.loading.isLoading -> {
                 item {
-                    FilmProgressIndicator(
-                        size = 24.dp,
+                    CommentCardSkeleton(
+                        containerColor = TraktTheme.colors.commentReplyContainer,
+                        shimmerColor = Shade800,
                         modifier = Modifier
+                            .height(128.dp)
                             .fillMaxWidth(),
                     )
                 }
@@ -324,7 +328,7 @@ private fun Preview() {
                 CommentDetailsViewContent(
                     state = CommentDetailsState(
                         comment = PreviewData.comment1,
-                        loading = DONE,
+                        loading = LoadingState.LOADING,
                     ),
                 )
 
