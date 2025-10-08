@@ -12,8 +12,8 @@ internal class GetMovieSentimentUseCase(
         val sentiments = remoteSource.getSentiments(movieId)
         return sentiments
             .copy(
-                good = sentiments.good.take(4).toImmutableList(),
-                bad = sentiments.bad.take(4).toImmutableList(),
+                good = sentiments.good.take(3).toImmutableList(),
+                bad = sentiments.bad.take(3).toImmutableList(),
             )
     }
 }

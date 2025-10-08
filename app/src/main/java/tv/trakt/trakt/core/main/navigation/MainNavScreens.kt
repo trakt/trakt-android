@@ -2,6 +2,9 @@ package tv.trakt.trakt.core.main.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import tv.trakt.trakt.common.model.MediaType.MOVIE
+import tv.trakt.trakt.core.comments.navigation.commentsScreen
+import tv.trakt.trakt.core.comments.navigation.navigateToComments
 import tv.trakt.trakt.core.home.navigation.homeScreen
 import tv.trakt.trakt.core.home.sections.activity.all.navigation.homeActivityPersonalScreen
 import tv.trakt.trakt.core.home.sections.activity.all.navigation.homeActivitySocialScreen
@@ -124,6 +127,13 @@ internal fun NavGraphBuilder.moviesScreens(controller: NavHostController) {
         )
         movieDetailsScreen(
             onNavigateToMovie = { navigateToMovie(it) },
+            onNavigateToComments = {
+                navigateToComments(
+                    mediaId = it.ids.trakt,
+                    mediaType = MOVIE,
+                    mediaImage = it.images?.getFanartUrl(),
+                )
+            },
             onNavigateBack = { popBackStack() },
         )
     }
@@ -175,6 +185,14 @@ internal fun NavGraphBuilder.searchScreens(
 internal fun NavGraphBuilder.profileScreens(controller: NavHostController) {
     with(controller) {
         profileScreen(
+            onNavigateBack = { popBackStack() },
+        )
+    }
+}
+
+internal fun NavGraphBuilder.commentsScreens(controller: NavHostController) {
+    with(controller) {
+        commentsScreen(
             onNavigateBack = { popBackStack() },
         )
     }

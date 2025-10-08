@@ -5,15 +5,26 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.comments.model.CommentsFilter
+import tv.trakt.trakt.core.comments.model.CommentsFilter.POPULAR
+import tv.trakt.trakt.core.comments.model.CommentsFilter.RECENT
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
 
 internal class GetMovieCommentsUseCase(
     private val remoteSource: MoviesRemoteDataSource,
 ) {
-    suspend fun getComments(movieId: TraktId): ImmutableList<Comment> {
+    suspend fun getComments(
+        movieId: TraktId,
+        filter: CommentsFilter = POPULAR,
+        limit: Int = 20,
+    ): ImmutableList<Comment> {
         val remoteComments = remoteSource.getComments(
             movieId = movieId,
-            limit = 30,
+            limit = limit,
+            sort = when (filter) {
+                POPULAR -> "likes"
+                RECENT -> "newest"
+            },
         ).asyncMap {
             Comment.Companion.fromDto(it)
         }

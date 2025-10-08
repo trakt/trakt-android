@@ -59,10 +59,11 @@ internal fun DetailsStreamingSkeleton() {
         )
 
         Text(
-            text = "STREAM",
+            text = "",
             color = Color.Transparent,
             style = TraktTheme.typography.meta,
             modifier = Modifier
+                .width(72.dp)
                 .clip(shape)
                 .background(shimmerTransition),
         )

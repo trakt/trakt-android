@@ -156,6 +156,8 @@
     <string name="page_title_recently_watched">Recently Watched</string>
     <string name="text_sort_recently_updated">Recently updated</string>
     <string name="text_sort_recently_added">Recently added</string>
+    <string name="text_sort_comments_popular">Popular</string>
+    <string name="text_sort_comments_recent">Recent</string>
     <string name="text_info_show_dropped">Show has been dropped.</string>
     <string name="header_community_sentiment">Community Sentiment</string>
     <string name="list_placeholder_replies">No replies yet.</string>

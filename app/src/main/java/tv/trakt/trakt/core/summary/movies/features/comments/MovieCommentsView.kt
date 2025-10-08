@@ -46,6 +46,7 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.core.comments.details.CommentDetailsSheet
 import tv.trakt.trakt.core.comments.ui.CommentCard
@@ -61,6 +62,7 @@ internal fun MovieCommentsView(
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
+    onMoreClick: (() -> Unit)?,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -71,6 +73,7 @@ internal fun MovieCommentsView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
+        onMoreClick = onMoreClick,
         onCommentClick = {
             commentSheet = it
         },
@@ -91,6 +94,7 @@ private fun MovieCommentsContent(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onCommentClick: ((Comment) -> Unit)? = null,
+    onMoreClick: (() -> Unit)? = null,
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
@@ -106,6 +110,18 @@ private fun MovieCommentsContent(
             TraktHeader(
                 title = stringResource(R.string.list_title_comments),
             )
+
+            if (state.loading.isLoading || !state.items.isNullOrEmpty()) {
+                Text(
+                    text = stringResource(R.string.button_text_view_all),
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.buttonSecondary,
+                    modifier = Modifier
+                        .onClick(enabled = (state.loading == DONE)) {
+                            onMoreClick?.invoke()
+                        },
+                )
+            }
         }
 
         Crossfade(

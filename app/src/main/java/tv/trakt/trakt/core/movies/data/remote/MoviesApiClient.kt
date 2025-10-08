@@ -201,10 +201,11 @@ internal class MoviesApiClient(
     override suspend fun getComments(
         movieId: TraktId,
         limit: Int,
+        sort: String,
     ): List<CommentDto> {
         val response = moviesApi.getMoviesComments(
             id = movieId.value.toString(),
-            sort = "likes",
+            sort = sort,
             extended = "images",
             page = null,
             limit = limit.toString(),

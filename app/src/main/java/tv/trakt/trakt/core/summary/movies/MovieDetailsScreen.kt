@@ -85,6 +85,7 @@ internal fun MovieDetailsScreen(
     modifier: Modifier = Modifier,
     viewModel: MovieDetailsViewModel,
     onMovieClick: ((Movie) -> Unit),
+    onCommentsClick: ((Movie) -> Unit),
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -117,6 +118,11 @@ internal fun MovieDetailsScreen(
         },
         onMoreClick = {
             contextSheet = state.movie
+        },
+        onMoreCommentsClick = {
+            state.movie?.let {
+                onCommentsClick(it)
+            }
         },
         onHistoryClick = {
             historySheet = it
@@ -193,6 +199,7 @@ internal fun MovieDetailsContent(
     onListsClick: (() -> Unit)? = null,
     onHistoryClick: ((HomeActivityItem.MovieItem) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
+    onMoreCommentsClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     val previewMode = LocalInspectionMode.current
@@ -347,6 +354,7 @@ internal fun MovieDetailsContent(
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
+                            onMoreClick = onMoreCommentsClick,
                             modifier = Modifier
                                 .padding(top = 32.dp),
                         )

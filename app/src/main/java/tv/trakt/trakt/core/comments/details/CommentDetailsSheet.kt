@@ -39,7 +39,7 @@ internal fun CommentDetailsSheet(
                     parameters = { parametersOf(comment) },
                 ),
                 modifier = Modifier
-                    .fillMaxHeight(0.85F)
+                    .fillMaxHeight(0.9F)
                     .padding(horizontal = 24.dp),
             )
         }

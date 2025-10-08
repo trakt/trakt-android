@@ -55,5 +55,6 @@ internal interface MoviesRemoteDataSource {
     suspend fun getComments(
         movieId: TraktId,
         limit: Int,
+        sort: String,
     ): List<CommentDto>
 }

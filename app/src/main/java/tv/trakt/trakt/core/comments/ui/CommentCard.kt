@@ -36,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.W700
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import coil3.ColorImage
@@ -56,12 +57,13 @@ internal fun CommentCard(
     comment: Comment,
     modifier: Modifier = Modifier,
     maxLines: Int = 4,
+    corner: Dp = 24.dp,
     onClick: () -> Unit,
 ) {
     Card(
         onClick = onClick,
         modifier = modifier,
-        shape = RoundedCornerShape(24.dp),
+        shape = RoundedCornerShape(corner),
         colors = cardColors(
             containerColor = TraktTheme.colors.commentContainer,
         ),
