@@ -60,7 +60,7 @@ internal fun BackdropImage(
     val linearGradient = remember {
         Brush.verticalGradient(
             colors = listOf(
-                background.copy(alpha = 0.48F),
+                background.copy(alpha = 0.5F),
                 background,
             ),
             startY = 0.0f,

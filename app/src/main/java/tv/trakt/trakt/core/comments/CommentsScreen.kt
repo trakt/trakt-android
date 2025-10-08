@@ -10,8 +10,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
@@ -53,7 +53,6 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.FilterChip
 import tv.trakt.trakt.ui.components.FilterChipGroup
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
-import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -193,9 +192,10 @@ private fun ContentList(
         if (loading) {
             items(3) {
                 CommentCardSkeleton(
+                    corner = 20.dp,
                     modifier = Modifier
+                        .fillMaxWidth()
                         .height(TraktTheme.size.commentCardSize)
-                        .aspectRatio(HorizontalImageAspectRatio)
                         .padding(bottom = 16.dp)
                         .animateItem(
                             fadeInSpec = null,

@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
@@ -45,6 +46,7 @@ internal fun CommentCardSkeleton(
     modifier: Modifier = Modifier,
     containerColor: Color = TraktTheme.colors.skeletonContainer,
     shimmerColor: Color = TraktTheme.colors.skeletonShimmer,
+    corner: Dp = 24.dp,
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "infiniteTransition")
     val shimmerTransition by infiniteTransition
@@ -61,7 +63,7 @@ internal fun CommentCardSkeleton(
     Card(
         onClick = {},
         modifier = modifier,
-        shape = RoundedCornerShape(24.dp),
+        shape = RoundedCornerShape(corner),
         colors = cardColors(
             containerColor = shimmerTransition,
         ),

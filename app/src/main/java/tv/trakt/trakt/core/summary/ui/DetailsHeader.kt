@@ -231,7 +231,7 @@ private fun DetailsHeader(
             traktRatings = traktRatings,
             externalRatings = ratings,
             modifier = Modifier
-                .padding(top = 19.dp),
+                .padding(top = 20.dp),
         )
 
         Column(
@@ -239,7 +239,7 @@ private fun DetailsHeader(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    top = 16.dp,
+                    top = 15.dp,
                     start = TraktTheme.spacing.mainPageHorizontalSpace,
                     end = TraktTheme.spacing.mainPageHorizontalSpace,
                 ),
