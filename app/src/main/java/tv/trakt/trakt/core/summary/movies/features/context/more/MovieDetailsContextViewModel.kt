@@ -12,12 +12,12 @@ import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.core.summary.movies.usecases.GetStreamOnUseCase
+import tv.trakt.trakt.core.summary.movies.usecases.GetMovieStreamingUseCase
 
 internal class MovieDetailsContextViewModel(
     private val movie: Movie,
     private val sessionManager: SessionManager,
-    private val getStreamingsUseCase: GetStreamOnUseCase,
+    private val getStreamingsUseCase: GetMovieStreamingUseCase,
 ) : ViewModel() {
     private val initialState = MovieDetailsContextState()
 

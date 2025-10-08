@@ -11,6 +11,7 @@ data class StreamingService(
     val logo: String?,
     val channel: String?,
     val linkDirect: String?,
+    val linkAndroid: String?,
     val uhd: Boolean,
     val color: Color?,
     val country: String,

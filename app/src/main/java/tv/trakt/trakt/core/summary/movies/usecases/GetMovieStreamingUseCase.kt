@@ -13,7 +13,7 @@ import tv.trakt.trakt.common.model.streamings.StreamingSource
 import tv.trakt.trakt.common.model.streamings.fromDto
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
 
-internal class GetStreamOnUseCase(
+internal class GetMovieStreamingUseCase(
     private val remoteMovieSource: MoviesRemoteDataSource,
     private val remoteStreamingSource: StreamingRemoteDataSource,
     private val localStreamingSource: StreamingLocalDataSource,
@@ -45,6 +45,7 @@ internal class GetStreamOnUseCase(
                 StreamingService(
                     name = localSource?.name ?: "",
                     linkDirect = it.linkDirect,
+                    linkAndroid = it.linkAndroid,
                     source = it.source,
                     color = localSource?.color,
                     logo = localSource?.images?.logo,

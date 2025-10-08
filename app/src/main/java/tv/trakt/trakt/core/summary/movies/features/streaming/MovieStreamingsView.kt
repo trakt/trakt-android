@@ -71,7 +71,9 @@ internal fun MovieStreamingsView(
             openWatchNowLink(
                 context = context,
                 uriHandler = uriHandler,
-                link = service.linkDirect,
+                link = (service.linkAndroid ?: "").ifBlank {
+                    service.linkDirect
+                },
             )
         },
     )

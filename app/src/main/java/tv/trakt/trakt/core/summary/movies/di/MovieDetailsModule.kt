@@ -26,8 +26,8 @@ import tv.trakt.trakt.core.summary.movies.features.streaming.MovieStreamingsView
 import tv.trakt.trakt.core.summary.movies.features.streaming.usecases.GetMovieStreamingsUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieRatingsUseCase
+import tv.trakt.trakt.core.summary.movies.usecases.GetMovieStreamingUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieStudiosUseCase
-import tv.trakt.trakt.core.summary.movies.usecases.GetStreamOnUseCase
 
 internal val movieDetailsDataModule = module {
     single<MovieLocalDataSource> {
@@ -80,19 +80,19 @@ internal val movieDetailsModule = module {
     }
 
     factory {
-        GetStreamOnUseCase(
-            remoteMovieSource = get(),
-            remoteStreamingSource = get(),
-            localStreamingSource = get(),
-            priorityStreamingProvider = get(),
-        )
-    }
-
-    factory {
         GetMovieStreamingsUseCase(
             remoteMovieSource = get(),
             remoteStreamingSource = get(),
             localStreamingSource = get(),
+        )
+    }
+
+    factory {
+        GetMovieStreamingUseCase(
+            remoteMovieSource = get(),
+            remoteStreamingSource = get(),
+            localStreamingSource = get(),
+            priorityStreamingProvider = get(),
         )
     }
 
