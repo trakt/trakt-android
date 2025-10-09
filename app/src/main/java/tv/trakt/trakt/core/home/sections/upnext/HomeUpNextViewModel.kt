@@ -82,7 +82,9 @@ internal class HomeUpNextViewModel(
             .distinctUntilChanged()
             .debounce(250)
             .onEach {
-                loadData(ignoreErrors = true)
+                loadData(
+                    ignoreErrors = true
+                )
             }.launchIn(viewModelScope)
 
         allUpNextSource.observeUpdates()
@@ -201,7 +203,10 @@ internal class HomeUpNextViewModel(
                         items = itemsOrder?.let { order ->
                             items
                                 .sortedBy {
-                                    order.indexOf(it.show.ids.trakt.value)
+                                    order.indexOf(it.show.ids.trakt.value).run {
+                                        // Items not in the list are placed at the end.
+                                        if (this < 0) Int.MAX_VALUE else this
+                                    }
                                 }
                                 .toImmutableList()
                         } ?: items,
