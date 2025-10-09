@@ -46,6 +46,7 @@ import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
+import kotlin.random.Random.Default.nextInt
 
 @Composable
 internal fun MovieActorsView(
@@ -138,7 +139,7 @@ private fun ContentList(
     ) {
         items(
             items = listItems,
-            key = { it.person.ids.trakt.value },
+            key = { it.person.ids.trakt.value.plus(nextInt()) },
         ) { item ->
             VerticalMediaCard(
                 title = "",
@@ -156,15 +157,13 @@ private fun ContentList(
                             overflow = Ellipsis,
                         )
 
-                        item.characters.firstOrNull()?.let {
-                            Text(
-                                text = it,
-                                style = TraktTheme.typography.cardSubtitle,
-                                color = TraktTheme.colors.textSecondary,
-                                maxLines = 1,
-                                overflow = Ellipsis,
-                            )
-                        }
+                        Text(
+                            text = item.characters.firstOrNull() ?: "—",
+                            style = TraktTheme.typography.cardSubtitle,
+                            color = TraktTheme.colors.textSecondary,
+                            maxLines = 1,
+                            overflow = Ellipsis,
+                        )
                     }
                 },
                 modifier = Modifier.animateItem(

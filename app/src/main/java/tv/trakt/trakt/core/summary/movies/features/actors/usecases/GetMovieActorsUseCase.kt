@@ -16,6 +16,7 @@ internal class GetMovieActorsUseCase(
         val castCrew = remoteSource.getCastCrew(movieId)
 
         val cast = (castCrew.cast ?: emptyList())
+            .distinctBy { it.person.ids.trakt }
             .take(30)
             .map { person ->
                 CastPerson(

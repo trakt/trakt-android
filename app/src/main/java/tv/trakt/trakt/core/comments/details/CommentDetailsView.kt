@@ -99,13 +99,14 @@ private fun CommentDetailsViewContent(
         }
 
         when {
-            state.loading.isLoading -> {
+            state.loading.isLoading &&
+                (state.comment?.replies ?: 0) > 0 -> {
                 item {
                     CommentCardSkeleton(
                         containerColor = TraktTheme.colors.commentReplyContainer,
                         shimmerColor = Shade800,
                         modifier = Modifier
-                            .height(128.dp)
+                            .height(132.dp)
                             .fillMaxWidth(),
                     )
                 }
