@@ -116,6 +116,7 @@ internal val searchModule = module {
             addRecentSearchUseCase = get(),
             getRecentSearchUseCase = get(),
             getBirthdayPeopleUseCase = get(),
+            showLocalDataSource = get(),
             movieLocalDataSource = get(),
             sessionManager = get(),
         )

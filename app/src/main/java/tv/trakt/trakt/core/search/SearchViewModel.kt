@@ -21,6 +21,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
+import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -55,6 +56,7 @@ internal class SearchViewModel(
     private val addRecentSearchUseCase: AddRecentSearchUseCase,
     private val getRecentSearchUseCase: GetRecentSearchUseCase,
     private val getBirthdayPeopleUseCase: GetBirthdayPeopleUseCase,
+    private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
@@ -348,6 +350,7 @@ internal class SearchViewModel(
         }
         viewModelScope.launch {
             addRecentSearchUseCase.addRecentSearchShow(show)
+            showLocalDataSource.upsertShows(listOf(show))
             navigateShow.update { show }
             postUserSearch(show)
         }
