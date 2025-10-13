@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.shows.data.remote
 import org.openapitools.client.apis.RecommendationsApi
 import org.openapitools.client.apis.ShowsApi
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.ShowDto
 import tv.trakt.trakt.core.shows.data.remote.model.AnticipatedShowDto
@@ -141,6 +142,15 @@ internal class ShowsApiClient(
         val response = showsApi.getShowsSummary(
             id = showId.value.toString(),
             extended = "full,streaming_ids,cloud9,colors",
+        )
+
+        return response.body()
+    }
+
+    override suspend fun getExternalRatings(showId: TraktId): ExternalRatingsDto {
+        val response = showsApi.getShowsRatings(
+            id = showId.value.toString(),
+            extended = "all",
         )
 
         return response.body()

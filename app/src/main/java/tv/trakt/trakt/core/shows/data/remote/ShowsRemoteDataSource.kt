@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.shows.data.remote
 
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.ShowDto
 import tv.trakt.trakt.core.shows.data.remote.model.AnticipatedShowDto
@@ -30,4 +31,6 @@ internal interface ShowsRemoteDataSource {
     ): List<AnticipatedShowDto>
 
     suspend fun getShowDetails(showId: TraktId): ShowDto
+
+    suspend fun getExternalRatings(showId: TraktId): ExternalRatingsDto
 }

@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowStorage
 import tv.trakt.trakt.core.summary.shows.ShowDetailsViewModel
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
+import tv.trakt.trakt.core.summary.shows.usecases.GetShowRatingsUseCase
 
 internal val showDetailsDataModule = module {
     single<ShowLocalDataSource> {
@@ -25,12 +26,11 @@ internal val showDetailsModule = module {
         )
     }
 
-//    factory {
-//        GetShowRatingsUseCase(
-//            remoteSource = get(),
-//            localSource = get(),
-//        )
-//    }
+    factory {
+        GetShowRatingsUseCase(
+            remoteSource = get(),
+        )
+    }
 //
 //    factory {
 //        GetShowStudiosUseCase(
@@ -102,7 +102,7 @@ internal val showDetailsModule = module {
         ShowDetailsViewModel(
             savedStateHandle = get(),
             getDetailsUseCase = get(),
-//            getExternalRatingsUseCase = get(),
+            getExternalRatingsUseCase = get(),
 //            getShowStudiosUseCase = get(),
 //            loadProgressUseCase = get(),
 //            loadWatchlistUseCase = get(),

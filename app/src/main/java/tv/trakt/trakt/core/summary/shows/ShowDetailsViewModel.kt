@@ -18,6 +18,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.StringResource
+import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Show
@@ -25,11 +26,12 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.summary.shows.navigation.ShowDetailsDestination
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
+import tv.trakt.trakt.core.summary.shows.usecases.GetShowRatingsUseCase
 
 internal class ShowDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val getDetailsUseCase: GetShowDetailsUseCase,
-//    private val getExternalRatingsUseCase: GetShowRatingsUseCase,
+    private val getExternalRatingsUseCase: GetShowRatingsUseCase,
 //    private val getShowStudiosUseCase: GetShowStudiosUseCase,
 //    private val loadProgressUseCase: LoadUserProgressUseCase,
 //    private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
@@ -90,7 +92,7 @@ internal class ShowDetailsViewModel(
                 }
                 showState.update { show }
 
-//                loadRatings(show)
+                loadRatings(show)
 //                loadStudios()
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -99,6 +101,24 @@ internal class ShowDetailsViewModel(
                 }
             } finally {
                 loadingState.update { DONE }
+            }
+        }
+    }
+
+    private fun loadRatings(show: Show?) {
+        if (show?.released?.isNowOrBefore() != true) {
+            // Don't load ratings for unreleased movies
+            return
+        }
+        viewModelScope.launch {
+            try {
+                showRatingsState.update {
+                    getExternalRatingsUseCase.getExternalRatings(showId)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.w(error)
+                }
             }
         }
     }
