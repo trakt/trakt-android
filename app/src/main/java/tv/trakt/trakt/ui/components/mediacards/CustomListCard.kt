@@ -64,17 +64,12 @@ private fun CustomListCardContent(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
 ) {
-    val containerColor = when (list.type) {
-        Type.OFFICIAL -> TraktTheme.colors.customTraktListContainer
-        else -> TraktTheme.colors.customListContainer
-    }
-
     Card(
         onClick = onClick,
         modifier = modifier,
         shape = RoundedCornerShape(24.dp),
         colors = cardColors(
-            containerColor = containerColor,
+            containerColor = TraktTheme.colors.customListContainer,
         ),
         content = {
             CustomListContent(

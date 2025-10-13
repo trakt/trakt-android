@@ -48,6 +48,7 @@ internal class MovieListsViewModel(
 
                     itemsState.update {
                         (officialListsAsync.await() + personalListsAsync.await())
+                            .take(1)
                             .toImmutableList()
                     }
                 }
