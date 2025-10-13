@@ -50,7 +50,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.core.comments.details.CommentDetailsSheet
 import tv.trakt.trakt.core.comments.ui.CommentCard
-import tv.trakt.trakt.core.comments.ui.CommentCardSkeleton
+import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
@@ -209,7 +209,7 @@ private fun ContentLoading(
             .alpha(if (visible) 1F else 0F),
     ) {
         items(count = 3) {
-            CommentCardSkeleton(
+            CommentSkeletonCard(
                 modifier = Modifier
                     .height(TraktTheme.size.commentCardSize)
                     .aspectRatio(HorizontalImageAspectRatio),

@@ -42,7 +42,7 @@ import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun CommentCardSkeleton(
+internal fun CommentSkeletonCard(
     modifier: Modifier = Modifier,
     containerColor: Color = TraktTheme.colors.skeletonContainer,
     shimmerColor: Color = TraktTheme.colors.skeletonShimmer,
@@ -131,7 +131,7 @@ private fun CommentHeader(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
-                        .fillMaxWidth(fraction = 0.5F)
+                        .fillMaxWidth(fraction = 0.25F)
                         .background(
                             color = shimmerColor,
                             shape = RoundedCornerShape(100),
@@ -143,7 +143,7 @@ private fun CommentHeader(
                 style = TraktTheme.typography.meta,
                 color = Color.Transparent,
                 modifier = Modifier
-                    .fillMaxWidth(fraction = 0.75F)
+                    .fillMaxWidth(fraction = 0.5F)
                     .background(
                         color = shimmerColor,
                         shape = RoundedCornerShape(100),
@@ -165,7 +165,7 @@ private fun Preview() {
             Column(
                 verticalArrangement = spacedBy(16.dp),
             ) {
-                CommentCardSkeleton(
+                CommentSkeletonCard(
                     modifier = Modifier
                         .height(TraktTheme.size.commentCardSize)
                         .aspectRatio(HorizontalImageAspectRatio),

@@ -60,8 +60,8 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.common.ui.theme.colors.Shade800
-import tv.trakt.trakt.core.comments.ui.CommentCardSkeleton
 import tv.trakt.trakt.core.comments.ui.CommentReplyCard
+import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
 import tv.trakt.trakt.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -102,7 +102,7 @@ private fun CommentDetailsViewContent(
             state.loading.isLoading &&
                 (state.comment?.replies ?: 0) > 0 -> {
                 item {
-                    CommentCardSkeleton(
+                    CommentSkeletonCard(
                         containerColor = TraktTheme.colors.commentReplyContainer,
                         shimmerColor = Shade800,
                         modifier = Modifier

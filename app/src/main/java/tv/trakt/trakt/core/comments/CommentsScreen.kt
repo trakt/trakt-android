@@ -47,7 +47,7 @@ import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.core.comments.details.CommentDetailsSheet
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.ui.CommentCard
-import tv.trakt.trakt.core.comments.ui.CommentCardSkeleton
+import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.FilterChip
@@ -191,7 +191,7 @@ private fun ContentList(
 
         if (loading) {
             items(3) {
-                CommentCardSkeleton(
+                CommentSkeletonCard(
                     corner = 20.dp,
                     modifier = Modifier
                         .fillMaxWidth()
