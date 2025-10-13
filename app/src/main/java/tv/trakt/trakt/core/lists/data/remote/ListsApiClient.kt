@@ -9,6 +9,7 @@ import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerOneOfIds
 import org.openapitools.client.models.PutUsersListsListUpdateRequest
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.networking.ListItemDto
 
 internal class ListsApiClient(
     private val listsApi: ListsApi,
@@ -148,5 +149,26 @@ internal class ListsApiClient(
                 ),
             ),
         )
+    }
+
+    override suspend fun getAllListItems(
+        listId: TraktId,
+        extended: String?,
+        limit: String?,
+    ): List<ListItemDto> {
+        val response = listsApi.getListsItemsAll(
+            id = listId.value.toString(),
+            extended = extended,
+            watchnow = null,
+            genres = null,
+            years = null,
+            ratings = null,
+            startDate = null,
+            endDate = null,
+            page = null,
+            limit = limit,
+        )
+
+        return response.body()
     }
 }

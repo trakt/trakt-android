@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
-import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -30,7 +29,7 @@ internal class AllMoviesTrendingViewModel(
     private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val loadingMoreState = MutableStateFlow(LoadingState.IDLE)
+    private val loadingMoreState = MutableStateFlow(initialState.loadingMore)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var pages: Int = 1

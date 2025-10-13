@@ -22,6 +22,8 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.ListsViewModel
 import tv.trakt.trakt.core.lists.data.remote.ListsApiClient
 import tv.trakt.trakt.core.lists.data.remote.ListsRemoteDataSource
+import tv.trakt.trakt.core.lists.features.details.ListDetailsViewModel
+import tv.trakt.trakt.core.lists.features.details.usecases.GetListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.ListsPersonalViewModel
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsStorage
@@ -114,6 +116,12 @@ internal val listsModule = module {
         GetPersonalListItemsUseCase(
             remoteSource = get(),
             localSource = get(),
+        )
+    }
+
+    factory {
+        GetListItemsUseCase(
+            remoteSource = get(),
         )
     }
 
@@ -266,6 +274,15 @@ internal val listsModule = module {
             userWatchlistLocalSource = get(),
             loadProgressUseCase = get(),
             loadWatchlistUseCase = get(),
+            sessionManager = get(),
+        )
+    }
+
+    viewModel {
+        ListDetailsViewModel(
+            savedStateHandle = get(),
+            getListItemsUseCase = get(),
+            movieLocalDataSource = get(),
             sessionManager = get(),
         )
     }

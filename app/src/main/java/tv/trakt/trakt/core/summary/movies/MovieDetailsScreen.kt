@@ -57,6 +57,7 @@ import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
@@ -88,6 +89,7 @@ internal fun MovieDetailsScreen(
     viewModel: MovieDetailsViewModel,
     onMovieClick: ((Movie) -> Unit),
     onCommentsClick: ((Movie) -> Unit),
+    onListClick: ((Movie, CustomList) -> Unit),
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -106,6 +108,11 @@ internal fun MovieDetailsScreen(
         state = state,
         modifier = modifier,
         onMovieClick = onMovieClick,
+        onListClick = {
+            state.movie?.let { movie ->
+                onListClick(movie, it)
+            }
+        },
         onTrackClick = {
             viewModel.addToWatched()
         },
@@ -202,6 +209,7 @@ internal fun MovieDetailsContent(
     onHistoryClick: ((HomeActivityItem.MovieItem) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
     onMoreCommentsClick: (() -> Unit)? = null,
+    onListClick: ((CustomList) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     val previewMode = LocalInspectionMode.current
@@ -406,9 +414,7 @@ internal fun MovieDetailsContent(
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
-                            onClick = {
-                                // TODO
-                            },
+                            onClick = onListClick ?: {},
                             modifier = Modifier
                                 .padding(top = 32.dp),
                         )

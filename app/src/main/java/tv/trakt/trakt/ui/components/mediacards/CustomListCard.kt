@@ -37,6 +37,7 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.CustomList.Type
 import tv.trakt.trakt.helpers.preview.PreviewData
@@ -78,19 +79,22 @@ private fun CustomListCardContent(
         content = {
             CustomListContent(
                 list = list,
+                onClick = onClick,
             )
         },
     )
 }
 
 @Composable
-private fun CustomListContent(list: CustomList) {
+private fun CustomListContent(
+    list: CustomList,
+    onClick: () -> Unit,
+) {
     Column(
         verticalArrangement = spacedBy(0.dp, Alignment.CenterVertically),
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .padding(vertical = 16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(vertical = 16.dp),
     ) {
         CustomListHeader(
             list = list,
@@ -104,13 +108,13 @@ private fun CustomListContent(list: CustomList) {
 
         images?.let {
             Box(
-                modifier =
-                    Modifier
-                        .padding(
-                            top = 16.dp,
-                            start = 16.dp,
-                            end = 16.dp,
-                        ),
+                modifier = Modifier
+                    .onClick(onClick = onClick)
+                    .padding(
+                        top = 16.dp,
+                        start = 16.dp,
+                        end = 16.dp,
+                    ),
             ) {
                 it.forEachIndexed { index, url ->
                     VerticalMediaCard(
@@ -118,9 +122,9 @@ private fun CustomListContent(list: CustomList) {
                         imageUrl = url,
                         width = 70.dp,
                         corner = 8.dp,
-                        modifier =
-                            Modifier
-                                .padding(start = (32 * index).dp),
+                        enabled = false,
+                        modifier = Modifier
+                            .padding(start = (32 * index).dp),
                     )
                 }
             }

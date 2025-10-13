@@ -48,6 +48,7 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import tv.trakt.trakt.common.helpers.extensions.ifOrElse
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -60,6 +61,7 @@ internal fun VerticalMediaCard(
     modifier: Modifier = Modifier,
     width: Dp = Dp.Unspecified,
     corner: Dp = 12.dp,
+    enabled: Boolean = true,
     chipContent: @Composable () -> Unit = {},
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
@@ -88,11 +90,14 @@ internal fun VerticalMediaCard(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .combinedClickable(
-                            onClick = onClick,
-                            onLongClick = onLongClick,
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = ripple(),
+                        .ifOrElse(
+                            condition = enabled,
+                            trueModifier = Modifier.combinedClickable(
+                                onClick = onClick,
+                                onLongClick = onLongClick,
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = ripple(),
+                            ),
                         ),
                 ) {
                     if (imageUrl != null && !isError) {

@@ -9,9 +9,9 @@ import java.lang.System.currentTimeMillis
 
 fun Modifier.ifOrElse(
     condition: Boolean,
-    ifTrueModifier: Modifier,
-    elseModifier: Modifier = Modifier,
-): Modifier = then(if (condition) ifTrueModifier else elseModifier)
+    trueModifier: Modifier,
+    falseModifier: Modifier = Modifier,
+): Modifier = then(if (condition) trueModifier else falseModifier)
 
 fun Modifier.onClick(
     enabled: Boolean = true,

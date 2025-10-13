@@ -12,6 +12,8 @@ import tv.trakt.trakt.core.home.sections.activity.all.navigation.navigateToAllAc
 import tv.trakt.trakt.core.home.sections.activity.all.navigation.navigateToAllActivitySocial
 import tv.trakt.trakt.core.home.sections.upnext.features.all.navigation.homeUpNextScreen
 import tv.trakt.trakt.core.home.sections.upnext.features.all.navigation.navigateToAllUpNext
+import tv.trakt.trakt.core.lists.features.details.navigation.listDetailsScreen
+import tv.trakt.trakt.core.lists.features.details.navigation.navigateToListDetails
 import tv.trakt.trakt.core.lists.navigation.listsScreen
 import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.allPersonalListScreen
 import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.navigateToPersonalList
@@ -134,6 +136,15 @@ internal fun NavGraphBuilder.moviesScreens(controller: NavHostController) {
                     mediaImage = it.images?.getFanartUrl(),
                 )
             },
+            onNavigateToList = { movie, list ->
+                navigateToListDetails(
+                    listId = list.ids.trakt.value,
+                    listTitle = list.name,
+                    listDescription = list.description,
+                    mediaId = movie.ids.trakt,
+                    mediaImage = movie.images?.getFanartUrl(),
+                )
+            },
             onNavigateBack = { popBackStack() },
         )
     }
@@ -160,6 +171,10 @@ internal fun NavGraphBuilder.listsScreens(controller: NavHostController) {
             onNavigateBack = { popBackStack() },
         )
         allPersonalListScreen(
+            onNavigateBack = { popBackStack() },
+            onNavigateToMovie = { navigateToMovie(it) },
+        )
+        listDetailsScreen(
             onNavigateBack = { popBackStack() },
             onNavigateToMovie = { navigateToMovie(it) },
         )

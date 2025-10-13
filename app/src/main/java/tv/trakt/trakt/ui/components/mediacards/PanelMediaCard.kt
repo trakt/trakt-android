@@ -92,7 +92,7 @@ internal fun PanelMediaCard(
                     radius = shadow,
                     color = Shade940,
                     spread = 2.dp,
-                    alpha = if (shadow > 0.dp) 0.45F else 0F,
+                    alpha = if (shadow > 0.dp) 0.33F else 0F,
                 ),
             )
             .clip(RoundedCornerShape(corner))
