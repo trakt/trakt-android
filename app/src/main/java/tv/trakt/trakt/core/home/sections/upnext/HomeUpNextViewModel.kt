@@ -83,7 +83,7 @@ internal class HomeUpNextViewModel(
             .debounce(250)
             .onEach {
                 loadData(
-                    ignoreErrors = true
+                    ignoreErrors = true,
                 )
             }.launchIn(viewModelScope)
 
