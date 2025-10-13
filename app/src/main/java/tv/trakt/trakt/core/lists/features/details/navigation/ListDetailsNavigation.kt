@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.features.details.ListDetailsScreen
 
@@ -14,6 +15,7 @@ internal data class ListsDetailsDestination(
     val listTitle: String,
     val listDescription: String?,
     val mediaId: Int,
+    val mediaType: MediaType,
     val mediaImage: String?,
 )
 
@@ -37,6 +39,7 @@ internal fun NavController.navigateToListDetails(
     listTitle: String,
     listDescription: String?,
     mediaId: TraktId,
+    mediaType: MediaType,
     mediaImage: String?,
 ) {
     navigate(
@@ -45,6 +48,7 @@ internal fun NavController.navigateToListDetails(
             listTitle = listTitle,
             listDescription = listDescription,
             mediaId = mediaId.value,
+            mediaType = mediaType,
             mediaImage = mediaImage,
         ),
     )

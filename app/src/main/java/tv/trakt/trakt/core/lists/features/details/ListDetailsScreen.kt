@@ -250,7 +250,6 @@ private fun ContentList(
                 when (item) {
                     is ShowItem -> ListDetailsShowView(
                         item = item,
-                        showIcon = true,
                         shadow = index == 0,
                         onClick = { onClick(item) },
                         onLongClick = { onLongClick(item) },
@@ -263,7 +262,6 @@ private fun ContentList(
                     )
                     is MovieItem -> ListDetailsMovieView(
                         item = item,
-                        showIcon = true,
                         shadow = index == 0,
                         onClick = { onClick(item) },
                         onLongClick = { onLongClick(item) },

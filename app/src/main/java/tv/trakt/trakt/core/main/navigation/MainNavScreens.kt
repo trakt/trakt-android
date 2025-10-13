@@ -114,13 +114,14 @@ internal fun NavGraphBuilder.showsScreens(controller: NavHostController) {
                     mediaImage = it.images?.getFanartUrl(),
                 )
             },
-            onNavigateToList = { movie, list ->
+            onNavigateToList = { show, list ->
                 navigateToListDetails(
                     listId = list.ids.trakt.value,
                     listTitle = list.name,
                     listDescription = list.description,
-                    mediaId = movie.ids.trakt,
-                    mediaImage = movie.images?.getFanartUrl(),
+                    mediaId = show.ids.trakt,
+                    mediaType = SHOW,
+                    mediaImage = show.images?.getFanartUrl(),
                 )
             },
             onNavigateBack = { popBackStack() },
@@ -169,6 +170,7 @@ internal fun NavGraphBuilder.moviesScreens(controller: NavHostController) {
                     listTitle = list.name,
                     listDescription = list.description,
                     mediaId = movie.ids.trakt,
+                    mediaType = MOVIE,
                     mediaImage = movie.images?.getFanartUrl(),
                 )
             },

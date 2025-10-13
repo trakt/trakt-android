@@ -89,6 +89,7 @@ internal class ListDetailsViewModel(
                 itemsState.update {
                     getListItemsUseCase.getItems(
                         listId = destination.listId.toTraktId(),
+                        type = destination.mediaType,
                     )
                 }
             } catch (error: Exception) {

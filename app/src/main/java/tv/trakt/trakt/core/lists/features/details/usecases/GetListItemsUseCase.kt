@@ -4,6 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -14,7 +15,36 @@ import tv.trakt.trakt.core.lists.model.PersonalListItem
 internal class GetListItemsUseCase(
     private val remoteSource: ListsRemoteDataSource,
 ) {
-    suspend fun getItems(listId: TraktId): ImmutableList<PersonalListItem> {
+    suspend fun getItems(
+        listId: TraktId,
+        type: MediaType?,
+    ): ImmutableList<PersonalListItem> {
+        if (type == MediaType.MOVIE) {
+            return remoteSource.getMovieListItems(
+                listId = listId,
+                limit = "all",
+                extended = "full,cloud9,colors",
+            ).asyncMap {
+                PersonalListItem.MovieItem(
+                    movie = Movie.fromDto(it.movie),
+                    listedAt = it.listedAt.toInstant(),
+                )
+            }.toImmutableList()
+        }
+
+        if (type == MediaType.SHOW) {
+            return remoteSource.getShowListItems(
+                listId = listId,
+                limit = "all",
+                extended = "full,cloud9,colors",
+            ).asyncMap {
+                PersonalListItem.ShowItem(
+                    show = Show.fromDto(it.show),
+                    listedAt = it.listedAt.toInstant(),
+                )
+            }.toImmutableList()
+        }
+
         return remoteSource.getAllListItems(
             listId = listId,
             limit = "all",

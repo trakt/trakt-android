@@ -2,6 +2,8 @@ package tv.trakt.trakt.core.lists.data.remote
 
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.ListItemDto
+import tv.trakt.trakt.common.networking.ListMovieItemDto
+import tv.trakt.trakt.common.networking.ListShowItemDto
 
 internal interface ListsRemoteDataSource {
     suspend fun createList(
@@ -42,4 +44,16 @@ internal interface ListsRemoteDataSource {
         extended: String?,
         limit: String?,
     ): List<ListItemDto>
+
+    suspend fun getShowListItems(
+        listId: TraktId,
+        extended: String?,
+        limit: String?,
+    ): List<ListShowItemDto>
+
+    suspend fun getMovieListItems(
+        listId: TraktId,
+        extended: String?,
+        limit: String?,
+    ): List<ListMovieItemDto>
 }
