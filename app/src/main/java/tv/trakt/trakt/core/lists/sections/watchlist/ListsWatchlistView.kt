@@ -180,9 +180,7 @@ internal fun ListWatchlistContent(
                     painter = painterResource(R.drawable.ic_more),
                     contentDescription = null,
                     tint = TraktTheme.colors.textSecondary,
-                    modifier = Modifier
-                        .padding(top = 2.dp)
-                        .size(20.dp),
+                    modifier = Modifier.size(20.dp),
                 )
             }
         }

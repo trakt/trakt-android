@@ -27,7 +27,6 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
@@ -45,16 +44,14 @@ import tv.trakt.trakt.core.search.usecase.GetBirthdayPeopleUseCase
 import tv.trakt.trakt.core.search.usecase.GetSearchResultsUseCase
 import tv.trakt.trakt.core.search.usecase.popular.GetPopularSearchUseCase
 import tv.trakt.trakt.core.search.usecase.popular.PostUserSearchUseCase
-import tv.trakt.trakt.core.search.usecase.recents.AddRecentSearchUseCase
-import tv.trakt.trakt.core.search.usecase.recents.GetRecentSearchUseCase
 
 @OptIn(FlowPreview::class)
 internal class SearchViewModel(
     private val getPopularSearchesUseCase: GetPopularSearchUseCase,
     private val postUserSearchUseCase: PostUserSearchUseCase,
     private val getSearchResultsUseCase: GetSearchResultsUseCase,
-    private val addRecentSearchUseCase: AddRecentSearchUseCase,
-    private val getRecentSearchUseCase: GetRecentSearchUseCase,
+//    private val addRecentSearchUseCase: AddRecentSearchUseCase,
+//    private val getRecentSearchUseCase: GetRecentSearchUseCase,
     private val getBirthdayPeopleUseCase: GetBirthdayPeopleUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
@@ -83,7 +80,7 @@ internal class SearchViewModel(
 
         initialJob = viewModelScope.launch {
             try {
-                loadRecentlySearched()
+//                loadRecentlySearched()
                 loadPopularSearches()
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -114,63 +111,63 @@ internal class SearchViewModel(
         val configUrl = Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL)
         backgroundState.update { configUrl }
     }
-
-    private suspend fun loadRecentlySearched() {
-        return coroutineScope {
-            val recentShowsAsync = async { getRecentSearchUseCase.getRecentShows() }
-            val recentMoviesAsync = async { getRecentSearchUseCase.getRecentMovies() }
-            val recentPeopleAsync = async { getRecentSearchUseCase.getRecentPeople() }
-
-            val recentShows = when (inputState.value.filter) {
-                in arrayOf(MEDIA, SHOWS) -> recentShowsAsync.await()
-                else -> emptyList()
-            }
-            val recentMovies = when (inputState.value.filter) {
-                in arrayOf(MEDIA, MOVIES) -> recentMoviesAsync.await()
-                else -> emptyList()
-            }
-            val recentPeople = when (inputState.value.filter) {
-                in arrayOf(PEOPLE) -> recentPeopleAsync.await()
-                else -> emptyList()
-            }
-
-            if (searchingState.value || screenState.value == State.SEARCH_RESULTS) {
-                return@coroutineScope
-            }
-
-            recentsResultState.update {
-                SearchResult(
-                    items = buildList {
-                        val showItems = recentShows.asyncMap {
-                            SearchItem.Show(
-                                rank = it.createdAt.toInstant().toEpochMilli(),
-                                show = it.show,
-                            )
-                        }
-                        val movieItems = recentMovies.asyncMap {
-                            SearchItem.Movie(
-                                rank = it.createdAt.toInstant().toEpochMilli(),
-                                movie = it.movie,
-                            )
-                        }
-                        val peopleItems = recentPeople.asyncMap {
-                            SearchItem.Person(
-                                rank = it.createdAt.toInstant().toEpochMilli(),
-                                person = it.person,
-                            )
-                        }
-
-                        addAll(showItems)
-                        addAll(movieItems)
-                        addAll(peopleItems)
-                    }
-                        .sortedByDescending { it.rank }
-                        .take(3)
-                        .toImmutableList(),
-                )
-            }
-        }
-    }
+//    Disabled until we decide how to do recently searched.
+//    private suspend fun loadRecentlySearched() {
+//        return coroutineScope {
+//            val recentShowsAsync = async { getRecentSearchUseCase.getRecentShows() }
+//            val recentMoviesAsync = async { getRecentSearchUseCase.getRecentMovies() }
+//            val recentPeopleAsync = async { getRecentSearchUseCase.getRecentPeople() }
+//
+//            val recentShows = when (inputState.value.filter) {
+//                in arrayOf(MEDIA, SHOWS) -> recentShowsAsync.await()
+//                else -> emptyList()
+//            }
+//            val recentMovies = when (inputState.value.filter) {
+//                in arrayOf(MEDIA, MOVIES) -> recentMoviesAsync.await()
+//                else -> emptyList()
+//            }
+//            val recentPeople = when (inputState.value.filter) {
+//                in arrayOf(PEOPLE) -> recentPeopleAsync.await()
+//                else -> emptyList()
+//            }
+//
+//            if (searchingState.value || screenState.value == State.SEARCH_RESULTS) {
+//                return@coroutineScope
+//            }
+//
+//            recentsResultState.update {
+//                SearchResult(
+//                    items = buildList {
+//                        val showItems = recentShows.asyncMap {
+//                            SearchItem.Show(
+//                                rank = it.createdAt.toInstant().toEpochMilli(),
+//                                show = it.show,
+//                            )
+//                        }
+//                        val movieItems = recentMovies.asyncMap {
+//                            SearchItem.Movie(
+//                                rank = it.createdAt.toInstant().toEpochMilli(),
+//                                movie = it.movie,
+//                            )
+//                        }
+//                        val peopleItems = recentPeople.asyncMap {
+//                            SearchItem.Person(
+//                                rank = it.createdAt.toInstant().toEpochMilli(),
+//                                person = it.person,
+//                            )
+//                        }
+//
+//                        addAll(showItems)
+//                        addAll(movieItems)
+//                        addAll(peopleItems)
+//                    }
+//                        .sortedByDescending { it.rank }
+//                        .take(3)
+//                        .toImmutableList(),
+//                )
+//            }
+//        }
+//    }
 
     private suspend fun loadPopularSearches() {
         return coroutineScope {
@@ -269,7 +266,7 @@ internal class SearchViewModel(
             } else {
                 initialJob = viewModelScope.launch {
                     try {
-                        loadRecentlySearched()
+//                        loadRecentlySearched()
                         loadPopularSearches()
                     } catch (error: Exception) {
                         error.rethrowCancellation {
@@ -349,7 +346,7 @@ internal class SearchViewModel(
             return
         }
         viewModelScope.launch {
-            addRecentSearchUseCase.addRecentSearchShow(show)
+//            addRecentSearchUseCase.addRecentSearchShow(show)
             showLocalDataSource.upsertShows(listOf(show))
             navigateShow.update { show }
             postUserSearch(show)
@@ -361,7 +358,7 @@ internal class SearchViewModel(
             return
         }
         viewModelScope.launch {
-            addRecentSearchUseCase.addRecentSearchMovie(movie)
+//            addRecentSearchUseCase.addRecentSearchMovie(movie)
             movieLocalDataSource.upsertMovies(listOf(movie))
             navigateMovie.update { movie }
             postUserSearch(movie)
@@ -373,7 +370,7 @@ internal class SearchViewModel(
             return
         }
         viewModelScope.launch {
-            addRecentSearchUseCase.addRecentSearchPerson(person)
+//            addRecentSearchUseCase.addRecentSearchPerson(person)
         }
     }
 
