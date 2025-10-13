@@ -5,6 +5,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 import tv.trakt.trakt.core.shows.ui.ShowMetaFooter
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
@@ -15,6 +16,7 @@ internal fun ListDetailsShowView(
     modifier: Modifier = Modifier,
     showIcon: Boolean = false,
     shadow: Boolean = false,
+    onClick: (TraktId) -> Unit = { },
     onLongClick: () -> Unit,
 ) {
     val genresText = remember(item.show.genres) {
@@ -33,6 +35,7 @@ internal fun ListDetailsShowView(
         shadow = if (shadow) 4.dp else 0.dp,
         contentImageUrl = item.images?.getPosterUrl(),
         containerImageUrl = item.images?.getFanartUrl(Images.Size.THUMB),
+        onClick = { onClick(item.show.ids.trakt) },
         onLongClick = onLongClick,
         footerContent = {
             ShowMetaFooter(

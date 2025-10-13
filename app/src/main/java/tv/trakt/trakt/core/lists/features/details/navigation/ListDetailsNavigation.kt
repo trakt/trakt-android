@@ -19,12 +19,14 @@ internal data class ListsDetailsDestination(
 
 internal fun NavGraphBuilder.listDetailsScreen(
     onNavigateBack: () -> Unit,
+    onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
 ) {
     composable<ListsDetailsDestination> {
         ListDetailsScreen(
             viewModel = koinViewModel(),
             onNavigateBack = onNavigateBack,
+            onShowClick = onNavigateToShow,
             onMovieClick = onNavigateToMovie,
         )
     }
