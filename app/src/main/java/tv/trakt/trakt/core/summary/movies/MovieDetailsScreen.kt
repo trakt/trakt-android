@@ -515,9 +515,7 @@ private fun shareMovie(
     movie: Movie,
     context: Context,
 ) {
-    val shareText = "${context.getString(R.string.text_share_movie, movie.title)} " +
-        "${WEB_V3_BASE_URL}movies/${movie.ids.slug.value}"
-
+    val shareText = "${WEB_V3_BASE_URL}movies/${movie.ids.slug.value}"
     val intent = Intent().apply {
         action = Intent.ACTION_SEND
         putExtra(Intent.EXTRA_TEXT, shareText)

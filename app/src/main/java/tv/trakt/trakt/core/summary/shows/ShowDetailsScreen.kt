@@ -50,7 +50,6 @@ import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.DetailsHeader
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.helpers.preview.PreviewData
-import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -498,9 +497,7 @@ private fun shareShow(
     show: Show,
     context: Context,
 ) {
-    val shareText = "${context.getString(R.string.text_share_show, show.title)} " +
-        "${WEB_V3_BASE_URL}shows/${show.ids.slug.value}"
-
+    val shareText = "${WEB_V3_BASE_URL}shows/${show.ids.slug.value}"
     val intent = Intent().apply {
         action = Intent.ACTION_SEND
         putExtra(Intent.EXTRA_TEXT, shareText)

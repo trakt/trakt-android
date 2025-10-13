@@ -223,8 +223,8 @@ private fun DetailsHeader(
 
                 this@Column.AnimatedVisibility(
                     visible = !loading,
-                    enter = fadeIn(tween(200)),
-                    exit = fadeOut(tween(200)),
+                    enter = fadeIn(tween(150)),
+                    exit = fadeOut(tween(150)),
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .graphicsLayer {

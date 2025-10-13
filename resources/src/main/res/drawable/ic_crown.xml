@@ -2,19 +2,10 @@
     android:width="18dp"
     android:height="16dp"
     android:viewportWidth="18"
-    android:viewportHeight="16">
+    android:viewportHeight="16"
+    >
     <path
-        android:fillColor="#00000000"
-        android:pathData="M2,7L4,12M4,12V15H7M4,12H7M14,12L16,7M14,12V15H11M14,12H11M5,4L6,8H9M9,8V2M9,8H12L13,4M11,12V15M11,12H7M11,15H7M7,12V15"
-        android:strokeWidth="2"
-        android:strokeColor="#FEFEFE"
-        android:strokeLineCap="square"
-        android:strokeLineJoin="round" />
-    <path
-        android:fillColor="#00000000"
-        android:pathData="M9,2m-1,0a1,1 0,1 1,2 0a1,1 0,1 1,-2 0"
-        android:strokeWidth="2"
-        android:strokeColor="#FEFEFE"
-        android:strokeLineCap="round"
-        android:strokeLineJoin="round" />
+        android:fillColor="#FFFFFF"
+        android:pathData="M10.929,0.629L12.471,4.483L14.445,3.168L14.697,3H17.095L16.996,4.091L15.996,15.091L15.913,16H2.087L2.004,15.091L1.004,4.091L0.905,3H3.303L3.555,3.168L5.528,4.483L7.071,0.629L7.323,0H10.677L10.929,0.629ZM6.929,6.371L5.445,6.832L3.12,5.282L3.913,14H14.087L14.879,5.282L12.555,6.832L11.071,6.371L9.323,2H8.677L6.929,6.371ZM11.414,10L9,12.414L6.586,10L9,7.586L11.414,10Z"
+        />
 </vector>
