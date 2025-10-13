@@ -359,7 +359,7 @@ private fun DetailsHeader(
                     Text(
                         text = it.uppercase(),
                         color = when (it.lowercase()) {
-                            "canceled", "ended" -> Red500
+                            "canceled" -> Red500
                             else -> Purple300
                         },
                         style = TraktTheme.typography.meta,

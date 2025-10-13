@@ -71,7 +71,11 @@ internal fun ListsPersonalView(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(state.navigateMovie) {
+    LaunchedEffect(state.navigateMovie, state.navigateShow) {
+        state.navigateShow?.let {
+            onShowClick(it)
+            viewModel.clearNavigation()
+        }
         state.navigateMovie?.let {
             onMovieClick(it)
             viewModel.clearNavigation()
@@ -102,9 +106,9 @@ internal fun ListsPersonalView(
                 viewModel.navigateToMovie(it)
             }
         },
-        onShowClick = { showId ->
+        onShowClick = {
             if (!state.loading.isLoading) {
-                // TODO
+                viewModel.navigateToShow(it)
             }
         },
         onAllClick = {

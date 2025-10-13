@@ -201,6 +201,7 @@ internal fun NavGraphBuilder.listsScreens(controller: NavHostController) {
         )
         allPersonalListScreen(
             onNavigateBack = { popBackStack() },
+            onNavigateToShow = { navigateToShow(it) },
             onNavigateToMovie = { navigateToMovie(it) },
         )
         listDetailsScreen(

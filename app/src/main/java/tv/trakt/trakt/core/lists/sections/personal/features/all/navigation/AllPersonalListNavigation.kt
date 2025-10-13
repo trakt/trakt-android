@@ -17,12 +17,14 @@ internal data class ListsPersonalDestination(
 
 internal fun NavGraphBuilder.allPersonalListScreen(
     onNavigateBack: () -> Unit,
+    onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
 ) {
     composable<ListsPersonalDestination> {
         AllPersonalListScreen(
             viewModel = koinViewModel(),
             onNavigateBack = onNavigateBack,
+            onShowClick = onNavigateToShow,
             onMovieClick = onNavigateToMovie,
         )
     }

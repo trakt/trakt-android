@@ -200,6 +200,7 @@ internal val listsModule = module {
             getListItemsUseCase = get(),
             localListsSource = get(),
             localListsItemsSource = get(),
+            showLocalDataSource = get(),
             movieLocalDataSource = get(),
         )
     }
@@ -209,6 +210,7 @@ internal val listsModule = module {
             savedStateHandle = get(),
             getListUseCase = get(),
             getListItemsUseCase = get(),
+            showLocalDataSource = get(),
             movieLocalDataSource = get(),
             userListLocalDataSource = get(),
             sessionManager = get(),

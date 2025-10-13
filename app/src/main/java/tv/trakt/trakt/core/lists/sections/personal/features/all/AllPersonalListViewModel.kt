@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
+import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
@@ -30,6 +31,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_ALL_LIMIT
@@ -45,6 +47,7 @@ internal class AllPersonalListViewModel(
     savedStateHandle: SavedStateHandle,
     private val getListUseCase: GetPersonalListsUseCase,
     private val getListItemsUseCase: GetPersonalListItemsUseCase,
+    private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val userListLocalDataSource: UserListsLocalDataSource,
     private val sessionManager: SessionManager,
@@ -56,6 +59,7 @@ internal class AllPersonalListViewModel(
     private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val listState = MutableStateFlow(initialState.list)
     private val itemsState = MutableStateFlow(initialState.items)
+    private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
@@ -163,6 +167,16 @@ internal class AllPersonalListViewModel(
         }
     }
 
+    fun navigateToShow(show: Show) {
+        if (navigateShow.value != null || processingJob?.isActive == true) {
+            return
+        }
+        processingJob = viewModelScope.launch {
+            showLocalDataSource.upsertShows(listOf(show))
+            navigateShow.update { show.ids.trakt }
+        }
+    }
+
     fun navigateToMovie(movie: Movie) {
         if (navigateMovie.value != null || processingJob?.isActive == true) {
             return
@@ -174,6 +188,7 @@ internal class AllPersonalListViewModel(
     }
 
     fun clearNavigation() {
+        navigateShow.update { null }
         navigateMovie.update { null }
     }
 
@@ -188,6 +203,7 @@ internal class AllPersonalListViewModel(
         loadingState,
         listState,
         itemsState,
+        navigateShow,
         navigateMovie,
         errorState,
         backgroundState,
@@ -196,9 +212,10 @@ internal class AllPersonalListViewModel(
             loading = state[0] as LoadingState,
             list = state[1] as? CustomList,
             items = state[2] as? ImmutableList<PersonalListItem>,
-            navigateMovie = state[3] as? TraktId,
-            error = state[4] as? Exception,
-            backgroundUrl = state[5] as? String,
+            navigateShow = state[3] as? TraktId,
+            navigateMovie = state[4] as? TraktId,
+            error = state[5] as? Exception,
+            backgroundUrl = state[6] as? String,
         )
     }.stateIn(
         scope = viewModelScope,

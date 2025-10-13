@@ -12,6 +12,7 @@ internal data class AllPersonalListState(
     val backgroundUrl: String? = null,
     val list: CustomList? = null,
     val items: ImmutableList<PersonalListItem>? = null,
+    val navigateShow: TraktId? = null,
     val navigateMovie: TraktId? = null,
     val loading: LoadingState = LoadingState.IDLE,
     val error: Exception? = null,

@@ -16,12 +16,14 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
+import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_SECTION_LIMIT
@@ -38,6 +40,7 @@ internal class ListsPersonalViewModel(
     private val getListItemsUseCase: GetPersonalListItemsUseCase,
     private val localListsSource: ListsPersonalLocalDataSource,
     private val localListsItemsSource: ListsPersonalItemsLocalDataSource,
+    private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
 ) : ViewModel() {
     private val initialState = ListsPersonalState()
@@ -45,6 +48,7 @@ internal class ListsPersonalViewModel(
     private val userState = MutableStateFlow(initialState.user)
     private val listState = MutableStateFlow(initialState.list)
     private val itemsState = MutableStateFlow(initialState.items)
+    private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
@@ -131,7 +135,18 @@ internal class ListsPersonalViewModel(
         }
     }
 
+    fun navigateToShow(show: Show) {
+        if (navigateShow.value != null || processingJob?.isActive == true) {
+            return
+        }
+        processingJob = viewModelScope.launch {
+            showLocalDataSource.upsertShows(listOf(show))
+            navigateShow.update { show.ids.trakt }
+        }
+    }
+
     fun clearNavigation() {
+        navigateShow.update { null }
         navigateMovie.update { null }
     }
 
@@ -140,6 +155,7 @@ internal class ListsPersonalViewModel(
         listState,
         userState,
         itemsState,
+        navigateShow,
         navigateMovie,
         loadingState,
         errorState,
@@ -148,9 +164,10 @@ internal class ListsPersonalViewModel(
             list = states[0] as CustomList?,
             user = states[1] as User?,
             items = states[2] as ImmutableList<PersonalListItem>?,
-            navigateMovie = states[3] as TraktId?,
-            loading = states[4] as LoadingState,
-            error = states[5] as Exception?,
+            navigateShow = states[3] as TraktId?,
+            navigateMovie = states[4] as TraktId?,
+            loading = states[5] as LoadingState,
+            error = states[6] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

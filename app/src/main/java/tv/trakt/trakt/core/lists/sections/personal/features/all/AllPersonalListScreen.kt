@@ -63,12 +63,17 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun AllPersonalListScreen(
     modifier: Modifier = Modifier,
     viewModel: AllPersonalListViewModel,
+    onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(state.navigateMovie) {
+    LaunchedEffect(state.navigateMovie, state.navigateShow) {
+        state.navigateShow?.let {
+            onShowClick(it)
+            viewModel.clearNavigation()
+        }
         state.navigateMovie?.let {
             onMovieClick(it)
             viewModel.clearNavigation()
@@ -85,7 +90,7 @@ internal fun AllPersonalListScreen(
         onClick = {
             when (it) {
                 is MovieItem -> viewModel.navigateToMovie(it.movie)
-                is ShowItem -> {} // No-op for shows
+                is ShowItem -> viewModel.navigateToShow(it.show)
             }
         },
         onLongClick = {
@@ -289,6 +294,7 @@ private fun ContentList(
                 is ShowItem -> AllPersonalListShowView(
                     item = item,
                     showIcon = true,
+                    onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
                     modifier = Modifier
                         .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)

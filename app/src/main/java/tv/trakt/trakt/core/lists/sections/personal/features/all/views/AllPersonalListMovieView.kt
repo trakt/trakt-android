@@ -3,7 +3,7 @@ package tv.trakt.trakt.core.lists.sections.personal.features.all.views
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 import tv.trakt.trakt.core.movies.ui.MovieMetaFooter
@@ -14,7 +14,7 @@ internal fun AllPersonalListMovieView(
     item: PersonalListItem.MovieItem,
     modifier: Modifier = Modifier,
     showIcon: Boolean = false,
-    onClick: (TraktId) -> Unit = { },
+    onClick: (TraktId) -> Unit,
     onLongClick: () -> Unit,
 ) {
     val genresText = remember(item.movie.genres) {
@@ -31,7 +31,7 @@ internal fun AllPersonalListMovieView(
         titleOriginal = item.movie.titleOriginal,
         subtitle = genresText,
         contentImageUrl = item.movie.images?.getPosterUrl(),
-        containerImageUrl = item.images?.getFanartUrl(Images.Size.THUMB),
+        containerImageUrl = item.images?.getFanartUrl(Size.THUMB),
         onClick = { onClick(item.movie.ids.trakt) },
         onLongClick = onLongClick,
         footerContent = {
