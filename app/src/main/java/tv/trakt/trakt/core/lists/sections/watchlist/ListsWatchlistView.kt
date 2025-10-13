@@ -75,6 +75,7 @@ internal fun ListsWatchlistView(
     contentPadding: PaddingValues,
     onProfileClick: () -> Unit,
     onShowsClick: () -> Unit,
+    onShowClick: (TraktId) -> Unit,
     onMoviesClick: () -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onWatchlistClick: () -> Unit,
@@ -85,6 +86,10 @@ internal fun ListsWatchlistView(
     var movieContextSheet by remember { mutableStateOf<Movie?>(null) }
 
     LaunchedEffect(state) {
+        state.navigateShow?.let {
+            viewModel.clearNavigation()
+            onShowClick(it)
+        }
         state.navigateMovie?.let {
             viewModel.clearNavigation()
             onMovieClick(it)
@@ -99,9 +104,8 @@ internal fun ListsWatchlistView(
         onFilterClick = viewModel::setFilter,
         onShowsClick = onShowsClick,
         onMoviesClick = onMoviesClick,
-        onMovieClick = {
-            viewModel.navigateToMovie(it)
-        },
+        onShowClick = { viewModel.navigateToShow(it) },
+        onMovieClick = { viewModel.navigateToMovie(it) },
         onShowLongClick = { showContextSheet = it },
         onMovieLongClick = { movieContextSheet = it },
         onProfileClick = onProfileClick,
@@ -144,6 +148,7 @@ internal fun ListWatchlistContent(
     contentPadding: PaddingValues = PaddingValues(),
     onFilterClick: (ListsMediaFilter) -> Unit = {},
     onShowsClick: () -> Unit = {},
+    onShowClick: (Show) -> Unit = {},
     onMoviesClick: () -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
     onShowLongClick: (Show) -> Unit = {},
@@ -234,6 +239,7 @@ internal fun ListWatchlistContent(
                                 filter = state.filter,
                                 listItems = (state.items ?: emptyList()).toImmutableList(),
                                 contentPadding = contentPadding,
+                                onShowClick = onShowClick,
                                 onMovieClick = onMovieClick,
                                 onShowLongClick = onShowLongClick,
                                 onMovieLongClick = onMovieLongClick,
@@ -297,6 +303,7 @@ private fun ContentList(
     listState: LazyListState = rememberLazyListState(),
     filter: ListsMediaFilter,
     contentPadding: PaddingValues,
+    onShowClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
     onShowLongClick: (Show) -> Unit = {},
     onMovieLongClick: (Movie) -> Unit = {},
@@ -324,6 +331,11 @@ private fun ContentList(
             ListsWatchlistItemView(
                 item = item,
                 showMediaIcon = (filter == MEDIA),
+                onShowClick = {
+                    if (item is WatchlistItem.ShowItem && !item.loading) {
+                        onShowClick(item.show)
+                    }
+                },
                 onMovieClick = {
                     if (item is WatchlistItem.MovieItem && !item.loading) {
                         onMovieClick(item.movie)

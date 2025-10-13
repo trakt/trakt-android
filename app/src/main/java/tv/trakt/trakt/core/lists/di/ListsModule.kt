@@ -170,6 +170,7 @@ internal val listsModule = module {
             getFilterUseCase = get(),
             userWatchlistSource = get(),
             allWatchlistSource = get(),
+            showLocalDataSource = get(),
             movieLocalDataSource = get(),
             sessionManager = get(),
         )
@@ -184,6 +185,7 @@ internal val listsModule = module {
             getMoviesWatchlistUseCase = get(),
             getFilterUseCase = get(),
             allWatchlistLocalDataSource = get(),
+            showLocalDataSource = get(),
             movieLocalDataSource = get(),
             loadUserProgressUseCase = get(),
             updateMovieHistoryUseCase = get(),

@@ -13,6 +13,7 @@ internal data class ListsWatchlistState(
     val user: User? = null,
     val filter: ListsMediaFilter = ListsMediaFilter.MEDIA,
     val items: ImmutableList<WatchlistItem>? = null,
+    val navigateShow: TraktId? = null,
     val navigateMovie: TraktId? = null,
     val loading: LoadingState = LoadingState.IDLE,
     val error: Exception? = null,

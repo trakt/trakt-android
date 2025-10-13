@@ -12,6 +12,7 @@ import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 internal fun AllWatchlistShowView(
     item: WatchlistItem.ShowItem,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit,
     onLongClick: () -> Unit,
 ) {
     val genresText = remember(item.show.genres) {
@@ -29,6 +30,7 @@ internal fun AllWatchlistShowView(
         subtitle = genresText,
         contentImageUrl = item.images?.getPosterUrl(),
         containerImageUrl = item.images?.getFanartUrl(Images.Size.THUMB),
+        onClick = onClick,
         onLongClick = onLongClick,
         footerContent = {
             ShowMetaFooter(

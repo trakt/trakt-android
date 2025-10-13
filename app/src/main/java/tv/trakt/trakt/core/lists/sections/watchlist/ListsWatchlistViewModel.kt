@@ -22,11 +22,13 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
+import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_SECTION_LIMIT
@@ -49,6 +51,7 @@ internal class ListsWatchlistViewModel(
     private val getFilterUseCase: GetWatchlistFilterUseCase,
     private val userWatchlistSource: UserWatchlistLocalDataSource,
     private val allWatchlistSource: AllWatchlistLocalDataSource,
+    private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
@@ -57,6 +60,7 @@ internal class ListsWatchlistViewModel(
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialState.filter)
+    private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
@@ -177,6 +181,16 @@ internal class ListsWatchlistViewModel(
         }
     }
 
+    fun navigateToShow(show: Show) {
+        if (navigateShow.value != null || processingJob?.isActive == true) {
+            return
+        }
+        processingJob = viewModelScope.launch {
+            showLocalDataSource.upsertShows(listOf(show))
+            navigateShow.update { show.ids.trakt }
+        }
+    }
+
     fun navigateToMovie(movie: Movie) {
         if (navigateMovie.value != null || processingJob?.isActive == true) {
             return
@@ -188,6 +202,7 @@ internal class ListsWatchlistViewModel(
     }
 
     fun clearNavigation() {
+        navigateShow.update { null }
         navigateMovie.update { null }
     }
 
@@ -196,6 +211,7 @@ internal class ListsWatchlistViewModel(
         loadingState,
         itemsState,
         filterState,
+        navigateShow,
         navigateMovie,
         errorState,
         userState,
@@ -204,9 +220,10 @@ internal class ListsWatchlistViewModel(
             loading = states[0] as LoadingState,
             items = states[1] as ImmutableList<WatchlistItem>?,
             filter = states[2] as ListsMediaFilter,
-            navigateMovie = states[3] as TraktId?,
-            error = states[4] as Exception?,
-            user = states[5] as User?,
+            navigateShow = states[3] as TraktId?,
+            navigateMovie = states[4] as TraktId?,
+            error = states[5] as Exception?,
+            user = states[6] as User?,
         )
     }.stateIn(
         scope = viewModelScope,

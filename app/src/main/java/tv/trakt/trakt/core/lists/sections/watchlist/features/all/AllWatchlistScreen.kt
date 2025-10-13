@@ -65,6 +65,7 @@ internal fun AllWatchlistScreen(
     modifier: Modifier = Modifier,
     viewModel: AllWatchlistViewModel,
     onNavigateBack: () -> Unit,
+    onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -73,6 +74,10 @@ internal fun AllWatchlistScreen(
     var contextShowSheet by remember { mutableStateOf<ShowItem?>(null) }
 
     LaunchedEffect(state) {
+        state.navigateShow?.let {
+            viewModel.clearNavigation()
+            onShowClick(it)
+        }
         state.navigateMovie?.let {
             viewModel.clearNavigation()
             onMovieClick(it)
@@ -83,8 +88,9 @@ internal fun AllWatchlistScreen(
         state = state,
         modifier = modifier,
         onClick = {
-            if (it is MovieItem) {
-                viewModel.navigateToMovie(it.movie)
+            when (it) {
+                is ShowItem -> viewModel.navigateToShow(it.show)
+                is MovieItem -> viewModel.navigateToMovie(it.movie)
             }
         },
         onLongClick = {
@@ -275,6 +281,7 @@ private fun ContentList(
             when (item) {
                 is ShowItem -> AllWatchlistShowView(
                     item = item,
+                    onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
                     modifier = Modifier
                         .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
