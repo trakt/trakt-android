@@ -32,6 +32,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.shows.ui.AllShowsListView
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.helpers.rememberHeaderState
@@ -42,6 +43,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun AllShowsPopularScreen(
     viewModel: AllShowsPopularViewModel,
+    onNavigateToShow: (TraktId) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -50,6 +52,7 @@ internal fun AllShowsPopularScreen(
 
     AllShowsPopularScreenContent(
         state = state,
+        onItemClick = { onNavigateToShow(it.ids.trakt) },
         onBackClick = onNavigateBack,
         onItemLongClick = {
             if (!state.loading.isLoading) {
@@ -71,6 +74,7 @@ internal fun AllShowsPopularScreen(
 private fun AllShowsPopularScreenContent(
     state: AllShowsPopularState,
     modifier: Modifier = Modifier,
+    onItemClick: (Show) -> Unit = {},
     onLoadMoreData: () -> Unit = {},
     onItemLongClick: (Show) -> Unit = {},
     onBackClick: () -> Unit = {},
@@ -105,6 +109,7 @@ private fun AllShowsPopularScreenContent(
                         .onClick { onBackClick() },
                 )
             },
+            onItemClick = onItemClick,
             onItemLongClick = onItemLongClick,
             onTopOfList = { headerState.resetScrolled() },
             onEndOfList = {

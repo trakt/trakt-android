@@ -5,15 +5,20 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.shows.sections.anticipated.all.AllShowsAnticipatedScreen
 
 @Serializable
 internal data object ShowsAnticipatedDestination
 
-internal fun NavGraphBuilder.showsAnticipatedScreen(onNavigateBack: () -> Unit) {
+internal fun NavGraphBuilder.showsAnticipatedScreen(
+    onNavigateBack: () -> Unit,
+    onNavigateToShow: (TraktId) -> Unit,
+) {
     composable<ShowsAnticipatedDestination> {
         AllShowsAnticipatedScreen(
             viewModel = koinViewModel(),
+            onNavigateToShow = onNavigateToShow,
             onNavigateBack = onNavigateBack,
         )
     }

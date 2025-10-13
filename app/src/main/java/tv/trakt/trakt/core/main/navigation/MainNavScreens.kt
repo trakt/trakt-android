@@ -95,12 +95,15 @@ internal fun NavGraphBuilder.showsScreens(controller: NavHostController) {
         )
         showsPopularScreen(
             onNavigateBack = { popBackStack() },
+            onNavigateToShow = { navigateToShow(it) },
         )
         showsAnticipatedScreen(
             onNavigateBack = { popBackStack() },
+            onNavigateToShow = { navigateToShow(it) },
         )
         showsRecommendedScreen(
             onNavigateBack = { popBackStack() },
+            onNavigateToShow = { navigateToShow(it) },
         )
         showDetailsScreen(
             onNavigateToShow = { navigateToShow(it) },

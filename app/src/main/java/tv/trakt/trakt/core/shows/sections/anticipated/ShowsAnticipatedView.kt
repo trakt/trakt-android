@@ -40,6 +40,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.shows.model.WatchersShow
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.resources.R
@@ -55,6 +56,7 @@ internal fun ShowsAnticipatedView(
     viewModel: ShowsAnticipatedViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
+    onShowClick: (TraktId) -> Unit = {},
     onMoreClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -71,6 +73,7 @@ internal fun ShowsAnticipatedView(
                 onMoreClick()
             }
         },
+        onClick = { onShowClick(it.ids.trakt) },
         onLongClick = {
             if (!state.loading.isLoading) {
                 contextSheet = it
@@ -90,6 +93,7 @@ internal fun ShowsAnticipatedContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
+    onClick: (Show) -> Unit = {},
     onLongClick: (Show) -> Unit = {},
     onMoreClick: () -> Unit = {},
 ) {
@@ -139,6 +143,7 @@ internal fun ShowsAnticipatedContent(
                         ContentList(
                             items = (state.items ?: emptyList()).toImmutableList(),
                             contentPadding = contentPadding,
+                            onClick = onClick,
                             onLongClick = onLongClick,
                         )
                     }
@@ -171,6 +176,7 @@ private fun ContentList(
     items: ImmutableList<WatchersShow>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
+    onClick: (Show) -> Unit,
     onLongClick: (Show) -> Unit,
 ) {
     val currentList = remember { mutableIntStateOf(items.hashCode()) }
@@ -195,6 +201,7 @@ private fun ContentList(
         ) { item ->
             ContentListItem(
                 item = item,
+                onClick = { onClick(item.show) },
                 onLongClick = { onLongClick(item.show) },
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,

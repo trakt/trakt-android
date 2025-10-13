@@ -66,6 +66,7 @@ internal val showsModule = module {
         GetPopularShowsUseCase(
             remoteSource = get(),
             localPopularSource = get(),
+            localShowSource = get(),
         )
     }
 
@@ -73,6 +74,7 @@ internal val showsModule = module {
         GetAnticipatedShowsUseCase(
             remoteSource = get(),
             localAnticipatedSource = get(),
+            localShowSource = get(),
         )
     }
 
@@ -80,6 +82,7 @@ internal val showsModule = module {
         GetRecommendedShowsUseCase(
             remoteSource = get(),
             localRecommendedSource = get(),
+            localShowSource = get(),
         )
     }
 

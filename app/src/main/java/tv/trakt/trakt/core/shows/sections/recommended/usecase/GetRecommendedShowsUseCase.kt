@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.shows.sections.recommended.usecase
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
@@ -15,10 +16,14 @@ internal const val DEFAULT_ALL_LIMIT = 102
 internal class GetRecommendedShowsUseCase(
     private val remoteSource: ShowsRemoteDataSource,
     private val localRecommendedSource: RecommendedShowsLocalDataSource,
+    private val localShowSource: ShowLocalDataSource,
 ) {
     suspend fun getLocalShows(): ImmutableList<Show> {
         return localRecommendedSource.getShows()
             .toImmutableList()
+            .also {
+                localShowSource.upsertShows(it)
+            }
     }
 
     suspend fun getShows(
@@ -31,11 +36,14 @@ internal class GetRecommendedShowsUseCase(
             }
             .toImmutableList()
             .also { shows ->
-                if (skipLocal) return@also
-                localRecommendedSource.addShows(
-                    shows = shows.take(DEFAULT_LIMIT),
-                    addedAt = Instant.now(),
-                )
+                if (!skipLocal) {
+                    localRecommendedSource.addShows(
+                        shows = shows.take(DEFAULT_LIMIT),
+                        addedAt = Instant.now(),
+                    )
+                }
+
+                localShowSource.upsertShows(shows)
             }
     }
 }

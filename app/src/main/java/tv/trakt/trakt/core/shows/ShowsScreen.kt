@@ -136,6 +136,7 @@ private fun ShowsScreenContent(
                 ShowsAnticipatedView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
+                    onShowClick = onShowClick,
                     onMoreClick = onMoreAnticipatedClick,
                 )
             }
@@ -144,6 +145,7 @@ private fun ShowsScreenContent(
                 ShowsPopularView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
+                    onShowClick = onShowClick,
                     onMoreClick = onMorePopularClick,
                 )
             }
@@ -153,6 +155,7 @@ private fun ShowsScreenContent(
                     ShowsRecommendedView(
                         headerPadding = sectionPadding,
                         contentPadding = sectionPadding,
+                        onShowClick = onShowClick,
                         onMoreClick = onMoreRecommendedClick,
                     )
                 }

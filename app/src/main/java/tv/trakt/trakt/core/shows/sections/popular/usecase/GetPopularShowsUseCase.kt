@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.shows.sections.popular.usecase
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.model.Show
@@ -17,10 +18,14 @@ internal const val DEFAULT_ALL_LIMIT = 102
 internal class GetPopularShowsUseCase(
     private val remoteSource: ShowsRemoteDataSource,
     private val localPopularSource: PopularShowsLocalDataSource,
+    private val localShowSource: ShowLocalDataSource,
 ) {
     suspend fun getLocalShows(): ImmutableList<Show> {
         return localPopularSource.getShows()
             .toImmutableList()
+            .also {
+                localShowSource.upsertShows(it)
+            }
     }
 
     suspend fun getShows(
@@ -38,11 +43,14 @@ internal class GetPopularShowsUseCase(
             }
             .toImmutableList()
             .also { shows ->
-                if (skipLocal) return@also
-                localPopularSource.addShows(
-                    shows = shows.take(DEFAULT_LIMIT),
-                    addedAt = Instant.now(),
-                )
+                if (!skipLocal) {
+                    localPopularSource.addShows(
+                        shows = shows.take(DEFAULT_LIMIT),
+                        addedAt = Instant.now(),
+                    )
+                }
+
+                localShowSource.upsertShows(shows)
             }
     }
 

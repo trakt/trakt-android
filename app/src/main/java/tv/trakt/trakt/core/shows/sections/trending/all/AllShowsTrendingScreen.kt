@@ -109,6 +109,7 @@ private fun AllShowsTrendingScreenContent(
                         .onClick { onBackClick() },
                 )
             },
+            onItemClick = onItemClick,
             onItemLongClick = onItemLongClick,
             onTopOfList = { headerState.resetScrolled() },
             onEndOfList = {
