@@ -53,6 +53,8 @@ internal object PreviewData {
         ),
         certification = "PG-18",
         runtime = 90.minutes,
+        trailer = "https://youtube.com/watch?v=abcdefg",
+        status = "Canceled",
         airedEpisodes = 28,
     )
 

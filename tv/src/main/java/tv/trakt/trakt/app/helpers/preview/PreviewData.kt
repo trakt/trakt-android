@@ -54,6 +54,8 @@ internal object PreviewData {
         ),
         certification = "PG-18",
         runtime = 90.minutes,
+        trailer = null,
+        status = "released",
         airedEpisodes = 28,
     )
 

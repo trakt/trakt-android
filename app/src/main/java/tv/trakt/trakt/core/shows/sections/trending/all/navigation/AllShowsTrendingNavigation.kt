@@ -5,15 +5,20 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.shows.sections.trending.all.AllShowsTrendingScreen
 
 @Serializable
 internal data object ShowsTrendingDestination
 
-internal fun NavGraphBuilder.showsTrendingScreen(onNavigateBack: () -> Unit) {
+internal fun NavGraphBuilder.showsTrendingScreen(
+    onNavigateBack: () -> Unit,
+    onNavigateToShow: (TraktId) -> Unit,
+) {
     composable<ShowsTrendingDestination> {
         AllShowsTrendingScreen(
             viewModel = koinViewModel(),
+            onNavigateToShow = onNavigateToShow,
             onNavigateBack = onNavigateBack,
         )
     }

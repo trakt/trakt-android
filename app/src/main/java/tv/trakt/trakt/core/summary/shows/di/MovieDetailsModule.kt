@@ -1,0 +1,193 @@
+package tv.trakt.trakt.core.summary.shows.di
+
+import org.koin.core.module.dsl.viewModel
+import org.koin.dsl.module
+import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.shows.data.local.ShowStorage
+import tv.trakt.trakt.core.summary.shows.ShowDetailsViewModel
+import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
+
+internal val showDetailsDataModule = module {
+    single<ShowLocalDataSource> {
+        ShowStorage()
+    }
+
+//    single<ShowRatingsLocalDataSource> {
+//        ShowRatingsStorage()
+//    }
+}
+
+internal val showDetailsModule = module {
+    factory {
+        GetShowDetailsUseCase(
+            remoteSource = get(),
+            localSource = get(),
+        )
+    }
+
+//    factory {
+//        GetShowRatingsUseCase(
+//            remoteSource = get(),
+//            localSource = get(),
+//        )
+//    }
+//
+//    factory {
+//        GetShowStudiosUseCase(
+//            remoteSource = get(),
+//        )
+//    }
+//
+//    factory {
+//        GetShowExtrasUseCase(
+//            remoteSource = get(),
+//        )
+//    }
+//
+//    factory {
+//        GetShowActorsUseCase(
+//            remoteSource = get(),
+//        )
+//    }
+//
+//    factory {
+//        GetShowRelatedUseCase(
+//            remoteSource = get(),
+//            localSource = get(),
+//        )
+//    }
+//
+//    factory {
+//        GetShowStreamingsUseCase(
+//            remoteShowSource = get(),
+//            remoteStreamingSource = get(),
+//            localStreamingSource = get(),
+//        )
+//    }
+//
+//    factory {
+//        GetShowStreamingUseCase(
+//            remoteShowSource = get(),
+//            remoteStreamingSource = get(),
+//            localStreamingSource = get(),
+//            priorityStreamingProvider = get(),
+//        )
+//    }
+//
+//    factory {
+//        GetShowSentimentUseCase(
+//            remoteSource = get(),
+//        )
+//    }
+//
+//    factory {
+//        GetShowHistoryUseCase(
+//            remoteSource = get(),
+//        )
+//    }
+//
+//    factory {
+//        GetShowCommentsUseCase(
+//            remoteSource = get(),
+//        )
+//    }
+//
+//    factory {
+//        GetShowListsUseCase(
+//            remoteSource = get(),
+//        )
+//    }
+
+    viewModel {
+        ShowDetailsViewModel(
+            savedStateHandle = get(),
+            getDetailsUseCase = get(),
+//            getExternalRatingsUseCase = get(),
+//            getShowStudiosUseCase = get(),
+//            loadProgressUseCase = get(),
+//            loadWatchlistUseCase = get(),
+//            loadListsUseCase = get(),
+//            updateShowHistoryUseCase = get(),
+//            updateShowWatchlistUseCase = get(),
+//            addListItemUseCase = get(),
+//            removeListItemUseCase = get(),
+//            userWatchlistLocalSource = get(),
+//            allActivityLocalSource = get(),
+            sessionManager = get(),
+        )
+    }
+
+//    viewModel { (show: Show) ->
+//        ShowStreamingsViewModel(
+//            show = show,
+//            sessionManager = get(),
+//            getStreamingsUseCase = get(),
+//        )
+//    }
+//
+//    viewModel { (show: Show) ->
+//        ShowExtrasViewModel(
+//            show = show,
+//            getExtrasUseCase = get(),
+//        )
+//    }
+//
+//    viewModel { (show: Show) ->
+//        ShowActorsViewModel(
+//            show = show,
+//            getActorsUseCase = get(),
+//        )
+//    }
+//
+//    viewModel { (show: Show) ->
+//        ShowRelatedViewModel(
+//            show = show,
+//            getRelatedShowsUseCase = get(),
+//        )
+//    }
+//
+//    viewModel { (show: Show) ->
+//        ShowListsViewModel(
+//            show = show,
+//            getListsUseCase = get(),
+//        )
+//    }
+//
+//    viewModel { (show: Show) ->
+//        ShowHistoryViewModel(
+//            show = show,
+//            getHistoryUseCase = get(),
+//            allActivityLocalSource = get(),
+//        )
+//    }
+//
+//    viewModel { (show: Show) ->
+//        ShowSentimentViewModel(
+//            show = show,
+//            getSentimentUseCase = get(),
+//        )
+//    }
+//
+//    viewModel { (show: Show) ->
+//        ShowCommentsViewModel(
+//            show = show,
+//            getCommentsUseCase = get(),
+//        )
+//    }
+//
+//    viewModel { (show: Show) ->
+//        ShowDetailsContextViewModel(
+//            show = show,
+//            sessionManager = get(),
+//            getStreamingsUseCase = get(),
+//        )
+//    }
+//
+//    viewModel { (show: Show) ->
+//        ShowDetailsListsViewModel(
+//            show = show,
+//            sessionManager = get(),
+//            loadListsUseCase = get(),
+//        )
+//    }
+}

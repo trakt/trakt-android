@@ -38,6 +38,7 @@ internal fun AllShowsListView(
     modifier: Modifier = Modifier,
     title: @Composable (() -> Unit)? = null,
     loading: Boolean = false,
+    onItemClick: (Show) -> Unit = {},
     onItemLongClick: (Show) -> Unit = {},
     onTopOfList: () -> Unit = {},
     onEndOfList: () -> Unit = {},
@@ -90,6 +91,7 @@ internal fun AllShowsListView(
 
         listItems(
             items = items,
+            onClick = onItemClick,
             onLongClick = onItemLongClick,
         )
 
@@ -106,6 +108,7 @@ internal fun AllShowsListView(
 
 private fun LazyListScope.listItems(
     items: ImmutableList<Show>,
+    onClick: ((Show) -> Unit)? = null,
     onLongClick: ((Show) -> Unit)? = null,
 ) {
     items(
@@ -126,6 +129,7 @@ private fun LazyListScope.listItems(
             subtitle = genresText,
             contentImageUrl = item.images?.getPosterUrl(),
             containerImageUrl = item.images?.getFanartUrl(THUMB),
+            onClick = onClick?.let { { onClick(item) } },
             onLongClick = onLongClick?.let { { onLongClick(item) } },
             footerContent = {
                 ShowMetaFooter(show = item)

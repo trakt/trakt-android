@@ -24,6 +24,7 @@ data class Show(
     val title: String,
     val titleOriginal: String?,
     val overview: String?,
+    val status: String?,
     @Serializable(ZonedDateTimeSerializer::class)
     val released: ZonedDateTime?,
     val year: Int?,
@@ -33,6 +34,7 @@ data class Show(
     val colors: MediaColors?,
     val rating: Rating,
     val certification: String?,
+    val trailer: String?,
     val runtime: Duration?,
     val airedEpisodes: Int,
 ) {
@@ -46,6 +48,7 @@ fun Companion.fromDto(dto: ShowDto): Show {
         titleOriginal = dto.originalTitle,
         overview = dto.overview,
         year = dto.year,
+        status = dto.status,
         released = dto.firstAired?.toZonedDateTime(),
         genres = (dto.genres ?: listOf()).toImmutableList(),
         images = dto.images?.let { Images.fromDto(it) },
@@ -63,6 +66,7 @@ fun Companion.fromDto(dto: ShowDto): Show {
             votes = dto.votes ?: 0,
         ),
         runtime = dto.runtime?.minutes,
+        trailer = dto.trailer,
         airedEpisodes = dto.airedEpisodes ?: 0,
     )
 }
@@ -91,6 +95,8 @@ fun Companion.fromDto(dto: RecommendedShowDto): Show {
             votes = dto.votes ?: 0,
         ),
         runtime = dto.runtime?.minutes,
+        status = dto.status,
+        trailer = dto.trailer,
         airedEpisodes = dto.airedEpisodes ?: 0,
     )
 }
@@ -119,6 +125,8 @@ fun Companion.fromDto(dto: ShowLikesDto): Show {
             votes = dto.votes ?: 0,
         ),
         runtime = dto.runtime?.minutes,
+        status = dto.status,
+        trailer = dto.trailer,
         airedEpisodes = dto.airedEpisodes ?: 0,
     )
 }

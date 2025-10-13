@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.shows.sections.trending.usecase
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
@@ -16,6 +17,7 @@ internal const val DEFAULT_ALL_LIMIT = 102
 internal class GetTrendingShowsUseCase(
     private val remoteSource: ShowsRemoteDataSource,
     private val localTrendingSource: TrendingShowsLocalDataSource,
+    private val localShowSource: ShowLocalDataSource,
 ) {
     suspend fun getLocalShows(): ImmutableList<WatchersShow> {
         return localTrendingSource.getShows()
@@ -27,6 +29,11 @@ internal class GetTrendingShowsUseCase(
             }
             .sortedByDescending { it.watchers }
             .toImmutableList()
+            .also {
+                localShowSource.upsertShows(
+                    it.asyncMap { item -> item.show },
+                )
+            }
     }
 
     suspend fun getShows(
@@ -46,10 +53,15 @@ internal class GetTrendingShowsUseCase(
             }
             .toImmutableList()
             .also { shows ->
-                if (skipLocal) return@also
-                localTrendingSource.addShows(
-                    shows = shows.take(DEFAULT_LIMIT),
-                    addedAt = Instant.now(),
+                if (!skipLocal) {
+                    localTrendingSource.addShows(
+                        shows = shows.take(DEFAULT_LIMIT),
+                        addedAt = Instant.now(),
+                    )
+                }
+
+                localShowSource.upsertShows(
+                    shows.asyncMap { item -> item.show },
                 )
             }
     }

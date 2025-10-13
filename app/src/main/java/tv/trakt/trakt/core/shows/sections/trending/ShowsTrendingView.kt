@@ -40,6 +40,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.shows.model.WatchersShow
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.resources.R
@@ -55,6 +56,7 @@ internal fun ShowsTrendingView(
     viewModel: ShowsTrendingViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
+    onShowClick: (TraktId) -> Unit = {},
     onMoreClick: () -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -71,6 +73,7 @@ internal fun ShowsTrendingView(
                 onMoreClick()
             }
         },
+        onClick = { onShowClick(it.ids.trakt) },
         onLongClick = {
             if (!state.loading.isLoading) {
                 contextSheet = it
@@ -90,6 +93,7 @@ internal fun ShowsTrendingContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
+    onClick: (Show) -> Unit = {},
     onLongClick: (Show) -> Unit = {},
     onMoreClick: () -> Unit = {},
 ) {
@@ -139,6 +143,7 @@ internal fun ShowsTrendingContent(
                         ContentList(
                             listItems = (state.items ?: emptyList()).toImmutableList(),
                             contentPadding = contentPadding,
+                            onClick = onClick,
                             onLongClick = onLongClick,
                         )
                     }
@@ -171,6 +176,7 @@ private fun ContentList(
     listItems: ImmutableList<WatchersShow>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
+    onClick: (Show) -> Unit,
     onLongClick: (Show) -> Unit,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
@@ -199,6 +205,7 @@ private fun ContentList(
                     fadeInSpec = null,
                     fadeOutSpec = null,
                 ),
+                onClick = { onClick(item.show) },
                 onLongClick = { onLongClick(item.show) },
             )
         }

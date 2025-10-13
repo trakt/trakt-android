@@ -34,6 +34,8 @@ import tv.trakt.trakt.core.shows.di.showsModule
 import tv.trakt.trakt.core.streamings.di.streamingsDataModule
 import tv.trakt.trakt.core.summary.movies.di.movieDetailsDataModule
 import tv.trakt.trakt.core.summary.movies.di.movieDetailsModule
+import tv.trakt.trakt.core.summary.shows.di.showDetailsDataModule
+import tv.trakt.trakt.core.summary.shows.di.showDetailsModule
 import tv.trakt.trakt.core.sync.di.syncModule
 import tv.trakt.trakt.core.user.di.profileDataModule
 import tv.trakt.trakt.core.user.di.profileModule
@@ -88,6 +90,8 @@ internal class TraktApplication : Application() {
                 homeDataModule,
                 showsModule,
                 showsDataModule,
+                showDetailsModule,
+                showDetailsDataModule,
                 moviesModule,
                 moviesDataModule,
                 movieDetailsModule,

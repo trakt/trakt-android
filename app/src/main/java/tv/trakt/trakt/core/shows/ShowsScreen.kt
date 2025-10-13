@@ -127,6 +127,7 @@ private fun ShowsScreenContent(
                 ShowsTrendingView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
+                    onShowClick = onShowClick,
                     onMoreClick = onMoreTrendingClick,
                 )
             }

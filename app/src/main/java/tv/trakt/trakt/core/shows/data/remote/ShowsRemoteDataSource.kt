@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.shows.data.remote
 
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.ShowDto
 import tv.trakt.trakt.core.shows.data.remote.model.AnticipatedShowDto
@@ -27,4 +28,6 @@ internal interface ShowsRemoteDataSource {
         limit: Int,
         endDate: Instant,
     ): List<AnticipatedShowDto>
+
+    suspend fun getShowDetails(showId: TraktId): ShowDto
 }

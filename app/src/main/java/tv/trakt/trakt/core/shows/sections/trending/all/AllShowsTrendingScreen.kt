@@ -32,6 +32,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.shows.ui.AllShowsListView
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.helpers.rememberHeaderState
@@ -42,6 +43,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun AllShowsTrendingScreen(
     viewModel: AllShowsTrendingViewModel,
+    onNavigateToShow: (TraktId) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -50,6 +52,7 @@ internal fun AllShowsTrendingScreen(
 
     AllShowsTrendingScreenContent(
         state = state,
+        onItemClick = { onNavigateToShow(it.ids.trakt) },
         onItemLongClick = {
             if (!state.loading.isLoading) {
                 contextSheet = it
@@ -72,6 +75,7 @@ private fun AllShowsTrendingScreenContent(
     state: AllShowsTrendingState,
     modifier: Modifier = Modifier,
     onLoadMoreData: () -> Unit = {},
+    onItemClick: (Show) -> Unit = {},
     onItemLongClick: (Show) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {

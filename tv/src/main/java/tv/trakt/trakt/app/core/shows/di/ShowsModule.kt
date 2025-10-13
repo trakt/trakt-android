@@ -6,8 +6,6 @@ import org.koin.dsl.module
 import org.openapitools.client.apis.RecommendationsApi
 import org.openapitools.client.apis.ShowsApi
 import tv.trakt.trakt.app.core.shows.ShowsViewModel
-import tv.trakt.trakt.app.core.shows.data.local.ShowLocalDataSource
-import tv.trakt.trakt.app.core.shows.data.local.ShowStorage
 import tv.trakt.trakt.app.core.shows.data.remote.ShowsApiClient
 import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.app.core.shows.features.anticipated.ShowsAnticipatedViewAllViewModel
@@ -19,6 +17,8 @@ import tv.trakt.trakt.app.core.shows.usecase.GetPopularShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetTrendingShowsUseCase
 import tv.trakt.trakt.common.Config.API_BASE_URL
+import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.shows.data.local.ShowStorage
 
 internal val showsDataModule = module {
     single<ShowsRemoteDataSource> {

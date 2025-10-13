@@ -1,0 +1,37 @@
+package tv.trakt.trakt.core.summary.shows.navigation
+
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import kotlinx.serialization.Serializable
+import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.summary.shows.ShowDetailsScreen
+
+@Serializable
+internal data class ShowDetailsDestination(
+    val showId: Int,
+)
+
+internal fun NavGraphBuilder.showDetailsScreen(
+    onNavigateToShow: (TraktId) -> Unit,
+    onNavigateToComments: (Show) -> Unit,
+    onNavigateToList: (Show, CustomList) -> Unit,
+    onNavigateBack: () -> Unit,
+) {
+    composable<ShowDetailsDestination> {
+        ShowDetailsScreen(
+            viewModel = koinViewModel(),
+            onShowClick = { onNavigateToShow(it.ids.trakt) },
+            onCommentsClick = { onNavigateToComments(it) },
+            onListClick = { show, list -> onNavigateToList(show, list) },
+            onNavigateBack = onNavigateBack,
+        )
+    }
+}
+
+internal fun NavController.navigateToShow(showId: TraktId) {
+    navigate(route = ShowDetailsDestination(showId.value))
+}

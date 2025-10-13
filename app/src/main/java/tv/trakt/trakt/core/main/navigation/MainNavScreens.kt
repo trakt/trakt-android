@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.main.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import tv.trakt.trakt.common.model.MediaType.MOVIE
+import tv.trakt.trakt.common.model.MediaType.SHOW
 import tv.trakt.trakt.core.comments.navigation.commentsScreen
 import tv.trakt.trakt.core.comments.navigation.navigateToComments
 import tv.trakt.trakt.core.home.navigation.homeScreen
@@ -44,6 +45,8 @@ import tv.trakt.trakt.core.shows.sections.trending.all.navigation.navigateToTren
 import tv.trakt.trakt.core.shows.sections.trending.all.navigation.showsTrendingScreen
 import tv.trakt.trakt.core.summary.movies.navigation.movieDetailsScreen
 import tv.trakt.trakt.core.summary.movies.navigation.navigateToMovie
+import tv.trakt.trakt.core.summary.shows.navigation.navigateToShow
+import tv.trakt.trakt.core.summary.shows.navigation.showDetailsScreen
 import tv.trakt.trakt.core.user.navigation.navigateToProfile
 import tv.trakt.trakt.core.user.navigation.profileScreen
 
@@ -80,7 +83,7 @@ internal fun NavGraphBuilder.showsScreens(controller: NavHostController) {
     with(controller) {
         showsScreen(
             onNavigateToProfile = { navigateToProfile() },
-            onNavigateToShow = {},
+            onNavigateToShow = { navigateToShow(it) },
             onNavigateToAllTrending = { navigateToTrendingShows() },
             onNavigateToAllPopular = { navigateToPopularShows() },
             onNavigateToAllAnticipated = { navigateToAnticipatedShows() },
@@ -88,6 +91,7 @@ internal fun NavGraphBuilder.showsScreens(controller: NavHostController) {
         )
         showsTrendingScreen(
             onNavigateBack = { popBackStack() },
+            onNavigateToShow = { navigateToShow(it) },
         )
         showsPopularScreen(
             onNavigateBack = { popBackStack() },
@@ -96,6 +100,26 @@ internal fun NavGraphBuilder.showsScreens(controller: NavHostController) {
             onNavigateBack = { popBackStack() },
         )
         showsRecommendedScreen(
+            onNavigateBack = { popBackStack() },
+        )
+        showDetailsScreen(
+            onNavigateToShow = { navigateToShow(it) },
+            onNavigateToComments = {
+                navigateToComments(
+                    mediaId = it.ids.trakt,
+                    mediaType = SHOW,
+                    mediaImage = it.images?.getFanartUrl(),
+                )
+            },
+            onNavigateToList = { movie, list ->
+                navigateToListDetails(
+                    listId = list.ids.trakt.value,
+                    listTitle = list.name,
+                    listDescription = list.description,
+                    mediaId = movie.ids.trakt,
+                    mediaImage = movie.images?.getFanartUrl(),
+                )
+            },
             onNavigateBack = { popBackStack() },
         )
     }

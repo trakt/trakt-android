@@ -58,6 +58,7 @@ internal val showsModule = module {
         GetTrendingShowsUseCase(
             remoteSource = get(),
             localTrendingSource = get(),
+            localShowSource = get(),
         )
     }
 
