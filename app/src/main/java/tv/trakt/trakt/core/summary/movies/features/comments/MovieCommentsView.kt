@@ -14,11 +14,13 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -33,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -103,7 +106,10 @@ private fun MovieCommentsContent(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(headerPadding),
+                .padding(headerPadding)
+                .onClick(enabled = state.loading == DONE) {
+                    onMoreClick?.invoke()
+                },
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = CenterVertically,
         ) {
@@ -112,14 +118,11 @@ private fun MovieCommentsContent(
             )
 
             if (state.loading.isLoading || !state.items.isNullOrEmpty()) {
-                Text(
-                    text = stringResource(R.string.button_text_view_all),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.buttonSecondary,
-                    modifier = Modifier
-                        .onClick(enabled = (state.loading == DONE)) {
-                            onMoreClick?.invoke()
-                        },
+                Icon(
+                    painter = painterResource(R.drawable.ic_more),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textSecondary,
+                    modifier = Modifier.size(20.dp),
                 )
             }
         }

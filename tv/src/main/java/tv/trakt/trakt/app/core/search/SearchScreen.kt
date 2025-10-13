@@ -139,7 +139,7 @@ private fun SearchScreenContent(
                 TraktTextField(
                     state = searchInputState,
                     placeholder = stringResource(R.string.input_placeholder_search),
-                    icon = painterResource(R.drawable.ic_search),
+                    icon = painterResource(R.drawable.ic_search_off),
                     loading = state.searching,
                     modifier = Modifier
                         .padding(top = 12.dp)

@@ -439,8 +439,8 @@ private val drawerItems = listOf(
     TraktDrawerItem(
         destination = SearchDestination,
         label = R.string.page_title_search,
-        iconOn = R.drawable.ic_search,
-        iconOff = R.drawable.ic_search,
+        iconOn = R.drawable.ic_search_off,
+        iconOff = R.drawable.ic_search_off,
     ),
     TraktDrawerItem(
         destination = HomeDestination,

@@ -89,7 +89,11 @@ internal fun HomeUpNextView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onShowsClick = onShowsClick,
-        onMoreClick = onMoreClick,
+        onMoreClick = {
+            if (state.loading == DONE) {
+                onMoreClick()
+            }
+        },
         onLongClick = {
             if (!it.loading) {
                 contextSheet = it
@@ -133,19 +137,22 @@ internal fun HomeUpNextContent(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(headerPadding),
+                .padding(headerPadding)
+                .onClick(enabled = state.loading == DONE) {
+                    onMoreClick()
+                },
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = CenterVertically,
         ) {
             TraktHeader(
                 title = stringResource(R.string.list_title_up_next),
             )
-            if (!state.items.items.isNullOrEmpty() && state.loading == DONE) {
-                Text(
-                    text = stringResource(R.string.button_text_view_all),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.buttonSecondary,
-                    modifier = Modifier.onClick { onMoreClick() },
+            if (!state.items.items.isNullOrEmpty() || state.loading != DONE) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_more),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textSecondary,
+                    modifier = Modifier.size(20.dp),
                 )
             }
         }

@@ -142,7 +142,10 @@ internal fun HomeActivityContent(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(headerPadding),
+                .padding(headerPadding)
+                .onClick(enabled = state.loading == DONE) {
+                    onMoreClick()
+                },
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -150,13 +153,12 @@ internal fun HomeActivityContent(
                 title = stringResource(R.string.list_title_activity),
             )
 
-            if (!state.items.isNullOrEmpty() || state.loading.isLoading) {
-                Text(
-                    text = stringResource(R.string.button_text_view_all),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.buttonSecondary,
-                    modifier = Modifier
-                        .onClick { onMoreClick() },
+            if (!state.items.isNullOrEmpty() || state.loading != DONE) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_more),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textSecondary,
+                    modifier = Modifier.size(20.dp),
                 )
             }
         }

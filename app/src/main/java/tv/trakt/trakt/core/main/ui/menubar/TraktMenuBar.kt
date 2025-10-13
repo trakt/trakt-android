@@ -76,8 +76,8 @@ private val navigationItems = listOf(
     NavigationItem(
         destination = SearchDestination,
         label = R.string.page_title_search,
-        iconOn = R.drawable.ic_search,
-        iconOff = R.drawable.ic_search,
+        iconOn = R.drawable.ic_search_on,
+        iconOff = R.drawable.ic_search_off,
     ),
 )
 
@@ -230,7 +230,7 @@ private fun SearchContent(
             InputField(
                 state = searchQuery,
                 placeholder = stringResource(searchInput.filter.placeholderRes),
-                icon = painterResource(R.drawable.ic_search),
+                icon = painterResource(R.drawable.ic_search_off),
                 enabled = enabled && visible,
                 loading = loading,
                 endSlot = {

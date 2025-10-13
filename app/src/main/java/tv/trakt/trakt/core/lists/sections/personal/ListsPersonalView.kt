@@ -153,7 +153,10 @@ internal fun ListsPersonalContent(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(headerPadding),
+                .padding(headerPadding)
+                .onClick(enabled = state.loading == DONE) {
+                    onAllClick()
+                },
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -197,11 +200,11 @@ internal fun ListsPersonalContent(
             }
 
             if (!state.items.isNullOrEmpty()) {
-                Text(
-                    text = stringResource(R.string.button_text_view_all),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.buttonSecondary,
-                    modifier = Modifier.onClick { onAllClick() },
+                Icon(
+                    painter = painterResource(R.drawable.ic_more),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textSecondary,
+                    modifier = Modifier.size(20.dp),
                 )
             }
         }

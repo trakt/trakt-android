@@ -142,7 +142,7 @@ private fun Preview() {
 private fun Preview2() {
     TraktTheme {
         TraktTextField(
-            icon = painterResource(R.drawable.ic_search),
+            icon = painterResource(R.drawable.ic_search_off),
             placeholder = "Search...",
             modifier = Modifier.padding(16.dp),
         )
@@ -158,7 +158,7 @@ private fun Preview2() {
 private fun Preview3() {
     TraktTheme {
         TraktTextField(
-            icon = painterResource(R.drawable.ic_search),
+            icon = painterResource(R.drawable.ic_search_off),
             placeholder = "Search...",
             loading = true,
             modifier = Modifier.padding(16.dp),

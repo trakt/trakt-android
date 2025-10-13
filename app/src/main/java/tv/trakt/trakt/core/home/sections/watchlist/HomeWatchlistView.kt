@@ -140,7 +140,10 @@ internal fun HomeWatchlistContent(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(headerPadding),
+                .padding(headerPadding)
+                .onClick(enabled = state.loading == DONE) {
+                    onMoreClick()
+                },
             horizontalArrangement = SpaceBetween,
             verticalAlignment = CenterVertically,
         ) {
@@ -149,15 +152,11 @@ internal fun HomeWatchlistContent(
                 subtitle = stringResource(R.string.list_description_released_movies),
             )
             if (!state.items.isNullOrEmpty() || state.loading != DONE) {
-                Text(
-                    text = stringResource(R.string.button_text_view_all),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.buttonSecondary,
-                    modifier = Modifier
-                        .onClick(
-                            enabled = !state.loading.isLoading,
-                            onClick = onMoreClick,
-                        ),
+                Icon(
+                    painter = painterResource(R.drawable.ic_more),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textSecondary,
+                    modifier = Modifier.size(20.dp),
                 )
             }
         }
