@@ -26,6 +26,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -89,7 +90,7 @@ internal class ListDetailsViewModel(
                 itemsState.update {
                     getListItemsUseCase.getItems(
                         listId = destination.listId.toTraktId(),
-                        type = destination.mediaType,
+                        type = MediaType.valueOf(destination.mediaType),
                     )
                 }
             } catch (error: Exception) {

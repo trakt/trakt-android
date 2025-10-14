@@ -15,7 +15,7 @@ internal data class ListsDetailsDestination(
     val listTitle: String,
     val listDescription: String?,
     val mediaId: Int,
-    val mediaType: MediaType,
+    val mediaType: String,
     val mediaImage: String?,
 )
 
@@ -48,7 +48,7 @@ internal fun NavController.navigateToListDetails(
             listTitle = listTitle,
             listDescription = listDescription,
             mediaId = mediaId.value,
-            mediaType = mediaType,
+            mediaType = mediaType.name,
             mediaImage = mediaImage,
         ),
     )
