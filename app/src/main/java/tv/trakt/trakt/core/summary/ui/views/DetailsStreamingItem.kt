@@ -1,12 +1,15 @@
 package tv.trakt.trakt.core.summary.ui.views
 
+import android.icu.util.Currency
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -26,6 +29,8 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.StreamingType
+import tv.trakt.trakt.common.model.streamings.StreamingType.PURCHASE
+import tv.trakt.trakt.common.model.streamings.StreamingType.RENT
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -64,11 +69,38 @@ internal fun DetailsStreamingItem(
             )
         }
 
-        Text(
-            text = stringResource(type.labelRes).uppercase(),
-            color = TraktTheme.colors.textSecondary,
-            style = TraktTheme.typography.meta,
-        )
+        Row(
+            verticalAlignment = CenterVertically,
+            horizontalArrangement = spacedBy(2.dp),
+        ) {
+            Text(
+                text = stringResource(type.labelRes).uppercase(),
+                color = TraktTheme.colors.textSecondary,
+                style = TraktTheme.typography.meta,
+            )
+
+            val price = remember(service.purchasePrice, service.rentPrice) {
+                val currencySymbol = service.currency?.symbol
+                val currencySpace = if (currencySymbol?.count() == 1) "" else " "
+
+                when (type) {
+                    PURCHASE -> "$currencySymbol$currencySpace${service.purchasePrice}".trim()
+                    RENT -> "$currencySymbol$currencySpace${service.rentPrice}".trim()
+                    else -> null
+                }
+            }
+
+            if (!price.isNullOrBlank()) {
+                Text(
+                    text = "(${price.uppercase()})",
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.meta,
+                    maxLines = 1,
+                    textAlign = TextAlign.Center,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+        }
     }
 }
 
@@ -95,12 +127,12 @@ private fun Preview() {
                     linkAndroid = "Hello",
                     uhd = false,
                     color = null,
-                    country = "Hello",
-                    currency = null,
-                    purchasePrice = "Hello",
-                    rentPrice = "Hello",
+                    country = "pl",
+                    currency = Currency.getInstance("PLN"),
+                    purchasePrice = "19.99",
+                    rentPrice = "19.99",
                 ),
-                type = StreamingType.SUBSCRIPTION,
+                type = StreamingType.PURCHASE,
                 onClick = {},
             )
         }
