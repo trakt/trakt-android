@@ -205,6 +205,16 @@ internal class ShowsApiClient(
         )
     }
 
+    override suspend fun getRelated(showId: TraktId): List<ShowDto> {
+        val response = showsApi.getShowsRelated(
+            id = showId.value.toString(),
+            extended = "full,streaming_ids,cloud9,colors",
+            limit = 30,
+            page = null,
+        )
+        return response.body()
+    }
+
     override suspend fun getExtras(showId: TraktId): List<ExtraVideoDto> {
         val response = showsApi.getShowsVideos(
             id = showId.value.toString(),

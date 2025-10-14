@@ -49,5 +49,7 @@ internal interface ShowsRemoteDataSource {
 
     suspend fun getSentiments(showId: TraktId): Sentiments
 
+    suspend fun getRelated(showId: TraktId): List<ShowDto>
+
     suspend fun getExtras(showId: TraktId): List<ExtraVideoDto>
 }

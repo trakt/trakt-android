@@ -11,6 +11,8 @@ import tv.trakt.trakt.core.summary.shows.features.actors.usecases.GetShowActorsU
 import tv.trakt.trakt.core.summary.shows.features.context.more.ShowDetailsContextViewModel
 import tv.trakt.trakt.core.summary.shows.features.extras.ShowExtrasViewModel
 import tv.trakt.trakt.core.summary.shows.features.extras.usecases.GetShowExtrasUseCase
+import tv.trakt.trakt.core.summary.shows.features.related.ShowRelatedViewModel
+import tv.trakt.trakt.core.summary.shows.features.related.usecases.GetShowRelatedUseCase
 import tv.trakt.trakt.core.summary.shows.features.sentiment.ShowSentimentViewModel
 import tv.trakt.trakt.core.summary.shows.features.sentiment.usecases.GetShowSentimentUseCase
 import tv.trakt.trakt.core.summary.shows.features.streaming.ShowStreamingsViewModel
@@ -61,14 +63,13 @@ internal val showDetailsModule = module {
             remoteSource = get(),
         )
     }
-//
-//    factory {
-//        GetShowRelatedUseCase(
-//            remoteSource = get(),
-//            localSource = get(),
-//        )
-//    }
-//
+
+    factory {
+        GetShowRelatedUseCase(
+            remoteSource = get(),
+            localSource = get(),
+        )
+    }
     factory {
         GetShowStreamingsUseCase(
             remoteShowSource = get(),
@@ -150,14 +151,13 @@ internal val showDetailsModule = module {
             getActorsUseCase = get(),
         )
     }
-//
-//    viewModel { (show: Show) ->
-//        ShowRelatedViewModel(
-//            show = show,
-//            getRelatedShowsUseCase = get(),
-//        )
-//    }
-//
+
+    viewModel { (show: Show) ->
+        ShowRelatedViewModel(
+            show = show,
+            getRelatedShowsUseCase = get(),
+        )
+    }
 //    viewModel { (show: Show) ->
 //        ShowListsViewModel(
 //            show = show,
