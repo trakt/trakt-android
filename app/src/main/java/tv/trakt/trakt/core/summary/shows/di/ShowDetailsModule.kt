@@ -4,9 +4,12 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowStorage
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.shows.ShowDetailsViewModel
+import tv.trakt.trakt.core.summary.shows.features.context.more.ShowDetailsContextViewModel
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowRatingsUseCase
+import tv.trakt.trakt.core.summary.shows.usecases.GetShowStreamingUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowStudiosUseCase
 
 internal val showDetailsDataModule = module {
@@ -66,14 +69,14 @@ internal val showDetailsModule = module {
 //        )
 //    }
 //
-//    factory {
-//        GetShowStreamingUseCase(
-//            remoteShowSource = get(),
-//            remoteStreamingSource = get(),
-//            localStreamingSource = get(),
-//            priorityStreamingProvider = get(),
-//        )
-//    }
+    factory {
+        GetShowStreamingUseCase(
+            remoteShowSource = get(),
+            remoteStreamingSource = get(),
+            localStreamingSource = get(),
+            priorityStreamingProvider = get(),
+        )
+    }
 //
 //    factory {
 //        GetShowSentimentUseCase(
@@ -176,13 +179,13 @@ internal val showDetailsModule = module {
 //        )
 //    }
 //
-//    viewModel { (show: Show) ->
-//        ShowDetailsContextViewModel(
-//            show = show,
-//            sessionManager = get(),
-//            getStreamingsUseCase = get(),
-//        )
-//    }
+    viewModel { (show: Show) ->
+        ShowDetailsContextViewModel(
+            show = show,
+            sessionManager = get(),
+            getStreamingsUseCase = get(),
+        )
+    }
 //
 //    viewModel { (show: Show) ->
 //        ShowDetailsListsViewModel(

@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.ShowDto
+import tv.trakt.trakt.common.networking.StreamingDto
 import tv.trakt.trakt.core.shows.data.remote.model.AnticipatedShowDto
 import tv.trakt.trakt.core.shows.data.remote.model.TrendingShowDto
 import java.time.Instant
@@ -162,5 +163,18 @@ internal class ShowsApiClient(
         )
 
         return response.body().map { it.name }
+    }
+
+    override suspend fun getStreamings(
+        showId: TraktId,
+        countryCode: String?,
+    ): Map<String, StreamingDto> {
+        val response = showsApi.getShowsWatchnow(
+            country = countryCode ?: "",
+            id = showId.value.toString(),
+            links = "direct",
+        )
+
+        return response.body()
     }
 }

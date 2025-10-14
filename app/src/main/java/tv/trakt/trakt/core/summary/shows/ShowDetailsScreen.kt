@@ -60,6 +60,7 @@ import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
+import tv.trakt.trakt.core.summary.shows.features.context.more.ShowDetailsContextSheet
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.DetailsHeader
@@ -142,18 +143,18 @@ internal fun ShowDetailsScreen(
 //        },
 //    )
 //
-//    ShowDetailsContextSheet(
-//        movie = contextSheet,
-//        onShareClick = {
-// //            state.movie?.let { shareShow(it, context) }
-//        },
-//        onTrailerClick = {
-//            state.movie?.trailer?.let { uriHandler.openUri(it) }
-//        },
-//        onDismiss = {
-//            contextSheet = null
-//        },
-//    )
+    ShowDetailsContextSheet(
+        show = contextSheet,
+        onShareClick = {
+            state.show?.let { shareShow(it, context) }
+        },
+        onTrailerClick = {
+            state.show?.trailer?.let { uriHandler.openUri(it) }
+        },
+        onDismiss = {
+            contextSheet = null
+        },
+    )
 //
 //    ShowDetailsHistorySheet(
 //        sheetItem = historySheet,

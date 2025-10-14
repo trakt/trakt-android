@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.summary.movies.features.context.more
+package tv.trakt.trakt.core.summary.shows.features.context.more
 
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.model.SlugId
@@ -6,7 +6,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.streamings.StreamingService
 
 @Immutable
-internal data class MovieDetailsContextState(
+internal data class ShowDetailsContextState(
     val streamings: StreamingsState = StreamingsState(),
     val user: User? = null,
     val error: Exception? = null,

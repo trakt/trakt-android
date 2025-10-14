@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.summary.movies.usecases
+package tv.trakt.trakt.core.summary.shows.usecases
 
 import android.icu.util.Currency
 import tv.trakt.trakt.common.Config.DEFAULT_COUNTRY_CODE
@@ -11,17 +11,17 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.StreamingSource
 import tv.trakt.trakt.common.model.streamings.fromDto
-import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
+import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 
-internal class GetMovieStreamingUseCase(
-    private val remoteMovieSource: MoviesRemoteDataSource,
+internal class GetShowStreamingUseCase(
+    private val remoteShowSource: ShowsRemoteDataSource,
     private val remoteStreamingSource: StreamingRemoteDataSource,
     private val localStreamingSource: StreamingLocalDataSource,
     private val priorityStreamingProvider: PriorityStreamingServiceProvider,
 ) {
     suspend fun getStreamingService(
         user: User,
-        movieId: TraktId,
+        showId: TraktId,
     ): Result {
         if (!localStreamingSource.isValid()) {
             val sources = remoteStreamingSource
@@ -32,8 +32,8 @@ internal class GetMovieStreamingUseCase(
         }
 
         val userCountry = user.streamings?.country ?: DEFAULT_COUNTRY_CODE
-        val streamings = remoteMovieSource.getStreamings(
-            movieId = movieId,
+        val streamings = remoteShowSource.getStreamings(
+            showId = showId,
             countryCode = null,
         )
 

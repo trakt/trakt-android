@@ -4,6 +4,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.ShowDto
+import tv.trakt.trakt.common.networking.StreamingDto
 import tv.trakt.trakt.core.shows.data.remote.model.AnticipatedShowDto
 import tv.trakt.trakt.core.shows.data.remote.model.TrendingShowDto
 import java.time.Instant
@@ -35,4 +36,9 @@ internal interface ShowsRemoteDataSource {
     suspend fun getExternalRatings(showId: TraktId): ExternalRatingsDto
 
     suspend fun getStudios(showId: TraktId): List<String>
+
+    suspend fun getStreamings(
+        showId: TraktId,
+        countryCode: String?,
+    ): Map<String, StreamingDto>
 }
