@@ -8,6 +8,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.ExtraVideoDto
+import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.ShowDto
 import tv.trakt.trakt.common.networking.StreamingDto
@@ -212,6 +213,23 @@ internal class ShowsApiClient(
             limit = 30,
             page = null,
         )
+        return response.body()
+    }
+
+    override suspend fun getLists(
+        showId: TraktId,
+        type: String,
+        limit: Int,
+    ): List<ListDto> {
+        val response = showsApi.getShowsLists(
+            id = showId.value.toString(),
+            type = type,
+            extended = "images",
+            page = null,
+            limit = limit,
+            sort = "popular",
+        )
+
         return response.body()
     }
 

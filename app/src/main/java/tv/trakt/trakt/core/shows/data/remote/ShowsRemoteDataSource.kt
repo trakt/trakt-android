@@ -5,6 +5,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.ExtraVideoDto
+import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.ShowDto
 import tv.trakt.trakt.common.networking.StreamingDto
@@ -50,6 +51,12 @@ internal interface ShowsRemoteDataSource {
     suspend fun getSentiments(showId: TraktId): Sentiments
 
     suspend fun getRelated(showId: TraktId): List<ShowDto>
+
+    suspend fun getLists(
+        showId: TraktId,
+        type: String,
+        limit: Int,
+    ): List<ListDto>
 
     suspend fun getExtras(showId: TraktId): List<ExtraVideoDto>
 }

@@ -65,6 +65,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.core.summary.shows.features.actors.ShowActorsView
 import tv.trakt.trakt.core.summary.shows.features.context.more.ShowDetailsContextSheet
 import tv.trakt.trakt.core.summary.shows.features.extras.ShowExtrasView
+import tv.trakt.trakt.core.summary.shows.features.lists.ShowListsView
 import tv.trakt.trakt.core.summary.shows.features.related.ShowRelatedView
 import tv.trakt.trakt.core.summary.shows.features.sentiment.ShowSentimentView
 import tv.trakt.trakt.core.summary.shows.features.streaming.ShowStreamingsView
@@ -103,9 +104,9 @@ internal fun ShowDetailsScreen(
         modifier = modifier,
         onShowClick = onShowClick,
         onListClick = {
-//            state.movie?.let { movie ->
-//                onListClick(movie, it)
-//            }
+            state.show?.let { show ->
+                onListClick(show, it)
+            }
         },
         onTrackClick = {
 //            viewModel.addToWatched()
@@ -127,9 +128,6 @@ internal fun ShowDetailsScreen(
                 onCommentsClick(it)
             }
         },
-//        onHistoryClick = {
-//            historySheet = it
-//        },
         onBackClick = onNavigateBack,
     )
 
@@ -162,16 +160,6 @@ internal fun ShowDetailsScreen(
             contextSheet = null
         },
     )
-//
-//    ShowDetailsHistorySheet(
-//        sheetItem = historySheet,
-//        onRemovePlay = {
-//            viewModel.removeFromWatched(playId = it.id)
-//        },
-//        onDismiss = {
-//            historySheet = null
-//        },
-//    )
 
     LaunchedEffect(state.info) {
         if (state.info == null) {
@@ -200,7 +188,6 @@ internal fun ShowDetailsContent(
     onShareClick: (() -> Unit)? = null,
     onTrailerClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
-//    onHistoryClick: ((HomeActivityItem.ShowItem) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
     onMoreCommentsClick: (() -> Unit)? = null,
     onListClick: ((CustomList) -> Unit)? = null,
@@ -397,33 +384,18 @@ internal fun ShowDetailsContent(
                         )
                     }
 
-//                    item {
-//                        ShowListsView(
-//                            viewModel = koinViewModel(
-//                                parameters = { parametersOf(show) },
-//                            ),
-//                            headerPadding = sectionPadding,
-//                            contentPadding = sectionPadding,
-//                            onClick = onListClick ?: {},
-//                            modifier = Modifier
-//                                .padding(top = 32.dp),
-//                        )
-//                    }
-//
-//                    if ((state.showProgress?.plays ?: 0) > 0) {
-//                        item {
-//                            ShowHistoryView(
-//                                viewModel = koinViewModel(
-//                                    parameters = { parametersOf(show) },
-//                                ),
-//                                headerPadding = sectionPadding,
-//                                contentPadding = sectionPadding,
-//                                onClick = onHistoryClick,
-//                                modifier = Modifier
-//                                    .padding(top = 32.dp),
-//                            )
-//                        }
-//                    }
+                    item {
+                        ShowListsView(
+                            viewModel = koinViewModel(
+                                parameters = { parametersOf(show) },
+                            ),
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            onClick = onListClick ?: {},
+                            modifier = Modifier
+                                .padding(top = 32.dp),
+                        )
+                    }
                 }
             }
         }
