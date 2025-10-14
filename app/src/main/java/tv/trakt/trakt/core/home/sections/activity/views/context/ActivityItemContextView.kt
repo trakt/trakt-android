@@ -86,7 +86,7 @@ internal fun ActivityItemContextView(
         active = confirmRemoveSheet,
         onYes = {
             confirmRemoveSheet = false
-            viewModel.removePlayFromHistory(item.id)
+            viewModel.removePlayFromHistory(item)
         },
         onNo = { confirmRemoveSheet = false },
         title = stringResource(R.string.button_text_remove_from_history),

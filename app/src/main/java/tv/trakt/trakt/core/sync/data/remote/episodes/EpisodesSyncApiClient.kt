@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.sync.data.remote.episodes
 
 import org.openapitools.client.apis.SyncApi
+import org.openapitools.client.models.PostSyncHistoryRemoveRequest
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestEpisodesInner
 import org.openapitools.client.models.PostUsersListsListAddRequestEpisodesInnerIds
@@ -28,6 +29,14 @@ internal class EpisodesSyncApiClient(
             ),
         )
         syncApi.postSyncHistoryAdd(request)
+        cacheMarker.invalidate()
+    }
+
+    override suspend fun removeSingleFromHistory(playId: Long) {
+        val request = PostSyncHistoryRemoveRequest(
+            ids = listOf(playId),
+        )
+        syncApi.postSyncHistoryRemove(request)
         cacheMarker.invalidate()
     }
 }

@@ -62,8 +62,10 @@ import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
+import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.summary.shows.features.actors.ShowActorsView
 import tv.trakt.trakt.core.summary.shows.features.comments.ShowCommentsView
+import tv.trakt.trakt.core.summary.shows.features.context.history.ShowDetailsHistorySheet
 import tv.trakt.trakt.core.summary.shows.features.context.lists.ShowDetailsListsSheet
 import tv.trakt.trakt.core.summary.shows.features.context.more.ShowDetailsContextSheet
 import tv.trakt.trakt.core.summary.shows.features.extras.ShowExtrasView
@@ -101,6 +103,7 @@ internal fun ShowDetailsScreen(
     val scope = rememberCoroutineScope()
     var contextSheet by remember { mutableStateOf<Show?>(null) }
     var listsSheet by remember { mutableStateOf<Show?>(null) }
+    var historySheet by remember { mutableStateOf<HomeActivityItem.EpisodeItem?>(null) }
     var confirmAddWatchedSheet by remember { mutableStateOf(false) }
 
     ShowDetailsContent(
@@ -123,6 +126,9 @@ internal fun ShowDetailsScreen(
         },
         onListsClick = {
             listsSheet = state.show
+        },
+        onHistoryClick = {
+            historySheet = it
         },
         onMoreClick = {
             contextSheet = state.show
@@ -162,6 +168,16 @@ internal fun ShowDetailsScreen(
         },
         onDismiss = {
             contextSheet = null
+        },
+    )
+
+    ShowDetailsHistorySheet(
+        sheetItem = historySheet,
+        onRemovePlay = {
+            viewModel.removeFromWatched(playId = it.id)
+        },
+        onDismiss = {
+            historySheet = null
         },
     )
 
@@ -206,6 +222,7 @@ internal fun ShowDetailsContent(
     onShareClick: (() -> Unit)? = null,
     onTrailerClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
+    onHistoryClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
     onMoreCommentsClick: (() -> Unit)? = null,
     onListClick: ((CustomList) -> Unit)? = null,
@@ -425,7 +442,8 @@ internal fun ShowDetailsContent(
                                 ),
                                 headerPadding = sectionPadding,
                                 contentPadding = sectionPadding,
-                                onClick = { },
+                                loading = state.loadingProgress.isLoading,
+                                onClick = onHistoryClick,
                                 modifier = Modifier
                                     .padding(top = 32.dp),
                             )

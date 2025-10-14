@@ -38,6 +38,7 @@ import tv.trakt.trakt.core.summary.shows.navigation.ShowDetailsDestination
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowRatingsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowStudiosUseCase
+import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowWatchlistUseCase
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
@@ -55,6 +56,7 @@ internal class ShowDetailsViewModel(
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
     private val loadListsUseCase: LoadUserListsUseCase,
     private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
+    private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val updateShowWatchlistUseCase: UpdateShowWatchlistUseCase,
     private val addListItemUseCase: AddPersonalListItemUseCase,
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
@@ -307,6 +309,51 @@ internal class ShowDetailsViewModel(
 
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_added)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.w(error)
+                }
+            } finally {
+                loadingProgress.update { DONE }
+            }
+        }
+    }
+
+    fun removeFromWatched(playId: Long) {
+        if (showState.value == null ||
+            loadingState.value.isLoading ||
+            loadingProgress.value.isLoading ||
+            loadingLists.value.isLoading
+        ) {
+            return
+        }
+
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                loadingProgress.update { LOADING }
+
+                updateEpisodeHistoryUseCase.removePlayFromHistory(playId)
+                val progress = loadProgressUseCase.loadShowsProgress()
+                    .firstOrNull {
+                        it.show.ids.trakt == showId
+                    }
+                allActivityLocalSource.notifyUpdate()
+
+                showProgressState.update {
+                    it?.copy(
+                        aired = progress?.progress?.aired ?: 0,
+                        completed = progress?.progress?.completed ?: 0,
+                        plays = progress?.progress?.plays ?: 0,
+                    )
+                }
+
+                infoState.update {
+                    DynamicStringResource(R.string.text_info_history_removed)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {

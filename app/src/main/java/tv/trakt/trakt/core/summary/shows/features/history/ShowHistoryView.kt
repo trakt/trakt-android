@@ -5,7 +5,6 @@ package tv.trakt.trakt.core.summary.shows.features.history
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -28,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
@@ -38,6 +38,7 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.views.EpisodeSocialItemView
 import tv.trakt.trakt.resources.R
@@ -47,10 +48,11 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 internal fun ShowHistoryView(
+    modifier: Modifier = Modifier,
     viewModel: ShowHistoryViewModel,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
-    modifier: Modifier = Modifier,
+    loading: Boolean = false,
     onClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -58,10 +60,15 @@ internal fun ShowHistoryView(
     ShowHistoryContent(
         state = state,
         modifier = modifier,
+        loading = loading,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        onClick = { onClick?.invoke(it) },
-        onLongClick = { onClick?.invoke(it) },
+        onClick = {
+            if (!loading) onClick?.invoke(it)
+        },
+        onLongClick = {
+            if (!loading) onClick?.invoke(it)
+        },
     )
 }
 
@@ -69,6 +76,7 @@ internal fun ShowHistoryView(
 private fun ShowHistoryContent(
     state: ShowHistoryState,
     modifier: Modifier = Modifier,
+    loading: Boolean = false,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
@@ -82,12 +90,18 @@ private fun ShowHistoryContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(headerPadding),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = spacedBy(8.dp),
             verticalAlignment = CenterVertically,
         ) {
             TraktHeader(
                 title = stringResource(R.string.list_title_watch_history),
             )
+
+            if (loading) {
+                FilmProgressIndicator(
+                    size = 16.dp,
+                )
+            }
         }
 
         Crossfade(
@@ -165,7 +179,7 @@ private fun ContentLoading(
             .fillMaxWidth()
             .alpha(if (visible) 1F else 0F),
     ) {
-        items(count = 1) {
+        items(count = 3) {
             EpisodeSkeletonCard()
         }
     }

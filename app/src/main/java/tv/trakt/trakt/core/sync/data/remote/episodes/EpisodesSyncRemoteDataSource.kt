@@ -8,4 +8,6 @@ internal interface EpisodesSyncRemoteDataSource {
         episodeId: TraktId,
         watchedAt: Instant,
     )
+
+    suspend fun removeSingleFromHistory(playId: Long)
 }

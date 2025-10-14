@@ -124,6 +124,7 @@ internal val showDetailsModule = module {
             loadWatchlistUseCase = get(),
             loadListsUseCase = get(),
             updateShowHistoryUseCase = get(),
+            updateEpisodeHistoryUseCase = get(),
             updateShowWatchlistUseCase = get(),
             addListItemUseCase = get(),
             removeListItemUseCase = get(),

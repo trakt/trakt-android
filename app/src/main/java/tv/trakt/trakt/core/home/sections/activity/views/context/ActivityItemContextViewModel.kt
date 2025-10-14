@@ -16,11 +16,16 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.home.sections.activity.all.data.local.AllActivityLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
+import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
+import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.EpisodeItem
+import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.MovieItem
+import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
 
 internal class ActivityItemContextViewModel(
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
+    private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val activityLocalSource: HomePersonalLocalDataSource,
     private val allActivityLocalSource: AllActivityLocalDataSource,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
@@ -31,17 +36,25 @@ internal class ActivityItemContextViewModel(
     private val loadingWatchlistState = MutableStateFlow(initialState.loadingWatchlist)
     private val errorState = MutableStateFlow(initialState.error)
 
-    fun removePlayFromHistory(playId: Long) {
+    fun removePlayFromHistory(item: HomeActivityItem) {
         if (isLoading()) return
         viewModelScope.launch {
             clear()
             try {
                 loadingRemoveState.update { LOADING }
 
-                updateMovieHistoryUseCase.removePlayFromHistory(playId = playId)
-                activityLocalSource.removeItems(ids = setOf(playId), notify = true)
+                when (item) {
+                    is MovieItem -> {
+                        updateMovieHistoryUseCase.removePlayFromHistory(playId = item.id)
+                    }
+                    is EpisodeItem -> {
+                        updateEpisodeHistoryUseCase.removePlayFromHistory(playId = item.id)
+                    }
+                }
 
+                activityLocalSource.removeItems(ids = setOf(item.id), notify = true)
                 allActivityLocalSource.notifyUpdate()
+
                 loadUserProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {

@@ -208,6 +208,7 @@ internal val homeModule = module {
     viewModel {
         ActivityItemContextViewModel(
             updateMovieHistoryUseCase = get(),
+            updateEpisodeHistoryUseCase = get(),
             activityLocalSource = get(),
             allActivityLocalSource = get(),
             loadUserProgressUseCase = get(),
