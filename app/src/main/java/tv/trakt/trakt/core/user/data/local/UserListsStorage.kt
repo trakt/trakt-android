@@ -11,6 +11,7 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 import tv.trakt.trakt.core.lists.model.PersonalListItem.MovieItem
+import tv.trakt.trakt.core.lists.model.PersonalListItem.ShowItem
 import java.time.Instant
 
 internal class UserListsStorage : UserListsLocalDataSource {
@@ -119,10 +120,9 @@ internal class UserListsStorage : UserListsLocalDataSource {
                     val updatedItems = items
                         .plus(item)
                         .distinctBy {
-                            if (it is MovieItem) {
-                                it.movie.ids.trakt
-                            } else {
-                                null
+                            when (it) {
+                                is MovieItem -> it.movie.ids.trakt
+                                is ShowItem -> it.show.ids.trakt
                             }
                         }
                     storage[listId] = list to updatedItems

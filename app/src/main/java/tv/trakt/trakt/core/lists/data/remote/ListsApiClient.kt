@@ -57,7 +57,7 @@ internal class ListsApiClient(
 
     override suspend fun addShowToList(
         listId: TraktId,
-        movieId: TraktId,
+        showId: TraktId,
     ) {
         listsApi.postUsersListsListAdd(
             id = "me",
@@ -66,7 +66,7 @@ internal class ListsApiClient(
                 shows = listOf(
                     PostUsersListsListAddRequestShowsInner(
                         ids = PostUsersListsListAddRequestShowsInnerOneOfIds(
-                            trakt = movieId.value,
+                            trakt = showId.value,
                             slug = null,
                             imdb = null,
                             tmdb = null,

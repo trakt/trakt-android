@@ -21,7 +21,7 @@ internal interface ListsRemoteDataSource {
 
     suspend fun addShowToList(
         listId: TraktId,
-        movieId: TraktId,
+        showId: TraktId,
     )
 
     suspend fun removeShowFromList(

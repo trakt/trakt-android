@@ -8,6 +8,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 import java.time.Instant
@@ -33,6 +34,35 @@ internal class ListsPersonalItemsStorage : ListsPersonalItemsLocalDataSource {
     override suspend fun getItems(listId: TraktId): List<PersonalListItem> {
         return mutex.withLock {
             storage[listId] ?: emptyList()
+        }
+    }
+
+    override suspend fun addShows(
+        listId: TraktId,
+        shows: List<Show>,
+        notify: Boolean,
+    ) {
+        mutex.withLock {
+            val currentItems = storage[listId] ?: emptyList()
+            val newItems = shows.map {
+                PersonalListItem.ShowItem(
+                    show = it,
+                    listedAt = nowUtcInstant(),
+                )
+            }
+
+            storage[listId] = (newItems + currentItems)
+                .distinctBy {
+                    if (it is PersonalListItem.ShowItem) {
+                        it.show.ids.trakt
+                    } else {
+                        null
+                    }
+                }
+        }
+
+        if (notify) {
+            updatedAt.tryEmit(nowUtcInstant())
         }
     }
 

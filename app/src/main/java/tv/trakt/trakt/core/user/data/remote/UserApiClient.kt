@@ -50,7 +50,10 @@ internal class UserApiClient(
 
         while (hasMorePages) {
             val response = syncApi.getProgressWatched(
-                limit = limit,
+                limit = when {
+                    limit == null -> "all"
+                    else -> limit.toString()
+                },
                 page = page,
             )
 

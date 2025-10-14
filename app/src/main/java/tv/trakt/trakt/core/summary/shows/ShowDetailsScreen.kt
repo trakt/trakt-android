@@ -64,6 +64,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.core.summary.shows.features.actors.ShowActorsView
 import tv.trakt.trakt.core.summary.shows.features.comments.ShowCommentsView
+import tv.trakt.trakt.core.summary.shows.features.context.lists.ShowDetailsListsSheet
 import tv.trakt.trakt.core.summary.shows.features.context.more.ShowDetailsContextSheet
 import tv.trakt.trakt.core.summary.shows.features.extras.ShowExtrasView
 import tv.trakt.trakt.core.summary.shows.features.lists.ShowListsView
@@ -98,7 +99,6 @@ internal fun ShowDetailsScreen(
     val scope = rememberCoroutineScope()
     var contextSheet by remember { mutableStateOf<Show?>(null) }
     var listsSheet by remember { mutableStateOf<Show?>(null) }
-//    var historySheet by remember { mutableStateOf<HomeActivityItem.ShowItem?>(null) }
 
     ShowDetailsContent(
         state = state,
@@ -119,7 +119,7 @@ internal fun ShowDetailsScreen(
             state.show?.trailer?.let { uriHandler.openUri(it) }
         },
         onListsClick = {
-//            listsSheet = state.movie
+            listsSheet = state.show
         },
         onMoreClick = {
             contextSheet = state.show
@@ -132,23 +132,23 @@ internal fun ShowDetailsScreen(
         onBackClick = onNavigateBack,
     )
 
-//    ShowDetailsListsSheet(
-//        movie = listsSheet,
-//        inWatchlist = state.movieProgress?.inWatchlist == true,
-//        onWatchlistClick = {
-//            viewModel.toggleWatchlist()
-//        },
-//        onAddListClick = {
-//            viewModel.toggleList(it, true)
-//        },
-//        onRemoveListClick = {
-//            viewModel.toggleList(it, false)
-//        },
-//        onDismiss = {
-//            listsSheet = null
-//        },
-//    )
-//
+    ShowDetailsListsSheet(
+        show = listsSheet,
+        inWatchlist = state.showProgress?.inWatchlist == true,
+        onWatchlistClick = {
+            viewModel.toggleWatchlist()
+        },
+        onAddListClick = {
+            viewModel.toggleList(it, true)
+        },
+        onRemoveListClick = {
+            viewModel.toggleList(it, false)
+        },
+        onDismiss = {
+            listsSheet = null
+        },
+    )
+
     ShowDetailsContextSheet(
         show = contextSheet,
         onShareClick = {

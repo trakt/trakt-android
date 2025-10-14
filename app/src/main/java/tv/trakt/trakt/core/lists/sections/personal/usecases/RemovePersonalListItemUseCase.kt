@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.lists.sections.personal.usecases
 
 import tv.trakt.trakt.common.model.MediaType.MOVIE
+import tv.trakt.trakt.common.model.MediaType.SHOW
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.data.remote.ListsRemoteDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
@@ -19,9 +20,17 @@ internal class RemovePersonalListItemUseCase(
             listId = listId,
             showId = showId,
         )
+
         listsItemsLocalDataSource.removeShows(
             listId = listId,
             showsIds = listOf(showId),
+            notify = true,
+        )
+
+        listsLocalDataSource.removeListItem(
+            listId = listId,
+            itemId = showId,
+            itemType = SHOW,
             notify = true,
         )
     }

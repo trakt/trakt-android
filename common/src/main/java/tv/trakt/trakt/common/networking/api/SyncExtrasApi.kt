@@ -29,7 +29,7 @@ open class SyncExtrasApi(
     @Suppress("UNCHECKED_CAST")
     open suspend fun getProgressWatched(
         page: Int? = null,
-        limit: Int? = null,
+        limit: String? = null,
     ): HttpResponse<List<SyncProgressItemDto>> {
         val localVariableAuthNames = listOf<String>()
 
@@ -38,7 +38,7 @@ open class SyncExtrasApi(
 
         val localVariableQuery = mutableMapOf<String, List<String>>()
         page?.apply { localVariableQuery["page"] = listOf("$page") }
-        limit?.apply { localVariableQuery["limit"] = listOf("$limit") }
+        limit?.apply { localVariableQuery["limit"] = listOf(limit) }
 
         val localVariableHeaders = mutableMapOf<String, String>()
 

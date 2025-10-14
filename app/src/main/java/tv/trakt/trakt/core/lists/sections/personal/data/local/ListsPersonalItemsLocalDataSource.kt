@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.lists.sections.personal.data.local
 
 import kotlinx.coroutines.flow.Flow
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 import java.time.Instant
@@ -13,6 +14,12 @@ internal interface ListsPersonalItemsLocalDataSource {
     )
 
     suspend fun getItems(listId: TraktId): List<PersonalListItem>
+
+    suspend fun addShows(
+        listId: TraktId,
+        shows: List<Show>,
+        notify: Boolean,
+    )
 
     suspend fun removeShows(
         listId: TraktId,

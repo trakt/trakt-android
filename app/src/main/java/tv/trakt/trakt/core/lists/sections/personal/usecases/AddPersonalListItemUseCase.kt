@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.lists.sections.personal.usecases
 
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.data.remote.ListsRemoteDataSource
 import tv.trakt.trakt.core.lists.model.PersonalListItem
@@ -32,6 +33,31 @@ internal class AddPersonalListItemUseCase(
             listId = listId,
             item = PersonalListItem.MovieItem(
                 movie = movie,
+                listedAt = nowUtcInstant(),
+            ),
+            notify = true,
+        )
+    }
+
+    suspend fun addShow(
+        listId: TraktId,
+        show: Show,
+    ) {
+        remoteSource.addShowToList(
+            listId = listId,
+            showId = show.ids.trakt,
+        )
+
+        listsItemsLocalDataSource.addShows(
+            listId = listId,
+            shows = listOf(show),
+            notify = true,
+        )
+
+        listsLocalDataSource.addListItem(
+            listId = listId,
+            item = PersonalListItem.ShowItem(
+                show = show,
                 listedAt = nowUtcInstant(),
             ),
             notify = true,

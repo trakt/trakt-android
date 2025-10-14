@@ -10,6 +10,7 @@ import tv.trakt.trakt.core.summary.shows.features.actors.ShowActorsViewModel
 import tv.trakt.trakt.core.summary.shows.features.actors.usecases.GetShowActorsUseCase
 import tv.trakt.trakt.core.summary.shows.features.comments.ShowCommentsViewModel
 import tv.trakt.trakt.core.summary.shows.features.comments.usecases.GetShowCommentsUseCase
+import tv.trakt.trakt.core.summary.shows.features.context.lists.ShowDetailsListsViewModel
 import tv.trakt.trakt.core.summary.shows.features.context.more.ShowDetailsContextViewModel
 import tv.trakt.trakt.core.summary.shows.features.extras.ShowExtrasViewModel
 import tv.trakt.trakt.core.summary.shows.features.extras.usecases.GetShowExtrasUseCase
@@ -120,14 +121,14 @@ internal val showDetailsModule = module {
             getDetailsUseCase = get(),
             getExternalRatingsUseCase = get(),
             getShowStudiosUseCase = get(),
-//            loadProgressUseCase = get(),
-//            loadWatchlistUseCase = get(),
-//            loadListsUseCase = get(),
+            loadProgressUseCase = get(),
+            loadWatchlistUseCase = get(),
+            loadListsUseCase = get(),
 //            updateShowHistoryUseCase = get(),
-//            updateShowWatchlistUseCase = get(),
-//            addListItemUseCase = get(),
-//            removeListItemUseCase = get(),
-//            userWatchlistLocalSource = get(),
+            updateShowWatchlistUseCase = get(),
+            addListItemUseCase = get(),
+            removeListItemUseCase = get(),
+            userWatchlistLocalSource = get(),
 //            allActivityLocalSource = get(),
             sessionManager = get(),
         )
@@ -196,11 +197,11 @@ internal val showDetailsModule = module {
         )
     }
 //
-//    viewModel { (show: Show) ->
-//        ShowDetailsListsViewModel(
-//            show = show,
-//            sessionManager = get(),
-//            loadListsUseCase = get(),
-//        )
-//    }
+    viewModel { (show: Show) ->
+        ShowDetailsListsViewModel(
+            show = show,
+            sessionManager = get(),
+            loadListsUseCase = get(),
+        )
+    }
 }
