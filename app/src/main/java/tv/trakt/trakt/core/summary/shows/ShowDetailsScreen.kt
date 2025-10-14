@@ -67,6 +67,7 @@ import tv.trakt.trakt.core.summary.shows.features.comments.ShowCommentsView
 import tv.trakt.trakt.core.summary.shows.features.context.lists.ShowDetailsListsSheet
 import tv.trakt.trakt.core.summary.shows.features.context.more.ShowDetailsContextSheet
 import tv.trakt.trakt.core.summary.shows.features.extras.ShowExtrasView
+import tv.trakt.trakt.core.summary.shows.features.history.ShowHistoryView
 import tv.trakt.trakt.core.summary.shows.features.lists.ShowListsView
 import tv.trakt.trakt.core.summary.shows.features.related.ShowRelatedView
 import tv.trakt.trakt.core.summary.shows.features.sentiment.ShowSentimentView
@@ -414,6 +415,21 @@ internal fun ShowDetailsContent(
                             modifier = Modifier
                                 .padding(top = 32.dp),
                         )
+                    }
+
+                    if ((state.showProgress?.completed ?: 0) > 0) {
+                        item {
+                            ShowHistoryView(
+                                viewModel = koinViewModel(
+                                    parameters = { parametersOf(show) },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onClick = { },
+                                modifier = Modifier
+                                    .padding(top = 32.dp),
+                            )
+                        }
                     }
                 }
             }

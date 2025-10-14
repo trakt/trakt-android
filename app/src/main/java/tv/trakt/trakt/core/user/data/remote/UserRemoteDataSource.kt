@@ -50,6 +50,12 @@ internal interface UserRemoteDataSource {
         limit: Int,
     ): List<SyncHistoryMovieItemDto>
 
+    suspend fun getShowHistory(
+        showId: TraktId,
+        page: Int = 1,
+        limit: Int? = null,
+    ): List<SyncHistoryEpisodeItemDto>
+
     suspend fun getShowsCalendar(
         startDate: LocalDate,
         days: Int,

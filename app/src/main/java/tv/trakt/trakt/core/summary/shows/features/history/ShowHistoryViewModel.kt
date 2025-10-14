@@ -1,0 +1,94 @@
+package tv.trakt.trakt.core.summary.shows.features.history
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import timber.log.Timber
+import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.core.home.sections.activity.all.data.local.AllActivityLocalDataSource
+import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
+import tv.trakt.trakt.core.summary.shows.features.history.usecases.GetShowHistoryUseCase
+
+@OptIn(FlowPreview::class)
+internal class ShowHistoryViewModel(
+    private val show: Show,
+    private val getHistoryUseCase: GetShowHistoryUseCase,
+    private val allActivityLocalSource: AllActivityLocalDataSource,
+) : ViewModel() {
+    private val initialState = ShowHistoryState()
+
+    private val itemsState = MutableStateFlow(initialState.items)
+    private val loadingState = MutableStateFlow(initialState.loading)
+    private val errorState = MutableStateFlow(initialState.error)
+
+    init {
+        loadData()
+        observeLists()
+    }
+
+    private fun observeLists() {
+        allActivityLocalSource.observeUpdates()
+            .distinctUntilChanged()
+            .debounce(250)
+            .onEach {
+                loadData(ignoreErrors = true)
+            }
+            .launchIn(viewModelScope)
+    }
+
+    fun loadData(ignoreErrors: Boolean = false) {
+        viewModelScope.launch {
+            try {
+                if (itemsState.value == initialState.items) {
+                    loadingState.update { LOADING }
+                }
+
+                itemsState.update {
+                    getHistoryUseCase.getHistory(show.ids.trakt)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    if (!ignoreErrors) {
+                        errorState.update { error }
+                    }
+                    Timber.w(error)
+                }
+            } finally {
+                loadingState.update { DONE }
+            }
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    val state: StateFlow<ShowHistoryState> = combine(
+        itemsState,
+        loadingState,
+        errorState,
+    ) { state ->
+        ShowHistoryState(
+            items = state[0] as ImmutableList<HomeActivityItem.EpisodeItem>?,
+            loading = state[1] as LoadingState,
+            error = state[2] as Exception?,
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = initialState,
+    )
+}

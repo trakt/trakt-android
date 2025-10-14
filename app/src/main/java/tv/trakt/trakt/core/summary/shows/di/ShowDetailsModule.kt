@@ -14,6 +14,8 @@ import tv.trakt.trakt.core.summary.shows.features.context.lists.ShowDetailsLists
 import tv.trakt.trakt.core.summary.shows.features.context.more.ShowDetailsContextViewModel
 import tv.trakt.trakt.core.summary.shows.features.extras.ShowExtrasViewModel
 import tv.trakt.trakt.core.summary.shows.features.extras.usecases.GetShowExtrasUseCase
+import tv.trakt.trakt.core.summary.shows.features.history.ShowHistoryViewModel
+import tv.trakt.trakt.core.summary.shows.features.history.usecases.GetShowHistoryUseCase
 import tv.trakt.trakt.core.summary.shows.features.lists.ShowListsViewModel
 import tv.trakt.trakt.core.summary.shows.features.lists.usecases.GetShowListsUseCase
 import tv.trakt.trakt.core.summary.shows.features.related.ShowRelatedViewModel
@@ -106,6 +108,12 @@ internal val showDetailsModule = module {
         )
     }
 
+    factory {
+        GetShowHistoryUseCase(
+            remoteSource = get(),
+        )
+    }
+
     viewModel {
         ShowDetailsViewModel(
             savedStateHandle = get(),
@@ -186,6 +194,14 @@ internal val showDetailsModule = module {
             show = show,
             sessionManager = get(),
             loadListsUseCase = get(),
+        )
+    }
+
+    viewModel { (show: Show) ->
+        ShowHistoryViewModel(
+            show = show,
+            getHistoryUseCase = get(),
+            allActivityLocalSource = get(),
         )
     }
 }

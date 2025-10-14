@@ -180,7 +180,7 @@ internal class ListShowContextViewModel(
                 loadingWatchedState.update { LOADING }
 
                 updateShowHistoryUseCase.addToWatched(show.ids.trakt)
-                loadProgressUseCase.loadShowsProgress()
+                loadProgressUseCase.loadShowsProgress(limit = 3)
                 userWatchlistLocalSource.removeShows(
                     ids = setOf(show.ids.trakt),
                     notify = true,
