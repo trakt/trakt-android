@@ -1,7 +1,7 @@
 package tv.trakt.trakt.app.core.home.sections.social.model
 
 import androidx.compose.runtime.Immutable
-import tv.trakt.trakt.app.core.episodes.model.Episode
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show

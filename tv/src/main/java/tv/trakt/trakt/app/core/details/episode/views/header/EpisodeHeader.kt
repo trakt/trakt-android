@@ -45,13 +45,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.core.details.ui.PosterImage
-import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Images.Size.MEDIUM
 import tv.trakt.trakt.common.model.Show
@@ -199,7 +199,8 @@ internal fun EpisodeHeader(
                     modifier = Modifier.horizontalScroll(rememberScrollState()),
                 ) {
                     val hidden = remember(episode.firstAired) {
-                        episode.firstAired == null || episode.firstAired.isAfter(nowUtc())
+                        val firstAired = episode.firstAired
+                        firstAired == null || firstAired.isAfter(nowUtc())
                     }
 
                     Row(
@@ -281,7 +282,7 @@ internal fun EpisodeHeader(
                             InfoChip(text = it)
                         }
                         episode.firstAired?.let {
-                            InfoChip(text = episode.firstAired.year.toString())
+                            InfoChip(text = it.year.toString())
                         }
                     }
                 }

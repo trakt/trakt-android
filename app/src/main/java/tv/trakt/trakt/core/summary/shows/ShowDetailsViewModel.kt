@@ -27,12 +27,13 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.summary.shows.navigation.ShowDetailsDestination
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowRatingsUseCase
+import tv.trakt.trakt.core.summary.shows.usecases.GetShowStudiosUseCase
 
 internal class ShowDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val getDetailsUseCase: GetShowDetailsUseCase,
     private val getExternalRatingsUseCase: GetShowRatingsUseCase,
-//    private val getShowStudiosUseCase: GetShowStudiosUseCase,
+    private val getShowStudiosUseCase: GetShowStudiosUseCase,
 //    private val loadProgressUseCase: LoadUserProgressUseCase,
 //    private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
 //    private val loadListsUseCase: LoadUserListsUseCase,
@@ -93,7 +94,7 @@ internal class ShowDetailsViewModel(
                 showState.update { show }
 
                 loadRatings(show)
-//                loadStudios()
+                loadStudios()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -114,6 +115,20 @@ internal class ShowDetailsViewModel(
             try {
                 showRatingsState.update {
                     getExternalRatingsUseCase.getExternalRatings(showId)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.w(error)
+                }
+            }
+        }
+    }
+
+    private fun loadStudios() {
+        viewModelScope.launch {
+            try {
+                showStudiosState.update {
+                    getShowStudiosUseCase.getStudios(showId)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {

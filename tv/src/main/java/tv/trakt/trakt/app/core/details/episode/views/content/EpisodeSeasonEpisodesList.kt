@@ -19,12 +19,12 @@ import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
-import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.resources.R
 
@@ -77,7 +77,8 @@ internal fun EpisodeSeasonEpisodesList(
                     onClick = { onClicked(episode) },
                     cardContent = {
                         val isReleased = remember(episode.firstAired) {
-                            episode.firstAired != null && !episode.firstAired.isBefore(nowUtc())
+                            val firstAired = episode.firstAired
+                            firstAired != null && !firstAired.isBefore(nowUtc())
                         }
                         if (isReleased) {
                             InfoChip(

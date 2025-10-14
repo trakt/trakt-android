@@ -155,4 +155,12 @@ internal class ShowsApiClient(
 
         return response.body()
     }
+
+    override suspend fun getStudios(showId: TraktId): List<String> {
+        val response = showsApi.getShowsStudios(
+            id = showId.value.toString(),
+        )
+
+        return response.body().map { it.name }
+    }
 }

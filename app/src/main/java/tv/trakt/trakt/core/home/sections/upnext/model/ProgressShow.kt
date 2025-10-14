@@ -2,9 +2,9 @@ package tv.trakt.trakt.core.home.sections.upnext.model
 
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.episodes.model.Episode
 import java.time.ZonedDateTime
 
 @Immutable

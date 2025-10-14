@@ -52,12 +52,12 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.app.common.ui.buttons.PrimaryButton
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
-import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.app.core.profile.sections.favorites.movies.ProfileFavoriteMoviesView
 import tv.trakt.trakt.app.core.profile.sections.favorites.shows.ProfileFavoriteShowsView
 import tv.trakt.trakt.app.core.profile.sections.history.ProfileHistoryView
-import tv.trakt.trakt.app.helpers.preview.PreviewData
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images.Size.FULL
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User

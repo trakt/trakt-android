@@ -1,17 +1,13 @@
-package tv.trakt.trakt.app.core.episodes.model
+package tv.trakt.trakt.common.model
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
-import tv.trakt.trakt.common.model.Ids
-import tv.trakt.trakt.common.model.Images
-import tv.trakt.trakt.common.model.toSlugId
-import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.SeasonDto
 import java.time.ZonedDateTime
 
 @Immutable
-internal data class Season(
+data class Season(
     val ids: Ids,
     val number: Int,
     val episodeCount: Int?,
@@ -25,7 +21,7 @@ internal data class Season(
         get() = number == 0
 }
 
-internal fun Season.Companion.fromDto(dto: SeasonDto): Season {
+fun Season.Companion.fromDto(dto: SeasonDto): Season {
     return Season(
         ids = Ids(
             trakt = dto.ids.trakt.toTraktId(),

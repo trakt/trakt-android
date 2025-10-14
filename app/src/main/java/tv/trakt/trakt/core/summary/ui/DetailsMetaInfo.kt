@@ -17,8 +17,9 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
+import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.LocalDate
@@ -26,6 +27,25 @@ import java.util.Locale
 import kotlin.time.Duration
 
 private val EmptyList = emptyList<String>().toImmutableList()
+
+@Composable
+internal fun DetailsMetaInfo(
+    modifier: Modifier = Modifier,
+    show: Show,
+    showStudios: ImmutableList<String>? = null,
+) {
+    DetailsMetaInfo(
+        modifier = modifier,
+        released = show.released?.toLocalDate(),
+        runtime = show.runtime,
+        status = show.status,
+        languages = show.languages,
+        titleOriginal = show.titleOriginal,
+        country = show.country,
+        genres = show.genres,
+        studios = showStudios ?: EmptyList,
+    )
+}
 
 @Composable
 internal fun DetailsMetaInfo(

@@ -1,11 +1,11 @@
 package tv.trakt.trakt.core.home.sections.activity.model
 
 import androidx.compose.runtime.Immutable
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.core.episodes.model.Episode
 import java.time.Instant
 import kotlin.time.Duration
 

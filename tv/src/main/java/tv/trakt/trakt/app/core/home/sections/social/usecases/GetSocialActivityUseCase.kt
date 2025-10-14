@@ -4,12 +4,11 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.openapitools.client.models.GetUsersActivities200ResponseInner.Type.EPISODE
 import org.openapitools.client.models.GetUsersActivities200ResponseInner.Type.MOVIE
-import tv.trakt.trakt.app.core.episodes.model.Episode
-import tv.trakt.trakt.app.core.episodes.model.fromDto
 import tv.trakt.trakt.app.core.home.sections.social.model.SocialActivityItem
 import tv.trakt.trakt.app.core.profile.data.remote.ProfileRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User

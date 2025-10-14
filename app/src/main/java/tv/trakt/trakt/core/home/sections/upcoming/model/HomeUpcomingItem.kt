@@ -1,11 +1,11 @@
 package tv.trakt.trakt.core.home.sections.upcoming.model
 
 import androidx.compose.runtime.Immutable
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.episodes.model.Episode
 import java.time.Instant
 
 @Immutable

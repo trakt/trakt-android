@@ -30,12 +30,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
-import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.app.core.home.sections.social.model.SocialActivityItem
 import tv.trakt.trakt.app.core.home.sections.social.views.EpisodeSocialItemView
 import tv.trakt.trakt.app.core.home.sections.social.views.MovieSocialItemView
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator

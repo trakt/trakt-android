@@ -68,12 +68,12 @@ import tv.trakt.trakt.app.core.details.episode.views.content.EpisodeSeasonEpisod
 import tv.trakt.trakt.app.core.details.episode.views.header.EpisodeActionButtons
 import tv.trakt.trakt.app.core.details.episode.views.header.EpisodeHeader
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
-import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.app.core.people.navigation.PersonDestination
-import tv.trakt.trakt.app.helpers.preview.PreviewData
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show

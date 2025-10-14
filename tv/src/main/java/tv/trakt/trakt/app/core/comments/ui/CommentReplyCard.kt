@@ -42,9 +42,9 @@ import androidx.tv.material3.Text
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
 import tv.trakt.trakt.app.common.ui.TvVipChip
-import tv.trakt.trakt.app.helpers.preview.PreviewData
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
+import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.resources.R

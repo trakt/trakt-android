@@ -1,11 +1,11 @@
-package tv.trakt.trakt.app.helpers.preview
+package tv.trakt.trakt.common.helpers.preview
 
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.CustomList.Type
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.ImdbId
@@ -23,7 +23,7 @@ import tv.trakt.trakt.common.model.sorting.SortType
 import java.time.ZonedDateTime
 import kotlin.time.Duration.Companion.minutes
 
-internal object PreviewData {
+object PreviewData {
     val show1 = Show(
         ids = Ids(
             trakt = TraktId(1),
@@ -37,7 +37,7 @@ internal object PreviewData {
         overview = "This is a sample movie overview that provides a brief description of the movie's plot " +
             "and main themes. It is intended to give viewers an idea of what to expect without revealing too much.",
         year = 2024,
-        released = ZonedDateTime.now(),
+        released = ZonedDateTime.now().plusDays(5),
         genres = listOf("Comedy", "Drama").toImmutableList(),
         images = Images(
             fanart = listOf(
@@ -54,13 +54,16 @@ internal object PreviewData {
         ),
         certification = "PG-18",
         runtime = 90.minutes,
-        trailer = null,
-        status = "released",
+        trailer = "https://youtube.com/watch?v=abcdefg",
+        status = "Canceled",
         airedEpisodes = 28,
+        country = "pl",
+        languages = listOf("en", "de").toImmutableList(),
     )
 
     val show2 = show1.copy(
         ids = show1.ids.copy(trakt = TraktId(2)),
+        titleOriginal = null,
     )
 
     val movie1 = Movie(
@@ -93,7 +96,7 @@ internal object PreviewData {
         ),
         certification = "PG-18",
         runtime = 90.minutes,
-        trailer = null,
+        trailer = "https://youtube.com/watch?v=abcdefg",
         status = "Canceled",
         credits = 2,
         country = "us",
@@ -103,6 +106,25 @@ internal object PreviewData {
     val movie2 = movie1.copy(
         ids = movie1.ids.copy(trakt = TraktId(2)),
         images = null,
+    )
+
+    val user1 = User(
+        ids = Ids(
+            trakt = TraktId(1),
+            slug = SlugId("john-doe"),
+            imdb = ImdbId("tt1234567"),
+            tmdb = TmdbId(67890),
+            tvdb = TvdbId(112233),
+        ),
+        name = "John",
+        username = "johndoe69",
+        location = "New York, USA",
+        isVip = false,
+        isVipEp = false,
+        isVipOg = false,
+        isPrivate = false,
+        images = null,
+        streamings = null,
     )
 
     val episode1 = Episode(
@@ -133,63 +155,6 @@ internal object PreviewData {
         updatedAt = ZonedDateTime.now(),
     )
 
-    val person1 = Person(
-        name = "John Doe",
-        ids = Ids(
-            trakt = TraktId(1),
-            slug = SlugId("john-doe"),
-            imdb = ImdbId("tt1234567"),
-            tmdb = TmdbId(67890),
-            tvdb = TvdbId(112233),
-        ),
-        knownForDepartment = "Acting",
-        birthday = nowLocalDay(),
-        biography = "John Doe is a fictional character often used as a placeholder name in various contexts. " +
-            "He represents an average person and is commonly used in legal cases, examples, and discussions.",
-        images = Images(
-            headshot = listOf("walter-r2.trakt.tv/images/people/000/414/068/headshots/thumb/85af40e2cb.jpg.webp")
-                .toImmutableList(),
-        ),
-    )
-
-    val person2 = person1.copy(
-        ids = person1.ids.copy(trakt = TraktId(2)),
-    )
-
-    val user1 = User(
-        ids = Ids(
-            trakt = TraktId(1),
-            slug = SlugId("john-doe"),
-            imdb = ImdbId("tt1234567"),
-            tmdb = TmdbId(67890),
-            tvdb = TvdbId(112233),
-        ),
-        name = "John Doe",
-        username = "johndoe69",
-        location = "New York, USA",
-        isVip = false,
-        isVipEp = false,
-        isVipOg = false,
-        isPrivate = false,
-        images = null,
-        streamings = null,
-    )
-
-    val comment1 = Comment(
-        id = 1,
-        parentId = 0,
-        createdAt = ZonedDateTime.now(),
-        updatedAt = ZonedDateTime.now(),
-        comment = "This is a sample comment that provides feedback or discussion about a movie, show, or episode. " +
-            "It is intended to give viewers an idea of what others think without revealing too much.",
-        isSpoiler = false,
-        isReview = false,
-        replies = 23,
-        likes = 12450,
-        userRating = 2,
-        user = user1,
-    )
-
     val customList1 = CustomList(
         ids = Ids(
             trakt = TraktId(1),
@@ -212,5 +177,43 @@ internal object PreviewData {
         likes = 12,
         images = null,
         user = user1,
+    )
+
+    val comment1 = Comment(
+        id = 1,
+        parentId = 0,
+        createdAt = ZonedDateTime.now(),
+        updatedAt = ZonedDateTime.now(),
+        comment = "This is a sample comment that provides feedback or discussion about a movie, show, or episode. " +
+            "It is intended to give viewers an idea of what others think without revealing too much.",
+        isSpoiler = false,
+        isReview = false,
+        replies = 23,
+        likes = 12450,
+        userRating = 2,
+        user = user1,
+    )
+
+    val person1 = Person(
+        name = "John Doe",
+        ids = Ids(
+            trakt = TraktId(1),
+            slug = SlugId("john-doe"),
+            imdb = ImdbId("tt1234567"),
+            tmdb = TmdbId(67890),
+            tvdb = TvdbId(112233),
+        ),
+        knownForDepartment = "Acting",
+        birthday = nowLocalDay(),
+        biography = "John Doe is a fictional character often used as a placeholder name in various contexts. " +
+            "He represents an average person and is commonly used in legal cases, examples, and discussions.",
+        images = Images(
+            headshot = listOf("walter-r2.trakt.tv/images/people/000/414/068/headshots/thumb/85af40e2cb.jpg.webp")
+                .toImmutableList(),
+        ),
+    )
+
+    val person2 = person1.copy(
+        ids = person1.ids.copy(trakt = TraktId(2)),
     )
 }

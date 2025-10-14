@@ -35,7 +35,6 @@ import tv.trakt.trakt.app.core.details.show.usecases.collection.ChangeWatchlistU
 import tv.trakt.trakt.app.core.details.show.usecases.collection.GetCollectionUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.streamings.GetPlexUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.streamings.GetStreamingsUseCase
-import tv.trakt.trakt.app.core.episodes.model.Season
 import tv.trakt.trakt.app.core.tutorials.TutorialsManager
 import tv.trakt.trakt.app.core.tutorials.model.TutorialKey.WATCH_NOW_MORE
 import tv.trakt.trakt.common.auth.session.SessionManager
@@ -49,6 +48,7 @@ import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Ids
+import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User

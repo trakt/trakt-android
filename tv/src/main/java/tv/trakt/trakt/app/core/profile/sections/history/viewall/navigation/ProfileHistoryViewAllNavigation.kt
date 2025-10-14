@@ -5,8 +5,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
-import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.app.core.profile.sections.history.viewall.ProfileHistoryViewAllScreen
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 
 @Serializable

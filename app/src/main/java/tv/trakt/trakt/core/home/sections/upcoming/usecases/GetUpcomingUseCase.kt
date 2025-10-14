@@ -8,12 +8,11 @@ import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.toInstant
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.core.episodes.model.Episode
-import tv.trakt.trakt.core.episodes.model.fromDto
 import tv.trakt.trakt.core.home.HomeConfig.HOME_UPCOMING_DAYS_LIMIT
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem

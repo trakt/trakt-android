@@ -29,7 +29,6 @@ import tv.trakt.trakt.app.core.details.episode.usecases.streamings.GetPlexUseCas
 import tv.trakt.trakt.app.core.details.episode.usecases.streamings.GetStreamingsUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.GetRelatedShowsUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.GetShowDetailsUseCase
-import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.app.core.inappreview.usecases.RequestAppReviewUseCase
 import tv.trakt.trakt.app.core.tutorials.TutorialsManager
 import tv.trakt.trakt.app.core.tutorials.model.TutorialKey.WATCH_NOW_MORE
@@ -41,6 +40,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.SeasonEpisode

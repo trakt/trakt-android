@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.delay
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
-import tv.trakt.trakt.app.core.episodes.model.Episode
 import tv.trakt.trakt.app.core.home.HomeState.AuthenticationState.AUTHENTICATED
 import tv.trakt.trakt.app.core.home.HomeState.AuthenticationState.UNAUTHENTICATED
 import tv.trakt.trakt.app.core.home.sections.movies.availablenow.HomeAvailableNowView
@@ -38,6 +37,7 @@ import tv.trakt.trakt.app.core.home.sections.shows.upnext.HomeUpNextView
 import tv.trakt.trakt.app.core.home.sections.social.HomeSocialView
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.TraktId
 

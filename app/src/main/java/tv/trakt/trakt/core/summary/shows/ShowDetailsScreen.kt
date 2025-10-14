@@ -4,20 +4,26 @@ package tv.trakt.trakt.core.summary.shows
 
 import android.content.Context
 import android.content.Intent
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -35,21 +41,31 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
+import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.ui.theme.colors.Shade500
+import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.DetailsHeader
+import tv.trakt.trakt.core.summary.ui.DetailsMetaInfo
 import tv.trakt.trakt.helpers.SimpleScrollConnection
-import tv.trakt.trakt.helpers.preview.PreviewData
+import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -96,7 +112,7 @@ internal fun ShowDetailsScreen(
 //            listsSheet = state.movie
         },
         onMoreClick = {
-//            contextSheet = state.movie
+            contextSheet = state.show
         },
         onMoreCommentsClick = {
             state.show?.let {
@@ -246,46 +262,46 @@ internal fun ShowDetailsContent(
                     )
                 }
 
-//                item {
-//                    DetailsActions(
-//                        primaryEnabled = isReleased,
-//                        enabled = state.user != null &&
-//                            !state.loadingProgress.isLoading &&
-//                            !state.loadingLists.isLoading,
-//                        loading = state.loadingProgress.isLoading ||
-//                            state.loadingLists.isLoading,
-//                        inLists = state.showProgress?.inAnyList,
-//                        onPrimaryClick = onTrackClick,
-//                        onSecondaryClick = onListsClick,
-//                        onMoreClick = onMoreClick,
-//                        modifier = Modifier
-//                            .align(Alignment.Center)
-//                            .fillMaxWidth()
-//                            .padding(top = 16.dp)
-//                            .padding(horizontal = 42.dp),
-//                    )
-//                }
+                item {
+                    DetailsActions(
+                        primaryEnabled = isReleased,
+                        enabled = state.user != null &&
+                            !state.loadingProgress.isLoading &&
+                            !state.loadingLists.isLoading,
+                        loading = state.loadingProgress.isLoading ||
+                            state.loadingLists.isLoading,
+                        inLists = state.showProgress?.inAnyList,
+                        onPrimaryClick = onTrackClick,
+                        onSecondaryClick = onListsClick,
+                        onMoreClick = onMoreClick,
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .fillMaxWidth()
+                            .padding(top = 16.dp)
+                            .padding(horizontal = 42.dp),
+                    )
+                }
 
-//                item {
-//                    DetailsOverview(
-//                        overview = show.overview,
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(top = 18.dp)
-//                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
-//                    )
-//                }
-//
-//                item {
-//                    DetailsMeta(
-//                        show = show,
-//                        showStudios = state.showStudios,
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(top = 22.dp)
-//                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
-//                    )
-//                }
+                item {
+                    DetailsOverview(
+                        overview = show.overview,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 18.dp)
+                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
+                    )
+                }
+
+                item {
+                    DetailsMeta(
+                        show = show,
+                        showStudios = state.showStudios,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 22.dp)
+                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
+                    )
+                }
 
 //                if (!previewMode) {
 //                    val showStreamings = (state.user != null) && isReleased
@@ -405,93 +421,77 @@ internal fun ShowDetailsContent(
         }
     }
 }
-//
-// @Composable
-// private fun DetailsOverview(
-//    modifier: Modifier = Modifier,
-//    overview: String? = null,
-// ) {
-//    var isCollapsed by remember { mutableStateOf(true) }
-//    Text(
-//        text = overview ?: stringResource(R.string.text_overview_placeholder),
-//        style = TraktTheme.typography.paragraphSmall,
-//        color = TraktTheme.colors.textSecondary,
-//        maxLines = if (isCollapsed) 6 else Int.MAX_VALUE,
-//        textAlign = TextAlign.Start,
-//        overflow = Ellipsis,
-//        modifier = modifier
-//            .onClick {
-//                isCollapsed = !isCollapsed
-//            },
-//    )
-// }
-//
-// @Composable
-// private fun DetailsMeta(
-//    modifier: Modifier = Modifier,
-//    show: Show,
-//    movieStudios: ImmutableList<String>?,
-// ) {
-//    var isCollapsed by remember { mutableStateOf(true) }
-//    Box(
-//        modifier = modifier
-//            .animateContentSize(),
-//    ) {
-//        Text(
-//            text = when {
-//                isCollapsed -> stringResource(R.string.button_text_view_details)
-//                else -> stringResource(R.string.button_text_hide_details)
-//            }.uppercase(),
-//            textAlign = TextAlign.Center,
-//            style = TraktTheme.typography.buttonPrimary
-//                .copy(fontSize = 14.sp),
-//            color = TraktTheme.colors.textPrimary,
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .background(
-//                    color = TraktTheme.colors.backgroundPrimary,
-//                    shape = RoundedCornerShape(100),
-//                )
-//                .border(
-//                    width = (1.5).dp,
-//                    color = Shade500,
-//                    shape = RoundedCornerShape(100),
-//                )
-//                .padding(vertical = 9.dp)
-//                .onClick {
-//                    isCollapsed = !isCollapsed
-//                },
-//        )
-//
-//        if (!isCollapsed) {
-//            DetailsMetaInfo(
-//                movie = movie,
-//                movieStudios = movieStudios,
-//                modifier = Modifier
-//                    .padding(
-//                        top = 57.dp,
-//                        bottom = 8.dp,
-//                    ),
-//            )
-//        }
-//    }
-// }
-//
-// private fun shareShow(
-//    movie: Show,
-//    context: Context,
-// ) {
-//    val shareText = "${context.getString(R.string.text_share_movie, movie.title)} " +
-//        "${WEB_V3_BASE_URL}movies/${movie.ids.slug.value}"
-//
-//    val intent = Intent().apply {
-//        Intent.setAction = Intent.ACTION_SEND
-//        putExtra(Intent.EXTRA_TEXT, shareText)
-//        Intent.setType = "text/plain"
-//    }
-//
-//    context.startActivity(Intent.createChooser(intent, movie.title))
-// }
+
+@Composable
+private fun DetailsOverview(
+    modifier: Modifier = Modifier,
+    overview: String? = null,
+) {
+    var isCollapsed by remember { mutableStateOf(true) }
+    Text(
+        text = overview ?: stringResource(R.string.text_overview_placeholder),
+        style = TraktTheme.typography.paragraphSmall,
+        color = TraktTheme.colors.textSecondary,
+        maxLines = if (isCollapsed) 6 else Int.MAX_VALUE,
+        textAlign = TextAlign.Start,
+        overflow = Ellipsis,
+        modifier = modifier
+            .onClick {
+                isCollapsed = !isCollapsed
+            },
+    )
+}
+
+@Composable
+private fun DetailsMeta(
+    modifier: Modifier = Modifier,
+    show: Show,
+    showStudios: ImmutableList<String>?,
+) {
+    var isCollapsed by remember { mutableStateOf(true) }
+    Box(
+        modifier = modifier
+            .animateContentSize(),
+    ) {
+        Text(
+            text = when {
+                isCollapsed -> stringResource(R.string.button_text_view_details)
+                else -> stringResource(R.string.button_text_hide_details)
+            }.uppercase(),
+            textAlign = TextAlign.Center,
+            style = TraktTheme.typography.buttonPrimary
+                .copy(fontSize = 14.sp),
+            color = TraktTheme.colors.textPrimary,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = TraktTheme.colors.backgroundPrimary,
+                    shape = RoundedCornerShape(100),
+                )
+                .border(
+                    width = (1.5).dp,
+                    color = Shade500,
+                    shape = RoundedCornerShape(100),
+                )
+                .padding(vertical = 9.dp)
+                .onClick {
+                    isCollapsed = !isCollapsed
+                },
+        )
+
+        if (!isCollapsed) {
+            DetailsMetaInfo(
+                show = show,
+                showStudios = showStudios,
+                modifier = Modifier
+                    .padding(
+                        top = 57.dp,
+                        bottom = 8.dp,
+                    ),
+            )
+        }
+    }
+}
 
 private fun shareShow(
     show: Show,

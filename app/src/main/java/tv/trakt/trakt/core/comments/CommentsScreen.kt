@@ -215,7 +215,7 @@ private fun ContentListItem(
 ) {
     CommentCard(
         comment = item,
-        maxLines = 20,
+        maxLines = 12,
         corner = 20.dp,
         onClick = onClick,
         modifier = modifier,

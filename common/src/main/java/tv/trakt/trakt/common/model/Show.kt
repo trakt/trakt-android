@@ -37,6 +37,9 @@ data class Show(
     val trailer: String?,
     val runtime: Duration?,
     val airedEpisodes: Int,
+    val country: String?,
+    @Serializable(ImmutableListSerializer::class)
+    val languages: ImmutableList<String>,
 ) {
     companion object
 }
@@ -68,6 +71,8 @@ fun Companion.fromDto(dto: ShowDto): Show {
         runtime = dto.runtime?.minutes,
         trailer = dto.trailer,
         airedEpisodes = dto.airedEpisodes ?: 0,
+        country = dto.country,
+        languages = (dto.languages ?: emptyList()).toImmutableList(),
     )
 }
 
@@ -98,6 +103,8 @@ fun Companion.fromDto(dto: RecommendedShowDto): Show {
         status = dto.status,
         trailer = dto.trailer,
         airedEpisodes = dto.airedEpisodes ?: 0,
+        country = dto.country,
+        languages = (dto.languages ?: emptyList()).toImmutableList(),
     )
 }
 
@@ -128,5 +135,7 @@ fun Companion.fromDto(dto: ShowLikesDto): Show {
         status = dto.status,
         trailer = dto.trailer,
         airedEpisodes = dto.airedEpisodes ?: 0,
+        country = dto.country,
+        languages = (dto.languages ?: emptyList()).toImmutableList(),
     )
 }

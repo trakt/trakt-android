@@ -5,12 +5,12 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.core.details.show.models.ShowSeasons
 import tv.trakt.trakt.app.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.app.core.episodes.data.remote.EpisodesRemoteDataSource
-import tv.trakt.trakt.app.core.episodes.model.Episode
-import tv.trakt.trakt.app.core.episodes.model.Season
-import tv.trakt.trakt.app.core.episodes.model.fromDto
 import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.fromDto
 
 internal class GetShowSeasonsUseCase(
     private val remoteShowsSource: ShowsRemoteDataSource,

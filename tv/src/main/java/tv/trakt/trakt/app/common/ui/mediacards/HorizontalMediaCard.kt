@@ -50,8 +50,8 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import tv.trakt.trakt.app.common.ui.InfoChip
-import tv.trakt.trakt.app.helpers.preview.PreviewData
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
 
 @Composable

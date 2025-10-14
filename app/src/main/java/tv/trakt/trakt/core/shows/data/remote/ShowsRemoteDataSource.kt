@@ -33,4 +33,6 @@ internal interface ShowsRemoteDataSource {
     suspend fun getShowDetails(showId: TraktId): ShowDto
 
     suspend fun getExternalRatings(showId: TraktId): ExternalRatingsDto
+
+    suspend fun getStudios(showId: TraktId): List<String>
 }
