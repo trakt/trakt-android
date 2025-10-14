@@ -51,6 +51,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
@@ -61,6 +63,7 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.core.summary.shows.features.context.more.ShowDetailsContextSheet
+import tv.trakt.trakt.core.summary.shows.features.streaming.ShowStreamingsView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.DetailsHeader
@@ -304,22 +307,23 @@ internal fun ShowDetailsContent(
                     )
                 }
 
-//                if (!previewMode) {
-//                    val showStreamings = (state.user != null) && isReleased
-//
-//                    if (showStreamings) {
-//                        item {
-//                            ShowStreamingsView(
-//                                viewModel = koinViewModel(
-//                                    parameters = { parametersOf(show) },
-//                                ),
-//                                headerPadding = sectionPadding,
-//                                contentPadding = sectionPadding,
-//                                modifier = Modifier
-//                                    .padding(top = 24.dp),
-//                            )
-//                        }
-//                    }
+                if (!previewMode) {
+                    val showStreamings = (state.user != null) && isReleased
+
+                    if (showStreamings) {
+                        item {
+                            ShowStreamingsView(
+                                viewModel = koinViewModel(
+                                    parameters = { parametersOf(show) },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                modifier = Modifier
+                                    .padding(top = 24.dp),
+                            )
+                        }
+                    }
+
 //
 //                    if (isReleased) {
 //                        item {
@@ -417,7 +421,7 @@ internal fun ShowDetailsContent(
 //                            )
 //                        }
 //                    }
-//                }
+                }
             }
         }
     }

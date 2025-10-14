@@ -50,7 +50,7 @@ internal fun TraktHeader(
 //            contentDescription = null,
 //            tint = TraktTheme.colors.textSecondary,
 //            modifier = Modifier
-//                .size(16.dp)
+//                .size(14.dp)
 //                .graphicsLayer {
 //                    translationY = 1.dp.toPx()
 //                },
