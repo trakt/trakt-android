@@ -48,6 +48,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Purple300
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
+import kotlin.math.max
 
 @Composable
 internal fun DetailsHeader(
@@ -111,7 +112,9 @@ internal fun DetailsHeader(
 internal fun DetailsHeader(
     show: Show,
     ratings: ExternalRating?,
-    playsCount: Int?,
+    airedCount: Int,
+    completedCount: Int,
+    playsCount: Int,
     loading: Boolean,
     onShareClick: () -> Unit,
     onTrailerClick: () -> Unit,
@@ -120,6 +123,13 @@ internal fun DetailsHeader(
 ) {
     val isReleased = remember {
         show.released?.isNowOrBefore() ?: false
+    }
+
+    val playsCount = remember(airedCount, completedCount, playsCount) {
+        if (airedCount == 0) {
+            return@remember 0
+        }
+        max(completedCount, playsCount) / airedCount
     }
 
     DetailsHeader(

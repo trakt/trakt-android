@@ -77,6 +77,7 @@ import tv.trakt.trakt.core.summary.ui.DetailsHeader
 import tv.trakt.trakt.core.summary.ui.DetailsMetaInfo
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -99,6 +100,7 @@ internal fun ShowDetailsScreen(
     val scope = rememberCoroutineScope()
     var contextSheet by remember { mutableStateOf<Show?>(null) }
     var listsSheet by remember { mutableStateOf<Show?>(null) }
+    var confirmAddWatchedSheet by remember { mutableStateOf(false) }
 
     ShowDetailsContent(
         state = state,
@@ -110,7 +112,7 @@ internal fun ShowDetailsScreen(
             }
         },
         onTrackClick = {
-//            viewModel.addToWatched()
+            confirmAddWatchedSheet = true
         },
         onShareClick = {
             state.show?.let { shareShow(it, context) }
@@ -160,6 +162,20 @@ internal fun ShowDetailsScreen(
         onDismiss = {
             contextSheet = null
         },
+    )
+
+    ConfirmationSheet(
+        active = confirmAddWatchedSheet,
+        onYes = {
+            confirmAddWatchedSheet = false
+            viewModel.addToWatched()
+        },
+        onNo = { confirmAddWatchedSheet = false },
+        title = stringResource(R.string.button_text_mark_as_watched),
+        message = stringResource(
+            R.string.warning_prompt_mark_as_watched_show,
+            state.show?.title ?: "",
+        ),
     )
 
     LaunchedEffect(state.info) {
@@ -248,7 +264,9 @@ internal fun ShowDetailsContent(
                     DetailsHeader(
                         show = show,
                         ratings = state.showRatings,
-                        playsCount = state.showProgress?.plays,
+                        airedCount = state.showProgress?.aired ?: 0,
+                        completedCount = state.showProgress?.completed ?: 0,
+                        playsCount = state.showProgress?.plays ?: 0,
                         loading = state.loading.isLoading ||
                             state.loadingProgress.isLoading,
                         onBackClick = onBackClick ?: {},

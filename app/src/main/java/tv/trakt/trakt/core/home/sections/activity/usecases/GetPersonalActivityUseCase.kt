@@ -52,7 +52,7 @@ internal class GetPersonalActivityUseCase(
                         ),
                         show = Show.fromDto(
                             checkNotNull(it.show) {
-                                "Show should not be null if type is EPISODE"
+                                "Show should not be null if type is SHOW"
                             },
                         ),
                     )

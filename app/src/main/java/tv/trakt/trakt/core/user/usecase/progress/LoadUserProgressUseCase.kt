@@ -17,11 +17,6 @@ internal class LoadUserProgressUseCase(
     private val remoteSource: UserRemoteDataSource,
     private val localSource: UserProgressLocalDataSource,
 ) {
-    suspend fun loadLocalAll(): ImmutableList<ProgressItem> {
-        return localSource.getAll()
-            .toImmutableList()
-    }
-
     suspend fun loadLocalShows(): ImmutableList<ProgressItem.ShowItem> {
         return localSource.getShows()
             .toImmutableList()
@@ -30,10 +25,6 @@ internal class LoadUserProgressUseCase(
     suspend fun loadLocalMovies(): ImmutableList<ProgressItem.MovieItem> {
         return localSource.getMovies()
             .toImmutableList()
-    }
-
-    suspend fun isLoaded(): Boolean {
-        return localSource.isMoviesLoaded() && localSource.isShowsLoaded()
     }
 
     suspend fun isShowsLoaded(): Boolean {
@@ -68,6 +59,7 @@ internal class LoadUserProgressUseCase(
                     progress = ProgressItem.ShowItem.Progress(
                         aired = it.progress.aired,
                         completed = it.progress.completed,
+                        plays = it.progress.stats?.playCount,
                         lastWatchedAt = it.progress.lastWatchedAt?.toInstant(),
                         resetAt = it.progress.resetAt?.toInstant(),
                     ),

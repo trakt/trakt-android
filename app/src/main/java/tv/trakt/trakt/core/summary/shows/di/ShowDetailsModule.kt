@@ -31,10 +31,6 @@ internal val showDetailsDataModule = module {
     single<ShowLocalDataSource> {
         ShowStorage()
     }
-
-//    single<ShowRatingsLocalDataSource> {
-//        ShowRatingsStorage()
-//    }
 }
 
 internal val showDetailsModule = module {
@@ -56,13 +52,13 @@ internal val showDetailsModule = module {
             remoteSource = get(),
         )
     }
-//
+
     factory {
         GetShowExtrasUseCase(
             remoteSource = get(),
         )
     }
-//
+
     factory {
         GetShowActorsUseCase(
             remoteSource = get(),
@@ -82,7 +78,7 @@ internal val showDetailsModule = module {
             localStreamingSource = get(),
         )
     }
-//
+
     factory {
         GetShowStreamingUseCase(
             remoteShowSource = get(),
@@ -91,24 +87,19 @@ internal val showDetailsModule = module {
             priorityStreamingProvider = get(),
         )
     }
-//
+
     factory {
         GetShowSentimentUseCase(
             remoteSource = get(),
         )
     }
-//
-//    factory {
-//        GetShowHistoryUseCase(
-//            remoteSource = get(),
-//        )
-//    }
-//
+
     factory {
         GetShowCommentsUseCase(
             remoteSource = get(),
         )
     }
+
     factory {
         GetShowListsUseCase(
             remoteSource = get(),
@@ -124,12 +115,12 @@ internal val showDetailsModule = module {
             loadProgressUseCase = get(),
             loadWatchlistUseCase = get(),
             loadListsUseCase = get(),
-//            updateShowHistoryUseCase = get(),
+            updateShowHistoryUseCase = get(),
             updateShowWatchlistUseCase = get(),
             addListItemUseCase = get(),
             removeListItemUseCase = get(),
             userWatchlistLocalSource = get(),
-//            allActivityLocalSource = get(),
+            allActivityLocalSource = get(),
             sessionManager = get(),
         )
     }
@@ -141,14 +132,14 @@ internal val showDetailsModule = module {
             getStreamingsUseCase = get(),
         )
     }
-//
+
     viewModel { (show: Show) ->
         ShowExtrasViewModel(
             show = show,
             getExtrasUseCase = get(),
         )
     }
-//
+
     viewModel { (show: Show) ->
         ShowActorsViewModel(
             show = show,
@@ -168,21 +159,14 @@ internal val showDetailsModule = module {
             getListsUseCase = get(),
         )
     }
-//    viewModel { (show: Show) ->
-//        ShowHistoryViewModel(
-//            show = show,
-//            getHistoryUseCase = get(),
-//            allActivityLocalSource = get(),
-//        )
-//    }
-//
+
     viewModel { (show: Show) ->
         ShowSentimentViewModel(
             show = show,
             getSentimentUseCase = get(),
         )
     }
-//
+
     viewModel { (show: Show) ->
         ShowCommentsViewModel(
             show = show,
@@ -196,7 +180,7 @@ internal val showDetailsModule = module {
             getStreamingsUseCase = get(),
         )
     }
-//
+
     viewModel { (show: Show) ->
         ShowDetailsListsViewModel(
             show = show,

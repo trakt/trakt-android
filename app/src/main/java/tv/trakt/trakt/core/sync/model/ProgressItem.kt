@@ -26,6 +26,7 @@ internal sealed class ProgressItem(
         data class Progress(
             val aired: Int,
             val completed: Int,
+            val plays: Int?,
             val lastWatchedAt: Instant?,
             val resetAt: Instant?,
         )

@@ -30,6 +30,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.home.sections.activity.all.data.local.AllActivityLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.usecases.AddPersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
@@ -37,6 +38,7 @@ import tv.trakt.trakt.core.summary.shows.navigation.ShowDetailsDestination
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowRatingsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowStudiosUseCase
+import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowWatchlistUseCase
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.usecase.lists.LoadUserListsUseCase
@@ -52,12 +54,12 @@ internal class ShowDetailsViewModel(
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
     private val loadListsUseCase: LoadUserListsUseCase,
-//    private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
+    private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
     private val updateShowWatchlistUseCase: UpdateShowWatchlistUseCase,
     private val addListItemUseCase: AddPersonalListItemUseCase,
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
-//    private val allActivityLocalSource: AllActivityLocalDataSource,
+    private val allActivityLocalSource: AllActivityLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<ShowDetailsDestination>()
@@ -181,7 +183,9 @@ internal class ShowDetailsViewModel(
 
                     showProgressState.update {
                         ShowDetailsState.ProgressState(
-                            plays = 0, // TODO
+                            aired = progress?.progress?.aired ?: 0,
+                            completed = progress?.progress?.completed ?: 0,
+                            plays = progress?.progress?.plays,
                             inWatchlist = watchlist != null,
                             inLists = lists != null,
                         )
@@ -262,6 +266,56 @@ internal class ShowDetailsViewModel(
         when {
             add -> addToList(listId)
             else -> removeFromList(listId)
+        }
+    }
+
+    fun addToWatched() {
+        if (showState.value == null ||
+            loadingState.value.isLoading ||
+            loadingProgress.value.isLoading ||
+            loadingLists.value.isLoading
+        ) {
+            return
+        }
+
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                loadingProgress.update { LOADING }
+
+                updateShowHistoryUseCase.addToWatched(showId)
+                val progress = loadProgressUseCase.loadShowsProgress(limit = 3)
+                    .firstOrNull {
+                        it.show.ids.trakt == showId
+                    }
+                userWatchlistLocalSource.removeShows(
+                    ids = setOf(showId),
+                    notify = true,
+                )
+                allActivityLocalSource.notifyUpdate()
+
+                showProgressState.update {
+                    it?.copy(
+                        aired = progress?.progress?.aired ?: 0,
+                        completed = progress?.progress?.completed ?: 0,
+                        plays = progress?.progress?.plays ?: 0,
+                        inWatchlist = false,
+                    )
+                }
+
+                infoState.update {
+                    DynamicStringResource(R.string.text_info_history_added)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.w(error)
+                }
+            } finally {
+                loadingProgress.update { DONE }
+            }
         }
     }
 

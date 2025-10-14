@@ -39,6 +39,7 @@ open class SyncExtrasApi(
         val localVariableQuery = mutableMapOf<String, List<String>>()
         page?.apply { localVariableQuery["page"] = listOf("$page") }
         limit?.apply { localVariableQuery["limit"] = listOf(limit) }
+        localVariableQuery["include_stats"] = listOf("true")
 
         val localVariableHeaders = mutableMapOf<String, String>()
 

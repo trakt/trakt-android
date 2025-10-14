@@ -22,7 +22,9 @@ internal data class ShowDetailsState(
     val user: User? = null,
 ) {
     data class ProgressState(
-        val plays: Int,
+        val aired: Int,
+        val completed: Int,
+        val plays: Int?,
         val inWatchlist: Boolean,
         val inLists: Boolean,
     ) {
