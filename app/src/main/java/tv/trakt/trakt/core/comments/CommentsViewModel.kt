@@ -24,9 +24,11 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.navigation.CommentsDestination
 import tv.trakt.trakt.core.summary.movies.features.comments.usecases.GetMovieCommentsUseCase
+import tv.trakt.trakt.core.summary.shows.features.comments.usecases.GetShowCommentsUseCase
 
 internal class CommentsViewModel(
     savedStateHandle: SavedStateHandle,
+    private val getShowCommentsUseCase: GetShowCommentsUseCase,
     private val getMovieCommentsUseCase: GetMovieCommentsUseCase,
 ) : ViewModel() {
     private val initialState = CommentsState()
@@ -76,7 +78,12 @@ internal class CommentsViewModel(
                 filter = filterState.value,
                 limit = 50,
             )
-            else -> TODO()
+            MediaType.SHOW -> getShowCommentsUseCase.getComments(
+                showId = mediaId,
+                filter = filterState.value,
+                limit = 50,
+            )
+            else -> throw IllegalArgumentException("Unsupported media type: $mediaType")
         }
     }
 

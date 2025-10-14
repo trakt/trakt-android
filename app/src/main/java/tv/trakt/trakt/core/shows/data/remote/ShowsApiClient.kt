@@ -6,6 +6,7 @@ import org.openapitools.client.apis.ShowsApi
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CastCrewDto
+import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.ListDto
@@ -228,6 +229,22 @@ internal class ShowsApiClient(
             page = null,
             limit = limit,
             sort = "popular",
+        )
+
+        return response.body()
+    }
+
+    override suspend fun getComments(
+        showId: TraktId,
+        limit: Int,
+        sort: String,
+    ): List<CommentDto> {
+        val response = showsApi.getShowsComments(
+            id = showId.value.toString(),
+            sort = sort,
+            extended = "images",
+            page = null,
+            limit = limit.toString(),
         )
 
         return response.body()

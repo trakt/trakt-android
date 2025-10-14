@@ -8,6 +8,8 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.shows.ShowDetailsViewModel
 import tv.trakt.trakt.core.summary.shows.features.actors.ShowActorsViewModel
 import tv.trakt.trakt.core.summary.shows.features.actors.usecases.GetShowActorsUseCase
+import tv.trakt.trakt.core.summary.shows.features.comments.ShowCommentsViewModel
+import tv.trakt.trakt.core.summary.shows.features.comments.usecases.GetShowCommentsUseCase
 import tv.trakt.trakt.core.summary.shows.features.context.more.ShowDetailsContextViewModel
 import tv.trakt.trakt.core.summary.shows.features.extras.ShowExtrasViewModel
 import tv.trakt.trakt.core.summary.shows.features.extras.usecases.GetShowExtrasUseCase
@@ -101,12 +103,11 @@ internal val showDetailsModule = module {
 //        )
 //    }
 //
-//    factory {
-//        GetShowCommentsUseCase(
-//            remoteSource = get(),
-//        )
-//    }
-//
+    factory {
+        GetShowCommentsUseCase(
+            remoteSource = get(),
+        )
+    }
     factory {
         GetShowListsUseCase(
             remoteSource = get(),
@@ -181,13 +182,12 @@ internal val showDetailsModule = module {
         )
     }
 //
-//    viewModel { (show: Show) ->
-//        ShowCommentsViewModel(
-//            show = show,
-//            getCommentsUseCase = get(),
-//        )
-//    }
-//
+    viewModel { (show: Show) ->
+        ShowCommentsViewModel(
+            show = show,
+            getCommentsUseCase = get(),
+        )
+    }
     viewModel { (show: Show) ->
         ShowDetailsContextViewModel(
             show = show,

@@ -63,6 +63,7 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.core.summary.shows.features.actors.ShowActorsView
+import tv.trakt.trakt.core.summary.shows.features.comments.ShowCommentsView
 import tv.trakt.trakt.core.summary.shows.features.context.more.ShowDetailsContextSheet
 import tv.trakt.trakt.core.summary.shows.features.extras.ShowExtrasView
 import tv.trakt.trakt.core.summary.shows.features.lists.ShowListsView
@@ -334,18 +335,18 @@ internal fun ShowDetailsContent(
                         }
                     }
 
-//                    item {
-//                        ShowCommentsView(
-//                            viewModel = koinViewModel(
-//                                parameters = { parametersOf(show) },
-//                            ),
-//                            headerPadding = sectionPadding,
-//                            contentPadding = sectionPadding,
-//                            onMoreClick = onMoreCommentsClick,
-//                            modifier = Modifier
-//                                .padding(top = 32.dp),
-//                        )
-//                    }
+                    item {
+                        ShowCommentsView(
+                            viewModel = koinViewModel(
+                                parameters = { parametersOf(show) },
+                            ),
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            onMoreClick = onMoreCommentsClick,
+                            modifier = Modifier
+                                .padding(top = 32.dp),
+                        )
+                    }
 
                     item {
                         ShowActorsView(

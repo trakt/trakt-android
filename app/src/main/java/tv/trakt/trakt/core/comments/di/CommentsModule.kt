@@ -34,6 +34,7 @@ internal val commentsModule = module {
     viewModel {
         CommentsViewModel(
             savedStateHandle = get(),
+            getShowCommentsUseCase = get(),
             getMovieCommentsUseCase = get(),
         )
     }

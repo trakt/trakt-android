@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.shows.data.remote
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CastCrewDto
+import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.ListDto
@@ -57,6 +58,12 @@ internal interface ShowsRemoteDataSource {
         type: String,
         limit: Int,
     ): List<ListDto>
+
+    suspend fun getComments(
+        showId: TraktId,
+        limit: Int,
+        sort: String,
+    ): List<CommentDto>
 
     suspend fun getExtras(showId: TraktId): List<ExtraVideoDto>
 }
