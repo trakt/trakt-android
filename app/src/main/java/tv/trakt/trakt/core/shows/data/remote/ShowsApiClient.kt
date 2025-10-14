@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.shows.data.remote
 import org.openapitools.client.apis.RecommendationsApi
 import org.openapitools.client.apis.ShowsApi
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.ShowDto
@@ -175,6 +176,14 @@ internal class ShowsApiClient(
             links = "direct",
         )
 
+        return response.body()
+    }
+
+    override suspend fun getCastCrew(showId: TraktId): CastCrewDto {
+        val response = showsApi.getShowsPeople(
+            id = showId.value.toString(),
+            extended = "cloud9",
+        )
         return response.body()
     }
 }

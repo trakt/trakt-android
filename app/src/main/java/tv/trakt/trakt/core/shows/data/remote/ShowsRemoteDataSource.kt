@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.shows.data.remote
 
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.ShowDto
@@ -41,4 +42,6 @@ internal interface ShowsRemoteDataSource {
         showId: TraktId,
         countryCode: String?,
     ): Map<String, StreamingDto>
+
+    suspend fun getCastCrew(showId: TraktId): CastCrewDto
 }

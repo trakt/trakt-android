@@ -6,6 +6,8 @@ import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowStorage
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.shows.ShowDetailsViewModel
+import tv.trakt.trakt.core.summary.shows.features.actors.ShowActorsViewModel
+import tv.trakt.trakt.core.summary.shows.features.actors.usecases.GetShowActorsUseCase
 import tv.trakt.trakt.core.summary.shows.features.context.more.ShowDetailsContextViewModel
 import tv.trakt.trakt.core.summary.shows.features.streaming.ShowStreamingsViewModel
 import tv.trakt.trakt.core.summary.shows.features.streaming.usecases.GetShowStreamingsUseCase
@@ -50,11 +52,11 @@ internal val showDetailsModule = module {
 //        )
 //    }
 //
-//    factory {
-//        GetShowActorsUseCase(
-//            remoteSource = get(),
-//        )
-//    }
+    factory {
+        GetShowActorsUseCase(
+            remoteSource = get(),
+        )
+    }
 //
 //    factory {
 //        GetShowRelatedUseCase(
@@ -138,12 +140,12 @@ internal val showDetailsModule = module {
 //        )
 //    }
 //
-//    viewModel { (show: Show) ->
-//        ShowActorsViewModel(
-//            show = show,
-//            getActorsUseCase = get(),
-//        )
-//    }
+    viewModel { (show: Show) ->
+        ShowActorsViewModel(
+            show = show,
+            getActorsUseCase = get(),
+        )
+    }
 //
 //    viewModel { (show: Show) ->
 //        ShowRelatedViewModel(

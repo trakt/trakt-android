@@ -62,6 +62,7 @@ import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
+import tv.trakt.trakt.core.summary.shows.features.actors.ShowActorsView
 import tv.trakt.trakt.core.summary.shows.features.context.more.ShowDetailsContextSheet
 import tv.trakt.trakt.core.summary.shows.features.streaming.ShowStreamingsView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
@@ -356,19 +357,19 @@ internal fun ShowDetailsContent(
 //                                .padding(top = 32.dp),
 //                        )
 //                    }
-//
-//                    item {
-//                        ShowActorsView(
-//                            viewModel = koinViewModel(
-//                                parameters = { parametersOf(show) },
-//                            ),
-//                            headerPadding = sectionPadding,
-//                            contentPadding = sectionPadding,
-//                            modifier = Modifier
-//                                .padding(top = 32.dp),
-//                        )
-//                    }
-//
+
+                    item {
+                        ShowActorsView(
+                            viewModel = koinViewModel(
+                                parameters = { parametersOf(show) },
+                            ),
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            modifier = Modifier
+                                .padding(top = 32.dp),
+                        )
+                    }
+
 //                    item {
 //                        ShowExtrasView(
 //                            viewModel = koinViewModel(

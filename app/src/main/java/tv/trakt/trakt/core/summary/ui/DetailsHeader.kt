@@ -43,6 +43,7 @@ import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.ui.theme.colors.Purple100
 import tv.trakt.trakt.common.ui.theme.colors.Purple300
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.resources.R
@@ -360,6 +361,7 @@ private fun DetailsHeader(
                         text = it.uppercase(),
                         color = when (it.lowercase()) {
                             "canceled" -> Red500
+                            "ended" -> Purple100
                             else -> Purple300
                         },
                         style = TraktTheme.typography.meta,
