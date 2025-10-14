@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
+import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.ShowDto
 import tv.trakt.trakt.common.networking.StreamingDto
@@ -202,5 +203,12 @@ internal class ShowsApiClient(
                 .map { Sentiments.Sentiment(it.sentiment) }
                 .toImmutableList(),
         )
+    }
+
+    override suspend fun getExtras(showId: TraktId): List<ExtraVideoDto> {
+        val response = showsApi.getShowsVideos(
+            id = showId.value.toString(),
+        )
+        return response.body()
     }
 }

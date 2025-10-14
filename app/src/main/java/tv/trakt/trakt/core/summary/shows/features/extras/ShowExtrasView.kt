@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 
-package tv.trakt.trakt.core.summary.shows.features.actors
+package tv.trakt.trakt.core.summary.shows.features.extras
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
@@ -12,20 +12,24 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,38 +44,45 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
-import tv.trakt.trakt.common.model.CastPerson
+import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.FilterChip
+import tv.trakt.trakt.ui.components.FilterChipGroup
+import tv.trakt.trakt.ui.components.FilterChipSkeleton
 import tv.trakt.trakt.ui.components.TraktHeader
-import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
-import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
+import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
+import tv.trakt.trakt.ui.components.mediacards.skeletons.HorizontalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
-import kotlin.random.Random.Default.nextInt
 
 @Composable
-internal fun ShowActorsView(
-    viewModel: ShowActorsViewModel,
+internal fun ShowExtrasView(
+    viewModel: ShowExtrasViewModel,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
+    val uriHandler = LocalUriHandler.current
+
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    ShowActorsContent(
+    ShowExtrasContent(
         state = state,
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
+        onClick = { uriHandler.openUri(it.url) },
+        onFilterClick = { viewModel.toggleFilter(it) },
     )
 }
 
 @Composable
-private fun ShowActorsContent(
-    state: ShowActorsState,
+private fun ShowExtrasContent(
+    state: ShowExtrasState,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onClick: ((CastPerson) -> Unit)? = null,
+    onClick: ((ExtraVideo) -> Unit)? = null,
+    onFilterClick: ((String) -> Unit)? = null,
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
@@ -85,7 +96,7 @@ private fun ShowActorsContent(
             verticalAlignment = CenterVertically,
         ) {
             TraktHeader(
-                title = stringResource(R.string.list_title_actors),
+                title = stringResource(R.string.list_title_extras),
             )
         }
 
@@ -101,16 +112,27 @@ private fun ShowActorsContent(
                     )
                 }
                 DONE -> {
-                    if (state.items?.isEmpty() == true) {
-                        ContentEmpty(
-                            contentPadding = headerPadding,
-                        )
-                    } else {
-                        ContentList(
-                            listItems = (state.items ?: emptyList()).toImmutableList(),
-                            contentPadding = contentPadding,
-                            onClick = onClick,
-                        )
+                    Column(
+                        verticalArrangement = spacedBy(0.dp),
+                    ) {
+                        if (state.filters.filters.size > 1) {
+                            ContentFilters(
+                                state = state.filters,
+                                onFilterClick = onFilterClick ?: {},
+                            )
+                        }
+
+                        if (state.items?.isEmpty() == true) {
+                            ContentEmpty(
+                                contentPadding = headerPadding,
+                            )
+                        } else {
+                            ContentList(
+                                listItems = (state.items ?: emptyList()).toImmutableList(),
+                                contentPadding = contentPadding,
+                                onClick = onClick,
+                            )
+                        }
                     }
                 }
             }
@@ -120,16 +142,20 @@ private fun ShowActorsContent(
 
 @Composable
 private fun ContentList(
-    listItems: ImmutableList<CastPerson>,
+    listItems: ImmutableList<ExtraVideo>,
+    listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
-    onClick: ((CastPerson) -> Unit)? = null,
+    onClick: ((ExtraVideo) -> Unit)? = null,
 ) {
-    val listState = rememberLazyListState(
-        cacheWindow = LazyLayoutCacheWindow(
-            aheadFraction = 1F,
-            behindFraction = 1F,
-        ),
-    )
+    val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
+
+    LaunchedEffect(listItems) {
+        val hashCode = listItems.hashCode()
+        if (currentList.intValue != hashCode) {
+            currentList.intValue = hashCode
+            listState.animateScrollToItem(0)
+        }
+    }
 
     LazyRow(
         state = listState,
@@ -139,18 +165,18 @@ private fun ContentList(
     ) {
         items(
             items = listItems,
-            key = { it.person.ids.trakt.value.plus(nextInt()) },
+            key = { it.url },
         ) { item ->
-            VerticalMediaCard(
+            HorizontalMediaCard(
                 title = "",
-                imageUrl = item.person.images?.getHeadshotUrl(),
+                containerImageUrl = item.getYoutubeImageUrl,
                 onClick = { onClick?.invoke(item) },
-                chipContent = {
+                footerContent = {
                     Column(
                         verticalArrangement = Arrangement.Absolute.spacedBy(1.dp),
                     ) {
                         Text(
-                            text = item.person.name,
+                            text = item.title,
                             style = TraktTheme.typography.cardTitle,
                             color = TraktTheme.colors.textPrimary,
                             maxLines = 1,
@@ -158,7 +184,7 @@ private fun ContentList(
                         )
 
                         Text(
-                            text = item.characters.firstOrNull() ?: "—",
+                            text = item.type.replaceFirstChar { it.uppercaseChar() },
                             style = TraktTheme.typography.cardSubtitle,
                             color = TraktTheme.colors.textSecondary,
                             maxLines = 1,
@@ -176,22 +202,67 @@ private fun ContentList(
 }
 
 @Composable
+private fun ContentFilters(
+    state: ShowExtrasState.FiltersState,
+    onFilterClick: (String) -> Unit,
+) {
+    FilterChipGroup(
+        paddingHorizontal = PaddingValues(
+            start = TraktTheme.spacing.mainPageHorizontalSpace,
+            end = TraktTheme.spacing.mainPageHorizontalSpace,
+        ),
+        paddingVertical = PaddingValues(
+            bottom = 18.dp,
+        ),
+    ) {
+        for (filter in state.filters) {
+            FilterChip(
+                text = filter
+                    .replaceFirstChar {
+                        it.uppercaseChar()
+                    },
+                selected = state.selectedFilter == filter,
+                onClick = { onFilterClick(filter) },
+            )
+        }
+    }
+}
+
+@Composable
 private fun ContentLoading(
     visible: Boolean = true,
     contentPadding: PaddingValues,
 ) {
-    LazyRow(
-        horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
-        contentPadding = contentPadding,
-        userScrollEnabled = false,
-        modifier = Modifier
-            .fillMaxWidth()
-            .alpha(if (visible) 1F else 0F),
+    Column(
+        verticalArrangement = spacedBy(0.dp),
     ) {
-        items(count = 6) {
-            VerticalMediaSkeletonCard(
-                modifier = Modifier.padding(bottom = 6.dp),
-            )
+        LazyRow(
+            horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
+            contentPadding = contentPadding,
+            userScrollEnabled = false,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 18.dp)
+                .alpha(if (visible) 1F else 0F),
+        ) {
+            items(count = 10) {
+                FilterChipSkeleton()
+            }
+        }
+
+        LazyRow(
+            horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
+            contentPadding = contentPadding,
+            userScrollEnabled = false,
+            modifier = Modifier
+                .fillMaxWidth()
+                .alpha(if (visible) 1F else 0F),
+        ) {
+            items(count = 3) {
+                HorizontalMediaSkeletonCard(
+                    modifier = Modifier.padding(bottom = 6.dp),
+                )
+            }
         }
     }
 }
@@ -219,8 +290,8 @@ private fun Preview() {
             ColorImage(Color.Blue.toArgb())
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            ShowActorsContent(
-                state = ShowActorsState(),
+            ShowExtrasContent(
+                state = ShowExtrasState(),
             )
         }
     }
@@ -239,9 +310,9 @@ private fun Preview2() {
             ColorImage(Color.Blue.toArgb())
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            ShowActorsContent(
-                state = ShowActorsState(
-                    items = emptyList<CastPerson>().toImmutableList(),
+            ShowExtrasContent(
+                state = ShowExtrasState(
+                    items = emptyList<ExtraVideo>().toImmutableList(),
                     loading = LOADING,
                 ),
             )
@@ -262,9 +333,9 @@ private fun Preview3() {
             ColorImage(Color.Blue.toArgb())
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            ShowActorsContent(
-                state = ShowActorsState(
-                    items = emptyList<CastPerson>().toImmutableList(),
+            ShowExtrasContent(
+                state = ShowExtrasState(
+                    items = emptyList<ExtraVideo>().toImmutableList(),
                     loading = DONE,
                 ),
             )
