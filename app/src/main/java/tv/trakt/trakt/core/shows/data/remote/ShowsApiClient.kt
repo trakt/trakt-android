@@ -1,7 +1,9 @@
 package tv.trakt.trakt.core.shows.data.remote
 
+import kotlinx.collections.immutable.toImmutableList
 import org.openapitools.client.apis.RecommendationsApi
 import org.openapitools.client.apis.ShowsApi
+import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
@@ -185,5 +187,20 @@ internal class ShowsApiClient(
             extended = "cloud9",
         )
         return response.body()
+    }
+
+    override suspend fun getSentiments(showId: TraktId): Sentiments {
+        val response = showsApi.getShowsSentiments(
+            id = showId.value.toString(),
+        ).body()
+
+        return Sentiments(
+            good = response.good
+                .map { Sentiments.Sentiment(it.sentiment) }
+                .toImmutableList(),
+            bad = response.bad
+                .map { Sentiments.Sentiment(it.sentiment) }
+                .toImmutableList(),
+        )
     }
 }

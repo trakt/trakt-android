@@ -64,6 +64,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.core.summary.shows.features.actors.ShowActorsView
 import tv.trakt.trakt.core.summary.shows.features.context.more.ShowDetailsContextSheet
+import tv.trakt.trakt.core.summary.shows.features.sentiment.ShowSentimentView
 import tv.trakt.trakt.core.summary.shows.features.streaming.ShowStreamingsView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
@@ -325,26 +326,25 @@ internal fun ShowDetailsContent(
                         }
                     }
 
-//
-//                    if (isReleased) {
-//                        item {
-//                            ShowSentimentView(
-//                                viewModel = koinViewModel(
-//                                    parameters = { parametersOf(show) },
-//                                ),
-//                                headerPadding = sectionPadding,
-//                                contentPadding = sectionPadding,
-//                                modifier = Modifier
-//                                    .padding(
-//                                        top = when {
-//                                            showStreamings -> 32.dp
-//                                            else -> 24.dp
-//                                        },
-//                                    ),
-//                            )
-//                        }
-//                    }
-//
+                    if (isReleased) {
+                        item {
+                            ShowSentimentView(
+                                viewModel = koinViewModel(
+                                    parameters = { parametersOf(show) },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                modifier = Modifier
+                                    .padding(
+                                        top = when {
+                                            showStreamings -> 32.dp
+                                            else -> 24.dp
+                                        },
+                                    ),
+                            )
+                        }
+                    }
+
 //                    item {
 //                        ShowCommentsView(
 //                            viewModel = koinViewModel(
