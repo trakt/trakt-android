@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.home.sections.upnext.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.Episode
@@ -15,6 +16,7 @@ import tv.trakt.trakt.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 internal class GetUpNextUseCase(
     private val remoteSyncSource: ShowsSyncRemoteDataSource,
     private val localDataSource: HomeUpNextLocalDataSource,
+    private val localEpisodeSource: EpisodeLocalDataSource,
 ) {
     suspend fun getLocalUpNext(limit: Int): ImmutableList<ProgressShow> {
         return localDataSource.getItems()
@@ -57,17 +59,19 @@ internal class GetUpNextUseCase(
             }
             .toImmutableList()
             .also {
-                if (page == 1) {
-                    localDataSource.setItems(
+                when (page) {
+                    1 -> localDataSource.setItems(
                         items = it,
                         notify = notify,
                     )
-                } else {
-                    localDataSource.addItems(
+                    else -> localDataSource.addItems(
                         items = it,
                         notify = notify,
                     )
                 }
+
+                val episodes = it.asyncMap { item -> item.progress.nextEpisode }
+                localEpisodeSource.upsertEpisodes(episodes)
             }
     }
 }

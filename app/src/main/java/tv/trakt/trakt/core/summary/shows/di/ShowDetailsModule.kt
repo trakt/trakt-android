@@ -88,6 +88,7 @@ internal val showDetailsModule = module {
             localSource = get(),
         )
     }
+
     factory {
         GetShowStreamingsUseCase(
             remoteShowSource = get(),
@@ -190,6 +191,7 @@ internal val showDetailsModule = module {
             getRelatedShowsUseCase = get(),
         )
     }
+
     viewModel { (show: Show) ->
         ShowListsViewModel(
             show = show,
@@ -210,6 +212,7 @@ internal val showDetailsModule = module {
             getCommentsUseCase = get(),
         )
     }
+
     viewModel { (show: Show) ->
         ShowDetailsContextViewModel(
             show = show,

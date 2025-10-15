@@ -43,6 +43,8 @@ import tv.trakt.trakt.core.shows.sections.recommended.all.navigation.navigateToR
 import tv.trakt.trakt.core.shows.sections.recommended.all.navigation.showsRecommendedScreen
 import tv.trakt.trakt.core.shows.sections.trending.all.navigation.navigateToTrendingShows
 import tv.trakt.trakt.core.shows.sections.trending.all.navigation.showsTrendingScreen
+import tv.trakt.trakt.core.summary.episodes.navigation.episodeDetailsScreen
+import tv.trakt.trakt.core.summary.episodes.navigation.navigateToEpisode
 import tv.trakt.trakt.core.summary.movies.navigation.movieDetailsScreen
 import tv.trakt.trakt.core.summary.movies.navigation.navigateToMovie
 import tv.trakt.trakt.core.summary.shows.navigation.navigateToShow
@@ -58,6 +60,9 @@ internal fun NavGraphBuilder.homeScreens(controller: NavHostController) {
             onNavigateToShows = { navigateToShows() },
             onNavigateToMovie = { navigateToMovie(it) },
             onNavigateToMovies = { navigateToMovies() },
+            onNavigateToEpisode = { showId, episode ->
+                navigateToEpisode(showId, episode)
+            },
             onNavigateToAllUpNext = { navigateToAllUpNext() },
             onNavigateToAllPersonal = { navigateToAllActivityPersonal() },
             onNavigateToAllSocial = { navigateToAllActivitySocial() },
@@ -125,6 +130,14 @@ internal fun NavGraphBuilder.showsScreens(controller: NavHostController) {
                     mediaImage = show.images?.getFanartUrl(),
                 )
             },
+            onNavigateBack = { popBackStack() },
+        )
+    }
+}
+
+internal fun NavGraphBuilder.episodesScreens(controller: NavHostController) {
+    with(controller) {
+        episodeDetailsScreen(
             onNavigateBack = { popBackStack() },
         )
     }

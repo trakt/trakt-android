@@ -181,7 +181,6 @@ internal fun DetailsHeader(
     playsCount: Int?,
     loading: Boolean,
     onShareClick: () -> Unit,
-    onTrailerClick: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -191,6 +190,56 @@ internal fun DetailsHeader(
 
     DetailsHeader(
         title = episode.title,
+        titleHeader = {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = spacedBy(4.dp),
+                modifier = Modifier.padding(
+                    top = 4.dp,
+                    bottom = 3.dp,
+                ),
+            ) {
+                val font = TraktTheme.typography.heading6.copy(fontSize = 13.sp)
+                Text(
+                    text = show.title.uppercase(),
+                    color = TraktTheme.colors.textPrimary,
+                    style = font.copy(fontSize = 13.sp),
+                    maxLines = 1,
+                    overflow = Ellipsis,
+                    autoSize = TextAutoSize.StepBased(
+                        maxFontSize = font.fontSize,
+                        minFontSize = 10.sp,
+                        stepSize = 1.sp,
+                    ),
+                )
+
+                Text(
+                    text = "/",
+                    color = TraktTheme.colors.textSecondary,
+                    style = font.copy(fontSize = 13.sp),
+                    maxLines = 1,
+                    overflow = Ellipsis,
+                    autoSize = TextAutoSize.StepBased(
+                        maxFontSize = font.fontSize,
+                        minFontSize = 10.sp,
+                        stepSize = 1.sp,
+                    ),
+                )
+
+                Text(
+                    text = episode.seasonEpisode.toDisplayString(),
+                    color = TraktTheme.colors.textPrimary,
+                    style = font.copy(fontSize = 13.sp),
+                    maxLines = 1,
+                    overflow = Ellipsis,
+                    autoSize = TextAutoSize.StepBased(
+                        maxFontSize = font.fontSize,
+                        minFontSize = 10.sp,
+                        stepSize = 1.sp,
+                    ),
+                )
+            }
+        },
         status = show.status,
         date = {
             Text(
@@ -225,7 +274,7 @@ internal fun DetailsHeader(
         creditsCount = 0,
         loading = loading,
         onBackClick = onBackClick,
-        onTrailerClick = onTrailerClick,
+        onTrailerClick = null,
         onShareClick = onShareClick,
         modifier = modifier,
     )
@@ -233,6 +282,8 @@ internal fun DetailsHeader(
 
 @Composable
 private fun DetailsHeader(
+    modifier: Modifier = Modifier,
+    titleHeader: @Composable (() -> Unit)? = null,
     title: String,
     genres: List<String>,
     date: @Composable (() -> Unit)?,
@@ -246,9 +297,8 @@ private fun DetailsHeader(
     playsCount: Int?,
     loading: Boolean,
     onShareClick: () -> Unit,
-    onTrailerClick: () -> Unit,
+    onTrailerClick: (() -> Unit)?,
     onBackClick: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -339,18 +389,20 @@ private fun DetailsHeader(
                         .onClick(onClick = onShareClick),
                 )
 
-                Icon(
-                    painter = painterResource(R.drawable.ic_trailer),
-                    tint = TraktTheme.colors.textPrimary,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .alpha(if (trailer != null) 1F else 0.25F)
-                        .size(21.dp)
-                        .onClick(
-                            enabled = trailer != null,
-                            onClick = onTrailerClick,
-                        ),
-                )
+                if (onTrailerClick != null) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_trailer),
+                        tint = TraktTheme.colors.textPrimary,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .alpha(if (trailer != null) 1F else 0.25F)
+                            .size(21.dp)
+                            .onClick(
+                                enabled = trailer != null,
+                                onClick = onTrailerClick,
+                            ),
+                    )
+                }
             }
         }
 
@@ -377,6 +429,10 @@ private fun DetailsHeader(
                         it.uppercaseChar()
                     }
                 }
+            }
+
+            if (titleHeader != null) {
+                titleHeader()
             }
 
             Text(
@@ -481,6 +537,20 @@ private fun Preview() {
     TraktTheme {
         DetailsHeader(
             title = "Movie Title",
+            titleHeader = {
+                Text(
+                    text = "Some Title Header".uppercase(),
+                    color = TraktTheme.colors.textPrimary,
+                    style = TraktTheme.typography.heading6.copy(fontSize = 13.sp),
+                    maxLines = 1,
+                    overflow = Ellipsis,
+                    autoSize = TextAutoSize.StepBased(
+                        maxFontSize = 13.sp,
+                        minFontSize = 10.sp,
+                        stepSize = 1.sp,
+                    ),
+                )
+            },
             genres = listOf("Action", "Adventure", "Sci-Fi"),
             date = null,
             images = null,

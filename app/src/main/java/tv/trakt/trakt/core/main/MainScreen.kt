@@ -40,6 +40,7 @@ import tv.trakt.trakt.core.lists.navigation.ListsDestination
 import tv.trakt.trakt.core.lists.navigation.navigateToLists
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.navigateToWatchlist
 import tv.trakt.trakt.core.main.navigation.commentsScreens
+import tv.trakt.trakt.core.main.navigation.episodesScreens
 import tv.trakt.trakt.core.main.navigation.homeScreens
 import tv.trakt.trakt.core.main.navigation.isMainDestination
 import tv.trakt.trakt.core.main.navigation.isStartDestination
@@ -187,6 +188,7 @@ private fun MainNavHost(
     ) {
         homeScreens(navController)
         showsScreens(navController)
+        episodesScreens(navController)
         moviesScreens(navController)
         listsScreens(navController)
         profileScreens(navController)

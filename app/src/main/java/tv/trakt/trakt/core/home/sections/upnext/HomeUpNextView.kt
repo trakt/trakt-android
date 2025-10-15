@@ -49,6 +49,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
@@ -69,6 +70,7 @@ internal fun HomeUpNextView(
     viewModel: HomeUpNextViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
+    onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
     onShowClick: (TraktId) -> Unit,
     onShowsClick: () -> Unit,
     onMoreClick: () -> Unit,
@@ -95,6 +97,14 @@ internal fun HomeUpNextView(
         onMoreClick = {
             if (state.loading == DONE) {
                 onMoreClick()
+            }
+        },
+        onClick = {
+            if (!it.loading) {
+                onEpisodeClick(
+                    it.show.ids.trakt,
+                    it.progress.nextEpisode,
+                )
             }
         },
         onLongClick = {
@@ -131,6 +141,7 @@ internal fun HomeUpNextContent(
     onMoreClick: () -> Unit = {},
     onShowsClick: () -> Unit = {},
     onShowClick: (ProgressShow) -> Unit = {},
+    onClick: (ProgressShow) -> Unit = {},
     onLongClick: (ProgressShow) -> Unit = {},
     onCheckClick: (ProgressShow) -> Unit = {},
 ) {
@@ -202,6 +213,7 @@ internal fun HomeUpNextContent(
                             ContentList(
                                 listItems = state.items,
                                 contentPadding = contentPadding,
+                                onClick = onClick,
                                 onLongClick = onLongClick,
                                 onCheckClick = onCheckClick,
                                 onShowClick = onShowClick,
@@ -237,6 +249,7 @@ private fun ContentList(
     listItems: ItemsState,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
+    onClick: (ProgressShow) -> Unit,
     onLongClick: (ProgressShow) -> Unit,
     onCheckClick: (ProgressShow) -> Unit,
     onShowClick: (ProgressShow) -> Unit,
@@ -265,6 +278,7 @@ private fun ContentList(
         ) { item ->
             ContentListItem(
                 item = item,
+                onClick = { onClick(item) },
                 onLongClick = { onLongClick(item) },
                 onCheckClick = { onCheckClick(item) },
                 onShowClick = { onShowClick(item) },
@@ -281,12 +295,14 @@ private fun ContentList(
 private fun ContentListItem(
     item: ProgressShow,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit,
     onLongClick: () -> Unit,
     onCheckClick: () -> Unit,
     onShowClick: () -> Unit,
 ) {
     HorizontalMediaCard(
         title = "",
+        onClick = onClick,
         onLongClick = onLongClick,
         containerImageUrl =
             item.progress.nextEpisode.images?.getScreenshotUrl()

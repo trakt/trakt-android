@@ -27,6 +27,7 @@ import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.activity.HomeActivityView
 import tv.trakt.trakt.core.home.sections.upcoming.HomeUpcomingView
@@ -46,6 +47,7 @@ internal fun HomeScreen(
     onNavigateToShows: () -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToMovies: () -> Unit,
+    onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToAllUpNext: () -> Unit,
     onNavigateToAllWatchlist: () -> Unit,
     onNavigateToAllPersonal: () -> Unit,
@@ -65,6 +67,7 @@ internal fun HomeScreen(
         onShowsClick = onNavigateToShows,
         onMoviesClick = onNavigateToMovies,
         onMovieClick = onNavigateToMovie,
+        onEpisodeClick = onNavigateToEpisode,
         onMoreUpNextClick = onNavigateToAllUpNext,
         onMoreWatchlistClick = onNavigateToAllWatchlist,
         onMorePersonalClick = onNavigateToAllPersonal,
@@ -86,6 +89,7 @@ private fun HomeScreenContent(
     onShowsClick: () -> Unit = {},
     onMoviesClick: () -> Unit = {},
     onMovieClick: (TraktId) -> Unit = {},
+    onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
 ) {
     val headerState = rememberHeaderState()
     val lazyListState = rememberLazyListState(
@@ -140,6 +144,7 @@ private fun HomeScreenContent(
                     contentPadding = sectionPadding,
                     onShowClick = onShowClick,
                     onShowsClick = onShowsClick,
+                    onEpisodeClick = onEpisodeClick,
                     onMoreClick = onMoreUpNextClick,
                 )
             }

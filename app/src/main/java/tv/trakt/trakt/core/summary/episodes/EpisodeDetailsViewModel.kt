@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -34,7 +35,7 @@ import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 internal class EpisodeDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val getShowDetailsUseCase: GetShowDetailsUseCase,
-    private val getDetailsUseCase: GetEpisodeDetailsUseCase,
+    private val getEpisodeDetailsUseCase: GetEpisodeDetailsUseCase,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = EpisodeDetailsState()
@@ -79,27 +80,30 @@ internal class EpisodeDetailsViewModel(
     private fun loadData() {
         viewModelScope.launch {
             try {
-                var episode = getDetailsUseCase.getLocalEpisode(episodeId)
-                var show = getShowDetailsUseCase.getLocalShow(showId)
+                val showAsync = async { getShowDetailsUseCase.getLocalShow(showId) }
+                val episodeAsync = async { getEpisodeDetailsUseCase.getLocalEpisode(episodeId) }
+
+                var show = showAsync.await()
+                var episode = episodeAsync.await()
 
                 if (episode == null || show == null) {
                     loadingState.update { LOADING }
                 }
 
-                if (episode == null) {
-                    episode = getDetailsUseCase.getEpisode(
-                        showId = showId,
-                        seasonEpisode = seasonEpisode,
-                    )
-                }
                 if (show == null) {
                     show = getShowDetailsUseCase.getShow(
                         showId = showId,
                     )
                 }
-
-                episodeState.update { episode }
                 showState.update { show }
+
+                if (episode == null) {
+                    episode = getEpisodeDetailsUseCase.getEpisode(
+                        showId = showId,
+                        seasonEpisode = seasonEpisode,
+                    )
+                }
+                episodeState.update { episode }
 
                 loadRatings(episode)
             } catch (error: Exception) {

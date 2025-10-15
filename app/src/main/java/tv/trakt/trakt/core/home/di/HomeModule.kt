@@ -85,6 +85,7 @@ internal val homeModule = module {
         GetUpNextUseCase(
             remoteSyncSource = get(),
             localDataSource = get(),
+            localEpisodeSource = get(),
         )
     }
 
