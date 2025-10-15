@@ -233,7 +233,7 @@ internal class HomeUpNextViewModel(
     fun loadUserProgress() {
         viewModelScope.launch {
             try {
-                loadUserProgressUseCase.loadShowsProgress(limit = 3)
+                loadUserProgressUseCase.loadShowsProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.w(error)

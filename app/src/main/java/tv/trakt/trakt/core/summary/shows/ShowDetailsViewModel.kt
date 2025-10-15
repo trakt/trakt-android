@@ -310,7 +310,7 @@ internal class ShowDetailsViewModel(
                 loadingProgress.update { LOADING }
 
                 updateShowHistoryUseCase.addToWatched(showId)
-                val progress = loadProgressUseCase.loadShowsProgress(limit = 3)
+                val progress = loadProgressUseCase.loadShowsProgress()
                     .firstOrNull {
                         it.show.ids.trakt == showId
                     }

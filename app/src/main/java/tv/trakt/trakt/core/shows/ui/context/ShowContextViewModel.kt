@@ -177,7 +177,7 @@ internal class ShowContextViewModel(
                 loadingWatchedState.update { LOADING }
 
                 updateHistoryUseCase.addToWatched(show.ids.trakt)
-                loadProgressUseCase.loadShowsProgress(limit = 3)
+                loadProgressUseCase.loadShowsProgress()
                 userWatchlistLocalSource.removeShows(setOf(show.ids.trakt))
             } catch (error: Exception) {
                 error.rethrowCancellation {
