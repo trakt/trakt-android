@@ -132,13 +132,13 @@ private fun ActionButtons(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
         modifier = modifier
             .graphicsLayer {
-                translationX = -10.dp.toPx()
+                translationX = -12.dp.toPx()
             },
     ) {
         GhostButton(
             text = stringResource(R.string.button_text_remove_from_history),
             onClick = onRemoveWatchedClick ?: {},
-            icon = painterResource(R.drawable.ic_trash),
+            icon = painterResource(R.drawable.ic_close),
             iconSize = 24.dp,
         )
     }

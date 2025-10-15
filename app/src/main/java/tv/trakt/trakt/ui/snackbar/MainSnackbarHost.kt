@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-internal const val SNACK_DURATION_SHORT = 2250L
+internal const val SNACK_DURATION_SHORT = 2000L
 internal const val SNACK_DURATION_LONG = 4500L
 
 @Composable

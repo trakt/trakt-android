@@ -284,7 +284,6 @@ internal fun ShowDetailsContent(
                         show = show,
                         ratings = state.showRatings,
                         airedCount = state.showProgress?.aired ?: 0,
-                        completedCount = state.showProgress?.completed ?: 0,
                         playsCount = state.showProgress?.plays ?: 0,
                         loading = state.loading.isLoading ||
                             state.loadingProgress.isLoading,
@@ -447,7 +446,7 @@ internal fun ShowDetailsContent(
                         )
                     }
 
-                    if ((state.showProgress?.completed ?: 0) > 0) {
+                    if ((state.showProgress?.plays ?: 0) > 0) {
                         item {
                             ShowHistoryView(
                                 viewModel = koinViewModel(

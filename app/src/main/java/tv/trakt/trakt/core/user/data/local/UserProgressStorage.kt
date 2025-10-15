@@ -183,6 +183,10 @@ internal class UserProgressStorage : UserProgressLocalDataSource {
     override fun clear() {
         moviesStorage?.clear()
         showsStorage?.clear()
+
+        moviesStorage = null
+        showsStorage = null
+
         updatedAt.tryEmit(null)
     }
 }

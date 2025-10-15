@@ -32,9 +32,24 @@ internal class EpisodesSyncApiClient(
         cacheMarker.invalidate()
     }
 
-    override suspend fun removeSingleFromHistory(playId: Long) {
+    override suspend fun removePlayFromHistory(playId: Long) {
         val request = PostSyncHistoryRemoveRequest(
             ids = listOf(playId),
+        )
+        syncApi.postSyncHistoryRemove(request)
+        cacheMarker.invalidate()
+    }
+
+    override suspend fun removeEpisodeFromHistory(episodeId: Int) {
+        val request = PostSyncHistoryRemoveRequest(
+            episodes = listOf(
+                PostUsersListsListAddRequestEpisodesInner(
+                    ids = PostUsersListsListAddRequestEpisodesInnerIds(
+                        trakt = episodeId,
+                        tvdb = -1,
+                    ),
+                ),
+            ),
         )
         syncApi.postSyncHistoryRemove(request)
         cacheMarker.invalidate()

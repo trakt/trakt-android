@@ -14,9 +14,9 @@ import tv.trakt.trakt.common.networking.SocialActivityItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
 import tv.trakt.trakt.common.networking.WatchedMovieDto
+import tv.trakt.trakt.common.networking.WatchedShowDto
 import tv.trakt.trakt.common.networking.WatchlistItemDto
 import tv.trakt.trakt.common.networking.api.SyncExtrasApi
-import tv.trakt.trakt.common.networking.api.model.SyncProgressItemDto
 import java.time.LocalDate
 
 internal class UserApiClient(
@@ -41,34 +41,46 @@ internal class UserApiClient(
         return response.body()
     }
 
-    override suspend fun getWatchedShows(limit: Int?): List<SyncProgressItemDto> {
-        val allResults = mutableListOf<SyncProgressItemDto>()
-        val defaultLimit = 200
+//    override suspend fun getProgressShows(limit: Int?): List<SyncProgressItemDto> {
+//        val allResults = mutableListOf<SyncProgressItemDto>()
+//        val defaultLimit = 200
+//
+//        var page = 1
+//        var hasMorePages = true
+//
+//        while (hasMorePages) {
+//            val response = syncApi.getProgressWatched(
+//                limit = when {
+//                    limit == null -> "all"
+//                    else -> limit.toString()
+//                },
+//                page = page,
+//            )
+//
+//            val body = response.body()
+//            if (body.isNotEmpty()) {
+//                allResults.addAll(body)
+//                page++
+//            }
+//
+//            if (limit == null || body.size < defaultLimit) {
+//                hasMorePages = false
+//            }
+//        }
+//
+//        return allResults
+//    }
 
-        var page = 1
-        var hasMorePages = true
+    override suspend fun getWatchedShows(): List<WatchedShowDto> {
+        val response = usersApi.getUsersWatchedShows(
+            id = "me",
+            extended = null,
+            hidden = null,
+            specials = true,
+            countSpecials = null,
+        )
 
-        while (hasMorePages) {
-            val response = syncApi.getProgressWatched(
-                limit = when {
-                    limit == null -> "all"
-                    else -> limit.toString()
-                },
-                page = page,
-            )
-
-            val body = response.body()
-            if (body.isNotEmpty()) {
-                allResults.addAll(body)
-                page++
-            }
-
-            if (limit == null || body.size < defaultLimit) {
-                hasMorePages = false
-            }
-        }
-
-        return allResults
+        return response.body()
     }
 
     override suspend fun getWatchlist(

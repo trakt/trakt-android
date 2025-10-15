@@ -21,6 +21,8 @@ import tv.trakt.trakt.core.summary.shows.features.lists.usecases.GetShowListsUse
 import tv.trakt.trakt.core.summary.shows.features.related.ShowRelatedViewModel
 import tv.trakt.trakt.core.summary.shows.features.related.usecases.GetShowRelatedUseCase
 import tv.trakt.trakt.core.summary.shows.features.seasons.ShowSeasonsViewModel
+import tv.trakt.trakt.core.summary.shows.features.seasons.data.local.ShowSeasonsLocalDataSource
+import tv.trakt.trakt.core.summary.shows.features.seasons.data.local.ShowSeasonsStorage
 import tv.trakt.trakt.core.summary.shows.features.seasons.usecases.GetShowSeasonsUseCase
 import tv.trakt.trakt.core.summary.shows.features.sentiment.ShowSentimentViewModel
 import tv.trakt.trakt.core.summary.shows.features.sentiment.usecases.GetShowSentimentUseCase
@@ -34,6 +36,10 @@ import tv.trakt.trakt.core.summary.shows.usecases.GetShowStudiosUseCase
 internal val showDetailsDataModule = module {
     single<ShowLocalDataSource> {
         ShowStorage()
+    }
+
+    single<ShowSeasonsLocalDataSource> {
+        ShowSeasonsStorage()
     }
 }
 
@@ -138,7 +144,8 @@ internal val showDetailsModule = module {
             addListItemUseCase = get(),
             removeListItemUseCase = get(),
             userWatchlistLocalSource = get(),
-            allActivityLocalSource = get(),
+            activityLocalSource = get(),
+            seasonsLocalDataSource = get(),
             sessionManager = get(),
         )
     }
@@ -162,6 +169,11 @@ internal val showDetailsModule = module {
         ShowSeasonsViewModel(
             show = show,
             getSeasonsUseCase = get(),
+            loadUserProgressUseCase = get(),
+            updateEpisodeHistoryUseCase = get(),
+            allActivityLocalSource = get(),
+            seasonsLocalDataSource = get(),
+            sessionManager = get(),
         )
     }
 
@@ -219,6 +231,7 @@ internal val showDetailsModule = module {
             show = show,
             getHistoryUseCase = get(),
             allActivityLocalSource = get(),
+            seasonsLocalDataSource = get(),
         )
     }
 }

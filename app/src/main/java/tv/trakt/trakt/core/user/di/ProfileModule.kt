@@ -71,6 +71,13 @@ internal val profileModule = module {
         )
     }
 
+//    factory {
+//        LoadUserWatchedUseCase(
+//            remoteSource = get(),
+//            localSource = get(),
+//        )
+//    }
+
     factory {
         LogoutUserUseCase(
             sessionManager = get(),

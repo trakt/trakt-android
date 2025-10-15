@@ -23,7 +23,6 @@ internal data class ShowDetailsState(
 ) {
     data class ProgressState(
         val aired: Int,
-        val completed: Int,
         val plays: Int?,
         val inWatchlist: Boolean,
         val inLists: Boolean,

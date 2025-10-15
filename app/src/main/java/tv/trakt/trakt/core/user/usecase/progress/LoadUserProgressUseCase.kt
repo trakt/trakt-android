@@ -6,8 +6,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
+import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.sync.model.ProgressItem
 import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
@@ -52,16 +52,32 @@ internal class LoadUserProgressUseCase(
     }
 
     suspend fun loadShowsProgress(limit: Int? = null): ImmutableList<ProgressItem.ShowItem> {
-        val response = remoteSource.getWatchedShows(limit = limit)
+        val response = remoteSource.getWatchedShows()
             .asyncMap {
                 ProgressItem.ShowItem(
-                    show = Show.fromDto(it.show),
+                    show = ProgressItem.ShowItem.Show(
+                        ids = Ids.fromDto(it.show.ids),
+                        title = it.show.title,
+                    ),
+                    seasons = (it.seasons ?: emptyList())
+                        .asyncMap { season ->
+                            ProgressItem.ShowItem.Season(
+                                number = season.number,
+                                episodes = season.episodes
+                                    .asyncMap { episode ->
+                                        ProgressItem.ShowItem.Episode(
+                                            number = episode.number,
+                                            plays = episode.plays,
+                                            lastWatchedAt = episode.lastWatchedAt.toInstant(),
+                                        )
+                                    }.toImmutableList(),
+                            )
+                        }.toImmutableList(),
                     progress = ProgressItem.ShowItem.Progress(
-                        aired = it.progress.aired,
-                        completed = it.progress.completed,
-                        plays = it.progress.stats?.playCount,
-                        lastWatchedAt = it.progress.lastWatchedAt?.toInstant(),
-                        resetAt = it.progress.resetAt?.toInstant(),
+                        aired = it.show.airedEpisodes,
+                        plays = it.plays,
+                        lastWatchedAt = it.lastWatchedAt.toInstant(),
+                        resetAt = it.resetAt?.toInstant(),
                     ),
                 )
             }

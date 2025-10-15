@@ -9,6 +9,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.episodes.data.remote.EpisodesRemoteDataSource
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
+import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
 
 internal class GetShowSeasonsUseCase(
@@ -30,7 +31,9 @@ internal class GetShowSeasonsUseCase(
                 showId = showId,
                 season = selectedSeason.number,
             ).asyncMap {
-                Episode.fromDto(it)
+                EpisodeItem(
+                    episode = Episode.fromDto(it),
+                )
             }
 
             return ShowSeasons(
@@ -49,9 +52,13 @@ internal class GetShowSeasonsUseCase(
     suspend fun getSeasonEpisodes(
         showId: TraktId,
         season: Int,
-    ): ImmutableList<Episode> {
+    ): ImmutableList<EpisodeItem> {
         return remoteEpisodesSource.getEpisodeSeason(showId, season)
-            .asyncMap { Episode.fromDto(it) }
+            .asyncMap {
+                EpisodeItem(
+                    episode = Episode.fromDto(it),
+                )
+            }
             .toImmutableList()
     }
 }

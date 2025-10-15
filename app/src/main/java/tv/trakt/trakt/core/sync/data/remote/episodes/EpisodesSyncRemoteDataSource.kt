@@ -9,5 +9,7 @@ internal interface EpisodesSyncRemoteDataSource {
         watchedAt: Instant,
     )
 
-    suspend fun removeSingleFromHistory(playId: Long)
+    suspend fun removeEpisodeFromHistory(episodeId: Int)
+
+    suspend fun removePlayFromHistory(playId: Long)
 }

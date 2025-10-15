@@ -16,15 +16,20 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -34,25 +39,29 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.preview.PreviewData
-import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.toSlugId
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
+import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
 import tv.trakt.trakt.core.summary.shows.features.seasons.ui.ShowEpisodesList
 import tv.trakt.trakt.core.summary.shows.features.seasons.ui.ShowSeasonsList
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
+import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -62,9 +71,14 @@ internal fun ShowSeasonsView(
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
+    val haptic = LocalHapticFeedback.current
+    val snack = LocalSnackbarState.current
+
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    var contextSheet by remember { mutableStateOf<Show?>(null) }
+    val scope = rememberCoroutineScope()
+    var confirmRemoveSheet by remember { mutableStateOf<EpisodeItem?>(null) }
 
     ShowSeasonsContent(
         state = state,
@@ -72,12 +86,45 @@ internal fun ShowSeasonsView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onSeasonClick = viewModel::loadSeason,
+        onRemoveEpisodeClick = {
+            confirmRemoveSheet = it
+        },
     )
 
-    ShowContextSheet(
-        show = contextSheet,
-        onDismiss = { contextSheet = null },
+    ConfirmationSheet(
+        active = confirmRemoveSheet != null,
+        onYes = {
+            confirmRemoveSheet?.let {
+                viewModel.removeFromWatched(it.episode)
+                confirmRemoveSheet = null
+            }
+        },
+        onNo = { confirmRemoveSheet = null },
+        title = stringResource(R.string.button_text_remove_from_history),
+        message = stringResource(
+            R.string.warning_prompt_remove_from_watched,
+            "${confirmRemoveSheet?.episode?.title}",
+        ),
     )
+
+    LaunchedEffect(state.info) {
+        if (state.info == null) {
+            return@LaunchedEffect
+        }
+        haptic.performHapticFeedback(Confirm)
+
+        with(scope) {
+            val job = launch {
+                state.info?.get(context)?.let {
+                    snack.showSnackbar(it)
+                }
+            }
+            delay(SNACK_DURATION_SHORT)
+            job.cancel()
+        }
+
+        viewModel.clearInfo()
+    }
 }
 
 @Composable
@@ -87,6 +134,7 @@ private fun ShowSeasonsContent(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onSeasonClick: ((Season) -> Unit)? = null,
+    onRemoveEpisodeClick: ((EpisodeItem) -> Unit)? = null,
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
@@ -146,6 +194,7 @@ private fun ShowSeasonsContent(
                             seasons = state.items,
                             contentPadding = contentPadding,
                             onSeasonClick = onSeasonClick,
+                            onRemoveEpisodeClick = onRemoveEpisodeClick,
                         )
                     }
                 }
@@ -160,7 +209,8 @@ private fun ContentList(
     seasons: ShowSeasons,
     contentPadding: PaddingValues,
     onSeasonClick: ((Season) -> Unit)? = null,
-    onEpisodeClick: ((Episode) -> Unit)? = null,
+    onEpisodeClick: ((EpisodeItem) -> Unit)? = null,
+    onRemoveEpisodeClick: ((EpisodeItem) -> Unit)? = null,
 ) {
     Column(
         verticalArrangement = spacedBy(20.dp),
@@ -177,8 +227,11 @@ private fun ContentList(
         ShowEpisodesList(
             isLoading = seasons.isSeasonLoading,
             show = show,
+            season = seasons.selectedSeason?.number,
             episodes = seasons.selectedSeasonEpisodes,
             onEpisodeClick = onEpisodeClick ?: {},
+            onCheckClick = {},
+            onRemoveClick = onRemoveEpisodeClick ?: {},
             contentPadding = contentPadding,
             modifier = Modifier.fillMaxWidth(),
         )
@@ -249,7 +302,9 @@ private fun Preview() {
                 state = ShowSeasonsState(
                     loading = DONE,
                     items = ShowSeasons(
-                        selectedSeasonEpisodes = listOf(PreviewData.episode1).toImmutableList(),
+                        selectedSeasonEpisodes = listOf(
+                            EpisodeItem(PreviewData.episode1),
+                        ).toImmutableList(),
                         selectedSeason = Season(
                             ids = Ids(
                                 trakt = 1.toTraktId(),

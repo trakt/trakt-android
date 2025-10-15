@@ -14,8 +14,14 @@ internal class UpdateEpisodeHistoryUseCase(
         )
     }
 
+    suspend fun removeEpisodeFromHistory(episodeId: Int) {
+        remoteSource.removeEpisodeFromHistory(
+            episodeId = episodeId,
+        )
+    }
+
     suspend fun removePlayFromHistory(playId: Long) {
-        remoteSource.removeSingleFromHistory(
+        remoteSource.removePlayFromHistory(
             playId = playId,
         )
     }

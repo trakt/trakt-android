@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -24,12 +25,14 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.home.sections.activity.all.data.local.AllActivityLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.summary.shows.features.history.usecases.GetShowHistoryUseCase
+import tv.trakt.trakt.core.summary.shows.features.seasons.data.local.ShowSeasonsLocalDataSource
 
 @OptIn(FlowPreview::class)
 internal class ShowHistoryViewModel(
     private val show: Show,
     private val getHistoryUseCase: GetShowHistoryUseCase,
     private val allActivityLocalSource: AllActivityLocalDataSource,
+    private val seasonsLocalDataSource: ShowSeasonsLocalDataSource,
 ) : ViewModel() {
     private val initialState = ShowHistoryState()
 
@@ -43,7 +46,10 @@ internal class ShowHistoryViewModel(
     }
 
     private fun observeLists() {
-        allActivityLocalSource.observeUpdates()
+        merge(
+            allActivityLocalSource.observeUpdates(),
+            seasonsLocalDataSource.observeUpdates(),
+        )
             .distinctUntilChanged()
             .debounce(250)
             .onEach {

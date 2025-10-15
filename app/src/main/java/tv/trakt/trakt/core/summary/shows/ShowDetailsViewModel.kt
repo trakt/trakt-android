@@ -5,12 +5,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -34,6 +39,7 @@ import tv.trakt.trakt.core.home.sections.activity.all.data.local.AllActivityLoca
 import tv.trakt.trakt.core.lists.sections.personal.usecases.AddPersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
+import tv.trakt.trakt.core.summary.shows.features.seasons.data.local.ShowSeasonsLocalDataSource
 import tv.trakt.trakt.core.summary.shows.navigation.ShowDetailsDestination
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowRatingsUseCase
@@ -47,6 +53,7 @@ import tv.trakt.trakt.core.user.usecase.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.resources.R
 
+@OptIn(FlowPreview::class)
 internal class ShowDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val getDetailsUseCase: GetShowDetailsUseCase,
@@ -61,7 +68,8 @@ internal class ShowDetailsViewModel(
     private val addListItemUseCase: AddPersonalListItemUseCase,
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
-    private val allActivityLocalSource: AllActivityLocalDataSource,
+    private val activityLocalSource: AllActivityLocalDataSource,
+    private val seasonsLocalDataSource: ShowSeasonsLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<ShowDetailsDestination>()
@@ -84,6 +92,19 @@ internal class ShowDetailsViewModel(
         loadUser()
         loadData()
         loadProgressData()
+        observeData()
+    }
+
+    private fun observeData() {
+        seasonsLocalDataSource.observeUpdates()
+            .distinctUntilChanged()
+            .debounce(250)
+            .onEach {
+                loadProgressData(
+                    ignoreErrors = true,
+                )
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun loadUser() {
@@ -125,7 +146,7 @@ internal class ShowDetailsViewModel(
         }
     }
 
-    private fun loadProgressData() {
+    private fun loadProgressData(ignoreErrors: Boolean = false) {
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) {
                 return@launch
@@ -186,7 +207,6 @@ internal class ShowDetailsViewModel(
                     showProgressState.update {
                         ShowDetailsState.ProgressState(
                             aired = progress?.progress?.aired ?: 0,
-                            completed = progress?.progress?.completed ?: 0,
                             plays = progress?.progress?.plays,
                             inWatchlist = watchlist != null,
                             inLists = lists != null,
@@ -195,7 +215,9 @@ internal class ShowDetailsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.update { error }
+                    if (!ignoreErrors) {
+                        errorState.update { error }
+                    }
                     Timber.w(error)
                 }
             } finally {
@@ -296,12 +318,11 @@ internal class ShowDetailsViewModel(
                     ids = setOf(showId),
                     notify = true,
                 )
-                allActivityLocalSource.notifyUpdate()
+                activityLocalSource.notifyUpdate()
 
                 showProgressState.update {
                     it?.copy(
                         aired = progress?.progress?.aired ?: 0,
-                        completed = progress?.progress?.completed ?: 0,
                         plays = progress?.progress?.plays ?: 0,
                         inWatchlist = false,
                     )
@@ -342,12 +363,11 @@ internal class ShowDetailsViewModel(
                     .firstOrNull {
                         it.show.ids.trakt == showId
                     }
-                allActivityLocalSource.notifyUpdate()
+                activityLocalSource.notifyUpdate()
 
                 showProgressState.update {
                     it?.copy(
                         aired = progress?.progress?.aired ?: 0,
-                        completed = progress?.progress?.completed ?: 0,
                         plays = progress?.progress?.plays ?: 0,
                     )
                 }

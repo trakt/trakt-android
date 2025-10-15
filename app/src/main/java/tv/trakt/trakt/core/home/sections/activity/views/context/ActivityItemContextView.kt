@@ -156,11 +156,11 @@ private fun ActivityItemContextViewContent(
                 loading = state.loadingRemove.isLoading,
                 text = stringResource(R.string.button_text_remove_from_history),
                 onClick = onRemoveWatchedClick,
-                icon = painterResource(R.drawable.ic_trash),
+                icon = painterResource(R.drawable.ic_close),
                 iconSize = 24.dp,
                 modifier = Modifier
                     .graphicsLayer {
-                        translationX = -9.dp.toPx()
+                        translationX = -12.dp.toPx()
                     },
             )
         }

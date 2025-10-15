@@ -2,52 +2,127 @@ package tv.trakt.trakt.core.summary.shows.features.seasons
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.StringResource
+import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.core.home.sections.activity.all.data.local.AllActivityLocalDataSource
+import tv.trakt.trakt.core.summary.shows.features.seasons.data.local.ShowSeasonsLocalDataSource
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
 import tv.trakt.trakt.core.summary.shows.features.seasons.usecases.GetShowSeasonsUseCase
+import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
+import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.resources.R
 
+@OptIn(FlowPreview::class)
 internal class ShowSeasonsViewModel(
     private val show: Show,
     private val getSeasonsUseCase: GetShowSeasonsUseCase,
+    private val loadUserProgressUseCase: LoadUserProgressUseCase,
+    private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
+    private val allActivityLocalSource: AllActivityLocalDataSource,
+    private val seasonsLocalDataSource: ShowSeasonsLocalDataSource,
+    private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = ShowSeasonsState()
 
     private val showState = MutableStateFlow(show)
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
+    private val loadingEpisodeState = MutableStateFlow(initialState.loadingEpisode)
+    private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var loadingJob: Job? = null
 
     init {
         loadData()
+        observeData()
     }
 
-    private fun loadData() {
+    private fun observeData() {
+        allActivityLocalSource.observeUpdates()
+            .distinctUntilChanged()
+            .debounce(250)
+            .onEach {
+                loadData(
+                    ignoreErrors = true,
+                )
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun loadData(ignoreErrors: Boolean = false) {
         viewModelScope.launch {
             try {
                 loadingState.update { LOADING }
-                itemsState.update {
+                val authenticated = sessionManager.isAuthenticated()
+
+                val seasonsAsync = async {
                     getSeasonsUseCase.getAllSeasons(show.ids.trakt)
+                }
+                val watchedAsync = async {
+                    if (!authenticated) {
+                        return@async null
+                    }
+                    when {
+                        loadUserProgressUseCase.isShowsLoaded() -> {
+                            loadUserProgressUseCase.loadLocalShows()
+                        }
+                        else -> loadUserProgressUseCase.loadShowsProgress()
+                    }.firstOrNull {
+                        it.show.ids.trakt == show.ids.trakt
+                    }
+                }
+
+                val seasons = seasonsAsync.await()
+                val watched = watchedAsync.await()
+
+                val markedEpisodes = seasons.selectedSeasonEpisodes
+                    .asyncMap {
+                        it.copy(
+                            isCheckable = authenticated,
+                            isWatched = watched?.seasons
+                                ?.firstOrNull { s -> s.number == it.episode.season }
+                                ?.episodes
+                                ?.any { e -> e.number == it.episode.number } == true,
+                        )
+                    }
+
+                itemsState.update {
+                    seasons.copy(
+                        selectedSeasonEpisodes = markedEpisodes.toImmutableList(),
+                    )
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.update { error }
+                    if (!ignoreErrors) {
+                        errorState.update { error }
+                    }
                     Timber.w(error)
                 }
             } finally {
@@ -64,7 +139,9 @@ internal class ShowSeasonsViewModel(
             }
         }
 
-        if (itemsState.value.isSeasonLoading ||
+        if (
+            loadingEpisodeState.value.isLoading ||
+            itemsState.value.isSeasonLoading ||
             season.number == itemsState.value.selectedSeason?.number
         ) {
             loadingJob?.cancel()
@@ -73,8 +150,22 @@ internal class ShowSeasonsViewModel(
 
         viewModelScope.launch {
             try {
+                val authenticated = sessionManager.isAuthenticated()
+
                 itemsState.update {
                     it.copy(selectedSeason = season)
+                }
+
+                val progress = when {
+                    authenticated -> when {
+                        loadUserProgressUseCase.isShowsLoaded() -> {
+                            loadUserProgressUseCase.loadLocalShows()
+                        }
+                        else -> loadUserProgressUseCase.loadShowsProgress()
+                    }.firstOrNull {
+                        it.show.ids.trakt == show.ids.trakt
+                    }
+                    else -> null
                 }
 
                 val episodes = getSeasonsUseCase.getSeasonEpisodes(
@@ -82,10 +173,21 @@ internal class ShowSeasonsViewModel(
                     season = season.number,
                 )
 
+                val markedEpisodes = episodes
+                    .asyncMap {
+                        it.copy(
+                            isCheckable = authenticated,
+                            isWatched = progress?.seasons
+                                ?.firstOrNull { s -> s.number == it.episode.season }
+                                ?.episodes
+                                ?.any { e -> e.number == it.episode.number } == true,
+                        )
+                    }
+
                 itemsState.update {
                     it.copy(
                         selectedSeason = season,
-                        selectedSeasonEpisodes = episodes,
+                        selectedSeasonEpisodes = markedEpisodes.toImmutableList(),
                         isSeasonLoading = false,
                     )
                 }
@@ -100,18 +202,89 @@ internal class ShowSeasonsViewModel(
         }
     }
 
+    fun removeFromWatched(episode: Episode) {
+        if (loadingState.value.isLoading || loadingEpisodeState.value.isLoading) {
+            return
+        }
+
+        viewModelScope.launch {
+            val authenticated = sessionManager.isAuthenticated()
+            if (!authenticated) {
+                return@launch
+            }
+
+            try {
+                loadingEpisodeState.update { LOADING }
+                itemsState.update {
+                    it.copy(
+                        selectedSeasonEpisodes = it.selectedSeasonEpisodes
+                            .asyncMap { e ->
+                                e.copy(
+                                    isLoading = (episode.ids.trakt == e.episode.ids.trakt),
+                                )
+                            }.toImmutableList(),
+                    )
+                }
+
+                updateEpisodeHistoryUseCase.removeEpisodeFromHistory(episode.ids.trakt.value)
+                val progress = loadUserProgressUseCase.loadShowsProgress()
+                    .firstOrNull {
+                        it.show.ids.trakt == show.ids.trakt
+                    }
+                seasonsLocalDataSource.notifyUpdate()
+
+                val markedEpisodes = itemsState.value.selectedSeasonEpisodes
+                    .asyncMap {
+                        it.copy(
+                            isWatched = progress?.seasons
+                                ?.firstOrNull { s -> s.number == it.episode.season }
+                                ?.episodes
+                                ?.any { e -> e.number == it.episode.number } == true,
+                            isLoading = false,
+                            isCheckable = true,
+                        )
+                    }
+
+                itemsState.update {
+                    it.copy(
+                        selectedSeasonEpisodes = markedEpisodes.toImmutableList(),
+                    )
+                }
+
+                infoState.update {
+                    DynamicStringResource(R.string.text_info_history_removed)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.w(error)
+                }
+            } finally {
+                loadingEpisodeState.update { DONE }
+            }
+        }
+    }
+
+    fun clearInfo() {
+        infoState.update { null }
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state: StateFlow<ShowSeasonsState> = combine(
         showState,
         itemsState,
         loadingState,
+        loadingEpisodeState,
+        infoState,
         errorState,
     ) { state ->
         ShowSeasonsState(
             show = state[0] as Show,
             items = state[1] as ShowSeasons,
             loading = state[2] as LoadingState,
-            error = state[3] as Exception?,
+            loadingEpisode = state[3] as LoadingState,
+            info = state[4] as StringResource?,
+            error = state[5] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,
