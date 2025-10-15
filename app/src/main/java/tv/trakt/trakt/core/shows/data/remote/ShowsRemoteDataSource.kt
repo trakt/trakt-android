@@ -8,6 +8,7 @@ import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.RecommendedShowDto
+import tv.trakt.trakt.common.networking.SeasonDto
 import tv.trakt.trakt.common.networking.ShowDto
 import tv.trakt.trakt.common.networking.StreamingDto
 import tv.trakt.trakt.core.shows.data.remote.model.AnticipatedShowDto
@@ -66,4 +67,6 @@ internal interface ShowsRemoteDataSource {
     ): List<CommentDto>
 
     suspend fun getExtras(showId: TraktId): List<ExtraVideoDto>
+
+    suspend fun getShowSeasons(showId: TraktId): List<SeasonDto>
 }

@@ -20,6 +20,8 @@ import tv.trakt.trakt.core.summary.shows.features.lists.ShowListsViewModel
 import tv.trakt.trakt.core.summary.shows.features.lists.usecases.GetShowListsUseCase
 import tv.trakt.trakt.core.summary.shows.features.related.ShowRelatedViewModel
 import tv.trakt.trakt.core.summary.shows.features.related.usecases.GetShowRelatedUseCase
+import tv.trakt.trakt.core.summary.shows.features.seasons.ShowSeasonsViewModel
+import tv.trakt.trakt.core.summary.shows.features.seasons.usecases.GetShowSeasonsUseCase
 import tv.trakt.trakt.core.summary.shows.features.sentiment.ShowSentimentViewModel
 import tv.trakt.trakt.core.summary.shows.features.sentiment.usecases.GetShowSentimentUseCase
 import tv.trakt.trakt.core.summary.shows.features.streaming.ShowStreamingsViewModel
@@ -52,6 +54,13 @@ internal val showDetailsModule = module {
     factory {
         GetShowStudiosUseCase(
             remoteSource = get(),
+        )
+    }
+
+    factory {
+        GetShowSeasonsUseCase(
+            remoteShowsSource = get(),
+            remoteEpisodesSource = get(),
         )
     }
 
@@ -146,6 +155,13 @@ internal val showDetailsModule = module {
         ShowExtrasViewModel(
             show = show,
             getExtrasUseCase = get(),
+        )
+    }
+
+    viewModel { (show: Show) ->
+        ShowSeasonsViewModel(
+            show = show,
+            getSeasonsUseCase = get(),
         )
     }
 

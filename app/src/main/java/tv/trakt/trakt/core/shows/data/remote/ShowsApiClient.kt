@@ -11,6 +11,7 @@ import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.RecommendedShowDto
+import tv.trakt.trakt.common.networking.SeasonDto
 import tv.trakt.trakt.common.networking.ShowDto
 import tv.trakt.trakt.common.networking.StreamingDto
 import tv.trakt.trakt.core.shows.data.remote.model.AnticipatedShowDto
@@ -253,6 +254,14 @@ internal class ShowsApiClient(
     override suspend fun getExtras(showId: TraktId): List<ExtraVideoDto> {
         val response = showsApi.getShowsVideos(
             id = showId.value.toString(),
+        )
+        return response.body()
+    }
+
+    override suspend fun getShowSeasons(showId: TraktId): List<SeasonDto> {
+        val response = showsApi.getShowsSeasons(
+            id = showId.value.toString(),
+            extended = "full,cloud9",
         )
         return response.body()
     }

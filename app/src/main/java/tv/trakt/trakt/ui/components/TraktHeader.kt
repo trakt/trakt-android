@@ -7,6 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
@@ -18,6 +19,7 @@ internal fun TraktHeader(
     title: String,
     modifier: Modifier = Modifier,
     subtitle: String? = null,
+    titleColor: Color = TraktTheme.colors.textPrimary,
 ) {
     Row(
         horizontalArrangement = spacedBy(6.dp),
@@ -29,7 +31,7 @@ internal fun TraktHeader(
         ) {
             Text(
                 text = title,
-                color = TraktTheme.colors.textPrimary,
+                color = titleColor,
                 style = TraktTheme.typography.heading5,
                 maxLines = 1,
                 overflow = Ellipsis,

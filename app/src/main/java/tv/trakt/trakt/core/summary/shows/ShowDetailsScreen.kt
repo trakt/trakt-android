@@ -72,6 +72,7 @@ import tv.trakt.trakt.core.summary.shows.features.extras.ShowExtrasView
 import tv.trakt.trakt.core.summary.shows.features.history.ShowHistoryView
 import tv.trakt.trakt.core.summary.shows.features.lists.ShowListsView
 import tv.trakt.trakt.core.summary.shows.features.related.ShowRelatedView
+import tv.trakt.trakt.core.summary.shows.features.seasons.ShowSeasonsView
 import tv.trakt.trakt.core.summary.shows.features.sentiment.ShowSentimentView
 import tv.trakt.trakt.core.summary.shows.features.streaming.ShowStreamingsView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
@@ -386,6 +387,18 @@ internal fun ShowDetailsContent(
 
                     item {
                         ShowActorsView(
+                            viewModel = koinViewModel(
+                                parameters = { parametersOf(show) },
+                            ),
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            modifier = Modifier
+                                .padding(top = 32.dp),
+                        )
+                    }
+
+                    item {
+                        ShowSeasonsView(
                             viewModel = koinViewModel(
                                 parameters = { parametersOf(show) },
                             ),

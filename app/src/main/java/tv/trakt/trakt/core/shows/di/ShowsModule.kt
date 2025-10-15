@@ -3,6 +3,8 @@ package tv.trakt.trakt.core.shows.di
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.core.episodes.data.remote.EpisodesApiClient
+import tv.trakt.trakt.core.episodes.data.remote.EpisodesRemoteDataSource
 import tv.trakt.trakt.core.shows.ShowsViewModel
 import tv.trakt.trakt.core.shows.data.remote.ShowsApiClient
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
@@ -33,6 +35,12 @@ internal val showsDataModule = module {
         ShowsApiClient(
             showsApi = get(),
             recommendationsApi = get(),
+        )
+    }
+
+    single<EpisodesRemoteDataSource> {
+        EpisodesApiClient(
+            showsApi = get(),
         )
     }
 

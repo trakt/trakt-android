@@ -1,5 +1,6 @@
 package tv.trakt.trakt.common.helpers.extensions
 
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -20,3 +21,5 @@ suspend fun <A, B> Iterable<A>.asyncMap(f: suspend (A) -> B): List<B> {
         map { async { f(it) } }.awaitAll()
     }
 }
+
+fun <T> emptyImmutableList() = emptyList<T>().toImmutableList()
