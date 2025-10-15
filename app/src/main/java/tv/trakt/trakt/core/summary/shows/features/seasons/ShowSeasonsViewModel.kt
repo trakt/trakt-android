@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.summary.shows.features.seasons
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
@@ -32,8 +33,10 @@ import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.home.sections.activity.all.data.local.AllActivityLocalDataSource
 import tv.trakt.trakt.core.summary.shows.features.seasons.data.local.ShowSeasonsLocalDataSource
+import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
 import tv.trakt.trakt.core.summary.shows.features.seasons.usecases.GetShowSeasonsUseCase
+import tv.trakt.trakt.core.sync.model.ProgressItem
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.resources.R
@@ -102,16 +105,11 @@ internal class ShowSeasonsViewModel(
                 val seasons = seasonsAsync.await()
                 val watched = watchedAsync.await()
 
-                val markedEpisodes = seasons.selectedSeasonEpisodes
-                    .asyncMap {
-                        it.copy(
-                            isCheckable = authenticated,
-                            isWatched = watched?.seasons
-                                ?.firstOrNull { s -> s.number == it.episode.season }
-                                ?.episodes
-                                ?.any { e -> e.number == it.episode.number } == true,
-                        )
-                    }
+                val markedEpisodes = markWatchedEpisodes(
+                    inputEpisodes = seasons.selectedSeasonEpisodes,
+                    progress = watched?.seasons,
+                    checkable = authenticated,
+                )
 
                 itemsState.update {
                     seasons.copy(
@@ -173,21 +171,14 @@ internal class ShowSeasonsViewModel(
                     season = season.number,
                 )
 
-                val markedEpisodes = episodes
-                    .asyncMap {
-                        it.copy(
-                            isCheckable = authenticated,
-                            isWatched = progress?.seasons
-                                ?.firstOrNull { s -> s.number == it.episode.season }
-                                ?.episodes
-                                ?.any { e -> e.number == it.episode.number } == true,
-                        )
-                    }
-
                 itemsState.update {
                     it.copy(
                         selectedSeason = season,
-                        selectedSeasonEpisodes = markedEpisodes.toImmutableList(),
+                        selectedSeasonEpisodes = markWatchedEpisodes(
+                            inputEpisodes = episodes,
+                            progress = progress?.seasons,
+                            checkable = authenticated,
+                        ),
                         isSeasonLoading = false,
                     )
                 }
@@ -198,6 +189,51 @@ internal class ShowSeasonsViewModel(
                 }
             } finally {
                 loadingJob?.cancel()
+            }
+        }
+    }
+
+    fun addToWatched(episode: Episode) {
+        if (loadingState.value.isLoading || loadingEpisodeState.value.isLoading) {
+            return
+        }
+        viewModelScope.launch {
+            val authenticated = sessionManager.isAuthenticated()
+            if (!authenticated) {
+                return@launch
+            }
+
+            try {
+                loadingEpisodeState.update { LOADING }
+                setLoadingEpisode(episode)
+
+                updateEpisodeHistoryUseCase.addToHistory(episode.ids.trakt)
+                val progress = loadUserProgressUseCase.loadShowsProgress()
+                    .firstOrNull {
+                        it.show.ids.trakt == show.ids.trakt
+                    }
+                seasonsLocalDataSource.notifyUpdate()
+
+                itemsState.update {
+                    it.copy(
+                        selectedSeasonEpisodes = markWatchedEpisodes(
+                            inputEpisodes = itemsState.value.selectedSeasonEpisodes,
+                            progress = progress?.seasons,
+                            checkable = true,
+                        ),
+                    )
+                }
+
+                infoState.update {
+                    DynamicStringResource(R.string.text_info_history_added)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.w(error)
+                }
+            } finally {
+                loadingEpisodeState.update { DONE }
             }
         }
     }
@@ -215,16 +251,7 @@ internal class ShowSeasonsViewModel(
 
             try {
                 loadingEpisodeState.update { LOADING }
-                itemsState.update {
-                    it.copy(
-                        selectedSeasonEpisodes = it.selectedSeasonEpisodes
-                            .asyncMap { e ->
-                                e.copy(
-                                    isLoading = (episode.ids.trakt == e.episode.ids.trakt),
-                                )
-                            }.toImmutableList(),
-                    )
-                }
+                setLoadingEpisode(episode)
 
                 updateEpisodeHistoryUseCase.removeEpisodeFromHistory(episode.ids.trakt.value)
                 val progress = loadUserProgressUseCase.loadShowsProgress()
@@ -233,21 +260,13 @@ internal class ShowSeasonsViewModel(
                     }
                 seasonsLocalDataSource.notifyUpdate()
 
-                val markedEpisodes = itemsState.value.selectedSeasonEpisodes
-                    .asyncMap {
-                        it.copy(
-                            isWatched = progress?.seasons
-                                ?.firstOrNull { s -> s.number == it.episode.season }
-                                ?.episodes
-                                ?.any { e -> e.number == it.episode.number } == true,
-                            isLoading = false,
-                            isCheckable = true,
-                        )
-                    }
-
                 itemsState.update {
                     it.copy(
-                        selectedSeasonEpisodes = markedEpisodes.toImmutableList(),
+                        selectedSeasonEpisodes = markWatchedEpisodes(
+                            inputEpisodes = itemsState.value.selectedSeasonEpisodes,
+                            progress = progress?.seasons,
+                            checkable = true,
+                        ),
                     )
                 }
 
@@ -263,6 +282,37 @@ internal class ShowSeasonsViewModel(
                 loadingEpisodeState.update { DONE }
             }
         }
+    }
+
+    private suspend fun setLoadingEpisode(episode: Episode) {
+        itemsState.update {
+            it.copy(
+                selectedSeasonEpisodes = it.selectedSeasonEpisodes
+                    .asyncMap { e ->
+                        e.copy(
+                            isLoading = (episode.ids.trakt == e.episode.ids.trakt),
+                        )
+                    }.toImmutableList(),
+            )
+        }
+    }
+
+    private suspend fun markWatchedEpisodes(
+        inputEpisodes: List<EpisodeItem>,
+        progress: ImmutableList<ProgressItem.ShowItem.Season>?,
+        checkable: Boolean,
+    ): ImmutableList<EpisodeItem> {
+        return inputEpisodes
+            .asyncMap {
+                it.copy(
+                    isLoading = false,
+                    isCheckable = checkable,
+                    isWatched = progress
+                        ?.firstOrNull { s -> s.number == it.episode.season }
+                        ?.episodes
+                        ?.any { e -> e.number == it.episode.number } == true,
+                )
+            }.toImmutableList()
     }
 
     fun clearInfo() {
