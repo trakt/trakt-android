@@ -5,8 +5,8 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.app.common.model.SyncHistoryItem
-import tv.trakt.trakt.app.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.app.core.profile.data.remote.ProfileRemoteDataSource
+import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime

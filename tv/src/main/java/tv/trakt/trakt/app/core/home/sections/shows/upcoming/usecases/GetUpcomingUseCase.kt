@@ -2,9 +2,9 @@ package tv.trakt.trakt.app.core.home.sections.shows.upcoming.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.app.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.CalendarShow
 import tv.trakt.trakt.app.core.profile.data.remote.ProfileRemoteDataSource
+import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
