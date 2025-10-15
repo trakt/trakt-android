@@ -86,6 +86,9 @@ internal fun ShowSeasonsView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onSeasonClick = viewModel::loadSeason,
+        onCheckEpisodeClick = {
+            viewModel.addToWatched(it.episode)
+        },
         onRemoveEpisodeClick = {
             confirmRemoveSheet = it
         },
@@ -111,8 +114,8 @@ internal fun ShowSeasonsView(
         if (state.info == null) {
             return@LaunchedEffect
         }
-        haptic.performHapticFeedback(Confirm)
 
+        haptic.performHapticFeedback(Confirm)
         with(scope) {
             val job = launch {
                 state.info?.get(context)?.let {
@@ -134,6 +137,7 @@ private fun ShowSeasonsContent(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onSeasonClick: ((Season) -> Unit)? = null,
+    onCheckEpisodeClick: ((EpisodeItem) -> Unit)? = null,
     onRemoveEpisodeClick: ((EpisodeItem) -> Unit)? = null,
 ) {
     Column(
@@ -194,6 +198,7 @@ private fun ShowSeasonsContent(
                             seasons = state.items,
                             contentPadding = contentPadding,
                             onSeasonClick = onSeasonClick,
+                            onCheckEpisodeClick = onCheckEpisodeClick,
                             onRemoveEpisodeClick = onRemoveEpisodeClick,
                         )
                     }
@@ -210,6 +215,7 @@ private fun ContentList(
     contentPadding: PaddingValues,
     onSeasonClick: ((Season) -> Unit)? = null,
     onEpisodeClick: ((EpisodeItem) -> Unit)? = null,
+    onCheckEpisodeClick: ((EpisodeItem) -> Unit)? = null,
     onRemoveEpisodeClick: ((EpisodeItem) -> Unit)? = null,
 ) {
     Column(
@@ -230,7 +236,7 @@ private fun ContentList(
             season = seasons.selectedSeason?.number,
             episodes = seasons.selectedSeasonEpisodes,
             onEpisodeClick = onEpisodeClick ?: {},
-            onCheckClick = {},
+            onCheckClick = onCheckEpisodeClick ?: {},
             onRemoveClick = onRemoveEpisodeClick ?: {},
             contentPadding = contentPadding,
             modifier = Modifier.fillMaxWidth(),
