@@ -14,6 +14,7 @@ internal data object HomeDestination
 
 internal fun NavGraphBuilder.homeScreen(
     onNavigateToProfile: () -> Unit,
+    onNavigateToShow: (TraktId) -> Unit,
     onNavigateToShows: () -> Unit,
     onNavigateToMovies: () -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
@@ -26,6 +27,7 @@ internal fun NavGraphBuilder.homeScreen(
         HomeScreen(
             viewModel = koinViewModel(),
             onNavigateToProfile = onNavigateToProfile,
+            onNavigateToShow = onNavigateToShow,
             onNavigateToShows = onNavigateToShows,
             onNavigateToMovies = onNavigateToMovies,
             onNavigateToMovie = onNavigateToMovie,

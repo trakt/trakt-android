@@ -49,6 +49,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
 import tv.trakt.trakt.core.home.sections.upnext.features.context.sheets.UpNextItemContextSheet
@@ -68,6 +69,7 @@ internal fun HomeUpNextView(
     viewModel: HomeUpNextViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
+    onShowClick: (TraktId) -> Unit,
     onShowsClick: () -> Unit,
     onMoreClick: () -> Unit,
 ) {
@@ -89,6 +91,7 @@ internal fun HomeUpNextView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onShowsClick = onShowsClick,
+        onShowClick = { onShowClick(it.show.ids.trakt) },
         onMoreClick = {
             if (state.loading == DONE) {
                 onMoreClick()
@@ -125,8 +128,9 @@ internal fun HomeUpNextContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onShowsClick: () -> Unit = {},
     onMoreClick: () -> Unit = {},
+    onShowsClick: () -> Unit = {},
+    onShowClick: (ProgressShow) -> Unit = {},
     onLongClick: (ProgressShow) -> Unit = {},
     onCheckClick: (ProgressShow) -> Unit = {},
 ) {
@@ -200,6 +204,7 @@ internal fun HomeUpNextContent(
                                 contentPadding = contentPadding,
                                 onLongClick = onLongClick,
                                 onCheckClick = onCheckClick,
+                                onShowClick = onShowClick,
                             )
                         }
                     }
@@ -234,6 +239,7 @@ private fun ContentList(
     contentPadding: PaddingValues,
     onLongClick: (ProgressShow) -> Unit,
     onCheckClick: (ProgressShow) -> Unit,
+    onShowClick: (ProgressShow) -> Unit,
 ) {
     val listHash = rememberSaveable { mutableIntStateOf(listItems.items.hashCode()) }
 
@@ -261,6 +267,7 @@ private fun ContentList(
                 item = item,
                 onLongClick = { onLongClick(item) },
                 onCheckClick = { onCheckClick(item) },
+                onShowClick = { onShowClick(item) },
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
                     fadeOutSpec = null,
@@ -276,6 +283,7 @@ private fun ContentListItem(
     modifier: Modifier = Modifier,
     onLongClick: () -> Unit,
     onCheckClick: () -> Unit,
+    onShowClick: () -> Unit,
 ) {
     HorizontalMediaCard(
         title = "",
@@ -316,7 +324,9 @@ private fun ContentListItem(
             ) {
                 Column(
                     verticalArrangement = spacedBy(1.dp),
-                    modifier = Modifier.weight(1F, fill = false),
+                    modifier = Modifier
+                        .onClick(onClick = onShowClick)
+                        .weight(1F, fill = false),
                 ) {
                     Text(
                         text = item.show.title,

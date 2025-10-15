@@ -42,6 +42,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun HomeScreen(
     viewModel: HomeViewModel,
     onNavigateToProfile: () -> Unit,
+    onNavigateToShow: (TraktId) -> Unit,
     onNavigateToShows: () -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToMovies: () -> Unit,
@@ -60,6 +61,7 @@ internal fun HomeScreen(
     HomeScreenContent(
         state = state,
         onProfileClick = onNavigateToProfile,
+        onShowClick = onNavigateToShow,
         onShowsClick = onNavigateToShows,
         onMoviesClick = onNavigateToMovies,
         onMovieClick = onNavigateToMovie,
@@ -80,6 +82,7 @@ private fun HomeScreenContent(
     onMoreWatchlistClick: () -> Unit = {},
     onMorePersonalClick: () -> Unit = {},
     onMoreSocialClick: () -> Unit = {},
+    onShowClick: (TraktId) -> Unit = {},
     onShowsClick: () -> Unit = {},
     onMoviesClick: () -> Unit = {},
     onMovieClick: (TraktId) -> Unit = {},
@@ -135,6 +138,7 @@ private fun HomeScreenContent(
                 HomeUpNextView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
+                    onShowClick = onShowClick,
                     onShowsClick = onShowsClick,
                     onMoreClick = onMoreUpNextClick,
                 )
