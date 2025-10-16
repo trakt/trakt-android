@@ -110,7 +110,7 @@ internal fun ShowEpisodesList(
                         cardContent = {
                             if (!isReleased) {
                                 InfoChip(
-                                    text = item.episode.firstAired?.relativeDateTimeString() ?: "",
+                                    text = item.episode.firstAired?.relativeDateTimeString() ?: "TBA",
                                     iconPainter = painterResource(R.drawable.ic_calendar_upcoming),
                                     containerColor = TraktTheme.colors.chipContainerOnContent,
                                 )

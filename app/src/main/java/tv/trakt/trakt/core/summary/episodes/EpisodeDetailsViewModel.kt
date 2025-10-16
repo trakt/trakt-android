@@ -29,6 +29,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.summary.episodes.navigation.EpisodeDetailsDestination
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeDetailsUseCase
+import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeRatingsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 
 @OptIn(FlowPreview::class)
@@ -36,6 +37,7 @@ internal class EpisodeDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val getShowDetailsUseCase: GetShowDetailsUseCase,
     private val getEpisodeDetailsUseCase: GetEpisodeDetailsUseCase,
+    private val getRatingsUseCase: GetEpisodeRatingsUseCase,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = EpisodeDetailsState()
@@ -122,17 +124,21 @@ internal class EpisodeDetailsViewModel(
             // Don't load ratings for unreleased episodes
             return
         }
-//        viewModelScope.launch {
-//            try {
-//                episodeRatingsState.update {
-//                    getExternalRatingsUseCase.getExternalRatings(episodeId)
-//                }
-//            } catch (error: Exception) {
-//                error.rethrowCancellation {
-//                    Timber.w(error)
-//                }
-//            }
-//        }
+        viewModelScope.launch {
+            try {
+                episodeRatingsState.update {
+                    getRatingsUseCase.getExternalRatings(
+                        showId = showId,
+                        season = episode.season,
+                        episode = episode.number,
+                    )
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.w(error)
+                }
+            }
+        }
     }
 
     @Suppress("UNCHECKED_CAST")

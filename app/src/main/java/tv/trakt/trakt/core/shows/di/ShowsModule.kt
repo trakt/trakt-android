@@ -41,6 +41,7 @@ internal val showsDataModule = module {
     single<EpisodesRemoteDataSource> {
         EpisodesApiClient(
             showsApi = get(),
+            episodesApi = get(),
         )
     }
 

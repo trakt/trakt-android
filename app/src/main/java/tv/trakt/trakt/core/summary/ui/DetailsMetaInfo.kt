@@ -14,10 +14,11 @@ import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.resources.R
@@ -25,8 +26,6 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.LocalDate
 import java.util.Locale
 import kotlin.time.Duration
-
-private val EmptyList = emptyList<String>().toImmutableList()
 
 @Composable
 internal fun DetailsMetaInfo(
@@ -43,7 +42,20 @@ internal fun DetailsMetaInfo(
         titleOriginal = show.titleOriginal,
         country = show.country,
         genres = show.genres,
-        studios = showStudios ?: EmptyList,
+        studios = showStudios ?: EmptyImmutableList,
+    )
+}
+
+@Composable
+internal fun DetailsMetaInfo(
+    modifier: Modifier = Modifier,
+    episode: Episode,
+) {
+    DetailsMetaInfo(
+        modifier = modifier,
+        released = episode.firstAired?.toLocalDate(),
+        runtime = episode.runtime,
+        episodeRowsOnly = true,
     )
 }
 
@@ -62,7 +74,7 @@ internal fun DetailsMetaInfo(
         titleOriginal = movie.titleOriginal,
         country = movie.country,
         genres = movie.genres,
-        studios = movieStudios ?: EmptyList,
+        studios = movieStudios ?: EmptyImmutableList,
     )
 }
 
@@ -74,9 +86,10 @@ internal fun DetailsMetaInfo(
     status: String? = null,
     country: String? = null,
     titleOriginal: String? = null,
-    languages: ImmutableList<String> = EmptyList,
-    genres: ImmutableList<String> = EmptyList,
-    studios: ImmutableList<String> = EmptyList,
+    languages: ImmutableList<String> = EmptyImmutableList,
+    genres: ImmutableList<String> = EmptyImmutableList,
+    studios: ImmutableList<String> = EmptyImmutableList,
+    episodeRowsOnly: Boolean = false,
 ) {
     val runtimeString = remember(runtime) {
         runtime?.inWholeMinutes?.durationFormat()
@@ -118,53 +131,59 @@ internal fun DetailsMetaInfo(
             )
         }
 
-        Row(
-            horizontalArrangement = spacedBy(16.dp),
-        ) {
-            DetailsMeta(
-                title = stringResource(R.string.header_status),
-                values = listOf(status ?: "N/A"),
-                modifier = Modifier.weight(1F),
-            )
-            DetailsMeta(
-                title = stringResource(R.string.header_language),
-                values = languagesStrings.ifEmpty { listOf("N/A") },
-                modifier = Modifier.weight(1F),
-            )
+        if (!episodeRowsOnly) {
+            Row(
+                horizontalArrangement = spacedBy(16.dp),
+            ) {
+                DetailsMeta(
+                    title = stringResource(R.string.header_status),
+                    values = listOf(status ?: "N/A"),
+                    modifier = Modifier.weight(1F),
+                )
+                DetailsMeta(
+                    title = stringResource(R.string.header_language),
+                    values = languagesStrings.ifEmpty { listOf("N/A") },
+                    modifier = Modifier.weight(1F),
+                )
+            }
         }
 
-        Row(
-            horizontalArrangement = spacedBy(16.dp),
-        ) {
-            DetailsMeta(
-                title = stringResource(R.string.header_country),
-                values = listOf(countryString ?: "N/A"),
-                modifier = Modifier.weight(1F),
-            )
-            DetailsMeta(
-                title = stringResource(R.string.header_original_title),
-                values = listOf(titleOriginal ?: "N/A"),
-                modifier = Modifier.weight(1F),
-            )
+        if (!episodeRowsOnly) {
+            Row(
+                horizontalArrangement = spacedBy(16.dp),
+            ) {
+                DetailsMeta(
+                    title = stringResource(R.string.header_country),
+                    values = listOf(countryString ?: "N/A"),
+                    modifier = Modifier.weight(1F),
+                )
+                DetailsMeta(
+                    title = stringResource(R.string.header_original_title),
+                    values = listOf(titleOriginal ?: "N/A"),
+                    modifier = Modifier.weight(1F),
+                )
+            }
         }
 
-        Row(
-            horizontalArrangement = spacedBy(16.dp),
-        ) {
-            DetailsMeta(
-                title = stringResource(R.string.header_studio),
-                values = studios
-                    .take(5)
-                    .ifEmpty { listOf("N/A") },
-                modifier = Modifier.weight(1F),
-            )
-            DetailsMeta(
-                title = stringResource(R.string.header_genre),
-                values = genres
-                    .take(5)
-                    .ifEmpty { listOf("N/A") },
-                modifier = Modifier.weight(1F),
-            )
+        if (!episodeRowsOnly) {
+            Row(
+                horizontalArrangement = spacedBy(16.dp),
+            ) {
+                DetailsMeta(
+                    title = stringResource(R.string.header_studio),
+                    values = studios
+                        .take(5)
+                        .ifEmpty { listOf("N/A") },
+                    modifier = Modifier.weight(1F),
+                )
+                DetailsMeta(
+                    title = stringResource(R.string.header_genre),
+                    values = genres
+                        .take(5)
+                        .ifEmpty { listOf("N/A") },
+                    modifier = Modifier.weight(1F),
+                )
+            }
         }
     }
 }

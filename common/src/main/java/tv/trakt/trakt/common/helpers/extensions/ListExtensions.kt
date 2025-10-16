@@ -22,4 +22,4 @@ suspend fun <A, B> Iterable<A>.asyncMap(f: suspend (A) -> B): List<B> {
     }
 }
 
-fun <T> emptyImmutableList() = emptyList<T>().toImmutableList()
+val EmptyImmutableList = emptyList<Nothing>().toImmutableList()

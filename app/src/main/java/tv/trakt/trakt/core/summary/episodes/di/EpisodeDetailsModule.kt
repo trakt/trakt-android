@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.episodes.data.local.EpisodeStorage
 import tv.trakt.trakt.core.summary.episodes.EpisodeDetailsViewModel
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeDetailsUseCase
+import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeRatingsUseCase
 
 internal val episodeDetailsDataModule = module {
     single<EpisodeLocalDataSource> {
@@ -21,11 +22,18 @@ internal val episodeDetailsModule = module {
         )
     }
 
+    factory {
+        GetEpisodeRatingsUseCase(
+            remoteSource = get(),
+        )
+    }
+
     viewModel {
         EpisodeDetailsViewModel(
             savedStateHandle = get(),
             getShowDetailsUseCase = get(),
             getEpisodeDetailsUseCase = get(),
+            getRatingsUseCase = get(),
             sessionManager = get(),
         )
     }

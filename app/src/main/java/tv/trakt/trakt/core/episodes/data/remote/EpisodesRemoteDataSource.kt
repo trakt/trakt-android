@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.episodes.data.remote
 
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.EpisodeDto
+import tv.trakt.trakt.common.networking.ExternalRatingsDto
 
 internal interface EpisodesRemoteDataSource {
     /**
@@ -29,4 +30,10 @@ internal interface EpisodesRemoteDataSource {
         showId: TraktId,
         season: Int,
     ): List<EpisodeDto>
+
+    suspend fun getExternalRatings(
+        showId: TraktId,
+        season: Int,
+        episode: Int,
+    ): ExternalRatingsDto
 }

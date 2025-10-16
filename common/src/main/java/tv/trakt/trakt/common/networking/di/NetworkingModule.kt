@@ -6,6 +6,8 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.openapitools.client.apis.CalendarsApi
+import org.openapitools.client.apis.EpisodeApi
+import org.openapitools.client.apis.EpisodesApi
 import org.openapitools.client.apis.HistoryApi
 import org.openapitools.client.apis.ListsApi
 import org.openapitools.client.apis.MoviesApi
@@ -62,9 +64,27 @@ val networkingApiModule = module {
             get<RecommendationsApi>(),
             get<SearchApi>(),
             get<ShowsApi>(),
+            get<EpisodeApi>(),
+            get<EpisodesApi>(),
             get<SyncApi>(),
             get<SyncExtrasApi>(),
             get<UsersApi>(),
+        )
+    }
+
+    single<EpisodeApi> {
+        EpisodeApi(
+            baseUrl = API_HD_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("clientConfig")),
+        )
+    }
+
+    single<EpisodesApi> {
+        EpisodesApi(
+            baseUrl = API_HD_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("clientConfig")),
         )
     }
 

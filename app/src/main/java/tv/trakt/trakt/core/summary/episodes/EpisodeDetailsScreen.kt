@@ -44,7 +44,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -199,6 +198,16 @@ internal fun EpisodeDetailsContent(
                             .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
                     )
                 }
+
+                item {
+                    DetailsMeta(
+                        episode = state.episode,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 22.dp)
+                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
+                    )
+                }
             }
         }
     }
@@ -227,8 +236,7 @@ private fun DetailsOverview(
 @Composable
 private fun DetailsMeta(
     modifier: Modifier = Modifier,
-    show: Show,
-    showStudios: ImmutableList<String>?,
+    episode: Episode,
 ) {
     var isCollapsed by remember { mutableStateOf(true) }
     Box(
@@ -263,8 +271,7 @@ private fun DetailsMeta(
 
         if (!isCollapsed) {
             DetailsMetaInfo(
-                show = show,
-                showStudios = showStudios,
+                episode = episode,
                 modifier = Modifier
                     .padding(
                         top = 57.dp,
