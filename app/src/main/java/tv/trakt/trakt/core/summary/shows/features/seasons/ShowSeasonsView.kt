@@ -47,6 +47,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
@@ -69,6 +70,7 @@ internal fun ShowSeasonsView(
     viewModel: ShowSeasonsViewModel,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
+    onEpisodeClick: (episode: Episode) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -85,6 +87,7 @@ internal fun ShowSeasonsView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
+        onEpisodeClick = { onEpisodeClick(it.episode) },
         onSeasonClick = viewModel::loadSeason,
         onCheckEpisodeClick = {
             viewModel.addToWatched(it.episode)
@@ -136,6 +139,7 @@ private fun ShowSeasonsContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
+    onEpisodeClick: ((EpisodeItem) -> Unit)? = null,
     onSeasonClick: ((Season) -> Unit)? = null,
     onCheckEpisodeClick: ((EpisodeItem) -> Unit)? = null,
     onRemoveEpisodeClick: ((EpisodeItem) -> Unit)? = null,
@@ -197,6 +201,7 @@ private fun ShowSeasonsContent(
                             show = state.show,
                             seasons = state.items,
                             contentPadding = contentPadding,
+                            onEpisodeClick = onEpisodeClick,
                             onSeasonClick = onSeasonClick,
                             onCheckEpisodeClick = onCheckEpisodeClick,
                             onRemoveEpisodeClick = onRemoveEpisodeClick,

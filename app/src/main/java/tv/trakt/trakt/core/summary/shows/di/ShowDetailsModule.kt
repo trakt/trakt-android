@@ -147,6 +147,7 @@ internal val showDetailsModule = module {
             userWatchlistLocalSource = get(),
             activityLocalSource = get(),
             seasonsLocalDataSource = get(),
+            episodeLocalDataSource = get(),
             sessionManager = get(),
         )
     }

@@ -142,6 +142,9 @@ internal fun NavGraphBuilder.showsScreens(controller: NavHostController) {
                     mediaImage = show.images?.getFanartUrl(),
                 )
             },
+            onNavigateToEpisode = { showId, episode ->
+                navigateToEpisode(showId, episode)
+            },
             onNavigateBack = { popBackStack() },
         )
     }

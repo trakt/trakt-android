@@ -59,8 +59,10 @@ import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.summary.shows.features.actors.ShowActorsView
@@ -90,6 +92,7 @@ internal fun ShowDetailsScreen(
     modifier: Modifier = Modifier,
     viewModel: ShowDetailsViewModel,
     onShowClick: ((Show) -> Unit),
+    onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
     onCommentsClick: ((Show) -> Unit),
     onListClick: ((Show, CustomList) -> Unit),
     onNavigateBack: () -> Unit,
@@ -111,6 +114,11 @@ internal fun ShowDetailsScreen(
         state = state,
         modifier = modifier,
         onShowClick = onShowClick,
+        onEpisodeClick = {
+            state.show?.let { show ->
+                viewModel.navigateToEpisode(show, it)
+            }
+        },
         onListClick = {
             state.show?.let { show ->
                 onListClick(show, it)
@@ -196,6 +204,13 @@ internal fun ShowDetailsScreen(
         ),
     )
 
+    LaunchedEffect(state.navigateEpisode) {
+        state.navigateEpisode?.let {
+            onEpisodeClick(it.first, it.second)
+            viewModel.clearNavigation()
+        }
+    }
+
     LaunchedEffect(state.info) {
         if (state.info == null) {
             return@LaunchedEffect
@@ -219,6 +234,7 @@ internal fun ShowDetailsContent(
     state: ShowDetailsState,
     modifier: Modifier = Modifier,
     onShowClick: ((Show) -> Unit)? = null,
+    onEpisodeClick: ((Episode) -> Unit)? = null,
     onTrackClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onTrailerClick: (() -> Unit)? = null,
@@ -403,6 +419,7 @@ internal fun ShowDetailsContent(
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
+                            onEpisodeClick = onEpisodeClick ?: {},
                             modifier = Modifier
                                 .padding(top = 32.dp),
                         )
