@@ -4,6 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.activity.all.personal.AllActivityPersonalScreen
 import tv.trakt.trakt.core.home.sections.activity.all.social.AllActivitySocialScreen
@@ -15,13 +16,17 @@ internal data object AllPersonalActivityDestination
 internal data object AllSocialActivityDestination
 
 internal fun NavGraphBuilder.homeActivityPersonalScreen(
+    onNavigateToShow: (TraktId) -> Unit,
+    onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
+    onNavigateToMovie: (TraktId) -> Unit,
     onNavigateBack: () -> Unit,
-    onMovieClick: (TraktId) -> Unit,
 ) {
     composable<AllPersonalActivityDestination> {
         AllActivityPersonalScreen(
+            onNavigateToShow = onNavigateToShow,
+            onNavigateToEpisode = onNavigateToEpisode,
+            onNavigateToMovie = onNavigateToMovie,
             onNavigateBack = onNavigateBack,
-            onMovieClick = onMovieClick,
         )
     }
 }

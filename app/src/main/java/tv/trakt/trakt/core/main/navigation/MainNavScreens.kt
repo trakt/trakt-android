@@ -78,8 +78,12 @@ internal fun NavGraphBuilder.homeScreens(controller: NavHostController) {
         )
 
         homeActivityPersonalScreen(
+            onNavigateToShow = { navigateToShow(it) },
+            onNavigateToEpisode = { showId, episode ->
+                navigateToEpisode(showId, episode)
+            },
+            onNavigateToMovie = { navigateToMovie(it) },
             onNavigateBack = { popBackStack() },
-            onMovieClick = { navigateToMovie(it) },
         )
 
         homeActivitySocialScreen(

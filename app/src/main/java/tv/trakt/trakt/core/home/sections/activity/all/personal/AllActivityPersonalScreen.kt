@@ -46,6 +46,9 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.home.sections.activity.all.AllActivityState
 import tv.trakt.trakt.core.home.sections.activity.all.views.AllActivityEpisodeItem
@@ -66,14 +69,27 @@ internal fun AllActivityPersonalScreen(
     modifier: Modifier = Modifier,
     viewModel: AllActivityPersonalViewModel = koinViewModel(),
     onNavigateBack: () -> Unit,
-    onMovieClick: (tv.trakt.trakt.common.model.TraktId) -> Unit = {},
+    onNavigateToShow: (TraktId) -> Unit,
+    onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
+    onNavigateToMovie: (TraktId) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    // Handle navigation
-    LaunchedEffect(state.navigateMovie) {
-        state.navigateMovie?.let { movieId ->
-            onMovieClick(movieId)
+    LaunchedEffect(
+        state.navigateShow,
+        state.navigateMovie,
+        state.navigateEpisode,
+    ) {
+        state.navigateShow?.let {
+            onNavigateToShow(it)
+            viewModel.clearNavigation()
+        }
+        state.navigateEpisode?.let {
+            onNavigateToEpisode(it.first, it.second)
+            viewModel.clearNavigation()
+        }
+        state.navigateMovie?.let {
+            onNavigateToMovie(it)
             viewModel.clearNavigation()
         }
     }
@@ -91,6 +107,15 @@ internal fun AllActivityPersonalScreen(
             if (!state.loading.isLoading && !state.loadingMore.isLoading) {
                 contextSheet = it
             }
+        },
+        onShowClick = { episodeItem ->
+            viewModel.navigateToShow(episodeItem.show)
+        },
+        onEpisodeClick = { episodeItem ->
+            viewModel.navigateToEpisode(
+                episodeItem.show,
+                episodeItem.episode,
+            )
         },
         onMovieClick = { movie ->
             viewModel.navigateToMovie(movie)
@@ -135,7 +160,9 @@ internal fun AllActivityPersonalContent(
     onLongClick: (HomeActivityItem) -> Unit = {},
     onBackClick: () -> Unit = {},
     onLoadMore: () -> Unit = {},
-    onMovieClick: (tv.trakt.trakt.common.model.Movie) -> Unit = {},
+    onShowClick: (EpisodeItem) -> Unit = {},
+    onEpisodeClick: (EpisodeItem) -> Unit = {},
+    onMovieClick: (Movie) -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
     val listState = rememberLazyListState(
@@ -175,6 +202,8 @@ internal fun AllActivityPersonalContent(
             onEndOfList = onLoadMore,
             onLongClick = onLongClick,
             onBackClick = onBackClick,
+            onShowClick = onShowClick,
+            onEpisodeClick = onEpisodeClick,
             onMovieClick = onMovieClick,
         )
     }
@@ -191,7 +220,9 @@ private fun ContentList(
     onEndOfList: () -> Unit,
     onLongClick: (HomeActivityItem) -> Unit,
     onBackClick: () -> Unit,
-    onMovieClick: (tv.trakt.trakt.common.model.Movie) -> Unit,
+    onShowClick: (EpisodeItem) -> Unit,
+    onEpisodeClick: (EpisodeItem) -> Unit,
+    onMovieClick: (Movie) -> Unit,
 ) {
     val isScrolledToBottom by remember(listItems.size) {
         derivedStateOf {
@@ -258,6 +289,8 @@ private fun ContentList(
                 is EpisodeItem -> {
                     AllActivityEpisodeItem(
                         item = item,
+                        onClick = { onEpisodeClick(item) },
+                        onShowClick = { onShowClick(item) },
                         onLongClick = { onLongClick(item) },
                         modifier = Modifier
                             .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)

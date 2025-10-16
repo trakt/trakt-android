@@ -26,6 +26,8 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun AllActivityEpisodeItem(
     item: HomeActivityItem.EpisodeItem,
     modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
+    onShowClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
 ) {
     PanelMediaCard(
@@ -35,6 +37,8 @@ internal fun AllActivityEpisodeItem(
         contentImageUrl = item.show.images?.getPosterUrl(),
         containerImageUrl = item.episode.images?.getScreenshotUrl(THUMB)
             ?: item.episode.images?.getFanartUrl(THUMB),
+        onClick = onClick,
+        onImageClick = onShowClick,
         onLongClick = onLongClick,
         footerContent = {
             Row(

@@ -186,6 +186,8 @@ internal val homeModule = module {
     viewModel {
         AllActivityPersonalViewModel(
             getActivityUseCase = get(),
+            showLocalDataSource = get(),
+            episodeLocalDataSource = get(),
             movieLocalDataSource = get(),
             sessionManager = get(),
         )
