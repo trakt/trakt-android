@@ -37,7 +37,6 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.core.home.sections.activity.all.data.local.AllActivityLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.usecases.AddPersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
@@ -70,7 +69,6 @@ internal class ShowDetailsViewModel(
     private val addListItemUseCase: AddPersonalListItemUseCase,
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
-    private val activityLocalSource: AllActivityLocalDataSource,
     private val seasonsLocalDataSource: ShowSeasonsLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val sessionManager: SessionManager,
@@ -322,7 +320,7 @@ internal class ShowDetailsViewModel(
                     ids = setOf(showId),
                     notify = true,
                 )
-                activityLocalSource.notifyUpdate()
+                seasonsLocalDataSource.notifyUpdate()
 
                 showProgressState.update {
                     it?.copy(
@@ -367,7 +365,6 @@ internal class ShowDetailsViewModel(
                     .firstOrNull {
                         it.show.ids.trakt == showId
                     }
-                activityLocalSource.notifyUpdate()
                 seasonsLocalDataSource.notifyUpdate()
 
                 showProgressState.update {

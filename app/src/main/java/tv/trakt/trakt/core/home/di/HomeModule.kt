@@ -182,6 +182,9 @@ internal val homeModule = module {
             showLocalDataSource = get(),
             episodeLocalDataSource = get(),
             movieLocalDataSource = get(),
+            showSeasonsLocalSource = get(),
+            episodeSeasonsLocalSource = get(),
+            movieDetailsLocalDataSource = get(),
             sessionManager = get(),
         )
     }

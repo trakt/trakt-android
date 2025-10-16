@@ -98,8 +98,8 @@ internal val episodeDetailsModule = module {
             getRatingsUseCase = get(),
             loadProgressUseCase = get(),
             updateEpisodeHistoryUseCase = get(),
-            activityLocalSource = get(),
             episodeSeasonsLocalSource = get(),
+            showsSeasonsLocalSource = get(),
             sessionManager = get(),
         )
     }
@@ -124,7 +124,6 @@ internal val episodeDetailsModule = module {
         EpisodeHistoryViewModel(
             episode = episode,
             getHistoryUseCase = get(),
-            allActivityLocalSource = get(),
             showSeasonsLocalSource = get(),
             episodeSeasonsLocalSource = get(),
         )

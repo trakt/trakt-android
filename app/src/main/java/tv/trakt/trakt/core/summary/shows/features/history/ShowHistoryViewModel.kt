@@ -22,7 +22,6 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.core.home.sections.activity.all.data.local.AllActivityLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.summary.shows.features.history.usecases.GetShowHistoryUseCase
 import tv.trakt.trakt.core.summary.shows.features.seasons.data.local.ShowSeasonsLocalDataSource
@@ -31,7 +30,6 @@ import tv.trakt.trakt.core.summary.shows.features.seasons.data.local.ShowSeasons
 internal class ShowHistoryViewModel(
     private val show: Show,
     private val getHistoryUseCase: GetShowHistoryUseCase,
-    private val allActivityLocalSource: AllActivityLocalDataSource,
     private val seasonsLocalDataSource: ShowSeasonsLocalDataSource,
 ) : ViewModel() {
     private val initialState = ShowHistoryState()
@@ -47,7 +45,6 @@ internal class ShowHistoryViewModel(
 
     private fun observeLists() {
         merge(
-            allActivityLocalSource.observeUpdates(),
             seasonsLocalDataSource.observeUpdates(),
         )
             .distinctUntilChanged()

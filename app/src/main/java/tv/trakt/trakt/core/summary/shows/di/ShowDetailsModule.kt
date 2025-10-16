@@ -145,7 +145,6 @@ internal val showDetailsModule = module {
             addListItemUseCase = get(),
             removeListItemUseCase = get(),
             userWatchlistLocalSource = get(),
-            activityLocalSource = get(),
             seasonsLocalDataSource = get(),
             episodeLocalDataSource = get(),
             sessionManager = get(),
@@ -173,7 +172,6 @@ internal val showDetailsModule = module {
             getSeasonsUseCase = get(),
             loadUserProgressUseCase = get(),
             updateEpisodeHistoryUseCase = get(),
-            allActivityLocalSource = get(),
             seasonsLocalDataSource = get(),
             sessionManager = get(),
         )
@@ -234,7 +232,6 @@ internal val showDetailsModule = module {
         ShowHistoryViewModel(
             show = show,
             getHistoryUseCase = get(),
-            allActivityLocalSource = get(),
             seasonsLocalDataSource = get(),
         )
     }

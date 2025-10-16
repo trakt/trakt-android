@@ -11,6 +11,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -29,11 +33,11 @@ import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.core.home.sections.activity.all.data.local.AllActivityLocalDataSource
 import tv.trakt.trakt.core.summary.episodes.features.seasons.local.EpisodeSeasonsLocalDataSource
 import tv.trakt.trakt.core.summary.episodes.navigation.EpisodeDetailsDestination
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeDetailsUseCase
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeRatingsUseCase
+import tv.trakt.trakt.core.summary.shows.features.seasons.data.local.ShowSeasonsLocalDataSource
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
@@ -47,7 +51,7 @@ internal class EpisodeDetailsViewModel(
     private val getRatingsUseCase: GetEpisodeRatingsUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
-    private val activityLocalSource: AllActivityLocalDataSource,
+    private val showsSeasonsLocalSource: ShowSeasonsLocalDataSource,
     private val episodeSeasonsLocalSource: EpisodeSeasonsLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
@@ -75,6 +79,19 @@ internal class EpisodeDetailsViewModel(
         loadUser()
         loadData()
         loadProgressData()
+        observeData()
+    }
+
+    private fun observeData() {
+        showsSeasonsLocalSource.observeUpdates()
+            .distinctUntilChanged()
+            .debounce(250)
+            .onEach {
+                loadProgressData(
+                    ignoreErrors = true,
+                )
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun loadUser() {
@@ -231,7 +248,6 @@ internal class EpisodeDetailsViewModel(
                     state?.copy(plays = progress?.plays)
                 }
 
-                activityLocalSource.notifyUpdate()
                 episodeSeasonsLocalSource.notifyUpdate()
 
                 infoState.update {

@@ -31,7 +31,6 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.core.home.sections.activity.all.data.local.AllActivityLocalDataSource
 import tv.trakt.trakt.core.summary.shows.features.seasons.data.local.ShowSeasonsLocalDataSource
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
@@ -47,7 +46,6 @@ internal class ShowSeasonsViewModel(
     private val getSeasonsUseCase: GetShowSeasonsUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
-    private val allActivityLocalSource: AllActivityLocalDataSource,
     private val seasonsLocalDataSource: ShowSeasonsLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
@@ -68,18 +66,19 @@ internal class ShowSeasonsViewModel(
     }
 
     private fun observeData() {
-        allActivityLocalSource.observeUpdates()
+        seasonsLocalDataSource.observeUpdates()
             .distinctUntilChanged()
             .debounce(250)
             .onEach {
-                loadData(
-                    ignoreErrors = true,
-                )
+                loadData(ignoreErrors = true)
             }
             .launchIn(viewModelScope)
     }
 
-    private fun loadData(ignoreErrors: Boolean = false) {
+    private fun loadData(
+        ignoreErrors: Boolean = false,
+        localOnly: Boolean = false,
+    ) {
         viewModelScope.launch {
             try {
                 loadingState.update { LOADING }
@@ -93,7 +92,7 @@ internal class ShowSeasonsViewModel(
                         return@async null
                     }
                     when {
-                        loadUserProgressUseCase.isShowsLoaded() -> {
+                        loadUserProgressUseCase.isShowsLoaded() || localOnly -> {
                             loadUserProgressUseCase.loadLocalShows()
                         }
                         else -> loadUserProgressUseCase.loadShowsProgress()

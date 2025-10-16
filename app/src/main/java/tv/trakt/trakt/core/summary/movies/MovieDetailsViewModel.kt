@@ -30,10 +30,10 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.core.home.sections.activity.all.data.local.AllActivityLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.usecases.AddPersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
+import tv.trakt.trakt.core.summary.movies.data.MovieDetailsLocalDataSource
 import tv.trakt.trakt.core.summary.movies.navigation.MovieDetailsDestination
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieRatingsUseCase
@@ -59,7 +59,7 @@ internal class MovieDetailsViewModel(
     private val addListItemUseCase: AddPersonalListItemUseCase,
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
-    private val allActivityLocalSource: AllActivityLocalDataSource,
+    private val movieDetailsLocalDataSource: MovieDetailsLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<MovieDetailsDestination>()
@@ -256,7 +256,7 @@ internal class MovieDetailsViewModel(
                     ids = setOf(movieId),
                     notify = true,
                 )
-                allActivityLocalSource.notifyUpdate()
+                movieDetailsLocalDataSource.notifyUpdate()
 
                 movieProgressState.update {
                     it?.copy(
@@ -296,7 +296,6 @@ internal class MovieDetailsViewModel(
 
                 updateMovieHistoryUseCase.removePlayFromHistory(playId)
                 loadProgressUseCase.loadMoviesProgress()
-                allActivityLocalSource.notifyUpdate()
 
                 val plays = movieProgressState.value?.plays?.minus(1) ?: 0
                 movieProgressState.update {
@@ -304,6 +303,7 @@ internal class MovieDetailsViewModel(
                         plays = plays.coerceAtLeast(0),
                     )
                 }
+                movieDetailsLocalDataSource.notifyUpdate()
 
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_removed)

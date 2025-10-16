@@ -45,6 +45,9 @@ import tv.trakt.trakt.core.home.sections.activity.usecases.GetActivityFilterUseC
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
+import tv.trakt.trakt.core.summary.episodes.features.seasons.local.EpisodeSeasonsLocalDataSource
+import tv.trakt.trakt.core.summary.movies.data.MovieDetailsLocalDataSource
+import tv.trakt.trakt.core.summary.shows.features.seasons.data.local.ShowSeasonsLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 
 internal class HomeActivityViewModel(
@@ -56,6 +59,9 @@ internal class HomeActivityViewModel(
     private val allActivitySource: AllActivityLocalDataSource,
     private val showLocalDataSource: ShowLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
+    private val showSeasonsLocalSource: ShowSeasonsLocalDataSource,
+    private val episodeSeasonsLocalSource: EpisodeSeasonsLocalDataSource,
+    private val movieDetailsLocalDataSource: MovieDetailsLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
@@ -98,6 +104,9 @@ internal class HomeActivityViewModel(
             homeUpNextSource.observeUpdates(),
             userWatchlistSource.observeUpdates(),
             allActivitySource.observeUpdates(),
+            showSeasonsLocalSource.observeUpdates(),
+            episodeSeasonsLocalSource.observeUpdates(),
+            movieDetailsLocalDataSource.observeUpdates(),
         )
             .distinctUntilChanged()
             .debounce(250)
