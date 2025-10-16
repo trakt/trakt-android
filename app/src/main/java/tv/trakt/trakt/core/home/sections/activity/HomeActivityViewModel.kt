@@ -23,12 +23,16 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
+import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
@@ -50,6 +54,8 @@ internal class HomeActivityViewModel(
     private val homeUpNextSource: HomeUpNextLocalDataSource,
     private val userWatchlistSource: UserWatchlistLocalDataSource,
     private val allActivitySource: AllActivityLocalDataSource,
+    private val showLocalDataSource: ShowLocalDataSource,
+    private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
@@ -58,6 +64,8 @@ internal class HomeActivityViewModel(
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialState.filter)
+    private val navigateShow = MutableStateFlow(initialState.navigateShow)
+    private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
@@ -171,25 +179,46 @@ internal class HomeActivityViewModel(
         }
     }
 
+    fun navigateToShow(show: Show) {
+        if (navigateShow.value != null || processingJob?.isActive == true) {
+            return
+        }
+        processingJob = viewModelScope.launch {
+            showLocalDataSource.upsertShows(listOf(show))
+            navigateShow.update { show.ids.trakt }
+        }
+    }
+
+    fun navigateToEpisode(
+        show: Show,
+        episode: Episode,
+    ) {
+        if (navigateEpisode.value != null || processingJob?.isActive == true) {
+            return
+        }
+        processingJob = viewModelScope.launch {
+            showLocalDataSource.upsertShows(listOf(show))
+            episodeLocalDataSource.upsertEpisodes(listOf(episode))
+
+            navigateEpisode.update {
+                Pair(show.ids.trakt, episode)
+            }
+        }
+    }
+
     fun navigateToMovie(movie: Movie) {
         if (navigateMovie.value != null || processingJob?.isActive == true) {
             return
         }
         processingJob = viewModelScope.launch {
-            try {
-                movieLocalDataSource.upsertMovies(listOf(movie))
-                navigateMovie.update { movie.ids.trakt }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.w(error, "Failed to navigate to movie")
-                }
-            } finally {
-                processingJob = null
-            }
+            movieLocalDataSource.upsertMovies(listOf(movie))
+            navigateMovie.update { movie.ids.trakt }
         }
     }
 
     fun clearNavigation() {
+        navigateShow.update { null }
+        navigateEpisode.update { null }
         navigateMovie.update { null }
     }
 
@@ -198,6 +227,8 @@ internal class HomeActivityViewModel(
         loadingState,
         itemsState,
         filterState,
+        navigateShow,
+        navigateEpisode,
         navigateMovie,
         errorState,
         userState,
@@ -206,9 +237,11 @@ internal class HomeActivityViewModel(
             loading = states[0] as LoadingState,
             items = states[1] as? ImmutableList<HomeActivityItem>,
             filter = states[2] as? HomeActivityFilter,
-            navigateMovie = states[3] as? TraktId,
-            error = states[4] as? Exception,
-            user = states[5] as? User,
+            navigateShow = states[3] as? TraktId,
+            navigateEpisode = states[4] as? Pair<TraktId, Episode>,
+            navigateMovie = states[5] as? TraktId,
+            error = states[6] as? Exception,
+            user = states[7] as? User,
         )
     }.stateIn(
         scope = viewModelScope,

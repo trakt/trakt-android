@@ -176,6 +176,8 @@ internal val homeModule = module {
             homeUpNextSource = get(),
             userWatchlistSource = get(),
             allActivitySource = get(),
+            showLocalDataSource = get(),
+            episodeLocalDataSource = get(),
             movieLocalDataSource = get(),
             sessionManager = get(),
         )

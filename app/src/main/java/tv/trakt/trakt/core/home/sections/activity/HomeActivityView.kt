@@ -75,7 +75,19 @@ internal fun HomeActivityView(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(state.navigateMovie) {
+    LaunchedEffect(
+        state.navigateShow,
+        state.navigateMovie,
+        state.navigateEpisode,
+    ) {
+        state.navigateShow?.let {
+            onShowClick(it)
+            viewModel.clearNavigation()
+        }
+        state.navigateEpisode?.let {
+            onEpisodeClick(it.first, it.second)
+            viewModel.clearNavigation()
+        }
         state.navigateMovie?.let {
             onMovieClick(it)
             viewModel.clearNavigation()
@@ -89,7 +101,15 @@ internal fun HomeActivityView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        onEpisodeClick = {},
+        onShowClick = {
+            viewModel.navigateToShow(it.show)
+        },
+        onEpisodeClick = {
+            viewModel.navigateToEpisode(
+                show = it.show,
+                episode = it.episode,
+            )
+        },
         onEpisodeLongClick = {
             if (state.filter == PERSONAL) {
                 contextSheet = it
@@ -131,6 +151,7 @@ internal fun HomeActivityContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
+    onShowClick: (HomeActivityItem.EpisodeItem) -> Unit = {},
     onEpisodeClick: (HomeActivityItem.EpisodeItem) -> Unit = {},
     onEpisodeLongClick: (HomeActivityItem.EpisodeItem) -> Unit = {},
     onMovieClick: (Movie) -> Unit = { },
@@ -210,6 +231,7 @@ internal fun HomeActivityContent(
                                 listItems = (state.items ?: emptyList()).toImmutableList(),
                                 listFilter = state.filter,
                                 contentPadding = contentPadding,
+                                onShowClick = onShowClick,
                                 onEpisodeClick = onEpisodeClick,
                                 onEpisodeLongClick = onEpisodeLongClick,
                                 onMovieClick = onMovieClick,
@@ -276,6 +298,7 @@ private fun ContentList(
     listState: LazyListState = rememberLazyListState(),
     listFilter: HomeActivityFilter?,
     contentPadding: PaddingValues,
+    onShowClick: (HomeActivityItem.EpisodeItem) -> Unit,
     onEpisodeClick: (HomeActivityItem.EpisodeItem) -> Unit,
     onEpisodeLongClick: (HomeActivityItem.EpisodeItem) -> Unit,
     onMovieClick: (Movie) -> Unit,
@@ -322,6 +345,7 @@ private fun ContentList(
                     EpisodeSocialItemView(
                         item = item,
                         onClick = { onEpisodeClick(item) },
+                        onShowClick = { onShowClick(item) },
                         onLongClick = when (listFilter) {
                             PERSONAL -> {
                                 { onEpisodeLongClick(item) }

@@ -21,6 +21,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -36,6 +37,7 @@ internal fun EpisodeSocialItemView(
     item: HomeActivityItem.EpisodeItem,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
+    onShowClick: () -> Unit = {},
     onLongClick: (() -> Unit)? = null,
 ) {
     HorizontalMediaCard(
@@ -94,6 +96,8 @@ internal fun EpisodeSocialItemView(
         footerContent = {
             Column(
                 verticalArrangement = Arrangement.spacedBy(1.dp),
+                modifier = Modifier
+                    .onClick(onClick = onShowClick),
             ) {
                 Text(
                     text = item.show.title,

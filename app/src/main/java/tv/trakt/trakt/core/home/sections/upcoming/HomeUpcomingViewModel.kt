@@ -151,7 +151,9 @@ internal class HomeUpcomingViewModel(
             return
         }
         processingJob = viewModelScope.launch {
+            showLocalDataSource.upsertShows(listOf(show))
             episodeLocalDataSource.upsertEpisodes(listOf(episode))
+
             navigateEpisode.update {
                 Pair(show.ids.trakt, episode)
             }
