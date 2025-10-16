@@ -25,16 +25,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -43,13 +47,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
+import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
-import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.Show
@@ -57,6 +63,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.summary.episodes.features.actors.EpisodeActorsView
 import tv.trakt.trakt.core.summary.episodes.features.comments.EpisodeCommentsView
+import tv.trakt.trakt.core.summary.episodes.features.context.history.EpisodeDetailsHistorySheet
 import tv.trakt.trakt.core.summary.episodes.features.context.more.EpisodeDetailsContextSheet
 import tv.trakt.trakt.core.summary.episodes.features.history.EpisodeHistoryView
 import tv.trakt.trakt.core.summary.episodes.features.related.EpisodeRelatedView
@@ -67,6 +74,7 @@ import tv.trakt.trakt.core.summary.ui.DetailsHeader
 import tv.trakt.trakt.core.summary.ui.DetailsMetaInfo
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -78,10 +86,14 @@ internal fun EpisodeDetailsScreen(
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
+    val haptic = LocalHapticFeedback.current
+    val snack = LocalSnackbarState.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    val scope = rememberCoroutineScope()
     var contextSheet by remember { mutableStateOf(false) }
+    var historySheet by remember { mutableStateOf<HomeActivityItem.EpisodeItem?>(null) }
 
     EpisodeDetailsContent(
         state = state,
@@ -94,6 +106,9 @@ internal fun EpisodeDetailsScreen(
                 episode = state.episode,
                 context = context,
             )
+        },
+        onHistoryClick = {
+            historySheet = it
         },
         onMoreClick = {
             contextSheet = true
@@ -124,6 +139,33 @@ internal fun EpisodeDetailsScreen(
             contextSheet = false
         },
     )
+
+    EpisodeDetailsHistorySheet(
+        sheetItem = historySheet,
+        onRemovePlay = {
+            viewModel.removeFromWatched(playId = it.id)
+        },
+        onDismiss = {
+            historySheet = null
+        },
+    )
+
+    LaunchedEffect(state.info) {
+        if (state.info == null) {
+            return@LaunchedEffect
+        }
+        haptic.performHapticFeedback(Confirm)
+        with(scope) {
+            val job = launch {
+                state.info?.get(context)?.let {
+                    snack.showSnackbar(it)
+                }
+            }
+            delay(SNACK_DURATION_SHORT)
+            job.cancel()
+        }
+        viewModel.clearInfo()
+    }
 }
 
 @Composable
@@ -133,11 +175,9 @@ internal fun EpisodeDetailsContent(
     onShowClick: ((Show) -> Unit)? = null,
     onTrackClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
-    onListsClick: (() -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
     onMoreCommentsClick: (() -> Unit)? = null,
     onHistoryClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
-    onListClick: ((CustomList) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     val previewMode = LocalInspectionMode.current
@@ -307,7 +347,7 @@ internal fun EpisodeDetailsContent(
                             EpisodeHistoryView(
                                 viewModel = koinViewModel(
                                     parameters = {
-                                        parametersOf(state.show, state.episode)
+                                        parametersOf(state.episode)
                                     },
                                 ),
                                 headerPadding = sectionPadding,

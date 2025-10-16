@@ -25,6 +25,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.core.home.sections.activity.all.data.local.AllActivityLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.summary.episodes.features.history.usecases.GetEpisodeHistoryUseCase
+import tv.trakt.trakt.core.summary.episodes.features.seasons.local.EpisodeSeasonsLocalDataSource
 import tv.trakt.trakt.core.summary.shows.features.seasons.data.local.ShowSeasonsLocalDataSource
 
 @OptIn(FlowPreview::class)
@@ -32,7 +33,8 @@ internal class EpisodeHistoryViewModel(
     private val episode: Episode,
     private val getHistoryUseCase: GetEpisodeHistoryUseCase,
     private val allActivityLocalSource: AllActivityLocalDataSource,
-    private val seasonsLocalDataSource: ShowSeasonsLocalDataSource,
+    private val showSeasonsLocalSource: ShowSeasonsLocalDataSource,
+    private val episodeSeasonsLocalSource: EpisodeSeasonsLocalDataSource,
 ) : ViewModel() {
     private val initialState = EpisodeHistoryState()
 
@@ -48,7 +50,8 @@ internal class EpisodeHistoryViewModel(
     private fun observeLists() {
         merge(
             allActivityLocalSource.observeUpdates(),
-            seasonsLocalDataSource.observeUpdates(),
+            showSeasonsLocalSource.observeUpdates(),
+            episodeSeasonsLocalSource.observeUpdates(),
         )
             .distinctUntilChanged()
             .debounce(250)

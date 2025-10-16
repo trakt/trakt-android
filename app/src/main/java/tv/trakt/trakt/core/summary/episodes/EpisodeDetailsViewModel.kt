@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
@@ -27,10 +29,15 @@ import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.home.sections.activity.all.data.local.AllActivityLocalDataSource
+import tv.trakt.trakt.core.summary.episodes.features.seasons.local.EpisodeSeasonsLocalDataSource
 import tv.trakt.trakt.core.summary.episodes.navigation.EpisodeDetailsDestination
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeDetailsUseCase
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeRatingsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
+import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
+import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.resources.R
 
 @OptIn(FlowPreview::class)
 internal class EpisodeDetailsViewModel(
@@ -38,6 +45,10 @@ internal class EpisodeDetailsViewModel(
     private val getShowDetailsUseCase: GetShowDetailsUseCase,
     private val getEpisodeDetailsUseCase: GetEpisodeDetailsUseCase,
     private val getRatingsUseCase: GetEpisodeRatingsUseCase,
+    private val loadProgressUseCase: LoadUserProgressUseCase,
+    private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
+    private val activityLocalSource: AllActivityLocalDataSource,
+    private val episodeSeasonsLocalSource: EpisodeSeasonsLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = EpisodeDetailsState()
@@ -63,6 +74,7 @@ internal class EpisodeDetailsViewModel(
     init {
         loadUser()
         loadData()
+        loadProgressData()
     }
 
     private fun loadUser() {
@@ -119,6 +131,55 @@ internal class EpisodeDetailsViewModel(
         }
     }
 
+    private fun loadProgressData(ignoreErrors: Boolean = false) {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                loadingProgress.update { LOADING }
+
+                coroutineScope {
+                    val progressAsync = async {
+                        if (!loadProgressUseCase.isShowsLoaded()) {
+                            loadProgressUseCase.loadShowsProgress()
+                        }
+                    }
+
+                    progressAsync.await()
+                }
+
+                coroutineScope {
+                    val progressAsync = async {
+                        loadProgressUseCase.loadShowsProgress()
+                            .firstOrNull {
+                                it.show.ids.trakt == showId
+                            }?.seasons?.firstOrNull {
+                                it.number == seasonEpisode.season
+                            }?.episodes?.firstOrNull {
+                                it.number == seasonEpisode.episode
+                            }
+                    }
+
+                    val progress = progressAsync.await()
+
+                    episodeProgressState.update {
+                        EpisodeDetailsState.ProgressState(plays = progress?.plays)
+                    }
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    if (!ignoreErrors) {
+                        errorState.update { error }
+                    }
+                    Timber.w(error)
+                }
+            } finally {
+                loadingProgress.update { DONE }
+            }
+        }
+    }
+
     private fun loadRatings(episode: Episode?) {
         if (episode?.firstAired?.isNowOrBefore() != true) {
             // Don't load ratings for unreleased episodes
@@ -139,6 +200,56 @@ internal class EpisodeDetailsViewModel(
                 }
             }
         }
+    }
+
+    fun removeFromWatched(playId: Long) {
+        if (showState.value == null ||
+            loadingState.value.isLoading ||
+            loadingProgress.value.isLoading
+        ) {
+            return
+        }
+
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                loadingProgress.update { LOADING }
+
+                updateEpisodeHistoryUseCase.removePlayFromHistory(playId)
+                val progress = loadProgressUseCase.loadShowsProgress()
+                    .firstOrNull {
+                        it.show.ids.trakt == showId
+                    }?.seasons?.firstOrNull {
+                        it.number == seasonEpisode.season
+                    }?.episodes?.firstOrNull {
+                        it.number == seasonEpisode.episode
+                    }
+
+                episodeProgressState.update { state ->
+                    state?.copy(plays = progress?.plays)
+                }
+
+                activityLocalSource.notifyUpdate()
+                episodeSeasonsLocalSource.notifyUpdate()
+
+                infoState.update {
+                    DynamicStringResource(R.string.text_info_history_removed)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.w(error)
+                }
+            } finally {
+                loadingProgress.update { DONE }
+            }
+        }
+    }
+
+    fun clearInfo() {
+        infoState.update { null }
     }
 
     @Suppress("UNCHECKED_CAST")

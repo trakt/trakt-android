@@ -16,6 +16,8 @@ import tv.trakt.trakt.core.summary.episodes.features.history.EpisodeHistoryViewM
 import tv.trakt.trakt.core.summary.episodes.features.history.usecases.GetEpisodeHistoryUseCase
 import tv.trakt.trakt.core.summary.episodes.features.related.EpisodeRelatedViewModel
 import tv.trakt.trakt.core.summary.episodes.features.related.usecases.GetEpisodeRelatedUseCase
+import tv.trakt.trakt.core.summary.episodes.features.seasons.local.EpisodeSeasonsLocalDataSource
+import tv.trakt.trakt.core.summary.episodes.features.seasons.local.EpisodeSeasonsStorage
 import tv.trakt.trakt.core.summary.episodes.features.streaming.EpisodeStreamingsViewModel
 import tv.trakt.trakt.core.summary.episodes.features.streaming.usecases.GetEpisodeStreamingsUseCase
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeDetailsUseCase
@@ -25,6 +27,10 @@ import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeStreamingUseCase
 internal val episodeDetailsDataModule = module {
     single<EpisodeLocalDataSource> {
         EpisodeStorage()
+    }
+
+    single<EpisodeSeasonsLocalDataSource> {
+        EpisodeSeasonsStorage()
     }
 }
 
@@ -90,6 +96,10 @@ internal val episodeDetailsModule = module {
             getShowDetailsUseCase = get(),
             getEpisodeDetailsUseCase = get(),
             getRatingsUseCase = get(),
+            loadProgressUseCase = get(),
+            updateEpisodeHistoryUseCase = get(),
+            activityLocalSource = get(),
+            episodeSeasonsLocalSource = get(),
             sessionManager = get(),
         )
     }
@@ -115,7 +125,8 @@ internal val episodeDetailsModule = module {
             episode = episode,
             getHistoryUseCase = get(),
             allActivityLocalSource = get(),
-            seasonsLocalDataSource = get(),
+            showSeasonsLocalSource = get(),
+            episodeSeasonsLocalSource = get(),
         )
     }
 

@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -33,6 +34,8 @@ import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
 import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.AllUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
+import tv.trakt.trakt.core.summary.episodes.features.seasons.local.EpisodeSeasonsLocalDataSource
+import tv.trakt.trakt.core.summary.shows.features.seasons.data.local.ShowSeasonsLocalDataSource
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
 
@@ -43,6 +46,8 @@ internal class HomeUpNextViewModel(
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val allUpNextSource: AllUpNextLocalDataSource,
     private val homePersonalActivitySource: HomePersonalLocalDataSource,
+    private val showSeasonsLocalDataSource: ShowSeasonsLocalDataSource,
+    private val episodeSeasonsLocalDataSource: EpisodeSeasonsLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = HomeUpNextState()
@@ -59,7 +64,7 @@ internal class HomeUpNextViewModel(
     init {
         loadData()
         observeUser()
-        observeHome()
+        observeData()
     }
 
     private fun observeUser() {
@@ -77,8 +82,12 @@ internal class HomeUpNextViewModel(
     }
 
     @OptIn(FlowPreview::class)
-    private fun observeHome() {
-        homePersonalActivitySource.observeUpdates()
+    private fun observeData() {
+        merge(
+            homePersonalActivitySource.observeUpdates(),
+            showSeasonsLocalDataSource.observeUpdates(),
+            episodeSeasonsLocalDataSource.observeUpdates(),
+        )
             .distinctUntilChanged()
             .debounce(250)
             .onEach {

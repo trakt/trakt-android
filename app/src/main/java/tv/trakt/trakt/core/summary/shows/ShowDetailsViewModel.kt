@@ -368,6 +368,7 @@ internal class ShowDetailsViewModel(
                         it.show.ids.trakt == showId
                     }
                 activityLocalSource.notifyUpdate()
+                seasonsLocalDataSource.notifyUpdate()
 
                 showProgressState.update {
                     it?.copy(

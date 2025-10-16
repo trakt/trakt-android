@@ -143,6 +143,8 @@ internal val homeModule = module {
             homePersonalActivitySource = get(),
             allUpNextSource = get(),
             loadUserProgressUseCase = get(),
+            showSeasonsLocalDataSource = get(),
+            episodeSeasonsLocalDataSource = get(),
             sessionManager = get(),
         )
     }
