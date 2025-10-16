@@ -43,6 +43,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter
@@ -69,6 +70,8 @@ internal fun HomeActivityView(
     onMorePersonalClick: () -> Unit,
     onMoreSocialClick: () -> Unit,
     onMovieClick: (TraktId) -> Unit,
+    onShowClick: (TraktId) -> Unit,
+    onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 

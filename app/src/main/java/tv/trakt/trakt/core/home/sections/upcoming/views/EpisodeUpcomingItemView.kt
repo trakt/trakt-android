@@ -11,6 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -26,9 +27,12 @@ import java.time.Instant
 internal fun EpisodeUpcomingItemView(
     item: HomeUpcomingItem.EpisodeItem,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    onShowClick: () -> Unit,
 ) {
     HorizontalMediaCard(
         title = "",
+        onClick = onClick,
         containerImageUrl =
             item.episode.images?.getScreenshotUrl()
                 ?: item.show.images?.getFanartUrl(),
@@ -45,6 +49,8 @@ internal fun EpisodeUpcomingItemView(
         footerContent = {
             Column(
                 verticalArrangement = spacedBy(1.dp),
+                modifier = Modifier
+                    .onClick(onClick = onShowClick),
             ) {
                 Text(
                     text = item.show.title,
@@ -87,6 +93,8 @@ private fun Preview() {
                 show = PreviewData.show1,
                 episode = PreviewData.episode1,
             ),
+            onClick = {},
+            onShowClick = {},
         )
     }
 }

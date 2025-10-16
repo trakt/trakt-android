@@ -33,6 +33,7 @@ import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAG
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
@@ -50,12 +51,26 @@ internal fun HomeUpcomingView(
     viewModel: HomeUpcomingViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
+    onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
+    onShowClick: (TraktId) -> Unit,
     onShowsClick: () -> Unit,
-    onMovieClick: (TraktId) -> Unit = { },
+    onMovieClick: (TraktId) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(state.navigateMovie) {
+    LaunchedEffect(
+        state.navigateShow,
+        state.navigateMovie,
+        state.navigateEpisode,
+    ) {
+        state.navigateShow?.let {
+            onShowClick(it)
+            viewModel.clearNavigation()
+        }
+        state.navigateEpisode?.let {
+            onEpisodeClick(it.first, it.second)
+            viewModel.clearNavigation()
+        }
         state.navigateMovie?.let {
             onMovieClick(it)
             viewModel.clearNavigation()
@@ -68,6 +83,12 @@ internal fun HomeUpcomingView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onShowsClick = onShowsClick,
+        onClick = {
+            viewModel.navigateToEpisode(it.show, it.episode)
+        },
+        onShowClick = {
+            viewModel.navigateToShow(it.show)
+        },
         onMovieClick = {
             viewModel.navigateToMovie(it)
         },
@@ -80,6 +101,8 @@ internal fun HomeUpcomingContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
+    onClick: (HomeUpcomingItem.EpisodeItem) -> Unit = {},
+    onShowClick: (HomeUpcomingItem.EpisodeItem) -> Unit = {},
     onShowsClick: () -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
 ) {
@@ -141,6 +164,8 @@ internal fun HomeUpcomingContent(
                             ContentList(
                                 listItems = (state.items ?: emptyList()).toImmutableList(),
                                 contentPadding = contentPadding,
+                                onClick = onClick,
+                                onShowClick = onShowClick,
                                 onMovieClick = onMovieClick,
                             )
                         }
@@ -174,6 +199,8 @@ private fun ContentList(
     listItems: ImmutableList<HomeUpcomingItem>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
+    onClick: (HomeUpcomingItem.EpisodeItem) -> Unit,
+    onShowClick: (HomeUpcomingItem.EpisodeItem) -> Unit,
     onMovieClick: (Movie) -> Unit,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
@@ -209,6 +236,8 @@ private fun ContentList(
                 is HomeUpcomingItem.EpisodeItem ->
                     EpisodeUpcomingItemView(
                         item = item,
+                        onClick = { onClick(item) },
+                        onShowClick = { onShowClick(item) },
                         modifier = Modifier.animateItem(
                             fadeInSpec = null,
                             fadeOutSpec = null,

@@ -201,6 +201,8 @@ internal val homeModule = module {
         HomeUpcomingViewModel(
             getUpcomingUseCase = get(),
             homeUpNextSource = get(),
+            showLocalDataSource = get(),
+            episodeLocalDataSource = get(),
             movieLocalDataSource = get(),
             sessionManager = get(),
         )

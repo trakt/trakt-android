@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.home.sections.upcoming
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,26 +20,37 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
+import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
+import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.core.home.sections.upcoming.usecases.GetUpcomingUseCase
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 
+@Suppress("UNCHECKED_CAST")
 @OptIn(FlowPreview::class)
 internal class HomeUpcomingViewModel(
     private val getUpcomingUseCase: GetUpcomingUseCase,
     private val homeUpNextSource: HomeUpNextLocalDataSource,
+    private val showLocalDataSource: ShowLocalDataSource,
+    private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = HomeUpcomingState()
 
     private val itemsState = MutableStateFlow(initialState.items)
+    private val navigateShow = MutableStateFlow(initialState.navigateShow)
+    private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
@@ -121,6 +133,31 @@ internal class HomeUpcomingViewModel(
         return false
     }
 
+    fun navigateToShow(show: Show) {
+        if (navigateShow.value != null || processingJob?.isActive == true) {
+            return
+        }
+        processingJob = viewModelScope.launch {
+            showLocalDataSource.upsertShows(listOf(show))
+            navigateShow.update { show.ids.trakt }
+        }
+    }
+
+    fun navigateToEpisode(
+        show: Show,
+        episode: Episode,
+    ) {
+        if (navigateEpisode.value != null || processingJob?.isActive == true) {
+            return
+        }
+        processingJob = viewModelScope.launch {
+            episodeLocalDataSource.upsertEpisodes(listOf(episode))
+            navigateEpisode.update {
+                Pair(show.ids.trakt, episode)
+            }
+        }
+    }
+
     fun navigateToMovie(movie: Movie) {
         if (navigateMovie.value != null || processingJob?.isActive == true) {
             return
@@ -132,20 +169,25 @@ internal class HomeUpcomingViewModel(
     }
 
     fun clearNavigation() {
+        navigateShow.update { null }
+        navigateEpisode.update { null }
         navigateMovie.update { null }
     }
 
     val state: StateFlow<HomeUpcomingState> = combine(
         loadingState,
         itemsState,
+        navigateShow,
+        navigateEpisode,
         navigateMovie,
         errorState,
-    ) { s1, s2, s3, s4 ->
+    ) { state ->
         HomeUpcomingState(
-            loading = s1,
-            items = s2,
-            navigateMovie = s3,
-            error = s4,
+            loading = state[0] as LoadingState,
+            items = state[1] as ImmutableList<HomeUpcomingItem>?,
+            navigateShow = state[2] as TraktId?,
+            navigateEpisode = state[3] as Pair<TraktId, Episode>?,
+            navigateMovie = state[4] as TraktId?,
         )
     }.stateIn(
         scope = viewModelScope,

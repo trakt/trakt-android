@@ -163,7 +163,9 @@ private fun HomeScreenContent(
                 HomeUpcomingView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
+                    onShowClick = onShowClick,
                     onShowsClick = onShowsClick,
+                    onEpisodeClick = onEpisodeClick,
                     onMovieClick = onMovieClick,
                 )
             }
@@ -174,6 +176,8 @@ private fun HomeScreenContent(
                     contentPadding = sectionPadding,
                     onMorePersonalClick = onMorePersonalClick,
                     onMoreSocialClick = onMoreSocialClick,
+                    onShowClick = onShowClick,
+                    onEpisodeClick = onEpisodeClick,
                     onMovieClick = onMovieClick,
                 )
             }
