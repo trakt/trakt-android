@@ -7,6 +7,8 @@ import tv.trakt.trakt.common.core.episodes.data.local.EpisodeStorage
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.episodes.EpisodeDetailsViewModel
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdatesStorage
 import tv.trakt.trakt.core.summary.episodes.features.actors.EpisodeActorsViewModel
 import tv.trakt.trakt.core.summary.episodes.features.actors.usecases.GetEpisodeActorsUseCase
 import tv.trakt.trakt.core.summary.episodes.features.comments.EpisodeCommentsViewModel
@@ -16,8 +18,6 @@ import tv.trakt.trakt.core.summary.episodes.features.history.EpisodeHistoryViewM
 import tv.trakt.trakt.core.summary.episodes.features.history.usecases.GetEpisodeHistoryUseCase
 import tv.trakt.trakt.core.summary.episodes.features.related.EpisodeRelatedViewModel
 import tv.trakt.trakt.core.summary.episodes.features.related.usecases.GetEpisodeRelatedUseCase
-import tv.trakt.trakt.core.summary.episodes.features.seasons.local.EpisodeSeasonsLocalDataSource
-import tv.trakt.trakt.core.summary.episodes.features.seasons.local.EpisodeSeasonsStorage
 import tv.trakt.trakt.core.summary.episodes.features.streaming.EpisodeStreamingsViewModel
 import tv.trakt.trakt.core.summary.episodes.features.streaming.usecases.GetEpisodeStreamingsUseCase
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeDetailsUseCase
@@ -29,8 +29,8 @@ internal val episodeDetailsDataModule = module {
         EpisodeStorage()
     }
 
-    single<EpisodeSeasonsLocalDataSource> {
-        EpisodeSeasonsStorage()
+    single<EpisodeDetailsUpdates> {
+        EpisodeDetailsUpdatesStorage()
     }
 }
 
@@ -98,8 +98,8 @@ internal val episodeDetailsModule = module {
             getRatingsUseCase = get(),
             loadProgressUseCase = get(),
             updateEpisodeHistoryUseCase = get(),
-            episodeSeasonsLocalSource = get(),
             showUpdatesSource = get(),
+            episodeUpdatesSource = get(),
             sessionManager = get(),
         )
     }
@@ -125,7 +125,7 @@ internal val episodeDetailsModule = module {
             episode = episode,
             getHistoryUseCase = get(),
             showUpdatesSource = get(),
-            episodeSeasonsLocalSource = get(),
+            episodeUpdatesSource = get(),
         )
     }
 

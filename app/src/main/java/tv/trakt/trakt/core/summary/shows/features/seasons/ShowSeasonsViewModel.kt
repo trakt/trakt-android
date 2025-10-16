@@ -68,7 +68,7 @@ internal class ShowSeasonsViewModel(
     }
 
     private fun observeData() {
-        showDetailsUpdates.observeUpdates(tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdatesSource.PROGRESS)
+        showDetailsUpdates.observeUpdates(PROGRESS)
             .distinctUntilChanged()
             .debounce(200)
             .onEach {
@@ -224,7 +224,7 @@ internal class ShowSeasonsViewModel(
                     )
                 }
 
-                showDetailsUpdates.notifyUpdate(tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdatesSource.SEASONS)
+                showDetailsUpdates.notifyUpdate(SEASONS)
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_added)
                 }
@@ -270,7 +270,7 @@ internal class ShowSeasonsViewModel(
                     )
                 }
 
-                showDetailsUpdates.notifyUpdate(tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdatesSource.SEASONS)
+                showDetailsUpdates.notifyUpdate(SEASONS)
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_removed)
                 }

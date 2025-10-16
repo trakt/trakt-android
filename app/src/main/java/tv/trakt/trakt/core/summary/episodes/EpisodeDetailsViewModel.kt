@@ -34,7 +34,8 @@ import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.core.summary.episodes.features.seasons.local.EpisodeSeasonsLocalDataSource
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
 import tv.trakt.trakt.core.summary.episodes.navigation.EpisodeDetailsDestination
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeDetailsUseCase
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeRatingsUseCase
@@ -53,8 +54,8 @@ internal class EpisodeDetailsViewModel(
     private val getRatingsUseCase: GetEpisodeRatingsUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
-    private val episodeSeasonsLocalSource: EpisodeSeasonsLocalDataSource,
     private val showUpdatesSource: ShowDetailsUpdates,
+    private val episodeUpdatesSource: EpisodeDetailsUpdates,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = EpisodeDetailsState()
@@ -253,8 +254,7 @@ internal class EpisodeDetailsViewModel(
                     state?.copy(plays = progress?.plays)
                 }
 
-                episodeSeasonsLocalSource.notifyUpdate()
-
+                episodeUpdatesSource.notifyUpdate(PROGRESS)
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_removed)
                 }

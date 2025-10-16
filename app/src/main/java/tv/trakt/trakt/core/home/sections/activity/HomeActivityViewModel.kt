@@ -45,7 +45,9 @@ import tv.trakt.trakt.core.home.sections.activity.usecases.GetActivityFilterUseC
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
-import tv.trakt.trakt.core.summary.episodes.features.seasons.local.EpisodeSeasonsLocalDataSource
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
@@ -60,8 +62,8 @@ internal class HomeActivityViewModel(
     private val allActivitySource: AllActivityLocalDataSource,
     private val showLocalDataSource: ShowLocalDataSource,
     private val showUpdatesSource: ShowDetailsUpdates,
+    private val episodeUpdatesSource: EpisodeDetailsUpdates,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
-    private val episodeSeasonsLocalSource: EpisodeSeasonsLocalDataSource,
     private val movieDetailsUpdates: MovieDetailsUpdates,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
@@ -107,7 +109,8 @@ internal class HomeActivityViewModel(
             allActivitySource.observeUpdates(),
             showUpdatesSource.observeUpdates(Source.PROGRESS),
             showUpdatesSource.observeUpdates(Source.SEASONS),
-            episodeSeasonsLocalSource.observeUpdates(),
+            episodeUpdatesSource.observeUpdates(PROGRESS),
+            episodeUpdatesSource.observeUpdates(SEASON),
             movieDetailsUpdates.observeUpdates(),
         )
             .distinctUntilChanged()

@@ -34,7 +34,9 @@ import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
 import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.AllUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
-import tv.trakt.trakt.core.summary.episodes.features.seasons.local.EpisodeSeasonsLocalDataSource
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
@@ -47,8 +49,8 @@ internal class HomeUpNextViewModel(
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val allUpNextSource: AllUpNextLocalDataSource,
     private val homePersonalActivitySource: HomePersonalLocalDataSource,
-    private val episodeSeasonsLocalDataSource: EpisodeSeasonsLocalDataSource,
     private val showUpdatesSource: ShowDetailsUpdates,
+    private val episodeUpdatesSource: EpisodeDetailsUpdates,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = HomeUpNextState()
@@ -88,7 +90,8 @@ internal class HomeUpNextViewModel(
             homePersonalActivitySource.observeUpdates(),
             showUpdatesSource.observeUpdates(Source.PROGRESS),
             showUpdatesSource.observeUpdates(Source.SEASONS),
-            episodeSeasonsLocalDataSource.observeUpdates(),
+            episodeUpdatesSource.observeUpdates(PROGRESS),
+            episodeUpdatesSource.observeUpdates(SEASON),
         )
             .distinctUntilChanged()
             .debounce(200)
