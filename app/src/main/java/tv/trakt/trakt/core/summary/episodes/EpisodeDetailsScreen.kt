@@ -44,6 +44,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -53,6 +55,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
+import tv.trakt.trakt.core.summary.episodes.features.actors.EpisodeActorsView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.DetailsHeader
@@ -207,6 +210,22 @@ internal fun EpisodeDetailsContent(
                             .padding(top = 22.dp)
                             .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
                     )
+                }
+
+                if (!previewMode) {
+                    item {
+                        EpisodeActorsView(
+                            viewModel = koinViewModel(
+                                parameters = {
+                                    parametersOf(state.show, state.episode)
+                                },
+                            ),
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            modifier = Modifier
+                                .padding(top = 32.dp),
+                        )
+                    }
                 }
             }
         }

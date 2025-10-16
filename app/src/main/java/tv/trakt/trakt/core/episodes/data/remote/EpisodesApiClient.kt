@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.episodes.data.remote
 import org.openapitools.client.apis.EpisodeApi
 import org.openapitools.client.apis.ShowsApi
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.EpisodeDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
 
@@ -46,6 +47,20 @@ internal class EpisodesApiClient(
             season = season,
             episode = episode,
             extended = "all",
+        )
+        return response.body()
+    }
+
+    override suspend fun getEpisodeCastCrew(
+        showId: TraktId,
+        season: Int,
+        episode: Int,
+    ): CastCrewDto {
+        val response = showsApi.getShowsEpisodePeople(
+            id = showId.value.toString(),
+            season = season,
+            episode = episode,
+            extended = "cloud9",
         )
         return response.body()
     }

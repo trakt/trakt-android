@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.episodes.data.remote
 
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.EpisodeDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
 
@@ -31,9 +32,31 @@ internal interface EpisodesRemoteDataSource {
         season: Int,
     ): List<EpisodeDto>
 
+    /**
+     * Retrieves the external ratings for a specific episode of a show.
+     *
+     * @param showId The Trakt ID of the show.
+     * @param season The season number.
+     * @param episode The episode number.
+     * @return An [ExternalRatingsDto] object containing the external ratings for the episode.
+     */
     suspend fun getExternalRatings(
         showId: TraktId,
         season: Int,
         episode: Int,
     ): ExternalRatingsDto
+
+    /**
+     * Retrieves the cast and crew for a specific episode of a show.
+     *
+     * @param showId The Trakt ID of the show.
+     * @param season The season number.
+     * @param episode The episode number.
+     * @return A [CastCrewDto] object containing the cast and crew information for the episode.
+     */
+    suspend fun getEpisodeCastCrew(
+        showId: TraktId,
+        season: Int,
+        episode: Int,
+    ): CastCrewDto
 }

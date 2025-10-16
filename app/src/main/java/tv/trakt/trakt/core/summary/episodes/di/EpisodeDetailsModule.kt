@@ -4,7 +4,11 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.episodes.data.local.EpisodeStorage
+import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.episodes.EpisodeDetailsViewModel
+import tv.trakt.trakt.core.summary.episodes.features.actors.EpisodeActorsViewModel
+import tv.trakt.trakt.core.summary.episodes.features.actors.usecases.GetEpisodeActorsUseCase
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeDetailsUseCase
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeRatingsUseCase
 
@@ -28,6 +32,12 @@ internal val episodeDetailsModule = module {
         )
     }
 
+    factory {
+        GetEpisodeActorsUseCase(
+            remoteSource = get(),
+        )
+    }
+
     viewModel {
         EpisodeDetailsViewModel(
             savedStateHandle = get(),
@@ -35,6 +45,14 @@ internal val episodeDetailsModule = module {
             getEpisodeDetailsUseCase = get(),
             getRatingsUseCase = get(),
             sessionManager = get(),
+        )
+    }
+
+    viewModel { (show: Show, episode: Episode) ->
+        EpisodeActorsViewModel(
+            show = show,
+            episode = episode,
+            getActorsUseCase = get(),
         )
     }
 }
