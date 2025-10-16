@@ -88,8 +88,6 @@ internal fun EpisodeDetailsScreen(
                 context = context,
             )
         },
-        onListsClick = {
-        },
         onMoreClick = {
         },
         onMoreCommentsClick = { },
@@ -104,7 +102,6 @@ internal fun EpisodeDetailsContent(
     onShowClick: ((Show) -> Unit)? = null,
     onTrackClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
-    onListsClick: (() -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
     onMoreCommentsClick: (() -> Unit)? = null,
     onListClick: ((CustomList) -> Unit)? = null,
@@ -178,11 +175,11 @@ internal fun EpisodeDetailsContent(
                 item {
                     DetailsActions(
                         primaryEnabled = isReleased,
+                        secondaryVisible = false,
                         enabled = false,
                         loading = false,
                         inLists = false,
                         onPrimaryClick = onTrackClick,
-                        onSecondaryClick = onListsClick,
                         onMoreClick = onMoreClick,
                         modifier = Modifier
                             .align(Center)

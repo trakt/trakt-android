@@ -34,6 +34,7 @@ internal fun DetailsActions(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     primaryEnabled: Boolean = true,
+    secondaryVisible: Boolean = true,
     loading: Boolean = false,
     inLists: Boolean? = false,
     onPrimaryClick: (() -> Unit)? = null,
@@ -50,7 +51,10 @@ internal fun DetailsActions(
                 top = 8.dp,
                 bottom = 8.dp,
                 start = 8.dp,
-                end = 20.dp,
+                end = when {
+                    secondaryVisible -> 20.dp
+                    else -> 32.dp
+                },
             ),
     ) {
         Row(
@@ -94,30 +98,32 @@ internal fun DetailsActions(
                 }
             }
 
-            Icon(
-                painter = when {
-                    inLists == true -> painterResource(R.drawable.ic_lists_check)
-                    else -> painterResource(R.drawable.ic_plus_round)
-                },
-                tint = when {
-                    enabled -> TraktTheme.colors.primaryButtonContent
-                    else -> TraktTheme.colors.primaryButtonContainerDisabled
-                },
-                contentDescription = null,
-                modifier = Modifier
-                    .onClick(
-                        enabled = enabled,
-                        onClick = onSecondaryClick ?: {},
-                    )
-                    .size(21.dp)
-                    .graphicsLayer {
-                        translationX = -(0.5).dp.toPx()
-                        if (inLists == true) {
-                            scaleX = 1.15F
-                            scaleY = 1.15F
-                        }
+            if (secondaryVisible) {
+                Icon(
+                    painter = when {
+                        inLists == true -> painterResource(R.drawable.ic_lists_check)
+                        else -> painterResource(R.drawable.ic_plus_round)
                     },
-            )
+                    tint = when {
+                        enabled -> TraktTheme.colors.primaryButtonContent
+                        else -> TraktTheme.colors.primaryButtonContainerDisabled
+                    },
+                    contentDescription = null,
+                    modifier = Modifier
+                        .onClick(
+                            enabled = enabled,
+                            onClick = onSecondaryClick ?: {},
+                        )
+                        .size(21.dp)
+                        .graphicsLayer {
+                            translationX = -(0.5).dp.toPx()
+                            if (inLists == true) {
+                                scaleX = 1.15F
+                                scaleY = 1.15F
+                            }
+                        },
+                )
+            }
 
             Icon(
                 painter = painterResource(R.drawable.ic_more_vertical),
@@ -159,6 +165,7 @@ private fun Preview() {
 
             DetailsActions(
                 enabled = false,
+                secondaryVisible = false
             )
 
             DetailsActions(
