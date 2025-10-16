@@ -362,8 +362,8 @@ private fun DetailsHeader(
                         if (playsCount != null && playsCount > 0) {
                             PosterChip(
                                 text = when {
-                                    playsCount > 1 -> playsCount.toString()
-                                    else -> ""
+                                    playsCount > 1 -> stringResource(R.string.text_watched_count, playsCount)
+                                    else -> stringResource(R.string.text_watched)
                                 },
                                 icon = painterResource(R.drawable.ic_check_round),
                             )
@@ -505,7 +505,7 @@ private fun PosterChip(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy(5.dp),
+        horizontalArrangement = spacedBy(6.dp),
         modifier = modifier
             .background(Color.White, RoundedCornerShape(100))
             .padding(
@@ -523,7 +523,7 @@ private fun PosterChip(
         }
         if (text.isNotBlank()) {
             Text(
-                text = text,
+                text = text.uppercase(),
                 color = Color.Black,
                 style = TraktTheme.typography.meta,
             )

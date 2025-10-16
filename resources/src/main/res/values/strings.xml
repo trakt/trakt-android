@@ -164,4 +164,10 @@
     <string name="text_info_list_updated">List has been updated.</string>
     <string name="input_placeholder_lists_name">Name</string>
     <string name="input_placeholder_lists_description">Description (optional)</string>
+
+    <!-- Sync with bank -->
+
+    <string name="text_watched">Watched</string>
+    <string name="text_watched_count">Watched: %d</string>
+
 </resources>
