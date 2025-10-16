@@ -57,6 +57,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.summary.episodes.features.actors.EpisodeActorsView
 import tv.trakt.trakt.core.summary.episodes.features.comments.EpisodeCommentsView
+import tv.trakt.trakt.core.summary.episodes.features.context.more.EpisodeDetailsContextSheet
 import tv.trakt.trakt.core.summary.episodes.features.history.EpisodeHistoryView
 import tv.trakt.trakt.core.summary.episodes.features.related.EpisodeRelatedView
 import tv.trakt.trakt.core.summary.episodes.features.streaming.EpisodeStreamingsView
@@ -79,6 +80,8 @@ internal fun EpisodeDetailsScreen(
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    var contextSheet by remember { mutableStateOf(false) }
+
     EpisodeDetailsContent(
         state = state,
         modifier = modifier,
@@ -92,6 +95,7 @@ internal fun EpisodeDetailsScreen(
             )
         },
         onMoreClick = {
+            contextSheet = true
         },
         onMoreCommentsClick = {
             val show = state.show
@@ -102,6 +106,22 @@ internal fun EpisodeDetailsScreen(
             }
         },
         onBackClick = onNavigateBack,
+    )
+
+    EpisodeDetailsContextSheet(
+        active = contextSheet,
+        show = state.show,
+        episode = state.episode,
+        onShareClick = {
+            shareEpisode(
+                show = state.show,
+                episode = state.episode,
+                context = context,
+            )
+        },
+        onDismiss = {
+            contextSheet = false
+        },
     )
 }
 
@@ -188,9 +208,9 @@ internal fun EpisodeDetailsContent(
                     DetailsActions(
                         primaryEnabled = isReleased,
                         secondaryVisible = false,
-                        enabled = false,
-                        loading = false,
-                        inLists = false,
+                        enabled = state.user != null &&
+                            !state.loadingProgress.isLoading,
+                        loading = state.loadingProgress.isLoading,
                         onPrimaryClick = onTrackClick,
                         onMoreClick = onMoreClick,
                         modifier = Modifier

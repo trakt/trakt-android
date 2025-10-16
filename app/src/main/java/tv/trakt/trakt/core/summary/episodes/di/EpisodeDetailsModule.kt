@@ -11,6 +11,7 @@ import tv.trakt.trakt.core.summary.episodes.features.actors.EpisodeActorsViewMod
 import tv.trakt.trakt.core.summary.episodes.features.actors.usecases.GetEpisodeActorsUseCase
 import tv.trakt.trakt.core.summary.episodes.features.comments.EpisodeCommentsViewModel
 import tv.trakt.trakt.core.summary.episodes.features.comments.usecases.GetEpisodeCommentsUseCase
+import tv.trakt.trakt.core.summary.episodes.features.context.more.EpisodeDetailsContextViewModel
 import tv.trakt.trakt.core.summary.episodes.features.history.EpisodeHistoryViewModel
 import tv.trakt.trakt.core.summary.episodes.features.history.usecases.GetEpisodeHistoryUseCase
 import tv.trakt.trakt.core.summary.episodes.features.related.EpisodeRelatedViewModel
@@ -19,6 +20,7 @@ import tv.trakt.trakt.core.summary.episodes.features.streaming.EpisodeStreamings
 import tv.trakt.trakt.core.summary.episodes.features.streaming.usecases.GetEpisodeStreamingsUseCase
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeDetailsUseCase
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeRatingsUseCase
+import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeStreamingUseCase
 
 internal val episodeDetailsDataModule = module {
     single<EpisodeLocalDataSource> {
@@ -73,6 +75,15 @@ internal val episodeDetailsModule = module {
         )
     }
 
+    factory {
+        GetEpisodeStreamingUseCase(
+            remoteEpisodeSource = get(),
+            remoteStreamingSource = get(),
+            localStreamingSource = get(),
+            priorityStreamingProvider = get(),
+        )
+    }
+
     viewModel {
         EpisodeDetailsViewModel(
             savedStateHandle = get(),
@@ -117,6 +128,15 @@ internal val episodeDetailsModule = module {
 
     viewModel { (show: Show, episode: Episode) ->
         EpisodeStreamingsViewModel(
+            show = show,
+            episode = episode,
+            sessionManager = get(),
+            getStreamingsUseCase = get(),
+        )
+    }
+
+    viewModel { (show: Show, episode: Episode) ->
+        EpisodeDetailsContextViewModel(
             show = show,
             episode = episode,
             sessionManager = get(),

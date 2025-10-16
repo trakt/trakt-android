@@ -39,11 +39,6 @@ internal class GetShowStreamingsUseCase(
             localStreamingSource.upsertStreamingSources(sources)
         }
 
-        // Ex. input favorite source: "pl-hbo_max", "us-netflix"
-        val favoriteSources = user.streamings?.favorites
-            ?.map { it.substringAfter("-") }
-            ?.toSet().orEmpty()
-
         val sources = localStreamingSource
             .getAllStreamingSources()
 
@@ -69,10 +64,8 @@ internal class GetShowStreamingsUseCase(
     private fun groupStreamings(
         streamings: Map<String, StreamingDto>,
         sources: Map<String, StreamingSource>,
-//        favoriteSources: Set<String>,
     ): Map<StreamingType, List<StreamingService>> {
         val resultMap = mapOf<StreamingType, MutableList<StreamingService>>(
-//            FAVORITE to mutableListOf(),
             SUBSCRIPTION to mutableListOf(),
             PURCHASE to mutableListOf(),
             RENT to mutableListOf(),
@@ -80,7 +73,6 @@ internal class GetShowStreamingsUseCase(
         )
 
         streamings.forEach { (country, streaming) ->
-//            val favorite = resultMap.getValue(FAVORITE)
             val subscriptions = resultMap.getValue(SUBSCRIPTION)
             val free = resultMap.getValue(FREE)
             val purchase = resultMap.getValue(PURCHASE)
@@ -96,11 +88,7 @@ internal class GetShowStreamingsUseCase(
                         country = country,
                         source = source,
                         service = subscription,
-                    ).also {
-//                        if (source.source in favoriteSources) {
-//                            favorite.add(it)
-//                        }
-                    }
+                    )
                 },
             )
 
@@ -115,11 +103,7 @@ internal class GetShowStreamingsUseCase(
                         country = country,
                         source = source,
                         service = free,
-                    ).also {
-//                        if (source.source in favoriteSources) {
-//                            favorite.add(it)
-//                        }
-                    }
+                    )
                 },
             )
 
@@ -141,9 +125,6 @@ internal class GetShowStreamingsUseCase(
                 if (!it.prices.rent.isNullOrBlank()) {
                     rent.add(service)
                 }
-//                if (it.source in favoriteSources) {
-//                    favorite.add(service)
-//                }
             }
         }
 
