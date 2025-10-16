@@ -189,6 +189,26 @@ internal class UserApiClient(
         return response.body()
     }
 
+    override suspend fun getEpisodeHistory(
+        episodeId: TraktId,
+        page: Int,
+        limit: Int?,
+    ): List<SyncHistoryEpisodeItemDto> {
+        val response = historyApi.getUsersHistoryEpisode(
+            id = "me",
+            itemId = episodeId.value.toString(),
+            extended = "full,cloud9,colors",
+            startAt = null,
+            endAt = null,
+            page = page,
+            limit = when {
+                limit == null -> 99_999
+                else -> limit
+            },
+        )
+        return response.body()
+    }
+
     override suspend fun getShowsCalendar(
         startDate: LocalDate,
         days: Int,

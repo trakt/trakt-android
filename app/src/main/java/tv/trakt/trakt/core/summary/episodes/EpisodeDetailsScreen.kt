@@ -49,12 +49,15 @@ import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
+import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.summary.episodes.features.actors.EpisodeActorsView
 import tv.trakt.trakt.core.summary.episodes.features.comments.EpisodeCommentsView
+import tv.trakt.trakt.core.summary.episodes.features.history.EpisodeHistoryView
 import tv.trakt.trakt.core.summary.episodes.features.related.EpisodeRelatedView
 import tv.trakt.trakt.core.summary.episodes.features.streaming.EpisodeStreamingsView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
@@ -109,8 +112,11 @@ internal fun EpisodeDetailsContent(
     onShowClick: ((Show) -> Unit)? = null,
     onTrackClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
+    onListsClick: (() -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
     onMoreCommentsClick: (() -> Unit)? = null,
+    onHistoryClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
+    onListClick: ((CustomList) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     val previewMode = LocalInspectionMode.current
@@ -262,7 +268,9 @@ internal fun EpisodeDetailsContent(
                     item {
                         EpisodeRelatedView(
                             viewModel = koinViewModel(
-                                parameters = { parametersOf(state.show) },
+                                parameters = {
+                                    parametersOf(state.show, state.episode)
+                                },
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
@@ -270,6 +278,24 @@ internal fun EpisodeDetailsContent(
                             modifier = Modifier
                                 .padding(top = 32.dp),
                         )
+                    }
+
+                    if ((state.episodeProgress?.plays ?: 0) > 0) {
+                        item {
+                            EpisodeHistoryView(
+                                viewModel = koinViewModel(
+                                    parameters = {
+                                        parametersOf(state.show, state.episode)
+                                    },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                loading = state.loadingProgress.isLoading,
+                                onClick = onHistoryClick,
+                                modifier = Modifier
+                                    .padding(top = 32.dp),
+                            )
+                        }
                     }
                 }
             }
