@@ -56,6 +56,7 @@ import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.core.summary.episodes.features.actors.EpisodeActorsView
+import tv.trakt.trakt.core.summary.episodes.features.streaming.EpisodeStreamingsView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.DetailsHeader
@@ -210,6 +211,24 @@ internal fun EpisodeDetailsContent(
                 }
 
                 if (!previewMode) {
+                    val showStreamings = (state.user != null) && isReleased
+
+                    if (showStreamings) {
+                        item {
+                            EpisodeStreamingsView(
+                                viewModel = koinViewModel(
+                                    parameters = {
+                                        parametersOf(state.show, state.episode)
+                                    },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                modifier = Modifier
+                                    .padding(top = 24.dp),
+                            )
+                        }
+                    }
+
                     item {
                         EpisodeActorsView(
                             viewModel = koinViewModel(

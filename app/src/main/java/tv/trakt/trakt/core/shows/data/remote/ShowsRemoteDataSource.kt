@@ -68,5 +68,5 @@ internal interface ShowsRemoteDataSource {
 
     suspend fun getExtras(showId: TraktId): List<ExtraVideoDto>
 
-    suspend fun getShowSeasons(showId: TraktId): List<SeasonDto>
+    suspend fun getSeasons(showId: TraktId): List<SeasonDto>
 }

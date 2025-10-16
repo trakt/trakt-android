@@ -4,14 +4,12 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.EpisodeDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
+import tv.trakt.trakt.common.networking.StreamingDto
 
 internal interface EpisodesRemoteDataSource {
     /**
      * Retrieves the details for a specific episode of a show.
      *
-     * @param showId The Trakt ID of the show.
-     * @param season The season number.
-     * @param episode The episode number.
      * @return An [EpisodeDto] object containing the details of the episode.
      */
     suspend fun getEpisodeDetails(
@@ -23,11 +21,9 @@ internal interface EpisodesRemoteDataSource {
     /**
      * Retrieves all episodes for a specific season of a show.
      *
-     * @param showId The Trakt ID of the show.
-     * @param season The season number.
      * @return A list of [EpisodeDto] objects representing the episodes in the season.
      */
-    suspend fun getEpisodeSeason(
+    suspend fun getSeason(
         showId: TraktId,
         season: Int,
     ): List<EpisodeDto>
@@ -35,9 +31,6 @@ internal interface EpisodesRemoteDataSource {
     /**
      * Retrieves the external ratings for a specific episode of a show.
      *
-     * @param showId The Trakt ID of the show.
-     * @param season The season number.
-     * @param episode The episode number.
      * @return An [ExternalRatingsDto] object containing the external ratings for the episode.
      */
     suspend fun getExternalRatings(
@@ -47,14 +40,21 @@ internal interface EpisodesRemoteDataSource {
     ): ExternalRatingsDto
 
     /**
-     * Retrieves the cast and crew for a specific episode of a show.
+     * Retrieves the streaming services available for a specific episode of a show in a given country.
      *
-     * @param showId The Trakt ID of the show.
-     * @param season The season number.
-     * @param episode The episode number.
-     * @return A [CastCrewDto] object containing the cast and crew information for the episode.
+     * @return A map where the key is the streaming service provider and the value is a [StreamingDto] object containing details about the streaming offer.
      */
-    suspend fun getEpisodeCastCrew(
+    suspend fun getStreamings(
+        showId: TraktId,
+        season: Int,
+        episode: Int,
+        countryCode: String?,
+    ): Map<String, StreamingDto>
+
+    /**
+     * Retrieves the cast and crew for a specific episode of a show.
+     */
+    suspend fun getCastCrew(
         showId: TraktId,
         season: Int,
         episode: Int,

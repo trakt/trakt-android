@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 
-package tv.trakt.trakt.core.summary.episodes.features.actors
+package tv.trakt.trakt.core.summary.episodes.features.streaming
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
@@ -12,9 +12,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -26,8 +26,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -40,41 +41,54 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
-import tv.trakt.trakt.common.model.CastPerson
+import tv.trakt.trakt.common.helpers.extensions.openWatchNowLink
+import tv.trakt.trakt.common.model.streamings.StreamingService
+import tv.trakt.trakt.common.model.streamings.StreamingType
+import tv.trakt.trakt.core.summary.ui.views.DetailsStreamingItem
+import tv.trakt.trakt.core.summary.ui.views.DetailsStreamingSkeleton
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
-import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
-import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
-import kotlin.random.Random.Default.nextInt
 
 @Composable
-internal fun EpisodeActorsView(
-    viewModel: EpisodeActorsViewModel,
+internal fun EpisodeStreamingsView(
+    viewModel: EpisodeStreamingsViewModel,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
+    val uriHandler = LocalUriHandler.current
+
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    EpisodeActorsContent(
+    EpisodeStreamingsContent(
         state = state,
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
+        onClick = { service ->
+            openWatchNowLink(
+                context = context,
+                uriHandler = uriHandler,
+                link = (service.linkAndroid ?: "").ifBlank {
+                    service.linkDirect
+                },
+            )
+        },
     )
 }
 
 @Composable
-private fun EpisodeActorsContent(
-    state: EpisodeActorsState,
+private fun EpisodeStreamingsContent(
+    state: EpisodeStreamingsState,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onClick: ((CastPerson) -> Unit)? = null,
+    onClick: ((StreamingService) -> Unit)? = null,
 ) {
     Column(
-        verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
+        verticalArrangement = spacedBy(12.dp),
         modifier = modifier,
     ) {
         Row(
@@ -85,7 +99,7 @@ private fun EpisodeActorsContent(
             verticalAlignment = CenterVertically,
         ) {
             TraktHeader(
-                title = stringResource(R.string.list_title_actors),
+                title = stringResource(R.string.page_title_where_to_watch),
             )
         }
 
@@ -120,56 +134,26 @@ private fun EpisodeActorsContent(
 
 @Composable
 private fun ContentList(
-    listItems: ImmutableList<CastPerson>,
+    listItems: ImmutableList<Pair<StreamingService, StreamingType>>,
+    listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
-    onClick: ((CastPerson) -> Unit)? = null,
+    onClick: ((StreamingService) -> Unit)? = null,
 ) {
-    val listState = rememberLazyListState(
-        cacheWindow = LazyLayoutCacheWindow(
-            aheadFraction = 1F,
-            behindFraction = 1F,
-        ),
-    )
-
     LazyRow(
         state = listState,
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
+        horizontalArrangement = spacedBy(32.dp),
+        verticalAlignment = CenterVertically,
         contentPadding = contentPadding,
     ) {
         items(
             items = listItems,
-            key = { it.person.ids.trakt.value.plus(nextInt()) },
-        ) { item ->
-            VerticalMediaCard(
-                title = "",
-                imageUrl = item.person.images?.getHeadshotUrl(),
-                onClick = { onClick?.invoke(item) },
-                chipContent = {
-                    Column(
-                        verticalArrangement = Arrangement.Absolute.spacedBy(1.dp),
-                    ) {
-                        Text(
-                            text = item.person.name,
-                            style = TraktTheme.typography.cardTitle,
-                            color = TraktTheme.colors.textPrimary,
-                            maxLines = 1,
-                            overflow = Ellipsis,
-                        )
-
-                        Text(
-                            text = item.characters.firstOrNull() ?: "—",
-                            style = TraktTheme.typography.cardSubtitle,
-                            color = TraktTheme.colors.textSecondary,
-                            maxLines = 1,
-                            overflow = Ellipsis,
-                        )
-                    }
-                },
-                modifier = Modifier.animateItem(
-                    fadeInSpec = null,
-                    fadeOutSpec = null,
-                ),
+            key = { "${it.second}_${it.first.source}" },
+        ) { (service, type) ->
+            DetailsStreamingItem(
+                service = service,
+                type = type,
+                onClick = onClick,
             )
         }
     }
@@ -189,9 +173,7 @@ private fun ContentLoading(
             .alpha(if (visible) 1F else 0F),
     ) {
         items(count = 6) {
-            VerticalMediaSkeletonCard(
-                modifier = Modifier.padding(bottom = 6.dp),
-            )
+            DetailsStreamingSkeleton()
         }
     }
 }
@@ -199,7 +181,7 @@ private fun ContentLoading(
 @Composable
 private fun ContentEmpty(contentPadding: PaddingValues) {
     Text(
-        text = stringResource(R.string.list_placeholder_empty),
+        text = stringResource(R.string.button_text_no_services),
         color = TraktTheme.colors.textSecondary,
         style = TraktTheme.typography.heading6,
         modifier = Modifier.padding(contentPadding),
@@ -219,54 +201,8 @@ private fun Preview() {
             ColorImage(Color.Blue.toArgb())
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            EpisodeActorsContent(
-                state = EpisodeActorsState(),
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalCoilApi::class)
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
-@Composable
-private fun Preview2() {
-    TraktTheme {
-        val previewHandler = AsyncImagePreviewHandler {
-            ColorImage(Color.Blue.toArgb())
-        }
-        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            EpisodeActorsContent(
-                state = EpisodeActorsState(
-                    items = emptyList<CastPerson>().toImmutableList(),
-                    loading = LOADING,
-                ),
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalCoilApi::class)
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
-@Composable
-private fun Preview3() {
-    TraktTheme {
-        val previewHandler = AsyncImagePreviewHandler {
-            ColorImage(Color.Blue.toArgb())
-        }
-        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            EpisodeActorsContent(
-                state = EpisodeActorsState(
-                    items = emptyList<CastPerson>().toImmutableList(),
-                    loading = DONE,
-                ),
+            EpisodeStreamingsContent(
+                state = EpisodeStreamingsState(),
             )
         }
     }

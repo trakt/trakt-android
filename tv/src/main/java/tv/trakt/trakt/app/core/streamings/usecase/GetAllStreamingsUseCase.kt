@@ -10,6 +10,7 @@ import tv.trakt.trakt.app.core.streamings.model.StreamingServiceRow
 import tv.trakt.trakt.common.Config.DEFAULT_COUNTRY_CODE
 import tv.trakt.trakt.common.core.streamings.data.local.StreamingLocalDataSource
 import tv.trakt.trakt.common.core.streamings.data.remote.StreamingRemoteDataSource
+import tv.trakt.trakt.common.core.streamings.helpers.PopularStreamingServices
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
@@ -37,19 +38,6 @@ private val popularCountries = mutableListOf(
     "nl",
     "mx",
     "sg",
-)
-
-private val popularServices = setOf(
-    "netflix",
-    "netflix_standard_with_ads",
-    "apple_tv_plus",
-    "apple_tv",
-    "disney_plus",
-    "amazon_prime_video",
-    "amazon_prime_video_free_with_ads",
-    "hbo_max",
-    "hbo_max_amazon_channel",
-    "hulu",
 )
 
 internal class GetAllStreamingsUseCase(
@@ -207,7 +195,7 @@ internal class GetAllStreamingsUseCase(
         }
 
         val priorityCountries = popularCountries.toSet().reversed()
-        val priorityServices = popularServices.reversed()
+        val priorityServices = PopularStreamingServices.reversed()
 
         val servicesComparator = compareByDescending<StreamingService> {
             priorityServices.indexOf(it.source)

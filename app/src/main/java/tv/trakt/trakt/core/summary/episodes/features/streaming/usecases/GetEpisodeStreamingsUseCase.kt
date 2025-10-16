@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.summary.shows.features.streaming.usecases
+package tv.trakt.trakt.core.summary.episodes.features.streaming.usecases
 
 import android.icu.util.Currency
 import kotlinx.collections.immutable.ImmutableList
@@ -8,7 +8,8 @@ import tv.trakt.trakt.common.core.streamings.data.local.StreamingLocalDataSource
 import tv.trakt.trakt.common.core.streamings.data.remote.StreamingRemoteDataSource
 import tv.trakt.trakt.common.core.streamings.helpers.PopularStreamingServices
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
-import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.StreamingSource
@@ -20,16 +21,17 @@ import tv.trakt.trakt.common.model.streamings.StreamingType.SUBSCRIPTION
 import tv.trakt.trakt.common.model.streamings.fromDto
 import tv.trakt.trakt.common.networking.StreamingDto
 import tv.trakt.trakt.common.networking.StreamingServiceDto
-import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
+import tv.trakt.trakt.core.episodes.data.remote.EpisodesRemoteDataSource
 
-internal class GetShowStreamingsUseCase(
-    private val remoteShowSource: ShowsRemoteDataSource,
+internal class GetEpisodeStreamingsUseCase(
+    private val remoteEpisodeSource: EpisodesRemoteDataSource,
     private val remoteStreamingSource: StreamingRemoteDataSource,
     private val localStreamingSource: StreamingLocalDataSource,
 ) {
     suspend fun getStreamings(
         user: User,
-        showId: TraktId,
+        show: Show,
+        episode: Episode,
     ): ImmutableList<Pair<StreamingService, StreamingType>> {
         if (!localStreamingSource.isValid()) {
             val sources = remoteStreamingSource
@@ -39,16 +41,13 @@ internal class GetShowStreamingsUseCase(
             localStreamingSource.upsertStreamingSources(sources)
         }
 
-        // Ex. input favorite source: "pl-hbo_max", "us-netflix"
-        val favoriteSources = user.streamings?.favorites
-            ?.map { it.substringAfter("-") }
-            ?.toSet().orEmpty()
-
         val sources = localStreamingSource
             .getAllStreamingSources()
 
-        val streamings = remoteShowSource.getStreamings(
-            showId = showId,
+        val streamings = remoteEpisodeSource.getStreamings(
+            showId = show.ids.trakt,
+            season = episode.season,
+            episode = episode.number,
             countryCode = user.streamings?.country ?: DEFAULT_COUNTRY_CODE,
         )
 
@@ -69,10 +68,8 @@ internal class GetShowStreamingsUseCase(
     private fun groupStreamings(
         streamings: Map<String, StreamingDto>,
         sources: Map<String, StreamingSource>,
-//        favoriteSources: Set<String>,
     ): Map<StreamingType, List<StreamingService>> {
         val resultMap = mapOf<StreamingType, MutableList<StreamingService>>(
-//            FAVORITE to mutableListOf(),
             SUBSCRIPTION to mutableListOf(),
             PURCHASE to mutableListOf(),
             RENT to mutableListOf(),
@@ -80,7 +77,6 @@ internal class GetShowStreamingsUseCase(
         )
 
         streamings.forEach { (country, streaming) ->
-//            val favorite = resultMap.getValue(FAVORITE)
             val subscriptions = resultMap.getValue(SUBSCRIPTION)
             val free = resultMap.getValue(FREE)
             val purchase = resultMap.getValue(PURCHASE)
@@ -96,11 +92,7 @@ internal class GetShowStreamingsUseCase(
                         country = country,
                         source = source,
                         service = subscription,
-                    ).also {
-//                        if (source.source in favoriteSources) {
-//                            favorite.add(it)
-//                        }
-                    }
+                    )
                 },
             )
 
@@ -115,11 +107,7 @@ internal class GetShowStreamingsUseCase(
                         country = country,
                         source = source,
                         service = free,
-                    ).also {
-//                        if (source.source in favoriteSources) {
-//                            favorite.add(it)
-//                        }
-                    }
+                    )
                 },
             )
 
@@ -141,9 +129,6 @@ internal class GetShowStreamingsUseCase(
                 if (!it.prices.rent.isNullOrBlank()) {
                     rent.add(service)
                 }
-//                if (it.source in favoriteSources) {
-//                    favorite.add(service)
-//                }
             }
         }
 

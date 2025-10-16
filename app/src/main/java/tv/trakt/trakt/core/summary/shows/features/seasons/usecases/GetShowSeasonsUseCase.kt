@@ -17,7 +17,7 @@ internal class GetShowSeasonsUseCase(
     private val remoteEpisodesSource: EpisodesRemoteDataSource,
 ) {
     suspend fun getAllSeasons(showId: TraktId): ShowSeasons {
-        val remoteSeasons = remoteShowsSource.getShowSeasons(showId)
+        val remoteSeasons = remoteShowsSource.getSeasons(showId)
             .asyncMap { Season.fromDto(it) }
             .filter { (it.episodeCount ?: 0) > 0 }
             .sortedBy { it.number }
@@ -27,7 +27,7 @@ internal class GetShowSeasonsUseCase(
             ?: remoteSeasons.firstOrNull()
 
         if (selectedSeason != null) {
-            val episodes = remoteEpisodesSource.getEpisodeSeason(
+            val episodes = remoteEpisodesSource.getSeason(
                 showId = showId,
                 season = selectedSeason.number,
             ).asyncMap {
@@ -53,7 +53,7 @@ internal class GetShowSeasonsUseCase(
         showId: TraktId,
         season: Int,
     ): ImmutableList<EpisodeItem> {
-        return remoteEpisodesSource.getEpisodeSeason(showId, season)
+        return remoteEpisodesSource.getSeason(showId, season)
             .asyncMap {
                 EpisodeItem(
                     episode = Episode.fromDto(it),

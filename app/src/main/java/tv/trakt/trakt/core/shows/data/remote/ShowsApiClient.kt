@@ -258,7 +258,7 @@ internal class ShowsApiClient(
         return response.body()
     }
 
-    override suspend fun getShowSeasons(showId: TraktId): List<SeasonDto> {
+    override suspend fun getSeasons(showId: TraktId): List<SeasonDto> {
         val response = showsApi.getShowsSeasons(
             id = showId.value.toString(),
             extended = "full,cloud9",

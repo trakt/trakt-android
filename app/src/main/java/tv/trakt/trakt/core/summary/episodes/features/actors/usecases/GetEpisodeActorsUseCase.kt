@@ -17,7 +17,7 @@ internal class GetEpisodeActorsUseCase(
         season: Int,
         episode: Int,
     ): ImmutableList<CastPerson> {
-        val castCrew = remoteSource.getEpisodeCastCrew(
+        val castCrew = remoteSource.getCastCrew(
             showId = showId,
             season = season,
             episode = episode,

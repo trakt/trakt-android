@@ -6,6 +6,7 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.Config.DEFAULT_COUNTRY_CODE
 import tv.trakt.trakt.common.core.streamings.data.local.StreamingLocalDataSource
 import tv.trakt.trakt.common.core.streamings.data.remote.StreamingRemoteDataSource
+import tv.trakt.trakt.common.core.streamings.helpers.PopularStreamingServices
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
@@ -20,19 +21,6 @@ import tv.trakt.trakt.common.model.streamings.fromDto
 import tv.trakt.trakt.common.networking.StreamingDto
 import tv.trakt.trakt.common.networking.StreamingServiceDto
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
-
-private val popularServices = setOf(
-    "netflix",
-    "netflix_standard_with_ads",
-    "apple_tv_plus",
-    "apple_tv",
-    "disney_plus",
-    "amazon_prime_video",
-    "amazon_prime_video_free_with_ads",
-    "hbo_max",
-    "hbo_max_amazon_channel",
-    "hulu",
-)
 
 internal class GetMovieStreamingsUseCase(
     private val remoteMovieSource: MoviesRemoteDataSource,
@@ -159,7 +147,7 @@ internal class GetMovieStreamingsUseCase(
             }
         }
 
-        val priorityServices = popularServices.reversed()
+        val priorityServices = PopularStreamingServices.reversed()
 
         val servicesComparator = compareByDescending<StreamingService> {
             priorityServices.indexOf(it.source)

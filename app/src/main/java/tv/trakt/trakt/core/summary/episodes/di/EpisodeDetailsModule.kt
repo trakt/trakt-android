@@ -9,6 +9,8 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.episodes.EpisodeDetailsViewModel
 import tv.trakt.trakt.core.summary.episodes.features.actors.EpisodeActorsViewModel
 import tv.trakt.trakt.core.summary.episodes.features.actors.usecases.GetEpisodeActorsUseCase
+import tv.trakt.trakt.core.summary.episodes.features.streaming.EpisodeStreamingsViewModel
+import tv.trakt.trakt.core.summary.episodes.features.streaming.usecases.GetEpisodeStreamingsUseCase
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeDetailsUseCase
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeRatingsUseCase
 
@@ -38,6 +40,14 @@ internal val episodeDetailsModule = module {
         )
     }
 
+    factory {
+        GetEpisodeStreamingsUseCase(
+            remoteEpisodeSource = get(),
+            remoteStreamingSource = get(),
+            localStreamingSource = get(),
+        )
+    }
+
     viewModel {
         EpisodeDetailsViewModel(
             savedStateHandle = get(),
@@ -53,6 +63,15 @@ internal val episodeDetailsModule = module {
             show = show,
             episode = episode,
             getActorsUseCase = get(),
+        )
+    }
+
+    viewModel { (show: Show, episode: Episode) ->
+        EpisodeStreamingsViewModel(
+            show = show,
+            episode = episode,
+            sessionManager = get(),
+            getStreamingsUseCase = get(),
         )
     }
 }

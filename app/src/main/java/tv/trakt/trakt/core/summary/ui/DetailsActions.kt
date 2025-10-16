@@ -165,7 +165,7 @@ private fun Preview() {
 
             DetailsActions(
                 enabled = false,
-                secondaryVisible = false
+                secondaryVisible = false,
             )
 
             DetailsActions(

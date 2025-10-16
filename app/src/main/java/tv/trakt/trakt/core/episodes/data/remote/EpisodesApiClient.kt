@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.EpisodeDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
+import tv.trakt.trakt.common.networking.StreamingDto
 
 internal class EpisodesApiClient(
     private val showsApi: ShowsApi,
@@ -25,7 +26,7 @@ internal class EpisodesApiClient(
         return response.body()
     }
 
-    override suspend fun getEpisodeSeason(
+    override suspend fun getSeason(
         showId: TraktId,
         season: Int,
     ): List<EpisodeDto> {
@@ -51,7 +52,23 @@ internal class EpisodesApiClient(
         return response.body()
     }
 
-    override suspend fun getEpisodeCastCrew(
+    override suspend fun getStreamings(
+        showId: TraktId,
+        season: Int,
+        episode: Int,
+        countryCode: String?,
+    ): Map<String, StreamingDto> {
+        val response = showsApi.getShowsEpisodeWatchnow(
+            country = countryCode ?: "",
+            id = showId.value.toString(),
+            season = season,
+            episode = episode,
+            links = "direct",
+        )
+        return response.body()
+    }
+
+    override suspend fun getCastCrew(
         showId: TraktId,
         season: Int,
         episode: Int,
