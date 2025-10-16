@@ -11,8 +11,9 @@ import tv.trakt.trakt.resources.R
 data class SeasonEpisode(
     val season: Int,
     val episode: Int,
-    val id: Long = (season * 10_000L) + episode,
 ) {
+    val id: Long = (season * 10_000L) + episode
+
     init {
         require(season >= 0) { "Season number must be >= 0" }
         require(episode > 0) { "Episode number must be > 0" }

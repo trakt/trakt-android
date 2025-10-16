@@ -4,6 +4,7 @@ import org.openapitools.client.apis.EpisodeApi
 import org.openapitools.client.apis.ShowsApi
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CastCrewDto
+import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.EpisodeDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.StreamingDto
@@ -64,6 +65,25 @@ internal class EpisodesApiClient(
             season = season,
             episode = episode,
             links = "direct",
+        )
+        return response.body()
+    }
+
+    override suspend fun getEpisodeComments(
+        showId: TraktId,
+        season: Int,
+        episode: Int,
+        limit: Int,
+        sort: String,
+    ): List<CommentDto> {
+        val response = showsApi.getShowsEpisodeComments(
+            id = showId.value.toString(),
+            season = season,
+            episode = episode,
+            sort = sort,
+            extended = "images",
+            page = null,
+            limit = limit.toString(),
         )
         return response.body()
     }

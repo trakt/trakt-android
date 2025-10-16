@@ -4,29 +4,29 @@ import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.Serializable
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.serializers.ImmutableListSerializer
 import tv.trakt.trakt.common.networking.ImagesDto
 
-private val emptyStringList = emptyList<String>().toImmutableList()
 private val imageSizeRegex = Regex("/(thumb|medium|original|full)/")
 
 @Immutable
 @Serializable
 data class Images(
     @Serializable(with = ImmutableListSerializer::class)
-    val fanart: ImmutableList<String> = emptyStringList,
+    val fanart: ImmutableList<String> = EmptyImmutableList,
     @Serializable(with = ImmutableListSerializer::class)
-    val poster: ImmutableList<String> = emptyStringList,
+    val poster: ImmutableList<String> = EmptyImmutableList,
     @Serializable(with = ImmutableListSerializer::class)
-    val posters: ImmutableList<String> = emptyStringList,
+    val posters: ImmutableList<String> = EmptyImmutableList,
     @Serializable(with = ImmutableListSerializer::class)
-    val logo: ImmutableList<String> = emptyStringList,
+    val logo: ImmutableList<String> = EmptyImmutableList,
     @Serializable(with = ImmutableListSerializer::class)
-    val thumb: ImmutableList<String> = emptyStringList,
+    val thumb: ImmutableList<String> = EmptyImmutableList,
     @Serializable(with = ImmutableListSerializer::class)
-    val headshot: ImmutableList<String> = emptyStringList,
+    val headshot: ImmutableList<String> = EmptyImmutableList,
     @Serializable(with = ImmutableListSerializer::class)
-    val screenshot: ImmutableList<String> = emptyStringList,
+    val screenshot: ImmutableList<String> = EmptyImmutableList,
 ) {
     fun getFanartUrl(size: Size = Size.MEDIUM): String? {
         return fanart.firstOrNull()?.let {

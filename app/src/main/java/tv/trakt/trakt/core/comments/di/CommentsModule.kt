@@ -36,6 +36,7 @@ internal val commentsModule = module {
             savedStateHandle = get(),
             getShowCommentsUseCase = get(),
             getMovieCommentsUseCase = get(),
+            getEpisodeCommentsUseCase = get(),
         )
     }
 

@@ -36,7 +36,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
@@ -56,6 +55,7 @@ import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.core.summary.episodes.features.actors.EpisodeActorsView
+import tv.trakt.trakt.core.summary.episodes.features.comments.EpisodeCommentsView
 import tv.trakt.trakt.core.summary.episodes.features.streaming.EpisodeStreamingsView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
@@ -69,10 +69,10 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun EpisodeDetailsScreen(
     modifier: Modifier = Modifier,
     viewModel: EpisodeDetailsViewModel,
+    onCommentsClick: ((Show, Episode) -> Unit),
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
-    val uriHandler = LocalUriHandler.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -91,7 +91,14 @@ internal fun EpisodeDetailsScreen(
         },
         onMoreClick = {
         },
-        onMoreCommentsClick = { },
+        onMoreCommentsClick = {
+            val show = state.show
+            val episode = state.episode
+
+            if (show != null && episode != null) {
+                onCommentsClick(show, episode)
+            }
+        },
         onBackClick = onNavigateBack,
     )
 }
@@ -211,22 +218,33 @@ internal fun EpisodeDetailsContent(
                 }
 
                 if (!previewMode) {
-                    val showStreamings = (state.user != null) && isReleased
+                    item {
+                        EpisodeStreamingsView(
+                            viewModel = koinViewModel(
+                                parameters = {
+                                    parametersOf(state.show, state.episode)
+                                },
+                            ),
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            modifier = Modifier
+                                .padding(top = 24.dp),
+                        )
+                    }
 
-                    if (showStreamings) {
-                        item {
-                            EpisodeStreamingsView(
-                                viewModel = koinViewModel(
-                                    parameters = {
-                                        parametersOf(state.show, state.episode)
-                                    },
-                                ),
-                                headerPadding = sectionPadding,
-                                contentPadding = sectionPadding,
-                                modifier = Modifier
-                                    .padding(top = 24.dp),
-                            )
-                        }
+                    item {
+                        EpisodeCommentsView(
+                            viewModel = koinViewModel(
+                                parameters = {
+                                    parametersOf(state.show, state.episode)
+                                },
+                            ),
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            onMoreClick = onMoreCommentsClick,
+                            modifier = Modifier
+                                .padding(top = 32.dp),
+                        )
                     }
 
                     item {

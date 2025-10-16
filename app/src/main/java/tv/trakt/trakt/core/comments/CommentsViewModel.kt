@@ -19,10 +19,12 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.navigation.CommentsDestination
+import tv.trakt.trakt.core.summary.episodes.features.comments.usecases.GetEpisodeCommentsUseCase
 import tv.trakt.trakt.core.summary.movies.features.comments.usecases.GetMovieCommentsUseCase
 import tv.trakt.trakt.core.summary.shows.features.comments.usecases.GetShowCommentsUseCase
 
@@ -30,6 +32,7 @@ internal class CommentsViewModel(
     savedStateHandle: SavedStateHandle,
     private val getShowCommentsUseCase: GetShowCommentsUseCase,
     private val getMovieCommentsUseCase: GetMovieCommentsUseCase,
+    private val getEpisodeCommentsUseCase: GetEpisodeCommentsUseCase,
 ) : ViewModel() {
     private val initialState = CommentsState()
 
@@ -83,6 +86,16 @@ internal class CommentsViewModel(
                 filter = filterState.value,
                 limit = 50,
             )
+            MediaType.EPISODE -> getEpisodeCommentsUseCase.getComments(
+                showId = mediaId,
+                seasonEpisode = SeasonEpisode(
+                    season = destination.mediaSeason ?: -1,
+                    episode = destination.mediaEpisode ?: -1,
+                ),
+                filter = filterState.value,
+                limit = 50,
+            )
+
             else -> throw IllegalArgumentException("Unsupported media type: $mediaType")
         }
     }

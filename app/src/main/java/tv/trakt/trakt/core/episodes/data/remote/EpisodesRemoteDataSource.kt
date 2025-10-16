@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.episodes.data.remote
 
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CastCrewDto
+import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.EpisodeDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.StreamingDto
@@ -50,6 +51,24 @@ internal interface EpisodesRemoteDataSource {
         episode: Int,
         countryCode: String?,
     ): Map<String, StreamingDto>
+
+    /**
+     * Retrieves the comments for a specific episode of a show.
+     *
+     * @param showId The Trakt ID of the show.
+     * @param season The season number.
+     * @param episode The episode number.
+     * @param limit The maximum number of comments to retrieve.
+     * @param sort The sort order for comments (e.g., "likes", "newest").
+     * @return A list of [CommentDto] objects representing the comments for the episode.
+     */
+    suspend fun getEpisodeComments(
+        showId: TraktId,
+        season: Int,
+        episode: Int,
+        limit: Int = 20,
+        sort: String = "likes",
+    ): List<CommentDto>
 
     /**
      * Retrieves the cast and crew for a specific episode of a show.

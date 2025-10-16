@@ -138,6 +138,13 @@ internal fun NavGraphBuilder.showsScreens(controller: NavHostController) {
 internal fun NavGraphBuilder.episodesScreens(controller: NavHostController) {
     with(controller) {
         episodeDetailsScreen(
+            onCommentsClick = { show, episode ->
+                navigateToComments(
+                    showId = show.ids.trakt,
+                    showImage = show.images?.getFanartUrl(),
+                    seasonEpisode = episode.seasonEpisode,
+                )
+            },
             onNavigateBack = { popBackStack() },
         )
     }
