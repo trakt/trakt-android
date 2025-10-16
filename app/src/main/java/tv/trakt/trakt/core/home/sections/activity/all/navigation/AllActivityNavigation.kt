@@ -32,13 +32,17 @@ internal fun NavGraphBuilder.homeActivityPersonalScreen(
 }
 
 internal fun NavGraphBuilder.homeActivitySocialScreen(
+    onNavigateToShow: (TraktId) -> Unit,
+    onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
+    onNavigateToMovie: (TraktId) -> Unit,
     onNavigateBack: () -> Unit,
-    onMovieClick: (TraktId) -> Unit,
 ) {
     composable<AllSocialActivityDestination> {
         AllActivitySocialScreen(
+            onNavigateToShow = onNavigateToShow,
+            onNavigateToEpisode = onNavigateToEpisode,
+            onNavigateToMovie = onNavigateToMovie,
             onNavigateBack = onNavigateBack,
-            onMovieClick = onMovieClick,
         )
     }
 }
