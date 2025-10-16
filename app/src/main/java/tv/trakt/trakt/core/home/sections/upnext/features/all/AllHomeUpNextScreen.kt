@@ -54,7 +54,9 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images.Size.THUMB
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.home.sections.upnext.features.context.sheets.UpNextItemContextSheet
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
@@ -68,6 +70,8 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun AllHomeUpNextScreen(
     modifier: Modifier = Modifier,
     viewModel: AllHomeUpNextViewModel = koinViewModel(),
+    onNavigateToShow: (TraktId) -> Unit,
+    onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -86,6 +90,14 @@ internal fun AllHomeUpNextScreen(
         state = state,
         modifier = modifier,
         onLoadMore = { viewModel.loadMoreData() },
+        onClick = {
+            if (!it.loading) {
+                onNavigateToEpisode(
+                    it.show.ids.trakt,
+                    it.progress.nextEpisode,
+                )
+            }
+        },
         onLongClick = {
             if (!it.loading) {
                 contextSheet = it
@@ -93,6 +105,11 @@ internal fun AllHomeUpNextScreen(
         },
         onCheckClick = {
             viewModel.addToHistory(it.id)
+        },
+        onShowClick = {
+            if (!it.loading) {
+                onNavigateToShow(it.show.ids.trakt)
+            }
         },
         onBackClick = onNavigateBack,
     )
@@ -113,8 +130,10 @@ internal fun AllHomeUpNextScreen(
 internal fun AllHomeUpNextContent(
     state: AllHomeUpNextState,
     modifier: Modifier = Modifier,
+    onClick: (ProgressShow) -> Unit = {},
     onLongClick: (ProgressShow) -> Unit = {},
     onCheckClick: (ProgressShow) -> Unit = {},
+    onShowClick: (ProgressShow) -> Unit = {},
     onBackClick: () -> Unit = {},
     onLoadMore: () -> Unit = {},
 ) {
@@ -154,8 +173,10 @@ internal fun AllHomeUpNextContent(
             loadingMore = state.loadingMore.isLoading,
             onTopOfList = { headerState.resetScrolled() },
             onEndOfList = onLoadMore,
+            onClick = onClick,
             onLongClick = onLongClick,
             onCheckClick = onCheckClick,
+            onShowClick = onShowClick,
             onBackClick = onBackClick,
         )
     }
@@ -170,8 +191,10 @@ private fun ContentList(
     loadingMore: Boolean,
     onTopOfList: () -> Unit,
     onEndOfList: () -> Unit,
+    onClick: (ProgressShow) -> Unit,
     onLongClick: (ProgressShow) -> Unit,
     onCheckClick: (ProgressShow) -> Unit,
+    onShowClick: (ProgressShow) -> Unit,
     onBackClick: () -> Unit,
 ) {
     val isScrolledToBottom by remember(listItems.size) {
@@ -220,8 +243,10 @@ private fun ContentList(
         ) { item ->
             ContentListItem(
                 item = item,
+                onClick = { onClick(item) },
                 onLongClick = { onLongClick(item) },
                 onCheckClick = { onCheckClick(item) },
+                onShowClick = { onShowClick(item) },
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
                     fadeOutSpec = null,
@@ -243,8 +268,10 @@ private fun ContentList(
 @Composable
 private fun ContentListItem(
     item: ProgressShow,
+    onClick: () -> Unit,
     onLongClick: () -> Unit,
     onCheckClick: () -> Unit,
+    onShowClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     PanelMediaCard(
@@ -254,7 +281,9 @@ private fun ContentListItem(
         contentImageUrl = item.show.images?.getPosterUrl(),
         containerImageUrl = item.progress.nextEpisode.images?.getScreenshotUrl()
             ?: item.show.images?.getFanartUrl(THUMB),
+        onClick = onClick,
         onLongClick = onLongClick,
+        onImageClick = onShowClick,
         footerContent = {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,

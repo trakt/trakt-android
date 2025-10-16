@@ -70,6 +70,10 @@ internal fun NavGraphBuilder.homeScreens(controller: NavHostController) {
         )
 
         homeUpNextScreen(
+            onNavigateToShow = { navigateToShow(it) },
+            onNavigateToEpisode = { showId, episode ->
+                navigateToEpisode(showId, episode)
+            },
             onNavigateBack = { popBackStack() },
         )
 

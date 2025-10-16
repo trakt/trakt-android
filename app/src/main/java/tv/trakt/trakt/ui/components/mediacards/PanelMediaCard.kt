@@ -57,6 +57,7 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.common.ui.theme.colors.Shade940
 import tv.trakt.trakt.resources.R
@@ -77,6 +78,7 @@ internal fun PanelMediaCard(
     containerColor: Color = TraktTheme.colors.panelCardContainer,
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
+    onImageClick: (() -> Unit)? = null,
     footerContent: @Composable (() -> Unit)? = null,
 ) {
     var isPosterError by remember { mutableStateOf(false) }
@@ -119,7 +121,8 @@ internal fun PanelMediaCard(
                 modifier = Modifier
                     .aspectRatio(VerticalImageAspectRatio)
                     .width(TraktTheme.size.verticalMediumMediaCardSize)
-                    .clip(RoundedCornerShape(corner)),
+                    .clip(RoundedCornerShape(corner))
+                    .onClick(onClick = onImageClick ?: {}),
             )
         } else {
             Box(
@@ -129,7 +132,8 @@ internal fun PanelMediaCard(
                     .aspectRatio(VerticalImageAspectRatio)
                     .width(TraktTheme.size.verticalMediumMediaCardSize)
                     .clip(RoundedCornerShape(corner - 2.dp))
-                    .background(TraktTheme.colors.placeholderContainer),
+                    .background(TraktTheme.colors.placeholderContainer)
+                    .onClick(onClick = onImageClick ?: {}),
             ) {
                 Image(
                     painter = painterResource(R.drawable.ic_placeholder_vertical_border),
