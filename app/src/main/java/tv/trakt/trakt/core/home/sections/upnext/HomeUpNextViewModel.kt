@@ -35,7 +35,8 @@ import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.AllUpNex
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.summary.episodes.features.seasons.local.EpisodeSeasonsLocalDataSource
-import tv.trakt.trakt.core.summary.shows.features.seasons.data.local.ShowSeasonsLocalDataSource
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
 
@@ -46,8 +47,8 @@ internal class HomeUpNextViewModel(
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val allUpNextSource: AllUpNextLocalDataSource,
     private val homePersonalActivitySource: HomePersonalLocalDataSource,
-    private val showSeasonsLocalDataSource: ShowSeasonsLocalDataSource,
     private val episodeSeasonsLocalDataSource: EpisodeSeasonsLocalDataSource,
+    private val showUpdatesSource: ShowDetailsUpdates,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = HomeUpNextState()
@@ -73,7 +74,7 @@ internal class HomeUpNextViewModel(
             sessionManager.observeProfile()
                 .drop(1)
                 .distinctUntilChanged()
-                .debounce(250)
+                .debounce(200)
                 .collect {
                     user = it
                     loadData()
@@ -85,11 +86,12 @@ internal class HomeUpNextViewModel(
     private fun observeData() {
         merge(
             homePersonalActivitySource.observeUpdates(),
-            showSeasonsLocalDataSource.observeUpdates(),
+            showUpdatesSource.observeUpdates(Source.PROGRESS),
+            showUpdatesSource.observeUpdates(Source.SEASONS),
             episodeSeasonsLocalDataSource.observeUpdates(),
         )
             .distinctUntilChanged()
-            .debounce(250)
+            .debounce(200)
             .onEach {
                 loadData(
                     ignoreErrors = true,
@@ -98,7 +100,7 @@ internal class HomeUpNextViewModel(
 
         allUpNextSource.observeUpdates()
             .distinctUntilChanged()
-            .debounce(250)
+            .debounce(200)
             .onEach {
                 loadData(
                     ignoreErrors = true,

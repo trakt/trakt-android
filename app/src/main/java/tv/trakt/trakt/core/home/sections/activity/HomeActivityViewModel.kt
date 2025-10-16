@@ -46,8 +46,9 @@ import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUs
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.summary.episodes.features.seasons.local.EpisodeSeasonsLocalDataSource
-import tv.trakt.trakt.core.summary.movies.data.MovieDetailsLocalDataSource
-import tv.trakt.trakt.core.summary.shows.features.seasons.data.local.ShowSeasonsLocalDataSource
+import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 
 internal class HomeActivityViewModel(
@@ -58,10 +59,10 @@ internal class HomeActivityViewModel(
     private val userWatchlistSource: UserWatchlistLocalDataSource,
     private val allActivitySource: AllActivityLocalDataSource,
     private val showLocalDataSource: ShowLocalDataSource,
+    private val showUpdatesSource: ShowDetailsUpdates,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
-    private val showSeasonsLocalSource: ShowSeasonsLocalDataSource,
     private val episodeSeasonsLocalSource: EpisodeSeasonsLocalDataSource,
-    private val movieDetailsLocalDataSource: MovieDetailsLocalDataSource,
+    private val movieDetailsUpdates: MovieDetailsUpdates,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
@@ -91,7 +92,7 @@ internal class HomeActivityViewModel(
             sessionManager.observeProfile()
                 .drop(1)
                 .distinctUntilChanged()
-                .debounce(250)
+                .debounce(200)
                 .collect { user ->
                     userState.update { user }
                     loadData()
@@ -104,12 +105,13 @@ internal class HomeActivityViewModel(
             homeUpNextSource.observeUpdates(),
             userWatchlistSource.observeUpdates(),
             allActivitySource.observeUpdates(),
-            showSeasonsLocalSource.observeUpdates(),
+            showUpdatesSource.observeUpdates(Source.PROGRESS),
+            showUpdatesSource.observeUpdates(Source.SEASONS),
             episodeSeasonsLocalSource.observeUpdates(),
-            movieDetailsLocalDataSource.observeUpdates(),
+            movieDetailsUpdates.observeUpdates(),
         )
             .distinctUntilChanged()
-            .debounce(250)
+            .debounce(200)
             .onEach {
                 loadData(ignoreErrors = true)
             }.launchIn(viewModelScope)

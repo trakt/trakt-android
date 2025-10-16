@@ -31,7 +31,9 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.core.summary.shows.features.seasons.data.local.ShowSeasonsLocalDataSource
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.PROGRESS
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.SEASONS
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
 import tv.trakt.trakt.core.summary.shows.features.seasons.usecases.GetShowSeasonsUseCase
@@ -46,7 +48,7 @@ internal class ShowSeasonsViewModel(
     private val getSeasonsUseCase: GetShowSeasonsUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
-    private val seasonsLocalDataSource: ShowSeasonsLocalDataSource,
+    private val showDetailsUpdates: ShowDetailsUpdates,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = ShowSeasonsState()
@@ -66,9 +68,9 @@ internal class ShowSeasonsViewModel(
     }
 
     private fun observeData() {
-        seasonsLocalDataSource.observeUpdates()
+        showDetailsUpdates.observeUpdates(tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdatesSource.PROGRESS)
             .distinctUntilChanged()
-            .debounce(250)
+            .debounce(200)
             .onEach {
                 loadData(ignoreErrors = true)
             }
@@ -211,7 +213,6 @@ internal class ShowSeasonsViewModel(
                     .firstOrNull {
                         it.show.ids.trakt == show.ids.trakt
                     }
-                seasonsLocalDataSource.notifyUpdate()
 
                 itemsState.update {
                     it.copy(
@@ -223,6 +224,7 @@ internal class ShowSeasonsViewModel(
                     )
                 }
 
+                showDetailsUpdates.notifyUpdate(tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdatesSource.SEASONS)
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_added)
                 }
@@ -257,7 +259,6 @@ internal class ShowSeasonsViewModel(
                     .firstOrNull {
                         it.show.ids.trakt == show.ids.trakt
                     }
-                seasonsLocalDataSource.notifyUpdate()
 
                 itemsState.update {
                     it.copy(
@@ -269,6 +270,7 @@ internal class ShowSeasonsViewModel(
                     )
                 }
 
+                showDetailsUpdates.notifyUpdate(tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdatesSource.SEASONS)
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_removed)
                 }

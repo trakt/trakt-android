@@ -22,14 +22,14 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
-import tv.trakt.trakt.core.summary.movies.data.MovieDetailsLocalDataSource
+import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.movies.features.history.usecases.GetMovieHistoryUseCase
 
 @OptIn(FlowPreview::class)
 internal class MovieHistoryViewModel(
     private val movie: Movie,
     private val getHistoryUseCase: GetMovieHistoryUseCase,
-    private val movieDetailsLocalDataSource: MovieDetailsLocalDataSource,
+    private val movieDetailsUpdates: MovieDetailsUpdates,
 ) : ViewModel() {
     private val initialState = MovieHistoryState()
 
@@ -43,9 +43,9 @@ internal class MovieHistoryViewModel(
     }
 
     private fun observeData() {
-        movieDetailsLocalDataSource.observeUpdates()
+        movieDetailsUpdates.observeUpdates()
             .distinctUntilChanged()
-            .debounce(250)
+            .debounce(200)
             .onEach {
                 loadData(ignoreErrors = true)
             }

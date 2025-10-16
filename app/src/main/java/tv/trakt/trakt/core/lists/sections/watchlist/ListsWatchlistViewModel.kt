@@ -81,7 +81,7 @@ internal class ListsWatchlistViewModel(
             sessionManager.observeProfile()
                 .drop(1)
                 .distinctUntilChanged()
-                .debounce(250)
+                .debounce(200)
                 .collect { user ->
                     userState.update { user }
                     loadData()
@@ -96,7 +96,7 @@ internal class ListsWatchlistViewModel(
             allWatchlistSource.observeUpdates(),
         )
             .distinctUntilChanged()
-            .debounce(250)
+            .debounce(200)
             .onEach {
                 loadData(ignoreErrors = true)
             }.launchIn(viewModelScope)

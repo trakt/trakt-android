@@ -80,7 +80,7 @@ internal class AllPersonalListViewModel(
                 userListLocalDataSource.observeUpdates(),
             )
                 .distinctUntilChanged()
-                .debounce(250)
+                .debounce(200)
                 .collect {
                     loadData(
                         ignoreErrors = true,

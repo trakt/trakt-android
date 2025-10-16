@@ -33,7 +33,7 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.lists.sections.personal.usecases.AddPersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
-import tv.trakt.trakt.core.summary.movies.data.MovieDetailsLocalDataSource
+import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.movies.navigation.MovieDetailsDestination
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieRatingsUseCase
@@ -59,7 +59,7 @@ internal class MovieDetailsViewModel(
     private val addListItemUseCase: AddPersonalListItemUseCase,
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
-    private val movieDetailsLocalDataSource: MovieDetailsLocalDataSource,
+    private val movieDetailsUpdates: MovieDetailsUpdates,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<MovieDetailsDestination>()
@@ -256,7 +256,7 @@ internal class MovieDetailsViewModel(
                     ids = setOf(movieId),
                     notify = true,
                 )
-                movieDetailsLocalDataSource.notifyUpdate()
+                movieDetailsUpdates.notifyUpdate()
 
                 movieProgressState.update {
                     it?.copy(
@@ -303,7 +303,7 @@ internal class MovieDetailsViewModel(
                         plays = plays.coerceAtLeast(0),
                     )
                 }
-                movieDetailsLocalDataSource.notifyUpdate()
+                movieDetailsUpdates.notifyUpdate()
 
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_removed)

@@ -6,8 +6,8 @@ import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.movies.data.local.MovieStorage
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.summary.movies.MovieDetailsViewModel
-import tv.trakt.trakt.core.summary.movies.data.MovieDetailsLocalDataSource
-import tv.trakt.trakt.core.summary.movies.data.MovieDetailsStorage
+import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
+import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdatesStorage
 import tv.trakt.trakt.core.summary.movies.features.actors.MovieActorsViewModel
 import tv.trakt.trakt.core.summary.movies.features.actors.usecases.GetMovieActorsUseCase
 import tv.trakt.trakt.core.summary.movies.features.comments.MovieCommentsViewModel
@@ -36,8 +36,8 @@ internal val movieDetailsDataModule = module {
         MovieStorage()
     }
 
-    single<MovieDetailsLocalDataSource> {
-        MovieDetailsStorage()
+    single<MovieDetailsUpdates> {
+        MovieDetailsUpdatesStorage()
     }
 }
 
@@ -135,7 +135,7 @@ internal val movieDetailsModule = module {
             addListItemUseCase = get(),
             removeListItemUseCase = get(),
             userWatchlistLocalSource = get(),
-            movieDetailsLocalDataSource = get(),
+            movieDetailsUpdates = get(),
             sessionManager = get(),
         )
     }
@@ -180,7 +180,7 @@ internal val movieDetailsModule = module {
         MovieHistoryViewModel(
             movie = movie,
             getHistoryUseCase = get(),
-            movieDetailsLocalDataSource = get(),
+            movieDetailsUpdates = get(),
         )
     }
 

@@ -39,7 +39,7 @@ internal class MainViewModel(
     private fun observeUser() {
         sessionManager.observeProfile()
             .distinctUntilChanged()
-            .debounce(250)
+            .debounce(200)
             .onEach { user ->
                 userState.update { user }
             }

@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -37,7 +38,8 @@ import tv.trakt.trakt.core.summary.episodes.features.seasons.local.EpisodeSeason
 import tv.trakt.trakt.core.summary.episodes.navigation.EpisodeDetailsDestination
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeDetailsUseCase
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeRatingsUseCase
-import tv.trakt.trakt.core.summary.shows.features.seasons.data.local.ShowSeasonsLocalDataSource
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
@@ -51,8 +53,8 @@ internal class EpisodeDetailsViewModel(
     private val getRatingsUseCase: GetEpisodeRatingsUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
-    private val showsSeasonsLocalSource: ShowSeasonsLocalDataSource,
     private val episodeSeasonsLocalSource: EpisodeSeasonsLocalDataSource,
+    private val showUpdatesSource: ShowDetailsUpdates,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = EpisodeDetailsState()
@@ -83,9 +85,12 @@ internal class EpisodeDetailsViewModel(
     }
 
     private fun observeData() {
-        showsSeasonsLocalSource.observeUpdates()
+        merge(
+            showUpdatesSource.observeUpdates(Source.PROGRESS),
+            showUpdatesSource.observeUpdates(Source.SEASONS),
+        )
             .distinctUntilChanged()
-            .debounce(250)
+            .debounce(200)
             .onEach {
                 loadProgressData(
                     ignoreErrors = true,

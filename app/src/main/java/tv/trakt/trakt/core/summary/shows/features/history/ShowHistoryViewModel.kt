@@ -23,14 +23,15 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.summary.shows.features.history.usecases.GetShowHistoryUseCase
-import tv.trakt.trakt.core.summary.shows.features.seasons.data.local.ShowSeasonsLocalDataSource
 
 @OptIn(FlowPreview::class)
 internal class ShowHistoryViewModel(
     private val show: Show,
     private val getHistoryUseCase: GetShowHistoryUseCase,
-    private val seasonsLocalDataSource: ShowSeasonsLocalDataSource,
+    private val showDetailsUpdates: ShowDetailsUpdates,
 ) : ViewModel() {
     private val initialState = ShowHistoryState()
 
@@ -45,10 +46,11 @@ internal class ShowHistoryViewModel(
 
     private fun observeLists() {
         merge(
-            seasonsLocalDataSource.observeUpdates(),
+            showDetailsUpdates.observeUpdates(Source.PROGRESS),
+            showDetailsUpdates.observeUpdates(Source.SEASONS),
         )
             .distinctUntilChanged()
-            .debounce(250)
+            .debounce(200)
             .onEach {
                 loadData(ignoreErrors = true)
             }

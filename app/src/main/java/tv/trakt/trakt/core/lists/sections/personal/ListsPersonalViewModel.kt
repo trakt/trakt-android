@@ -67,7 +67,7 @@ internal class ListsPersonalViewModel(
                 localListsItemsSource.observeUpdates(),
             )
                 .distinctUntilChanged()
-                .debounce(250)
+                .debounce(200)
                 .collect {
                     loadLocalData()
                 }

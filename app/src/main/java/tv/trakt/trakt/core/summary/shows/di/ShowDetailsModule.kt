@@ -6,6 +6,8 @@ import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowStorage
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.shows.ShowDetailsViewModel
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdatesStorage
 import tv.trakt.trakt.core.summary.shows.features.actors.ShowActorsViewModel
 import tv.trakt.trakt.core.summary.shows.features.actors.usecases.GetShowActorsUseCase
 import tv.trakt.trakt.core.summary.shows.features.comments.ShowCommentsViewModel
@@ -21,8 +23,6 @@ import tv.trakt.trakt.core.summary.shows.features.lists.usecases.GetShowListsUse
 import tv.trakt.trakt.core.summary.shows.features.related.ShowRelatedViewModel
 import tv.trakt.trakt.core.summary.shows.features.related.usecases.GetShowRelatedUseCase
 import tv.trakt.trakt.core.summary.shows.features.seasons.ShowSeasonsViewModel
-import tv.trakt.trakt.core.summary.shows.features.seasons.data.local.ShowSeasonsLocalDataSource
-import tv.trakt.trakt.core.summary.shows.features.seasons.data.local.ShowSeasonsStorage
 import tv.trakt.trakt.core.summary.shows.features.seasons.usecases.GetShowSeasonsUseCase
 import tv.trakt.trakt.core.summary.shows.features.sentiment.ShowSentimentViewModel
 import tv.trakt.trakt.core.summary.shows.features.sentiment.usecases.GetShowSentimentUseCase
@@ -38,8 +38,8 @@ internal val showDetailsDataModule = module {
         ShowStorage()
     }
 
-    single<ShowSeasonsLocalDataSource> {
-        ShowSeasonsStorage()
+    single<ShowDetailsUpdates> {
+        ShowDetailsUpdatesStorage()
     }
 }
 
@@ -145,8 +145,8 @@ internal val showDetailsModule = module {
             addListItemUseCase = get(),
             removeListItemUseCase = get(),
             userWatchlistLocalSource = get(),
-            seasonsLocalDataSource = get(),
             episodeLocalDataSource = get(),
+            showDetailsUpdates = get(),
             sessionManager = get(),
         )
     }
@@ -172,7 +172,7 @@ internal val showDetailsModule = module {
             getSeasonsUseCase = get(),
             loadUserProgressUseCase = get(),
             updateEpisodeHistoryUseCase = get(),
-            seasonsLocalDataSource = get(),
+            showDetailsUpdates = get(),
             sessionManager = get(),
         )
     }
@@ -232,7 +232,7 @@ internal val showDetailsModule = module {
         ShowHistoryViewModel(
             show = show,
             getHistoryUseCase = get(),
-            seasonsLocalDataSource = get(),
+            showDetailsUpdates = get(),
         )
     }
 }

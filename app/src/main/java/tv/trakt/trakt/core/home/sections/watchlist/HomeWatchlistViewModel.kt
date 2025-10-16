@@ -73,7 +73,7 @@ internal class HomeWatchlistViewModel(
             sessionManager.observeProfile()
                 .drop(1)
                 .distinctUntilChanged()
-                .debounce(250)
+                .debounce(200)
                 .collect {
                     user = it
                     loadData()
@@ -87,7 +87,7 @@ internal class HomeWatchlistViewModel(
             userWatchlistSource.observeUpdates(),
         )
             .distinctUntilChanged()
-            .debounce(250)
+            .debounce(200)
             .onEach {
                 loadData(
                     ignoreErrors = true,

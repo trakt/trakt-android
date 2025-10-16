@@ -99,7 +99,7 @@ internal val episodeDetailsModule = module {
             loadProgressUseCase = get(),
             updateEpisodeHistoryUseCase = get(),
             episodeSeasonsLocalSource = get(),
-            showsSeasonsLocalSource = get(),
+            showUpdatesSource = get(),
             sessionManager = get(),
         )
     }
@@ -124,7 +124,7 @@ internal val episodeDetailsModule = module {
         EpisodeHistoryViewModel(
             episode = episode,
             getHistoryUseCase = get(),
-            showSeasonsLocalSource = get(),
+            showUpdatesSource = get(),
             episodeSeasonsLocalSource = get(),
         )
     }

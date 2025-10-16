@@ -66,7 +66,7 @@ internal class ListsViewModel(
         viewModelScope.launch {
             localListsSource.observeUpdates()
                 .distinctUntilChanged()
-                .debounce(250)
+                .debounce(200)
                 .collect {
                     loadLocalData()
                 }
