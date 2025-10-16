@@ -180,6 +180,7 @@ internal fun DetailsHeader(
     ratings: ExternalRating?,
     playsCount: Int?,
     loading: Boolean,
+    onShowClick: (Show) -> Unit,
     onShareClick: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -211,6 +212,8 @@ internal fun DetailsHeader(
                         minFontSize = 10.sp,
                         stepSize = 1.sp,
                     ),
+                    modifier = Modifier
+                        .onClick(onClick = { onShowClick(show) }),
                 )
 
                 Text(

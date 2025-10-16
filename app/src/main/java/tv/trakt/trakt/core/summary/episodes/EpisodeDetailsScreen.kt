@@ -73,6 +73,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun EpisodeDetailsScreen(
     modifier: Modifier = Modifier,
     viewModel: EpisodeDetailsViewModel,
+    onShowClick: ((Show) -> Unit),
     onCommentsClick: ((Show, Episode) -> Unit),
     onNavigateBack: () -> Unit,
 ) {
@@ -85,7 +86,7 @@ internal fun EpisodeDetailsScreen(
     EpisodeDetailsContent(
         state = state,
         modifier = modifier,
-        onShowClick = { },
+        onShowClick = onShowClick,
         onTrackClick = { },
         onShareClick = {
             shareEpisode(
@@ -198,6 +199,7 @@ internal fun EpisodeDetailsContent(
                         ratings = state.episodeRatings,
                         playsCount = state.episodeProgress?.plays ?: 0,
                         loading = state.loading.isLoading || state.loadingProgress.isLoading,
+                        onShowClick = onShowClick ?: {},
                         onBackClick = onBackClick ?: {},
                         onShareClick = onShareClick ?: {},
                         modifier = Modifier.align(Center),

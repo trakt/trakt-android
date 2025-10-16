@@ -19,12 +19,14 @@ internal data class EpisodeDetailsDestination(
 )
 
 internal fun NavGraphBuilder.episodeDetailsScreen(
+    onShowClick: ((Show) -> Unit),
     onCommentsClick: ((Show, Episode) -> Unit),
     onNavigateBack: () -> Unit,
 ) {
     composable<EpisodeDetailsDestination> {
         EpisodeDetailsScreen(
             viewModel = koinViewModel(),
+            onShowClick = onShowClick,
             onCommentsClick = onCommentsClick,
             onNavigateBack = onNavigateBack,
         )
