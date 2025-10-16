@@ -151,7 +151,7 @@ internal class EpisodeDetailsViewModel(
 
                 coroutineScope {
                     val progressAsync = async {
-                        loadProgressUseCase.loadShowsProgress()
+                        loadProgressUseCase.loadLocalShows()
                             .firstOrNull {
                                 it.show.ids.trakt == showId
                             }?.seasons?.firstOrNull {
