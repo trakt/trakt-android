@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
@@ -32,6 +33,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
@@ -57,6 +59,7 @@ internal class EpisodeDetailsViewModel(
     private val updateHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val showUpdatesSource: ShowDetailsUpdates,
     private val episodeUpdatesSource: EpisodeDetailsUpdates,
+    private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = EpisodeDetailsState()
@@ -73,6 +76,7 @@ internal class EpisodeDetailsViewModel(
     private val episodeState = MutableStateFlow(initialState.episode)
     private val episodeRatingsState = MutableStateFlow(initialState.episodeRatings)
     private val episodeProgressState = MutableStateFlow(initialState.episodeProgress)
+    private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingProgress = MutableStateFlow(initialState.loadingProgress)
     private val infoState = MutableStateFlow(initialState.info)
@@ -305,8 +309,28 @@ internal class EpisodeDetailsViewModel(
         }
     }
 
+    fun navigateToEpisode(episode: Episode) {
+        if (isLoading()) {
+            return
+        }
+        if (episode.ids.trakt == episodeId) {
+            // Same episode, don't navigate
+            return
+        }
+        viewModelScope.launch {
+            episodeLocalDataSource.upsertEpisodes(listOf(episode))
+            navigateEpisode.update {
+                Pair(showId, episode)
+            }
+        }
+    }
+
     fun clearInfo() {
         infoState.update { null }
+    }
+
+    fun clearNavigation() {
+        navigateEpisode.update { null }
     }
 
     private fun isLoading(): Boolean {
@@ -326,6 +350,7 @@ internal class EpisodeDetailsViewModel(
         infoState,
         errorState,
         userState,
+        navigateEpisode,
     ) { state ->
         EpisodeDetailsState(
             show = state[0] as Show?,
@@ -337,6 +362,7 @@ internal class EpisodeDetailsViewModel(
             info = state[6] as StringResource?,
             error = state[7] as Exception?,
             user = state[8] as User?,
+            navigateEpisode = state[9] as Pair<TraktId, Episode>?,
         )
     }.stateIn(
         scope = viewModelScope,

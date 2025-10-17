@@ -84,7 +84,7 @@ internal fun EpisodeDetailsScreen(
     modifier: Modifier = Modifier,
     viewModel: EpisodeDetailsViewModel,
     onShowClick: ((Show) -> Unit),
-    onEpisodeClick: ((TraktId, Episode) -> Unit)? = null,
+    onEpisodeClick: ((TraktId, Episode) -> Unit),
     onCommentsClick: ((Show, Episode) -> Unit),
     onNavigateBack: () -> Unit,
 ) {
@@ -98,17 +98,18 @@ internal fun EpisodeDetailsScreen(
     var contextSheet by remember { mutableStateOf(false) }
     var historySheet by remember { mutableStateOf<HomeActivityItem.EpisodeItem?>(null) }
 
+    LaunchedEffect(state.navigateEpisode) {
+        state.navigateEpisode?.let {
+            onEpisodeClick(it.first, it.second)
+            viewModel.clearNavigation()
+        }
+    }
+
     EpisodeDetailsContent(
         state = state,
         modifier = modifier,
         onShowClick = onShowClick,
-        onEpisodeClick = { episode ->
-            state.show?.let {
-                if (episode.ids.trakt != state.episode?.ids?.trakt) {
-                    onEpisodeClick?.invoke(it.ids.trakt, episode)
-                }
-            }
-        },
+        onEpisodeClick = viewModel::navigateToEpisode,
         onTrackClick = viewModel::addToWatched,
         onShareClick = {
             shareEpisode(

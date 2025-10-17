@@ -71,7 +71,6 @@ internal val episodeDetailsModule = module {
     factory {
         GetEpisodeSeasonUseCase(
             remoteEpisodesSource = get(),
-            localEpisodeSource = get(),
         )
     }
 
@@ -109,6 +108,7 @@ internal val episodeDetailsModule = module {
             updateHistoryUseCase = get(),
             showUpdatesSource = get(),
             episodeUpdatesSource = get(),
+            episodeLocalDataSource = get(),
             sessionManager = get(),
         )
     }
