@@ -18,7 +18,7 @@ internal class GetShowSeasonsUseCase(
 ) {
     suspend fun getAllSeasons(
         showId: TraktId,
-        initialSeason: Int? = null,
+        initialSeason: Int,
     ): ShowSeasons {
         val remoteSeasons = remoteShowsSource.getSeasons(showId)
             .asyncMap { Season.fromDto(it) }

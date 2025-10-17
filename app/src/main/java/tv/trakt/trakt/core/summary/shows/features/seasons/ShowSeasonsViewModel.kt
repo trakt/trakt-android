@@ -106,7 +106,8 @@ internal class ShowSeasonsViewModel(
                     showId = show.ids.trakt,
                     initialSeason = watched?.seasons
                         ?.maxByOrNull { it.number }
-                        ?.number,
+                        ?.number
+                        ?: 1,
                 )
 
                 itemsState.update {
