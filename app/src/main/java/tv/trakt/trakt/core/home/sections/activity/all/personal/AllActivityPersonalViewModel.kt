@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
@@ -84,7 +83,6 @@ internal class AllActivityPersonalViewModel(
             episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.SEASON),
             movieDetailsUpdates.observeUpdates(),
         )
-            .drop(1)
             .distinctUntilChanged()
             .debounce(200)
             .onEach {
