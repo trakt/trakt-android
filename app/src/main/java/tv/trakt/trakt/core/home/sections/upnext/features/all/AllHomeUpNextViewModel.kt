@@ -8,13 +8,13 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
@@ -24,11 +24,11 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
+import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
-import tv.trakt.trakt.common.helpers.StaticStringResource
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
@@ -37,11 +37,14 @@ import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.AllUpNex
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.resources.R
 
 @OptIn(FlowPreview::class)
 internal class AllHomeUpNextViewModel(
@@ -79,17 +82,17 @@ internal class AllHomeUpNextViewModel(
         merge(
             showUpdatesSource.observeUpdates(Source.PROGRESS),
             showUpdatesSource.observeUpdates(Source.SEASONS),
-            episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.PROGRESS),
-            episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.SEASON),
+            episodeUpdatesSource.observeUpdates(PROGRESS),
+            episodeUpdatesSource.observeUpdates(SEASON),
             movieDetailsUpdates.observeUpdates(),
         )
+            .drop(1)
             .distinctUntilChanged()
             .debounce(200)
             .onEach {
                 loadData(ignoreErrors = true)
             }.launchIn(viewModelScope)
     }
-
 
     private fun loadBackground() {
         val configUrl = Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL)
@@ -209,9 +212,6 @@ internal class AllHomeUpNextViewModel(
 
                 updateHistoryUseCase.addToHistory(episodeId)
 
-                // TODO Temporarily delay to mitigation DB replication
-                delay(100)
-
                 itemsState.update {
                     val items = getUpNextUseCase.getUpNext(
                         page = 1,
@@ -230,7 +230,7 @@ internal class AllHomeUpNextViewModel(
                 allUpNextSource.notifyUpdate()
                 loadUserProgress()
 
-                infoState.update { StaticStringResource("Added to history") }
+                infoState.update { DynamicStringResource(R.string.text_info_history_added) }
                 itemsOrder = itemsState.value?.map { it.show.ids.trakt.value }
             } catch (error: Exception) {
                 error.rethrowCancellation {

@@ -99,7 +99,7 @@ internal fun EpisodeDetailsScreen(
         state = state,
         modifier = modifier,
         onShowClick = onShowClick,
-        onTrackClick = { },
+        onTrackClick = viewModel::addToWatched,
         onShareClick = {
             shareEpisode(
                 show = state.show,

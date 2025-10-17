@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -203,9 +202,6 @@ internal class HomeUpNextViewModel(
                 }
 
                 updateHistoryUseCase.addToHistory(episodeId)
-
-                // TODO Temporarily delay to mitigation DB replication
-                delay(100)
 
                 itemsState.update {
                     val items = getUpNextUseCase.getUpNext(

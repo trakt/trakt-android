@@ -53,7 +53,7 @@ internal class EpisodeDetailsViewModel(
     private val getEpisodeDetailsUseCase: GetEpisodeDetailsUseCase,
     private val getRatingsUseCase: GetEpisodeRatingsUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
-    private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
+    private val updateHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val showUpdatesSource: ShowDetailsUpdates,
     private val episodeUpdatesSource: EpisodeDetailsUpdates,
     private val sessionManager: SessionManager,
@@ -225,14 +225,10 @@ internal class EpisodeDetailsViewModel(
         }
     }
 
-    fun removeFromWatched(playId: Long) {
-        if (showState.value == null ||
-            loadingState.value.isLoading ||
-            loadingProgress.value.isLoading
-        ) {
+    fun addToWatched() {
+        if (isLoading()) {
             return
         }
-
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) {
                 return@launch
@@ -240,7 +236,45 @@ internal class EpisodeDetailsViewModel(
             try {
                 loadingProgress.update { LOADING }
 
-                updateEpisodeHistoryUseCase.removePlayFromHistory(playId)
+                updateHistoryUseCase.addToHistory(episodeId)
+                val progress = loadProgressUseCase.loadShowsProgress()
+                    .firstOrNull {
+                        it.show.ids.trakt == showId
+                    }?.seasons?.firstOrNull {
+                        it.number == seasonEpisode.season
+                    }?.episodes?.firstOrNull {
+                        it.number == seasonEpisode.episode
+                    }
+
+                episodeProgressState.update { state ->
+                    state?.copy(plays = progress?.plays)
+                }
+
+                episodeUpdatesSource.notifyUpdate(PROGRESS)
+                infoState.update { DynamicStringResource(R.string.text_info_history_added) }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.d(error, "Failed to add movie to history")
+                }
+            } finally {
+                loadingProgress.update { DONE }
+            }
+        }
+    }
+
+    fun removeFromWatched(playId: Long) {
+        if (isLoading()) {
+            return
+        }
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                loadingProgress.update { LOADING }
+
+                updateHistoryUseCase.removePlayFromHistory(playId)
                 val progress = loadProgressUseCase.loadShowsProgress()
                     .firstOrNull {
                         it.show.ids.trakt == showId
@@ -271,6 +305,12 @@ internal class EpisodeDetailsViewModel(
 
     fun clearInfo() {
         infoState.update { null }
+    }
+
+    private fun isLoading(): Boolean {
+        return showState.value == null ||
+            loadingState.value.isLoading ||
+            loadingProgress.value.isLoading
     }
 
     @Suppress("UNCHECKED_CAST")
