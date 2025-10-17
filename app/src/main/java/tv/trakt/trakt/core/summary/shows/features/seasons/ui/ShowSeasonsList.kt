@@ -49,7 +49,7 @@ internal fun ShowSeasonsList(
 
     var initialScrolled by rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(Unit) {
-        if (!initialScrolled) {
+        if (!initialScrolled && (selectedSeason ?: 0) > 1) {
             initialScrolled = true
             val index = seasons
                 .indexOfFirst { it.number == selectedSeason }

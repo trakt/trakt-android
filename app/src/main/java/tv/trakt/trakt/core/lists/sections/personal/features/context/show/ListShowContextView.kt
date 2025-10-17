@@ -55,6 +55,7 @@ internal fun ListShowContextView(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    var confirmAddWatchedSheet by remember { mutableStateOf(false) }
     var confirmRemoveListSheet by remember { mutableStateOf(false) }
     var confirmRemoveWatchlistSheet by remember { mutableStateOf(false) }
     var confirmRemoveWatchedSheet by remember { mutableStateOf(false) }
@@ -92,7 +93,7 @@ internal fun ListShowContextView(
         onWatchedClick = {
             when {
                 state.isWatched && !state.isWatchlist -> confirmRemoveWatchedSheet = true
-                else -> viewModel.addToWatched()
+                else -> confirmAddWatchedSheet = true
             }
         },
         onWatchlistClick = {
@@ -104,6 +105,20 @@ internal fun ListShowContextView(
         onRemoveListClick = {
             confirmRemoveListSheet = true
         },
+    )
+
+    ConfirmationSheet(
+        active = confirmAddWatchedSheet,
+        onYes = {
+            confirmAddWatchedSheet = false
+            viewModel.addToWatched()
+        },
+        onNo = { confirmAddWatchedSheet = false },
+        title = stringResource(R.string.button_text_mark_as_watched),
+        message = stringResource(
+            R.string.warning_prompt_mark_as_watched_show,
+            show.title,
+        ),
     )
 
     ConfirmationSheet(
