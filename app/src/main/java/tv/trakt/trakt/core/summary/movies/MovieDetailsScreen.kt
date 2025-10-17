@@ -80,6 +80,7 @@ import tv.trakt.trakt.core.summary.ui.DetailsHeader
 import tv.trakt.trakt.core.summary.ui.DetailsMetaInfo
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -103,6 +104,7 @@ internal fun MovieDetailsScreen(
     var contextSheet by remember { mutableStateOf<Movie?>(null) }
     var listsSheet by remember { mutableStateOf<Movie?>(null) }
     var historySheet by remember { mutableStateOf<HomeActivityItem.MovieItem?>(null) }
+    var confirmRemoveWatchlistSheet by remember { mutableStateOf(false) }
 
     MovieDetailsContent(
         state = state,
@@ -113,30 +115,39 @@ internal fun MovieDetailsScreen(
                 onListClick(movie, it)
             }
         },
-        onTrackClick = {
-            viewModel.addToWatched()
+        onTrackClick = { viewModel.addToWatched() },
+        onShareClick = { state.movie?.let { shareMovie(it, context) } },
+        onTrailerClick = { state.movie?.trailer?.let { uriHandler.openUri(it) } },
+        onWatchlistClick = {
+            if (state.movieProgress?.inWatchlist == true) {
+                confirmRemoveWatchlistSheet = true
+            } else {
+                viewModel.toggleWatchlist()
+            }
         },
-        onShareClick = {
-            state.movie?.let { shareMovie(it, context) }
-        },
-        onTrailerClick = {
-            state.movie?.trailer?.let { uriHandler.openUri(it) }
-        },
-        onListsClick = {
-            listsSheet = state.movie
-        },
-        onMoreClick = {
-            contextSheet = state.movie
-        },
+        onListsClick = { listsSheet = state.movie },
+        onMoreClick = { contextSheet = state.movie },
         onMoreCommentsClick = {
             state.movie?.let {
                 onCommentsClick(it)
             }
         },
-        onHistoryClick = {
-            historySheet = it
-        },
+        onHistoryClick = { historySheet = it },
         onBackClick = onNavigateBack,
+    )
+
+    ConfirmationSheet(
+        active = confirmRemoveWatchlistSheet,
+        onYes = {
+            confirmRemoveWatchlistSheet = false
+            viewModel.toggleWatchlist()
+        },
+        onNo = { confirmRemoveWatchlistSheet = false },
+        title = stringResource(R.string.button_text_watchlist),
+        message = stringResource(
+            R.string.warning_prompt_remove_from_watchlist,
+            state.movie?.title ?: "",
+        ),
     )
 
     MovieDetailsListsSheet(
@@ -205,6 +216,7 @@ internal fun MovieDetailsContent(
     onTrackClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onTrailerClick: (() -> Unit)? = null,
+    onWatchlistClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
     onHistoryClick: ((HomeActivityItem.MovieItem) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
@@ -288,9 +300,10 @@ internal fun MovieDetailsContent(
                             !state.loadingLists.isLoading,
                         loading = state.loadingProgress.isLoading ||
                             state.loadingLists.isLoading,
-                        inLists = state.movieProgress?.inAnyList,
+                        inWatchlist = state.movieProgress?.inWatchlist,
                         onPrimaryClick = onTrackClick,
-                        onSecondaryClick = onListsClick,
+                        onSecondaryClick = onWatchlistClick,
+                        onSecondaryLongClick = onListsClick,
                         onMoreClick = onMoreClick,
                         modifier = Modifier
                             .align(Alignment.Center)

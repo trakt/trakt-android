@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.summary.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,9 +37,10 @@ internal fun DetailsActions(
     primaryEnabled: Boolean = true,
     secondaryVisible: Boolean = true,
     loading: Boolean = false,
-    inLists: Boolean? = false,
+    inWatchlist: Boolean? = false,
     onPrimaryClick: (() -> Unit)? = null,
     onSecondaryClick: (() -> Unit)? = null,
+    onSecondaryLongClick: (() -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
 ) {
     Box(
@@ -101,8 +103,8 @@ internal fun DetailsActions(
             if (secondaryVisible) {
                 Icon(
                     painter = when {
-                        inLists == true -> painterResource(R.drawable.ic_lists_check)
-                        else -> painterResource(R.drawable.ic_plus_round)
+                        inWatchlist == true -> painterResource(R.drawable.ic_bookmark_on)
+                        else -> painterResource(R.drawable.ic_bookmark_off)
                     },
                     tint = when {
                         enabled -> TraktTheme.colors.primaryButtonContent
@@ -110,17 +112,15 @@ internal fun DetailsActions(
                     },
                     contentDescription = null,
                     modifier = Modifier
-                        .onClick(
-                            enabled = enabled,
+                        .combinedClickable(
                             onClick = onSecondaryClick ?: {},
+                            onLongClick = onSecondaryLongClick ?: {},
+                            interactionSource = null,
+                            indication = null,
                         )
-                        .size(21.dp)
+                        .size(20.dp)
                         .graphicsLayer {
-                            translationX = -(0.5).dp.toPx()
-                            if (inLists == true) {
-                                scaleX = 1.15F
-                                scaleY = 1.15F
-                            }
+                            translationX = 0.5.dp.toPx()
                         },
                 )
             }
@@ -160,7 +160,7 @@ private fun Preview() {
             DetailsActions()
 
             DetailsActions(
-                inLists = true,
+                inWatchlist = true,
             )
 
             DetailsActions(

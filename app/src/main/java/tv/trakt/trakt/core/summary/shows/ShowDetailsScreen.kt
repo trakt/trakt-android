@@ -109,6 +109,7 @@ internal fun ShowDetailsScreen(
     var listsSheet by remember { mutableStateOf<Show?>(null) }
     var historySheet by remember { mutableStateOf<HomeActivityItem.EpisodeItem?>(null) }
     var confirmAddWatchedSheet by remember { mutableStateOf(false) }
+    var confirmRemoveWatchlistSheet by remember { mutableStateOf(false) }
 
     ShowDetailsContent(
         state = state,
@@ -132,6 +133,13 @@ internal fun ShowDetailsScreen(
         },
         onTrailerClick = {
             state.show?.trailer?.let { uriHandler.openUri(it) }
+        },
+        onWatchlistClick = {
+            if (state.showProgress?.inWatchlist == true) {
+                confirmRemoveWatchlistSheet = true
+            } else {
+                viewModel.toggleWatchlist()
+            }
         },
         onListsClick = {
             listsSheet = state.show
@@ -204,6 +212,20 @@ internal fun ShowDetailsScreen(
         ),
     )
 
+    ConfirmationSheet(
+        active = confirmRemoveWatchlistSheet,
+        onYes = {
+            confirmRemoveWatchlistSheet = false
+            viewModel.toggleWatchlist()
+        },
+        onNo = { confirmRemoveWatchlistSheet = false },
+        title = stringResource(R.string.button_text_watchlist),
+        message = stringResource(
+            R.string.warning_prompt_remove_from_watchlist,
+            state.show?.title ?: "",
+        ),
+    )
+
     LaunchedEffect(state.navigateEpisode) {
         state.navigateEpisode?.let {
             onEpisodeClick(it.first, it.second)
@@ -239,6 +261,7 @@ internal fun ShowDetailsContent(
     onShareClick: (() -> Unit)? = null,
     onTrailerClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
+    onWatchlistClick: (() -> Unit)? = null,
     onHistoryClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
     onMoreCommentsClick: (() -> Unit)? = null,
@@ -318,9 +341,10 @@ internal fun ShowDetailsContent(
                             !state.loadingLists.isLoading,
                         loading = state.loadingProgress.isLoading ||
                             state.loadingLists.isLoading,
-                        inLists = state.showProgress?.inAnyList,
+                        inWatchlist = state.showProgress?.inWatchlist,
                         onPrimaryClick = onTrackClick,
-                        onSecondaryClick = onListsClick,
+                        onSecondaryClick = onWatchlistClick,
+                        onSecondaryLongClick = onListsClick,
                         onMoreClick = onMoreClick,
                         modifier = Modifier
                             .align(Alignment.Center)

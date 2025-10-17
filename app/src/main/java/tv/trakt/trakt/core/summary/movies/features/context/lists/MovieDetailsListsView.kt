@@ -185,16 +185,16 @@ private fun ActionButtons(
                 translationX = -8.dp.toPx()
             },
     ) {
-        GhostButton(
-            text = stringResource(R.string.button_text_watchlist),
-            onClick = onWatchlistClick ?: {},
-            iconSize = 22.dp,
-            iconSpace = 16.dp,
-            icon = when {
-                inWatchlist -> painterResource(R.drawable.ic_minus)
-                else -> painterResource(R.drawable.ic_plus_round)
-            },
-        )
+//        GhostButton(
+//            text = stringResource(R.string.button_text_watchlist),
+//            onClick = onWatchlistClick ?: {},
+//            iconSize = 22.dp,
+//            iconSpace = 16.dp,
+//            icon = when {
+//                inWatchlist -> painterResource(R.drawable.ic_minus)
+//                else -> painterResource(R.drawable.ic_plus_round)
+//            },
+//        )
 
         for (list in lists) {
             GhostButton(
