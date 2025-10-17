@@ -71,6 +71,7 @@ internal val episodeDetailsModule = module {
     factory {
         GetEpisodeSeasonUseCase(
             remoteEpisodesSource = get(),
+            localEpisodeSource = get(),
         )
     }
 
