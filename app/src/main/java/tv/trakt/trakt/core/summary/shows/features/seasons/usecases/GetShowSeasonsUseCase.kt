@@ -16,15 +16,19 @@ internal class GetShowSeasonsUseCase(
     private val remoteShowsSource: ShowsRemoteDataSource,
     private val remoteEpisodesSource: EpisodesRemoteDataSource,
 ) {
-    suspend fun getAllSeasons(showId: TraktId): ShowSeasons {
+    suspend fun getAllSeasons(
+        showId: TraktId,
+        initialSeason: Int? = null,
+    ): ShowSeasons {
         val remoteSeasons = remoteShowsSource.getSeasons(showId)
             .asyncMap { Season.fromDto(it) }
             .filter { (it.episodeCount ?: 0) > 0 }
             .sortedBy { it.number }
 
         val selectedSeason = remoteSeasons
-            .firstOrNull { !it.isSpecial }
-            ?: remoteSeasons.firstOrNull()
+            .firstOrNull {
+                !it.isSpecial && (initialSeason == it.number)
+            } ?: remoteSeasons.firstOrNull()
 
         if (selectedSeason != null) {
             val episodes = remoteEpisodesSource.getSeason(

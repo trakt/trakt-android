@@ -6,7 +6,6 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -85,24 +84,16 @@ internal class ShowSeasonsViewModel(
             .launchIn(viewModelScope)
     }
 
-    private fun loadData(
-        ignoreErrors: Boolean = false,
-        localOnly: Boolean = false,
-    ) {
+    private fun loadData(ignoreErrors: Boolean = false) {
         viewModelScope.launch {
             try {
                 loadingState.update { LOADING }
                 val authenticated = sessionManager.isAuthenticated()
 
-                val seasonsAsync = async {
-                    getSeasonsUseCase.getAllSeasons(show.ids.trakt)
-                }
-                val watchedAsync = async {
-                    if (!authenticated) {
-                        return@async null
-                    }
-                    when {
-                        loadUserProgressUseCase.isShowsLoaded() || localOnly -> {
+                val watched = when {
+                    !authenticated -> null
+                    else -> when {
+                        loadUserProgressUseCase.isShowsLoaded() -> {
                             loadUserProgressUseCase.loadLocalShows()
                         }
                         else -> loadUserProgressUseCase.loadShowsProgress()
@@ -111,18 +102,20 @@ internal class ShowSeasonsViewModel(
                     }
                 }
 
-                val seasons = seasonsAsync.await()
-                val watched = watchedAsync.await()
-
-                val markedEpisodes = markWatchedEpisodes(
-                    inputEpisodes = seasons.selectedSeasonEpisodes,
-                    progress = watched?.seasons,
-                    checkable = authenticated,
+                val seasons = getSeasonsUseCase.getAllSeasons(
+                    showId = show.ids.trakt,
+                    initialSeason = watched?.seasons
+                        ?.maxByOrNull { it.number }
+                        ?.number,
                 )
 
                 itemsState.update {
                     seasons.copy(
-                        selectedSeasonEpisodes = markedEpisodes.toImmutableList(),
+                        selectedSeasonEpisodes = markWatchedEpisodes(
+                            inputEpisodes = seasons.selectedSeasonEpisodes,
+                            progress = watched?.seasons,
+                            checkable = authenticated,
+                        ),
                     )
                 }
             } catch (error: Exception) {

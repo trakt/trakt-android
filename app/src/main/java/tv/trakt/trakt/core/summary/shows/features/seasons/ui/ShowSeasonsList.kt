@@ -14,7 +14,11 @@ import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
@@ -42,6 +46,17 @@ internal fun ShowSeasonsList(
             behindFraction = 0.75F,
         ),
     )
+
+    var initialScrolled by rememberSaveable { mutableStateOf(false) }
+    LaunchedEffect(Unit) {
+        if (!initialScrolled) {
+            initialScrolled = true
+            val index = seasons
+                .indexOfFirst { it.number == selectedSeason }
+                .coerceAtLeast(0)
+            listState.animateScrollToItem(index)
+        }
+    }
 
     LazyRow(
         state = listState,
