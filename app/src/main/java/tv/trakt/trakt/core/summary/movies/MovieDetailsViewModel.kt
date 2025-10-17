@@ -169,9 +169,8 @@ internal class MovieDetailsViewModel(
                     }
 
                     val listsAsync = async {
-                        loadListsUseCase.loadLocalLists()
-                            .values
-                            .flatten()
+                        val lists = loadListsUseCase.loadLocalLists()
+                        lists.size to lists.values.flatten()
                             .firstOrNull {
                                 it.type == MOVIE && it.id == movieId
                             }
@@ -179,13 +178,14 @@ internal class MovieDetailsViewModel(
 
                     val progress = progressAsync.await()
                     val watchlist = watchlistAsync.await()
-                    val lists = listsAsync.await()
+                    val (listsCount, lists) = listsAsync.await()
 
                     movieProgressState.update {
                         MovieDetailsState.ProgressState(
                             plays = progress?.plays ?: 0,
                             inWatchlist = watchlist != null,
                             inLists = lists != null,
+                            hasLists = listsCount > 0,
                         )
                     }
                 }
@@ -490,21 +490,21 @@ internal class MovieDetailsViewModel(
             }
 
             val listsAsync = async {
-                loadListsUseCase.loadLocalLists()
-                    .values
-                    .flatten()
+                val lists = loadListsUseCase.loadLocalLists()
+                lists.size to lists.values.flatten()
                     .firstOrNull {
                         it.type == MOVIE && it.id == movieId
                     }
             }
 
             val watchlist = watchlistAsync.await()
-            val lists = listsAsync.await()
+            val (listsCount, lists) = listsAsync.await()
 
             movieProgressState.update {
                 it?.copy(
                     inWatchlist = watchlist != null,
                     inLists = lists != null,
+                    hasLists = listsCount > 0,
                 )
             }
         }

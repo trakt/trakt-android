@@ -25,6 +25,7 @@ internal data class MovieDetailsState(
         val plays: Int,
         val inWatchlist: Boolean,
         val inLists: Boolean,
+        val hasLists: Boolean,
     ) {
         val inAnyList: Boolean = inWatchlist || inLists
     }

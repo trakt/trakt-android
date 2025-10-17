@@ -29,6 +29,7 @@ internal data class ShowDetailsState(
         val plays: Int?,
         val inWatchlist: Boolean,
         val inLists: Boolean,
+        val hasLists: Boolean,
     ) {
         val inAnyList: Boolean = inWatchlist || inLists
     }

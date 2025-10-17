@@ -300,9 +300,12 @@ internal fun MovieDetailsContent(
                             !state.loadingLists.isLoading,
                         loading = state.loadingProgress.isLoading ||
                             state.loadingLists.isLoading,
-                        inWatchlist = state.movieProgress?.inWatchlist,
+                        inLists = state.movieProgress?.inAnyList,
                         onPrimaryClick = onTrackClick,
-                        onSecondaryClick = onWatchlistClick,
+                        onSecondaryClick = when {
+                            state.movieProgress?.hasLists == true -> onListsClick
+                            else -> onWatchlistClick
+                        },
                         onSecondaryLongClick = onListsClick,
                         onMoreClick = onMoreClick,
                         modifier = Modifier
