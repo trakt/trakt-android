@@ -173,6 +173,7 @@ internal val showDetailsModule = module {
             loadUserProgressUseCase = get(),
             updateEpisodeHistoryUseCase = get(),
             showDetailsUpdates = get(),
+            episodeDetailsUpdates = get(),
             sessionManager = get(),
         )
     }
@@ -233,6 +234,7 @@ internal val showDetailsModule = module {
             show = show,
             getHistoryUseCase = get(),
             showDetailsUpdates = get(),
+            episodeDetailsUpdates = get(),
         )
     }
 }

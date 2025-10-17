@@ -156,6 +156,9 @@ internal fun NavGraphBuilder.episodesScreens(controller: NavHostController) {
             onShowClick = {
                 navigateToShow(it.ids.trakt)
             },
+            onEpisodeCLick = { showId, episode ->
+                navigateToEpisode(showId, episode)
+            },
             onCommentsClick = { show, episode ->
                 navigateToComments(
                     showId = show.ids.trakt,

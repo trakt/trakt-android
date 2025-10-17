@@ -59,6 +59,7 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.summary.episodes.features.actors.EpisodeActorsView
@@ -67,6 +68,7 @@ import tv.trakt.trakt.core.summary.episodes.features.context.history.EpisodeDeta
 import tv.trakt.trakt.core.summary.episodes.features.context.more.EpisodeDetailsContextSheet
 import tv.trakt.trakt.core.summary.episodes.features.history.EpisodeHistoryView
 import tv.trakt.trakt.core.summary.episodes.features.related.EpisodeRelatedView
+import tv.trakt.trakt.core.summary.episodes.features.season.EpisodeSeasonView
 import tv.trakt.trakt.core.summary.episodes.features.streaming.EpisodeStreamingsView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
@@ -82,6 +84,7 @@ internal fun EpisodeDetailsScreen(
     modifier: Modifier = Modifier,
     viewModel: EpisodeDetailsViewModel,
     onShowClick: ((Show) -> Unit),
+    onEpisodeClick: ((TraktId, Episode) -> Unit)? = null,
     onCommentsClick: ((Show, Episode) -> Unit),
     onNavigateBack: () -> Unit,
 ) {
@@ -99,6 +102,13 @@ internal fun EpisodeDetailsScreen(
         state = state,
         modifier = modifier,
         onShowClick = onShowClick,
+        onEpisodeClick = { episode ->
+            state.show?.let {
+                if (episode.ids.trakt != state.episode?.ids?.trakt) {
+                    onEpisodeClick?.invoke(it.ids.trakt, episode)
+                }
+            }
+        },
         onTrackClick = viewModel::addToWatched,
         onShareClick = {
             shareEpisode(
@@ -173,6 +183,7 @@ internal fun EpisodeDetailsContent(
     state: EpisodeDetailsState,
     modifier: Modifier = Modifier,
     onShowClick: ((Show) -> Unit)? = null,
+    onEpisodeClick: ((Episode) -> Unit)? = null,
     onTrackClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
@@ -322,6 +333,21 @@ internal fun EpisodeDetailsContent(
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
+                            modifier = Modifier
+                                .padding(top = 32.dp),
+                        )
+                    }
+
+                    item {
+                        EpisodeSeasonView(
+                            viewModel = koinViewModel(
+                                parameters = {
+                                    parametersOf(state.show, state.episode)
+                                },
+                            ),
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            onEpisodeClick = onEpisodeClick ?: {},
                             modifier = Modifier
                                 .padding(top = 32.dp),
                         )

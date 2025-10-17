@@ -18,6 +18,8 @@ import tv.trakt.trakt.core.summary.episodes.features.history.EpisodeHistoryViewM
 import tv.trakt.trakt.core.summary.episodes.features.history.usecases.GetEpisodeHistoryUseCase
 import tv.trakt.trakt.core.summary.episodes.features.related.EpisodeRelatedViewModel
 import tv.trakt.trakt.core.summary.episodes.features.related.usecases.GetEpisodeRelatedUseCase
+import tv.trakt.trakt.core.summary.episodes.features.season.EpisodeSeasonViewModel
+import tv.trakt.trakt.core.summary.episodes.features.season.usecases.GetEpisodeSeasonUseCase
 import tv.trakt.trakt.core.summary.episodes.features.streaming.EpisodeStreamingsViewModel
 import tv.trakt.trakt.core.summary.episodes.features.streaming.usecases.GetEpisodeStreamingsUseCase
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeDetailsUseCase
@@ -63,6 +65,12 @@ internal val episodeDetailsModule = module {
     factory {
         GetEpisodeHistoryUseCase(
             remoteSource = get(),
+        )
+    }
+
+    factory {
+        GetEpisodeSeasonUseCase(
+            remoteEpisodesSource = get(),
         )
     }
 
@@ -126,6 +134,19 @@ internal val episodeDetailsModule = module {
             getHistoryUseCase = get(),
             showUpdatesSource = get(),
             episodeUpdatesSource = get(),
+        )
+    }
+
+    viewModel { (show: Show, episode: Episode) ->
+        EpisodeSeasonViewModel(
+            show = show,
+            episode = episode,
+            getSeasonDetailsUseCase = get(),
+            loadUserProgressUseCase = get(),
+            updateEpisodeHistoryUseCase = get(),
+            showDetailsUpdates = get(),
+            episodeDetailsUpdates = get(),
+            sessionManager = get(),
         )
     }
 

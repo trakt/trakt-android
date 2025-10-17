@@ -20,6 +20,7 @@ internal data class EpisodeDetailsDestination(
 
 internal fun NavGraphBuilder.episodeDetailsScreen(
     onShowClick: ((Show) -> Unit),
+    onEpisodeCLick: ((TraktId, Episode) -> Unit),
     onCommentsClick: ((Show, Episode) -> Unit),
     onNavigateBack: () -> Unit,
 ) {
@@ -27,6 +28,7 @@ internal fun NavGraphBuilder.episodeDetailsScreen(
         EpisodeDetailsScreen(
             viewModel = koinViewModel(),
             onShowClick = onShowClick,
+            onEpisodeClick = onEpisodeCLick,
             onCommentsClick = onCommentsClick,
             onNavigateBack = onNavigateBack,
         )

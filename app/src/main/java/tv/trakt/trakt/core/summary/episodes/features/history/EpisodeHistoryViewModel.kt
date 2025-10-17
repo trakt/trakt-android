@@ -45,10 +45,10 @@ internal class EpisodeHistoryViewModel(
 
     init {
         loadData()
-        observeLists()
+        observeData()
     }
 
-    private fun observeLists() {
+    private fun observeData() {
         merge(
             showUpdatesSource.observeUpdates(Source.PROGRESS),
             showUpdatesSource.observeUpdates(Source.SEASONS),

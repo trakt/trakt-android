@@ -36,6 +36,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
 import tv.trakt.trakt.core.summary.episodes.navigation.EpisodeDetailsDestination
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeDetailsUseCase
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeRatingsUseCase
@@ -89,6 +90,7 @@ internal class EpisodeDetailsViewModel(
         merge(
             showUpdatesSource.observeUpdates(Source.PROGRESS),
             showUpdatesSource.observeUpdates(Source.SEASONS),
+            episodeUpdatesSource.observeUpdates(SEASON),
         )
             .distinctUntilChanged()
             .debounce(200)
