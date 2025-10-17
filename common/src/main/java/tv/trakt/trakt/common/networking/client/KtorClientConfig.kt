@@ -3,6 +3,7 @@ package tv.trakt.trakt.common.networking.client
 import android.content.Context
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.call.body
+import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.api.createClientPlugin
 import io.ktor.client.plugins.auth.Auth
@@ -69,6 +70,11 @@ internal fun HttpClientConfig<*>.applyConfig(
         requestTimeoutMillis = timeoutMillis
         socketTimeoutMillis = timeoutMillis
         connectTimeoutMillis = timeoutMillis
+    }
+
+    install(HttpRequestRetry) {
+        retryOnExceptionOrServerErrors(maxRetries = 3)
+        exponentialDelay()
     }
 
     install(ContentNegotiation) {
