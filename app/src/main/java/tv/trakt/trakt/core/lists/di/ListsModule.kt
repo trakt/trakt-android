@@ -189,6 +189,9 @@ internal val listsModule = module {
             movieLocalDataSource = get(),
             loadUserProgressUseCase = get(),
             updateMovieHistoryUseCase = get(),
+            showUpdatesSource = get(),
+            episodeUpdatesSource = get(),
+            movieDetailsUpdates = get(),
             sessionManager = get(),
         )
     }

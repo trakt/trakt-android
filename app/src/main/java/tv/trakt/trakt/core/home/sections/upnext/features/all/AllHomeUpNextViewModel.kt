@@ -6,12 +6,18 @@ import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -30,14 +36,22 @@ import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_LIMIT
 import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.AllUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
+import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
 
+@OptIn(FlowPreview::class)
 internal class AllHomeUpNextViewModel(
     private val getUpNextUseCase: GetUpNextUseCase,
     private val updateHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val allUpNextSource: AllUpNextLocalDataSource,
+    private val showUpdatesSource: ShowDetailsUpdates,
+    private val episodeUpdatesSource: EpisodeDetailsUpdates,
+    private val movieDetailsUpdates: MovieDetailsUpdates,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = AllHomeUpNextState()
@@ -58,7 +72,24 @@ internal class AllHomeUpNextViewModel(
     init {
         loadBackground()
         loadData()
+        observeData()
     }
+
+    private fun observeData() {
+        merge(
+            showUpdatesSource.observeUpdates(Source.PROGRESS),
+            showUpdatesSource.observeUpdates(Source.SEASONS),
+            episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.PROGRESS),
+            episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.SEASON),
+            movieDetailsUpdates.observeUpdates(),
+        )
+            .distinctUntilChanged()
+            .debounce(200)
+            .onEach {
+                loadData(ignoreErrors = true)
+            }.launchIn(viewModelScope)
+    }
+
 
     private fun loadBackground() {
         val configUrl = Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL)

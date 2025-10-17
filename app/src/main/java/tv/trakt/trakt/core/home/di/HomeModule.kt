@@ -155,6 +155,9 @@ internal val homeModule = module {
             updateHistoryUseCase = get(),
             loadUserProgressUseCase = get(),
             allUpNextSource = get(),
+            showUpdatesSource = get(),
+            episodeUpdatesSource = get(),
+            movieDetailsUpdates = get(),
             sessionManager = get(),
         )
     }
@@ -195,6 +198,9 @@ internal val homeModule = module {
             showLocalDataSource = get(),
             episodeLocalDataSource = get(),
             movieLocalDataSource = get(),
+            showUpdatesSource = get(),
+            episodeUpdatesSource = get(),
+            movieDetailsUpdates = get(),
             sessionManager = get(),
         )
     }

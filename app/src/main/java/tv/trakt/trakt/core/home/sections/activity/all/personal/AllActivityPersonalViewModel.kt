@@ -6,10 +6,16 @@ import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -32,12 +38,20 @@ import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.all.AllActivityState
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
+import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 
+@OptIn(FlowPreview::class)
 internal class AllActivityPersonalViewModel(
     private val getActivityUseCase: GetPersonalActivityUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
+    private val showUpdatesSource: ShowDetailsUpdates,
+    private val episodeUpdatesSource: EpisodeDetailsUpdates,
+    private val movieDetailsUpdates: MovieDetailsUpdates,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = AllActivityState()
@@ -58,6 +72,22 @@ internal class AllActivityPersonalViewModel(
     init {
         loadBackground()
         loadData()
+        observeData()
+    }
+
+    private fun observeData() {
+        merge(
+            showUpdatesSource.observeUpdates(Source.PROGRESS),
+            showUpdatesSource.observeUpdates(Source.SEASONS),
+            episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.PROGRESS),
+            episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.SEASON),
+            movieDetailsUpdates.observeUpdates(),
+        )
+            .distinctUntilChanged()
+            .debounce(200)
+            .onEach {
+                loadData(ignoreErrors = true)
+            }.launchIn(viewModelScope)
     }
 
     private fun loadBackground() {
