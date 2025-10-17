@@ -118,7 +118,7 @@ internal fun DetailsActions(
                             interactionSource = null,
                             indication = null,
                         )
-                        .size(20.dp)
+                        .size(19.dp)
                         .graphicsLayer {
                             translationX = 0.5.dp.toPx()
                         },
