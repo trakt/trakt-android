@@ -176,6 +176,20 @@ internal fun VerticalMediaCard(
                                 .padding(horizontal = 12.dp, vertical = 16.dp),
                         )
                     }
+
+//                    Icon(
+//                        painter = painterResource(R.drawable.ic_more_vertical),
+//                        contentDescription = null,
+//                        tint = Color.White,
+//                        modifier = Modifier
+//                            .padding(
+//                                horizontal = 5.dp,
+//                                vertical = 10.dp
+//                            )
+//                            .size(14.dp)
+//                            .align(Alignment.TopEnd)
+//                            .onClick(onClick = onLongClick)
+//                    )
                 }
             },
         )
