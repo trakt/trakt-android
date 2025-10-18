@@ -10,6 +10,8 @@ internal val personDetailsModule = module {
             savedStateHandle = get(),
             getPersonUseCase = get(),
             getPersonCreditsUseCase = get(),
+            showLocalDataSource = get(),
+            movieLocalDataSource = get(),
         )
     }
 }

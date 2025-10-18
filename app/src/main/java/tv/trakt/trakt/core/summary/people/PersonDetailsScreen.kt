@@ -5,8 +5,6 @@ package tv.trakt.trakt.core.summary.people
 import android.content.Context
 import android.content.Intent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.Crossfade
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -14,9 +12,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,18 +22,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -49,27 +44,25 @@ import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableMap
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
-import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
+import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
+import tv.trakt.trakt.core.summary.people.ui.MoviesCreditsList
+import tv.trakt.trakt.core.summary.people.ui.ShowsCreditsList
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.DetailsHeader
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.InfoChip
-import tv.trakt.trakt.ui.components.TraktHeader
-import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -83,22 +76,59 @@ internal fun PersonDetailsScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    var contextShowSheet by remember { mutableStateOf<Show?>(null) }
+    var contextMovieSheet by remember { mutableStateOf<Movie?>(null) }
+
+    LaunchedEffect(
+        state.navigateShow,
+        state.navigateMovie,
+    ) {
+        state.navigateShow?.let {
+            viewModel.clearNavigation()
+            onNavigateToShow(it)
+        }
+        state.navigateMovie?.let {
+            viewModel.clearNavigation()
+            onNavigateToMovie(it)
+        }
+    }
+
     PersonDetailsContent(
         state = state,
         modifier = modifier,
         onShowClick = {
             when {
                 viewModel.isCurrentMediaId(it.ids.trakt) -> onNavigateBack()
-                else -> onNavigateToShow(it.ids.trakt)
+                else -> viewModel.navigateToShow(it)
             }
         },
         onMovieClick = {
             when {
                 viewModel.isCurrentMediaId(it.ids.trakt) -> onNavigateBack()
-                else -> onNavigateToMovie(it.ids.trakt)
+                else -> viewModel.navigateToMovie(it)
             }
         },
+        onShowLongClick = {
+            contextShowSheet = it
+        },
+        onMovieLongClick = {
+            contextMovieSheet = it
+        },
         onBackClick = onNavigateBack,
+    )
+
+    ShowContextSheet(
+        show = contextShowSheet,
+        onDismiss = {
+            contextShowSheet = null
+        },
+    )
+
+    MovieContextSheet(
+        movie = contextMovieSheet,
+        onDismiss = {
+            contextMovieSheet = null
+        },
     )
 }
 
@@ -107,7 +137,9 @@ internal fun PersonDetailsContent(
     state: PersonDetailsState,
     modifier: Modifier = Modifier,
     onShowClick: ((Show) -> Unit)? = null,
+    onShowLongClick: ((Show) -> Unit)? = null,
     onMovieClick: ((Movie) -> Unit)? = null,
+    onMovieLongClick: ((Movie) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
@@ -191,10 +223,11 @@ internal fun PersonDetailsContent(
                     ) {
                         ShowsCreditsList(
                             loading = state.loadingCredits,
-                            listItems = state.personShowCredits,
+                            listItems = (state.personShowCredits ?: emptyMap()).toImmutableMap(),
                             sectionPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             onClick = onShowClick,
+                            onLongClick = onShowLongClick,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(top = 24.dp),
@@ -210,10 +243,11 @@ internal fun PersonDetailsContent(
                     ) {
                         MoviesCreditsList(
                             loading = state.loadingCredits,
-                            listItems = state.personMovieCredits,
+                            listItems = (state.personMovieCredits ?: emptyMap()).toImmutableMap(),
                             sectionPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             onClick = onMovieClick,
+                            onLongClick = onMovieLongClick,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(top = 32.dp),
@@ -252,197 +286,7 @@ private fun DetailsOverview(
 }
 
 @Composable
-private fun ShowsCreditsList(
-    loading: LoadingState,
-    listItems: ImmutableList<Show>?,
-    modifier: Modifier = Modifier,
-    sectionPadding: PaddingValues = PaddingValues(),
-    contentPadding: PaddingValues = PaddingValues(),
-    onClick: ((Show) -> Unit)? = null,
-    onLongClick: ((Show) -> Unit)? = null,
-) {
-    val listState = rememberLazyListState(
-        cacheWindow = LazyLayoutCacheWindow(
-            aheadFraction = 1F,
-            behindFraction = 1F,
-        ),
-    )
-
-    Column(
-        verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
-        modifier = modifier,
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(sectionPadding),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = CenterVertically,
-        ) {
-            TraktHeader(
-                title = stringResource(R.string.page_title_shows),
-            )
-        }
-
-        Crossfade(
-            targetState = loading,
-            animationSpec = tween(200),
-        ) { loading ->
-            when (loading) {
-                IDLE, LOADING -> {
-                    ListLoadingView(
-                        visible = loading.isLoading,
-                        contentPadding = contentPadding,
-                    )
-                }
-                DONE -> {
-                    if (listItems?.isEmpty() == true) {
-                        ListEmptyView(
-                            contentPadding = sectionPadding,
-                        )
-                    } else {
-                        LazyRow(
-                            state = listState,
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(TraktTheme.spacing.mainRowSpace),
-                            contentPadding = contentPadding,
-                        ) {
-                            items(
-                                items = listItems ?: EmptyImmutableList,
-                                key = { it.ids.trakt.value },
-                            ) { item ->
-                                VerticalMediaCard(
-                                    title = item.title,
-                                    imageUrl = item.images?.getPosterUrl(),
-                                    onClick = { onClick?.invoke(item) },
-                                    onLongClick = { onLongClick?.invoke(item) },
-                                    chipContent = {
-                                        Row(
-                                            horizontalArrangement = Arrangement.spacedBy(TraktTheme.spacing.chipsSpace),
-                                        ) {
-                                            item.year?.let {
-                                                InfoChip(text = it.toString())
-                                            }
-                                            if (item.airedEpisodes > 0) {
-                                                InfoChip(
-                                                    text = stringResource(
-                                                        R.string.tag_text_number_of_episodes,
-                                                        item.airedEpisodes,
-                                                    ),
-                                                )
-                                            }
-                                        }
-                                    },
-                                    modifier = Modifier.animateItem(
-                                        fadeInSpec = null,
-                                        fadeOutSpec = null,
-                                    ),
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun MoviesCreditsList(
-    loading: LoadingState,
-    listItems: ImmutableList<Movie>?,
-    modifier: Modifier = Modifier,
-    sectionPadding: PaddingValues = PaddingValues(),
-    contentPadding: PaddingValues = PaddingValues(),
-    onClick: ((Movie) -> Unit)? = null,
-    onLongClick: ((Movie) -> Unit)? = null,
-) {
-    val listState = rememberLazyListState(
-        cacheWindow = LazyLayoutCacheWindow(
-            aheadFraction = 1F,
-            behindFraction = 1F,
-        ),
-    )
-
-    Column(
-        verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
-        modifier = modifier,
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(sectionPadding),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = CenterVertically,
-        ) {
-            TraktHeader(
-                title = stringResource(R.string.page_title_movies),
-            )
-        }
-
-        Crossfade(
-            targetState = loading,
-            animationSpec = tween(200),
-        ) { loading ->
-            when (loading) {
-                IDLE, LOADING -> {
-                    ListLoadingView(
-                        visible = loading.isLoading,
-                        contentPadding = contentPadding,
-                    )
-                }
-                DONE -> {
-                    if (listItems?.isEmpty() == true) {
-                        ListEmptyView(
-                            contentPadding = sectionPadding,
-                        )
-                    } else {
-                        LazyRow(
-                            state = listState,
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(TraktTheme.spacing.mainRowSpace),
-                            contentPadding = contentPadding,
-                        ) {
-                            items(
-                                items = listItems ?: EmptyImmutableList,
-                                key = { it.ids.trakt.value },
-                            ) { item ->
-                                VerticalMediaCard(
-                                    title = item.title,
-                                    imageUrl = item.images?.getPosterUrl(),
-                                    onClick = { onClick?.invoke(item) },
-                                    onLongClick = { onLongClick?.invoke(item) },
-                                    chipContent = {
-                                        Row(
-                                            horizontalArrangement = Arrangement.spacedBy(TraktTheme.spacing.chipsSpace),
-                                        ) {
-                                            item.released?.let {
-                                                InfoChip(text = it.year.toString())
-                                            }
-                                            item.runtime?.inWholeMinutes?.let {
-                                                val runtimeString = remember(item.runtime) {
-                                                    it.durationFormat()
-                                                }
-                                                InfoChip(text = runtimeString)
-                                            }
-                                        }
-                                    },
-                                    modifier = Modifier.animateItem(
-                                        fadeInSpec = null,
-                                        fadeOutSpec = null,
-                                    ),
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun ListLoadingView(
+internal fun ListLoadingView(
     visible: Boolean = true,
     contentPadding: PaddingValues,
 ) {
@@ -461,7 +305,7 @@ private fun ListLoadingView(
 }
 
 @Composable
-private fun ListEmptyView(contentPadding: PaddingValues) {
+internal fun ListEmptyView(contentPadding: PaddingValues) {
     Text(
         text = stringResource(R.string.list_placeholder_empty),
         color = TraktTheme.colors.textSecondary,

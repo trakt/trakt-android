@@ -169,5 +169,6 @@
 
     <string name="text_watched">Watched</string>
     <string name="text_watched_count">Watched: %d</string>
+    <string name="text_job_acting">Acting</string>
 
 </resources>

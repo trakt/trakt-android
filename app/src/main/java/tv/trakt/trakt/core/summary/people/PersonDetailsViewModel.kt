@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,6 +16,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
+import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
@@ -30,6 +33,8 @@ internal class PersonDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val getPersonUseCase: GetPersonUseCase,
     private val getPersonCreditsUseCase: GetPersonCreditsUseCase,
+    private val showLocalDataSource: ShowLocalDataSource,
+    private val movieLocalDataSource: MovieLocalDataSource,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<PersonDestination>()
     private val initialState = PersonDetailsState()
@@ -42,6 +47,8 @@ internal class PersonDetailsViewModel(
     private val personShowCreditsState = MutableStateFlow(initialState.personShowCredits)
     private val personMovieCreditsState = MutableStateFlow(initialState.personMovieCredits)
 
+    private val navigateShow = MutableStateFlow(initialState.navigateShow)
+    private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val errorState = MutableStateFlow(initialState.error)
 
     init {
@@ -108,8 +115,33 @@ internal class PersonDetailsViewModel(
         }
     }
 
+    fun navigateToShow(show: Show) {
+        if (navigateShow.value != null) {
+            return
+        }
+        viewModelScope.launch {
+            showLocalDataSource.upsertShows(listOf(show))
+            navigateShow.update { show.ids.trakt }
+        }
+    }
+
+    fun navigateToMovie(movie: Movie) {
+        if (navigateMovie.value != null) {
+            return
+        }
+        viewModelScope.launch {
+            movieLocalDataSource.upsertMovies(listOf(movie))
+            navigateMovie.update { movie.ids.trakt }
+        }
+    }
+
     fun isCurrentMediaId(targetId: TraktId): Boolean {
         return destination.sourceMediaId == targetId.value
+    }
+
+    fun clearNavigation() {
+        navigateShow.update { null }
+        navigateMovie.update { null }
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -120,6 +152,8 @@ internal class PersonDetailsViewModel(
         personBackdropState,
         personShowCreditsState,
         personMovieCreditsState,
+        navigateShow,
+        navigateMovie,
         errorState,
     ) { state ->
         PersonDetailsState(
@@ -127,9 +161,11 @@ internal class PersonDetailsViewModel(
             loadingCredits = state[1] as LoadingState,
             personDetails = state[2] as Person?,
             personBackdropUrl = state[3] as String?,
-            personShowCredits = state[4] as ImmutableList<Show>?,
-            personMovieCredits = state[5] as ImmutableList<Movie>?,
-            error = state[6] as Exception?,
+            personShowCredits = state[4] as ImmutableMap<String, ImmutableList<Show>>?,
+            personMovieCredits = state[5] as ImmutableMap<String, ImmutableList<Movie>>?,
+            navigateShow = state[6] as TraktId?,
+            navigateMovie = state[7] as TraktId?,
+            error = state[8] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

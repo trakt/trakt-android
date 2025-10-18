@@ -39,8 +39,6 @@ internal val peopleModule = module {
     factory {
         GetPersonCreditsUseCase(
             peopleRemoteSource = get(),
-            showLocalSource = get(),
-            movieLocalDataSource = get(),
         )
     }
 }

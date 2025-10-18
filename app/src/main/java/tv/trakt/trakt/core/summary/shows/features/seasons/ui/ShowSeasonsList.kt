@@ -69,7 +69,7 @@ internal fun ShowSeasonsList(
             key = { item -> item.ids.trakt.value },
         ) { item ->
             val animatedAlpha: Float by animateFloatAsState(
-                if (item.number == selectedSeason) 1f else 0.33f,
+                if (item.number == selectedSeason) 1f else 0.35f,
                 animationSpec = tween(200),
                 label = "alpha",
             )
