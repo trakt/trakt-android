@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -20,22 +22,26 @@ import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.people.usecases.GetPersonCreditsUseCase
 import tv.trakt.trakt.core.people.usecases.GetPersonUseCase
 import tv.trakt.trakt.core.summary.people.navigation.PersonDestination
 
 internal class PersonDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val getPersonUseCase: GetPersonUseCase,
-//    private val getPersonCreditsUseCase: GetPersonCreditsUseCase,
+    private val getPersonCreditsUseCase: GetPersonCreditsUseCase,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<PersonDestination>()
     private val initialState = PersonDetailsState()
 
-    private val loadingState = MutableStateFlow(initialState.loading)
+    private val loadingDetailsState = MutableStateFlow(initialState.loadingDetails)
+    private val loadingCreditsState = MutableStateFlow(initialState.loadingCredits)
+
     private val personDetailsState = MutableStateFlow(initialState.personDetails)
     private val personBackdropState = MutableStateFlow(destination.backdropUrl)
     private val personShowCreditsState = MutableStateFlow(initialState.personShowCredits)
     private val personMovieCreditsState = MutableStateFlow(initialState.personMovieCredits)
+
     private val errorState = MutableStateFlow(initialState.error)
 
     init {
@@ -44,81 +50,72 @@ internal class PersonDetailsViewModel(
 
     private fun loadData() {
         viewModelScope.launch {
+            loadingDetailsState.update { LoadingState.LOADING }
+
             val person = getPersonUseCase.getPerson(
                 personId = destination.personId.toTraktId(),
             )
+
             person?.let { person ->
                 personDetailsState.update { person }
+
                 loadPersonDetails(person.ids.trakt)
-//                loadPersonCredits(personId)
+                loadingDetailsState.update { LoadingState.DONE }
+
+                loadPersonCredits(person.ids.trakt)
             }
         }
     }
 
-    private fun loadPersonDetails(personId: TraktId) {
+    private suspend fun loadPersonDetails(personId: TraktId) {
         if (personDetailsState.value?.biography != null) {
             // Skip if biography is already available.
             return
         }
-        viewModelScope.launch {
-            try {
-                personDetailsState.update {
-                    getPersonUseCase.getPersonDetails(personId)
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    errorState.update { error }
-                    Timber.w("Error loading person details: ${error.message}")
-                }
+        try {
+            personDetailsState.update {
+                getPersonUseCase.getPersonDetails(personId)
+            }
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                errorState.update { error }
+                Timber.w("Error loading person details: ${error.message}")
             }
         }
     }
 
-//    private fun loadPersonDetails(personId: TraktId) {
-// //        if (personDetailsState.value?.biography != null) {
-// //            // Skip if biography is already available.
-// //            return
-// //        }
-//        viewModelScope.launch {
-//            try {
-//                personDetailsState.update {
-//                    getPersonUseCase.getPerson(personId)
-//                }
-//            } catch (e: Exception) {
-//                e.rethrowCancellation()
-//            }
-//        }
-//    }
+    private suspend fun loadPersonCredits(personId: TraktId) {
+        try {
+            loadingCreditsState.update { LoadingState.LOADING }
 
-//    private fun loadPersonCredits(personId: TraktId) {
-//        viewModelScope.launch {
-//            try {
-//                coroutineScope {
-//                    val showCreditsAsync = async { getPersonCreditsUseCase.getShowCredits(personId) }
-//                    val movieCreditsAsync = async { getPersonCreditsUseCase.getMovieCredits(personId) }
-//
-//                    val showCredits = showCreditsAsync.await()
-//                    val movieCredits = movieCreditsAsync.await()
-//
-//                    personShowCreditsState.value = showCredits
-//                    personMovieCreditsState.value = movieCredits
-//                }
-//            } catch (error: Exception) {
-//                error.rethrowCancellation {
-//                    errorState.update { error }
-//                    Timber.e("Error loading person credits: ${error.message}")
-//                }
-//            }
-//        }
-//    }
+            coroutineScope {
+                val showCreditsAsync = async { getPersonCreditsUseCase.getShowCredits(personId) }
+                val movieCreditsAsync = async { getPersonCreditsUseCase.getMovieCredits(personId) }
 
-    fun checkSourceMediaId(targetId: TraktId): Boolean {
-        return destination.sourceMediaId != targetId.value
+                val showCredits = showCreditsAsync.await()
+                val movieCredits = movieCreditsAsync.await()
+
+                personShowCreditsState.update { showCredits }
+                personMovieCreditsState.update { movieCredits }
+            }
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                errorState.update { error }
+                Timber.w("Error loading person credits: ${error.message}")
+            }
+        } finally {
+            loadingCreditsState.update { LoadingState.DONE }
+        }
+    }
+
+    fun isCurrentMediaId(targetId: TraktId): Boolean {
+        return destination.sourceMediaId == targetId.value
     }
 
     @Suppress("UNCHECKED_CAST")
     val state: StateFlow<PersonDetailsState> = combine(
-        loadingState,
+        loadingDetailsState,
+        loadingCreditsState,
         personDetailsState,
         personBackdropState,
         personShowCreditsState,
@@ -126,12 +123,13 @@ internal class PersonDetailsViewModel(
         errorState,
     ) { state ->
         PersonDetailsState(
-            loading = state[0] as LoadingState,
-            personDetails = state[1] as Person?,
-            personBackdropUrl = state[2] as String?,
-            personShowCredits = state[3] as ImmutableList<Show>?,
-            personMovieCredits = state[4] as ImmutableList<Movie>?,
-            error = state[5] as Exception?,
+            loadingDetails = state[0] as LoadingState,
+            loadingCredits = state[1] as LoadingState,
+            personDetails = state[2] as Person?,
+            personBackdropUrl = state[3] as String?,
+            personShowCredits = state[4] as ImmutableList<Show>?,
+            personMovieCredits = state[5] as ImmutableList<Movie>?,
+            error = state[6] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

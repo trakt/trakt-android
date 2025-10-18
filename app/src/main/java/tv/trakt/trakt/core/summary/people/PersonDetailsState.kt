@@ -13,6 +13,7 @@ internal data class PersonDetailsState(
     val personBackdropUrl: String? = null,
     val personShowCredits: ImmutableList<Show>? = null,
     val personMovieCredits: ImmutableList<Movie>? = null,
-    val loading: LoadingState = LoadingState.IDLE,
+    val loadingDetails: LoadingState = LoadingState.IDLE,
+    val loadingCredits: LoadingState = LoadingState.IDLE,
     val error: Exception? = null,
 )

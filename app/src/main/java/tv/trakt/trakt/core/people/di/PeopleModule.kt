@@ -8,6 +8,7 @@ import tv.trakt.trakt.core.people.data.local.PeopleStorage
 import tv.trakt.trakt.core.people.data.remote.PeopleApiClient
 import tv.trakt.trakt.core.people.data.remote.PeopleRemoteDataSource
 import tv.trakt.trakt.core.people.data.remote.api.PeopleExtrasApi
+import tv.trakt.trakt.core.people.usecases.GetPersonCreditsUseCase
 import tv.trakt.trakt.core.people.usecases.GetPersonUseCase
 
 internal val peopleDataModule = module {
@@ -32,6 +33,14 @@ internal val peopleModule = module {
         GetPersonUseCase(
             peopleLocalSource = get(),
             peopleRemoteSource = get(),
+        )
+    }
+
+    factory {
+        GetPersonCreditsUseCase(
+            peopleRemoteSource = get(),
+            showLocalSource = get(),
+            movieLocalDataSource = get(),
         )
     }
 }

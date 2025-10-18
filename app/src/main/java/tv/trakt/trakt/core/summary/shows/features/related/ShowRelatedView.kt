@@ -168,8 +168,10 @@ private fun ContentList(
                         item.year?.let {
                             InfoChip(text = it.toString())
                         }
-                        item.runtime?.inWholeMinutes?.let { runtime ->
-                            InfoChip(text = "${runtime}m")
+                        if (item.airedEpisodes > 0) {
+                            InfoChip(
+                                text = stringResource(R.string.tag_text_number_of_episodes, item.airedEpisodes),
+                            )
                         }
                     }
                 },

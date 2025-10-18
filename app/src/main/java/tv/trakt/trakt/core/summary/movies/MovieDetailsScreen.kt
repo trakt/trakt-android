@@ -241,8 +241,8 @@ internal fun MovieDetailsContent(
 
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
-            aheadFraction = 0.5F,
-            behindFraction = 0.5F,
+            aheadFraction = 0.75F,
+            behindFraction = 0.75F,
         ),
     )
 

@@ -9,6 +9,7 @@ internal val personDetailsModule = module {
         PersonDetailsViewModel(
             savedStateHandle = get(),
             getPersonUseCase = get(),
+            getPersonCreditsUseCase = get(),
         )
     }
 }
