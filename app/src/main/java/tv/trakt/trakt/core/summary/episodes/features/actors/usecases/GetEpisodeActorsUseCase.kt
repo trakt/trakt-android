@@ -7,10 +7,11 @@ import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.episodes.data.remote.EpisodesRemoteDataSource
+import tv.trakt.trakt.core.people.data.local.PeopleLocalDataSource
 
 internal class GetEpisodeActorsUseCase(
     private val remoteSource: EpisodesRemoteDataSource,
-//    private val peopleLocalSource: PeopleLocalDataSource,
+    private val peopleLocalSource: PeopleLocalDataSource,
 ) {
     suspend fun getCastCrew(
         showId: TraktId,
@@ -33,7 +34,7 @@ internal class GetEpisodeActorsUseCase(
                 )
             }
 
-//        peopleLocalSource.upsertPeople(cast.map { it.person })
+        peopleLocalSource.upsertPeople(cast.map { it.person })
 
         return cast.toImmutableList()
     }

@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.summary.episodes.EpisodeDetailsScreen
@@ -22,6 +23,7 @@ internal fun NavGraphBuilder.episodeDetailsScreen(
     onShowClick: ((Show) -> Unit),
     onEpisodeCLick: ((TraktId, Episode) -> Unit),
     onCommentsClick: ((Show, Episode) -> Unit),
+    onPersonClick: ((Show, Episode, Person) -> Unit),
     onNavigateBack: () -> Unit,
 ) {
     composable<EpisodeDetailsDestination> {
@@ -30,6 +32,7 @@ internal fun NavGraphBuilder.episodeDetailsScreen(
             onShowClick = onShowClick,
             onEpisodeClick = onEpisodeCLick,
             onCommentsClick = onCommentsClick,
+            onPersonClick = onPersonClick,
             onNavigateBack = onNavigateBack,
         )
     }

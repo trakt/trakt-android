@@ -58,6 +58,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images.Size
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
@@ -86,6 +87,7 @@ internal fun EpisodeDetailsScreen(
     onShowClick: ((Show) -> Unit),
     onEpisodeClick: ((TraktId, Episode) -> Unit),
     onCommentsClick: ((Show, Episode) -> Unit),
+    onPersonClick: ((Show, Episode, Person) -> Unit),
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -130,6 +132,13 @@ internal fun EpisodeDetailsScreen(
 
             if (show != null && episode != null) {
                 onCommentsClick(show, episode)
+            }
+        },
+        onPersonClick = {
+            state.show?.let { show ->
+                state.episode?.let { episode ->
+                    onPersonClick(show, episode, it)
+                }
             }
         },
         onBackClick = onNavigateBack,
@@ -190,6 +199,7 @@ internal fun EpisodeDetailsContent(
     onMoreClick: (() -> Unit)? = null,
     onMoreCommentsClick: (() -> Unit)? = null,
     onHistoryClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
+    onPersonClick: ((Person) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     val previewMode = LocalInspectionMode.current
@@ -334,6 +344,7 @@ internal fun EpisodeDetailsContent(
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
+                            onPersonClick = onPersonClick ?: {},
                             modifier = Modifier
                                 .padding(top = 32.dp),
                         )

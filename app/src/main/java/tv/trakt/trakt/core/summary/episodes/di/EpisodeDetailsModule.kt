@@ -53,6 +53,7 @@ internal val episodeDetailsModule = module {
     factory {
         GetEpisodeActorsUseCase(
             remoteSource = get(),
+            peopleLocalSource = get(),
         )
     }
 

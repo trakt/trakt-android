@@ -176,6 +176,13 @@ internal fun NavGraphBuilder.episodesScreens(controller: NavHostController) {
                     seasonEpisode = episode.seasonEpisode,
                 )
             },
+            onPersonClick = { show, episode, person ->
+                navigateToPerson(
+                    personId = person.ids.trakt,
+                    sourceMediaId = show.ids.trakt,
+                    backdropUrl = show.images?.getFanartUrl(Size.THUMB),
+                )
+            },
             onNavigateBack = { popBackStack() },
         )
     }
