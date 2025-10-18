@@ -52,6 +52,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.theme.colors.Purple100
 import tv.trakt.trakt.common.ui.theme.colors.Purple300
 import tv.trakt.trakt.common.ui.theme.colors.Red500
+import tv.trakt.trakt.common.ui.theme.colors.Shade700
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -309,7 +310,7 @@ internal fun DetailsHeader(
         externalRatingsVisible = false,
         trailer = null,
         playsCount = null,
-        accentColor = Color.Gray,
+        accentColor = Shade700,
         creditsCount = null,
         traktRatings = null,
         onTrailerClick = null,

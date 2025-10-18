@@ -70,6 +70,7 @@ internal val movieDetailsModule = module {
     factory {
         GetMovieActorsUseCase(
             remoteSource = get(),
+            peopleLocalSource = get(),
         )
     }
 

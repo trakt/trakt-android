@@ -226,6 +226,13 @@ internal fun NavGraphBuilder.moviesScreens(controller: NavHostController) {
                     mediaImage = movie.images?.getFanartUrl(),
                 )
             },
+            onNavigateToPerson = { movie, person ->
+                navigateToPerson(
+                    personId = person.ids.trakt,
+                    sourceMediaId = movie.ids.trakt,
+                    backdropUrl = movie.images?.getFanartUrl(Size.THUMB),
+                )
+            },
             onNavigateBack = { popBackStack() },
         )
     }

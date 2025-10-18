@@ -61,6 +61,7 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.summary.movies.features.actors.MovieActorsView
@@ -91,6 +92,7 @@ internal fun MovieDetailsScreen(
     onMovieClick: ((Movie) -> Unit),
     onCommentsClick: ((Movie) -> Unit),
     onListClick: ((Movie, CustomList) -> Unit),
+    onPersonClick: ((Movie, Person) -> Unit),
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -110,6 +112,11 @@ internal fun MovieDetailsScreen(
         state = state,
         modifier = modifier,
         onMovieClick = onMovieClick,
+        onPersonClick = {
+            state.movie?.let { movie ->
+                onPersonClick(movie, it)
+            }
+        },
         onListClick = {
             state.movie?.let { movie ->
                 onListClick(movie, it)
@@ -221,6 +228,7 @@ internal fun MovieDetailsContent(
     onHistoryClick: ((HomeActivityItem.MovieItem) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
     onMoreCommentsClick: (() -> Unit)? = null,
+    onPersonClick: ((Person) -> Unit)? = null,
     onListClick: ((CustomList) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
@@ -393,6 +401,7 @@ internal fun MovieDetailsContent(
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
+                            onPersonClick = onPersonClick ?: {},
                             modifier = Modifier
                                 .padding(top = 32.dp),
                         )

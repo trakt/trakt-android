@@ -177,13 +177,13 @@ internal fun PersonDetailsContent(
             .background(TraktTheme.colors.backgroundPrimary)
             .nestedScroll(listScrollConnection),
     ) {
-        state.personDetails?.let { person ->
-            DetailsBackground(
-                imageUrl = state.personBackdropUrl,
-                translation = listScrollConnection.resultOffset,
-                color = TraktTheme.colors.backgroundPrimary,
-            )
+        DetailsBackground(
+            imageUrl = state.personBackdropUrl,
+            translation = listScrollConnection.resultOffset,
+            color = TraktTheme.colors.backgroundPrimary,
+        )
 
+        state.personDetails?.let { person ->
             LazyColumn(
                 state = listState,
                 verticalArrangement = spacedBy(0.dp),
