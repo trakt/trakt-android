@@ -12,6 +12,7 @@ import org.openapitools.client.apis.HistoryApi
 import org.openapitools.client.apis.ListsApi
 import org.openapitools.client.apis.MoviesApi
 import org.openapitools.client.apis.OauthApi
+import org.openapitools.client.apis.PeopleApi
 import org.openapitools.client.apis.RecommendationsApi
 import org.openapitools.client.apis.SearchApi
 import org.openapitools.client.apis.ShowsApi
@@ -59,6 +60,7 @@ val networkingApiModule = module {
             get<CalendarsApi>(),
             get<HistoryApi>(),
             get<ListsApi>(),
+            get<PeopleApi>(),
             get<MoviesApi>(),
             get<OauthApi>(),
             get<RecommendationsApi>(),
@@ -117,6 +119,14 @@ val networkingApiModule = module {
             baseUrl = API_HD_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
+        )
+    }
+
+    single<PeopleApi> {
+        PeopleApi(
+            baseUrl = API_HD_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("clientConfig")),
         )
     }
 

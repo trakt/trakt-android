@@ -79,6 +79,7 @@ internal val showDetailsModule = module {
     factory {
         GetShowActorsUseCase(
             remoteSource = get(),
+            peopleLocalSource = get(),
         )
     }
 

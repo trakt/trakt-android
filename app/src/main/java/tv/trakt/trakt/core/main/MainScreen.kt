@@ -47,6 +47,7 @@ import tv.trakt.trakt.core.main.navigation.isStartDestination
 import tv.trakt.trakt.core.main.navigation.listsScreens
 import tv.trakt.trakt.core.main.navigation.moviesScreens
 import tv.trakt.trakt.core.main.navigation.navigateToMainDestination
+import tv.trakt.trakt.core.main.navigation.peopleScreens
 import tv.trakt.trakt.core.main.navigation.profileScreens
 import tv.trakt.trakt.core.main.navigation.searchScreens
 import tv.trakt.trakt.core.main.navigation.showsScreens
@@ -193,6 +194,7 @@ private fun MainNavHost(
         listsScreens(navController)
         profileScreens(navController)
         commentsScreens(navController)
+        peopleScreens(navController)
         searchScreens(
             controller = navController,
             searchInput = searchInput,

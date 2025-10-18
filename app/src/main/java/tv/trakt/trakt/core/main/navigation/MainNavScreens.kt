@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.main.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.MediaType.SHOW
 import tv.trakt.trakt.core.comments.navigation.commentsScreen
@@ -47,6 +48,8 @@ import tv.trakt.trakt.core.summary.episodes.navigation.episodeDetailsScreen
 import tv.trakt.trakt.core.summary.episodes.navigation.navigateToEpisode
 import tv.trakt.trakt.core.summary.movies.navigation.movieDetailsScreen
 import tv.trakt.trakt.core.summary.movies.navigation.navigateToMovie
+import tv.trakt.trakt.core.summary.people.navigation.navigateToPerson
+import tv.trakt.trakt.core.summary.people.navigation.personDetailsScreen
 import tv.trakt.trakt.core.summary.shows.navigation.navigateToShow
 import tv.trakt.trakt.core.summary.shows.navigation.showDetailsScreen
 import tv.trakt.trakt.core.user.navigation.navigateToProfile
@@ -144,6 +147,13 @@ internal fun NavGraphBuilder.showsScreens(controller: NavHostController) {
             },
             onNavigateToEpisode = { showId, episode ->
                 navigateToEpisode(showId, episode)
+            },
+            onNavigateToPerson = { show, person ->
+                navigateToPerson(
+                    personId = person.ids.trakt,
+                    sourceMediaId = show.ids.trakt,
+                    backdropUrl = show.images?.getFanartUrl(Size.THUMB),
+                )
             },
             onNavigateBack = { popBackStack() },
         )
@@ -275,6 +285,16 @@ internal fun NavGraphBuilder.searchScreens(
 internal fun NavGraphBuilder.profileScreens(controller: NavHostController) {
     with(controller) {
         profileScreen(
+            onNavigateBack = { popBackStack() },
+        )
+    }
+}
+
+internal fun NavGraphBuilder.peopleScreens(controller: NavHostController) {
+    with(controller) {
+        personDetailsScreen(
+            onNavigateToShow = { navigateToShow(it) },
+            onNavigateToMovie = { navigateToMovie(it) },
             onNavigateBack = { popBackStack() },
         )
     }

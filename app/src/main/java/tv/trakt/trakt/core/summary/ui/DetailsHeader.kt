@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -35,14 +36,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.ExternalRating
-import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.theme.colors.Purple100
 import tv.trakt.trakt.common.ui.theme.colors.Purple300
@@ -90,14 +95,14 @@ internal fun DetailsHeader(
             )
         },
         genres = movie.genres,
-        images = movie.images,
+        imageUrl = movie.images?.getPosterUrl(Size.MEDIUM),
         trailer = movie.trailer?.toUri(),
         accentColor = movie.colors?.colors?.first,
         traktRatings = when {
             isReleased -> movie.rating.ratingPercent
             else -> null
         },
-        ratings = ratings,
+        externalRatings = ratings,
         playsCount = playsCount,
         creditsCount = creditsCount,
         loading = loading,
@@ -155,14 +160,14 @@ internal fun DetailsHeader(
             )
         },
         genres = show.genres,
-        images = show.images,
+        imageUrl = show.images?.getPosterUrl(Size.MEDIUM),
         trailer = show.trailer?.toUri(),
         accentColor = show.colors?.colors?.first,
         traktRatings = when {
             isReleased -> show.rating.ratingPercent
             else -> null
         },
-        ratings = ratings,
+        externalRatings = ratings,
         playsCount = playsCount,
         creditsCount = null,
         loading = loading,
@@ -265,14 +270,14 @@ internal fun DetailsHeader(
             )
         },
         genres = show.genres,
-        images = show.images,
+        imageUrl = show.images?.getPosterUrl(Size.MEDIUM),
         trailer = show.trailer?.toUri(),
         accentColor = show.colors?.colors?.first,
         traktRatings = when {
             isReleased -> episode.rating.ratingPercent
             else -> null
         },
-        ratings = ratings,
+        externalRatings = ratings,
         playsCount = playsCount,
         creditsCount = 0,
         loading = loading,
@@ -284,18 +289,48 @@ internal fun DetailsHeader(
 }
 
 @Composable
+internal fun DetailsHeader(
+    person: Person,
+    loading: Boolean,
+    onShareClick: () -> Unit,
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    DetailsHeader(
+        loading = loading,
+        title = person.name,
+        genres = EmptyImmutableList,
+        imageUrl = person.images?.getHeadshotUrl(),
+        onShareClick = onShareClick,
+        onBackClick = onBackClick,
+        date = null,
+        status = null,
+        externalRatings = null,
+        externalRatingsVisible = false,
+        trailer = null,
+        playsCount = null,
+        accentColor = Color.Gray,
+        creditsCount = null,
+        traktRatings = null,
+        onTrailerClick = null,
+        modifier = modifier,
+    )
+}
+
+@Composable
 private fun DetailsHeader(
     modifier: Modifier = Modifier,
     titleHeader: @Composable (() -> Unit)? = null,
     title: String,
-    genres: List<String>,
+    genres: ImmutableList<String>,
     date: @Composable (() -> Unit)?,
-    images: Images?,
+    imageUrl: String?,
     status: String?,
     trailer: Uri?,
     accentColor: Color?,
     traktRatings: Int?,
-    ratings: ExternalRating?,
+    externalRatings: ExternalRating?,
+    externalRatingsVisible: Boolean = true,
     creditsCount: Int?,
     playsCount: Int?,
     loading: Boolean,
@@ -336,7 +371,7 @@ private fun DetailsHeader(
                     .padding(horizontal = posterSpace),
             ) {
                 DetailsPoster(
-                    imageUrl = images?.getPosterUrl(Images.Size.MEDIUM),
+                    imageUrl = imageUrl,
                     color = accentColor,
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -409,12 +444,16 @@ private fun DetailsHeader(
             }
         }
 
-        DetailsRatings(
-            traktRatings = traktRatings,
-            externalRatings = ratings,
-            modifier = Modifier
-                .padding(top = 20.dp),
-        )
+        if (externalRatingsVisible) {
+            DetailsRatings(
+                traktRatings = traktRatings,
+                externalRatings = externalRatings,
+                modifier = Modifier
+                    .padding(top = 20.dp),
+            )
+        } else {
+            Spacer(Modifier.padding(top = 4.dp))
+        }
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -554,9 +593,9 @@ private fun Preview() {
                     ),
                 )
             },
-            genres = listOf("Action", "Adventure", "Sci-Fi"),
+            genres = listOf("Action", "Adventure", "Sci-Fi").toImmutableList(),
             date = null,
-            images = null,
+            imageUrl = null,
             status = "Released",
             trailer = null,
             accentColor = null,
@@ -564,7 +603,7 @@ private fun Preview() {
             playsCount = 2,
             creditsCount = 2,
             loading = true,
-            ratings = ExternalRating(
+            externalRatings = ExternalRating(
                 imdb = ExternalRating.ImdbRating(
                     rating = 7.5F,
                     votes = 12345,

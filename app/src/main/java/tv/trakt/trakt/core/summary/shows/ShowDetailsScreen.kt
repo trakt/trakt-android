@@ -61,6 +61,7 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
@@ -95,6 +96,7 @@ internal fun ShowDetailsScreen(
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
     onCommentsClick: ((Show) -> Unit),
     onListClick: ((Show, CustomList) -> Unit),
+    onPersonClick: ((Show, Person) -> Unit),
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -114,6 +116,11 @@ internal fun ShowDetailsScreen(
     ShowDetailsContent(
         state = state,
         modifier = modifier,
+        onPersonClick = {
+            state.show?.let { show ->
+                onPersonClick(show, it)
+            }
+        },
         onShowClick = onShowClick,
         onEpisodeClick = {
             state.show?.let { show ->
@@ -265,6 +272,7 @@ internal fun ShowDetailsContent(
     onHistoryClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
     onMoreCommentsClick: (() -> Unit)? = null,
+    onPersonClick: ((Person) -> Unit)? = null,
     onListClick: ((CustomList) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
@@ -434,6 +442,7 @@ internal fun ShowDetailsContent(
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
+                            onPersonClick = onPersonClick ?: {},
                             modifier = Modifier
                                 .padding(top = 32.dp),
                         )

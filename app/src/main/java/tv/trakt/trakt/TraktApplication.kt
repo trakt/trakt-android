@@ -27,6 +27,7 @@ import tv.trakt.trakt.core.main.di.mainModule
 import tv.trakt.trakt.core.movies.di.moviesDataModule
 import tv.trakt.trakt.core.movies.di.moviesModule
 import tv.trakt.trakt.core.people.di.peopleDataModule
+import tv.trakt.trakt.core.people.di.peopleModule
 import tv.trakt.trakt.core.search.di.searchDataModule
 import tv.trakt.trakt.core.search.di.searchModule
 import tv.trakt.trakt.core.shows.di.showsDataModule
@@ -36,6 +37,7 @@ import tv.trakt.trakt.core.summary.episodes.di.episodeDetailsDataModule
 import tv.trakt.trakt.core.summary.episodes.di.episodeDetailsModule
 import tv.trakt.trakt.core.summary.movies.di.movieDetailsDataModule
 import tv.trakt.trakt.core.summary.movies.di.movieDetailsModule
+import tv.trakt.trakt.core.summary.people.di.personDetailsModule
 import tv.trakt.trakt.core.summary.shows.di.showDetailsDataModule
 import tv.trakt.trakt.core.summary.shows.di.showDetailsModule
 import tv.trakt.trakt.core.sync.di.syncModule
@@ -103,6 +105,8 @@ internal class TraktApplication : Application() {
                 profileModule,
                 profileDataModule,
                 peopleDataModule,
+                peopleModule,
+                personDetailsModule,
                 searchModule,
                 searchDataModule,
                 streamingsDataModule,

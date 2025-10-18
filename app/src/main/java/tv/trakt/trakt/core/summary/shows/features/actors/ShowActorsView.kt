@@ -41,6 +41,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.model.CastPerson
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
@@ -53,6 +54,7 @@ internal fun ShowActorsView(
     viewModel: ShowActorsViewModel,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
+    onPersonClick: (Person) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -62,6 +64,7 @@ internal fun ShowActorsView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
+        onPersonClick = onPersonClick,
     )
 }
 
@@ -71,7 +74,7 @@ private fun ShowActorsContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onClick: ((CastPerson) -> Unit)? = null,
+    onPersonClick: ((Person) -> Unit)? = null,
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
@@ -109,7 +112,7 @@ private fun ShowActorsContent(
                         ContentList(
                             listItems = (state.items ?: emptyList()).toImmutableList(),
                             contentPadding = contentPadding,
-                            onClick = onClick,
+                            onPersonClick = onPersonClick,
                         )
                     }
                 }
@@ -122,7 +125,7 @@ private fun ShowActorsContent(
 private fun ContentList(
     listItems: ImmutableList<CastPerson>,
     contentPadding: PaddingValues,
-    onClick: ((CastPerson) -> Unit)? = null,
+    onPersonClick: ((Person) -> Unit)? = null,
 ) {
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
@@ -144,7 +147,7 @@ private fun ContentList(
             VerticalMediaCard(
                 title = "",
                 imageUrl = item.person.images?.getHeadshotUrl(),
-                onClick = { onClick?.invoke(item) },
+                onClick = { onPersonClick?.invoke(item.person) },
                 chipContent = {
                     Column(
                         verticalArrangement = Arrangement.Absolute.spacedBy(1.dp),

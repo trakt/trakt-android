@@ -1,0 +1,10 @@
+package tv.trakt.trakt.core.people.data.local
+
+import tv.trakt.trakt.common.model.Person
+import tv.trakt.trakt.common.model.TraktId
+
+internal interface PeopleLocalDataSource {
+    suspend fun getPerson(personId: TraktId): Person?
+
+    suspend fun upsertPeople(people: List<Person>)
+}
