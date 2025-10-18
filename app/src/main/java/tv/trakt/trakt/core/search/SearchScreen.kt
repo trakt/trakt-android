@@ -75,6 +75,7 @@ internal fun SearchScreen(
     onSearchLoading: (Boolean) -> Unit,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
+    onPersonClick: ((TraktId) -> Unit),
     onProfileClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -103,6 +104,10 @@ internal fun SearchScreen(
         state.navigateMovie?.let {
             viewModel.clearNavigation()
             onMovieClick(it.ids.trakt)
+        }
+        state.navigatePerson?.let {
+            viewModel.clearNavigation()
+            onPersonClick(it.ids.trakt)
         }
     }
 

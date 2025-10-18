@@ -31,6 +31,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.core.people.data.local.PeopleLocalDataSource
 import tv.trakt.trakt.core.search.SearchState.SearchResult
 import tv.trakt.trakt.core.search.SearchState.State
 import tv.trakt.trakt.core.search.SearchState.UserState
@@ -55,6 +56,7 @@ internal class SearchViewModel(
     private val getBirthdayPeopleUseCase: GetBirthdayPeopleUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
+    private val peopleLocalDataSource: PeopleLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = SearchState()
@@ -66,6 +68,7 @@ internal class SearchViewModel(
     private val searchResultState = MutableStateFlow(initialState.searchResult)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
+    private val navigatePerson = MutableStateFlow(initialState.navigatePerson)
     private val searchingState = MutableStateFlow(initialState.searching)
     private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val userState = MutableStateFlow(initialState.user)
@@ -342,11 +345,14 @@ internal class SearchViewModel(
     }
 
     fun navigateToShow(show: Show) {
-        if (navigateShow.value != null || navigateMovie.value != null) {
+        if (navigateShow.value != null ||
+            navigateMovie.value != null ||
+            navigatePerson.value != null
+        ) {
             return
         }
+
         viewModelScope.launch {
-//            addRecentSearchUseCase.addRecentSearchShow(show)
             showLocalDataSource.upsertShows(listOf(show))
             navigateShow.update { show }
             postUserSearch(show)
@@ -354,11 +360,14 @@ internal class SearchViewModel(
     }
 
     fun navigateToMovie(movie: Movie) {
-        if (navigateShow.value != null || navigateMovie.value != null) {
+        if (navigateShow.value != null ||
+            navigateMovie.value != null ||
+            navigatePerson.value != null
+        ) {
             return
         }
+
         viewModelScope.launch {
-//            addRecentSearchUseCase.addRecentSearchMovie(movie)
             movieLocalDataSource.upsertMovies(listOf(movie))
             navigateMovie.update { movie }
             postUserSearch(movie)
@@ -366,11 +375,16 @@ internal class SearchViewModel(
     }
 
     fun navigateToPerson(person: Person) {
-        if (navigateShow.value != null || navigateMovie.value != null) {
+        if (navigateShow.value != null ||
+            navigateMovie.value != null ||
+            navigatePerson.value != null
+        ) {
             return
         }
+
         viewModelScope.launch {
-//            addRecentSearchUseCase.addRecentSearchPerson(person)
+            peopleLocalDataSource.upsertPeople(listOf(person))
+            navigatePerson.update { person }
         }
     }
 
@@ -409,6 +423,7 @@ internal class SearchViewModel(
     fun clearNavigation() {
         navigateShow.update { null }
         navigateMovie.update { null }
+        navigatePerson.update { null }
     }
 
     private fun clearJobs() {
@@ -428,6 +443,7 @@ internal class SearchViewModel(
         popularResultState,
         navigateShow,
         navigateMovie,
+        navigatePerson,
         backgroundState,
         searchingState,
         userState,
@@ -441,10 +457,11 @@ internal class SearchViewModel(
             popularResults = state[4] as SearchResult?,
             navigateShow = state[5] as Show?,
             navigateMovie = state[6] as Movie?,
-            backgroundUrl = state[7] as String?,
-            searching = state[8] as Boolean,
-            user = state[9] as UserState,
-            error = state[10] as Exception?,
+            navigatePerson = state[7] as Person?,
+            backgroundUrl = state[8] as String?,
+            searching = state[9] as Boolean,
+            user = state[10] as UserState,
+            error = state[11] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

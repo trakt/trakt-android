@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
-import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
@@ -159,7 +158,7 @@ private fun PersonGridItem(
 ) {
     VerticalMediaCard(
         title = item.person.name,
-        imageUrl = item.person.images?.getHeadshotUrl(THUMB),
+        imageUrl = item.person.images?.getHeadshotUrl(),
         chipContent = {
             Column(
                 verticalArrangement = spacedBy(1.dp),

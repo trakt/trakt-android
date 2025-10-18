@@ -11,7 +11,7 @@ import tv.trakt.trakt.core.summary.people.PersonDetailsScreen
 @Serializable
 internal data class PersonDestination(
     val personId: Int,
-    val sourceMediaId: Int,
+    val sourceMediaId: Int?,
     val backdropUrl: String?,
 )
 
@@ -32,13 +32,13 @@ internal fun NavGraphBuilder.personDetailsScreen(
 
 internal fun NavController.navigateToPerson(
     personId: TraktId,
-    sourceMediaId: TraktId,
+    sourceMediaId: TraktId?,
     backdropUrl: String?,
 ) {
     navigate(
         route = PersonDestination(
             personId = personId.value,
-            sourceMediaId = sourceMediaId.value,
+            sourceMediaId = sourceMediaId?.value,
             backdropUrl = backdropUrl,
         ),
     )

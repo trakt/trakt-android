@@ -18,6 +18,7 @@ internal fun NavGraphBuilder.searchScreen(
     onSearchLoading: (Boolean) -> Unit,
     onNavigateToShow: (showId: TraktId) -> Unit,
     onNavigateToMovie: (movieId: TraktId) -> Unit,
+    onNavigateToPerson: (personId: TraktId) -> Unit,
     onNavigateToProfile: () -> Unit,
 ) {
     composable<SearchDestination> {
@@ -27,6 +28,7 @@ internal fun NavGraphBuilder.searchScreen(
             onSearchLoading = onSearchLoading,
             onShowClick = onNavigateToShow,
             onMovieClick = onNavigateToMovie,
+            onPersonClick = onNavigateToPerson,
             onProfileClick = onNavigateToProfile,
         )
     }

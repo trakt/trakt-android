@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.search.model.SearchInput
@@ -18,6 +19,7 @@ internal data class SearchState(
     val searchResult: SearchResult? = null,
     val navigateShow: Show? = null,
     val navigateMovie: Movie? = null,
+    val navigatePerson: Person? = null,
     val backgroundUrl: String? = null,
     val user: UserState = UserState(),
     val searching: Boolean = false,
