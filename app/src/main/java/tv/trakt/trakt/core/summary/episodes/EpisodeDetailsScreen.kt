@@ -306,18 +306,22 @@ internal fun EpisodeDetailsContent(
                 }
 
                 if (!previewMode) {
-                    item {
-                        EpisodeStreamingsView(
-                            viewModel = koinViewModel(
-                                parameters = {
-                                    parametersOf(state.show, state.episode)
-                                },
-                            ),
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            modifier = Modifier
-                                .padding(top = 24.dp),
-                        )
+                    val streamingsVisible = isReleased && (state.user != null)
+
+                    if (streamingsVisible) {
+                        item {
+                            EpisodeStreamingsView(
+                                viewModel = koinViewModel(
+                                    parameters = {
+                                        parametersOf(state.show, state.episode)
+                                    },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                modifier = Modifier
+                                    .padding(top = 24.dp),
+                            )
+                        }
                     }
 
                     item {
@@ -331,7 +335,12 @@ internal fun EpisodeDetailsContent(
                             contentPadding = sectionPadding,
                             onMoreClick = onMoreCommentsClick,
                             modifier = Modifier
-                                .padding(top = 32.dp),
+                                .padding(
+                                    top = when {
+                                        streamingsVisible -> 32.dp
+                                        else -> 24.dp
+                                    },
+                                ),
                         )
                     }
 
