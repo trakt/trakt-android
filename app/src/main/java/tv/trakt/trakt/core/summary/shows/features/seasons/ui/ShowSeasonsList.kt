@@ -2,8 +2,6 @@
 
 package tv.trakt.trakt.core.summary.shows.features.seasons.ui
 
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
@@ -20,7 +18,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -68,18 +65,13 @@ internal fun ShowSeasonsList(
             items = seasons,
             key = { item -> item.ids.trakt.value },
         ) { item ->
-            val animatedAlpha: Float by animateFloatAsState(
-                if (item.number == selectedSeason) 1f else 0.35f,
-                animationSpec = tween(200),
-                label = "alpha",
-            )
-
             val seasonPosterUrl = item.images?.getPosterUrl()
             val showPosterUrl = show?.images?.getPosterUrl()
 
             VerticalMediaCard(
                 title = "",
                 imageUrl = seasonPosterUrl ?: showPosterUrl,
+                blackAndWhite = (item.number != selectedSeason),
                 onClick = { onSeasonClick(item) },
                 chipContent = {
                     Column(
@@ -109,7 +101,6 @@ internal fun ShowSeasonsList(
                         }
                     }
                 },
-                modifier = Modifier.alpha(animatedAlpha),
             )
         }
     }

@@ -47,7 +47,7 @@ internal class MainViewModel(
     }
 
     fun loadData() {
-        if (lastLoadTime != null && nowUtcInstant().minus(5, MINUTES) < lastLoadTime) {
+        if (lastLoadTime != null && nowUtcInstant().minus(1, MINUTES) < lastLoadTime) {
             Timber.d("Skipping...")
             return
         }

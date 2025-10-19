@@ -1,5 +1,7 @@
 package tv.trakt.trakt.ui.components.mediacards
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -27,10 +29,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
@@ -62,6 +66,7 @@ internal fun VerticalMediaCard(
     width: Dp = Dp.Unspecified,
     corner: Dp = 12.dp,
     enabled: Boolean = true,
+    blackAndWhite: Boolean = false,
     chipContent: @Composable () -> Unit = {},
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
@@ -72,6 +77,29 @@ internal fun VerticalMediaCard(
     }
 
     var isError by remember(imageUrl) { mutableStateOf(false) }
+
+    val animatedSaturation by animateFloatAsState(
+        targetValue = if (blackAndWhite) 0f else 1f,
+        animationSpec = tween(200),
+        label = "saturation",
+    )
+    val animatedAlpha by animateFloatAsState(
+        targetValue = if (blackAndWhite) 0.75f else 1f,
+        animationSpec = tween(200),
+        label = "alpha",
+    )
+
+    val animatedColorFilter = remember(animatedSaturation, blackAndWhite) {
+        if (animatedSaturation >= 0.99F) {
+            null // No filter when fully saturated
+        } else {
+            ColorFilter.colorMatrix(
+                ColorMatrix().apply {
+                    setToSaturation(animatedSaturation)
+                },
+            )
+        }
+    }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -108,8 +136,11 @@ internal fun VerticalMediaCard(
                                 .build(),
                             contentDescription = "Card image",
                             contentScale = ContentScale.Crop,
-                            modifier = Modifier.fillMaxSize(),
+                            colorFilter = animatedColorFilter,
                             onError = { isError = true },
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .alpha(animatedAlpha),
                         )
                     } else {
                         Image(
