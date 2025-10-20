@@ -263,6 +263,9 @@ private fun CommentFooter(
     modifier: Modifier = Modifier,
     onReactionClick: ((Reaction) -> Unit)? = null,
 ) {
+    val scope = rememberCoroutineScope()
+    val tooltipState = rememberTooltipState(isPersistent = true)
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -270,9 +273,6 @@ private fun CommentFooter(
             .fillMaxWidth()
             .padding(horizontal = 2.dp),
     ) {
-        val scope = rememberCoroutineScope()
-        val tooltipState = rememberTooltipState(isPersistent = true)
-
         ReactionsSummaryToolTip(
             state = tooltipState,
             reactions = reactions,

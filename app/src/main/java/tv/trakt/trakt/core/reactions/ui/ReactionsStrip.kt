@@ -84,9 +84,16 @@ fun ReactionsStrip(
                 ),
                 modifier = Modifier
                     .alpha(animatedAlpha)
-                    .scale(animatedScale)
+                    .scale(
+                        when {
+                            (reaction == selectedReaction) -> animatedScale
+                            else -> 0.9F
+                        },
+                    )
                     .onClick(
-                        onClick = { onReactionClick?.invoke(reaction) },
+                        onClick = {
+                            onReactionClick?.invoke(reaction)
+                        },
                     ),
             )
         }

@@ -2,6 +2,8 @@
 
 package tv.trakt.trakt.core.reactions.ui
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
@@ -12,7 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TooltipAnchorPosition
 import androidx.compose.material3.TooltipBox
-import androidx.compose.material3.TooltipDefaults
+import androidx.compose.material3.TooltipDefaults.rememberTooltipPositionProvider
 import androidx.compose.material3.TooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -40,8 +42,9 @@ fun ReactionsSummaryToolTip(
     TooltipBox(
         state = state,
         content = contentAnchor,
-        positionProvider = TooltipDefaults.rememberTooltipPositionProvider(
+        positionProvider = rememberTooltipPositionProvider(
             positioning = TooltipAnchorPosition.Above,
+            spacingBetweenTooltipAndAnchor = 2.dp,
         ),
         tooltip = {
             TooltipContent(
@@ -68,7 +71,7 @@ fun TooltipContent(
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = spacedBy(12.dp),
+        verticalArrangement = spacedBy(0.dp),
         modifier = modifier
             .widthIn(max = 272.dp)
             .dropShadow(
@@ -82,13 +85,18 @@ fun TooltipContent(
             )
             .background(Shade800, RoundedCornerShape(20.dp))
             .padding(4.dp)
-            .padding(bottom = 6.dp),
+            .padding(bottom = 6.dp)
+            .animateContentSize(
+                alignment = Alignment.BottomStart,
+                animationSpec = tween(200),
+            ),
     ) {
         if (summaryVisible) {
             ReactionsSummaryGrid(
                 reactions = reactions,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(bottom = 6.dp)
                     .onClick(onClick = onDismiss),
             )
         }
@@ -102,10 +110,7 @@ fun TooltipContent(
                 .padding(
                     start = 4.dp,
                     end = 8.dp,
-                    top = when {
-                        summaryVisible -> 2.dp
-                        else -> 8.dp
-                    },
+                    top = 6.dp,
                 ),
         )
     }
