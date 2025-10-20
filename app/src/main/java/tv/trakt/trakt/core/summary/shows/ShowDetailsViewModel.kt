@@ -164,16 +164,19 @@ internal class ShowDetailsViewModel(
                             loadProgressUseCase.loadShowsProgress()
                         }
                     }
+
                     val watchlistAsync = async {
                         if (!loadWatchlistUseCase.isShowsLoaded()) {
                             loadWatchlistUseCase.loadWatchlist()
                         }
                     }
+
                     val listsAsync = async {
                         if (!loadListsUseCase.isLoaded()) {
                             loadListsUseCase.loadLists()
                         }
                     }
+
                     progressAsync.await()
                     watchlistAsync.await()
                     listsAsync.await()

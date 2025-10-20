@@ -3,6 +3,9 @@ package tv.trakt.trakt.core.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -18,6 +21,7 @@ import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.core.user.usecase.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
 import java.time.Instant
 import java.time.temporal.ChronoUnit.MINUTES
@@ -26,6 +30,7 @@ import java.time.temporal.ChronoUnit.MINUTES
 internal class MainViewModel(
     private val sessionManager: SessionManager,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
+    private val loadUserWatchlistUseCase: LoadUserWatchlistUseCase,
 ) : ViewModel() {
     private val initialState = MainState()
     private val userState = MutableStateFlow(initialState.user)
@@ -57,7 +62,17 @@ internal class MainViewModel(
                 if (!sessionManager.isAuthenticated()) {
                     return@launch
                 }
-                loadUserProgressUseCase.loadAllProgress()
+
+                coroutineScope {
+                    val progressAsync = async { loadUserProgressUseCase.loadAllProgress() }
+                    val watchlistAsync = async { loadUserWatchlistUseCase.loadWatchlist() }
+
+                    awaitAll(
+                        progressAsync,
+                        watchlistAsync,
+                    )
+                }
+
                 lastLoadTime = nowUtcInstant()
             } catch (error: Exception) {
                 error.rethrowCancellation {
