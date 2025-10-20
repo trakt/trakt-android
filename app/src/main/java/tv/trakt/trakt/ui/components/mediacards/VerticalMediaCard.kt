@@ -53,6 +53,7 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import tv.trakt.trakt.common.helpers.extensions.ifOrElse
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -66,7 +67,8 @@ internal fun VerticalMediaCard(
     width: Dp = Dp.Unspecified,
     corner: Dp = 12.dp,
     enabled: Boolean = true,
-    blackAndWhite: Boolean = false,
+    moreVisible: Boolean = true,
+    blackWhite: Boolean = false,
     chipContent: @Composable () -> Unit = {},
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
@@ -79,17 +81,17 @@ internal fun VerticalMediaCard(
     var isError by remember(imageUrl) { mutableStateOf(false) }
 
     val animatedSaturation by animateFloatAsState(
-        targetValue = if (blackAndWhite) 0f else 1f,
+        targetValue = if (blackWhite) 0f else 1f,
         animationSpec = tween(200),
         label = "saturation",
     )
     val animatedAlpha by animateFloatAsState(
-        targetValue = if (blackAndWhite) 0.75f else 1f,
+        targetValue = if (blackWhite) 0.75f else 1f,
         animationSpec = tween(200),
         label = "alpha",
     )
 
-    val animatedColorFilter = remember(animatedSaturation, blackAndWhite) {
+    val animatedColorFilter = remember(animatedSaturation, blackWhite) {
         if (animatedSaturation >= 0.99F) {
             null // No filter when fully saturated
         } else {
@@ -208,19 +210,21 @@ internal fun VerticalMediaCard(
                         )
                     }
 
-//                    Icon(
-//                        painter = painterResource(R.drawable.ic_more_vertical),
-//                        contentDescription = null,
-//                        tint = Color.White,
-//                        modifier = Modifier
-//                            .padding(
-//                                horizontal = 5.dp,
-//                                vertical = 10.dp
-//                            )
-//                            .size(14.dp)
-//                            .align(Alignment.TopEnd)
-//                            .onClick(onClick = onLongClick)
-//                    )
+                    if (moreVisible) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_more_vertical),
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier
+                                .padding(
+                                    horizontal = 5.dp,
+                                    vertical = 10.dp,
+                                )
+                                .size(14.dp)
+                                .align(Alignment.TopEnd)
+                                .onClick(onClick = onLongClick),
+                        )
+                    }
                 }
             },
         )

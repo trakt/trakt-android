@@ -71,7 +71,8 @@ internal fun ShowSeasonsList(
             VerticalMediaCard(
                 title = "",
                 imageUrl = seasonPosterUrl ?: showPosterUrl,
-                blackAndWhite = (item.number != selectedSeason),
+                blackWhite = (item.number != selectedSeason),
+                moreVisible = false,
                 onClick = { onSeasonClick(item) },
                 chipContent = {
                     Column(
