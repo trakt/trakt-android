@@ -130,6 +130,7 @@ private fun WatchlistShowContextViewContent(
                 }
             },
             shadow = 4.dp,
+            more = false,
             containerColor = Shade910,
             contentImageUrl = show.images?.getPosterUrl(),
             containerImageUrl = show.images?.getFanartUrl(THUMB),

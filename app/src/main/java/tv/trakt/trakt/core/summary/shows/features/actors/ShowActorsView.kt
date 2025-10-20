@@ -148,7 +148,7 @@ private fun ContentList(
                 title = "",
                 imageUrl = item.person.images?.getHeadshotUrl(),
                 onClick = { onPersonClick?.invoke(item.person) },
-                moreVisible = false,
+                more = false,
                 chipContent = {
                     Column(
                         verticalArrangement = Arrangement.Absolute.spacedBy(1.dp),

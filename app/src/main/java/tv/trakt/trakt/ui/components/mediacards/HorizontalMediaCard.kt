@@ -53,6 +53,7 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
@@ -68,6 +69,7 @@ internal fun HorizontalMediaCard(
     paletteColor: Color? = null,
     width: Dp = TraktTheme.size.horizontalMediaCardSize,
     corner: Dp = 12.dp,
+    more: Boolean = true,
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
     footerContent: @Composable (() -> Unit)? = null,
@@ -228,6 +230,22 @@ internal fun HorizontalMediaCard(
                         ) {
                             cardTopContent()
                         }
+                    }
+
+                    if (more) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_more_vertical),
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier
+                                .padding(
+                                    horizontal = 5.dp,
+                                    vertical = 10.dp,
+                                )
+                                .size(14.dp)
+                                .align(Alignment.TopEnd)
+                                .onClick(onClick = onLongClick ?: {}),
+                        )
                     }
                 }
             },

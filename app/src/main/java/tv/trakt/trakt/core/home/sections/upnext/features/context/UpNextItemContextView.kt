@@ -113,6 +113,7 @@ private fun UpNextItemContextViewContent(
             titleOriginal = item.show.titleOriginal,
             subtitle = item.progress.nextEpisode.seasonEpisodeString(),
             shadow = 4.dp,
+            more = false,
             containerColor = Shade910,
             contentImageUrl = item.show.images?.getPosterUrl(),
             containerImageUrl = item.progress.nextEpisode.images?.getScreenshotUrl()

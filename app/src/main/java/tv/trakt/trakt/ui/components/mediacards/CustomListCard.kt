@@ -118,6 +118,7 @@ private fun CustomListContent(
                         width = 70.dp,
                         corner = 8.dp,
                         enabled = false,
+                        more = false,
                         modifier = Modifier
                             .padding(start = (32 * index).dp),
                     )

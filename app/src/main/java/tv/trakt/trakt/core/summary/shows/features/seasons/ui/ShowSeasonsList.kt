@@ -72,7 +72,7 @@ internal fun ShowSeasonsList(
                 title = "",
                 imageUrl = seasonPosterUrl ?: showPosterUrl,
                 blackWhite = (item.number != selectedSeason),
-                moreVisible = false,
+                more = false,
                 onClick = { onSeasonClick(item) },
                 chipContent = {
                     Column(

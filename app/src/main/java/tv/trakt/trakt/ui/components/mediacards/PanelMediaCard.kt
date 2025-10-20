@@ -75,6 +75,7 @@ internal fun PanelMediaCard(
     modifier: Modifier = Modifier,
     corner: Dp = 12.dp,
     shadow: Dp = 0.dp,
+    more: Boolean = true,
     containerColor: Color = TraktTheme.colors.panelCardContainer,
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
@@ -228,35 +229,56 @@ internal fun PanelMediaCard(
                     .padding(end = 12.dp)
                     .fillMaxSize(),
             ) {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(3.dp),
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.Top,
                 ) {
-                    Text(
-                        text = title,
-                        style = TraktTheme.typography.cardTitle.copy(fontSize = 16.sp),
-                        color = TraktTheme.colors.textPrimary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-
-                    if (!titleOriginal.isNullOrBlank() && !titleOriginal.equals(title, ignoreCase = true)) {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(3.dp),
+                        modifier = Modifier.weight(1F),
+                    ) {
                         Text(
-                            text = "($titleOriginal)",
+                            text = title,
+                            style = TraktTheme.typography.cardTitle.copy(fontSize = 16.sp),
+                            color = TraktTheme.colors.textPrimary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+
+                        if (!titleOriginal.isNullOrBlank() && !titleOriginal.equals(title, ignoreCase = true)) {
+                            Text(
+                                text = "($titleOriginal)",
+                                style = TraktTheme.typography.cardSubtitle.copy(fontSize = 12.sp),
+                                color = TraktTheme.colors.textSecondary,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier.padding(bottom = 3.dp),
+                            )
+                        }
+
+                        Text(
+                            text = subtitle,
                             style = TraktTheme.typography.cardSubtitle.copy(fontSize = 12.sp),
                             color = TraktTheme.colors.textSecondary,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier.padding(bottom = 3.dp),
                         )
                     }
 
-                    Text(
-                        text = subtitle,
-                        style = TraktTheme.typography.cardSubtitle.copy(fontSize = 12.sp),
-                        color = TraktTheme.colors.textSecondary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
+                    if (more) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_more_vertical),
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier
+                                .padding(top = 2.dp)
+                                .graphicsLayer {
+                                    translationX = 4.dp.toPx()
+                                }
+                                .size(14.dp)
+                                .onClick(onClick = onLongClick ?: {}),
+                        )
+                    }
                 }
 
                 footerContent?.let { it() }

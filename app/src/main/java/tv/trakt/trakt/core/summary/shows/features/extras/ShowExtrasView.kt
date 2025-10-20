@@ -169,6 +169,7 @@ private fun ContentList(
         ) { item ->
             HorizontalMediaCard(
                 title = "",
+                more = false,
                 containerImageUrl = item.getYoutubeImageUrl,
                 onClick = { onClick?.invoke(item) },
                 footerContent = {

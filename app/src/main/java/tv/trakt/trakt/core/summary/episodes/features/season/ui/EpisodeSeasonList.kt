@@ -91,6 +91,7 @@ internal fun EpisodeSeasonList(
 
             HorizontalMediaCard(
                 title = "",
+                more = false,
                 containerImageUrl = item.episode.images?.getScreenshotUrl()
                     ?: show?.images?.getFanartUrl(),
                 onClick = { onEpisodeClick(item) },

@@ -174,6 +174,7 @@ private fun ListMovieContextViewContent(
                 }
             },
             shadow = 4.dp,
+            more = false,
             containerColor = Shade910,
             contentImageUrl = movie.images?.getPosterUrl(),
             containerImageUrl = movie.images?.getFanartUrl(THUMB),

@@ -67,7 +67,7 @@ internal fun VerticalMediaCard(
     width: Dp = Dp.Unspecified,
     corner: Dp = 12.dp,
     enabled: Boolean = true,
-    moreVisible: Boolean = true,
+    more: Boolean = true,
     blackWhite: Boolean = false,
     chipContent: @Composable () -> Unit = {},
     onClick: () -> Unit = {},
@@ -210,7 +210,7 @@ internal fun VerticalMediaCard(
                         )
                     }
 
-                    if (moreVisible) {
+                    if (more) {
                         Icon(
                             painter = painterResource(R.drawable.ic_more_vertical),
                             contentDescription = null,

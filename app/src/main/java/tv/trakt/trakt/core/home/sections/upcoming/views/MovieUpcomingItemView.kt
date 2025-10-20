@@ -31,6 +31,7 @@ internal fun MovieUpcomingItemView(
 ) {
     HorizontalMediaCard(
         title = "",
+        more = false,
         containerImageUrl = item.movie.images?.getFanartUrl(),
         onClick = { onClick(item.movie.ids.trakt) },
         cardContent = {

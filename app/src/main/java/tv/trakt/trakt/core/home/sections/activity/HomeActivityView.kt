@@ -335,6 +335,7 @@ private fun ContentList(
                             }
                             else -> null
                         },
+                        moreButton = (listFilter == PERSONAL),
                         modifier = Modifier
                             .animateItem(
                                 fadeInSpec = null,
@@ -352,6 +353,7 @@ private fun ContentList(
                             }
                             else -> null
                         },
+                        moreButton = (listFilter == PERSONAL),
                         modifier = Modifier
                             .animateItem(
                                 fadeInSpec = null,

@@ -113,7 +113,9 @@ internal fun ListsPersonalView(
         },
         onAllClick = {
             state.list?.let {
-                onAllClick(it)
+                if (!state.items.isNullOrEmpty()) {
+                    onAllClick(it)
+                }
             }
         },
         onMoreClick = onMoreClick,
@@ -177,7 +179,7 @@ internal fun ListsPersonalContent(
 
                     Icon(
                         painter = painterResource(R.drawable.ic_more_vertical),
-                        contentDescription = "Genres",
+                        contentDescription = null,
                         tint = TraktTheme.colors.textPrimary,
                         modifier = Modifier
                             .onClick { onMoreClick() }

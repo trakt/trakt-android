@@ -26,6 +26,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun AllActivityEpisodeItem(
     item: HomeActivityItem.EpisodeItem,
     modifier: Modifier = Modifier,
+    moreButton: Boolean = false,
     onClick: (() -> Unit)? = null,
     onShowClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
@@ -40,6 +41,7 @@ internal fun AllActivityEpisodeItem(
         onClick = onClick,
         onImageClick = onShowClick,
         onLongClick = onLongClick,
+        more = moreButton,
         footerContent = {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,

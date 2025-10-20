@@ -34,11 +34,13 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun MovieSocialItemView(
     item: HomeActivityItem.MovieItem,
     modifier: Modifier = Modifier,
+    moreButton: Boolean = false,
     onClick: (TraktId) -> Unit = { },
     onLongClick: (() -> Unit)? = null,
 ) {
     HorizontalMediaCard(
         title = "",
+        more = moreButton,
         onClick = { onClick(item.movie.ids.trakt) },
         onLongClick = onLongClick,
         containerImageUrl = item.movie.images?.getFanartUrl(),

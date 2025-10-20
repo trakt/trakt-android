@@ -36,12 +36,14 @@ import java.time.Instant
 internal fun EpisodeSocialItemView(
     item: HomeActivityItem.EpisodeItem,
     modifier: Modifier = Modifier,
+    moreButton: Boolean = false,
     onClick: () -> Unit = {},
     onShowClick: () -> Unit = {},
     onLongClick: (() -> Unit)? = null,
 ) {
     HorizontalMediaCard(
         title = "",
+        more = moreButton,
         onClick = onClick,
         onLongClick = onLongClick,
         containerImageUrl =

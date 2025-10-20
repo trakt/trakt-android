@@ -278,6 +278,7 @@ private fun ContentList(
                             onMovieClick(item.movie)
                         },
                         onLongClick = { onLongClick(item) },
+                        moreButton = true,
                         modifier = Modifier
                             .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
                             .animateItem(
@@ -292,6 +293,7 @@ private fun ContentList(
                         onClick = { onEpisodeClick(item) },
                         onShowClick = { onShowClick(item) },
                         onLongClick = { onLongClick(item) },
+                        moreButton = true,
                         modifier = Modifier
                             .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
                             .animateItem(

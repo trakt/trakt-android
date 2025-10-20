@@ -119,6 +119,7 @@ private fun ActivityItemContextViewContent(
                 is MovieItem -> stringResource(R.string.translated_value_type_movie)
             },
             shadow = 4.dp,
+            more = false,
             containerColor = Shade910,
             contentImageUrl = item.images?.getPosterUrl(),
             containerImageUrl = when (item) {

@@ -158,7 +158,7 @@ private fun PersonGridItem(
 ) {
     VerticalMediaCard(
         title = item.person.name,
-        moreVisible = false,
+        more = false,
         imageUrl = item.person.images?.getHeadshotUrl(),
         chipContent = {
             Column(

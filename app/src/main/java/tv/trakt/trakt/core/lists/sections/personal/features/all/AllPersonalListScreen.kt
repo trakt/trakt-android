@@ -229,14 +229,14 @@ private fun TitleBar(
         }
 
         Icon(
-            painter = painterResource(R.drawable.ic_more_vertical),
-            contentDescription = "Genres",
+            painter = painterResource(R.drawable.ic_edit),
+            contentDescription = null,
             tint = TraktTheme.colors.textPrimary,
             modifier = Modifier
                 .padding(start = 16.dp)
                 .fillMaxHeight()
                 .onClick { onMoreClick() }
-                .size(16.dp),
+                .size(18.dp),
         )
     }
 }

@@ -154,17 +154,17 @@ fun ShowMetaFooter(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .background(TraktTheme.colors.chipContainerOnContent, RoundedCornerShape(10.dp))
-                    .size(30.dp),
+                    .size(28.dp),
             ) {
                 if (loading) {
-                    FilmProgressIndicator(size = 18.dp)
+                    FilmProgressIndicator(size = 16.dp)
                 } else {
                     Icon(
                         painter = painterResource(R.drawable.ic_check_round),
                         contentDescription = null,
                         tint = TraktTheme.colors.accent,
                         modifier = Modifier
-                            .size(19.dp)
+                            .size(16.dp)
                             .onClick(onClick = onCheckClick ?: {}),
                     )
                 }

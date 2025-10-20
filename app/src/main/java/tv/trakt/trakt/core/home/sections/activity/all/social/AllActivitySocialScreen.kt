@@ -275,6 +275,7 @@ private fun ContentList(
                         onClick = {
                             onMovieClick(item.movie)
                         },
+                        moreButton = false,
                         modifier = Modifier
                             .padding(
                                 start = TraktTheme.spacing.mainPageHorizontalSpace,
@@ -292,6 +293,7 @@ private fun ContentList(
                         item = item,
                         onClick = { onEpisodeClick(item) },
                         onShowClick = { onShowClick(item) },
+                        moreButton = false,
                         modifier = Modifier
                             .padding(
                                 start = TraktTheme.spacing.mainPageHorizontalSpace,

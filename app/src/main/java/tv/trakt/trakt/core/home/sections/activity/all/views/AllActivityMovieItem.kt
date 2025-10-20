@@ -30,6 +30,7 @@ import java.time.Instant
 internal fun AllActivityMovieItem(
     item: HomeActivityItem.MovieItem,
     modifier: Modifier = Modifier,
+    moreButton: Boolean = false,
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
 ) {
@@ -41,6 +42,7 @@ internal fun AllActivityMovieItem(
         containerImageUrl = item.movie.images?.getFanartUrl(Images.Size.THUMB),
         onClick = onClick,
         onLongClick = onLongClick,
+        more = moreButton,
         footerContent = {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,

@@ -32,6 +32,7 @@ internal fun EpisodeUpcomingItemView(
 ) {
     HorizontalMediaCard(
         title = "",
+        more = false,
         onClick = onClick,
         containerImageUrl =
             item.episode.images?.getScreenshotUrl()
