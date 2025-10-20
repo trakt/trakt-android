@@ -18,7 +18,12 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -44,6 +49,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun EpisodeSeasonList(
     show: Show?,
     episodes: ImmutableList<EpisodeItem>,
+    currentEpisode: Int?,
     onEpisodeClick: (episode: EpisodeItem) -> Unit,
     onCheckClick: (episode: EpisodeItem) -> Unit,
     onRemoveClick: (episode: EpisodeItem) -> Unit,
@@ -56,6 +62,17 @@ internal fun EpisodeSeasonList(
             behindFraction = 1F,
         ),
     )
+
+    var initialScrolled by rememberSaveable { mutableStateOf(false) }
+    LaunchedEffect(Unit) {
+        if (!initialScrolled && (currentEpisode ?: 0) > 1) {
+            initialScrolled = true
+            val index = episodes
+                .indexOfFirst { it.episode.number == currentEpisode }
+                .coerceAtLeast(0)
+            listState.scrollToItem(index)
+        }
+    }
 
     LazyRow(
         state = listState,

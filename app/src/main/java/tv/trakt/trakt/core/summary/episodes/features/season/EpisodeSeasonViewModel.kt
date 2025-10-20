@@ -54,8 +54,8 @@ internal class EpisodeSeasonViewModel(
 ) : ViewModel() {
     private val initialState = EpisodeSeasonState()
 
-    private val seasonNumberState = MutableStateFlow(episode.season)
     private val showState = MutableStateFlow(show)
+    private val episodeState = MutableStateFlow(episode)
     private val episodesState = MutableStateFlow(initialState.episodes)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingEpisodeState = MutableStateFlow(initialState.loadingEpisode)
@@ -255,7 +255,7 @@ internal class EpisodeSeasonViewModel(
 
     @Suppress("UNCHECKED_CAST")
     val state: StateFlow<EpisodeSeasonState> = combine(
-        seasonNumberState,
+        episodeState,
         showState,
         episodesState,
         loadingState,
@@ -264,7 +264,7 @@ internal class EpisodeSeasonViewModel(
         errorState,
     ) { state ->
         EpisodeSeasonState(
-            seasonNumber = state[0] as Int,
+            episode = state[0] as Episode,
             show = state[1] as Show,
             episodes = state[2] as ImmutableList<EpisodeItem>,
             loading = state[3] as LoadingState,

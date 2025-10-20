@@ -123,10 +123,10 @@ private fun EpisodeSeasonContent(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
         modifier = modifier,
     ) {
-        val headerText = state.seasonNumber?.let {
+        val headerText = state.episode?.let {
             when {
-                it == 0 -> stringResource(R.string.text_season_specials)
-                else -> stringResource(R.string.text_season_number, it)
+                it.season == 0 -> stringResource(R.string.text_season_specials)
+                else -> stringResource(R.string.text_season_number, it.season)
             }
         }
 
@@ -157,6 +157,7 @@ private fun EpisodeSeasonContent(
                         EpisodeSeasonList(
                             show = state.show,
                             episodes = state.episodes,
+                            currentEpisode = state.episode?.number,
                             contentPadding = contentPadding,
                             onEpisodeClick = onEpisodeClick ?: {},
                             onCheckClick = onCheckEpisodeClick ?: {},

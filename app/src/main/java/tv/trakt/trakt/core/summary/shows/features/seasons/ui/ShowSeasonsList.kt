@@ -51,7 +51,7 @@ internal fun ShowSeasonsList(
             val index = seasons
                 .indexOfFirst { it.number == selectedSeason }
                 .coerceAtLeast(0)
-            listState.animateScrollToItem(index)
+            listState.scrollToItem(index)
         }
     }
 
