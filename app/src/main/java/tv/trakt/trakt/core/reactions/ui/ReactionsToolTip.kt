@@ -33,24 +33,26 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 fun ReactionsSummaryToolTip(
     state: TooltipState,
     reactions: ReactionsSummary?,
-    summary: Boolean = false,
+    userReaction: Reaction? = null,
+    onReactionClick: ((Reaction) -> Unit)? = null,
     contentAnchor: @Composable () -> Unit,
 ) {
     TooltipBox(
+        state = state,
+        content = contentAnchor,
         positionProvider = TooltipDefaults.rememberTooltipPositionProvider(
             positioning = TooltipAnchorPosition.Above,
         ),
         tooltip = {
             TooltipContent(
                 reactions = reactions,
-                summary = summary,
+                userReaction = userReaction,
+                onReactionClick = onReactionClick ?: {},
                 onDismiss = {
                     state.dismiss()
                 },
             )
         },
-        state = state,
-        content = contentAnchor,
     )
 }
 
@@ -58,9 +60,12 @@ fun ReactionsSummaryToolTip(
 fun TooltipContent(
     modifier: Modifier = Modifier,
     reactions: ReactionsSummary?,
-    summary: Boolean,
+    userReaction: Reaction?,
+    onReactionClick: (Reaction) -> Unit = {},
     onDismiss: () -> Unit = {},
 ) {
+    val summaryVisible = (userReaction != null)
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = spacedBy(12.dp),
@@ -79,7 +84,7 @@ fun TooltipContent(
             .padding(4.dp)
             .padding(bottom = 8.dp),
     ) {
-        if (summary) {
+        if (summaryVisible) {
             ReactionsSummaryGrid(
                 reactions = reactions,
                 modifier = Modifier
@@ -89,15 +94,16 @@ fun TooltipContent(
         }
 
         ReactionsStrip(
-            onReactionClick = { onDismiss() },
-            onCloseClick = { onDismiss() },
+            selectedReaction = userReaction,
+            onReactionClick = onReactionClick,
+            onCloseClick = onDismiss,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
                     start = 4.dp,
                     end = 8.dp,
                     top = when {
-                        summary -> 2.dp
+                        summaryVisible -> 2.dp
                         else -> 8.dp
                     },
                 ),
@@ -110,7 +116,7 @@ fun TooltipContent(
 private fun Preview() {
     TraktTheme {
         TooltipContent(
-            summary = false,
+            userReaction = null,
             reactions = ReactionsSummary(
                 reactionsCount = 14,
                 usersCount = 2,
@@ -128,7 +134,7 @@ private fun Preview() {
 private fun Preview2() {
     TraktTheme {
         TooltipContent(
-            summary = true,
+            userReaction = Reaction.LOVE,
             reactions = ReactionsSummary(
                 reactionsCount = 14,
                 usersCount = 2,

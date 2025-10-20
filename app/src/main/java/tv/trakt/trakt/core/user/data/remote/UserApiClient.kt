@@ -13,15 +13,14 @@ import tv.trakt.trakt.common.networking.ListItemDto
 import tv.trakt.trakt.common.networking.SocialActivityItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
+import tv.trakt.trakt.common.networking.UserReactionDto
 import tv.trakt.trakt.common.networking.WatchedMovieDto
 import tv.trakt.trakt.common.networking.WatchedShowDto
 import tv.trakt.trakt.common.networking.WatchlistItemDto
-import tv.trakt.trakt.common.networking.api.SyncExtrasApi
 import java.time.LocalDate
 
 internal class UserApiClient(
     private val usersApi: UsersApi,
-    private val syncApi: SyncExtrasApi,
     private val historyApi: HistoryApi,
     private val calendarsApi: CalendarsApi,
 ) : UserRemoteDataSource {
@@ -33,8 +32,14 @@ internal class UserApiClient(
         return User.fromDto(response)
     }
 
-    override suspend fun getReactions() {
-        TODO("Not yet implemented")
+    override suspend fun getReactions(): List<UserReactionDto> {
+        val response = usersApi.getUsersReactionsComments(
+            extended = "min",
+            page = null,
+            limit = "all",
+        )
+
+        return response.body()
     }
 
     override suspend fun getWatchedMovies(): List<WatchedMovieDto> {

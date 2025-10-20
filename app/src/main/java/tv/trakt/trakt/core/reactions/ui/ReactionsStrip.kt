@@ -1,5 +1,7 @@
 package tv.trakt.trakt.core.reactions.ui
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,8 +9,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.EmojiSupportMatch
 import androidx.compose.ui.text.PlatformTextStyle
@@ -24,6 +28,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 fun ReactionsStrip(
     modifier: Modifier = Modifier,
+    selectedReaction: Reaction? = null,
     onCloseClick: (() -> Unit)? = null,
     onReactionClick: ((Reaction) -> Unit)? = null,
 ) {
@@ -43,6 +48,15 @@ fun ReactionsStrip(
         )
 
         for (reaction in Reaction.entries) {
+            val animatedAlpha: Float by animateFloatAsState(
+                targetValue = when (selectedReaction) {
+                    null, reaction -> 1f
+                    else -> 0.25f
+                },
+                animationSpec = tween(200),
+                label = "alpha",
+            )
+
             Text(
                 text = reaction.emoji,
                 fontSize = 14.sp,
@@ -51,9 +65,11 @@ fun ReactionsStrip(
                         emojiSupportMatch = EmojiSupportMatch.Default,
                     ),
                 ),
-                modifier = Modifier.onClick(
-                    onClick = { onReactionClick?.invoke(reaction) },
-                ),
+                modifier = Modifier
+                    .alpha(animatedAlpha)
+                    .onClick(
+                        onClick = { onReactionClick?.invoke(reaction) },
+                    ),
             )
         }
     }
@@ -61,8 +77,18 @@ fun ReactionsStrip(
 
 @Preview(widthDp = 300)
 @Composable
-private fun Preview() {
+private fun Preview2() {
     TraktTheme {
         ReactionsStrip()
+    }
+}
+
+@Preview(widthDp = 300)
+@Composable
+private fun Preview() {
+    TraktTheme {
+        ReactionsStrip(
+            selectedReaction = Reaction.LOVE,
+        )
     }
 }

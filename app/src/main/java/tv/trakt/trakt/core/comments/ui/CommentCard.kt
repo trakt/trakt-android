@@ -56,6 +56,7 @@ import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryChip
@@ -70,10 +71,12 @@ internal fun CommentCard(
     modifier: Modifier = Modifier,
     reactions: ReactionsSummary? = null,
     reactionsEnabled: Boolean = true,
+    userReaction: Reaction? = null,
     maxLines: Int = 4,
     corner: Dp = 24.dp,
     onClick: () -> Unit,
     onRequestReactions: (() -> Unit)? = null,
+    onReactionClick: ((Reaction) -> Unit)? = null,
 ) {
     LaunchedEffect(comment.id) {
         if (reactions == null) {
@@ -91,9 +94,11 @@ internal fun CommentCard(
         content = {
             CommentCardContent(
                 comment = comment,
+                maxLines = maxLines,
                 reactions = reactions,
                 reactionsEnabled = reactionsEnabled,
-                maxLines = maxLines,
+                userReaction = userReaction,
+                onReactionClick = onReactionClick,
             )
         },
     )
@@ -104,8 +109,10 @@ private fun CommentCardContent(
     comment: Comment,
     reactions: ReactionsSummary?,
     reactionsEnabled: Boolean,
+    userReaction: Reaction?,
     maxLines: Int,
     modifier: Modifier = Modifier,
+    onReactionClick: ((Reaction) -> Unit)? = null,
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -142,6 +149,8 @@ private fun CommentCardContent(
             comment = comment,
             reactions = reactions,
             reactionsEnabled = reactionsEnabled,
+            userReaction = userReaction,
+            onReactionClick = onReactionClick,
             modifier = Modifier
                 .padding(
                     start = 16.dp,
@@ -250,7 +259,9 @@ private fun CommentFooter(
     comment: Comment,
     reactions: ReactionsSummary?,
     reactionsEnabled: Boolean,
+    userReaction: Reaction?,
     modifier: Modifier = Modifier,
+    onReactionClick: ((Reaction) -> Unit)? = null,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -265,9 +276,12 @@ private fun CommentFooter(
         ReactionsSummaryToolTip(
             state = tooltipState,
             reactions = reactions,
+            userReaction = userReaction,
+            onReactionClick = onReactionClick,
         ) {
             ReactionsSummaryChip(
                 reactions = reactions,
+                userReaction = userReaction,
                 enabled = reactionsEnabled,
                 modifier = Modifier.onClick {
                     if (reactions == null) {

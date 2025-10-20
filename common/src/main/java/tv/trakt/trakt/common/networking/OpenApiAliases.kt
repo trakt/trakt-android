@@ -35,6 +35,7 @@ import org.openapitools.client.models.GetUsersLikesComments200ResponseInnerAllOf
 import org.openapitools.client.models.GetUsersLikesComments200ResponseInnerAllOfOneOf2Episode
 import org.openapitools.client.models.GetUsersLikesComments200ResponseInnerAllOfOneOfMovie
 import org.openapitools.client.models.GetUsersListsPersonal200ResponseInner
+import org.openapitools.client.models.GetUsersReactionsComments200ResponseInner
 import org.openapitools.client.models.GetUsersReactionsComments200ResponseInnerCommentUser
 import org.openapitools.client.models.GetUsersSettings200Response
 import org.openapitools.client.models.GetUsersSettings200ResponseUser
@@ -81,6 +82,7 @@ typealias ListShowItemDto = GetUsersWatchlistShows200ResponseInner
 typealias ListItemDto = GetUsersWatchlistAll200ResponseInner
 typealias UserDto = GetUsersSettings200ResponseUser
 typealias UserSettingsDto = GetUsersSettings200Response
+typealias UserReactionDto = GetUsersReactionsComments200ResponseInner
 typealias UserCommentsDto = GetUsersReactionsComments200ResponseInnerCommentUser
 typealias StreamingDto = GetMoviesWatchnow200ResponseValue
 typealias StreamingSourceDto = GetWatchnowSourcesAll200ResponseInnerValueInner

@@ -212,6 +212,7 @@ internal val showDetailsModule = module {
             show = show,
             getCommentsUseCase = get(),
             getCommentReactionsUseCase = get(),
+            loadUserReactionsUseCase = get(),
             sessionManager = get(),
         )
     }

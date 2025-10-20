@@ -5,6 +5,10 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -22,22 +26,29 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.core.summary.shows.features.comments.usecases.GetShowCommentsUseCase
+import tv.trakt.trakt.core.user.usecase.reactions.LoadUserReactionsUseCase
+import kotlin.time.Duration.Companion.seconds
 
 internal class ShowCommentsViewModel(
     private val show: Show,
     private val getCommentsUseCase: GetShowCommentsUseCase,
     private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
+    private val loadUserReactionsUseCase: LoadUserReactionsUseCase,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = ShowCommentsState()
 
     private val itemsState = MutableStateFlow(initialState.items)
     private val reactionsState = MutableStateFlow(initialState.reactions)
+    private val userReactionsState = MutableStateFlow(initialState.userReactions)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val userState = MutableStateFlow(initialState.user)
     private val errorState = MutableStateFlow(initialState.error)
+
+    private var reactionJob: Job? = null
 
     init {
         loadData()
@@ -49,8 +60,28 @@ internal class ShowCommentsViewModel(
             try {
                 loadingState.update { LOADING }
 
-                val items = getCommentsUseCase.getComments(show.ids.trakt)
-                itemsState.update { items }
+                coroutineScope {
+                    val commentsAsync = async {
+                        getCommentsUseCase.getComments(show.ids.trakt)
+                    }
+
+                    val userReactionsAsync = async {
+                        if (!sessionManager.isAuthenticated()) {
+                            return@async null
+                        }
+                        if (loadUserReactionsUseCase.isLoaded()) {
+                            loadUserReactionsUseCase.loadLocalReactions()
+                        } else {
+                            loadUserReactionsUseCase.loadReactions()
+                        }
+                    }
+
+                    val comments = commentsAsync.await()
+                    val userReactions = userReactionsAsync.await()
+
+                    itemsState.update { comments }
+                    userReactionsState.update { userReactions }
+                }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -98,10 +129,44 @@ internal class ShowCommentsViewModel(
         }
     }
 
+    fun setReaction(
+        reaction: Reaction,
+        commentId: Int,
+    ) {
+        reactionJob?.cancel()
+        reactionJob = viewModelScope.launch {
+            try {
+                userReactionsState.update {
+                    val mutable = it?.toMutableMap() ?: mutableMapOf()
+                    mutable[commentId] = reaction
+                    mutable.toImmutableMap()
+                }
+
+                if (!sessionManager.isAuthenticated()) {
+                    return@launch
+                }
+
+                // Debounce to avoid multiple rapid calls.
+                delay(1.seconds)
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.w(error)
+                }
+            }
+        }
+    }
+
+    override fun onCleared() {
+        reactionJob?.cancel()
+        reactionJob = null
+        super.onCleared()
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state: StateFlow<ShowCommentsState> = combine(
         itemsState,
         reactionsState,
+        userReactionsState,
         loadingState,
         userState,
         errorState,
@@ -109,9 +174,10 @@ internal class ShowCommentsViewModel(
         ShowCommentsState(
             items = state[0] as ImmutableList<Comment>?,
             reactions = state[1] as ImmutableMap<Int, ReactionsSummary>?,
-            loading = state[2] as LoadingState,
-            user = state[3] as User?,
-            error = state[4] as Exception?,
+            userReactions = state[2] as ImmutableMap<Int, Reaction?>?,
+            loading = state[3] as LoadingState,
+            user = state[4] as User?,
+            error = state[5] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,
