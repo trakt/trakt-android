@@ -3,14 +3,14 @@ package tv.trakt.trakt.core.user.usecase.reactions
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
 import tv.trakt.trakt.common.model.reactions.Reaction
+import tv.trakt.trakt.core.reactions.data.remote.ReactionsRemoteDataSource
 import tv.trakt.trakt.core.user.data.local.reactions.UserReactionsLocalDataSource
-import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 
 private val supportedReactions = Reaction.entries
     .map { it.name.uppercase() }
 
 internal class LoadUserReactionsUseCase(
-    private val remoteSource: UserRemoteDataSource,
+    private val remoteSource: ReactionsRemoteDataSource,
     private val localSource: UserReactionsLocalDataSource,
 ) {
     suspend fun isLoaded(): Boolean {
@@ -23,7 +23,7 @@ internal class LoadUserReactionsUseCase(
     }
 
     suspend fun loadReactions(): ImmutableMap<Int, Reaction?> {
-        return remoteSource.getReactions()
+        return remoteSource.getUserReactions()
             .associateBy(
                 keySelector = { it.comment.id },
                 valueTransform = {

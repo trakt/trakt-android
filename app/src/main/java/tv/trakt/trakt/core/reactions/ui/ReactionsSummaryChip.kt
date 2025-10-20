@@ -66,9 +66,10 @@ fun ReactionsSummaryChip(
                         .map { it.key }
                 }
 
-                val totalCount = remember(topReactions) {
+                val totalCount = remember(reactions.reactionsCount) {
                     reactions.reactionsCount.thousandsFormat()
                 }
+
                 Row(
                     horizontalArrangement = spacedBy(5.dp),
                     verticalAlignment = CenterVertically,
@@ -111,7 +112,6 @@ private fun Preview() {
             userReaction = Reaction.SPOILER,
             reactions = ReactionsSummary(
                 reactionsCount = 14,
-                usersCount = 2,
                 distribution = mapOf(
                     Reaction.LOVE to 2,
                     Reaction.LAUGH to 12,

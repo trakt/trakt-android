@@ -28,6 +28,8 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
+import tv.trakt.trakt.core.reactions.usecases.DeleteCommentReactionUseCase
+import tv.trakt.trakt.core.reactions.usecases.PostCommentReactionUseCase
 import tv.trakt.trakt.core.summary.shows.features.comments.usecases.GetShowCommentsUseCase
 import tv.trakt.trakt.core.user.usecase.reactions.LoadUserReactionsUseCase
 import kotlin.time.Duration.Companion.seconds
@@ -37,6 +39,8 @@ internal class ShowCommentsViewModel(
     private val getCommentsUseCase: GetShowCommentsUseCase,
     private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
     private val loadUserReactionsUseCase: LoadUserReactionsUseCase,
+    private val postCommentReactionUseCase: PostCommentReactionUseCase,
+    private val deleteCommentReactionUseCase: DeleteCommentReactionUseCase,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = ShowCommentsState()
@@ -136,9 +140,43 @@ internal class ShowCommentsViewModel(
         reactionJob?.cancel()
         reactionJob = viewModelScope.launch {
             try {
+                val userReaction = userReactionsState.value?.get(commentId)
+
                 userReactionsState.update {
                     val mutable = it?.toMutableMap() ?: mutableMapOf()
-                    mutable[commentId] = reaction
+                    mutable[commentId] = when {
+                        userReaction == reaction -> null
+                        else -> reaction
+                    }
+                    mutable.toImmutableMap()
+                }
+
+                reactionsState.update { current ->
+                    val mutable = current?.toMutableMap() ?: mutableMapOf()
+
+                    mutable[commentId]?.let {
+                        val updatedReactions = it.copy(
+                            reactionsCount = when (userReaction) {
+                                reaction -> it.reactionsCount - 1
+                                null -> it.reactionsCount + 1
+                                else -> it.reactionsCount
+                            },
+                            distribution = it.distribution
+                                .toMutableMap()
+                                .apply {
+                                    for ((r, count) in entries) {
+                                        if (r == reaction && userReaction != reaction) {
+                                            this[r] = count + 1
+                                        } else if (r == userReaction) {
+                                            this[r] = (count - 1).coerceAtLeast(0)
+                                        }
+                                    }
+                                }
+                                .toImmutableMap(),
+                        )
+                        mutable[commentId] = updatedReactions
+                    }
+
                     mutable.toImmutableMap()
                 }
 
@@ -148,6 +186,19 @@ internal class ShowCommentsViewModel(
 
                 // Debounce to avoid multiple rapid calls.
                 delay(1.seconds)
+
+                if (reaction == userReaction) {
+                    deleteCommentReactionUseCase.deleteReactions(
+                        commentId = commentId,
+                    )
+                } else {
+                    postCommentReactionUseCase.postReaction(
+                        commentId = commentId,
+                        reaction = reaction,
+                    )
+                }
+
+                loadUserReactionsUseCase.loadReactions()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.w(error)

@@ -13,6 +13,7 @@ import org.openapitools.client.apis.ListsApi
 import org.openapitools.client.apis.MoviesApi
 import org.openapitools.client.apis.OauthApi
 import org.openapitools.client.apis.PeopleApi
+import org.openapitools.client.apis.ReactionsApi
 import org.openapitools.client.apis.RecommendationsApi
 import org.openapitools.client.apis.SearchApi
 import org.openapitools.client.apis.ShowsApi
@@ -58,16 +59,17 @@ val networkingApiModule = module {
     single(named("apiClients")) {
         arrayOf(
             get<CalendarsApi>(),
+            get<EpisodeApi>(),
+            get<EpisodesApi>(),
             get<HistoryApi>(),
             get<ListsApi>(),
-            get<PeopleApi>(),
             get<MoviesApi>(),
             get<OauthApi>(),
+            get<PeopleApi>(),
+            get<ReactionsApi>(),
             get<RecommendationsApi>(),
             get<SearchApi>(),
             get<ShowsApi>(),
-            get<EpisodeApi>(),
-            get<EpisodesApi>(),
             get<SyncApi>(),
             get<SyncExtrasApi>(),
             get<UsersApi>(),
@@ -108,6 +110,14 @@ val networkingApiModule = module {
 
     single<RecommendationsApi> {
         RecommendationsApi(
+            baseUrl = API_HD_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
+        )
+    }
+
+    single<ReactionsApi> {
+        ReactionsApi(
             baseUrl = API_HD_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),

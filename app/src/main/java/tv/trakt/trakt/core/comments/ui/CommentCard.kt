@@ -284,7 +284,7 @@ private fun CommentFooter(
                 userReaction = userReaction,
                 enabled = reactionsEnabled,
                 modifier = Modifier.onClick {
-                    if (reactions == null) {
+                    if (reactions == null || !reactionsEnabled) {
                         return@onClick
                     }
                     scope.launch {

@@ -13,7 +13,6 @@ import tv.trakt.trakt.common.networking.ListItemDto
 import tv.trakt.trakt.common.networking.SocialActivityItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
-import tv.trakt.trakt.common.networking.UserReactionDto
 import tv.trakt.trakt.common.networking.WatchedMovieDto
 import tv.trakt.trakt.common.networking.WatchedShowDto
 import tv.trakt.trakt.common.networking.WatchlistItemDto
@@ -30,16 +29,6 @@ internal class UserApiClient(
         ).body()
 
         return User.fromDto(response)
-    }
-
-    override suspend fun getReactions(): List<UserReactionDto> {
-        val response = usersApi.getUsersReactionsComments(
-            extended = "min",
-            page = null,
-            limit = "all",
-        )
-
-        return response.body()
     }
 
     override suspend fun getWatchedMovies(): List<WatchedMovieDto> {

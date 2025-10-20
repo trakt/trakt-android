@@ -28,6 +28,8 @@ import tv.trakt.trakt.core.movies.di.moviesDataModule
 import tv.trakt.trakt.core.movies.di.moviesModule
 import tv.trakt.trakt.core.people.di.peopleDataModule
 import tv.trakt.trakt.core.people.di.peopleModule
+import tv.trakt.trakt.core.reactions.di.reactionsDataModule
+import tv.trakt.trakt.core.reactions.di.reactionsModule
 import tv.trakt.trakt.core.search.di.searchDataModule
 import tv.trakt.trakt.core.search.di.searchModule
 import tv.trakt.trakt.core.shows.di.showsDataModule
@@ -114,6 +116,8 @@ internal class TraktApplication : Application() {
                 commentsModule,
                 listsModule,
                 listsDataModule,
+                reactionsDataModule,
+                reactionsModule,
                 syncModule,
             )
         }

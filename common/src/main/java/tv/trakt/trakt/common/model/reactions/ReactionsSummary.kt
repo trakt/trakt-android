@@ -6,6 +6,5 @@ import kotlinx.collections.immutable.ImmutableMap
 @Immutable
 data class ReactionsSummary(
     val reactionsCount: Int,
-    val usersCount: Int,
     val distribution: ImmutableMap<Reaction, Int>,
 )

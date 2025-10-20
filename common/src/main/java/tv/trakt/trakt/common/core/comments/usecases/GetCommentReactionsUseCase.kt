@@ -15,7 +15,6 @@ class GetCommentReactionsUseCase(
         val remoteReactions = remoteSource.getCommentReactions(commentId)
         return ReactionsSummary(
             reactionsCount = remoteReactions.reactionCount,
-            usersCount = remoteReactions.userCount,
             distribution = remoteReactions.distribution
                 .filterKeys { supportedReactions.contains(it.uppercase()) }
                 .mapKeys { Reaction.valueOf(it.key.uppercase()) }

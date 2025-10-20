@@ -70,7 +70,7 @@ fun TooltipContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = spacedBy(12.dp),
         modifier = modifier
-            .widthIn(max = 264.dp)
+            .widthIn(max = 272.dp)
             .dropShadow(
                 shape = RoundedCornerShape(20.dp),
                 shadow = Shadow(
@@ -82,7 +82,7 @@ fun TooltipContent(
             )
             .background(Shade800, RoundedCornerShape(20.dp))
             .padding(4.dp)
-            .padding(bottom = 8.dp),
+            .padding(bottom = 6.dp),
     ) {
         if (summaryVisible) {
             ReactionsSummaryGrid(
@@ -119,7 +119,6 @@ private fun Preview() {
             userReaction = null,
             reactions = ReactionsSummary(
                 reactionsCount = 14,
-                usersCount = 2,
                 distribution = mapOf(
                     Reaction.LOVE to 2,
                     Reaction.LAUGH to 1,
@@ -137,7 +136,6 @@ private fun Preview2() {
             userReaction = Reaction.LOVE,
             reactions = ReactionsSummary(
                 reactionsCount = 14,
-                usersCount = 2,
                 distribution = mapOf(
                     Reaction.LOVE to 2,
                     Reaction.LAUGH to 1,

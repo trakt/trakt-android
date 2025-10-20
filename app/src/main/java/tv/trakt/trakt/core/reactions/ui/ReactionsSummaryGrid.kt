@@ -142,7 +142,6 @@ private fun Preview() {
         ReactionsSummaryGrid(
             reactions = ReactionsSummary(
                 reactionsCount = 14,
-                usersCount = 2,
                 distribution = mapOf(
                     Reaction.LOVE to 2,
                     Reaction.LAUGH to 1,

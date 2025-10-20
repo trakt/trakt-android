@@ -9,7 +9,6 @@ import tv.trakt.trakt.common.networking.ListItemDto
 import tv.trakt.trakt.common.networking.SocialActivityItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
-import tv.trakt.trakt.common.networking.UserReactionDto
 import tv.trakt.trakt.common.networking.WatchedMovieDto
 import tv.trakt.trakt.common.networking.WatchedShowDto
 import tv.trakt.trakt.common.networking.WatchlistItemDto
@@ -17,8 +16,6 @@ import java.time.LocalDate
 
 internal interface UserRemoteDataSource {
     suspend fun getProfile(): User
-
-    suspend fun getReactions(): List<UserReactionDto>
 
     suspend fun getWatchedMovies(): List<WatchedMovieDto>
 
