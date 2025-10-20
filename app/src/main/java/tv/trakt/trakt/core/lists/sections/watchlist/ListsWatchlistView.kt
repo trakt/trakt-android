@@ -32,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -177,10 +178,14 @@ internal fun ListWatchlistContent(
 
             if (!state.items.isNullOrEmpty() || state.loading != DONE) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_more),
+                    painter = painterResource(R.drawable.ic_chevron_right),
                     contentDescription = null,
-                    tint = TraktTheme.colors.textSecondary,
-                    modifier = Modifier.size(20.dp),
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .graphicsLayer {
+                            translationX = (4.9).dp.toPx()
+                        },
                 )
             }
         }

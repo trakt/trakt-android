@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -119,10 +120,14 @@ private fun MovieCommentsContent(
 
             if (state.loading.isLoading || !state.items.isNullOrEmpty()) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_more),
+                    painter = painterResource(R.drawable.ic_chevron_right),
                     contentDescription = null,
-                    tint = TraktTheme.colors.textSecondary,
-                    modifier = Modifier.size(20.dp),
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .graphicsLayer {
+                            translationX = (4.9).dp.toPx()
+                        },
                 )
             }
         }

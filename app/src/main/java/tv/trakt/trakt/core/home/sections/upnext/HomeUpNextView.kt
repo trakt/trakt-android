@@ -32,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
@@ -164,10 +165,14 @@ internal fun HomeUpNextContent(
             )
             if (!state.items.items.isNullOrEmpty() || state.loading != DONE) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_more),
+                    painter = painterResource(R.drawable.ic_chevron_right),
                     contentDescription = null,
-                    tint = TraktTheme.colors.textSecondary,
-                    modifier = Modifier.size(20.dp),
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .graphicsLayer {
+                            translationX = (4.9).dp.toPx()
+                        },
                 )
             }
         }
