@@ -26,7 +26,7 @@ internal class GetShowCommentsUseCase(
                 RECENT -> "newest"
             },
         ).asyncMap {
-            Comment.Companion.fromDto(it)
+            Comment.fromDto(it)
         }
 
         return remoteComments

@@ -17,6 +17,8 @@ import java.time.LocalDate
 internal interface UserRemoteDataSource {
     suspend fun getProfile(): User
 
+    suspend fun getReactions()
+
     suspend fun getWatchedMovies(): List<WatchedMovieDto>
 
     suspend fun getWatchedShows(): List<WatchedShowDto>

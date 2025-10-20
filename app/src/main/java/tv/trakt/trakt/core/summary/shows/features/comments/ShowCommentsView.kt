@@ -46,12 +46,14 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.core.comments.details.CommentDetailsSheet
 import tv.trakt.trakt.core.comments.ui.CommentCard
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
@@ -81,6 +83,9 @@ internal fun ShowCommentsView(
         onCommentClick = {
             commentSheet = it
         },
+        onCommentVisible = {
+            viewModel.loadReactions(it.id)
+        },
     )
 
     CommentDetailsSheet(
@@ -98,6 +103,7 @@ private fun ShowCommentsContent(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onCommentClick: ((Comment) -> Unit)? = null,
+    onCommentVisible: ((Comment) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
 ) {
     Column(
@@ -154,8 +160,11 @@ private fun ShowCommentsContent(
                         } else {
                             ContentList(
                                 listItems = (state.items ?: emptyList()).toImmutableList(),
+                                listReactions = state.reactions,
+                                reactionsEnabled = state.user != null,
                                 contentPadding = contentPadding,
                                 onCommentClick = onCommentClick,
+                                onCommentVisible = onCommentVisible,
                             )
                         }
                     }
@@ -168,8 +177,11 @@ private fun ShowCommentsContent(
 @Composable
 private fun ContentList(
     listItems: ImmutableList<Comment>,
+    listReactions: ImmutableMap<Int, ReactionsSummary>?,
     listState: LazyListState = rememberLazyListState(),
+    reactionsEnabled: Boolean,
     contentPadding: PaddingValues,
+    onCommentVisible: ((Comment) -> Unit)? = null,
     onCommentClick: ((Comment) -> Unit)? = null,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
@@ -194,7 +206,10 @@ private fun ContentList(
         ) { comment ->
             CommentCard(
                 comment = comment,
+                reactions = listReactions?.get(comment.id),
                 onClick = { onCommentClick?.invoke(comment) },
+                onRequestReactions = { onCommentVisible?.invoke(comment) },
+                reactionsEnabled = reactionsEnabled,
                 modifier = Modifier
                     .height(TraktTheme.size.commentCardSize)
                     .aspectRatio(HorizontalImageAspectRatio),

@@ -211,6 +211,8 @@ internal val showDetailsModule = module {
         ShowCommentsViewModel(
             show = show,
             getCommentsUseCase = get(),
+            getCommentReactionsUseCase = get(),
+            sessionManager = get(),
         )
     }
 

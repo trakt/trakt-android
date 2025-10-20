@@ -33,6 +33,10 @@ internal class UserApiClient(
         return User.fromDto(response)
     }
 
+    override suspend fun getReactions() {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getWatchedMovies(): List<WatchedMovieDto> {
         val response = usersApi.getUsersWatchedMovies(
             "me",

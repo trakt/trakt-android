@@ -1,8 +1,11 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package tv.trakt.trakt.core.comments.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,10 +21,14 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults.cardColors
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -44,10 +51,15 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
+import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
+import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryChip
+import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryToolTip
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -56,10 +68,19 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun CommentCard(
     comment: Comment,
     modifier: Modifier = Modifier,
+    reactions: ReactionsSummary? = null,
+    reactionsEnabled: Boolean = true,
     maxLines: Int = 4,
     corner: Dp = 24.dp,
     onClick: () -> Unit,
+    onRequestReactions: (() -> Unit)? = null,
 ) {
+    LaunchedEffect(comment.id) {
+        if (reactions == null) {
+            onRequestReactions?.invoke()
+        }
+    }
+
     Card(
         onClick = onClick,
         modifier = modifier,
@@ -70,6 +91,8 @@ internal fun CommentCard(
         content = {
             CommentCardContent(
                 comment = comment,
+                reactions = reactions,
+                reactionsEnabled = reactionsEnabled,
                 maxLines = maxLines,
             )
         },
@@ -79,6 +102,8 @@ internal fun CommentCard(
 @Composable
 private fun CommentCardContent(
     comment: Comment,
+    reactions: ReactionsSummary?,
+    reactionsEnabled: Boolean,
     maxLines: Int,
     modifier: Modifier = Modifier,
 ) {
@@ -115,8 +140,13 @@ private fun CommentCardContent(
 
         CommentFooter(
             comment = comment,
+            reactions = reactions,
+            reactionsEnabled = reactionsEnabled,
             modifier = Modifier
-                .padding(end = 20.dp),
+                .padding(
+                    start = 16.dp,
+                    end = 20.dp,
+                ),
         )
     }
 }
@@ -218,31 +248,41 @@ private fun CommentHeader(
 @Composable
 private fun CommentFooter(
     comment: Comment,
+    reactions: ReactionsSummary?,
+    reactionsEnabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy(16.dp, Alignment.End),
+        horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 2.dp),
     ) {
-//        Row(
-//            horizontalArrangement = spacedBy(3.dp),
-//            verticalAlignment = Alignment.CenterVertically,
-//        ) {
-//            Icon(
-//                painter = painterResource(R.drawable.ic_thumb_up),
-//                contentDescription = "Likes",
-//                tint = TraktTheme.colors.textSecondary,
-//                modifier = Modifier.size(16.dp),
-//            )
-//            Text(
-//                text = stringResource(R.string.button_text_comment_likes, comment.likes).uppercase(),
-//                style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
-//                color = TraktTheme.colors.textSecondary,
-//            )
-//        }
+        val scope = rememberCoroutineScope()
+        val tooltipState = rememberTooltipState(isPersistent = true)
+
+        ReactionsSummaryToolTip(
+            state = tooltipState,
+            reactions = reactions,
+        ) {
+            ReactionsSummaryChip(
+                reactions = reactions,
+                enabled = reactionsEnabled,
+                modifier = Modifier.onClick {
+                    if (reactions == null) {
+                        return@onClick
+                    }
+                    scope.launch {
+                        if (tooltipState.isVisible) {
+                            tooltipState.dismiss()
+                        } else {
+                            tooltipState.show()
+                        }
+                    }
+                },
+            )
+        }
 
         Row(
             horizontalArrangement = spacedBy(4.dp),
