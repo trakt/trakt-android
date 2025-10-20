@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,9 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalUriHandler
@@ -223,28 +220,6 @@ internal fun HeaderBar(
                                 modifier = Modifier
                                     .border(2.dp, borderColor, CircleShape)
                                     .clip(CircleShape),
-                            )
-                        }
-
-                        if (userVip) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_crown),
-                                contentDescription = null,
-                                tint = Color.White,
-                                modifier = Modifier
-                                    .align(Alignment.TopEnd)
-                                    .graphicsLayer {
-                                        val offset = 4.dp
-                                        translationX = offset.toPx()
-                                        translationY = -offset.toPx()
-                                    }
-                                    .shadow(
-                                        elevation = 1.dp,
-                                        shape = CircleShape,
-                                    )
-                                    .background(Color.Red, shape = CircleShape)
-                                    .size(18.dp)
-                                    .padding(bottom = (4).dp, top = 3.dp),
                             )
                         }
                     }
