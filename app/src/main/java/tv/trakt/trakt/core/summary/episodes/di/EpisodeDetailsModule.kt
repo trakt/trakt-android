@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.summary.episodes.di
 
+import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
@@ -124,9 +125,13 @@ internal val episodeDetailsModule = module {
 
     viewModel { (show: Show, episode: Episode) ->
         EpisodeCommentsViewModel(
+            appContext = androidApplication(),
             show = show,
             episode = episode,
             getCommentsUseCase = get(),
+            getCommentReactionsUseCase = get(),
+            loadUserReactionsUseCase = get(),
+            sessionManager = get(),
         )
     }
 

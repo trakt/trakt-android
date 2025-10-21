@@ -2,12 +2,19 @@ package tv.trakt.trakt.core.summary.episodes.features.comments
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableMap
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.reactions.Reaction
+import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 
 @Immutable
 internal data class EpisodeCommentsState(
     val items: ImmutableList<Comment>? = null,
+    val reactions: ImmutableMap<Int, ReactionsSummary>? = null,
+    val userReactions: ImmutableMap<Int, Reaction?>? = null,
     val loading: LoadingState = LoadingState.IDLE,
+    val user: User? = null,
     val error: Exception? = null,
 )
