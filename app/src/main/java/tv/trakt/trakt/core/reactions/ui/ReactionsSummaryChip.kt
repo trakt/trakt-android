@@ -91,7 +91,7 @@ fun ReactionsSummaryChip(
                         }
                     }
 
-                    if (reactions.reactionsCount > 3) {
+                    if (reactions.reactionsCount > 1) {
                         Text(
                             text = totalCount,
                             style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
