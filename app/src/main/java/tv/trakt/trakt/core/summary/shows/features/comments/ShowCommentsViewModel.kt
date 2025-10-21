@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.summary.shows.features.comments
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
@@ -28,19 +29,18 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
-import tv.trakt.trakt.core.reactions.usecases.DeleteCommentReactionUseCase
-import tv.trakt.trakt.core.reactions.usecases.PostCommentReactionUseCase
+import tv.trakt.trakt.core.reactions.data.work.DeleteReactionWorker
+import tv.trakt.trakt.core.reactions.data.work.PostReactionWorker
 import tv.trakt.trakt.core.summary.shows.features.comments.usecases.GetShowCommentsUseCase
 import tv.trakt.trakt.core.user.usecase.reactions.LoadUserReactionsUseCase
 import kotlin.time.Duration.Companion.seconds
 
 internal class ShowCommentsViewModel(
+    private val appContext: Context,
     private val show: Show,
     private val getCommentsUseCase: GetShowCommentsUseCase,
     private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
     private val loadUserReactionsUseCase: LoadUserReactionsUseCase,
-    private val postCommentReactionUseCase: PostCommentReactionUseCase,
-    private val deleteCommentReactionUseCase: DeleteCommentReactionUseCase,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = ShowCommentsState()
@@ -180,31 +180,50 @@ internal class ShowCommentsViewModel(
                     mutable.toImmutableMap()
                 }
 
-                if (!sessionManager.isAuthenticated()) {
-                    return@launch
-                }
-
                 // Debounce to avoid multiple rapid calls.
                 delay(1.seconds)
-
                 if (reaction == userReaction) {
-                    deleteCommentReactionUseCase.deleteReactions(
+                    deleteReactionWork(
                         commentId = commentId,
                     )
                 } else {
-                    postCommentReactionUseCase.postReaction(
+                    postReactionWork(
                         commentId = commentId,
                         reaction = reaction,
                     )
                 }
-
-                loadUserReactionsUseCase.loadReactions()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.w(error)
                 }
             }
         }
+    }
+
+    private suspend fun postReactionWork(
+        commentId: Int,
+        reaction: Reaction,
+    ) {
+        if (!sessionManager.isAuthenticated()) {
+            return
+        }
+
+        PostReactionWorker.scheduleOneTime(
+            appContext = appContext,
+            commentId = commentId,
+            reaction = reaction,
+        )
+    }
+
+    private suspend fun deleteReactionWork(commentId: Int) {
+        if (!sessionManager.isAuthenticated()) {
+            return
+        }
+
+        DeleteReactionWorker.scheduleOneTime(
+            appContext = appContext,
+            commentId = commentId,
+        )
     }
 
     override fun onCleared() {

@@ -1,5 +1,7 @@
 package tv.trakt.trakt.core.user.usecase
 
+import android.content.Context
+import androidx.work.WorkManager
 import io.ktor.client.plugins.auth.authProvider
 import io.ktor.client.plugins.auth.providers.BearerAuthProvider
 import org.openapitools.client.infrastructure.ApiClient
@@ -19,6 +21,7 @@ import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.data.local.reactions.UserReactionsLocalDataSource
 
 internal class LogoutUserUseCase(
+    private val appContext: Context,
     private val sessionManager: SessionManager,
     private val apiClients: Array<ApiClient>,
     private val localUpNext: HomeUpNextLocalDataSource,
@@ -55,5 +58,7 @@ internal class LogoutUserUseCase(
 
         localRecommendedShows.clear()
         localRecommendedMovies.clear()
+
+        WorkManager.getInstance(appContext).cancelAllWork()
     }
 }

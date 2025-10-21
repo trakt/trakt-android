@@ -81,6 +81,7 @@ dependencies {
     implementation(libs.android.material)
     implementation(libs.androidx.navigation)
     implementation(libs.androidx.datastore)
+    implementation(libs.androidx.work)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.config)
@@ -97,6 +98,7 @@ dependencies {
     implementation(project.dependencies.platform(libs.koin.bom))
     implementation(libs.koin.core)
     implementation(libs.koin.android.compose)
+    implementation(libs.koin.android.work)
 
     implementation(libs.coil.compose)
     implementation(libs.coil.network)

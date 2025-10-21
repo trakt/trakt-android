@@ -11,7 +11,7 @@ import androidx.datastore.preferences.preferencesDataStoreFile
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidApplication
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.common.auth.DefaultTokenProvider
@@ -25,14 +25,14 @@ private const val SESSION_PREFERENCES = "session_preferences"
 val commonAuthModule = module {
     single<DataStore<Preferences>>(named(AUTH_PREFERENCES)) {
         createStore(
-            context = androidContext(),
+            context = androidApplication(),
             key = AUTH_PREFERENCES,
         )
     }
 
     single<DataStore<Preferences>>(named(SESSION_PREFERENCES)) {
         createStore(
-            context = androidContext(),
+            context = androidApplication(),
             key = SESSION_PREFERENCES,
         )
     }

@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.user.di
 
+import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -84,15 +85,9 @@ internal val profileModule = module {
         )
     }
 
-//    factory {
-//        LoadUserWatchedUseCase(
-//            remoteSource = get(),
-//            localSource = get(),
-//        )
-//    }
-
     factory {
         LogoutUserUseCase(
+            appContext = androidApplication(),
             sessionManager = get(),
             apiClients = get(named("apiClients")),
             localUpNext = get(),

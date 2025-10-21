@@ -56,7 +56,7 @@ fun ReactionsSummaryGrid(
         verticalArrangement = spacedBy(12.dp),
         modifier = modifier
             .fillMaxWidth()
-            .background(Shade700, RoundedCornerShape(18.dp))
+            .background(Shade700, RoundedCornerShape(19.dp))
             .padding(horizontal = 16.dp, vertical = 12.dp),
     ) {
         Row(

@@ -10,6 +10,7 @@ import com.google.firebase.remoteconfig.remoteConfig
 import com.google.firebase.remoteconfig.remoteConfigSettings
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
+import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.context.startKoin
 import timber.log.Timber
 import tv.trakt.trakt.app.TvActivity
@@ -86,6 +87,9 @@ internal class TraktApplication : Application() {
         startKoin {
             androidContext(applicationContext)
             androidLogger()
+
+            workManagerFactory()
+
             modules(
                 networkingModule,
                 networkingApiModule,

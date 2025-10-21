@@ -1,0 +1,102 @@
+package tv.trakt.trakt.core.reactions.data.work
+
+import android.content.Context
+import androidx.work.BackoffPolicy
+import androidx.work.CoroutineWorker
+import androidx.work.Data
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.WorkerParameters
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import timber.log.Timber
+import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.model.reactions.Reaction
+import tv.trakt.trakt.core.reactions.usecases.PostCommentReactionUseCase
+import tv.trakt.trakt.core.user.usecase.reactions.LoadUserReactionsUseCase
+import java.util.concurrent.TimeUnit.SECONDS
+
+private const val MAX_RETRY_ATTEMPTS = 2
+
+internal class PostReactionWorker(
+    appContext: Context,
+    workerParams: WorkerParameters,
+    val sessionManager: SessionManager,
+    val postReactionUseCase: PostCommentReactionUseCase,
+    val loadUserReactionsUseCase: LoadUserReactionsUseCase,
+) : CoroutineWorker(appContext, workerParams) {
+    companion object {
+        fun scheduleOneTime(
+            appContext: Context,
+            commentId: Int,
+            reaction: Reaction,
+        ) {
+            val workRequest = OneTimeWorkRequestBuilder<PostReactionWorker>()
+                .setInputData(
+                    Data.Builder()
+                        .putInt("commentId", commentId)
+                        .putString("reaction", reaction.name)
+                        .build(),
+                )
+                .setBackoffCriteria(BackoffPolicy.LINEAR, 3, SECONDS)
+                .build()
+
+            WorkManager
+                .getInstance(appContext)
+                .enqueueUniqueWork(
+                    "post_reaction_$commentId",
+                    ExistingWorkPolicy.REPLACE,
+                    workRequest,
+                )
+        }
+    }
+
+    override suspend fun doWork(): Result {
+        try {
+            if (!sessionManager.isAuthenticated()) {
+                Timber.d("Not authenticated, cannot post reaction")
+                return Result.failure()
+            }
+
+            if (runAttemptCount >= MAX_RETRY_ATTEMPTS) {
+                Timber.d("Max retry attempts reached, failing work")
+                return Result.failure()
+            }
+
+            val commentId = inputData.getInt("commentId", -1)
+            val reactionValue = inputData.getString("reaction")
+
+            if (commentId == -1) {
+                Timber.d("Invalid comment ID, cannot post reaction")
+                return Result.failure()
+            }
+
+            if (reactionValue.isNullOrEmpty()) {
+                Timber.d("No reaction value provided, cannot post reaction")
+                return Result.failure()
+            }
+
+            withContext(Dispatchers.IO) {
+                postReactionUseCase.postReaction(
+                    commentId = commentId,
+                    reaction = Reaction.valueOf(
+                        reactionValue,
+                    ),
+                )
+
+                loadUserReactionsUseCase.loadReactions()
+            }
+        } catch (error: Exception) {
+            if (error is CancellationException) {
+                return Result.failure()
+            }
+            Timber.w(error)
+            return Result.retry()
+        }
+
+        Timber.d("Successfully posted reaction.")
+        return Result.success()
+    }
+}

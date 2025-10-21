@@ -35,6 +35,7 @@ tvFoundation = "1.0.0-alpha12"
 tvMaterial = "1.0.1"
 youtube-player = "13.0.0"
 inAppReview = "2.0.2"
+workManager = "2.10.5"
 
 # Testing Libraries
 
@@ -56,6 +57,7 @@ androidx-compose-material3 = { group = "androidx.compose.material3", name = "mat
 androidx-compose-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-compose-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
+androidx-work = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workManager" }
 
 androidx-tv-foundation = { group = "androidx.tv", name = "tv-foundation", version.ref = "tvFoundation" }
 androidx-tv-material = { group = "androidx.tv", name = "tv-material", version.ref = "tvMaterial" }
@@ -88,6 +90,7 @@ ktor-client-logger = { group = "io.ktor", name = "ktor-client-logging", version.
 koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koinBom" }
 koin-core = { module = "io.insert-koin:koin-core" }
 koin-android-compose = { module = "io.insert-koin:koin-androidx-compose" }
+koin-android-work = { module = "io.insert-koin:koin-androidx-workmanager" }
 
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-config = { group = "com.google.firebase", name = "firebase-config" }
