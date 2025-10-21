@@ -44,7 +44,6 @@ fun ReactionsSummaryToolTip(
         content = contentAnchor,
         positionProvider = rememberTooltipPositionProvider(
             positioning = TooltipAnchorPosition.Above,
-            spacingBetweenTooltipAndAnchor = 2.dp,
         ),
         tooltip = {
             TooltipContent(
@@ -73,7 +72,7 @@ fun TooltipContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = spacedBy(0.dp),
         modifier = modifier
-            .widthIn(max = 272.dp)
+            .widthIn(max = 300.dp)
             .dropShadow(
                 shape = RoundedCornerShape(20.dp),
                 shadow = Shadow(
@@ -85,7 +84,6 @@ fun TooltipContent(
             )
             .background(Shade800, RoundedCornerShape(20.dp))
             .padding(4.dp)
-            .padding(bottom = 6.dp)
             .animateContentSize(
                 alignment = Alignment.BottomStart,
                 animationSpec = tween(200),
@@ -94,9 +92,9 @@ fun TooltipContent(
         if (summaryVisible) {
             ReactionsSummaryGrid(
                 reactions = reactions,
+                userReaction = userReaction,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 6.dp)
                     .onClick(onClick = onDismiss),
             )
         }
@@ -111,6 +109,7 @@ fun TooltipContent(
                     start = 4.dp,
                     end = 8.dp,
                     top = 6.dp,
+                    bottom = 4.dp,
                 ),
         )
     }

@@ -50,7 +50,7 @@ fun ReactionsStrip(
             tint = TraktTheme.colors.textPrimary,
             modifier = Modifier
                 .onClick(onClick = onCloseClick ?: {})
-                .size(17.dp)
+                .size(18.dp)
                 .graphicsLayer {
                     translationY = 1.dp.toPx()
                 },
@@ -67,7 +67,7 @@ fun ReactionsStrip(
             )
 
             val animatedScale by animateFloatAsState(
-                targetValue = if (reaction == selectedReaction) 1F else 0.9f,
+                targetValue = if (reaction == selectedReaction) 1F else 0.85f,
                 animationSpec = spring(
                     dampingRatio = Spring.DampingRatioHighBouncy,
                     stiffness = Spring.StiffnessMediumLow,
@@ -76,7 +76,7 @@ fun ReactionsStrip(
 
             Text(
                 text = reaction.emoji,
-                fontSize = 16.sp,
+                fontSize = 20.sp,
                 style = TextStyle(
                     platformStyle = PlatformTextStyle(
                         emojiSupportMatch = EmojiSupportMatch.Default,
@@ -87,7 +87,7 @@ fun ReactionsStrip(
                     .scale(
                         when {
                             (reaction == selectedReaction) -> animatedScale
-                            else -> 0.9F
+                            else -> 0.85f
                         },
                     )
                     .onClick(

@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.EmojiSupportMatch
@@ -28,6 +29,7 @@ import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.common.ui.theme.colors.Shade700
+import tv.trakt.trakt.common.ui.theme.colors.Shade800
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -48,9 +50,10 @@ private val secondRowReactions = listOf(
 fun ReactionsSummaryGrid(
     modifier: Modifier = Modifier,
     reactions: ReactionsSummary?,
+    userReaction: Reaction?,
 ) {
     Column(
-        verticalArrangement = spacedBy(14.dp),
+        verticalArrangement = spacedBy(12.dp),
         modifier = modifier
             .fillMaxWidth()
             .background(Shade700, RoundedCornerShape(18.dp))
@@ -77,7 +80,7 @@ fun ReactionsSummaryGrid(
 
         reactions?.let {
             Column(
-                verticalArrangement = spacedBy(16.dp),
+                verticalArrangement = spacedBy(12.dp),
             ) {
                 Row(
                     verticalAlignment = CenterVertically,
@@ -87,6 +90,7 @@ fun ReactionsSummaryGrid(
                     for (reaction in firstRowReactions) {
                         ReactionItem(
                             reaction = reaction to (reactions.distribution[reaction] ?: 0),
+                            highlight = reaction == userReaction,
                         )
                     }
                 }
@@ -99,6 +103,7 @@ fun ReactionsSummaryGrid(
                     for (reaction in secondRowReactions) {
                         ReactionItem(
                             reaction = reaction to (reactions.distribution[reaction] ?: 0),
+                            highlight = reaction == userReaction,
                         )
                     }
                 }
@@ -111,11 +116,20 @@ fun ReactionsSummaryGrid(
 fun ReactionItem(
     modifier: Modifier = Modifier,
     reaction: Pair<Reaction, Int>,
+    highlight: Boolean,
 ) {
     Row(
         horizontalArrangement = spacedBy(4.dp),
         verticalAlignment = CenterVertically,
-        modifier = modifier,
+        modifier = modifier
+            .background(
+                if (highlight) Shade800 else Color.Transparent,
+                RoundedCornerShape(12.dp),
+            )
+            .padding(
+                horizontal = 8.dp,
+                vertical = 4.dp,
+            ),
     ) {
         Text(
             text = reaction.first.emoji,
@@ -140,6 +154,24 @@ fun ReactionItem(
 private fun Preview() {
     TraktTheme {
         ReactionsSummaryGrid(
+            userReaction = null,
+            reactions = ReactionsSummary(
+                reactionsCount = 14,
+                distribution = mapOf(
+                    Reaction.LOVE to 2,
+                    Reaction.LAUGH to 1,
+                ).toImmutableMap(),
+            ),
+        )
+    }
+}
+
+@Preview(widthDp = 300)
+@Composable
+private fun Preview2() {
+    TraktTheme {
+        ReactionsSummaryGrid(
+            userReaction = Reaction.LOVE,
             reactions = ReactionsSummary(
                 reactionsCount = 14,
                 distribution = mapOf(

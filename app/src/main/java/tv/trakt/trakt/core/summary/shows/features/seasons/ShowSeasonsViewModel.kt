@@ -5,8 +5,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -62,8 +60,6 @@ internal class ShowSeasonsViewModel(
     private val loadingEpisodeState = MutableStateFlow(initialState.loadingEpisode)
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
-
-    private var loadingJob: Job? = null
 
     init {
         loadData()
@@ -133,24 +129,20 @@ internal class ShowSeasonsViewModel(
     }
 
     fun loadSeason(season: Season) {
-        loadingJob = viewModelScope.launch {
-            delay(250)
-            itemsState.update {
-                it.copy(isSeasonLoading = true)
-            }
-        }
-
         if (
             loadingEpisodeState.value.isLoading ||
             itemsState.value.isSeasonLoading ||
             season.number == itemsState.value.selectedSeason?.number
         ) {
-            loadingJob?.cancel()
             return
         }
 
         viewModelScope.launch {
             try {
+                itemsState.update {
+                    it.copy(isSeasonLoading = true)
+                }
+
                 val authenticated = sessionManager.isAuthenticated()
 
                 itemsState.update {
@@ -190,8 +182,6 @@ internal class ShowSeasonsViewModel(
                     Timber.w("Error loading season: ${error.message}")
                     itemsState.update { it.copy(isSeasonLoading = false) }
                 }
-            } finally {
-                loadingJob?.cancel()
             }
         }
     }
