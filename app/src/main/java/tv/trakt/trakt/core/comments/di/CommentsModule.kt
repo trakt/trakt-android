@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.comments.di
 
+import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -40,10 +41,14 @@ internal val commentsModule = module {
 
     viewModel {
         CommentsViewModel(
+            appContext = androidApplication(),
             savedStateHandle = get(),
             getShowCommentsUseCase = get(),
             getMovieCommentsUseCase = get(),
             getEpisodeCommentsUseCase = get(),
+            getCommentReactionsUseCase = get(),
+            sessionManager = get(),
+            loadUserReactionsUseCase = get(),
         )
     }
 

@@ -39,11 +39,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableMap
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.reactions.Reaction
+import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.core.comments.details.CommentDetailsSheet
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.ui.CommentCard
@@ -68,11 +72,17 @@ internal fun CommentsScreen(
     CommentsContent(
         state = state,
         modifier = modifier,
-        onClick = {
+        onCommentLoaded = {
+            viewModel.loadReactions(it.id)
+        },
+        onCommentClick = {
             commentSheet = it
         },
         onFilterClick = {
             viewModel.setFilter(it)
+        },
+        onReactionClick = { reaction, comment ->
+            viewModel.setReaction(reaction, comment.id)
         },
         onBackClick = onNavigateBack,
     )
@@ -89,9 +99,11 @@ internal fun CommentsScreen(
 internal fun CommentsContent(
     state: CommentsState,
     modifier: Modifier = Modifier,
-    onClick: (Comment) -> Unit = {},
-    onFilterClick: (CommentsFilter) -> Unit = {},
-    onBackClick: () -> Unit = {},
+    onCommentLoaded: ((Comment) -> Unit)? = null,
+    onCommentClick: ((Comment) -> Unit)? = null,
+    onFilterClick: ((CommentsFilter) -> Unit)? = null,
+    onReactionClick: ((Reaction, Comment) -> Unit)? = null,
+    onBackClick: (() -> Unit)? = null,
 ) {
     val headerState = rememberHeaderState()
     val listState = rememberLazyListState(
@@ -126,10 +138,15 @@ internal fun CommentsContent(
             listState = listState,
             listItems = (state.items ?: emptyList()).toImmutableList(),
             listFilter = state.filter,
+            listReactions = state.reactions,
+            userReactions = (state.userReactions ?: emptyMap()).toImmutableMap(),
             contentPadding = contentPadding,
             loading = state.loading.isLoading,
-            onClick = onClick,
+            reactionsEnabled = state.user != null,
+            onCommentLoaded = onCommentLoaded,
+            onCommentClick = onCommentClick,
             onFilterClick = onFilterClick,
+            onReactionClick = onReactionClick,
             onBackClick = onBackClick,
         )
     }
@@ -140,12 +157,17 @@ private fun ContentList(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues,
     listItems: ImmutableList<Comment>,
+    listReactions: ImmutableMap<Int, ReactionsSummary>?,
     listState: LazyListState,
     listFilter: CommentsFilter?,
     loading: Boolean,
-    onClick: (Comment) -> Unit,
-    onFilterClick: (CommentsFilter) -> Unit,
-    onBackClick: () -> Unit,
+    reactionsEnabled: Boolean,
+    userReactions: ImmutableMap<Int, Reaction?>,
+    onCommentLoaded: ((Comment) -> Unit)? = null,
+    onCommentClick: ((Comment) -> Unit)? = null,
+    onFilterClick: ((CommentsFilter) -> Unit)? = null,
+    onReactionClick: ((Reaction, Comment) -> Unit)? = null,
+    onBackClick: (() -> Unit)? = null,
 ) {
     LazyColumn(
         state = listState,
@@ -158,14 +180,16 @@ private fun ContentList(
             TitleBar(
                 modifier = Modifier
                     .padding(bottom = 2.dp)
-                    .onClick { onBackClick() },
+                    .onClick {
+                        onBackClick?.invoke()
+                    },
             )
         }
 
         item {
             ContentFilters(
                 selectedFilter = listFilter,
-                onClick = onFilterClick,
+                onClick = onFilterClick ?: {},
                 modifier = Modifier
                     .padding(bottom = 20.dp),
             )
@@ -175,10 +199,17 @@ private fun ContentList(
             items(
                 items = listItems,
                 key = { it.id },
-            ) { item ->
-                ContentListItem(
-                    item = item,
-                    onClick = { onClick(item) },
+            ) { comment ->
+                CommentCard(
+                    comment = comment,
+                    reactions = listReactions?.get(comment.id),
+                    userReaction = userReactions[comment.id],
+                    onRequestReactions = { onCommentLoaded?.invoke(comment) },
+                    reactionsEnabled = reactionsEnabled,
+                    onReactionClick = { onReactionClick?.invoke(it, comment) },
+                    maxLines = 12,
+                    corner = 20.dp,
+                    onClick = { onCommentClick?.invoke(comment) },
                     modifier = Modifier
                         .padding(bottom = 16.dp)
                         .animateItem(
@@ -205,21 +236,6 @@ private fun ContentList(
             }
         }
     }
-}
-
-@Composable
-private fun ContentListItem(
-    item: Comment,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    CommentCard(
-        comment = item,
-        maxLines = 12,
-        corner = 20.dp,
-        onClick = onClick,
-        modifier = modifier,
-    )
 }
 
 @Composable
