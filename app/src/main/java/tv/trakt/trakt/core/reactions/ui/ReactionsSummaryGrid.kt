@@ -59,10 +59,10 @@ fun ReactionsSummaryGrid(
             .background(
                 Shade700,
                 RoundedCornerShape(
-                    topStart = 17.dp,
-                    topEnd = 17.dp,
-                    bottomStart = 19.dp,
-                    bottomEnd = 19.dp,
+                    topStart = 16.dp,
+                    topEnd = 16.dp,
+                    bottomStart = 20.dp,
+                    bottomEnd = 20.dp,
                 ),
             )
             .padding(horizontal = 16.dp, vertical = 12.dp),

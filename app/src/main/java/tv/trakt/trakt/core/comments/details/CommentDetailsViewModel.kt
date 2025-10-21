@@ -57,6 +57,7 @@ internal class CommentDetailsViewModel(
     init {
         loadUser()
         loadData()
+        loadReactions(comment.id)
     }
 
     private fun loadUser() {

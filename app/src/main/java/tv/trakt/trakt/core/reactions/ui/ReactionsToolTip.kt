@@ -109,10 +109,10 @@ private fun ReactionsToolTipContent(
                 .alpha(animatedAlpha)
                 .fillMaxWidth()
                 .padding(
-                    top = 4.dp,
+                    top = 6.dp,
                     bottom = 2.dp,
-                    start = 4.dp,
-                    end = 4.dp,
+                    start = 6.dp,
+                    end = 6.dp,
                 )
                 .onClick(onClick = onDismiss),
         )

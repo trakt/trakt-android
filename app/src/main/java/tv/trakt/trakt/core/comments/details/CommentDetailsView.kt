@@ -23,11 +23,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,7 +41,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.font.FontWeight.Companion.W700
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -55,6 +56,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
+import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
@@ -67,6 +69,8 @@ import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.common.ui.theme.colors.Shade800
 import tv.trakt.trakt.core.comments.ui.CommentReplyCard
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
+import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryChip
+import tv.trakt.trakt.core.reactions.ui.ReactionsToolTip
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -183,6 +187,15 @@ private fun CommentContent(
                 .onClick {
                     isCollapsed = !isCollapsed
                 }
+                .padding(top = 16.dp),
+        )
+
+        CommentFooter(
+            reactions = listReactions?.get(comment.id),
+            reactionsEnabled = reactionsEnabled,
+            userReaction = userReactions[comment.id],
+            onReactionClick = { onReactionClick?.invoke(it, comment) },
+            modifier = Modifier
                 .padding(top = 16.dp),
         )
 
@@ -309,30 +322,44 @@ private fun CommentHeader(
 
 @Composable
 private fun CommentFooter(
-    comment: Comment,
+    reactions: ReactionsSummary?,
+    reactionsEnabled: Boolean,
+    userReaction: Reaction?,
     modifier: Modifier = Modifier,
+    onReactionClick: ((Reaction) -> Unit)? = null,
 ) {
+    val scope = rememberCoroutineScope()
+    val tooltipState = rememberTooltipState(isPersistent = true)
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Absolute.spacedBy(16.dp, Alignment.End),
+        horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 2.dp),
     ) {
-        Row(
-            horizontalArrangement = Arrangement.Absolute.spacedBy(2.dp),
-            verticalAlignment = Alignment.CenterVertically,
+        ReactionsToolTip(
+            state = tooltipState,
+            reactions = reactions,
+            userReaction = userReaction,
+            onReactionClick = onReactionClick,
         ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_comment),
-                contentDescription = "Replies",
-                tint = TraktTheme.colors.textPrimary,
-                modifier = Modifier.size(18.dp),
-            )
-            Text(
-                text = "${comment.replies}",
-                style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
-                color = TraktTheme.colors.textPrimary,
+            ReactionsSummaryChip(
+                reactions = reactions,
+                userReaction = userReaction,
+                enabled = reactionsEnabled,
+                modifier = Modifier.onClick {
+                    if (reactions == null || !reactionsEnabled) {
+                        return@onClick
+                    }
+                    scope.launch {
+                        if (tooltipState.isVisible) {
+                            tooltipState.dismiss()
+                        } else {
+                            tooltipState.show()
+                        }
+                    }
+                },
             )
         }
     }
