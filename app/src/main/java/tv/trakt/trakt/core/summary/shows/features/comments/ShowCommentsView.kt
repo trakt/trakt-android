@@ -82,11 +82,11 @@ internal fun ShowCommentsView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onMoreClick = onMoreClick,
+        onCommentLoaded = {
+            viewModel.loadReactions(it.id)
+        },
         onCommentClick = {
             commentSheet = it
-        },
-        onCommentVisible = {
-            viewModel.loadReactions(it.id)
         },
         onReactionClick = { reaction, comment ->
             viewModel.setReaction(reaction, comment.id)
@@ -107,8 +107,8 @@ private fun ShowCommentsContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
+    onCommentLoaded: ((Comment) -> Unit)? = null,
     onCommentClick: ((Comment) -> Unit)? = null,
-    onCommentVisible: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
 ) {
@@ -171,7 +171,7 @@ private fun ShowCommentsContent(
                                 reactionsEnabled = state.user != null,
                                 contentPadding = contentPadding,
                                 onCommentClick = onCommentClick,
-                                onCommentVisible = onCommentVisible,
+                                onCommentLoaded = onCommentLoaded,
                                 onReactionClick = onReactionClick,
                             )
                         }
@@ -190,7 +190,7 @@ private fun ContentList(
     reactionsEnabled: Boolean,
     userReactions: ImmutableMap<Int, Reaction?>,
     contentPadding: PaddingValues,
-    onCommentVisible: ((Comment) -> Unit)? = null,
+    onCommentLoaded: ((Comment) -> Unit)? = null,
     onCommentClick: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
 ) {
@@ -219,7 +219,7 @@ private fun ContentList(
                 reactions = listReactions?.get(comment.id),
                 userReaction = userReactions[comment.id],
                 onClick = { onCommentClick?.invoke(comment) },
-                onRequestReactions = { onCommentVisible?.invoke(comment) },
+                onRequestReactions = { onCommentLoaded?.invoke(comment) },
                 reactionsEnabled = reactionsEnabled,
                 onReactionClick = { onReactionClick?.invoke(it, comment) },
                 modifier = Modifier

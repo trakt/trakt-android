@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.summary.movies.di
 
+import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
@@ -194,8 +195,12 @@ internal val movieDetailsModule = module {
 
     viewModel { (movie: Movie) ->
         MovieCommentsViewModel(
+            appContext = androidApplication(),
             movie = movie,
             getCommentsUseCase = get(),
+            getCommentReactionsUseCase = get(),
+            loadUserReactionsUseCase = get(),
+            sessionManager = get(),
         )
     }
 

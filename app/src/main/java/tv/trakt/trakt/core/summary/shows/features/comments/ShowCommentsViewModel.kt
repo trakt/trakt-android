@@ -38,10 +38,10 @@ import kotlin.time.Duration.Companion.seconds
 internal class ShowCommentsViewModel(
     private val appContext: Context,
     private val show: Show,
+    private val sessionManager: SessionManager,
     private val getCommentsUseCase: GetShowCommentsUseCase,
     private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
     private val loadUserReactionsUseCase: LoadUserReactionsUseCase,
-    private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = ShowCommentsState()
 
