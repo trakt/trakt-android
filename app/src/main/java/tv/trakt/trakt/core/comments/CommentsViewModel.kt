@@ -9,6 +9,8 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -84,7 +86,27 @@ internal class CommentsViewModel(
         viewModelScope.launch {
             try {
                 loadingState.update { LOADING }
-                itemsState.update { fetchComments() }
+
+                coroutineScope {
+                    val commentsAsync = async { fetchComments() }
+
+                    val userReactionsAsync = async {
+                        if (!sessionManager.isAuthenticated()) {
+                            return@async null
+                        }
+                        if (loadUserReactionsUseCase.isLoaded()) {
+                            loadUserReactionsUseCase.loadLocalReactions()
+                        } else {
+                            loadUserReactionsUseCase.loadReactions()
+                        }
+                    }
+
+                    val comments = commentsAsync.await()
+                    val userReactions = userReactionsAsync.await()
+
+                    itemsState.update { comments }
+                    userReactionsState.update { userReactions }
+                }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.value = error

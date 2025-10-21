@@ -52,13 +52,17 @@ import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableMap
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.reactions.Reaction
+import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.common.ui.theme.colors.Shade800
 import tv.trakt.trakt.core.comments.ui.CommentReplyCard
@@ -76,6 +80,12 @@ internal fun CommentDetailsView(
     CommentDetailsViewContent(
         state = state,
         modifier = modifier,
+        onReplyLoaded = {
+            viewModel.loadReactions(it.id)
+        },
+        onReactionClick = { reaction, comment ->
+            viewModel.setReaction(reaction, comment.id)
+        },
     )
 }
 
@@ -83,6 +93,8 @@ internal fun CommentDetailsView(
 private fun CommentDetailsViewContent(
     state: CommentDetailsState,
     modifier: Modifier = Modifier,
+    onReplyLoaded: ((Comment) -> Unit)? = null,
+    onReactionClick: ((Reaction, Comment) -> Unit)? = null,
 ) {
     LazyColumn(
         verticalArrangement = spacedBy(16.dp),
@@ -94,6 +106,11 @@ private fun CommentDetailsViewContent(
                 CommentContent(
                     comment = comment,
                     commentReplies = state.replies,
+                    listReactions = state.reactions,
+                    userReactions = (state.userReactions ?: emptyMap()).toImmutableMap(),
+                    reactionsEnabled = state.user != null,
+                    onReplyLoaded = onReplyLoaded,
+                    onReactionClick = onReactionClick,
                 )
             }
         }
@@ -140,6 +157,11 @@ private fun CommentDetailsViewContent(
 private fun CommentContent(
     comment: Comment,
     commentReplies: ImmutableList<Comment>?,
+    listReactions: ImmutableMap<Int, ReactionsSummary>?,
+    reactionsEnabled: Boolean,
+    userReactions: ImmutableMap<Int, Reaction?>,
+    onReplyLoaded: ((Comment) -> Unit)? = null,
+    onReactionClick: ((Reaction, Comment) -> Unit)? = null,
 ) {
     var isCollapsed by remember { mutableStateOf(true) }
 
@@ -177,6 +199,11 @@ private fun CommentContent(
                     for (reply in replies) {
                         CommentReplyCard(
                             comment = reply,
+                            reactions = listReactions?.get(reply.id),
+                            userReaction = userReactions[reply.id],
+                            onRequestReactions = { onReplyLoaded?.invoke(reply) },
+                            reactionsEnabled = reactionsEnabled,
+                            onReactionClick = { onReactionClick?.invoke(it, reply) },
                             modifier = Modifier.fillMaxWidth(),
                         )
                     }

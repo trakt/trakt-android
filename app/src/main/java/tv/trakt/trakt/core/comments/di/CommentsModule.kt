@@ -54,9 +54,12 @@ internal val commentsModule = module {
 
     viewModel { (comment: Comment) ->
         CommentDetailsViewModel(
+            appContext = androidApplication(),
             comment = comment,
             sessionManager = get(),
-            getRepliseUseCase = get(),
+            getRepliesUseCase = get(),
+            getCommentReactionsUseCase = get(),
+            loadUserReactionsUseCase = get(),
         )
     }
 }

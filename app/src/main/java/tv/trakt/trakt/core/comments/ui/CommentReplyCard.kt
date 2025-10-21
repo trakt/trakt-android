@@ -1,8 +1,11 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package tv.trakt.trakt.core.comments.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,13 +17,17 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults.cardColors
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,7 +40,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.font.FontWeight.Companion.W700
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,12 +49,17 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
+import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.helpers.extensions.highlightMentions
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.reactions.Reaction
+import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
+import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryChip
+import tv.trakt.trakt.core.reactions.ui.ReactionsToolTip
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -56,9 +67,20 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun CommentReplyCard(
     comment: Comment,
     modifier: Modifier = Modifier,
+    reactions: ReactionsSummary? = null,
+    reactionsEnabled: Boolean = true,
+    userReaction: Reaction? = null,
     maxLines: Int = 10,
     onClick: (() -> Unit)? = null,
+    onRequestReactions: (() -> Unit)? = null,
+    onReactionClick: ((Reaction) -> Unit)? = null,
 ) {
+    LaunchedEffect(comment.id) {
+        if (reactions == null) {
+            onRequestReactions?.invoke()
+        }
+    }
+
     Card(
         onClick = onClick ?: {},
         modifier = modifier,
@@ -70,6 +92,10 @@ internal fun CommentReplyCard(
             CommentReplyCardContent(
                 comment = comment,
                 maxLines = maxLines,
+                reactions = reactions,
+                reactionsEnabled = reactionsEnabled,
+                userReaction = userReaction,
+                onReactionClick = onReactionClick,
             )
         },
     )
@@ -78,8 +104,12 @@ internal fun CommentReplyCard(
 @Composable
 private fun CommentReplyCardContent(
     comment: Comment,
+    reactions: ReactionsSummary?,
+    reactionsEnabled: Boolean,
+    userReaction: Reaction?,
     maxLines: Int,
     modifier: Modifier = Modifier,
+    onReactionClick: ((Reaction) -> Unit)? = null,
 ) {
     var isCollapsed by remember { mutableStateOf(true) }
     var showSpoilers by remember { mutableStateOf(false) }
@@ -124,6 +154,19 @@ private fun CommentReplyCardContent(
                             .padding(top = 12.dp)
                             .padding(horizontal = 16.dp)
                     },
+                ),
+        )
+
+        CommentFooter(
+            reactions = reactions,
+            reactionsEnabled = reactionsEnabled,
+            userReaction = userReaction,
+            onReactionClick = onReactionClick,
+            modifier = Modifier
+                .padding(
+                    top = 16.dp,
+                    start = 16.dp,
+                    end = 20.dp,
                 ),
         )
     }
@@ -219,47 +262,44 @@ private fun CommentHeader(
 
 @Composable
 private fun CommentFooter(
-    comment: Comment,
+    reactions: ReactionsSummary?,
+    reactionsEnabled: Boolean,
+    userReaction: Reaction?,
     modifier: Modifier = Modifier,
+    onReactionClick: ((Reaction) -> Unit)? = null,
 ) {
+    val scope = rememberCoroutineScope()
+    val tooltipState = rememberTooltipState(isPersistent = true)
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy(16.dp, Alignment.End),
+        horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 2.dp),
     ) {
-//        Row(
-//            horizontalArrangement = spacedBy(3.dp),
-//            verticalAlignment = Alignment.CenterVertically,
-//        ) {
-//            Icon(
-//                painter = painterResource(R.drawable.ic_thumb_up),
-//                contentDescription = "Likes",
-//                tint = TraktTheme.colors.textSecondary,
-//                modifier = Modifier.size(16.dp),
-//            )
-//            Text(
-//                text = stringResource(R.string.button_text_comment_likes, comment.likes).uppercase(),
-//                style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
-//                color = TraktTheme.colors.textSecondary,
-//            )
-//        }
-
-        Row(
-            horizontalArrangement = spacedBy(4.dp),
-            verticalAlignment = Alignment.CenterVertically,
+        ReactionsToolTip(
+            state = tooltipState,
+            reactions = reactions,
+            userReaction = userReaction,
+            onReactionClick = onReactionClick,
         ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_comment),
-                contentDescription = "Replies",
-                tint = TraktTheme.colors.textPrimary,
-                modifier = Modifier.size(18.dp),
-            )
-            Text(
-                text = "${comment.replies}",
-                style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
-                color = TraktTheme.colors.textPrimary,
+            ReactionsSummaryChip(
+                reactions = reactions,
+                userReaction = userReaction,
+                enabled = reactionsEnabled,
+                modifier = Modifier.onClick {
+                    if (reactions == null || !reactionsEnabled) {
+                        return@onClick
+                    }
+                    scope.launch {
+                        if (tooltipState.isVisible) {
+                            tooltipState.dismiss()
+                        } else {
+                            tooltipState.show()
+                        }
+                    }
+                },
             )
         }
     }
