@@ -32,7 +32,7 @@ import tv.trakt.trakt.ui.theme.VerticalImageAspectRatio
 internal fun VerticalMediaSkeletonCard(
     modifier: Modifier = Modifier,
     width: Dp = Dp.Unspecified,
-    corner: Dp = 12.dp,
+    corner: Dp = 15.dp,
     chipRatio: Float = 0.33F,
     shimmer: Boolean = true,
     chip: Boolean = true,

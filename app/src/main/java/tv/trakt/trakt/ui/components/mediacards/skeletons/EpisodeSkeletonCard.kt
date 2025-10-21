@@ -57,7 +57,7 @@ internal fun EpisodeSkeletonCard(
             modifier = Modifier
                 .width(TraktTheme.size.horizontalMediaCardSize)
                 .aspectRatio(HorizontalImageAspectRatio),
-            shape = RoundedCornerShape(12.dp),
+            shape = RoundedCornerShape(15.dp),
             colors = cardColors(
                 containerColor = shimmerTransition,
             ),

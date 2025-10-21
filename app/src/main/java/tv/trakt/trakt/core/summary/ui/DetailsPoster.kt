@@ -42,7 +42,7 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.VerticalImageAspectRatio
 
-private val cardShape = RoundedCornerShape(20.dp)
+private val cardShape = RoundedCornerShape(24.dp)
 
 @Composable
 internal fun DetailsPoster(

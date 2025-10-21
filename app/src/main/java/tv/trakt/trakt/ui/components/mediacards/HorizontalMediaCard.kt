@@ -68,7 +68,7 @@ internal fun HorizontalMediaCard(
     contentImageUrl: String? = null,
     paletteColor: Color? = null,
     width: Dp = TraktTheme.size.horizontalMediaCardSize,
-    corner: Dp = 12.dp,
+    corner: Dp = 15.dp,
     more: Boolean = true,
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,

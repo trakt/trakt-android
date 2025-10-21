@@ -65,7 +65,7 @@ internal fun VerticalMediaCard(
     imageUrl: String?,
     modifier: Modifier = Modifier,
     width: Dp = Dp.Unspecified,
-    corner: Dp = 12.dp,
+    corner: Dp = 15.dp,
     enabled: Boolean = true,
     more: Boolean = true,
     blackWhite: Boolean = false,
@@ -151,7 +151,7 @@ internal fun VerticalMediaCard(
                             contentScale = ContentScale.Fit,
                             colorFilter = ColorFilter.tint(TraktTheme.colors.placeholderContent),
                             modifier = Modifier
-                                .padding(5.dp)
+                                .padding(6.dp)
                                 .align(Alignment.Center),
                         )
                         Icon(

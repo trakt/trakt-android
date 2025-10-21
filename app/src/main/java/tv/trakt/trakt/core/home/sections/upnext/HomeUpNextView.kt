@@ -312,9 +312,7 @@ private fun ContentListItem(
             item.progress.nextEpisode.images?.getScreenshotUrl()
                 ?: item.show.images?.getFanartUrl(),
         cardContent = {
-            Row(
-                horizontalArrangement = spacedBy(4.dp),
-            ) {
+            Row {
                 val runtime = item.progress.nextEpisode.runtime?.inWholeMinutes
 
                 val remainingEpisodes = remember(item.progress.completed, item.progress.aired) {
