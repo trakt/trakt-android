@@ -60,7 +60,7 @@ import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryChip
-import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryToolTip
+import tv.trakt.trakt.core.reactions.ui.ReactionsToolTip
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -273,7 +273,7 @@ private fun CommentFooter(
             .fillMaxWidth()
             .padding(horizontal = 2.dp),
     ) {
-        ReactionsSummaryToolTip(
+        ReactionsToolTip(
             state = tooltipState,
             reactions = reactions,
             userReaction = userReaction,

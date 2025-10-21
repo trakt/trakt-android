@@ -17,7 +17,6 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.EmojiSupportMatch
 import androidx.compose.ui.text.PlatformTextStyle
@@ -50,10 +49,7 @@ fun ReactionsStrip(
             tint = TraktTheme.colors.textPrimary,
             modifier = Modifier
                 .onClick(onClick = onCloseClick ?: {})
-                .size(18.dp)
-                .graphicsLayer {
-                    translationY = 1.dp.toPx()
-                },
+                .size(20.dp),
         )
 
         for (reaction in Reaction.entries) {
