@@ -81,7 +81,11 @@ internal fun ShowCommentsView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        onMoreClick = onMoreClick,
+        onMoreClick = {
+            if (!state.items.isNullOrEmpty()) {
+                onMoreClick?.invoke()
+            }
+        },
         onCommentLoaded = {
             viewModel.loadReactions(it.id)
         },
