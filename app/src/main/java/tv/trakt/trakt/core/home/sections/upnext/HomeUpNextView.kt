@@ -59,7 +59,6 @@ import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EpisodeProgressBar
-import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
@@ -317,22 +316,18 @@ private fun ContentListItem(
                 horizontalArrangement = spacedBy(4.dp),
             ) {
                 val runtime = item.progress.nextEpisode.runtime?.inWholeMinutes
-                if (runtime != null) {
-                    InfoChip(
-                        text = runtime.durationFormat(),
-                        containerColor = TraktTheme.colors.chipContainerOnContent,
-                    )
-                }
 
                 val remainingEpisodes = remember(item.progress.completed, item.progress.aired) {
                     item.progress.remainingEpisodes
                 }
+
                 val remainingPercent = remember(item.progress.completed, item.progress.aired) {
                     item.progress.remainingPercent
                 }
 
                 EpisodeProgressBar(
-                    startText = stringResource(R.string.tag_text_remaining_episodes, remainingEpisodes),
+                    startText = runtime?.durationFormat(),
+                    endText = stringResource(R.string.tag_text_remaining_episodes, remainingEpisodes),
                     progress = remainingPercent,
                 )
             }

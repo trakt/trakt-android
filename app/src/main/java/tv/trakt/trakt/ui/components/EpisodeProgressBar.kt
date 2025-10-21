@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import tv.trakt.trakt.common.ui.theme.colors.Shade930
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -29,7 +30,7 @@ internal fun EpisodeProgressBar(
     textStyle: TextStyle = TraktTheme.typography.meta,
     containerColor: Color = TraktTheme.colors.chipContainerOnContent,
     progress: Float = 0f,
-    trackColor: Color = TraktTheme.colors.accent,
+    trackColor: Color = Shade930,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -41,13 +42,13 @@ internal fun EpisodeProgressBar(
             )
             .padding(
                 horizontal = 9.dp,
-                vertical = 5.dp,
+                vertical = 4.dp,
             )
             .drawWithContent {
                 if (progress > 0.1F) {
                     val cornerRadius = CornerRadius(size.width * 2)
-                    val xOffset = (0).dp.toPx()
-                    val yOffset = (4).dp.toPx()
+                    val xOffset = (0.25).dp.toPx()
+                    val yOffset = (5).dp.toPx()
 
                     drawRoundRect(
                         topLeft = Offset(xOffset, yOffset),
