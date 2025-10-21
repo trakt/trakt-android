@@ -2,6 +2,8 @@
 
 package tv.trakt.trakt.core.summary.shows.features.seasons.ui
 
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -72,13 +74,13 @@ internal fun ShowEpisodesList(
         }
     }
 
-    Column(
-        horizontalAlignment = Alignment.Start,
-        modifier = modifier,
-    ) {
-        if (isLoading) {
+    Crossfade(
+        targetState = isLoading,
+        animationSpec = tween(200),
+    ) { loading ->
+        if (loading) {
             LazyRow(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(TraktTheme.spacing.mainRowSpace),
                 contentPadding = contentPadding,
             ) {
@@ -91,7 +93,7 @@ internal fun ShowEpisodesList(
                 state = listState,
                 horizontalArrangement = Arrangement.spacedBy(TraktTheme.spacing.mainRowSpace),
                 contentPadding = contentPadding,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = modifier.fillMaxWidth(),
             ) {
                 items(
                     items = episodes,
