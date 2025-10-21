@@ -4,6 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
+import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.people.data.remote.PeopleRemoteDataSource
@@ -13,6 +14,16 @@ internal class GetBirthdayPeopleUseCase(
     private val remoteSource: PeopleRemoteDataSource,
     private val localSource: SearchPeopleLocalDataSource,
 ) {
+    suspend fun isLocalPeopleValid(): Boolean {
+        val currentMonth = nowUtc().monthValue
+
+        val peopleMonth = getLocalPeople()
+            .firstOrNull()
+            ?.birthday?.monthValue
+
+        return peopleMonth == currentMonth
+    }
+
     suspend fun getLocalPeople(): ImmutableList<Person> {
         val today = nowLocalDay()
         return localSource.getPeople()

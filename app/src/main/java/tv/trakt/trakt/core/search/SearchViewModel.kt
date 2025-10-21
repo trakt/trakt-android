@@ -84,6 +84,7 @@ internal class SearchViewModel(
         initialJob = viewModelScope.launch {
             try {
 //                loadRecentlySearched()
+                loadLocalPopularSearches()
                 loadPopularSearches()
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -172,21 +173,17 @@ internal class SearchViewModel(
 //        }
 //    }
 
-    private suspend fun loadPopularSearches() {
+    private suspend fun loadLocalPopularSearches() {
         return coroutineScope {
             if (searchingState.value || screenState.value == State.SEARCH_RESULTS) {
                 return@coroutineScope
             }
 
             val showsAsync = async {
-                getPopularSearchesUseCase.getLocalShows().ifEmpty {
-                    getPopularSearchesUseCase.getShows()
-                }
+                getPopularSearchesUseCase.getLocalShows()
             }
             val moviesAsync = async {
-                getPopularSearchesUseCase.getLocalMovies().ifEmpty {
-                    getPopularSearchesUseCase.getMovies()
-                }
+                getPopularSearchesUseCase.getLocalMovies()
             }
             val peopleAsync = async {
                 var localPeople = getBirthdayPeopleUseCase.getLocalPeople()
@@ -195,8 +192,90 @@ internal class SearchViewModel(
                     // Clear it to fetch fresh.
                     localPeople = emptyList<Person>().toImmutableList()
                 }
-                localPeople.ifEmpty {
+                localPeople
+            }
+
+            val filter = inputState.value.filter
+            val shows = when (filter) {
+                in arrayOf(MEDIA, SHOWS) -> showsAsync.await()
+                else -> emptyList()
+            }
+            val movies = when (filter) {
+                in arrayOf(MEDIA, MOVIES) -> moviesAsync.await()
+                else -> emptyList()
+            }
+            val people = when (filter) {
+                in arrayOf(PEOPLE) -> peopleAsync.await()
+                else -> emptyList()
+            }
+
+            val results = when (filter) {
+                PEOPLE -> {
+                    SearchResult(
+                        items = people
+                            .asyncMap {
+                                SearchItem.Person(
+                                    rank = 0,
+                                    person = it,
+                                    showBirthday = true,
+                                )
+                            }
+                            .toImmutableList(),
+                    )
+                }
+                else -> {
+                    SearchResult(
+                        items = buildList {
+                            val showItems = shows.asyncMap {
+                                SearchItem.Show(
+                                    rank = it.rank.toLong(),
+                                    show = it.show,
+                                )
+                            }
+                            val movieItems = movies.asyncMap {
+                                SearchItem.Movie(
+                                    rank = it.rank.toLong(),
+                                    movie = it.movie,
+                                )
+                            }
+                            addAll(showItems)
+                            addAll(movieItems)
+                        }
+                            .sortedByDescending { it.rank }
+                            .toImmutableList(),
+                    )
+                }
+            }
+
+            popularResultState.update { results }
+        }
+    }
+
+    private suspend fun loadPopularSearches() {
+        return coroutineScope {
+            if (searchingState.value || screenState.value == State.SEARCH_RESULTS) {
+                return@coroutineScope
+            }
+
+            val showsAsync = async {
+                if (!getPopularSearchesUseCase.isLocalShowsValid()) {
+                    getPopularSearchesUseCase.getShows()
+                } else {
+                    getPopularSearchesUseCase.getLocalShows()
+                }
+            }
+            val moviesAsync = async {
+                if (!getPopularSearchesUseCase.isLocalMoviesValid()) {
+                    getPopularSearchesUseCase.getMovies()
+                } else {
+                    getPopularSearchesUseCase.getLocalMovies()
+                }
+            }
+            val peopleAsync = async {
+                if (!getBirthdayPeopleUseCase.isLocalPeopleValid()) {
                     getBirthdayPeopleUseCase.getPeople()
+                } else {
+                    getBirthdayPeopleUseCase.getLocalPeople()
                 }
             }
 
@@ -270,7 +349,7 @@ internal class SearchViewModel(
                 initialJob = viewModelScope.launch {
                     try {
 //                        loadRecentlySearched()
-                        loadPopularSearches()
+                        loadLocalPopularSearches()
                     } catch (error: Exception) {
                         error.rethrowCancellation {
                             errorState.update { error }

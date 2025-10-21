@@ -11,7 +11,6 @@ import tv.trakt.trakt.core.search.data.local.model.PopularShowEntity
 import tv.trakt.trakt.core.search.data.local.model.create
 import tv.trakt.trakt.core.search.data.local.popular.PopularSearchLocalDataSource
 import tv.trakt.trakt.core.search.data.remote.SearchRemoteDataSource
-import java.time.Instant
 import java.time.temporal.ChronoUnit.HOURS
 
 private const val TRENDING_SEARCH_LIMIT = 36
@@ -20,24 +19,24 @@ internal class GetPopularSearchUseCase(
     private val remoteSource: SearchRemoteDataSource,
     private val localSource: PopularSearchLocalDataSource,
 ) {
-    suspend fun getLocalShows(): List<PopularShowEntity> {
-        val localShows = localSource.getShows()
-        val timestamp = localShows.firstOrNull()?.createdAt?.toInstant()
+    suspend fun isLocalShowsValid(): Boolean {
+        val local = localSource.getShows()
+        val timestamp = local.firstOrNull()?.createdAt?.toInstant()
+        return timestamp?.plus(12, HOURS)?.isAfter(nowUtcInstant()) == true
+    }
 
-        return when {
-            isTimestampValid(timestamp) -> localShows
-            else -> emptyList()
-        }
+    suspend fun isLocalMoviesValid(): Boolean {
+        val local = localSource.getMovies()
+        val timestamp = local.firstOrNull()?.createdAt?.toInstant()
+        return timestamp?.plus(12, HOURS)?.isAfter(nowUtcInstant()) == true
+    }
+
+    suspend fun getLocalShows(): List<PopularShowEntity> {
+        return localSource.getShows()
     }
 
     suspend fun getLocalMovies(): List<PopularMovieEntity> {
-        val localMovies = localSource.getMovies()
-        val timestamp = localMovies.firstOrNull()?.createdAt?.toInstant()
-
-        return when {
-            isTimestampValid(timestamp) -> localMovies
-            else -> emptyList()
-        }
+        return localSource.getMovies()
     }
 
     suspend fun getShows(): List<PopularShowEntity> {
@@ -66,9 +65,5 @@ internal class GetPopularSearchUseCase(
         }.also {
             localSource.setMovies(it)
         }
-    }
-
-    private fun isTimestampValid(timestamp: Instant?): Boolean {
-        return timestamp?.plus(12, HOURS)?.isAfter(nowUtcInstant()) == true
     }
 }
