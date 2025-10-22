@@ -385,7 +385,7 @@ private fun DetailsHeader(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .graphicsLayer {
-                            translationY = 8.dp.toPx()
+                            translationY = 6.dp.toPx()
                         },
                 ) {
                     Row(

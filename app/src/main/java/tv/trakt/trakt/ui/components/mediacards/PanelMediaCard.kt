@@ -73,7 +73,7 @@ internal fun PanelMediaCard(
     contentImageUrl: String?,
     containerImageUrl: String?,
     modifier: Modifier = Modifier,
-    corner: Dp = 12.dp,
+    corner: Dp = 16.dp,
     shadow: Dp = 0.dp,
     more: Boolean = true,
     containerColor: Color = TraktTheme.colors.panelCardContainer,
@@ -90,7 +90,7 @@ internal fun PanelMediaCard(
         verticalAlignment = Alignment.Top,
         modifier = modifier
             .dropShadow(
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(corner),
                 shadow = Shadow(
                     radius = shadow,
                     color = Shade940,
@@ -120,16 +120,18 @@ internal fun PanelMediaCard(
                 contentDescription = "Card image",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
+                    .padding(start = 4.dp)
+                    .padding(vertical = 4.dp)
                     .aspectRatio(VerticalImageAspectRatio)
                     .width(TraktTheme.size.verticalMediumMediaCardSize)
-                    .clip(RoundedCornerShape(corner))
+                    .clip(RoundedCornerShape(corner - 2.dp))
                     .onClick(onClick = onImageClick ?: {}),
             )
         } else {
             Box(
                 modifier = Modifier
-                    .padding(start = 8.dp)
-                    .padding(vertical = 8.dp)
+                    .padding(start = 4.dp)
+                    .padding(vertical = 4.dp)
                     .aspectRatio(VerticalImageAspectRatio)
                     .width(TraktTheme.size.verticalMediumMediaCardSize)
                     .clip(RoundedCornerShape(corner - 2.dp))
@@ -141,7 +143,7 @@ internal fun PanelMediaCard(
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
                     colorFilter = ColorFilter.tint(TraktTheme.colors.placeholderContent),
-                    modifier = Modifier.padding(4.dp),
+                    modifier = Modifier.padding(5.dp),
                 )
                 Icon(
                     painter = painterResource(R.drawable.ic_placeholder_trakt),
@@ -224,7 +226,7 @@ internal fun PanelMediaCard(
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
-                    .padding(vertical = 12.dp)
+                    .padding(vertical = 10.dp)
                     .padding(start = 12.dp)
                     .padding(end = 12.dp)
                     .fillMaxSize(),
@@ -273,7 +275,7 @@ internal fun PanelMediaCard(
                             modifier = Modifier
                                 .padding(top = 2.dp)
                                 .graphicsLayer {
-                                    translationX = 4.dp.toPx()
+                                    translationX = 5.dp.toPx()
                                 }
                                 .size(14.dp)
                                 .onClick(onClick = onLongClick ?: {}),

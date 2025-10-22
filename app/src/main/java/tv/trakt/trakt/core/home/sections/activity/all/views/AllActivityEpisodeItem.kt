@@ -12,8 +12,8 @@ import androidx.compose.ui.Alignment.Companion.Bottom
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Images.Size.THUMB
@@ -55,13 +55,15 @@ internal fun AllActivityEpisodeItem(
                     Icon(
                         painter = painterResource(R.drawable.ic_calendar_check),
                         contentDescription = null,
-                        tint = TraktTheme.colors.textSecondary,
-                        modifier = Modifier.Companion.size(14.dp),
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier.size(14.dp),
                     )
                     Text(
                         text = item.activityAt.toLocal().relativePastDateString(),
-                        color = TraktTheme.colors.textSecondary,
-                        style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
+                        color = TraktTheme.colors.textPrimary,
+                        style = TraktTheme.typography.cardSubtitle.copy(
+                            fontWeight = W500,
+                        ),
                     )
                 }
 

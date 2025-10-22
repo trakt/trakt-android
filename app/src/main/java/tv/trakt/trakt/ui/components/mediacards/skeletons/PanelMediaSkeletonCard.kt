@@ -41,7 +41,7 @@ import tv.trakt.trakt.ui.theme.VerticalImageAspectRatio
 @Composable
 internal fun PanelMediaSkeletonCard(
     modifier: Modifier = Modifier,
-    corner: Dp = 12.dp,
+    corner: Dp = 16.dp,
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "infiniteTransition")
     val shimmerTransition by infiniteTransition

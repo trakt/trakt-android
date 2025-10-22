@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.home.sections.activity.all.views
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.CircleShape
@@ -31,9 +32,10 @@ internal fun AllActivityUserChip(
         modifier = modifier.sizeIn(maxHeight = 26.dp),
     ) {
         InfoChip(
-            text = user.displayName,
+            text = " ${user.displayName}",
             containerColor = TraktTheme.colors.chipContainerOnContent,
-            endPadding = 24.dp,
+            endPadding = 26.dp,
+            modifier = Modifier.fillMaxHeight(),
         )
 
         val borderColor = remember(user.isAnyVip) {
