@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.user
+package tv.trakt.trakt.core.user.features.profile
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -7,10 +7,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -36,12 +41,11 @@ internal class ProfileViewModel(
 
     private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val profileState = MutableStateFlow(initialState.profile)
-    private val signedInState = MutableStateFlow(initialState.isSignedIn)
+    private val userState = MutableStateFlow(initialState.user)
 
     init {
         loadBackground()
-        observeProfile()
+        observeUser()
         observeAuthCode()
     }
 
@@ -56,14 +60,20 @@ internal class ProfileViewModel(
         }
     }
 
-    private fun observeProfile() {
+    @OptIn(FlowPreview::class)
+    private fun observeUser() {
         viewModelScope.launch {
-            sessionManager.observeProfile()
-                .collect { profile ->
-                    signedInState.update { (profile != null) }
-                    profileState.update { profile }
-                }
+            userState.update {
+                sessionManager.getProfile()
+            }
         }
+        sessionManager.observeProfile()
+            .distinctUntilChanged()
+            .debounce(200)
+            .onEach { user ->
+                userState.update { user }
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun loadBackground() {
@@ -107,14 +117,12 @@ internal class ProfileViewModel(
     val state: StateFlow<ProfileState> = combine(
         backgroundState,
         loadingState,
-        profileState,
-        signedInState,
-    ) { s1, s2, s3, s4 ->
+        userState,
+    ) { s1, s2, s3 ->
         ProfileState(
             backgroundUrl = s1,
             loading = s2,
-            profile = s3,
-            isSignedIn = s4,
+            user = s3,
         )
     }.stateIn(
         scope = viewModelScope,

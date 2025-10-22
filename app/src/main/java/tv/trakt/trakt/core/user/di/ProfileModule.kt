@@ -5,19 +5,23 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
-import tv.trakt.trakt.core.user.ProfileViewModel
 import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserListsStorage
 import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserProgressStorage
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserWatchlistStorage
+import tv.trakt.trakt.core.user.data.local.favorites.UserFavoritesLocalDataSource
+import tv.trakt.trakt.core.user.data.local.favorites.UserFavoritesStorage
 import tv.trakt.trakt.core.user.data.local.reactions.UserReactionsLocalDataSource
 import tv.trakt.trakt.core.user.data.local.reactions.UserReactionsStorage
 import tv.trakt.trakt.core.user.data.remote.UserApiClient
 import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
+import tv.trakt.trakt.core.user.features.profile.ProfileViewModel
+import tv.trakt.trakt.core.user.features.profile.sections.favorites.ProfileFavoritesViewModel
 import tv.trakt.trakt.core.user.usecase.GetUserProfileUseCase
 import tv.trakt.trakt.core.user.usecase.LogoutUserUseCase
+import tv.trakt.trakt.core.user.usecase.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.core.user.usecase.lists.LoadUserListsUseCase
 import tv.trakt.trakt.core.user.usecase.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
@@ -47,6 +51,10 @@ internal val profileDataModule = module {
     single<UserReactionsLocalDataSource> {
         UserReactionsStorage()
     }
+
+    single<UserFavoritesLocalDataSource> {
+        UserFavoritesStorage()
+    }
 }
 
 internal val profileModule = module {
@@ -59,6 +67,13 @@ internal val profileModule = module {
 
     factory {
         LoadUserWatchlistUseCase(
+            remoteSource = get(),
+            localSource = get(),
+        )
+    }
+
+    factory {
+        LoadUserFavoritesUseCase(
             remoteSource = get(),
             localSource = get(),
         )
@@ -113,6 +128,15 @@ internal val profileModule = module {
             authorizePreferences = get(named(AUTH_PREFERENCES)),
             getProfileUseCase = get(),
             logoutUseCase = get(),
+        )
+    }
+
+    viewModel {
+        ProfileFavoritesViewModel(
+            sessionManager = get(),
+            loadFavoritesUseCase = get(),
+            showLocalDataSource = get(),
+            movieLocalDataSource = get(),
         )
     }
 }

@@ -11,6 +11,8 @@ import tv.trakt.trakt.common.networking.CalendarShowDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.ListItemDto
 import tv.trakt.trakt.common.networking.SocialActivityItemDto
+import tv.trakt.trakt.common.networking.SyncFavoriteMovieDto
+import tv.trakt.trakt.common.networking.SyncFavoriteShowDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
 import tv.trakt.trakt.common.networking.WatchedMovieDto
@@ -99,6 +101,40 @@ internal class UserApiClient(
             ratings = null,
             startDate = null,
             endDate = null,
+        )
+
+        return response.body()
+    }
+
+    override suspend fun getFavoriteShows(
+        page: Int?,
+        limit: Int?,
+        extended: String?,
+        sort: String?,
+    ): List<SyncFavoriteShowDto> {
+        val response = usersApi.getUsersFavoritesShows(
+            id = "me",
+            extended = extended,
+            page = page,
+            limit = 99999,
+            sort = sort ?: "rank",
+        )
+
+        return response.body()
+    }
+
+    override suspend fun getFavoriteMovies(
+        page: Int?,
+        limit: Int?,
+        extended: String?,
+        sort: String?,
+    ): List<SyncFavoriteMovieDto> {
+        val response = usersApi.getUsersFavoritesMovies(
+            id = "me",
+            extended = extended,
+            page = page,
+            limit = 99999,
+            sort = sort ?: "rank",
         )
 
         return response.body()

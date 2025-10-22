@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
-import tv.trakt.trakt.core.user.ProfileScreen
+import tv.trakt.trakt.core.user.features.profile.ProfileScreen
 
 @Serializable
 internal data object ProfileDestination

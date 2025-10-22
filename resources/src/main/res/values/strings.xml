@@ -25,7 +25,7 @@
     <string name="button_label_browse_shows">Browse Shows</string>
     <string name="page_title_shows">Shows</string>
     <string name="page_title_home">Home</string>
-    <string name="button_text_logout">Log out of Trakt</string>
+    <string name="button_text_logout">Log out</string>
     <string name="list_title_coming_soon">Coming Soon</string>
     <string name="list_title_related_movies">Related Movies</string>
     <string name="list_title_related_shows">Related Shows</string>
@@ -171,5 +171,8 @@
     <string name="text_watched_count">Watched: %d</string>
     <string name="text_job_acting">Acting</string>
     <string name="text_comments_reactions">Comments Reactions</string>
+    <string name="page_title_profile">Profile</string>
+    <string name="page_title_favorites">Favorites</string>
+    <string name="warning_prompt_logout">Are you sure you want to log out?</string>
 
 </resources>

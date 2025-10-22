@@ -7,6 +7,8 @@ import tv.trakt.trakt.common.networking.CalendarShowDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.ListItemDto
 import tv.trakt.trakt.common.networking.SocialActivityItemDto
+import tv.trakt.trakt.common.networking.SyncFavoriteMovieDto
+import tv.trakt.trakt.common.networking.SyncFavoriteShowDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
 import tv.trakt.trakt.common.networking.WatchedMovieDto
@@ -20,6 +22,20 @@ internal interface UserRemoteDataSource {
     suspend fun getWatchedMovies(): List<WatchedMovieDto>
 
     suspend fun getWatchedShows(): List<WatchedShowDto>
+
+    suspend fun getFavoriteShows(
+        page: Int? = null,
+        limit: Int? = null,
+        extended: String? = null,
+        sort: String? = null,
+    ): List<SyncFavoriteShowDto>
+
+    suspend fun getFavoriteMovies(
+        page: Int? = null,
+        limit: Int? = null,
+        extended: String? = null,
+        sort: String? = null,
+    ): List<SyncFavoriteMovieDto>
 
     suspend fun getWatchlist(
         page: Int? = null,
