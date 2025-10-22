@@ -14,8 +14,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
@@ -27,7 +29,6 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.search.model.SearchFilter
 import tv.trakt.trakt.core.search.model.SearchItem
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -68,27 +69,48 @@ private fun ShowGridItem(
     VerticalMediaCard(
         title = item.show.title,
         imageUrl = item.show.images?.getPosterUrl(),
-        chipContent = {
-            if (currentFilter == SearchFilter.MEDIA) {
-                InfoChip(
-                    text = item.show.released?.year?.toString()
-                        ?: stringResource(R.string.translated_value_type_show),
-                    iconPainter = painterResource(R.drawable.ic_shows_off),
-                    iconPadding = 2.dp,
-                )
-            } else {
-                Row(
-                    horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpace),
-                ) {
-                    item.show.released?.let {
-                        InfoChip(
-                            text = it.year.toString(),
-                        )
-                    }
-                    InfoChip(
-                        text = stringResource(R.string.tag_text_number_of_episodes, item.show.airedEpisodes),
+        chipContent = { modifier ->
+            Row(
+                verticalAlignment = CenterVertically,
+                horizontalArrangement = spacedBy(4.dp),
+                modifier = modifier,
+            ) {
+                if (currentFilter == SearchFilter.MEDIA) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_shows_off),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.chipContent,
+                        modifier = Modifier
+                            .size(13.dp),
                     )
                 }
+
+                val airedEpisodes = stringResource(
+                    R.string.tag_text_number_of_episodes,
+                    item.show.airedEpisodes,
+                )
+
+                val footerText = remember {
+                    buildString {
+                        item.show.released?.let {
+                            append(it.year.toString())
+                        } ?: append("TBA")
+
+                        if (item.show.airedEpisodes > 0) {
+                            append(" • ")
+                            append(airedEpisodes)
+                        }
+                    }
+                }
+
+                Text(
+                    text = footerText,
+                    style = TraktTheme.typography.cardTitle,
+                    color = TraktTheme.colors.textPrimary,
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
             }
         },
         onClick = { onShowClick(item.show) },
@@ -116,32 +138,40 @@ private fun MovieGridItem(
     VerticalMediaCard(
         title = item.movie.title,
         imageUrl = item.movie.images?.getPosterUrl(),
-        chipContent = {
-            if (currentFilter == SearchFilter.MEDIA) {
-                InfoChip(
-                    text = item.movie.released?.year?.toString()
-                        ?: stringResource(R.string.translated_value_type_movie),
-                    iconPainter = painterResource(R.drawable.ic_movies_off),
-                    iconPadding = 1.dp,
-                )
-            } else {
-                Row(
-                    horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpace),
-                ) {
-                    item.movie.released?.let {
-                        InfoChip(
-                            text = it.year.toString(),
-                        )
-                    }
-                    item.movie.runtime?.inWholeMinutes?.let {
-                        val runtimeString = remember(item.movie.runtime) {
-                            it.durationFormat()
-                        }
-                        InfoChip(
-                            text = runtimeString,
-                        )
-                    }
+        chipContent = { modifier ->
+            Row(
+                verticalAlignment = CenterVertically,
+                horizontalArrangement = spacedBy(4.dp),
+                modifier = modifier,
+            ) {
+                if (currentFilter == SearchFilter.MEDIA) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_movies_off),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.chipContent,
+                        modifier = Modifier
+                            .size(13.dp)
+                            .graphicsLayer {
+                                translationY = -(0.25).dp.toPx()
+                            },
+                    )
                 }
+
+                Text(
+                    text = remember {
+                        val runtime = item.movie.runtime?.inWholeMinutes
+                        if (runtime != null) {
+                            "${item.movie.year} • ${runtime.durationFormat()}"
+                        } else {
+                            item.movie.year.toString()
+                        }
+                    },
+                    style = TraktTheme.typography.cardTitle,
+                    color = TraktTheme.colors.textPrimary,
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
             }
         },
         onClick = { onMovieClick(item.movie) },
@@ -160,7 +190,7 @@ private fun PersonGridItem(
         title = item.person.name,
         more = false,
         imageUrl = item.person.images?.getHeadshotUrl(),
-        chipContent = {
+        chipContent = { modifier ->
             Column(
                 verticalArrangement = spacedBy(1.dp),
             ) {

@@ -86,67 +86,71 @@ internal fun DetailsSentiment(
             )
             .padding(20.dp),
     ) {
-        Row(
-            horizontalArrangement = spacedBy(16.dp, Alignment.Start),
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_thumb_up_fill),
-                contentDescription = null,
-                tint = Purple100,
-            )
-            Column(
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = spacedBy(6.dp),
+        if (sentiments.good.isNotEmpty()) {
+            Row(
+                horizontalArrangement = spacedBy(16.dp, Alignment.Start),
             ) {
-                for (sentiment in sentiments.good) {
-                    Row(
-                        horizontalArrangement = spacedBy(6.dp, Alignment.Start),
-                        verticalAlignment = Alignment.Top,
-                    ) {
-                        Text(
-                            text = "•",
-                            color = Purple100,
-                            style = TraktTheme.typography.paragraphSmall,
-                        )
+                Icon(
+                    painter = painterResource(R.drawable.ic_thumb_up_fill),
+                    contentDescription = null,
+                    tint = Purple100,
+                )
+                Column(
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = spacedBy(6.dp),
+                ) {
+                    for (sentiment in sentiments.good) {
+                        Row(
+                            horizontalArrangement = spacedBy(6.dp, Alignment.Start),
+                            verticalAlignment = Alignment.Top,
+                        ) {
+                            Text(
+                                text = "•",
+                                color = Purple100,
+                                style = TraktTheme.typography.paragraphSmall,
+                            )
 
-                        Text(
-                            text = sentiment.sentiment.replaceFirstChar { it.titlecase() },
-                            color = Purple100,
-                            style = TraktTheme.typography.paragraphSmall,
-                        )
+                            Text(
+                                text = sentiment.sentiment.replaceFirstChar { it.titlecase() },
+                                color = Purple100,
+                                style = TraktTheme.typography.paragraphSmall,
+                            )
+                        }
                     }
                 }
             }
         }
 
-        Row(
-            horizontalArrangement = spacedBy(16.dp, Alignment.Start),
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_thumb_down_fill),
-                contentDescription = null,
-                tint = Red100,
-            )
-            Column(
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = spacedBy(6.dp),
+        if (sentiments.bad.isNotEmpty()) {
+            Row(
+                horizontalArrangement = spacedBy(16.dp, Alignment.Start),
             ) {
-                for (sentiment in sentiments.bad) {
-                    Row(
-                        horizontalArrangement = spacedBy(6.dp, Alignment.Start),
-                        verticalAlignment = Alignment.Top,
-                    ) {
-                        Text(
-                            text = "•",
-                            color = Red100,
-                            style = TraktTheme.typography.paragraphSmall,
-                        )
+                Icon(
+                    painter = painterResource(R.drawable.ic_thumb_down_fill),
+                    contentDescription = null,
+                    tint = Red100,
+                )
+                Column(
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = spacedBy(6.dp),
+                ) {
+                    for (sentiment in sentiments.bad) {
+                        Row(
+                            horizontalArrangement = spacedBy(6.dp, Alignment.Start),
+                            verticalAlignment = Alignment.Top,
+                        ) {
+                            Text(
+                                text = "•",
+                                color = Red100,
+                                style = TraktTheme.typography.paragraphSmall,
+                            )
 
-                        Text(
-                            text = sentiment.sentiment.replaceFirstChar { it.titlecase() },
-                            color = Red100,
-                            style = TraktTheme.typography.paragraphSmall,
-                        )
+                            Text(
+                                text = sentiment.sentiment.replaceFirstChar { it.titlecase() },
+                                color = Red100,
+                                style = TraktTheme.typography.paragraphSmall,
+                            )
+                        }
                     }
                 }
             }
@@ -200,7 +204,6 @@ private fun Preview() {
                         Sentiment("Stylish"),
                     ).toImmutableList(),
                     bad = listOf(
-                        Sentiment("Slow"),
                         Sentiment("Boring"),
                         Sentiment("Confusing"),
                     ).toImmutableList(),
@@ -218,6 +221,32 @@ private fun Preview() {
 )
 @Composable
 private fun Preview2() {
+    TraktTheme {
+        val previewHandler = AsyncImagePreviewHandler {
+            ColorImage(Color.Blue.toArgb())
+        }
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            DetailsSentiment(
+                modifier = Modifier.padding(16.dp),
+                sentiments = Sentiments(
+                    good = listOf(
+                        Sentiment("lorem ipsum dolor sit amet consectetur adipiscing elit"),
+                        Sentiment("Stylish"),
+                    ).toImmutableList(),
+                ),
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalCoilApi::class)
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+    widthDp = 300,
+)
+@Composable
+private fun Preview3() {
     TraktTheme {
         DetailsSentimentSkeleton(
             modifier = Modifier.padding(16.dp),

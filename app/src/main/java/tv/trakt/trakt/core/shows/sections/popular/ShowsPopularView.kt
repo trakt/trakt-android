@@ -32,6 +32,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -46,7 +48,6 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
@@ -175,7 +176,7 @@ private fun ContentLoadingList(
             .alpha(if (visible) 1F else 0F),
     ) {
         items(count = 6) {
-            VerticalMediaSkeletonCard(chipRatio = 0.75F)
+            VerticalMediaSkeletonCard(chipRatio = 0.66F)
         }
     }
 }
@@ -233,21 +234,34 @@ private fun ContentListItem(
         imageUrl = item.images?.getPosterUrl(),
         onClick = onClick,
         onLongClick = onLongClick,
-        chipContent = {
-            Row(
-                horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpace),
-            ) {
-                item.released?.let {
-                    InfoChip(
-                        text = it.year.toString(),
-                    )
-                }
-                if (item.airedEpisodes > 0) {
-                    InfoChip(
-                        text = stringResource(R.string.tag_text_number_of_episodes, item.airedEpisodes),
-                    )
+        chipContent = { modifier ->
+            val airedEpisodes = stringResource(
+                R.string.tag_text_number_of_episodes,
+                item.airedEpisodes,
+            )
+
+            val footerText = remember {
+                buildString {
+                    item.released?.let {
+                        append(it.year.toString())
+                    } ?: append("TBA")
+
+                    if (item.airedEpisodes > 0) {
+                        append(" • ")
+                        append(airedEpisodes)
+                    }
                 }
             }
+
+            Text(
+                text = footerText,
+                style = TraktTheme.typography.cardTitle,
+                color = TraktTheme.colors.textPrimary,
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = modifier,
+            )
         },
         modifier = modifier,
     )

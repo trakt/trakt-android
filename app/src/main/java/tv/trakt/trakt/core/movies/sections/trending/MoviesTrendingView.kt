@@ -32,6 +32,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -48,7 +50,6 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.movies.model.WatchersMovie
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
@@ -235,11 +236,27 @@ private fun ContentListItem(
         imageUrl = item.movie.images?.getPosterUrl(),
         onClick = onClick,
         onLongClick = onLongClick,
-        chipContent = {
-            InfoChip(
-                text = item.watchers.thousandsFormat(),
-                iconPainter = painterResource(R.drawable.ic_person_trakt),
-            )
+        chipContent = { modifier ->
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = spacedBy(4.dp),
+                modifier = modifier,
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_person_trakt_2),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.chipContent,
+                    modifier = Modifier.size(12.dp),
+                )
+                Text(
+                    text = item.watchers.thousandsFormat(),
+                    style = TraktTheme.typography.cardTitle,
+                    color = TraktTheme.colors.textPrimary,
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
         },
         modifier = modifier,
     )

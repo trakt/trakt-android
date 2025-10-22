@@ -35,6 +35,8 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -56,7 +58,6 @@ import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies.sheets.WatchlistMovieSheet
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
@@ -234,7 +235,11 @@ private fun ContentLoadingList(
             .alpha(if (visible) 1F else 0F),
     ) {
         items(count = 6) {
-            VerticalMediaSkeletonCard(chipRatio = 0.75F)
+            VerticalMediaSkeletonCard(
+                chipRatio = 0.66F,
+                modifier = Modifier
+                    .padding(bottom = 2.dp),
+            )
         }
     }
 }
@@ -291,28 +296,29 @@ private fun ContentListItem(
                 horizontalArrangement = SpaceBetween,
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Row(
-                    horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpace),
-                    modifier = Modifier.weight(1F, fill = false),
-                ) {
-                    InfoChip(
-                        text = item.movie.year.toString(),
-                    )
-                    item.movie.runtime?.inWholeMinutes?.let {
-                        val runtimeString = remember(item.movie.runtime) {
-                            it.durationFormat()
-                        }
-                        InfoChip(
-                            text = runtimeString,
-                        )
+                val footerText = remember {
+                    val runtime = item.movie.runtime?.inWholeMinutes
+                    if (runtime != null) {
+                        "${item.movie.year} • ${runtime.durationFormat()}"
+                    } else {
+                        item.movie.year.toString()
                     }
                 }
+                Text(
+                    text = footerText,
+                    style = TraktTheme.typography.cardTitle,
+                    color = TraktTheme.colors.textPrimary,
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1F, fill = false),
+                )
 
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .padding(start = 8.dp, end = 2.dp)
-                        .size(19.dp),
+                        .size(18.dp),
                 ) {
                     if (item.loading) {
                         FilmProgressIndicator(size = 18.dp)
@@ -322,7 +328,7 @@ private fun ContentListItem(
                             contentDescription = null,
                             tint = TraktTheme.colors.accent,
                             modifier = Modifier
-                                .size(19.dp)
+                                .size(18.dp)
                                 .onClick { onCheckClick() },
                         )
                     }

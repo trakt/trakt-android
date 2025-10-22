@@ -371,6 +371,7 @@ private fun ContentList(
                 else -> {
                     items(count = 12) { index ->
                         VerticalMediaSkeletonCard(
+                            chipRatio = 0.66F,
                             modifier = Modifier
                                 .padding(bottom = 6.dp)
                                 .animateItem(

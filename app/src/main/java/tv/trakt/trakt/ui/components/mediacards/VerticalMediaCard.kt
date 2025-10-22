@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -69,7 +70,7 @@ internal fun VerticalMediaCard(
     enabled: Boolean = true,
     more: Boolean = true,
     blackWhite: Boolean = false,
-    chipContent: @Composable () -> Unit = {},
+    chipContent: @Composable (Modifier) -> Unit = {},
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
 ) {
@@ -228,7 +229,10 @@ internal fun VerticalMediaCard(
                 }
             },
         )
-        chipContent()
+
+        chipContent(
+            Modifier.heightIn(min = 16.dp),
+        )
     }
 }
 

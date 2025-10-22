@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,6 +27,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
@@ -43,7 +46,6 @@ import tv.trakt.trakt.core.summary.people.ListLoadingView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.FilterChip
 import tv.trakt.trakt.ui.components.FilterChipGroup
-import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -136,22 +138,24 @@ internal fun MoviesCreditsList(
                                         imageUrl = item.images?.getPosterUrl(),
                                         onClick = { onClick?.invoke(item) },
                                         onLongClick = { onLongClick?.invoke(item) },
-                                        chipContent = {
-                                            Row(
-                                                horizontalArrangement = Arrangement.spacedBy(
-                                                    TraktTheme.spacing.chipsSpace,
-                                                ),
-                                            ) {
-                                                item.released?.let {
-                                                    InfoChip(text = it.year.toString())
-                                                }
-                                                item.runtime?.inWholeMinutes?.let {
-                                                    val runtimeString = remember(item.runtime) {
-                                                        it.durationFormat()
-                                                    }
-                                                    InfoChip(text = runtimeString)
+                                        chipContent = { modifier ->
+                                            val footerText = remember {
+                                                val runtime = item.runtime?.inWholeMinutes
+                                                if (runtime != null) {
+                                                    "${item.released?.year ?: item.year} • ${runtime.durationFormat()}"
+                                                } else {
+                                                    "${item.released?.year ?: item.year}"
                                                 }
                                             }
+                                            Text(
+                                                text = footerText,
+                                                style = TraktTheme.typography.cardTitle,
+                                                color = TraktTheme.colors.textPrimary,
+                                                textAlign = TextAlign.Center,
+                                                maxLines = 1,
+                                                overflow = TextOverflow.Ellipsis,
+                                                modifier = modifier,
+                                            )
                                         },
                                         modifier = Modifier.animateItem(
                                             fadeInSpec = null,

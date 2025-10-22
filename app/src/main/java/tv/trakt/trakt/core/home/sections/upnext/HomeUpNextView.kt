@@ -363,7 +363,7 @@ private fun ContentListItem(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .padding(start = 12.dp, end = 4.dp)
-                        .size(19.dp),
+                        .size(18.dp),
                 ) {
                     if (item.loading) {
                         FilmProgressIndicator(size = 18.dp)
@@ -373,7 +373,7 @@ private fun ContentListItem(
                             contentDescription = null,
                             tint = TraktTheme.colors.accent,
                             modifier = Modifier
-                                .size(19.dp)
+                                .size(18.dp)
                                 .onClick { onCheckClick() },
                         )
                     }
