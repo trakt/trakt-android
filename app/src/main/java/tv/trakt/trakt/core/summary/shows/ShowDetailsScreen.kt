@@ -65,6 +65,7 @@ import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
+import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.summary.shows.features.actors.ShowActorsView
 import tv.trakt.trakt.core.summary.shows.features.comments.ShowCommentsView
@@ -94,7 +95,7 @@ internal fun ShowDetailsScreen(
     viewModel: ShowDetailsViewModel,
     onShowClick: ((Show) -> Unit),
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
-    onCommentsClick: ((Show) -> Unit),
+    onCommentsClick: ((Show, CommentsFilter) -> Unit),
     onListClick: ((Show, CustomList) -> Unit),
     onPersonClick: ((Show, Person) -> Unit),
     onNavigateBack: () -> Unit,
@@ -157,9 +158,9 @@ internal fun ShowDetailsScreen(
         onMoreClick = {
             contextSheet = state.show
         },
-        onMoreCommentsClick = {
+        onMoreCommentsClick = { filter ->
             state.show?.let {
-                onCommentsClick(it)
+                onCommentsClick(it, filter)
             }
         },
         onBackClick = onNavigateBack,
@@ -271,7 +272,7 @@ internal fun ShowDetailsContent(
     onWatchlistClick: (() -> Unit)? = null,
     onHistoryClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
-    onMoreCommentsClick: (() -> Unit)? = null,
+    onMoreCommentsClick: ((CommentsFilter) -> Unit)? = null,
     onPersonClick: ((Person) -> Unit)? = null,
     onListClick: ((CustomList) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,

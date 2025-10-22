@@ -3,6 +3,7 @@
 package tv.trakt.trakt.core.reactions.ui
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -23,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -83,6 +85,12 @@ private fun ReactionsToolTipContent(
         label = "alpha",
     )
 
+    val animatedTranslation by animateIntAsState(
+        targetValue = if (summaryVisible) 0 else 6,
+        animationSpec = tween(200),
+        label = "translation",
+    )
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = spacedBy(0.dp),
@@ -114,6 +122,11 @@ private fun ReactionsToolTipContent(
                     start = 6.dp,
                     end = 6.dp,
                 )
+                .graphicsLayer {
+                    if (summaryVisible) {
+                        translationY = animatedTranslation.dp.toPx()
+                    }
+                }
                 .onClick(onClick = onDismiss),
         )
 

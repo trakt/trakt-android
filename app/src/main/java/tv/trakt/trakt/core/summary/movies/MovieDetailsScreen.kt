@@ -63,6 +63,7 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
+import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.summary.movies.features.actors.MovieActorsView
 import tv.trakt.trakt.core.summary.movies.features.comments.MovieCommentsView
@@ -90,7 +91,7 @@ internal fun MovieDetailsScreen(
     modifier: Modifier = Modifier,
     viewModel: MovieDetailsViewModel,
     onMovieClick: ((Movie) -> Unit),
-    onCommentsClick: ((Movie) -> Unit),
+    onCommentsClick: ((Movie, CommentsFilter) -> Unit),
     onListClick: ((Movie, CustomList) -> Unit),
     onPersonClick: ((Movie, Person) -> Unit),
     onNavigateBack: () -> Unit,
@@ -134,9 +135,9 @@ internal fun MovieDetailsScreen(
         },
         onListsClick = { listsSheet = state.movie },
         onMoreClick = { contextSheet = state.movie },
-        onMoreCommentsClick = {
+        onMoreCommentsClick = { filter ->
             state.movie?.let {
-                onCommentsClick(it)
+                onCommentsClick(it, filter)
             }
         },
         onHistoryClick = { historySheet = it },
@@ -227,7 +228,7 @@ internal fun MovieDetailsContent(
     onListsClick: (() -> Unit)? = null,
     onHistoryClick: ((HomeActivityItem.MovieItem) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
-    onMoreCommentsClick: (() -> Unit)? = null,
+    onMoreCommentsClick: ((CommentsFilter) -> Unit)? = null,
     onPersonClick: ((Person) -> Unit)? = null,
     onListClick: ((CustomList) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,

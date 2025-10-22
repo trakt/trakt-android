@@ -14,6 +14,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -43,6 +44,10 @@ internal fun FilterChip(
     text: String,
     modifier: Modifier = Modifier,
     leadingIcon: @Composable (() -> Unit)? = null,
+    paddingHorizontal: PaddingValues = PaddingValues(
+        start = 9.dp,
+        end = 13.dp,
+    ),
     onClick: () -> Unit = {},
 ) {
     Row(
@@ -68,10 +73,7 @@ internal fun FilterChip(
                     Color.Transparent
                 },
             )
-            .padding(
-                start = 9.dp,
-                end = 13.dp,
-            ),
+            .padding(paddingHorizontal),
     ) {
         AnimatedVisibility(
             visible = selected && leadingIcon != null,

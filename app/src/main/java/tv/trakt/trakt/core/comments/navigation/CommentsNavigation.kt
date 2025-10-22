@@ -9,6 +9,7 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.comments.CommentsScreen
+import tv.trakt.trakt.core.comments.model.CommentsFilter
 
 @Serializable
 internal data class CommentsDestination(
@@ -17,6 +18,7 @@ internal data class CommentsDestination(
     val mediaImage: String?,
     val mediaEpisode: Int? = null,
     val mediaSeason: Int? = null,
+    val initialFilter: CommentsFilter,
 )
 
 internal fun NavGraphBuilder.commentsScreen(onNavigateBack: () -> Unit) {
@@ -32,12 +34,14 @@ internal fun NavController.navigateToComments(
     mediaId: TraktId,
     mediaType: MediaType,
     mediaImage: String?,
+    filter: CommentsFilter,
 ) {
     navigate(
         route = CommentsDestination(
             mediaId = mediaId.value,
             mediaType = mediaType.name,
             mediaImage = mediaImage,
+            initialFilter = filter,
         ),
     )
 }
@@ -46,6 +50,7 @@ internal fun NavController.navigateToComments(
     showId: TraktId,
     showImage: String?,
     seasonEpisode: SeasonEpisode,
+    filter: CommentsFilter,
 ) {
     navigate(
         route = CommentsDestination(
@@ -54,6 +59,7 @@ internal fun NavController.navigateToComments(
             mediaImage = showImage,
             mediaEpisode = seasonEpisode.episode,
             mediaSeason = seasonEpisode.season,
+            initialFilter = filter,
         ),
     )
 }

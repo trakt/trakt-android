@@ -9,6 +9,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.summary.episodes.EpisodeDetailsScreen
 
 @Serializable
@@ -22,7 +23,7 @@ internal data class EpisodeDetailsDestination(
 internal fun NavGraphBuilder.episodeDetailsScreen(
     onShowClick: ((Show) -> Unit),
     onEpisodeCLick: ((TraktId, Episode) -> Unit),
-    onCommentsClick: ((Show, Episode) -> Unit),
+    onCommentsClick: ((Show, Episode, CommentsFilter) -> Unit),
     onPersonClick: ((Show, Episode, Person) -> Unit),
     onNavigateBack: () -> Unit,
 ) {

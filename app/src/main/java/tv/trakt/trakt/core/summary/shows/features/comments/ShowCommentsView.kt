@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,6 +21,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -57,9 +59,12 @@ import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.core.comments.details.CommentDetailsSheet
+import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.ui.CommentCard
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.FilterChip
+import tv.trakt.trakt.ui.components.FilterChipGroup
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -70,7 +75,7 @@ internal fun ShowCommentsView(
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
-    onMoreClick: (() -> Unit)?,
+    onMoreClick: ((CommentsFilter) -> Unit)?,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -83,7 +88,7 @@ internal fun ShowCommentsView(
         contentPadding = contentPadding,
         onMoreClick = {
             if (!state.items.isNullOrEmpty()) {
-                onMoreClick?.invoke()
+                onMoreClick?.invoke(state.filter)
             }
         },
         onCommentLoaded = {
@@ -91,6 +96,9 @@ internal fun ShowCommentsView(
         },
         onCommentClick = {
             commentSheet = it
+        },
+        onFilterClick = {
+            viewModel.setFilter(it)
         },
         onReactionClick = { reaction, comment ->
             viewModel.setReaction(reaction, comment.id)
@@ -114,6 +122,7 @@ private fun ShowCommentsContent(
     onCommentLoaded: ((Comment) -> Unit)? = null,
     onCommentClick: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
+    onFilterClick: ((CommentsFilter) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
 ) {
     Column(
@@ -146,6 +155,16 @@ private fun ShowCommentsContent(
                         },
                 )
             }
+        }
+
+        if (!state.items.isNullOrEmpty() || state.loading.isLoading || state.user != null) {
+            ContentFilters(
+                selectedFilter = state.filter,
+                headerPadding = headerPadding,
+                onFilterClick = onFilterClick,
+            )
+        } else {
+            Spacer(modifier = Modifier.height(16.dp))
         }
 
         Crossfade(
@@ -229,6 +248,40 @@ private fun ContentList(
                 modifier = Modifier
                     .height(TraktTheme.size.commentCardSize)
                     .aspectRatio(HorizontalImageAspectRatio),
+            )
+        }
+    }
+}
+
+@Composable
+private fun ContentFilters(
+    headerPadding: PaddingValues,
+    selectedFilter: CommentsFilter,
+    onFilterClick: ((CommentsFilter) -> Unit)? = null,
+) {
+    FilterChipGroup(
+        paddingHorizontal = headerPadding,
+        paddingVertical = PaddingValues(
+            bottom = 3.dp,
+        ),
+    ) {
+        for (filter in CommentsFilter.entries) {
+            FilterChip(
+                selected = selectedFilter == filter,
+                text = stringResource(filter.displayRes),
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(filter.iconRes),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier
+                            .size(FilterChipDefaults.IconSize)
+                            .graphicsLayer {
+                                translationX = (-1).dp.toPx()
+                            },
+                    )
+                },
+                onClick = { onFilterClick?.invoke(filter) },
             )
         }
     }

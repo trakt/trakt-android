@@ -30,6 +30,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
+import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.reactions.data.work.DeleteReactionWorker
 import tv.trakt.trakt.core.reactions.data.work.PostReactionWorker
 import tv.trakt.trakt.core.summary.episodes.features.comments.usecases.GetEpisodeCommentsUseCase
@@ -48,6 +49,7 @@ internal class EpisodeCommentsViewModel(
     private val initialState = EpisodeCommentsState()
 
     private val itemsState = MutableStateFlow(initialState.items)
+    private val filterState = MutableStateFlow(initialState.filter)
     private val reactionsState = MutableStateFlow(initialState.reactions)
     private val userReactionsState = MutableStateFlow(initialState.userReactions)
     private val loadingState = MutableStateFlow(initialState.loading)
@@ -71,6 +73,7 @@ internal class EpisodeCommentsViewModel(
                         getCommentsUseCase.getComments(
                             showId = show.ids.trakt,
                             seasonEpisode = episode.seasonEpisode,
+                            filter = filterState.value,
                         )
                     }
 
@@ -136,6 +139,15 @@ internal class EpisodeCommentsViewModel(
                 }
             }
         }
+    }
+
+    fun setFilter(filter: CommentsFilter) {
+        if (loadingState.value != DONE || filter == state.value.filter) {
+            return
+        }
+
+        filterState.update { filter }
+        loadData()
     }
 
     fun setReaction(
@@ -234,6 +246,7 @@ internal class EpisodeCommentsViewModel(
     @Suppress("UNCHECKED_CAST")
     val state: StateFlow<EpisodeCommentsState> = combine(
         itemsState,
+        filterState,
         reactionsState,
         userReactionsState,
         loadingState,
@@ -242,11 +255,12 @@ internal class EpisodeCommentsViewModel(
     ) { state ->
         EpisodeCommentsState(
             items = state[0] as ImmutableList<Comment>?,
-            reactions = state[1] as ImmutableMap<Int, ReactionsSummary>?,
-            userReactions = state[2] as ImmutableMap<Int, Reaction?>?,
-            loading = state[3] as LoadingState,
-            user = state[4] as User?,
-            error = state[5] as Exception?,
+            filter = state[1] as CommentsFilter,
+            reactions = state[2] as ImmutableMap<Int, ReactionsSummary>?,
+            userReactions = state[3] as ImmutableMap<Int, Reaction?>?,
+            loading = state[4] as LoadingState,
+            user = state[5] as User?,
+            error = state[6] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

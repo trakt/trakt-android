@@ -62,6 +62,7 @@ import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
+import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.summary.episodes.features.actors.EpisodeActorsView
 import tv.trakt.trakt.core.summary.episodes.features.comments.EpisodeCommentsView
@@ -86,7 +87,7 @@ internal fun EpisodeDetailsScreen(
     viewModel: EpisodeDetailsViewModel,
     onShowClick: ((Show) -> Unit),
     onEpisodeClick: ((TraktId, Episode) -> Unit),
-    onCommentsClick: ((Show, Episode) -> Unit),
+    onCommentsClick: ((Show, Episode, CommentsFilter) -> Unit),
     onPersonClick: ((Show, Episode, Person) -> Unit),
     onNavigateBack: () -> Unit,
 ) {
@@ -126,19 +127,18 @@ internal fun EpisodeDetailsScreen(
         onMoreClick = {
             contextSheet = true
         },
-        onMoreCommentsClick = {
+        onMoreCommentsClick = { filter ->
             val show = state.show
             val episode = state.episode
-
             if (show != null && episode != null) {
-                onCommentsClick(show, episode)
+                onCommentsClick(show, episode, filter)
             }
         },
         onPersonClick = {
-            state.show?.let { show ->
-                state.episode?.let { episode ->
-                    onPersonClick(show, episode, it)
-                }
+            val show = state.show
+            val episode = state.episode
+            if (show != null && episode != null) {
+                onPersonClick(show, episode, it)
             }
         },
         onBackClick = onNavigateBack,
@@ -197,7 +197,7 @@ internal fun EpisodeDetailsContent(
     onTrackClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
-    onMoreCommentsClick: (() -> Unit)? = null,
+    onMoreCommentsClick: ((CommentsFilter) -> Unit)? = null,
     onHistoryClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
     onPersonClick: ((Person) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,

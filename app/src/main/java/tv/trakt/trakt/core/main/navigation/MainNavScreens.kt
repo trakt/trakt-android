@@ -128,11 +128,12 @@ internal fun NavGraphBuilder.showsScreens(controller: NavHostController) {
         )
         showDetailsScreen(
             onNavigateToShow = { navigateToShow(it) },
-            onNavigateToComments = {
+            onNavigateToComments = { show, filter ->
                 navigateToComments(
-                    mediaId = it.ids.trakt,
+                    mediaId = show.ids.trakt,
                     mediaType = SHOW,
-                    mediaImage = it.images?.getFanartUrl(),
+                    mediaImage = show.images?.getFanartUrl(),
+                    filter = filter,
                 )
             },
             onNavigateToList = { show, list ->
@@ -169,11 +170,12 @@ internal fun NavGraphBuilder.episodesScreens(controller: NavHostController) {
             onEpisodeCLick = { showId, episode ->
                 navigateToEpisode(showId, episode)
             },
-            onCommentsClick = { show, episode ->
+            onCommentsClick = { show, episode, filter ->
                 navigateToComments(
                     showId = show.ids.trakt,
                     showImage = show.images?.getFanartUrl(),
                     seasonEpisode = episode.seasonEpisode,
+                    filter = filter,
                 )
             },
             onPersonClick = { show, episode, person ->
@@ -216,11 +218,12 @@ internal fun NavGraphBuilder.moviesScreens(controller: NavHostController) {
         )
         movieDetailsScreen(
             onNavigateToMovie = { navigateToMovie(it) },
-            onNavigateToComments = {
+            onNavigateToComments = { movie, filter ->
                 navigateToComments(
-                    mediaId = it.ids.trakt,
+                    mediaId = movie.ids.trakt,
                     mediaType = MOVIE,
-                    mediaImage = it.images?.getFanartUrl(),
+                    mediaImage = movie.images?.getFanartUrl(),
+                    filter = filter,
                 )
             },
             onNavigateToList = { movie, list ->

@@ -29,6 +29,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
+import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.reactions.data.work.DeleteReactionWorker
 import tv.trakt.trakt.core.reactions.data.work.PostReactionWorker
 import tv.trakt.trakt.core.summary.shows.features.comments.usecases.GetShowCommentsUseCase
@@ -46,6 +47,7 @@ internal class ShowCommentsViewModel(
     private val initialState = ShowCommentsState()
 
     private val itemsState = MutableStateFlow(initialState.items)
+    private val filterState = MutableStateFlow(initialState.filter)
     private val reactionsState = MutableStateFlow(initialState.reactions)
     private val userReactionsState = MutableStateFlow(initialState.userReactions)
     private val loadingState = MutableStateFlow(initialState.loading)
@@ -66,7 +68,10 @@ internal class ShowCommentsViewModel(
 
                 coroutineScope {
                     val commentsAsync = async {
-                        getCommentsUseCase.getComments(show.ids.trakt)
+                        getCommentsUseCase.getComments(
+                            showId = show.ids.trakt,
+                            filter = filterState.value,
+                        )
                     }
 
                     val userReactionsAsync = async {
@@ -131,6 +136,15 @@ internal class ShowCommentsViewModel(
                 }
             }
         }
+    }
+
+    fun setFilter(filter: CommentsFilter) {
+        if (loadingState.value != DONE || filter == state.value.filter) {
+            return
+        }
+
+        filterState.update { filter }
+        loadData()
     }
 
     fun setReaction(
@@ -235,6 +249,7 @@ internal class ShowCommentsViewModel(
     @Suppress("UNCHECKED_CAST")
     val state: StateFlow<ShowCommentsState> = combine(
         itemsState,
+        filterState,
         reactionsState,
         userReactionsState,
         loadingState,
@@ -243,11 +258,12 @@ internal class ShowCommentsViewModel(
     ) { state ->
         ShowCommentsState(
             items = state[0] as ImmutableList<Comment>?,
-            reactions = state[1] as ImmutableMap<Int, ReactionsSummary>?,
-            userReactions = state[2] as ImmutableMap<Int, Reaction?>?,
-            loading = state[3] as LoadingState,
-            user = state[4] as User?,
-            error = state[5] as Exception?,
+            filter = state[1] as CommentsFilter,
+            reactions = state[2] as ImmutableMap<Int, ReactionsSummary>?,
+            userReactions = state[3] as ImmutableMap<Int, Reaction?>?,
+            loading = state[4] as LoadingState,
+            user = state[5] as User?,
+            error = state[6] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -53,18 +53,18 @@ internal class CommentsViewModel(
     private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
     private val loadUserReactionsUseCase: LoadUserReactionsUseCase,
 ) : ViewModel() {
+    private val destination = savedStateHandle.toRoute<CommentsDestination>()
     private val initialState = CommentsState()
 
     private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val itemsState = MutableStateFlow(initialState.items)
-    private val filterState = MutableStateFlow(initialState.filter)
+    private val filterState = MutableStateFlow(destination.initialFilter)
     private val reactionsState = MutableStateFlow(initialState.reactions)
     private val userReactionsState = MutableStateFlow(initialState.userReactions)
     private val userState = MutableStateFlow(initialState.user)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
-    private val destination = savedStateHandle.toRoute<CommentsDestination>()
     private val mediaId = destination.mediaId.toTraktId()
     private val mediaType = MediaType.valueOf(destination.mediaType)
 
