@@ -125,6 +125,8 @@ object PreviewData {
         isPrivate = false,
         images = null,
         streamings = null,
+        about = "About John Doe: John is a movie enthusiast and avid TV show watcher. " +
+            "He enjoys exploring different genres and sharing his reviews with the community.",
     )
 
     val episode1 = Episode(

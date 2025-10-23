@@ -30,10 +30,12 @@ import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MEDIA
 import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MOVIES
 import tv.trakt.trakt.core.lists.model.ListsMediaFilter.SHOWS
 import tv.trakt.trakt.core.user.features.profile.model.FavoriteItem
+import tv.trakt.trakt.core.user.features.profile.sections.favorites.filters.GetFavoritesFilterUseCase
 import tv.trakt.trakt.core.user.usecase.lists.LoadUserFavoritesUseCase
 
 internal class ProfileFavoritesViewModel(
     private val loadFavoritesUseCase: LoadUserFavoritesUseCase,
+    private val getFilterUseCase: GetFavoritesFilterUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
@@ -102,8 +104,7 @@ internal class ProfileFavoritesViewModel(
     }
 
     private suspend fun loadFilter(): ListsMediaFilter {
-//        val filter = getFilterUseCase.getFilter()
-        val filter = ListsMediaFilter.MEDIA
+        val filter = getFilterUseCase.getFilter()
         filterState.update { filter }
         return filter
     }
@@ -124,11 +125,11 @@ internal class ProfileFavoritesViewModel(
         if (newFilter == filterState.value || loadingState.value.isLoading) {
             return
         }
-//        viewModelScope.launch {
-//            getFilterUseCase.setFilter(newFilter)
-//            loadFilter()
-//            loadData()
-//        }
+        viewModelScope.launch {
+            getFilterUseCase.setFilter(newFilter)
+            loadFilter()
+            loadData()
+        }
     }
 
     fun navigateToShow(show: Show) {

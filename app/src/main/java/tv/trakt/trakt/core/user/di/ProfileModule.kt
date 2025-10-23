@@ -1,5 +1,16 @@
 package tv.trakt.trakt.core.user.di
 
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
+import androidx.datastore.preferences.SharedPreferencesMigration
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.preferencesDataStoreFile
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -19,6 +30,7 @@ import tv.trakt.trakt.core.user.data.remote.UserApiClient
 import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 import tv.trakt.trakt.core.user.features.profile.ProfileViewModel
 import tv.trakt.trakt.core.user.features.profile.sections.favorites.ProfileFavoritesViewModel
+import tv.trakt.trakt.core.user.features.profile.sections.favorites.filters.GetFavoritesFilterUseCase
 import tv.trakt.trakt.core.user.usecase.GetUserProfileUseCase
 import tv.trakt.trakt.core.user.usecase.LogoutUserUseCase
 import tv.trakt.trakt.core.user.usecase.lists.LoadUserFavoritesUseCase
@@ -26,6 +38,8 @@ import tv.trakt.trakt.core.user.usecase.lists.LoadUserListsUseCase
 import tv.trakt.trakt.core.user.usecase.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.core.user.usecase.reactions.LoadUserReactionsUseCase
+
+internal const val PROFILE_PREFERENCES = "profile_preferences_mobile"
 
 internal val profileDataModule = module {
     single<UserRemoteDataSource> {
@@ -55,6 +69,13 @@ internal val profileDataModule = module {
     single<UserFavoritesLocalDataSource> {
         UserFavoritesStorage()
     }
+
+    single<DataStore<Preferences>>(named(PROFILE_PREFERENCES)) {
+        createStore(
+            context = androidApplication(),
+        )
+    }
+
 }
 
 internal val profileModule = module {
@@ -62,6 +83,12 @@ internal val profileModule = module {
         GetUserProfileUseCase(
             sessionManager = get(),
             remoteSource = get(),
+        )
+    }
+
+    factory {
+        GetFavoritesFilterUseCase(
+            dataStore = get(named(PROFILE_PREFERENCES)),
         )
     }
 
@@ -135,8 +162,20 @@ internal val profileModule = module {
         ProfileFavoritesViewModel(
             sessionManager = get(),
             loadFavoritesUseCase = get(),
+            getFilterUseCase = get(),
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
         )
     }
+}
+
+private fun createStore(context: Context): DataStore<Preferences> {
+    return PreferenceDataStoreFactory.create(
+        corruptionHandler = ReplaceFileCorruptionHandler(
+            produceNewData = { emptyPreferences() },
+        ),
+        migrations = listOf(SharedPreferencesMigration(context, PROFILE_PREFERENCES)),
+        scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
+        produceFile = { context.preferencesDataStoreFile(PROFILE_PREFERENCES) },
+    )
 }

@@ -21,6 +21,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarDuration.Short
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -36,6 +37,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -144,10 +147,7 @@ private fun ProfileScreenContent(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(
-                        bottom = 29.dp,
-                        end = TraktTheme.spacing.mainPageHorizontalSpace,
-                    )
+                    .padding(end = TraktTheme.spacing.mainPageHorizontalSpace)
                     .height(TraktTheme.size.titleBarHeight),
             ) {
                 Row(
@@ -229,6 +229,23 @@ private fun ProfileScreenContent(
             }
 
             if (state.user != null) {
+                if (!state.user.about.isNullOrBlank()) {
+                    Text(
+                        text = state.user.about ?: "",
+                        style = TraktTheme.typography.paragraphSmall,
+                        color = TraktTheme.colors.textSecondary,
+                        maxLines = 5,
+                        textAlign = TextAlign.Center,
+                        overflow = Ellipsis,
+                        modifier = Modifier
+                            .padding(
+                                top = 12.dp,
+                                start = TraktTheme.spacing.mainPageHorizontalSpace,
+                                end = TraktTheme.spacing.mainPageHorizontalSpace,
+                            )
+                    )
+                }
+
                 ProfileFavoritesView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
@@ -238,6 +255,7 @@ private fun ProfileScreenContent(
                     onMovieClick = { },
                     onProfileClick = { },
                     onWatchlistClick = { },
+                    modifier = Modifier.padding(top = 20.dp)
                 )
             }
         }
