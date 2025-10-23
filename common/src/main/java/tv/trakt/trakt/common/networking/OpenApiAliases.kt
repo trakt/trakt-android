@@ -90,7 +90,6 @@ typealias StreamingServiceDto = GetMoviesWatchnow200ResponseValueCableInner
 typealias WatchlistShowDto = GetUsersWatchlistShows200ResponseInner
 typealias WatchlistMovieDto = GetUsersWatchlistMovies200ResponseInner
 typealias WatchlistItemDto = GetUsersWatchlistAll200ResponseInner
-typealias FavoriteItemDto = GetUsersWatchlistAll200ResponseInner
 typealias CalendarShowDto = GetCalendarsShows200ResponseInner
 typealias CalendarMovieDto = GetCalendarsMovies200ResponseInner
 typealias ProgressShowDto = GetSyncProgressUpNextStandard200ResponseInner

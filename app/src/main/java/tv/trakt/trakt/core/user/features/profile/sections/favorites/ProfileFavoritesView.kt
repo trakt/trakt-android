@@ -32,7 +32,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -57,8 +56,8 @@ import tv.trakt.trakt.core.lists.model.ListsMediaFilter
 import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MEDIA
 import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MOVIES
 import tv.trakt.trakt.core.lists.model.ListsMediaFilter.SHOWS
-import tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies.sheets.WatchlistMovieSheet
-import tv.trakt.trakt.core.lists.sections.watchlist.features.context.shows.sheets.WatchlistShowSheet
+import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
+import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.core.user.features.profile.model.FavoriteItem
 import tv.trakt.trakt.core.user.features.profile.sections.favorites.views.FavoriteItemView
 import tv.trakt.trakt.resources.R
@@ -74,12 +73,10 @@ internal fun ProfileFavoritesView(
     viewModel: ProfileFavoritesViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
-    onProfileClick: () -> Unit,
     onShowsClick: () -> Unit,
     onShowClick: (TraktId) -> Unit,
     onMoviesClick: () -> Unit,
     onMovieClick: (TraktId) -> Unit,
-    onWatchlistClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -97,7 +94,7 @@ internal fun ProfileFavoritesView(
         }
     }
 
-    ListWatchlistContent(
+    ProfileFavoritesContent(
         state = state,
         modifier = modifier,
         headerPadding = headerPadding,
@@ -109,40 +106,23 @@ internal fun ProfileFavoritesView(
         onMovieClick = { viewModel.navigateToMovie(it) },
         onShowLongClick = { showContextSheet = it },
         onMovieLongClick = { movieContextSheet = it },
-        onProfileClick = onProfileClick,
-        onWatchlistClick = {
-            if (!state.loading.isLoading) {
-                onWatchlistClick()
-            }
+        onFavoritesClick = {
         },
     )
 
-    WatchlistShowSheet(
-        sheetItem = showContextSheet,
+    ShowContextSheet(
+        show = showContextSheet,
         onDismiss = { showContextSheet = null },
-        onRemoveWatchlist = {
-            viewModel.loadData(ignoreErrors = true)
-        },
-        onAddWatched = {
-            viewModel.loadData(ignoreErrors = true)
-        },
     )
 
-    WatchlistMovieSheet(
-        addLocally = true,
-        sheetItem = movieContextSheet,
+    MovieContextSheet(
+        movie = movieContextSheet,
         onDismiss = { movieContextSheet = null },
-        onRemoveWatchlist = {
-            viewModel.loadData(ignoreErrors = true)
-        },
-        onAddWatched = {
-            viewModel.loadData(ignoreErrors = true)
-        },
     )
 }
 
 @Composable
-internal fun ListWatchlistContent(
+internal fun ProfileFavoritesContent(
     state: ProfileFavoritesState,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
@@ -154,8 +134,7 @@ internal fun ListWatchlistContent(
     onMovieClick: (Movie) -> Unit = {},
     onShowLongClick: (Show) -> Unit = {},
     onMovieLongClick: (Movie) -> Unit = {},
-    onProfileClick: () -> Unit = {},
-    onWatchlistClick: () -> Unit = {},
+    onFavoritesClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -166,7 +145,7 @@ internal fun ListWatchlistContent(
                 .fillMaxWidth()
                 .padding(headerPadding)
                 .onClick(enabled = state.loading == DONE) {
-                    onWatchlistClick()
+                    onFavoritesClick()
                 },
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
@@ -176,18 +155,18 @@ internal fun ListWatchlistContent(
                 subtitle = stringResource(R.string.text_sort_recently_added),
             )
 
-            if (!state.items.isNullOrEmpty() || state.loading != DONE) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_chevron_right),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .size(20.dp)
-                        .graphicsLayer {
-                            translationX = (4.9).dp.toPx()
-                        },
-                )
-            }
+//            if (!state.items.isNullOrEmpty() || state.loading != DONE) {
+//                Icon(
+//                    painter = painterResource(R.drawable.ic_chevron_right),
+//                    contentDescription = null,
+//                    tint = TraktTheme.colors.textPrimary,
+//                    modifier = Modifier
+//                        .size(20.dp)
+//                        .graphicsLayer {
+//                            translationX = (4.9).dp.toPx()
+//                        },
+//                )
+//            }
         }
 
         if (!state.items.isNullOrEmpty() || state.loading.isLoading || state.user != null) {
@@ -229,7 +208,6 @@ internal fun ListWatchlistContent(
                                 filter = state.filter,
                                 onActionClick = {
                                     if (state.user == null) {
-                                        onProfileClick()
                                         return@ContentEmptyView
                                     }
                                     when (it) {
@@ -421,7 +399,7 @@ private fun ContentEmptyView(
 @Composable
 private fun Preview() {
     TraktTheme {
-        ListWatchlistContent(
+        ProfileFavoritesContent(
             state = ProfileFavoritesState(
                 loading = IDLE,
             ),
@@ -437,7 +415,7 @@ private fun Preview() {
 @Composable
 private fun Preview2() {
     TraktTheme {
-        ListWatchlistContent(
+        ProfileFavoritesContent(
             state = ProfileFavoritesState(
                 loading = LOADING,
             ),
@@ -453,7 +431,7 @@ private fun Preview2() {
 @Composable
 private fun Preview3() {
     TraktTheme {
-        ListWatchlistContent(
+        ProfileFavoritesContent(
             state = ProfileFavoritesState(
                 loading = DONE,
                 items = emptyList<FavoriteItem>().toImmutableList(),

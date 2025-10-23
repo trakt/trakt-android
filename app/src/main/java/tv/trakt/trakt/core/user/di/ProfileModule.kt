@@ -31,6 +31,8 @@ import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 import tv.trakt.trakt.core.user.features.profile.ProfileViewModel
 import tv.trakt.trakt.core.user.features.profile.sections.favorites.ProfileFavoritesViewModel
 import tv.trakt.trakt.core.user.features.profile.sections.favorites.filters.GetFavoritesFilterUseCase
+import tv.trakt.trakt.core.user.features.profile.sections.social.ProfileSocialViewModel
+import tv.trakt.trakt.core.user.features.profile.sections.social.usecases.GetSocialFilterUseCase
 import tv.trakt.trakt.core.user.usecase.GetUserProfileUseCase
 import tv.trakt.trakt.core.user.usecase.LogoutUserUseCase
 import tv.trakt.trakt.core.user.usecase.lists.LoadUserFavoritesUseCase
@@ -38,6 +40,7 @@ import tv.trakt.trakt.core.user.usecase.lists.LoadUserListsUseCase
 import tv.trakt.trakt.core.user.usecase.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.core.user.usecase.reactions.LoadUserReactionsUseCase
+import tv.trakt.trakt.core.user.usecase.social.LoadUserSocialUseCase
 
 internal const val PROFILE_PREFERENCES = "profile_preferences_mobile"
 
@@ -75,7 +78,6 @@ internal val profileDataModule = module {
             context = androidApplication(),
         )
     }
-
 }
 
 internal val profileModule = module {
@@ -93,9 +95,21 @@ internal val profileModule = module {
     }
 
     factory {
+        GetSocialFilterUseCase(
+            dataStore = get(named(PROFILE_PREFERENCES)),
+        )
+    }
+
+    factory {
         LoadUserWatchlistUseCase(
             remoteSource = get(),
             localSource = get(),
+        )
+    }
+
+    factory {
+        LoadUserSocialUseCase(
+            remoteSource = get(),
         )
     }
 
@@ -165,6 +179,14 @@ internal val profileModule = module {
             getFilterUseCase = get(),
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
+        )
+    }
+
+    viewModel {
+        ProfileSocialViewModel(
+            sessionManager = get(),
+            loadSocialUseCase = get(),
+            getFilterUseCase = get(),
         )
     }
 }

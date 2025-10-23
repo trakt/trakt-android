@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.user.data.remote
 import org.openapitools.client.apis.CalendarsApi
 import org.openapitools.client.apis.HistoryApi
 import org.openapitools.client.apis.UsersApi
+import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.fromDto
@@ -15,10 +16,12 @@ import tv.trakt.trakt.common.networking.SyncFavoriteMovieDto
 import tv.trakt.trakt.common.networking.SyncFavoriteShowDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
+import tv.trakt.trakt.common.networking.UserCommentsDto
 import tv.trakt.trakt.common.networking.WatchedMovieDto
 import tv.trakt.trakt.common.networking.WatchedShowDto
 import tv.trakt.trakt.common.networking.WatchlistItemDto
 import java.time.LocalDate
+import java.time.ZonedDateTime
 
 internal class UserApiClient(
     private val usersApi: UsersApi,
@@ -303,5 +306,29 @@ internal class UserApiClient(
         )
 
         return response.body()
+    }
+
+    override suspend fun getFollowers(): Map<UserCommentsDto, ZonedDateTime> {
+        val response = usersApi.getUsersFollowers(
+            id = "me",
+            extended = "full,vip",
+        ).body()
+
+        return response.associate {
+            val followedAt = it.followedAt.toZonedDateTime()
+            it.user to followedAt
+        }
+    }
+
+    override suspend fun getFollowing(): Map<UserCommentsDto, ZonedDateTime> {
+        val response = usersApi.getUsersFollowing(
+            id = "me",
+            extended = "full,vip",
+        ).body()
+
+        return response.associate {
+            val followedAt = it.followedAt.toZonedDateTime()
+            it.user to followedAt
+        }
     }
 }

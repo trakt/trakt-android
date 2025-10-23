@@ -171,8 +171,12 @@
     <string name="text_watched_count">Watched: %d</string>
     <string name="text_job_acting">Acting</string>
     <string name="text_comments_reactions">Comments Reactions</string>
+    <string name="text_following">Following</string>
+    <string name="text_followers">Followers</string>
     <string name="page_title_profile">Profile</string>
     <string name="page_title_favorites">Favorites</string>
+    <string name="page_title_about_me">About You</string>
+    <string name="page_title_social">Social</string>
     <string name="warning_prompt_logout">Are you sure you want to log out?</string>
 
 </resources>

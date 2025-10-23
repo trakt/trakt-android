@@ -50,6 +50,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.user.features.profile.sections.favorites.ProfileFavoritesView
+import tv.trakt.trakt.core.user.features.profile.sections.social.ProfileSocialView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.BackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -242,7 +243,7 @@ private fun ProfileScreenContent(
                                 top = 12.dp,
                                 start = TraktTheme.spacing.mainPageHorizontalSpace,
                                 end = TraktTheme.spacing.mainPageHorizontalSpace,
-                            )
+                            ),
                     )
                 }
 
@@ -253,14 +254,20 @@ private fun ProfileScreenContent(
                     onShowClick = { },
                     onMoviesClick = { },
                     onMovieClick = { },
-                    onProfileClick = { },
-                    onWatchlistClick = { },
-                    modifier = Modifier.padding(top = 20.dp)
+                    modifier = Modifier.padding(top = 20.dp),
+                )
+
+                ProfileSocialView(
+                    headerPadding = sectionPadding,
+                    contentPadding = sectionPadding,
+                    modifier = Modifier.padding(top = 32.dp),
                 )
             }
         }
     }
 }
+
+// Previews
 
 @Preview(
     device = "id:pixel_6",

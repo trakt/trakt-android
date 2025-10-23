@@ -11,10 +11,12 @@ import tv.trakt.trakt.common.networking.SyncFavoriteMovieDto
 import tv.trakt.trakt.common.networking.SyncFavoriteShowDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
+import tv.trakt.trakt.common.networking.UserCommentsDto
 import tv.trakt.trakt.common.networking.WatchedMovieDto
 import tv.trakt.trakt.common.networking.WatchedShowDto
 import tv.trakt.trakt.common.networking.WatchlistItemDto
 import java.time.LocalDate
+import java.time.ZonedDateTime
 
 internal interface UserRemoteDataSource {
     suspend fun getProfile(): User
@@ -96,4 +98,8 @@ internal interface UserRemoteDataSource {
         page: Int = 1,
         extended: String,
     ): List<ListItemDto>
+
+    suspend fun getFollowing(): Map<UserCommentsDto, ZonedDateTime>
+
+    suspend fun getFollowers(): Map<UserCommentsDto, ZonedDateTime>
 }
