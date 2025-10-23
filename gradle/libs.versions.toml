@@ -13,7 +13,7 @@ agp = "8.13.0"
 androidxLifecycle = "2.9.4"
 appcompat = "1.7.1"
 coil = "3.3.0"
-composeBom = "2025.10.00"
+composeBom = "2025.10.01"
 composeNavigation = "2.9.5"
 coreKtx = "1.17.0"
 datastore = "1.1.7"
@@ -35,7 +35,7 @@ tvFoundation = "1.0.0-alpha12"
 tvMaterial = "1.0.1"
 youtube-player = "13.0.0"
 inAppReview = "2.0.2"
-workManager = "2.10.5"
+workManager = "2.11.0"
 
 # Testing Libraries
 
