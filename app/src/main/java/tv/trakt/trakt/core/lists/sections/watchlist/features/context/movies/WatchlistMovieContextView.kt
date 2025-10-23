@@ -130,7 +130,7 @@ private fun WatchlistMovieContextViewContent(
 
         Column(
             verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
-            modifier = Modifier.padding(top = 24.dp),
+            modifier = Modifier.padding(top = 20.dp),
         ) {
             val isLoading =
                 state.loadingWatched.isLoading ||

@@ -230,7 +230,7 @@ private fun ActionButtons(
 
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
-        modifier = Modifier.padding(top = 24.dp),
+        modifier = Modifier.padding(top = 20.dp),
     ) {
         if (isReleased) {
             if (state.isWatched && !state.isWatchlist) {

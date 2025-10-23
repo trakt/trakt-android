@@ -7,7 +7,7 @@ import androidx.compose.ui.unit.dp
 internal val Spacing: TraktSpacing = TraktSpacing(
     mainRowSpace = 10.dp,
     mainRowHeaderSpace = 14.dp,
-    mainListVerticalSpace = 16.dp,
+    mainListVerticalSpace = 14.dp,
     mainGridHorizontalSpace = 10.dp,
     mainGridVerticalSpace = 14.dp,
     mainPageHorizontalSpace = 16.dp,

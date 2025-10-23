@@ -124,7 +124,7 @@ internal fun PanelMediaCard(
                     .padding(vertical = 4.dp)
                     .aspectRatio(VerticalImageAspectRatio)
                     .width(TraktTheme.size.verticalMediumMediaCardSize)
-                    .clip(RoundedCornerShape(corner - 2.dp))
+                    .clip(RoundedCornerShape(corner - 3.dp))
                     .onClick(onClick = onImageClick ?: {}),
             )
         } else {
@@ -134,7 +134,7 @@ internal fun PanelMediaCard(
                     .padding(vertical = 4.dp)
                     .aspectRatio(VerticalImageAspectRatio)
                     .width(TraktTheme.size.verticalMediumMediaCardSize)
-                    .clip(RoundedCornerShape(corner - 2.dp))
+                    .clip(RoundedCornerShape(corner - 3.dp))
                     .background(TraktTheme.colors.placeholderContainer)
                     .onClick(onClick = onImageClick ?: {}),
             ) {
@@ -143,7 +143,7 @@ internal fun PanelMediaCard(
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
                     colorFilter = ColorFilter.tint(TraktTheme.colors.placeholderContent),
-                    modifier = Modifier.padding(5.dp),
+                    modifier = Modifier.padding(6.dp),
                 )
                 Icon(
                     painter = painterResource(R.drawable.ic_placeholder_trakt),
@@ -162,10 +162,10 @@ internal fun PanelMediaCard(
                     contentDescription = null,
                     tint = TraktTheme.colors.placeholderContent,
                     modifier = Modifier
-                        .size(32.dp)
+                        .size(38.dp)
                         .align(Alignment.Center)
                         .graphicsLayer {
-                            translationY = 12.dp.toPx()
+                            translationY = 10.dp.toPx()
                         },
                 )
                 Box(
