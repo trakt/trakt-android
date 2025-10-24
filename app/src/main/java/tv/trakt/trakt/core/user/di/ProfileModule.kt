@@ -32,6 +32,7 @@ import tv.trakt.trakt.core.user.features.profile.ProfileViewModel
 import tv.trakt.trakt.core.user.features.profile.sections.favorites.ProfileFavoritesViewModel
 import tv.trakt.trakt.core.user.features.profile.sections.favorites.all.AllFavoritesViewModel
 import tv.trakt.trakt.core.user.features.profile.sections.favorites.filters.GetFavoritesFilterUseCase
+import tv.trakt.trakt.core.user.features.profile.sections.history.ProfileHistoryViewModel
 import tv.trakt.trakt.core.user.features.profile.sections.social.ProfileSocialViewModel
 import tv.trakt.trakt.core.user.features.profile.sections.social.usecases.GetSocialFilterUseCase
 import tv.trakt.trakt.core.user.usecase.GetUserProfileUseCase
@@ -170,6 +171,20 @@ internal val profileModule = module {
             authorizePreferences = get(named(AUTH_PREFERENCES)),
             getProfileUseCase = get(),
             logoutUseCase = get(),
+        )
+    }
+
+    viewModel {
+        ProfileHistoryViewModel(
+            getPersonalActivityUseCase = get(),
+            allActivitySource = get(),
+            showLocalDataSource = get(),
+            showUpdatesSource = get(),
+            episodeUpdatesSource = get(),
+            episodeLocalDataSource = get(),
+            movieUpdates = get(),
+            movieLocalDataSource = get(),
+            sessionManager = get(),
         )
     }
 

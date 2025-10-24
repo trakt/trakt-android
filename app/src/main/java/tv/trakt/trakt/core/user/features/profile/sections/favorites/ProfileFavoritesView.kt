@@ -67,7 +67,7 @@ internal fun ProfileFavoritesView(
     contentPadding: PaddingValues,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
-    onFavoritesClick: () -> Unit,
+    onMoreClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -97,7 +97,7 @@ internal fun ProfileFavoritesView(
         onMovieLongClick = { /* TODO */ },
         onFavoritesClick = {
             if (state.loading == DONE && !state.items.isNullOrEmpty()) {
-                onFavoritesClick()
+                onMoreClick()
             }
         },
     )

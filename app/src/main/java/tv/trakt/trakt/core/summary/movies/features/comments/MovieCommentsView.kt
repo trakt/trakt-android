@@ -164,7 +164,7 @@ private fun MovieCommentsContent(
                 onFilterClick = onFilterClick,
             )
         } else {
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(TraktTheme.spacing.mainRowHeaderSpace))
         }
 
         Crossfade(

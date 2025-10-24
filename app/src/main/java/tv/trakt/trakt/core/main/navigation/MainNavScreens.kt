@@ -307,6 +307,12 @@ internal fun NavGraphBuilder.profileScreens(controller: NavHostController) {
         profileScreen(
             onNavigateToShow = { navigateToShow(it) },
             onNavigateToMovie = { navigateToMovie(it) },
+            onNavigateToEpisode = { showId, episode ->
+                navigateToEpisode(showId, episode)
+            },
+            onNavigateToHistory = {
+                navigateToAllActivityPersonal()
+            },
             onNavigateToFavorites = { navigateToFavorites() },
             onNavigateBack = { popBackStack() },
         )

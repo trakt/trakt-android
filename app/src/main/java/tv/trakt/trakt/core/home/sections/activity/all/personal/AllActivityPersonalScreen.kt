@@ -146,7 +146,7 @@ private fun TitleBar(modifier: Modifier = Modifier) {
             contentDescription = null,
         )
         Text(
-            text = stringResource(R.string.page_title_recently_watched),
+            text = stringResource(R.string.list_title_watch_history),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.heading5,
         )

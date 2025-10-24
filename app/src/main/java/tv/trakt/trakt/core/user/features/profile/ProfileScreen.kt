@@ -1,7 +1,8 @@
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package tv.trakt.trakt.core.user.features.profile
 
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -16,10 +17,14 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -30,12 +35,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
@@ -51,12 +57,16 @@ import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.user.features.profile.sections.favorites.ProfileFavoritesView
+import tv.trakt.trakt.core.user.features.profile.sections.history.ProfileHistoryView
 import tv.trakt.trakt.core.user.features.profile.sections.social.ProfileSocialView
+import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.BackdropImage
+import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
@@ -67,6 +77,8 @@ internal fun ProfileScreen(
     viewModel: ProfileViewModel,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
+    onNavigateToHistory: () -> Unit,
     onNavigateToFavorites: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -95,6 +107,8 @@ internal fun ProfileScreen(
         state = state,
         onNavigateToShow = onNavigateToShow,
         onNavigateToMovie = onNavigateToMovie,
+        onNavigateToEpisode = onNavigateToEpisode,
+        onNavigateToHistory = onNavigateToHistory,
         onNavigateToFavorites = onNavigateToFavorites,
         onLogoutClick = { confirmLogout = true },
         onBackClick = onNavigateBack,
@@ -121,178 +135,231 @@ private fun ProfileScreenContent(
     modifier: Modifier = Modifier,
     onNavigateToShow: (TraktId) -> Unit = {},
     onNavigateToMovie: (TraktId) -> Unit = {},
+    onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
+    onNavigateToHistory: () -> Unit = {},
     onNavigateToFavorites: () -> Unit = {},
     onLogoutClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
     val uriHandler = LocalUriHandler.current
 
-    val topInset = WindowInsets.statusBars.asPaddingValues()
-        .calculateTopPadding()
-        .plus(3.dp)
+    val listPadding = PaddingValues(
+        top = WindowInsets.statusBars.asPaddingValues()
+            .calculateTopPadding()
+            .plus(10.dp),
+        bottom = WindowInsets.navigationBars.asPaddingValues()
+            .calculateBottomPadding()
+            .plus(TraktTheme.size.navigationBarHeight)
+            .plus(TraktTheme.spacing.mainPageBottomSpace),
+    )
 
     val sectionPadding = PaddingValues(
         start = TraktTheme.spacing.mainPageHorizontalSpace,
         end = TraktTheme.spacing.mainPageHorizontalSpace,
     )
 
+    val listState = rememberLazyListState(
+        cacheWindow = LazyLayoutCacheWindow(
+            aheadFraction = 0.5F,
+            behindFraction = 0.5F,
+        ),
+    )
+
+    val listScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
+        SimpleScrollConnection()
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(TraktTheme.colors.backgroundPrimary),
+            .background(TraktTheme.colors.backgroundPrimary)
+            .nestedScroll(listScrollConnection),
     ) {
-        BackdropImage(
+        ScrollableBackdropImage(
             imageUrl = state.backgroundUrl,
+            scrollState = listState,
         )
 
-        Column(
-            modifier = Modifier
-                .padding(
-                    top = topInset,
-                ),
+        LazyColumn(
+            state = listState,
+            verticalArrangement = spacedBy(0.dp),
+            contentPadding = listPadding,
+            overscrollEffect = null,
         ) {
-            Row(
-                verticalAlignment = CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = TraktTheme.spacing.mainPageHorizontalSpace)
-                    .height(TraktTheme.size.titleBarHeight),
-            ) {
-                Row(
-                    verticalAlignment = CenterVertically,
-                    horizontalArrangement = spacedBy(12.dp),
+            item {
+                TitleBar(
+                    user = state.user,
+                    onLogoutClick = onLogoutClick,
+                    onBackClick = onBackClick,
                     modifier = Modifier
-                        .onClick { onBackClick() }
-                        .padding(
-                            start = TraktTheme.spacing.mainPageHorizontalSpace - 2.dp,
-                        ),
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_back_arrow),
-                        tint = Color.White,
-                        contentDescription = "Back",
-                    )
-
-                    TraktHeader(
-                        title = state.user?.displayName ?: stringResource(R.string.page_title_profile),
-                        subtitle = state.user?.location,
-                    )
-                }
-
-                if (state.user != null) {
-                    Row(
-                        verticalAlignment = CenterVertically,
-                        horizontalArrangement = spacedBy(16.dp),
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_logout),
-                            contentDescription = null,
-                            tint = TraktTheme.colors.textPrimary,
-                            modifier = Modifier
-                                .size(24.dp)
-                                .onClick(onClick = onLogoutClick),
-                        )
-
-                        Box(
-                            modifier = Modifier.size(34.dp),
-                        ) {
-                            val borderColor = remember(state.user) {
-                                when (state.user.isAnyVip) {
-                                    true -> Color.Red
-                                    else -> Color.White
-                                }
-                            }
-
-                            if (state.user.hasAvatar) {
-                                AsyncImage(
-                                    model = state.user.images?.avatar?.full,
-                                    contentDescription = null,
-                                    contentScale = ContentScale.Crop,
-                                    error = painterResource(R.drawable.ic_person_placeholder),
-                                    modifier = Modifier
-                                        .border(2.dp, borderColor, CircleShape)
-                                        .clip(CircleShape),
-                                )
-                            } else {
-                                Image(
-                                    painter = painterResource(R.drawable.ic_person_placeholder),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .border(2.dp, borderColor, CircleShape)
-                                        .clip(CircleShape),
-                                )
-                            }
-                        }
-                    }
-                }
+                        .padding(bottom = 20.dp),
+                )
             }
 
             if (state.user != null) {
-                val hasAbout = !state.user.about.isNullOrBlank()
-
-                if (hasAbout) {
-                    Column(
-                        verticalArrangement = spacedBy(4.dp),
+                item {
+                    ProfileHistoryView(
+                        headerPadding = sectionPadding,
+                        contentPadding = sectionPadding,
+                        onMoreClick = onNavigateToHistory,
+                        onEpisodeClick = onNavigateToEpisode,
+                        onShowClick = onNavigateToShow,
+                        onMovieClick = onNavigateToMovie,
                         modifier = Modifier
-                            .animateContentSize(
-                                animationSpec = tween(200),
+                            .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+                    )
+                }
+
+                item {
+                    ProfileFavoritesView(
+                        headerPadding = sectionPadding,
+                        contentPadding = sectionPadding,
+                        onShowClick = onNavigateToShow,
+                        onMovieClick = onNavigateToMovie,
+                        onMoreClick = onNavigateToFavorites,
+                        modifier = Modifier
+                            .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+                    )
+                }
+
+                item {
+                    ProfileSocialView(
+                        headerPadding = sectionPadding,
+                        contentPadding = sectionPadding,
+                        modifier = Modifier
+                            .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+                    )
+                }
+
+                if (!state.user.about.isNullOrBlank()) {
+                    item {
+                        Column(
+                            verticalArrangement = spacedBy(8.dp),
+                            modifier = Modifier
+                                .padding(
+                                    start = TraktTheme.spacing.mainPageHorizontalSpace,
+                                    end = TraktTheme.spacing.mainPageHorizontalSpace,
+                                ),
+                        ) {
+                            TraktHeader(
+                                title = stringResource(R.string.page_title_about_me),
+                                titleColor = TraktTheme.colors.textPrimary,
                             )
-                            .padding(
-                                top = 16.dp,
-                                start = TraktTheme.spacing.mainPageHorizontalSpace,
-                                end = TraktTheme.spacing.mainPageHorizontalSpace,
-                            ),
-                    ) {
-                        TraktHeader(
-                            title = stringResource(R.string.page_title_about_me),
-                            titleColor = TraktTheme.colors.textSecondary,
+                            Text(
+                                text = state.user.about ?: "",
+                                style = TraktTheme.typography.paragraphSmall,
+                                color = TraktTheme.colors.textSecondary,
+                                maxLines = 3,
+                                textAlign = TextAlign.Center,
+                                overflow = Ellipsis,
+                            )
+                        }
+                    }
+                }
+            } else {
+                item {
+                    TertiaryButton(
+                        text = stringResource(R.string.button_text_login),
+                        icon = painterResource(R.drawable.ic_trakt_icon),
+                        height = 42.dp,
+                        enabled = !state.loading.isLoading,
+                        loading = state.loading.isLoading,
+                        onClick = {
+                            uriHandler.openUri(ConfigAuth.authCodeUrl)
+                        },
+                        modifier = Modifier
+                            .padding(top = 16.dp)
+                            .widthIn(112.dp),
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun TitleBar(
+    user: User?,
+    modifier: Modifier = Modifier,
+    onBackClick: () -> Unit = {},
+    onLogoutClick: () -> Unit = {},
+) {
+    Row(
+        verticalAlignment = CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(TraktTheme.size.titleBarHeight)
+            .padding(
+                bottom = 14.dp,
+                end = TraktTheme.spacing.mainPageHorizontalSpace,
+            ),
+    ) {
+        Row(
+            verticalAlignment = CenterVertically,
+            horizontalArrangement = spacedBy(12.dp),
+            modifier = Modifier
+                .onClick { onBackClick() }
+                .padding(
+                    start = TraktTheme.spacing.mainPageHorizontalSpace - 2.dp,
+                ),
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_back_arrow),
+                tint = Color.White,
+                contentDescription = "Back",
+            )
+
+            TraktHeader(
+                title = user?.displayName ?: stringResource(R.string.page_title_profile),
+                subtitle = user?.location,
+            )
+        }
+
+        if (user != null) {
+            Row(
+                verticalAlignment = CenterVertically,
+                horizontalArrangement = spacedBy(16.dp),
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_logout),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .onClick(onClick = onLogoutClick),
+                )
+
+                Box(
+                    modifier = Modifier.size(34.dp),
+                ) {
+                    val borderColor = remember(user) {
+                        when (user.isAnyVip) {
+                            true -> Color.Red
+                            else -> Color.White
+                        }
+                    }
+
+                    if (user.hasAvatar) {
+                        AsyncImage(
+                            model = user.images?.avatar?.full,
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            error = painterResource(R.drawable.ic_person_placeholder),
+                            modifier = Modifier
+                                .border(2.dp, borderColor, CircleShape)
+                                .clip(CircleShape),
                         )
-                        Text(
-                            text = state.user.about ?: "",
-                            style = TraktTheme.typography.paragraphSmall,
-                            color = TraktTheme.colors.textPrimary,
-                            maxLines = 3,
-                            textAlign = TextAlign.Center,
-                            overflow = Ellipsis,
+                    } else {
+                        Image(
+                            painter = painterResource(R.drawable.ic_person_placeholder),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .border(2.dp, borderColor, CircleShape)
+                                .clip(CircleShape),
                         )
                     }
                 }
-
-                ProfileFavoritesView(
-                    headerPadding = sectionPadding,
-                    contentPadding = sectionPadding,
-                    onShowClick = onNavigateToShow,
-                    onMovieClick = onNavigateToMovie,
-                    onFavoritesClick = onNavigateToFavorites,
-                    modifier = Modifier.padding(
-                        top = when {
-                            hasAbout -> 32.dp
-                            else -> 20.dp
-                        },
-                    ),
-                )
-
-                ProfileSocialView(
-                    headerPadding = sectionPadding,
-                    contentPadding = sectionPadding,
-                    modifier = Modifier.padding(top = 32.dp),
-                )
-            } else {
-                TertiaryButton(
-                    text = stringResource(R.string.button_text_login),
-                    icon = painterResource(R.drawable.ic_trakt_icon),
-                    height = 42.dp,
-                    enabled = !state.loading.isLoading,
-                    loading = state.loading.isLoading,
-                    onClick = {
-                        uriHandler.openUri(ConfigAuth.authCodeUrl)
-                    },
-                    modifier = Modifier
-                        .align(CenterHorizontally)
-                        .padding(top = 32.dp)
-                        .widthIn(112.dp),
-                )
             }
         }
     }

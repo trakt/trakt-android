@@ -106,6 +106,21 @@ private fun HomeScreenContent(
         }
     }
 
+    val listPadding = PaddingValues(
+        top = WindowInsets.statusBars.asPaddingValues()
+            .calculateTopPadding()
+            .plus(TraktTheme.spacing.mainPageTopSpace),
+        bottom = WindowInsets.navigationBars.asPaddingValues()
+            .calculateBottomPadding()
+            .plus(TraktTheme.size.navigationBarHeight)
+            .plus(TraktTheme.spacing.mainPageBottomSpace),
+    )
+
+    val sectionPadding = PaddingValues(
+        start = TraktTheme.spacing.mainPageHorizontalSpace,
+        end = TraktTheme.spacing.mainPageHorizontalSpace,
+    )
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -115,21 +130,6 @@ private fun HomeScreenContent(
         ScrollableBackdropImage(
             imageUrl = state.backgroundUrl,
             scrollState = lazyListState,
-        )
-
-        val listPadding = PaddingValues(
-            top = WindowInsets.statusBars.asPaddingValues()
-                .calculateTopPadding()
-                .plus(TraktTheme.spacing.mainPageTopSpace),
-            bottom = WindowInsets.navigationBars.asPaddingValues()
-                .calculateBottomPadding()
-                .plus(TraktTheme.size.navigationBarHeight)
-                .plus(TraktTheme.spacing.mainPageBottomSpace),
-        )
-
-        val sectionPadding = PaddingValues(
-            start = TraktTheme.spacing.mainPageHorizontalSpace,
-            end = TraktTheme.spacing.mainPageHorizontalSpace,
         )
 
         LazyColumn(
