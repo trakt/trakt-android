@@ -121,7 +121,7 @@ private fun ProfileScreenContent(
 
     val topInset = WindowInsets.statusBars.asPaddingValues()
         .calculateTopPadding()
-        .plus(2.75.dp)
+        .plus(3.dp)
 
     val sectionPadding = PaddingValues(
         start = TraktTheme.spacing.mainPageHorizontalSpace,

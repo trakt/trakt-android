@@ -271,6 +271,7 @@ private fun ContentLoadingList(
     LazyRow(
         horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
         contentPadding = contentPadding,
+        userScrollEnabled = false,
         modifier = Modifier
             .fillMaxWidth()
             .alpha(if (visible) 1F else 0F),

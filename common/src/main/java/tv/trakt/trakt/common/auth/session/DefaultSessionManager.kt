@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
+import timber.log.Timber
 import tv.trakt.trakt.common.auth.TokenProvider
 import tv.trakt.trakt.common.model.User
 
@@ -37,6 +38,8 @@ internal class DefaultSessionManager(
         val userData = dataStore.data.first()[KEY_USER_PROFILE] ?: return null
         val decodedUserData = runCatching {
             Json.decodeFromString<User?>(userData)
+        }.onFailure {
+            Timber.w(it, "Failed to decode user profile")
         }
         return decodedUserData.getOrElse {
             clear()
@@ -52,6 +55,8 @@ internal class DefaultSessionManager(
             }
             return@map runCatching {
                 Json.decodeFromString<User>(data)
+            }.onFailure {
+                Timber.w(it, "Failed to decode user profile")
             }.getOrElse {
                 clear()
                 null

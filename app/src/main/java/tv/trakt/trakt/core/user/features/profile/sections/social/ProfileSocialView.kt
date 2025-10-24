@@ -28,6 +28,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -43,6 +44,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.views.HomeEmptySocialView
 import tv.trakt.trakt.core.user.features.profile.sections.social.model.SocialFilter
 import tv.trakt.trakt.core.user.features.profile.sections.social.ui.SocialUserView
+import tv.trakt.trakt.core.user.features.profile.sections.social.ui.SocialUserViewSkeleton
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.FilterChip
 import tv.trakt.trakt.ui.components.FilterChipGroup
@@ -182,17 +184,18 @@ private fun ContentLoadingList(
     visible: Boolean = true,
     contentPadding: PaddingValues,
 ) {
-//    LazyRow(
-//        horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
-//        contentPadding = contentPadding,
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .alpha(if (visible) 1F else 0F),
-//    ) {
-//        items(count = 6) {
-//            VerticalMediaSkeletonCard(chipRatio = 0.66F)
-//        }
-//    }
+    LazyRow(
+        horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
+        contentPadding = contentPadding,
+        userScrollEnabled = false,
+        modifier = Modifier
+            .fillMaxWidth()
+            .alpha(if (visible) 1F else 0F),
+    ) {
+        items(count = 10) {
+            SocialUserViewSkeleton()
+        }
+    }
 }
 
 @Composable
@@ -255,23 +258,6 @@ private fun Preview2() {
         ProfileSocialContent(
             state = ProfileSocialState(
                 loading = LOADING,
-            ),
-        )
-    }
-}
-
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
-@Composable
-private fun Preview3() {
-    TraktTheme {
-        ProfileSocialContent(
-            state = ProfileSocialState(
-                loading = DONE,
-                items = emptyList<User>().toImmutableList(),
             ),
         )
     }
