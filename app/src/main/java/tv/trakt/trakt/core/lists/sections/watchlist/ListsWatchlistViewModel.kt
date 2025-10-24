@@ -171,7 +171,7 @@ internal class ListsWatchlistViewModel(
     }
 
     fun setFilter(newFilter: ListsMediaFilter) {
-        if (newFilter == filterState.value || loadingState.value.isLoading) {
+        if (newFilter == filterState.value || loadingState.value.isLoading || userState.value == null) {
             return
         }
         viewModelScope.launch {

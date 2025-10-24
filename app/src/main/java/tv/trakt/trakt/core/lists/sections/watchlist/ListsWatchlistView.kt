@@ -190,7 +190,7 @@ internal fun ListWatchlistContent(
             }
         }
 
-        if (!state.items.isNullOrEmpty() || state.loading.isLoading || state.user != null) {
+        if (state.user != null) {
             ContentFilters(
                 state = state,
                 headerPadding = headerPadding,
