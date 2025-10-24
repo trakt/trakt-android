@@ -12,7 +12,11 @@ import timber.log.Timber
 import tv.trakt.trakt.common.auth.TokenProvider
 import tv.trakt.trakt.common.model.User
 
-private val KEY_USER_PROFILE = stringPreferencesKey("key_user_profile")
+// Token storage versioning.
+// Can be used to force clearing old data when the structure changes.
+private const val KEY_VERSION = 1
+
+private val KEY_USER_PROFILE = stringPreferencesKey("key_user_profile_$KEY_VERSION")
 
 internal class DefaultSessionManager(
     private val tokenProvider: TokenProvider,

@@ -303,6 +303,8 @@ internal fun NavGraphBuilder.searchScreens(
 internal fun NavGraphBuilder.profileScreens(controller: NavHostController) {
     with(controller) {
         profileScreen(
+            onNavigateToShow = { navigateToShow(it) },
+            onNavigateToMovie = { navigateToMovie(it) },
             onNavigateBack = { popBackStack() },
         )
     }

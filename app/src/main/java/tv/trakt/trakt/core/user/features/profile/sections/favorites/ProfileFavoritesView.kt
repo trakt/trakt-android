@@ -37,13 +37,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.google.firebase.Firebase
-import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
-import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_1
-import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_2
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
@@ -51,11 +47,8 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.core.lists.model.ListsMediaFilter
 import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MEDIA
-import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MOVIES
-import tv.trakt.trakt.core.lists.model.ListsMediaFilter.SHOWS
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.core.user.features.profile.model.FavoriteItem
@@ -73,9 +66,7 @@ internal fun ProfileFavoritesView(
     viewModel: ProfileFavoritesViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
-    onShowsClick: () -> Unit,
     onShowClick: (TraktId) -> Unit,
-    onMoviesClick: () -> Unit,
     onMovieClick: (TraktId) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -100,14 +91,11 @@ internal fun ProfileFavoritesView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onFilterClick = viewModel::setFilter,
-        onShowsClick = onShowsClick,
-        onMoviesClick = onMoviesClick,
         onShowClick = { viewModel.navigateToShow(it) },
         onMovieClick = { viewModel.navigateToMovie(it) },
-        onShowLongClick = { showContextSheet = it },
-        onMovieLongClick = { movieContextSheet = it },
-        onFavoritesClick = {
-        },
+        onShowLongClick = { /* TODO */ },
+        onMovieLongClick = { /* TODO */ },
+        onFavoritesClick = {},
     )
 
     ShowContextSheet(
@@ -128,9 +116,7 @@ internal fun ProfileFavoritesContent(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onFilterClick: (ListsMediaFilter) -> Unit = {},
-    onShowsClick: () -> Unit = {},
     onShowClick: (Show) -> Unit = {},
-    onMoviesClick: () -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
     onShowLongClick: (Show) -> Unit = {},
     onMovieLongClick: (Movie) -> Unit = {},
@@ -202,22 +188,22 @@ internal fun ProfileFavoritesContent(
                                 modifier = Modifier.padding(contentPadding),
                             )
                         }
-                        state.items?.isEmpty() == true -> {
-                            ContentEmptyView(
-                                authenticated = (state.user != null),
-                                filter = state.filter,
-                                onActionClick = {
-                                    if (state.user == null) {
-                                        return@ContentEmptyView
-                                    }
-                                    when (it) {
-                                        MEDIA, SHOWS -> onShowsClick()
-                                        MOVIES -> onMoviesClick()
-                                    }
-                                },
-                                modifier = Modifier.padding(contentPadding),
-                            )
-                        }
+//                        state.items?.isEmpty() == true -> {
+//                            ContentEmptyView(
+//                                authenticated = (state.user != null),
+//                                filter = state.filter,
+//                                onActionClick = {
+//                                    if (state.user == null) {
+//                                        return@ContentEmptyView
+//                                    }
+//                                    when (it) {
+//                                        MEDIA, SHOWS -> onShowsClick()
+//                                        MOVIES -> onMoviesClick()
+//                                    }
+//                                },
+//                                modifier = Modifier.padding(contentPadding),
+//                            )
+//                        }
                         else -> {
                             ContentList(
                                 filter = state.filter,
@@ -249,7 +235,7 @@ private fun ContentFilters(
             FilterChip(
                 selected = state.filter == filter,
                 text = stringResource(filter.displayRes),
-                leadingIcon = {
+                leadingContent = {
                     Icon(
                         painter = painterResource(filter.iconRes),
                         contentDescription = null,
@@ -345,50 +331,50 @@ private fun ContentList(
     }
 }
 
-@Composable
-private fun ContentEmptyView(
-    filter: ListsMediaFilter,
-    authenticated: Boolean,
-    modifier: Modifier = Modifier,
-    onActionClick: (ListsMediaFilter) -> Unit = {},
-) {
-    val imageUrl = remember(filter) {
-        val key = when (filter) {
-            MEDIA, SHOWS -> MOBILE_EMPTY_IMAGE_1
-            MOVIES -> MOBILE_EMPTY_IMAGE_2
-        }
-        Firebase.remoteConfig.getString(key).ifBlank { null }
-    }
-
-    val buttonText = remember(filter, authenticated) {
-        if (!authenticated) {
-            return@remember R.string.button_text_join_trakt
-        }
-        when (filter) {
-            MEDIA, SHOWS -> R.string.button_label_browse_shows
-            MOVIES -> R.string.button_label_browse_movies
-        }
-    }
-
-    val buttonIcon = remember(authenticated) {
-        when {
-            authenticated -> R.drawable.ic_search_off
-            else -> R.drawable.ic_trakt_icon
-        }
-    }
-
-    HomeEmptyView(
-        text = stringResource(R.string.text_cta_watchlist_unreleased),
-        icon = R.drawable.ic_empty_watchlist,
-        buttonText = stringResource(buttonText),
-        buttonIcon = buttonIcon,
-        backgroundImageUrl = imageUrl,
-        backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
-        height = (226.25).dp,
-        onClick = { onActionClick(filter) },
-        modifier = modifier,
-    )
-}
+// @Composable
+// private fun ContentEmptyView(
+//    filter: ListsMediaFilter,
+//    authenticated: Boolean,
+//    modifier: Modifier = Modifier,
+//    onActionClick: (ListsMediaFilter) -> Unit = {},
+// ) {
+//    val imageUrl = remember(filter) {
+//        val key = when (filter) {
+//            MEDIA, SHOWS -> MOBILE_EMPTY_IMAGE_1
+//            MOVIES -> MOBILE_EMPTY_IMAGE_2
+//        }
+//        Firebase.remoteConfig.getString(key).ifBlank { null }
+//    }
+//
+//    val buttonText = remember(filter, authenticated) {
+//        if (!authenticated) {
+//            return@remember R.string.button_text_join_trakt
+//        }
+//        when (filter) {
+//            MEDIA, SHOWS -> R.string.button_label_browse_shows
+//            MOVIES -> R.string.button_label_browse_movies
+//        }
+//    }
+//
+//    val buttonIcon = remember(authenticated) {
+//        when {
+//            authenticated -> R.drawable.ic_search_off
+//            else -> R.drawable.ic_trakt_icon
+//        }
+//    }
+//
+//    HomeEmptyView(
+//        text = stringResource(R.string.text_cta_watchlist_unreleased),
+//        icon = R.drawable.ic_empty_watchlist,
+//        buttonText = stringResource(buttonText),
+//        buttonIcon = buttonIcon,
+//        backgroundImageUrl = imageUrl,
+//        backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
+//        height = (226.25).dp,
+//        onClick = { onActionClick(filter) },
+//        modifier = modifier,
+//    )
+// }
 
 // Previews
 

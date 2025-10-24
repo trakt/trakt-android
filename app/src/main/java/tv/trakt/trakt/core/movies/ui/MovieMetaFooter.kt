@@ -110,7 +110,7 @@ fun MovieMetaFooter(
                     modifier = Modifier.size(13.dp),
                 )
                 Text(
-                    text = movie.released?.relativeDateString() ?: "",
+                    text = movie.released?.relativeDateString() ?: "TBA",
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.cardSubtitle.copy(
                         fontWeight = W500,

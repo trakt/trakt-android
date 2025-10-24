@@ -9,9 +9,7 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
@@ -31,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -93,15 +92,11 @@ internal fun ProfileSocialContent(
             )
         }
 
-        if (!state.items.isNullOrEmpty() || state.loading.isLoading || state.user != null) {
-            ContentFilters(
-                state = state,
-                headerPadding = headerPadding,
-                onFilterClick = onFilterClick,
-            )
-        } else {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
+        ContentFilters(
+            state = state,
+            headerPadding = headerPadding,
+            onFilterClick = onFilterClick,
+        )
 
         Crossfade(
             targetState = state.loading,
@@ -127,7 +122,9 @@ internal fun ProfileSocialContent(
                             )
                         }
                         state.items?.isEmpty() == true -> {
-                            HomeEmptySocialView()
+                            HomeEmptySocialView(
+                                modifier = Modifier.padding(contentPadding),
+                            )
                         }
                         else -> {
                             ContentList(
@@ -154,16 +151,10 @@ private fun ContentFilters(
         paddingVertical = PaddingValues(top = 13.dp, bottom = 16.dp),
     ) {
         for (filter in SocialFilter.entries) {
-            val filterText = buildString {
-                append(stringResource(filter.displayRes))
-                if (!state.loading.isLoading && state.filter == filter) {
-                    append(" • $usersCount")
-                }
-            }
             FilterChip(
                 selected = state.filter == filter,
-                text = filterText,
-                leadingIcon = {
+                text = stringResource(filter.displayRes),
+                leadingContent = {
                     Icon(
                         painter = painterResource(filter.iconRes),
                         contentDescription = null,
@@ -172,6 +163,19 @@ private fun ContentFilters(
                             .size(17.dp)
                             .padding(end = 2.dp),
                     )
+                },
+                endContent = {
+                    if (!state.loading.isLoading && state.filter == filter) {
+                        Text(
+                            text = " • $usersCount",
+                            style = TraktTheme.typography.buttonTertiary,
+                            color = TraktTheme.colors.textPrimary,
+                            maxLines = 1,
+                            textAlign = TextAlign.Center,
+                        )
+                    } else {
+                        null
+                    }
                 },
                 onClick = { onFilterClick(filter) },
             )

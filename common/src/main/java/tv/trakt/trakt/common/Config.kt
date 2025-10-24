@@ -11,5 +11,7 @@ object Config {
     const val WEB_VIP_URL: String = "https://trakt.tv/vip?native_app_mode=true"
     const val WEB_ABOUT_US_URL: String = "https://trakt.tv/about?native_app_mode=true"
 
+    fun webUserUrl(userId: String): String = "https://trakt.tv/users/$userId?native_app_mode=true"
+
     const val PLEX_BASE_URL: String = "https://watch.plex.tv/"
 }

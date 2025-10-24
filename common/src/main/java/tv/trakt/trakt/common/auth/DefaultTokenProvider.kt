@@ -9,10 +9,14 @@ import kotlinx.coroutines.flow.first
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.model.TraktAccessToken
 
-private val KEY_ACCESS_TOKEN = stringPreferencesKey("key_access_token")
-private val KEY_REFRESH_TOKEN = stringPreferencesKey("key_refresh_token")
-private val KEY_EXPIRES_IN = longPreferencesKey("key_expires_in")
-private val KEY_CREATED_AT = longPreferencesKey("key_created_at")
+// Storage versioning.
+// Can be used to force clearing old data when the structure changes.
+private const val KEY_VERSION = 1
+
+private val KEY_ACCESS_TOKEN = stringPreferencesKey("key_access_token_$KEY_VERSION")
+private val KEY_REFRESH_TOKEN = stringPreferencesKey("key_refresh_token_$KEY_VERSION")
+private val KEY_EXPIRES_IN = longPreferencesKey("key_expires_in_$KEY_VERSION")
+private val KEY_CREATED_AT = longPreferencesKey("key_created_at_$KEY_VERSION")
 
 internal class DefaultTokenProvider(
     private val dataStore: DataStore<Preferences>,

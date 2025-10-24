@@ -1,5 +1,7 @@
 package tv.trakt.trakt.core.user.features.profile
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -43,11 +45,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
-import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.user.features.profile.sections.favorites.ProfileFavoritesView
 import tv.trakt.trakt.core.user.features.profile.sections.social.ProfileSocialView
@@ -61,19 +63,16 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun ProfileScreen(
     viewModel: ProfileViewModel,
+    onNavigateToShow: (TraktId) -> Unit,
+    onNavigateToMovie: (TraktId) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val localContext = LocalContext.current
     val localSnack = LocalSnackbarState.current
-    val localBottomBarVisibility = LocalBottomBarVisibility.current
 
     var confirmLogout by remember { mutableStateOf(false) }
-
-    LaunchedEffect(Unit) {
-        localBottomBarVisibility.value = false
-    }
 
     LaunchedEffect(state.user) {
         if (state.loading == DONE && state.user != null) {
@@ -91,6 +90,8 @@ internal fun ProfileScreen(
 
     ProfileScreenContent(
         state = state,
+        onNavigateToShow = onNavigateToShow,
+        onNavigateToMovie = onNavigateToMovie,
         onLogoutClick = { confirmLogout = true },
         onBackClick = onNavigateBack,
     )
@@ -114,6 +115,8 @@ internal fun ProfileScreen(
 private fun ProfileScreenContent(
     state: ProfileState,
     modifier: Modifier = Modifier,
+    onNavigateToShow: (TraktId) -> Unit = {},
+    onNavigateToMovie: (TraktId) -> Unit = {},
     onLogoutClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
@@ -230,31 +233,47 @@ private fun ProfileScreenContent(
             }
 
             if (state.user != null) {
-                if (!state.user.about.isNullOrBlank()) {
-                    Text(
-                        text = state.user.about ?: "",
-                        style = TraktTheme.typography.paragraphSmall,
-                        color = TraktTheme.colors.textSecondary,
-                        maxLines = 5,
-                        textAlign = TextAlign.Center,
-                        overflow = Ellipsis,
+                val hasAbout = !state.user.about.isNullOrBlank()
+
+                if (hasAbout) {
+                    Column(
+                        verticalArrangement = spacedBy(4.dp),
                         modifier = Modifier
+                            .animateContentSize(
+                                animationSpec = tween(200),
+                            )
                             .padding(
-                                top = 12.dp,
+                                top = 16.dp,
                                 start = TraktTheme.spacing.mainPageHorizontalSpace,
                                 end = TraktTheme.spacing.mainPageHorizontalSpace,
                             ),
-                    )
+                    ) {
+                        TraktHeader(
+                            title = stringResource(R.string.page_title_about_me),
+                            titleColor = TraktTheme.colors.textSecondary,
+                        )
+                        Text(
+                            text = state.user.about ?: "",
+                            style = TraktTheme.typography.paragraphSmall,
+                            color = TraktTheme.colors.textPrimary,
+                            maxLines = 5,
+                            textAlign = TextAlign.Center,
+                            overflow = Ellipsis,
+                        )
+                    }
                 }
 
                 ProfileFavoritesView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
-                    onShowsClick = { },
-                    onShowClick = { },
-                    onMoviesClick = { },
-                    onMovieClick = { },
-                    modifier = Modifier.padding(top = 20.dp),
+                    onShowClick = onNavigateToShow,
+                    onMovieClick = onNavigateToMovie,
+                    modifier = Modifier.padding(
+                        top = when {
+                            hasAbout -> 32.dp
+                            else -> 20.dp
+                        },
+                    ),
                 )
 
                 ProfileSocialView(

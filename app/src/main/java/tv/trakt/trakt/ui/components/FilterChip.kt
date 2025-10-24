@@ -43,7 +43,8 @@ internal fun FilterChip(
     selected: Boolean,
     text: String,
     modifier: Modifier = Modifier,
-    leadingIcon: @Composable (() -> Unit)? = null,
+    leadingContent: @Composable (() -> Unit)? = null,
+    endContent: @Composable (() -> Unit)? = null,
     paddingHorizontal: PaddingValues = PaddingValues(
         start = 9.dp,
         end = 13.dp,
@@ -76,12 +77,13 @@ internal fun FilterChip(
             .padding(paddingHorizontal),
     ) {
         AnimatedVisibility(
-            visible = selected && leadingIcon != null,
+            visible = selected && leadingContent != null,
             enter = fadeIn(tween(150)) + expandHorizontally(tween(150)),
             exit = fadeOut(tween(150)) + shrinkHorizontally(tween(150)),
         ) {
-            leadingIcon?.invoke()
+            leadingContent?.invoke()
         }
+
         Text(
             text = text,
             style = TraktTheme.typography.buttonTertiary,
@@ -91,6 +93,14 @@ internal fun FilterChip(
             modifier = Modifier
                 .padding(start = 4.dp),
         )
+
+        AnimatedVisibility(
+            visible = selected && endContent != null,
+            enter = fadeIn(tween(150, delayMillis = 100)) + expandHorizontally(tween(150, delayMillis = 100)),
+            exit = fadeOut(tween(150)) + shrinkHorizontally(tween(150)),
+        ) {
+            endContent?.invoke()
+        }
     }
 }
 
@@ -130,7 +140,7 @@ private fun Preview() {
         FilterChip(
             selected = false,
             text = "Filter Chip",
-            leadingIcon = {
+            leadingContent = {
                 Icon(
                     painter = painterResource(R.drawable.ic_check_round),
                     contentDescription = null,
@@ -149,7 +159,7 @@ private fun Preview2() {
         FilterChip(
             selected = true,
             text = "Selected Chip",
-            leadingIcon = {
+            leadingContent = {
                 Icon(
                     painter = painterResource(R.drawable.ic_check_round),
                     contentDescription = null,

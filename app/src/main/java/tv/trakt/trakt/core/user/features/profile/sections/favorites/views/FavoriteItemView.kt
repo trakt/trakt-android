@@ -47,6 +47,7 @@ internal fun FavoriteItemView(
             VerticalMediaCard(
                 title = item.show.title,
                 imageUrl = item.images?.getPosterUrl(),
+                more = false,
                 onClick = onShowClick,
                 onLongClick = onShowLongClick,
                 chipContent = { modifier ->
@@ -127,6 +128,7 @@ internal fun FavoriteItemView(
                 title = item.movie.title,
                 imageUrl = item.images?.getPosterUrl(),
                 onClick = onMovieClick,
+                more = false,
                 onLongClick = onMovieLongClick,
                 chipContent = { modifier ->
                     if (isReleased) {

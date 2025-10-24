@@ -255,7 +255,7 @@ private fun ContentFilters(
             FilterChip(
                 selected = selectedFilter == filter,
                 text = stringResource(filter.displayRes),
-                leadingIcon = {
+                leadingContent = {
                     Icon(
                         painter = painterResource(filter.iconRes),
                         contentDescription = null,

@@ -111,7 +111,7 @@ fun ShowMetaFooter(
                     modifier = Modifier.size(14.dp),
                 )
                 Text(
-                    text = show.released?.relativeDateTimeString() ?: "",
+                    text = show.released?.relativeDateTimeString() ?: "TBA",
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.cardSubtitle.copy(
                         fontWeight = W500,
