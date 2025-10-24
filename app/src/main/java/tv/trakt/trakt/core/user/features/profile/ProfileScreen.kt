@@ -65,6 +65,7 @@ internal fun ProfileScreen(
     viewModel: ProfileViewModel,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToFavorites: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -92,6 +93,7 @@ internal fun ProfileScreen(
         state = state,
         onNavigateToShow = onNavigateToShow,
         onNavigateToMovie = onNavigateToMovie,
+        onNavigateToFavorites = onNavigateToFavorites,
         onLogoutClick = { confirmLogout = true },
         onBackClick = onNavigateBack,
     )
@@ -117,6 +119,7 @@ private fun ProfileScreenContent(
     modifier: Modifier = Modifier,
     onNavigateToShow: (TraktId) -> Unit = {},
     onNavigateToMovie: (TraktId) -> Unit = {},
+    onNavigateToFavorites: () -> Unit = {},
     onLogoutClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
@@ -270,6 +273,7 @@ private fun ProfileScreenContent(
                     contentPadding = sectionPadding,
                     onShowClick = onNavigateToShow,
                     onMovieClick = onNavigateToMovie,
+                    onFavoritesClick = onNavigateToFavorites,
                     modifier = Modifier.padding(
                         top = when {
                             hasAbout -> 32.dp

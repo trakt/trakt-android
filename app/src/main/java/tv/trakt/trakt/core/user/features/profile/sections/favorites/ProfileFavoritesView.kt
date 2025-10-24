@@ -9,9 +9,7 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
@@ -32,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -68,6 +67,7 @@ internal fun ProfileFavoritesView(
     contentPadding: PaddingValues,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
+    onFavoritesClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -95,7 +95,11 @@ internal fun ProfileFavoritesView(
         onMovieClick = { viewModel.navigateToMovie(it) },
         onShowLongClick = { /* TODO */ },
         onMovieLongClick = { /* TODO */ },
-        onFavoritesClick = {},
+        onFavoritesClick = {
+            if (state.loading == DONE && !state.items.isNullOrEmpty()) {
+                onFavoritesClick()
+            }
+        },
     )
 
     ShowContextSheet(
@@ -141,29 +145,25 @@ internal fun ProfileFavoritesContent(
                 subtitle = stringResource(R.string.text_sort_recently_added),
             )
 
-//            if (!state.items.isNullOrEmpty() || state.loading != DONE) {
-//                Icon(
-//                    painter = painterResource(R.drawable.ic_chevron_right),
-//                    contentDescription = null,
-//                    tint = TraktTheme.colors.textPrimary,
-//                    modifier = Modifier
-//                        .size(20.dp)
-//                        .graphicsLayer {
-//                            translationX = (4.9).dp.toPx()
-//                        },
-//                )
-//            }
+            if (!state.items.isNullOrEmpty() || state.loading != DONE) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_chevron_right),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .graphicsLayer {
+                            translationX = (4.9).dp.toPx()
+                        },
+                )
+            }
         }
 
-        if (!state.items.isNullOrEmpty() || state.loading.isLoading || state.user != null) {
-            ContentFilters(
-                state = state,
-                headerPadding = headerPadding,
-                onFilterClick = onFilterClick,
-            )
-        } else {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
+        ContentFilters(
+            state = state,
+            headerPadding = headerPadding,
+            onFilterClick = onFilterClick,
+        )
 
         Crossfade(
             targetState = state.loading,
@@ -188,22 +188,11 @@ internal fun ProfileFavoritesContent(
                                 modifier = Modifier.padding(contentPadding),
                             )
                         }
-//                        state.items?.isEmpty() == true -> {
-//                            ContentEmptyView(
-//                                authenticated = (state.user != null),
-//                                filter = state.filter,
-//                                onActionClick = {
-//                                    if (state.user == null) {
-//                                        return@ContentEmptyView
-//                                    }
-//                                    when (it) {
-//                                        MEDIA, SHOWS -> onShowsClick()
-//                                        MOVIES -> onMoviesClick()
-//                                    }
-//                                },
-//                                modifier = Modifier.padding(contentPadding),
-//                            )
-//                        }
+                        state.items?.isEmpty() == true -> {
+                            ContentEmptyView(
+                                modifier = Modifier.padding(contentPadding),
+                            )
+                        }
                         else -> {
                             ContentList(
                                 filter = state.filter,
@@ -331,50 +320,15 @@ private fun ContentList(
     }
 }
 
-// @Composable
-// private fun ContentEmptyView(
-//    filter: ListsMediaFilter,
-//    authenticated: Boolean,
-//    modifier: Modifier = Modifier,
-//    onActionClick: (ListsMediaFilter) -> Unit = {},
-// ) {
-//    val imageUrl = remember(filter) {
-//        val key = when (filter) {
-//            MEDIA, SHOWS -> MOBILE_EMPTY_IMAGE_1
-//            MOVIES -> MOBILE_EMPTY_IMAGE_2
-//        }
-//        Firebase.remoteConfig.getString(key).ifBlank { null }
-//    }
-//
-//    val buttonText = remember(filter, authenticated) {
-//        if (!authenticated) {
-//            return@remember R.string.button_text_join_trakt
-//        }
-//        when (filter) {
-//            MEDIA, SHOWS -> R.string.button_label_browse_shows
-//            MOVIES -> R.string.button_label_browse_movies
-//        }
-//    }
-//
-//    val buttonIcon = remember(authenticated) {
-//        when {
-//            authenticated -> R.drawable.ic_search_off
-//            else -> R.drawable.ic_trakt_icon
-//        }
-//    }
-//
-//    HomeEmptyView(
-//        text = stringResource(R.string.text_cta_watchlist_unreleased),
-//        icon = R.drawable.ic_empty_watchlist,
-//        buttonText = stringResource(buttonText),
-//        buttonIcon = buttonIcon,
-//        backgroundImageUrl = imageUrl,
-//        backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
-//        height = (226.25).dp,
-//        onClick = { onActionClick(filter) },
-//        modifier = modifier,
-//    )
-// }
+@Composable
+private fun ContentEmptyView(modifier: Modifier = Modifier) {
+    Text(
+        text = stringResource(R.string.list_placeholder_empty),
+        color = TraktTheme.colors.textSecondary,
+        style = TraktTheme.typography.heading6,
+        modifier = modifier,
+    )
+}
 
 // Previews
 

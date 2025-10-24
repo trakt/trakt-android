@@ -37,7 +37,6 @@ internal class ProfileSocialViewModel(
     private val filterState = MutableStateFlow(initialState.filter)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
-
     private var loadDataJob: Job? = null
 
     init {

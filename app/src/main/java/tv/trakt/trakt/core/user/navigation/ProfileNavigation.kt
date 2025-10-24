@@ -14,6 +14,7 @@ internal data object ProfileDestination
 internal fun NavGraphBuilder.profileScreen(
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToFavorites: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     composable<ProfileDestination> {
@@ -21,6 +22,7 @@ internal fun NavGraphBuilder.profileScreen(
             viewModel = koinViewModel(),
             onNavigateToShow = onNavigateToShow,
             onNavigateToMovie = onNavigateToMovie,
+            onNavigateToFavorites = onNavigateToFavorites,
             onNavigateBack = onNavigateBack,
         )
     }

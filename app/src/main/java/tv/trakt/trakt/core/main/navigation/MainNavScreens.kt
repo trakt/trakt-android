@@ -52,6 +52,8 @@ import tv.trakt.trakt.core.summary.people.navigation.navigateToPerson
 import tv.trakt.trakt.core.summary.people.navigation.personDetailsScreen
 import tv.trakt.trakt.core.summary.shows.navigation.navigateToShow
 import tv.trakt.trakt.core.summary.shows.navigation.showDetailsScreen
+import tv.trakt.trakt.core.user.features.profile.sections.favorites.all.navigation.allFavoritesScreen
+import tv.trakt.trakt.core.user.features.profile.sections.favorites.all.navigation.navigateToFavorites
 import tv.trakt.trakt.core.user.navigation.navigateToProfile
 import tv.trakt.trakt.core.user.navigation.profileScreen
 
@@ -303,6 +305,13 @@ internal fun NavGraphBuilder.searchScreens(
 internal fun NavGraphBuilder.profileScreens(controller: NavHostController) {
     with(controller) {
         profileScreen(
+            onNavigateToShow = { navigateToShow(it) },
+            onNavigateToMovie = { navigateToMovie(it) },
+            onNavigateToFavorites = { navigateToFavorites() },
+            onNavigateBack = { popBackStack() },
+        )
+
+        allFavoritesScreen(
             onNavigateToShow = { navigateToShow(it) },
             onNavigateToMovie = { navigateToMovie(it) },
             onNavigateBack = { popBackStack() },
