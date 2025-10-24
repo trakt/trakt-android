@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -30,6 +31,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -178,18 +180,7 @@ private fun ProfileScreenContent(
                     )
                 }
 
-                if (state.user == null) {
-                    TertiaryButton(
-                        text = stringResource(R.string.button_text_login),
-                        icon = painterResource(R.drawable.ic_trakt_icon),
-                        height = 34.dp,
-                        enabled = !state.loading.isLoading,
-                        loading = state.loading.isLoading,
-                        onClick = {
-                            uriHandler.openUri(ConfigAuth.authCodeUrl)
-                        },
-                    )
-                } else {
+                if (state.user != null) {
                     Row(
                         verticalAlignment = CenterVertically,
                         horizontalArrangement = spacedBy(16.dp),
@@ -286,6 +277,21 @@ private fun ProfileScreenContent(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     modifier = Modifier.padding(top = 32.dp),
+                )
+            } else {
+                TertiaryButton(
+                    text = stringResource(R.string.button_text_login),
+                    icon = painterResource(R.drawable.ic_trakt_icon),
+                    height = 42.dp,
+                    enabled = !state.loading.isLoading,
+                    loading = state.loading.isLoading,
+                    onClick = {
+                        uriHandler.openUri(ConfigAuth.authCodeUrl)
+                    },
+                    modifier = Modifier
+                        .align(CenterHorizontally)
+                        .padding(top = 32.dp)
+                        .widthIn(112.dp),
                 )
             }
         }

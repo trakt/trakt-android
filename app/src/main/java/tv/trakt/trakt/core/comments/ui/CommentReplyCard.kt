@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -50,11 +51,13 @@ import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.common.Config.webUserUrl
 import tv.trakt.trakt.common.helpers.extensions.highlightMentions
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
@@ -75,6 +78,8 @@ internal fun CommentReplyCard(
     onRequestReactions: (() -> Unit)? = null,
     onReactionClick: ((Reaction) -> Unit)? = null,
 ) {
+    val uriHandler = LocalUriHandler.current
+
     LaunchedEffect(comment.id) {
         if (reactions == null) {
             onRequestReactions?.invoke()
@@ -96,6 +101,11 @@ internal fun CommentReplyCard(
                 reactionsEnabled = reactionsEnabled,
                 userReaction = userReaction,
                 onReactionClick = onReactionClick,
+                onUserClick = {
+                    uriHandler.openUri(
+                        webUserUrl(it.username),
+                    )
+                },
             )
         },
     )
@@ -109,6 +119,7 @@ private fun CommentReplyCardContent(
     userReaction: Reaction?,
     maxLines: Int,
     modifier: Modifier = Modifier,
+    onUserClick: ((User) -> Unit)? = null,
     onReactionClick: ((Reaction) -> Unit)? = null,
 ) {
     var isCollapsed by remember { mutableStateOf(true) }
@@ -176,6 +187,7 @@ private fun CommentReplyCardContent(
 private fun CommentHeader(
     comment: Comment,
     modifier: Modifier = Modifier,
+    onUserClick: ((User) -> Unit)? = null,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -183,7 +195,11 @@ private fun CommentHeader(
         modifier = modifier,
     ) {
         Box(
-            modifier = Modifier.size(36.dp),
+            modifier = Modifier
+                .size(36.dp)
+                .onClick {
+                    onUserClick?.invoke(comment.user)
+                },
         ) {
             val avatarBorder = when {
                 comment.user.isAnyVip -> Color.Red
@@ -246,6 +262,9 @@ private fun CommentHeader(
                     color = TraktTheme.colors.textPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.onClick {
+                        onUserClick?.invoke(comment.user)
+                    },
                 )
             }
             Text(
