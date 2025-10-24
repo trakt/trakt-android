@@ -133,7 +133,7 @@ internal fun HttpClientConfig<*>.applyAuthorizationConfig(
 
                     try {
                         Timber.d("Refreshing auth tokens")
-                        val newTokens = client.post("${Config.API_BASE_URL}oauth/token") {
+                        val newTokens = client.post("${Config.API_HD_BASE_URL}oauth/token") {
                             setBody(
                                 TraktRefreshToken(
                                     refreshToken = oldTokens.refreshToken ?: "",

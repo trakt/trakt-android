@@ -19,7 +19,6 @@ import org.openapitools.client.apis.SearchApi
 import org.openapitools.client.apis.ShowsApi
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
-import tv.trakt.trakt.common.Config.API_BASE_URL
 import tv.trakt.trakt.common.Config.API_HD_BASE_URL
 import tv.trakt.trakt.common.networking.api.SyncExtrasApi
 import tv.trakt.trakt.common.networking.client.KtorClientFactory
@@ -198,7 +197,7 @@ val networkingApiModule = module {
 
     single<OauthApi> {
         OauthApi(
-            baseUrl = API_BASE_URL,
+            baseUrl = API_HD_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("clientConfig")),
         )
