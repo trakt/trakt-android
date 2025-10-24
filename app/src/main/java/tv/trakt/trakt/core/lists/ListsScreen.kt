@@ -1,10 +1,6 @@
 package tv.trakt.trakt.core.lists
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColor
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -13,24 +9,20 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -41,13 +33,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.firebase.Firebase
@@ -71,7 +61,6 @@ import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
-import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -231,20 +220,6 @@ private fun ListsScreenContent(
                 }
             }
 
-            if (state.listsLoading != DONE) {
-                item(key = "personal_loading") {
-                    AnimatedVisibility(
-                        visible = state.listsLoading != DONE,
-                        enter = fadeIn(tween(200)),
-                        exit = fadeOut(tween(200)),
-                    ) {
-                        ContentLoadingList(
-                            contentPadding = sectionPadding,
-                        )
-                    }
-                }
-            }
-
             items(
                 items = state.lists ?: emptyList(),
                 key = { list -> list.ids.trakt.value },
@@ -361,48 +336,48 @@ private fun ContentEmptyView(
     )
 }
 
-@Composable
-private fun ContentLoadingList(
-    visible: Boolean = true,
-    contentPadding: PaddingValues,
-) {
-    val infiniteTransition = rememberInfiniteTransition(label = "infiniteTransition")
-    val shimmerTransition by infiniteTransition
-        .animateColor(
-            initialValue = TraktTheme.colors.skeletonContainer,
-            targetValue = TraktTheme.colors.skeletonShimmer,
-            animationSpec = infiniteRepeatable(
-                animation = tween(durationMillis = 1000),
-                repeatMode = RepeatMode.Reverse,
-            ),
-            label = "shimmerTransition",
-        )
-
-    Column(
-        verticalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
-    ) {
-        Box(
-            modifier = Modifier
-                .padding(
-                    horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
-                )
-                .fillMaxWidth(fraction = 0.33F)
-                .height(18.dp)
-                .background(shimmerTransition, RoundedCornerShape(100)),
-        )
-        LazyRow(
-            horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
-            contentPadding = contentPadding,
-            modifier = Modifier
-                .fillMaxWidth()
-                .alpha(if (visible) 1F else 0F),
-        ) {
-            items(count = 6) {
-                VerticalMediaSkeletonCard(chipRatio = 0.66F)
-            }
-        }
-    }
-}
+// @Composable
+// private fun ContentLoadingList(
+//    visible: Boolean = true,
+//    contentPadding: PaddingValues,
+// ) {
+//    val infiniteTransition = rememberInfiniteTransition(label = "infiniteTransition")
+//    val shimmerTransition by infiniteTransition
+//        .animateColor(
+//            initialValue = TraktTheme.colors.skeletonContainer,
+//            targetValue = TraktTheme.colors.skeletonShimmer,
+//            animationSpec = infiniteRepeatable(
+//                animation = tween(durationMillis = 1000),
+//                repeatMode = RepeatMode.Reverse,
+//            ),
+//            label = "shimmerTransition",
+//        )
+//
+//    Column(
+//        verticalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
+//    ) {
+//        Box(
+//            modifier = Modifier
+//                .padding(
+//                    horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
+//                )
+//                .fillMaxWidth(fraction = 0.33F)
+//                .height(18.dp)
+//                .background(shimmerTransition, RoundedCornerShape(100)),
+//        )
+//        LazyRow(
+//            horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
+//            contentPadding = contentPadding,
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .alpha(if (visible) 1F else 0F),
+//        ) {
+//            items(count = 6) {
+//                VerticalMediaSkeletonCard(chipRatio = 0.66F)
+//            }
+//        }
+//    }
+// }
 
 @Preview(
     device = "id:pixel_9",

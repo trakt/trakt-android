@@ -90,6 +90,7 @@ internal class ProfileViewModel(
                 getProfileUseCase.loadUserProfile()
             } catch (error: Exception) {
                 error.rethrowCancellation {
+                    logoutUser()
                     Timber.e(error)
                 }
             } finally {

@@ -177,9 +177,11 @@ private fun ProfileScreenContent(
 
                 if (state.user == null) {
                     TertiaryButton(
-                        text = stringResource(R.string.button_text_join_trakt),
+                        text = stringResource(R.string.button_text_login),
                         icon = painterResource(R.drawable.ic_trakt_icon),
                         height = 34.dp,
+                        enabled = !state.loading.isLoading,
+                        loading = state.loading.isLoading,
                         onClick = {
                             uriHandler.openUri(ConfigAuth.authCodeUrl)
                         },
@@ -256,7 +258,7 @@ private fun ProfileScreenContent(
                             text = state.user.about ?: "",
                             style = TraktTheme.typography.paragraphSmall,
                             color = TraktTheme.colors.textPrimary,
-                            maxLines = 5,
+                            maxLines = 3,
                             textAlign = TextAlign.Center,
                             overflow = Ellipsis,
                         )
