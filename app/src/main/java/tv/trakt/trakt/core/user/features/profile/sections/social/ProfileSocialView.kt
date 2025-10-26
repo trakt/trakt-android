@@ -165,7 +165,7 @@ private fun ContentFilters(
                     )
                 },
                 endContent = {
-                    if (!state.loading.isLoading && state.filter == filter) {
+                    if (state.loading == DONE && state.filter == filter) {
                         Text(
                             text = " • $usersCount",
                             style = TraktTheme.typography.buttonTertiary,

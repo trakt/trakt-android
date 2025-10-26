@@ -215,6 +215,7 @@ internal val showDetailsModule = module {
             getCommentsUseCase = get(),
             getCommentReactionsUseCase = get(),
             loadUserReactionsUseCase = get(),
+            reactionsUpdates = get(),
             sessionManager = get(),
         )
     }

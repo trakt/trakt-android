@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.core.reactions.data.ReactionsUpdates
 import tv.trakt.trakt.core.reactions.usecases.DeleteCommentReactionUseCase
 import tv.trakt.trakt.core.user.usecase.reactions.LoadUserReactionsUseCase
 import java.util.concurrent.TimeUnit.SECONDS
@@ -25,16 +26,19 @@ internal class DeleteReactionWorker(
     val sessionManager: SessionManager,
     val deleteReactionsUseCase: DeleteCommentReactionUseCase,
     val loadUserReactionsUseCase: LoadUserReactionsUseCase,
+    val reactionsUpdates: ReactionsUpdates,
 ) : CoroutineWorker(appContext, workerParams) {
     companion object {
         fun scheduleOneTime(
             appContext: Context,
             commentId: Int,
+            source: ReactionsUpdates.Source? = null,
         ) {
             val workRequest = OneTimeWorkRequestBuilder<DeleteReactionWorker>()
                 .setInputData(
                     Data.Builder()
                         .putInt("commentId", commentId)
+                        .putString("source", source?.name)
                         .build(),
                 )
                 .setBackoffCriteria(BackoffPolicy.LINEAR, 3, SECONDS)
@@ -62,6 +66,7 @@ internal class DeleteReactionWorker(
                 return Result.failure()
             }
 
+            val reactionSource = inputData.getString("source")
             val commentId = inputData.getInt("commentId", -1)
             if (commentId == -1) {
                 Timber.d("Invalid comment ID, cannot delete reaction")
@@ -74,6 +79,14 @@ internal class DeleteReactionWorker(
                 )
 
                 loadUserReactionsUseCase.loadReactions()
+
+                if (!reactionSource.isNullOrBlank()) {
+                    val source = ReactionsUpdates.Source.valueOf(reactionSource)
+                    reactionsUpdates.notifyUpdate(
+                        commentId = commentId,
+                        source = source,
+                    )
+                }
             }
         } catch (error: Exception) {
             if (error is CancellationException) {

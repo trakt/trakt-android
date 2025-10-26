@@ -14,6 +14,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.model.reactions.Reaction
+import tv.trakt.trakt.core.reactions.data.ReactionsUpdates
 import tv.trakt.trakt.core.reactions.usecases.PostCommentReactionUseCase
 import tv.trakt.trakt.core.user.usecase.reactions.LoadUserReactionsUseCase
 import java.util.concurrent.TimeUnit.SECONDS
@@ -26,18 +27,21 @@ internal class PostReactionWorker(
     val sessionManager: SessionManager,
     val postReactionUseCase: PostCommentReactionUseCase,
     val loadUserReactionsUseCase: LoadUserReactionsUseCase,
+    val reactionsUpdates: ReactionsUpdates,
 ) : CoroutineWorker(appContext, workerParams) {
     companion object {
         fun scheduleOneTime(
             appContext: Context,
             commentId: Int,
             reaction: Reaction,
+            source: ReactionsUpdates.Source? = null,
         ) {
             val workRequest = OneTimeWorkRequestBuilder<PostReactionWorker>()
                 .setInputData(
                     Data.Builder()
                         .putInt("commentId", commentId)
                         .putString("reaction", reaction.name)
+                        .putString("source", source?.name)
                         .build(),
                 )
                 .setBackoffCriteria(BackoffPolicy.LINEAR, 3, SECONDS)
@@ -67,6 +71,7 @@ internal class PostReactionWorker(
 
             val commentId = inputData.getInt("commentId", -1)
             val reactionValue = inputData.getString("reaction")
+            val reactionSource = inputData.getString("source")
 
             if (commentId == -1) {
                 Timber.d("Invalid comment ID, cannot post reaction")
@@ -87,6 +92,14 @@ internal class PostReactionWorker(
                 )
 
                 loadUserReactionsUseCase.loadReactions()
+
+                if (!reactionSource.isNullOrBlank()) {
+                    val source = ReactionsUpdates.Source.valueOf(reactionSource)
+                    reactionsUpdates.notifyUpdate(
+                        commentId = commentId,
+                        source = source,
+                    )
+                }
             }
         } catch (error: Exception) {
             if (error is CancellationException) {

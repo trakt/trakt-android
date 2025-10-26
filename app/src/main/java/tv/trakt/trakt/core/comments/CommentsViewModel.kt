@@ -8,6 +8,7 @@ import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -16,6 +17,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -35,6 +40,8 @@ import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.navigation.CommentsDestination
+import tv.trakt.trakt.core.reactions.data.ReactionsUpdates
+import tv.trakt.trakt.core.reactions.data.ReactionsUpdates.Source
 import tv.trakt.trakt.core.reactions.data.work.DeleteReactionWorker
 import tv.trakt.trakt.core.reactions.data.work.PostReactionWorker
 import tv.trakt.trakt.core.summary.episodes.features.comments.usecases.GetEpisodeCommentsUseCase
@@ -43,6 +50,7 @@ import tv.trakt.trakt.core.summary.shows.features.comments.usecases.GetShowComme
 import tv.trakt.trakt.core.user.usecase.reactions.LoadUserReactionsUseCase
 import kotlin.time.Duration.Companion.seconds
 
+@OptIn(FlowPreview::class)
 internal class CommentsViewModel(
     savedStateHandle: SavedStateHandle,
     private val appContext: Context,
@@ -52,6 +60,7 @@ internal class CommentsViewModel(
     private val getEpisodeCommentsUseCase: GetEpisodeCommentsUseCase,
     private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
     private val loadUserReactionsUseCase: LoadUserReactionsUseCase,
+    private val reactionsUpdates: ReactionsUpdates,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<CommentsDestination>()
     private val initialState = CommentsState()
@@ -74,6 +83,17 @@ internal class CommentsViewModel(
         loadBackground()
         loadData()
         loadUser()
+        observeData()
+    }
+
+    private fun observeData() {
+        reactionsUpdates.observeUpdates(Source.COMMENT_DETAILS)
+            .distinctUntilChanged()
+            .debounce(200)
+            .onEach {
+                updateReactions(it.first)
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun loadBackground() {
@@ -256,6 +276,35 @@ internal class CommentsViewModel(
         }
     }
 
+    private fun updateReactions(commentId: Int) {
+        viewModelScope.launch {
+            try {
+                if (!sessionManager.isAuthenticated()) {
+                    return@launch
+                }
+
+                val reactions = getCommentReactionsUseCase.getReactions(commentId)
+                val userReactions = when {
+                    loadUserReactionsUseCase.isLoaded() -> {
+                        loadUserReactionsUseCase.loadLocalReactions()
+                    }
+                    else -> loadUserReactionsUseCase.loadReactions()
+                }
+
+                userReactionsState.update { userReactions }
+                reactionsState.update { current ->
+                    val mutable = current?.toMutableMap() ?: mutableMapOf()
+                    mutable[commentId] = reactions
+                    mutable.toImmutableMap()
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.w(error)
+                }
+            }
+        }
+    }
+
     private suspend fun postReactionWork(
         commentId: Int,
         reaction: Reaction,
@@ -268,6 +317,7 @@ internal class CommentsViewModel(
             appContext = appContext,
             commentId = commentId,
             reaction = reaction,
+            source = Source.ALL_COMMENTS,
         )
     }
 
@@ -279,6 +329,7 @@ internal class CommentsViewModel(
         DeleteReactionWorker.scheduleOneTime(
             appContext = appContext,
             commentId = commentId,
+            source = Source.ALL_COMMENTS,
         )
     }
 

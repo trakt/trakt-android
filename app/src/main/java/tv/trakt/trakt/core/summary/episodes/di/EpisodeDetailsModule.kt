@@ -131,6 +131,7 @@ internal val episodeDetailsModule = module {
             getCommentsUseCase = get(),
             getCommentReactionsUseCase = get(),
             loadUserReactionsUseCase = get(),
+            reactionsUpdates = get(),
             sessionManager = get(),
         )
     }
