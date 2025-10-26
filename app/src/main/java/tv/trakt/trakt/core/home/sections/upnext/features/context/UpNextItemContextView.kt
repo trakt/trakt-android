@@ -1,11 +1,12 @@
 package tv.trakt.trakt.core.home.sections.upnext.features.context
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -13,7 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -22,7 +23,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
@@ -37,6 +37,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.core.home.sections.upnext.model.Progress
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.EpisodeProgressBar
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
@@ -120,38 +121,54 @@ private fun UpNextItemContextViewContent(
                 ?: item.show.images?.getFanartUrl(THUMB),
             footerContent = {
                 Row(
-                    horizontalArrangement = spacedBy(4.dp),
-                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = CenterVertically,
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
-                    val remainingEpisodesString = stringResource(
-                        R.string.tag_text_remaining_episodes,
-                        item.progress.remainingEpisodes,
-                    )
-                    val metaString = remember {
-                        val separator = "  •  "
+                    val startString = remember {
                         buildString {
                             val runtime = item.progress.nextEpisode.runtime?.inWholeMinutes
                             if (runtime != null) {
                                 append(runtime.durationFormat())
                             }
+                        }
+                    }
 
+                    val remainingEpisodesString = stringResource(
+                        R.string.tag_text_remaining_episodes,
+                        item.progress.remainingEpisodes,
+                    )
+
+                    val endString = remember {
+                        val separator = "  •  "
+                        buildString {
                             val remainingEpisodes = item.progress.remainingEpisodes
                             if (remainingEpisodes > 0) {
-                                if (isNotEmpty()) append(separator)
                                 append(remainingEpisodesString)
                             }
 
+                            append(separator)
+
                             val remainingTime = item.progress.remainingMinutesString
                             if (remainingTime != null) {
-                                append(" ($remainingTime)")
+                                append(remainingTime)
                             }
                         }
                     }
 
-                    Text(
-                        text = metaString,
-                        color = TraktTheme.colors.textSecondary,
-                        style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
+                    val remainingPercent = remember(
+                        item.progress.completed,
+                        item.progress.aired,
+                    ) {
+                        item.progress.remainingPercent
+                    }
+
+                    EpisodeProgressBar(
+                        startText = startString,
+                        endText = endString,
+                        progress = remainingPercent,
+                        containerColor = TraktTheme.colors.chipContainer,
+                        modifier = Modifier.weight(1F, fill = false),
                     )
                 }
             },
@@ -159,8 +176,7 @@ private fun UpNextItemContextViewContent(
 
         Column(
             verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
-            modifier = Modifier
-                .padding(top = 24.dp),
+            modifier = Modifier.padding(top = 20.dp),
         ) {
             val isLoading =
                 state.loadingWatched.isLoading ||
