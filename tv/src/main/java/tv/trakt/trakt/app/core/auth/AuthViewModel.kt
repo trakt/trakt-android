@@ -72,7 +72,7 @@ internal class AuthViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error, "Error loading data")
+                    Timber.w(error, "Error loading data")
                 }
             } finally {
                 loadingState.update { null }

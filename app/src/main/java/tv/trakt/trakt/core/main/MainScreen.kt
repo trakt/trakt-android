@@ -118,6 +118,7 @@ internal fun MainScreen(
         MainNavHost(
             navController = navController,
             searchInput = searchState.searchInput,
+            userLoading = state.loadingUser.isLoading,
             onSearchLoading = searchState.onSearchLoading,
         )
 
@@ -194,6 +195,7 @@ internal fun MainScreen(
 @Composable
 private fun MainNavHost(
     navController: NavHostController,
+    userLoading: Boolean,
     searchInput: SearchInput,
     onSearchLoading: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
@@ -205,7 +207,10 @@ private fun MainNavHost(
         enterTransition = { fadeIn(animationSpec = tween(250)) },
         exitTransition = { fadeOut(animationSpec = tween(250)) },
     ) {
-        homeScreens(navController)
+        homeScreens(
+            controller = navController,
+            userLoading = userLoading,
+        )
         showsScreens(navController)
         episodesScreens(navController)
         moviesScreens(navController)

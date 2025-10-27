@@ -415,7 +415,7 @@ internal class SearchViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error, "Error!")
+                    Timber.w(error, "Error!")
                 }
             } finally {
                 searchingState.update { false }

@@ -42,7 +42,6 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
-import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HEADER_NEWS_1
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HEADER_NEWS_2
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HEADER_NEWS_ENABLED
@@ -52,7 +51,6 @@ import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.VipChip
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.components.headerbar.model.HeaderNews
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -75,6 +73,7 @@ internal fun HeaderBar(
     showJoinTrakt: Boolean = false,
     userAvatar: String? = null,
     userVip: Boolean = false,
+    userLoading: Boolean = false,
     onProfileClick: () -> Unit = {},
 ) {
     val localMode = LocalInspectionMode.current
@@ -143,51 +142,51 @@ internal fun HeaderBar(
                     modifier = Modifier
                         .heightIn(min = contentHeight),
                 ) {
-                    if (vip) {
-                        VipChip(
-                            onClick = {
-                                uriHandler.openUri(Config.WEB_VIP_URL)
-                            },
-                            modifier = Modifier.align(Alignment.Center),
-                        )
-                    } else {
-                        val isNewsHeader = remember(news) {
-                            news.enabled && news.newsUrl.isNotBlank()
-                        }
-                        Column(
-                            verticalArrangement = spacedBy(2.dp, Alignment.CenterVertically),
-                            modifier = Modifier
-                                .padding(end = 16.dp)
-                                .align(Alignment.Center)
-                                .onClick {
-                                    if (isNewsHeader) {
-                                        uriHandler.openUri(news.newsUrl)
-                                    }
-                                },
-                        ) {
-                            Text(
-                                text = when {
-                                    isNewsHeader -> news.news1
-                                    !title.isNullOrBlank() -> title
-                                    else -> GreetingQuotes.getTodayQuote()
-                                },
-                                color = TraktTheme.colors.textPrimary,
-                                style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                            )
-                            Text(
-                                text = when {
-                                    isNewsHeader -> news.news2
-                                    else -> todayLabel
-                                },
-                                color = TraktTheme.colors.textSecondary,
-                                style = TraktTheme.typography.meta,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                            )
-                        }
+//                    if (vip) {
+//                        VipChip(
+//                            onClick = {
+//                                uriHandler.openUri(Config.WEB_VIP_URL)
+//                            },
+//                            modifier = Modifier.align(Alignment.Center),
+//                        )
+//                    } else {
+                    val isNewsHeader = remember(news) {
+                        news.enabled && news.newsUrl.isNotBlank()
                     }
+                    Column(
+                        verticalArrangement = spacedBy(2.dp, Alignment.CenterVertically),
+                        modifier = Modifier
+                            .padding(end = 16.dp)
+                            .align(Alignment.Center)
+                            .onClick {
+                                if (isNewsHeader) {
+                                    uriHandler.openUri(news.newsUrl)
+                                }
+                            },
+                    ) {
+                        Text(
+                            text = when {
+                                isNewsHeader -> news.news1
+                                !title.isNullOrBlank() -> title
+                                else -> GreetingQuotes.getTodayQuote()
+                            },
+                            color = TraktTheme.colors.textPrimary,
+                            style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                        Text(
+                            text = when {
+                                isNewsHeader -> news.news2
+                                else -> todayLabel
+                            },
+                            color = TraktTheme.colors.textSecondary,
+                            style = TraktTheme.typography.meta,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
+//                    }
                 }
             }
 
@@ -227,6 +226,8 @@ internal fun HeaderBar(
                         text = stringResource(R.string.button_text_join_trakt),
                         icon = painterResource(R.drawable.ic_trakt_icon),
                         height = contentHeight,
+                        loading = userLoading,
+                        enabled = !userLoading,
                         onClick = {
                             uriHandler.openUri(ConfigAuth.authCodeUrl)
                         },

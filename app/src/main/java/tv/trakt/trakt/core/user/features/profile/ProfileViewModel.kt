@@ -68,7 +68,7 @@ internal class ProfileViewModel(
                 logoutUseCase.logoutUser()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error)
+                    Timber.w(error)
                 }
             } finally {
                 loadingState.update { LoadingState.DONE }

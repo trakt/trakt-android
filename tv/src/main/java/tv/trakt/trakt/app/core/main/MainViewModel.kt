@@ -68,7 +68,7 @@ internal class MainViewModel(
                 loadUserProfileUseCase.loadUserProfile()
             } catch (error: Exception) {
                 error.rethrowCancellation()
-                Timber.e(error, "Failed to load user profile")
+                Timber.w(error, "Failed to load user profile")
             }
         }
     }

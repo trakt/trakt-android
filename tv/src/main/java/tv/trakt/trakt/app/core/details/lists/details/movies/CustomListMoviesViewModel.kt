@@ -52,7 +52,7 @@ internal class CustomListMoviesViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error, "Error loading movies for list: ${destination.listId} $error")
+                    Timber.w(error, "Error loading movies for list: ${destination.listId} $error")
                 }
             } finally {
                 loadingState.update { false }
@@ -82,7 +82,7 @@ internal class CustomListMoviesViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e("Error loading next page of movies for list: ${destination.listId} $error")
+                    Timber.w("Error loading next page of movies for list: ${destination.listId} $error")
                 }
             } finally {
                 loadingPageState.update { false }

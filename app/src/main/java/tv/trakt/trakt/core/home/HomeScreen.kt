@@ -42,6 +42,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun HomeScreen(
     viewModel: HomeViewModel,
+    userLoading: Boolean,
     onNavigateToProfile: () -> Unit,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToShows: () -> Unit,
@@ -62,6 +63,7 @@ internal fun HomeScreen(
 
     HomeScreenContent(
         state = state,
+        userLoading = userLoading,
         onProfileClick = onNavigateToProfile,
         onShowClick = onNavigateToShow,
         onShowsClick = onNavigateToShows,
@@ -79,6 +81,7 @@ internal fun HomeScreen(
 @Composable
 private fun HomeScreenContent(
     state: HomeState,
+    userLoading: Boolean,
     modifier: Modifier = Modifier,
     onProfileClick: () -> Unit = {},
     onMoreUpNextClick: () -> Unit = {},
@@ -186,6 +189,7 @@ private fun HomeScreenContent(
         HomeScreenHeader(
             state = state,
             headerState = headerState,
+            userLoading = userLoading,
             isScrolledToTop = isScrolledToTop,
             onProfileClick = onProfileClick,
         )
@@ -196,6 +200,7 @@ private fun HomeScreenContent(
 private fun HomeScreenHeader(
     state: HomeState,
     headerState: ScreenHeaderState,
+    userLoading: Boolean,
     isScrolledToTop: Boolean,
     onProfileClick: () -> Unit,
 ) {
@@ -212,6 +217,7 @@ private fun HomeScreenHeader(
         showJoinTrakt = userState.first && !userState.second,
         userVip = state.user.user?.isAnyVip ?: false,
         userAvatar = state.user.user?.images?.avatar?.full,
+        userLoading = userLoading,
         onProfileClick = onProfileClick,
         modifier = Modifier.offset {
             IntOffset(0, headerState.connection.barOffset.fastRoundToInt())
@@ -229,6 +235,7 @@ private fun Preview() {
     TraktTheme {
         HomeScreenContent(
             state = HomeState(),
+            userLoading = false,
             onProfileClick = {},
         )
     }

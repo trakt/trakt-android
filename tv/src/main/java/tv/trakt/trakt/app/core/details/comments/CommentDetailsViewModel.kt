@@ -39,7 +39,7 @@ internal class CommentDetailsViewModel(
                 commentRepliesState.update { replies }
             } catch (e: Exception) {
                 e.rethrowCancellation {
-                    Timber.e(e, "Error loading comment replies")
+                    Timber.w(e, "Error loading comment replies")
                 }
             } finally {
                 loadingJob?.cancel()

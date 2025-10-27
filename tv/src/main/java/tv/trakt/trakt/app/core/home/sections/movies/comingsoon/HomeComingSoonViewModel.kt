@@ -45,7 +45,7 @@ internal class HomeComingSoonViewModel(
                 loadedAt = nowUtc()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error, "Error loading coming soon movies")
+                    Timber.w(error, "Error loading coming soon movies")
                     errorState.update { error }
                 }
             } finally {
@@ -65,7 +65,7 @@ internal class HomeComingSoonViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error, "Error")
+                    Timber.w(error, "Error")
                 }
             }
         }

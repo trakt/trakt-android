@@ -73,7 +73,7 @@ internal class MoviesViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error, error.message ?: "Unknown error")
+                    Timber.w(error, error.message ?: "Unknown error")
                 }
             } finally {
                 loadingState.update { false }

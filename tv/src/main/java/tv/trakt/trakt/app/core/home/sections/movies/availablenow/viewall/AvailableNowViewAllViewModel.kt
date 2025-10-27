@@ -61,7 +61,7 @@ internal class AvailableNowViewAllViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error, "Failed to load data")
+                    Timber.w(error, "Failed to load data")
                 }
             } finally {
                 loadingState.update { false }
@@ -110,7 +110,7 @@ internal class AvailableNowViewAllViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error, "Error")
+                    Timber.w(error, "Error")
                 }
             }
         }

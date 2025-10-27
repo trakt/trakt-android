@@ -79,7 +79,7 @@ internal class ListsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.value = error
-                    Timber.e(error, "Error loading: ${error.message}")
+                    Timber.w(error, "Error loading: ${error.message}")
                 }
             } finally {
                 loadingWatchlistState.update { false }
@@ -119,7 +119,7 @@ internal class ListsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error, "Error")
+                    Timber.w(error, "Error")
                 }
             }
         }
@@ -139,7 +139,7 @@ internal class ListsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error, "Error")
+                    Timber.w(error, "Error")
                 }
             }
         }

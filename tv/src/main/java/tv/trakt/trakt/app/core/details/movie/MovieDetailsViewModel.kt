@@ -113,7 +113,7 @@ internal class MovieDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Timber.e("Error loading movie details: ${error.message}")
+                    Timber.w("Error loading movie details: ${error.message}")
                 }
             }
         }
@@ -127,7 +127,7 @@ internal class MovieDetailsViewModel(
             } catch (e: Exception) {
                 e.rethrowCancellation {
                     showSnackMessage(StaticStringResource(e.toString()))
-                    Timber.e("Error loading external ratings: ${e.message}")
+                    Timber.w("Error loading external ratings: ${e.message}")
                 }
             }
         }
@@ -141,7 +141,7 @@ internal class MovieDetailsViewModel(
             } catch (e: Exception) {
                 e.rethrowCancellation {
                     showSnackMessage(StaticStringResource(e.toString()))
-                    Timber.e("Error loading extra videos: ${e.message}")
+                    Timber.w("Error loading extra videos: ${e.message}")
                 }
             }
         }
@@ -155,7 +155,7 @@ internal class MovieDetailsViewModel(
             } catch (e: Exception) {
                 e.rethrowCancellation {
                     showSnackMessage(StaticStringResource(e.toString()))
-                    Timber.e("Error loading cast and crew: ${e.message}")
+                    Timber.w("Error loading cast and crew: ${e.message}")
                 }
             }
         }
@@ -169,7 +169,7 @@ internal class MovieDetailsViewModel(
             } catch (e: Exception) {
                 e.rethrowCancellation {
                     showSnackMessage(StaticStringResource(e.toString()))
-                    Timber.e("Error loading related movies: ${e.message}")
+                    Timber.w("Error loading related movies: ${e.message}")
                 }
             }
         }
@@ -183,7 +183,7 @@ internal class MovieDetailsViewModel(
             } catch (e: Exception) {
                 e.rethrowCancellation {
                     showSnackMessage(StaticStringResource(e.toString()))
-                    Timber.e("Error loading comments: ${e.message}")
+                    Timber.w("Error loading comments: ${e.message}")
                 }
             }
         }
@@ -204,7 +204,7 @@ internal class MovieDetailsViewModel(
             } catch (e: Exception) {
                 e.rethrowCancellation {
                     showSnackMessage(StaticStringResource(e.toString()))
-                    Timber.e(e, "Error loading lists: ${e.message}")
+                    Timber.w(e, "Error loading lists: ${e.message}")
                 }
             }
         }
@@ -260,7 +260,7 @@ internal class MovieDetailsViewModel(
                 e.rethrowCancellation {
                     showSnackMessage(StaticStringResource(e.toString()))
                     movieStreamingsState.update { StreamingsState() }
-                    Timber.e("Error loading streaming services: ${e.message}")
+                    Timber.w("Error loading streaming services: ${e.message}")
                 }
             }
         }
@@ -301,7 +301,7 @@ internal class MovieDetailsViewModel(
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
                     movieCollectionState.update { CollectionState() }
-                    Timber.e("Error loading history: ${error.message}")
+                    Timber.w("Error loading history: ${error.message}")
                 }
             }
         }
@@ -334,7 +334,7 @@ internal class MovieDetailsViewModel(
             } catch (e: Exception) {
                 e.rethrowCancellation {
                     showSnackMessage(StaticStringResource(e.toString()))
-                    Timber.e("Error toggling history: ${e.message}")
+                    Timber.w("Error toggling history: ${e.message}")
                 }
             }
         }
@@ -365,7 +365,7 @@ internal class MovieDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Timber.e("Error toggling watchlist: ${error.message}")
+                    Timber.w("Error toggling watchlist: ${error.message}")
                 }
             }
         }

@@ -120,7 +120,7 @@ internal class MainViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     logoutUser()
-                    Timber.e(error)
+                    Timber.w(error)
                 }
             } finally {
                 loadingUserState.update { LoadingState.DONE }
@@ -135,7 +135,7 @@ internal class MainViewModel(
                 logoutUserUseCase.logoutUser()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error)
+                    Timber.w(error)
                 }
             } finally {
                 loadingUserState.update { LoadingState.DONE }

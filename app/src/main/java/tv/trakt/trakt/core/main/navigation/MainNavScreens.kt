@@ -57,9 +57,13 @@ import tv.trakt.trakt.core.user.features.profile.sections.favorites.all.navigati
 import tv.trakt.trakt.core.user.navigation.navigateToProfile
 import tv.trakt.trakt.core.user.navigation.profileScreen
 
-internal fun NavGraphBuilder.homeScreens(controller: NavHostController) {
+internal fun NavGraphBuilder.homeScreens(
+    controller: NavHostController,
+    userLoading: Boolean,
+) {
     with(controller) {
         homeScreen(
+            userLoading = userLoading,
             onNavigateToProfile = { navigateToProfile() },
             onNavigateToShow = { navigateToShow(it) },
             onNavigateToShows = { navigateToShows() },

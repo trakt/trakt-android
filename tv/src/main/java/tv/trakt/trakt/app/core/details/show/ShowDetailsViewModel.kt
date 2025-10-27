@@ -119,7 +119,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Timber.e("Error loading show details: ${error.message}")
+                    Timber.w("Error loading show details: ${error.message}")
                 }
             }
         }
@@ -134,7 +134,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Timber.e("Error loading external ratings: ${error.message}")
+                    Timber.w("Error loading external ratings: ${error.message}")
                 }
             }
         }
@@ -149,7 +149,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Timber.e("Error loading extra videos: ${error.message}")
+                    Timber.w("Error loading extra videos: ${error.message}")
                 }
             }
         }
@@ -164,7 +164,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Timber.e("Error loading cast and crew: ${error.message}")
+                    Timber.w("Error loading cast and crew: ${error.message}")
                 }
             }
         }
@@ -182,7 +182,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Timber.e("Error loading seasons: ${error.message}")
+                    Timber.w("Error loading seasons: ${error.message}")
                 }
             }
         }
@@ -224,7 +224,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Timber.e("Error loading season: ${error.message}")
+                    Timber.w("Error loading season: ${error.message}")
                     showSeasonsState.update { it.copy(isSeasonLoading = false) }
                 }
             } finally {
@@ -242,7 +242,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Timber.e("Error loading related shows: ${error.message}")
+                    Timber.w("Error loading related shows: ${error.message}")
                 }
             }
         }
@@ -257,7 +257,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Timber.e("Error loading comments: ${error.message}")
+                    Timber.w("Error loading comments: ${error.message}")
                 }
             }
         }
@@ -278,7 +278,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Timber.e(error, "Error loading lists: ${error.message}")
+                    Timber.w(error, "Error loading lists: ${error.message}")
                 }
             }
         }
@@ -334,7 +334,7 @@ internal class ShowDetailsViewModel(
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
                     showStreamingsState.update { StreamingsState() }
-                    Timber.e("Error loading streaming services: ${error.message}")
+                    Timber.w("Error loading streaming services: ${error.message}")
                 }
             }
         }
@@ -375,7 +375,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Timber.e("Error loading collection: ${error.message}")
+                    Timber.w("Error loading collection: ${error.message}")
                     showCollectionState.update { CollectionState() }
                 }
             }
@@ -410,7 +410,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Timber.e("Error toggling history: ${error.message}")
+                    Timber.w("Error toggling history: ${error.message}")
                 }
             }
         }
@@ -441,7 +441,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Timber.e("Error toggling watchlist: ${error.message}")
+                    Timber.w("Error toggling watchlist: ${error.message}")
                 }
             }
         }

@@ -160,7 +160,7 @@ internal class SearchViewModel(
                     errorState.value = error
                     searchingState.update { false }
                     screenState.update { State.ERROR }
-                    Timber.e(error, "Error!")
+                    Timber.w(error, "Error!")
                 }
             }
         }

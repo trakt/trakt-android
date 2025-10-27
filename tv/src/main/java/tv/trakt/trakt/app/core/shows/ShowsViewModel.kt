@@ -73,7 +73,7 @@ internal class ShowsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error, error.toString())
+                    Timber.w(error, error.toString())
                 }
             } finally {
                 loadingState.update { false }

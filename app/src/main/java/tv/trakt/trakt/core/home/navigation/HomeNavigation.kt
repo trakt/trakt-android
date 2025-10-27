@@ -14,6 +14,7 @@ import tv.trakt.trakt.core.home.HomeScreen
 internal data object HomeDestination
 
 internal fun NavGraphBuilder.homeScreen(
+    userLoading: Boolean,
     onNavigateToProfile: () -> Unit,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToShows: () -> Unit,
@@ -28,6 +29,7 @@ internal fun NavGraphBuilder.homeScreen(
     composable<HomeDestination> {
         HomeScreen(
             viewModel = koinViewModel(),
+            userLoading = userLoading,
             onNavigateToProfile = onNavigateToProfile,
             onNavigateToShow = onNavigateToShow,
             onNavigateToShows = onNavigateToShows,

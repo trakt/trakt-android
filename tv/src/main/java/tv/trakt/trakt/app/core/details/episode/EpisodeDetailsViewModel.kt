@@ -137,7 +137,7 @@ internal class EpisodeDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Timber.e("Error loading details: ${error.message}")
+                    Timber.w("Error loading details: ${error.message}")
                 }
             }
         }
@@ -157,7 +157,7 @@ internal class EpisodeDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Timber.e("Error loading external ratings: ${error.message}")
+                    Timber.w("Error loading external ratings: ${error.message}")
                 }
             }
         }
@@ -217,7 +217,7 @@ internal class EpisodeDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Timber.e("Error loading streaming services: ${error.message}")
+                    Timber.w("Error loading streaming services: ${error.message}")
                     episodeStreamingsState.update { StreamingsState() }
                 }
             }
@@ -235,7 +235,7 @@ internal class EpisodeDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Timber.e("Error loading cast and crew: ${error.message}")
+                    Timber.w("Error loading cast and crew: ${error.message}")
                 }
             }
         }
@@ -252,7 +252,7 @@ internal class EpisodeDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Timber.e("Error loading season: ${error.message}")
+                    Timber.w("Error loading season: ${error.message}")
                 }
             }
         }
@@ -283,7 +283,7 @@ internal class EpisodeDetailsViewModel(
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
                     episodeHistoryState.update { HistoryState() }
-                    Timber.e("Error loading history: ${error.message}")
+                    Timber.w("Error loading history: ${error.message}")
                 }
             }
         }
@@ -300,7 +300,7 @@ internal class EpisodeDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Timber.e(error, "Error loading comments: ${error.message}")
+                    Timber.w(error, "Error loading comments: ${error.message}")
                 }
             }
         }
@@ -314,7 +314,7 @@ internal class EpisodeDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Timber.e("Error loading related shows: ${error.message}")
+                    Timber.w("Error loading related shows: ${error.message}")
                 }
             }
         }
@@ -344,7 +344,7 @@ internal class EpisodeDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Timber.e("Error adding history: ${error.message}")
+                    Timber.w("Error adding history: ${error.message}")
                 }
             }
         }
@@ -373,7 +373,7 @@ internal class EpisodeDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
-                    Timber.e("Error removing history: ${error.message}")
+                    Timber.w("Error removing history: ${error.message}")
                 }
             }
         }
