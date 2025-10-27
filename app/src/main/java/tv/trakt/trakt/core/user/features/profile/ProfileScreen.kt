@@ -197,6 +197,30 @@ private fun ProfileScreenContent(
             }
 
             if (state.user != null) {
+                if (!state.user.about.isNullOrBlank()) {
+                    item {
+                        Column(
+                            verticalArrangement = spacedBy(8.dp),
+                            modifier = Modifier
+                                .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+                                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+                        ) {
+                            TraktHeader(
+                                title = stringResource(R.string.page_title_about_me),
+                                titleColor = TraktTheme.colors.textSecondary,
+                            )
+                            Text(
+                                text = state.user.about ?: "",
+                                style = TraktTheme.typography.paragraphSmaller,
+                                color = TraktTheme.colors.textPrimary,
+                                maxLines = 3,
+                                textAlign = TextAlign.Center,
+                                overflow = Ellipsis,
+                            )
+                        }
+                    }
+                }
+
                 item {
                     ProfileHistoryView(
                         headerPadding = sectionPadding,
@@ -229,32 +253,6 @@ private fun ProfileScreenContent(
                         modifier = Modifier
                             .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
                     )
-                }
-
-                if (!state.user.about.isNullOrBlank()) {
-                    item {
-                        Column(
-                            verticalArrangement = spacedBy(8.dp),
-                            modifier = Modifier
-                                .padding(
-                                    start = TraktTheme.spacing.mainPageHorizontalSpace,
-                                    end = TraktTheme.spacing.mainPageHorizontalSpace,
-                                ),
-                        ) {
-                            TraktHeader(
-                                title = stringResource(R.string.page_title_about_me),
-                                titleColor = TraktTheme.colors.textPrimary,
-                            )
-                            Text(
-                                text = state.user.about ?: "",
-                                style = TraktTheme.typography.paragraphSmall,
-                                color = TraktTheme.colors.textSecondary,
-                                maxLines = 3,
-                                textAlign = TextAlign.Center,
-                                overflow = Ellipsis,
-                            )
-                        }
-                    }
                 }
             } else {
                 item {
