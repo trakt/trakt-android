@@ -42,7 +42,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
-import coil3.request.crossfade
 import tv.trakt.trakt.common.Config.webMonthReviewUrl
 import tv.trakt.trakt.common.Config.webYearReviewUrl
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
@@ -96,7 +95,6 @@ internal fun ThisMonthCard(
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(containerImage)
-                    .crossfade(true)
                     .build(),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,

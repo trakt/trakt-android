@@ -182,7 +182,7 @@
     <string name="text_followers">Followers</string>
     <string name="page_title_profile">Profile</string>
     <string name="page_title_favorites">Favorites</string>
-    <string name="page_title_about_me">About Me</string>
+    <string name="page_title_about_you">About You</string>
     <string name="page_title_social">Social</string>
     <string name="warning_prompt_logout">Are you sure you want to log out?</string>
 
