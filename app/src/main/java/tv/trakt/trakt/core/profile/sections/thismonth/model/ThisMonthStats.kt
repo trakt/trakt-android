@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.profile.sections.month.model
+package tv.trakt.trakt.core.profile.sections.thismonth.model
 
 data class ThisMonthStats(
     val showsCount: Int = 0,

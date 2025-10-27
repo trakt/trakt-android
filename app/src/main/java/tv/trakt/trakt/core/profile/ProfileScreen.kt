@@ -53,9 +53,8 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.profile.sections.favorites.ProfileFavoritesView
 import tv.trakt.trakt.core.profile.sections.history.ProfileHistoryView
-import tv.trakt.trakt.core.profile.sections.month.ThisMonthCard
-import tv.trakt.trakt.core.profile.sections.month.model.ThisMonthStats
 import tv.trakt.trakt.core.profile.sections.social.ProfileSocialView
+import tv.trakt.trakt.core.profile.sections.thismonth.ThisMonthCard
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
@@ -170,7 +169,7 @@ private fun ProfileScreenContent(
                     onLogoutClick = onLogoutClick,
                     onBackClick = onBackClick,
                     modifier = Modifier
-                        .padding(bottom = 12.dp),
+                        .padding(bottom = 14.dp),
                 )
             }
 
@@ -178,7 +177,7 @@ private fun ProfileScreenContent(
                 item {
                     ThisMonthCard(
                         user = state.user,
-                        stats = ThisMonthStats(),
+                        stats = state.monthStats,
                         containerImage = state.monthBackgroundUrl,
                         modifier = Modifier
                             .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)

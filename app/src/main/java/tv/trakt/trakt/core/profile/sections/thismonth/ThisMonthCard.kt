@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalFoundationApi::class)
 
-package tv.trakt.trakt.core.profile.sections.month
+package tv.trakt.trakt.core.profile.sections.thismonth
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -52,7 +52,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.common.ui.theme.colors.Shade920
 import tv.trakt.trakt.common.ui.theme.colors.Shade940
-import tv.trakt.trakt.core.profile.sections.month.model.ThisMonthStats
+import tv.trakt.trakt.core.profile.sections.thismonth.model.ThisMonthStats
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.format.TextStyle
@@ -64,7 +64,7 @@ internal fun ThisMonthCard(
     modifier: Modifier = Modifier,
     containerColor: Color = Shade920,
     containerImage: String? = null,
-    stats: ThisMonthStats,
+    stats: ThisMonthStats?,
 ) {
     val uriHandler = LocalUriHandler.current
 
@@ -101,7 +101,7 @@ internal fun ThisMonthCard(
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .alpha(0.05F)
+                    .alpha(0.1F)
                     .matchParentSize(),
             )
 
@@ -125,15 +125,27 @@ internal fun ThisMonthCard(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
             ) {
-                Text(
-                    text = stringResource(R.string.text_month_so_far).uppercase(),
-                    color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.heading6,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.graphicsLayer {
-                        translationY = 0.5.dp.toPx()
-                    },
-                )
+                Row(
+                    verticalAlignment = CenterVertically,
+                    horizontalArrangement = spacedBy(8.dp),
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_calendar_trakt),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier
+                            .size(18.dp),
+                    )
+                    Text(
+                        text = stringResource(R.string.text_month_so_far).uppercase(),
+                        color = TraktTheme.colors.textPrimary,
+                        style = TraktTheme.typography.heading6,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.graphicsLayer {
+                            translationY = 0.25.dp.toPx()
+                        },
+                    )
+                }
 
                 Row(
                     verticalAlignment = CenterVertically,
@@ -171,18 +183,19 @@ internal fun ThisMonthCard(
                         overscrollEffect = null,
                     )
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 2.dp),
             ) {
                 StatsChip(
-                    text = stringResource(R.string.text_episodes_count, stats.episodesCount),
+                    text = stringResource(R.string.text_episodes_count, stats?.episodesCount ?: 0),
                     icon = painterResource(R.drawable.ic_shows_off),
                 )
                 StatsChip(
-                    text = stringResource(R.string.text_shows_count, stats.showsCount),
+                    text = stringResource(R.string.text_shows_count, stats?.showsCount ?: 0),
                     icon = painterResource(R.drawable.ic_shows_off),
                 )
                 StatsChip(
-                    text = stringResource(R.string.text_movies_count, stats.moviesCount),
+                    text = stringResource(R.string.text_movies_count, stats?.moviesCount ?: 0),
                     icon = painterResource(R.drawable.ic_movies_off),
                 )
             }
@@ -228,13 +241,15 @@ fun StatsChip(
     text: String,
     icon: Painter,
 ) {
+    val shape = RoundedCornerShape(6.dp)
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = spacedBy(6.dp),
         modifier = modifier
+            .shadow(1.dp, shape)
             .background(
                 color = Shade940,
-                shape = RoundedCornerShape(6.dp),
+                shape = shape,
             )
             .padding(
                 horizontal = 8.dp,

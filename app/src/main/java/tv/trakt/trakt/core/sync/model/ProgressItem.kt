@@ -15,6 +15,7 @@ internal sealed class ProgressItem(
     internal data class MovieItem(
         val movie: MovieProgress,
         val plays: Int,
+        val lastWatchedAt: Instant,
         override val loading: Boolean = false,
     ) : ProgressItem(loading)
 
@@ -23,6 +24,7 @@ internal sealed class ProgressItem(
         val show: Show,
         val seasons: ImmutableList<Season>,
         val progress: Progress,
+        val lastWatchedAt: Instant,
         override val loading: Boolean = false,
     ) : ProgressItem(loading) {
         data class Show(

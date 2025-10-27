@@ -22,6 +22,7 @@ import tv.trakt.trakt.core.profile.sections.favorites.filters.GetFavoritesFilter
 import tv.trakt.trakt.core.profile.sections.history.ProfileHistoryViewModel
 import tv.trakt.trakt.core.profile.sections.social.ProfileSocialViewModel
 import tv.trakt.trakt.core.profile.sections.social.usecases.GetSocialFilterUseCase
+import tv.trakt.trakt.core.profile.sections.thismonth.usecases.GetThisMonthUseCase
 import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserListsStorage
 import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
@@ -102,6 +103,12 @@ internal val profileModule = module {
     }
 
     factory {
+        GetThisMonthUseCase(
+            loadUserProgressUseCase = get(),
+        )
+    }
+
+    factory {
         LoadUserWatchlistUseCase(
             remoteSource = get(),
             localSource = get(),
@@ -159,6 +166,7 @@ internal val profileModule = module {
             localUserWatchlist = get(),
             localUserProgress = get(),
             localUserLists = get(),
+            localUserFavorites = get(),
             localUserReactions = get(),
         )
     }
@@ -166,6 +174,7 @@ internal val profileModule = module {
     viewModel {
         ProfileViewModel(
             sessionManager = get(),
+            getThisMonthUseCase = get(),
             logoutUseCase = get(),
         )
     }

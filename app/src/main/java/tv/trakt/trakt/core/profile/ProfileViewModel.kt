@@ -23,22 +23,29 @@ import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_THIS_MONTH
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.profile.sections.thismonth.model.ThisMonthStats
+import tv.trakt.trakt.core.profile.sections.thismonth.usecases.GetThisMonthUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 
 internal class ProfileViewModel(
     private val sessionManager: SessionManager,
+    private val getThisMonthUseCase: GetThisMonthUseCase,
     private val logoutUseCase: LogoutUserUseCase,
 ) : ViewModel() {
     private val initialState = ProfileState()
 
     private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val monthBackgroundState = MutableStateFlow(initialState.monthBackgroundUrl)
+    private val monthStatsState = MutableStateFlow(initialState.monthStats)
     private val loadingState = MutableStateFlow(initialState.loading)
+    private val loadingMonthStatsState = MutableStateFlow(initialState.loadingMonthStats)
     private val userState = MutableStateFlow(initialState.user)
 
     init {
         loadBackground()
         loadMonthBackground()
+        loadData()
         observeUser()
     }
 
@@ -68,6 +75,23 @@ internal class ProfileViewModel(
         monthBackgroundState.update { configUrl }
     }
 
+    private fun loadData() {
+        viewModelScope.launch {
+            try {
+                loadingMonthStatsState.update { LOADING }
+                monthStatsState.update {
+                    getThisMonthUseCase.getThisMonthStats()
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.w(error)
+                }
+            } finally {
+                loadingMonthStatsState.update { LoadingState.DONE }
+            }
+        }
+    }
+
     fun logoutUser() {
         viewModelScope.launch {
             try {
@@ -85,16 +109,20 @@ internal class ProfileViewModel(
     }
 
     val state: StateFlow<ProfileState> = combine(
+        monthStatsState,
         backgroundState,
         monthBackgroundState,
         loadingState,
+        loadingMonthStatsState,
         userState,
-    ) { s1, s2, s3, s4 ->
+    ) { state ->
         ProfileState(
-            backgroundUrl = s1,
-            monthBackgroundUrl = s2,
-            loading = s3,
-            user = s4,
+            monthStats = state[0] as ThisMonthStats?,
+            backgroundUrl = state[1] as String?,
+            monthBackgroundUrl = state[2] as String?,
+            loading = state[3] as LoadingState,
+            loadingMonthStats = state[4] as LoadingState,
+            user = state[5] as User?,
         )
     }.stateIn(
         scope = viewModelScope,

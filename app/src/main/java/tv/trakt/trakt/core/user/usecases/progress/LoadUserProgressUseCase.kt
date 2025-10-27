@@ -41,6 +41,7 @@ internal class LoadUserProgressUseCase(
                 ProgressItem.MovieItem(
                     plays = it.plays,
                     movie = Movie.fromDto(it.movie),
+                    lastWatchedAt = it.lastWatchedAt.toInstant(),
                 )
             }
 
@@ -79,6 +80,7 @@ internal class LoadUserProgressUseCase(
                         lastWatchedAt = it.lastWatchedAt.toInstant(),
                         resetAt = it.resetAt?.toInstant(),
                     ),
+                    lastWatchedAt = it.lastWatchedAt.toInstant(),
                 )
             }
 
