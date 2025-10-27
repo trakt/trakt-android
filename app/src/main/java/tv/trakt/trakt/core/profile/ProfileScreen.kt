@@ -187,7 +187,12 @@ private fun ProfileScreenContent(
                         containerImage = state.monthBackgroundUrl,
                         modifier = Modifier
                             .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
-                            .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace / 1.5F),
+                            .padding(
+                                bottom = when {
+                                    state.user.about.isNullOrBlank() -> TraktTheme.spacing.mainSectionVerticalSpace
+                                    else -> TraktTheme.spacing.mainSectionVerticalSpace / 1.5F
+                                },
+                            ),
                     )
                 }
 
@@ -200,7 +205,7 @@ private fun ProfileScreenContent(
                                 .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
                         ) {
                             Text(
-                                text = stringResource(R.string.page_title_about_you).uppercase(),
+                                text = stringResource(R.string.page_title_about_me).uppercase(),
                                 color = TraktTheme.colors.textSecondary,
                                 style = TraktTheme.typography.heading6.copy(
                                     fontWeight = W500,

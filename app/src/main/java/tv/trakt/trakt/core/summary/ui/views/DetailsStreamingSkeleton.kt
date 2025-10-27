@@ -6,18 +6,13 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -44,30 +39,13 @@ internal fun DetailsStreamingSkeleton() {
             label = "shimmerTransition",
         )
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = spacedBy(4.dp, CenterVertically),
-    ) {
-        val shape = RoundedCornerShape(100)
-
-        Box(
-            modifier = Modifier
-                .height(40.dp)
-                .width(80.dp)
-                .clip(shape)
-                .background(shimmerTransition),
-        )
-
-        Text(
-            text = "",
-            color = Color.Transparent,
-            style = TraktTheme.typography.meta,
-            modifier = Modifier
-                .width(72.dp)
-                .clip(shape)
-                .background(shimmerTransition),
-        )
-    }
+    Box(
+        modifier = Modifier
+            .height(73.dp)
+            .width(110.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(shimmerTransition),
+    )
 }
 
 @OptIn(ExperimentalCoilApi::class)
