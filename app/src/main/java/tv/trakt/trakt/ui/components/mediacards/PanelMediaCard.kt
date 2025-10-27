@@ -58,7 +58,6 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.common.ui.theme.colors.Shade940
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
@@ -191,7 +190,7 @@ internal fun PanelMediaCard(
             if (!containerImageUrl.isNullOrBlank() && !isContainerError) {
                 val inspection = LocalInspectionMode.current
                 val gradientColor2 = when {
-                    inspection -> Purple500
+                    inspection -> TraktTheme.colors.accent
                     else -> containerColor.copy(alpha = 0F)
                 }
 

@@ -94,7 +94,7 @@ internal fun DetailsRatings(
                 horizontalArrangement = iconSpace,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.graphicsLayer {
-                    translationX = (1.5).dp.toPx()
+                    translationX = (1.8).dp.toPx()
                 },
             ) {
                 Image(

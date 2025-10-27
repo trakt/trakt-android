@@ -25,17 +25,22 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.qualifier.named
 import timber.log.Timber
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HALLOWEEN_THEME
 import tv.trakt.trakt.core.auth.ConfigAuth.OAUTH_REDIRECT_URI
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
 import tv.trakt.trakt.core.main.MainScreen
 import tv.trakt.trakt.ui.theme.TraktTheme
+import tv.trakt.trakt.ui.theme.colors.DarkColors
+import tv.trakt.trakt.ui.theme.colors.HalloweenColors
+import tv.trakt.trakt.ui.theme.colors.TraktColors
 
 internal val LocalBottomBarVisibility = compositionLocalOf { mutableStateOf(true) }
 internal val LocalSnackbarState = compositionLocalOf { SnackbarHostState() }
 
 internal class MainActivity : ComponentActivity() {
     private val authPreferences: DataStore<Preferences> by inject(named(AUTH_PREFERENCES))
+    private val remoteConfig = Firebase.remoteConfig
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,10 +56,13 @@ internal class MainActivity : ComponentActivity() {
         )
 
         setContent {
+            val themeColors = remember { getThemeColors() }
             val bottomBarVisibility = remember { mutableStateOf(true) }
             val snackbarState = remember { SnackbarHostState() }
 
-            TraktTheme {
+            TraktTheme(
+                colors = themeColors,
+            ) {
                 CompositionLocalProvider(
                     LocalBottomBarVisibility provides bottomBarVisibility,
                     LocalSnackbarState provides snackbarState,
@@ -81,6 +89,13 @@ internal class MainActivity : ComponentActivity() {
     @SuppressLint("SourceLockedOrientationActivity")
     private fun setupOrientation() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+    }
+
+    private fun getThemeColors(): TraktColors {
+        return when {
+            remoteConfig.getBoolean(MOBILE_HALLOWEEN_THEME) -> HalloweenColors
+            else -> DarkColors
+        }
     }
 
     private fun updateRemoteConfig() {

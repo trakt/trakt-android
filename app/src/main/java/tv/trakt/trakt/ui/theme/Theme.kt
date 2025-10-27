@@ -30,9 +30,12 @@ internal object TraktTheme {
 }
 
 @Composable
-fun TraktTheme(content: @Composable () -> Unit) {
+internal fun TraktTheme(
+    colors: TraktColors = DarkColors,
+    content: @Composable () -> Unit,
+) {
     CompositionLocalProvider(
-        LocalTraktColors provides DarkColors,
+        LocalTraktColors provides colors,
         LocalTraktTypography provides Typography,
         LocalTraktSpacing provides Spacing,
         LocalTraktSize provides Size,

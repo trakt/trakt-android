@@ -41,8 +41,6 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.Sentiments.Sentiment
-import tv.trakt.trakt.common.ui.theme.colors.Purple100
-import tv.trakt.trakt.common.ui.theme.colors.Purple900
 import tv.trakt.trakt.common.ui.theme.colors.Red100
 import tv.trakt.trakt.common.ui.theme.colors.Shade920
 import tv.trakt.trakt.resources.R
@@ -55,12 +53,13 @@ internal fun DetailsSentiment(
     sentiments: Sentiments,
     modifier: Modifier = Modifier,
 ) {
+    val containerColor = TraktTheme.colors.sentimentsContainer
     val radialGradient = remember {
         object : ShaderBrush() {
             override fun createShader(size: Size): Shader {
                 return RadialGradientShader(
                     colors = listOf(
-                        Purple900,
+                        containerColor,
                         Shade920,
                     ),
                     center = Offset(size.width / 4, size.height * 1.5F),
@@ -93,7 +92,7 @@ internal fun DetailsSentiment(
                 Icon(
                     painter = painterResource(R.drawable.ic_thumb_up_fill),
                     contentDescription = null,
-                    tint = Purple100,
+                    tint = TraktTheme.colors.sentimentsAccent,
                 )
                 Column(
                     horizontalAlignment = Alignment.Start,
@@ -106,13 +105,13 @@ internal fun DetailsSentiment(
                         ) {
                             Text(
                                 text = "•",
-                                color = Purple100,
+                                color = TraktTheme.colors.sentimentsAccent,
                                 style = TraktTheme.typography.paragraphSmall,
                             )
 
                             Text(
                                 text = sentiment.sentiment.replaceFirstChar { it.titlecase() },
-                                color = Purple100,
+                                color = TraktTheme.colors.sentimentsAccent,
                                 style = TraktTheme.typography.paragraphSmall,
                             )
                         }

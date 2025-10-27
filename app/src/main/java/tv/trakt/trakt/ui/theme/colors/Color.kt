@@ -2,6 +2,12 @@ package tv.trakt.trakt.ui.theme.colors
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
+import tv.trakt.trakt.common.ui.theme.colors.Orange100
+import tv.trakt.trakt.common.ui.theme.colors.Orange300
+import tv.trakt.trakt.common.ui.theme.colors.Orange500
+import tv.trakt.trakt.common.ui.theme.colors.Orange900
+import tv.trakt.trakt.common.ui.theme.colors.Purple100
+import tv.trakt.trakt.common.ui.theme.colors.Purple300
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.common.ui.theme.colors.Purple900
 import tv.trakt.trakt.common.ui.theme.colors.Shade300
@@ -35,7 +41,10 @@ internal val DarkColors: TraktColors = TraktColors(
     commentContainer = Shade920,
     commentReplyContainer = Shade900,
     customListContainer = Shade920,
-    customTraktListContainer = Purple900,
+    sentimentsContainer = Purple900,
+    sentimentsAccent = Purple100,
+    detailsStatus1 = Purple300,
+    detailsStatus2 = Purple100,
     // Buttons
     primaryButtonContainer = Purple500,
     primaryButtonContainerDisabled = Shade700,
@@ -44,6 +53,15 @@ internal val DarkColors: TraktColors = TraktColors(
     // Snackbar
     snackbarContainer = White,
     snackbarContent = Shade940,
+)
+
+internal val HalloweenColors: TraktColors = DarkColors.copy(
+    accent = Orange500,
+    primaryButtonContainer = Orange500,
+    sentimentsContainer = Orange900,
+    sentimentsAccent = Orange100,
+    detailsStatus1 = Orange300,
+    detailsStatus2 = Orange100,
 )
 
 @Immutable
@@ -66,7 +84,10 @@ internal data class TraktColors(
     val commentContainer: Color = Color.Unspecified,
     val commentReplyContainer: Color = Color.Unspecified,
     val customListContainer: Color = Color.Unspecified,
-    val customTraktListContainer: Color = Color.Unspecified,
+    val sentimentsContainer: Color = Color.Unspecified,
+    val sentimentsAccent: Color = Color.Unspecified,
+    val detailsStatus1: Color = Color.Unspecified,
+    val detailsStatus2: Color = Color.Unspecified,
     // Nav
     val navigationHeaderContainer: Color = Color.Unspecified,
     val navigationContainer: Color = Color.Unspecified,
