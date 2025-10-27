@@ -8,5 +8,6 @@ import tv.trakt.trakt.common.model.User
 internal data class ProfileState(
     val user: User? = null,
     val backgroundUrl: String? = null,
+    val monthBackgroundUrl: String? = null,
     val loading: LoadingState = LoadingState.IDLE,
 )

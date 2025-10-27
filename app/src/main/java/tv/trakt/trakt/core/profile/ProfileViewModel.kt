@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_THIS_MONTH_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
@@ -31,11 +32,13 @@ internal class ProfileViewModel(
     private val initialState = ProfileState()
 
     private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
+    private val monthBackgroundState = MutableStateFlow(initialState.monthBackgroundUrl)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val userState = MutableStateFlow(initialState.user)
 
     init {
         loadBackground()
+        loadMonthBackground()
         observeUser()
     }
 
@@ -60,6 +63,11 @@ internal class ProfileViewModel(
         backgroundState.update { configUrl }
     }
 
+    private fun loadMonthBackground() {
+        val configUrl = Firebase.remoteConfig.getString(MOBILE_THIS_MONTH_IMAGE_URL)
+        monthBackgroundState.update { configUrl }
+    }
+
     fun logoutUser() {
         viewModelScope.launch {
             try {
@@ -78,13 +86,15 @@ internal class ProfileViewModel(
 
     val state: StateFlow<ProfileState> = combine(
         backgroundState,
+        monthBackgroundState,
         loadingState,
         userState,
-    ) { s1, s2, s3 ->
+    ) { s1, s2, s3, s4 ->
         ProfileState(
             backgroundUrl = s1,
-            loading = s2,
-            user = s3,
+            monthBackgroundUrl = s2,
+            loading = s3,
+            user = s4,
         )
     }.stateIn(
         scope = viewModelScope,

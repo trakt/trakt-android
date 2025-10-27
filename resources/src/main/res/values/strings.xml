@@ -168,6 +168,12 @@
 
     <!-- Sync with bank -->
 
+    <string name="text_episodes_count">%d episodes</string>
+    <string name="text_shows_count">%d shows</string>
+    <string name="text_movies_count">%d movies</string>
+
+    <string name="text_month_so_far">So far, this month</string>
+    <string name="text_month_in_review">%s in review</string>
     <string name="text_watched">Watched</string>
     <string name="text_watched_count">Watched: %d</string>
     <string name="text_job_acting">Acting</string>

@@ -13,5 +13,18 @@ object Config {
 
     fun webUserUrl(userId: String): String = "https://trakt.tv/users/$userId?native_app_mode=true"
 
+    fun webYearReviewUrl(
+        user: String,
+        year: Int,
+    ): String = "https://trakt.tv/users/$user/year/$year?native_app_mode=true"
+
+    fun webMonthReviewUrl(
+        user: String,
+        month: Int,
+        year: Int,
+    ): String {
+        return "https://trakt.tv/users/$user/mir/$year/$month?native_app_mode=true"
+    }
+
     const val PLEX_BASE_URL: String = "https://watch.plex.tv/"
 }

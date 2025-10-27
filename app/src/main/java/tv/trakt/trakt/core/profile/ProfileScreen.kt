@@ -9,7 +9,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -27,7 +26,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -43,8 +41,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -57,6 +53,8 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.profile.sections.favorites.ProfileFavoritesView
 import tv.trakt.trakt.core.profile.sections.history.ProfileHistoryView
+import tv.trakt.trakt.core.profile.sections.month.ThisMonthCard
+import tv.trakt.trakt.core.profile.sections.month.model.ThisMonthStats
 import tv.trakt.trakt.core.profile.sections.social.ProfileSocialView
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
@@ -172,34 +170,45 @@ private fun ProfileScreenContent(
                     onLogoutClick = onLogoutClick,
                     onBackClick = onBackClick,
                     modifier = Modifier
-                        .padding(bottom = 20.dp),
+                        .padding(bottom = 12.dp),
                 )
             }
 
             if (state.user != null) {
-                if (!state.user.about.isNullOrBlank()) {
-                    item {
-                        Column(
-                            verticalArrangement = spacedBy(8.dp),
-                            modifier = Modifier
-                                .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
-                                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
-                        ) {
-                            TraktHeader(
-                                title = stringResource(R.string.page_title_about_me),
-                                titleColor = TraktTheme.colors.textSecondary,
-                            )
-                            Text(
-                                text = state.user.about ?: "",
-                                style = TraktTheme.typography.paragraphSmaller,
-                                color = TraktTheme.colors.textPrimary,
-                                maxLines = 3,
-                                textAlign = TextAlign.Center,
-                                overflow = Ellipsis,
-                            )
-                        }
-                    }
+                item {
+                    ThisMonthCard(
+                        user = state.user,
+                        stats = ThisMonthStats(),
+                        containerImage = state.monthBackgroundUrl,
+                        modifier = Modifier
+                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+                            .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+                    )
                 }
+
+//                if (!state.user.about.isNullOrBlank()) {
+//                    item {
+//                        Column(
+//                            verticalArrangement = spacedBy(6.dp),
+//                            modifier = Modifier
+//                                .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+//                                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+//                        ) {
+//                            TraktHeader(
+//                                title = stringResource(R.string.page_title_about_me),
+//                                titleColor = TraktTheme.colors.textSecondary,
+//                            )
+//                            Text(
+//                                text = state.user.about ?: "",
+//                                style = TraktTheme.typography.paragraphSmaller,
+//                                color = TraktTheme.colors.textPrimary,
+//                                maxLines = 3,
+//                                textAlign = TextAlign.Center,
+//                                overflow = Ellipsis,
+//                            )
+//                        }
+//                    }
+//                }
 
                 item {
                     ProfileHistoryView(
