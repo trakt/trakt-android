@@ -140,7 +140,7 @@ private fun ContentList(
     LazyRow(
         state = listState,
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = spacedBy(32.dp),
+        horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
         verticalAlignment = CenterVertically,
         contentPadding = contentPadding,
     ) {
