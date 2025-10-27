@@ -106,6 +106,7 @@ internal fun DetailsHeader(
         externalRatings = ratings,
         playsCount = playsCount,
         creditsCount = creditsCount,
+        certification = movie.certification,
         loading = loading,
         onBackClick = onBackClick,
         onTrailerClick = onTrailerClick,
@@ -171,6 +172,7 @@ internal fun DetailsHeader(
         externalRatings = ratings,
         playsCount = playsCount,
         creditsCount = null,
+        certification = show.certification,
         loading = loading,
         onBackClick = onBackClick,
         onTrailerClick = onTrailerClick,
@@ -250,6 +252,7 @@ internal fun DetailsHeader(
             }
         },
         status = show.status,
+        certification = show.certification,
         date = {
             Text(
                 text = when {
@@ -310,6 +313,7 @@ internal fun DetailsHeader(
         externalRatingsVisible = false,
         trailer = null,
         playsCount = null,
+        certification = null,
         accentColor = Shade700,
         creditsCount = null,
         traktRatings = null,
@@ -327,6 +331,7 @@ private fun DetailsHeader(
     date: @Composable (() -> Unit)?,
     imageUrl: String?,
     status: String?,
+    certification: String?,
     trailer: Uri?,
     accentColor: Color?,
     traktRatings: Int?,
@@ -507,6 +512,24 @@ private fun DetailsHeader(
                             .padding(horizontal = 1.dp),
                     )
                 }
+
+                if (!certification.isNullOrBlank()) {
+                    Text(
+                        text = certification,
+                        color = TraktTheme.colors.textSecondary,
+                        style = TraktTheme.typography.paragraphSmaller,
+                        maxLines = 1,
+                        overflow = Ellipsis,
+                    )
+                    Text(
+                        text = "  •  ",
+                        color = TraktTheme.colors.textSecondary,
+                        style = TraktTheme.typography.paragraphSmaller,
+                        modifier = Modifier
+                            .padding(horizontal = 1.dp),
+                    )
+                }
+
                 Text(
                     text = genresText,
                     color = TraktTheme.colors.textSecondary,
@@ -599,6 +622,7 @@ private fun Preview() {
             imageUrl = null,
             status = "Released",
             trailer = null,
+            certification = "PG-13",
             accentColor = null,
             traktRatings = 72,
             playsCount = 2,
