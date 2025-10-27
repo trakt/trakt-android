@@ -1,8 +1,5 @@
 package tv.trakt.trakt.core.user.features.profile
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
@@ -25,16 +22,10 @@ import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.core.auth.usecase.AuthorizeUserUseCase
-import tv.trakt.trakt.core.auth.usecase.authCodeKey
-import tv.trakt.trakt.core.user.usecase.GetUserProfileUseCase
 import tv.trakt.trakt.core.user.usecase.LogoutUserUseCase
 
 internal class ProfileViewModel(
     private val sessionManager: SessionManager,
-    private val authorizePreferences: DataStore<Preferences>,
-    private val authorizeUseCase: AuthorizeUserUseCase,
-    private val getProfileUseCase: GetUserProfileUseCase,
     private val logoutUseCase: LogoutUserUseCase,
 ) : ViewModel() {
     private val initialState = ProfileState()
@@ -46,18 +37,6 @@ internal class ProfileViewModel(
     init {
         loadBackground()
         observeUser()
-        observeAuthCode()
-    }
-
-    private fun observeAuthCode() {
-        viewModelScope.launch {
-            authorizePreferences.data.collect { preferences ->
-                preferences[authCodeKey]?.let { code ->
-                    authorizePreferences.edit { it.remove(authCodeKey) }
-                    authorizeUser(code)
-                }
-            }
-        }
     }
 
     @OptIn(FlowPreview::class)
@@ -79,24 +58,6 @@ internal class ProfileViewModel(
     private fun loadBackground() {
         val configUrl = Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL)
         backgroundState.update { configUrl }
-    }
-
-    private fun authorizeUser(code: String) {
-        viewModelScope.launch {
-            try {
-                loadingState.update { LOADING }
-
-                authorizeUseCase.authorizeByCode(code)
-                getProfileUseCase.loadUserProfile()
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    logoutUser()
-                    Timber.e(error)
-                }
-            } finally {
-                loadingState.update { LoadingState.DONE }
-            }
-        }
     }
 
     fun logoutUser() {

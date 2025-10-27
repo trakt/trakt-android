@@ -15,7 +15,6 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
 import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserListsStorage
 import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
@@ -167,9 +166,6 @@ internal val profileModule = module {
     viewModel {
         ProfileViewModel(
             sessionManager = get(),
-            authorizeUseCase = get(),
-            authorizePreferences = get(named(AUTH_PREFERENCES)),
-            getProfileUseCase = get(),
             logoutUseCase = get(),
         )
     }

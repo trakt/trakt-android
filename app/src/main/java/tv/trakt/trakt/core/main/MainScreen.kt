@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -35,6 +36,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.LocalSnackbarState
+import tv.trakt.trakt.common.helpers.LaunchedUpdateEffect
+import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.core.home.navigation.HomeDestination
 import tv.trakt.trakt.core.lists.navigation.ListsDestination
 import tv.trakt.trakt.core.lists.navigation.navigateToLists
@@ -56,6 +59,7 @@ import tv.trakt.trakt.core.movies.navigation.navigateToMovies
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.navigateToSearch
 import tv.trakt.trakt.core.shows.navigation.navigateToShows
+import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.snackbar.MainSnackbarHost
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -82,6 +86,20 @@ internal fun MainScreen(
 
     LifecycleEventEffect(ON_RESUME) {
         viewModel.loadData()
+    }
+
+    LaunchedUpdateEffect(state.user) {
+        if (state.loadingUser == DONE && state.user != null) {
+            localSnackbar.showSnackbar(
+                message = localContext.getString(R.string.text_info_signed_in),
+                duration = SnackbarDuration.Short,
+            )
+        } else if (state.user == null) {
+            localSnackbar.showSnackbar(
+                message = localContext.getString(R.string.text_info_signed_out),
+                duration = SnackbarDuration.Short,
+            )
+        }
     }
 
     LaunchedEffect(intent) {

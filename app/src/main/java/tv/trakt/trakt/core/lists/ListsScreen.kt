@@ -292,7 +292,6 @@ private fun ListsScreenHeader(
         showJoinTrakt = userState.first && !userState.second,
         userVip = state.user.user?.isAnyVip ?: false,
         userAvatar = state.user.user?.images?.avatar?.full,
-        onJoinClick = onProfileClick,
         onProfileClick = onProfileClick,
         modifier = Modifier.offset {
             IntOffset(0, headerState.connection.barOffset.fastRoundToInt())

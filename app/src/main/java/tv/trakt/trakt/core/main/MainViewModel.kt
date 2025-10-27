@@ -1,5 +1,8 @@
 package tv.trakt.trakt.core.main
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.FlowPreview
@@ -19,8 +22,15 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.auth.usecase.AuthorizeUserUseCase
+import tv.trakt.trakt.core.auth.usecase.authCodeKey
+import tv.trakt.trakt.core.user.usecase.GetUserProfileUseCase
+import tv.trakt.trakt.core.user.usecase.LogoutUserUseCase
 import tv.trakt.trakt.core.user.usecase.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
 import java.time.Instant
@@ -29,16 +39,23 @@ import java.time.temporal.ChronoUnit.MINUTES
 @OptIn(FlowPreview::class)
 internal class MainViewModel(
     private val sessionManager: SessionManager,
+    private val authorizePreferences: DataStore<Preferences>,
+    private val authorizeUseCase: AuthorizeUserUseCase,
+    private val getUserUseCase: GetUserProfileUseCase,
+    private val logoutUserUseCase: LogoutUserUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val loadUserWatchlistUseCase: LoadUserWatchlistUseCase,
 ) : ViewModel() {
     private val initialState = MainState()
+
     private val userState = MutableStateFlow(initialState.user)
+    private val loadingUserState = MutableStateFlow(initialState.loadingUser)
 
     private var lastLoadTime: Instant? = null
 
     init {
         observeUser()
+        observeAuthCode()
     }
 
     private fun observeUser() {
@@ -49,6 +66,17 @@ internal class MainViewModel(
                 userState.update { user }
             }
             .launchIn(viewModelScope)
+    }
+
+    private fun observeAuthCode() {
+        viewModelScope.launch {
+            authorizePreferences.data.collect { preferences ->
+                preferences[authCodeKey]?.let { code ->
+                    authorizePreferences.edit { it.remove(authCodeKey) }
+                    authorizeUser(code)
+                }
+            }
+        }
     }
 
     fun loadData() {
@@ -82,11 +110,46 @@ internal class MainViewModel(
         }
     }
 
+    private fun authorizeUser(code: String) {
+        viewModelScope.launch {
+            try {
+                loadingUserState.update { LOADING }
+
+                authorizeUseCase.authorizeByCode(code)
+                getUserUseCase.loadUserProfile()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    logoutUser()
+                    Timber.e(error)
+                }
+            } finally {
+                loadingUserState.update { LoadingState.DONE }
+            }
+        }
+    }
+
+    fun logoutUser() {
+        viewModelScope.launch {
+            try {
+                loadingUserState.update { LOADING }
+                logoutUserUseCase.logoutUser()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.e(error)
+                }
+            } finally {
+                loadingUserState.update { LoadingState.DONE }
+            }
+        }
+    }
+
     val state: StateFlow<MainState> = combine(
         userState,
+        loadingUserState,
     ) { state ->
         MainState(
-            user = state[0],
+            user = state[0] as User?,
+            loadingUser = state[1] as LoadingState,
         )
     }.stateIn(
         scope = viewModelScope,

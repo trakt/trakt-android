@@ -50,6 +50,7 @@ import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HEADER_NEW
 import tv.trakt.trakt.common.helpers.GreetingQuotes
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.VipChip
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
@@ -74,10 +75,10 @@ internal fun HeaderBar(
     showJoinTrakt: Boolean = false,
     userAvatar: String? = null,
     userVip: Boolean = false,
-    onJoinClick: () -> Unit = {},
     onProfileClick: () -> Unit = {},
 ) {
     val localMode = LocalInspectionMode.current
+    val uriHandler = LocalUriHandler.current
 
     val contentHeight = 34.dp
     val headerBarHeight = WindowInsets.statusBars.asPaddingValues()
@@ -131,7 +132,6 @@ internal fun HeaderBar(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            val uriHandler = LocalUriHandler.current
             Crossfade(
                 targetState = showVip && !userVip,
                 label = "HeaderBarVipCrossfade",
@@ -191,8 +191,6 @@ internal fun HeaderBar(
                 }
             }
 
-//            Spacer(modifier = Modifier.weight(1F))
-
             when {
                 showProfile -> {
                     Box(
@@ -229,7 +227,9 @@ internal fun HeaderBar(
                         text = stringResource(R.string.button_text_join_trakt),
                         icon = painterResource(R.drawable.ic_trakt_icon),
                         height = contentHeight,
-                        onClick = onJoinClick,
+                        onClick = {
+                            uriHandler.openUri(ConfigAuth.authCodeUrl)
+                        },
                     )
                 }
             }

@@ -21,14 +21,12 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.SnackbarDuration.Short
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,8 +41,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -53,14 +49,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
-import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.user.features.profile.sections.favorites.ProfileFavoritesView
 import tv.trakt.trakt.core.user.features.profile.sections.history.ProfileHistoryView
 import tv.trakt.trakt.core.user.features.profile.sections.social.ProfileSocialView
@@ -68,7 +62,6 @@ import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
-import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -84,22 +77,11 @@ internal fun ProfileScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    val localContext = LocalContext.current
-    val localSnack = LocalSnackbarState.current
-
     var confirmLogout by remember { mutableStateOf(false) }
 
     LaunchedEffect(state.user) {
-        if (state.loading == DONE && state.user != null) {
-            localSnack.showSnackbar(
-                message = localContext.getString(R.string.text_info_signed_in),
-                duration = Short,
-            )
-        } else if (state.loading == DONE) {
-            localSnack.showSnackbar(
-                message = localContext.getString(R.string.text_info_signed_out),
-                duration = Short,
-            )
+        if (state.loading == DONE && state.user == null) {
+            onNavigateBack()
         }
     }
 
@@ -141,8 +123,6 @@ private fun ProfileScreenContent(
     onLogoutClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
-    val uriHandler = LocalUriHandler.current
-
     val listPadding = PaddingValues(
         top = WindowInsets.statusBars.asPaddingValues()
             .calculateTopPadding()
@@ -254,23 +234,24 @@ private fun ProfileScreenContent(
                             .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
                     )
                 }
-            } else {
-                item {
-                    TertiaryButton(
-                        text = stringResource(R.string.button_text_login),
-                        icon = painterResource(R.drawable.ic_trakt_icon),
-                        height = 42.dp,
-                        enabled = !state.loading.isLoading,
-                        loading = state.loading.isLoading,
-                        onClick = {
-                            uriHandler.openUri(ConfigAuth.authCodeUrl)
-                        },
-                        modifier = Modifier
-                            .padding(top = 16.dp)
-                            .widthIn(112.dp),
-                    )
-                }
             }
+//            } else {
+//                item {
+//                    TertiaryButton(
+//                        text = stringResource(R.string.button_text_login),
+//                        icon = painterResource(R.drawable.ic_trakt_icon),
+//                        height = 42.dp,
+//                        enabled = !state.loading.isLoading,
+//                        loading = state.loading.isLoading,
+//                        onClick = {
+//                            uriHandler.openUri(ConfigAuth.authCodeUrl)
+//                        },
+//                        modifier = Modifier
+//                            .padding(top = 16.dp)
+//                            .widthIn(112.dp),
+//                    )
+//                }
+//            }
         }
     }
 }
