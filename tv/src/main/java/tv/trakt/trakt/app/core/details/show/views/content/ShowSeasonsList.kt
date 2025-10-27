@@ -19,7 +19,6 @@ import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.show.models.ShowSeasons
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.model.Images.Size.MEDIUM
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.resources.R
@@ -66,8 +65,8 @@ internal fun ShowSeasonsList(
                 items = seasons().seasons,
                 key = { item -> item.ids.trakt.value },
             ) { item ->
-                val seasonPosterUrl = item.images?.getPosterUrl(MEDIUM)
-                val showPosterUrl = show?.images?.getPosterUrl(MEDIUM)
+                val seasonPosterUrl = item.images?.getPosterUrl()
+                val showPosterUrl = show?.images?.getPosterUrl()
                 VerticalMediaCard(
                     title = "",
                     imageUrl = seasonPosterUrl ?: showPosterUrl,
