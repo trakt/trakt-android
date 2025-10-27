@@ -34,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,11 +45,11 @@ import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
-import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_3
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.core.lists.sections.personal.ListsPersonalView
 import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistView
@@ -75,11 +76,7 @@ internal fun ListsScreen(
     onNavigateToWatchlist: () -> Unit,
     onNavigateToList: (CustomList) -> Unit,
 ) {
-    val localBottomBarVisibility = LocalBottomBarVisibility.current
-    LaunchedEffect(Unit) {
-        localBottomBarVisibility.value = true
-    }
-
+    val uriHandler = LocalUriHandler.current
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var createListSheet by remember { mutableStateOf(false) }
@@ -87,7 +84,13 @@ internal fun ListsScreen(
 
     ListsScreenContent(
         state = state,
-        onProfileClick = onNavigateToProfile,
+        onProfileClick = {
+            if (state.user.user == null) {
+                uriHandler.openUri(ConfigAuth.authCodeUrl)
+            } else {
+                onNavigateToProfile()
+            }
+        },
         onWatchlistClick = onNavigateToWatchlist,
         onShowsClick = onNavigateToShows,
         onShowClick = onNavigateToShow,

@@ -24,7 +24,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.movies.sections.anticipated.MoviesAnticipatedView
@@ -47,11 +46,6 @@ internal fun MoviesScreen(
     onNavigateToAllAnticipated: () -> Unit,
     onNavigateToAllRecommended: () -> Unit,
 ) {
-    val localBottomBarVisibility = LocalBottomBarVisibility.current
-    LaunchedEffect(Unit) {
-        localBottomBarVisibility.value = true
-    }
-
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     MoviesScreenContent(

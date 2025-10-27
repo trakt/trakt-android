@@ -40,7 +40,6 @@ import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
@@ -90,11 +89,6 @@ internal fun SearchScreen(
 
     var showContextSheet by remember { mutableStateOf<Show?>(null) }
     var movieContextSheet by remember { mutableStateOf<Movie?>(null) }
-
-    val localBottomBarVisibility = LocalBottomBarVisibility.current
-    LaunchedEffect(Unit) {
-        localBottomBarVisibility.value = true
-    }
 
     LaunchedEffect(state) {
         state.navigateShow?.let {

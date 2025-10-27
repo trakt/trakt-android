@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -25,7 +24,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
@@ -54,11 +52,6 @@ internal fun HomeScreen(
     onNavigateToAllPersonal: () -> Unit,
     onNavigateToAllSocial: () -> Unit,
 ) {
-    val localBottomBarVisibility = LocalBottomBarVisibility.current
-    LaunchedEffect(Unit) {
-        localBottomBarVisibility.value = true
-    }
-
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     HomeScreenContent(
