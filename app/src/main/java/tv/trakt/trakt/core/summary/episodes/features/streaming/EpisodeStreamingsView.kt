@@ -27,10 +27,10 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
@@ -41,7 +41,8 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
-import tv.trakt.trakt.common.helpers.extensions.openWatchNowLink
+import tv.trakt.trakt.common.helpers.streamingservices.StreamingServiceApp
+import tv.trakt.trakt.common.helpers.streamingservices.StreamingServiceLink
 import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.StreamingType
 import tv.trakt.trakt.core.summary.ui.views.DetailsStreamingItem
@@ -58,8 +59,6 @@ internal fun EpisodeStreamingsView(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-    val uriHandler = LocalUriHandler.current
-
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     EpisodeStreamingsContent(
@@ -68,12 +67,11 @@ internal fun EpisodeStreamingsView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onClick = { service ->
-            openWatchNowLink(
+            StreamingServiceLink.openApp(
+                packageId = StreamingServiceApp.findFromSource(service.source)?.packageId,
+                packageName = service.source,
+                uri = service.linkDirect?.toUri(),
                 context = context,
-                uriHandler = uriHandler,
-                link = (service.linkAndroid ?: "").ifBlank {
-                    service.linkDirect
-                },
             )
         },
     )

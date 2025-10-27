@@ -85,4 +85,41 @@
 
     </application>
 
+    <queries>
+        <package android:name="com.amazon.avod.thirdpartyclient" />
+        <package android:name="com.netflix.mediaclient" />
+        <package android:name="com.apple.atve.androidtv.appletv" />
+        <package android:name="com.wbd.stream" />
+        <package android:name="com.hulu.plus" />
+        <package android:name="com.disney.disneyplus" />
+        <package android:name="com.peacocktv.peacockandroid" />
+        <package android:name="com.cbs.app" />
+        <package android:name="com.espn.score_center" />
+        <package android:name="com.amcplus.amcfullepisodes" />
+        <package android:name="tv.wuaki" />
+        <package android:name="com.bydeluxe.d3.android.program.starz" />
+        <package android:name="com.google.android.apps.youtube.unplugged" />
+        <package android:name="com.sling" />
+        <package android:name="com.discovery.discoveryplus.mobile" />
+        <package android:name="com.britbox.us" />
+        <package android:name="tv.fubo.mobile" />
+        <package android:name="com.batanga.vix" />
+        <package android:name="com.curiosity.curiositystream" />
+        <package android:name="com.dazn" />
+        <package android:name="com.crunchyroll.crunchyroid" />
+        <package android:name="com.tubitv" />
+        <package android:name="tv.pluto.android" />
+        <package android:name="com.roku.web.trc" />
+        <package android:name="com.amazon.imdb.tv" />
+        <package android:name="com.dramafever.shudder" />
+        <package android:name="com.acorn.tv" />
+        <package android:name="com.philo.philo.google" />
+        <package android:name="com.kanopy" />
+        <package android:name="air.com.vudu.air.DownloaderTablet" />
+        <package android:name="com.feeln.android" />
+        <package android:name="air.com.vudu.air.DownloaderTablet" />
+        <package android:name="com.plexapp.android" />
+        <package android:name="com.turner.tnt.android.networkapp" />
+    </queries>
+
 </manifest>
