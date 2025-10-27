@@ -36,7 +36,7 @@ import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeWatchlistUseC
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
-import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import java.time.Instant
 
 @OptIn(FlowPreview::class)

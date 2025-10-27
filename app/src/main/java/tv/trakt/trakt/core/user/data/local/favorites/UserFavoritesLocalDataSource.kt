@@ -2,7 +2,7 @@ package tv.trakt.trakt.core.user.data.local.favorites
 
 import kotlinx.coroutines.flow.Flow
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.user.features.profile.model.FavoriteItem
+import tv.trakt.trakt.core.profile.model.FavoriteItem
 import java.time.Instant
 
 internal interface UserFavoritesLocalDataSource {

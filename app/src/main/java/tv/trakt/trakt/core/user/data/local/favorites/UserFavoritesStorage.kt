@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.user.features.profile.model.FavoriteItem
+import tv.trakt.trakt.core.profile.model.FavoriteItem
 import java.time.Instant
 
 internal class UserFavoritesStorage : UserFavoritesLocalDataSource {

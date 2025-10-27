@@ -93,6 +93,9 @@ internal fun DetailsRatings(
             Row(
                 horizontalArrangement = iconSpace,
                 verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.graphicsLayer {
+                    translationX = (1.5).dp.toPx()
+                },
             ) {
                 Image(
                     painter = painterResource(R.drawable.ic_imdb_color),

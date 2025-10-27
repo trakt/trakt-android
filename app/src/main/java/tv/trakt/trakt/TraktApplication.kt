@@ -29,6 +29,8 @@ import tv.trakt.trakt.core.movies.di.moviesDataModule
 import tv.trakt.trakt.core.movies.di.moviesModule
 import tv.trakt.trakt.core.people.di.peopleDataModule
 import tv.trakt.trakt.core.people.di.peopleModule
+import tv.trakt.trakt.core.profile.di.profileDataModule
+import tv.trakt.trakt.core.profile.di.profileModule
 import tv.trakt.trakt.core.reactions.di.reactionsDataModule
 import tv.trakt.trakt.core.reactions.di.reactionsModule
 import tv.trakt.trakt.core.search.di.searchDataModule
@@ -44,8 +46,6 @@ import tv.trakt.trakt.core.summary.people.di.personDetailsModule
 import tv.trakt.trakt.core.summary.shows.di.showDetailsDataModule
 import tv.trakt.trakt.core.summary.shows.di.showDetailsModule
 import tv.trakt.trakt.core.sync.di.syncModule
-import tv.trakt.trakt.core.user.di.profileDataModule
-import tv.trakt.trakt.core.user.di.profileModule
 import java.util.concurrent.TimeUnit.MINUTES
 
 internal class TraktApplication : Application() {

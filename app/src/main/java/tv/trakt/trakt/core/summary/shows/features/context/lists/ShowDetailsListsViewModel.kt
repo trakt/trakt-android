@@ -16,7 +16,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaType.SHOW
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.user.usecase.lists.LoadUserListsUseCase
+import tv.trakt.trakt.core.user.usecases.lists.LoadUserListsUseCase
 
 internal class ShowDetailsListsViewModel(
     private val show: Show,

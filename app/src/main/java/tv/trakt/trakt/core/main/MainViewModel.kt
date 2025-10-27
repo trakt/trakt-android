@@ -29,10 +29,10 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.auth.usecase.AuthorizeUserUseCase
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
-import tv.trakt.trakt.core.user.usecase.GetUserProfileUseCase
-import tv.trakt.trakt.core.user.usecase.LogoutUserUseCase
-import tv.trakt.trakt.core.user.usecase.lists.LoadUserWatchlistUseCase
-import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.core.user.usecases.GetUserProfileUseCase
+import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
+import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
+import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import java.time.Instant
 import java.time.temporal.ChronoUnit.MINUTES
 

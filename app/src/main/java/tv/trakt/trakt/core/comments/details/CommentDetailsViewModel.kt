@@ -32,7 +32,7 @@ import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.core.reactions.data.ReactionsUpdates.Source
 import tv.trakt.trakt.core.reactions.data.work.DeleteReactionWorker
 import tv.trakt.trakt.core.reactions.data.work.PostReactionWorker
-import tv.trakt.trakt.core.user.usecase.reactions.LoadUserReactionsUseCase
+import tv.trakt.trakt.core.user.usecases.reactions.LoadUserReactionsUseCase
 import kotlin.time.Duration.Companion.seconds
 
 internal class CommentDetailsViewModel(

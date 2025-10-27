@@ -38,7 +38,7 @@ import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.SEASONS
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.core.sync.model.ProgressItem
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
-import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.resources.R
 
 @OptIn(FlowPreview::class)

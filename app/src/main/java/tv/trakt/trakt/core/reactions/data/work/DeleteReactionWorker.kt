@@ -15,7 +15,7 @@ import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.core.reactions.data.ReactionsUpdates
 import tv.trakt.trakt.core.reactions.usecases.DeleteCommentReactionUseCase
-import tv.trakt.trakt.core.user.usecase.reactions.LoadUserReactionsUseCase
+import tv.trakt.trakt.core.user.usecases.reactions.LoadUserReactionsUseCase
 import java.util.concurrent.TimeUnit.SECONDS
 
 private const val MAX_RETRY_ATTEMPTS = 2

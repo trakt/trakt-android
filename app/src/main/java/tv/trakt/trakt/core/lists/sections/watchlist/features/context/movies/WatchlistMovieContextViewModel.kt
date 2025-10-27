@@ -18,7 +18,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
-import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 
 internal class WatchlistMovieContextViewModel(
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,

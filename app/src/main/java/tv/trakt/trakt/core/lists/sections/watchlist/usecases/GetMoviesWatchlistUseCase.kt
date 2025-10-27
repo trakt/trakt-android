@@ -3,7 +3,7 @@ package tv.trakt.trakt.core.lists.sections.watchlist.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
-import tv.trakt.trakt.core.user.usecase.lists.LoadUserWatchlistUseCase
+import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 
 internal class GetMoviesWatchlistUseCase(
     private val loadUserWatchlistUseCase: LoadUserWatchlistUseCase,

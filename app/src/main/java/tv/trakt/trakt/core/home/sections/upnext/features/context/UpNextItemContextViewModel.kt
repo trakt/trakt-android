@@ -19,7 +19,7 @@ import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDa
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.AllUpNextLocalDataSource
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
-import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 
 internal class UpNextItemContextViewModel(
     private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,

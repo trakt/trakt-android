@@ -21,7 +21,7 @@ import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.Episode
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.MovieItem
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
-import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 
 internal class ActivityItemContextViewModel(
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,

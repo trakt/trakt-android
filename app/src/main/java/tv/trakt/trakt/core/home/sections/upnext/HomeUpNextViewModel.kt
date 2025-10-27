@@ -39,7 +39,7 @@ import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SE
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
-import tv.trakt.trakt.core.user.usecase.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 
 @OptIn(FlowPreview::class)
 internal class HomeUpNextViewModel(

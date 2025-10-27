@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
-import tv.trakt.trakt.core.user.usecase.lists.LoadUserWatchlistUseCase
+import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 
 internal class GetHomeWatchlistUseCase(
     val loadUserWatchlistUseCase: LoadUserWatchlistUseCase,

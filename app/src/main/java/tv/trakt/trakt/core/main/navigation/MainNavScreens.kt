@@ -32,6 +32,10 @@ import tv.trakt.trakt.core.movies.sections.recommended.all.navigation.moviesReco
 import tv.trakt.trakt.core.movies.sections.recommended.all.navigation.navigateToRecommendedMovies
 import tv.trakt.trakt.core.movies.sections.trending.all.navigation.moviesTrendingScreen
 import tv.trakt.trakt.core.movies.sections.trending.all.navigation.navigateToTrendingMovies
+import tv.trakt.trakt.core.profile.navigation.navigateToProfile
+import tv.trakt.trakt.core.profile.navigation.profileScreen
+import tv.trakt.trakt.core.profile.sections.favorites.all.navigation.allFavoritesScreen
+import tv.trakt.trakt.core.profile.sections.favorites.all.navigation.navigateToFavorites
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.searchScreen
 import tv.trakt.trakt.core.shows.navigation.navigateToShows
@@ -52,10 +56,6 @@ import tv.trakt.trakt.core.summary.people.navigation.navigateToPerson
 import tv.trakt.trakt.core.summary.people.navigation.personDetailsScreen
 import tv.trakt.trakt.core.summary.shows.navigation.navigateToShow
 import tv.trakt.trakt.core.summary.shows.navigation.showDetailsScreen
-import tv.trakt.trakt.core.user.features.profile.sections.favorites.all.navigation.allFavoritesScreen
-import tv.trakt.trakt.core.user.features.profile.sections.favorites.all.navigation.navigateToFavorites
-import tv.trakt.trakt.core.user.navigation.navigateToProfile
-import tv.trakt.trakt.core.user.navigation.profileScreen
 
 internal fun NavGraphBuilder.homeScreens(
     controller: NavHostController,

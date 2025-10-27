@@ -47,7 +47,7 @@ import tv.trakt.trakt.core.reactions.data.work.PostReactionWorker
 import tv.trakt.trakt.core.summary.episodes.features.comments.usecases.GetEpisodeCommentsUseCase
 import tv.trakt.trakt.core.summary.movies.features.comments.usecases.GetMovieCommentsUseCase
 import tv.trakt.trakt.core.summary.shows.features.comments.usecases.GetShowCommentsUseCase
-import tv.trakt.trakt.core.user.usecase.reactions.LoadUserReactionsUseCase
+import tv.trakt.trakt.core.user.usecases.reactions.LoadUserReactionsUseCase
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(FlowPreview::class)
