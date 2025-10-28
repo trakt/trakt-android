@@ -191,7 +191,7 @@ private fun CommentHeader(
                 },
         ) {
             val avatarBorder = when {
-                comment.user.isAnyVip -> Color.Red
+                comment.user.isAnyVip -> TraktTheme.colors.vipAccent
                 else -> Color.Transparent
             }
             val avatar = comment.user.images?.avatar?.full

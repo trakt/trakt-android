@@ -52,7 +52,7 @@ internal fun SocialUserView(
         ) {
             val borderWidth = 2.dp
             val borderColor = when {
-                user.isAnyVip -> Color.Red
+                user.isAnyVip -> TraktTheme.colors.vipAccent
                 else -> Color.Transparent
             }
 

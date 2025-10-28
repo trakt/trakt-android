@@ -64,6 +64,7 @@ val Red900 = Color(0xFF6B0000)
 // Orange
 val Orange100 = Color(0xffffcdb2)
 val Orange300 = Color(0xffff9458)
+val Orange400 = Color(0xFFff7f38)
 val Orange500 = Color(0xFFFF5f06)
 val Orange900 = Color(0xFF6b2803)
 

@@ -68,8 +68,9 @@ internal fun EpisodeSocialItemView(
                         endPadding = 24.dp,
                     )
 
+                    val vipAccent = TraktTheme.colors.vipAccent
                     val borderColor = remember(user.isAnyVip) {
-                        if (user.isAnyVip) Color.Red else Color.Transparent
+                        if (user.isAnyVip) vipAccent else Color.Transparent
                     }
                     if (user.hasAvatar) {
                         AsyncImage(

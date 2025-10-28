@@ -347,9 +347,10 @@ private fun TitleBar(
                 Box(
                     modifier = Modifier.size(34.dp),
                 ) {
+                    val vipAccent = TraktTheme.colors.vipAccent
                     val borderColor = remember(user) {
                         when (user.isAnyVip) {
-                            true -> Color.Red
+                            true -> vipAccent
                             else -> Color.White
                         }
                     }

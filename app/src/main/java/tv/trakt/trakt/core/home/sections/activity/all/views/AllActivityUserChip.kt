@@ -37,9 +37,9 @@ internal fun AllActivityUserChip(
             endPadding = 26.dp,
             modifier = Modifier.fillMaxHeight(),
         )
-
+        val vipAccent = TraktTheme.colors.vipAccent
         val borderColor = remember(user.isAnyVip) {
-            if (user.isAnyVip) Color.Red else Color.Transparent
+            if (user.isAnyVip) vipAccent else Color.Transparent
         }
         if (user.hasAvatar) {
             AsyncImage(

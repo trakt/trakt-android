@@ -151,7 +151,10 @@ internal fun HeaderBar(
 //                        )
 //                    } else {
                     val isNewsHeader = remember(news) {
-                        news.enabled && news.newsUrl.isNotBlank()
+                        news.enabled
+                    }
+                    val isNewsUrl = remember(news) {
+                        news.newsUrl.isNotBlank()
                     }
                     Column(
                         verticalArrangement = spacedBy(2.dp, Alignment.CenterVertically),
@@ -159,7 +162,7 @@ internal fun HeaderBar(
                             .padding(end = 16.dp)
                             .align(Alignment.Center)
                             .onClick {
-                                if (isNewsHeader) {
+                                if (isNewsHeader && isNewsUrl) {
                                     uriHandler.openUri(news.newsUrl)
                                 }
                             },
@@ -197,8 +200,9 @@ internal fun HeaderBar(
                             .size(contentHeight)
                             .onClick(onClick = onProfileClick),
                     ) {
+                        val vipAccent = TraktTheme.colors.vipAccent
                         val borderColor = remember(userVip) {
-                            if (userVip) Color.Red else Color.White
+                            if (userVip) vipAccent else Color.White
                         }
                         if (userAvatar != null) {
                             AsyncImage(
