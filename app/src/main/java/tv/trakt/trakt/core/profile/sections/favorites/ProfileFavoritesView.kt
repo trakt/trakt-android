@@ -36,9 +36,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.firebase.Firebase
+import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_1
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_2
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_3
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
@@ -46,8 +51,11 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.core.lists.model.ListsMediaFilter
 import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MEDIA
+import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MOVIES
+import tv.trakt.trakt.core.lists.model.ListsMediaFilter.SHOWS
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.profile.model.FavoriteItem
 import tv.trakt.trakt.core.profile.sections.favorites.views.FavoriteItemView
@@ -190,6 +198,9 @@ internal fun ProfileFavoritesContent(
                         }
                         state.items?.isEmpty() == true -> {
                             ContentEmptyView(
+                                filter = state.filter,
+                                onShowsClick = { },
+                                onMoviesClick = { },
                                 modifier = Modifier.padding(contentPadding),
                             )
                         }
@@ -321,13 +332,57 @@ private fun ContentList(
 }
 
 @Composable
-private fun ContentEmptyView(modifier: Modifier = Modifier) {
-    Text(
-        text = stringResource(R.string.list_placeholder_empty),
-        color = TraktTheme.colors.textSecondary,
-        style = TraktTheme.typography.heading6,
-        modifier = modifier,
-    )
+private fun ContentEmptyView(
+    filter: ListsMediaFilter,
+    modifier: Modifier = Modifier,
+    onShowsClick: () -> Unit,
+    onMoviesClick: () -> Unit,
+) {
+    val height = 219.dp
+
+    val imageUrls = remember {
+        val remoteConfig = Firebase.remoteConfig
+        buildList {
+            add(remoteConfig.getString(MOBILE_EMPTY_IMAGE_1).ifBlank { null })
+            add(remoteConfig.getString(MOBILE_EMPTY_IMAGE_2).ifBlank { null })
+            add(remoteConfig.getString(MOBILE_EMPTY_IMAGE_3).ifBlank { null })
+        }
+    }
+
+    when (filter) {
+        MEDIA -> {
+            HomeEmptyView(
+                text = stringResource(R.string.text_cta_favorites),
+                icon = R.drawable.ic_empty_watchlist,
+                height = height,
+                buttonText = stringResource(R.string.button_label_browse_shows),
+                backgroundImageUrl = imageUrls.getOrNull(0),
+                backgroundImage = if (imageUrls.getOrNull(0) == null) R.drawable.ic_splash_background else null,
+                onClick = onShowsClick,
+                modifier = modifier,
+            )
+        }
+        SHOWS -> HomeEmptyView(
+            text = stringResource(R.string.text_cta_favorites_shows),
+            icon = R.drawable.ic_empty_watchlist,
+            height = height,
+            buttonText = stringResource(R.string.button_label_browse_shows),
+            backgroundImageUrl = imageUrls.getOrNull(2),
+            backgroundImage = if (imageUrls.getOrNull(2) == null) R.drawable.ic_splash_background_2 else null,
+            onClick = onShowsClick,
+            modifier = modifier,
+        )
+        MOVIES -> HomeEmptyView(
+            text = stringResource(R.string.text_cta_favorites_movies),
+            icon = R.drawable.ic_empty_watchlist,
+            height = height,
+            buttonText = stringResource(R.string.button_label_browse_movies),
+            backgroundImageUrl = imageUrls.getOrNull(1),
+            backgroundImage = if (imageUrls.getOrNull(1) == null) R.drawable.ic_splash_background_2 else null,
+            onClick = onMoviesClick,
+            modifier = modifier,
+        )
+    }
 }
 
 // Previews
