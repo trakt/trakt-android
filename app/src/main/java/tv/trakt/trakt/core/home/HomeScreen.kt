@@ -24,6 +24,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.firebase.Firebase
+import com.google.firebase.remoteconfig.remoteConfig
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HALLOWEEN_THEME
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
@@ -51,6 +54,7 @@ internal fun HomeScreen(
     onNavigateToAllWatchlist: () -> Unit,
     onNavigateToAllPersonal: () -> Unit,
     onNavigateToAllSocial: () -> Unit,
+    onHalloweenCheck: (Boolean) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -67,6 +71,7 @@ internal fun HomeScreen(
         onMoreWatchlistClick = onNavigateToAllWatchlist,
         onMorePersonalClick = onNavigateToAllPersonal,
         onMoreSocialClick = onNavigateToAllSocial,
+        onHalloweenCheck = onHalloweenCheck,
     )
 }
 
@@ -86,6 +91,7 @@ private fun HomeScreenContent(
     onMoviesClick: () -> Unit = {},
     onMovieClick: (TraktId) -> Unit = {},
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
+    onHalloweenCheck: (Boolean) -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
     val lazyListState = rememberLazyListState(
@@ -184,6 +190,7 @@ private fun HomeScreenContent(
             headerState = headerState,
             userLoading = userLoading,
             isScrolledToTop = isScrolledToTop,
+            onHalloweenCheck = onHalloweenCheck,
             onProfileClick = onProfileClick,
         )
     }
@@ -195,12 +202,17 @@ private fun HomeScreenHeader(
     headerState: ScreenHeaderState,
     userLoading: Boolean,
     isScrolledToTop: Boolean,
+    onHalloweenCheck: (Boolean) -> Unit,
     onProfileClick: () -> Unit,
 ) {
     val userState = remember(state.user) {
         val loadingDone = state.user.loading == DONE
         val userNotNull = state.user.user != null
         loadingDone to userNotNull
+    }
+
+    val halloweenTheme = remember {
+        Firebase.remoteConfig.getBoolean(MOBILE_HALLOWEEN_THEME)
     }
 
     HeaderBar(
@@ -211,6 +223,9 @@ private fun HomeScreenHeader(
         userVip = state.user.user?.isAnyVip ?: false,
         userAvatar = state.user.user?.images?.avatar?.full,
         userLoading = userLoading,
+        halloweenVisible = halloweenTheme,
+        halloweenEnabled = state.halloween,
+        onHalloweenCheck = onHalloweenCheck,
         onProfileClick = onProfileClick,
         modifier = Modifier.offset {
             IntOffset(0, headerState.connection.barOffset.fastRoundToInt())

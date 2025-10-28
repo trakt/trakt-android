@@ -23,7 +23,7 @@ flagkit = "1.0.5"
 googleServices = "4.4.4"
 immutableCollections = "0.4.0"
 koinBom = "4.1.1"
-kotlin = "2.2.20"
+kotlin = "2.2.21"
 kotlinx-datetime = "0.7.1"
 kotlinxSerialization = "1.9.0"
 ktor = "3.3.1"
@@ -36,6 +36,7 @@ tvMaterial = "1.0.1"
 youtube-player = "13.0.0"
 inAppReview = "2.0.2"
 workManager = "2.11.0"
+phoenix = "3.0.0"
 
 # Testing Libraries
 
@@ -79,6 +80,7 @@ youtube-player = { group = "com.pierfrancescosoffritti.androidyoutubeplayer", na
 youtube-player-ui = { group = "com.pierfrancescosoffritti.androidyoutubeplayer", name = "custom-ui", version.ref = "youtube-player" }
 flagkit = { module = "com.github.murgupluoglu:flagkit-android", version.ref = "flagkit" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+phoenix = { group = "com.jakewharton", name = "process-phoenix", version.ref = "phoenix" }
 
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }

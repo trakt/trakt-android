@@ -22,6 +22,9 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -49,6 +52,9 @@ import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HEADER_NEW
 import tv.trakt.trakt.common.helpers.GreetingQuotes
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.ui.theme.colors.Orange100
+import tv.trakt.trakt.common.ui.theme.colors.Orange300
+import tv.trakt.trakt.common.ui.theme.colors.Orange500
 import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
@@ -74,6 +80,9 @@ internal fun HeaderBar(
     userAvatar: String? = null,
     userVip: Boolean = false,
     userLoading: Boolean = false,
+    halloweenVisible: Boolean = false,
+    halloweenEnabled: Boolean = false,
+    onHalloweenCheck: (Boolean) -> Unit = {},
     onProfileClick: () -> Unit = {},
 ) {
     val localMode = LocalInspectionMode.current
@@ -139,89 +148,114 @@ internal fun HeaderBar(
             ) { vip ->
                 Box(
                     contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .heightIn(min = contentHeight),
+                    modifier = Modifier.heightIn(min = contentHeight),
                 ) {
-//                    if (vip) {
-//                        VipChip(
-//                            onClick = {
-//                                uriHandler.openUri(Config.WEB_VIP_URL)
-//                            },
-//                            modifier = Modifier.align(Alignment.Center),
-//                        )
-//                    } else {
                     val isNewsHeader = remember(news) {
                         news.enabled
                     }
                     val isNewsUrl = remember(news) {
                         news.newsUrl.isNotBlank()
                     }
-                    Column(
-                        verticalArrangement = spacedBy(2.dp, Alignment.CenterVertically),
-                        modifier = Modifier
-                            .padding(end = 16.dp)
-                            .align(Alignment.Center)
-                            .onClick {
-                                if (isNewsHeader && isNewsUrl) {
-                                    uriHandler.openUri(news.newsUrl)
-                                }
-                            },
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = spacedBy(2.dp),
+                        modifier = Modifier.align(Alignment.Center),
                     ) {
-                        Text(
-                            text = when {
-                                isNewsHeader -> news.news1
-                                !title.isNullOrBlank() -> title
-                                else -> GreetingQuotes.getTodayQuote()
-                            },
-                            color = TraktTheme.colors.textPrimary,
-                            style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                        Text(
-                            text = when {
-                                isNewsHeader -> news.news2
-                                else -> todayLabel
-                            },
-                            color = TraktTheme.colors.textSecondary,
-                            style = TraktTheme.typography.meta,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
+                        Column(
+                            verticalArrangement = spacedBy(2.dp, Alignment.CenterVertically),
+                            modifier = Modifier
+                                .padding(end = 16.dp)
+                                .onClick {
+                                    if (isNewsHeader && isNewsUrl) {
+                                        uriHandler.openUri(news.newsUrl)
+                                    }
+                                },
+                        ) {
+                            Text(
+                                text = when {
+                                    isNewsHeader -> news.news1
+                                    !title.isNullOrBlank() -> title
+                                    else -> GreetingQuotes.getTodayQuote()
+                                },
+                                color = TraktTheme.colors.textPrimary,
+                                style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                            Text(
+                                text = when {
+                                    isNewsHeader -> news.news2
+                                    else -> todayLabel
+                                },
+                                color = TraktTheme.colors.textSecondary,
+                                style = TraktTheme.typography.meta,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        }
                     }
-//                    }
                 }
             }
 
             when {
                 showProfile -> {
-                    Box(
-                        modifier = Modifier
-                            .size(contentHeight)
-                            .onClick(onClick = onProfileClick),
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = spacedBy(8.dp),
+                        modifier = Modifier.height(contentHeight),
                     ) {
-                        val vipAccent = TraktTheme.colors.vipAccent
-                        val borderColor = remember(userVip) {
-                            if (userVip) vipAccent else Color.White
+                        if (halloweenVisible) {
+                            Switch(
+                                checked = halloweenEnabled,
+                                onCheckedChange = onHalloweenCheck,
+                                thumbContent = {
+                                    Icon(
+                                        painter = painterResource(R.drawable.ic_skull),
+                                        contentDescription = null,
+                                        modifier = Modifier.size(18.dp),
+                                    )
+                                },
+                                colors = SwitchDefaults.colors(
+                                    checkedThumbColor = Orange500,
+                                    uncheckedThumbColor = Orange300,
+                                    checkedTrackColor = Orange100,
+                                    uncheckedTrackColor = Orange100,
+                                    uncheckedBorderColor = Orange100,
+                                    checkedIconColor = Color.White,
+                                    uncheckedIconColor = Orange100,
+                                ),
+                            )
                         }
-                        if (userAvatar != null) {
-                            AsyncImage(
-                                model = userAvatar,
-                                contentDescription = "User avatar",
-                                contentScale = ContentScale.Crop,
-                                error = painterResource(R.drawable.ic_person_placeholder),
-                                modifier = Modifier
-                                    .border(2.dp, borderColor, CircleShape)
-                                    .clip(CircleShape),
-                            )
-                        } else {
-                            Image(
-                                painter = painterResource(R.drawable.ic_person_placeholder),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .border(2.dp, borderColor, CircleShape)
-                                    .clip(CircleShape),
-                            )
+
+                        Box(
+                            modifier = Modifier
+                                .size(contentHeight)
+                                .onClick(onClick = onProfileClick),
+                        ) {
+                            val vipAccent = TraktTheme.colors.vipAccent
+                            val borderColor = remember(userVip) {
+                                if (userVip) vipAccent else Color.White
+                            }
+                            if (userAvatar != null) {
+                                AsyncImage(
+                                    model = userAvatar,
+                                    contentDescription = "User avatar",
+                                    contentScale = ContentScale.Crop,
+                                    error = painterResource(R.drawable.ic_person_placeholder),
+                                    modifier = Modifier
+                                        .border(2.dp, borderColor, CircleShape)
+                                        .clip(CircleShape),
+                                )
+                            } else {
+                                Image(
+                                    painter = painterResource(R.drawable.ic_person_placeholder),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .border(2.dp, borderColor, CircleShape)
+                                        .clip(CircleShape),
+                                )
+                            }
                         }
                     }
                 }
@@ -242,7 +276,7 @@ internal fun HeaderBar(
     }
 }
 
-@Preview(widthDp = 350)
+@Preview(widthDp = 400)
 @Composable
 private fun Preview() {
     TraktTheme {
@@ -253,7 +287,7 @@ private fun Preview() {
     }
 }
 
-@Preview(widthDp = 350)
+@Preview(widthDp = 400)
 @Composable
 private fun Preview2() {
     TraktTheme {
@@ -261,11 +295,12 @@ private fun Preview2() {
             showVip = true,
             showProfile = true,
             userVip = false,
+            halloweenVisible = true,
         )
     }
 }
 
-@Preview(widthDp = 350)
+@Preview(widthDp = 400)
 @Composable
 private fun Preview3() {
     TraktTheme {
@@ -275,7 +310,7 @@ private fun Preview3() {
     }
 }
 
-@Preview(widthDp = 350)
+@Preview(widthDp = 400)
 @Composable
 private fun Preview4() {
     TraktTheme {

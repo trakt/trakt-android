@@ -17,24 +17,37 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.core.home.HomeState.UserState
+import tv.trakt.trakt.core.main.usecases.HalloweenUseCase
 
 @OptIn(FlowPreview::class)
 internal class HomeViewModel(
     private val sessionManager: SessionManager,
+    private val halloweenUseCase: HalloweenUseCase,
 ) : ViewModel() {
     private val initialState = HomeState()
 
     private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val userState = MutableStateFlow(initialState.user)
+    private val halloweenState = MutableStateFlow(initialState.halloween)
 
     init {
         loadBackground()
+        loadHalloween()
         observeUser()
+        observeHalloween()
     }
 
     private fun loadBackground() {
         val configUrl = Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL)
         backgroundState.update { configUrl }
+    }
+
+    private fun loadHalloween() {
+        viewModelScope.launch {
+            halloweenState.update {
+                halloweenUseCase.isHalloweenEnabled()
+            }
+        }
     }
 
     private fun observeUser() {
@@ -52,13 +65,25 @@ internal class HomeViewModel(
         }
     }
 
+    private fun observeHalloween() {
+        viewModelScope.launch {
+            halloweenUseCase.observeHalloweenEnabled()
+                .distinctUntilChanged()
+                .collect { enabled ->
+                    halloweenState.update { enabled }
+                }
+        }
+    }
+
     val state: StateFlow<HomeState> = combine(
         backgroundState,
         userState,
-    ) { s1, s2 ->
+        halloweenState,
+    ) { s1, s2, s3 ->
         HomeState(
             backgroundUrl = s1,
             user = s2,
+            halloween = s3,
         )
     }.stateIn(
         scope = viewModelScope,

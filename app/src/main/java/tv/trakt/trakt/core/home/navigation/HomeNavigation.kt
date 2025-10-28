@@ -25,6 +25,7 @@ internal fun NavGraphBuilder.homeScreen(
     onNavigateToAllWatchlist: () -> Unit,
     onNavigateToAllPersonal: () -> Unit,
     onNavigateToAllSocial: () -> Unit,
+    onHalloweenCheck: (Boolean) -> Unit,
 ) {
     composable<HomeDestination> {
         HomeScreen(
@@ -40,6 +41,7 @@ internal fun NavGraphBuilder.homeScreen(
             onNavigateToAllWatchlist = onNavigateToAllWatchlist,
             onNavigateToAllPersonal = onNavigateToAllPersonal,
             onNavigateToAllSocial = onNavigateToAllSocial,
+            onHalloweenCheck = onHalloweenCheck,
         )
     }
 }

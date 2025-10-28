@@ -133,6 +133,7 @@ internal val homeModule = module {
     viewModel {
         HomeViewModel(
             sessionManager = get(),
+            halloweenUseCase = get(),
         )
     }
 

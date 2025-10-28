@@ -18,8 +18,9 @@ import org.koin.dsl.module
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
 import tv.trakt.trakt.core.main.MainViewModel
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
+import tv.trakt.trakt.core.main.usecases.HalloweenUseCase
 
-private const val MAIN_PREFERENCES = "main_preferences"
+internal const val MAIN_PREFERENCES = "main_preferences"
 
 internal val mainModule = module {
     single<DataStore<Preferences>>(named(MAIN_PREFERENCES)) {
@@ -38,11 +39,18 @@ internal val mainModule = module {
             getUserUseCase = get(),
             logoutUserUseCase = get(),
             dismissWelcomeUseCase = get(),
+            halloweenUseCase = get(),
         )
     }
 
     factory {
         DismissWelcomeUseCase(
+            mainDataStore = get(named(MAIN_PREFERENCES)),
+        )
+    }
+
+    factory {
+        HalloweenUseCase(
             mainDataStore = get(named(MAIN_PREFERENCES)),
         )
     }

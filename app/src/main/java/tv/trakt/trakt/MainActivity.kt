@@ -20,6 +20,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.inject
 import org.koin.androidx.compose.koinViewModel
@@ -30,6 +31,8 @@ import tv.trakt.trakt.core.auth.ConfigAuth.OAUTH_REDIRECT_URI
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
 import tv.trakt.trakt.core.main.MainScreen
+import tv.trakt.trakt.core.main.di.MAIN_PREFERENCES
+import tv.trakt.trakt.core.main.usecases.KEY_HALLOWEEN_USER_ENABLED
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.colors.DarkColors
 import tv.trakt.trakt.ui.theme.colors.HalloweenColors
@@ -40,6 +43,7 @@ internal val LocalSnackbarState = compositionLocalOf { SnackbarHostState() }
 
 internal class MainActivity : ComponentActivity() {
     private val authPreferences: DataStore<Preferences> by inject(named(AUTH_PREFERENCES))
+    private val mainPreferences: DataStore<Preferences> by inject(named(MAIN_PREFERENCES))
     private val remoteConfig = Firebase.remoteConfig
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,7 +97,16 @@ internal class MainActivity : ComponentActivity() {
 
     private fun getThemeColors(): TraktColors {
         return when {
-            remoteConfig.getBoolean(MOBILE_HALLOWEEN_THEME) -> HalloweenColors
+            remoteConfig.getBoolean(MOBILE_HALLOWEEN_THEME) -> {
+                runBlocking {
+                    val prefs = mainPreferences.data.first()
+                    val halloweenEnabled = prefs[KEY_HALLOWEEN_USER_ENABLED] ?: true
+                    return@runBlocking when {
+                        halloweenEnabled -> HalloweenColors
+                        else -> DarkColors
+                    }
+                }
+            }
             else -> DarkColors
         }
     }

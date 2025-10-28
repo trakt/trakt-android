@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.model.User
 @Immutable
 internal data class HomeState(
     val backgroundUrl: String? = null,
+    val halloween: Boolean = false,
     val user: UserState = UserState(),
 ) {
     data class UserState(

@@ -114,6 +114,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.proto)
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.timber)
+    implementation(libs.phoenix)
 
     // Testing
 

@@ -131,6 +131,12 @@ internal fun MainScreen(
                     searchInput = searchState.searchInput,
                     userLoading = state.loadingUser.isLoading,
                     onSearchLoading = searchState.onSearchLoading,
+                    onHalloweenCheck = {
+                        viewModel.toggleHalloween(
+                            enabled = it,
+                            context = localContext,
+                        )
+                    },
                 )
 
                 AnimatedVisibility(
@@ -214,6 +220,7 @@ private fun MainNavHost(
     userLoading: Boolean,
     searchInput: SearchInput,
     onSearchLoading: (Boolean) -> Unit,
+    onHalloweenCheck: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     NavHost(
@@ -226,6 +233,7 @@ private fun MainNavHost(
         homeScreens(
             controller = navController,
             userLoading = userLoading,
+            onHalloweenCheck = onHalloweenCheck,
         )
         showsScreens(navController)
         episodesScreens(navController)
