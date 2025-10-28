@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -59,6 +60,7 @@ import tv.trakt.trakt.core.movies.navigation.navigateToMovies
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.navigateToSearch
 import tv.trakt.trakt.core.shows.navigation.navigateToShows
+import tv.trakt.trakt.core.welcome.WelcomeScreen
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.snackbar.MainSnackbarHost
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -115,69 +117,82 @@ internal fun MainScreen(
     Box(
         modifier = modifier.fillMaxSize(),
     ) {
-        MainNavHost(
-            navController = navController,
-            searchInput = searchState.searchInput,
-            userLoading = state.loadingUser.isLoading,
-            onSearchLoading = searchState.onSearchLoading,
-        )
+        Crossfade(
+            targetState = state.welcome,
+            animationSpec = tween(500),
+        ) { isWelcome ->
+            if (isWelcome) {
+                WelcomeScreen(
+                    onDismiss = viewModel::dismissWelcome,
+                )
+            } else {
+                MainNavHost(
+                    navController = navController,
+                    searchInput = searchState.searchInput,
+                    userLoading = state.loadingUser.isLoading,
+                    onSearchLoading = searchState.onSearchLoading,
+                )
 
-        AnimatedVisibility(
-            visible = localBottomBarVisibility.value,
-            enter = fadeIn(tween(200)) + slideInVertically(initialOffsetY = { it / 2 }),
-            exit = fadeOut(tween(200)) + slideOutVertically(targetOffsetY = { it / 2 }),
-            modifier = Modifier
-                .align(BottomCenter),
-        ) {
-            NavigationBar(
-                containerColor = TraktTheme.colors.navigationContainer,
-                contentColor = TraktTheme.colors.accent,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .dropShadow(
-                        shape = RoundedCornerShape(
-                            topStart = 24.dp,
-                            topEnd = 24.dp,
-                        ),
-                        shadow = Shadow(
-                            radius = 6.dp,
-                            color = Color.Black,
-                            spread = 2.dp,
-                            alpha = 0.25F,
-                        ),
-                    )
-                    .clip(
-                        RoundedCornerShape(
-                            topStart = 24.dp,
-                            topEnd = 24.dp,
-                        ),
-                    ),
-            ) {
-                TraktMenuBar(
-                    currentDestination = currentDestination.value?.destination,
-                    enabled = localBottomBarVisibility.value,
-                    searchState = searchState,
-                    onSelected = {
-                        navController.navigateToMainDestination(it.destination)
-                    },
-                    onReselected = {
-                        currentDestination.value?.destination?.let {
-                            if (it.hasRoute(ListsDestination::class) && state.user != null) {
-                                navController.navigateToWatchlist()
-                            }
-                        }
-                    },
-                    onSearchInput = searchState.onSearchInput,
+                AnimatedVisibility(
+                    visible = localBottomBarVisibility.value,
+                    enter = fadeIn(tween(200)) + slideInVertically(initialOffsetY = { it / 2 }),
+                    exit = fadeOut(tween(200)) + slideOutVertically(targetOffsetY = { it / 2 }),
+                    modifier = Modifier
+                        .align(BottomCenter),
+                ) {
+                    NavigationBar(
+                        containerColor = TraktTheme.colors.navigationContainer,
+                        contentColor = TraktTheme.colors.accent,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .dropShadow(
+                                shape = RoundedCornerShape(
+                                    topStart = 24.dp,
+                                    topEnd = 24.dp,
+                                ),
+                                shadow = Shadow(
+                                    radius = 6.dp,
+                                    color = Color.Black,
+                                    spread = 2.dp,
+                                    alpha = 0.25F,
+                                ),
+                            )
+                            .clip(
+                                RoundedCornerShape(
+                                    topStart = 24.dp,
+                                    topEnd = 24.dp,
+                                ),
+                            ),
+                    ) {
+                        TraktMenuBar(
+                            currentDestination = currentDestination.value?.destination,
+                            enabled = localBottomBarVisibility.value,
+                            searchState = searchState,
+                            onSelected = {
+                                navController.navigateToMainDestination(it.destination)
+                            },
+                            onReselected = {
+                                currentDestination.value?.destination?.let {
+                                    if (it.hasRoute(ListsDestination::class) && state.user != null) {
+                                        navController.navigateToWatchlist()
+                                    }
+                                }
+                            },
+                            onSearchInput = searchState.onSearchInput,
+                        )
+                    }
+                }
+
+                MainSnackbarHost(
+                    snackbarHostState = localSnackbar,
                 )
             }
         }
-
-        MainSnackbarHost(
-            snackbarHostState = localSnackbar,
-        )
     }
 
-    BackHandler {
+    BackHandler(
+        enabled = !state.welcome,
+    ) {
         with(currentDestination.value?.destination) {
             if (isStartDestination(this)) {
                 (localContext as? Activity)?.finish()
@@ -188,6 +203,7 @@ internal fun MainScreen(
                 return@BackHandler
             }
         }
+
         navController.popBackStack()
     }
 }

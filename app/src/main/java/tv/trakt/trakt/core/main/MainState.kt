@@ -8,4 +8,5 @@ import tv.trakt.trakt.common.model.User
 internal data class MainState(
     val user: User? = null,
     val loadingUser: LoadingState = LoadingState.IDLE,
+    val welcome: Boolean = false,
 )

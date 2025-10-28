@@ -223,7 +223,7 @@ internal fun HeaderBar(
                 }
                 showJoinTrakt -> {
                     TertiaryButton(
-                        text = stringResource(R.string.button_text_join_trakt),
+                        text = stringResource(R.string.button_text_login),
                         icon = painterResource(R.drawable.ic_trakt_icon),
                         height = contentHeight,
                         loading = userLoading,

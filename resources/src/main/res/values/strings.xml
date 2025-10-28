@@ -188,5 +188,6 @@
     <string name="page_title_about_me">About Me</string>
     <string name="page_title_social">Social</string>
     <string name="warning_prompt_logout">Are you sure you want to log out?</string>
+    <string name="button_text_join_trakt_free">Join Trakt for Free</string>
 
 </resources>

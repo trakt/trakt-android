@@ -29,6 +29,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.auth.usecase.AuthorizeUserUseCase
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
+import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
 import tv.trakt.trakt.core.user.usecases.GetUserProfileUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
@@ -45,17 +46,20 @@ internal class MainViewModel(
     private val logoutUserUseCase: LogoutUserUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val loadUserWatchlistUseCase: LoadUserWatchlistUseCase,
+    private val dismissWelcomeUseCase: DismissWelcomeUseCase,
 ) : ViewModel() {
     private val initialState = MainState()
 
     private val userState = MutableStateFlow(initialState.user)
     private val loadingUserState = MutableStateFlow(initialState.loadingUser)
+    private val welcomeState = MutableStateFlow(initialState.welcome)
 
     private var lastLoadTime: Instant? = null
 
     init {
         observeUser()
         observeAuthCode()
+        loadWelcome()
     }
 
     private fun observeUser() {
@@ -75,6 +79,14 @@ internal class MainViewModel(
                     authorizePreferences.edit { it.remove(authCodeKey) }
                     authorizeUser(code)
                 }
+            }
+        }
+    }
+
+    private fun loadWelcome() {
+        viewModelScope.launch {
+            welcomeState.update {
+                !dismissWelcomeUseCase.isWelcomeDismissed()
             }
         }
     }
@@ -143,13 +155,22 @@ internal class MainViewModel(
         }
     }
 
+    fun dismissWelcome() {
+        viewModelScope.launch {
+            welcomeState.update { false }
+            dismissWelcomeUseCase.dismissWelcome()
+        }
+    }
+
     val state: StateFlow<MainState> = combine(
         userState,
         loadingUserState,
+        welcomeState,
     ) { state ->
         MainState(
             user = state[0] as User?,
             loadingUser = state[1] as LoadingState,
+            welcome = state[2] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,
