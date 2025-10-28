@@ -30,6 +30,8 @@ import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.StaticStringResource
+import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -83,6 +85,7 @@ internal class AllWatchlistViewModel(
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
+    private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var loadDataJob: Job? = null
@@ -226,6 +229,10 @@ internal class AllWatchlistViewModel(
                 updateMovieHistoryUseCase.addToHistory(movieId)
                 removeItem(currentItems[itemIndex])
 
+                infoState.update {
+                    StaticStringResource("Added to history")
+                }
+
                 loadUserProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -290,6 +297,10 @@ internal class AllWatchlistViewModel(
         navigateMovie.update { null }
     }
 
+    fun clearInfo() {
+        infoState.update { null }
+    }
+
     override fun onCleared() {
         loadDataJob?.cancel()
         loadDataJob = null
@@ -307,6 +318,7 @@ internal class AllWatchlistViewModel(
         filterState,
         navigateShow,
         navigateMovie,
+        infoState,
         errorState,
         backgroundState,
         isHomeWatchlist,
@@ -317,9 +329,10 @@ internal class AllWatchlistViewModel(
             filter = state[2] as? ListsMediaFilter,
             navigateShow = state[3] as? TraktId,
             navigateMovie = state[4] as? TraktId,
-            error = state[5] as? Exception,
-            backgroundUrl = state[6] as? String,
-            isHomeWatchlist = state[7] as Boolean,
+            info = state[5] as? StringResource,
+            error = state[6] as? Exception,
+            backgroundUrl = state[7] as? String,
+            isHomeWatchlist = state[8] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

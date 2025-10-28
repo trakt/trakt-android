@@ -34,7 +34,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -69,6 +71,7 @@ internal fun AllWatchlistScreen(
     onMovieClick: (TraktId) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val haptic = LocalHapticFeedback.current
 
     var contextMovieSheet by remember { mutableStateOf<MovieItem?>(null) }
     var contextShowSheet by remember { mutableStateOf<ShowItem?>(null) }
@@ -81,6 +84,13 @@ internal fun AllWatchlistScreen(
         state.navigateMovie?.let {
             viewModel.clearNavigation()
             onMovieClick(it)
+        }
+    }
+
+    LaunchedEffect(state.info) {
+        if (state.info != null) {
+            haptic.performHapticFeedback(Confirm)
+            viewModel.clearInfo()
         }
     }
 

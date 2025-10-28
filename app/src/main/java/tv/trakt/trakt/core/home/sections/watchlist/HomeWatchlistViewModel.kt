@@ -167,12 +167,17 @@ internal class HomeWatchlistViewModel(
                 }
 
                 addHistoryUseCase.addToHistory(movieId)
+
+                infoState.update {
+                    StaticStringResource("Added to history")
+                }
+
                 itemsState.update {
                     getWatchlistUseCase.getWatchlist()
                 }
+
                 loadUserProgress()
 
-                infoState.update { StaticStringResource("Added to history") }
                 loadedAt = nowUtcInstant()
             } catch (error: Exception) {
                 error.rethrowCancellation {
