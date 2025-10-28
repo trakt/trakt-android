@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +15,6 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -56,7 +57,8 @@ internal class HomeUpcomingViewModel(
     private val errorState = MutableStateFlow(initialState.error)
 
     private var user: User? = null
-    private var processingJob: kotlinx.coroutines.Job? = null
+    private var dataJob: Job? = null
+    private var processingJob: Job? = null
 
     init {
         loadData()
@@ -80,9 +82,7 @@ internal class HomeUpcomingViewModel(
 
     @OptIn(FlowPreview::class)
     private fun observeHome() {
-        merge(
-            homeUpNextSource.observeUpdates(),
-        )
+        homeUpNextSource.observeUpdates()
             .distinctUntilChanged()
             .debounce(200)
             .onEach {
@@ -91,7 +91,10 @@ internal class HomeUpcomingViewModel(
     }
 
     private fun loadData(ignoreErrors: Boolean = false) {
-        viewModelScope.launch {
+        if (dataJob?.isActive == true) {
+            return
+        }
+        dataJob = viewModelScope.launch {
             if (loadEmptyIfNeeded()) {
                 return@launch
             }
@@ -106,6 +109,7 @@ internal class HomeUpcomingViewModel(
                 }
 
                 itemsState.update {
+                    delay(200) // Blinking workaround (Upcoming endpoint is HTTP-Cacheable)
                     getUpcomingUseCase.getUpcoming()
                 }
             } catch (error: Exception) {
@@ -115,6 +119,7 @@ internal class HomeUpcomingViewModel(
                 Timber.w(error, "Failed to load upcoming data")
             } finally {
                 loadingState.update { DONE }
+                dataJob = null
             }
         }
     }

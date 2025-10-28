@@ -59,6 +59,7 @@ internal class HomeWatchlistViewModel(
 
     private var user: User? = null
     private var loadedAt: Instant? = null
+    private var dataJob: Job? = null
     private var processingJob: Job? = null
 
     init {
@@ -101,7 +102,8 @@ internal class HomeWatchlistViewModel(
         ignoreErrors: Boolean = false,
         localOnly: Boolean = false,
     ) {
-        viewModelScope.launch {
+        if (dataJob?.isActive == true) return
+        dataJob = viewModelScope.launch {
             if (loadEmptyIfNeeded()) {
                 return@launch
             }
@@ -132,6 +134,7 @@ internal class HomeWatchlistViewModel(
                 }
             } finally {
                 loadingState.update { DONE }
+                dataJob = null
             }
         }
     }

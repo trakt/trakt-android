@@ -61,6 +61,7 @@ internal class HomeUpNextViewModel(
 
     private var user: User? = null
     private var itemsOrder: List<Int>? = null
+    private var dataJob: Job? = null
     private var processingJob: Job? = null
 
     init {
@@ -116,7 +117,8 @@ internal class HomeUpNextViewModel(
         ignoreErrors: Boolean = false,
         localOnly: Boolean = false,
     ) {
-        viewModelScope.launch {
+        if (dataJob?.isActive == true) return
+        dataJob = viewModelScope.launch {
             if (loadEmptyIfNeeded()) {
                 return@launch
             }
@@ -163,6 +165,7 @@ internal class HomeUpNextViewModel(
                 }
             } finally {
                 loadingState.update { DONE }
+                dataJob = null
             }
         }
     }
