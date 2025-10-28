@@ -76,6 +76,8 @@ internal fun ProfileScreen(
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToHistory: () -> Unit,
     onNavigateToFavorites: () -> Unit,
+    onNavigateToShows: () -> Unit,
+    onNavigateToMovies: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -95,6 +97,8 @@ internal fun ProfileScreen(
         onNavigateToEpisode = onNavigateToEpisode,
         onNavigateToHistory = onNavigateToHistory,
         onNavigateToFavorites = onNavigateToFavorites,
+        onNavigateToShows = onNavigateToShows,
+        onNavigateToMovies = onNavigateToMovies,
         onLogoutClick = { confirmLogout = true },
         onBackClick = onNavigateBack,
     )
@@ -123,6 +127,8 @@ private fun ProfileScreenContent(
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
     onNavigateToHistory: () -> Unit = {},
     onNavigateToFavorites: () -> Unit = {},
+    onNavigateToShows: () -> Unit = {},
+    onNavigateToMovies: () -> Unit = {},
     onLogoutClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
@@ -248,6 +254,8 @@ private fun ProfileScreenContent(
                         onShowClick = onNavigateToShow,
                         onMovieClick = onNavigateToMovie,
                         onMoreClick = onNavigateToFavorites,
+                        onShowsClick = onNavigateToShows,
+                        onMoviesClick = onNavigateToMovies,
                         modifier = Modifier
                             .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
                     )

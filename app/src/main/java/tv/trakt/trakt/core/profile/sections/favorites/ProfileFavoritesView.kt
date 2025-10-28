@@ -76,6 +76,8 @@ internal fun ProfileFavoritesView(
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onMoreClick: () -> Unit,
+    onShowsClick: () -> Unit,
+    onMoviesClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -108,6 +110,8 @@ internal fun ProfileFavoritesView(
                 onMoreClick()
             }
         },
+        onShowsClick = onShowsClick,
+        onMoviesClick = onMoviesClick,
     )
 
     ShowContextSheet(
@@ -133,6 +137,8 @@ internal fun ProfileFavoritesContent(
     onShowLongClick: (Show) -> Unit = {},
     onMovieLongClick: (Movie) -> Unit = {},
     onFavoritesClick: () -> Unit = {},
+    onShowsClick: () -> Unit = {},
+    onMoviesClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -199,8 +205,8 @@ internal fun ProfileFavoritesContent(
                         state.items?.isEmpty() == true -> {
                             ContentEmptyView(
                                 filter = state.filter,
-                                onShowsClick = { },
-                                onMoviesClick = { },
+                                onShowsClick = onShowsClick,
+                                onMoviesClick = onMoviesClick,
                                 modifier = Modifier.padding(contentPadding),
                             )
                         }
