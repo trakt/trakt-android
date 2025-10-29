@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.main
 import android.app.Activity
 import android.content.Intent
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
@@ -216,6 +217,8 @@ private fun MainNavHost(
     onSearchLoading: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val localActivity = LocalActivity.current
+
     NavHost(
         startDestination = HomeDestination,
         navController = navController,
@@ -227,7 +230,7 @@ private fun MainNavHost(
             controller = navController,
             userLoading = userLoading,
         )
-        showsScreens(navController)
+        showsScreens(localActivity, navController)
         episodesScreens(navController)
         moviesScreens(navController)
         listsScreens(navController)

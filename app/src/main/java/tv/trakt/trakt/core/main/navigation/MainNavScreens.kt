@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.main.navigation
 
+import android.content.Context
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import tv.trakt.trakt.common.model.Images.Size
@@ -106,7 +107,10 @@ internal fun NavGraphBuilder.homeScreens(
     }
 }
 
-internal fun NavGraphBuilder.showsScreens(controller: NavHostController) {
+internal fun NavGraphBuilder.showsScreens(
+    context: Context?,
+    controller: NavHostController,
+) {
     with(controller) {
         showsScreen(
             onNavigateToProfile = { navigateToProfile() },
@@ -117,18 +121,22 @@ internal fun NavGraphBuilder.showsScreens(controller: NavHostController) {
             onNavigateToAllRecommended = { navigateToRecommendedShows() },
         )
         showsTrendingScreen(
+            context = context,
             onNavigateBack = { popBackStack() },
             onNavigateToShow = { navigateToShow(it) },
         )
         showsPopularScreen(
+            context = context,
             onNavigateBack = { popBackStack() },
             onNavigateToShow = { navigateToShow(it) },
         )
         showsAnticipatedScreen(
+            context = context,
             onNavigateBack = { popBackStack() },
             onNavigateToShow = { navigateToShow(it) },
         )
         showsRecommendedScreen(
+            context = context,
             onNavigateBack = { popBackStack() },
             onNavigateToShow = { navigateToShow(it) },
         )

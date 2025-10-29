@@ -27,10 +27,14 @@ internal interface ShowsRemoteDataSource {
     suspend fun getPopular(
         page: Int = 1,
         limit: Int,
-        years: Int,
+        years: String? = null,
+        subgenres: List<String>? = null,
     ): List<ShowDto>
 
-    suspend fun getRecommended(limit: Int): List<RecommendedShowDto>
+    suspend fun getRecommended(
+        limit: Int,
+        subgenres: List<String>? = null,
+    ): List<RecommendedShowDto>
 
     suspend fun getAnticipated(
         page: Int = 1,

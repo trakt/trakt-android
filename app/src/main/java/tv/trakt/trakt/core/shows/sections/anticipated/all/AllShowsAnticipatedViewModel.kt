@@ -20,10 +20,10 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.shows.sections.anticipated.usecases.DEFAULT_ALL_LIMIT
-import tv.trakt.trakt.core.shows.sections.anticipated.usecases.anticipated.DefaultGetAnticipatedShowsUseCase
+import tv.trakt.trakt.core.shows.sections.anticipated.usecases.GetAnticipatedShowsUseCase
 
 internal class AllShowsAnticipatedViewModel(
-    private val getAnticipatedUseCase: DefaultGetAnticipatedShowsUseCase,
+    private val getAnticipatedUseCase: GetAnticipatedShowsUseCase,
 ) : ViewModel() {
     private val initialState = AllShowsAnticipatedState()
 

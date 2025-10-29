@@ -21,11 +21,15 @@ import tv.trakt.trakt.core.shows.sections.popular.all.AllShowsPopularViewModel
 import tv.trakt.trakt.core.shows.sections.popular.data.local.PopularShowsLocalDataSource
 import tv.trakt.trakt.core.shows.sections.popular.data.local.PopularShowsStorage
 import tv.trakt.trakt.core.shows.sections.popular.usecase.GetPopularShowsUseCase
+import tv.trakt.trakt.core.shows.sections.popular.usecase.popular.DefaultGetPopularShowsUseCase
+import tv.trakt.trakt.core.shows.sections.popular.usecase.popular.HalloweenGetPopularShowsUseCase
 import tv.trakt.trakt.core.shows.sections.recommended.ShowsRecommendedViewModel
 import tv.trakt.trakt.core.shows.sections.recommended.all.AllShowsRecommendedViewModel
 import tv.trakt.trakt.core.shows.sections.recommended.data.local.RecommendedShowsLocalDataSource
 import tv.trakt.trakt.core.shows.sections.recommended.data.local.RecommendedShowsStorage
 import tv.trakt.trakt.core.shows.sections.recommended.usecase.GetRecommendedShowsUseCase
+import tv.trakt.trakt.core.shows.sections.recommended.usecase.recommended.DefaultGetRecommendedShowsUseCase
+import tv.trakt.trakt.core.shows.sections.recommended.usecase.recommended.HalloweenGetRecommendedShowsUseCase
 import tv.trakt.trakt.core.shows.sections.trending.ShowsTrendingViewModel
 import tv.trakt.trakt.core.shows.sections.trending.all.AllShowsTrendingViewModel
 import tv.trakt.trakt.core.shows.sections.trending.data.local.TrendingShowsLocalDataSource
@@ -88,8 +92,20 @@ internal val showsModule = module {
         )
     }
 
-    factory {
-        GetPopularShowsUseCase(
+    factory<GetPopularShowsUseCase>(
+        qualifier = named("defaultPopularShowsUseCase")
+    ) {
+        DefaultGetPopularShowsUseCase(
+            remoteSource = get(),
+            localPopularSource = get(),
+            localShowSource = get(),
+        )
+    }
+
+    factory<GetPopularShowsUseCase>(
+        qualifier = named("halloweenPopularShowsUseCase")
+    ) {
+        HalloweenGetPopularShowsUseCase(
             remoteSource = get(),
             localPopularSource = get(),
             localShowSource = get(),
@@ -116,8 +132,20 @@ internal val showsModule = module {
         )
     }
 
-    factory {
-        GetRecommendedShowsUseCase(
+    factory<GetRecommendedShowsUseCase>(
+        qualifier = named("defaultRecommendedShowsUseCase")
+    ) {
+        DefaultGetRecommendedShowsUseCase(
+            remoteSource = get(),
+            localRecommendedSource = get(),
+            localShowSource = get(),
+        )
+    }
+
+    factory<GetRecommendedShowsUseCase>(
+        qualifier = named("halloweenRecommendedShowsUseCase")
+    ) {
+        HalloweenGetRecommendedShowsUseCase(
             remoteSource = get(),
             localRecommendedSource = get(),
             localShowSource = get(),
@@ -148,39 +176,57 @@ internal val showsModule = module {
         )
     }
 
-    viewModel {
+    viewModel { (halloween: Boolean) ->
         ShowsRecommendedViewModel(
-            getRecommendedUseCase = get(),
+            getRecommendedUseCase = when {
+                halloween -> get(named("halloweenRecommendedShowsUseCase"))
+                else -> get(named("defaultRecommendedShowsUseCase"))
+            },
         )
     }
 
-    viewModel {
+    viewModel { (halloween: Boolean) ->
         ShowsPopularViewModel(
-            getPopularUseCase = get(),
+            getPopularUseCase = when {
+                halloween -> get(named("halloweenPopularShowsUseCase"))
+                else -> get(named("defaultPopularShowsUseCase"))
+            },
         )
     }
 
-    viewModel {
+    viewModel { (halloween: Boolean) ->
         AllShowsTrendingViewModel(
-            getTrendingUseCase = get(),
+            getTrendingUseCase = when {
+                halloween -> get(named("halloweenTrendingShowsUseCase"))
+                else -> get(named("defaultTrendingShowsUseCase"))
+            },
         )
     }
 
-    viewModel {
+    viewModel { (halloween: Boolean) ->
         AllShowsPopularViewModel(
-            getPopularUseCase = get(),
+            getPopularUseCase = when {
+                halloween -> get(named("halloweenPopularShowsUseCase"))
+                else -> get(named("defaultPopularShowsUseCase"))
+            },
         )
     }
 
-    viewModel {
+    viewModel { (halloween: Boolean) ->
         AllShowsAnticipatedViewModel(
-            getAnticipatedUseCase = get(),
+            getAnticipatedUseCase = when {
+                halloween -> get(named("halloweenAnticipatedShowsUseCase"))
+                else -> get(named("defaultAnticipatedShowsUseCase"))
+            },
         )
     }
 
-    viewModel {
+    viewModel { (halloween: Boolean) ->
         AllShowsRecommendedViewModel(
-            getRecommendedUseCase = get(),
+            getRecommendedUseCase = when {
+                halloween -> get(named("halloweenRecommendedShowsUseCase"))
+                else -> get(named("defaultRecommendedShowsUseCase"))
+            },
         )
     }
 

@@ -80,14 +80,16 @@ internal class ShowsApiClient(
     override suspend fun getPopular(
         page: Int,
         limit: Int,
-        years: Int,
+        years: String?,
+        subgenres: List<String>?,
     ): List<ShowDto> {
         val response = showsApi.getShowsPopular(
             extended = "full,streaming_ids,cloud9,colors",
             limit = limit,
             watchnow = null,
             genres = null,
-            years = years.toString(),
+            subgenres = subgenres?.joinToString(","),
+            years = years,
             ratings = null,
             page = page,
             ignoreWatched = null,
@@ -100,7 +102,10 @@ internal class ShowsApiClient(
         return response.body()
     }
 
-    override suspend fun getRecommended(limit: Int): List<RecommendedShowDto> {
+    override suspend fun getRecommended(
+        limit: Int,
+        subgenres: List<String>?,
+    ): List<RecommendedShowDto> {
         val response = recommendationsApi.getRecommendationsShowsRecommend(
             extended = "full,streaming_ids,cloud9,colors",
             limit = limit,
@@ -110,6 +115,7 @@ internal class ShowsApiClient(
             watchWindow = 25,
             watchnow = null,
             genres = null,
+            subgenres = subgenres?.joinToString(","),
             years = null,
             ratings = null,
             startDate = null,
