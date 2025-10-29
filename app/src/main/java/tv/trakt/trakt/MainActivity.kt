@@ -59,10 +59,7 @@ internal class MainActivity : ComponentActivity() {
             val bottomBarVisibility = remember { mutableStateOf(true) }
             val snackbarState = remember { SnackbarHostState() }
             val halloweenState = remember {
-                HalloweenConfig(
-                    enabled = true,
-                    visible = true,
-                ).also {
+                getHalloweenConfig().also {
                     halloweenConfig = it
                 }
             }
