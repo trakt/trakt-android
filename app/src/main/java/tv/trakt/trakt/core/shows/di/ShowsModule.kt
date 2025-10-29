@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.shows.di
 
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.episodes.data.remote.EpisodesApiClient
@@ -12,7 +13,9 @@ import tv.trakt.trakt.core.shows.sections.anticipated.ShowsAnticipatedViewModel
 import tv.trakt.trakt.core.shows.sections.anticipated.all.AllShowsAnticipatedViewModel
 import tv.trakt.trakt.core.shows.sections.anticipated.data.local.AnticipatedShowsLocalDataSource
 import tv.trakt.trakt.core.shows.sections.anticipated.data.local.AnticipatedShowsStorage
-import tv.trakt.trakt.core.shows.sections.anticipated.usecase.GetAnticipatedShowsUseCase
+import tv.trakt.trakt.core.shows.sections.anticipated.usecases.GetAnticipatedShowsUseCase
+import tv.trakt.trakt.core.shows.sections.anticipated.usecases.anticipated.DefaultGetAnticipatedShowsUseCase
+import tv.trakt.trakt.core.shows.sections.anticipated.usecases.anticipated.HalloweenGetAnticipatedShowsUseCase
 import tv.trakt.trakt.core.shows.sections.popular.ShowsPopularViewModel
 import tv.trakt.trakt.core.shows.sections.popular.all.AllShowsPopularViewModel
 import tv.trakt.trakt.core.shows.sections.popular.data.local.PopularShowsLocalDataSource
@@ -27,7 +30,9 @@ import tv.trakt.trakt.core.shows.sections.trending.ShowsTrendingViewModel
 import tv.trakt.trakt.core.shows.sections.trending.all.AllShowsTrendingViewModel
 import tv.trakt.trakt.core.shows.sections.trending.data.local.TrendingShowsLocalDataSource
 import tv.trakt.trakt.core.shows.sections.trending.data.local.TrendingShowsStorage
-import tv.trakt.trakt.core.shows.sections.trending.usecase.GetTrendingShowsUseCase
+import tv.trakt.trakt.core.shows.sections.trending.usecases.GetTrendingShowsUseCase
+import tv.trakt.trakt.core.shows.sections.trending.usecases.trending.DefaultGetTrendingShowsUseCase
+import tv.trakt.trakt.core.shows.sections.trending.usecases.trending.HalloweenGetTrendingShowsUseCase
 import tv.trakt.trakt.core.shows.ui.context.ShowContextViewModel
 
 internal val showsDataModule = module {
@@ -63,8 +68,20 @@ internal val showsDataModule = module {
 }
 
 internal val showsModule = module {
-    factory {
-        GetTrendingShowsUseCase(
+    factory<GetTrendingShowsUseCase>(
+        qualifier = named("defaultTrendingShowsUseCase")
+    ) {
+        DefaultGetTrendingShowsUseCase(
+            remoteSource = get(),
+            localTrendingSource = get(),
+            localShowSource = get(),
+        )
+    }
+
+    factory<GetTrendingShowsUseCase>(
+        qualifier = named("halloweenTrendingShowsUseCase")
+    ) {
+        HalloweenGetTrendingShowsUseCase(
             remoteSource = get(),
             localTrendingSource = get(),
             localShowSource = get(),
@@ -79,8 +96,20 @@ internal val showsModule = module {
         )
     }
 
-    factory {
-        GetAnticipatedShowsUseCase(
+    factory<GetAnticipatedShowsUseCase>(
+        qualifier = named("defaultAnticipatedShowsUseCase")
+    ) {
+        DefaultGetAnticipatedShowsUseCase(
+            remoteSource = get(),
+            localAnticipatedSource = get(),
+            localShowSource = get(),
+        )
+    }
+
+    factory<GetAnticipatedShowsUseCase>(
+        qualifier = named("halloweenAnticipatedShowsUseCase")
+    ) {
+        HalloweenGetAnticipatedShowsUseCase(
             remoteSource = get(),
             localAnticipatedSource = get(),
             localShowSource = get(),
@@ -101,15 +130,21 @@ internal val showsModule = module {
         )
     }
 
-    viewModel {
+    viewModel { (halloween: Boolean) ->
         ShowsTrendingViewModel(
-            getTrendingUseCase = get(),
+            getTrendingUseCase = when {
+                halloween -> get(named("halloweenTrendingShowsUseCase"))
+                else -> get(named("defaultTrendingShowsUseCase"))
+            },
         )
     }
 
-    viewModel {
+    viewModel { (halloween: Boolean) ->
         ShowsAnticipatedViewModel(
-            getAnticipatedUseCase = get(),
+            getAnticipatedUseCase = when {
+                halloween -> get(named("halloweenAnticipatedShowsUseCase"))
+                else -> get(named("defaultAnticipatedShowsUseCase"))
+            },
         )
     }
 

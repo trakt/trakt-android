@@ -19,6 +19,7 @@ internal interface ShowsRemoteDataSource {
     suspend fun getTrending(
         page: Int = 1,
         limit: Int,
+        subgenres: List<String>? = null,
     ): List<TrendingShowDto>
 
     suspend fun getHot(limit: Int): List<TrendingShowDto>
@@ -34,7 +35,9 @@ internal interface ShowsRemoteDataSource {
     suspend fun getAnticipated(
         page: Int = 1,
         limit: Int,
-        endDate: Instant,
+        years: String? = null,
+        endDate: Instant? = null,
+        subgenres: List<String>? = null,
     ): List<AnticipatedShowDto>
 
     suspend fun getShowDetails(showId: TraktId): ShowDto

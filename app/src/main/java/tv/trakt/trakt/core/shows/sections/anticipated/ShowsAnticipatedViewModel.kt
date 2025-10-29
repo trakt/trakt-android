@@ -13,7 +13,7 @@ import timber.log.Timber
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.core.shows.sections.anticipated.usecase.GetAnticipatedShowsUseCase
+import tv.trakt.trakt.core.shows.sections.anticipated.usecases.GetAnticipatedShowsUseCase
 
 internal class ShowsAnticipatedViewModel(
     private val getAnticipatedUseCase: GetAnticipatedShowsUseCase,

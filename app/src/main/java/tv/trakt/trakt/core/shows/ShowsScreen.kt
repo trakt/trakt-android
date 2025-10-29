@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.shows
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -23,6 +24,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
+import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.shows.sections.anticipated.ShowsAnticipatedView
@@ -45,10 +49,16 @@ internal fun ShowsScreen(
     onNavigateToAllAnticipated: () -> Unit,
     onNavigateToAllRecommended: () -> Unit,
 ) {
+    val localActivity = LocalActivity.current
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    val isHalloween = remember {
+        (localActivity as? MainActivity)?.halloweenConfig?.enabled == true
+    }
 
     ShowsScreenContent(
         state = state,
+        halloween = isHalloween,
         onShowClick = onNavigateToShow,
         onProfileClick = onNavigateToProfile,
         onMoreTrendingClick = onNavigateToAllTrending,
@@ -61,6 +71,7 @@ internal fun ShowsScreen(
 @Composable
 private fun ShowsScreenContent(
     state: ShowsState,
+    halloween: Boolean,
     modifier: Modifier = Modifier,
     onShowClick: (TraktId) -> Unit,
     onProfileClick: () -> Unit = {},
@@ -119,6 +130,9 @@ private fun ShowsScreenContent(
         ) {
             item {
                 ShowsTrendingView(
+                    viewModel = koinViewModel(
+                        parameters = { parametersOf(halloween) }
+                    ),
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     onShowClick = onShowClick,
@@ -128,6 +142,9 @@ private fun ShowsScreenContent(
 
             item {
                 ShowsAnticipatedView(
+                    viewModel = koinViewModel(
+                        parameters = { parametersOf(halloween) }
+                    ),
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     onShowClick = onShowClick,
@@ -137,6 +154,9 @@ private fun ShowsScreenContent(
 
             item {
                 ShowsPopularView(
+                    viewModel = koinViewModel(
+                        parameters = { parametersOf(halloween) }
+                    ),
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     onShowClick = onShowClick,
@@ -147,6 +167,9 @@ private fun ShowsScreenContent(
             if (state.user.isAuthenticated) {
                 item {
                     ShowsRecommendedView(
+                        viewModel = koinViewModel(
+                            parameters = { parametersOf(halloween) }
+                        ),
                         headerPadding = sectionPadding,
                         contentPadding = sectionPadding,
                         onShowClick = onShowClick,
@@ -202,6 +225,7 @@ private fun Preview() {
     TraktTheme {
         ShowsScreenContent(
             state = ShowsState(),
+            halloween = false,
             onShowClick = {},
         )
     }

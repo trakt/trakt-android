@@ -1,28 +1,31 @@
-package tv.trakt.trakt.core.shows.sections.anticipated.usecase
+package tv.trakt.trakt.core.shows.sections.trending.usecases.trending
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
-import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.core.shows.model.WatchersShow
-import tv.trakt.trakt.core.shows.sections.anticipated.data.local.AnticipatedShowsLocalDataSource
+import tv.trakt.trakt.core.shows.sections.trending.data.local.TrendingShowsLocalDataSource
+import tv.trakt.trakt.core.shows.sections.trending.usecases.DEFAULT_LIMIT
+import tv.trakt.trakt.core.shows.sections.trending.usecases.GetTrendingShowsUseCase
 import java.time.Instant
-import java.time.temporal.ChronoUnit.DAYS
 
-private const val DEFAULT_LIMIT = 24
-internal const val DEFAULT_ALL_LIMIT = 102
-
-internal class GetAnticipatedShowsUseCase(
+internal class DefaultGetTrendingShowsUseCase(
     private val remoteSource: ShowsRemoteDataSource,
-    private val localAnticipatedSource: AnticipatedShowsLocalDataSource,
+    private val localTrendingSource: TrendingShowsLocalDataSource,
     private val localShowSource: ShowLocalDataSource,
-) {
-    suspend fun getLocalShows(): ImmutableList<WatchersShow> {
-        return localAnticipatedSource.getShows()
+) : GetTrendingShowsUseCase {
+    override suspend fun getLocalShows(): ImmutableList<WatchersShow> {
+        return localTrendingSource.getShows()
+            .asyncMap { entity ->
+                WatchersShow(
+                    watchers = entity.watchers,
+                    show = entity.show,
+                )
+            }
             .sortedByDescending { it.watchers }
             .toImmutableList()
             .also {
@@ -32,26 +35,25 @@ internal class GetAnticipatedShowsUseCase(
             }
     }
 
-    suspend fun getShows(
-        limit: Int = DEFAULT_LIMIT,
-        page: Int = 1,
-        skipLocal: Boolean = false,
+    override suspend fun getShows(
+        limit: Int,
+        page: Int,
+        skipLocal: Boolean,
     ): ImmutableList<WatchersShow> {
-        return remoteSource.getAnticipated(
+        return remoteSource.getTrending(
             page = page,
             limit = limit,
-            endDate = nowUtcInstant().plus(365, DAYS).truncatedTo(DAYS),
         )
             .asyncMap {
                 WatchersShow(
-                    watchers = it.listCount,
+                    watchers = it.watchers,
                     show = Show.fromDto(it.show),
                 )
             }
             .toImmutableList()
             .also { shows ->
                 if (!skipLocal) {
-                    localAnticipatedSource.addShows(
+                    localTrendingSource.addShows(
                         shows = shows.take(DEFAULT_LIMIT),
                         addedAt = Instant.now(),
                     )

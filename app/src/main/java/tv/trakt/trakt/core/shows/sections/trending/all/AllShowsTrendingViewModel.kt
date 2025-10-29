@@ -19,11 +19,11 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.core.shows.sections.trending.usecase.DEFAULT_ALL_LIMIT
-import tv.trakt.trakt.core.shows.sections.trending.usecase.GetTrendingShowsUseCase
+import tv.trakt.trakt.core.shows.sections.trending.usecases.DEFAULT_ALL_LIMIT
+import tv.trakt.trakt.core.shows.sections.trending.usecases.trending.DefaultGetTrendingShowsUseCase
 
 internal class AllShowsTrendingViewModel(
-    private val getTrendingUseCase: GetTrendingShowsUseCase,
+    private val getTrendingUseCase: DefaultGetTrendingShowsUseCase,
 ) : ViewModel() {
     private val initialState = AllShowsTrendingState()
 

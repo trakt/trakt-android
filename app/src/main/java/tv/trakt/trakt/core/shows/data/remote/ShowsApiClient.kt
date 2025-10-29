@@ -25,12 +25,14 @@ internal class ShowsApiClient(
     override suspend fun getTrending(
         page: Int,
         limit: Int,
+        subgenres: List<String>?,
     ): List<TrendingShowDto> {
         val response = showsApi.getShowsTrending(
             extended = "full,streaming_ids,cloud9,colors",
             limit = limit,
             watchnow = null,
             genres = null,
+            subgenres = subgenres?.joinToString(","),
             years = null,
             ratings = null,
             page = page,
@@ -120,21 +122,24 @@ internal class ShowsApiClient(
     override suspend fun getAnticipated(
         page: Int,
         limit: Int,
-        endDate: Instant,
+        years: String?,
+        endDate: Instant?,
+        subgenres: List<String>?,
     ): List<AnticipatedShowDto> {
         val response = showsApi.getShowsAnticipated(
             extended = "full,streaming_ids,cloud9,colors",
             limit = limit,
             watchnow = null,
             genres = null,
-            years = null,
+            subgenres = subgenres?.joinToString(","),
+            years = years,
             ratings = null,
             page = page,
             ignoreWatched = null,
             ignoreCollected = null,
             ignoreWatchlisted = null,
             startDate = null,
-            endDate = endDate.toString(),
+            endDate = endDate?.toString(),
         )
 
         return response.body()

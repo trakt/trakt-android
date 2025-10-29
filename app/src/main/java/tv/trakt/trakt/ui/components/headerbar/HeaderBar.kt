@@ -219,7 +219,7 @@ internal fun HeaderBar(
                 showProfile -> {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = spacedBy(12.dp),
+                        horizontalArrangement = spacedBy(10.dp),
                         modifier = Modifier.height(contentHeight),
                     ) {
                         if (halloween?.visible == true) {
@@ -236,19 +236,20 @@ internal fun HeaderBar(
                                 },
                                 thumbContent = {
                                     Icon(
-                                        painter = painterResource(R.drawable.ic_skull),
+                                        painter = painterResource(R.drawable.ic_pumpkin),
                                         contentDescription = null,
                                         modifier = Modifier.size(18.dp),
                                     )
                                 },
                                 colors = SwitchDefaults.colors(
-                                    checkedThumbColor = Orange500,
-                                    uncheckedThumbColor = Orange500,
+                                    checkedBorderColor = Orange100,
                                     checkedTrackColor = Orange100,
-                                    uncheckedTrackColor = White,
-                                    uncheckedBorderColor = White,
+                                    checkedThumbColor = Orange500,
                                     checkedIconColor = White,
-                                    uncheckedIconColor = White,
+                                    uncheckedBorderColor = White,
+                                    uncheckedTrackColor = White,
+                                    uncheckedThumbColor = White,
+                                    uncheckedIconColor = Orange500,
                                 ),
                             )
                         }

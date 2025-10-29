@@ -39,7 +39,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
@@ -58,7 +57,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun ShowsAnticipatedView(
     modifier: Modifier = Modifier,
-    viewModel: ShowsAnticipatedViewModel = koinViewModel(),
+    viewModel: ShowsAnticipatedViewModel,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     onShowClick: (TraktId) -> Unit = {},
