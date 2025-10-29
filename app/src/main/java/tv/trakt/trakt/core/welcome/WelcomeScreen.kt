@@ -53,6 +53,7 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.Config.WEB_ABOUT_US_URL
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.common.ui.theme.colors.Purple900
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.resources.R
@@ -118,7 +119,7 @@ internal fun WelcomeScreen(
                 Icon(
                     painter = painterResource(R.drawable.ic_trakt_logo),
                     contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
+                    tint = Color.White,
                 )
             }
 
@@ -174,7 +175,7 @@ internal fun WelcomeScreen(
                         style = TraktTheme.typography.heading1.copy(
                             fontSize = 48.sp,
                         ),
-                        color = TraktTheme.colors.textPrimary,
+                        color = Color.White,
                         maxLines = 3,
                         modifier = Modifier.graphicsLayer {
                             translationY = 2.dp.toPx()
@@ -186,19 +187,19 @@ internal fun WelcomeScreen(
                         Text(
                             text = "years of watching together",
                             style = font,
-                            color = TraktTheme.colors.textPrimary,
+                            color = Color.White,
                             maxLines = 1,
                         )
                         Text(
                             text = "mil. shows & movies lovers",
                             style = font,
-                            color = TraktTheme.colors.textPrimary,
+                            color = Color.White,
                             maxLines = 1,
                         )
                         Text(
                             text = "mil. titles tracked weekly",
                             style = font,
-                            color = TraktTheme.colors.textPrimary,
+                            color = Color.White,
                             maxLines = 1,
                         )
                     }
@@ -262,7 +263,7 @@ private fun WelcomeItem(
                 letterSpacing = 6.sp,
             ),
             textAlign = TextAlign.Center,
-            color = TraktTheme.colors.textPrimary,
+            color = Color.White,
             maxLines = 3,
             modifier = Modifier
                 .align(Alignment.TopCenter)
@@ -277,7 +278,7 @@ private fun WelcomeItem(
             Icon(
                 painter = iconPainter,
                 contentDescription = null,
-                tint = TraktTheme.colors.accent,
+                tint = Purple500,
                 modifier = Modifier.size(24.dp),
             )
 
@@ -290,7 +291,7 @@ private fun WelcomeItem(
                 Text(
                     text = title,
                     style = TraktTheme.typography.heading1,
-                    color = TraktTheme.colors.textPrimary,
+                    color = Color.White,
                     maxLines = 3,
                 )
                 Box(
@@ -299,7 +300,7 @@ private fun WelcomeItem(
                         .graphicsLayer {
                             translationY = -10.dp.toPx()
                         }
-                        .background(TraktTheme.colors.accent, CircleShape),
+                        .background(Purple500, CircleShape),
                 )
             }
             Text(
@@ -307,7 +308,7 @@ private fun WelcomeItem(
                 style = TraktTheme.typography.paragraphSmall.copy(
                     fontSize = 14.sp,
                 ),
-                color = TraktTheme.colors.textPrimary,
+                color = Color.White,
                 textAlign = TextAlign.Center,
                 maxLines = 3,
             )

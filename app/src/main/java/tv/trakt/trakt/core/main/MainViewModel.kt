@@ -86,7 +86,15 @@ internal class MainViewModel(
     private fun loadWelcome() {
         viewModelScope.launch {
             welcomeState.update {
-                !dismissWelcomeUseCase.isWelcomeDismissed()
+                val authenticatedAsync = async { sessionManager.isAuthenticated() }
+                val dismissedAsync = async { dismissWelcomeUseCase.isWelcomeDismissed() }
+
+                val (authenticated, dismissed) = awaitAll(
+                    authenticatedAsync,
+                    dismissedAsync
+                )
+
+                !authenticated && !dismissed
             }
         }
     }
