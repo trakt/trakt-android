@@ -31,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,6 +51,8 @@ import coil3.compose.AsyncImage
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import com.jakewharton.processphoenix.ProcessPhoenix
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HEADER_NEWS_1
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HEADER_NEWS_2
@@ -91,6 +94,7 @@ internal fun HeaderBar(
     val localActivity = LocalActivity.current
     val localMode = LocalInspectionMode.current
     val uriHandler = LocalUriHandler.current
+    val scope = rememberCoroutineScope()
 
     val contentHeight = 34.dp
     val headerBarHeight = WindowInsets.statusBars.asPaddingValues()
@@ -232,7 +236,10 @@ internal fun HeaderBar(
                                 onCheckedChange = {
                                     isChecked = it
                                     (localActivity as? MainActivity)?.toggleHalloween(it)
-                                    ProcessPhoenix.triggerRebirth(localActivity)
+                                    scope.launch {
+                                        delay(100)
+                                        ProcessPhoenix.triggerRebirth(localActivity)
+                                    }
                                 },
                                 thumbContent = {
                                     Icon(

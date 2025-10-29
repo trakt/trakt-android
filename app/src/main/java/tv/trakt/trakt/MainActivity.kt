@@ -20,11 +20,13 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
+import com.jakewharton.processphoenix.ProcessPhoenix
 import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.inject
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.qualifier.named
 import timber.log.Timber
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HALLOWEEN_ENABLED
 import tv.trakt.trakt.core.auth.ConfigAuth.OAUTH_REDIRECT_URI
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
@@ -99,11 +101,15 @@ internal class MainActivity : ComponentActivity() {
     }
 
     private fun updateRemoteConfig() {
+        val halloweenTheme = remoteConfig.getBoolean(MOBILE_HALLOWEEN_ENABLED)
         remoteConfig
             .fetchAndActivate()
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     Timber.d("Remote Config updated: ${it.result}")
+                    if (!halloweenTheme && remoteConfig.getBoolean(MOBILE_HALLOWEEN_ENABLED)) {
+                        ProcessPhoenix.triggerRebirth(this)
+                    }
                 } else {
                     Timber.w("Remote Config update failed!")
                 }

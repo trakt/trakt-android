@@ -87,11 +87,11 @@ internal class MainViewModel(
         viewModelScope.launch {
             welcomeState.update {
                 val authenticatedAsync = async { sessionManager.isAuthenticated() }
-                val dismissedAsync = async { dismissWelcomeUseCase.isWelcomeDismissed() }
+                val welcomeDismissedAsync = async { dismissWelcomeUseCase.isWelcomeDismissed() }
 
                 val (authenticated, dismissed) = awaitAll(
                     authenticatedAsync,
-                    dismissedAsync
+                    welcomeDismissedAsync
                 )
 
                 !authenticated && !dismissed

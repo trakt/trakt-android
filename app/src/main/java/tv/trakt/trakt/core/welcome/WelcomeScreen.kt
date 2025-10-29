@@ -82,7 +82,7 @@ internal fun WelcomeScreen(
     val contentPadding = PaddingValues(
         top = WindowInsets.statusBars.asPaddingValues()
             .calculateTopPadding()
-            .plus(16.dp),
+            .plus(32.dp),
         bottom = WindowInsets.navigationBars.asPaddingValues()
             .calculateBottomPadding(),
     )
@@ -237,6 +237,8 @@ internal fun WelcomeScreen(
 
                 PrimaryButton(
                     text = stringResource(R.string.button_text_join_trakt_free),
+                    containerColor = Purple500,
+                    contentColor = Color.White,
                     onClick = onDismiss,
                     modifier = Modifier.fillMaxWidth(),
                 )
