@@ -31,7 +31,17 @@ internal class HalloweenGetRecommendedShowsUseCase(
     ): ImmutableList<Show> {
         return remoteSource.getRecommended(
             limit = limit,
-            subgenres = listOf("halloween"),
+            genres = listOf("horror"),
+            subgenres = listOf(
+                "halloween",
+                "haunting",
+                "nightmare",
+                "witch",
+                "monster",
+                "demon",
+                "occult",
+                "supernatural",
+            ),
         )
             .asyncMap {
                 Show.fromDto(it)

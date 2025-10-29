@@ -33,6 +33,7 @@ internal interface ShowsRemoteDataSource {
 
     suspend fun getRecommended(
         limit: Int,
+        genres: List<String>? = null,
         subgenres: List<String>? = null,
     ): List<RecommendedShowDto>
 
@@ -41,6 +42,7 @@ internal interface ShowsRemoteDataSource {
         limit: Int,
         years: String? = null,
         endDate: Instant? = null,
+        genres: List<String>? = null,
         subgenres: List<String>? = null,
     ): List<AnticipatedShowDto>
 

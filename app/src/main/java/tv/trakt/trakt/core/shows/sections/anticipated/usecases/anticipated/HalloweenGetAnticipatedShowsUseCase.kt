@@ -40,7 +40,17 @@ internal class HalloweenGetAnticipatedShowsUseCase(
             page = page,
             limit = limit,
             years = "${now.minusYears(3).year}-${now.year}",
-            subgenres = listOf("halloween"),
+            genres = listOf("horror"),
+            subgenres = listOf(
+                "halloween",
+                "haunting",
+                "nightmare",
+                "witch",
+                "monster",
+                "demon",
+                "occult",
+                "supernatural",
+            ),
         )
             .asyncMap {
                 WatchersShow(
