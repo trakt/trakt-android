@@ -23,6 +23,7 @@ internal data class ShowDetailsState(
     val info: StringResource? = null,
     val error: Exception? = null,
     val user: User? = null,
+    val halloween: Boolean = false,
 ) {
     data class ProgressState(
         val aired: Int,

@@ -5,7 +5,10 @@ package tv.trakt.trakt.core.summary.shows
 import android.content.Context
 import android.content.Intent
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -17,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
@@ -35,12 +39,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
@@ -315,6 +321,13 @@ internal fun ShowDetailsContent(
                 show.released?.isNowOrBefore() ?: false
             }
 
+            val animatedPeekABoo by animateDpAsState(
+                targetValue = if (state.halloween) (-3.25).dp else 20.dp,
+                animationSpec = tween(
+                    delayMillis = 100,
+                    durationMillis = 2500,
+                ),
+            )
             DetailsBackground(
                 imageUrl = show.images?.getFanartUrl(Images.Size.THUMB),
                 color = show.colors?.colors?.second,
@@ -343,27 +356,41 @@ internal fun ShowDetailsContent(
                 }
 
                 item {
-                    DetailsActions(
-                        primaryEnabled = isReleased,
-                        enabled = state.user != null &&
-                            !state.loadingProgress.isLoading &&
-                            !state.loadingLists.isLoading,
-                        loading = state.loadingProgress.isLoading ||
-                            state.loadingLists.isLoading,
-                        inLists = state.showProgress?.inAnyList,
-                        onPrimaryClick = onTrackClick,
-                        onSecondaryClick = when {
-                            state.showProgress?.hasLists == true -> onListsClick
-                            else -> onWatchlistClick
-                        },
-                        onSecondaryLongClick = onListsClick,
-                        onMoreClick = onMoreClick,
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .fillMaxWidth()
-                            .padding(top = 16.dp)
-                            .padding(horizontal = 42.dp),
-                    )
+                    Box {
+                        Image(
+                            painter = painterResource(R.drawable.ic_ghost),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(36.dp)
+                                .align(Alignment.TopEnd)
+                                .graphicsLayer {
+                                    translationX = (-62).dp.toPx()
+                                    translationY = animatedPeekABoo.toPx()
+                                },
+                        )
+
+                        DetailsActions(
+                            primaryEnabled = isReleased,
+                            enabled = state.user != null &&
+                                !state.loadingProgress.isLoading &&
+                                !state.loadingLists.isLoading,
+                            loading = state.loadingProgress.isLoading ||
+                                state.loadingLists.isLoading,
+                            inLists = state.showProgress?.inAnyList,
+                            onPrimaryClick = onTrackClick,
+                            onSecondaryClick = when {
+                                state.showProgress?.hasLists == true -> onListsClick
+                                else -> onWatchlistClick
+                            },
+                            onSecondaryLongClick = onListsClick,
+                            onMoreClick = onMoreClick,
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                                .fillMaxWidth()
+                                .padding(top = 16.dp)
+                                .padding(horizontal = 42.dp),
+                        )
+                    }
                 }
 
                 item {

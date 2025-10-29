@@ -146,6 +146,7 @@ internal val showDetailsModule = module {
             updateShowWatchlistUseCase = get(),
             addListItemUseCase = get(),
             removeListItemUseCase = get(),
+            halloweenUseCase = get(),
             userWatchlistLocalSource = get(),
             episodeLocalDataSource = get(),
             showDetailsUpdates = get(),

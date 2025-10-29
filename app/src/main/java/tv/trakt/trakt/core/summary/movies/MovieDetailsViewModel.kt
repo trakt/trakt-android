@@ -7,6 +7,7 @@ import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -33,6 +34,7 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.lists.sections.personal.usecases.AddPersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
+import tv.trakt.trakt.core.main.usecases.HalloweenUseCase
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.movies.navigation.MovieDetailsDestination
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
@@ -58,6 +60,7 @@ internal class MovieDetailsViewModel(
     private val updateMovieWatchlistUseCase: UpdateMovieWatchlistUseCase,
     private val addListItemUseCase: AddPersonalListItemUseCase,
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
+    private val halloweenUseCase: HalloweenUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
     private val movieDetailsUpdates: MovieDetailsUpdates,
     private val sessionManager: SessionManager,
@@ -77,6 +80,7 @@ internal class MovieDetailsViewModel(
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
     private val userState = MutableStateFlow(initialState.user)
+    private val halloweenState = MutableStateFlow(initialState.halloween)
 
     init {
         loadUser()
@@ -112,6 +116,7 @@ internal class MovieDetailsViewModel(
 
                 loadRatings(movie)
                 loadStudios()
+                loadHalloween(movie)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -119,6 +124,22 @@ internal class MovieDetailsViewModel(
                 }
             } finally {
                 loadingState.update { DONE }
+            }
+        }
+    }
+
+    private fun loadHalloween(movie: Movie?) {
+        viewModelScope.launch {
+            try {
+                delay(100)
+                halloweenState.update {
+                    movie?.genres?.contains("horror") == true &&
+                        halloweenUseCase.getConfig().enabled
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.w(error)
+                }
             }
         }
     }
@@ -526,6 +547,7 @@ internal class MovieDetailsViewModel(
         infoState,
         errorState,
         userState,
+        halloweenState,
     ) { state ->
         MovieDetailsState(
             movie = state[0] as Movie?,
@@ -538,6 +560,7 @@ internal class MovieDetailsViewModel(
             info = state[7] as StringResource?,
             error = state[8] as Exception?,
             user = state[9] as User?,
+            halloween = state[10] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

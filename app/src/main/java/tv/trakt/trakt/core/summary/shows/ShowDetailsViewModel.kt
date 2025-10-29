@@ -8,6 +8,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -40,6 +41,7 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.lists.sections.personal.usecases.AddPersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
+import tv.trakt.trakt.core.main.usecases.HalloweenUseCase
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.summary.shows.navigation.ShowDetailsDestination
@@ -69,6 +71,7 @@ internal class ShowDetailsViewModel(
     private val updateShowWatchlistUseCase: UpdateShowWatchlistUseCase,
     private val addListItemUseCase: AddPersonalListItemUseCase,
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
+    private val halloweenUseCase: HalloweenUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val showDetailsUpdates: ShowDetailsUpdates,
@@ -90,6 +93,7 @@ internal class ShowDetailsViewModel(
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
     private val userState = MutableStateFlow(initialState.user)
+    private val halloweenState = MutableStateFlow(initialState.halloween)
 
     init {
         loadUser()
@@ -138,6 +142,7 @@ internal class ShowDetailsViewModel(
 
                 loadRatings(show)
                 loadStudios()
+                loadHalloween(show)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -145,6 +150,22 @@ internal class ShowDetailsViewModel(
                 }
             } finally {
                 loadingState.update { DONE }
+            }
+        }
+    }
+
+    private fun loadHalloween(show: Show?) {
+        viewModelScope.launch {
+            delay(100)
+            try {
+                halloweenState.update {
+                    show?.genres?.contains("horror") == true &&
+                        halloweenUseCase.getConfig().enabled
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.w(error)
+                }
             }
         }
     }
@@ -591,6 +612,7 @@ internal class ShowDetailsViewModel(
         infoState,
         errorState,
         userState,
+        halloweenState,
     ) { state ->
         ShowDetailsState(
             show = state[0] as Show?,
@@ -604,6 +626,7 @@ internal class ShowDetailsViewModel(
             info = state[8] as StringResource?,
             error = state[9] as Exception?,
             user = state[10] as User?,
+            halloween = state[11] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

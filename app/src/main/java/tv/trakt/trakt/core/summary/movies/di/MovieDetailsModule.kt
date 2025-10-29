@@ -138,6 +138,7 @@ internal val movieDetailsModule = module {
             removeListItemUseCase = get(),
             userWatchlistLocalSource = get(),
             movieDetailsUpdates = get(),
+            halloweenUseCase = get(),
             sessionManager = get(),
         )
     }
