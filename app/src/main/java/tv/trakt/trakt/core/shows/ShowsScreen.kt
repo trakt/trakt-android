@@ -131,7 +131,7 @@ private fun ShowsScreenContent(
             item {
                 ShowsTrendingView(
                     viewModel = koinViewModel(
-                        parameters = { parametersOf(halloween) }
+                        parameters = { parametersOf(halloween) },
                     ),
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
@@ -143,7 +143,7 @@ private fun ShowsScreenContent(
             item {
                 ShowsAnticipatedView(
                     viewModel = koinViewModel(
-                        parameters = { parametersOf(halloween) }
+                        parameters = { parametersOf(halloween) },
                     ),
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
@@ -155,7 +155,7 @@ private fun ShowsScreenContent(
             item {
                 ShowsPopularView(
                     viewModel = koinViewModel(
-                        parameters = { parametersOf(halloween) }
+                        parameters = { parametersOf(halloween) },
                     ),
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
@@ -168,7 +168,7 @@ private fun ShowsScreenContent(
                 item {
                     ShowsRecommendedView(
                         viewModel = koinViewModel(
-                            parameters = { parametersOf(halloween) }
+                            parameters = { parametersOf(halloween) },
                         ),
                         headerPadding = sectionPadding,
                         contentPadding = sectionPadding,

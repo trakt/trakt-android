@@ -73,7 +73,7 @@ internal val showsDataModule = module {
 
 internal val showsModule = module {
     factory<GetTrendingShowsUseCase>(
-        qualifier = named("defaultTrendingShowsUseCase")
+        qualifier = named("defaultTrendingShowsUseCase"),
     ) {
         DefaultGetTrendingShowsUseCase(
             remoteSource = get(),
@@ -83,7 +83,7 @@ internal val showsModule = module {
     }
 
     factory<GetTrendingShowsUseCase>(
-        qualifier = named("halloweenTrendingShowsUseCase")
+        qualifier = named("halloweenTrendingShowsUseCase"),
     ) {
         HalloweenGetTrendingShowsUseCase(
             remoteSource = get(),
@@ -93,7 +93,7 @@ internal val showsModule = module {
     }
 
     factory<GetPopularShowsUseCase>(
-        qualifier = named("defaultPopularShowsUseCase")
+        qualifier = named("defaultPopularShowsUseCase"),
     ) {
         DefaultGetPopularShowsUseCase(
             remoteSource = get(),
@@ -103,7 +103,7 @@ internal val showsModule = module {
     }
 
     factory<GetPopularShowsUseCase>(
-        qualifier = named("halloweenPopularShowsUseCase")
+        qualifier = named("halloweenPopularShowsUseCase"),
     ) {
         HalloweenGetPopularShowsUseCase(
             remoteSource = get(),
@@ -113,7 +113,7 @@ internal val showsModule = module {
     }
 
     factory<GetAnticipatedShowsUseCase>(
-        qualifier = named("defaultAnticipatedShowsUseCase")
+        qualifier = named("defaultAnticipatedShowsUseCase"),
     ) {
         DefaultGetAnticipatedShowsUseCase(
             remoteSource = get(),
@@ -123,7 +123,7 @@ internal val showsModule = module {
     }
 
     factory<GetAnticipatedShowsUseCase>(
-        qualifier = named("halloweenAnticipatedShowsUseCase")
+        qualifier = named("halloweenAnticipatedShowsUseCase"),
     ) {
         HalloweenGetAnticipatedShowsUseCase(
             remoteSource = get(),
@@ -133,7 +133,7 @@ internal val showsModule = module {
     }
 
     factory<GetRecommendedShowsUseCase>(
-        qualifier = named("defaultRecommendedShowsUseCase")
+        qualifier = named("defaultRecommendedShowsUseCase"),
     ) {
         DefaultGetRecommendedShowsUseCase(
             remoteSource = get(),
@@ -143,7 +143,7 @@ internal val showsModule = module {
     }
 
     factory<GetRecommendedShowsUseCase>(
-        qualifier = named("halloweenRecommendedShowsUseCase")
+        qualifier = named("halloweenRecommendedShowsUseCase"),
     ) {
         HalloweenGetRecommendedShowsUseCase(
             remoteSource = get(),
