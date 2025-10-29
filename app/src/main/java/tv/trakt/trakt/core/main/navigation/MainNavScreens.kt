@@ -60,7 +60,6 @@ import tv.trakt.trakt.core.summary.shows.navigation.showDetailsScreen
 internal fun NavGraphBuilder.homeScreens(
     controller: NavHostController,
     userLoading: Boolean,
-    onHalloweenCheck: (Boolean) -> Unit,
 ) {
     with(controller) {
         homeScreen(
@@ -77,7 +76,6 @@ internal fun NavGraphBuilder.homeScreens(
             onNavigateToAllPersonal = { navigateToAllActivityPersonal() },
             onNavigateToAllSocial = { navigateToAllActivitySocial() },
             onNavigateToAllWatchlist = { navigateToHomeWatchlist() },
-            onHalloweenCheck = onHalloweenCheck,
         )
 
         homeUpNextScreen(

@@ -14,7 +14,9 @@ class FirebaseConfig {
         const val MOBILE_HEADER_NEWS_2 = "mobile_header_news_2"
         const val MOBILE_HEADER_NEWS_URL = "mobile_header_news_url"
 
-        const val MOBILE_HALLOWEEN_THEME = "mobile_halloween_theme"
+        const val MOBILE_HALLOWEEN_ENABLED = "mobile_halloween_enabled"
+        const val MOBILE_HALLOWEEN_HEADER = "mobile_halloween_header"
+        const val MOBILE_HALLOWEEN_SUBHEADER = "mobile_halloween_subheader"
 
         const val BACKGROUND_IMAGE_URL = "background_image_url"
     }

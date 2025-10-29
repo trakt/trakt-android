@@ -39,7 +39,6 @@ internal val mainModule = module {
             getUserUseCase = get(),
             logoutUserUseCase = get(),
             dismissWelcomeUseCase = get(),
-            halloweenUseCase = get(),
         )
     }
 

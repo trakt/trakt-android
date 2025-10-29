@@ -1,17 +1,14 @@
 package tv.trakt.trakt.core.main
 
-import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jakewharton.processphoenix.ProcessPhoenix
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -33,7 +30,6 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.auth.usecase.AuthorizeUserUseCase
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
-import tv.trakt.trakt.core.main.usecases.HalloweenUseCase
 import tv.trakt.trakt.core.user.usecases.GetUserProfileUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
@@ -51,7 +47,6 @@ internal class MainViewModel(
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val loadUserWatchlistUseCase: LoadUserWatchlistUseCase,
     private val dismissWelcomeUseCase: DismissWelcomeUseCase,
-    private val halloweenUseCase: HalloweenUseCase,
 ) : ViewModel() {
     private val initialState = MainState()
 
@@ -164,17 +159,6 @@ internal class MainViewModel(
         viewModelScope.launch {
             welcomeState.update { false }
             dismissWelcomeUseCase.dismissWelcome()
-        }
-    }
-
-    fun toggleHalloween(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        viewModelScope.launch {
-            halloweenUseCase.toggleHalloween(enabled)
-            delay(200)
-            ProcessPhoenix.triggerRebirth(context.applicationContext)
         }
     }
 

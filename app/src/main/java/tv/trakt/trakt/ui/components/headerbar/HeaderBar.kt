@@ -1,5 +1,6 @@
 package tv.trakt.trakt.ui.components.headerbar
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -28,11 +29,14 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalUriHandler
@@ -45,15 +49,17 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
+import com.jakewharton.processphoenix.ProcessPhoenix
+import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HEADER_NEWS_1
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HEADER_NEWS_2
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HEADER_NEWS_ENABLED
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HEADER_NEWS_URL
 import tv.trakt.trakt.common.helpers.GreetingQuotes
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
+import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Orange100
-import tv.trakt.trakt.common.ui.theme.colors.Orange300
 import tv.trakt.trakt.common.ui.theme.colors.Orange500
 import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.resources.R
@@ -80,11 +86,9 @@ internal fun HeaderBar(
     userAvatar: String? = null,
     userVip: Boolean = false,
     userLoading: Boolean = false,
-    halloweenVisible: Boolean = false,
-    halloweenEnabled: Boolean = false,
-    onHalloweenCheck: (Boolean) -> Unit = {},
     onProfileClick: () -> Unit = {},
 ) {
+    val localActivity = LocalActivity.current
     val localMode = LocalInspectionMode.current
     val uriHandler = LocalUriHandler.current
 
@@ -114,6 +118,10 @@ internal fun HeaderBar(
                 newsUrl = remoteConfig.getString(MOBILE_HEADER_NEWS_URL),
             )
         }
+    }
+
+    val halloween = remember {
+        (localActivity as? MainActivity)?.halloweenConfig
     }
 
     Box(
@@ -157,6 +165,10 @@ internal fun HeaderBar(
                         news.newsUrl.isNotBlank()
                     }
 
+                    val isHalloweenHeader = remember(halloween) {
+                        halloween?.enabled == true && halloween.visible
+                    }
+
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = spacedBy(2.dp),
@@ -172,11 +184,15 @@ internal fun HeaderBar(
                                     }
                                 },
                         ) {
+                            val todayQuote = remember(nowUtc().dayOfYear) {
+                                GreetingQuotes.getTodayQuote()
+                            }
                             Text(
                                 text = when {
+                                    isHalloweenHeader -> halloween?.header ?: todayQuote
                                     isNewsHeader -> news.news1
                                     !title.isNullOrBlank() -> title
-                                    else -> GreetingQuotes.getTodayQuote()
+                                    else -> todayQuote
                                 },
                                 color = TraktTheme.colors.textPrimary,
                                 style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
@@ -185,6 +201,7 @@ internal fun HeaderBar(
                             )
                             Text(
                                 text = when {
+                                    isHalloweenHeader -> halloween?.subheader ?: todayLabel
                                     isNewsHeader -> news.news2
                                     else -> todayLabel
                                 },
@@ -202,13 +219,21 @@ internal fun HeaderBar(
                 showProfile -> {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = spacedBy(8.dp),
+                        horizontalArrangement = spacedBy(12.dp),
                         modifier = Modifier.height(contentHeight),
                     ) {
-                        if (halloweenVisible) {
+                        if (halloween?.visible == true) {
+                            var isChecked by remember {
+                                mutableStateOf(halloween.enabled)
+                            }
+
                             Switch(
-                                checked = halloweenEnabled,
-                                onCheckedChange = onHalloweenCheck,
+                                checked = isChecked,
+                                onCheckedChange = {
+                                    isChecked = it
+                                    (localActivity as? MainActivity)?.toggleHalloween(it)
+                                    ProcessPhoenix.triggerRebirth(localActivity)
+                                },
                                 thumbContent = {
                                     Icon(
                                         painter = painterResource(R.drawable.ic_skull),
@@ -218,12 +243,12 @@ internal fun HeaderBar(
                                 },
                                 colors = SwitchDefaults.colors(
                                     checkedThumbColor = Orange500,
-                                    uncheckedThumbColor = Orange300,
+                                    uncheckedThumbColor = Orange500,
                                     checkedTrackColor = Orange100,
-                                    uncheckedTrackColor = Orange100,
-                                    uncheckedBorderColor = Orange100,
-                                    checkedIconColor = Color.White,
-                                    uncheckedIconColor = Orange100,
+                                    uncheckedTrackColor = White,
+                                    uncheckedBorderColor = White,
+                                    checkedIconColor = White,
+                                    uncheckedIconColor = White,
                                 ),
                             )
                         }
@@ -235,7 +260,7 @@ internal fun HeaderBar(
                         ) {
                             val vipAccent = TraktTheme.colors.vipAccent
                             val borderColor = remember(userVip) {
-                                if (userVip) vipAccent else Color.White
+                                if (userVip) vipAccent else White
                             }
                             if (userAvatar != null) {
                                 AsyncImage(
@@ -295,7 +320,6 @@ private fun Preview2() {
             showVip = true,
             showProfile = true,
             userVip = false,
-            halloweenVisible = true,
         )
     }
 }
