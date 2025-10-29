@@ -22,8 +22,8 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="tv.trakt.trakt.v3" />
-                  <option name="mobileSdkAppId" value="1:213753735103:android:13d79e31e4663aea06230a" />
+                  <option name="appId" value="tv.trakt.trakt" />
+                  <option name="mobileSdkAppId" value="1:213753735103:android:902ce39d8c94b41f06230a" />
                   <option name="projectId" value="trakt-f4bbe" />
                   <option name="projectNumber" value="213753735103" />
                 </ConnectionSetting>

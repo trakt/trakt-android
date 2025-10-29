@@ -10,7 +10,7 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetClass="tv.trakt.trakt.MainActivity"
-            android:targetPackage="tv.trakt.trakt.v3"
+            android:targetPackage="tv.trakt.trakt"
             >
             <extra
                 android:name="shortcutSearchExtra"
@@ -29,7 +29,7 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetClass="tv.trakt.trakt.MainActivity"
-            android:targetPackage="tv.trakt.trakt.v3"
+            android:targetPackage="tv.trakt.trakt"
             >
             <extra
                 android:name="shortcutShowsExtra"
@@ -48,7 +48,7 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetClass="tv.trakt.trakt.MainActivity"
-            android:targetPackage="tv.trakt.trakt.v3"
+            android:targetPackage="tv.trakt.trakt"
             >
             <extra
                 android:name="shortcutMoviesExtra"
@@ -67,7 +67,7 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetClass="tv.trakt.trakt.MainActivity"
-            android:targetPackage="tv.trakt.trakt.v3"
+            android:targetPackage="tv.trakt.trakt"
             >
             <extra
                 android:name="shortcutListsExtra"
