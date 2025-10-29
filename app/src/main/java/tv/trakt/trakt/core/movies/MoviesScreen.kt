@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.movies
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -24,6 +25,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
+import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.movies.sections.anticipated.MoviesAnticipatedView
@@ -46,10 +50,16 @@ internal fun MoviesScreen(
     onNavigateToAllAnticipated: () -> Unit,
     onNavigateToAllRecommended: () -> Unit,
 ) {
+    val localActivity = LocalActivity.current
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    val isHalloween = remember {
+        (localActivity as? MainActivity)?.halloweenConfig?.enabled == true
+    }
 
     MoviesScreenContent(
         state = state,
+        halloween = isHalloween,
         onMovieClick = onNavigateToMovie,
         onProfileClick = onNavigateToProfile,
         onMoreTrendingClick = onNavigateToAllTrending,
@@ -62,6 +72,7 @@ internal fun MoviesScreen(
 @Composable
 private fun MoviesScreenContent(
     state: MoviesState,
+    halloween: Boolean,
     modifier: Modifier = Modifier,
     onMovieClick: (TraktId) -> Unit = {},
     onProfileClick: () -> Unit = {},
@@ -121,6 +132,9 @@ private fun MoviesScreenContent(
         ) {
             item {
                 MoviesTrendingView(
+                    viewModel = koinViewModel(
+                        parameters = { parametersOf(halloween) },
+                    ),
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     onMovieClick = onMovieClick,
@@ -130,6 +144,9 @@ private fun MoviesScreenContent(
 
             item {
                 MoviesAnticipatedView(
+                    viewModel = koinViewModel(
+                        parameters = { parametersOf(halloween) },
+                    ),
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     onMovieClick = onMovieClick,
@@ -139,6 +156,9 @@ private fun MoviesScreenContent(
 
             item {
                 MoviesPopularView(
+                    viewModel = koinViewModel(
+                        parameters = { parametersOf(halloween) },
+                    ),
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     onMovieClick = onMovieClick,
@@ -149,6 +169,9 @@ private fun MoviesScreenContent(
             if (state.user.isAuthenticated) {
                 item {
                     MoviesRecommendedView(
+                        viewModel = koinViewModel(
+                            parameters = { parametersOf(halloween) },
+                        ),
                         headerPadding = sectionPadding,
                         contentPadding = sectionPadding,
                         onMovieClick = onMovieClick,
@@ -204,6 +227,7 @@ private fun Preview() {
     TraktTheme {
         MoviesScreenContent(
             state = MoviesState(),
+            halloween = false,
             onMovieClick = {},
         )
     }

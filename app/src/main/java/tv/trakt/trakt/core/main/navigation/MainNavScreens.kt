@@ -204,7 +204,10 @@ internal fun NavGraphBuilder.episodesScreens(controller: NavHostController) {
     }
 }
 
-internal fun NavGraphBuilder.moviesScreens(controller: NavHostController) {
+internal fun NavGraphBuilder.moviesScreens(
+    context: Context?,
+    controller: NavHostController,
+) {
     with(controller) {
         moviesScreen(
             onNavigateToProfile = { navigateToProfile() },
@@ -215,18 +218,22 @@ internal fun NavGraphBuilder.moviesScreens(controller: NavHostController) {
             onNavigateToAllRecommended = { navigateToRecommendedMovies() },
         )
         moviesTrendingScreen(
+            context = context,
             onNavigateBack = { popBackStack() },
             onNavigateToMovie = { navigateToMovie(it) },
         )
         moviesPopularScreen(
+            context = context,
             onNavigateBack = { popBackStack() },
             onNavigateToMovie = { navigateToMovie(it) },
         )
         moviesAnticipatedScreen(
+            context = context,
             onNavigateBack = { popBackStack() },
             onNavigateToMovie = { navigateToMovie(it) },
         )
         moviesRecommendedScreen(
+            context = context,
             onNavigateBack = { popBackStack() },
             onNavigateToMovie = { navigateToMovie(it) },
         )

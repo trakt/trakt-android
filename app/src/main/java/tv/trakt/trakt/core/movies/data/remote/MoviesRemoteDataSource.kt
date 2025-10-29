@@ -18,20 +18,32 @@ internal interface MoviesRemoteDataSource {
     suspend fun getTrending(
         page: Int = 1,
         limit: Int,
+        genres: List<String>? = null,
+        subgenres: List<String>? = null,
+        years: String? = null,
     ): List<TrendingMovieDto>
 
     suspend fun getPopular(
         page: Int = 1,
         limit: Int,
-        years: Int,
+        years: String? = null,
+        genres: List<String>? = null,
+        subgenres: List<String>? = null,
     ): List<MovieDto>
 
-    suspend fun getRecommended(limit: Int): List<RecommendedMovieDto>
+    suspend fun getRecommended(
+        limit: Int,
+        genres: List<String>? = null,
+        subgenres: List<String>? = null,
+    ): List<RecommendedMovieDto>
 
     suspend fun getAnticipated(
         page: Int = 1,
         limit: Int,
-        endDate: Instant,
+        endDate: Instant? = null,
+        genres: List<String>? = null,
+        subgenres: List<String>? = null,
+        years: String? = null,
     ): List<AnticipatedMovieDto>
 
     suspend fun getDetails(movieId: TraktId): MovieDto

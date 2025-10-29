@@ -91,7 +91,7 @@ internal class MainViewModel(
 
                 val (authenticated, dismissed) = awaitAll(
                     authenticatedAsync,
-                    welcomeDismissedAsync
+                    welcomeDismissedAsync,
                 )
 
                 !authenticated && !dismissed

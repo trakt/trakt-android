@@ -24,14 +24,18 @@ internal class MoviesApiClient(
     override suspend fun getTrending(
         page: Int,
         limit: Int,
+        genres: List<String>?,
+        subgenres: List<String>?,
+        years: String?,
     ): List<TrendingMovieDto> {
         val response = moviesApi.getMoviesTrending(
             extended = "full,streaming_ids,cloud9,colors",
             page = page,
             limit = limit,
             watchnow = null,
-            genres = null,
-            years = null,
+            subgenres = subgenres?.joinToString(","),
+            genres = genres?.joinToString(","),
+            years = years,
             ratings = null,
             ignoreWatched = null,
             ignoreCollected = null,
@@ -52,15 +56,18 @@ internal class MoviesApiClient(
     override suspend fun getPopular(
         page: Int,
         limit: Int,
-        years: Int,
+        years: String?,
+        genres: List<String>?,
+        subgenres: List<String>?,
     ): List<MovieDto> {
         val response = moviesApi.getMoviesPopular(
             extended = "full,streaming_ids,cloud9,colors",
             page = page,
             limit = limit,
-            years = years.toString(),
+            years = years,
             watchnow = null,
-            genres = null,
+            subgenres = subgenres?.joinToString(","),
+            genres = genres?.joinToString(","),
             ratings = null,
             ignoreWatched = null,
             ignoreCollected = null,
@@ -72,7 +79,11 @@ internal class MoviesApiClient(
         return response.body()
     }
 
-    override suspend fun getRecommended(limit: Int): List<RecommendedMovieDto> {
+    override suspend fun getRecommended(
+        limit: Int,
+        genres: List<String>?,
+        subgenres: List<String>?,
+    ): List<RecommendedMovieDto> {
         val response = recommendationsApi.getRecommendationsMoviesRecommend(
             extended = "full,streaming_ids,cloud9,colors",
             limit = limit,
@@ -81,7 +92,8 @@ internal class MoviesApiClient(
             ignoreCollected = true,
             watchWindow = 25,
             watchnow = null,
-            genres = null,
+            subgenres = subgenres?.joinToString(","),
+            genres = genres?.joinToString(","),
             years = null,
             ratings = null,
             startDate = null,
@@ -94,21 +106,25 @@ internal class MoviesApiClient(
     override suspend fun getAnticipated(
         page: Int,
         limit: Int,
-        endDate: Instant,
+        endDate: Instant?,
+        genres: List<String>?,
+        subgenres: List<String>?,
+        years: String?,
     ): List<AnticipatedMovieDto> {
         val response = moviesApi.getMoviesAnticipated(
             extended = "full,streaming_ids,cloud9,colors",
             page = page,
             limit = limit,
             watchnow = null,
-            genres = null,
-            years = null,
+            subgenres = subgenres?.joinToString(","),
+            genres = genres?.joinToString(","),
+            years = years,
             ratings = null,
             ignoreWatched = null,
             ignoreCollected = null,
             ignoreWatchlisted = null,
             startDate = null,
-            endDate = endDate.toString(),
+            endDate = endDate?.toString(),
         )
 
         return response.body()

@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.movies.di
 
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.movies.MoviesViewModel
@@ -11,21 +12,29 @@ import tv.trakt.trakt.core.movies.sections.anticipated.all.AllMoviesAnticipatedV
 import tv.trakt.trakt.core.movies.sections.anticipated.data.local.AnticipatedMoviesLocalDataSource
 import tv.trakt.trakt.core.movies.sections.anticipated.data.local.AnticipatedMoviesStorage
 import tv.trakt.trakt.core.movies.sections.anticipated.usecase.GetAnticipatedMoviesUseCase
+import tv.trakt.trakt.core.movies.sections.anticipated.usecase.anticipated.DefaultGetAnticipatedMoviesUseCase
+import tv.trakt.trakt.core.movies.sections.anticipated.usecase.anticipated.HalloweenGetAnticipatedMoviesUseCase
 import tv.trakt.trakt.core.movies.sections.popular.MoviesPopularViewModel
 import tv.trakt.trakt.core.movies.sections.popular.all.AllMoviesPopularViewModel
 import tv.trakt.trakt.core.movies.sections.popular.data.local.PopularMoviesLocalDataSource
 import tv.trakt.trakt.core.movies.sections.popular.data.local.PopularMoviesStorage
 import tv.trakt.trakt.core.movies.sections.popular.usecase.GetPopularMoviesUseCase
+import tv.trakt.trakt.core.movies.sections.popular.usecase.popular.DefaultGetPopularMoviesUseCase
+import tv.trakt.trakt.core.movies.sections.popular.usecase.popular.HalloweenGetPopularMoviesUseCase
 import tv.trakt.trakt.core.movies.sections.recommended.MoviesRecommendedViewModel
 import tv.trakt.trakt.core.movies.sections.recommended.all.AllMoviesRecommendedViewModel
 import tv.trakt.trakt.core.movies.sections.recommended.data.local.RecommendedMoviesLocalDataSource
 import tv.trakt.trakt.core.movies.sections.recommended.data.local.RecommendedMoviesStorage
 import tv.trakt.trakt.core.movies.sections.recommended.usecase.GetRecommendedMoviesUseCase
+import tv.trakt.trakt.core.movies.sections.recommended.usecase.recommended.DefaultGetRecommendedMoviesUseCase
+import tv.trakt.trakt.core.movies.sections.recommended.usecase.recommended.HalloweenGetRecommendedMoviesUseCase
 import tv.trakt.trakt.core.movies.sections.trending.MoviesTrendingViewModel
 import tv.trakt.trakt.core.movies.sections.trending.all.AllMoviesTrendingViewModel
 import tv.trakt.trakt.core.movies.sections.trending.data.local.TrendingMoviesLocalDataSource
 import tv.trakt.trakt.core.movies.sections.trending.data.local.TrendingMoviesStorage
 import tv.trakt.trakt.core.movies.sections.trending.usecase.GetTrendingMoviesUseCase
+import tv.trakt.trakt.core.movies.sections.trending.usecase.trending.DefaultGetTrendingMoviesUseCase
+import tv.trakt.trakt.core.movies.sections.trending.usecase.trending.HalloweenGetTrendingMoviesUseCase
 import tv.trakt.trakt.core.movies.ui.context.MovieContextViewModel
 
 internal val moviesDataModule = module {
@@ -55,32 +64,80 @@ internal val moviesDataModule = module {
 }
 
 internal val moviesModule = module {
-    factory {
-        GetTrendingMoviesUseCase(
+    factory<GetTrendingMoviesUseCase>(
+        qualifier = named("defaultTrendingMoviesUseCase"),
+    ) {
+        DefaultGetTrendingMoviesUseCase(
             remoteSource = get(),
             localTrendingSource = get(),
             localMovieSource = get(),
         )
     }
 
-    factory {
-        GetPopularMoviesUseCase(
+    factory<GetTrendingMoviesUseCase>(
+        qualifier = named("halloweenTrendingMoviesUseCase"),
+    ) {
+        HalloweenGetTrendingMoviesUseCase(
+            remoteSource = get(),
+            localTrendingSource = get(),
+            localMovieSource = get(),
+        )
+    }
+
+    factory<GetPopularMoviesUseCase>(
+        qualifier = named("defaultPopularMoviesUseCase"),
+    ) {
+        DefaultGetPopularMoviesUseCase(
             remoteSource = get(),
             localPopularSource = get(),
             localMovieSource = get(),
         )
     }
 
-    factory {
-        GetAnticipatedMoviesUseCase(
+    factory<GetPopularMoviesUseCase>(
+        qualifier = named("halloweenPopularMoviesUseCase"),
+    ) {
+        HalloweenGetPopularMoviesUseCase(
+            remoteSource = get(),
+            localPopularSource = get(),
+            localMovieSource = get(),
+        )
+    }
+
+    factory<GetAnticipatedMoviesUseCase>(
+        qualifier = named("defaultAnticipatedMoviesUseCase"),
+    ) {
+        DefaultGetAnticipatedMoviesUseCase(
             remoteSource = get(),
             localAnticipatedSource = get(),
             localMovieSource = get(),
         )
     }
 
-    factory {
-        GetRecommendedMoviesUseCase(
+    factory<GetAnticipatedMoviesUseCase>(
+        qualifier = named("halloweenAnticipatedMoviesUseCase"),
+    ) {
+        HalloweenGetAnticipatedMoviesUseCase(
+            remoteSource = get(),
+            localAnticipatedSource = get(),
+            localMovieSource = get(),
+        )
+    }
+
+    factory<GetRecommendedMoviesUseCase>(
+        qualifier = named("defaultRecommendedMoviesUseCase"),
+    ) {
+        DefaultGetRecommendedMoviesUseCase(
+            remoteSource = get(),
+            localRecommendedSource = get(),
+            localMovieSource = get(),
+        )
+    }
+
+    factory<GetRecommendedMoviesUseCase>(
+        qualifier = named("halloweenRecommendedMoviesUseCase"),
+    ) {
+        HalloweenGetRecommendedMoviesUseCase(
             remoteSource = get(),
             localRecommendedSource = get(),
             localMovieSource = get(),
@@ -93,57 +150,75 @@ internal val moviesModule = module {
         )
     }
 
-    viewModel {
+    viewModel { (halloween: Boolean) ->
         MoviesTrendingViewModel(
-            getTrendingUseCase = get(),
+            getTrendingUseCase = when {
+                halloween -> get(named("halloweenTrendingMoviesUseCase"))
+                else -> get(named("defaultTrendingMoviesUseCase"))
+            },
         )
     }
 
-    viewModel {
+    viewModel { (halloween: Boolean) ->
         AllMoviesTrendingViewModel(
-            getTrendingUseCase = get(),
+            getTrendingUseCase = when {
+                halloween -> get(named("halloweenTrendingMoviesUseCase"))
+                else -> get(named("defaultTrendingMoviesUseCase"))
+            },
         )
     }
 
-    viewModel {
-        AllMoviesAnticipatedViewModel(
-            getAnticipatedUseCase = get(),
-        )
-    }
-
-    viewModel {
+    viewModel { (halloween: Boolean) ->
         MoviesAnticipatedViewModel(
-            getAnticipatedUseCase = get(),
+            getAnticipatedUseCase = when {
+                halloween -> get(named("halloweenAnticipatedMoviesUseCase"))
+                else -> get(named("defaultAnticipatedMoviesUseCase"))
+            },
         )
     }
 
-    viewModel {
+    viewModel { (halloween: Boolean) ->
         AllMoviesAnticipatedViewModel(
-            getAnticipatedUseCase = get(),
+            getAnticipatedUseCase = when {
+                halloween -> get(named("halloweenAnticipatedMoviesUseCase"))
+                else -> get(named("defaultAnticipatedMoviesUseCase"))
+            },
         )
     }
 
-    viewModel {
+    viewModel { (halloween: Boolean) ->
         MoviesRecommendedViewModel(
-            getRecommendedUseCase = get(),
+            getRecommendedUseCase = when {
+                halloween -> get(named("halloweenRecommendedMoviesUseCase"))
+                else -> get(named("defaultRecommendedMoviesUseCase"))
+            },
         )
     }
 
-    viewModel {
+    viewModel { (halloween: Boolean) ->
         AllMoviesRecommendedViewModel(
-            getRecommendedUseCase = get(),
+            getRecommendedUseCase = when {
+                halloween -> get(named("halloweenRecommendedMoviesUseCase"))
+                else -> get(named("defaultRecommendedMoviesUseCase"))
+            },
         )
     }
 
-    viewModel {
+    viewModel { (halloween: Boolean) ->
         MoviesPopularViewModel(
-            getPopularUseCase = get(),
+            getPopularUseCase = when {
+                halloween -> get(named("halloweenPopularMoviesUseCase"))
+                else -> get(named("defaultPopularMoviesUseCase"))
+            },
         )
     }
 
-    viewModel {
+    viewModel { (halloween: Boolean) ->
         AllMoviesPopularViewModel(
-            getPopularUseCase = get(),
+            getPopularUseCase = when {
+                halloween -> get(named("halloweenPopularMoviesUseCase"))
+                else -> get(named("defaultPopularMoviesUseCase"))
+            },
         )
     }
 

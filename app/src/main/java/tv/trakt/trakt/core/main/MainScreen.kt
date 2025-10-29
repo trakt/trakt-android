@@ -231,8 +231,8 @@ private fun MainNavHost(
             userLoading = userLoading,
         )
         showsScreens(localActivity, navController)
+        moviesScreens(localActivity, navController)
         episodesScreens(navController)
-        moviesScreens(navController)
         listsScreens(navController)
         profileScreens(navController)
         commentsScreens(navController)
