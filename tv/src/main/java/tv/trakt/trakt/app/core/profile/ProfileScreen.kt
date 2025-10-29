@@ -29,13 +29,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -43,7 +41,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
@@ -299,28 +296,6 @@ private fun ProfileAvatar(
                     .fillMaxSize()
                     .border((2.5).dp, borderColor, CircleShape)
                     .clip(CircleShape),
-            )
-        }
-
-        if (profile?.isAnyVip == true) {
-            Icon(
-                painter = painterResource(R.drawable.ic_crown),
-                contentDescription = null,
-                tint = Color.White,
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .graphicsLayer {
-                        val offset = 5.dp
-                        translationX = offset.toPx()
-                        translationY = -offset.toPx()
-                    }
-                    .shadow(
-                        elevation = 1.dp,
-                        shape = CircleShape,
-                    )
-                    .background(Color.Red, shape = CircleShape)
-                    .size(20.dp)
-                    .padding(bottom = (3.5).dp, top = 3.dp),
             )
         }
     }

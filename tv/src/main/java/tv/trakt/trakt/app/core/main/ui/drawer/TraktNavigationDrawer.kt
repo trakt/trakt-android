@@ -29,13 +29,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Start
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -328,28 +326,6 @@ private fun NavigationProfileItem(
                         modifier = Modifier
                             .border(2.dp, borderColor, CircleShape)
                             .clip(CircleShape),
-                    )
-                }
-
-                if (profile.isAnyVip) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_crown),
-                        contentDescription = null,
-                        tint = Color.White,
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .graphicsLayer {
-                                val offset = 4.dp
-                                translationX = offset.toPx()
-                                translationY = -offset.toPx()
-                            }
-                            .shadow(
-                                elevation = 1.dp,
-                                shape = CircleShape,
-                            )
-                            .background(Color.Red, shape = CircleShape)
-                            .size(16.dp)
-                            .padding(bottom = (3.5).dp, top = 3.dp),
                     )
                 }
             }
