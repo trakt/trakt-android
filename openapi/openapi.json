@@ -3844,6 +3844,15 @@
                           }
                         },
                         "nullable": true
+                      },
+                      "dark_knight": {
+                        "type": "string",
+                        "enum": [
+                          "true",
+                          "false",
+                          "auto"
+                        ],
+                        "nullable": true
                       }
                     },
                     "nullable": true
@@ -5629,6 +5638,60 @@
           }
         },
         "operationId": "putUsersAvatar"
+      }
+    },
+    "/users/set_cover": {
+      "put": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "cover_type": {
+                    "type": "string",
+                    "enum": [
+                      "movie",
+                      "show",
+                      "episode"
+                    ]
+                  },
+                  "cover_id": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "cover_type",
+                  "cover_id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "204",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "operationId": "putUsersCover"
       }
     },
     "/users/{id}/": {
@@ -36372,6 +36435,19 @@
               "type": "integer",
               "nullable": true
             }
+          },
+          {
+            "name": "intent",
+            "in": "query",
+            "description": "To get shows a user is just starting, continuing, or all shows.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "all",
+                "continue",
+                "start"
+              ]
+            }
           }
         ],
         "responses": {
@@ -36962,6 +37038,352 @@
           }
         },
         "operationId": "getSyncProgressUpNextNitro"
+      }
+    },
+    "/sync/playback/movies": {
+      "get": {
+        "tags": [
+          "sync",
+          "progress"
+        ],
+        "parameters": [
+          {
+            "name": "extended",
+            "in": "query",
+            "description": "Extended information to include in the response.",
+            "schema": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page number to retrieve",
+            "schema": {
+              "type": "integer",
+              "nullable": true
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of items per page",
+            "schema": {
+              "type": "integer",
+              "nullable": true
+            }
+          },
+          {
+            "name": "start_at",
+            "in": "query",
+            "description": "Start date for the range. Must be formatted as \"YYYY-MM-DD\".",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "end_at",
+            "in": "query",
+            "description": "End date for the range. Must be formatted as \"YYYY-MM-DD\".",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "progress": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 100
+                      },
+                      "paused_at": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "number",
+                        "format": "int64"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "movie"
+                        ]
+                      },
+                      "movie": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string"
+                          },
+                          "year": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "slug": {
+                                "type": "string"
+                              },
+                              "imdb": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "tmdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "plex": {
+                                "type": "object",
+                                "properties": {
+                                  "guid": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "slug": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "trakt",
+                              "slug"
+                            ]
+                          },
+                          "images": {
+                            "type": "object",
+                            "properties": {
+                              "fanart": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "poster": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "logo": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "clearart": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "banner": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "thumb": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "fanart",
+                              "poster",
+                              "logo",
+                              "clearart",
+                              "banner",
+                              "thumb"
+                            ],
+                            "nullable": true
+                          },
+                          "tagline": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "overview": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "released": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "country": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "rating": {
+                            "type": "number",
+                            "format": "float",
+                            "nullable": true
+                          },
+                          "votes": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "comment_count": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "trailer": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "homepage": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "language": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "languages": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "available_translations": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "genres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "certification": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "original_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "after_credits": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "during_credits": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "colors": {
+                            "type": "object",
+                            "properties": {
+                              "poster": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "title",
+                          "ids"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "progress",
+                      "paused_at",
+                      "id",
+                      "type",
+                      "movie"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getSyncProgressMovies"
+      }
+    },
+    "/sync/playback/{id}": {
+      "delete": {
+        "tags": [
+          "sync",
+          "progress",
+          "drop"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "ID of the playback entry"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "204",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "operationId": "deleteSyncProgressDropMovie"
       }
     },
     "/sync/watchlist": {

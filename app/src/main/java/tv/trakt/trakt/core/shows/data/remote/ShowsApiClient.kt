@@ -58,6 +58,7 @@ internal class ShowsApiClient(
             limit = limit,
             watchnow = null,
             genres = null,
+            subgenres = null,
             years = null,
             ratings = null,
             page = null,
