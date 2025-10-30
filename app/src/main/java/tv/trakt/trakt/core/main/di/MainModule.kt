@@ -20,7 +20,9 @@ import org.koin.dsl.module
 import tv.trakt.trakt.BuildConfig
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.implementation.DebugAnalytics
+import tv.trakt.trakt.analytics.implementation.DebugAnalyticsReactions
 import tv.trakt.trakt.analytics.implementation.FirebaseAnalytics
+import tv.trakt.trakt.analytics.implementation.FirebaseAnalyticsReactions
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
 import tv.trakt.trakt.core.main.MainViewModel
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
@@ -37,10 +39,16 @@ internal val mainModule = module {
 
     single<Analytics> {
         if (BuildConfig.DEBUG) {
-            DebugAnalytics()
+            DebugAnalytics(
+                reactions = DebugAnalyticsReactions(),
+            )
         } else {
+            val firebaseAnalytics = Firebase.analytics
             FirebaseAnalytics(
-                firebase = Firebase.analytics,
+                firebase = firebaseAnalytics,
+                reactions = FirebaseAnalyticsReactions(
+                    firebase = firebaseAnalytics,
+                ),
             )
         }
     }

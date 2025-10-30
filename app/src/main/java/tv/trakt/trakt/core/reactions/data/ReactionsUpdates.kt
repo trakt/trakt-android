@@ -12,7 +12,10 @@ internal interface ReactionsUpdates {
     fun observeUpdates(source: Source): Flow<Pair<Int, Instant>>
 
     enum class Source {
-        ALL_COMMENTS,
         COMMENT_DETAILS,
+        ALL_COMMENTS,
+        SHOW_COMMENTS,
+        MOVIE_COMMENTS,
+        EPISODE_COMMENTS,
     }
 }

@@ -279,6 +279,7 @@ internal class ShowCommentsViewModel(
             appContext = appContext,
             commentId = commentId,
             reaction = reaction,
+            source = Source.SHOW_COMMENTS,
         )
     }
 
@@ -290,6 +291,7 @@ internal class ShowCommentsViewModel(
         DeleteReactionWorker.scheduleOneTime(
             appContext = appContext,
             commentId = commentId,
+            source = Source.SHOW_COMMENTS,
         )
     }
 

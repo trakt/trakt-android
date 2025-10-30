@@ -12,6 +12,7 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.core.reactions.data.ReactionsUpdates
@@ -28,6 +29,7 @@ internal class PostReactionWorker(
     val postReactionUseCase: PostCommentReactionUseCase,
     val loadUserReactionsUseCase: LoadUserReactionsUseCase,
     val reactionsUpdates: ReactionsUpdates,
+    val analytics: Analytics,
 ) : CoroutineWorker(appContext, workerParams) {
     companion object {
         fun scheduleOneTime(
@@ -89,6 +91,11 @@ internal class PostReactionWorker(
                     reaction = Reaction.valueOf(
                         reactionValue,
                     ),
+                )
+
+                analytics.reactions.logReactionAdd(
+                    reaction = reactionValue,
+                    source = reactionSource ?: "unknown",
                 )
 
                 loadUserReactionsUseCase.loadReactions()

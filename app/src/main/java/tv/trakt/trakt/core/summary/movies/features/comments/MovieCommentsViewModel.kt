@@ -279,6 +279,7 @@ internal class MovieCommentsViewModel(
             appContext = appContext,
             commentId = commentId,
             reaction = reaction,
+            source = Source.MOVIE_COMMENTS,
         )
     }
 
@@ -290,6 +291,7 @@ internal class MovieCommentsViewModel(
         DeleteReactionWorker.scheduleOneTime(
             appContext = appContext,
             commentId = commentId,
+            source = Source.MOVIE_COMMENTS,
         )
     }
 

@@ -12,6 +12,7 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.core.reactions.data.ReactionsUpdates
 import tv.trakt.trakt.core.reactions.usecases.DeleteCommentReactionUseCase
@@ -27,6 +28,7 @@ internal class DeleteReactionWorker(
     val deleteReactionsUseCase: DeleteCommentReactionUseCase,
     val loadUserReactionsUseCase: LoadUserReactionsUseCase,
     val reactionsUpdates: ReactionsUpdates,
+    val analytics: Analytics,
 ) : CoroutineWorker(appContext, workerParams) {
     companion object {
         fun scheduleOneTime(
@@ -76,6 +78,10 @@ internal class DeleteReactionWorker(
             withContext(Dispatchers.IO) {
                 deleteReactionsUseCase.deleteReactions(
                     commentId = inputData.getInt("commentId", -1),
+                )
+
+                analytics.reactions.logReactionRemove(
+                    source = reactionSource ?: "unknown",
                 )
 
                 loadUserReactionsUseCase.loadReactions()

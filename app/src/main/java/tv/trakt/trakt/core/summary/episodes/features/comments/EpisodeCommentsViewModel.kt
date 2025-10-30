@@ -282,6 +282,7 @@ internal class EpisodeCommentsViewModel(
             appContext = appContext,
             commentId = commentId,
             reaction = reaction,
+            source = Source.EPISODE_COMMENTS,
         )
     }
 
@@ -293,6 +294,7 @@ internal class EpisodeCommentsViewModel(
         DeleteReactionWorker.scheduleOneTime(
             appContext = appContext,
             commentId = commentId,
+            source = Source.EPISODE_COMMENTS,
         )
     }
 

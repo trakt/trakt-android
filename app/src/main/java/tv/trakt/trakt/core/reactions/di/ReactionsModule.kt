@@ -46,6 +46,7 @@ internal val reactionsModule = module {
             loadUserReactionsUseCase = get(),
             reactionsUpdates = get(),
             sessionManager = get(),
+            analytics = get(),
         )
     }
 
@@ -57,6 +58,7 @@ internal val reactionsModule = module {
             loadUserReactionsUseCase = get(),
             reactionsUpdates = get(),
             sessionManager = get(),
+            analytics = get(),
         )
     }
 }
