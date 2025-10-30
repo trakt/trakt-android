@@ -20,6 +20,16 @@ android {
         buildConfigField("String", "TRAKT_API_SECRET", localProperties.getProperty("TRAKT_API_SECRET"))
     }
 
+    flavorDimensions += "version"
+    productFlavors {
+        create("playstore") {
+            dimension = "version"
+        }
+        create("internal") {
+            dimension = "version"
+        }
+    }
+
     kotlin {
         jvmToolchain(11)
     }

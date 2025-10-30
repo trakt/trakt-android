@@ -4,7 +4,7 @@ platform :android do
   desc "Distribute a new version to me only"
   lane :firebase_distribute_me do
     gradle(
-      task: "assembleRelease"
+      task: "assembleInternalRelease"
     )
 
     # Ensure using mike@trakt.tv for this project
@@ -30,7 +30,7 @@ platform :android do
     )
 
     gradle(
-      task: "assembleRelease"
+      task: "assembleInternalRelease"
     )
 
     # Ensure using mike@trakt.tv for this project

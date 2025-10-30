@@ -17,6 +17,7 @@ android {
 
     defaultConfig {
         applicationId = "tv.trakt.trakt"
+        manifestPlaceholders["applicationName"] = "Trakt"
 
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
@@ -45,14 +46,26 @@ android {
     }
 
     buildTypes {
-        debug {
+        getByName("debug") {
             isMinifyEnabled = false
         }
-        release {
+        getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
             signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+    }
+
+    flavorDimensions += "version"
+    productFlavors {
+        create("playstore") {
+            dimension = "version"
+        }
+        create("internal") {
+            dimension = "version"
+            applicationIdSuffix = ".v3"
+            manifestPlaceholders["applicationName"] = "Trakt Internal"
         }
     }
 
