@@ -316,6 +316,7 @@ private fun ContentListItem(
         cardContent = {
             Row {
                 val runtime = item.progress.nextEpisode.runtime?.inWholeMinutes
+                    ?: item.show.runtime?.inWholeMinutes
 
                 val remainingEpisodes = remember(item.progress.completed, item.progress.aired) {
                     item.progress.remainingEpisodes

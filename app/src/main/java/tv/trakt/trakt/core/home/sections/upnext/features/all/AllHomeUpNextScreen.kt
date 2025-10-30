@@ -291,6 +291,8 @@ private fun ContentListItem(
                 val startString = remember {
                     buildString {
                         val runtime = item.progress.nextEpisode.runtime?.inWholeMinutes
+                            ?: item.show.runtime?.inWholeMinutes
+
                         if (runtime != null) {
                             append(runtime.durationFormat())
                         }
