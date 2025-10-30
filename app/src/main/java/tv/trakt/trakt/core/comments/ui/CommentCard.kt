@@ -147,10 +147,12 @@ private fun CommentCardContent(
                 if (comment.hasSpoilers) {
                     Modifier
                         .blur(4.dp)
-                        .padding(horizontal = 16.dp, vertical = 12.dp)
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 14.dp, bottom = 20.dp)
                 } else {
                     Modifier
-                        .padding(horizontal = 16.dp, vertical = 12.dp)
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 14.dp, bottom = 20.dp)
                 },
             ),
         )

@@ -209,7 +209,7 @@ private fun ContentList(
                     onRequestReactions = { onCommentLoaded?.invoke(comment) },
                     reactionsEnabled = reactionsEnabled,
                     onReactionClick = { onReactionClick?.invoke(it, comment) },
-                    maxLines = 12,
+                    maxLines = Int.MAX_VALUE,
                     corner = 20.dp,
                     onClick = { onCommentClick?.invoke(comment) },
                     modifier = Modifier

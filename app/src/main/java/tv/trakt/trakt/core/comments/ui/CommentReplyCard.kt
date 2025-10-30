@@ -73,7 +73,6 @@ internal fun CommentReplyCard(
     reactions: ReactionsSummary? = null,
     reactionsEnabled: Boolean = true,
     userReaction: Reaction? = null,
-    maxLines: Int = 10,
     onClick: (() -> Unit)? = null,
     onRequestReactions: (() -> Unit)? = null,
     onReactionClick: ((Reaction) -> Unit)? = null,
@@ -96,7 +95,7 @@ internal fun CommentReplyCard(
         content = {
             CommentReplyCardContent(
                 comment = comment,
-                maxLines = maxLines,
+                maxLines = 20,
                 reactions = reactions,
                 reactionsEnabled = reactionsEnabled,
                 userReaction = userReaction,
@@ -132,6 +131,7 @@ private fun CommentReplyCardContent(
     ) {
         CommentHeader(
             comment = comment,
+            onUserClick = onUserClick,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
