@@ -172,7 +172,7 @@ internal fun EpisodeSeasonList(
                                 }
                                 isReleased && item.isCheckable -> {
                                     Icon(
-                                        painter = painterResource(R.drawable.ic_check_round),
+                                        painter = painterResource(R.drawable.ic_check),
                                         contentDescription = null,
                                         tint = TraktTheme.colors.accent,
                                         modifier = Modifier

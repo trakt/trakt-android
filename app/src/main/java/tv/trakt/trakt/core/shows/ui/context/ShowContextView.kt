@@ -223,7 +223,7 @@ private fun ShowActionButtons(
                     iconSize = 22.dp,
                     iconSpace = 16.dp,
                     onClick = onWatchedClick,
-                    icon = painterResource(R.drawable.ic_check_round),
+                    icon = painterResource(R.drawable.ic_check),
                     modifier = Modifier
                         .graphicsLayer {
                             translationX = -6.dp.toPx()

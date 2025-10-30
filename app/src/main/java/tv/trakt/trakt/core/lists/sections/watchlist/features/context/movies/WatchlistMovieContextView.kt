@@ -148,7 +148,7 @@ private fun WatchlistMovieContextViewContent(
                     iconSize = 20.dp,
                     iconSpace = 16.dp,
                     onClick = onAddWatched,
-                    icon = painterResource(R.drawable.ic_check_round),
+                    icon = painterResource(R.drawable.ic_check),
                     modifier = Modifier
                         .graphicsLayer {
                             translationX = -6.dp.toPx()

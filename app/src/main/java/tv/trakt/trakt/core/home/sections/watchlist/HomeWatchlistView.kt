@@ -324,7 +324,7 @@ private fun ContentListItem(
                         FilmProgressIndicator(size = 18.dp)
                     } else {
                         Icon(
-                            painter = painterResource(R.drawable.ic_check_round),
+                            painter = painterResource(R.drawable.ic_check),
                             contentDescription = null,
                             tint = TraktTheme.colors.accent,
                             modifier = Modifier

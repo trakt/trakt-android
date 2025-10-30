@@ -9,5 +9,5 @@ enum class HomeActivityFilter(
     @param:DrawableRes val iconRes: Int,
 ) {
     SOCIAL(R.string.button_text_social, R.drawable.ic_social),
-    PERSONAL(R.string.button_text_personal, R.drawable.ic_check_round),
+    PERSONAL(R.string.button_text_personal, R.drawable.ic_check),
 }
