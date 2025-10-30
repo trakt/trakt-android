@@ -77,7 +77,6 @@ internal class AllPersonalListViewModel(
 
         analytics.logScreenView(
             screenName = "AllPersonalList",
-            screenClass = "AllPersonalListScreen",
         )
     }
 

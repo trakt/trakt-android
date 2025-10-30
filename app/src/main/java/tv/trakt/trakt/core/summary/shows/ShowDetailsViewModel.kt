@@ -105,7 +105,6 @@ internal class ShowDetailsViewModel(
 
         analytics.logScreenView(
             screenName = "ShowDetails",
-            screenClass = "ShowDetailsScreen",
         )
     }
 

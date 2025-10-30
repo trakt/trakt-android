@@ -78,7 +78,6 @@ internal class AllActivityPersonalViewModel(
 
         analytics.logScreenView(
             screenName = "AllActivityPersonal",
-            screenClass = "AllActivityPersonalScreen",
         )
     }
 

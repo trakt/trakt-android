@@ -58,7 +58,6 @@ internal class PersonDetailsViewModel(
 
         analytics.logScreenView(
             screenName = "PersonDetails",
-            screenClass = "PersonDetailsScreen",
         )
     }
 

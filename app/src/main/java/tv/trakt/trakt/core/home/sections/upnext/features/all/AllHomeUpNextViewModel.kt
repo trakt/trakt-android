@@ -80,7 +80,6 @@ internal class AllHomeUpNextViewModel(
 
         analytics.logScreenView(
             screenName = "AllUpNext",
-            screenClass = "AllUpNextScreen",
         )
     }
 

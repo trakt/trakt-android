@@ -91,7 +91,6 @@ internal class MovieDetailsViewModel(
 
         analytics.logScreenView(
             screenName = "MovieDetails",
-            screenClass = "MovieDetailsScreen",
         )
     }
 

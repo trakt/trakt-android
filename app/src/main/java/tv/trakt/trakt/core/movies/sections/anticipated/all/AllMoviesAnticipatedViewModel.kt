@@ -43,7 +43,6 @@ internal class AllMoviesAnticipatedViewModel(
 
         analytics.logScreenView(
             screenName = "AllMoviesAnticipated",
-            screenClass = "AllMoviesAnticipatedScreen",
         )
     }
 

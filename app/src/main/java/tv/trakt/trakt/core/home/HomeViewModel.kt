@@ -35,7 +35,6 @@ internal class HomeViewModel(
 
         analytics.logScreenView(
             screenName = "Home",
-            screenClass = "HomeScreen",
         )
     }
 

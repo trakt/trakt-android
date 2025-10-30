@@ -52,7 +52,6 @@ internal class ProfileViewModel(
 
         analytics.logScreenView(
             screenName = "Profile",
-            screenClass = "ProfileScreen",
         )
     }
 

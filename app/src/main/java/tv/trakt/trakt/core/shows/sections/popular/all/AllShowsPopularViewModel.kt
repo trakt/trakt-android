@@ -42,7 +42,6 @@ internal class AllShowsPopularViewModel(
 
         analytics.logScreenView(
             screenName = "AllShowsPopular",
-            screenClass = "AllShowsPopularScreen",
         )
     }
 

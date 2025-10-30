@@ -93,7 +93,6 @@ internal class EpisodeDetailsViewModel(
 
         analytics.logScreenView(
             screenName = "EpisodeDetails",
-            screenClass = "EpisodeDetailsScreen",
         )
     }
 

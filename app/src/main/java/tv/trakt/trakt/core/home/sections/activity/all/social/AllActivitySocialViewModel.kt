@@ -66,7 +66,6 @@ internal class AllActivitySocialViewModel(
 
         analytics.logScreenView(
             screenName = "AllActivitySocial",
-            screenClass = "AllActivitySocialScreen",
         )
     }
 

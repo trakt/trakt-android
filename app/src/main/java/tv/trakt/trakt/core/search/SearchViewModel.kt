@@ -99,7 +99,6 @@ internal class SearchViewModel(
 
         analytics.logScreenView(
             screenName = "Search",
-            screenClass = "SearchScreen",
         )
     }
 

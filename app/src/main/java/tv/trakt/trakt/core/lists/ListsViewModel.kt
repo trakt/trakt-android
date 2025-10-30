@@ -49,7 +49,6 @@ internal class ListsViewModel(
 
         analytics.logScreenView(
             screenName = "Lists",
-            screenClass = "ListsScreen",
         )
     }
 

@@ -38,7 +38,6 @@ internal class AllShowsRecommendedViewModel(
 
         analytics.logScreenView(
             screenName = "AllShowsRecommended",
-            screenClass = "AllShowsRecommendedScreen",
         )
     }
 

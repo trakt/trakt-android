@@ -43,7 +43,6 @@ internal class AllShowsTrendingViewModel(
 
         analytics.logScreenView(
             screenName = "AllShowsTrending",
-            screenClass = "AllShowsTrendingScreen",
         )
     }
 

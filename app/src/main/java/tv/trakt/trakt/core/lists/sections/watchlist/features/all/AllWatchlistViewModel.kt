@@ -100,7 +100,6 @@ internal class AllWatchlistViewModel(
 
         analytics.logScreenView(
             screenName = "AllWatchlist",
-            screenClass = "AllWatchlistScreen",
         )
     }
 

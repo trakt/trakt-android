@@ -35,7 +35,6 @@ internal class ShowsViewModel(
 
         analytics.logScreenView(
             screenName = "Shows",
-            screenClass = "ShowsScreen",
         )
     }
 

@@ -27,16 +27,10 @@ internal class FirebaseAnalytics(
         require(eventName(LOGOUT).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
     }
 
-    override fun logScreenView(
-        screenName: String,
-        screenClass: String,
-    ) {
+    override fun logScreenView(screenName: String) {
         firebase.logEvent(
             eventName(SCREEN_VIEW),
-            bundleOf(
-                Param.SCREEN_NAME to screenName,
-                Param.SCREEN_CLASS to screenClass,
-            ),
+            bundleOf(Param.SCREEN_NAME to screenName),
         )
     }
 

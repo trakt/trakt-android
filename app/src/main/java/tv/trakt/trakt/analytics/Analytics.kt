@@ -6,10 +6,7 @@ package tv.trakt.trakt.analytics
 interface Analytics {
     val reactions: Reactions
 
-    fun logScreenView(
-        screenName: String,
-        screenClass: String,
-    )
+    fun logScreenView(screenName: String)
 
     fun logUserLogin()
 

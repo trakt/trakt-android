@@ -6,10 +6,7 @@ import tv.trakt.trakt.analytics.Analytics
 internal class DebugAnalytics(
     override val reactions: Analytics.Reactions,
 ) : Analytics {
-    override fun logScreenView(
-        screenName: String,
-        screenClass: String,
-    ) {
+    override fun logScreenView(screenName: String) {
         Timber.d("logScreenView: screenName=$screenName")
     }
 
