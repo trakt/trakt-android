@@ -155,6 +155,7 @@ internal val showsModule = module {
     viewModel {
         ShowsViewModel(
             sessionManager = get(),
+            analytics = get(),
         )
     }
 
@@ -200,6 +201,7 @@ internal val showsModule = module {
                 halloween -> get(named("halloweenTrendingShowsUseCase"))
                 else -> get(named("defaultTrendingShowsUseCase"))
             },
+            analytics = get(),
         )
     }
 
@@ -209,6 +211,7 @@ internal val showsModule = module {
                 halloween -> get(named("halloweenPopularShowsUseCase"))
                 else -> get(named("defaultPopularShowsUseCase"))
             },
+            analytics = get(),
         )
     }
 
@@ -218,6 +221,7 @@ internal val showsModule = module {
                 halloween -> get(named("halloweenAnticipatedShowsUseCase"))
                 else -> get(named("defaultAnticipatedShowsUseCase"))
             },
+            analytics = get(),
         )
     }
 
@@ -227,6 +231,7 @@ internal val showsModule = module {
                 halloween -> get(named("halloweenRecommendedShowsUseCase"))
                 else -> get(named("defaultRecommendedShowsUseCase"))
             },
+            analytics = get(),
         )
     }
 

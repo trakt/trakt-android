@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.helpers.DynamicStringResource
@@ -76,6 +77,7 @@ internal class ShowDetailsViewModel(
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val showDetailsUpdates: ShowDetailsUpdates,
     private val sessionManager: SessionManager,
+    analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<ShowDetailsDestination>()
     private val showId = destination.showId.toTraktId()
@@ -100,6 +102,11 @@ internal class ShowDetailsViewModel(
         loadData()
         loadProgressData()
         observeData()
+
+        analytics.logScreenView(
+            screenName = "ShowDetails",
+            screenClass = "ShowDetailsScreen",
+        )
     }
 
     private fun observeData() {

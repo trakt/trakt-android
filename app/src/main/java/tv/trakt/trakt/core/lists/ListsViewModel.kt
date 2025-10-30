@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
@@ -31,6 +32,7 @@ internal class ListsViewModel(
     private val sessionManager: SessionManager,
     private val getPersonalListsUseCase: GetPersonalListsUseCase,
     private val localListsSource: ListsPersonalLocalDataSource,
+    analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ListsState()
 
@@ -44,6 +46,11 @@ internal class ListsViewModel(
         loadBackground()
         observeUser()
         observeLists()
+
+        analytics.logScreenView(
+            screenName = "Lists",
+            screenClass = "ListsScreen",
+        )
     }
 
     private fun observeUser() {

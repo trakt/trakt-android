@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
@@ -23,6 +24,7 @@ import tv.trakt.trakt.core.shows.sections.popular.usecase.GetPopularShowsUseCase
 
 internal class AllShowsPopularViewModel(
     private val getPopularUseCase: GetPopularShowsUseCase,
+    analytics: Analytics,
 ) : ViewModel() {
     private val initialState = AllShowsPopularState()
 
@@ -37,6 +39,11 @@ internal class AllShowsPopularViewModel(
     init {
         loadBackground()
         loadData()
+
+        analytics.logScreenView(
+            screenName = "AllShowsPopular",
+            screenClass = "AllShowsPopularScreen",
+        )
     }
 
     private fun loadBackground() {

@@ -147,6 +147,7 @@ internal val moviesModule = module {
     viewModel {
         MoviesViewModel(
             sessionManager = get(),
+            analytics = get(),
         )
     }
 
@@ -165,6 +166,7 @@ internal val moviesModule = module {
                 halloween -> get(named("halloweenTrendingMoviesUseCase"))
                 else -> get(named("defaultTrendingMoviesUseCase"))
             },
+            analytics = get(),
         )
     }
 
@@ -183,6 +185,7 @@ internal val moviesModule = module {
                 halloween -> get(named("halloweenAnticipatedMoviesUseCase"))
                 else -> get(named("defaultAnticipatedMoviesUseCase"))
             },
+            analytics = get(),
         )
     }
 
@@ -201,6 +204,7 @@ internal val moviesModule = module {
                 halloween -> get(named("halloweenRecommendedMoviesUseCase"))
                 else -> get(named("defaultRecommendedMoviesUseCase"))
             },
+            analytics = get(),
         )
     }
 
@@ -219,6 +223,7 @@ internal val moviesModule = module {
                 halloween -> get(named("halloweenPopularMoviesUseCase"))
                 else -> get(named("defaultPopularMoviesUseCase"))
             },
+            analytics = get(),
         )
     }
 

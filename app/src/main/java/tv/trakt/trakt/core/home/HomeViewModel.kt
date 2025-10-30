@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -21,6 +22,7 @@ import tv.trakt.trakt.core.home.HomeState.UserState
 @OptIn(FlowPreview::class)
 internal class HomeViewModel(
     private val sessionManager: SessionManager,
+    analytics: Analytics,
 ) : ViewModel() {
     private val initialState = HomeState()
 
@@ -30,6 +32,11 @@ internal class HomeViewModel(
     init {
         loadBackground()
         observeUser()
+
+        analytics.logScreenView(
+            screenName = "Home",
+            screenClass = "HomeScreen",
+        )
     }
 
     private fun loadBackground() {

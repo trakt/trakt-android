@@ -159,6 +159,7 @@ internal val listsModule = module {
             sessionManager = get(),
             getPersonalListsUseCase = get(),
             localListsSource = get(),
+            analytics = get(),
         )
     }
 
@@ -193,6 +194,7 @@ internal val listsModule = module {
             episodeUpdatesSource = get(),
             movieDetailsUpdates = get(),
             sessionManager = get(),
+            analytics = get(),
         )
     }
 
@@ -217,6 +219,7 @@ internal val listsModule = module {
             movieLocalDataSource = get(),
             userListLocalDataSource = get(),
             sessionManager = get(),
+            analytics = get(),
         )
     }
 

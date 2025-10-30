@@ -118,6 +118,7 @@ internal val searchModule = module {
             movieLocalDataSource = get(),
             peopleLocalDataSource = get(),
             sessionManager = get(),
+            analytics = get(),
         )
     }
 }

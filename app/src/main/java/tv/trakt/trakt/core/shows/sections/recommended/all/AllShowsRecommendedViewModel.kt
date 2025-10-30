@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
@@ -22,6 +23,7 @@ import tv.trakt.trakt.core.shows.sections.recommended.usecase.GetRecommendedShow
 
 internal class AllShowsRecommendedViewModel(
     private val getRecommendedUseCase: GetRecommendedShowsUseCase,
+    analytics: Analytics,
 ) : ViewModel() {
     private val initialState = AllShowsRecommendedState()
 
@@ -33,6 +35,11 @@ internal class AllShowsRecommendedViewModel(
     init {
         loadBackground()
         loadData()
+
+        analytics.logScreenView(
+            screenName = "AllShowsRecommended",
+            screenClass = "AllShowsRecommendedScreen",
+        )
     }
 
     private fun loadBackground() {

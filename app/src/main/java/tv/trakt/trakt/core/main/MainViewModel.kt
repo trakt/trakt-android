@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
@@ -47,6 +48,7 @@ internal class MainViewModel(
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val loadUserWatchlistUseCase: LoadUserWatchlistUseCase,
     private val dismissWelcomeUseCase: DismissWelcomeUseCase,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = MainState()
 
@@ -137,6 +139,8 @@ internal class MainViewModel(
 
                 authorizeUseCase.authorizeByCode(code)
                 getUserUseCase.loadUserProfile()
+
+                analytics.logUserLogin()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     logoutUser()

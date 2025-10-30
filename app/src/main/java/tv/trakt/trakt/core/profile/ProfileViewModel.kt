@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_THIS_MONTH_IMAGE_URL
@@ -32,6 +33,7 @@ internal class ProfileViewModel(
     private val sessionManager: SessionManager,
     private val getThisMonthUseCase: GetThisMonthUseCase,
     private val logoutUseCase: LogoutUserUseCase,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ProfileState()
 
@@ -47,6 +49,11 @@ internal class ProfileViewModel(
         loadMonthBackground()
         loadData()
         observeUser()
+
+        analytics.logScreenView(
+            screenName = "Profile",
+            screenClass = "ProfileScreen",
+        )
     }
 
     @OptIn(FlowPreview::class)
@@ -98,6 +105,7 @@ internal class ProfileViewModel(
                 loadingState.update { LOADING }
 
                 logoutUseCase.logoutUser()
+                analytics.logUserLogout()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.w(error)

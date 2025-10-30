@@ -133,6 +133,7 @@ internal val homeModule = module {
     viewModel {
         HomeViewModel(
             sessionManager = get(),
+            analytics = get(),
         )
     }
 
@@ -159,6 +160,7 @@ internal val homeModule = module {
             episodeUpdatesSource = get(),
             movieDetailsUpdates = get(),
             sessionManager = get(),
+            analytics = get(),
         )
     }
 
@@ -202,6 +204,7 @@ internal val homeModule = module {
             episodeUpdatesSource = get(),
             movieDetailsUpdates = get(),
             sessionManager = get(),
+            analytics = get(),
         )
     }
 
@@ -212,6 +215,7 @@ internal val homeModule = module {
             episodeLocalDataSource = get(),
             movieLocalDataSource = get(),
             sessionManager = get(),
+            analytics = get(),
         )
     }
 

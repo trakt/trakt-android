@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
@@ -24,6 +25,7 @@ import tv.trakt.trakt.core.movies.sections.anticipated.usecase.GetAnticipatedMov
 
 internal class AllMoviesAnticipatedViewModel(
     private val getAnticipatedUseCase: GetAnticipatedMoviesUseCase,
+    analytics: Analytics,
 ) : ViewModel() {
     private val initialState = AllMoviesAnticipatedState()
 
@@ -38,6 +40,11 @@ internal class AllMoviesAnticipatedViewModel(
     init {
         loadBackground()
         loadData()
+
+        analytics.logScreenView(
+            screenName = "AllMoviesAnticipated",
+            screenClass = "AllMoviesAnticipatedScreen",
+        )
     }
 
     private fun loadBackground() {

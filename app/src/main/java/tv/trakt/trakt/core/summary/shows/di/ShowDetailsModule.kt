@@ -151,6 +151,7 @@ internal val showDetailsModule = module {
             episodeLocalDataSource = get(),
             showDetailsUpdates = get(),
             sessionManager = get(),
+            analytics = get(),
         )
     }
 

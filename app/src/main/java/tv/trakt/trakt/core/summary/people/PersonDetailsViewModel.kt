@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -30,6 +31,7 @@ import tv.trakt.trakt.core.people.usecases.GetPersonUseCase
 import tv.trakt.trakt.core.summary.people.navigation.PersonDestination
 
 internal class PersonDetailsViewModel(
+    analytics: Analytics,
     savedStateHandle: SavedStateHandle,
     private val getPersonUseCase: GetPersonUseCase,
     private val getPersonCreditsUseCase: GetPersonCreditsUseCase,
@@ -53,6 +55,11 @@ internal class PersonDetailsViewModel(
 
     init {
         loadData()
+
+        analytics.logScreenView(
+            screenName = "PersonDetails",
+            screenClass = "PersonDetailsScreen",
+        )
     }
 
     private fun loadData() {

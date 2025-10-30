@@ -12,6 +12,7 @@ internal val personDetailsModule = module {
             getPersonCreditsUseCase = get(),
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
+            analytics = get(),
         )
     }
 }

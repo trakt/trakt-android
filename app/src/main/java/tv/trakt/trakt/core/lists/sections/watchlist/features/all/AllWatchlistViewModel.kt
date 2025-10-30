@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
@@ -73,6 +74,7 @@ internal class AllWatchlistViewModel(
     private val episodeUpdatesSource: EpisodeDetailsUpdates,
     private val movieDetailsUpdates: MovieDetailsUpdates,
     private val sessionManager: SessionManager,
+    analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<ListsWatchlistDestination>()
 
@@ -95,6 +97,11 @@ internal class AllWatchlistViewModel(
         loadBackground()
         loadData()
         observeData()
+
+        analytics.logScreenView(
+            screenName = "AllWatchlist",
+            screenClass = "AllWatchlistScreen",
+        )
     }
 
     private fun observeData() {

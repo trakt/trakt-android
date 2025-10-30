@@ -140,6 +140,7 @@ internal val movieDetailsModule = module {
             movieDetailsUpdates = get(),
             halloweenUseCase = get(),
             sessionManager = get(),
+            analytics = get(),
         )
     }
 

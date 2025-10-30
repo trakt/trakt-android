@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
@@ -58,6 +59,7 @@ internal class SearchViewModel(
     private val movieLocalDataSource: MovieLocalDataSource,
     private val peopleLocalDataSource: PeopleLocalDataSource,
     private val sessionManager: SessionManager,
+    analytics: Analytics,
 ) : ViewModel() {
     private val initialState = SearchState()
 
@@ -94,6 +96,11 @@ internal class SearchViewModel(
                 }
             }
         }
+
+        analytics.logScreenView(
+            screenName = "Search",
+            screenClass = "SearchScreen",
+        )
     }
 
     private fun observeUser() {

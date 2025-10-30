@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.DynamicStringResource
@@ -55,6 +56,7 @@ internal class AllHomeUpNextViewModel(
     private val episodeUpdatesSource: EpisodeDetailsUpdates,
     private val movieDetailsUpdates: MovieDetailsUpdates,
     private val sessionManager: SessionManager,
+    analytics: Analytics,
 ) : ViewModel() {
     private val initialState = AllHomeUpNextState()
 
@@ -75,6 +77,11 @@ internal class AllHomeUpNextViewModel(
         loadBackground()
         loadData()
         observeData()
+
+        analytics.logScreenView(
+            screenName = "AllUpNext",
+            screenClass = "AllUpNextScreen",
+        )
     }
 
     private fun observeData() {

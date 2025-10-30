@@ -176,6 +176,7 @@ internal val profileModule = module {
             sessionManager = get(),
             getThisMonthUseCase = get(),
             logoutUseCase = get(),
+            analytics = get(),
         )
     }
 
@@ -218,6 +219,7 @@ internal val profileModule = module {
             getFilterUseCase = get(),
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
+            analytics = get(),
         )
     }
 }

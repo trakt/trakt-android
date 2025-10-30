@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
@@ -53,6 +54,7 @@ internal class AllActivityPersonalViewModel(
     private val episodeUpdatesSource: EpisodeDetailsUpdates,
     private val movieDetailsUpdates: MovieDetailsUpdates,
     private val sessionManager: SessionManager,
+    analytics: Analytics,
 ) : ViewModel() {
     private val initialState = AllActivityState()
 
@@ -73,6 +75,11 @@ internal class AllActivityPersonalViewModel(
         loadBackground()
         loadData()
         observeData()
+
+        analytics.logScreenView(
+            screenName = "AllActivityPersonal",
+            screenClass = "AllActivityPersonalScreen",
+        )
     }
 
     private fun observeData() {

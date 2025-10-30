@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -64,6 +65,7 @@ internal class MovieDetailsViewModel(
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
     private val movieDetailsUpdates: MovieDetailsUpdates,
     private val sessionManager: SessionManager,
+    analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<MovieDetailsDestination>()
     private val movieId = destination.movieId.toTraktId()
@@ -86,6 +88,11 @@ internal class MovieDetailsViewModel(
         loadUser()
         loadData()
         loadProgressData()
+
+        analytics.logScreenView(
+            screenName = "MovieDetails",
+            screenClass = "MovieDetailsScreen",
+        )
     }
 
     private fun loadUser() {

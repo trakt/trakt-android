@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
@@ -23,6 +24,7 @@ import tv.trakt.trakt.core.movies.sections.trending.usecase.GetTrendingMoviesUse
 
 internal class AllMoviesTrendingViewModel(
     private val getTrendingUseCase: GetTrendingMoviesUseCase,
+    analytics: Analytics,
 ) : ViewModel() {
     private val initialState = AllMoviesTrendingState()
 
@@ -37,6 +39,11 @@ internal class AllMoviesTrendingViewModel(
     init {
         loadBackground()
         loadData()
+
+        analytics.logScreenView(
+            screenName = "AllMoviesTrending",
+            screenClass = "AllMoviesTrendingScreen",
+        )
     }
 
     private fun loadBackground() {
