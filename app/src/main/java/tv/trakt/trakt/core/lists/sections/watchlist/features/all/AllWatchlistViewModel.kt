@@ -74,7 +74,7 @@ internal class AllWatchlistViewModel(
     private val episodeUpdatesSource: EpisodeDetailsUpdates,
     private val movieDetailsUpdates: MovieDetailsUpdates,
     private val sessionManager: SessionManager,
-    analytics: Analytics,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<ListsWatchlistDestination>()
 
@@ -99,7 +99,7 @@ internal class AllWatchlistViewModel(
         observeData()
 
         analytics.logScreenView(
-            screenName = "AllWatchlist",
+            screenName = "all_watchlist",
         )
     }
 
@@ -234,6 +234,10 @@ internal class AllWatchlistViewModel(
 
                 updateMovieHistoryUseCase.addToHistory(movieId)
                 removeItem(currentItems[itemIndex])
+                analytics.progress.logAddWatchedMedia(
+                    mediaType = "movie",
+                    source = "all_watchlist",
+                )
 
                 infoState.update {
                     StaticStringResource("Added to history")

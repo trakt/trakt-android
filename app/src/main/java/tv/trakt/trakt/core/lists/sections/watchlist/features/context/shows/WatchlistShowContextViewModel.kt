@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
@@ -32,6 +33,7 @@ internal class WatchlistShowContextViewModel(
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val sessionManager: SessionManager,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = WatchlistShowContextState()
 
@@ -43,7 +45,6 @@ internal class WatchlistShowContextViewModel(
 
     init {
         loadUser()
-//        loadData()
     }
 
     private fun loadUser() {
@@ -90,6 +91,11 @@ internal class WatchlistShowContextViewModel(
                 updateHistoryUseCase.addToWatched(show.ids.trakt)
                 userWatchlistLocalSource.removeShows(setOf(show.ids.trakt))
                 loadProgressUseCase.loadShowsProgress()
+
+                analytics.progress.logAddWatchedMedia(
+                    mediaType = "show",
+                    source = "watchlist_show_context",
+                )
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

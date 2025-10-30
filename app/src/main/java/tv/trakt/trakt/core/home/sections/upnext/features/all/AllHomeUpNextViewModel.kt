@@ -56,7 +56,7 @@ internal class AllHomeUpNextViewModel(
     private val episodeUpdatesSource: EpisodeDetailsUpdates,
     private val movieDetailsUpdates: MovieDetailsUpdates,
     private val sessionManager: SessionManager,
-    analytics: Analytics,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = AllHomeUpNextState()
 
@@ -79,7 +79,7 @@ internal class AllHomeUpNextViewModel(
         observeData()
 
         analytics.logScreenView(
-            screenName = "AllUpNext",
+            screenName = "all_up_next",
         )
     }
 
@@ -215,6 +215,10 @@ internal class AllHomeUpNextViewModel(
                 }
 
                 updateHistoryUseCase.addToHistory(episodeId)
+                analytics.progress.logAddWatchedMedia(
+                    mediaType = "episode",
+                    source = "all_home_up_next",
+                )
 
                 itemsState.update {
                     val items = getUpNextUseCase.getUpNext(

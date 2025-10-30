@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
@@ -38,6 +39,7 @@ internal class MovieContextViewModel(
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
     private val sessionManager: SessionManager,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = MovieContextState()
 
@@ -174,6 +176,11 @@ internal class MovieContextViewModel(
                 updateMovieHistoryUseCase.addToWatched(movie.ids.trakt)
                 loadProgressUseCase.loadMoviesProgress()
                 userWatchlistLocalSource.removeMovies(setOf(movie.ids.trakt))
+
+                analytics.progress.logAddWatchedMedia(
+                    mediaType = "movie",
+                    source = "movie_context",
+                )
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

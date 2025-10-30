@@ -76,7 +76,7 @@ internal class AllPersonalListViewModel(
         observeLists()
 
         analytics.logScreenView(
-            screenName = "AllPersonalList",
+            screenName = "all_personal_list",
         )
     }
 

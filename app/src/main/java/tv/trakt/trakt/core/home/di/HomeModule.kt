@@ -147,6 +147,7 @@ internal val homeModule = module {
             showUpdatesSource = get(),
             episodeUpdatesSource = get(),
             sessionManager = get(),
+            analytics = get(),
         )
     }
 
@@ -173,6 +174,7 @@ internal val homeModule = module {
             userWatchlistSource = get(),
             movieLocalDataSource = get(),
             sessionManager = get(),
+            analytics = get(),
         )
     }
 

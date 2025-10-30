@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
@@ -51,6 +52,7 @@ internal class HomeUpNextViewModel(
     private val showUpdatesSource: ShowDetailsUpdates,
     private val episodeUpdatesSource: EpisodeDetailsUpdates,
     private val sessionManager: SessionManager,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = HomeUpNextState()
 
@@ -205,6 +207,10 @@ internal class HomeUpNextViewModel(
                 }
 
                 updateHistoryUseCase.addToHistory(episodeId)
+                analytics.progress.logAddWatchedMedia(
+                    mediaType = "episode",
+                    source = "home_up_next",
+                )
 
                 itemsState.update {
                     val items = getUpNextUseCase.getUpNext(

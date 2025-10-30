@@ -37,7 +37,7 @@ internal class AllShowsRecommendedViewModel(
         loadData()
 
         analytics.logScreenView(
-            screenName = "AllShowsRecommended",
+            screenName = "all_shows_recommended",
         )
     }
 

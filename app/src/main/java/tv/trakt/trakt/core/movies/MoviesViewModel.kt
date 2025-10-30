@@ -34,7 +34,7 @@ internal class MoviesViewModel(
         observeUser()
 
         analytics.logScreenView(
-            screenName = "Movies",
+            screenName = "movies",
         )
     }
 

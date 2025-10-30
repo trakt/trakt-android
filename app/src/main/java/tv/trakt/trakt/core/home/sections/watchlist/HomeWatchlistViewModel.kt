@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
@@ -48,6 +49,7 @@ internal class HomeWatchlistViewModel(
     private val userWatchlistSource: UserWatchlistLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = HomeWatchlistState()
 
@@ -170,6 +172,10 @@ internal class HomeWatchlistViewModel(
                 }
 
                 addHistoryUseCase.addToHistory(movieId)
+                analytics.progress.logAddWatchedMedia(
+                    mediaType = "movie",
+                    source = "home_watchlist",
+                )
 
                 infoState.update {
                     StaticStringResource("Added to history")

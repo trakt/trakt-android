@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -51,6 +52,7 @@ internal class EpisodeSeasonViewModel(
     private val showDetailsUpdates: ShowDetailsUpdates,
     private val episodeDetailsUpdates: EpisodeDetailsUpdates,
     private val sessionManager: SessionManager,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = EpisodeSeasonState()
 
@@ -166,6 +168,10 @@ internal class EpisodeSeasonViewModel(
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_added)
                 }
+                analytics.progress.logAddWatchedMedia(
+                    mediaType = "episode",
+                    source = "episode_season_view",
+                )
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

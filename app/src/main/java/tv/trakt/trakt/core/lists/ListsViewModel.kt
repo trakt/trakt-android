@@ -48,7 +48,7 @@ internal class ListsViewModel(
         observeLists()
 
         analytics.logScreenView(
-            screenName = "Lists",
+            screenName = "lists",
         )
     }
 

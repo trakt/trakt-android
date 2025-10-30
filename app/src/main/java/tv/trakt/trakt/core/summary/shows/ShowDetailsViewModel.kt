@@ -77,7 +77,7 @@ internal class ShowDetailsViewModel(
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val showDetailsUpdates: ShowDetailsUpdates,
     private val sessionManager: SessionManager,
-    analytics: Analytics,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<ShowDetailsDestination>()
     private val showId = destination.showId.toTraktId()
@@ -104,7 +104,7 @@ internal class ShowDetailsViewModel(
         observeData()
 
         analytics.logScreenView(
-            screenName = "ShowDetails",
+            screenName = "show_details",
         )
     }
 
@@ -361,9 +361,14 @@ internal class ShowDetailsViewModel(
                 }
 
                 showDetailsUpdates.notifyUpdate(Source.PROGRESS)
+
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_added)
                 }
+                analytics.progress.logAddWatchedMedia(
+                    mediaType = "show",
+                    source = "show_details",
+                )
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

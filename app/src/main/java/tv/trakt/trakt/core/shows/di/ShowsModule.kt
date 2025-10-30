@@ -245,6 +245,7 @@ internal val showsModule = module {
             loadProgressUseCase = get(),
             loadWatchlistUseCase = get(),
             sessionManager = get(),
+            analytics = get(),
         )
     }
 }

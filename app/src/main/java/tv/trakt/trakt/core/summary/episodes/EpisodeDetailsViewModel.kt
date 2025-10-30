@@ -62,7 +62,7 @@ internal class EpisodeDetailsViewModel(
     private val episodeUpdatesSource: EpisodeDetailsUpdates,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val sessionManager: SessionManager,
-    analytics: Analytics,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = EpisodeDetailsState()
     private val destination = savedStateHandle.toRoute<EpisodeDetailsDestination>()
@@ -92,7 +92,7 @@ internal class EpisodeDetailsViewModel(
         observeData()
 
         analytics.logScreenView(
-            screenName = "EpisodeDetails",
+            screenName = "episode_details",
         )
     }
 
@@ -263,7 +263,12 @@ internal class EpisodeDetailsViewModel(
                 }
 
                 episodeUpdatesSource.notifyUpdate(PROGRESS)
+
                 infoState.update { DynamicStringResource(R.string.text_info_history_added) }
+                analytics.progress.logAddWatchedMedia(
+                    mediaType = "episode",
+                    source = "episode_details",
+                )
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

@@ -243,6 +243,7 @@ internal val listsModule = module {
             userWatchlistLocalSource = get(),
             updateMovieHistoryUseCase = get(),
             loadProgressUseCase = get(),
+            analytics = get(),
         )
     }
 
@@ -255,6 +256,7 @@ internal val listsModule = module {
             userWatchlistLocalSource = get(),
             loadProgressUseCase = get(),
             sessionManager = get(),
+            analytics = get(),
         )
     }
 
@@ -270,6 +272,7 @@ internal val listsModule = module {
             loadProgressUseCase = get(),
             loadWatchlistUseCase = get(),
             sessionManager = get(),
+            analytics = get(),
         )
     }
 
@@ -285,6 +288,7 @@ internal val listsModule = module {
             loadProgressUseCase = get(),
             loadWatchlistUseCase = get(),
             sessionManager = get(),
+            analytics = get(),
         )
     }
 

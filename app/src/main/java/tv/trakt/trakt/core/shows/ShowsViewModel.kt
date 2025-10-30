@@ -34,7 +34,7 @@ internal class ShowsViewModel(
         observeUser()
 
         analytics.logScreenView(
-            screenName = "Shows",
+            screenName = "shows",
         )
     }
 

@@ -98,7 +98,7 @@ internal class SearchViewModel(
         }
 
         analytics.logScreenView(
-            screenName = "Search",
+            screenName = "search",
         )
     }
 

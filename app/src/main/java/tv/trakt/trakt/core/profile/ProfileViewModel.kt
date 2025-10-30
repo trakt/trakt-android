@@ -51,7 +51,7 @@ internal class ProfileViewModel(
         observeUser()
 
         analytics.logScreenView(
-            screenName = "Profile",
+            screenName = "profile",
         )
     }
 

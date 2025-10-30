@@ -237,6 +237,7 @@ internal val moviesModule = module {
             loadProgressUseCase = get(),
             loadWatchlistUseCase = get(),
             sessionManager = get(),
+            analytics = get(),
         )
     }
 }

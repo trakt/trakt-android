@@ -7,6 +7,7 @@ import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -58,14 +59,14 @@ internal class AllActivitySocialViewModel(
 
     private var pages: Int = 1
     private var hasMoreData: Boolean = false
-    private var processingJob: kotlinx.coroutines.Job? = null
+    private var processingJob: Job? = null
 
     init {
         loadBackground()
         loadData()
 
         analytics.logScreenView(
-            screenName = "AllActivitySocial",
+            screenName = "all_activity_social",
         )
     }
 

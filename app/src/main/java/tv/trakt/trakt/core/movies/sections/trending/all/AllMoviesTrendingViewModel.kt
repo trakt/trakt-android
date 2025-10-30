@@ -41,7 +41,7 @@ internal class AllMoviesTrendingViewModel(
         loadData()
 
         analytics.logScreenView(
-            screenName = "AllMoviesTrending",
+            screenName = "all_movies_trending",
         )
     }
 

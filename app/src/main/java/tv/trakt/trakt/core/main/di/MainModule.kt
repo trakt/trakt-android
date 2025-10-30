@@ -20,8 +20,10 @@ import org.koin.dsl.module
 import tv.trakt.trakt.BuildConfig
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.implementation.DebugAnalytics
+import tv.trakt.trakt.analytics.implementation.DebugAnalyticsProgress
 import tv.trakt.trakt.analytics.implementation.DebugAnalyticsReactions
 import tv.trakt.trakt.analytics.implementation.FirebaseAnalytics
+import tv.trakt.trakt.analytics.implementation.FirebaseAnalyticsProgress
 import tv.trakt.trakt.analytics.implementation.FirebaseAnalyticsReactions
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
 import tv.trakt.trakt.core.main.MainViewModel
@@ -41,13 +43,17 @@ internal val mainModule = module {
         if (BuildConfig.DEBUG) {
             DebugAnalytics(
                 reactions = DebugAnalyticsReactions(),
+                progress = DebugAnalyticsProgress(),
             )
         } else {
-            val firebaseAnalytics = Firebase.analytics
+            val firebase = Firebase.analytics
             FirebaseAnalytics(
-                firebase = firebaseAnalytics,
+                firebase = firebase,
                 reactions = FirebaseAnalyticsReactions(
-                    firebase = firebaseAnalytics,
+                    firebase = firebase,
+                ),
+                progress = FirebaseAnalyticsProgress(
+                    firebase = firebase,
                 ),
             )
         }

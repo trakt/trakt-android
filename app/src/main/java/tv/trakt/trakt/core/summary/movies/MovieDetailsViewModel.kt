@@ -65,7 +65,7 @@ internal class MovieDetailsViewModel(
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
     private val movieDetailsUpdates: MovieDetailsUpdates,
     private val sessionManager: SessionManager,
-    analytics: Analytics,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<MovieDetailsDestination>()
     private val movieId = destination.movieId.toTraktId()
@@ -90,7 +90,7 @@ internal class MovieDetailsViewModel(
         loadProgressData()
 
         analytics.logScreenView(
-            screenName = "MovieDetails",
+            screenName = "movie_details",
         )
     }
 
@@ -291,9 +291,14 @@ internal class MovieDetailsViewModel(
                         inWatchlist = false,
                     )
                 }
+
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_added)
                 }
+                analytics.progress.logAddWatchedMedia(
+                    mediaType = "movie",
+                    source = "movie_details",
+                )
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

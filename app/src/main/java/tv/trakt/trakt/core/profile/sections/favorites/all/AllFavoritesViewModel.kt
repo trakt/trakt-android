@@ -61,7 +61,7 @@ internal class AllFavoritesViewModel(
         loadData()
 
         analytics.logScreenView(
-            screenName = "AllFavorites",
+            screenName = "all_favorites",
         )
     }
 

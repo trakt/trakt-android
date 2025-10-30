@@ -42,7 +42,7 @@ internal class AllShowsAnticipatedViewModel(
         loadData()
 
         analytics.logScreenView(
-            screenName = "AllShowsAnticipated",
+            screenName = "all_shows_anticipated",
         )
     }
 
