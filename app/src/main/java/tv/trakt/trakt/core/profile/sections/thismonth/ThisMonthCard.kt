@@ -2,6 +2,7 @@
 
 package tv.trakt.trakt.core.profile.sections.thismonth
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
@@ -244,6 +245,7 @@ fun StatsChip(
         verticalAlignment = CenterVertically,
         horizontalArrangement = spacedBy(6.dp),
         modifier = modifier
+            .animateContentSize()
             .shadow(1.dp, shape)
             .background(
                 color = Shade940,
