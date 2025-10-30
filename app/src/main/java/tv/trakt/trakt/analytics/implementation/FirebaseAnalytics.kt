@@ -10,6 +10,9 @@ import tv.trakt.trakt.analytics.Analytics
 // Android V3 events identifier
 private const val EVENT_NAME_PREFIX = "av3_"
 
+private const val EVENT_NAME_LIMIT = 40
+private const val EVENT_NAME_ERROR = "Firebase event names must be less than 40 characters long"
+
 private fun eventName(name: String) = "$EVENT_NAME_PREFIX$name"
 
 internal class FirebaseAnalytics(
@@ -18,6 +21,10 @@ internal class FirebaseAnalytics(
 ) : Analytics {
     companion object Event {
         const val LOGOUT = "logout"
+    }
+
+    init {
+        require(eventName(LOGOUT).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
     }
 
     override fun logScreenView(
@@ -54,6 +61,11 @@ internal class FirebaseAnalyticsReactions(
     companion object Event {
         const val REACTIONS_ADD = "reactions_comment_add"
         const val REACTIONS_REMOVE = "reactions_comment_remove"
+    }
+
+    init {
+        require(eventName(REACTIONS_ADD).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
+        require(eventName(REACTIONS_REMOVE).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
     }
 
     override fun logReactionAdd(
