@@ -25,7 +25,7 @@ internal class ShowsSyncApiClient(
         val response = syncApi.getSyncProgressUpNextNitro(
             page = page,
             limit = limit,
-            intent = null,
+            intent = "continue",
         )
         return response.body()
     }
