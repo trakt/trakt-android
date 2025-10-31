@@ -1,8 +1,6 @@
 package tv.trakt.trakt
 
 import android.app.Application
-import android.app.UiModeManager
-import android.content.res.Configuration.UI_MODE_TYPE_TELEVISION
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
 import com.google.firebase.crashlytics.crashlytics
@@ -16,6 +14,7 @@ import org.koin.core.context.startKoin
 import timber.log.Timber
 import tv.trakt.trakt.app.TvActivity
 import tv.trakt.trakt.common.auth.di.commonAuthModule
+import tv.trakt.trakt.common.helpers.extensions.isTelevision
 import tv.trakt.trakt.common.networking.di.networkingApiModule
 import tv.trakt.trakt.common.networking.di.networkingModule
 import tv.trakt.trakt.core.auth.di.authModule
@@ -83,8 +82,7 @@ internal class TraktApplication : Application() {
     }
 
     fun setupKoin() {
-        val uiModeManager = getSystemService(UI_MODE_SERVICE) as UiModeManager
-        if (uiModeManager.currentModeType == UI_MODE_TYPE_TELEVISION) {
+        if (isTelevision()) {
             TvActivity.setupKoin(this)
             return
         }

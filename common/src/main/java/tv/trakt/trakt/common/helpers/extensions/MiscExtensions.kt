@@ -1,9 +1,12 @@
 package tv.trakt.trakt.common.helpers.extensions
 
+import android.app.UiModeManager
 import android.content.Context
+import android.content.Context.UI_MODE_SERVICE
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.content.res.Configuration.UI_MODE_TYPE_TELEVISION
 import androidx.compose.ui.platform.UriHandler
 import androidx.core.net.toUri
 import tv.trakt.trakt.common.Config.PLEX_BASE_URL
@@ -56,4 +59,15 @@ fun openPlexLink(
             else -> plexUrl
         },
     )
+}
+
+/**
+ * Checks if the device is a TV device.
+ */
+fun Context.isTelevision(): Boolean {
+    val uiModeManager = getSystemService(UI_MODE_SERVICE) as UiModeManager
+    val packageManager = applicationContext.packageManager
+
+    return uiModeManager.currentModeType == UI_MODE_TYPE_TELEVISION &&
+        packageManager.hasSystemFeature("android.software.leanback")
 }

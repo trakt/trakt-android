@@ -1,8 +1,6 @@
 package tv.trakt.trakt.app
 
-import android.app.UiModeManager
 import android.content.Context
-import android.content.res.Configuration.UI_MODE_TYPE_TELEVISION
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -49,6 +47,7 @@ import tv.trakt.trakt.app.core.streamings.di.streamingsModule
 import tv.trakt.trakt.app.core.sync.di.syncModule
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.auth.di.commonAuthModule
+import tv.trakt.trakt.common.helpers.extensions.isTelevision
 import tv.trakt.trakt.common.networking.di.networkingModule
 
 internal val LocalDrawerVisibility = compositionLocalOf { mutableStateOf(true) }
@@ -91,11 +90,9 @@ class TvActivity : ComponentActivity() {
 
     companion object {
         fun setupKoin(context: Context) {
-            val uiModeManager = context.getSystemService(UI_MODE_SERVICE) as UiModeManager
-            if (uiModeManager.currentModeType != UI_MODE_TYPE_TELEVISION) {
+            if (!context.isTelevision()) {
                 return
             }
-
             startKoin {
                 androidContext(context.applicationContext)
                 androidLogger()
