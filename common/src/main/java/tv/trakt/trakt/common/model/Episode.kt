@@ -77,7 +77,7 @@ fun Episode.Companion.fromDto(dto: LastEpisodeDto): Episode {
         ids = Ids.fromDto(dto.ids),
         number = dto.number,
         season = dto.season,
-        title = dto.title,
+        title = dto.title ?: "TBA",
         numberAbs = dto.numberAbs,
         overview = dto.overview,
         rating = Rating(

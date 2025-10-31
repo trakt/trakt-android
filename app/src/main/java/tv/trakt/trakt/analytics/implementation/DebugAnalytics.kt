@@ -25,11 +25,11 @@ internal class DebugAnalyticsReactions : Analytics.Reactions {
         reaction: String,
         source: String,
     ) {
-        Timber.d("logReactionAdd: reaction=$reaction, source=$source")
+        Timber.d("logReactionAdd: reaction=${reaction.lowercase()}, source=${source.lowercase()}")
     }
 
     override fun logReactionRemove(source: String) {
-        Timber.d("logReactionRemove: source=$source")
+        Timber.d("logReactionRemove: source=${source.lowercase()}")
     }
 }
 
