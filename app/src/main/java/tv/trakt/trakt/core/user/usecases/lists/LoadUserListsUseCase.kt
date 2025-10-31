@@ -42,7 +42,7 @@ internal class LoadUserListsUseCase(
                     async {
                         val items = remoteSource.getPersonalListItems(
                             listId = list.ids.trakt.toTraktId(),
-                            extended = "full,cloud9,colors",
+                            extended = "min",
                             limit = null, // -> all
                         )
                         list to items

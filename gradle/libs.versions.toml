@@ -1,5 +1,5 @@
 [versions]
-versionCode = "300"
+versionCode = "301"
 versionName = "3.0.0-Beta02"
 
 minSdk = "28"
@@ -17,26 +17,27 @@ composeBom = "2025.10.01"
 composeNavigation = "2.9.5"
 coreKtx = "1.17.0"
 datastore = "1.1.7"
-firebaseBom = "34.4.0"
+firebaseBom = "34.5.0"
 firebaseCrashlytics = "3.0.6"
 flagkit = "1.0.5"
 googleServices = "4.4.4"
 immutableCollections = "0.4.0"
+inAppReview = "2.0.2"
 koinBom = "4.1.1"
 kotlin = "2.2.21"
 kotlinx-datetime = "0.7.1"
 kotlinxSerialization = "1.9.0"
 ktor = "3.3.1"
 material = "1.13.0"
+material3 = "1.5.0-alpha07"
 openapi = "7.16.0"
+phoenix = "3.0.0"
 qr = "1.0.1"
 timber = "5.0.1"
 tvFoundation = "1.0.0-alpha12"
 tvMaterial = "1.0.1"
-youtube-player = "13.0.0"
-inAppReview = "2.0.2"
 workManager = "2.11.0"
-phoenix = "3.0.0"
+youtube-player = "13.0.0"
 
 # Testing Libraries
 
@@ -46,17 +47,17 @@ espressoCore = "3.7.0"
 
 [libraries]
 android-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+androidx-compose-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-compose-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
-androidx-compose-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-androidx-compose-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
 androidx-work = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workManager" }
 

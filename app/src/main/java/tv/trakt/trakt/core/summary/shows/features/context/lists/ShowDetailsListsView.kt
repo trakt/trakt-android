@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.TextAutoSize
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -178,9 +180,14 @@ private fun ActionButtons(
     onWatchlistClick: (() -> Unit)? = null,
     onListClick: ((CustomList) -> Unit)? = null,
 ) {
+    val scrollState = rememberScrollState()
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
         modifier = modifier
+            .verticalScroll(
+                state = scrollState,
+                overscrollEffect = null,
+            )
             .graphicsLayer {
                 translationX = -8.dp.toPx()
             },

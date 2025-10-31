@@ -82,20 +82,7 @@ internal class SearchViewModel(
     init {
         observeUser()
         loadBackground()
-
-        initialJob = viewModelScope.launch {
-            try {
-//                loadRecentlySearched()
-                loadLocalPopularSearches()
-                loadPopularSearches()
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    errorState.update { error }
-                    searchingState.update { false }
-                    Timber.w(error, "Error during initial load!")
-                }
-            }
-        }
+        loadInitialData()
 
         analytics.logScreenView(
             screenName = "search",
@@ -121,63 +108,21 @@ internal class SearchViewModel(
         val configUrl = Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL)
         backgroundState.update { configUrl }
     }
-//    Disabled until we decide how to do recently searched.
-//    private suspend fun loadRecentlySearched() {
-//        return coroutineScope {
-//            val recentShowsAsync = async { getRecentSearchUseCase.getRecentShows() }
-//            val recentMoviesAsync = async { getRecentSearchUseCase.getRecentMovies() }
-//            val recentPeopleAsync = async { getRecentSearchUseCase.getRecentPeople() }
-//
-//            val recentShows = when (inputState.value.filter) {
-//                in arrayOf(MEDIA, SHOWS) -> recentShowsAsync.await()
-//                else -> emptyList()
-//            }
-//            val recentMovies = when (inputState.value.filter) {
-//                in arrayOf(MEDIA, MOVIES) -> recentMoviesAsync.await()
-//                else -> emptyList()
-//            }
-//            val recentPeople = when (inputState.value.filter) {
-//                in arrayOf(PEOPLE) -> recentPeopleAsync.await()
-//                else -> emptyList()
-//            }
-//
-//            if (searchingState.value || screenState.value == State.SEARCH_RESULTS) {
-//                return@coroutineScope
-//            }
-//
-//            recentsResultState.update {
-//                SearchResult(
-//                    items = buildList {
-//                        val showItems = recentShows.asyncMap {
-//                            SearchItem.Show(
-//                                rank = it.createdAt.toInstant().toEpochMilli(),
-//                                show = it.show,
-//                            )
-//                        }
-//                        val movieItems = recentMovies.asyncMap {
-//                            SearchItem.Movie(
-//                                rank = it.createdAt.toInstant().toEpochMilli(),
-//                                movie = it.movie,
-//                            )
-//                        }
-//                        val peopleItems = recentPeople.asyncMap {
-//                            SearchItem.Person(
-//                                rank = it.createdAt.toInstant().toEpochMilli(),
-//                                person = it.person,
-//                            )
-//                        }
-//
-//                        addAll(showItems)
-//                        addAll(movieItems)
-//                        addAll(peopleItems)
-//                    }
-//                        .sortedByDescending { it.rank }
-//                        .take(3)
-//                        .toImmutableList(),
-//                )
-//            }
-//        }
-//    }
+
+    private fun loadInitialData() {
+        viewModelScope.launch {
+            try {
+                loadLocalPopularSearches()
+                loadPopularSearches()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    searchingState.update { false }
+                    Timber.w(error, "Error during initial load!")
+                }
+            }
+        }
+    }
 
     private suspend fun loadLocalPopularSearches() {
         return coroutineScope {
@@ -354,7 +299,6 @@ internal class SearchViewModel(
             } else {
                 initialJob = viewModelScope.launch {
                     try {
-//                        loadRecentlySearched()
                         loadLocalPopularSearches()
                     } catch (error: Exception) {
                         error.rethrowCancellation {
@@ -513,11 +457,69 @@ internal class SearchViewModel(
 
     private fun clearJobs() {
         searchJob?.cancel()
-        searchJob = null
-
         initialJob?.cancel()
+
+        searchJob = null
         initialJob = null
     }
+
+//    Disabled until we decide how to do recently searched.
+//    private suspend fun loadRecentlySearched() {
+//        return coroutineScope {
+//            val recentShowsAsync = async { getRecentSearchUseCase.getRecentShows() }
+//            val recentMoviesAsync = async { getRecentSearchUseCase.getRecentMovies() }
+//            val recentPeopleAsync = async { getRecentSearchUseCase.getRecentPeople() }
+//
+//            val recentShows = when (inputState.value.filter) {
+//                in arrayOf(MEDIA, SHOWS) -> recentShowsAsync.await()
+//                else -> emptyList()
+//            }
+//            val recentMovies = when (inputState.value.filter) {
+//                in arrayOf(MEDIA, MOVIES) -> recentMoviesAsync.await()
+//                else -> emptyList()
+//            }
+//            val recentPeople = when (inputState.value.filter) {
+//                in arrayOf(PEOPLE) -> recentPeopleAsync.await()
+//                else -> emptyList()
+//            }
+//
+//            if (searchingState.value || screenState.value == State.SEARCH_RESULTS) {
+//                return@coroutineScope
+//            }
+//
+//            recentsResultState.update {
+//                SearchResult(
+//                    items = buildList {
+//                        val showItems = recentShows.asyncMap {
+//                            SearchItem.Show(
+//                                rank = it.createdAt.toInstant().toEpochMilli(),
+//                                show = it.show,
+//                            )
+//                        }
+//                        val movieItems = recentMovies.asyncMap {
+//                            SearchItem.Movie(
+//                                rank = it.createdAt.toInstant().toEpochMilli(),
+//                                movie = it.movie,
+//                            )
+//                        }
+//                        val peopleItems = recentPeople.asyncMap {
+//                            SearchItem.Person(
+//                                rank = it.createdAt.toInstant().toEpochMilli(),
+//                                person = it.person,
+//                            )
+//                        }
+//
+//                        addAll(showItems)
+//                        addAll(movieItems)
+//                        addAll(peopleItems)
+//                    }
+//                        .sortedByDescending { it.rank }
+//                        .take(3)
+//                        .toImmutableList(),
+//                )
+//            }
+//        }
+//    }
 
     @Suppress("UNCHECKED_CAST")
     val state: StateFlow<SearchState> = combine(
