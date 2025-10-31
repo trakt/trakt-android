@@ -8,6 +8,7 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.crashlytics.crashlytics
 import com.google.firebase.remoteconfig.remoteConfig
 import com.google.firebase.remoteconfig.remoteConfigSettings
+import com.jakewharton.processphoenix.ProcessPhoenix
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.workmanager.koin.workManagerFactory
@@ -50,6 +51,10 @@ import java.util.concurrent.TimeUnit.MINUTES
 
 internal class TraktApplication : Application() {
     override fun onCreate() {
+        if (ProcessPhoenix.isPhoenixProcess(this)) {
+            return
+        }
+
         super.onCreate()
         setupKoin()
         setupTimber()

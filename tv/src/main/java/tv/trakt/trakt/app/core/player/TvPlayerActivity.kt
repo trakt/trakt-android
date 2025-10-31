@@ -73,7 +73,11 @@ class TvPlayerActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val videoUrl = intent.getStringExtra("extra_video_url")
-            ?: throw IllegalArgumentException("Video URL must be provided")
+        if (videoUrl.isNullOrEmpty()) {
+            // No video URL, finish activity
+            finish()
+            return
+        }
 
         setContent {
             val uriHandler = LocalUriHandler.current
