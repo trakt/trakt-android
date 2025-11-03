@@ -21,7 +21,10 @@ internal class PostRatingUseCase(
                 id = mediaId,
                 rating = rating,
             )
-            SHOW -> TODO()
+            SHOW -> remoteSource.postShowRating(
+                id = mediaId,
+                rating = rating,
+            )
             EPISODE -> TODO()
             SEASON -> throw IllegalStateException("Rating a season is not supported")
         }

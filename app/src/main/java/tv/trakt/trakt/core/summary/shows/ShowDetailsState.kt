@@ -9,11 +9,13 @@ import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.ratings.UserRating
 
 @Immutable
 internal data class ShowDetailsState(
     val show: Show? = null,
     val showRatings: ExternalRating? = null,
+    val showUserRating: UserRatingsState? = null,
     val showStudios: ImmutableList<String>? = null,
     val showProgress: ProgressState? = null,
     val navigateEpisode: Pair<TraktId, Episode>? = null,
@@ -34,4 +36,9 @@ internal data class ShowDetailsState(
     ) {
         val inAnyList: Boolean = inWatchlist || inLists
     }
+
+    data class UserRatingsState(
+        val rating: UserRating? = null,
+        val loading: LoadingState = LoadingState.IDLE,
+    )
 }

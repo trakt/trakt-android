@@ -134,6 +134,7 @@ internal val showDetailsModule = module {
 
     viewModel {
         ShowDetailsViewModel(
+            appContext = androidApplication(),
             savedStateHandle = get(),
             getDetailsUseCase = get(),
             getExternalRatingsUseCase = get(),
@@ -141,6 +142,7 @@ internal val showDetailsModule = module {
             loadProgressUseCase = get(),
             loadWatchlistUseCase = get(),
             loadListsUseCase = get(),
+            loadRatingUseCase = get(),
             updateShowHistoryUseCase = get(),
             updateEpisodeHistoryUseCase = get(),
             updateShowWatchlistUseCase = get(),

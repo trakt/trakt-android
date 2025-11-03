@@ -4,6 +4,8 @@ import org.openapitools.client.apis.RatingsApi
 import org.openapitools.client.models.PostCheckinMovieRequestMovieIds
 import org.openapitools.client.models.PostSyncRatingsAddRequest
 import org.openapitools.client.models.PostSyncRatingsAddRequestMoviesInner
+import org.openapitools.client.models.PostSyncRatingsAddRequestShowsInner
+import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerOneOfIds
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
@@ -24,6 +26,28 @@ internal class RatingsApiClient(
                         slug = null,
                         imdb = null,
                         tmdb = 0,
+                    ),
+                ),
+            ),
+        )
+        ratingsApi.postSyncRatingsAdd(request)
+        cacheMarker.invalidate()
+    }
+
+    override suspend fun postShowRating(
+        id: TraktId,
+        rating: Int,
+    ) {
+        val request = PostSyncRatingsAddRequest(
+            shows = listOf(
+                PostSyncRatingsAddRequestShowsInner(
+                    rating = rating,
+                    ids = PostUsersListsListAddRequestShowsInnerOneOfIds(
+                        trakt = id.value,
+                        slug = null,
+                        imdb = null,
+                        tmdb = null,
+                        tvdb = -1,
                     ),
                 ),
             ),

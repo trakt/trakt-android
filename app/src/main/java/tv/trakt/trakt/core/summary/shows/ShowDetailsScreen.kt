@@ -61,6 +61,7 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
+import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -70,6 +71,7 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
@@ -91,6 +93,7 @@ import tv.trakt.trakt.core.summary.ui.DetailsHeader
 import tv.trakt.trakt.core.summary.ui.DetailsMetaInfo
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.UserRatingBar
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -168,6 +171,10 @@ internal fun ShowDetailsScreen(
             state.show?.let {
                 onCommentsClick(it, filter)
             }
+        },
+        onRatingClick = {
+            viewModel.addRating(it)
+            haptic.performHapticFeedback(Confirm)
         },
         onBackClick = onNavigateBack,
     )
@@ -281,6 +288,7 @@ internal fun ShowDetailsContent(
     onMoreCommentsClick: ((CommentsFilter) -> Unit)? = null,
     onPersonClick: ((Person) -> Unit)? = null,
     onListClick: ((CustomList) -> Unit)? = null,
+    onRatingClick: ((Int) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     val previewMode = LocalInspectionMode.current
@@ -391,6 +399,16 @@ internal fun ShowDetailsContent(
                                 .padding(horizontal = 42.dp),
                         )
                     }
+                }
+
+                item {
+                    val isWatched = (state.showProgress?.plays ?: 0) > 0
+                    val isLoaded = state.showUserRating?.loading == LoadingState.DONE
+                    DetailsRating(
+                        visible = isWatched && isLoaded,
+                        rating = state.showUserRating?.rating,
+                        onRatingClick = onRatingClick ?: {},
+                    )
                 }
 
                 item {
@@ -544,6 +562,32 @@ internal fun ShowDetailsContent(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun DetailsRating(
+    modifier: Modifier = Modifier,
+    visible: Boolean,
+    rating: UserRating?,
+    onRatingClick: (Int) -> Unit,
+) {
+    Box(
+        modifier = modifier
+            .animateContentSize(
+                animationSpec = tween(200, delayMillis = 250),
+            ),
+    ) {
+        if (visible) {
+            UserRatingBar(
+                rating = rating,
+                onRatingClick = onRatingClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 20.dp)
+                    .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
+            )
         }
     }
 }

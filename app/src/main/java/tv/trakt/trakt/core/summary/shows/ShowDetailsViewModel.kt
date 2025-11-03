@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.summary.shows
 
+import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -38,11 +39,14 @@ import tv.trakt.trakt.common.model.MediaType.SHOW
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.lists.sections.personal.usecases.AddPersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.main.usecases.HalloweenUseCase
+import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
+import tv.trakt.trakt.core.summary.shows.ShowDetailsState.UserRatingsState
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.summary.shows.navigation.ShowDetailsDestination
@@ -56,17 +60,21 @@ import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserListsUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.resources.R
+import kotlin.time.Duration.Companion.seconds
 
 @OptIn(FlowPreview::class)
 internal class ShowDetailsViewModel(
     savedStateHandle: SavedStateHandle,
+    private val appContext: Context,
     private val getDetailsUseCase: GetShowDetailsUseCase,
     private val getExternalRatingsUseCase: GetShowRatingsUseCase,
     private val getShowStudiosUseCase: GetShowStudiosUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
     private val loadListsUseCase: LoadUserListsUseCase,
+    private val loadRatingUseCase: LoadUserRatingsUseCase,
     private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val updateShowWatchlistUseCase: UpdateShowWatchlistUseCase,
@@ -86,6 +94,7 @@ internal class ShowDetailsViewModel(
 
     private val showState = MutableStateFlow(initialState.show)
     private val showRatingsState = MutableStateFlow(initialState.showRatings)
+    private val showUserRatingsState = MutableStateFlow(initialState.showUserRating)
     private val showStudiosState = MutableStateFlow(initialState.showStudios)
     private val showProgressState = MutableStateFlow(initialState.showProgress)
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
@@ -97,10 +106,13 @@ internal class ShowDetailsViewModel(
     private val userState = MutableStateFlow(initialState.user)
     private val halloweenState = MutableStateFlow(initialState.halloween)
 
+    private var ratingJob: kotlinx.coroutines.Job? = null
+
     init {
         loadUser()
         loadData()
         loadProgressData()
+        loadUserRatingData()
         observeData()
 
         analytics.logScreenView(
@@ -283,6 +295,39 @@ internal class ShowDetailsViewModel(
             try {
                 showStudiosState.update {
                     getShowStudiosUseCase.getStudios(showId)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.w(error)
+                }
+            }
+        }
+    }
+
+    private fun loadUserRatingData() {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                showUserRatingsState.update {
+                    UserRatingsState(
+                        loading = LOADING,
+                    )
+                }
+
+                if (!loadRatingUseCase.isShowsLoaded()) {
+                    loadRatingUseCase.loadShows()
+                }
+
+                val userRatings = loadRatingUseCase.loadLocalShows()
+                val userRating = userRatings[showId]
+
+                showUserRatingsState.update {
+                    UserRatingsState(
+                        rating = userRating,
+                        loading = DONE,
+                    )
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -615,10 +660,40 @@ internal class ShowDetailsViewModel(
         navigateEpisode.update { null }
     }
 
+    fun addRating(newRating: Int) {
+        ratingJob?.cancel()
+        ratingJob = viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+
+            showUserRatingsState.update {
+                UserRatingsState(
+                    rating = UserRating(
+                        mediaId = showId,
+                        mediaType = SHOW,
+                        rating = newRating,
+                    ),
+                    loading = DONE,
+                )
+            }
+
+            // Debounce to avoid multiple rapid calls.
+            delay(1.seconds)
+            PostRatingWorker.scheduleOneTime(
+                appContext = appContext,
+                mediaId = showId,
+                mediaType = SHOW,
+                rating = newRating,
+            )
+        }
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state: StateFlow<ShowDetailsState> = combine(
         showState,
         showRatingsState,
+        showUserRatingsState,
         showStudiosState,
         showProgressState,
         navigateEpisode,
@@ -633,16 +708,17 @@ internal class ShowDetailsViewModel(
         ShowDetailsState(
             show = state[0] as Show?,
             showRatings = state[1] as ExternalRating?,
-            showStudios = state[2] as ImmutableList<String>?,
-            showProgress = state[3] as ShowDetailsState.ProgressState?,
-            navigateEpisode = state[4] as Pair<TraktId, Episode>?,
-            loading = state[5] as LoadingState,
-            loadingProgress = state[6] as LoadingState,
-            loadingLists = state[7] as LoadingState,
-            info = state[8] as StringResource?,
-            error = state[9] as Exception?,
-            user = state[10] as User?,
-            halloween = state[11] as Boolean,
+            showUserRating = state[2] as UserRatingsState?,
+            showStudios = state[3] as ImmutableList<String>?,
+            showProgress = state[4] as ShowDetailsState.ProgressState?,
+            navigateEpisode = state[5] as Pair<TraktId, Episode>?,
+            loading = state[6] as LoadingState,
+            loadingProgress = state[7] as LoadingState,
+            loadingLists = state[8] as LoadingState,
+            info = state[9] as StringResource?,
+            error = state[10] as Exception?,
+            user = state[11] as User?,
+            halloween = state[12] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,
