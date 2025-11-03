@@ -1,18 +1,24 @@
 package tv.trakt.trakt.ui.components
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.keyframes
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
@@ -27,9 +33,14 @@ internal fun UserRatingBar(
     size: Dp = 22.dp,
     onRatingClick: (Int) -> Unit = {},
 ) {
+    val scope = rememberCoroutineScope()
+
     val stars = remember(rating) {
         rating?.rating?.div(2f) ?: 0f
     }
+
+    val scaleAnimation = remember { Animatable(1f) }
+    val lastClickedIndex = remember { mutableIntStateOf(-1) }
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -37,6 +48,10 @@ internal fun UserRatingBar(
         modifier = modifier,
     ) {
         repeat(5) { index ->
+            val scale = when {
+                lastClickedIndex.intValue == index -> scaleAnimation.value
+                else -> 1f
+            }
             Icon(
                 painter = painterResource(
                     when {
@@ -49,10 +64,29 @@ internal fun UserRatingBar(
                 tint = Color.White,
                 modifier = Modifier
                     .size(size)
+                    .graphicsLayer {
+                        scaleX = scale
+                        scaleY = scale
+                    }
                     .onClick {
                         val scaledRating = UserRating.scaleTo10(index + 1)
                         if (rating?.rating != scaledRating) {
+                            lastClickedIndex.intValue = index
+
                             onRatingClick(scaledRating)
+
+                            scope.launch {
+                                scaleAnimation.animateTo(
+                                    targetValue = 1f,
+                                    initialVelocity = 1f,
+                                    animationSpec = keyframes {
+                                        durationMillis = 350
+                                        1.2f at 100
+                                        0.9f at 250
+                                        1f at 350
+                                    },
+                                )
+                            }
                         }
                     },
             )
