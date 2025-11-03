@@ -91,6 +91,7 @@ internal class FirebaseAnalyticsProgress(
 ) : Analytics.Progress {
     companion object Event {
         const val PROGRESS_WATCHED_ADD = "progress_watched_add"
+        const val PROGRESS_WATCHLIST_ADD = "progress_watchlist_add"
     }
 
     init {
@@ -103,6 +104,19 @@ internal class FirebaseAnalyticsProgress(
     ) {
         firebase.logEvent(
             eventName(PROGRESS_WATCHED_ADD),
+            bundleOf(
+                "media_type" to mediaType.lowercase(),
+                "source" to source.lowercase(),
+            ),
+        )
+    }
+
+    override fun logAddWatchlistMedia(
+        mediaType: String,
+        source: String,
+    ) {
+        firebase.logEvent(
+            eventName(PROGRESS_WATCHLIST_ADD),
             bundleOf(
                 "media_type" to mediaType.lowercase(),
                 "source" to source.lowercase(),

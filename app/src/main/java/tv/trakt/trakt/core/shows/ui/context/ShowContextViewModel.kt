@@ -134,6 +134,11 @@ internal class ShowContextViewModel(
                         ),
                     ),
                 )
+
+                analytics.progress.logAddWatchlistMedia(
+                    mediaType = "show",
+                    source = "show_context",
+                )
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

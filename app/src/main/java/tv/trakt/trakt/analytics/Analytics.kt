@@ -27,5 +27,10 @@ interface Analytics {
             mediaType: String,
             source: String,
         )
+
+        fun logAddWatchlistMedia(
+            mediaType: String,
+            source: String,
+        )
     }
 }

@@ -410,6 +410,11 @@ internal class MovieDetailsViewModel(
                         inWatchlist = true,
                     )
                 }
+
+                analytics.progress.logAddWatchlistMedia(
+                    mediaType = "movie",
+                    source = "movie_details",
+                )
                 infoState.update {
                     DynamicStringResource(R.string.text_info_watchlist_added)
                 }

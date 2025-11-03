@@ -449,9 +449,14 @@ internal class ShowDetailsViewModel(
                         inWatchlist = true,
                     )
                 }
+
                 infoState.update {
                     DynamicStringResource(R.string.text_info_watchlist_added)
                 }
+                analytics.progress.logAddWatchlistMedia(
+                    mediaType = "show",
+                    source = "show_details",
+                )
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

@@ -40,4 +40,11 @@ internal class DebugAnalyticsProgress : Analytics.Progress {
     ) {
         Timber.d("logAddWatchedMedia: mediaType=$mediaType, source=$source")
     }
+
+    override fun logAddWatchlistMedia(
+        mediaType: String,
+        source: String,
+    ) {
+        Timber.d("logAddWatchlistMedia: mediaType=$mediaType, source=$source")
+    }
 }

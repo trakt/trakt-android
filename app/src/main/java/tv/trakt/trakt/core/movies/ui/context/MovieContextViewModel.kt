@@ -129,6 +129,11 @@ internal class MovieContextViewModel(
                     ),
                     notify = true,
                 )
+
+                analytics.progress.logAddWatchlistMedia(
+                    mediaType = "movie",
+                    source = "movie_context",
+                )
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
