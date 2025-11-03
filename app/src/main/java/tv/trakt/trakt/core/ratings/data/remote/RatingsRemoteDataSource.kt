@@ -12,4 +12,9 @@ internal interface RatingsRemoteDataSource {
         id: TraktId,
         rating: Int,
     )
+
+    suspend fun postEpisodeRating(
+        id: TraktId,
+        rating: Int,
+    )
 }

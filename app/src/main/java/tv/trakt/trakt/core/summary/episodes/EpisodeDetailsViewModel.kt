@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.summary.episodes
 
+import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,6 +8,7 @@ import androidx.navigation.toRoute
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -32,11 +34,15 @@ import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.ExternalRating
+import tv.trakt.trakt.common.model.MediaType.EPISODE
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
+import tv.trakt.trakt.core.summary.episodes.EpisodeDetailsState.UserRatingsState
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
@@ -48,15 +54,19 @@ import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.resources.R
+import kotlin.time.Duration.Companion.seconds
 
 @OptIn(FlowPreview::class)
 internal class EpisodeDetailsViewModel(
     savedStateHandle: SavedStateHandle,
+    private val appContext: Context,
     private val getShowDetailsUseCase: GetShowDetailsUseCase,
     private val getEpisodeDetailsUseCase: GetEpisodeDetailsUseCase,
     private val getRatingsUseCase: GetEpisodeRatingsUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
+    private val loadRatingUseCase: LoadUserRatingsUseCase,
     private val updateHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val showUpdatesSource: ShowDetailsUpdates,
     private val episodeUpdatesSource: EpisodeDetailsUpdates,
@@ -77,6 +87,7 @@ internal class EpisodeDetailsViewModel(
     private val showState = MutableStateFlow(initialState.show)
     private val episodeState = MutableStateFlow(initialState.episode)
     private val episodeRatingsState = MutableStateFlow(initialState.episodeRatings)
+    private val episodeUserRatingsState = MutableStateFlow(initialState.episodeUserRating)
     private val episodeProgressState = MutableStateFlow(initialState.episodeProgress)
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val loadingState = MutableStateFlow(initialState.loading)
@@ -85,10 +96,13 @@ internal class EpisodeDetailsViewModel(
     private val errorState = MutableStateFlow(initialState.error)
     private val userState = MutableStateFlow(initialState.user)
 
+    private var ratingJob: kotlinx.coroutines.Job? = null
+
     init {
         loadUser()
         loadData()
         loadProgressData()
+        loadUserRatingData()
         observeData()
 
         analytics.logScreenView(
@@ -237,6 +251,39 @@ internal class EpisodeDetailsViewModel(
         }
     }
 
+    private fun loadUserRatingData() {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                episodeUserRatingsState.update {
+                    UserRatingsState(
+                        loading = LOADING,
+                    )
+                }
+
+                if (!loadRatingUseCase.isEpisodesLoaded()) {
+                    loadRatingUseCase.loadEpisodes()
+                }
+
+                val userRatings = loadRatingUseCase.loadLocalEpisodes()
+                val userRating = userRatings[episodeId]
+
+                episodeUserRatingsState.update {
+                    UserRatingsState(
+                        rating = userRating,
+                        loading = DONE,
+                    )
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.w(error)
+                }
+            }
+        }
+    }
+
     fun addToWatched() {
         if (isLoading()) {
             return
@@ -344,6 +391,35 @@ internal class EpisodeDetailsViewModel(
         navigateEpisode.update { null }
     }
 
+    fun addRating(newRating: Int) {
+        ratingJob?.cancel()
+        ratingJob = viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+
+            episodeUserRatingsState.update {
+                UserRatingsState(
+                    rating = UserRating(
+                        mediaId = episodeId,
+                        mediaType = EPISODE,
+                        rating = newRating,
+                    ),
+                    loading = DONE,
+                )
+            }
+
+            // Debounce to avoid multiple rapid calls.
+            delay(1.seconds)
+            PostRatingWorker.scheduleOneTime(
+                appContext = appContext,
+                mediaId = episodeId,
+                mediaType = EPISODE,
+                rating = newRating,
+            )
+        }
+    }
+
     private fun isLoading(): Boolean {
         return showState.value == null ||
             loadingState.value.isLoading ||
@@ -355,6 +431,7 @@ internal class EpisodeDetailsViewModel(
         showState,
         episodeState,
         episodeRatingsState,
+        episodeUserRatingsState,
         episodeProgressState,
         loadingState,
         loadingProgress,
@@ -367,13 +444,14 @@ internal class EpisodeDetailsViewModel(
             show = state[0] as Show?,
             episode = state[1] as Episode?,
             episodeRatings = state[2] as ExternalRating?,
-            episodeProgress = state[3] as EpisodeDetailsState.ProgressState?,
-            loading = state[4] as LoadingState,
-            loadingProgress = state[5] as LoadingState,
-            info = state[6] as StringResource?,
-            error = state[7] as Exception?,
-            user = state[8] as User?,
-            navigateEpisode = state[9] as Pair<TraktId, Episode>?,
+            episodeUserRating = state[3] as UserRatingsState?,
+            episodeProgress = state[4] as EpisodeDetailsState.ProgressState?,
+            loading = state[5] as LoadingState,
+            loadingProgress = state[6] as LoadingState,
+            info = state[7] as StringResource?,
+            error = state[8] as Exception?,
+            user = state[9] as User?,
+            navigateEpisode = state[10] as Pair<TraktId, Episode>?,
         )
     }.stateIn(
         scope = viewModelScope,

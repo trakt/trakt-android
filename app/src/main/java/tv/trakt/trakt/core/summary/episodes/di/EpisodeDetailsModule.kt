@@ -102,11 +102,13 @@ internal val episodeDetailsModule = module {
 
     viewModel {
         EpisodeDetailsViewModel(
+            appContext = androidApplication(),
             savedStateHandle = get(),
             getShowDetailsUseCase = get(),
             getEpisodeDetailsUseCase = get(),
             getRatingsUseCase = get(),
             loadProgressUseCase = get(),
+            loadRatingUseCase = get(),
             updateHistoryUseCase = get(),
             showUpdatesSource = get(),
             episodeUpdatesSource = get(),
