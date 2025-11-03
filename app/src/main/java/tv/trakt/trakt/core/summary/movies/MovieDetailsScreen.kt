@@ -513,9 +513,10 @@ fun DetailsRating(
     onRatingClick: (Int) -> Unit,
 ) {
     Box(
-        modifier = modifier.animateContentSize(
-            animationSpec = tween(200, delayMillis = 200),
-        ),
+        modifier = modifier
+            .animateContentSize(
+                animationSpec = tween(200, delayMillis = 250),
+            ),
     ) {
         if (visible) {
             UserRatingBar(

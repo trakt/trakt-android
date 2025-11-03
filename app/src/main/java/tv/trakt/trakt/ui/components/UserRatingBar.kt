@@ -24,7 +24,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun UserRatingBar(
     modifier: Modifier = Modifier,
     rating: UserRating? = null,
-    size: Dp = 24.dp,
+    size: Dp = 22.dp,
     onRatingClick: (Int) -> Unit = {},
 ) {
     val stars = remember(rating) {
