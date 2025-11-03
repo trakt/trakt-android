@@ -199,6 +199,7 @@ internal val movieDetailsModule = module {
         MovieCommentsViewModel(
             appContext = androidApplication(),
             movie = movie,
+            getFilterUseCase = get(),
             getCommentsUseCase = get(),
             getCommentReactionsUseCase = get(),
             loadUserReactionsUseCase = get(),

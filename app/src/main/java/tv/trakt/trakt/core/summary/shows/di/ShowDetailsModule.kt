@@ -215,6 +215,7 @@ internal val showDetailsModule = module {
         ShowCommentsViewModel(
             appContext = androidApplication(),
             show = show,
+            getFilterUseCase = get(),
             getCommentsUseCase = get(),
             getCommentReactionsUseCase = get(),
             loadUserReactionsUseCase = get(),

@@ -36,6 +36,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.core.comments.model.CommentsFilter
+import tv.trakt.trakt.core.comments.usecases.GetCommentsFilterUseCase
 import tv.trakt.trakt.core.reactions.data.ReactionsUpdates
 import tv.trakt.trakt.core.reactions.data.ReactionsUpdates.Source
 import tv.trakt.trakt.core.reactions.data.work.DeleteReactionWorker
@@ -49,6 +50,7 @@ internal class ShowCommentsViewModel(
     private val appContext: Context,
     private val show: Show,
     private val sessionManager: SessionManager,
+    private val getFilterUseCase: GetCommentsFilterUseCase,
     private val getCommentsUseCase: GetShowCommentsUseCase,
     private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
     private val loadUserReactionsUseCase: LoadUserReactionsUseCase,
@@ -85,6 +87,12 @@ internal class ShowCommentsViewModel(
             .launchIn(viewModelScope)
     }
 
+    private suspend fun loadFilter(): CommentsFilter {
+        val filter = getFilterUseCase.getFilter()
+        filterState.update { filter }
+        return filter
+    }
+
     private fun loadData() {
         viewModelScope.launch {
             try {
@@ -94,7 +102,7 @@ internal class ShowCommentsViewModel(
                     val commentsAsync = async {
                         getCommentsUseCase.getComments(
                             showId = show.ids.trakt,
-                            filter = filterState.value,
+                            filter = loadFilter(),
                         )
                     }
 
@@ -192,12 +200,14 @@ internal class ShowCommentsViewModel(
     }
 
     fun setFilter(filter: CommentsFilter) {
-        if (loadingState.value != DONE || filter == state.value.filter) {
+        if (loadingState.value != DONE || filter == filterState.value) {
             return
         }
-
-        filterState.update { filter }
-        loadData()
+        viewModelScope.launch {
+            getFilterUseCase.setFilter(filter)
+            loadFilter()
+            loadData()
+        }
     }
 
     fun setReaction(

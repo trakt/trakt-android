@@ -36,6 +36,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.core.comments.model.CommentsFilter
+import tv.trakt.trakt.core.comments.usecases.GetCommentsFilterUseCase
 import tv.trakt.trakt.core.reactions.data.ReactionsUpdates
 import tv.trakt.trakt.core.reactions.data.ReactionsUpdates.Source
 import tv.trakt.trakt.core.reactions.data.work.DeleteReactionWorker
@@ -49,6 +50,7 @@ internal class MovieCommentsViewModel(
     private val appContext: Context,
     private val movie: Movie,
     private val sessionManager: SessionManager,
+    private val getFilterUseCase: GetCommentsFilterUseCase,
     private val getCommentsUseCase: GetMovieCommentsUseCase,
     private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
     private val loadUserReactionsUseCase: LoadUserReactionsUseCase,
@@ -85,6 +87,12 @@ internal class MovieCommentsViewModel(
             .launchIn(viewModelScope)
     }
 
+    private suspend fun loadFilter(): CommentsFilter {
+        val filter = getFilterUseCase.getFilter()
+        filterState.update { filter }
+        return filter
+    }
+
     private fun loadData() {
         viewModelScope.launch {
             try {
@@ -94,7 +102,7 @@ internal class MovieCommentsViewModel(
                     val commentsAsync = async {
                         getCommentsUseCase.getComments(
                             movieId = movie.ids.trakt,
-                            filter = filterState.value,
+                            filter = loadFilter(),
                         )
                     }
 
@@ -196,8 +204,11 @@ internal class MovieCommentsViewModel(
             return
         }
 
-        filterState.update { filter }
-        loadData()
+        viewModelScope.launch {
+            getFilterUseCase.setFilter(filter)
+            loadFilter()
+            loadData()
+        }
     }
 
     fun setReaction(

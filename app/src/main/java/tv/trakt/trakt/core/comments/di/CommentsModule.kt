@@ -1,5 +1,16 @@
 package tv.trakt.trakt.core.comments.di
 
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
+import androidx.datastore.preferences.SharedPreferencesMigration
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.preferencesDataStoreFile
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -13,6 +24,9 @@ import tv.trakt.trakt.common.core.comments.usecases.GetCommentRepliesUseCase
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.core.comments.CommentsViewModel
 import tv.trakt.trakt.core.comments.details.CommentDetailsViewModel
+import tv.trakt.trakt.core.comments.usecases.GetCommentsFilterUseCase
+
+internal const val COMMENTS_PREFERENCES = "comments_preferences_mobile"
 
 internal val commentsDataModule = module {
     single<CommentsRemoteDataSource> {
@@ -22,6 +36,12 @@ internal val commentsDataModule = module {
                 httpClientEngine = get(),
                 httpClientConfig = get(named("clientConfig")),
             ),
+        )
+    }
+
+    single<DataStore<Preferences>>(named(COMMENTS_PREFERENCES)) {
+        createStore(
+            context = androidApplication(),
         )
     }
 }
@@ -39,10 +59,17 @@ internal val commentsModule = module {
         )
     }
 
+    factory {
+        GetCommentsFilterUseCase(
+            dataStore = get(named(COMMENTS_PREFERENCES)),
+        )
+    }
+
     viewModel {
         CommentsViewModel(
             appContext = androidApplication(),
             savedStateHandle = get(),
+            getFilterUseCase = get(),
             getShowCommentsUseCase = get(),
             getMovieCommentsUseCase = get(),
             getEpisodeCommentsUseCase = get(),
@@ -63,4 +90,15 @@ internal val commentsModule = module {
             loadUserReactionsUseCase = get(),
         )
     }
+}
+
+private fun createStore(context: Context): DataStore<Preferences> {
+    return PreferenceDataStoreFactory.create(
+        corruptionHandler = ReplaceFileCorruptionHandler(
+            produceNewData = { emptyPreferences() },
+        ),
+        migrations = listOf(SharedPreferencesMigration(context, COMMENTS_PREFERENCES)),
+        scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
+        produceFile = { context.preferencesDataStoreFile(COMMENTS_PREFERENCES) },
+    )
 }

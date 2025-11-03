@@ -40,6 +40,7 @@ import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.navigation.CommentsDestination
+import tv.trakt.trakt.core.comments.usecases.GetCommentsFilterUseCase
 import tv.trakt.trakt.core.reactions.data.ReactionsUpdates
 import tv.trakt.trakt.core.reactions.data.ReactionsUpdates.Source
 import tv.trakt.trakt.core.reactions.data.work.DeleteReactionWorker
@@ -55,6 +56,7 @@ internal class CommentsViewModel(
     savedStateHandle: SavedStateHandle,
     private val appContext: Context,
     private val sessionManager: SessionManager,
+    private val getFilterUseCase: GetCommentsFilterUseCase,
     private val getShowCommentsUseCase: GetShowCommentsUseCase,
     private val getMovieCommentsUseCase: GetMovieCommentsUseCase,
     private val getEpisodeCommentsUseCase: GetEpisodeCommentsUseCase,
@@ -100,6 +102,12 @@ internal class CommentsViewModel(
         backgroundState.update {
             destination.mediaImage
         }
+    }
+
+    private suspend fun loadFilter(): CommentsFilter {
+        val filter = getFilterUseCase.getFilter()
+        filterState.update { filter }
+        return filter
     }
 
     private fun loadData() {
@@ -153,15 +161,16 @@ internal class CommentsViewModel(
     }
 
     private suspend fun fetchComments(): ImmutableList<Comment> {
+        val filter = loadFilter()
         return when (mediaType) {
             MediaType.MOVIE -> getMovieCommentsUseCase.getComments(
                 movieId = mediaId,
-                filter = filterState.value,
+                filter = filter,
                 limit = 50,
             )
             MediaType.SHOW -> getShowCommentsUseCase.getComments(
                 showId = mediaId,
-                filter = filterState.value,
+                filter = filter,
                 limit = 50,
             )
             MediaType.EPISODE -> getEpisodeCommentsUseCase.getComments(
@@ -170,7 +179,7 @@ internal class CommentsViewModel(
                     season = destination.mediaSeason ?: -1,
                     episode = destination.mediaEpisode ?: -1,
                 ),
-                filter = filterState.value,
+                filter = filter,
                 limit = 50,
             )
 
@@ -179,12 +188,14 @@ internal class CommentsViewModel(
     }
 
     fun setFilter(filter: CommentsFilter) {
-        if (loadingState.value != DONE || filter == state.value.filter) {
+        if (loadingState.value != DONE || filter == filterState.value) {
             return
         }
-
-        filterState.update { filter }
-        loadData()
+        viewModelScope.launch {
+            getFilterUseCase.setFilter(filter)
+            loadFilter()
+            loadData()
+        }
     }
 
     fun loadReactions(commentId: Int) {
