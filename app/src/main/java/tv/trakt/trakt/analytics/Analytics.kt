@@ -5,6 +5,7 @@ package tv.trakt.trakt.analytics
  */
 interface Analytics {
     val reactions: Reactions
+    val ratings: Ratings
     val progress: Progress
 
     fun logScreenView(screenName: String)
@@ -20,6 +21,13 @@ interface Analytics {
         )
 
         fun logReactionRemove(source: String)
+    }
+
+    interface Ratings {
+        fun logRatingAdd(
+            rating: Int,
+            mediaType: String,
+        )
     }
 
     interface Progress {

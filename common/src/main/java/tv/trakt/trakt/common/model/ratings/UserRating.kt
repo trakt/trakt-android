@@ -13,14 +13,17 @@ data class UserRating(
     val mediaType: MediaType,
     val rating: Int,
 ) {
-    /**
-     * Rating scaled to 1-5 range.
-     */
-    val ratingsScaled: Int = when {
-        rating >= 9 -> 5
-        rating >= 7 -> 4
-        rating >= 5 -> 3
-        rating >= 3 -> 2
-        else -> 1
+    companion object {
+        fun scaleTo10(rating: Int): Int {
+            require(rating in 1..5) { "Rating must be between 1 and 5" }
+            return when (rating) {
+                5 -> 10
+                4 -> 8
+                3 -> 6
+                2 -> 4
+                1 -> 2
+                else -> throw IllegalArgumentException("Rating must be between 1 and 5")
+            }
+        }
     }
 }

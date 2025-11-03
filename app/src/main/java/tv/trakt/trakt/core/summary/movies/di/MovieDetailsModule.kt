@@ -125,6 +125,7 @@ internal val movieDetailsModule = module {
 
     viewModel {
         MovieDetailsViewModel(
+            appContext = androidApplication(),
             savedStateHandle = get(),
             getDetailsUseCase = get(),
             getExternalRatingsUseCase = get(),

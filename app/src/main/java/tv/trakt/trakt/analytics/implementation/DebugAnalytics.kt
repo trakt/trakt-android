@@ -5,6 +5,7 @@ import tv.trakt.trakt.analytics.Analytics
 
 internal class DebugAnalytics(
     override val reactions: Analytics.Reactions,
+    override val ratings: Analytics.Ratings,
     override val progress: Analytics.Progress,
 ) : Analytics {
     override fun logScreenView(screenName: String) {
@@ -33,18 +34,27 @@ internal class DebugAnalyticsReactions : Analytics.Reactions {
     }
 }
 
+internal class DebugAnalyticsRatings : Analytics.Ratings {
+    override fun logRatingAdd(
+        rating: Int,
+        mediaType: String,
+    ) {
+        Timber.d("logRatingAdd: rating=$rating, mediaType=${mediaType.lowercase()}")
+    }
+}
+
 internal class DebugAnalyticsProgress : Analytics.Progress {
     override fun logAddWatchedMedia(
         mediaType: String,
         source: String,
     ) {
-        Timber.d("logAddWatchedMedia: mediaType=$mediaType, source=$source")
+        Timber.d("logAddWatchedMedia: mediaType=${mediaType.lowercase()}, source=${source.lowercase()}")
     }
 
     override fun logAddWatchlistMedia(
         mediaType: String,
         source: String,
     ) {
-        Timber.d("logAddWatchlistMedia: mediaType=$mediaType, source=$source")
+        Timber.d("logAddWatchlistMedia: mediaType=${mediaType.lowercase()}, source=${source.lowercase()}")
     }
 }

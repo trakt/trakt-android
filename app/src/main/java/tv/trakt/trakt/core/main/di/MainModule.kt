@@ -21,9 +21,11 @@ import tv.trakt.trakt.BuildConfig
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.implementation.DebugAnalytics
 import tv.trakt.trakt.analytics.implementation.DebugAnalyticsProgress
+import tv.trakt.trakt.analytics.implementation.DebugAnalyticsRatings
 import tv.trakt.trakt.analytics.implementation.DebugAnalyticsReactions
 import tv.trakt.trakt.analytics.implementation.FirebaseAnalytics
 import tv.trakt.trakt.analytics.implementation.FirebaseAnalyticsProgress
+import tv.trakt.trakt.analytics.implementation.FirebaseAnalyticsRatings
 import tv.trakt.trakt.analytics.implementation.FirebaseAnalyticsReactions
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
 import tv.trakt.trakt.core.main.MainViewModel
@@ -43,6 +45,7 @@ internal val mainModule = module {
         if (BuildConfig.DEBUG) {
             DebugAnalytics(
                 reactions = DebugAnalyticsReactions(),
+                ratings = DebugAnalyticsRatings(),
                 progress = DebugAnalyticsProgress(),
             )
         } else {
@@ -50,6 +53,9 @@ internal val mainModule = module {
             FirebaseAnalytics(
                 firebase = firebase,
                 reactions = FirebaseAnalyticsReactions(
+                    firebase = firebase,
+                ),
+                ratings = FirebaseAnalyticsRatings(
                     firebase = firebase,
                 ),
                 progress = FirebaseAnalyticsProgress(
@@ -64,6 +70,7 @@ internal val mainModule = module {
             sessionManager = get(),
             loadUserProgressUseCase = get(),
             loadUserWatchlistUseCase = get(),
+            laodUserRatingsUseCase = get(),
             authorizePreferences = get(named(AUTH_PREFERENCES)),
             authorizeUseCase = get(),
             getUserUseCase = get(),

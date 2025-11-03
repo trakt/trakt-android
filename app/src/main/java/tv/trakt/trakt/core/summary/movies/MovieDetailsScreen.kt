@@ -145,6 +145,7 @@ internal fun MovieDetailsScreen(
             }
         },
         onHistoryClick = { historySheet = it },
+        onRatingClick = viewModel::addRating,
         onBackClick = onNavigateBack,
     )
 
@@ -235,6 +236,7 @@ internal fun MovieDetailsContent(
     onMoreCommentsClick: ((CommentsFilter) -> Unit)? = null,
     onPersonClick: ((Person) -> Unit)? = null,
     onListClick: ((CustomList) -> Unit)? = null,
+    onRatingClick: ((Int) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     val previewMode = LocalInspectionMode.current
@@ -335,6 +337,7 @@ internal fun MovieDetailsContent(
                     DetailsRating(
                         visible = isWatched && isLoaded,
                         rating = state.movieUserRating?.rating,
+                        onRatingClick = onRatingClick ?: {},
                     )
                 }
 
@@ -504,6 +507,7 @@ fun DetailsRating(
     modifier: Modifier = Modifier,
     visible: Boolean,
     rating: UserRating?,
+    onRatingClick: (Int) -> Unit,
 ) {
     Box(
         modifier = modifier.animateContentSize(
@@ -512,7 +516,8 @@ fun DetailsRating(
     ) {
         if (visible) {
             UserRatingBar(
-                rating = rating?.ratingsScaled,
+                rating = rating,
+                onRatingClick = onRatingClick,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 20.dp)

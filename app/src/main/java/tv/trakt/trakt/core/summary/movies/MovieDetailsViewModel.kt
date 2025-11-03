@@ -1,12 +1,15 @@
 package tv.trakt.trakt.core.summary.movies
 
+import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -30,10 +33,12 @@ import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.lists.sections.personal.usecases.AddPersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
+import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.summary.movies.MovieDetailsState.UserRatingsState
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.movies.navigation.MovieDetailsDestination
@@ -48,9 +53,11 @@ import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.resources.R
+import kotlin.time.Duration.Companion.seconds
 
 internal class MovieDetailsViewModel(
     savedStateHandle: SavedStateHandle,
+    private val appContext: Context,
     private val getDetailsUseCase: GetMovieDetailsUseCase,
     private val getExternalRatingsUseCase: GetMovieRatingsUseCase,
     private val getMovieStudiosUseCase: GetMovieStudiosUseCase,
@@ -83,6 +90,8 @@ internal class MovieDetailsViewModel(
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
     private val userState = MutableStateFlow(initialState.user)
+
+    private var ratingJob: Job? = null
 
     init {
         loadUser()
@@ -562,6 +571,35 @@ internal class MovieDetailsViewModel(
                     hasLists = listsCount > 0,
                 )
             }
+        }
+    }
+
+    fun addRating(newRating: Int) {
+        ratingJob?.cancel()
+        ratingJob = viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+
+            movieUserRatingsState.update {
+                UserRatingsState(
+                    rating = UserRating(
+                        mediaId = movieId,
+                        mediaType = MOVIE,
+                        rating = newRating,
+                    ),
+                    loading = DONE,
+                )
+            }
+
+            // Debounce to avoid multiple rapid calls.
+            delay(1.seconds)
+            PostRatingWorker.scheduleOneTime(
+                appContext = appContext,
+                mediaId = movieId,
+                mediaType = MOVIE,
+                rating = newRating,
+            )
         }
     }
 

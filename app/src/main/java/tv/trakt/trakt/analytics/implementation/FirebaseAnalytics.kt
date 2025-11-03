@@ -18,6 +18,7 @@ private fun eventName(name: String) = "$EVENT_NAME_PREFIX$name"
 internal class FirebaseAnalytics(
     private val firebase: FirebaseAnalytics,
     override val reactions: Analytics.Reactions,
+    override val ratings: Analytics.Ratings,
     override val progress: Analytics.Progress,
 ) : Analytics {
     companion object Event {
@@ -81,6 +82,31 @@ internal class FirebaseAnalyticsReactions(
             eventName(REACTIONS_REMOVE),
             bundleOf(
                 "source" to source.lowercase(),
+            ),
+        )
+    }
+}
+
+internal class FirebaseAnalyticsRatings(
+    private val firebase: FirebaseAnalytics,
+) : Analytics.Ratings {
+    companion object Event {
+        const val RATINGS_ADD = "ratings_add"
+    }
+
+    init {
+        require(eventName(RATINGS_ADD).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
+    }
+
+    override fun logRatingAdd(
+        rating: Int,
+        mediaType: String,
+    ) {
+        firebase.logEvent(
+            eventName(RATINGS_ADD),
+            bundleOf(
+                "rating_value" to rating,
+                "media_type" to mediaType.lowercase(),
             ),
         )
     }

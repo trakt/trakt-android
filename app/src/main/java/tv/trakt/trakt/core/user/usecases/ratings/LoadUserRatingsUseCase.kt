@@ -2,6 +2,8 @@ package tv.trakt.trakt.core.user.usecases.ratings
 
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
@@ -42,6 +44,21 @@ internal class LoadUserRatingsUseCase(
 
     suspend fun isEpisodesLoaded(): Boolean {
         return localSource.isEpisodesLoaded()
+    }
+
+    suspend fun loadAll(): ImmutableMap<TraktId, UserRating> {
+        return coroutineScope {
+            val showsAsync = async { loadShows() }
+            val moviesAsync = async { loadMovies() }
+            val episodesAsync = async { loadEpisodes() }
+
+            val shows = showsAsync.await()
+            val movies = moviesAsync.await()
+            val episodes = episodesAsync.await()
+
+            (shows + movies + episodes)
+                .toImmutableMap()
+        }
     }
 
     suspend fun loadShows(): ImmutableMap<TraktId, UserRating> {

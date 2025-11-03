@@ -35,6 +35,7 @@ import tv.trakt.trakt.core.user.usecases.GetUserProfileUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import java.time.Instant
 import java.time.temporal.ChronoUnit.MINUTES
 
@@ -47,6 +48,7 @@ internal class MainViewModel(
     private val logoutUserUseCase: LogoutUserUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val loadUserWatchlistUseCase: LoadUserWatchlistUseCase,
+    private val laodUserRatingsUseCase: LoadUserRatingsUseCase,
     private val dismissWelcomeUseCase: DismissWelcomeUseCase,
     private val analytics: Analytics,
 ) : ViewModel() {
@@ -116,10 +118,12 @@ internal class MainViewModel(
                 coroutineScope {
                     val progressAsync = async { loadUserProgressUseCase.loadAllProgress() }
                     val watchlistAsync = async { loadUserWatchlistUseCase.loadWatchlist() }
+                    val ratingsAsync = async { laodUserRatingsUseCase.loadAll() }
 
                     awaitAll(
                         progressAsync,
                         watchlistAsync,
+                        ratingsAsync,
                     )
                 }
 

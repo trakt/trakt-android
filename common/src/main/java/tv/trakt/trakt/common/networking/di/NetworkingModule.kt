@@ -13,6 +13,7 @@ import org.openapitools.client.apis.ListsApi
 import org.openapitools.client.apis.MoviesApi
 import org.openapitools.client.apis.OauthApi
 import org.openapitools.client.apis.PeopleApi
+import org.openapitools.client.apis.RatingsApi
 import org.openapitools.client.apis.ReactionsApi
 import org.openapitools.client.apis.RecommendationsApi
 import org.openapitools.client.apis.SearchApi
@@ -66,6 +67,7 @@ val networkingApiModule = module {
             get<OauthApi>(),
             get<PeopleApi>(),
             get<ReactionsApi>(),
+            get<RatingsApi>(),
             get<RecommendationsApi>(),
             get<SearchApi>(),
             get<ShowsApi>(),
@@ -117,6 +119,14 @@ val networkingApiModule = module {
 
     single<ReactionsApi> {
         ReactionsApi(
+            baseUrl = API_HD_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
+        )
+    }
+
+    single<RatingsApi> {
+        RatingsApi(
             baseUrl = API_HD_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
