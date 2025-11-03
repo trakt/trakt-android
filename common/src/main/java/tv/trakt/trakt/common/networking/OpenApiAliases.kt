@@ -35,6 +35,7 @@ import org.openapitools.client.models.GetUsersLikesComments200ResponseInnerAllOf
 import org.openapitools.client.models.GetUsersLikesComments200ResponseInnerAllOfOneOf2Episode
 import org.openapitools.client.models.GetUsersLikesComments200ResponseInnerAllOfOneOfMovie
 import org.openapitools.client.models.GetUsersListsPersonal200ResponseInner
+import org.openapitools.client.models.GetUsersRatingsMovies200ResponseInner
 import org.openapitools.client.models.GetUsersReactionsComments200ResponseInner
 import org.openapitools.client.models.GetUsersReactionsComments200ResponseInnerCommentUser
 import org.openapitools.client.models.GetUsersSettings200Response
@@ -104,3 +105,4 @@ typealias RecommendedMovieDto = GetRecommendationsMoviesRecommend200ResponseInne
 typealias RecommendedShowDto = GetRecommendationsShowsRecommend200ResponseInner
 typealias SearchItemDto = GetSearchQuery200ResponseInner
 typealias SocialActivityItemDto = GetUsersActivities200ResponseInner
+typealias UserRatingDto = GetUsersRatingsMovies200ResponseInner

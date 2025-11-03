@@ -17,6 +17,7 @@ import tv.trakt.trakt.common.networking.SyncFavoriteShowDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
 import tv.trakt.trakt.common.networking.UserCommentsDto
+import tv.trakt.trakt.common.networking.UserRatingDto
 import tv.trakt.trakt.common.networking.WatchedMovieDto
 import tv.trakt.trakt.common.networking.WatchedShowDto
 import tv.trakt.trakt.common.networking.WatchlistItemDto
@@ -104,6 +105,33 @@ internal class UserApiClient(
             ratings = null,
             startDate = null,
             endDate = null,
+        )
+
+        return response.body()
+    }
+
+    override suspend fun getRatingsShows(): List<UserRatingDto> {
+        val response = usersApi.getUsersRatingsShows(
+            id = "me",
+            extended = null,
+        )
+
+        return response.body()
+    }
+
+    override suspend fun getRatingsMovies(): List<UserRatingDto> {
+        val response = usersApi.getUsersRatingsMovies(
+            id = "me",
+            extended = null,
+        )
+
+        return response.body()
+    }
+
+    override suspend fun getRatingsEpisodes(): List<UserRatingDto> {
+        val response = usersApi.getUsersRatingsEpisodes(
+            id = "me",
+            extended = null,
         )
 
         return response.body()

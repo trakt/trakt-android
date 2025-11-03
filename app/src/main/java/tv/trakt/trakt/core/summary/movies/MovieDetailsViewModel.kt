@@ -7,7 +7,6 @@ import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -35,7 +34,7 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.lists.sections.personal.usecases.AddPersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
-import tv.trakt.trakt.core.main.usecases.HalloweenUseCase
+import tv.trakt.trakt.core.summary.movies.MovieDetailsState.UserRatingsState
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.movies.navigation.MovieDetailsDestination
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
@@ -47,6 +46,7 @@ import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserListsUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.resources.R
 
 internal class MovieDetailsViewModel(
@@ -57,11 +57,11 @@ internal class MovieDetailsViewModel(
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
     private val loadListsUseCase: LoadUserListsUseCase,
+    private val loadRatingUseCase: LoadUserRatingsUseCase,
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
     private val updateMovieWatchlistUseCase: UpdateMovieWatchlistUseCase,
     private val addListItemUseCase: AddPersonalListItemUseCase,
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
-    private val halloweenUseCase: HalloweenUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
     private val movieDetailsUpdates: MovieDetailsUpdates,
     private val sessionManager: SessionManager,
@@ -74,6 +74,7 @@ internal class MovieDetailsViewModel(
 
     private val movieState = MutableStateFlow(initialState.movie)
     private val movieRatingsState = MutableStateFlow(initialState.movieRatings)
+    private val movieUserRatingsState = MutableStateFlow(initialState.movieUserRating)
     private val movieStudiosState = MutableStateFlow(initialState.movieStudios)
     private val movieProgressState = MutableStateFlow(initialState.movieProgress)
     private val loadingState = MutableStateFlow(initialState.loading)
@@ -82,12 +83,13 @@ internal class MovieDetailsViewModel(
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
     private val userState = MutableStateFlow(initialState.user)
-    private val halloweenState = MutableStateFlow(initialState.halloween)
 
     init {
         loadUser()
         loadData()
-        loadProgressData()
+
+        loadUserProgressData()
+        loadUserRatingData()
 
         analytics.logScreenView(
             screenName = "movie_details",
@@ -122,7 +124,6 @@ internal class MovieDetailsViewModel(
 
                 loadRatings(movie)
                 loadStudios()
-                loadHalloween(movie)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -134,23 +135,7 @@ internal class MovieDetailsViewModel(
         }
     }
 
-    private fun loadHalloween(movie: Movie?) {
-        viewModelScope.launch {
-            try {
-                delay(100)
-                halloweenState.update {
-                    movie?.genres?.contains("horror") == true &&
-                        halloweenUseCase.getConfig().enabled
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.w(error)
-                }
-            }
-        }
-    }
-
-    private fun loadProgressData() {
+    private fun loadUserProgressData() {
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) {
                 return@launch
@@ -224,6 +209,39 @@ internal class MovieDetailsViewModel(
             } finally {
                 loadingProgress.update { DONE }
                 loadingLists.update { DONE }
+            }
+        }
+    }
+
+    private fun loadUserRatingData() {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                movieUserRatingsState.update {
+                    UserRatingsState(
+                        loading = LOADING,
+                    )
+                }
+
+                if (!loadRatingUseCase.isMoviesLoaded()) {
+                    loadRatingUseCase.loadMovies()
+                }
+
+                val userRatings = loadRatingUseCase.loadLocalMovies()
+                val userRating = userRatings[movieId]
+
+                movieUserRatingsState.update {
+                    UserRatingsState(
+                        rating = userRating,
+                        loading = DONE,
+                    )
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.w(error)
+                }
             }
         }
     }
@@ -557,26 +575,26 @@ internal class MovieDetailsViewModel(
         movieRatingsState,
         movieStudiosState,
         movieProgressState,
+        movieUserRatingsState,
         loadingState,
         loadingProgress,
         loadingLists,
         infoState,
         errorState,
         userState,
-        halloweenState,
     ) { state ->
         MovieDetailsState(
             movie = state[0] as Movie?,
             movieRatings = state[1] as ExternalRating?,
             movieStudios = state[2] as ImmutableList<String>?,
             movieProgress = state[3] as MovieDetailsState.ProgressState?,
-            loading = state[4] as LoadingState,
-            loadingProgress = state[5] as LoadingState,
-            loadingLists = state[6] as LoadingState,
-            info = state[7] as StringResource?,
-            error = state[8] as Exception?,
-            user = state[9] as User?,
-            halloween = state[10] as Boolean,
+            movieUserRating = state[4] as UserRatingsState?,
+            loading = state[5] as LoadingState,
+            loadingProgress = state[6] as LoadingState,
+            loadingLists = state[7] as LoadingState,
+            info = state[8] as StringResource?,
+            error = state[9] as Exception?,
+            user = state[10] as User?,
         )
     }.stateIn(
         scope = viewModelScope,

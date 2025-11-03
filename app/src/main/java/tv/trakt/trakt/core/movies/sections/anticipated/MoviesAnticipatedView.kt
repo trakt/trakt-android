@@ -242,7 +242,7 @@ private fun ContentListItem(
                 modifier = modifier,
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_star_trakt),
+                    painter = painterResource(R.drawable.ic_star_trakt_on),
                     contentDescription = null,
                     tint = TraktTheme.colors.chipContent,
                     modifier = Modifier.size(12.dp),

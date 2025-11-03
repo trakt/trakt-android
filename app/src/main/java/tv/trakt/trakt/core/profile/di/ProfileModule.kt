@@ -31,6 +31,8 @@ import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserWatchlistStorage
 import tv.trakt.trakt.core.user.data.local.favorites.UserFavoritesLocalDataSource
 import tv.trakt.trakt.core.user.data.local.favorites.UserFavoritesStorage
+import tv.trakt.trakt.core.user.data.local.ratings.UserRatingsLocalDataSource
+import tv.trakt.trakt.core.user.data.local.ratings.UserRatingsStorage
 import tv.trakt.trakt.core.user.data.local.reactions.UserReactionsLocalDataSource
 import tv.trakt.trakt.core.user.data.local.reactions.UserReactionsStorage
 import tv.trakt.trakt.core.user.data.remote.UserApiClient
@@ -41,6 +43,7 @@ import tv.trakt.trakt.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserListsUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.core.user.usecases.reactions.LoadUserReactionsUseCase
 import tv.trakt.trakt.core.user.usecases.social.LoadUserSocialUseCase
 
@@ -73,6 +76,10 @@ internal val profileDataModule = module {
 
     single<UserFavoritesLocalDataSource> {
         UserFavoritesStorage()
+    }
+
+    single<UserRatingsLocalDataSource> {
+        UserRatingsStorage()
     }
 
     single<DataStore<Preferences>>(named(PROFILE_PREFERENCES)) {
@@ -148,6 +155,12 @@ internal val profileModule = module {
             localSource = get(),
         )
     }
+    factory {
+        LoadUserRatingsUseCase(
+            remoteSource = get(),
+            localSource = get(),
+        )
+    }
 
     factory {
         LogoutUserUseCase(
@@ -168,6 +181,7 @@ internal val profileModule = module {
             localUserLists = get(),
             localUserFavorites = get(),
             localUserReactions = get(),
+            localUserRatings = get(),
         )
     }
 

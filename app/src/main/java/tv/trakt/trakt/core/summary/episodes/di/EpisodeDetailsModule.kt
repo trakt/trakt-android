@@ -129,6 +129,7 @@ internal val episodeDetailsModule = module {
             appContext = androidApplication(),
             show = show,
             episode = episode,
+            getFilterUseCase = get(),
             getCommentsUseCase = get(),
             getCommentReactionsUseCase = get(),
             loadUserReactionsUseCase = get(),
