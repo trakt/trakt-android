@@ -182,7 +182,7 @@ private fun CommentContent(
             style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.3.em),
             color = TraktTheme.colors.textSecondary,
             overflow = if (isCollapsed) TextOverflow.Ellipsis else TextOverflow.Clip,
-            maxLines = if (isCollapsed) 12 else Int.MAX_VALUE,
+            maxLines = if (isCollapsed) 20 else Int.MAX_VALUE,
             modifier = Modifier
                 .onClick {
                     isCollapsed = !isCollapsed

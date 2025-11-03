@@ -95,7 +95,6 @@ internal fun CommentReplyCard(
         content = {
             CommentReplyCardContent(
                 comment = comment,
-                maxLines = 20,
                 reactions = reactions,
                 reactionsEnabled = reactionsEnabled,
                 userReaction = userReaction,
@@ -116,12 +115,10 @@ private fun CommentReplyCardContent(
     reactions: ReactionsSummary?,
     reactionsEnabled: Boolean,
     userReaction: Reaction?,
-    maxLines: Int,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
     onReactionClick: ((Reaction) -> Unit)? = null,
 ) {
-    var isCollapsed by remember { mutableStateOf(true) }
     var showSpoilers by remember { mutableStateOf(false) }
 
     Column(
@@ -144,14 +141,11 @@ private fun CommentReplyCardContent(
             text = mentionsText,
             style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.3.em),
             color = TraktTheme.colors.textSecondary,
-            overflow = if (isCollapsed) TextOverflow.Ellipsis else TextOverflow.Clip,
-            maxLines = if (isCollapsed) maxLines else Int.MAX_VALUE,
+            maxLines = Int.MAX_VALUE,
             modifier = Modifier
                 .onClick {
                     if (comment.hasSpoilers && !showSpoilers) {
                         showSpoilers = true
-                    } else {
-                        isCollapsed = !isCollapsed
                     }
                 }
                 .then(

@@ -19,7 +19,7 @@ import kotlin.random.Random.Default.nextInt
 @Composable
 internal fun CommentDetailsSheet(
     state: SheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = false,
+        skipPartiallyExpanded = true,
     ),
     comment: Comment?,
     onDismiss: () -> Unit,
@@ -36,7 +36,7 @@ internal fun CommentDetailsSheet(
                     parameters = { parametersOf(comment) },
                 ),
                 modifier = Modifier
-                    .fillMaxHeight()
+                    .fillMaxHeight(0.75F)
                     .padding(horizontal = 24.dp),
             )
         }
