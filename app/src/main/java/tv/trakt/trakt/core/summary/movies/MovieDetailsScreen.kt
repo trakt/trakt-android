@@ -145,7 +145,10 @@ internal fun MovieDetailsScreen(
             }
         },
         onHistoryClick = { historySheet = it },
-        onRatingClick = viewModel::addRating,
+        onRatingClick = {
+            viewModel.addRating(it)
+            haptic.performHapticFeedback(Confirm)
+        },
         onBackClick = onNavigateBack,
     )
 
