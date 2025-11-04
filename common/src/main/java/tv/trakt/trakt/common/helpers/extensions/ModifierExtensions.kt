@@ -15,17 +15,19 @@ fun Modifier.ifOrElse(
 
 fun Modifier.onClick(
     enabled: Boolean = true,
+    throttle: Boolean = true,
     onClick: () -> Unit,
 ): Modifier {
     return composed {
         val lastClickMs = remember { mutableLongStateOf(0L) }
+        val delaysMs = remember(throttle) { if (throttle) 350L else 0L }
         clickable(
             enabled = enabled,
             indication = null,
             interactionSource = null,
             onClick = {
                 val currentTime = currentTimeMillis()
-                if (currentTime - lastClickMs.longValue > 350) {
+                if (currentTime - lastClickMs.longValue > delaysMs) {
                     lastClickMs.longValue = currentTime
                     onClick()
                 }

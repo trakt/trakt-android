@@ -679,7 +679,7 @@ internal class ShowDetailsViewModel(
             }
 
             // Debounce to avoid multiple rapid calls.
-            delay(1.seconds)
+            delay(2.seconds)
             PostRatingWorker.scheduleOneTime(
                 appContext = appContext,
                 mediaId = showId,

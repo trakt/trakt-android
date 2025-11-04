@@ -14,16 +14,9 @@ data class UserRating(
     val rating: Int,
 ) {
     companion object {
-        fun scaleTo10(rating: Int): Int {
-            require(rating in 1..5) { "Rating must be between 1 and 5" }
-            return when (rating) {
-                5 -> 10
-                4 -> 8
-                3 -> 6
-                2 -> 4
-                1 -> 2
-                else -> throw IllegalArgumentException("Rating must be between 1 and 5")
-            }
+        fun scaleTo10(rating: Float): Int {
+            require(rating in 0.5F..5F) { "Rating must be between 0.5 and 5" }
+            return (rating * 2).toInt()
         }
     }
 }

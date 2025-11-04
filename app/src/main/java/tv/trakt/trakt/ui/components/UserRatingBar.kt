@@ -30,7 +30,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun UserRatingBar(
     modifier: Modifier = Modifier,
     rating: UserRating? = null,
-    size: Dp = 22.dp,
+    size: Dp = 23.dp,
     onRatingClick: (Int) -> Unit = {},
 ) {
     val scope = rememberCoroutineScope()
@@ -68,25 +68,28 @@ internal fun UserRatingBar(
                         scaleX = scale
                         scaleY = scale
                     }
-                    .onClick {
-                        val scaledRating = UserRating.scaleTo10(index + 1)
+                    .onClick(throttle = false) {
+                        val scaledRating = UserRating.scaleTo10(index + 1F)
+
                         if (rating?.rating != scaledRating) {
                             lastClickedIndex.intValue = index
-
                             onRatingClick(scaledRating)
+                        } else {
+                            lastClickedIndex.intValue = index
+                            onRatingClick(scaledRating - 1)
+                        }
 
-                            scope.launch {
-                                scaleAnimation.animateTo(
-                                    targetValue = 1f,
-                                    initialVelocity = 1f,
-                                    animationSpec = keyframes {
-                                        durationMillis = 350
-                                        1.2f at 100
-                                        0.9f at 250
-                                        1f at 350
-                                    },
-                                )
-                            }
+                        scope.launch {
+                            scaleAnimation.animateTo(
+                                targetValue = 1f,
+                                initialVelocity = 1f,
+                                animationSpec = keyframes {
+                                    durationMillis = 350
+                                    1.2f at 100
+                                    0.9f at 250
+                                    1f at 350
+                                },
+                            )
                         }
                     },
             )
