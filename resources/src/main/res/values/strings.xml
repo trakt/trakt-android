@@ -65,9 +65,6 @@
     <string name="text_by">by</string>
     <string name="list_placeholder_comments">No comments yet.</string>
     <string name="list_placeholder_replies">No replies yet.</string>
-    <string name="text_review_by">Review by</string>
-    <string name="text_shout_by">Shout by</string>
-    <string name="text_reply_by">Reply by</string>
     <string name="list_title_social_activity">Social Activity</string>
     <string name="list_title_personal_lists">My Lists</string>
     <string name="text_share_movie">Just discovered \"%s\" - you need to see this! 🎬</string>

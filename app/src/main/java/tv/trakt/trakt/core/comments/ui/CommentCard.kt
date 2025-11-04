@@ -3,7 +3,6 @@
 package tv.trakt.trakt.core.comments.ui
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -34,12 +33,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.W700
 import androidx.compose.ui.text.style.TextOverflow
@@ -61,7 +58,6 @@ import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
-import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryChip
 import tv.trakt.trakt.core.reactions.ui.ReactionsToolTip
 import tv.trakt.trakt.resources.R
@@ -217,22 +213,22 @@ private fun CommentHeader(
                 )
             }
 
-            comment.userLiteRating?.let {
-                Icon(
-                    painter = painterResource(it.iconRes),
-                    contentDescription = it.name,
-                    tint = it.tint,
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .graphicsLayer {
-                            translationX = 4.dp.toPx()
-                            translationY = -4.dp.toPx()
-                        }
-                        .background(Shade500, shape = CircleShape)
-                        .size(18.dp)
-                        .padding(3.dp),
-                )
-            }
+//            comment.userLiteRating?.let {
+//                Icon(
+//                    painter = painterResource(it.iconRes),
+//                    contentDescription = it.name,
+//                    tint = it.tint,
+//                    modifier = Modifier
+//                        .align(Alignment.TopEnd)
+//                        .graphicsLayer {
+//                            translationX = 4.dp.toPx()
+//                            translationY = -4.dp.toPx()
+//                        }
+//                        .background(Shade500, shape = CircleShape)
+//                        .size(18.dp)
+//                        .padding(3.dp),
+//                )
+//            }
         }
 
         Column(verticalArrangement = spacedBy(2.dp)) {
@@ -240,19 +236,6 @@ private fun CommentHeader(
                 horizontalArrangement = spacedBy(4.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(
-                    text = stringResource(
-                        if (comment.isReview) {
-                            R.string.text_review_by
-                        } else {
-                            R.string.text_shout_by
-                        },
-                    ),
-                    style = TraktTheme.typography.paragraph,
-                    color = TraktTheme.colors.textSecondary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
                 Text(
                     text = comment.user.displayName,
                     style = TraktTheme.typography.paragraph.copy(fontWeight = FontWeight.W600),

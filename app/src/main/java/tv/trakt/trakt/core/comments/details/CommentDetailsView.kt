@@ -5,7 +5,6 @@ package tv.trakt.trakt.core.comments.details
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -21,7 +20,6 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
@@ -35,7 +33,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -65,7 +62,6 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
-import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.common.ui.theme.colors.Shade800
 import tv.trakt.trakt.core.comments.ui.CommentReplyCard
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
@@ -264,22 +260,22 @@ private fun CommentHeader(
                 )
             }
 
-            comment.userLiteRating?.let {
-                Icon(
-                    painter = painterResource(it.iconRes),
-                    contentDescription = it.name,
-                    tint = it.tint,
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .graphicsLayer {
-                            translationX = 4.dp.toPx()
-                            translationY = -4.dp.toPx()
-                        }
-                        .background(Shade500, shape = CircleShape)
-                        .size(18.dp)
-                        .padding(3.dp),
-                )
-            }
+//            comment.userLiteRating?.let {
+//                Icon(
+//                    painter = painterResource(it.iconRes),
+//                    contentDescription = it.name,
+//                    tint = it.tint,
+//                    modifier = Modifier
+//                        .align(Alignment.TopEnd)
+//                        .graphicsLayer {
+//                            translationX = 4.dp.toPx()
+//                            translationY = -4.dp.toPx()
+//                        }
+//                        .background(Shade500, shape = CircleShape)
+//                        .size(18.dp)
+//                        .padding(3.dp),
+//                )
+//            }
         }
 
         Column(verticalArrangement = Arrangement.Absolute.spacedBy(2.dp)) {
@@ -287,19 +283,6 @@ private fun CommentHeader(
                 horizontalArrangement = Arrangement.Absolute.spacedBy(4.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(
-                    text = stringResource(
-                        if (comment.isReview) {
-                            R.string.text_review_by
-                        } else {
-                            R.string.text_shout_by
-                        },
-                    ),
-                    style = TraktTheme.typography.paragraph,
-                    color = TraktTheme.colors.textSecondary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
                 Text(
                     text = comment.user.displayName,
                     style = TraktTheme.typography.paragraph.copy(fontWeight = FontWeight.W600),

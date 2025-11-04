@@ -184,13 +184,6 @@ private fun CommentHeader(comment: Comment) {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = stringResource(R.string.text_reply_by),
-                    style = TraktTheme.typography.paragraph,
-                    color = TraktTheme.colors.textSecondary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                Text(
                     text = comment.user.displayName,
                     style = TraktTheme.typography.paragraph.copy(fontWeight = FontWeight.W600),
                     color = TraktTheme.colors.textPrimary,

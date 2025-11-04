@@ -258,19 +258,6 @@ private fun CommentHeader(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = stringResource(
-                        if (comment.isReview) {
-                            R.string.text_review_by
-                        } else {
-                            R.string.text_shout_by
-                        },
-                    ),
-                    style = TraktTheme.typography.paragraph,
-                    color = TraktTheme.colors.textSecondary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                Text(
                     text = comment.user.displayName,
                     style = TraktTheme.typography.paragraph.copy(fontWeight = FontWeight.W600),
                     color = TraktTheme.colors.textPrimary,
