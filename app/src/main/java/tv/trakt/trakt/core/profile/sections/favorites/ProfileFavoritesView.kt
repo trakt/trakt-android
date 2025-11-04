@@ -56,10 +56,10 @@ import tv.trakt.trakt.core.lists.model.ListsMediaFilter
 import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MEDIA
 import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MOVIES
 import tv.trakt.trakt.core.lists.model.ListsMediaFilter.SHOWS
-import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.profile.model.FavoriteItem
+import tv.trakt.trakt.core.profile.sections.favorites.context.movie.FavoriteMovieContextSheet
+import tv.trakt.trakt.core.profile.sections.favorites.context.show.FavoriteShowContextSheet
 import tv.trakt.trakt.core.profile.sections.favorites.views.FavoriteItemView
-import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.FilterChip
 import tv.trakt.trakt.ui.components.FilterChipGroup
@@ -103,8 +103,8 @@ internal fun ProfileFavoritesView(
         onFilterClick = viewModel::setFilter,
         onShowClick = { viewModel.navigateToShow(it) },
         onMovieClick = { viewModel.navigateToMovie(it) },
-        onShowLongClick = { /* TODO */ },
-        onMovieLongClick = { /* TODO */ },
+        onShowLongClick = { showContextSheet = it },
+        onMovieLongClick = { movieContextSheet = it },
         onFavoritesClick = {
             if (state.loading == DONE && !state.items.isNullOrEmpty()) {
                 onMoreClick()
@@ -114,12 +114,12 @@ internal fun ProfileFavoritesView(
         onMoviesClick = onMoviesClick,
     )
 
-    ShowContextSheet(
+    FavoriteShowContextSheet(
         show = showContextSheet,
         onDismiss = { showContextSheet = null },
     )
 
-    MovieContextSheet(
+    FavoriteMovieContextSheet(
         movie = movieContextSheet,
         onDismiss = { movieContextSheet = null },
     )
