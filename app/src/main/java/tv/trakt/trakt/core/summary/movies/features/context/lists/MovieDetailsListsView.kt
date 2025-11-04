@@ -199,7 +199,7 @@ private fun ActionButtons(
             iconSpace = 16.dp,
             icon = when {
                 inWatchlist -> painterResource(R.drawable.ic_minus)
-                else -> painterResource(R.drawable.ic_plus_round)
+                else -> painterResource(R.drawable.ic_plus)
             },
         )
 
@@ -213,7 +213,7 @@ private fun ActionButtons(
                 iconSpace = 16.dp,
                 icon = when {
                     list.second -> painterResource(R.drawable.ic_minus)
-                    else -> painterResource(R.drawable.ic_plus_round)
+                    else -> painterResource(R.drawable.ic_plus)
                 },
             )
         }

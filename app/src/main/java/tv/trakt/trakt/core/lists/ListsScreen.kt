@@ -215,7 +215,7 @@ private fun ListsScreenContent(
                     if (state.user.isAuthenticated && !state.lists.isNullOrEmpty()) {
                         TertiaryButton(
                             text = stringResource(R.string.button_text_create_list),
-                            icon = painterResource(R.drawable.ic_plus_round),
+                            icon = painterResource(R.drawable.ic_plus),
                             enabled = state.listsLoading == DONE,
                             onClick = onCreateListClick,
                         )
@@ -321,7 +321,7 @@ private fun ContentEmptyView(
 
     val buttonIcon = remember(authenticated) {
         when {
-            authenticated -> R.drawable.ic_plus_round
+            authenticated -> R.drawable.ic_plus
             else -> R.drawable.ic_trakt_icon
         }
     }
