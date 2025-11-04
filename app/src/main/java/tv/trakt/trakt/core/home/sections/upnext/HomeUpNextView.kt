@@ -364,21 +364,22 @@ private fun ContentListItem(
                     )
                 }
 
+                val checkSize = 19.dp
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .padding(start = 12.dp, end = 4.dp)
-                        .size(18.dp),
+                        .size(checkSize),
                 ) {
                     if (item.loading) {
-                        FilmProgressIndicator(size = 18.dp)
+                        FilmProgressIndicator(size = checkSize - 2.dp)
                     } else {
                         Icon(
                             painter = painterResource(R.drawable.ic_check),
                             contentDescription = null,
                             tint = TraktTheme.colors.accent,
                             modifier = Modifier
-                                .size(18.dp)
+                                .size(checkSize)
                                 .onClick { onCheckClick() },
                         )
                     }

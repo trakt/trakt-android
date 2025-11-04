@@ -238,7 +238,7 @@ private fun ContentLoadingList(
             VerticalMediaSkeletonCard(
                 chipRatio = 0.66F,
                 modifier = Modifier
-                    .padding(bottom = 2.dp),
+                    .padding(bottom = 3.dp),
             )
         }
     }
@@ -314,21 +314,22 @@ private fun ContentListItem(
                     modifier = Modifier.weight(1F, fill = false),
                 )
 
+                val checkSize = 19.dp
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .padding(start = 8.dp, end = 2.dp)
-                        .size(18.dp),
+                        .size(checkSize),
                 ) {
                     if (item.loading) {
-                        FilmProgressIndicator(size = 18.dp)
+                        FilmProgressIndicator(size = checkSize - 2.dp)
                     } else {
                         Icon(
                             painter = painterResource(R.drawable.ic_check),
                             contentDescription = null,
                             tint = TraktTheme.colors.accent,
                             modifier = Modifier
-                                .size(18.dp)
+                                .size(checkSize)
                                 .onClick { onCheckClick() },
                         )
                     }

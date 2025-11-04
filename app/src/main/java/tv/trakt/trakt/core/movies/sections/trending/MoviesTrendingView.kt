@@ -238,11 +238,11 @@ private fun ContentListItem(
         chipContent = { modifier ->
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = spacedBy(4.dp),
+                horizontalArrangement = spacedBy(3.dp),
                 modifier = modifier,
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_person_trakt_2),
+                    painter = painterResource(R.drawable.ic_person_double),
                     contentDescription = null,
                     tint = TraktTheme.colors.chipContent,
                     modifier = Modifier.size(12.dp),
