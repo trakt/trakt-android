@@ -149,6 +149,11 @@ internal fun MovieDetailsScreen(
             viewModel.addRating(it)
             haptic.performHapticFeedback(Confirm)
         },
+        onFavoriteClick = {
+            viewModel.toggleFavorite(
+                state.movieUserRating?.rating?.favorite != true,
+            )
+        },
         onBackClick = onNavigateBack,
     )
 
@@ -240,6 +245,7 @@ internal fun MovieDetailsContent(
     onPersonClick: ((Person) -> Unit)? = null,
     onListClick: ((CustomList) -> Unit)? = null,
     onRatingClick: ((Int) -> Unit)? = null,
+    onFavoriteClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     val previewMode = LocalInspectionMode.current
@@ -340,7 +346,9 @@ internal fun MovieDetailsContent(
                     DetailsRating(
                         visible = isWatched && isLoaded,
                         rating = state.movieUserRating?.rating,
+                        loading = state.loadingFavorite.isLoading,
                         onRatingClick = onRatingClick ?: {},
+                        onFavoriteClick = onFavoriteClick ?: {},
                     )
                 }
 
@@ -510,20 +518,28 @@ fun DetailsRating(
     modifier: Modifier = Modifier,
     visible: Boolean,
     rating: UserRating?,
+    loading: Boolean,
     onRatingClick: (Int) -> Unit,
+    onFavoriteClick: () -> Unit,
 ) {
     Box(
+        contentAlignment = Alignment.Center,
         modifier = modifier
+            .fillMaxWidth()
             .animateContentSize(
                 animationSpec = tween(200, delayMillis = 250),
             ),
     ) {
         if (visible) {
+            val isFavorite = rating?.favorite == true
             UserRatingBar(
                 rating = rating,
+                favoriteVisible = isFavorite || rating?.isFavorable == true,
+                favoriteLoading = loading,
+                favorite = isFavorite,
                 onRatingClick = onRatingClick,
+                onFavoriteClick = onFavoriteClick,
                 modifier = Modifier
-                    .fillMaxWidth()
                     .padding(top = 20.dp)
                     .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
             )

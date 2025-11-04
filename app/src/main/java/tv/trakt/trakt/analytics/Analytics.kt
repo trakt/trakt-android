@@ -28,6 +28,10 @@ interface Analytics {
             rating: Int,
             mediaType: String,
         )
+
+        fun logFavoriteAdd(mediaType: String)
+
+        fun logFavoriteRemove(mediaType: String)
     }
 
     interface Progress {

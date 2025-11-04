@@ -204,7 +204,7 @@ internal fun ShowHeader(
                         }
 
                         Image(
-                            painter = painterResource(R.drawable.ic_heart),
+                            painter = painterResource(R.drawable.ic_heart_on),
                             contentDescription = null,
                             modifier = Modifier.size(18.dp),
                             colorFilter = if (show.rating.rating > 0 && !hidden) redFilter else grayFilter,

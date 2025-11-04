@@ -186,5 +186,7 @@
     <string name="page_title_social">Social</string>
     <string name="warning_prompt_logout">Are you sure you want to log out?</string>
     <string name="button_text_join_trakt_free">Join Trakt for Free</string>
+    <string name="text_info_favorites_added">Added to favorites.</string>
+    <string name="text_info_favorites_removed">Removed from favorites.</string>
 
 </resources>

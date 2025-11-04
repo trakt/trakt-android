@@ -19,6 +19,7 @@ internal data class MovieDetailsState(
     val loading: LoadingState = LoadingState.IDLE,
     val loadingProgress: LoadingState = LoadingState.IDLE,
     val loadingLists: LoadingState = LoadingState.IDLE,
+    val loadingFavorite: LoadingState = LoadingState.IDLE,
     val info: StringResource? = null,
     val error: Exception? = null,
     val user: User? = null,

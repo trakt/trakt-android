@@ -16,4 +16,8 @@ internal interface MoviesSyncRemoteDataSource {
     suspend fun addToWatchlist(movieId: TraktId)
 
     suspend fun removeFromWatchlist(movieId: TraktId)
+
+    suspend fun addToFavorites(movieId: TraktId)
+
+    suspend fun removeFromFavorites(movieId: TraktId)
 }

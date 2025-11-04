@@ -2,6 +2,8 @@ package tv.trakt.trakt.core.sync.data.remote.movies
 
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.models.PostCheckinMovieRequestMovieIds
+import org.openapitools.client.models.PostSyncFavoritesAddRequest
+import org.openapitools.client.models.PostSyncFavoritesAddRequestMoviesInner
 import org.openapitools.client.models.PostSyncHistoryRemoveRequest
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInner
@@ -98,6 +100,40 @@ internal class MoviesSyncApiClient(
             ),
         )
         syncApi.postSyncWatchlistRemove(request)
+        cacheMarker.invalidate()
+    }
+
+    override suspend fun addToFavorites(movieId: TraktId) {
+        val request = PostSyncFavoritesAddRequest(
+            movies = listOf(
+                PostSyncFavoritesAddRequestMoviesInner(
+                    ids = PostCheckinMovieRequestMovieIds(
+                        trakt = movieId.value,
+                        slug = null,
+                        imdb = null,
+                        tmdb = 0,
+                    ),
+                ),
+            ),
+        )
+        syncApi.postSyncFavoritesAdd(request)
+        cacheMarker.invalidate()
+    }
+
+    override suspend fun removeFromFavorites(movieId: TraktId) {
+        val request = PostSyncFavoritesAddRequest(
+            movies = listOf(
+                PostSyncFavoritesAddRequestMoviesInner(
+                    ids = PostCheckinMovieRequestMovieIds(
+                        trakt = movieId.value,
+                        slug = null,
+                        imdb = null,
+                        tmdb = 0,
+                    ),
+                ),
+            ),
+        )
+        syncApi.postSyncFavoritesRemove(request)
         cacheMarker.invalidate()
     }
 }

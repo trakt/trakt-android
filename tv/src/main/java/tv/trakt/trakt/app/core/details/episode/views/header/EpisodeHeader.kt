@@ -219,7 +219,7 @@ internal fun EpisodeHeader(
                         }
 
                         Image(
-                            painter = painterResource(R.drawable.ic_heart),
+                            painter = painterResource(R.drawable.ic_heart_on),
                             contentDescription = null,
                             modifier = Modifier.size(18.dp),
                             colorFilter = if (episode.rating.rating > 0 && !hidden) redFilter else grayFilter,

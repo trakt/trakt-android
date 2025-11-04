@@ -8,6 +8,7 @@ import tv.trakt.trakt.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
 import tv.trakt.trakt.core.sync.data.remote.shows.ShowsSyncApiClient
 import tv.trakt.trakt.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
+import tv.trakt.trakt.core.sync.usecases.UpdateMovieFavoritesUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
@@ -44,6 +45,12 @@ internal val syncModule = module {
 
     factory {
         UpdateMovieWatchlistUseCase(
+            remoteSource = get(),
+        )
+    }
+
+    factory {
+        UpdateMovieFavoritesUseCase(
             remoteSource = get(),
         )
     }

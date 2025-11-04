@@ -13,6 +13,11 @@ private const val EVENT_NAME_PREFIX = "av3_"
 private const val EVENT_NAME_LIMIT = 40
 private const val EVENT_NAME_ERROR = "Firebase event names must be less than 40 characters long"
 
+private const val PARAMETER_MEDIA_TYPE = "media_type"
+private const val PARAMETER_SOURCE = "source"
+private const val PARAMETER_REACTION = "reaction"
+private const val PARAMETER_RATING = "rating_value"
+
 private fun eventName(name: String) = "$EVENT_NAME_PREFIX$name"
 
 internal class FirebaseAnalytics(
@@ -71,8 +76,8 @@ internal class FirebaseAnalyticsReactions(
         firebase.logEvent(
             eventName(REACTIONS_ADD),
             bundleOf(
-                "reaction" to reaction.lowercase(),
-                "source" to source.lowercase(),
+                PARAMETER_REACTION to reaction.lowercase(),
+                PARAMETER_SOURCE to source.lowercase(),
             ),
         )
     }
@@ -81,7 +86,7 @@ internal class FirebaseAnalyticsReactions(
         firebase.logEvent(
             eventName(REACTIONS_REMOVE),
             bundleOf(
-                "source" to source.lowercase(),
+                PARAMETER_SOURCE to source.lowercase(),
             ),
         )
     }
@@ -92,6 +97,8 @@ internal class FirebaseAnalyticsRatings(
 ) : Analytics.Ratings {
     companion object Event {
         const val RATINGS_ADD = "ratings_add"
+        const val FAVORITES_ADD = "favorites_add"
+        const val FAVORITES_REMOVE = "favorites_remove"
     }
 
     init {
@@ -105,8 +112,26 @@ internal class FirebaseAnalyticsRatings(
         firebase.logEvent(
             eventName(RATINGS_ADD),
             bundleOf(
-                "rating_value" to rating,
-                "media_type" to mediaType.lowercase(),
+                PARAMETER_RATING to rating,
+                PARAMETER_MEDIA_TYPE to mediaType.lowercase(),
+            ),
+        )
+    }
+
+    override fun logFavoriteAdd(mediaType: String) {
+        firebase.logEvent(
+            eventName(FAVORITES_ADD),
+            bundleOf(
+                PARAMETER_MEDIA_TYPE to mediaType.lowercase(),
+            ),
+        )
+    }
+
+    override fun logFavoriteRemove(mediaType: String) {
+        firebase.logEvent(
+            eventName(FAVORITES_REMOVE),
+            bundleOf(
+                PARAMETER_MEDIA_TYPE to mediaType.lowercase(),
             ),
         )
     }
@@ -131,8 +156,8 @@ internal class FirebaseAnalyticsProgress(
         firebase.logEvent(
             eventName(PROGRESS_WATCHED_ADD),
             bundleOf(
-                "media_type" to mediaType.lowercase(),
-                "source" to source.lowercase(),
+                PARAMETER_MEDIA_TYPE to mediaType.lowercase(),
+                PARAMETER_SOURCE to source.lowercase(),
             ),
         )
     }
@@ -144,8 +169,8 @@ internal class FirebaseAnalyticsProgress(
         firebase.logEvent(
             eventName(PROGRESS_WATCHLIST_ADD),
             bundleOf(
-                "media_type" to mediaType.lowercase(),
-                "source" to source.lowercase(),
+                PARAMETER_MEDIA_TYPE to mediaType.lowercase(),
+                PARAMETER_SOURCE to source.lowercase(),
             ),
         )
     }

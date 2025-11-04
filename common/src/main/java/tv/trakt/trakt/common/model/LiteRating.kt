@@ -11,7 +11,7 @@ enum class LiteRating(
 ) {
     LIKE(R.drawable.ic_thumb_up_fill, Color.Companion.White),
     DISLIKE(R.drawable.ic_thumb_down_fill, Color.Companion.White),
-    LOVE(R.drawable.ic_heart, Red500),
+    LOVE(R.drawable.ic_heart_on, Red500),
     ;
 
     companion object {

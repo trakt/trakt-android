@@ -38,6 +38,7 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.lists.sections.personal.usecases.AddPersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
+import tv.trakt.trakt.core.profile.model.FavoriteItem
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.summary.movies.MovieDetailsState.UserRatingsState
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
@@ -45,9 +46,12 @@ import tv.trakt.trakt.core.summary.movies.navigation.MovieDetailsDestination
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieRatingsUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieStudiosUseCase
+import tv.trakt.trakt.core.sync.usecases.UpdateMovieFavoritesUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
+import tv.trakt.trakt.core.user.data.local.favorites.UserFavoritesLocalDataSource
+import tv.trakt.trakt.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserListsUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
@@ -65,11 +69,14 @@ internal class MovieDetailsViewModel(
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
     private val loadListsUseCase: LoadUserListsUseCase,
     private val loadRatingUseCase: LoadUserRatingsUseCase,
+    private val loadFavoritesUseCase: LoadUserFavoritesUseCase,
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
     private val updateMovieWatchlistUseCase: UpdateMovieWatchlistUseCase,
+    private val updateMovieFavoritesUseCase: UpdateMovieFavoritesUseCase,
     private val addListItemUseCase: AddPersonalListItemUseCase,
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
+    private val userFavoritesLocalSource: UserFavoritesLocalDataSource,
     private val movieDetailsUpdates: MovieDetailsUpdates,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
@@ -87,6 +94,7 @@ internal class MovieDetailsViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingProgress = MutableStateFlow(initialState.loadingProgress)
     private val loadingLists = MutableStateFlow(initialState.loadingLists)
+    private val loadingFavorite = MutableStateFlow(initialState.loadingFavorite)
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
     private val userState = MutableStateFlow(initialState.user)
@@ -234,12 +242,30 @@ internal class MovieDetailsViewModel(
                     )
                 }
 
-                if (!loadRatingUseCase.isMoviesLoaded()) {
-                    loadRatingUseCase.loadMovies()
+                coroutineScope {
+                    val ratingsAsync = async {
+                        if (!loadRatingUseCase.isMoviesLoaded()) {
+                            loadRatingUseCase.loadMovies()
+                        }
+                    }
+
+                    val favoritesAsync = async {
+                        if (!loadFavoritesUseCase.isMoviesLoaded()) {
+                            loadFavoritesUseCase.loadMovies()
+                        }
+                    }
+
+                    ratingsAsync.await()
+                    favoritesAsync.await()
                 }
 
                 val userRatings = loadRatingUseCase.loadLocalMovies()
-                val userRating = userRatings[movieId]
+                val userFavorites = loadFavoritesUseCase.loadLocalMovies()
+                    .associateBy { it.movie.ids.trakt }
+
+                val userRating = userRatings[movieId]?.copy(
+                    favorite = userFavorites[movieId] != null,
+                )
 
                 movieUserRatingsState.update {
                     UserRatingsState(
@@ -412,6 +438,19 @@ internal class MovieDetailsViewModel(
         }
     }
 
+    fun toggleFavorite(add: Boolean) {
+        if (movieState.value == null ||
+            loadingFavorite.value.isLoading
+        ) {
+            return
+        }
+
+        when {
+            add -> addToFavorites()
+            else -> removeFromFavorites()
+        }
+    }
+
     private fun addToWatchlist() {
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) {
@@ -574,6 +613,91 @@ internal class MovieDetailsViewModel(
         }
     }
 
+    private fun addToFavorites() {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+
+            try {
+                loadingFavorite.update { LOADING }
+
+                delay(300) // Small delay to allow UI to settle.
+                updateMovieFavoritesUseCase.addToFavorites(movieId)
+                userFavoritesLocalSource.addMovies(
+                    movies = listOf(
+                        FavoriteItem.MovieItem(
+                            rank = 0,
+                            movie = movieState.value!!,
+                            listedAt = nowUtcInstant(),
+                        ),
+                    ),
+                    notify = true,
+                )
+
+                movieUserRatingsState.update {
+                    it?.copy(
+                        rating = it.rating?.copy(
+                            favorite = true,
+                        ),
+                    )
+                }
+
+                analytics.ratings.logFavoriteAdd(
+                    mediaType = "movie",
+                )
+                infoState.update {
+                    DynamicStringResource(R.string.text_info_favorites_added)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.w(error)
+                }
+            } finally {
+                loadingFavorite.update { DONE }
+            }
+        }
+    }
+
+    private fun removeFromFavorites() {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+
+            try {
+                loadingFavorite.update { LOADING }
+
+                delay(300) // Small delay to allow UI to settle.
+                updateMovieFavoritesUseCase.removeFromFavorites(movieId)
+                userFavoritesLocalSource.removeMovies(
+                    ids = setOf(movieId),
+                    notify = true,
+                )
+
+                movieUserRatingsState.update {
+                    it?.copy(
+                        rating = it.rating?.copy(
+                            favorite = false,
+                        ),
+                    )
+                }
+
+                infoState.update {
+                    DynamicStringResource(R.string.text_info_favorites_removed)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.w(error)
+                }
+            } finally {
+                loadingFavorite.update { DONE }
+            }
+        }
+    }
+
     fun addRating(newRating: Int) {
         ratingJob?.cancel()
         ratingJob = viewModelScope.launch {
@@ -587,6 +711,7 @@ internal class MovieDetailsViewModel(
                         mediaId = movieId,
                         mediaType = MOVIE,
                         rating = newRating,
+                        favorite = it?.rating?.favorite == true,
                     ),
                     loading = DONE,
                 )
@@ -617,6 +742,7 @@ internal class MovieDetailsViewModel(
         loadingState,
         loadingProgress,
         loadingLists,
+        loadingFavorite,
         infoState,
         errorState,
         userState,
@@ -630,9 +756,10 @@ internal class MovieDetailsViewModel(
             loading = state[5] as LoadingState,
             loadingProgress = state[6] as LoadingState,
             loadingLists = state[7] as LoadingState,
-            info = state[8] as StringResource?,
-            error = state[9] as Exception?,
-            user = state[10] as User?,
+            loadingFavorite = state[8] as LoadingState,
+            info = state[9] as StringResource?,
+            error = state[10] as Exception?,
+            user = state[11] as User?,
         )
     }.stateIn(
         scope = viewModelScope,
