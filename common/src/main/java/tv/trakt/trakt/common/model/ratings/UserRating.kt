@@ -15,7 +15,7 @@ data class UserRating(
     val favorite: Boolean = false,
 ) {
     val isFavorable: Boolean
-        get() = rating in 9..10
+        get() = rating == 10
 
     companion object {
         fun scaleTo10(rating: Float): Int {

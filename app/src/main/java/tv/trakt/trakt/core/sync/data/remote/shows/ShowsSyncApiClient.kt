@@ -2,9 +2,11 @@ package tv.trakt.trakt.core.sync.data.remote.shows
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
+import org.openapitools.client.models.PostCheckinMovieRequestMovieIds
+import org.openapitools.client.models.PostSyncFavoritesAddRequest
+import org.openapitools.client.models.PostSyncFavoritesAddRequestMoviesInner
 import org.openapitools.client.models.PostSyncHistoryRemoveRequest
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
@@ -153,12 +155,36 @@ internal class ShowsSyncApiClient(
     }
 
     override suspend fun addToFavorites(showId: TraktId) {
-        delay(1000) // TODO
+        val request = PostSyncFavoritesAddRequest(
+            shows = listOf(
+                PostSyncFavoritesAddRequestMoviesInner(
+                    ids = PostCheckinMovieRequestMovieIds(
+                        trakt = showId.value,
+                        slug = null,
+                        imdb = null,
+                        tmdb = 0,
+                    ),
+                ),
+            ),
+        )
+        syncApi.postSyncFavoritesAdd(request)
         cacheMarker.invalidate()
     }
 
     override suspend fun removeFromFavorites(showId: TraktId) {
-        delay(1000) // TODO
+        val request = PostSyncFavoritesAddRequest(
+            shows = listOf(
+                PostSyncFavoritesAddRequestMoviesInner(
+                    ids = PostCheckinMovieRequestMovieIds(
+                        trakt = showId.value,
+                        slug = null,
+                        imdb = null,
+                        tmdb = 0,
+                    ),
+                ),
+            ),
+        )
+        syncApi.postSyncFavoritesRemove(request)
         cacheMarker.invalidate()
     }
 }
