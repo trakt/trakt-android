@@ -49,7 +49,7 @@ internal fun DetailsRatings(
         val textStyle = TraktTheme.typography.meta.copy(fontSize = 12.sp)
         val iconSpace = spacedBy(4.dp, Alignment.Start)
         val emptyText = "— %"
-        val emptyText2 = "—"
+        val emptyText2 = "— %"
 
         // Trakt Rating
         val traktRating = traktRatings ?: 0

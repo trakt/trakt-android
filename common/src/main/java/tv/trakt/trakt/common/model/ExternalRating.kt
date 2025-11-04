@@ -17,7 +17,7 @@ data class ExternalRating(
         val link: String?,
     ) {
         val ratingString: String
-            get() = String.Companion.format(Locale.ROOT, "%.1f", rating)
+            get() = String.format(Locale.ROOT, "%.0f%%", rating * 10)
     }
 
     @Immutable
