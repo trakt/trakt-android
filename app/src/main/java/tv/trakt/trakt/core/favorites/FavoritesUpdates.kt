@@ -10,6 +10,6 @@ internal interface FavoritesUpdates {
 
     enum class Source {
         DETAILS,
-        ALL_FAVORITES,
+        CONTEXT_SHEET,
     }
 }

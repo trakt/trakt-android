@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -33,6 +34,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.favorites.FavoritesUpdates
+import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.CONTEXT_SHEET
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.DETAILS
 import tv.trakt.trakt.core.lists.model.ListsMediaFilter
 import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MEDIA
@@ -76,7 +78,10 @@ internal class AllFavoritesViewModel(
     }
 
     private fun observeData() {
-        favoritesUpdates.observeUpdates(DETAILS)
+        merge(
+            favoritesUpdates.observeUpdates(DETAILS),
+            favoritesUpdates.observeUpdates(CONTEXT_SHEET),
+        )
             .distinctUntilChanged()
             .debounce(200)
             .onEach {

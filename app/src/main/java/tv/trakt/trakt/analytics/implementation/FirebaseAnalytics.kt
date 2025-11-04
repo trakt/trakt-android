@@ -127,11 +127,15 @@ internal class FirebaseAnalyticsRatings(
         )
     }
 
-    override fun logFavoriteRemove(mediaType: String) {
+    override fun logFavoriteRemove(
+        mediaType: String,
+        source: String,
+    ) {
         firebase.logEvent(
             eventName(FAVORITES_REMOVE),
             bundleOf(
                 PARAMETER_MEDIA_TYPE to mediaType.lowercase(),
+                PARAMETER_SOURCE to source.lowercase(),
             ),
         )
     }

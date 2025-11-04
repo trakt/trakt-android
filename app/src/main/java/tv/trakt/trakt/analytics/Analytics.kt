@@ -31,7 +31,10 @@ interface Analytics {
 
         fun logFavoriteAdd(mediaType: String)
 
-        fun logFavoriteRemove(mediaType: String)
+        fun logFavoriteRemove(
+            mediaType: String,
+            source: String,
+        )
     }
 
     interface Progress {

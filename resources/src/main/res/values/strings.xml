@@ -188,5 +188,7 @@
     <string name="button_text_join_trakt_free">Join Trakt for Free</string>
     <string name="text_info_favorites_added">Added to favorites.</string>
     <string name="text_info_favorites_removed">Removed from favorites.</string>
+    <string name="button_text_remove_favorites">Remove from Favorites</string>
+    <string name="warning_prompt_remove_from_favorites">Are you sure you want to remove \"%s\" from your Favorites?</string>
 
 </resources>

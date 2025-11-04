@@ -15,9 +15,11 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.profile.ProfileViewModel
 import tv.trakt.trakt.core.profile.sections.favorites.ProfileFavoritesViewModel
 import tv.trakt.trakt.core.profile.sections.favorites.all.AllFavoritesViewModel
+import tv.trakt.trakt.core.profile.sections.favorites.context.movie.FavoriteMovieContextViewModel
 import tv.trakt.trakt.core.profile.sections.favorites.filters.GetFavoritesFilterUseCase
 import tv.trakt.trakt.core.profile.sections.history.ProfileHistoryViewModel
 import tv.trakt.trakt.core.profile.sections.social.ProfileSocialViewModel
@@ -234,6 +236,17 @@ internal val profileModule = module {
             getFilterUseCase = get(),
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
+            favoritesUpdates = get(),
+            analytics = get(),
+        )
+    }
+
+    viewModel { (movie: Movie) ->
+        FavoriteMovieContextViewModel(
+            movie = movie,
+            sessionManager = get(),
+            updateMovieFavoritesUseCase = get(),
+            userFavoritesLocalSource = get(),
             favoritesUpdates = get(),
             analytics = get(),
         )
