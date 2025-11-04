@@ -6,11 +6,16 @@ import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -27,6 +32,8 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.favorites.FavoritesUpdates
+import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.DETAILS
 import tv.trakt.trakt.core.lists.model.ListsMediaFilter
 import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MEDIA
 import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MOVIES
@@ -35,11 +42,13 @@ import tv.trakt.trakt.core.profile.model.FavoriteItem
 import tv.trakt.trakt.core.profile.sections.favorites.filters.GetFavoritesFilterUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserFavoritesUseCase
 
+@OptIn(FlowPreview::class)
 internal class AllFavoritesViewModel(
     private val loadFavoritesUseCase: LoadUserFavoritesUseCase,
     private val getFilterUseCase: GetFavoritesFilterUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
+    private val favoritesUpdates: FavoritesUpdates,
     private val sessionManager: SessionManager,
     analytics: Analytics,
 ) : ViewModel() {
@@ -59,10 +68,24 @@ internal class AllFavoritesViewModel(
     init {
         loadBackground()
         loadData()
+        observeData()
 
         analytics.logScreenView(
             screenName = "all_favorites",
         )
+    }
+
+    private fun observeData() {
+        favoritesUpdates.observeUpdates(DETAILS)
+            .distinctUntilChanged()
+            .debounce(200)
+            .onEach {
+                loadData(
+                    ignoreErrors = true,
+                    localOnly = true,
+                )
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun loadBackground() {

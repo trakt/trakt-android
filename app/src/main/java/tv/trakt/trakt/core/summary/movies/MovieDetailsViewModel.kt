@@ -35,6 +35,8 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.favorites.FavoritesUpdates
+import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.DETAILS
 import tv.trakt.trakt.core.lists.sections.personal.usecases.AddPersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
@@ -78,6 +80,7 @@ internal class MovieDetailsViewModel(
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
     private val userFavoritesLocalSource: UserFavoritesLocalDataSource,
     private val movieDetailsUpdates: MovieDetailsUpdates,
+    private val favoritesUpdates: FavoritesUpdates,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
 ) : ViewModel() {
@@ -632,8 +635,8 @@ internal class MovieDetailsViewModel(
                             listedAt = nowUtcInstant(),
                         ),
                     ),
-                    notify = true,
                 )
+                favoritesUpdates.notifyUpdate(DETAILS)
 
                 movieUserRatingsState.update {
                     it?.copy(
@@ -671,10 +674,8 @@ internal class MovieDetailsViewModel(
 
                 delay(300) // Small delay to allow UI to settle.
                 updateMovieFavoritesUseCase.removeFromFavorites(movieId)
-                userFavoritesLocalSource.removeMovies(
-                    ids = setOf(movieId),
-                    notify = true,
-                )
+                userFavoritesLocalSource.removeMovies(setOf(movieId))
+                favoritesUpdates.notifyUpdate(DETAILS)
 
                 movieUserRatingsState.update {
                     it?.copy(

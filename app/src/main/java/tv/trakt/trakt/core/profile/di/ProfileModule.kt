@@ -215,6 +215,7 @@ internal val profileModule = module {
             getFilterUseCase = get(),
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
+            favoritesUpdates = get(),
         )
     }
 
@@ -233,6 +234,7 @@ internal val profileModule = module {
             getFilterUseCase = get(),
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
+            favoritesUpdates = get(),
             analytics = get(),
         )
     }
