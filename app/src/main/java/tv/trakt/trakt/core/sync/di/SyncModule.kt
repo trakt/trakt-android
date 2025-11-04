@@ -11,6 +11,7 @@ import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieFavoritesUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
+import tv.trakt.trakt.core.sync.usecases.UpdateShowFavoritesUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowWatchlistUseCase
 
@@ -57,6 +58,12 @@ internal val syncModule = module {
 
     factory {
         UpdateShowWatchlistUseCase(
+            remoteSource = get(),
+        )
+    }
+
+    factory {
+        UpdateShowFavoritesUseCase(
             remoteSource = get(),
         )
     }

@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.sync.data.remote.shows
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
 import org.openapitools.client.models.PostSyncHistoryRemoveRequest
@@ -148,6 +149,16 @@ internal class ShowsSyncApiClient(
             calendarAsync.await()
         }
 
+        cacheMarker.invalidate()
+    }
+
+    override suspend fun addToFavorites(showId: TraktId) {
+        delay(1000) // TODO
+        cacheMarker.invalidate()
+    }
+
+    override suspend fun removeFromFavorites(showId: TraktId) {
+        delay(1000) // TODO
         cacheMarker.invalidate()
     }
 }

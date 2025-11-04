@@ -22,4 +22,8 @@ internal interface ShowsSyncRemoteDataSource {
     suspend fun removeFromWatchlist(showId: TraktId)
 
     suspend fun dropShow(showId: TraktId)
+
+    suspend fun addToFavorites(showId: TraktId)
+
+    suspend fun removeFromFavorites(showId: TraktId)
 }

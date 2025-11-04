@@ -45,6 +45,7 @@ import tv.trakt.trakt.core.lists.sections.personal.usecases.AddPersonalListItemU
 import tv.trakt.trakt.core.lists.sections.personal.usecases.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.main.usecases.HalloweenUseCase
+import tv.trakt.trakt.core.profile.model.FavoriteItem
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.summary.shows.ShowDetailsState.UserRatingsState
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
@@ -54,9 +55,12 @@ import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowRatingsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowStudiosUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
+import tv.trakt.trakt.core.sync.usecases.UpdateShowFavoritesUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowWatchlistUseCase
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
+import tv.trakt.trakt.core.user.data.local.favorites.UserFavoritesLocalDataSource
+import tv.trakt.trakt.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserListsUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
@@ -75,13 +79,16 @@ internal class ShowDetailsViewModel(
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
     private val loadListsUseCase: LoadUserListsUseCase,
     private val loadRatingUseCase: LoadUserRatingsUseCase,
+    private val loadFavoritesUseCase: LoadUserFavoritesUseCase,
     private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val updateShowWatchlistUseCase: UpdateShowWatchlistUseCase,
+    private val updateShowFavoritesUseCase: UpdateShowFavoritesUseCase,
     private val addListItemUseCase: AddPersonalListItemUseCase,
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
     private val halloweenUseCase: HalloweenUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
+    private val userFavoritesLocalSource: UserFavoritesLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val showDetailsUpdates: ShowDetailsUpdates,
     private val sessionManager: SessionManager,
@@ -101,6 +108,7 @@ internal class ShowDetailsViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingProgress = MutableStateFlow(initialState.loadingProgress)
     private val loadingLists = MutableStateFlow(initialState.loadingLists)
+    private val loadingFavorite = MutableStateFlow(initialState.loadingFavorite)
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
     private val userState = MutableStateFlow(initialState.user)
@@ -316,12 +324,30 @@ internal class ShowDetailsViewModel(
                     )
                 }
 
-                if (!loadRatingUseCase.isShowsLoaded()) {
-                    loadRatingUseCase.loadShows()
+                coroutineScope {
+                    val ratingsAsync = async {
+                        if (!loadRatingUseCase.isShowsLoaded()) {
+                            loadRatingUseCase.loadShows()
+                        }
+                    }
+
+                    val favoritesAsync = async {
+                        if (!loadFavoritesUseCase.isShowsLoaded()) {
+                            loadFavoritesUseCase.loadShows()
+                        }
+                    }
+
+                    ratingsAsync.await()
+                    favoritesAsync.await()
                 }
 
                 val userRatings = loadRatingUseCase.loadLocalShows()
-                val userRating = userRatings[showId]
+                val userFavorites = loadFavoritesUseCase.loadLocalShows()
+                    .associateBy { it.show.ids.trakt }
+
+                val userRating = userRatings[showId]?.copy(
+                    favorite = userFavorites[showId] != null,
+                )
 
                 showUserRatingsState.update {
                     UserRatingsState(
@@ -660,6 +686,98 @@ internal class ShowDetailsViewModel(
         navigateEpisode.update { null }
     }
 
+    fun toggleFavorite(add: Boolean) {
+        if (showState.value == null ||
+            loadingFavorite.value.isLoading
+        ) {
+            return
+        }
+
+        when {
+            add -> addToFavorites()
+            else -> removeFromFavorites()
+        }
+    }
+
+    private fun addToFavorites() {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                loadingFavorite.update { LOADING }
+
+                delay(300) // Small delay to allow UI to settle.
+                updateShowFavoritesUseCase.addToFavorites(showId)
+                userFavoritesLocalSource.addShows(
+                    shows = listOf(
+                        FavoriteItem.ShowItem(
+                            rank = 0,
+                            show = showState.value!!,
+                            listedAt = nowUtcInstant(),
+                        ),
+                    ),
+                    notify = true,
+                )
+
+                showUserRatingsState.update {
+                    it?.copy(
+                        rating = it.rating?.copy(favorite = true),
+                    )
+                }
+
+                analytics.ratings.logFavoriteAdd(mediaType = "show")
+                infoState.update {
+                    DynamicStringResource(R.string.text_info_favorites_added)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.w(error)
+                }
+            } finally {
+                loadingFavorite.update { DONE }
+            }
+        }
+    }
+
+    private fun removeFromFavorites() {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                loadingFavorite.update { LOADING }
+
+                delay(300) // Small delay to allow UI to settle.
+                updateShowFavoritesUseCase.removeFromFavorites(showId)
+                userFavoritesLocalSource.removeShows(
+                    ids = setOf(showId),
+                    notify = true,
+                )
+
+                showUserRatingsState.update {
+                    it?.copy(
+                        rating = it.rating?.copy(
+                            favorite = false,
+                        ),
+                    )
+                }
+
+                infoState.update {
+                    DynamicStringResource(R.string.text_info_favorites_removed)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.w(error)
+                }
+            } finally {
+                loadingFavorite.update { DONE }
+            }
+        }
+    }
+
     fun addRating(newRating: Int) {
         ratingJob?.cancel()
         ratingJob = viewModelScope.launch {
@@ -673,6 +791,7 @@ internal class ShowDetailsViewModel(
                         mediaId = showId,
                         mediaType = SHOW,
                         rating = newRating,
+                        favorite = it?.rating?.favorite == true,
                     ),
                     loading = DONE,
                 )
@@ -700,6 +819,7 @@ internal class ShowDetailsViewModel(
         loadingState,
         loadingProgress,
         loadingLists,
+        loadingFavorite,
         infoState,
         errorState,
         userState,
@@ -715,10 +835,11 @@ internal class ShowDetailsViewModel(
             loading = state[6] as LoadingState,
             loadingProgress = state[7] as LoadingState,
             loadingLists = state[8] as LoadingState,
-            info = state[9] as StringResource?,
-            error = state[10] as Exception?,
-            user = state[11] as User?,
-            halloween = state[12] as Boolean,
+            loadingFavorite = state[9] as LoadingState,
+            info = state[10] as StringResource?,
+            error = state[11] as Exception?,
+            user = state[12] as User?,
+            halloween = state[13] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,
