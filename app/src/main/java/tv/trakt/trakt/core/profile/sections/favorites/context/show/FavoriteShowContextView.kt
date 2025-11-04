@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package tv.trakt.trakt.core.profile.sections.favorites.context.movie
+package tv.trakt.trakt.core.profile.sections.favorites.context.show
 
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
@@ -29,9 +29,9 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images.Size.THUMB
-import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
-import tv.trakt.trakt.core.movies.ui.MovieMetaFooter
+import tv.trakt.trakt.core.shows.ui.ShowMetaFooter
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
@@ -39,9 +39,9 @@ import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun FavoriteMovieContextView(
-    movie: Movie,
-    viewModel: FavoriteMovieContextViewModel,
+internal fun FavoriteShowContextView(
+    show: Show,
+    viewModel: FavoriteShowContextViewModel,
     modifier: Modifier = Modifier,
     onRemovedFromFavorites: () -> Unit,
     onError: () -> Unit,
@@ -64,8 +64,8 @@ internal fun FavoriteMovieContextView(
         }
     }
 
-    FavoriteMovieContextViewContent(
-        movie = movie,
+    FavoriteShowContextViewContent(
+        show = show,
         state = state,
         modifier = modifier,
         onRemoveClick = {
@@ -83,15 +83,15 @@ internal fun FavoriteMovieContextView(
         title = stringResource(R.string.button_text_remove_favorites),
         message = stringResource(
             R.string.warning_prompt_remove_from_favorites,
-            movie.title,
+            show.title,
         ),
     )
 }
 
 @Composable
-private fun FavoriteMovieContextViewContent(
-    movie: Movie,
-    state: FavoriteMovieContextState,
+private fun FavoriteShowContextViewContent(
+    show: Show,
+    state: FavoriteShowContextState,
     modifier: Modifier = Modifier,
     onRemoveClick: () -> Unit = {},
 ) {
@@ -100,10 +100,10 @@ private fun FavoriteMovieContextViewContent(
         modifier = modifier,
     ) {
         PanelMediaCard(
-            title = movie.title,
-            titleOriginal = movie.titleOriginal,
-            subtitle = remember(movie.genres) {
-                movie.genres.take(2).joinToString(", ") { genre ->
+            title = show.title,
+            titleOriginal = show.titleOriginal,
+            subtitle = remember(show.genres) {
+                show.genres.take(2).joinToString(", ") { genre ->
                     genre.replaceFirstChar {
                         it.uppercaseChar()
                     }
@@ -112,15 +112,15 @@ private fun FavoriteMovieContextViewContent(
             shadow = 4.dp,
             more = false,
             containerColor = Shade910,
-            contentImageUrl = movie.images?.getPosterUrl(),
-            containerImageUrl = movie.images?.getFanartUrl(THUMB),
+            contentImageUrl = show.images?.getPosterUrl(),
+            containerImageUrl = show.images?.getFanartUrl(THUMB),
             footerContent = {
-                MovieMetaFooter(movie)
+                ShowMetaFooter(show)
             },
         )
 
         if (state.user != null) {
-            MovieActionButtons(
+            ShowActionButtons(
                 state = state,
                 onRemoveClick = onRemoveClick,
             )
@@ -129,8 +129,8 @@ private fun FavoriteMovieContextViewContent(
 }
 
 @Composable
-private fun MovieActionButtons(
-    state: FavoriteMovieContextState,
+private fun ShowActionButtons(
+    state: FavoriteShowContextState,
     onRemoveClick: () -> Unit,
 ) {
     val isLoadingOrDone =
@@ -170,9 +170,9 @@ private fun Preview() {
             ColorImage(Color.Blue.toArgb())
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            FavoriteMovieContextViewContent(
-                state = FavoriteMovieContextState(),
-                movie = PreviewData.movie1,
+            FavoriteShowContextViewContent(
+                state = FavoriteShowContextState(),
+                show = PreviewData.show1,
             )
         }
     }

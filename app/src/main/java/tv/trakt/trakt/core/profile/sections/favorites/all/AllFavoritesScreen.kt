@@ -53,7 +53,7 @@ import tv.trakt.trakt.core.profile.model.FavoriteItem
 import tv.trakt.trakt.core.profile.sections.favorites.all.views.AllFavoritesMovieView
 import tv.trakt.trakt.core.profile.sections.favorites.all.views.AllFavoritesShowView
 import tv.trakt.trakt.core.profile.sections.favorites.context.movie.FavoriteMovieContextSheet
-import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
+import tv.trakt.trakt.core.profile.sections.favorites.context.show.FavoriteShowContextSheet
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.FilterChip
@@ -110,7 +110,7 @@ internal fun AllFavoritesScreen(
         onDismiss = { contextMovieSheet = null },
     )
 
-    ShowContextSheet(
+    FavoriteShowContextSheet(
         show = contextShowSheet,
         onDismiss = { contextShowSheet = null },
     )
