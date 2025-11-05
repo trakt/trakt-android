@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.resources.R
@@ -73,10 +74,16 @@ internal fun ShowSeasonsList(
                 imageUrl = seasonPosterUrl ?: showPosterUrl,
                 blackWhite = (item.number != selectedSeason),
                 more = false,
-                onClick = { onSeasonClick(item) },
+                onClick = {
+                    onSeasonClick(item)
+                },
                 chipContent = {
                     Column(
                         verticalArrangement = spacedBy(1.dp),
+                        modifier = Modifier
+                            .onClick {
+                                onSeasonClick(item)
+                            },
                     ) {
                         val seasonTitle = when {
                             item.isSpecial -> stringResource(R.string.text_season_specials)

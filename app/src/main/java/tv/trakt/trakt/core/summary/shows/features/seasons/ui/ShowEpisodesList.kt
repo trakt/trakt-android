@@ -163,7 +163,7 @@ internal fun ShowEpisodesList(
                                     when {
                                         item.isLoading -> {
                                             FilmProgressIndicator(
-                                                size = 19.dp,
+                                                size = 18.dp,
                                                 modifier = Modifier
                                                     .graphicsLayer {
                                                         translationX = 2.dp.toPx()
@@ -176,7 +176,7 @@ internal fun ShowEpisodesList(
                                                 contentDescription = null,
                                                 tint = Red500,
                                                 modifier = Modifier
-                                                    .size(23.dp)
+                                                    .size(18.dp)
                                                     .graphicsLayer {
                                                         translationX = 3.dp.toPx()
                                                     }

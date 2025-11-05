@@ -5,14 +5,18 @@ package tv.trakt.trakt.core.summary.shows.features.seasons
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -22,6 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -30,6 +35,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,6 +52,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Ids
@@ -53,6 +60,8 @@ import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.toSlugId
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
 import tv.trakt.trakt.core.summary.shows.features.seasons.ui.ShowEpisodesList
@@ -80,7 +89,10 @@ internal fun ShowSeasonsView(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val scope = rememberCoroutineScope()
-    var confirmRemoveSheet by remember { mutableStateOf<EpisodeItem?>(null) }
+
+    var confirmRemoveEpisodeSheet by remember { mutableStateOf<EpisodeItem?>(null) }
+    var confirmMarkSeasonSheet by remember { mutableStateOf(false) }
+    var confirmRemoveSeasonSheet by remember { mutableStateOf(false) }
 
     ShowSeasonsContent(
         state = state,
@@ -93,23 +105,62 @@ internal fun ShowSeasonsView(
             viewModel.addToWatched(it.episode)
         },
         onRemoveEpisodeClick = {
-            confirmRemoveSheet = it
+            confirmRemoveEpisodeSheet = it
+        },
+        onCheckSeasonClick = {
+            confirmMarkSeasonSheet = true
+        },
+        onRemoveSeasonClick = {
+            confirmRemoveSeasonSheet = true
         },
     )
 
     ConfirmationSheet(
-        active = confirmRemoveSheet != null,
+        active = confirmRemoveEpisodeSheet != null,
         onYes = {
-            confirmRemoveSheet?.let {
+            confirmRemoveEpisodeSheet?.let {
                 viewModel.removeFromWatched(it.episode)
-                confirmRemoveSheet = null
+                confirmRemoveEpisodeSheet = null
             }
         },
-        onNo = { confirmRemoveSheet = null },
+        onNo = { confirmRemoveEpisodeSheet = null },
         title = stringResource(R.string.button_text_remove_from_history),
         message = stringResource(
             R.string.warning_prompt_remove_from_watched,
-            "${confirmRemoveSheet?.episode?.title}",
+            "${confirmRemoveEpisodeSheet?.episode?.title}",
+        ),
+    )
+
+    ConfirmationSheet(
+        active = confirmMarkSeasonSheet,
+        onYes = {
+            confirmMarkSeasonSheet = false
+            viewModel.addToWatched(state.items)
+        },
+        onNo = { confirmMarkSeasonSheet = false },
+        title = stringResource(R.string.button_text_mark_as_watched),
+        message = stringResource(
+            R.string.warning_prompt_mark_as_watched_multiple_episodes,
+            state.items.selectedSeasonEpisodes.count { !it.isWatched },
+        ),
+    )
+
+    ConfirmationSheet(
+        active = confirmRemoveSeasonSheet,
+        onYes = {
+            confirmRemoveSeasonSheet = false
+            state.items.selectedSeason?.let {
+                viewModel.removeFromWatched(it)
+            }
+        },
+        onNo = { confirmRemoveSeasonSheet = false },
+        title = stringResource(R.string.button_text_remove_from_history),
+        message = stringResource(
+            R.string.warning_prompt_remove_from_watched,
+            stringResource(
+                R.string.text_season_number,
+                state.items.selectedSeason?.number ?: 0,
+            ),
         ),
     )
 
@@ -143,6 +194,8 @@ private fun ShowSeasonsContent(
     onSeasonClick: ((Season) -> Unit)? = null,
     onCheckEpisodeClick: ((EpisodeItem) -> Unit)? = null,
     onRemoveEpisodeClick: ((EpisodeItem) -> Unit)? = null,
+    onCheckSeasonClick: (() -> Unit)? = null,
+    onRemoveSeasonClick: (() -> Unit)? = null,
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
@@ -162,21 +215,70 @@ private fun ShowSeasonsContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(headerPadding),
-            horizontalArrangement = spacedBy(5.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = CenterVertically,
         ) {
-            TraktHeader(
-                title = headerSeasons,
-                titleColor = TraktTheme.colors.textSecondary,
-            )
-            if (state.items.selectedSeason != null) {
+            Row(
+                horizontalArrangement = spacedBy(5.dp),
+                verticalAlignment = CenterVertically,
+            ) {
                 TraktHeader(
-                    title = "/",
+                    title = headerSeasons,
                     titleColor = TraktTheme.colors.textSecondary,
                 )
-                TraktHeader(
-                    title = headerCurrentSeason ?: "",
-                )
+                if (state.items.selectedSeason != null) {
+                    TraktHeader(
+                        title = "/",
+                        titleColor = TraktTheme.colors.textSecondary,
+                    )
+                    TraktHeader(
+                        title = headerCurrentSeason ?: "",
+                    )
+                }
+            }
+
+            if (state.items.isSelectedSeasonReleased) {
+                val checkSize = 20.dp
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.size(checkSize),
+                ) {
+                    if (state.loadingSeason.isLoading) {
+                        FilmProgressIndicator(size = checkSize - 3.dp)
+                    } else {
+                        val isLoading =
+                            state.items.isSeasonLoading ||
+                                state.loadingSeason.isLoading
+
+                        if (state.items.isSelectedSeasonWatched) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_close),
+                                contentDescription = null,
+                                tint = Red500,
+                                modifier = Modifier
+                                    .size(checkSize - 2.dp)
+                                    .onClick(enabled = !isLoading) {
+                                        state.items.selectedSeason?.let {
+                                            onRemoveSeasonClick?.invoke()
+                                        }
+                                    },
+                            )
+                        } else {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_check),
+                                contentDescription = null,
+                                tint = TraktTheme.colors.accent,
+                                modifier = Modifier
+                                    .size(checkSize)
+                                    .onClick(enabled = !isLoading) {
+                                        state.items.selectedSeason?.let {
+                                            onCheckSeasonClick?.invoke()
+                                        }
+                                    },
+                            )
+                        }
+                    }
+                }
             }
         }
 

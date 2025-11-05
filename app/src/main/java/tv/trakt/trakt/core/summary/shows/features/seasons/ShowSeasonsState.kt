@@ -12,6 +12,7 @@ internal data class ShowSeasonsState(
     val items: ShowSeasons = ShowSeasons(),
     val loading: LoadingState = LoadingState.IDLE,
     val loadingEpisode: LoadingState = LoadingState.IDLE,
+    val loadingSeason: LoadingState = LoadingState.IDLE,
     val info: StringResource? = null,
     val error: Exception? = null,
 )
