@@ -169,7 +169,7 @@ internal class ListsApiClient(
             endDate = null,
             page = null,
             limit = limit,
-            subgenres = null
+            subgenres = null,
         )
 
         return response.body()
