@@ -509,6 +509,7 @@ internal fun ShowDetailsContent(
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
+                            user = state.user,
                             onEpisodeClick = onEpisodeClick ?: {},
                             modifier = Modifier
                                 .padding(top = 32.dp),

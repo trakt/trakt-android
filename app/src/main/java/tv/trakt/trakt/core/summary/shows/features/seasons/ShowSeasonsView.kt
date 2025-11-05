@@ -58,6 +58,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toSlugId
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
@@ -77,6 +78,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun ShowSeasonsView(
     viewModel: ShowSeasonsViewModel,
+    user: User?,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     onEpisodeClick: (episode: Episode) -> Unit,
@@ -96,6 +98,7 @@ internal fun ShowSeasonsView(
 
     ShowSeasonsContent(
         state = state,
+        user = user,
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
@@ -187,6 +190,7 @@ internal fun ShowSeasonsView(
 @Composable
 private fun ShowSeasonsContent(
     state: ShowSeasonsState,
+    user: User?,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
@@ -237,7 +241,7 @@ private fun ShowSeasonsContent(
                 }
             }
 
-            if (state.items.isSelectedSeasonReleased) {
+            if (user != null && state.items.isSelectedSeasonReleased) {
                 val checkSize = 20.dp
                 Box(
                     contentAlignment = Alignment.Center,
@@ -412,6 +416,7 @@ private fun Preview() {
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             ShowSeasonsContent(
+                user = PreviewData.user1,
                 state = ShowSeasonsState(
                     loading = DONE,
                     items = ShowSeasons(
@@ -450,6 +455,7 @@ private fun Preview2() {
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             ShowSeasonsContent(
+                user = PreviewData.user1,
                 state = ShowSeasonsState(
                     loading = LOADING,
                 ),
@@ -472,6 +478,7 @@ private fun Preview3() {
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             ShowSeasonsContent(
+                user = PreviewData.user1,
                 state = ShowSeasonsState(
                     loading = DONE,
                 ),
