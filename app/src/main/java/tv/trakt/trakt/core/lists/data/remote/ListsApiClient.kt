@@ -169,6 +169,7 @@ internal class ListsApiClient(
             endDate = null,
             page = null,
             limit = limit,
+            subgenres = null
         )
 
         return response.body()
@@ -184,6 +185,7 @@ internal class ListsApiClient(
             extended = extended,
             watchnow = null,
             genres = null,
+            subgenres = null,
             years = null,
             ratings = null,
             startDate = null,
@@ -209,6 +211,7 @@ internal class ListsApiClient(
             startDate = null,
             endDate = null,
             page = null,
+            subgenres = null,
             limit = limit,
         )
         return response.body()

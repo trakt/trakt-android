@@ -25,6 +25,7 @@ internal class ListsApiClient(
             limit = limit.toString(),
             startDate = null,
             endDate = null,
+            subgenres = null
         )
 
         return response.body()
@@ -47,6 +48,7 @@ internal class ListsApiClient(
             limit = limit.toString(),
             startDate = null,
             endDate = null,
+            subgenres = null
         )
 
         return response.body()

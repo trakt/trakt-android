@@ -129,6 +129,7 @@ internal class ProfileApiClient(
             ratings = null,
             startDate = null,
             endDate = null,
+            subgenres = null
         )
         return response.body()
     }
@@ -153,6 +154,7 @@ internal class ProfileApiClient(
             ratings = null,
             startDate = null,
             endDate = null,
+            subgenres = null
         )
         return response.body()
     }

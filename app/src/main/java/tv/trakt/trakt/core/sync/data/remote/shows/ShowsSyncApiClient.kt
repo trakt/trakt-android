@@ -4,9 +4,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
-import org.openapitools.client.models.PostCheckinMovieRequestMovieIds
 import org.openapitools.client.models.PostSyncFavoritesAddRequest
-import org.openapitools.client.models.PostSyncFavoritesAddRequestMoviesInner
+import org.openapitools.client.models.PostSyncFavoritesAddRequestShowsInner
 import org.openapitools.client.models.PostSyncHistoryRemoveRequest
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
@@ -157,11 +156,12 @@ internal class ShowsSyncApiClient(
     override suspend fun addToFavorites(showId: TraktId) {
         val request = PostSyncFavoritesAddRequest(
             shows = listOf(
-                PostSyncFavoritesAddRequestMoviesInner(
-                    ids = PostCheckinMovieRequestMovieIds(
+                PostSyncFavoritesAddRequestShowsInner(
+                    ids = PostUsersListsListAddRequestShowsInnerOneOfIds(
                         trakt = showId.value,
                         slug = null,
                         imdb = null,
+                        tvdb = -1,
                         tmdb = 0,
                     ),
                 ),
@@ -174,11 +174,12 @@ internal class ShowsSyncApiClient(
     override suspend fun removeFromFavorites(showId: TraktId) {
         val request = PostSyncFavoritesAddRequest(
             shows = listOf(
-                PostSyncFavoritesAddRequestMoviesInner(
-                    ids = PostCheckinMovieRequestMovieIds(
+                PostSyncFavoritesAddRequestShowsInner(
+                    ids = PostUsersListsListAddRequestShowsInnerOneOfIds(
                         trakt = showId.value,
                         slug = null,
                         imdb = null,
+                        tvdb = -1,
                         tmdb = 0,
                     ),
                 ),

@@ -78,6 +78,7 @@ internal class ShowsSyncApiClient(
             ratings = null,
             startDate = null,
             endDate = null,
+            subgenres = null
         )
 
         return response.body()
