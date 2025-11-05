@@ -69,7 +69,6 @@
     <string name="list_title_personal_lists">My Lists</string>
     <string name="text_share_movie">Just discovered \"%s\" - you need to see this! 🎬</string>
     <string name="text_share_show">Found this awesome show: %s! 📺</string>
-    <string name="list_title_recently_watched">Recently Watched</string>
     <string name="list_title_available_now">Available Now</string>
     <string name="warning_prompt_drop_show">Are you sure you want to drop \"%s\" show? This will remove it from your up next list.</string>
     <string name="button_text_drop_show">Drop show</string>
@@ -90,7 +89,6 @@
     <string name="header_device_auth_code_instruction">and enter the following code:</string>
     <string name="error_text_lists_limit">You have reached the limit of your personal lists. Upgrade to VIP for unlimited amount of lists!</string>
     <string name="list_title_extras">Extras</string>
-    <string name="page_title_recently_watched">Recently Watched</string>
     <string name="page_title_search">Search</string>
     <string name="link_text_view_profile">View profile</string>
     <string name="button_text_delete_list">Delete</string>
@@ -151,7 +149,6 @@
     <string name="button_text_cancel">Cancel</string>
     <string name="button_text_where_to_watch">Where to watch</string>
     <string name="button_text_no_services">No services</string>
-    <string name="list_title_watch_history">Watch History</string>
     <string name="list_title_most_popular_searches">Most Popular Searches</string>
     <string name="list_title_birthdays_this_month">Birthdays This Month</string>
     <string name="text_sort_recently_updated">Recently updated</string>
@@ -189,5 +186,6 @@
     <string name="button_text_remove_favorites">Remove from Favorites</string>
     <string name="warning_prompt_remove_from_favorites">Are you sure you want to remove \"%s\" from your Favorites?</string>
     <string name="warning_prompt_mark_as_watched_multiple_episodes">Are you sure you want to mark %d episodes as watched?</string>
+    <string name="list_title_watch_history">History</string>
 
 </resources>

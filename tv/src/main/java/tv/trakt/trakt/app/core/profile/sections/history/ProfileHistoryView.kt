@@ -108,7 +108,7 @@ internal fun ProfileHistoryContent(
         modifier = modifier,
     ) {
         Text(
-            text = stringResource(R.string.list_title_recently_watched),
+            text = stringResource(R.string.list_title_watch_history),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.heading5,
             modifier = Modifier.padding(headerPadding),

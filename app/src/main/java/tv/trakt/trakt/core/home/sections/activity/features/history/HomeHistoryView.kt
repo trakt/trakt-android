@@ -158,7 +158,7 @@ internal fun HomeHistoryContent(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             TraktHeader(
-                title = stringResource(R.string.list_title_recently_watched),
+                title = stringResource(R.string.list_title_watch_history),
             )
 
             if (!state.items.isNullOrEmpty() || state.loading != DONE) {
