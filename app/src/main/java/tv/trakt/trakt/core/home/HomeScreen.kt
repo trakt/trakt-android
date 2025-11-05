@@ -27,7 +27,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.home.sections.activity.HomeActivityView
+import tv.trakt.trakt.core.home.sections.activity.features.history.HomeHistoryView
+import tv.trakt.trakt.core.home.sections.activity.features.social.HomeSocialView
 import tv.trakt.trakt.core.home.sections.upcoming.HomeUpcomingView
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextView
 import tv.trakt.trakt.core.home.sections.watchlist.HomeWatchlistView
@@ -166,12 +167,24 @@ private fun HomeScreenContent(
                 )
             }
 
+            if (state.user.user != null) {
+                item {
+                    HomeHistoryView(
+                        headerPadding = sectionPadding,
+                        contentPadding = sectionPadding,
+                        onShowClick = onShowClick,
+                        onEpisodeClick = onEpisodeClick,
+                        onMovieClick = onMovieClick,
+                        onMoreClick = onMorePersonalClick,
+                    )
+                }
+            }
+
             item {
-                HomeActivityView(
+                HomeSocialView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
-                    onMorePersonalClick = onMorePersonalClick,
-                    onMoreSocialClick = onMoreSocialClick,
+                    onMoreClick = onMoreSocialClick,
                     onShowClick = onShowClick,
                     onEpisodeClick = onEpisodeClick,
                     onMovieClick = onMovieClick,

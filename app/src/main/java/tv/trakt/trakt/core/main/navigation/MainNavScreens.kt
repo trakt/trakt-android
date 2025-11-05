@@ -9,10 +9,10 @@ import tv.trakt.trakt.common.model.MediaType.SHOW
 import tv.trakt.trakt.core.comments.navigation.commentsScreen
 import tv.trakt.trakt.core.comments.navigation.navigateToComments
 import tv.trakt.trakt.core.home.navigation.homeScreen
-import tv.trakt.trakt.core.home.sections.activity.all.navigation.homeActivityPersonalScreen
-import tv.trakt.trakt.core.home.sections.activity.all.navigation.homeActivitySocialScreen
-import tv.trakt.trakt.core.home.sections.activity.all.navigation.navigateToAllActivityPersonal
-import tv.trakt.trakt.core.home.sections.activity.all.navigation.navigateToAllActivitySocial
+import tv.trakt.trakt.core.home.sections.activity.features.all.navigation.homeActivityPersonalScreen
+import tv.trakt.trakt.core.home.sections.activity.features.all.navigation.homeActivitySocialScreen
+import tv.trakt.trakt.core.home.sections.activity.features.all.navigation.navigateToAllActivityPersonal
+import tv.trakt.trakt.core.home.sections.activity.features.all.navigation.navigateToAllActivitySocial
 import tv.trakt.trakt.core.home.sections.upnext.features.all.navigation.homeUpNextScreen
 import tv.trakt.trakt.core.home.sections.upnext.features.all.navigation.navigateToAllUpNext
 import tv.trakt.trakt.core.lists.features.details.navigation.listDetailsScreen

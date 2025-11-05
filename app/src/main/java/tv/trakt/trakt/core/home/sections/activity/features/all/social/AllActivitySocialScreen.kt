@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 
-package tv.trakt.trakt.core.home.sections.activity.all.personal
+package tv.trakt.trakt.core.home.sections.activity.features.all.social
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
@@ -28,9 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -49,25 +46,26 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.core.home.sections.activity.all.AllActivityState
-import tv.trakt.trakt.core.home.sections.activity.all.views.AllActivityEpisodeItem
-import tv.trakt.trakt.core.home.sections.activity.all.views.AllActivityMovieItem
+import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.home.sections.activity.features.all.AllActivityState
+import tv.trakt.trakt.core.home.sections.activity.features.all.views.AllActivityEpisodeItem
+import tv.trakt.trakt.core.home.sections.activity.features.all.views.AllActivityMovieItem
+import tv.trakt.trakt.core.home.sections.activity.features.all.views.UserFilterChip
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.EpisodeItem
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.MovieItem
-import tv.trakt.trakt.core.home.sections.activity.sheets.HomeActivityItemSheet
 import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextContent
 import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextState
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.FilterChipGroup
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun AllActivityPersonalScreen(
+internal fun AllActivitySocialScreen(
     modifier: Modifier = Modifier,
-    viewModel: AllActivityPersonalViewModel = koinViewModel(),
+    viewModel: AllActivitySocialViewModel = koinViewModel(),
     onNavigateBack: () -> Unit,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
@@ -94,19 +92,15 @@ internal fun AllActivityPersonalScreen(
         }
     }
 
-    var contextSheet by remember { mutableStateOf<HomeActivityItem?>(null) }
-
-    AllActivityPersonalContent(
+    AllActivitySocialContent(
         state = state,
         modifier = modifier,
+        onFilterClick = { user ->
+            viewModel.setUserFilter(user)
+        },
         onBackClick = onNavigateBack,
         onLoadMore = {
-            viewModel.loadMoreData()
-        },
-        onLongClick = {
-            if (!state.loading.isLoading && !state.loadingMore.isLoading) {
-                contextSheet = it
-            }
+            // No pagination at the moment.
         },
         onShowClick = { episodeItem ->
             viewModel.navigateToShow(episodeItem.show)
@@ -120,12 +114,6 @@ internal fun AllActivityPersonalScreen(
         onMovieClick = { movie ->
             viewModel.navigateToMovie(movie)
         },
-    )
-
-    HomeActivityItemSheet(
-        sheetItem = contextSheet,
-        onDismiss = { contextSheet = null },
-        onPlayRemoved = { viewModel.removeItem(it) },
     )
 }
 
@@ -146,7 +134,7 @@ private fun TitleBar(modifier: Modifier = Modifier) {
             contentDescription = null,
         )
         Text(
-            text = stringResource(R.string.list_title_watch_history),
+            text = stringResource(R.string.list_title_social_activity),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.heading5,
         )
@@ -154,10 +142,10 @@ private fun TitleBar(modifier: Modifier = Modifier) {
 }
 
 @Composable
-internal fun AllActivityPersonalContent(
+internal fun AllActivitySocialContent(
     state: AllActivityState,
     modifier: Modifier = Modifier,
-    onLongClick: (HomeActivityItem) -> Unit = {},
+    onFilterClick: (User) -> Unit = {},
     onBackClick: () -> Unit = {},
     onLoadMore: () -> Unit = {},
     onShowClick: (EpisodeItem) -> Unit = {},
@@ -179,8 +167,6 @@ internal fun AllActivityPersonalContent(
             .nestedScroll(headerState.connection),
     ) {
         val contentPadding = PaddingValues(
-            start = TraktTheme.spacing.mainPageHorizontalSpace,
-            end = TraktTheme.spacing.mainPageHorizontalSpace,
             top = WindowInsets.statusBars.asPaddingValues()
                 .calculateTopPadding(),
             bottom = WindowInsets.navigationBars.asPaddingValues()
@@ -196,11 +182,11 @@ internal fun AllActivityPersonalContent(
         ContentList(
             listState = listState,
             listItems = (state.items ?: emptyList()).toImmutableList(),
+            listFilters = state.usersFilter,
             contentPadding = contentPadding,
-            loadingMore = state.loadingMore.isLoading,
             onTopOfList = { headerState.resetScrolled() },
             onEndOfList = onLoadMore,
-            onLongClick = onLongClick,
+            onFilterClick = onFilterClick,
             onBackClick = onBackClick,
             onShowClick = onShowClick,
             onEpisodeClick = onEpisodeClick,
@@ -213,12 +199,12 @@ internal fun AllActivityPersonalContent(
 private fun ContentList(
     modifier: Modifier = Modifier,
     listItems: ImmutableList<HomeActivityItem>,
+    listFilters: AllActivityState.UsersFilter,
     listState: LazyListState,
     contentPadding: PaddingValues,
-    loadingMore: Boolean,
+    onFilterClick: (User) -> Unit,
     onTopOfList: () -> Unit,
     onEndOfList: () -> Unit,
-    onLongClick: (HomeActivityItem) -> Unit,
     onBackClick: () -> Unit,
     onShowClick: (EpisodeItem) -> Unit,
     onEpisodeClick: (EpisodeItem) -> Unit,
@@ -259,11 +245,24 @@ private fun ContentList(
         item {
             TitleBar(
                 modifier = Modifier
-                    .padding(bottom = 2.dp)
+                    .padding(
+                        start = TraktTheme.spacing.mainPageHorizontalSpace,
+                        end = TraktTheme.spacing.mainPageHorizontalSpace,
+                        bottom = 2.dp,
+                    )
                     .onClick {
                         onBackClick()
                     },
             )
+        }
+
+        if (listFilters.users.isNotEmpty()) {
+            item {
+                ContentFilters(
+                    state = listFilters,
+                    onFilterClick = onFilterClick,
+                )
+            }
         }
 
         items(
@@ -277,10 +276,13 @@ private fun ContentList(
                         onClick = {
                             onMovieClick(item.movie)
                         },
-                        onLongClick = { onLongClick(item) },
-                        moreButton = true,
+                        moreButton = false,
                         modifier = Modifier
-                            .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                            .padding(
+                                start = TraktTheme.spacing.mainPageHorizontalSpace,
+                                end = TraktTheme.spacing.mainPageHorizontalSpace,
+                                bottom = TraktTheme.spacing.mainListVerticalSpace,
+                            )
                             .animateItem(
                                 fadeInSpec = null,
                                 fadeOutSpec = null,
@@ -292,10 +294,13 @@ private fun ContentList(
                         item = item,
                         onClick = { onEpisodeClick(item) },
                         onShowClick = { onShowClick(item) },
-                        onLongClick = { onLongClick(item) },
-                        moreButton = true,
+                        moreButton = false,
                         modifier = Modifier
-                            .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                            .padding(
+                                start = TraktTheme.spacing.mainPageHorizontalSpace,
+                                end = TraktTheme.spacing.mainPageHorizontalSpace,
+                                bottom = TraktTheme.spacing.mainListVerticalSpace,
+                            )
                             .animateItem(
                                 fadeInSpec = null,
                                 fadeOutSpec = null,
@@ -304,14 +309,27 @@ private fun ContentList(
                 }
             }
         }
+    }
+}
 
-        if (loadingMore) {
-            item {
-                FilmProgressIndicator(
-                    size = 32.dp,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
+@Composable
+private fun ContentFilters(
+    state: AllActivityState.UsersFilter,
+    onFilterClick: (User) -> Unit,
+) {
+    FilterChipGroup(
+        paddingHorizontal = PaddingValues(
+            start = TraktTheme.spacing.mainPageHorizontalSpace,
+            end = TraktTheme.spacing.mainPageHorizontalSpace,
+        ),
+        paddingVertical = PaddingValues(bottom = 22.dp),
+    ) {
+        for (user in state.users) {
+            UserFilterChip(
+                user = user,
+                selected = state.selectedUser?.ids?.trakt == user.ids.trakt,
+                onClick = { onFilterClick(user) },
+            )
         }
     }
 }

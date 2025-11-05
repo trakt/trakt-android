@@ -39,7 +39,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
-import tv.trakt.trakt.core.home.sections.activity.views.MovieSocialItemView
+import tv.trakt.trakt.core.home.sections.activity.views.ActivityMovieItemView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
@@ -138,7 +138,7 @@ private fun ContentList(
             items = listItems,
             key = { it.id },
         ) { item ->
-            MovieSocialItemView(
+            ActivityMovieItemView(
                 item = item,
                 onClick = { onClick?.invoke(item) },
                 onLongClick = { onLongClick?.invoke(item) },

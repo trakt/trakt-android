@@ -16,16 +16,16 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.core.home.HomeViewModel
-import tv.trakt.trakt.core.home.sections.activity.HomeActivityViewModel
-import tv.trakt.trakt.core.home.sections.activity.all.data.local.AllActivityLocalDataSource
-import tv.trakt.trakt.core.home.sections.activity.all.data.local.AllActivityStorage
-import tv.trakt.trakt.core.home.sections.activity.all.personal.AllActivityPersonalViewModel
-import tv.trakt.trakt.core.home.sections.activity.all.social.AllActivitySocialViewModel
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalStorage
 import tv.trakt.trakt.core.home.sections.activity.data.local.social.HomeSocialLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.data.local.social.HomeSocialStorage
-import tv.trakt.trakt.core.home.sections.activity.usecases.GetActivityFilterUseCase
+import tv.trakt.trakt.core.home.sections.activity.features.all.data.local.AllActivityLocalDataSource
+import tv.trakt.trakt.core.home.sections.activity.features.all.data.local.AllActivityStorage
+import tv.trakt.trakt.core.home.sections.activity.features.all.personal.AllActivityPersonalViewModel
+import tv.trakt.trakt.core.home.sections.activity.features.all.social.AllActivitySocialViewModel
+import tv.trakt.trakt.core.home.sections.activity.features.history.HomeHistoryViewModel
+import tv.trakt.trakt.core.home.sections.activity.features.social.HomeSocialViewModel
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.views.context.ActivityItemContextViewModel
@@ -118,12 +118,6 @@ internal val homeModule = module {
     }
 
     factory {
-        GetActivityFilterUseCase(
-            homeDataStore = get(named(HOME_PREFERENCES)),
-        )
-    }
-
-    factory {
         GetUpcomingUseCase(
             remoteUserSource = get(),
             localDataSource = get(),
@@ -179,10 +173,18 @@ internal val homeModule = module {
     }
 
     viewModel {
-        HomeActivityViewModel(
+        HomeSocialViewModel(
             getSocialActivityUseCase = get(),
+            showLocalDataSource = get(),
+            episodeLocalDataSource = get(),
+            movieLocalDataSource = get(),
+            sessionManager = get(),
+        )
+    }
+
+    viewModel {
+        HomeHistoryViewModel(
             getPersonalActivityUseCase = get(),
-            getActivityFilterUseCase = get(),
             homeUpNextSource = get(),
             userWatchlistSource = get(),
             allActivitySource = get(),
@@ -190,8 +192,8 @@ internal val homeModule = module {
             showUpdatesSource = get(),
             episodeUpdatesSource = get(),
             episodeLocalDataSource = get(),
-            movieLocalDataSource = get(),
             movieDetailsUpdates = get(),
+            movieLocalDataSource = get(),
             sessionManager = get(),
         )
     }

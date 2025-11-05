@@ -1,18 +1,20 @@
-package tv.trakt.trakt.core.home.sections.activity.all.personal
+@file:OptIn(FlowPreview::class)
+
+package tv.trakt.trakt.core.home.sections.activity.features.history
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.Firebase
-import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
@@ -20,73 +22,87 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
-import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_LIMIT
-import tv.trakt.trakt.core.home.sections.activity.all.AllActivityState
+import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
+import tv.trakt.trakt.core.home.sections.activity.features.all.data.local.AllActivityLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
+import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
+import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 
-@OptIn(FlowPreview::class)
-internal class AllActivityPersonalViewModel(
-    private val getActivityUseCase: GetPersonalActivityUseCase,
+internal class HomeHistoryViewModel(
+    private val getPersonalActivityUseCase: GetPersonalActivityUseCase,
+    private val homeUpNextSource: HomeUpNextLocalDataSource,
+    private val userWatchlistSource: UserWatchlistLocalDataSource,
+    private val allActivitySource: AllActivityLocalDataSource,
     private val showLocalDataSource: ShowLocalDataSource,
-    private val episodeLocalDataSource: EpisodeLocalDataSource,
-    private val movieLocalDataSource: MovieLocalDataSource,
     private val showUpdatesSource: ShowDetailsUpdates,
     private val episodeUpdatesSource: EpisodeDetailsUpdates,
+    private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieDetailsUpdates: MovieDetailsUpdates,
+    private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
-    analytics: Analytics,
 ) : ViewModel() {
-    private val initialState = AllActivityState()
+    private val initialState = HomeHistoryState()
 
-    private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
+    private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val loadingMoreState = MutableStateFlow(IDLE)
     private val errorState = MutableStateFlow(initialState.error)
 
-    private var pages: Int = 1
-    private var hasMoreData: Boolean = false
-    private var processingJob: kotlinx.coroutines.Job? = null
+    private var loadDataJob: Job? = null
+    private var processingJob: Job? = null
 
     init {
-        loadBackground()
         loadData()
-        observeData()
-
-        analytics.logScreenView(
-            screenName = "all_activity_personal",
-        )
+        observeUser()
+        observeHome()
     }
 
-    private fun observeData() {
+    private fun observeUser() {
+        viewModelScope.launch {
+            userState.update { sessionManager.getProfile() }
+            sessionManager.observeProfile()
+                .drop(1)
+                .distinctUntilChanged()
+                .debounce(200)
+                .collect { user ->
+                    userState.update { user }
+                    loadData()
+                }
+        }
+    }
+
+    private fun observeHome() {
         merge(
+            homeUpNextSource.observeUpdates(),
+            userWatchlistSource.observeUpdates(),
+            allActivitySource.observeUpdates(),
             showUpdatesSource.observeUpdates(Source.PROGRESS),
             showUpdatesSource.observeUpdates(Source.SEASONS),
-            episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.PROGRESS),
-            episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.SEASON),
+            episodeUpdatesSource.observeUpdates(PROGRESS),
+            episodeUpdatesSource.observeUpdates(SEASON),
             movieDetailsUpdates.observeUpdates(),
         )
             .distinctUntilChanged()
@@ -96,22 +112,18 @@ internal class AllActivityPersonalViewModel(
             }.launchIn(viewModelScope)
     }
 
-    private fun loadBackground() {
-        val configUrl = Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL)
-        backgroundState.update { configUrl }
-    }
-
-    private fun loadData(ignoreErrors: Boolean = false) {
-        clear()
-        viewModelScope.launch {
-            if (loadEmptyIfNeeded()) {
-                return@launch
-            }
-
+    fun loadData(ignoreErrors: Boolean = false) {
+        loadDataJob?.cancel()
+        loadDataJob = viewModelScope.launch {
             try {
-                val localItems = getActivityUseCase.getLocalPersonalActivity(
-                    limit = HOME_ALL_LIMIT,
+                if (loadEmptyIfNeeded()) {
+                    return@launch
+                }
+
+                val localItems = getPersonalActivityUseCase.getLocalPersonalActivity(
+                    limit = HOME_SECTION_LIMIT,
                 )
+
                 if (localItems.isNotEmpty()) {
                     itemsState.update { localItems }
                     loadingState.update { DONE }
@@ -119,13 +131,9 @@ internal class AllActivityPersonalViewModel(
                     loadingState.update { LOADING }
                 }
 
-                val remoteItems = getActivityUseCase.getPersonalActivity(
-                    page = 1,
-                    limit = HOME_ALL_LIMIT,
-                )
-                itemsState.update { remoteItems }
-
-                hasMoreData = remoteItems.size >= HOME_ALL_LIMIT
+                itemsState.update {
+                    getPersonalActivityUseCase.getPersonalActivity(1, HOME_SECTION_LIMIT)
+                }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     if (!ignoreErrors) {
@@ -139,49 +147,16 @@ internal class AllActivityPersonalViewModel(
         }
     }
 
-    fun loadMoreData() {
-        if (itemsState.value.isNullOrEmpty() || !hasMoreData) {
-            return
-        }
-
-        if (loadingMoreState.value.isLoading || loadingState.value.isLoading) {
-            return
-        }
-
-        viewModelScope.launch {
-            try {
-                loadingMoreState.update { LOADING }
-
-                val nextData = getActivityUseCase.getPersonalActivity(
-                    page = pages + 1,
-                    limit = HOME_ALL_LIMIT,
-                )
-
-                itemsState.update { items ->
-                    items
-                        ?.plus(nextData)
-                        ?.distinctBy { it.id }
-                        ?.toImmutableList()
-                }
-
-                pages += 1
-                hasMoreData = nextData.size >= HOME_ALL_LIMIT
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    errorState.update { error }
-                    Timber.w(error, "Failed to load more page data")
-                }
-            } finally {
-                loadingMoreState.update { DONE }
+    private suspend fun loadEmptyIfNeeded(): Boolean {
+        if (!sessionManager.isAuthenticated()) {
+            itemsState.update {
+                emptyList<HomeActivityItem>().toImmutableList()
             }
+            loadingState.update { DONE }
+            return true
         }
-    }
 
-    fun removeItem(item: HomeActivityItem) {
-        itemsState.update {
-            it?.filterNot { existingItem -> existingItem.id == item.id }
-                ?.toImmutableList()
-        }
+        return false
     }
 
     fun navigateToShow(show: Show) {
@@ -216,16 +191,8 @@ internal class AllActivityPersonalViewModel(
             return
         }
         processingJob = viewModelScope.launch {
-            try {
-                movieLocalDataSource.upsertMovies(listOf(movie))
-                navigateMovie.update { movie.ids.trakt }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.w(error, "Failed to navigate to movie")
-                }
-            } finally {
-                processingJob = null
-            }
+            movieLocalDataSource.upsertMovies(listOf(movie))
+            navigateMovie.update { movie.ids.trakt }
         }
     }
 
@@ -233,48 +200,29 @@ internal class AllActivityPersonalViewModel(
         navigateShow.update { null }
         navigateEpisode.update { null }
         navigateMovie.update { null }
-    }
 
-    private suspend fun loadEmptyIfNeeded(): Boolean {
-        if (!sessionManager.isAuthenticated()) {
-            itemsState.update {
-                emptyList<HomeActivityItem>().toImmutableList()
-            }
-            loadingState.update { DONE }
-            return true
-        } else {
-            itemsState.update { null }
-            loadingState.update { IDLE }
-        }
-
-        return false
-    }
-
-    private fun clear() {
-        pages = 1
-        hasMoreData = true
+        processingJob?.cancel()
+        processingJob = null
     }
 
     @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<AllActivityState> = combine(
-        backgroundState,
+    val state: StateFlow<HomeHistoryState> = combine(
+        loadingState,
         itemsState,
         navigateShow,
         navigateEpisode,
         navigateMovie,
-        loadingState,
-        loadingMoreState,
         errorState,
-    ) { state ->
-        AllActivityState(
-            backgroundUrl = state[0] as String,
-            items = state[1] as ImmutableList<HomeActivityItem>?,
-            navigateShow = state[2] as TraktId?,
-            navigateEpisode = state[3] as Pair<TraktId, Episode>?,
-            navigateMovie = state[4] as TraktId?,
-            loading = state[5] as LoadingState,
-            loadingMore = state[6] as LoadingState,
-            error = state[7] as Exception?,
+        userState,
+    ) { states ->
+        HomeHistoryState(
+            loading = states[0] as LoadingState,
+            items = states[1] as? ImmutableList<HomeActivityItem>,
+            navigateShow = states[2] as? TraktId,
+            navigateEpisode = states[3] as? Pair<TraktId, Episode>,
+            navigateMovie = states[4] as? TraktId,
+            error = states[5] as? Exception,
+            user = states[6] as? User,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -34,7 +34,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
-import tv.trakt.trakt.core.home.sections.activity.all.data.local.AllActivityLocalDataSource
+import tv.trakt.trakt.core.home.sections.activity.features.all.data.local.AllActivityLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates

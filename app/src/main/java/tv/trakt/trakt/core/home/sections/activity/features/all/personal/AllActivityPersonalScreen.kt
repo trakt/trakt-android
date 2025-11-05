@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 
-package tv.trakt.trakt.core.home.sections.activity.all.social
+package tv.trakt.trakt.core.home.sections.activity.features.all.personal
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
@@ -27,7 +28,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -44,27 +47,27 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.core.home.sections.activity.all.AllActivityState
-import tv.trakt.trakt.core.home.sections.activity.all.views.AllActivityEpisodeItem
-import tv.trakt.trakt.core.home.sections.activity.all.views.AllActivityMovieItem
-import tv.trakt.trakt.core.home.sections.activity.all.views.UserFilterChip
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.core.home.sections.activity.features.all.AllActivityState
+import tv.trakt.trakt.core.home.sections.activity.features.all.views.AllActivityEpisodeItem
+import tv.trakt.trakt.core.home.sections.activity.features.all.views.AllActivityMovieItem
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.EpisodeItem
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.MovieItem
+import tv.trakt.trakt.core.home.sections.activity.sheets.HomeActivityItemSheet
 import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextContent
 import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextState
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.FilterChipGroup
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun AllActivitySocialScreen(
+internal fun AllActivityPersonalScreen(
     modifier: Modifier = Modifier,
-    viewModel: AllActivitySocialViewModel = koinViewModel(),
+    viewModel: AllActivityPersonalViewModel = koinViewModel(),
     onNavigateBack: () -> Unit,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
@@ -91,15 +94,19 @@ internal fun AllActivitySocialScreen(
         }
     }
 
-    AllActivitySocialContent(
+    var contextSheet by remember { mutableStateOf<HomeActivityItem?>(null) }
+
+    AllActivityPersonalContent(
         state = state,
         modifier = modifier,
-        onFilterClick = { user ->
-            viewModel.setUserFilter(user)
-        },
         onBackClick = onNavigateBack,
         onLoadMore = {
-            // No pagination at the moment.
+            viewModel.loadMoreData()
+        },
+        onLongClick = {
+            if (!state.loading.isLoading && !state.loadingMore.isLoading) {
+                contextSheet = it
+            }
         },
         onShowClick = { episodeItem ->
             viewModel.navigateToShow(episodeItem.show)
@@ -113,6 +120,12 @@ internal fun AllActivitySocialScreen(
         onMovieClick = { movie ->
             viewModel.navigateToMovie(movie)
         },
+    )
+
+    HomeActivityItemSheet(
+        sheetItem = contextSheet,
+        onDismiss = { contextSheet = null },
+        onPlayRemoved = { viewModel.removeItem(it) },
     )
 }
 
@@ -133,7 +146,7 @@ private fun TitleBar(modifier: Modifier = Modifier) {
             contentDescription = null,
         )
         Text(
-            text = stringResource(R.string.list_title_social_activity),
+            text = stringResource(R.string.list_title_watch_history),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.heading5,
         )
@@ -141,15 +154,15 @@ private fun TitleBar(modifier: Modifier = Modifier) {
 }
 
 @Composable
-internal fun AllActivitySocialContent(
+internal fun AllActivityPersonalContent(
     state: AllActivityState,
     modifier: Modifier = Modifier,
-    onFilterClick: (User) -> Unit = {},
+    onLongClick: (HomeActivityItem) -> Unit = {},
     onBackClick: () -> Unit = {},
     onLoadMore: () -> Unit = {},
     onShowClick: (EpisodeItem) -> Unit = {},
     onEpisodeClick: (EpisodeItem) -> Unit = {},
-    onMovieClick: (tv.trakt.trakt.common.model.Movie) -> Unit = {},
+    onMovieClick: (Movie) -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
     val listState = rememberLazyListState(
@@ -166,6 +179,8 @@ internal fun AllActivitySocialContent(
             .nestedScroll(headerState.connection),
     ) {
         val contentPadding = PaddingValues(
+            start = TraktTheme.spacing.mainPageHorizontalSpace,
+            end = TraktTheme.spacing.mainPageHorizontalSpace,
             top = WindowInsets.statusBars.asPaddingValues()
                 .calculateTopPadding(),
             bottom = WindowInsets.navigationBars.asPaddingValues()
@@ -181,11 +196,11 @@ internal fun AllActivitySocialContent(
         ContentList(
             listState = listState,
             listItems = (state.items ?: emptyList()).toImmutableList(),
-            listFilters = state.usersFilter,
             contentPadding = contentPadding,
+            loadingMore = state.loadingMore.isLoading,
             onTopOfList = { headerState.resetScrolled() },
             onEndOfList = onLoadMore,
-            onFilterClick = onFilterClick,
+            onLongClick = onLongClick,
             onBackClick = onBackClick,
             onShowClick = onShowClick,
             onEpisodeClick = onEpisodeClick,
@@ -198,16 +213,16 @@ internal fun AllActivitySocialContent(
 private fun ContentList(
     modifier: Modifier = Modifier,
     listItems: ImmutableList<HomeActivityItem>,
-    listFilters: AllActivityState.UsersFilter,
     listState: LazyListState,
     contentPadding: PaddingValues,
-    onFilterClick: (User) -> Unit,
+    loadingMore: Boolean,
     onTopOfList: () -> Unit,
     onEndOfList: () -> Unit,
+    onLongClick: (HomeActivityItem) -> Unit,
     onBackClick: () -> Unit,
     onShowClick: (EpisodeItem) -> Unit,
     onEpisodeClick: (EpisodeItem) -> Unit,
-    onMovieClick: (tv.trakt.trakt.common.model.Movie) -> Unit,
+    onMovieClick: (Movie) -> Unit,
 ) {
     val isScrolledToBottom by remember(listItems.size) {
         derivedStateOf {
@@ -244,24 +259,11 @@ private fun ContentList(
         item {
             TitleBar(
                 modifier = Modifier
-                    .padding(
-                        start = TraktTheme.spacing.mainPageHorizontalSpace,
-                        end = TraktTheme.spacing.mainPageHorizontalSpace,
-                        bottom = 2.dp,
-                    )
+                    .padding(bottom = 2.dp)
                     .onClick {
                         onBackClick()
                     },
             )
-        }
-
-        if (listFilters.users.isNotEmpty()) {
-            item {
-                ContentFilters(
-                    state = listFilters,
-                    onFilterClick = onFilterClick,
-                )
-            }
         }
 
         items(
@@ -275,13 +277,10 @@ private fun ContentList(
                         onClick = {
                             onMovieClick(item.movie)
                         },
-                        moreButton = false,
+                        onLongClick = { onLongClick(item) },
+                        moreButton = true,
                         modifier = Modifier
-                            .padding(
-                                start = TraktTheme.spacing.mainPageHorizontalSpace,
-                                end = TraktTheme.spacing.mainPageHorizontalSpace,
-                                bottom = TraktTheme.spacing.mainListVerticalSpace,
-                            )
+                            .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
                             .animateItem(
                                 fadeInSpec = null,
                                 fadeOutSpec = null,
@@ -293,13 +292,10 @@ private fun ContentList(
                         item = item,
                         onClick = { onEpisodeClick(item) },
                         onShowClick = { onShowClick(item) },
-                        moreButton = false,
+                        onLongClick = { onLongClick(item) },
+                        moreButton = true,
                         modifier = Modifier
-                            .padding(
-                                start = TraktTheme.spacing.mainPageHorizontalSpace,
-                                end = TraktTheme.spacing.mainPageHorizontalSpace,
-                                bottom = TraktTheme.spacing.mainListVerticalSpace,
-                            )
+                            .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
                             .animateItem(
                                 fadeInSpec = null,
                                 fadeOutSpec = null,
@@ -308,27 +304,14 @@ private fun ContentList(
                 }
             }
         }
-    }
-}
 
-@Composable
-private fun ContentFilters(
-    state: AllActivityState.UsersFilter,
-    onFilterClick: (User) -> Unit,
-) {
-    FilterChipGroup(
-        paddingHorizontal = PaddingValues(
-            start = TraktTheme.spacing.mainPageHorizontalSpace,
-            end = TraktTheme.spacing.mainPageHorizontalSpace,
-        ),
-        paddingVertical = PaddingValues(bottom = 22.dp),
-    ) {
-        for (user in state.users) {
-            UserFilterChip(
-                user = user,
-                selected = state.selectedUser?.ids?.trakt == user.ids.trakt,
-                onClick = { onFilterClick(user) },
-            )
+        if (loadingMore) {
+            item {
+                FilmProgressIndicator(
+                    size = 32.dp,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
         }
     }
 }

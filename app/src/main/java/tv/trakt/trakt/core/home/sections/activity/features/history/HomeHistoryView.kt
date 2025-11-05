@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package tv.trakt.trakt.core.home.sections.activity
+package tv.trakt.trakt.core.home.sections.activity.features.history
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
@@ -47,29 +47,22 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.PERSONAL
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.SOCIAL
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.sheets.HomeActivityItemSheet
-import tv.trakt.trakt.core.home.sections.activity.views.EpisodeSocialItemView
-import tv.trakt.trakt.core.home.sections.activity.views.MovieSocialItemView
-import tv.trakt.trakt.core.home.views.HomeEmptySocialView
+import tv.trakt.trakt.core.home.sections.activity.views.ActivityEpisodeItemView
+import tv.trakt.trakt.core.home.sections.activity.views.ActivityMovieItemView
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.FilterChip
-import tv.trakt.trakt.ui.components.FilterChipGroup
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun HomeActivityView(
+internal fun HomeHistoryView(
     modifier: Modifier = Modifier,
-    viewModel: HomeActivityViewModel = koinViewModel(),
+    viewModel: HomeHistoryViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
-    onMorePersonalClick: () -> Unit,
-    onMoreSocialClick: () -> Unit,
+    onMoreClick: () -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onShowClick: (TraktId) -> Unit,
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
@@ -97,7 +90,7 @@ internal fun HomeActivityView(
 
     var contextSheet by remember { mutableStateOf<HomeActivityItem?>(null) }
 
-    HomeActivityContent(
+    HomeHistoryContent(
         state = state,
         modifier = modifier,
         headerPadding = headerPadding,
@@ -112,29 +105,20 @@ internal fun HomeActivityView(
             )
         },
         onEpisodeLongClick = {
-            if (state.filter == PERSONAL) {
-                contextSheet = it
-            }
+            contextSheet = it
         },
         onMovieClick = {
             viewModel.navigateToMovie(it)
         },
         onMovieLongClick = {
-            if (state.filter == PERSONAL) {
-                contextSheet = it
-            }
+            contextSheet = it
         },
         onMoreClick = {
             if (state.loading.isLoading) {
-                return@HomeActivityContent
+                return@HomeHistoryContent
             }
-            when (state.filter) {
-                PERSONAL -> onMorePersonalClick()
-                SOCIAL -> onMoreSocialClick()
-                null -> Unit
-            }
+            onMoreClick()
         },
-        onFilterClick = viewModel::setFilter,
     )
 
     HomeActivityItemSheet(
@@ -147,8 +131,8 @@ internal fun HomeActivityView(
 }
 
 @Composable
-internal fun HomeActivityContent(
-    state: HomeActivityState,
+internal fun HomeHistoryContent(
+    state: HomeHistoryState,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
@@ -157,7 +141,6 @@ internal fun HomeActivityContent(
     onEpisodeLongClick: (HomeActivityItem.EpisodeItem) -> Unit = {},
     onMovieClick: (Movie) -> Unit = { },
     onMovieLongClick: (HomeActivityItem.MovieItem) -> Unit = {},
-    onFilterClick: (HomeActivityFilter) -> Unit = {},
     onMoreClick: () -> Unit = {},
 ) {
     Column(
@@ -175,7 +158,7 @@ internal fun HomeActivityContent(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             TraktHeader(
-                title = stringResource(R.string.list_title_activity),
+                title = stringResource(R.string.list_title_recently_watched),
             )
 
             if (!state.items.isNullOrEmpty() || state.loading != DONE) {
@@ -192,15 +175,7 @@ internal fun HomeActivityContent(
             }
         }
 
-        if (!state.items.isNullOrEmpty() || state.loading.isLoading || state.user != null) {
-            ContentFilters(
-                state = state,
-                headerPadding = headerPadding,
-                onFilterClick = onFilterClick,
-            )
-        } else {
-            Spacer(modifier = Modifier.height(TraktTheme.spacing.mainRowHeaderSpace))
-        }
+        Spacer(modifier = Modifier.height(TraktTheme.spacing.mainRowHeaderSpace))
 
         Crossfade(
             targetState = state.loading,
@@ -226,15 +201,16 @@ internal fun HomeActivityContent(
                             )
                         }
                         state.items?.isEmpty() == true -> {
-                            HomeEmptySocialView(
-                                modifier = Modifier
-                                    .padding(contentPadding),
+                            Text(
+                                text = stringResource(R.string.list_placeholder_empty),
+                                color = TraktTheme.colors.textSecondary,
+                                style = TraktTheme.typography.heading6,
+                                modifier = Modifier.padding(contentPadding),
                             )
                         }
                         else -> {
                             ContentList(
                                 listItems = (state.items ?: emptyList()).toImmutableList(),
-                                listFilter = state.filter,
                                 contentPadding = contentPadding,
                                 onShowClick = onShowClick,
                                 onEpisodeClick = onEpisodeClick,
@@ -246,35 +222,6 @@ internal fun HomeActivityContent(
                     }
                 }
             }
-        }
-    }
-}
-
-@Composable
-private fun ContentFilters(
-    headerPadding: PaddingValues,
-    state: HomeActivityState,
-    onFilterClick: (HomeActivityFilter) -> Unit,
-) {
-    FilterChipGroup(
-        paddingHorizontal = headerPadding,
-    ) {
-        for (filter in HomeActivityFilter.entries) {
-            FilterChip(
-                selected = state.filter == filter,
-                text = stringResource(filter.displayRes),
-                leadingContent = {
-                    Icon(
-                        painter = painterResource(filter.iconRes),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier.size(14.dp),
-                    )
-                },
-                onClick = {
-                    onFilterClick(filter)
-                },
-            )
         }
     }
 }
@@ -301,7 +248,6 @@ private fun ContentLoadingList(
 private fun ContentList(
     listItems: ImmutableList<HomeActivityItem>,
     listState: LazyListState = rememberLazyListState(),
-    listFilter: HomeActivityFilter?,
     contentPadding: PaddingValues,
     onShowClick: (HomeActivityItem.EpisodeItem) -> Unit,
     onEpisodeClick: (HomeActivityItem.EpisodeItem) -> Unit,
@@ -331,16 +277,11 @@ private fun ContentList(
         ) { item ->
             when (item) {
                 is HomeActivityItem.MovieItem ->
-                    MovieSocialItemView(
+                    ActivityMovieItemView(
                         item = item,
                         onClick = { onMovieClick(item.movie) },
-                        onLongClick = when (listFilter) {
-                            PERSONAL -> {
-                                { onMovieLongClick(item) }
-                            }
-                            else -> null
-                        },
-                        moreButton = (listFilter == PERSONAL),
+                        onLongClick = { onMovieLongClick(item) },
+                        moreButton = true,
                         modifier = Modifier
                             .animateItem(
                                 fadeInSpec = null,
@@ -348,17 +289,12 @@ private fun ContentList(
                             ),
                     )
                 is HomeActivityItem.EpisodeItem ->
-                    EpisodeSocialItemView(
+                    ActivityEpisodeItemView(
                         item = item,
                         onClick = { onEpisodeClick(item) },
                         onShowClick = { onShowClick(item) },
-                        onLongClick = when (listFilter) {
-                            PERSONAL -> {
-                                { onEpisodeLongClick(item) }
-                            }
-                            else -> null
-                        },
-                        moreButton = (listFilter == PERSONAL),
+                        onLongClick = { onEpisodeLongClick(item) },
+                        moreButton = true,
                         modifier = Modifier
                             .animateItem(
                                 fadeInSpec = null,
@@ -380,8 +316,8 @@ private fun ContentList(
 @Composable
 private fun Preview() {
     TraktTheme {
-        HomeActivityContent(
-            state = HomeActivityState(
+        HomeHistoryContent(
+            state = HomeHistoryState(
                 loading = IDLE,
             ),
         )
@@ -396,8 +332,8 @@ private fun Preview() {
 @Composable
 private fun Preview2() {
     TraktTheme {
-        HomeActivityContent(
-            state = HomeActivityState(
+        HomeHistoryContent(
+            state = HomeHistoryState(
                 loading = LOADING,
             ),
         )
@@ -412,8 +348,8 @@ private fun Preview2() {
 @Composable
 private fun Preview3() {
     TraktTheme {
-        HomeActivityContent(
-            state = HomeActivityState(
+        HomeHistoryContent(
+            state = HomeHistoryState(
                 loading = DONE,
                 items = emptyList<HomeActivityItem>().toImmutableList(),
             ),

@@ -36,14 +36,14 @@ internal class PostReactionWorker(
             appContext: Context,
             commentId: Int,
             reaction: Reaction,
-            source: ReactionsUpdates.Source? = null,
+            source: ReactionsUpdates.Source,
         ) {
             val workRequest = OneTimeWorkRequestBuilder<PostReactionWorker>()
                 .setInputData(
                     Data.Builder()
                         .putInt("commentId", commentId)
                         .putString("reaction", reaction.name)
-                        .putString("source", source?.name)
+                        .putString("source", source.name)
                         .build(),
                 )
                 .setBackoffCriteria(BackoffPolicy.LINEAR, 3, SECONDS)
@@ -73,7 +73,7 @@ internal class PostReactionWorker(
 
             val commentId = inputData.getInt("commentId", -1)
             val reactionValue = inputData.getString("reaction")
-            val reactionSource = inputData.getString("source")
+            val reactionSource = inputData.getString("source") ?: "unknown"
 
             if (commentId == -1) {
                 Timber.d("Invalid comment ID, cannot post reaction")
@@ -95,12 +95,12 @@ internal class PostReactionWorker(
 
                 analytics.reactions.logReactionAdd(
                     reaction = reactionValue,
-                    source = reactionSource ?: "unknown",
+                    source = reactionSource,
                 )
 
                 loadUserReactionsUseCase.loadReactions()
 
-                if (!reactionSource.isNullOrBlank()) {
+                if (reactionSource.isNotBlank()) {
                     val source = ReactionsUpdates.Source.valueOf(reactionSource)
                     reactionsUpdates.notifyUpdate(
                         commentId = commentId,

@@ -1,6 +1,6 @@
 @file:OptIn(FlowPreview::class)
 
-package tv.trakt.trakt.core.home.sections.activity
+package tv.trakt.trakt.core.home.sections.activity.features.social
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,9 +15,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -36,43 +33,20 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
-import tv.trakt.trakt.core.home.sections.activity.all.data.local.AllActivityLocalDataSource
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.PERSONAL
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityFilter.SOCIAL
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
-import tv.trakt.trakt.core.home.sections.activity.usecases.GetActivityFilterUseCase
-import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
-import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
-import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
-import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 
-internal class HomeActivityViewModel(
-    private val getActivityFilterUseCase: GetActivityFilterUseCase,
+internal class HomeSocialViewModel(
     private val getSocialActivityUseCase: GetSocialActivityUseCase,
-    private val getPersonalActivityUseCase: GetPersonalActivityUseCase,
-    private val homeUpNextSource: HomeUpNextLocalDataSource,
-    private val userWatchlistSource: UserWatchlistLocalDataSource,
-    private val allActivitySource: AllActivityLocalDataSource,
     private val showLocalDataSource: ShowLocalDataSource,
-    private val showUpdatesSource: ShowDetailsUpdates,
-    private val episodeUpdatesSource: EpisodeDetailsUpdates,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
-    private val movieDetailsUpdates: MovieDetailsUpdates,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
-    private val initialState = HomeActivityState()
+    private val initialState = HomeSocialState()
 
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
-    private val filterState = MutableStateFlow(initialState.filter)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
@@ -85,7 +59,6 @@ internal class HomeActivityViewModel(
     init {
         loadData()
         observeUser()
-        observeHome()
     }
 
     private fun observeUser() {
@@ -102,24 +75,6 @@ internal class HomeActivityViewModel(
         }
     }
 
-    private fun observeHome() {
-        merge(
-            homeUpNextSource.observeUpdates(),
-            userWatchlistSource.observeUpdates(),
-            allActivitySource.observeUpdates(),
-            showUpdatesSource.observeUpdates(Source.PROGRESS),
-            showUpdatesSource.observeUpdates(Source.SEASONS),
-            episodeUpdatesSource.observeUpdates(PROGRESS),
-            episodeUpdatesSource.observeUpdates(SEASON),
-            movieDetailsUpdates.observeUpdates(),
-        )
-            .distinctUntilChanged()
-            .debounce(200)
-            .onEach {
-                loadData(ignoreErrors = true)
-            }.launchIn(viewModelScope)
-    }
-
     fun loadData(ignoreErrors: Boolean = false) {
         loadDataJob?.cancel()
         loadDataJob = viewModelScope.launch {
@@ -128,15 +83,9 @@ internal class HomeActivityViewModel(
                     return@launch
                 }
 
-                val filter = loadFilter()
-                val localItems = when (filter) {
-                    SOCIAL -> getSocialActivityUseCase.getLocalSocialActivity(
-                        limit = HOME_SECTION_LIMIT,
-                    )
-                    PERSONAL -> getPersonalActivityUseCase.getLocalPersonalActivity(
-                        limit = HOME_SECTION_LIMIT,
-                    )
-                }
+                val localItems = getSocialActivityUseCase.getLocalSocialActivity(
+                    limit = HOME_SECTION_LIMIT,
+                )
 
                 if (localItems.isNotEmpty()) {
                     itemsState.update { localItems }
@@ -146,10 +95,7 @@ internal class HomeActivityViewModel(
                 }
 
                 itemsState.update {
-                    when (filter) {
-                        SOCIAL -> getSocialActivityUseCase.getSocialActivity(1, HOME_SECTION_LIMIT)
-                        PERSONAL -> getPersonalActivityUseCase.getPersonalActivity(1, HOME_SECTION_LIMIT)
-                    }
+                    getSocialActivityUseCase.getSocialActivity(1, HOME_SECTION_LIMIT)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -174,23 +120,6 @@ internal class HomeActivityViewModel(
         }
 
         return false
-    }
-
-    private suspend fun loadFilter(): HomeActivityFilter {
-        val filter = getActivityFilterUseCase.getFilter()
-        filterState.update { filter }
-        return filter
-    }
-
-    fun setFilter(newFilter: HomeActivityFilter) {
-        if (newFilter == filterState.value || loadingState.value.isLoading) {
-            return
-        }
-        viewModelScope.launch {
-            getActivityFilterUseCase.setFilter(newFilter)
-            loadFilter()
-            loadData()
-        }
     }
 
     fun navigateToShow(show: Show) {
@@ -237,25 +166,23 @@ internal class HomeActivityViewModel(
     }
 
     @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<HomeActivityState> = combine(
+    val state: StateFlow<HomeSocialState> = combine(
         loadingState,
         itemsState,
-        filterState,
         navigateShow,
         navigateEpisode,
         navigateMovie,
         errorState,
         userState,
     ) { states ->
-        HomeActivityState(
+        HomeSocialState(
             loading = states[0] as LoadingState,
             items = states[1] as? ImmutableList<HomeActivityItem>,
-            filter = states[2] as? HomeActivityFilter,
-            navigateShow = states[3] as? TraktId,
-            navigateEpisode = states[4] as? Pair<TraktId, Episode>,
-            navigateMovie = states[5] as? TraktId,
-            error = states[6] as? Exception,
-            user = states[7] as? User,
+            navigateShow = states[2] as? TraktId,
+            navigateEpisode = states[3] as? Pair<TraktId, Episode>,
+            navigateMovie = states[4] as? TraktId,
+            error = states[5] as? Exception,
+            user = states[6] as? User,
         )
     }.stateIn(
         scope = viewModelScope,

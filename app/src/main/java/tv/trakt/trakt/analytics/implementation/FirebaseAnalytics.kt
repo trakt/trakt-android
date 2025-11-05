@@ -103,6 +103,8 @@ internal class FirebaseAnalyticsRatings(
 
     init {
         require(eventName(RATINGS_ADD).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
+        require(eventName(FAVORITES_ADD).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
+        require(eventName(FAVORITES_REMOVE).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
     }
 
     override fun logRatingAdd(
@@ -151,6 +153,7 @@ internal class FirebaseAnalyticsProgress(
 
     init {
         require(eventName(PROGRESS_WATCHED_ADD).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
+        require(eventName(PROGRESS_WATCHLIST_ADD).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
     }
 
     override fun logAddWatchedMedia(

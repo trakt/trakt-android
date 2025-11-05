@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.home.sections.activity.all.social
+package tv.trakt.trakt.core.home.sections.activity.features.all.personal
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -6,12 +6,17 @@ import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.collections.immutable.toImmutableSet
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -31,17 +36,24 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_ACTIVITY_LIMIT
-import tv.trakt.trakt.core.home.sections.activity.all.AllActivityState
+import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_LIMIT
+import tv.trakt.trakt.core.home.sections.activity.features.all.AllActivityState
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
-import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
+import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
+import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 
-internal class AllActivitySocialViewModel(
-    private val getActivityUseCase: GetSocialActivityUseCase,
+@OptIn(FlowPreview::class)
+internal class AllActivityPersonalViewModel(
+    private val getActivityUseCase: GetPersonalActivityUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
+    private val showUpdatesSource: ShowDetailsUpdates,
+    private val episodeUpdatesSource: EpisodeDetailsUpdates,
+    private val movieDetailsUpdates: MovieDetailsUpdates,
     private val sessionManager: SessionManager,
     analytics: Analytics,
 ) : ViewModel() {
@@ -49,7 +61,6 @@ internal class AllActivitySocialViewModel(
 
     private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val itemsState = MutableStateFlow(initialState.items)
-    private val usersFilterState = MutableStateFlow(initialState.usersFilter)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
@@ -64,10 +75,26 @@ internal class AllActivitySocialViewModel(
     init {
         loadBackground()
         loadData()
+        observeData()
 
         analytics.logScreenView(
-            screenName = "all_activity_social",
+            screenName = "all_activity_personal",
         )
+    }
+
+    private fun observeData() {
+        merge(
+            showUpdatesSource.observeUpdates(Source.PROGRESS),
+            showUpdatesSource.observeUpdates(Source.SEASONS),
+            episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.PROGRESS),
+            episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.SEASON),
+            movieDetailsUpdates.observeUpdates(),
+        )
+            .distinctUntilChanged()
+            .debounce(200)
+            .onEach {
+                loadData(ignoreErrors = true)
+            }.launchIn(viewModelScope)
     }
 
     private fun loadBackground() {
@@ -75,10 +102,7 @@ internal class AllActivitySocialViewModel(
         backgroundState.update { configUrl }
     }
 
-    private fun loadData(
-        ignoreErrors: Boolean = false,
-        localOnly: Boolean = false,
-    ) {
+    private fun loadData(ignoreErrors: Boolean = false) {
         clear()
         viewModelScope.launch {
             if (loadEmptyIfNeeded()) {
@@ -86,34 +110,23 @@ internal class AllActivitySocialViewModel(
             }
 
             try {
-                val localItems = getActivityUseCase.getLocalSocialActivity(
-                    limit = HOME_ALL_ACTIVITY_LIMIT,
+                val localItems = getActivityUseCase.getLocalPersonalActivity(
+                    limit = HOME_ALL_LIMIT,
                 )
                 if (localItems.isNotEmpty()) {
-                    loadUsersFilter(localItems)
-                    itemsState.update {
-                        val selectedUser = usersFilterState.value.selectedUser
-                        localItems.filter { items ->
-                            selectedUser?.let { items.user == it } ?: true
-                        }.toImmutableList()
-                    }
+                    itemsState.update { localItems }
                     loadingState.update { DONE }
-
-                    if (localOnly) {
-                        return@launch
-                    }
                 } else {
                     loadingState.update { LOADING }
                 }
 
-                val remoteItems = getActivityUseCase.getSocialActivity(
+                val remoteItems = getActivityUseCase.getPersonalActivity(
                     page = 1,
-                    limit = HOME_ALL_ACTIVITY_LIMIT,
+                    limit = HOME_ALL_LIMIT,
                 )
-                loadUsersFilter(remoteItems)
                 itemsState.update { remoteItems }
 
-                hasMoreData = remoteItems.size >= HOME_ALL_ACTIVITY_LIMIT
+                hasMoreData = remoteItems.size >= HOME_ALL_LIMIT
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     if (!ignoreErrors) {
@@ -127,96 +140,49 @@ internal class AllActivitySocialViewModel(
         }
     }
 
-    private fun loadUsersFilter(items: List<HomeActivityItem>) {
-        val users = items
-            .groupBy { it.user }
-            .map { (user, items) -> user to items.size }
-            .sortedWith(
-                compareByDescending<Pair<User?, Int>> { it.second }
-                    .thenBy { it.first?.username?.lowercase() },
-            )
-            .mapNotNull { it.first }
-            .take(10)
-
-        if (users.size <= 1) {
+    fun loadMoreData() {
+        if (itemsState.value.isNullOrEmpty() || !hasMoreData) {
             return
         }
 
-        usersFilterState.update {
-            AllActivityState.UsersFilter(
-                users = it.users.plus(users).toImmutableSet(),
-                selectedUser = it.selectedUser,
-            )
-        }
-    }
-
-    fun setUserFilter(user: User) {
-        val currentFilter = usersFilterState.value
-        val newFilter = when (currentFilter.selectedUser) {
-            user -> currentFilter.copy(selectedUser = null)
-            else -> currentFilter.copy(selectedUser = user)
+        if (loadingMoreState.value.isLoading || loadingState.value.isLoading) {
+            return
         }
 
-        usersFilterState.update { newFilter }
-        loadData(localOnly = true)
-    }
+        viewModelScope.launch {
+            try {
+                loadingMoreState.update { LOADING }
 
-//    fun loadMoreData() {
-//        if (itemsState.value.isNullOrEmpty() || !hasMoreData) {
-//            return
-//        }
-//
-//        if (loadingMoreState.value.isLoading || loadingState.value.isLoading) {
-//            return
-//        }
-//
-//        viewModelScope.launch {
-//            try {
-//                loadingMoreState.update { LOADING }
-//
-//                val nextData = getActivityUseCase.getSocialActivity(
-//                    page = pages + 1,
-//                    limit = HOME_ALL_ACTIVITY_LIMIT,
-//                )
-//
-//                itemsState.update { items ->
-//                    items
-//                        ?.plus(nextData)
-//                        ?.distinctBy { it.id }
-//                        ?.toImmutableList()
-//                }
-//
-//                pages += 1
-//                hasMoreData = nextData.size >= HOME_ALL_ACTIVITY_LIMIT
-//            } catch (error: Exception) {
-//                error.rethrowCancellation {
-//                    errorState.update { error }
-//                    Timber.w(error, "Failed to load more page data")
-//                }
-//            } finally {
-//                loadingMoreState.update { DONE }
-//            }
-//        }
-//    }
+                val nextData = getActivityUseCase.getPersonalActivity(
+                    page = pages + 1,
+                    limit = HOME_ALL_LIMIT,
+                )
 
-    private suspend fun loadEmptyIfNeeded(): Boolean {
-        if (!sessionManager.isAuthenticated()) {
-            itemsState.update {
-                emptyList<HomeActivityItem>().toImmutableList()
+                itemsState.update { items ->
+                    items
+                        ?.plus(nextData)
+                        ?.distinctBy { it.id }
+                        ?.toImmutableList()
+                }
+
+                pages += 1
+                hasMoreData = nextData.size >= HOME_ALL_LIMIT
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.w(error, "Failed to load more page data")
+                }
+            } finally {
+                loadingMoreState.update { DONE }
             }
-            loadingState.update { DONE }
-            return true
-        } else {
-            itemsState.update { null }
-            loadingState.update { IDLE }
         }
-
-        return false
     }
 
-    private fun clear() {
-        pages = 1
-        hasMoreData = true
+    fun removeItem(item: HomeActivityItem) {
+        itemsState.update {
+            it?.filterNot { existingItem -> existingItem.id == item.id }
+                ?.toImmutableList()
+        }
     }
 
     fun navigateToShow(show: Show) {
@@ -270,11 +236,30 @@ internal class AllActivitySocialViewModel(
         navigateMovie.update { null }
     }
 
+    private suspend fun loadEmptyIfNeeded(): Boolean {
+        if (!sessionManager.isAuthenticated()) {
+            itemsState.update {
+                emptyList<HomeActivityItem>().toImmutableList()
+            }
+            loadingState.update { DONE }
+            return true
+        } else {
+            itemsState.update { null }
+            loadingState.update { IDLE }
+        }
+
+        return false
+    }
+
+    private fun clear() {
+        pages = 1
+        hasMoreData = true
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state: StateFlow<AllActivityState> = combine(
         backgroundState,
         itemsState,
-        usersFilterState,
         navigateShow,
         navigateEpisode,
         navigateMovie,
@@ -285,13 +270,12 @@ internal class AllActivitySocialViewModel(
         AllActivityState(
             backgroundUrl = state[0] as String,
             items = state[1] as ImmutableList<HomeActivityItem>?,
-            usersFilter = state[2] as AllActivityState.UsersFilter,
-            navigateShow = state[3] as TraktId?,
-            navigateEpisode = state[4] as Pair<TraktId, Episode>?,
-            navigateMovie = state[5] as TraktId?,
-            loading = state[6] as LoadingState,
-            loadingMore = state[7] as LoadingState,
-            error = state[8] as Exception?,
+            navigateShow = state[2] as TraktId?,
+            navigateEpisode = state[3] as Pair<TraktId, Episode>?,
+            navigateMovie = state[4] as TraktId?,
+            loading = state[5] as LoadingState,
+            loadingMore = state[6] as LoadingState,
+            error = state[7] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

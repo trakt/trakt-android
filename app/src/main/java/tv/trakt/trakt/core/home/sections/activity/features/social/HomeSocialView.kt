@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package tv.trakt.trakt.core.profile.sections.history
+package tv.trakt.trakt.core.home.sections.activity.features.social
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
@@ -25,9 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -48,7 +46,6 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
-import tv.trakt.trakt.core.home.sections.activity.sheets.HomeActivityItemSheet
 import tv.trakt.trakt.core.home.sections.activity.views.ActivityEpisodeItemView
 import tv.trakt.trakt.core.home.sections.activity.views.ActivityMovieItemView
 import tv.trakt.trakt.core.home.views.HomeEmptySocialView
@@ -58,15 +55,15 @@ import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun ProfileHistoryView(
+internal fun HomeSocialView(
     modifier: Modifier = Modifier,
-    viewModel: ProfileHistoryViewModel = koinViewModel(),
+    viewModel: HomeSocialViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
-    onMoreClick: () -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onShowClick: (TraktId) -> Unit,
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
+    onMoreClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -89,9 +86,7 @@ internal fun ProfileHistoryView(
         }
     }
 
-    var contextSheet by remember { mutableStateOf<HomeActivityItem?>(null) }
-
-    ProfileHistoryContent(
+    HomeSocialContent(
         state = state,
         modifier = modifier,
         headerPadding = headerPadding,
@@ -105,43 +100,22 @@ internal fun ProfileHistoryView(
                 episode = it.episode,
             )
         },
-        onEpisodeLongClick = {
-            contextSheet = it
-        },
         onMovieClick = {
             viewModel.navigateToMovie(it)
         },
-        onMovieLongClick = {
-            contextSheet = it
-        },
-        onMoreClick = {
-            if (state.loading.isLoading) {
-                return@ProfileHistoryContent
-            }
-            onMoreClick()
-        },
-    )
-
-    HomeActivityItemSheet(
-        sheetItem = contextSheet,
-        onDismiss = { contextSheet = null },
-        onPlayRemoved = {
-            viewModel.loadData(ignoreErrors = true)
-        },
+        onMoreClick = onMoreClick,
     )
 }
 
 @Composable
-internal fun ProfileHistoryContent(
-    state: ProfileHistoryState,
+internal fun HomeSocialContent(
+    state: HomeSocialState,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onShowClick: (HomeActivityItem.EpisodeItem) -> Unit = {},
     onEpisodeClick: (HomeActivityItem.EpisodeItem) -> Unit = {},
-    onEpisodeLongClick: (HomeActivityItem.EpisodeItem) -> Unit = {},
     onMovieClick: (Movie) -> Unit = { },
-    onMovieLongClick: (HomeActivityItem.MovieItem) -> Unit = {},
     onMoreClick: () -> Unit = {},
 ) {
     Column(
@@ -159,7 +133,8 @@ internal fun ProfileHistoryContent(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             TraktHeader(
-                title = stringResource(R.string.list_title_recently_watched),
+                title = stringResource(R.string.list_title_social_activity),
+//                icon = painterResource(R.drawable.ic_person_double),
             )
 
             if (!state.items.isNullOrEmpty() || state.loading != DONE) {
@@ -213,9 +188,7 @@ internal fun ProfileHistoryContent(
                                 contentPadding = contentPadding,
                                 onShowClick = onShowClick,
                                 onEpisodeClick = onEpisodeClick,
-                                onEpisodeLongClick = onEpisodeLongClick,
                                 onMovieClick = onMovieClick,
-                                onMovieLongClick = onMovieLongClick,
                             )
                         }
                     }
@@ -250,9 +223,7 @@ private fun ContentList(
     contentPadding: PaddingValues,
     onShowClick: (HomeActivityItem.EpisodeItem) -> Unit,
     onEpisodeClick: (HomeActivityItem.EpisodeItem) -> Unit,
-    onEpisodeLongClick: (HomeActivityItem.EpisodeItem) -> Unit,
     onMovieClick: (Movie) -> Unit,
-    onMovieLongClick: (HomeActivityItem.MovieItem) -> Unit,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
@@ -279,8 +250,6 @@ private fun ContentList(
                     ActivityMovieItemView(
                         item = item,
                         onClick = { onMovieClick(item.movie) },
-                        onLongClick = { onMovieLongClick(item) },
-                        moreButton = true,
                         modifier = Modifier
                             .animateItem(
                                 fadeInSpec = null,
@@ -292,8 +261,6 @@ private fun ContentList(
                         item = item,
                         onClick = { onEpisodeClick(item) },
                         onShowClick = { onShowClick(item) },
-                        onLongClick = { onEpisodeLongClick(item) },
-                        moreButton = true,
                         modifier = Modifier
                             .animateItem(
                                 fadeInSpec = null,
@@ -315,8 +282,8 @@ private fun ContentList(
 @Composable
 private fun Preview() {
     TraktTheme {
-        ProfileHistoryContent(
-            state = ProfileHistoryState(
+        HomeSocialContent(
+            state = HomeSocialState(
                 loading = IDLE,
             ),
         )
@@ -331,8 +298,8 @@ private fun Preview() {
 @Composable
 private fun Preview2() {
     TraktTheme {
-        ProfileHistoryContent(
-            state = ProfileHistoryState(
+        HomeSocialContent(
+            state = HomeSocialState(
                 loading = LOADING,
             ),
         )
@@ -347,8 +314,8 @@ private fun Preview2() {
 @Composable
 private fun Preview3() {
     TraktTheme {
-        ProfileHistoryContent(
-            state = ProfileHistoryState(
+        HomeSocialContent(
+            state = HomeSocialState(
                 loading = DONE,
                 items = emptyList<HomeActivityItem>().toImmutableList(),
             ),

@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.home.sections.activity.all.views
+package tv.trakt.trakt.core.home.sections.activity.features.all.views
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

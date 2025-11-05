@@ -160,7 +160,7 @@ private fun ActivityItemContextViewContent(
                 iconSize = 18.dp,
                 modifier = Modifier
                     .graphicsLayer {
-                        translationX = -12.dp.toPx()
+                        translationX = -8.dp.toPx()
                     },
             )
         }

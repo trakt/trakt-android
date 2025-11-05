@@ -124,8 +124,6 @@
     <string name="text_cta_favorites_movies">Your faves. Your story. Spotlight the movies that left a mark.</string>
     <string name="text_cta_favorites_shows">Your faves. Your story. Spotlight the shows that left a mark.</string>
     <string name="list_title_activity">Activity</string>
-    <string name="button_text_social">Social</string>
-    <string name="button_text_personal">Personal</string>
     <string name="page_title_unexpected_error">Something went wrong</string>
     <string name="error_text_unexpected_error_short">Uh oh… this wasn\'t planned. If this keeps happening, please contact Trakt support.</string>
     <string name="page_title_where_to_watch">Where to Watch</string>

@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.home.sections.activity.all.navigation
+package tv.trakt.trakt.core.home.sections.activity.features.all.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -6,8 +6,8 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.home.sections.activity.all.personal.AllActivityPersonalScreen
-import tv.trakt.trakt.core.home.sections.activity.all.social.AllActivitySocialScreen
+import tv.trakt.trakt.core.home.sections.activity.features.all.personal.AllActivityPersonalScreen
+import tv.trakt.trakt.core.home.sections.activity.features.all.social.AllActivitySocialScreen
 
 @Serializable
 internal data object AllPersonalActivityDestination
