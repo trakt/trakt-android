@@ -61,7 +61,7 @@ internal class ComingSoonViewAllViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error, "Failed to load data")
+                    Timber.e(error, "Failed to load data")
                 }
             } finally {
                 loadingState.update { false }
@@ -110,7 +110,7 @@ internal class ComingSoonViewAllViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error, "Error")
+                    Timber.e(error, "Error")
                 }
             }
         }

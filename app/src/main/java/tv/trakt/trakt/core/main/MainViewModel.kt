@@ -130,7 +130,7 @@ internal class MainViewModel(
                 lastLoadTime = nowUtcInstant()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             }
         }
@@ -148,7 +148,7 @@ internal class MainViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     logoutUser()
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingUserState.update { LoadingState.DONE }
@@ -163,7 +163,7 @@ internal class MainViewModel(
                 logoutUserUseCase.logoutUser()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingUserState.update { LoadingState.DONE }

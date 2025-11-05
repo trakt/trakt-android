@@ -124,7 +124,7 @@ internal class MovieDetailsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             }
         }
@@ -147,7 +147,7 @@ internal class MovieDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingState.update { DONE }
@@ -224,7 +224,7 @@ internal class MovieDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingProgress.update { DONE }
@@ -278,7 +278,7 @@ internal class MovieDetailsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             }
         }
@@ -297,7 +297,7 @@ internal class MovieDetailsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             }
         }
@@ -311,7 +311,7 @@ internal class MovieDetailsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             }
         }
@@ -358,7 +358,7 @@ internal class MovieDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingProgress.update { DONE }
@@ -399,7 +399,7 @@ internal class MovieDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingProgress.update { DONE }
@@ -490,7 +490,7 @@ internal class MovieDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingLists.update { DONE }
@@ -519,7 +519,7 @@ internal class MovieDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingLists.update { DONE }
@@ -550,7 +550,7 @@ internal class MovieDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingLists.update { DONE }
@@ -578,7 +578,7 @@ internal class MovieDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingLists.update { DONE }
@@ -655,7 +655,7 @@ internal class MovieDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingFavorite.update { DONE }
@@ -691,7 +691,7 @@ internal class MovieDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingFavorite.update { DONE }

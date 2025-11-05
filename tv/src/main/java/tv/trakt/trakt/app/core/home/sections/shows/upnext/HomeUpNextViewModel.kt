@@ -47,7 +47,7 @@ internal class HomeUpNextViewModel(
                 loadedAt = nowUtc()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error, "Failed to load data")
+                    Timber.e(error, "Failed to load data")
                     errorState.update { error }
                 }
             } finally {
@@ -84,7 +84,7 @@ internal class HomeUpNextViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error, "Error")
+                    Timber.e(error, "Error")
                 }
             }
         }

@@ -126,7 +126,7 @@ internal class EpisodeSeasonViewModel(
                     if (!ignoreErrors) {
                         errorState.update { error }
                     }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingState.update { DONE }
@@ -175,7 +175,7 @@ internal class EpisodeSeasonViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingEpisodeState.update { DONE }
@@ -221,7 +221,7 @@ internal class EpisodeSeasonViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingEpisodeState.update { DONE }

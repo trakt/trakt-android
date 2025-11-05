@@ -93,7 +93,7 @@ internal class SearchViewModel(
                 screenState.update { State.RECENTS }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error, "Error loading recent searches!")
+                    Timber.e(error, "Error loading recent searches!")
                 }
             }
         }
@@ -126,7 +126,7 @@ internal class SearchViewModel(
                 screenState.update { State.TRENDING }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error, "Error loading trending searches!")
+                    Timber.e(error, "Error loading trending searches!")
                 }
             }
         }
@@ -160,7 +160,7 @@ internal class SearchViewModel(
                     errorState.value = error
                     searchingState.update { false }
                     screenState.update { State.ERROR }
-                    Timber.w(error, "Error!")
+                    Timber.e(error, "Error!")
                 }
             }
         }

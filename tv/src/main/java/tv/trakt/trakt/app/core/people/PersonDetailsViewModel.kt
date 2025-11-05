@@ -87,7 +87,7 @@ internal class PersonDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w("Error loading person credits: ${error.message}")
+                    Timber.e("Error loading person credits: ${error.message}")
                 }
             }
         }

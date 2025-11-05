@@ -64,7 +64,7 @@ internal class ShowDetailsListsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error, "Failed to load user lists for show details.")
+                    Timber.e(error, "Failed to load user lists for show details.")
                 }
             }
         }

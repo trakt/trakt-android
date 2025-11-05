@@ -134,7 +134,7 @@ internal class EpisodeDetailsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             }
         }
@@ -172,7 +172,7 @@ internal class EpisodeDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingState.update { DONE }
@@ -221,7 +221,7 @@ internal class EpisodeDetailsViewModel(
                     if (!ignoreErrors) {
                         errorState.update { error }
                     }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingProgress.update { DONE }
@@ -245,7 +245,7 @@ internal class EpisodeDetailsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             }
         }
@@ -278,7 +278,7 @@ internal class EpisodeDetailsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             }
         }
@@ -359,7 +359,7 @@ internal class EpisodeDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingProgress.update { DONE }

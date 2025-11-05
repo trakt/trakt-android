@@ -123,7 +123,7 @@ internal class ShowSeasonsViewModel(
                     if (!ignoreErrors) {
                         errorState.update { error }
                     }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingState.update { DONE }
@@ -183,7 +183,7 @@ internal class ShowSeasonsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w("Error loading season: ${error.message}")
+                    Timber.e("Error loading season: ${error.message}")
                     itemsState.update { it.copy(isSeasonLoading = false) }
                 }
             }
@@ -236,7 +236,7 @@ internal class ShowSeasonsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingEpisodeState.update { DONE }
@@ -293,7 +293,7 @@ internal class ShowSeasonsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingSeasonState.update { DONE }
@@ -342,7 +342,7 @@ internal class ShowSeasonsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingEpisodeState.update { DONE }
@@ -390,7 +390,7 @@ internal class ShowSeasonsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingSeasonState.update { DONE }

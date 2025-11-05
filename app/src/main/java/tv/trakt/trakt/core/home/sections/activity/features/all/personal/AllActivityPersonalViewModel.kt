@@ -132,7 +132,7 @@ internal class AllActivityPersonalViewModel(
                     if (!ignoreErrors) {
                         errorState.update { error }
                     }
-                    Timber.w(error, "Error loading social activity")
+                    Timber.e(error, "Error loading social activity")
                 }
             } finally {
                 loadingState.update { DONE }
@@ -170,7 +170,7 @@ internal class AllActivityPersonalViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error, "Failed to load more page data")
+                    Timber.e(error, "Failed to load more page data")
                 }
             } finally {
                 loadingMoreState.update { DONE }
@@ -222,7 +222,7 @@ internal class AllActivityPersonalViewModel(
                 navigateMovie.update { movie.ids.trakt }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error, "Failed to navigate to movie")
+                    Timber.e(error, "Failed to navigate to movie")
                 }
             } finally {
                 processingJob = null

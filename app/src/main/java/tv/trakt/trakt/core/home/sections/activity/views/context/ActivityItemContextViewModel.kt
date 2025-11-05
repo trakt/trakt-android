@@ -59,7 +59,7 @@ internal class ActivityItemContextViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingRemoveState.update { DONE }
@@ -73,7 +73,7 @@ internal class ActivityItemContextViewModel(
                 loadUserProgressUseCase.loadAllProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             }
         }

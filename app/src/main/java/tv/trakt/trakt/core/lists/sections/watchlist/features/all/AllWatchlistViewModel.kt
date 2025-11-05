@@ -179,7 +179,7 @@ internal class AllWatchlistViewModel(
                     if (!ignoreErrors) {
                         errorState.update { error }
                     }
-                    Timber.w(error, "Failed to load data")
+                    Timber.e(error, "Failed to load data")
                 }
             } finally {
                 loadingState.update { DONE }
@@ -276,7 +276,7 @@ internal class AllWatchlistViewModel(
                 loadUserProgressUseCase.loadMoviesProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             }
         }

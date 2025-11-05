@@ -45,7 +45,7 @@ internal class ProfileFavoriteShowsViewModel(
                 loadedAt = nowUtc()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error, "Failed to load data")
+                    Timber.e(error, "Failed to load data")
                     errorState.update { error }
                 }
             } finally {

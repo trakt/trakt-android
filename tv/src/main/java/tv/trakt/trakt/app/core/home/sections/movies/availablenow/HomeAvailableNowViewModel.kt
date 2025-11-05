@@ -48,7 +48,7 @@ internal class HomeAvailableNowViewModel(
                 loadedAt = nowUtc()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error, "Error loading available now movies")
+                    Timber.e(error, "Error loading available now movies")
                     errorState.update { error }
                 }
             } finally {
@@ -68,7 +68,7 @@ internal class HomeAvailableNowViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error, "Error")
+                    Timber.e(error, "Error")
                 }
             }
         }

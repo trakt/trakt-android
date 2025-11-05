@@ -115,7 +115,7 @@ internal class ProfileHistoryViewModel(
                     if (!ignoreErrors) {
                         errorState.update { error }
                     }
-                    Timber.w(error, "Error loading social activity")
+                    Timber.e(error, "Error loading social activity")
                 }
             } finally {
                 loadingState.update { DONE }

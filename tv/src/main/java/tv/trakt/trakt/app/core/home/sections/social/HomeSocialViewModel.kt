@@ -38,7 +38,7 @@ internal class HomeSocialViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error, "Error loading social activity")
+                    Timber.e(error, "Error loading social activity")
                 }
             } finally {
                 loadingState.update { false }

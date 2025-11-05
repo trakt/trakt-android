@@ -90,7 +90,7 @@ internal class ProfileViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingMonthStatsState.update { LoadingState.DONE }
@@ -107,7 +107,7 @@ internal class ProfileViewModel(
                 analytics.logUserLogout()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingState.update { LoadingState.DONE }

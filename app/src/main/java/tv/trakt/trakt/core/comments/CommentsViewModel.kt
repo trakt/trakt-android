@@ -138,7 +138,7 @@ internal class CommentsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.value = error
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingState.update { DONE }
@@ -154,7 +154,7 @@ internal class CommentsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             }
         }
@@ -214,7 +214,7 @@ internal class CommentsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             }
         }
@@ -281,7 +281,7 @@ internal class CommentsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             }
         }
@@ -310,7 +310,7 @@ internal class CommentsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             }
         }

@@ -135,7 +135,7 @@ internal class AllHomeUpNextViewModel(
                     if (!ignoreErrors) {
                         errorState.update { error }
                     }
-                    Timber.w(error, "Failed to load data")
+                    Timber.e(error, "Failed to load data")
                 }
             } finally {
                 loadingState.update { DONE }
@@ -175,7 +175,7 @@ internal class AllHomeUpNextViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error, "Failed to load more page data")
+                    Timber.e(error, "Failed to load more page data")
                 }
             } finally {
                 loadingMoreState.update { DONE }
@@ -257,7 +257,7 @@ internal class AllHomeUpNextViewModel(
                 loadUserProgressUseCase.loadShowsProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             }
         }

@@ -116,7 +116,7 @@ internal class HomeUpcomingViewModel(
                 if (!ignoreErrors) {
                     errorState.update { error }
                 }
-                Timber.w(error, "Failed to load upcoming data")
+                Timber.e(error, "Failed to load upcoming data")
             } finally {
                 loadingState.update { DONE }
                 dataJob = null

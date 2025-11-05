@@ -205,7 +205,7 @@ internal class HomeWatchlistViewModel(
                 loadUserProgressUseCase.loadMoviesProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             }
         }

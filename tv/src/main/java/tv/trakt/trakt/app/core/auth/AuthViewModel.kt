@@ -72,7 +72,7 @@ internal class AuthViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error, "Error loading data")
+                    Timber.e(error, "Error loading data")
                 }
             } finally {
                 loadingState.update { null }
@@ -140,7 +140,7 @@ internal class AuthViewModel(
             }
         }
 
-        Timber.w(error, "Error polling device token")
+        Timber.e(error, "Error polling device token")
     }
 
     val state: StateFlow<AuthState> = combine(

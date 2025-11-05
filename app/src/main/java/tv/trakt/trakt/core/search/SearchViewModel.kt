@@ -118,7 +118,7 @@ internal class SearchViewModel(
                 error.rethrowCancellation {
                     errorState.update { error }
                     searchingState.update { false }
-                    Timber.w(error, "Error during initial load!")
+                    Timber.e(error, "Error during initial load!")
                 }
             }
         }
@@ -303,7 +303,7 @@ internal class SearchViewModel(
                     } catch (error: Exception) {
                         error.rethrowCancellation {
                             errorState.update { error }
-                            Timber.w(error, "Error during initial load!")
+                            Timber.e(error, "Error during initial load!")
                         }
                     } finally {
                         searchingState.update { false }
@@ -365,7 +365,7 @@ internal class SearchViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error, "Error!")
+                    Timber.e(error, "Error!")
                 }
             } finally {
                 searchingState.update { false }
@@ -428,7 +428,7 @@ internal class SearchViewModel(
                     query = inputState.value.query,
                 )
             } catch (error: Exception) {
-                Timber.w(error, "Error posting user search")
+                Timber.e(error, "Error posting user search")
             }
         }
     }
@@ -444,7 +444,7 @@ internal class SearchViewModel(
                     query = inputState.value.query,
                 )
             } catch (error: Exception) {
-                Timber.w(error, "Error posting user search")
+                Timber.e(error, "Error posting user search")
             }
         }
     }

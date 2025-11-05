@@ -43,7 +43,7 @@ internal class DefaultSessionManager(
         val decodedUserData = runCatching {
             Json.decodeFromString<User?>(userData)
         }.onFailure {
-            Timber.w(it, "Failed to decode user profile")
+            Timber.e(it, "Failed to decode user profile")
         }
         return decodedUserData.getOrElse {
             clear()
@@ -60,7 +60,7 @@ internal class DefaultSessionManager(
             return@map runCatching {
                 Json.decodeFromString<User>(data)
             }.onFailure {
-                Timber.w(it, "Failed to decode user profile")
+                Timber.e(it, "Failed to decode user profile")
             }.getOrElse {
                 clear()
                 null

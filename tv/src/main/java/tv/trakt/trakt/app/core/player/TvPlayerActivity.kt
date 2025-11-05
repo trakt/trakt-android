@@ -184,7 +184,7 @@ private fun TvVideoPlayer(
                         error: PlayerConstants.PlayerError,
                     ) {
                         onOpenVideoExternal(videoUrl)
-                        Timber.w("YouTube Player Error: $error")
+                        Timber.e("YouTube Player Error: $error")
                         super.onError(youTubePlayer, error)
                     }
                 }

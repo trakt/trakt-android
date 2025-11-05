@@ -102,7 +102,7 @@ internal class ProfileHistoryViewAllViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error, "Error")
+                    Timber.e(error, "Error")
                 }
             }
         }

@@ -63,7 +63,7 @@ internal class AllStreamingsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error, "Error loading streamings")
+                    Timber.e(error, "Error loading streamings")
                 }
             } finally {
                 loadingState.update { false }

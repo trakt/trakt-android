@@ -57,7 +57,7 @@ internal class UpNextItemContextViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingDropState.update { DONE }
@@ -71,7 +71,7 @@ internal class UpNextItemContextViewModel(
                 loadUserProgressUseCase.loadShowsProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             }
         }

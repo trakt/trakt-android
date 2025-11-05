@@ -163,7 +163,7 @@ internal fun HttpClientConfig<*>.applyAuthorizationConfig(
                         if (error !is CancellationException) {
                             sessionManager.clear()
                             tokenProvider.clear()
-                            Timber.w(error, "Failed to refresh auth tokens")
+                            Timber.e(error, "Failed to refresh auth tokens")
                         }
                         return@withLock null
                     }

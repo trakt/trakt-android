@@ -255,7 +255,7 @@ internal class HomeUpNextViewModel(
                 loadUserProgressUseCase.loadShowsProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             }
         }

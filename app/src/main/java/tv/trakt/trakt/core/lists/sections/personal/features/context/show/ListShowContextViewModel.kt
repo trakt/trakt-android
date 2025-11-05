@@ -99,7 +99,7 @@ internal class ListShowContextViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingWatchedState.update { IDLE }
@@ -140,7 +140,7 @@ internal class ListShowContextViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingWatchlistState.update { DONE }
@@ -168,7 +168,7 @@ internal class ListShowContextViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingWatchlistState.update { DONE }
@@ -200,7 +200,7 @@ internal class ListShowContextViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingWatchedState.update { DONE }
@@ -223,7 +223,7 @@ internal class ListShowContextViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingWatchedState.update { DONE }
@@ -248,7 +248,7 @@ internal class ListShowContextViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error)
+                    Timber.e(error)
                 }
             } finally {
                 loadingListState.update { DONE }

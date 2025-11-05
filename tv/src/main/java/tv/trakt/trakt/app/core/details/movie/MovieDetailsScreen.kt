@@ -143,7 +143,7 @@ internal fun MovieDetailsScreen(
                         manager.launchReviewFlow(activity, reviewInfo)
                         Timber.d("Review flow launched")
                     } else {
-                        Timber.w("Review flow error: ${request.exception}")
+                        Timber.e("Review flow error: ${request.exception}")
                     }
                 }
             }

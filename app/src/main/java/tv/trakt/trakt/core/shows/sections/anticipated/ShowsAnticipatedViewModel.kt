@@ -45,7 +45,7 @@ internal class ShowsAnticipatedViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error, "Failed to load data")
+                    Timber.e(error, "Failed to load data")
                 }
             } finally {
                 loadingState.update { DONE }

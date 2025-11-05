@@ -112,7 +112,7 @@ internal class PostReactionWorker(
             if (error is CancellationException) {
                 return Result.failure()
             }
-            Timber.w(error)
+            Timber.e(error)
             return Result.retry()
         }
 

@@ -111,7 +111,7 @@ internal class MainActivity : ComponentActivity() {
                         ProcessPhoenix.triggerRebirth(this)
                     }
                 } else {
-                    Timber.w("Remote Config update failed!")
+                    Timber.e("Remote Config update failed!")
                 }
             }
     }

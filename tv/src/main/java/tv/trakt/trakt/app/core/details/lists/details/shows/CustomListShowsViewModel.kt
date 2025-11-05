@@ -52,7 +52,7 @@ internal class CustomListShowsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.w(error, "Error loading shows for list: ${destination.listId} $error")
+                    Timber.e(error, "Error loading shows for list: ${destination.listId} $error")
                 }
             } finally {
                 loadingState.update { false }

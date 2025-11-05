@@ -83,7 +83,7 @@ class TvActivity : ComponentActivity() {
             if (task.isSuccessful) {
                 Timber.d("Remote Config params updated: ${task.result}")
             } else {
-                Timber.w("Remote Config fetch failed!")
+                Timber.e("Remote Config fetch failed!")
             }
         }
     }
