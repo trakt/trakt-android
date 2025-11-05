@@ -147,7 +147,7 @@ private fun ReactionsToolTipContent(
                 )
                 .background(Shade800, RoundedCornerShape(20.dp))
                 .padding(
-                    start = 6.dp,
+                    start = 8.dp,
                     end = 8.dp,
                     top = 6.dp,
                     bottom = 6.dp,

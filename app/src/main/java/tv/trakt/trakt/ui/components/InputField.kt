@@ -199,6 +199,7 @@ private fun PreviewFocused() {
                     painter = painterResource(R.drawable.ic_close),
                     contentDescription = "Clear",
                     tint = TraktTheme.colors.textSecondary,
+                    modifier = Modifier.size(18.dp),
                 )
             },
             modifier = Modifier

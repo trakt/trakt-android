@@ -49,7 +49,7 @@ fun ReactionsStrip(
             tint = TraktTheme.colors.textPrimary,
             modifier = Modifier
                 .onClick(onClick = onCloseClick ?: {})
-                .size(20.dp),
+                .size(16.dp),
         )
 
         for (reaction in Reaction.entries) {

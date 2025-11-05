@@ -161,7 +161,7 @@ internal fun EpisodeSeasonList(
                                         contentDescription = null,
                                         tint = Red500,
                                         modifier = Modifier
-                                            .size(23.dp)
+                                            .size(18.dp)
                                             .graphicsLayer {
                                                 translationX = 3.dp.toPx()
                                             }

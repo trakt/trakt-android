@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Icon
@@ -239,9 +240,11 @@ private fun SearchContent(
                             painter = painterResource(R.drawable.ic_close),
                             contentDescription = null,
                             tint = TraktTheme.colors.textSecondary,
-                            modifier = Modifier.onClick {
-                                searchQuery.clearText()
-                            },
+                            modifier = Modifier
+                                .size(18.dp)
+                                .onClick {
+                                    searchQuery.clearText()
+                                },
                         )
                     }
                 },
