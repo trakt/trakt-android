@@ -114,7 +114,7 @@ internal fun TraktMenuBar(
         user = user,
         stateHolder = searchState,
         onSelected = onSelected,
-        onProfileSelected = onProfileSelected,
+        onProfileClick = onProfileSelected,
         onReselected = onReselected,
         onSearchInput = onSearchInput,
     )
@@ -128,7 +128,7 @@ private fun TraktMenuBarContent(
     enabled: Boolean = true,
     user: User? = null,
     onSelected: (NavigationItem) -> Unit = {},
-    onProfileSelected: () -> Unit = {},
+    onProfileClick: () -> Unit = {},
     onReselected: () -> Unit = {},
     onSearchInput: (SearchInput) -> Unit = {},
 ) {
@@ -208,7 +208,12 @@ private fun TraktMenuBarContent(
                 selected = profileSelected,
                 vip = user?.isAnyVip == true,
                 userAvatar = user?.images?.avatar?.full,
-                onClick = onProfileSelected,
+                onClick = {
+                    if (!enabled || profileSelected) {
+                        return@ProfileItem
+                    }
+                    onProfileClick()
+                },
                 modifier = Modifier
                     .graphicsLayer {
                         translationY = -1.dp.toPx()

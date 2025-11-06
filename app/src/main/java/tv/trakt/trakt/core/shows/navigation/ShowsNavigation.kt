@@ -14,7 +14,6 @@ internal data object ShowsDestination
 
 internal fun NavGraphBuilder.showsScreen(
     onNavigateToShow: (TraktId) -> Unit,
-    onNavigateToProfile: () -> Unit,
     onNavigateToAllTrending: () -> Unit = {},
     onNavigateToAllPopular: () -> Unit = {},
     onNavigateToAllAnticipated: () -> Unit = {},
@@ -24,7 +23,6 @@ internal fun NavGraphBuilder.showsScreen(
         ShowsScreen(
             viewModel = koinViewModel(),
             onNavigateToShow = onNavigateToShow,
-            onNavigateToProfile = onNavigateToProfile,
             onNavigateToAllTrending = onNavigateToAllTrending,
             onNavigateToAllPopular = onNavigateToAllPopular,
             onNavigateToAllAnticipated = onNavigateToAllAnticipated,

@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -42,7 +43,6 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun HomeScreen(
     viewModel: HomeViewModel,
     userLoading: Boolean,
-    onNavigateToProfile: () -> Unit,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToShows: () -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
@@ -58,7 +58,6 @@ internal fun HomeScreen(
     HomeScreenContent(
         state = state,
         userLoading = userLoading,
-        onProfileClick = onNavigateToProfile,
         onShowClick = onNavigateToShow,
         onShowsClick = onNavigateToShows,
         onMoviesClick = onNavigateToMovies,
@@ -77,7 +76,6 @@ private fun HomeScreenContent(
     state: HomeState,
     userLoading: Boolean,
     modifier: Modifier = Modifier,
-    onProfileClick: () -> Unit = {},
     onMoreUpNextClick: () -> Unit = {},
     onMoreWatchlistClick: () -> Unit = {},
     onMorePersonalClick: () -> Unit = {},
@@ -96,13 +94,6 @@ private fun HomeScreenContent(
         ),
     )
 
-    val isScrolledToTop by remember {
-        derivedStateOf {
-            lazyListState.firstVisibleItemIndex == 0 &&
-                lazyListState.firstVisibleItemScrollOffset == 0
-        }
-    }
-
     val listPadding = PaddingValues(
         top = WindowInsets.statusBars.asPaddingValues()
             .calculateTopPadding()
@@ -117,6 +108,19 @@ private fun HomeScreenContent(
         start = TraktTheme.spacing.mainPageHorizontalSpace,
         end = TraktTheme.spacing.mainPageHorizontalSpace,
     )
+
+    val isScrolledToTop by remember {
+        derivedStateOf {
+            lazyListState.firstVisibleItemIndex == 0 &&
+                lazyListState.firstVisibleItemScrollOffset == 0
+        }
+    }
+
+    LaunchedEffect(isScrolledToTop) {
+        if (isScrolledToTop) {
+            headerState.resetScrolled()
+        }
+    }
 
     Box(
         modifier = modifier
@@ -197,7 +201,6 @@ private fun HomeScreenContent(
             headerState = headerState,
             userLoading = userLoading,
             isScrolledToTop = isScrolledToTop,
-            onProfileClick = onProfileClick,
         )
     }
 }
@@ -208,7 +211,6 @@ private fun HomeScreenHeader(
     headerState: ScreenHeaderState,
     userLoading: Boolean,
     isScrolledToTop: Boolean,
-    onProfileClick: () -> Unit,
 ) {
     val userState = remember(state.user) {
         val loadingDone = state.user.loading == DONE
@@ -219,12 +221,9 @@ private fun HomeScreenHeader(
     HeaderBar(
         containerAlpha = if (headerState.scrolled && !isScrolledToTop) 0.98F else 0F,
         showVip = headerState.startScrolled,
-        showProfile = userState.first && userState.second,
-        showJoinTrakt = userState.first && !userState.second,
+        showLogin = userState.first && !userState.second,
         userVip = state.user.user?.isAnyVip ?: false,
-        userAvatar = state.user.user?.images?.avatar?.full,
         userLoading = userLoading,
-        onProfileClick = onProfileClick,
         modifier = Modifier.offset {
             IntOffset(0, headerState.connection.barOffset.fastRoundToInt())
         },
@@ -242,7 +241,6 @@ private fun Preview() {
         HomeScreenContent(
             state = HomeState(),
             userLoading = false,
-            onProfileClick = {},
         )
     }
 }

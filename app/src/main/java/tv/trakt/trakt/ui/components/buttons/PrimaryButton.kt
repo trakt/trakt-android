@@ -90,7 +90,7 @@ internal fun PrimaryButton(
             }
 
             Text(
-                text = text.uppercase(),
+                text = text,
                 color = if (enabled) contentColor else disabledContentColor,
                 style = textStyle,
                 maxLines = 1,

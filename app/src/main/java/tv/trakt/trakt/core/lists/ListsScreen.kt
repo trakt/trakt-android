@@ -291,11 +291,8 @@ private fun ListsScreenHeader(
     HeaderBar(
         containerAlpha = if (headerState.scrolled && !isScrolledToTop) 0.98F else 0F,
         showVip = headerState.startScrolled,
-        showProfile = userState.first && userState.second,
-        showJoinTrakt = userState.first && !userState.second,
+        showLogin = userState.first && !userState.second,
         userVip = state.user.user?.isAnyVip ?: false,
-        userAvatar = state.user.user?.images?.avatar?.full,
-        onProfileClick = onProfileClick,
         modifier = Modifier.offset {
             IntOffset(0, headerState.connection.barOffset.fastRoundToInt())
         },

@@ -75,7 +75,6 @@ internal fun SearchScreen(
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onPersonClick: ((TraktId) -> Unit),
-    onProfileClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -134,7 +133,6 @@ internal fun SearchScreen(
             }
         },
         onPersonClick = { viewModel.navigateToPerson(it) },
-        onProfileClick = onProfileClick,
     )
 
     ShowContextSheet(
@@ -160,7 +158,6 @@ private fun SearchScreenContent(
     onMovieClick: (Movie) -> Unit = {},
     onMovieLongClick: (Movie) -> Unit = {},
     onPersonClick: (Person) -> Unit = {},
-    onProfileClick: () -> Unit = {},
 ) {
     val isScrolledToTop by remember {
         derivedStateOf {
@@ -206,7 +203,6 @@ private fun SearchScreenContent(
             state = state,
             headerState = headerState,
             isScrolledToTop = isScrolledToTop,
-            onProfileClick = onProfileClick,
         )
     }
 }
@@ -396,7 +392,6 @@ private fun SearchScreenHeader(
     state: SearchState,
     headerState: ScreenHeaderState,
     isScrolledToTop: Boolean,
-    onProfileClick: () -> Unit,
 ) {
     val userState = remember(state.user) {
         val loadingDone = state.user.loading == DONE
@@ -407,11 +402,9 @@ private fun SearchScreenHeader(
     HeaderBar(
         containerAlpha = if (headerState.scrolled && !isScrolledToTop) 0.98F else 0F,
         showVip = headerState.startScrolled,
-        showProfile = userState.first && userState.second,
-        showJoinTrakt = userState.first && !userState.second,
+        showLogin = userState.first && !userState.second,
+        showMediaButtons = false,
         userVip = state.user.user?.isAnyVip ?: false,
-        userAvatar = state.user.user?.images?.avatar?.full,
-        onProfileClick = onProfileClick,
         modifier = Modifier.offset {
             IntOffset(0, headerState.connection.barOffset.fastRoundToInt())
         },

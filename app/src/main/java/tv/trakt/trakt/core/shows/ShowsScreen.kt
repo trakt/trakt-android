@@ -43,7 +43,6 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun ShowsScreen(
     viewModel: ShowsViewModel,
     onNavigateToShow: (TraktId) -> Unit,
-    onNavigateToProfile: () -> Unit,
     onNavigateToAllTrending: () -> Unit,
     onNavigateToAllPopular: () -> Unit,
     onNavigateToAllAnticipated: () -> Unit,
@@ -60,7 +59,6 @@ internal fun ShowsScreen(
         state = state,
         halloween = isHalloween,
         onShowClick = onNavigateToShow,
-        onProfileClick = onNavigateToProfile,
         onMoreTrendingClick = onNavigateToAllTrending,
         onMorePopularClick = onNavigateToAllPopular,
         onMoreAnticipatedClick = onNavigateToAllAnticipated,
@@ -74,7 +72,6 @@ private fun ShowsScreenContent(
     halloween: Boolean,
     modifier: Modifier = Modifier,
     onShowClick: (TraktId) -> Unit,
-    onProfileClick: () -> Unit = {},
     onMoreTrendingClick: () -> Unit = {},
     onMorePopularClick: () -> Unit = {},
     onMoreAnticipatedClick: () -> Unit = {},
@@ -183,7 +180,6 @@ private fun ShowsScreenContent(
             state = state,
             headerState = headerState,
             isScrolledToTop = isScrolledToTop,
-            onProfileClick = onProfileClick,
         )
     }
 }
@@ -193,7 +189,6 @@ private fun ShowsScreenHeader(
     state: ShowsState,
     headerState: ScreenHeaderState,
     isScrolledToTop: Boolean,
-    onProfileClick: () -> Unit,
 ) {
     val userState = remember(state.user) {
         val loadingDone = state.user.loading == DONE
@@ -204,11 +199,8 @@ private fun ShowsScreenHeader(
     HeaderBar(
         containerAlpha = if (headerState.scrolled && !isScrolledToTop) 0.98F else 0F,
         showVip = headerState.startScrolled,
-        showProfile = userState.first && userState.second,
-        showJoinTrakt = userState.first && !userState.second,
+        showLogin = userState.first && !userState.second,
         userVip = state.user.user?.isAnyVip ?: false,
-        userAvatar = state.user.user?.images?.avatar?.full,
-        onProfileClick = onProfileClick,
         modifier = Modifier.offset {
             IntOffset(0, headerState.connection.barOffset.fastRoundToInt())
         },

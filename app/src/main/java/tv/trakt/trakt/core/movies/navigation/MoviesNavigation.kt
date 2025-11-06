@@ -14,7 +14,6 @@ internal data object MoviesDestination
 
 internal fun NavGraphBuilder.moviesScreen(
     onNavigateToMovie: (TraktId) -> Unit,
-    onNavigateToProfile: () -> Unit = {},
     onNavigateToAllTrending: () -> Unit = {},
     onNavigateToAllPopular: () -> Unit = {},
     onNavigateToAllAnticipated: () -> Unit = {},
@@ -24,7 +23,6 @@ internal fun NavGraphBuilder.moviesScreen(
         MoviesScreen(
             viewModel = koinViewModel(),
             onNavigateToMovie = onNavigateToMovie,
-            onNavigateToProfile = onNavigateToProfile,
             onNavigateToAllTrending = onNavigateToAllTrending,
             onNavigateToAllPopular = onNavigateToAllPopular,
             onNavigateToAllAnticipated = onNavigateToAllAnticipated,

@@ -65,7 +65,6 @@ internal fun NavGraphBuilder.homeScreens(
     with(controller) {
         homeScreen(
             userLoading = userLoading,
-            onNavigateToProfile = { navigateToProfile() },
             onNavigateToShow = { navigateToShow(it) },
             onNavigateToShows = { navigateToShows() },
             onNavigateToMovie = { navigateToMovie(it) },
@@ -113,7 +112,6 @@ internal fun NavGraphBuilder.showsScreens(
 ) {
     with(controller) {
         showsScreen(
-            onNavigateToProfile = { navigateToProfile() },
             onNavigateToShow = { navigateToShow(it) },
             onNavigateToAllTrending = { navigateToTrendingShows() },
             onNavigateToAllPopular = { navigateToPopularShows() },
@@ -210,7 +208,6 @@ internal fun NavGraphBuilder.moviesScreens(
 ) {
     with(controller) {
         moviesScreen(
-            onNavigateToProfile = { navigateToProfile() },
             onNavigateToMovie = { navigateToMovie(it) },
             onNavigateToAllTrending = { navigateToTrendingMovies() },
             onNavigateToAllPopular = { navigateToPopularMovies() },
@@ -316,7 +313,6 @@ internal fun NavGraphBuilder.searchScreens(
             onNavigateToShow = { navigateToShow(it) },
             onNavigateToMovie = { navigateToMovie(it) },
             onNavigateToPerson = { navigateToPerson(it, null, null) },
-            onNavigateToProfile = { navigateToProfile() },
         )
     }
 }
