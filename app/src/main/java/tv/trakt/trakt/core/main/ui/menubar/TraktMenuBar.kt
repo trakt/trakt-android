@@ -45,6 +45,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import coil3.compose.AsyncImage
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.navigation.HomeDestination
 import tv.trakt.trakt.core.lists.navigation.ListsDestination
 import tv.trakt.trakt.core.main.MainSearchState
@@ -65,18 +66,18 @@ private val navigationItems = listOf(
         iconOn = R.drawable.ic_home_on,
         iconOff = R.drawable.ic_home_off,
     ),
-    NavigationItem(
-        destination = ShowsDestination,
-        label = R.string.page_title_shows,
-        iconOn = R.drawable.ic_discover_on,
-        iconOff = R.drawable.ic_discover_off,
-    ),
 //    NavigationItem(
 //        destination = MoviesDestination,
 //        label = R.string.page_title_movies,
 //        iconOn = R.drawable.ic_movies_on,
 //        iconOff = R.drawable.ic_movies_off,
 //    ),
+    NavigationItem(
+        destination = ShowsDestination,
+        label = R.string.page_title_shows,
+        iconOn = R.drawable.ic_discover_on,
+        iconOff = R.drawable.ic_discover_off,
+    ),
     NavigationItem(
         destination = ListsDestination,
         label = R.string.page_title_lists,
@@ -96,6 +97,7 @@ internal fun TraktMenuBar(
     currentDestination: NavDestination?,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    user: User? = null,
     searchState: MainSearchStateHolder,
     onSelected: (NavigationItem) -> Unit = {},
     onProfileSelected: () -> Unit = {},
@@ -106,6 +108,7 @@ internal fun TraktMenuBar(
         destination = currentDestination,
         modifier = modifier,
         enabled = enabled,
+        user = user,
         stateHolder = searchState,
         onSelected = onSelected,
         onProfileSelected = onProfileSelected,
@@ -120,6 +123,7 @@ private fun TraktMenuBarContent(
     modifier: Modifier = Modifier,
     stateHolder: MainSearchStateHolder,
     enabled: Boolean = true,
+    user: User? = null,
     onSelected: (NavigationItem) -> Unit = {},
     onProfileSelected: () -> Unit = {},
     onReselected: () -> Unit = {},
@@ -199,15 +203,15 @@ private fun TraktMenuBarContent(
 
             ProfileItem(
                 selected = profileSelected,
-                vip = false,
-                userAvatar = null,
+                vip = user?.isAnyVip == true,
+                userAvatar = user?.images?.avatar?.full,
                 onClick = onProfileSelected,
                 modifier = Modifier
                     .graphicsLayer {
                         translationY = -1.dp.toPx()
                     }
                     .padding(
-                        start = 20.dp,
+                        start = 22.dp,
                         end = 26.dp,
                     ),
             )

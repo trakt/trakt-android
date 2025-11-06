@@ -48,7 +48,7 @@ internal class MainViewModel(
     private val logoutUserUseCase: LogoutUserUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val loadUserWatchlistUseCase: LoadUserWatchlistUseCase,
-    private val laodUserRatingsUseCase: LoadUserRatingsUseCase,
+    private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
     private val dismissWelcomeUseCase: DismissWelcomeUseCase,
     private val analytics: Analytics,
 ) : ViewModel() {
@@ -118,7 +118,7 @@ internal class MainViewModel(
                 coroutineScope {
                     val progressAsync = async { loadUserProgressUseCase.loadAllProgress() }
                     val watchlistAsync = async { loadUserWatchlistUseCase.loadWatchlist() }
-                    val ratingsAsync = async { laodUserRatingsUseCase.loadAll() }
+                    val ratingsAsync = async { loadUserRatingsUseCase.loadAll() }
 
                     awaitAll(
                         progressAsync,

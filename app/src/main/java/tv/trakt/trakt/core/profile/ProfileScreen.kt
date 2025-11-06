@@ -351,9 +351,15 @@ private fun TitleBar(
                     }
                 }
 
+                val vipPrefix = remember(user) {
+                    when (user.isAnyVip) {
+                        true -> "VIP • "
+                        else -> ""
+                    }
+                }
                 TraktHeader(
-                    title = user.displayName ?: stringResource(R.string.page_title_profile),
-                    subtitle = user.location,
+                    title = user.displayName,
+                    subtitle = "$vipPrefix${user.location}",
                 )
             }
         }

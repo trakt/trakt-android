@@ -27,6 +27,7 @@ import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle.Event.ON_RESUME
 import androidx.lifecycle.compose.LifecycleEventEffect
@@ -40,6 +41,7 @@ import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LaunchedUpdateEffect
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.home.navigation.HomeDestination
 import tv.trakt.trakt.core.lists.navigation.ListsDestination
 import tv.trakt.trakt.core.lists.navigation.navigateToLists
@@ -75,6 +77,7 @@ internal fun MainScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    val localUriHandler = LocalUriHandler.current
     val localContext = LocalContext.current
     val localSnackbar = LocalSnackbarState.current
     val localBottomBarVisibility = LocalBottomBarVisibility.current
@@ -169,12 +172,17 @@ internal fun MainScreen(
                         TraktMenuBar(
                             currentDestination = currentDestination.value?.destination,
                             enabled = localBottomBarVisibility.value,
+                            user = state.user,
                             searchState = searchState,
                             onSelected = {
                                 navController.navigateToMainDestination(it.destination)
                             },
                             onProfileSelected = {
-                                navController.navigateToMainDestination(ProfileDestination)
+                                if (state.user != null) {
+                                    navController.navigateToMainDestination(ProfileDestination)
+                                } else {
+                                    localUriHandler.openUri(ConfigAuth.authCodeUrl)
+                                }
                             },
                             onReselected = {
                                 currentDestination.value?.destination?.let {
