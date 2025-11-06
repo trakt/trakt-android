@@ -119,6 +119,11 @@ internal class WatchlistShowContextViewModel(
 
                 updateHistoryUseCase.removeAllFromHistory(show.ids.trakt)
                 userProgressLocalSource.removeShows(setOf(show.ids.trakt))
+
+                analytics.progress.logRemoveWatchedMedia(
+                    mediaType = "show",
+                    source = "watchlist_show_context",
+                )
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

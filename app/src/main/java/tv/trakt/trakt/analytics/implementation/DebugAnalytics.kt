@@ -68,4 +68,12 @@ internal class DebugAnalyticsProgress : Analytics.Progress {
     ) {
         Timber.d("logAddWatchlistMedia: mediaType=${mediaType.lowercase()}, source=${source.lowercase()}")
     }
+
+    override fun logRemoveWatchlistMedia(mediaType: String, source: String) {
+        Timber.d("logRemoveWatchlistMedia: mediaType=${mediaType.lowercase()}, source=${source.lowercase()}")
+    }
+
+    override fun logRemoveWatchedMedia(mediaType: String, source: String) {
+        Timber.d("logRemoveWatchedMedia: mediaType=${mediaType.lowercase()}, source=${source.lowercase()}")
+    }
 }

@@ -160,6 +160,11 @@ internal class ListMovieContextViewModel(
                     ids = setOf(movie.ids.trakt),
                     notify = true,
                 )
+
+                analytics.progress.logRemoveWatchlistMedia(
+                    mediaType = "movie",
+                    source = "list_movie_context",
+                )
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -215,6 +220,11 @@ internal class ListMovieContextViewModel(
 
                 updateMovieHistoryUseCase.removeAllFromHistory(movie.ids.trakt)
                 userProgressLocalSource.removeMovies(setOf(movie.ids.trakt))
+
+                analytics.progress.logRemoveWatchedMedia(
+                    mediaType = "movie",
+                    source = "list_movie_context",
+                )
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

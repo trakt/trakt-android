@@ -43,7 +43,17 @@ interface Analytics {
             source: String,
         )
 
+        fun logRemoveWatchedMedia(
+            mediaType: String,
+            source: String,
+        )
+
         fun logAddWatchlistMedia(
+            mediaType: String,
+            source: String,
+        )
+
+        fun logRemoveWatchlistMedia(
             mediaType: String,
             source: String,
         )

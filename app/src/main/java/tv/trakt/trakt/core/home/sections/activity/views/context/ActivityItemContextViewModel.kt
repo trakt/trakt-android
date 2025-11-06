@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
@@ -29,6 +30,7 @@ internal class ActivityItemContextViewModel(
     private val activityLocalSource: HomePersonalLocalDataSource,
     private val allActivityLocalSource: AllActivityLocalDataSource,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
+    private val analytics: Analytics
 ) : ViewModel() {
     private val initialState = ActivityItemContextState()
 
@@ -46,9 +48,17 @@ internal class ActivityItemContextViewModel(
                 when (item) {
                     is MovieItem -> {
                         updateMovieHistoryUseCase.removePlayFromHistory(playId = item.id)
+                        analytics.progress.logRemoveWatchedMedia(
+                            mediaType = "movie",
+                            source = "activity_context",
+                        )
                     }
                     is EpisodeItem -> {
                         updateEpisodeHistoryUseCase.removePlayFromHistory(playId = item.id)
+                        analytics.progress.logRemoveWatchedMedia(
+                            mediaType = "episode",
+                            source = "activity_context",
+                        )
                     }
                 }
 

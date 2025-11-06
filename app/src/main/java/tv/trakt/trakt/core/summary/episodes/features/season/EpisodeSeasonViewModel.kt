@@ -218,6 +218,10 @@ internal class EpisodeSeasonViewModel(
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_removed)
                 }
+                analytics.progress.logRemoveWatchedMedia(
+                    mediaType = "episode",
+                    source = "episode_season_view",
+                )
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

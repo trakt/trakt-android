@@ -148,12 +148,16 @@ internal class FirebaseAnalyticsProgress(
 ) : Analytics.Progress {
     companion object Event {
         const val PROGRESS_WATCHED_ADD = "progress_watched_add"
+        const val PROGRESS_WATCHED_REMOVE = "progress_watched_remove"
         const val PROGRESS_WATCHLIST_ADD = "progress_watchlist_add"
+        const val PROGRESS_WATCHLIST_REMOVE = "progress_watchlist_remove"
     }
 
     init {
         require(eventName(PROGRESS_WATCHED_ADD).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
+        require(eventName(PROGRESS_WATCHED_REMOVE).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
         require(eventName(PROGRESS_WATCHLIST_ADD).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
+        require(eventName(PROGRESS_WATCHLIST_REMOVE).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
     }
 
     override fun logAddWatchedMedia(
@@ -169,12 +173,32 @@ internal class FirebaseAnalyticsProgress(
         )
     }
 
+    override fun logRemoveWatchedMedia(mediaType: String, source: String) {
+        firebase.logEvent(
+            eventName(PROGRESS_WATCHED_REMOVE),
+            bundleOf(
+                PARAMETER_MEDIA_TYPE to mediaType.lowercase(),
+                PARAMETER_SOURCE to source.lowercase(),
+            ),
+        )
+    }
+
     override fun logAddWatchlistMedia(
         mediaType: String,
         source: String,
     ) {
         firebase.logEvent(
             eventName(PROGRESS_WATCHLIST_ADD),
+            bundleOf(
+                PARAMETER_MEDIA_TYPE to mediaType.lowercase(),
+                PARAMETER_SOURCE to source.lowercase(),
+            ),
+        )
+    }
+
+    override fun logRemoveWatchlistMedia(mediaType: String, source: String) {
+        firebase.logEvent(
+            eventName(PROGRESS_WATCHLIST_REMOVE),
             bundleOf(
                 PARAMETER_MEDIA_TYPE to mediaType.lowercase(),
                 PARAMETER_SOURCE to source.lowercase(),

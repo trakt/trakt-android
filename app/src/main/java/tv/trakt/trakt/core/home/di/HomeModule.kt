@@ -241,6 +241,7 @@ internal val homeModule = module {
             activityLocalSource = get(),
             allActivityLocalSource = get(),
             loadUserProgressUseCase = get(),
+            analytics = get(),
         )
     }
 

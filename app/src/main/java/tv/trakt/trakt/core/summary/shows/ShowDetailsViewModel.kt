@@ -487,6 +487,10 @@ internal class ShowDetailsViewModel(
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_removed)
                 }
+                analytics.progress.logRemoveWatchedMedia(
+                    mediaType = "episode",
+                    source = "show_details",
+                )
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -557,9 +561,14 @@ internal class ShowDetailsViewModel(
                 )
 
                 refreshLists()
+
                 infoState.update {
                     DynamicStringResource(R.string.text_info_watchlist_removed)
                 }
+                analytics.progress.logRemoveWatchlistMedia(
+                    mediaType = "show",
+                    source = "show_details",
+                )
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

@@ -165,6 +165,11 @@ internal class ListShowContextViewModel(
                     ids = setOf(show.ids.trakt),
                     notify = true,
                 )
+
+                analytics.progress.logRemoveWatchlistMedia(
+                    mediaType = "show",
+                    source = "list_show_context",
+                )
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -220,6 +225,11 @@ internal class ListShowContextViewModel(
 
                 updateShowHistoryUseCase.removeAllFromHistory(show.ids.trakt)
                 userProgressLocalSource.removeShows(setOf(show.ids.trakt))
+
+                analytics.progress.logRemoveWatchedMedia(
+                    mediaType = "show",
+                    source = "list_show_context",
+                )
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
