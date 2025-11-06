@@ -4,9 +4,7 @@ import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -21,7 +19,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Switch
@@ -38,7 +35,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
@@ -47,7 +43,6 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W700
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import com.jakewharton.processphoenix.ProcessPhoenix
@@ -261,35 +256,35 @@ internal fun HeaderBar(
                             )
                         }
 
-                        Box(
-                            modifier = Modifier
-                                .size(contentHeight)
-                                .onClick(onClick = onProfileClick),
-                        ) {
-                            val vipAccent = TraktTheme.colors.vipAccent
-                            val borderColor = remember(userVip) {
-                                if (userVip) vipAccent else White
-                            }
-                            if (userAvatar != null) {
-                                AsyncImage(
-                                    model = userAvatar,
-                                    contentDescription = "User avatar",
-                                    contentScale = ContentScale.Crop,
-                                    error = painterResource(R.drawable.ic_person_placeholder),
-                                    modifier = Modifier
-                                        .border(2.dp, borderColor, CircleShape)
-                                        .clip(CircleShape),
-                                )
-                            } else {
-                                Image(
-                                    painter = painterResource(R.drawable.ic_person_placeholder),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .border(2.dp, borderColor, CircleShape)
-                                        .clip(CircleShape),
-                                )
-                            }
-                        }
+//                        Box(
+//                            modifier = Modifier
+//                                .size(contentHeight)
+//                                .onClick(onClick = onProfileClick),
+//                        ) {
+//                            val vipAccent = TraktTheme.colors.vipAccent
+//                            val borderColor = remember(userVip) {
+//                                if (userVip) vipAccent else White
+//                            }
+//                            if (userAvatar != null) {
+//                                AsyncImage(
+//                                    model = userAvatar,
+//                                    contentDescription = "User avatar",
+//                                    contentScale = ContentScale.Crop,
+//                                    error = painterResource(R.drawable.ic_person_placeholder),
+//                                    modifier = Modifier
+//                                        .border(2.dp, borderColor, CircleShape)
+//                                        .clip(CircleShape),
+//                                )
+//                            } else {
+//                                Image(
+//                                    painter = painterResource(R.drawable.ic_person_placeholder),
+//                                    contentDescription = null,
+//                                    modifier = Modifier
+//                                        .border(2.dp, borderColor, CircleShape)
+//                                        .clip(CircleShape),
+//                                )
+//                            }
+//                        }
                     }
                 }
                 showJoinTrakt -> {

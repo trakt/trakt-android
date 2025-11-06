@@ -39,6 +39,7 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -100,7 +101,6 @@ internal fun ProfileScreen(
         onNavigateToShows = onNavigateToShows,
         onNavigateToMovies = onNavigateToMovies,
         onLogoutClick = { confirmLogout = true },
-        onBackClick = onNavigateBack,
     )
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -130,7 +130,6 @@ private fun ProfileScreenContent(
     onNavigateToShows: () -> Unit = {},
     onNavigateToMovies: () -> Unit = {},
     onLogoutClick: () -> Unit = {},
-    onBackClick: () -> Unit = {},
 ) {
     val listPadding = PaddingValues(
         top = WindowInsets.statusBars.asPaddingValues()
@@ -179,9 +178,8 @@ private fun ProfileScreenContent(
                 TitleBar(
                     user = state.user,
                     onLogoutClick = onLogoutClick,
-                    onBackClick = onBackClick,
                     modifier = Modifier
-                        .padding(bottom = 14.dp),
+                        .padding(bottom = 8.dp),
                 )
             }
 
@@ -295,7 +293,6 @@ private fun ProfileScreenContent(
 private fun TitleBar(
     user: User?,
     modifier: Modifier = Modifier,
-    onBackClick: () -> Unit = {},
     onLogoutClick: () -> Unit = {},
 ) {
     Row(
@@ -309,43 +306,21 @@ private fun TitleBar(
                 end = TraktTheme.spacing.mainPageHorizontalSpace,
             ),
     ) {
-        Row(
-            verticalAlignment = CenterVertically,
-            horizontalArrangement = spacedBy(12.dp),
-            modifier = Modifier
-                .onClick { onBackClick() }
-                .padding(
-                    start = TraktTheme.spacing.mainPageHorizontalSpace - 2.dp,
-                ),
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_back_arrow),
-                tint = Color.White,
-                contentDescription = "Back",
-            )
-
-            TraktHeader(
-                title = user?.displayName ?: stringResource(R.string.page_title_profile),
-                subtitle = user?.location,
-            )
-        }
-
         if (user != null) {
             Row(
                 verticalAlignment = CenterVertically,
-                horizontalArrangement = spacedBy(16.dp),
+                horizontalArrangement = spacedBy(10.dp),
+                modifier = Modifier
+                    .padding(
+                        start = TraktTheme.spacing.mainPageHorizontalSpace - 2.dp,
+                    ),
             ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_logout),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .size(24.dp)
-                        .onClick(onClick = onLogoutClick),
-                )
-
                 Box(
-                    modifier = Modifier.size(34.dp),
+                    modifier = Modifier
+                        .size(34.dp)
+                        .graphicsLayer {
+                            translationY = 1.dp.toPx()
+                        },
                 ) {
                     val vipAccent = TraktTheme.colors.vipAccent
                     val borderColor = remember(user) {
@@ -375,7 +350,26 @@ private fun TitleBar(
                         )
                     }
                 }
+
+                TraktHeader(
+                    title = user.displayName ?: stringResource(R.string.page_title_profile),
+                    subtitle = user.location,
+                )
             }
+        }
+
+        Row(
+            verticalAlignment = CenterVertically,
+            horizontalArrangement = spacedBy(16.dp),
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_logout),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .size(24.dp)
+                    .onClick(onClick = onLogoutClick),
+            )
         }
     }
 }

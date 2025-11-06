@@ -173,7 +173,10 @@ internal class FirebaseAnalyticsProgress(
         )
     }
 
-    override fun logRemoveWatchedMedia(mediaType: String, source: String) {
+    override fun logRemoveWatchedMedia(
+        mediaType: String,
+        source: String,
+    ) {
         firebase.logEvent(
             eventName(PROGRESS_WATCHED_REMOVE),
             bundleOf(
@@ -196,7 +199,10 @@ internal class FirebaseAnalyticsProgress(
         )
     }
 
-    override fun logRemoveWatchlistMedia(mediaType: String, source: String) {
+    override fun logRemoveWatchlistMedia(
+        mediaType: String,
+        source: String,
+    ) {
         firebase.logEvent(
             eventName(PROGRESS_WATCHLIST_REMOVE),
             bundleOf(

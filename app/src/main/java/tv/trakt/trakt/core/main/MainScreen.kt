@@ -58,6 +58,7 @@ import tv.trakt.trakt.core.main.navigation.searchScreens
 import tv.trakt.trakt.core.main.navigation.showsScreens
 import tv.trakt.trakt.core.main.ui.menubar.TraktMenuBar
 import tv.trakt.trakt.core.movies.navigation.navigateToMovies
+import tv.trakt.trakt.core.profile.navigation.ProfileDestination
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.navigateToSearch
 import tv.trakt.trakt.core.shows.navigation.navigateToShows
@@ -171,6 +172,9 @@ internal fun MainScreen(
                             searchState = searchState,
                             onSelected = {
                                 navController.navigateToMainDestination(it.destination)
+                            },
+                            onProfileSelected = {
+                                navController.navigateToMainDestination(ProfileDestination)
                             },
                             onReselected = {
                                 currentDestination.value?.destination?.let {

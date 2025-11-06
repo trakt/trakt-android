@@ -7,14 +7,18 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Icon
@@ -25,9 +29,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,13 +43,14 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
+import coil3.compose.AsyncImage
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.core.home.navigation.HomeDestination
 import tv.trakt.trakt.core.lists.navigation.ListsDestination
 import tv.trakt.trakt.core.main.MainSearchState
 import tv.trakt.trakt.core.main.MainSearchStateHolder
 import tv.trakt.trakt.core.main.model.NavigationItem
-import tv.trakt.trakt.core.movies.navigation.MoviesDestination
+import tv.trakt.trakt.core.profile.navigation.ProfileDestination
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.SearchDestination
 import tv.trakt.trakt.core.search.views.SearchFiltersList
@@ -59,15 +68,15 @@ private val navigationItems = listOf(
     NavigationItem(
         destination = ShowsDestination,
         label = R.string.page_title_shows,
-        iconOn = R.drawable.ic_shows_on,
-        iconOff = R.drawable.ic_shows_off,
+        iconOn = R.drawable.ic_discover_on,
+        iconOff = R.drawable.ic_discover_off,
     ),
-    NavigationItem(
-        destination = MoviesDestination,
-        label = R.string.page_title_movies,
-        iconOn = R.drawable.ic_movies_on,
-        iconOff = R.drawable.ic_movies_off,
-    ),
+//    NavigationItem(
+//        destination = MoviesDestination,
+//        label = R.string.page_title_movies,
+//        iconOn = R.drawable.ic_movies_on,
+//        iconOff = R.drawable.ic_movies_off,
+//    ),
     NavigationItem(
         destination = ListsDestination,
         label = R.string.page_title_lists,
@@ -89,6 +98,7 @@ internal fun TraktMenuBar(
     enabled: Boolean = true,
     searchState: MainSearchStateHolder,
     onSelected: (NavigationItem) -> Unit = {},
+    onProfileSelected: () -> Unit = {},
     onReselected: () -> Unit = {},
     onSearchInput: (SearchInput) -> Unit = {},
 ) {
@@ -98,6 +108,7 @@ internal fun TraktMenuBar(
         enabled = enabled,
         stateHolder = searchState,
         onSelected = onSelected,
+        onProfileSelected = onProfileSelected,
         onReselected = onReselected,
         onSearchInput = onSearchInput,
     )
@@ -110,6 +121,7 @@ private fun TraktMenuBarContent(
     stateHolder: MainSearchStateHolder,
     enabled: Boolean = true,
     onSelected: (NavigationItem) -> Unit = {},
+    onProfileSelected: () -> Unit = {},
     onReselected: () -> Unit = {},
     onSearchInput: (SearchInput) -> Unit = {},
 ) {
@@ -138,6 +150,7 @@ private fun TraktMenuBarContent(
         )
 
         Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .padding(horizontal = 12.dp),
         ) {
@@ -179,6 +192,72 @@ private fun TraktMenuBarContent(
                     ),
                 )
             }
+
+            val profileSelected = destination
+                ?.hierarchy
+                ?.any { it.hasRoute(ProfileDestination::class) } == true
+
+            ProfileItem(
+                selected = profileSelected,
+                vip = false,
+                userAvatar = null,
+                onClick = onProfileSelected,
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationY = -1.dp.toPx()
+                    }
+                    .padding(
+                        start = 20.dp,
+                        end = 26.dp,
+                    ),
+            )
+        }
+    }
+}
+
+@Composable
+fun ProfileItem(
+    modifier: Modifier = Modifier,
+    vip: Boolean = false,
+    selected: Boolean = false,
+    userAvatar: String? = null,
+    onClick: () -> Unit = {},
+) {
+    val size = 28.dp
+    val border = (1.9).dp
+    Box(
+        modifier = modifier
+            .size(size)
+            .onClick(onClick = onClick),
+    ) {
+        val vipAccent = TraktTheme.colors.vipAccent
+        val accent = TraktTheme.colors.accent
+
+        val borderColor = remember(vip, selected) {
+            when {
+                selected -> accent
+                vip -> vipAccent
+                else -> White
+            }
+        }
+        if (userAvatar != null) {
+            AsyncImage(
+                model = userAvatar,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                error = painterResource(R.drawable.ic_person_placeholder),
+                modifier = Modifier
+                    .border(border, borderColor, CircleShape)
+                    .clip(CircleShape),
+            )
+        } else {
+            Image(
+                painter = painterResource(R.drawable.ic_person_placeholder),
+                contentDescription = null,
+                modifier = Modifier
+                    .border(border, borderColor, CircleShape)
+                    .clip(CircleShape),
+            )
         }
     }
 }

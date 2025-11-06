@@ -30,7 +30,7 @@ internal class ActivityItemContextViewModel(
     private val activityLocalSource: HomePersonalLocalDataSource,
     private val allActivityLocalSource: AllActivityLocalDataSource,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
-    private val analytics: Analytics
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ActivityItemContextState()
 
