@@ -364,7 +364,7 @@ private fun ContentListItem(
                     )
                 }
 
-                val checkSize = 19.dp
+                val checkSize = 20.dp
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
@@ -372,7 +372,7 @@ private fun ContentListItem(
                         .size(checkSize),
                 ) {
                     if (item.loading) {
-                        FilmProgressIndicator(size = checkSize - 2.dp)
+                        FilmProgressIndicator(size = checkSize - 3.dp)
                     } else {
                         Icon(
                             painter = painterResource(R.drawable.ic_check),

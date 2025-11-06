@@ -238,7 +238,7 @@ private fun ContentLoadingList(
             VerticalMediaSkeletonCard(
                 chipRatio = 0.66F,
                 modifier = Modifier
-                    .padding(bottom = 3.dp),
+                    .padding(bottom = 4.dp),
             )
         }
     }
@@ -314,7 +314,7 @@ private fun ContentListItem(
                     modifier = Modifier.weight(1F, fill = false),
                 )
 
-                val checkSize = 19.dp
+                val checkSize = 20.dp
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
@@ -322,7 +322,7 @@ private fun ContentListItem(
                         .size(checkSize),
                 ) {
                     if (item.loading) {
-                        FilmProgressIndicator(size = checkSize - 2.dp)
+                        FilmProgressIndicator(size = checkSize - 3.dp)
                     } else {
                         Icon(
                             painter = painterResource(R.drawable.ic_check),
