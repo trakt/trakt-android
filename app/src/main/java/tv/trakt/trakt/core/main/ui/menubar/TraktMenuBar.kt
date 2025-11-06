@@ -36,6 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,6 +45,8 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.navigation.HomeDestination
@@ -211,7 +214,7 @@ private fun TraktMenuBarContent(
                         translationY = -1.dp.toPx()
                     }
                     .padding(
-                        start = 22.dp,
+                        start = 22.5.dp,
                         end = 26.dp,
                     ),
             )
@@ -246,7 +249,10 @@ fun ProfileItem(
         }
         if (userAvatar != null) {
             AsyncImage(
-                model = userAvatar,
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(userAvatar)
+                    .crossfade(true)
+                    .build(),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 error = painterResource(R.drawable.ic_person_placeholder),
