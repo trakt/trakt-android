@@ -16,9 +16,8 @@ internal data object ListsDestination
 internal fun NavGraphBuilder.listsScreen(
     onNavigateToProfile: () -> Unit,
     onNavigateToShow: (TraktId) -> Unit,
-    onNavigateToShows: () -> Unit,
+    onNavigateToDiscover: () -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
-    onNavigateToMovies: () -> Unit,
     onNavigateToWatchlist: () -> Unit,
     onNavigateToList: (CustomList) -> Unit,
 ) {
@@ -27,9 +26,8 @@ internal fun NavGraphBuilder.listsScreen(
             viewModel = koinViewModel(),
             onNavigateToProfile = onNavigateToProfile,
             onNavigateToShow = onNavigateToShow,
-            onNavigateToShows = onNavigateToShows,
+            onNavigateToDiscover = onNavigateToDiscover,
             onNavigateToMovie = onNavigateToMovie,
-            onNavigateToMovies = onNavigateToMovies,
             onNavigateToWatchlist = onNavigateToWatchlist,
             onNavigateToList = onNavigateToList,
         )

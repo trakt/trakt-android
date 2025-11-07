@@ -4,21 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
-import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.core.discover.sections.recommended.usecase.DEFAULT_ALL_LIMIT
 import tv.trakt.trakt.core.discover.sections.recommended.usecase.GetRecommendedShowsUseCase
 
 internal class AllShowsRecommendedViewModel(
@@ -47,32 +40,32 @@ internal class AllShowsRecommendedViewModel(
     }
 
     private fun loadData() {
-        viewModelScope.launch {
-            try {
-                val localShows = getRecommendedUseCase.getLocalShows()
-                if (localShows.isNotEmpty()) {
-                    itemsState.update {
-                        localShows.toImmutableList()
-                    }
-                    loadingState.update { DONE }
-                } else {
-                    loadingState.update { LOADING }
-                }
-
-                itemsState.update {
-                    getRecommendedUseCase.getShows(
-                        limit = DEFAULT_ALL_LIMIT,
-                    ).toImmutableList()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    errorState.update { error }
-                    Timber.e(error, "Failed to load data")
-                }
-            } finally {
-                loadingState.update { DONE }
-            }
-        }
+//        viewModelScope.launch {
+//            try {
+//                val localShows = getRecommendedUseCase.getLocalShows()
+//                if (localShows.isNotEmpty()) {
+//                    itemsState.update {
+//                        localShows.toImmutableList()
+//                    }
+//                    loadingState.update { DONE }
+//                } else {
+//                    loadingState.update { LOADING }
+//                }
+//
+//                itemsState.update {
+//                    getRecommendedUseCase.getShows(
+//                        limit = DEFAULT_ALL_LIMIT,
+//                    ).toImmutableList()
+//                }
+//            } catch (error: Exception) {
+//                error.rethrowCancellation {
+//                    errorState.update { error }
+//                    Timber.e(error, "Failed to load data")
+//                }
+//            } finally {
+//                loadingState.update { DONE }
+//            }
+//        }
     }
 
     val state: StateFlow<AllShowsRecommendedState> = combine(

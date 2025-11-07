@@ -1,16 +1,14 @@
 package tv.trakt.trakt.core.discover.sections.recommended.usecase
 
 import kotlinx.collections.immutable.ImmutableList
-import tv.trakt.trakt.common.model.Show
-
-internal const val DEFAULT_LIMIT = 24
-internal const val DEFAULT_ALL_LIMIT = 102
+import tv.trakt.trakt.core.discover.DiscoverConfig
+import tv.trakt.trakt.core.discover.model.DiscoverItem
 
 internal interface GetRecommendedShowsUseCase {
-    suspend fun getLocalShows(): ImmutableList<Show>
+    suspend fun getLocalShows(): ImmutableList<DiscoverItem>
 
     suspend fun getShows(
-        limit: Int = DEFAULT_LIMIT,
+        limit: Int = DiscoverConfig.DEFAULT_SECTION_LIMIT,
         skipLocal: Boolean = false,
-    ): ImmutableList<Show>
+    ): ImmutableList<DiscoverItem>
 }

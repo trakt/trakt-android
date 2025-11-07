@@ -14,15 +14,13 @@
     <string name="input_placeholder_search_movies">Search movies…</string>
     <string name="input_placeholder_search_shows">Search shows…</string>
     <string name="button_text_join_trakt">Join Trakt</string>
-    <string name="button_text_meet_team">Meet the team</string>
+    <string name="button_text_meet_team">Meet the Team</string>
     <string name="list_title_trending">Trending</string>
     <string name="list_title_recommended">Recommended</string>
     <string name="list_title_most_anticipated">Anticipated</string>
     <string name="badge_text_get_vip">Get VIP</string>
     <string name="list_title_most_popular">Popular</string>
-    <string name="button_label_browse_movies">Browse Movies</string>
     <string name="page_title_movies">Movies</string>
-    <string name="button_label_browse_shows">Browse Shows</string>
     <string name="page_title_shows">Shows</string>
     <string name="page_title_home">Home</string>
     <string name="button_text_login">Login</string>
@@ -167,6 +165,8 @@
     <string name="text_shows_count">%d shows</string>
     <string name="text_movies_count">%d movies</string>
 
+    <string name="button_label_browse_movies">Discover Movies</string>
+    <string name="button_label_browse_shows">Discover Shows</string>
     <string name="text_month_so_far">So far, this month</string>
     <string name="text_month_in_review">%s in review</string>
     <string name="text_watched">Watched</string>
@@ -179,6 +179,7 @@
     <string name="page_title_favorites">Favorites</string>
     <string name="page_title_about_me">About Me</string>
     <string name="page_title_social">Social</string>
+    <string name="page_title_discover">Discover</string>
     <string name="warning_prompt_logout">Are you sure you want to log out?</string>
     <string name="button_text_join_trakt_free">Join Trakt for Free</string>
     <string name="text_info_favorites_added">Added to favorites.</string>

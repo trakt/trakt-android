@@ -8,10 +8,10 @@ import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
-import tv.trakt.trakt.core.discover.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.sections.anticipated.data.local.shows.AnticipatedShowsLocalDataSource
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedShowsUseCase
+import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 import java.time.Instant
 
 internal class HalloweenGetAnticipatedShowsUseCase(

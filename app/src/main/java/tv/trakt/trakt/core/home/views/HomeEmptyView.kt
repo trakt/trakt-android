@@ -56,7 +56,7 @@ internal fun HomeEmptyView(
     backgroundImage: Int? = null,
     backgroundImageUrl: String? = null,
     buttonText: String,
-    buttonIcon: Int = R.drawable.ic_search_off,
+    buttonIcon: Int = R.drawable.ic_discover_off,
     onClick: () -> Unit = {},
 ) {
     BoxWithConstraints(

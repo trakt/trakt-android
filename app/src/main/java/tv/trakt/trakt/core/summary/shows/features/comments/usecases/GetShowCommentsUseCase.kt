@@ -8,7 +8,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.model.CommentsFilter.POPULAR
 import tv.trakt.trakt.core.comments.model.CommentsFilter.RECENT
-import tv.trakt.trakt.core.discover.data.remote.ShowsRemoteDataSource
+import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 
 internal class GetShowCommentsUseCase(
     private val remoteSource: ShowsRemoteDataSource,

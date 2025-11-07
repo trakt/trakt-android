@@ -20,7 +20,7 @@ import tv.trakt.trakt.common.model.streamings.StreamingType.SUBSCRIPTION
 import tv.trakt.trakt.common.model.streamings.fromDto
 import tv.trakt.trakt.common.networking.StreamingDto
 import tv.trakt.trakt.common.networking.StreamingServiceDto
-import tv.trakt.trakt.core.discover.data.remote.ShowsRemoteDataSource
+import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 
 internal class GetShowStreamingsUseCase(
     private val remoteShowSource: ShowsRemoteDataSource,

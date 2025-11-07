@@ -61,7 +61,6 @@ import tv.trakt.trakt.core.main.navigation.profileScreens
 import tv.trakt.trakt.core.main.navigation.searchScreens
 import tv.trakt.trakt.core.main.navigation.showsScreens
 import tv.trakt.trakt.core.main.ui.menubar.TraktMenuBar
-import tv.trakt.trakt.core.movies.navigation.navigateToMovies
 import tv.trakt.trakt.core.profile.navigation.ProfileDestination
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.navigateToSearch
@@ -271,13 +270,9 @@ private fun handleShortcutIntent(
                 navController.navigateToSearch()
                 onRequestFocus()
             }
-            containsKey("shortcutShowsExtra") -> {
-                intent.removeExtra("shortcutShowsExtra")
+            containsKey("shortcutDiscoverExtra") -> {
+                intent.removeExtra("shortcutDiscoverExtra")
                 navController.navigateToDiscover()
-            }
-            containsKey("shortcutMoviesExtra") -> {
-                intent.removeExtra("shortcutMoviesExtra")
-                navController.navigateToMovies()
             }
             containsKey("shortcutListsExtra") -> {
                 intent.removeExtra("shortcutListsExtra")

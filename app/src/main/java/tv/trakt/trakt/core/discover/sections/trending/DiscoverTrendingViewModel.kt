@@ -89,9 +89,9 @@ internal class DiscoverTrendingViewModel(
             val localMoviesAsync = async { getTrendingMoviesUseCase.getLocalMovies() }
 
             val localShows = if (modeState.value.isMediaOrShows) localShowsAsync.await() else emptyList()
-            val localMovies = if (modeState.value.isMediaOrShows) localMoviesAsync.await() else emptyList()
+            val localMovies = if (modeState.value.isMediaOrMovies) localMoviesAsync.await() else emptyList()
 
-            if (localShows.isNotEmpty() && localMovies.isNotEmpty()) {
+            if (localShows.isNotEmpty() || localMovies.isNotEmpty()) {
                 itemsState.update {
                     listOf(localShows, localMovies)
                         .interleave()

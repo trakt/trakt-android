@@ -77,8 +77,7 @@ internal fun ProfileScreen(
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToHistory: () -> Unit,
     onNavigateToFavorites: () -> Unit,
-    onNavigateToShows: () -> Unit,
-    onNavigateToMovies: () -> Unit,
+    onNavigateToDiscover: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -98,8 +97,8 @@ internal fun ProfileScreen(
         onNavigateToEpisode = onNavigateToEpisode,
         onNavigateToHistory = onNavigateToHistory,
         onNavigateToFavorites = onNavigateToFavorites,
-        onNavigateToShows = onNavigateToShows,
-        onNavigateToMovies = onNavigateToMovies,
+        onNavigateToShows = onNavigateToDiscover,
+        onNavigateToMovies = onNavigateToDiscover,
         onLogoutClick = { confirmLogout = true },
     )
 

@@ -69,9 +69,8 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun ListsScreen(
     viewModel: ListsViewModel,
     onNavigateToProfile: () -> Unit,
-    onNavigateToShows: () -> Unit,
+    onNavigateToDiscover: () -> Unit,
     onNavigateToShow: (TraktId) -> Unit,
-    onNavigateToMovies: () -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToWatchlist: () -> Unit,
     onNavigateToList: (CustomList) -> Unit,
@@ -92,9 +91,9 @@ internal fun ListsScreen(
             }
         },
         onWatchlistClick = onNavigateToWatchlist,
-        onShowsClick = onNavigateToShows,
+        onShowsClick = onNavigateToDiscover,
         onShowClick = onNavigateToShow,
-        onMoviesClick = onNavigateToMovies,
+        onMoviesClick = onNavigateToDiscover,
         onMovieClick = onNavigateToMovie,
         onCreateListClick = { createListSheet = true },
         onEditListClick = { editListSheet = it },

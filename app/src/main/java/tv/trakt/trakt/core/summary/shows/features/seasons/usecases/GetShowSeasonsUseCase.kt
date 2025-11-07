@@ -7,8 +7,8 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
-import tv.trakt.trakt.core.discover.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.core.episodes.data.remote.EpisodesRemoteDataSource
+import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
 

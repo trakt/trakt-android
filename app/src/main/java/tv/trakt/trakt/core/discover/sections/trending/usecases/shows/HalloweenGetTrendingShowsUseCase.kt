@@ -8,10 +8,10 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
-import tv.trakt.trakt.core.discover.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.sections.trending.data.local.shows.TrendingShowsLocalDataSource
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingShowsUseCase
+import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 
 internal class HalloweenGetTrendingShowsUseCase(
     private val remoteSource: ShowsRemoteDataSource,

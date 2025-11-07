@@ -9,8 +9,6 @@ import tv.trakt.trakt.core.home.navigation.HomeDestination
 import tv.trakt.trakt.core.home.navigation.navigateToHome
 import tv.trakt.trakt.core.lists.navigation.ListsDestination
 import tv.trakt.trakt.core.lists.navigation.navigateToLists
-import tv.trakt.trakt.core.movies.navigation.MoviesDestination
-import tv.trakt.trakt.core.movies.navigation.navigateToMovies
 import tv.trakt.trakt.core.profile.navigation.ProfileDestination
 import tv.trakt.trakt.core.profile.navigation.navigateToProfile
 import tv.trakt.trakt.core.search.navigation.SearchDestination
@@ -18,7 +16,6 @@ import tv.trakt.trakt.core.search.navigation.navigateToSearch
 
 private val mainDestinations = setOf(
     DiscoverDestination::class,
-    MoviesDestination::class,
     ListsDestination::class,
     SearchDestination::class,
     ProfileDestination::class,
@@ -28,7 +25,6 @@ internal fun NavController.navigateToMainDestination(destination: Any) {
     when (destination) {
         HomeDestination -> navigateToHome()
         DiscoverDestination -> navigateToDiscover()
-        MoviesDestination -> navigateToMovies()
         ListsDestination -> navigateToLists()
         SearchDestination -> navigateToSearch()
         ProfileDestination -> navigateToProfile()
@@ -48,7 +44,6 @@ internal fun isMainDestination(destination: NavDestination?): Boolean {
 internal fun isNonSearchDestination(destination: NavDestination?): Boolean {
     return isStartDestination(destination) ||
         destination?.hasRoute(DiscoverDestination::class) == true ||
-        destination?.hasRoute(MoviesDestination::class) == true ||
         destination?.hasRoute(ListsDestination::class) == true ||
         destination?.hasRoute(ProfileDestination::class) == true
 }

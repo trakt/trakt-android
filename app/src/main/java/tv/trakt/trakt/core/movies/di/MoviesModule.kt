@@ -14,22 +14,19 @@ import tv.trakt.trakt.core.discover.sections.popular.data.local.movies.PopularMo
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.popular.usecases.movies.DefaultGetPopularMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.popular.usecases.movies.HalloweenGetPopularMoviesUseCase
+import tv.trakt.trakt.core.discover.sections.recommended.data.local.movies.RecommendedMoviesLocalDataSource
+import tv.trakt.trakt.core.discover.sections.recommended.data.local.movies.RecommendedMoviesStorage
+import tv.trakt.trakt.core.discover.sections.recommended.usecase.GetRecommendedMoviesUseCase
+import tv.trakt.trakt.core.discover.sections.recommended.usecase.movies.DefaultGetRecommendedMoviesUseCase
+import tv.trakt.trakt.core.discover.sections.recommended.usecase.movies.HalloweenGetRecommendedMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.trending.data.local.movies.TrendingMoviesLocalDataSource
 import tv.trakt.trakt.core.discover.sections.trending.data.local.movies.TrendingMoviesStorage
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.trending.usecases.movies.DefaultGetTrendingMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.trending.usecases.movies.HalloweenGetTrendingMoviesUseCase
-import tv.trakt.trakt.core.movies.MoviesViewModel
 import tv.trakt.trakt.core.movies.data.remote.MoviesApiClient
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
-import tv.trakt.trakt.core.movies.sections.recommended.MoviesRecommendedViewModel
 import tv.trakt.trakt.core.movies.sections.recommended.all.AllMoviesRecommendedViewModel
-import tv.trakt.trakt.core.movies.sections.recommended.data.local.RecommendedMoviesLocalDataSource
-import tv.trakt.trakt.core.movies.sections.recommended.data.local.RecommendedMoviesStorage
-import tv.trakt.trakt.core.movies.sections.recommended.usecase.GetRecommendedMoviesUseCase
-import tv.trakt.trakt.core.movies.sections.recommended.usecase.recommended.DefaultGetRecommendedMoviesUseCase
-import tv.trakt.trakt.core.movies.sections.recommended.usecase.recommended.HalloweenGetRecommendedMoviesUseCase
-import tv.trakt.trakt.core.movies.sections.trending.MoviesTrendingViewModel
 import tv.trakt.trakt.core.movies.sections.trending.all.AllMoviesTrendingViewModel
 import tv.trakt.trakt.core.movies.ui.context.MovieContextViewModel
 
@@ -140,22 +137,6 @@ internal val moviesModule = module {
         )
     }
 
-    viewModel {
-        MoviesViewModel(
-            sessionManager = get(),
-            analytics = get(),
-        )
-    }
-
-    viewModel { (halloween: Boolean) ->
-        MoviesTrendingViewModel(
-            getTrendingUseCase = when {
-                halloween -> get(named("halloweenTrendingMoviesUseCase"))
-                else -> get(named("defaultTrendingMoviesUseCase"))
-            },
-        )
-    }
-
     viewModel { (halloween: Boolean) ->
         AllMoviesTrendingViewModel(
             getTrendingUseCase = when {
@@ -163,15 +144,6 @@ internal val moviesModule = module {
                 else -> get(named("defaultTrendingMoviesUseCase"))
             },
             analytics = get(),
-        )
-    }
-
-    viewModel { (halloween: Boolean) ->
-        MoviesRecommendedViewModel(
-            getRecommendedUseCase = when {
-                halloween -> get(named("halloweenRecommendedMoviesUseCase"))
-                else -> get(named("defaultRecommendedMoviesUseCase"))
-            },
         )
     }
 

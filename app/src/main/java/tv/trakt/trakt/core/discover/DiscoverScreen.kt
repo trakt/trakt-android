@@ -31,7 +31,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.discover.sections.anticipated.DiscoverAnticipatedView
 import tv.trakt.trakt.core.discover.sections.popular.DiscoverPopularView
-import tv.trakt.trakt.core.discover.sections.recommended.ShowsRecommendedView
+import tv.trakt.trakt.core.discover.sections.recommended.DiscoverRecommendedView
 import tv.trakt.trakt.core.discover.sections.trending.DiscoverTrendingView
 import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
@@ -169,13 +169,14 @@ private fun DiscoverScreenContent(
 
             if (state.user.isAuthenticated) {
                 item {
-                    ShowsRecommendedView(
+                    DiscoverRecommendedView(
                         viewModel = koinViewModel(
                             parameters = { parametersOf(halloween) },
                         ),
                         headerPadding = sectionPadding,
                         contentPadding = sectionPadding,
                         onShowClick = onShowClick,
+                        onMovieClick = onMovieClick,
                         onMoreClick = onMoreRecommendedClick,
                     )
                 }

@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.discover.data.remote.ShowsRemoteDataSource
+import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 
 internal class GetShowExtrasUseCase(
     private val remoteSource: ShowsRemoteDataSource,

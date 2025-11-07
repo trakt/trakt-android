@@ -2,11 +2,13 @@
     android:width="24dp"
     android:height="24dp"
     android:viewportWidth="24"
-    android:viewportHeight="24">
-  <path
-      android:pathData="M12.776,5.753L12,3.063L11.224,5.753C10.462,8.396 8.396,10.462 5.753,11.224L3.062,12L5.753,12.776C8.396,13.538 10.462,15.604 11.224,18.247L12,20.938L12.776,18.247C13.538,15.604 15.604,13.538 18.247,12.776L20.938,12L18.247,11.224C15.604,10.462 13.538,8.396 12.776,5.753Z"
-      android:strokeLineJoin="bevel"
-      android:strokeWidth="2"
-      android:fillColor="#00000000"
-      android:strokeColor="#FEFEFE"/>
+    android:viewportHeight="24"
+    >
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M12.776,5.753L12,3.063L11.224,5.753C10.462,8.396 8.396,10.462 5.753,11.224L3.062,12L5.753,12.776C8.396,13.538 10.462,15.604 11.224,18.247L12,20.938L12.776,18.247C13.538,15.604 15.604,13.538 18.247,12.776L20.938,12L18.247,11.224C15.604,10.462 13.538,8.396 12.776,5.753Z"
+        android:strokeWidth="2"
+        android:strokeColor="#FEFEFE"
+        android:strokeLineJoin="bevel"
+        />
 </vector>

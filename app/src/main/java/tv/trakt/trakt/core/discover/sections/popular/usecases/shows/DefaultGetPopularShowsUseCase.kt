@@ -8,10 +8,10 @@ import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.discover.DiscoverConfig
-import tv.trakt.trakt.core.discover.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.sections.popular.data.local.shows.PopularShowsLocalDataSource
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularShowsUseCase
+import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 import java.time.Instant
 import java.time.Year
 

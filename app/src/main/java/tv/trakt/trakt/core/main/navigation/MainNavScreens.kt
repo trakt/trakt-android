@@ -33,7 +33,6 @@ import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.navig
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.allWatchlistScreen
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.navigateToHomeWatchlist
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.navigateToWatchlist
-import tv.trakt.trakt.core.movies.navigation.navigateToMovies
 import tv.trakt.trakt.core.profile.navigation.navigateToProfile
 import tv.trakt.trakt.core.profile.navigation.profileScreen
 import tv.trakt.trakt.core.profile.sections.favorites.all.navigation.allFavoritesScreen
@@ -57,9 +56,8 @@ internal fun NavGraphBuilder.homeScreens(
         homeScreen(
             userLoading = userLoading,
             onNavigateToShow = { navigateToShow(it) },
-            onNavigateToShows = { navigateToDiscover() },
+            onNavigateToDiscover = { navigateToDiscover() },
             onNavigateToMovie = { navigateToMovie(it) },
-            onNavigateToMovies = { navigateToMovies() },
             onNavigateToEpisode = { showId, episode ->
                 navigateToEpisode(showId, episode)
             },
@@ -238,9 +236,8 @@ internal fun NavGraphBuilder.listsScreens(controller: NavHostController) {
         listsScreen(
             onNavigateToProfile = { navigateToProfile() },
             onNavigateToShow = { navigateToShow(it) },
-            onNavigateToShows = { navigateToDiscover() },
+            onNavigateToDiscover = { navigateToDiscover() },
             onNavigateToMovie = { navigateToMovie(it) },
-            onNavigateToMovies = { navigateToMovies() },
             onNavigateToWatchlist = { navigateToWatchlist() },
             onNavigateToList = {
                 navigateToPersonalList(
@@ -296,8 +293,7 @@ internal fun NavGraphBuilder.profileScreens(controller: NavHostController) {
                 navigateToAllActivityPersonal()
             },
             onNavigateToFavorites = { navigateToFavorites() },
-            onNavigateToShows = { navigateToDiscover() },
-            onNavigateToMovies = { navigateToMovies() },
+            onNavigateToDiscover = { navigateToDiscover() },
             onNavigateBack = { popBackStack() },
         )
 
