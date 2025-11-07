@@ -167,9 +167,10 @@ internal class AllDiscoverTrendingViewModel(
                 val nextData = listOf(shows, movies)
                     .interleave()
 
-                itemsState.update {
-                    it?.plus(nextData)
-                        ?.distinctBy { item -> item.key }
+                itemsState.update { items ->
+                    items
+                        ?.plus(nextData)
+                        ?.distinctBy { it.key }
                         ?.toImmutableList()
                 }
 
