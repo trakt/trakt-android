@@ -30,7 +30,7 @@ import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.discover.sections.anticipated.DiscoverAnticipatedView
-import tv.trakt.trakt.core.discover.sections.popular.ShowsPopularView
+import tv.trakt.trakt.core.discover.sections.popular.DiscoverPopularView
 import tv.trakt.trakt.core.discover.sections.recommended.ShowsRecommendedView
 import tv.trakt.trakt.core.discover.sections.trending.DiscoverTrendingView
 import tv.trakt.trakt.helpers.ScreenHeaderState
@@ -155,13 +155,14 @@ private fun DiscoverScreenContent(
             }
 
             item {
-                ShowsPopularView(
+                DiscoverPopularView(
                     viewModel = koinViewModel(
                         parameters = { parametersOf(halloween) },
                     ),
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     onShowClick = onShowClick,
+                    onMovieClick = onMovieClick,
                     onMoreClick = onMorePopularClick,
                 )
             }

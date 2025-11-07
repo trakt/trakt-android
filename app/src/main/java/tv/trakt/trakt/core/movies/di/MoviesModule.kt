@@ -9,6 +9,11 @@ import tv.trakt.trakt.core.discover.sections.anticipated.data.local.movies.Antic
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.movies.DefaultGetAnticipatedMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.movies.HalloweenGetAnticipatedMoviesUseCase
+import tv.trakt.trakt.core.discover.sections.popular.data.local.movies.PopularMoviesLocalDataSource
+import tv.trakt.trakt.core.discover.sections.popular.data.local.movies.PopularMoviesStorage
+import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularMoviesUseCase
+import tv.trakt.trakt.core.discover.sections.popular.usecases.movies.DefaultGetPopularMoviesUseCase
+import tv.trakt.trakt.core.discover.sections.popular.usecases.movies.HalloweenGetPopularMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.trending.data.local.movies.TrendingMoviesLocalDataSource
 import tv.trakt.trakt.core.discover.sections.trending.data.local.movies.TrendingMoviesStorage
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingMoviesUseCase
@@ -17,13 +22,6 @@ import tv.trakt.trakt.core.discover.sections.trending.usecases.movies.HalloweenG
 import tv.trakt.trakt.core.movies.MoviesViewModel
 import tv.trakt.trakt.core.movies.data.remote.MoviesApiClient
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
-import tv.trakt.trakt.core.movies.sections.popular.MoviesPopularViewModel
-import tv.trakt.trakt.core.movies.sections.popular.all.AllMoviesPopularViewModel
-import tv.trakt.trakt.core.movies.sections.popular.data.local.PopularMoviesLocalDataSource
-import tv.trakt.trakt.core.movies.sections.popular.data.local.PopularMoviesStorage
-import tv.trakt.trakt.core.movies.sections.popular.usecase.GetPopularMoviesUseCase
-import tv.trakt.trakt.core.movies.sections.popular.usecase.popular.DefaultGetPopularMoviesUseCase
-import tv.trakt.trakt.core.movies.sections.popular.usecase.popular.HalloweenGetPopularMoviesUseCase
 import tv.trakt.trakt.core.movies.sections.recommended.MoviesRecommendedViewModel
 import tv.trakt.trakt.core.movies.sections.recommended.all.AllMoviesRecommendedViewModel
 import tv.trakt.trakt.core.movies.sections.recommended.data.local.RecommendedMoviesLocalDataSource
@@ -182,25 +180,6 @@ internal val moviesModule = module {
             getRecommendedUseCase = when {
                 halloween -> get(named("halloweenRecommendedMoviesUseCase"))
                 else -> get(named("defaultRecommendedMoviesUseCase"))
-            },
-            analytics = get(),
-        )
-    }
-
-    viewModel { (halloween: Boolean) ->
-        MoviesPopularViewModel(
-            getPopularUseCase = when {
-                halloween -> get(named("halloweenPopularMoviesUseCase"))
-                else -> get(named("defaultPopularMoviesUseCase"))
-            },
-        )
-    }
-
-    viewModel { (halloween: Boolean) ->
-        AllMoviesPopularViewModel(
-            getPopularUseCase = when {
-                halloween -> get(named("halloweenPopularMoviesUseCase"))
-                else -> get(named("defaultPopularMoviesUseCase"))
             },
             analytics = get(),
         )

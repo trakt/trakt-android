@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package tv.trakt.trakt.core.movies.sections.popular
+package tv.trakt.trakt.core.discover.sections.popular
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
@@ -45,7 +45,14 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.discover.model.DiscoverItem
+import tv.trakt.trakt.core.discover.model.DiscoverItem.MovieItem
+import tv.trakt.trakt.core.discover.model.DiscoverItem.ShowItem
+import tv.trakt.trakt.core.discover.ui.context.sheet.ShowContextSheet
+import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -54,50 +61,66 @@ import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCa
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun MoviesPopularView(
+internal fun DiscoverPopularView(
     modifier: Modifier = Modifier,
-    viewModel: MoviesPopularViewModel,
+    viewModel: DiscoverPopularViewModel,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
-    onMovieClick: (TraktId) -> Unit,
-    onMoreClick: () -> Unit,
+    onShowClick: (TraktId) -> Unit = {},
+    onMovieClick: (TraktId) -> Unit = {},
+    onMoreClick: () -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    var contextSheet by remember { mutableStateOf<Movie?>(null) }
+    var contextShowSheet by remember { mutableStateOf<Show?>(null) }
+    var contextMovieSheet by remember { mutableStateOf<Movie?>(null) }
 
-    MoviesPopularContent(
+    DiscoverPopularContent(
         state = state,
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        onClick = { onMovieClick(it.ids.trakt) },
-        onLongClick = {
-            if (!state.loading.isLoading) {
-                contextSheet = it
-            }
-        },
         onMoreClick = {
             if (!state.loading.isLoading) {
                 onMoreClick()
             }
         },
+        onClick = {
+            when (it) {
+                is ShowItem -> onShowClick(it.id)
+                is MovieItem -> onMovieClick(it.id)
+            }
+        },
+        onLongClick = {
+            if (state.loading.isLoading) {
+                return@DiscoverPopularContent
+            }
+            when (it) {
+                is ShowItem -> contextShowSheet = it.show
+                is MovieItem -> contextMovieSheet = it.movie
+            }
+        },
+    )
+
+    ShowContextSheet(
+        show = contextShowSheet,
+        onDismiss = { contextShowSheet = null },
     )
 
     MovieContextSheet(
-        movie = contextSheet,
-        onDismiss = { contextSheet = null },
+        movie = contextMovieSheet,
+        onDismiss = { contextMovieSheet = null },
     )
 }
 
 @Composable
-internal fun MoviesPopularContent(
-    state: MoviesPopularState,
+internal fun DiscoverPopularContent(
+    state: DiscoverPopularState,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onClick: (Movie) -> Unit = {},
-    onLongClick: (Movie) -> Unit = {},
+    onClick: (DiscoverItem) -> Unit = {},
+    onLongClick: (DiscoverItem) -> Unit = {},
     onMoreClick: () -> Unit = {},
 ) {
     Column(
@@ -151,7 +174,8 @@ internal fun MoviesPopularContent(
                         )
                     } else {
                         ContentList(
-                            items = (state.items ?: emptyList()).toImmutableList(),
+                            mode = state.mode,
+                            listItems = (state.items ?: emptyList()).toImmutableList(),
                             contentPadding = contentPadding,
                             onClick = onClick,
                             onLongClick = onLongClick,
@@ -183,16 +207,17 @@ private fun ContentLoadingList(
 
 @Composable
 private fun ContentList(
-    items: ImmutableList<Movie>,
+    mode: MediaMode?,
     listState: LazyListState = rememberLazyListState(),
+    listItems: ImmutableList<DiscoverItem>,
     contentPadding: PaddingValues,
-    onClick: (Movie) -> Unit = {},
-    onLongClick: (Movie) -> Unit,
+    onClick: (DiscoverItem) -> Unit,
+    onLongClick: (DiscoverItem) -> Unit,
 ) {
-    val currentList = remember { mutableIntStateOf(items.hashCode()) }
+    val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
-    LaunchedEffect(items) {
-        val hashCode = items.hashCode()
+    LaunchedEffect(listItems) {
+        val hashCode = listItems.hashCode()
         if (currentList.intValue != hashCode) {
             currentList.intValue = hashCode
             listState.animateScrollToItem(0)
@@ -206,17 +231,18 @@ private fun ContentList(
         contentPadding = contentPadding,
     ) {
         items(
-            items = items,
-            key = { it.ids.trakt.value },
+            items = listItems,
+            key = { it.key },
         ) { item ->
             ContentListItem(
                 item = item,
-                onClick = { onClick(item) },
-                onLongClick = { onLongClick(item) },
+                mode = mode,
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
                     fadeOutSpec = null,
                 ),
+                onClick = { onClick(item) },
+                onLongClick = { onLongClick(item) },
             )
         }
     }
@@ -224,36 +250,74 @@ private fun ContentList(
 
 @Composable
 private fun ContentListItem(
-    item: Movie,
+    item: DiscoverItem,
+    mode: MediaMode?,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
 ) {
     VerticalMediaCard(
+        modifier = modifier,
         title = item.title,
         imageUrl = item.images?.getPosterUrl(),
         onClick = onClick,
         onLongClick = onLongClick,
-        chipContent = { modifier ->
-            val footerText = remember {
-                val runtime = item.runtime?.inWholeMinutes
-                if (runtime != null) {
-                    "${item.released?.year ?: item.year} • ${runtime.durationFormat()}"
-                } else {
-                    "${item.released?.year ?: item.year}"
+        chipContent = { chipModifier ->
+            val footerText = when (item) {
+                is MovieItem -> {
+                    remember {
+                        val runtime = item.movie.runtime?.inWholeMinutes
+                        if (runtime != null) {
+                            "${item.movie.released?.year ?: item.movie.year}  •  ${runtime.durationFormat()}"
+                        } else {
+                            "${item.movie.released?.year ?: item.movie.year}"
+                        }
+                    }
+                }
+                is ShowItem -> {
+                    val airedEpisodes = stringResource(
+                        R.string.tag_text_number_of_episodes,
+                        item.show.airedEpisodes,
+                    )
+                    remember {
+                        buildString {
+                            item.show.released?.let {
+                                append(it.year.toString())
+                            } ?: append("TBA")
+
+                            if (item.show.airedEpisodes > 0) {
+                                append("  •  ")
+                                append(airedEpisodes)
+                            }
+                        }
+                    }
                 }
             }
-            Text(
-                text = footerText,
-                style = TraktTheme.typography.cardTitle,
-                color = TraktTheme.colors.textPrimary,
-                textAlign = TextAlign.Center,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = modifier,
-            )
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = spacedBy(4.dp),
+                modifier = chipModifier,
+            ) {
+                if (mode == MEDIA) {
+                    Icon(
+                        painter = painterResource(item.icon),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.chipContent,
+                        modifier = Modifier.size(13.dp),
+                    )
+                }
+
+                Text(
+                    text = footerText,
+                    style = TraktTheme.typography.cardTitle,
+                    color = TraktTheme.colors.textPrimary,
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
         },
-        modifier = modifier,
     )
 }
 
@@ -265,25 +329,9 @@ private fun ContentListItem(
 @Composable
 private fun Preview() {
     TraktTheme {
-        MoviesPopularContent(
-            state = MoviesPopularState(
+        DiscoverPopularContent(
+            state = DiscoverPopularState(
                 loading = IDLE,
-            ),
-        )
-    }
-}
-
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
-@Composable
-private fun Preview2() {
-    TraktTheme {
-        MoviesPopularContent(
-            state = MoviesPopularState(
-                loading = LOADING,
             ),
         )
     }

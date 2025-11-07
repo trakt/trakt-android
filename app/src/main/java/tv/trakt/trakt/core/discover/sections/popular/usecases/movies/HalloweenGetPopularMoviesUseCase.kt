@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.movies.sections.popular.usecase.popular
+package tv.trakt.trakt.core.discover.sections.popular.usecases.movies
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -7,23 +7,25 @@ import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
+import tv.trakt.trakt.core.discover.model.DiscoverItem
+import tv.trakt.trakt.core.discover.sections.popular.data.local.movies.PopularMoviesLocalDataSource
+import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularMoviesUseCase
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
-import tv.trakt.trakt.core.movies.sections.popular.data.local.PopularMoviesLocalDataSource
-import tv.trakt.trakt.core.movies.sections.popular.usecase.GetPopularMoviesUseCase
 import java.time.Instant
-
-private const val DEFAULT_LIMIT = 24
 
 internal class HalloweenGetPopularMoviesUseCase(
     private val remoteSource: MoviesRemoteDataSource,
     private val localPopularSource: PopularMoviesLocalDataSource,
     private val localMovieSource: MovieLocalDataSource,
 ) : GetPopularMoviesUseCase {
-    override suspend fun getLocalMovies(): ImmutableList<Movie> {
+    override suspend fun getLocalMovies(): ImmutableList<DiscoverItem.MovieItem> {
         return localPopularSource.getMovies()
             .toImmutableList()
             .also {
-                localMovieSource.upsertMovies(it)
+                localMovieSource.upsertMovies(
+                    it.asyncMap { item -> item.movie },
+                )
             }
     }
 
@@ -31,7 +33,7 @@ internal class HalloweenGetPopularMoviesUseCase(
         limit: Int,
         page: Int,
         skipLocal: Boolean,
-    ): ImmutableList<Movie> {
+    ): ImmutableList<DiscoverItem.MovieItem> {
         return remoteSource.getPopular(
             page = page,
             limit = limit,
@@ -39,17 +41,22 @@ internal class HalloweenGetPopularMoviesUseCase(
             years = "1990-${nowLocal().year}",
         )
             .asyncMap {
-                Movie.fromDto(it)
+                DiscoverItem.MovieItem(
+                    movie = Movie.fromDto(it),
+                    count = 0,
+                )
             }
             .toImmutableList()
             .also { movies ->
                 if (!skipLocal) {
                     localPopularSource.addMovies(
-                        movies = movies.take(DEFAULT_LIMIT),
+                        movies = movies.take(DEFAULT_SECTION_LIMIT),
                         addedAt = Instant.now(),
                     )
 
-                    localMovieSource.upsertMovies(movies)
+                    localMovieSource.upsertMovies(
+                        movies.asyncMap { item -> item.movie },
+                    )
                 }
             }
     }

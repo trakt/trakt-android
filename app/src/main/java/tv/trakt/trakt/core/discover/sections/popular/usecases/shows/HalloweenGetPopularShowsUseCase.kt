@@ -1,29 +1,31 @@
-package tv.trakt.trakt.core.discover.sections.popular.usecase.popular
+package tv.trakt.trakt.core.discover.sections.popular.usecases.shows
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
-import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
+import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
 import tv.trakt.trakt.core.discover.data.remote.ShowsRemoteDataSource
-import tv.trakt.trakt.core.discover.sections.popular.data.local.PopularShowsLocalDataSource
-import tv.trakt.trakt.core.discover.sections.popular.usecase.DEFAULT_LIMIT
-import tv.trakt.trakt.core.discover.sections.popular.usecase.GetPopularShowsUseCase
+import tv.trakt.trakt.core.discover.model.DiscoverItem
+import tv.trakt.trakt.core.discover.sections.popular.data.local.shows.PopularShowsLocalDataSource
+import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularShowsUseCase
 import java.time.Instant
-import java.time.Year
 
-internal class DefaultGetPopularShowsUseCase(
+internal class HalloweenGetPopularShowsUseCase(
     private val remoteSource: ShowsRemoteDataSource,
     private val localPopularSource: PopularShowsLocalDataSource,
     private val localShowSource: ShowLocalDataSource,
 ) : GetPopularShowsUseCase {
-    override suspend fun getLocalShows(): ImmutableList<Show> {
+    override suspend fun getLocalShows(): ImmutableList<DiscoverItem.ShowItem> {
         return localPopularSource.getShows()
             .toImmutableList()
             .also {
-                localShowSource.upsertShows(it)
+                localShowSource.upsertShows(
+                    it.asyncMap { item -> item.show },
+                )
             }
     }
 
@@ -31,35 +33,28 @@ internal class DefaultGetPopularShowsUseCase(
         limit: Int,
         page: Int,
         skipLocal: Boolean,
-    ): ImmutableList<Show> {
+    ): ImmutableList<DiscoverItem.ShowItem> {
         return remoteSource.getPopular(
             page = page,
             limit = limit,
-            years = getYearsRange().toString(),
-        )
-            .asyncMap {
-                Show.fromDto(it)
-            }
+            subgenres = listOf("halloween"),
+            years = "1990-${nowLocal().year}",
+        ).asyncMap {
+            DiscoverItem.ShowItem(
+                show = Show.fromDto(it),
+                count = 0,
+            )
+        }
             .toImmutableList()
             .also { shows ->
                 if (!skipLocal) {
                     localPopularSource.addShows(
-                        shows = shows.take(DEFAULT_LIMIT),
+                        shows = shows.take(DEFAULT_SECTION_LIMIT),
                         addedAt = Instant.now(),
                     )
                 }
 
-                localShowSource.upsertShows(shows)
+                localShowSource.upsertShows(shows.asyncMap { it.show })
             }
-    }
-
-    private fun getYearsRange(): Int {
-        val currentYear = Year.now().value
-        val currentMonth = nowLocalDay().monthValue
-        return if (currentMonth <= 3) {
-            currentYear - 1
-        } else {
-            currentYear
-        }
     }
 }

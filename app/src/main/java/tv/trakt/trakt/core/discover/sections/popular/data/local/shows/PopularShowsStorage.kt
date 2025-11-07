@@ -1,28 +1,28 @@
-package tv.trakt.trakt.core.discover.sections.popular.data.local
+package tv.trakt.trakt.core.discover.sections.popular.data.local.shows
 
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.discover.model.DiscoverItem
 import java.time.Instant
 
 internal class PopularShowsStorage : PopularShowsLocalDataSource {
     private val mutex = Mutex()
-    private val showsCache = mutableMapOf<TraktId, Show>()
+    private val showsCache = mutableMapOf<TraktId, DiscoverItem.ShowItem>()
 
     override suspend fun addShows(
-        shows: List<Show>,
+        shows: List<DiscoverItem.ShowItem>,
         addedAt: Instant,
     ) {
         mutex.withLock {
             with(showsCache) {
                 clear()
-                putAll(shows.associateBy { it.ids.trakt })
+                putAll(shows.associateBy { it.show.ids.trakt })
             }
         }
     }
 
-    override suspend fun getShows(): List<Show> {
+    override suspend fun getShows(): List<DiscoverItem.ShowItem> {
         return mutex.withLock {
             showsCache.values.toList()
         }

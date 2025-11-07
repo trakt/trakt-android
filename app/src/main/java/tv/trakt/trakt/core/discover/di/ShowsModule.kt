@@ -14,13 +14,13 @@ import tv.trakt.trakt.core.discover.sections.anticipated.data.local.shows.Antici
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedShowsUseCase
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.shows.DefaultGetAnticipatedShowsUseCase
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.shows.HalloweenGetAnticipatedShowsUseCase
-import tv.trakt.trakt.core.discover.sections.popular.ShowsPopularViewModel
+import tv.trakt.trakt.core.discover.sections.popular.DiscoverPopularViewModel
 import tv.trakt.trakt.core.discover.sections.popular.all.AllShowsPopularViewModel
-import tv.trakt.trakt.core.discover.sections.popular.data.local.PopularShowsLocalDataSource
-import tv.trakt.trakt.core.discover.sections.popular.data.local.PopularShowsStorage
-import tv.trakt.trakt.core.discover.sections.popular.usecase.GetPopularShowsUseCase
-import tv.trakt.trakt.core.discover.sections.popular.usecase.popular.DefaultGetPopularShowsUseCase
-import tv.trakt.trakt.core.discover.sections.popular.usecase.popular.HalloweenGetPopularShowsUseCase
+import tv.trakt.trakt.core.discover.sections.popular.data.local.shows.PopularShowsLocalDataSource
+import tv.trakt.trakt.core.discover.sections.popular.data.local.shows.PopularShowsStorage
+import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularShowsUseCase
+import tv.trakt.trakt.core.discover.sections.popular.usecases.shows.DefaultGetPopularShowsUseCase
+import tv.trakt.trakt.core.discover.sections.popular.usecases.shows.HalloweenGetPopularShowsUseCase
 import tv.trakt.trakt.core.discover.sections.recommended.ShowsRecommendedViewModel
 import tv.trakt.trakt.core.discover.sections.recommended.all.AllShowsRecommendedViewModel
 import tv.trakt.trakt.core.discover.sections.recommended.data.local.RecommendedShowsLocalDataSource
@@ -197,10 +197,15 @@ internal val showsModule = module {
     }
 
     viewModel { (halloween: Boolean) ->
-        ShowsPopularViewModel(
-            getPopularUseCase = when {
+        DiscoverPopularViewModel(
+            modeProvider = get(),
+            getPopularShowsUseCase = when {
                 halloween -> get(named("halloweenPopularShowsUseCase"))
                 else -> get(named("defaultPopularShowsUseCase"))
+            },
+            getPopularMoviesUseCase = when {
+                halloween -> get(named("halloweenPopularMoviesUseCase"))
+                else -> get(named("defaultPopularMoviesUseCase"))
             },
         )
     }
