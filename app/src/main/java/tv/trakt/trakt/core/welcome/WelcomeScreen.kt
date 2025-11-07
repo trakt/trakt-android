@@ -236,7 +236,7 @@ internal fun WelcomeScreen(
                 }
 
                 PrimaryButton(
-                    text = stringResource(R.string.button_text_join_trakt_free),
+                    text = stringResource(R.string.button_text_join_trakt_free).uppercase(),
                     containerColor = Purple500,
                     contentColor = Color.White,
                     onClick = onDismiss,

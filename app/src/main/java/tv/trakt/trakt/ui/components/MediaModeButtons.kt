@@ -40,7 +40,7 @@ private val Options = MediaMode.entries
 @Composable
 internal fun MediaModeButtons(
     modifier: Modifier = Modifier,
-    height: Dp = 35.dp,
+    height: Dp = 36.dp,
     mode: MediaMode? = null,
     onModeSelect: (MediaMode) -> Unit = { _ -> },
 ) {
