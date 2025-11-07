@@ -24,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,6 +40,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
+import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HEADER_NEWS_1
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HEADER_NEWS_2
@@ -49,6 +52,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.core.auth.ConfigAuth
+import tv.trakt.trakt.core.main.helpers.MediaModeProvider
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaModeButtons
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
@@ -58,7 +62,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 private val todayDateFormat = DateTimeFormatter
-    .ofPattern("EEEE, MMM d, yyyy")
+    .ofPattern("EEEE, MMMM d, yyyy")
     .withLocale(Locale.US)
 
 @Composable
@@ -73,6 +77,10 @@ internal fun HeaderBar(
     userVip: Boolean = false,
     userLoading: Boolean = false,
 ) {
+    val mediaMode: MediaModeProvider = koinInject()
+    val currentMediaMode = remember { mediaMode.getMode() }
+
+    val scope = rememberCoroutineScope()
     val localActivity = LocalActivity.current
     val localMode = LocalInspectionMode.current
     val uriHandler = LocalUriHandler.current
@@ -134,7 +142,14 @@ internal fun HeaderBar(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             if (showMediaButtons) {
-                MediaModeButtons()
+                MediaModeButtons(
+                    mode = currentMediaMode,
+                    onModeSelect = {
+                        scope.launch {
+                            mediaMode.setMode(it)
+                        }
+                    },
+                )
             } else {
                 @SuppressLint("UnusedCrossfadeTargetStateParameter")
                 Crossfade(
