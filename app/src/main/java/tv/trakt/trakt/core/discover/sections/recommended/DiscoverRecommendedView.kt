@@ -307,7 +307,7 @@ private fun ContentListItem(
                         modifier = Modifier
                             .size(13.dp)
                             .graphicsLayer {
-                                translationY = (-0.33).dp.toPx()
+                                translationY = (-0.25).dp.toPx()
                             },
                     )
                 }

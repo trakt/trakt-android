@@ -8,6 +8,7 @@ import tv.trakt.trakt.core.discover.sections.anticipated.DiscoverAnticipatedView
 import tv.trakt.trakt.core.discover.sections.popular.DiscoverPopularViewModel
 import tv.trakt.trakt.core.discover.sections.recommended.DiscoverRecommendedViewModel
 import tv.trakt.trakt.core.discover.sections.trending.DiscoverTrendingViewModel
+import tv.trakt.trakt.core.discover.sections.trending.all.AllDiscoverTrendingViewModel
 
 internal val discoverModule = module {
     viewModel {
@@ -28,6 +29,21 @@ internal val discoverModule = module {
                 halloween -> get(named("halloweenTrendingMoviesUseCase"))
                 else -> get(named("defaultTrendingMoviesUseCase"))
             },
+        )
+    }
+
+    viewModel { (halloween: Boolean) ->
+        AllDiscoverTrendingViewModel(
+            modeProvider = get(),
+            getTrendingShowsUseCase = when {
+                halloween -> get(named("halloweenTrendingShowsUseCase"))
+                else -> get(named("defaultTrendingShowsUseCase"))
+            },
+            getTrendingMoviesUseCase = when {
+                halloween -> get(named("halloweenTrendingMoviesUseCase"))
+                else -> get(named("defaultTrendingMoviesUseCase"))
+            },
+            analytics = get(),
         )
     }
 

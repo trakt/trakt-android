@@ -15,13 +15,13 @@ internal sealed class DiscoverItem(
     @Immutable
     internal data class MovieItem(
         val movie: Movie,
-        override val count: Int,
+        override val count: Int = 0,
     ) : DiscoverItem(count)
 
     @Immutable
     internal data class ShowItem(
         val show: Show,
-        override val count: Int,
+        override val count: Int = 0,
     ) : DiscoverItem(count)
 
     val type: MediaType

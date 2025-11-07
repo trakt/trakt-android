@@ -16,8 +16,8 @@ import tv.trakt.trakt.core.discover.sections.popular.all.navigation.navigateToPo
 import tv.trakt.trakt.core.discover.sections.popular.all.navigation.showsPopularScreen
 import tv.trakt.trakt.core.discover.sections.recommended.all.navigation.navigateToRecommendedShows
 import tv.trakt.trakt.core.discover.sections.recommended.all.navigation.showsRecommendedScreen
-import tv.trakt.trakt.core.discover.sections.trending.all.navigation.navigateToTrendingShows
-import tv.trakt.trakt.core.discover.sections.trending.all.navigation.showsTrendingScreen
+import tv.trakt.trakt.core.discover.sections.trending.all.navigation.discoverTrendingScreen
+import tv.trakt.trakt.core.discover.sections.trending.all.navigation.navigateToDiscoverTrending
 import tv.trakt.trakt.core.home.navigation.homeScreen
 import tv.trakt.trakt.core.home.sections.activity.features.all.navigation.homeActivityPersonalScreen
 import tv.trakt.trakt.core.home.sections.activity.features.all.navigation.homeActivitySocialScreen
@@ -103,15 +103,16 @@ internal fun NavGraphBuilder.discoverScreens(
         discoverScreen(
             onNavigateToShow = { navigateToShow(it) },
             onNavigateToMovie = { navigateToMovie(it) },
-            onNavigateToAllTrending = { navigateToTrendingShows() },
+            onNavigateToAllTrending = { navigateToDiscoverTrending() },
             onNavigateToAllPopular = { navigateToPopularShows() },
             onNavigateToAllAnticipated = { navigateToAnticipatedShows() },
             onNavigateToAllRecommended = { navigateToRecommendedShows() },
         )
-        showsTrendingScreen(
+        discoverTrendingScreen(
             context = context,
             onNavigateBack = { popBackStack() },
             onNavigateToShow = { navigateToShow(it) },
+            onNavigateToMovie = { navigateToMovie(it) },
         )
         showsPopularScreen(
             context = context,

@@ -22,7 +22,6 @@ import tv.trakt.trakt.core.discover.sections.recommended.data.local.shows.Recomm
 import tv.trakt.trakt.core.discover.sections.recommended.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.core.discover.sections.recommended.usecase.shows.DefaultGetRecommendedShowsUseCase
 import tv.trakt.trakt.core.discover.sections.recommended.usecase.shows.HalloweenGetRecommendedShowsUseCase
-import tv.trakt.trakt.core.discover.sections.trending.all.AllShowsTrendingViewModel
 import tv.trakt.trakt.core.discover.sections.trending.data.local.shows.TrendingShowsLocalDataSource
 import tv.trakt.trakt.core.discover.sections.trending.data.local.shows.TrendingShowsStorage
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingShowsUseCase
@@ -144,16 +143,6 @@ internal val showsModule = module {
             remoteSource = get(),
             localRecommendedSource = get(),
             localShowSource = get(),
-        )
-    }
-
-    viewModel { (halloween: Boolean) ->
-        AllShowsTrendingViewModel(
-            getTrendingUseCase = when {
-                halloween -> get(named("halloweenTrendingShowsUseCase"))
-                else -> get(named("defaultTrendingShowsUseCase"))
-            },
-            analytics = get(),
         )
     }
 

@@ -87,7 +87,7 @@ fun ShowMetaFooter(
                         modifier = Modifier
                             .size(14.dp)
                             .graphicsLayer {
-                                translationY = -1.dp.toPx()
+                                translationY = -0.66.dp.toPx()
                             },
                     )
                 }
