@@ -85,7 +85,7 @@ internal fun HeaderBar(
     val localMode = LocalInspectionMode.current
     val uriHandler = LocalUriHandler.current
 
-    val contentHeight = 34.dp
+    val contentHeight = 36.dp
     val headerBarHeight = WindowInsets.statusBars.asPaddingValues()
         .calculateTopPadding()
         .plus(TraktTheme.size.navigationHeaderHeight)
@@ -144,6 +144,7 @@ internal fun HeaderBar(
             if (showMediaButtons) {
                 MediaModeButtons(
                     mode = currentMediaMode,
+                    height = contentHeight,
                     onModeSelect = {
                         scope.launch {
                             mediaMode.setMode(it)
