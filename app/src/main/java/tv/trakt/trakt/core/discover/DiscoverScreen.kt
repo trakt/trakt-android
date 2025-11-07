@@ -29,7 +29,7 @@ import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.discover.sections.anticipated.ShowsAnticipatedView
+import tv.trakt.trakt.core.discover.sections.anticipated.DiscoverAnticipatedView
 import tv.trakt.trakt.core.discover.sections.popular.ShowsPopularView
 import tv.trakt.trakt.core.discover.sections.recommended.ShowsRecommendedView
 import tv.trakt.trakt.core.discover.sections.trending.DiscoverTrendingView
@@ -142,13 +142,14 @@ private fun DiscoverScreenContent(
             }
 
             item {
-                ShowsAnticipatedView(
+                DiscoverAnticipatedView(
                     viewModel = koinViewModel(
                         parameters = { parametersOf(halloween) },
                     ),
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     onShowClick = onShowClick,
+                    onMovieClick = onMovieClick,
                     onMoreClick = onMoreAnticipatedClick,
                 )
             }

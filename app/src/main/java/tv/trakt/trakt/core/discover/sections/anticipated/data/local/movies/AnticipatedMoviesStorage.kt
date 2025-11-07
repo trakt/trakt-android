@@ -1,17 +1,17 @@
-package tv.trakt.trakt.core.movies.sections.anticipated.data.local
+package tv.trakt.trakt.core.discover.sections.anticipated.data.local.movies
 
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.movies.model.WatchersMovie
+import tv.trakt.trakt.core.discover.model.DiscoverItem
 import java.time.Instant
 
 internal class AnticipatedMoviesStorage : AnticipatedMoviesLocalDataSource {
     private val mutex = Mutex()
-    private val moviesCache = mutableMapOf<TraktId, WatchersMovie>()
+    private val moviesCache = mutableMapOf<TraktId, DiscoverItem.MovieItem>()
 
     override suspend fun addMovies(
-        movies: List<WatchersMovie>,
+        movies: List<DiscoverItem.MovieItem>,
         addedAt: Instant,
     ) {
         mutex.withLock {
@@ -22,7 +22,7 @@ internal class AnticipatedMoviesStorage : AnticipatedMoviesLocalDataSource {
         }
     }
 
-    override suspend fun getMovies(): List<WatchersMovie> {
+    override suspend fun getMovies(): List<DiscoverItem.MovieItem> {
         return mutex.withLock {
             moviesCache.values.toList()
         }

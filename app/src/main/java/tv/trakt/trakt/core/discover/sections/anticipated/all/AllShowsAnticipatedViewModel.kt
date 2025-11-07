@@ -4,23 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
-import tv.trakt.trakt.common.helpers.extensions.asyncMap
-import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.core.discover.sections.anticipated.usecases.DEFAULT_ALL_LIMIT
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedShowsUseCase
 
 internal class AllShowsAnticipatedViewModel(
@@ -52,37 +44,37 @@ internal class AllShowsAnticipatedViewModel(
     }
 
     private fun loadData() {
-        viewModelScope.launch {
-            try {
-                val localShows = getAnticipatedUseCase.getLocalShows()
-                if (localShows.isNotEmpty()) {
-                    itemsState.update {
-                        localShows
-                            .asyncMap { it.show }
-                            .toImmutableList()
-                    }
-                    loadingState.update { DONE }
-                } else {
-                    loadingState.update { LOADING }
-                }
-
-                itemsState.update {
-                    getAnticipatedUseCase.getShows(
-                        page = 1,
-                        limit = DEFAULT_ALL_LIMIT,
-                    ).asyncMap {
-                        it.show
-                    }.toImmutableList()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    errorState.update { error }
-                    Timber.e(error, "Failed to load data")
-                }
-            } finally {
-                loadingState.update { DONE }
-            }
-        }
+//        viewModelScope.launch {
+//            try {
+//                val localShows = getAnticipatedUseCase.getLocalShows()
+//                if (localShows.isNotEmpty()) {
+//                    itemsState.update {
+//                        localShows
+//                            .asyncMap { it.show }
+//                            .toImmutableList()
+//                    }
+//                    loadingState.update { DONE }
+//                } else {
+//                    loadingState.update { LOADING }
+//                }
+//
+//                itemsState.update {
+//                    getAnticipatedUseCase.getShows(
+//                        page = 1,
+//                        limit = DEFAULT_ALL_LIMIT,
+//                    ).asyncMap {
+//                        it.show
+//                    }.toImmutableList()
+//                }
+//            } catch (error: Exception) {
+//                error.rethrowCancellation {
+//                    errorState.update { error }
+//                    Timber.e(error, "Failed to load data")
+//                }
+//            } finally {
+//                loadingState.update { DONE }
+//            }
+//        }
     }
 
     fun loadMoreData() {
@@ -90,32 +82,32 @@ internal class AllShowsAnticipatedViewModel(
             return
         }
 
-        viewModelScope.launch {
-            try {
-                loadingMoreState.update { LOADING }
-
-                val nextData = getAnticipatedUseCase.getShows(
-                    page = pages + 1,
-                    limit = DEFAULT_ALL_LIMIT,
-                    skipLocal = true,
-                ).asyncMap {
-                    it.show
-                }
-
-                itemsState.update {
-                    it?.plus(nextData)?.toImmutableList()
-                }
-
-                pages += 1
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    errorState.update { error }
-                    Timber.e(error, "Failed to load more page data")
-                }
-            } finally {
-                loadingMoreState.update { DONE }
-            }
-        }
+//        viewModelScope.launch {
+//            try {
+//                loadingMoreState.update { LOADING }
+//
+//                val nextData = getAnticipatedUseCase.getShows(
+//                    page = pages + 1,
+//                    limit = DEFAULT_ALL_LIMIT,
+//                    skipLocal = true,
+//                ).asyncMap {
+//                    it.show
+//                }
+//
+//                itemsState.update {
+//                    it?.plus(nextData)?.toImmutableList()
+//                }
+//
+//                pages += 1
+//            } catch (error: Exception) {
+//                error.rethrowCancellation {
+//                    errorState.update { error }
+//                    Timber.e(error, "Failed to load more page data")
+//                }
+//            } finally {
+//                loadingMoreState.update { DONE }
+//            }
+//        }
     }
 
     val state: StateFlow<AllShowsAnticipatedState> = combine(

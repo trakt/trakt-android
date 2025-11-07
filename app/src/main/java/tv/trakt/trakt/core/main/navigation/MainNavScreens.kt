@@ -33,16 +33,7 @@ import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.navig
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.allWatchlistScreen
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.navigateToHomeWatchlist
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.navigateToWatchlist
-import tv.trakt.trakt.core.movies.navigation.moviesScreen
 import tv.trakt.trakt.core.movies.navigation.navigateToMovies
-import tv.trakt.trakt.core.movies.sections.anticipated.all.navigation.moviesAnticipatedScreen
-import tv.trakt.trakt.core.movies.sections.anticipated.all.navigation.navigateToAnticipatedMovies
-import tv.trakt.trakt.core.movies.sections.popular.all.navigation.moviesPopularScreen
-import tv.trakt.trakt.core.movies.sections.popular.all.navigation.navigateToPopularMovies
-import tv.trakt.trakt.core.movies.sections.recommended.all.navigation.moviesRecommendedScreen
-import tv.trakt.trakt.core.movies.sections.recommended.all.navigation.navigateToRecommendedMovies
-import tv.trakt.trakt.core.movies.sections.trending.all.navigation.moviesTrendingScreen
-import tv.trakt.trakt.core.movies.sections.trending.all.navigation.navigateToTrendingMovies
 import tv.trakt.trakt.core.profile.navigation.navigateToProfile
 import tv.trakt.trakt.core.profile.navigation.profileScreen
 import tv.trakt.trakt.core.profile.sections.favorites.all.navigation.allFavoritesScreen
@@ -208,38 +199,8 @@ internal fun NavGraphBuilder.episodesScreens(controller: NavHostController) {
     }
 }
 
-internal fun NavGraphBuilder.moviesScreens(
-    context: Context?,
-    controller: NavHostController,
-) {
+internal fun NavGraphBuilder.moviesScreens(controller: NavHostController) {
     with(controller) {
-        moviesScreen(
-            onNavigateToMovie = { navigateToMovie(it) },
-            onNavigateToAllTrending = { navigateToTrendingMovies() },
-            onNavigateToAllPopular = { navigateToPopularMovies() },
-            onNavigateToAllAnticipated = { navigateToAnticipatedMovies() },
-            onNavigateToAllRecommended = { navigateToRecommendedMovies() },
-        )
-        moviesTrendingScreen(
-            context = context,
-            onNavigateBack = { popBackStack() },
-            onNavigateToMovie = { navigateToMovie(it) },
-        )
-        moviesPopularScreen(
-            context = context,
-            onNavigateBack = { popBackStack() },
-            onNavigateToMovie = { navigateToMovie(it) },
-        )
-        moviesAnticipatedScreen(
-            context = context,
-            onNavigateBack = { popBackStack() },
-            onNavigateToMovie = { navigateToMovie(it) },
-        )
-        moviesRecommendedScreen(
-            context = context,
-            onNavigateBack = { popBackStack() },
-            onNavigateToMovie = { navigateToMovie(it) },
-        )
         movieDetailsScreen(
             onNavigateToMovie = { navigateToMovie(it) },
             onNavigateToComments = { movie, filter ->

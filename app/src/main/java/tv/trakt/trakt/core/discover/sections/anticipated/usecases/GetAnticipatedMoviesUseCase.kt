@@ -1,13 +1,13 @@
-package tv.trakt.trakt.core.discover.sections.trending.usecases
+package tv.trakt.trakt.core.discover.sections.anticipated.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 
-internal interface GetTrendingShowsUseCase {
-    suspend fun getLocalShows(): ImmutableList<DiscoverItem>
+internal interface GetAnticipatedMoviesUseCase {
+    suspend fun getLocalMovies(): ImmutableList<DiscoverItem>
 
-    suspend fun getShows(
+    suspend fun getMovies(
         limit: Int = DEFAULT_SECTION_LIMIT,
         page: Int = 1,
         skipLocal: Boolean = false,

@@ -4,6 +4,11 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.core.discover.sections.anticipated.data.local.movies.AnticipatedMoviesLocalDataSource
+import tv.trakt.trakt.core.discover.sections.anticipated.data.local.movies.AnticipatedMoviesStorage
+import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedMoviesUseCase
+import tv.trakt.trakt.core.discover.sections.anticipated.usecases.movies.DefaultGetAnticipatedMoviesUseCase
+import tv.trakt.trakt.core.discover.sections.anticipated.usecases.movies.HalloweenGetAnticipatedMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.trending.data.local.movies.TrendingMoviesLocalDataSource
 import tv.trakt.trakt.core.discover.sections.trending.data.local.movies.TrendingMoviesStorage
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingMoviesUseCase
@@ -12,13 +17,6 @@ import tv.trakt.trakt.core.discover.sections.trending.usecases.movies.HalloweenG
 import tv.trakt.trakt.core.movies.MoviesViewModel
 import tv.trakt.trakt.core.movies.data.remote.MoviesApiClient
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
-import tv.trakt.trakt.core.movies.sections.anticipated.MoviesAnticipatedViewModel
-import tv.trakt.trakt.core.movies.sections.anticipated.all.AllMoviesAnticipatedViewModel
-import tv.trakt.trakt.core.movies.sections.anticipated.data.local.AnticipatedMoviesLocalDataSource
-import tv.trakt.trakt.core.movies.sections.anticipated.data.local.AnticipatedMoviesStorage
-import tv.trakt.trakt.core.movies.sections.anticipated.usecase.GetAnticipatedMoviesUseCase
-import tv.trakt.trakt.core.movies.sections.anticipated.usecase.anticipated.DefaultGetAnticipatedMoviesUseCase
-import tv.trakt.trakt.core.movies.sections.anticipated.usecase.anticipated.HalloweenGetAnticipatedMoviesUseCase
 import tv.trakt.trakt.core.movies.sections.popular.MoviesPopularViewModel
 import tv.trakt.trakt.core.movies.sections.popular.all.AllMoviesPopularViewModel
 import tv.trakt.trakt.core.movies.sections.popular.data.local.PopularMoviesLocalDataSource
@@ -50,16 +48,16 @@ internal val moviesDataModule = module {
         PopularMoviesStorage()
     }
 
+    single<RecommendedMoviesLocalDataSource> {
+        RecommendedMoviesStorage()
+    }
+
     single<AnticipatedMoviesLocalDataSource> {
         AnticipatedMoviesStorage()
     }
 
     single<TrendingMoviesLocalDataSource> {
         TrendingMoviesStorage()
-    }
-
-    single<RecommendedMoviesLocalDataSource> {
-        RecommendedMoviesStorage()
     }
 }
 
@@ -165,25 +163,6 @@ internal val moviesModule = module {
             getTrendingUseCase = when {
                 halloween -> get(named("halloweenTrendingMoviesUseCase"))
                 else -> get(named("defaultTrendingMoviesUseCase"))
-            },
-            analytics = get(),
-        )
-    }
-
-    viewModel { (halloween: Boolean) ->
-        MoviesAnticipatedViewModel(
-            getAnticipatedUseCase = when {
-                halloween -> get(named("halloweenAnticipatedMoviesUseCase"))
-                else -> get(named("defaultAnticipatedMoviesUseCase"))
-            },
-        )
-    }
-
-    viewModel { (halloween: Boolean) ->
-        AllMoviesAnticipatedViewModel(
-            getAnticipatedUseCase = when {
-                halloween -> get(named("halloweenAnticipatedMoviesUseCase"))
-                else -> get(named("defaultAnticipatedMoviesUseCase"))
             },
             analytics = get(),
         )

@@ -1,17 +1,15 @@
 package tv.trakt.trakt.core.discover.sections.anticipated.usecases
 
 import kotlinx.collections.immutable.ImmutableList
-import tv.trakt.trakt.core.discover.model.WatchersShow
-
-internal const val DEFAULT_LIMIT = 24
-internal const val DEFAULT_ALL_LIMIT = 102
+import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
+import tv.trakt.trakt.core.discover.model.DiscoverItem
 
 internal interface GetAnticipatedShowsUseCase {
-    suspend fun getLocalShows(): ImmutableList<WatchersShow>
+    suspend fun getLocalShows(): ImmutableList<DiscoverItem>
 
     suspend fun getShows(
-        limit: Int = DEFAULT_LIMIT,
+        limit: Int = DEFAULT_SECTION_LIMIT,
         page: Int = 1,
         skipLocal: Boolean = false,
-    ): ImmutableList<WatchersShow>
+    ): ImmutableList<DiscoverItem>
 }

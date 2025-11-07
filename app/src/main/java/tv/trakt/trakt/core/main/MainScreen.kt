@@ -245,7 +245,7 @@ private fun MainNavHost(
         )
         discoverScreens(localActivity, navController)
         showsScreens(navController)
-        moviesScreens(localActivity, navController)
+        moviesScreens(navController)
         episodesScreens(navController)
         listsScreens(navController)
         profileScreens(navController)

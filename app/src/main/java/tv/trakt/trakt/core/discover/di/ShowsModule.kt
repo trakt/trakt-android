@@ -7,13 +7,13 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.discover.DiscoverViewModel
 import tv.trakt.trakt.core.discover.data.remote.ShowsApiClient
 import tv.trakt.trakt.core.discover.data.remote.ShowsRemoteDataSource
-import tv.trakt.trakt.core.discover.sections.anticipated.ShowsAnticipatedViewModel
+import tv.trakt.trakt.core.discover.sections.anticipated.DiscoverAnticipatedViewModel
 import tv.trakt.trakt.core.discover.sections.anticipated.all.AllShowsAnticipatedViewModel
-import tv.trakt.trakt.core.discover.sections.anticipated.data.local.AnticipatedShowsLocalDataSource
-import tv.trakt.trakt.core.discover.sections.anticipated.data.local.AnticipatedShowsStorage
+import tv.trakt.trakt.core.discover.sections.anticipated.data.local.shows.AnticipatedShowsLocalDataSource
+import tv.trakt.trakt.core.discover.sections.anticipated.data.local.shows.AnticipatedShowsStorage
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedShowsUseCase
-import tv.trakt.trakt.core.discover.sections.anticipated.usecases.anticipated.DefaultGetAnticipatedShowsUseCase
-import tv.trakt.trakt.core.discover.sections.anticipated.usecases.anticipated.HalloweenGetAnticipatedShowsUseCase
+import tv.trakt.trakt.core.discover.sections.anticipated.usecases.shows.DefaultGetAnticipatedShowsUseCase
+import tv.trakt.trakt.core.discover.sections.anticipated.usecases.shows.HalloweenGetAnticipatedShowsUseCase
 import tv.trakt.trakt.core.discover.sections.popular.ShowsPopularViewModel
 import tv.trakt.trakt.core.discover.sections.popular.all.AllShowsPopularViewModel
 import tv.trakt.trakt.core.discover.sections.popular.data.local.PopularShowsLocalDataSource
@@ -174,10 +174,15 @@ internal val showsModule = module {
     }
 
     viewModel { (halloween: Boolean) ->
-        ShowsAnticipatedViewModel(
-            getAnticipatedUseCase = when {
+        DiscoverAnticipatedViewModel(
+            modeProvider = get(),
+            getAnticipatedShowsUseCase = when {
                 halloween -> get(named("halloweenAnticipatedShowsUseCase"))
                 else -> get(named("defaultAnticipatedShowsUseCase"))
+            },
+            getAnticipatedMoviesUseCase = when {
+                halloween -> get(named("halloweenAnticipatedMoviesUseCase"))
+                else -> get(named("defaultAnticipatedMoviesUseCase"))
             },
         )
     }

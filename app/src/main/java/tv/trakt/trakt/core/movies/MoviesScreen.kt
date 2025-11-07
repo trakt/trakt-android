@@ -2,7 +2,6 @@ package tv.trakt.trakt.core.movies
 
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,15 +23,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import org.koin.androidx.compose.koinViewModel
-import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.movies.sections.anticipated.MoviesAnticipatedView
-import tv.trakt.trakt.core.movies.sections.popular.MoviesPopularView
-import tv.trakt.trakt.core.movies.sections.recommended.MoviesRecommendedView
-import tv.trakt.trakt.core.movies.sections.trending.MoviesTrendingView
 import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
@@ -121,62 +113,62 @@ private fun MoviesScreenContent(
             end = TraktTheme.spacing.mainPageHorizontalSpace,
         )
 
-        LazyColumn(
-            state = lazyListState,
-            overscrollEffect = null,
-            verticalArrangement = spacedBy(TraktTheme.spacing.mainSectionVerticalSpace),
-            contentPadding = listPadding,
-        ) {
-            item {
-                MoviesTrendingView(
-                    viewModel = koinViewModel(
-                        parameters = { parametersOf(halloween) },
-                    ),
-                    headerPadding = sectionPadding,
-                    contentPadding = sectionPadding,
-                    onMovieClick = onMovieClick,
-                    onMoreClick = onMoreTrendingClick,
-                )
-            }
-
-            item {
-                MoviesAnticipatedView(
-                    viewModel = koinViewModel(
-                        parameters = { parametersOf(halloween) },
-                    ),
-                    headerPadding = sectionPadding,
-                    contentPadding = sectionPadding,
-                    onMovieClick = onMovieClick,
-                    onMoreClick = onMoreAnticipatedClick,
-                )
-            }
-
-            item {
-                MoviesPopularView(
-                    viewModel = koinViewModel(
-                        parameters = { parametersOf(halloween) },
-                    ),
-                    headerPadding = sectionPadding,
-                    contentPadding = sectionPadding,
-                    onMovieClick = onMovieClick,
-                    onMoreClick = onMorePopularClick,
-                )
-            }
-
-            if (state.user.isAuthenticated) {
-                item {
-                    MoviesRecommendedView(
-                        viewModel = koinViewModel(
-                            parameters = { parametersOf(halloween) },
-                        ),
-                        headerPadding = sectionPadding,
-                        contentPadding = sectionPadding,
-                        onMovieClick = onMovieClick,
-                        onMoreClick = onMoreRecommendedClick,
-                    )
-                }
-            }
-        }
+//        LazyColumn(
+//            state = lazyListState,
+//            overscrollEffect = null,
+//            verticalArrangement = spacedBy(TraktTheme.spacing.mainSectionVerticalSpace),
+//            contentPadding = listPadding,
+//        ) {
+//            item {
+//                MoviesTrendingView(
+//                    viewModel = koinViewModel(
+//                        parameters = { parametersOf(halloween) },
+//                    ),
+//                    headerPadding = sectionPadding,
+//                    contentPadding = sectionPadding,
+//                    onMovieClick = onMovieClick,
+//                    onMoreClick = onMoreTrendingClick,
+//                )
+//            }
+//
+//            item {
+//                MoviesAnticipatedView(
+//                    viewModel = koinViewModel(
+//                        parameters = { parametersOf(halloween) },
+//                    ),
+//                    headerPadding = sectionPadding,
+//                    contentPadding = sectionPadding,
+//                    onMovieClick = onMovieClick,
+//                    onMoreClick = onMoreAnticipatedClick,
+//                )
+//            }
+//
+//            item {
+//                MoviesPopularView(
+//                    viewModel = koinViewModel(
+//                        parameters = { parametersOf(halloween) },
+//                    ),
+//                    headerPadding = sectionPadding,
+//                    contentPadding = sectionPadding,
+//                    onMovieClick = onMovieClick,
+//                    onMoreClick = onMorePopularClick,
+//                )
+//            }
+//
+//            if (state.user.isAuthenticated) {
+//                item {
+//                    MoviesRecommendedView(
+//                        viewModel = koinViewModel(
+//                            parameters = { parametersOf(halloween) },
+//                        ),
+//                        headerPadding = sectionPadding,
+//                        contentPadding = sectionPadding,
+//                        onMovieClick = onMovieClick,
+//                        onMoreClick = onMoreRecommendedClick,
+//                    )
+//                }
+//            }
+//        }
 
         MoviesScreenHeader(
             state = state,

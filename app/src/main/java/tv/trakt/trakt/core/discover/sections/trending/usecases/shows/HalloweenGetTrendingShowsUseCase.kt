@@ -7,10 +7,10 @@ import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
 import tv.trakt.trakt.core.discover.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.sections.trending.data.local.shows.TrendingShowsLocalDataSource
-import tv.trakt.trakt.core.discover.sections.trending.usecases.DEFAULT_LIMIT
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingShowsUseCase
 
 internal class HalloweenGetTrendingShowsUseCase(
@@ -49,7 +49,7 @@ internal class HalloweenGetTrendingShowsUseCase(
             .also { shows ->
                 if (!skipLocal) {
                     localTrendingSource.addShows(
-                        shows = shows.take(DEFAULT_LIMIT),
+                        shows = shows.take(DEFAULT_SECTION_LIMIT),
                         addedAt = nowUtcInstant(),
                     )
                 }
