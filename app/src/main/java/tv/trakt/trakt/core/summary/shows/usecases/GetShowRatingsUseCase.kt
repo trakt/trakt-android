@@ -2,7 +2,7 @@ package tv.trakt.trakt.core.summary.shows.usecases
 
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
+import tv.trakt.trakt.core.discover.data.remote.ShowsRemoteDataSource
 
 internal class GetShowRatingsUseCase(
     private val remoteSource: ShowsRemoteDataSource,

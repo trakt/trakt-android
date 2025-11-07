@@ -1,0 +1,13 @@
+package tv.trakt.trakt.core.discover.sections.anticipated
+
+import androidx.compose.runtime.Immutable
+import kotlinx.collections.immutable.ImmutableList
+import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.core.discover.model.WatchersShow
+
+@Immutable
+internal data class ShowsAnticipatedState(
+    val items: ImmutableList<WatchersShow>? = null,
+    val loading: LoadingState = LoadingState.IDLE,
+    val error: Exception? = null,
+)

@@ -28,4 +28,11 @@ enum class MediaMode(
         R.drawable.ic_movies_off,
         R.drawable.ic_movies_on,
     ),
+    ;
+
+    val isMediaOrShows: Boolean
+        get() = this == MEDIA || this == SHOWS
+
+    val isMediaOrMovies: Boolean
+        get() = this == MEDIA || this == MOVIES
 }

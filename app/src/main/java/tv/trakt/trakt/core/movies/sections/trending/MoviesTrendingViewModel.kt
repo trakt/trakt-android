@@ -7,13 +7,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import timber.log.Timber
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
-import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.core.movies.sections.trending.usecase.GetTrendingMoviesUseCase
+import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingMoviesUseCase
 
 internal class MoviesTrendingViewModel(
     private val getTrendingUseCase: GetTrendingMoviesUseCase,
@@ -29,28 +23,28 @@ internal class MoviesTrendingViewModel(
     }
 
     private fun loadData() {
-        viewModelScope.launch {
-            try {
-                val localMovies = getTrendingUseCase.getLocalMovies()
-                if (localMovies.isNotEmpty()) {
-                    itemsState.update { localMovies }
-                    loadingState.update { DONE }
-                } else {
-                    loadingState.update { LOADING }
-                }
-
-                itemsState.update {
-                    getTrendingUseCase.getMovies()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    errorState.update { error }
-                    Timber.e(error, "Failed to load data")
-                }
-            } finally {
-                loadingState.update { DONE }
-            }
-        }
+//        viewModelScope.launch {
+//            try {
+//                val localMovies = getTrendingUseCase.getLocalMovies()
+//                if (localMovies.isNotEmpty()) {
+//                    itemsState.update { localMovies }
+//                    loadingState.update { DONE }
+//                } else {
+//                    loadingState.update { LOADING }
+//                }
+//
+//                itemsState.update {
+//                    getTrendingUseCase.getMovies()
+//                }
+//            } catch (error: Exception) {
+//                error.rethrowCancellation {
+//                    errorState.update { error }
+//                    Timber.e(error, "Failed to load data")
+//                }
+//            } finally {
+//                loadingState.update { DONE }
+//            }
+//        }
     }
 
     val state: StateFlow<MoviesTrendingState> = combine(

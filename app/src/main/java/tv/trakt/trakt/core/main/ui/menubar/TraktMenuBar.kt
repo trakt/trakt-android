@@ -49,6 +49,7 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.discover.navigation.DiscoverDestination
 import tv.trakt.trakt.core.home.navigation.HomeDestination
 import tv.trakt.trakt.core.lists.navigation.ListsDestination
 import tv.trakt.trakt.core.main.MainSearchState
@@ -58,7 +59,6 @@ import tv.trakt.trakt.core.profile.navigation.ProfileDestination
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.SearchDestination
 import tv.trakt.trakt.core.search.views.SearchFiltersList
-import tv.trakt.trakt.core.shows.navigation.ShowsDestination
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -76,7 +76,7 @@ private val navigationItems = listOf(
 //        iconOff = R.drawable.ic_movies_off,
 //    ),
     NavigationItem(
-        destination = ShowsDestination,
+        destination = DiscoverDestination,
         label = R.string.page_title_shows,
         iconOn = R.drawable.ic_discover_on,
         iconOff = R.drawable.ic_discover_off,

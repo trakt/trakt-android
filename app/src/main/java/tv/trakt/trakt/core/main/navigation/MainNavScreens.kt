@@ -8,6 +8,16 @@ import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.MediaType.SHOW
 import tv.trakt.trakt.core.comments.navigation.commentsScreen
 import tv.trakt.trakt.core.comments.navigation.navigateToComments
+import tv.trakt.trakt.core.discover.navigation.discoverScreen
+import tv.trakt.trakt.core.discover.navigation.navigateToDiscover
+import tv.trakt.trakt.core.discover.sections.anticipated.all.navigation.navigateToAnticipatedShows
+import tv.trakt.trakt.core.discover.sections.anticipated.all.navigation.showsAnticipatedScreen
+import tv.trakt.trakt.core.discover.sections.popular.all.navigation.navigateToPopularShows
+import tv.trakt.trakt.core.discover.sections.popular.all.navigation.showsPopularScreen
+import tv.trakt.trakt.core.discover.sections.recommended.all.navigation.navigateToRecommendedShows
+import tv.trakt.trakt.core.discover.sections.recommended.all.navigation.showsRecommendedScreen
+import tv.trakt.trakt.core.discover.sections.trending.all.navigation.navigateToTrendingShows
+import tv.trakt.trakt.core.discover.sections.trending.all.navigation.showsTrendingScreen
 import tv.trakt.trakt.core.home.navigation.homeScreen
 import tv.trakt.trakt.core.home.sections.activity.features.all.navigation.homeActivityPersonalScreen
 import tv.trakt.trakt.core.home.sections.activity.features.all.navigation.homeActivitySocialScreen
@@ -39,16 +49,6 @@ import tv.trakt.trakt.core.profile.sections.favorites.all.navigation.allFavorite
 import tv.trakt.trakt.core.profile.sections.favorites.all.navigation.navigateToFavorites
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.searchScreen
-import tv.trakt.trakt.core.shows.navigation.navigateToShows
-import tv.trakt.trakt.core.shows.navigation.showsScreen
-import tv.trakt.trakt.core.shows.sections.anticipated.all.navigation.navigateToAnticipatedShows
-import tv.trakt.trakt.core.shows.sections.anticipated.all.navigation.showsAnticipatedScreen
-import tv.trakt.trakt.core.shows.sections.popular.all.navigation.navigateToPopularShows
-import tv.trakt.trakt.core.shows.sections.popular.all.navigation.showsPopularScreen
-import tv.trakt.trakt.core.shows.sections.recommended.all.navigation.navigateToRecommendedShows
-import tv.trakt.trakt.core.shows.sections.recommended.all.navigation.showsRecommendedScreen
-import tv.trakt.trakt.core.shows.sections.trending.all.navigation.navigateToTrendingShows
-import tv.trakt.trakt.core.shows.sections.trending.all.navigation.showsTrendingScreen
 import tv.trakt.trakt.core.summary.episodes.navigation.episodeDetailsScreen
 import tv.trakt.trakt.core.summary.episodes.navigation.navigateToEpisode
 import tv.trakt.trakt.core.summary.movies.navigation.movieDetailsScreen
@@ -66,7 +66,7 @@ internal fun NavGraphBuilder.homeScreens(
         homeScreen(
             userLoading = userLoading,
             onNavigateToShow = { navigateToShow(it) },
-            onNavigateToShows = { navigateToShows() },
+            onNavigateToShows = { navigateToDiscover() },
             onNavigateToMovie = { navigateToMovie(it) },
             onNavigateToMovies = { navigateToMovies() },
             onNavigateToEpisode = { showId, episode ->
@@ -106,13 +106,14 @@ internal fun NavGraphBuilder.homeScreens(
     }
 }
 
-internal fun NavGraphBuilder.showsScreens(
+internal fun NavGraphBuilder.discoverScreens(
     context: Context?,
     controller: NavHostController,
 ) {
     with(controller) {
-        showsScreen(
+        discoverScreen(
             onNavigateToShow = { navigateToShow(it) },
+            onNavigateToMovie = { navigateToMovie(it) },
             onNavigateToAllTrending = { navigateToTrendingShows() },
             onNavigateToAllPopular = { navigateToPopularShows() },
             onNavigateToAllAnticipated = { navigateToAnticipatedShows() },
@@ -138,6 +139,11 @@ internal fun NavGraphBuilder.showsScreens(
             onNavigateBack = { popBackStack() },
             onNavigateToShow = { navigateToShow(it) },
         )
+    }
+}
+
+internal fun NavGraphBuilder.showsScreens(controller: NavHostController) {
+    with(controller) {
         showDetailsScreen(
             onNavigateToShow = { navigateToShow(it) },
             onNavigateToComments = { show, filter ->
@@ -271,7 +277,7 @@ internal fun NavGraphBuilder.listsScreens(controller: NavHostController) {
         listsScreen(
             onNavigateToProfile = { navigateToProfile() },
             onNavigateToShow = { navigateToShow(it) },
-            onNavigateToShows = { navigateToShows() },
+            onNavigateToShows = { navigateToDiscover() },
             onNavigateToMovie = { navigateToMovie(it) },
             onNavigateToMovies = { navigateToMovies() },
             onNavigateToWatchlist = { navigateToWatchlist() },
@@ -329,7 +335,7 @@ internal fun NavGraphBuilder.profileScreens(controller: NavHostController) {
                 navigateToAllActivityPersonal()
             },
             onNavigateToFavorites = { navigateToFavorites() },
-            onNavigateToShows = { navigateToShows() },
+            onNavigateToShows = { navigateToDiscover() },
             onNavigateToMovies = { navigateToMovies() },
             onNavigateBack = { popBackStack() },
         )

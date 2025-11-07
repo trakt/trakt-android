@@ -55,8 +55,8 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.discover.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
-import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.core.summary.people.ui.MoviesCreditsList
 import tv.trakt.trakt.core.summary.people.ui.ShowsCreditsList
 import tv.trakt.trakt.core.summary.ui.DetailsBackground

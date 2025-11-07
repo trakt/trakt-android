@@ -38,7 +38,7 @@ internal class DefaultMediaModeProvider(
             it[KEY_MAIN_MODE] = mode.name
         }
 
-        Timber.d("Media mode set to: $mode")
+        Timber.d("Media mode set: $mode")
     }
 
     override fun getMode(): MediaMode {

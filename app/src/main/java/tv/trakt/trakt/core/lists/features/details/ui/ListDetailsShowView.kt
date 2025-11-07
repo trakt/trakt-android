@@ -6,8 +6,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.discover.ui.ShowMetaFooter
 import tv.trakt.trakt.core.lists.model.PersonalListItem
-import tv.trakt.trakt.core.shows.ui.ShowMetaFooter
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 
 @Composable

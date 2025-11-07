@@ -6,7 +6,7 @@ import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.CustomList.Type
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
+import tv.trakt.trakt.core.discover.data.remote.ShowsRemoteDataSource
 
 internal class GetShowListsUseCase(
     private val remoteSource: ShowsRemoteDataSource,

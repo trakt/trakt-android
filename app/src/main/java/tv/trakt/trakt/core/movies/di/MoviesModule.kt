@@ -4,6 +4,11 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.core.discover.sections.trending.data.local.movies.TrendingMoviesLocalDataSource
+import tv.trakt.trakt.core.discover.sections.trending.data.local.movies.TrendingMoviesStorage
+import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingMoviesUseCase
+import tv.trakt.trakt.core.discover.sections.trending.usecases.movies.DefaultGetTrendingMoviesUseCase
+import tv.trakt.trakt.core.discover.sections.trending.usecases.movies.HalloweenGetTrendingMoviesUseCase
 import tv.trakt.trakt.core.movies.MoviesViewModel
 import tv.trakt.trakt.core.movies.data.remote.MoviesApiClient
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
@@ -30,11 +35,6 @@ import tv.trakt.trakt.core.movies.sections.recommended.usecase.recommended.Defau
 import tv.trakt.trakt.core.movies.sections.recommended.usecase.recommended.HalloweenGetRecommendedMoviesUseCase
 import tv.trakt.trakt.core.movies.sections.trending.MoviesTrendingViewModel
 import tv.trakt.trakt.core.movies.sections.trending.all.AllMoviesTrendingViewModel
-import tv.trakt.trakt.core.movies.sections.trending.data.local.TrendingMoviesLocalDataSource
-import tv.trakt.trakt.core.movies.sections.trending.data.local.TrendingMoviesStorage
-import tv.trakt.trakt.core.movies.sections.trending.usecase.GetTrendingMoviesUseCase
-import tv.trakt.trakt.core.movies.sections.trending.usecase.trending.DefaultGetTrendingMoviesUseCase
-import tv.trakt.trakt.core.movies.sections.trending.usecase.trending.HalloweenGetTrendingMoviesUseCase
 import tv.trakt.trakt.core.movies.ui.context.MovieContextViewModel
 
 internal val moviesDataModule = module {

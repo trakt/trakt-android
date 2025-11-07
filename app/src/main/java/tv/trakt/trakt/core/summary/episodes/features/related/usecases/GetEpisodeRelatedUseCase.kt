@@ -6,7 +6,7 @@ import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
-import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
+import tv.trakt.trakt.core.discover.data.remote.ShowsRemoteDataSource
 
 internal class GetEpisodeRelatedUseCase(
     private val remoteSource: ShowsRemoteDataSource,

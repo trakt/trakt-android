@@ -42,11 +42,13 @@ import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LaunchedUpdateEffect
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.core.auth.ConfigAuth
+import tv.trakt.trakt.core.discover.navigation.navigateToDiscover
 import tv.trakt.trakt.core.home.navigation.HomeDestination
 import tv.trakt.trakt.core.lists.navigation.ListsDestination
 import tv.trakt.trakt.core.lists.navigation.navigateToLists
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.navigateToWatchlist
 import tv.trakt.trakt.core.main.navigation.commentsScreens
+import tv.trakt.trakt.core.main.navigation.discoverScreens
 import tv.trakt.trakt.core.main.navigation.episodesScreens
 import tv.trakt.trakt.core.main.navigation.homeScreens
 import tv.trakt.trakt.core.main.navigation.isMainDestination
@@ -63,7 +65,6 @@ import tv.trakt.trakt.core.movies.navigation.navigateToMovies
 import tv.trakt.trakt.core.profile.navigation.ProfileDestination
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.navigateToSearch
-import tv.trakt.trakt.core.shows.navigation.navigateToShows
 import tv.trakt.trakt.core.welcome.WelcomeScreen
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.snackbar.MainSnackbarHost
@@ -242,7 +243,8 @@ private fun MainNavHost(
             controller = navController,
             userLoading = userLoading,
         )
-        showsScreens(localActivity, navController)
+        discoverScreens(localActivity, navController)
+        showsScreens(navController)
         moviesScreens(localActivity, navController)
         episodesScreens(navController)
         listsScreens(navController)
@@ -271,7 +273,7 @@ private fun handleShortcutIntent(
             }
             containsKey("shortcutShowsExtra") -> {
                 intent.removeExtra("shortcutShowsExtra")
-                navController.navigateToShows()
+                navController.navigateToDiscover()
             }
             containsKey("shortcutMoviesExtra") -> {
                 intent.removeExtra("shortcutMoviesExtra")

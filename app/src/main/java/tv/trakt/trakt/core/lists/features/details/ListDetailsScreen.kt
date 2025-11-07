@@ -50,13 +50,13 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.discover.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsMovieView
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsShowView
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 import tv.trakt.trakt.core.lists.model.PersonalListItem.MovieItem
 import tv.trakt.trakt.core.lists.model.PersonalListItem.ShowItem
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
-import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
