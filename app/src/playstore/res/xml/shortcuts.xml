@@ -56,4 +56,23 @@
                 />
         </intent>
     </shortcut>
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@mipmap/ic_shortcut_profile"
+        android:shortcutId="shortcutProfile"
+        android:shortcutLongLabel="@string/page_title_profile"
+        android:shortcutShortLabel="@string/page_title_profile"
+        >
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="tv.trakt.trakt.MainActivity"
+            android:targetPackage="tv.trakt.trakt"
+            >
+            <extra
+                android:name="shortcutProfileExtra"
+                android:value="shortcutProfileExtra"
+                />
+        </intent>
+    </shortcut>
 </shortcuts>

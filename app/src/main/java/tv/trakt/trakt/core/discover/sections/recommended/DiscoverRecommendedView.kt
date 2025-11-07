@@ -304,7 +304,11 @@ private fun ContentListItem(
                         painter = painterResource(item.icon),
                         contentDescription = null,
                         tint = TraktTheme.colors.chipContent,
-                        modifier = Modifier.size(13.dp),
+                        modifier = Modifier
+                            .size(13.dp)
+                            .graphicsLayer {
+                                translationY = (-0.33).dp.toPx()
+                            },
                     )
                 }
 

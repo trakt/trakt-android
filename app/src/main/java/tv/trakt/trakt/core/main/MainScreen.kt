@@ -62,6 +62,7 @@ import tv.trakt.trakt.core.main.navigation.searchScreens
 import tv.trakt.trakt.core.main.navigation.showsScreens
 import tv.trakt.trakt.core.main.ui.menubar.TraktMenuBar
 import tv.trakt.trakt.core.profile.navigation.ProfileDestination
+import tv.trakt.trakt.core.profile.navigation.navigateToProfile
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.navigateToSearch
 import tv.trakt.trakt.core.welcome.WelcomeScreen
@@ -277,6 +278,10 @@ private fun handleShortcutIntent(
             containsKey("shortcutListsExtra") -> {
                 intent.removeExtra("shortcutListsExtra")
                 navController.navigateToLists()
+            }
+            containsKey("shortcutProfileExtra") -> {
+                intent.removeExtra("shortcutProfileExtra")
+                navController.navigateToProfile()
             }
         }
     }
