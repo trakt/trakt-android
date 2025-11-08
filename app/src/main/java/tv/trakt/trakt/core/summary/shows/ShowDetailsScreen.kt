@@ -457,38 +457,6 @@ internal fun ShowDetailsContent(
                         }
                     }
 
-                    if (isReleased) {
-                        item {
-                            ShowSentimentView(
-                                viewModel = koinViewModel(
-                                    parameters = { parametersOf(show) },
-                                ),
-                                headerPadding = sectionPadding,
-                                contentPadding = sectionPadding,
-                                modifier = Modifier
-                                    .padding(
-                                        top = when {
-                                            showStreamings -> 32.dp
-                                            else -> 24.dp
-                                        },
-                                    ),
-                            )
-                        }
-                    }
-
-                    item {
-                        ShowCommentsView(
-                            viewModel = koinViewModel(
-                                parameters = { parametersOf(show) },
-                            ),
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onMoreClick = onMoreCommentsClick,
-                            modifier = Modifier
-                                .padding(top = 32.dp),
-                        )
-                    }
-
                     item {
                         ShowActorsView(
                             viewModel = koinViewModel(
@@ -498,7 +466,12 @@ internal fun ShowDetailsContent(
                             contentPadding = sectionPadding,
                             onPersonClick = onPersonClick ?: {},
                             modifier = Modifier
-                                .padding(top = 32.dp),
+                                .padding(
+                                    top = when {
+                                        showStreamings -> 32.dp
+                                        else -> 24.dp
+                                    },
+                                ),
                         )
                     }
 
@@ -511,6 +484,33 @@ internal fun ShowDetailsContent(
                             contentPadding = sectionPadding,
                             user = state.user,
                             onEpisodeClick = onEpisodeClick ?: {},
+                            modifier = Modifier
+                                .padding(top = 32.dp),
+                        )
+                    }
+
+                    if (isReleased) {
+                        item {
+                            ShowSentimentView(
+                                viewModel = koinViewModel(
+                                    parameters = { parametersOf(show) },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                modifier = Modifier
+                                    .padding(top = 32.dp),
+                            )
+                        }
+                    }
+
+                    item {
+                        ShowCommentsView(
+                            viewModel = koinViewModel(
+                                parameters = { parametersOf(show) },
+                            ),
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            onMoreClick = onMoreCommentsClick,
                             modifier = Modifier
                                 .padding(top = 32.dp),
                         )
