@@ -21,3 +21,4 @@
 #-renamesourcefileattribute SourceFile
 
 -keep class tv.trakt.trakt.core.comments.model.**
+-keep class tv.trakt.trakt.core.discover.model.**
