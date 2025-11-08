@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 
-package tv.trakt.trakt.core.discover.sections.anticipated.all
+package tv.trakt.trakt.core.discover.sections.all
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -29,11 +29,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.shows.ui.AllShowsListView
+import tv.trakt.trakt.core.discover.model.DiscoverItem
+import tv.trakt.trakt.core.discover.model.DiscoverItem.MovieItem
+import tv.trakt.trakt.core.discover.model.DiscoverItem.ShowItem
+import tv.trakt.trakt.core.discover.model.DiscoverSection
+import tv.trakt.trakt.core.discover.ui.AllDiscoverListView
+import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
@@ -41,42 +48,56 @@ import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun AllShowsAnticipatedScreen(
-    viewModel: AllShowsAnticipatedViewModel,
+internal fun AllDiscoverScreen(
+    viewModel: AllDiscoverViewModel,
     onNavigateToShow: (TraktId) -> Unit,
+    onNavigateToMovie: (TraktId) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    var contextSheet by remember { mutableStateOf<Show?>(null) }
+    var contextShowSheet by remember { mutableStateOf<Show?>(null) }
+    var contextMovieSheet by remember { mutableStateOf<Movie?>(null) }
 
-    AllShowsAnticipatedScreenContent(
+    AllDiscoverScreenContent(
         state = state,
-        onItemClick = { onNavigateToShow(it.ids.trakt) },
-        onBackClick = onNavigateBack,
-        onItemLongClick = {
-            if (!state.loading.isLoading) {
-                contextSheet = it
+        onLoadMoreData = viewModel::loadMoreData,
+        onItemClick = {
+            when (it) {
+                is ShowItem -> onNavigateToShow(it.id)
+                is MovieItem -> onNavigateToMovie(it.id)
             }
         },
-        onLoadMoreData = {
-            viewModel.loadMoreData()
+        onItemLongClick = {
+            if (state.loading.isLoading) {
+                return@AllDiscoverScreenContent
+            }
+            when (it) {
+                is ShowItem -> contextShowSheet = it.show
+                is MovieItem -> contextMovieSheet = it.movie
+            }
         },
+        onBackClick = onNavigateBack,
     )
 
     ShowContextSheet(
-        show = contextSheet,
-        onDismiss = { contextSheet = null },
+        show = contextShowSheet,
+        onDismiss = { contextShowSheet = null },
+    )
+
+    MovieContextSheet(
+        movie = contextMovieSheet,
+        onDismiss = { contextMovieSheet = null },
     )
 }
 
 @Composable
-private fun AllShowsAnticipatedScreenContent(
-    state: AllShowsAnticipatedState,
+private fun AllDiscoverScreenContent(
+    state: AllDiscoverState,
     modifier: Modifier = Modifier,
-    onItemClick: (Show) -> Unit = {},
     onLoadMoreData: () -> Unit = {},
-    onItemLongClick: (Show) -> Unit = {},
+    onItemClick: (DiscoverItem) -> Unit = {},
+    onItemLongClick: (DiscoverItem) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
@@ -98,12 +119,15 @@ private fun AllShowsAnticipatedScreenContent(
             scrollState = listState,
         )
 
-        AllShowsListView(
+        AllDiscoverListView(
             state = listState,
-            items = state.items ?: emptyList<Show>().toImmutableList(),
+            mode = state.mode ?: MediaMode.MEDIA,
+            items = state.items ?: EmptyImmutableList,
             loading = state.loadingMore.isLoading || state.loading.isLoading,
             title = {
                 TitleBar(
+                    mode = state.mode,
+                    type = state.type,
                     modifier = Modifier
                         .padding(bottom = 2.dp)
                         .onClick { onBackClick() },
@@ -112,16 +136,18 @@ private fun AllShowsAnticipatedScreenContent(
             onItemClick = onItemClick,
             onItemLongClick = onItemLongClick,
             onTopOfList = { headerState.resetScrolled() },
-            onEndOfList = {
-                onLoadMoreData()
-            },
+            onEndOfList = { onLoadMoreData() },
             modifier = Modifier.fillMaxSize(),
         )
     }
 }
 
 @Composable
-private fun TitleBar(modifier: Modifier = Modifier) {
+private fun TitleBar(
+    mode: MediaMode?,
+    type: DiscoverSection?,
+    modifier: Modifier = Modifier,
+) {
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = spacedBy(12.dp),
@@ -136,11 +162,13 @@ private fun TitleBar(modifier: Modifier = Modifier) {
             tint = TraktTheme.colors.textPrimary,
             contentDescription = null,
         )
-        Text(
-            text = stringResource(R.string.list_title_anticipated_shows),
-            color = TraktTheme.colors.textPrimary,
-            style = TraktTheme.typography.heading5,
-        )
+        if (mode != null && type != null) {
+            Text(
+                text = stringResource(type.getTitle(mode)),
+                color = TraktTheme.colors.textPrimary,
+                style = TraktTheme.typography.heading5,
+            )
+        }
     }
 }
 
@@ -152,8 +180,8 @@ private fun TitleBar(modifier: Modifier = Modifier) {
 @Composable
 private fun Preview() {
     TraktTheme {
-        AllShowsAnticipatedScreenContent(
-            state = AllShowsAnticipatedState(),
+        AllDiscoverScreenContent(
+            state = AllDiscoverState(),
         )
     }
 }

@@ -1,6 +1,5 @@
 package tv.trakt.trakt.core.main.navigation
 
-import android.content.Context
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import tv.trakt.trakt.common.model.Images.Size
@@ -8,16 +7,11 @@ import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.MediaType.SHOW
 import tv.trakt.trakt.core.comments.navigation.commentsScreen
 import tv.trakt.trakt.core.comments.navigation.navigateToComments
+import tv.trakt.trakt.core.discover.model.DiscoverSection
 import tv.trakt.trakt.core.discover.navigation.discoverScreen
 import tv.trakt.trakt.core.discover.navigation.navigateToDiscover
-import tv.trakt.trakt.core.discover.sections.anticipated.all.navigation.navigateToAnticipatedShows
-import tv.trakt.trakt.core.discover.sections.anticipated.all.navigation.showsAnticipatedScreen
-import tv.trakt.trakt.core.discover.sections.popular.all.navigation.navigateToPopularShows
-import tv.trakt.trakt.core.discover.sections.popular.all.navigation.showsPopularScreen
-import tv.trakt.trakt.core.discover.sections.recommended.all.navigation.navigateToRecommendedShows
-import tv.trakt.trakt.core.discover.sections.recommended.all.navigation.showsRecommendedScreen
-import tv.trakt.trakt.core.discover.sections.trending.all.navigation.discoverTrendingScreen
-import tv.trakt.trakt.core.discover.sections.trending.all.navigation.navigateToDiscoverTrending
+import tv.trakt.trakt.core.discover.sections.all.navigation.discoverAllScreen
+import tv.trakt.trakt.core.discover.sections.all.navigation.navigateToDiscoverAll
 import tv.trakt.trakt.core.home.navigation.homeScreen
 import tv.trakt.trakt.core.home.sections.activity.features.all.navigation.homeActivityPersonalScreen
 import tv.trakt.trakt.core.home.sections.activity.features.all.navigation.homeActivitySocialScreen
@@ -95,39 +89,28 @@ internal fun NavGraphBuilder.homeScreens(
     }
 }
 
-internal fun NavGraphBuilder.discoverScreens(
-    context: Context?,
-    controller: NavHostController,
-) {
+internal fun NavGraphBuilder.discoverScreens(controller: NavHostController) {
     with(controller) {
         discoverScreen(
             onNavigateToShow = { navigateToShow(it) },
             onNavigateToMovie = { navigateToMovie(it) },
-            onNavigateToAllTrending = { navigateToDiscoverTrending() },
-            onNavigateToAllPopular = { navigateToPopularShows() },
-            onNavigateToAllAnticipated = { navigateToAnticipatedShows() },
-            onNavigateToAllRecommended = { navigateToRecommendedShows() },
+            onNavigateToAllTrending = {
+                navigateToDiscoverAll(DiscoverSection.TRENDING)
+            },
+            onNavigateToAllPopular = {
+                navigateToDiscoverAll(DiscoverSection.POPULAR)
+            },
+            onNavigateToAllAnticipated = {
+                navigateToDiscoverAll(DiscoverSection.ANTICIPATED)
+            },
+            onNavigateToAllRecommended = {
+                navigateToDiscoverAll(DiscoverSection.RECOMMENDED)
+            },
         )
-        discoverTrendingScreen(
-            context = context,
+        discoverAllScreen(
             onNavigateBack = { popBackStack() },
             onNavigateToShow = { navigateToShow(it) },
             onNavigateToMovie = { navigateToMovie(it) },
-        )
-        showsPopularScreen(
-            context = context,
-            onNavigateBack = { popBackStack() },
-            onNavigateToShow = { navigateToShow(it) },
-        )
-        showsAnticipatedScreen(
-            context = context,
-            onNavigateBack = { popBackStack() },
-            onNavigateToShow = { navigateToShow(it) },
-        )
-        showsRecommendedScreen(
-            context = context,
-            onNavigateBack = { popBackStack() },
-            onNavigateToShow = { navigateToShow(it) },
         )
     }
 }

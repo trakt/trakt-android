@@ -4,19 +4,16 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.core.discover.sections.anticipated.all.AllShowsAnticipatedViewModel
 import tv.trakt.trakt.core.discover.sections.anticipated.data.local.shows.AnticipatedShowsLocalDataSource
 import tv.trakt.trakt.core.discover.sections.anticipated.data.local.shows.AnticipatedShowsStorage
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedShowsUseCase
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.shows.DefaultGetAnticipatedShowsUseCase
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.shows.HalloweenGetAnticipatedShowsUseCase
-import tv.trakt.trakt.core.discover.sections.popular.all.AllShowsPopularViewModel
 import tv.trakt.trakt.core.discover.sections.popular.data.local.shows.PopularShowsLocalDataSource
 import tv.trakt.trakt.core.discover.sections.popular.data.local.shows.PopularShowsStorage
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularShowsUseCase
 import tv.trakt.trakt.core.discover.sections.popular.usecases.shows.DefaultGetPopularShowsUseCase
 import tv.trakt.trakt.core.discover.sections.popular.usecases.shows.HalloweenGetPopularShowsUseCase
-import tv.trakt.trakt.core.discover.sections.recommended.all.AllShowsRecommendedViewModel
 import tv.trakt.trakt.core.discover.sections.recommended.data.local.shows.RecommendedShowsLocalDataSource
 import tv.trakt.trakt.core.discover.sections.recommended.data.local.shows.RecommendedShowsStorage
 import tv.trakt.trakt.core.discover.sections.recommended.usecase.GetRecommendedShowsUseCase
@@ -143,36 +140,6 @@ internal val showsModule = module {
             remoteSource = get(),
             localRecommendedSource = get(),
             localShowSource = get(),
-        )
-    }
-
-    viewModel { (halloween: Boolean) ->
-        AllShowsPopularViewModel(
-            getPopularUseCase = when {
-                halloween -> get(named("halloweenPopularShowsUseCase"))
-                else -> get(named("defaultPopularShowsUseCase"))
-            },
-            analytics = get(),
-        )
-    }
-
-    viewModel { (halloween: Boolean) ->
-        AllShowsAnticipatedViewModel(
-            getAnticipatedUseCase = when {
-                halloween -> get(named("halloweenAnticipatedShowsUseCase"))
-                else -> get(named("defaultAnticipatedShowsUseCase"))
-            },
-            analytics = get(),
-        )
-    }
-
-    viewModel { (halloween: Boolean) ->
-        AllShowsRecommendedViewModel(
-            getRecommendedUseCase = when {
-                halloween -> get(named("halloweenRecommendedShowsUseCase"))
-                else -> get(named("defaultRecommendedShowsUseCase"))
-            },
-            analytics = get(),
         )
     }
 

@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
-import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.model.TraktId
@@ -130,9 +129,7 @@ private fun DiscoverScreenContent(
         ) {
             item {
                 DiscoverTrendingView(
-                    viewModel = koinViewModel(
-                        parameters = { parametersOf(halloween) },
-                    ),
+                    viewModel = koinViewModel(),
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     onShowClick = onShowClick,
@@ -143,9 +140,7 @@ private fun DiscoverScreenContent(
 
             item {
                 DiscoverAnticipatedView(
-                    viewModel = koinViewModel(
-                        parameters = { parametersOf(halloween) },
-                    ),
+                    viewModel = koinViewModel(),
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     onShowClick = onShowClick,
@@ -156,9 +151,7 @@ private fun DiscoverScreenContent(
 
             item {
                 DiscoverPopularView(
-                    viewModel = koinViewModel(
-                        parameters = { parametersOf(halloween) },
-                    ),
+                    viewModel = koinViewModel(),
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     onShowClick = onShowClick,
@@ -170,9 +163,7 @@ private fun DiscoverScreenContent(
             if (state.user.isAuthenticated) {
                 item {
                     DiscoverRecommendedView(
-                        viewModel = koinViewModel(
-                            parameters = { parametersOf(halloween) },
-                        ),
+                        viewModel = koinViewModel(),
                         headerPadding = sectionPadding,
                         contentPadding = sectionPadding,
                         onShowClick = onShowClick,

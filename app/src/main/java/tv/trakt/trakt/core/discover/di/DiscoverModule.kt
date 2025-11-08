@@ -4,11 +4,11 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.core.discover.DiscoverViewModel
+import tv.trakt.trakt.core.discover.sections.all.AllDiscoverViewModel
 import tv.trakt.trakt.core.discover.sections.anticipated.DiscoverAnticipatedViewModel
 import tv.trakt.trakt.core.discover.sections.popular.DiscoverPopularViewModel
 import tv.trakt.trakt.core.discover.sections.recommended.DiscoverRecommendedViewModel
 import tv.trakt.trakt.core.discover.sections.trending.DiscoverTrendingViewModel
-import tv.trakt.trakt.core.discover.sections.trending.all.AllDiscoverTrendingViewModel
 
 internal val discoverModule = module {
     viewModel {
@@ -18,74 +18,51 @@ internal val discoverModule = module {
         )
     }
 
-    viewModel { (halloween: Boolean) ->
+    viewModel {
         DiscoverTrendingViewModel(
             modeProvider = get(),
-            getTrendingShowsUseCase = when {
-                halloween -> get(named("halloweenTrendingShowsUseCase"))
-                else -> get(named("defaultTrendingShowsUseCase"))
-            },
-            getTrendingMoviesUseCase = when {
-                halloween -> get(named("halloweenTrendingMoviesUseCase"))
-                else -> get(named("defaultTrendingMoviesUseCase"))
-            },
+            getTrendingShowsUseCase = get(named("defaultTrendingShowsUseCase")),
+            getTrendingMoviesUseCase = get(named("defaultTrendingMoviesUseCase")),
         )
     }
 
-    viewModel { (halloween: Boolean) ->
-        AllDiscoverTrendingViewModel(
-            modeProvider = get(),
-            getTrendingShowsUseCase = when {
-                halloween -> get(named("halloweenTrendingShowsUseCase"))
-                else -> get(named("defaultTrendingShowsUseCase"))
-            },
-            getTrendingMoviesUseCase = when {
-                halloween -> get(named("halloweenTrendingMoviesUseCase"))
-                else -> get(named("defaultTrendingMoviesUseCase"))
-            },
+    viewModel {
+        AllDiscoverViewModel(
+            savedStateHandle = get(),
             analytics = get(),
+            modeProvider = get(),
+            getTrendingShowsUseCase = get(named("defaultTrendingShowsUseCase")),
+            getTrendingMoviesUseCase = get(named("defaultTrendingMoviesUseCase")),
+            getPopularShowsUseCase = get(named("defaultPopularShowsUseCase")),
+            getPopularMoviesUseCase = get(named("defaultPopularMoviesUseCase")),
+            getAnticipatedShowsUseCase = get(named("defaultAnticipatedShowsUseCase")),
+            getAnticipatedMoviesUseCase = get(named("defaultAnticipatedMoviesUseCase")),
+            getRecommendedShowsUseCase = get(named("defaultRecommendedShowsUseCase")),
+            getRecommendedMoviesUseCase = get(named("defaultRecommendedMoviesUseCase")),
         )
     }
 
-    viewModel { (halloween: Boolean) ->
+    viewModel {
         DiscoverAnticipatedViewModel(
             modeProvider = get(),
-            getAnticipatedShowsUseCase = when {
-                halloween -> get(named("halloweenAnticipatedShowsUseCase"))
-                else -> get(named("defaultAnticipatedShowsUseCase"))
-            },
-            getAnticipatedMoviesUseCase = when {
-                halloween -> get(named("halloweenAnticipatedMoviesUseCase"))
-                else -> get(named("defaultAnticipatedMoviesUseCase"))
-            },
+            getAnticipatedShowsUseCase = get(named("defaultAnticipatedShowsUseCase")),
+            getAnticipatedMoviesUseCase = get(named("defaultAnticipatedMoviesUseCase")),
         )
     }
 
-    viewModel { (halloween: Boolean) ->
+    viewModel {
         DiscoverRecommendedViewModel(
             modeProvider = get(),
-            getRecommendedShowsUseCase = when {
-                halloween -> get(named("halloweenRecommendedShowsUseCase"))
-                else -> get(named("defaultRecommendedShowsUseCase"))
-            },
-            getRecommendedMoviesUseCase = when {
-                halloween -> get(named("halloweenRecommendedMoviesUseCase"))
-                else -> get(named("defaultRecommendedMoviesUseCase"))
-            },
+            getRecommendedShowsUseCase = get(named("defaultRecommendedShowsUseCase")),
+            getRecommendedMoviesUseCase = get(named("defaultRecommendedMoviesUseCase")),
         )
     }
 
-    viewModel { (halloween: Boolean) ->
+    viewModel {
         DiscoverPopularViewModel(
             modeProvider = get(),
-            getPopularShowsUseCase = when {
-                halloween -> get(named("halloweenPopularShowsUseCase"))
-                else -> get(named("defaultPopularShowsUseCase"))
-            },
-            getPopularMoviesUseCase = when {
-                halloween -> get(named("halloweenPopularMoviesUseCase"))
-                else -> get(named("defaultPopularMoviesUseCase"))
-            },
+            getPopularShowsUseCase = get(named("defaultPopularShowsUseCase")),
+            getPopularMoviesUseCase = get(named("defaultPopularMoviesUseCase")),
         )
     }
 }

@@ -26,8 +26,6 @@ import tv.trakt.trakt.core.discover.sections.trending.usecases.movies.DefaultGet
 import tv.trakt.trakt.core.discover.sections.trending.usecases.movies.HalloweenGetTrendingMoviesUseCase
 import tv.trakt.trakt.core.movies.data.remote.MoviesApiClient
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
-import tv.trakt.trakt.core.movies.sections.recommended.all.AllMoviesRecommendedViewModel
-import tv.trakt.trakt.core.movies.sections.trending.all.AllMoviesTrendingViewModel
 import tv.trakt.trakt.core.movies.ui.context.MovieContextViewModel
 
 internal val moviesDataModule = module {
@@ -134,26 +132,6 @@ internal val moviesModule = module {
             remoteSource = get(),
             localRecommendedSource = get(),
             localMovieSource = get(),
-        )
-    }
-
-    viewModel { (halloween: Boolean) ->
-        AllMoviesTrendingViewModel(
-            getTrendingUseCase = when {
-                halloween -> get(named("halloweenTrendingMoviesUseCase"))
-                else -> get(named("defaultTrendingMoviesUseCase"))
-            },
-            analytics = get(),
-        )
-    }
-
-    viewModel { (halloween: Boolean) ->
-        AllMoviesRecommendedViewModel(
-            getRecommendedUseCase = when {
-                halloween -> get(named("halloweenRecommendedMoviesUseCase"))
-                else -> get(named("defaultRecommendedMoviesUseCase"))
-            },
-            analytics = get(),
         )
     }
 
