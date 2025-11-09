@@ -141,7 +141,7 @@ private fun AllDiscoverScreenContent(
 
                     if (state.mode == MediaMode.MEDIA) {
                         MediaModeFilters(
-                            mode = state.filter,
+                            selected = state.filter,
                             paddingVertical = PaddingValues(
                                 top = 0.dp,
                                 bottom = 20.dp,

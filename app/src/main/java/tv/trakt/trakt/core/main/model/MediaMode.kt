@@ -9,7 +9,7 @@ import tv.trakt.trakt.resources.R
 @Immutable
 @Serializable
 enum class MediaMode(
-    @param:StringRes val label: Int,
+    @param:StringRes val displayRes: Int,
     @param:DrawableRes val offIcon: Int,
     @param:DrawableRes val onIcon: Int,
 ) {

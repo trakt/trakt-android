@@ -104,7 +104,7 @@ internal fun MediaModeButtons(
                     Spacer(Modifier.size(5.dp))
 
                     Text(
-                        text = stringResource(option.label),
+                        text = stringResource(option.displayRes),
                         color = TraktTheme.colors.textPrimary,
                         style = TraktTheme.typography.buttonTertiary,
                     )

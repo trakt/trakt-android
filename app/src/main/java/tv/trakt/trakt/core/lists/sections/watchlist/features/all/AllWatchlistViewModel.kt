@@ -39,10 +39,6 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeWatchlistUseCase
-import tv.trakt.trakt.core.lists.model.ListsMediaFilter
-import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MEDIA
-import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MOVIES
-import tv.trakt.trakt.core.lists.model.ListsMediaFilter.SHOWS
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.ListsWatchlistDestination
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
@@ -51,6 +47,10 @@ import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistU
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetShowsWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.filters.GetWatchlistFilterUseCase
+import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
+import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
+import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
@@ -187,7 +187,7 @@ internal class AllWatchlistViewModel(
         }
     }
 
-    private suspend fun loadFilter(): ListsMediaFilter {
+    private suspend fun loadFilter(): MediaMode {
         val filter = getFilterUseCase.getFilter()
         filterState.update { filter }
         return filter
@@ -205,7 +205,7 @@ internal class AllWatchlistViewModel(
         return false
     }
 
-    fun setFilter(newFilter: ListsMediaFilter) {
+    fun setFilter(newFilter: MediaMode) {
         if (newFilter == filterState.value || loadingState.value.isLoading) {
             return
         }
@@ -336,7 +336,7 @@ internal class AllWatchlistViewModel(
         AllWatchlistState(
             loading = state[0] as LoadingState,
             items = state[1] as? ImmutableList<WatchlistItem>,
-            filter = state[2] as? ListsMediaFilter,
+            filter = state[2] as? MediaMode,
             navigateShow = state[3] as? TraktId,
             navigateMovie = state[4] as? TraktId,
             info = state[5] as? StringResource,

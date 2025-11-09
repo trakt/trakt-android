@@ -34,10 +34,10 @@ import tv.trakt.trakt.core.favorites.FavoritesUpdates
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.CONTEXT_SHEET
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.DETAILS
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_SECTION_LIMIT
-import tv.trakt.trakt.core.lists.model.ListsMediaFilter
-import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MEDIA
-import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MOVIES
-import tv.trakt.trakt.core.lists.model.ListsMediaFilter.SHOWS
+import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
+import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
+import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
 import tv.trakt.trakt.core.profile.model.FavoriteItem
 import tv.trakt.trakt.core.profile.sections.favorites.filters.GetFavoritesFilterUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserFavoritesUseCase
@@ -137,7 +137,7 @@ internal class ProfileFavoritesViewModel(
         }
     }
 
-    private suspend fun loadFilter(): ListsMediaFilter {
+    private suspend fun loadFilter(): MediaMode {
         val filter = getFilterUseCase.getFilter()
         filterState.update { filter }
         return filter
@@ -155,7 +155,7 @@ internal class ProfileFavoritesViewModel(
         return false
     }
 
-    fun setFilter(newFilter: ListsMediaFilter) {
+    fun setFilter(newFilter: MediaMode) {
         if (newFilter == filterState.value || loadingState.value.isLoading) {
             return
         }
@@ -204,7 +204,7 @@ internal class ProfileFavoritesViewModel(
         ProfileFavoritesState(
             loading = states[0] as LoadingState,
             items = states[1] as ImmutableList<FavoriteItem>?,
-            filter = states[2] as ListsMediaFilter,
+            filter = states[2] as MediaMode,
             navigateShow = states[3] as TraktId?,
             navigateMovie = states[4] as TraktId?,
             error = states[5] as Exception?,

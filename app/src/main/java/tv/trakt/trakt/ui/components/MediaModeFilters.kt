@@ -17,19 +17,20 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun MediaModeFilters(
     modifier: Modifier = Modifier,
-    mode: MediaMode? = null,
+    selected: MediaMode? = null,
+    paddingHorizontal: PaddingValues = PaddingValues.Zero,
     paddingVertical: PaddingValues = PaddingValues.Zero,
     onClick: (MediaMode) -> Unit = { _ -> },
 ) {
     FilterChipGroup(
-        paddingHorizontal = PaddingValues.Zero,
+        paddingHorizontal = paddingHorizontal,
         paddingVertical = paddingVertical,
         modifier = modifier,
     ) {
         for (filter in MediaMode.entries) {
             FilterChip(
-                selected = mode == filter,
-                text = stringResource(filter.label),
+                selected = selected == filter,
+                text = stringResource(filter.displayRes),
                 leadingContent = {
                     Icon(
                         painter = painterResource(filter.offIcon),
@@ -55,11 +56,11 @@ private fun Preview() {
             verticalArrangement = spacedBy(8.dp),
         ) {
             MediaModeFilters(
-                mode = null,
+                selected = null,
             )
             for (mode in MediaMode.entries) {
                 MediaModeFilters(
-                    mode = mode,
+                    selected = mode,
                 )
             }
         }

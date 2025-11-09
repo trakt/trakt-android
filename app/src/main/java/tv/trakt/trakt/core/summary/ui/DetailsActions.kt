@@ -19,6 +19,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.DefaultShadowColor
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -43,11 +45,18 @@ internal fun DetailsActions(
     onSecondaryLongClick: (() -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
 ) {
+    val shape = RoundedCornerShape(18.dp)
     Box(
         modifier = modifier
+            .shadow(
+                elevation = 2.dp,
+                shape = shape,
+                ambientColor = DefaultShadowColor.copy(alpha = 0.33F),
+                spotColor = DefaultShadowColor.copy(alpha = 0.33F),
+            )
             .background(
                 color = Shade920,
-                shape = RoundedCornerShape(18.dp),
+                shape = shape,
             )
             .padding(
                 top = 8.dp,
@@ -147,7 +156,7 @@ internal fun DetailsActions(
 @Preview(
     device = "id:pixel_5",
     showBackground = true,
-    backgroundColor = 0xFF131517,
+    backgroundColor = 0xFFFFFFFF,
     widthDp = 400,
 )
 @Composable

@@ -17,7 +17,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,17 +51,16 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.views.HomeEmptyView
-import tv.trakt.trakt.core.lists.model.ListsMediaFilter
-import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MEDIA
-import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MOVIES
-import tv.trakt.trakt.core.lists.model.ListsMediaFilter.SHOWS
+import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
+import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
+import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
 import tv.trakt.trakt.core.profile.model.FavoriteItem
 import tv.trakt.trakt.core.profile.sections.favorites.context.movie.FavoriteMovieContextSheet
 import tv.trakt.trakt.core.profile.sections.favorites.context.show.FavoriteShowContextSheet
 import tv.trakt.trakt.core.profile.sections.favorites.views.FavoriteItemView
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.FilterChip
-import tv.trakt.trakt.ui.components.FilterChipGroup
+import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -131,7 +129,7 @@ internal fun ProfileFavoritesContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onFilterClick: (ListsMediaFilter) -> Unit = {},
+    onFilterClick: (MediaMode) -> Unit = {},
     onShowClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
     onShowLongClick: (Show) -> Unit = {},
@@ -232,27 +230,14 @@ internal fun ProfileFavoritesContent(
 private fun ContentFilters(
     headerPadding: PaddingValues,
     state: ProfileFavoritesState,
-    onFilterClick: (ListsMediaFilter) -> Unit,
+    onFilterClick: (MediaMode) -> Unit,
 ) {
-    FilterChipGroup(
+    MediaModeFilters(
+        selected = state.filter,
+        onClick = onFilterClick,
         paddingHorizontal = headerPadding,
-    ) {
-        for (filter in ListsMediaFilter.entries) {
-            FilterChip(
-                selected = state.filter == filter,
-                text = stringResource(filter.displayRes),
-                leadingContent = {
-                    Icon(
-                        painter = painterResource(filter.iconRes),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier.size(FilterChipDefaults.IconSize),
-                    )
-                },
-                onClick = { onFilterClick(filter) },
-            )
-        }
-    }
+        paddingVertical = PaddingValues(top = 13.dp, bottom = 15.dp),
+    )
 }
 
 @Composable
@@ -278,7 +263,7 @@ private fun ContentLoadingList(
 private fun ContentList(
     listItems: ImmutableList<FavoriteItem>,
     listState: LazyListState = rememberLazyListState(),
-    filter: ListsMediaFilter,
+    filter: MediaMode,
     contentPadding: PaddingValues,
     onShowClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
@@ -339,7 +324,7 @@ private fun ContentList(
 
 @Composable
 private fun ContentEmptyView(
-    filter: ListsMediaFilter,
+    filter: MediaMode,
     modifier: Modifier = Modifier,
     onShowsClick: () -> Unit,
     onMoviesClick: () -> Unit,

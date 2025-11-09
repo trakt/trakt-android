@@ -3,7 +3,6 @@ package tv.trakt.trakt.core.search.views
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -38,7 +37,7 @@ internal fun SearchFiltersList(
                         painter = painterResource(filter.iconRes),
                         contentDescription = null,
                         tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier.size(FilterChipDefaults.IconSize),
+                        modifier = Modifier.size(16.dp),
                     )
                 },
                 onClick = {

@@ -26,22 +26,11 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.interleave
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_ALL_LIMIT
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.model.DiscoverSection
-import tv.trakt.trakt.core.discover.model.DiscoverSection.ANTICIPATED
-import tv.trakt.trakt.core.discover.model.DiscoverSection.POPULAR
-import tv.trakt.trakt.core.discover.model.DiscoverSection.RECOMMENDED
-import tv.trakt.trakt.core.discover.model.DiscoverSection.TRENDING
 import tv.trakt.trakt.core.discover.sections.all.navigation.DiscoverDestination
-import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedMoviesUseCase
-import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedShowsUseCase
-import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularMoviesUseCase
-import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularShowsUseCase
-import tv.trakt.trakt.core.discover.sections.recommended.usecase.GetRecommendedMoviesUseCase
-import tv.trakt.trakt.core.discover.sections.recommended.usecase.GetRecommendedShowsUseCase
-import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingMoviesUseCase
-import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingShowsUseCase
+import tv.trakt.trakt.core.discover.sections.all.usecases.GetAllDiscoverMoviesUseCase
+import tv.trakt.trakt.core.discover.sections.all.usecases.GetAllDiscoverShowsUseCase
 import tv.trakt.trakt.core.main.helpers.MediaModeProvider
 import tv.trakt.trakt.core.main.model.MediaMode
 
@@ -50,18 +39,8 @@ internal class AllDiscoverViewModel(
     savedStateHandle: SavedStateHandle,
     analytics: Analytics,
     private val modeProvider: MediaModeProvider,
-    // Trending
-    private val getTrendingShowsUseCase: GetTrendingShowsUseCase,
-    private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
-    // Anticipated
-    private val getAnticipatedShowsUseCase: GetAnticipatedShowsUseCase,
-    private val getAnticipatedMoviesUseCase: GetAnticipatedMoviesUseCase,
-    // Popular
-    private val getPopularShowsUseCase: GetPopularShowsUseCase,
-    private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
-    // Recommended
-    private val getRecommendedShowsUseCase: GetRecommendedShowsUseCase,
-    private val getRecommendedMoviesUseCase: GetRecommendedMoviesUseCase,
+    private val getShowsUseCase: GetAllDiscoverShowsUseCase,
+    private val getMoviesUseCase: GetAllDiscoverMoviesUseCase,
 ) : ViewModel() {
     private val initialState = AllDiscoverState()
     private val destination = savedStateHandle.toRoute<DiscoverDestination>()
@@ -76,7 +55,12 @@ internal class AllDiscoverViewModel(
     private val loadingMoreState = MutableStateFlow(initialState.loadingMore)
     private val errorState = MutableStateFlow(initialState.error)
 
-    private var pages: Int = 1
+    private var currentPage: Int = 1
+    private val currentFilter: MediaMode
+        get() = when (modeState.value) {
+            MediaMode.MEDIA -> filterState.value
+            else -> modeState.value
+        }
 
     init {
         loadBackground()
@@ -108,11 +92,11 @@ internal class AllDiscoverViewModel(
                 loadLocalData()
 
                 coroutineScope {
-                    val showsAsync = async { getShows() }
-                    val moviesAsync = async { getMovies() }
+                    val showsAsync = async { getShowsUseCase.getShows(destination.source) }
+                    val moviesAsync = async { getMoviesUseCase.getMovies(destination.source) }
 
-                    val shows = if (getCurrentFilter().isMediaOrShows) showsAsync.await() else emptyList()
-                    val movies = if (getCurrentFilter().isMediaOrMovies) moviesAsync.await() else emptyList()
+                    val shows = if (currentFilter.isMediaOrShows) showsAsync.await() else emptyList()
+                    val movies = if (currentFilter.isMediaOrMovies) moviesAsync.await() else emptyList()
 
                     itemsState.update {
                         listOf(shows, movies)
@@ -133,11 +117,11 @@ internal class AllDiscoverViewModel(
 
     private suspend fun loadLocalData() {
         return coroutineScope {
-            val localShowsAsync = async { getLocalShows() }
-            val localMoviesAsync = async { getLocalMovies() }
+            val localShowsAsync = async { getShowsUseCase.getLocalShows(destination.source) }
+            val localMoviesAsync = async { getMoviesUseCase.getLocalMovies(destination.source) }
 
-            val localShows = if (getCurrentFilter().isMediaOrShows) localShowsAsync.await() else emptyList()
-            val localMovies = if (getCurrentFilter().isMediaOrMovies) localMoviesAsync.await() else emptyList()
+            val localShows = if (currentFilter.isMediaOrShows) localShowsAsync.await() else emptyList()
+            val localMovies = if (currentFilter.isMediaOrMovies) localMoviesAsync.await() else emptyList()
 
             if (localShows.isNotEmpty() || localMovies.isNotEmpty()) {
                 itemsState.update {
@@ -166,21 +150,23 @@ internal class AllDiscoverViewModel(
                 loadingMoreState.update { LOADING }
 
                 val showsAsync = async {
-                    getShows(
-                        page = pages + 1,
+                    getShowsUseCase.getShows(
+                        source = destination.source,
+                        page = currentPage + 1,
                         skipLocal = true,
                     )
                 }
 
                 val moviesAsync = async {
-                    getMovies(
-                        page = pages + 1,
+                    getMoviesUseCase.getMovies(
+                        source = destination.source,
+                        page = currentPage + 1,
                         skipLocal = true,
                     )
                 }
 
-                val shows = if (getCurrentFilter().isMediaOrShows) showsAsync.await() else emptyList()
-                val movies = if (getCurrentFilter().isMediaOrMovies) moviesAsync.await() else emptyList()
+                val shows = if (currentFilter.isMediaOrShows) showsAsync.await() else emptyList()
+                val movies = if (currentFilter.isMediaOrMovies) moviesAsync.await() else emptyList()
 
                 val nextData = listOf(shows, movies)
                     .interleave()
@@ -192,7 +178,7 @@ internal class AllDiscoverViewModel(
                         ?.toImmutableList()
                 }
 
-                pages += 1
+                currentPage += 1
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -204,88 +190,9 @@ internal class AllDiscoverViewModel(
         }
     }
 
-    private suspend fun getShows(
-        page: Int = 1,
-        skipLocal: Boolean = false,
-    ): ImmutableList<DiscoverItem> {
-        return when (destination.source) {
-            TRENDING -> getTrendingShowsUseCase.getShows(
-                page = page,
-                limit = DEFAULT_ALL_LIMIT,
-                skipLocal = skipLocal,
-            )
-            ANTICIPATED -> getAnticipatedShowsUseCase.getShows(
-                page = page,
-                limit = DEFAULT_ALL_LIMIT,
-                skipLocal = skipLocal,
-            )
-            POPULAR -> getPopularShowsUseCase.getShows(
-                page = page,
-                limit = DEFAULT_ALL_LIMIT,
-                skipLocal = skipLocal,
-            )
-            RECOMMENDED -> getRecommendedShowsUseCase.getShows(
-                limit = DEFAULT_ALL_LIMIT,
-                skipLocal = skipLocal,
-            )
-        }
-    }
-
-    private suspend fun getMovies(
-        page: Int = 1,
-        skipLocal: Boolean = false,
-    ): ImmutableList<DiscoverItem> {
-        return when (destination.source) {
-            TRENDING -> getTrendingMoviesUseCase.getMovies(
-                page = page,
-                limit = DEFAULT_ALL_LIMIT,
-                skipLocal = skipLocal,
-            )
-            ANTICIPATED -> getAnticipatedMoviesUseCase.getMovies(
-                page = page,
-                limit = DEFAULT_ALL_LIMIT,
-                skipLocal = skipLocal,
-            )
-            POPULAR -> getPopularMoviesUseCase.getMovies(
-                page = page,
-                limit = DEFAULT_ALL_LIMIT,
-                skipLocal = skipLocal,
-            )
-            RECOMMENDED -> getRecommendedMoviesUseCase.getMovies(
-                limit = DEFAULT_ALL_LIMIT,
-                skipLocal = skipLocal,
-            )
-        }
-    }
-
-    private suspend fun getLocalShows(): ImmutableList<DiscoverItem> {
-        return when (destination.source) {
-            TRENDING -> getTrendingShowsUseCase.getLocalShows()
-            ANTICIPATED -> getAnticipatedShowsUseCase.getLocalShows()
-            POPULAR -> getPopularShowsUseCase.getLocalShows()
-            RECOMMENDED -> getRecommendedShowsUseCase.getLocalShows()
-        }
-    }
-
-    private suspend fun getLocalMovies(): ImmutableList<DiscoverItem> {
-        return when (destination.source) {
-            TRENDING -> getTrendingMoviesUseCase.getLocalMovies()
-            ANTICIPATED -> getAnticipatedMoviesUseCase.getLocalMovies()
-            POPULAR -> getPopularMoviesUseCase.getLocalMovies()
-            RECOMMENDED -> getRecommendedMoviesUseCase.getLocalMovies()
-        }
-    }
-
     fun setFilter(filter: MediaMode) {
         filterState.update { filter }
         loadData()
-    }
-
-    private fun getCurrentFilter(): MediaMode {
-        if (modeState.value == MediaMode.MEDIA) {
-            return filterState.value
-        }
-        return modeState.value
     }
 
     val state = combine(

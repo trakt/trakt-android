@@ -32,16 +32,16 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_SECTION_LIMIT
-import tv.trakt.trakt.core.lists.model.ListsMediaFilter
-import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MEDIA
-import tv.trakt.trakt.core.lists.model.ListsMediaFilter.MOVIES
-import tv.trakt.trakt.core.lists.model.ListsMediaFilter.SHOWS
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetShowsWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.filters.GetWatchlistFilterUseCase
+import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
+import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
+import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 
 internal class ListsWatchlistViewModel(
@@ -112,7 +112,9 @@ internal class ListsWatchlistViewModel(
 
                 val filter = loadFilter()
                 val localItems = when (filter) {
-                    MEDIA -> getWatchlistUseCase.getLocalWatchlist(LISTS_SECTION_LIMIT)
+                    MEDIA -> getWatchlistUseCase.getLocalWatchlist(
+                        LISTS_SECTION_LIMIT,
+                    )
                     SHOWS -> getShowsWatchlistUseCase.getLocalWatchlist(
                         LISTS_SECTION_LIMIT,
                     )
@@ -152,7 +154,7 @@ internal class ListsWatchlistViewModel(
         }
     }
 
-    private suspend fun loadFilter(): ListsMediaFilter {
+    private suspend fun loadFilter(): MediaMode {
         val filter = getFilterUseCase.getFilter()
         filterState.update { filter }
         return filter
@@ -170,7 +172,7 @@ internal class ListsWatchlistViewModel(
         return false
     }
 
-    fun setFilter(newFilter: ListsMediaFilter) {
+    fun setFilter(newFilter: MediaMode) {
         if (newFilter == filterState.value || loadingState.value.isLoading || userState.value == null) {
             return
         }
@@ -219,7 +221,7 @@ internal class ListsWatchlistViewModel(
         ListsWatchlistState(
             loading = states[0] as LoadingState,
             items = states[1] as ImmutableList<WatchlistItem>?,
-            filter = states[2] as ListsMediaFilter,
+            filter = states[2] as MediaMode,
             navigateShow = states[3] as TraktId?,
             navigateMovie = states[4] as TraktId?,
             error = states[5] as Exception?,
