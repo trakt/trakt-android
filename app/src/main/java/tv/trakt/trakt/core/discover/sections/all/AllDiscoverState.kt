@@ -11,6 +11,7 @@ import tv.trakt.trakt.core.main.model.MediaMode
 internal data class AllDiscoverState(
     val items: ImmutableList<DiscoverItem>? = null,
     val mode: MediaMode? = null,
+    val filter: MediaMode? = null,
     val type: DiscoverSection? = null,
     val loading: LoadingState = LoadingState.IDLE,
     val loadingMore: LoadingState = LoadingState.IDLE,

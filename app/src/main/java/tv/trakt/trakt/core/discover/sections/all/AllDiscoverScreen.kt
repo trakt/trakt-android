@@ -6,6 +6,8 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -44,6 +46,7 @@ import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -77,6 +80,7 @@ internal fun AllDiscoverScreen(
                 is MovieItem -> contextMovieSheet = it.movie
             }
         },
+        onFilterClick = viewModel::setFilter,
         onBackClick = onNavigateBack,
     )
 
@@ -98,6 +102,7 @@ private fun AllDiscoverScreenContent(
     onLoadMoreData: () -> Unit = {},
     onItemClick: (DiscoverItem) -> Unit = {},
     onItemLongClick: (DiscoverItem) -> Unit = {},
+    onFilterClick: (MediaMode) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
@@ -125,13 +130,26 @@ private fun AllDiscoverScreenContent(
             items = state.items ?: EmptyImmutableList,
             loading = state.loadingMore.isLoading || state.loading.isLoading,
             title = {
-                TitleBar(
-                    mode = state.mode,
-                    type = state.type,
-                    modifier = Modifier
-                        .padding(bottom = 2.dp)
-                        .onClick { onBackClick() },
-                )
+                Column {
+                    TitleBar(
+                        mode = state.mode,
+                        type = state.type,
+                        modifier = Modifier
+                            .padding(bottom = 2.dp)
+                            .onClick { onBackClick() },
+                    )
+
+                    if (state.mode == MediaMode.MEDIA) {
+                        MediaModeFilters(
+                            mode = state.filter,
+                            paddingVertical = PaddingValues(
+                                top = 0.dp,
+                                bottom = 20.dp,
+                            ),
+                            onClick = onFilterClick,
+                        )
+                    }
+                }
             },
             onItemClick = onItemClick,
             onItemLongClick = onItemLongClick,

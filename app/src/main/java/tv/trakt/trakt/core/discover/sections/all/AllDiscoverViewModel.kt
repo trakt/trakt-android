@@ -67,6 +67,7 @@ internal class AllDiscoverViewModel(
     private val destination = savedStateHandle.toRoute<DiscoverDestination>()
 
     private val modeState = MutableStateFlow(modeProvider.getMode())
+    private val filterState = MutableStateFlow(MediaMode.MEDIA)
     private val typeState = MutableStateFlow(destination.source)
 
     private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
@@ -110,8 +111,8 @@ internal class AllDiscoverViewModel(
                     val showsAsync = async { getShows() }
                     val moviesAsync = async { getMovies() }
 
-                    val shows = if (modeState.value.isMediaOrShows) showsAsync.await() else emptyList()
-                    val movies = if (modeState.value.isMediaOrMovies) moviesAsync.await() else emptyList()
+                    val shows = if (getCurrentFilter().isMediaOrShows) showsAsync.await() else emptyList()
+                    val movies = if (getCurrentFilter().isMediaOrMovies) moviesAsync.await() else emptyList()
 
                     itemsState.update {
                         listOf(shows, movies)
@@ -135,8 +136,8 @@ internal class AllDiscoverViewModel(
             val localShowsAsync = async { getLocalShows() }
             val localMoviesAsync = async { getLocalMovies() }
 
-            val localShows = if (modeState.value.isMediaOrShows) localShowsAsync.await() else emptyList()
-            val localMovies = if (modeState.value.isMediaOrMovies) localMoviesAsync.await() else emptyList()
+            val localShows = if (getCurrentFilter().isMediaOrShows) localShowsAsync.await() else emptyList()
+            val localMovies = if (getCurrentFilter().isMediaOrMovies) localMoviesAsync.await() else emptyList()
 
             if (localShows.isNotEmpty() || localMovies.isNotEmpty()) {
                 itemsState.update {
@@ -178,8 +179,8 @@ internal class AllDiscoverViewModel(
                     )
                 }
 
-                val shows = if (modeState.value.isMediaOrShows) showsAsync.await() else emptyList()
-                val movies = if (modeState.value.isMediaOrMovies) moviesAsync.await() else emptyList()
+                val shows = if (getCurrentFilter().isMediaOrShows) showsAsync.await() else emptyList()
+                val movies = if (getCurrentFilter().isMediaOrMovies) moviesAsync.await() else emptyList()
 
                 val nextData = listOf(shows, movies)
                     .interleave()
@@ -275,9 +276,22 @@ internal class AllDiscoverViewModel(
         }
     }
 
+    fun setFilter(filter: MediaMode) {
+        filterState.update { filter }
+        loadData()
+    }
+
+    private fun getCurrentFilter(): MediaMode {
+        if (modeState.value == MediaMode.MEDIA) {
+            return filterState.value
+        }
+        return modeState.value
+    }
+
     val state = combine(
         modeState,
         typeState,
+        filterState,
         backgroundState,
         itemsState,
         loadingState,
@@ -287,11 +301,12 @@ internal class AllDiscoverViewModel(
         AllDiscoverState(
             mode = state[0] as MediaMode,
             type = state[1] as DiscoverSection,
-            backgroundUrl = state[2] as String,
-            items = state[3] as ImmutableList<DiscoverItem>?,
-            loading = state[4] as LoadingState,
-            loadingMore = state[5] as LoadingState,
-            error = state[6] as Exception?,
+            filter = state[2] as MediaMode,
+            backgroundUrl = state[3] as String,
+            items = state[4] as ImmutableList<DiscoverItem>?,
+            loading = state[5] as LoadingState,
+            loadingMore = state[6] as LoadingState,
+            error = state[7] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,
