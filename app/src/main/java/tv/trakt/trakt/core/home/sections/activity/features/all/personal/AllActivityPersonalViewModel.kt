@@ -55,6 +55,7 @@ import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 internal class AllActivityPersonalViewModel(
     savedStateHandle: SavedStateHandle,
     modeManager: MediaModeManager,
+    analytics: Analytics,
     private val getActivityUseCase: GetPersonalActivityUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
@@ -63,7 +64,6 @@ internal class AllActivityPersonalViewModel(
     private val episodeUpdatesSource: EpisodeDetailsUpdates,
     private val movieDetailsUpdates: MovieDetailsUpdates,
     private val sessionManager: SessionManager,
-    analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<AllPersonalActivityDestination>()
     private val initialState = AllActivityState()

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -56,8 +57,10 @@ import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.Episode
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.MovieItem
 import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextContent
 import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextState
+import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.FilterChip
 import tv.trakt.trakt.ui.components.FilterChipGroup
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -95,9 +98,8 @@ internal fun AllActivitySocialScreen(
     AllActivitySocialContent(
         state = state,
         modifier = modifier,
-        onFilterClick = { user ->
-            viewModel.setUserFilter(user)
-        },
+        onUsersFilterClick = viewModel::setUserFilter,
+        onItemsFilterClick = viewModel::setItemsFilter,
         onBackClick = onNavigateBack,
         onLoadMore = {
             // No pagination at the moment.
@@ -145,7 +147,8 @@ private fun TitleBar(modifier: Modifier = Modifier) {
 internal fun AllActivitySocialContent(
     state: AllActivityState,
     modifier: Modifier = Modifier,
-    onFilterClick: (User) -> Unit = {},
+    onUsersFilterClick: (User) -> Unit = {},
+    onItemsFilterClick: (MediaMode) -> Unit = {},
     onBackClick: () -> Unit = {},
     onLoadMore: () -> Unit = {},
     onShowClick: (EpisodeItem) -> Unit = {},
@@ -182,11 +185,13 @@ internal fun AllActivitySocialContent(
         ContentList(
             listState = listState,
             listItems = (state.items ?: emptyList()).toImmutableList(),
-            listFilters = state.usersFilter,
+            listUsersFilters = state.usersFilter,
+            listItemsFilters = state.itemsFilter,
             contentPadding = contentPadding,
             onTopOfList = { headerState.resetScrolled() },
             onEndOfList = onLoadMore,
-            onFilterClick = onFilterClick,
+            onItemsFilterClick = onItemsFilterClick,
+            onUserFilterClick = onUsersFilterClick,
             onBackClick = onBackClick,
             onShowClick = onShowClick,
             onEpisodeClick = onEpisodeClick,
@@ -199,10 +204,12 @@ internal fun AllActivitySocialContent(
 private fun ContentList(
     modifier: Modifier = Modifier,
     listItems: ImmutableList<HomeActivityItem>,
-    listFilters: AllActivityState.UsersFilter,
+    listUsersFilters: AllActivityState.UsersFilter,
+    listItemsFilters: MediaMode?,
     listState: LazyListState,
     contentPadding: PaddingValues,
-    onFilterClick: (User) -> Unit,
+    onUserFilterClick: (User) -> Unit,
+    onItemsFilterClick: (MediaMode) -> Unit,
     onTopOfList: () -> Unit,
     onEndOfList: () -> Unit,
     onBackClick: () -> Unit,
@@ -256,13 +263,13 @@ private fun ContentList(
             )
         }
 
-        if (listFilters.users.isNotEmpty()) {
-            item {
-                ContentFilters(
-                    state = listFilters,
-                    onFilterClick = onFilterClick,
-                )
-            }
+        item {
+            ContentFilters(
+                itemsFilter = listItemsFilters,
+                usersFilter = listUsersFilters,
+                onUserFilterClick = onUserFilterClick,
+                onItemFilterClick = onItemsFilterClick,
+            )
         }
 
         items(
@@ -314,8 +321,10 @@ private fun ContentList(
 
 @Composable
 private fun ContentFilters(
-    state: AllActivityState.UsersFilter,
-    onFilterClick: (User) -> Unit,
+    itemsFilter: MediaMode?,
+    usersFilter: AllActivityState.UsersFilter,
+    onItemFilterClick: (MediaMode) -> Unit,
+    onUserFilterClick: (User) -> Unit,
 ) {
     FilterChipGroup(
         paddingHorizontal = PaddingValues(
@@ -324,11 +333,37 @@ private fun ContentFilters(
         ),
         paddingVertical = PaddingValues(bottom = 22.dp),
     ) {
-        for (user in state.users) {
+        for (filter in MediaMode.entries) {
+            FilterChip(
+                selected = itemsFilter == filter,
+                text = stringResource(filter.displayRes),
+                leadingContent = {
+                    Icon(
+                        painter = painterResource(filter.offIcon),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier
+                            .size(16.dp),
+                    )
+                },
+                onClick = {
+                    onItemFilterClick(filter)
+                },
+            )
+        }
+
+        Box(
+            modifier = Modifier
+                .padding(horizontal = 6.dp)
+                .size(width = 1.25.dp, height = 12.dp)
+                .background(TraktTheme.colors.chipContainer),
+        )
+
+        for (user in usersFilter.users) {
             UserFilterChip(
                 user = user,
-                selected = state.selectedUser?.ids?.trakt == user.ids.trakt,
-                onClick = { onFilterClick(user) },
+                selected = usersFilter.selectedUser?.ids?.trakt == user.ids.trakt,
+                onClick = { onUserFilterClick(user) },
             )
         }
     }

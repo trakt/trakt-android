@@ -13,14 +13,28 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.home.sections.activity.data.local.social.HomeSocialLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
+import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
+import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
+import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
 import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 
 internal class GetSocialActivityUseCase(
     private val remoteSource: UserRemoteDataSource,
     private val localDataSource: HomeSocialLocalDataSource,
 ) {
-    suspend fun getLocalSocialActivity(limit: Int): ImmutableList<HomeActivityItem> {
+    suspend fun getLocalSocialActivity(
+        limit: Int,
+        filter: MediaMode,
+    ): ImmutableList<HomeActivityItem> {
         return localDataSource.getItems()
+            .filter {
+                when (filter) {
+                    MEDIA -> true
+                    MOVIES -> it is HomeActivityItem.MovieItem
+                    SHOWS -> it is HomeActivityItem.EpisodeItem
+                }
+            }
             .sortedWith(
                 compareByDescending<HomeActivityItem> { it.activityAt }
                     .thenByDescending { it.sortId },
@@ -32,6 +46,7 @@ internal class GetSocialActivityUseCase(
     suspend fun getSocialActivity(
         page: Int,
         limit: Int,
+        filter: MediaMode,
     ): ImmutableList<HomeActivityItem> {
         val items = remoteSource.getSocialActivity(
             limit = limit,
@@ -75,17 +90,19 @@ internal class GetSocialActivityUseCase(
                 compareByDescending<HomeActivityItem> { it.activityAt }
                     .thenByDescending { it.sortId },
             )
-            .toImmutableList()
             .also {
-                if (page == 1) {
-                    localDataSource.setItems(
-                        items = it,
-                    )
-                } else {
-                    localDataSource.addItems(
-                        items = it,
-                    )
+                when (page) {
+                    1 -> localDataSource.setItems(it)
+                    else -> localDataSource.addItems(it)
                 }
             }
+            .filter {
+                when (filter) {
+                    MEDIA -> true
+                    MOVIES -> it is HomeActivityItem.MovieItem
+                    SHOWS -> it is HomeActivityItem.EpisodeItem
+                }
+            }
+            .toImmutableList()
     }
 }

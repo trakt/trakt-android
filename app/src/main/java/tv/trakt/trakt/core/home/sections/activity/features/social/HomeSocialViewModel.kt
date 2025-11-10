@@ -5,7 +5,6 @@ package tv.trakt.trakt.core.home.sections.activity.features.social
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,6 +14,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -26,6 +27,7 @@ import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
@@ -35,6 +37,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
+import tv.trakt.trakt.core.main.helpers.MediaModeManager
 
 internal class HomeSocialViewModel(
     private val getSocialActivityUseCase: GetSocialActivityUseCase,
@@ -42,23 +45,27 @@ internal class HomeSocialViewModel(
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
+    private val modeManager: MediaModeManager,
 ) : ViewModel() {
     private val initialState = HomeSocialState()
+    private val initialMode = modeManager.getMode()
 
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
+    private val filterState = MutableStateFlow(initialMode)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
-    private var loadDataJob: Job? = null
+    private var dataJob: Job? = null
     private var processingJob: Job? = null
 
     init {
         loadData()
         observeUser()
+        observeMode()
     }
 
     private fun observeUser() {
@@ -75,9 +82,19 @@ internal class HomeSocialViewModel(
         }
     }
 
+    private fun observeMode() {
+        modeManager.observeMode()
+            .distinctUntilChanged()
+            .onEach { value ->
+                filterState.update { value }
+                loadData()
+            }
+            .launchIn(viewModelScope)
+    }
+
     fun loadData(ignoreErrors: Boolean = false) {
-        loadDataJob?.cancel()
-        loadDataJob = viewModelScope.launch {
+        dataJob?.cancel()
+        dataJob = viewModelScope.launch {
             try {
                 if (loadEmptyIfNeeded()) {
                     return@launch
@@ -85,6 +102,7 @@ internal class HomeSocialViewModel(
 
                 val localItems = getSocialActivityUseCase.getLocalSocialActivity(
                     limit = HOME_SECTION_LIMIT,
+                    filter = filterState.value,
                 )
 
                 if (localItems.isNotEmpty()) {
@@ -95,7 +113,11 @@ internal class HomeSocialViewModel(
                 }
 
                 itemsState.update {
-                    getSocialActivityUseCase.getSocialActivity(1, HOME_SECTION_LIMIT)
+                    getSocialActivityUseCase.getSocialActivity(
+                        page = 1,
+                        limit = HOME_SECTION_LIMIT,
+                        filter = filterState.value,
+                    )
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -106,15 +128,14 @@ internal class HomeSocialViewModel(
                 }
             } finally {
                 loadingState.update { DONE }
+                dataJob = null
             }
         }
     }
 
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {
-            itemsState.update {
-                emptyList<HomeActivityItem>().toImmutableList()
-            }
+            itemsState.update { EmptyImmutableList }
             loadingState.update { DONE }
             return true
         }

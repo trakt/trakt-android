@@ -50,8 +50,7 @@ internal fun MediaModeFilters(
                         painter = painterResource(filter.offIcon),
                         contentDescription = null,
                         tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier
-                            .size(16.dp),
+                        modifier = Modifier.size(16.dp),
                     )
                 },
                 onClick = {
