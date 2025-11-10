@@ -16,11 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
@@ -39,6 +41,8 @@ internal fun ActivityMovieItemView(
     onClick: (TraktId) -> Unit = { },
     onLongClick: (() -> Unit)? = null,
 ) {
+    val uriHandler = LocalUriHandler.current
+
     HorizontalMediaCard(
         title = "",
         more = moreButton,
@@ -56,7 +60,13 @@ internal fun ActivityMovieItemView(
             item.user?.let { user ->
                 Box(
                     contentAlignment = Alignment.CenterEnd,
-                    modifier = Modifier.sizeIn(maxHeight = 26.dp),
+                    modifier = Modifier
+                        .sizeIn(maxHeight = 26.dp)
+                        .onClick {
+                            uriHandler.openUri(
+                                Config.webUserUrl(user.username),
+                            )
+                        },
                 ) {
                     InfoChip(
                         text = user.displayName,
