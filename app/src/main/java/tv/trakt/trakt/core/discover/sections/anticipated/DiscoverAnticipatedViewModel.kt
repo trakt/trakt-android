@@ -21,16 +21,16 @@ import tv.trakt.trakt.common.helpers.extensions.interleave
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedShowsUseCase
-import tv.trakt.trakt.core.main.helpers.MediaModeProvider
+import tv.trakt.trakt.core.main.helpers.MediaModeManager
 
 internal class DiscoverAnticipatedViewModel(
-    private val modeProvider: MediaModeProvider,
+    private val modeManager: MediaModeManager,
     private val getAnticipatedShowsUseCase: GetAnticipatedShowsUseCase,
     private val getAnticipatedMoviesUseCase: GetAnticipatedMoviesUseCase,
 ) : ViewModel() {
     private val initialState = DiscoverAnticipatedState()
 
-    private val modeState = MutableStateFlow(modeProvider.getMode())
+    private val modeState = MutableStateFlow(modeManager.getMode())
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
@@ -43,7 +43,7 @@ internal class DiscoverAnticipatedViewModel(
     }
 
     private fun observeMode() {
-        modeProvider.observeMode()
+        modeManager.observeMode()
             .onEach { value ->
                 modeState.update { value }
                 loadData()

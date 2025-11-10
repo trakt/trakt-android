@@ -61,7 +61,6 @@ import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
 import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
 import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -100,7 +99,6 @@ internal fun ListsWatchlistView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        onFilterClick = viewModel::setFilter,
         onShowsClick = onShowsClick,
         onMoviesClick = onMoviesClick,
         onShowClick = { viewModel.navigateToShow(it) },
@@ -145,7 +143,6 @@ internal fun ListWatchlistContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onFilterClick: (MediaMode) -> Unit = {},
     onShowsClick: () -> Unit = {},
     onShowClick: (Show) -> Unit = {},
     onMoviesClick: () -> Unit = {},
@@ -188,15 +185,9 @@ internal fun ListWatchlistContent(
             }
         }
 
-        if (state.user != null) {
-            ContentFilters(
-                state = state,
-                headerPadding = headerPadding,
-                onFilterClick = onFilterClick,
-            )
-        } else {
-            Spacer(modifier = Modifier.height(TraktTheme.spacing.mainRowHeaderSpace))
-        }
+        Spacer(
+            Modifier.height(TraktTheme.spacing.mainRowHeaderSpace),
+        )
 
         Crossfade(
             targetState = state.loading,
@@ -254,20 +245,6 @@ internal fun ListWatchlistContent(
             }
         }
     }
-}
-
-@Composable
-private fun ContentFilters(
-    headerPadding: PaddingValues,
-    state: ListsWatchlistState,
-    onFilterClick: (MediaMode) -> Unit,
-) {
-    MediaModeFilters(
-        selected = state.filter,
-        onClick = onFilterClick,
-        paddingHorizontal = headerPadding,
-        paddingVertical = PaddingValues(top = 13.dp, bottom = 15.dp),
-    )
 }
 
 @Composable

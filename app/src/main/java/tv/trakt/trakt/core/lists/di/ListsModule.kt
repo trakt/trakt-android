@@ -45,7 +45,6 @@ import tv.trakt.trakt.core.lists.sections.watchlist.features.context.shows.Watch
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetShowsWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetWatchlistUseCase
-import tv.trakt.trakt.core.lists.sections.watchlist.usecases.filters.GetWatchlistFilterUseCase
 import tv.trakt.trakt.core.lists.sheets.create.CreateListViewModel
 import tv.trakt.trakt.core.lists.sheets.create.usecases.CreateListUseCase
 import tv.trakt.trakt.core.lists.sheets.edit.EditListViewModel
@@ -99,11 +98,11 @@ internal val listsModule = module {
         )
     }
 
-    factory {
-        GetWatchlistFilterUseCase(
-            dataStore = get(named(LISTS_PREFERENCES)),
-        )
-    }
+//    factory {
+//        GetWatchlistFilterUseCase(
+//            dataStore = get(named(LISTS_PREFERENCES)),
+//        )
+//    }
 
     factory {
         GetPersonalListsUseCase(
@@ -168,11 +167,11 @@ internal val listsModule = module {
             getWatchlistUseCase = get(),
             getShowsWatchlistUseCase = get(),
             getMoviesWatchlistUseCase = get(),
-            getFilterUseCase = get(),
             userWatchlistSource = get(),
             allWatchlistSource = get(),
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
+            modeManager = get(),
             sessionManager = get(),
         )
     }
@@ -184,7 +183,6 @@ internal val listsModule = module {
             getHomeWatchlistUseCase = get(),
             getShowsWatchlistUseCase = get(),
             getMoviesWatchlistUseCase = get(),
-            getFilterUseCase = get(),
             allWatchlistLocalDataSource = get(),
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
@@ -193,6 +191,7 @@ internal val listsModule = module {
             showUpdatesSource = get(),
             episodeUpdatesSource = get(),
             movieDetailsUpdates = get(),
+            modeManager = get(),
             sessionManager = get(),
             analytics = get(),
         )

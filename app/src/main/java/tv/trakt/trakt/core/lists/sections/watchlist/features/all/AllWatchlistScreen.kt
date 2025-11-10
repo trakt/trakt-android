@@ -272,7 +272,7 @@ private fun ContentList(
             )
         }
 
-        if (listFilter != null && listItems.isNotEmpty() && !loading) {
+        if (!homeWatchlist && listFilter != null && listItems.isNotEmpty() && !loading) {
             item {
                 ContentFilters(
                     watchlistFilter = listFilter,

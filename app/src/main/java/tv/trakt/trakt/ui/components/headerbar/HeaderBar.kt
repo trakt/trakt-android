@@ -52,7 +52,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.core.auth.ConfigAuth
-import tv.trakt.trakt.core.main.helpers.MediaModeProvider
+import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaModeButtons
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
@@ -77,7 +77,7 @@ internal fun HeaderBar(
     userVip: Boolean = false,
     userLoading: Boolean = false,
 ) {
-    val mediaMode: MediaModeProvider = koinInject()
+    val mediaMode: MediaModeManager = koinInject()
     val currentMediaMode = remember { mediaMode.getMode() }
 
     val scope = rememberCoroutineScope()

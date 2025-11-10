@@ -43,7 +43,7 @@ internal val discoverModule = module {
         AllDiscoverViewModel(
             savedStateHandle = get(),
             analytics = get(),
-            modeProvider = get(),
+            modeManager = get(),
             getShowsUseCase = get(),
             getMoviesUseCase = get(),
         )
@@ -51,7 +51,7 @@ internal val discoverModule = module {
 
     viewModel {
         DiscoverTrendingViewModel(
-            modeProvider = get(),
+            modeManager = get(),
             getTrendingShowsUseCase = get(named("defaultTrendingShowsUseCase")),
             getTrendingMoviesUseCase = get(named("defaultTrendingMoviesUseCase")),
         )
@@ -59,7 +59,7 @@ internal val discoverModule = module {
 
     viewModel {
         DiscoverAnticipatedViewModel(
-            modeProvider = get(),
+            modeManager = get(),
             getAnticipatedShowsUseCase = get(named("defaultAnticipatedShowsUseCase")),
             getAnticipatedMoviesUseCase = get(named("defaultAnticipatedMoviesUseCase")),
         )
@@ -67,7 +67,7 @@ internal val discoverModule = module {
 
     viewModel {
         DiscoverPopularViewModel(
-            modeProvider = get(),
+            modeManager = get(),
             getPopularShowsUseCase = get(named("defaultPopularShowsUseCase")),
             getPopularMoviesUseCase = get(named("defaultPopularMoviesUseCase")),
         )
@@ -75,7 +75,7 @@ internal val discoverModule = module {
 
     viewModel {
         DiscoverRecommendedViewModel(
-            modeProvider = get(),
+            modeManager = get(),
             getRecommendedShowsUseCase = get(named("defaultRecommendedShowsUseCase")),
             getRecommendedMoviesUseCase = get(named("defaultRecommendedMoviesUseCase")),
         )

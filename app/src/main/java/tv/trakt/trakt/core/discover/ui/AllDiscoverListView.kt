@@ -39,7 +39,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun AllDiscoverListView(
     state: LazyListState,
-    mode: MediaMode,
+    filter: MediaMode,
     items: ImmutableList<DiscoverItem>,
     modifier: Modifier = Modifier,
     title: @Composable (() -> Unit)? = null,
@@ -97,7 +97,7 @@ internal fun AllDiscoverListView(
 
         listItems(
             items = items,
-            mediaIcon = (mode == MediaMode.MEDIA),
+            mediaIcon = (filter == MediaMode.MEDIA),
             onClick = onItemClick,
             onLongClick = onItemLongClick,
         )
@@ -130,7 +130,11 @@ private fun LazyListScope.listItems(
                 onClick = onClick?.let { { it(item) } },
                 onLongClick = onLongClick?.let { { it(item) } },
                 modifier = Modifier
-                    .padding(bottom = TraktTheme.spacing.mainListVerticalSpace),
+                    .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                    .animateItem(
+                        fadeInSpec = null,
+                        fadeOutSpec = null,
+                    ),
             )
             is MovieItem -> MovieListItem(
                 item = item,
@@ -138,7 +142,11 @@ private fun LazyListScope.listItems(
                 onClick = onClick?.let { { it(item) } },
                 onLongClick = onLongClick?.let { { it(item) } },
                 modifier = Modifier
-                    .padding(bottom = TraktTheme.spacing.mainListVerticalSpace),
+                    .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                    .animateItem(
+                        fadeInSpec = null,
+                        fadeOutSpec = null,
+                    ),
             )
         }
     }
@@ -222,7 +230,7 @@ private fun AllDiscoverListViewPreview() {
     TraktTheme {
         AllDiscoverListView(
             state = LazyListState(),
-            mode = MediaMode.MEDIA,
+            filter = MediaMode.MEDIA,
             items = listOf(
                 ShowItem(
                     show = PreviewData.show1,

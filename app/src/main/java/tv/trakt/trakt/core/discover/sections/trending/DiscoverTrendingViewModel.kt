@@ -21,16 +21,16 @@ import tv.trakt.trakt.common.helpers.extensions.interleave
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingShowsUseCase
-import tv.trakt.trakt.core.main.helpers.MediaModeProvider
+import tv.trakt.trakt.core.main.helpers.MediaModeManager
 
 internal class DiscoverTrendingViewModel(
-    private val modeProvider: MediaModeProvider,
+    private val modeManager: MediaModeManager,
     private val getTrendingShowsUseCase: GetTrendingShowsUseCase,
     private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
 ) : ViewModel() {
     private val initialState = DiscoverTrendingState()
 
-    private val modeState = MutableStateFlow(modeProvider.getMode())
+    private val modeState = MutableStateFlow(modeManager.getMode())
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
@@ -43,7 +43,7 @@ internal class DiscoverTrendingViewModel(
     }
 
     private fun observeMode() {
-        modeProvider.observeMode()
+        modeManager.observeMode()
             .onEach { value ->
                 modeState.update { value }
                 loadData()

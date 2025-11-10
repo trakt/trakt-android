@@ -29,8 +29,8 @@ import tv.trakt.trakt.analytics.implementation.FirebaseAnalyticsRatings
 import tv.trakt.trakt.analytics.implementation.FirebaseAnalyticsReactions
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
 import tv.trakt.trakt.core.main.MainViewModel
-import tv.trakt.trakt.core.main.helpers.DefaultMediaModeProvider
-import tv.trakt.trakt.core.main.helpers.MediaModeProvider
+import tv.trakt.trakt.core.main.helpers.DefaultMediaModeManager
+import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
 import tv.trakt.trakt.core.main.usecases.HalloweenUseCase
 
@@ -43,8 +43,8 @@ internal val mainModule = module {
         )
     }
 
-    single<MediaModeProvider> {
-        DefaultMediaModeProvider(
+    single<MediaModeManager> {
+        DefaultMediaModeManager(
             dataStore = get(named(MAIN_PREFERENCES)),
         )
     }

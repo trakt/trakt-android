@@ -46,7 +46,7 @@ import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.MovieIte
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetShowsWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetWatchlistUseCase
-import tv.trakt.trakt.core.lists.sections.watchlist.usecases.filters.GetWatchlistFilterUseCase
+import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
 import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
@@ -60,11 +60,11 @@ import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 @OptIn(FlowPreview::class)
 internal class AllWatchlistViewModel(
     savedStateHandle: SavedStateHandle,
+    modeManager: MediaModeManager,
     private val getWatchlistUseCase: GetWatchlistUseCase,
     private val getHomeWatchlistUseCase: GetHomeWatchlistUseCase,
     private val getShowsWatchlistUseCase: GetShowsWatchlistUseCase,
     private val getMoviesWatchlistUseCase: GetMoviesWatchlistUseCase,
-    private val getFilterUseCase: GetWatchlistFilterUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val updateMovieHistoryUseCase: AddHomeHistoryUseCase,
     private val allWatchlistLocalDataSource: AllWatchlistLocalDataSource,
@@ -79,11 +79,12 @@ internal class AllWatchlistViewModel(
     private val destination = savedStateHandle.toRoute<ListsWatchlistDestination>()
 
     private val initialState = AllWatchlistState()
+    private val initialMode = modeManager.getMode()
 
     private val isHomeWatchlist = MutableStateFlow(destination.homeWatchlist)
     private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val itemsState = MutableStateFlow(initialState.items)
-    private val filterState = MutableStateFlow(initialState.filter)
+    private val filterState = MutableStateFlow(initialMode)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
@@ -135,8 +136,8 @@ internal class AllWatchlistViewModel(
                 }
 
                 val filter = when {
-                    !destination.homeWatchlist -> loadFilter()
-                    else -> null
+                    destination.homeWatchlist -> MOVIES
+                    else -> filterState.value
                 }
 
                 val localItems = when {
@@ -147,7 +148,6 @@ internal class AllWatchlistViewModel(
                         MEDIA -> getWatchlistUseCase.getLocalWatchlist()
                         SHOWS -> getShowsWatchlistUseCase.getLocalWatchlist()
                         MOVIES -> getMoviesWatchlistUseCase.getLocalWatchlist()
-                        else -> emptyList<WatchlistItem>().toImmutableList()
                     }
                 }
 
@@ -170,7 +170,6 @@ internal class AllWatchlistViewModel(
                             MEDIA -> getWatchlistUseCase.getWatchlist()
                             SHOWS -> getShowsWatchlistUseCase.getWatchlist()
                             MOVIES -> getMoviesWatchlistUseCase.getWatchlist()
-                            else -> emptyList<WatchlistItem>().toImmutableList()
                         }
                     }
                 }
@@ -185,12 +184,6 @@ internal class AllWatchlistViewModel(
                 loadingState.update { DONE }
             }
         }
-    }
-
-    private suspend fun loadFilter(): MediaMode {
-        val filter = getFilterUseCase.getFilter()
-        filterState.update { filter }
-        return filter
     }
 
     private suspend fun loadEmptyIfNeeded(): Boolean {
@@ -210,8 +203,7 @@ internal class AllWatchlistViewModel(
             return
         }
         viewModelScope.launch {
-            getFilterUseCase.setFilter(newFilter)
-            loadFilter()
+            filterState.update { newFilter }
             loadData(localOnly = true)
         }
     }

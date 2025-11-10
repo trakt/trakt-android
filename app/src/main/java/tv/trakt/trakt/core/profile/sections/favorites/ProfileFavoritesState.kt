@@ -12,7 +12,7 @@ import tv.trakt.trakt.core.profile.model.FavoriteItem
 internal data class ProfileFavoritesState(
     val user: User? = null,
     val items: ImmutableList<FavoriteItem>? = null,
-    val filter: MediaMode = MediaMode.MEDIA,
+    val filter: MediaMode? = null,
     val navigateShow: TraktId? = null,
     val navigateMovie: TraktId? = null,
     val loading: LoadingState = LoadingState.IDLE,

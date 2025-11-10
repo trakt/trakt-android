@@ -6,6 +6,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -22,6 +25,16 @@ internal fun MediaModeFilters(
     paddingVertical: PaddingValues = PaddingValues.Zero,
     onClick: (MediaMode) -> Unit = { _ -> },
 ) {
+    val initialSelected = remember {
+        mutableStateOf(selected)
+    }
+
+    LaunchedEffect(selected) {
+        if (selected != null) {
+            initialSelected.value = selected
+        }
+    }
+
     FilterChipGroup(
         paddingHorizontal = paddingHorizontal,
         paddingVertical = paddingVertical,
@@ -30,6 +43,7 @@ internal fun MediaModeFilters(
         for (filter in MediaMode.entries) {
             FilterChip(
                 selected = selected == filter,
+                animated = initialSelected.value != null,
                 text = stringResource(filter.displayRes),
                 leadingContent = {
                     Icon(

@@ -14,9 +14,9 @@ import tv.trakt.trakt.core.main.model.MediaMode
 
 private val KEY_MAIN_MODE = stringPreferencesKey("key_main_mode")
 
-internal class DefaultMediaModeProvider(
+internal class DefaultMediaModeManager(
     private val dataStore: DataStore<Preferences>,
-) : MediaModeProvider {
+) : MediaModeManager {
     private var currentMode = runBlocking {
         val data = dataStore.data.first()
         val modeName = data[KEY_MAIN_MODE] ?: MediaMode.MEDIA.name

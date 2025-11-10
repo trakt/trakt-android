@@ -126,7 +126,7 @@ private fun AllDiscoverScreenContent(
 
         AllDiscoverListView(
             state = listState,
-            mode = state.mode ?: MediaMode.MEDIA,
+            filter = state.filter ?: MediaMode.MEDIA,
             items = state.items ?: EmptyImmutableList,
             loading = state.loadingMore.isLoading || state.loading.isLoading,
             title = {
@@ -139,16 +139,14 @@ private fun AllDiscoverScreenContent(
                             .onClick { onBackClick() },
                     )
 
-                    if (state.mode == MediaMode.MEDIA) {
-                        MediaModeFilters(
-                            selected = state.filter,
-                            paddingVertical = PaddingValues(
-                                top = 0.dp,
-                                bottom = 20.dp,
-                            ),
-                            onClick = onFilterClick,
-                        )
-                    }
+                    MediaModeFilters(
+                        selected = state.filter,
+                        paddingVertical = PaddingValues(
+                            top = 0.dp,
+                            bottom = 20.dp,
+                        ),
+                        onClick = onFilterClick,
+                    )
                 }
             },
             onItemClick = onItemClick,
@@ -182,7 +180,7 @@ private fun TitleBar(
         )
         if (mode != null && type != null) {
             Text(
-                text = stringResource(type.getTitle(mode)),
+                text = stringResource(type.getTitle()),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading5,
             )

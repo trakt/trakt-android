@@ -219,7 +219,7 @@ private fun TraktMenuBarContent(
                         translationY = -1.dp.toPx()
                     }
                     .padding(
-                        start = 22.5.dp,
+                        start = 22.dp,
                         end = 26.dp,
                     ),
             )
@@ -235,8 +235,8 @@ fun ProfileItem(
     userAvatar: String? = null,
     onClick: () -> Unit = {},
 ) {
-    val size = 28.dp
-    val border = (1.9).dp
+    val size = 26.dp
+    val border = (1.6).dp
     Box(
         modifier = modifier
             .size(size)

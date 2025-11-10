@@ -204,7 +204,7 @@ internal class ProfileFavoritesViewModel(
         ProfileFavoritesState(
             loading = states[0] as LoadingState,
             items = states[1] as ImmutableList<FavoriteItem>?,
-            filter = states[2] as MediaMode,
+            filter = states[2] as MediaMode?,
             navigateShow = states[3] as TraktId?,
             navigateMovie = states[4] as TraktId?,
             error = states[5] as Exception?,

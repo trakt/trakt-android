@@ -43,6 +43,7 @@ internal fun FilterChip(
     selected: Boolean,
     text: String,
     modifier: Modifier = Modifier,
+    animated: Boolean = true,
     leadingContent: @Composable (() -> Unit)? = null,
     endContent: @Composable (() -> Unit)? = null,
     paddingHorizontal: PaddingValues = PaddingValues(
@@ -76,12 +77,16 @@ internal fun FilterChip(
             )
             .padding(paddingHorizontal),
     ) {
-        AnimatedVisibility(
-            visible = selected && leadingContent != null,
-            enter = fadeIn(tween(150)) + expandHorizontally(tween(150)),
-            exit = fadeOut(tween(150)) + shrinkHorizontally(tween(150)),
-        ) {
-            leadingContent?.invoke()
+        if (animated) {
+            AnimatedVisibility(
+                visible = selected && leadingContent != null,
+                enter = fadeIn(tween(150)) + expandHorizontally(tween(150)),
+                exit = fadeOut(tween(150)) + shrinkHorizontally(tween(150)),
+            ) {
+                leadingContent?.invoke()
+            }
+        } else if (selected && leadingContent != null) {
+            leadingContent.invoke()
         }
 
         Text(
@@ -94,12 +99,16 @@ internal fun FilterChip(
                 .padding(start = 4.dp),
         )
 
-        AnimatedVisibility(
-            visible = selected && endContent != null,
-            enter = fadeIn(tween(150, delayMillis = 100)) + expandHorizontally(tween(150, delayMillis = 100)),
-            exit = fadeOut(tween(150)) + shrinkHorizontally(tween(150)),
-        ) {
-            endContent?.invoke()
+        if (animated) {
+            AnimatedVisibility(
+                visible = selected && endContent != null,
+                enter = fadeIn(tween(150, delayMillis = 100)) + expandHorizontally(tween(150, delayMillis = 100)),
+                exit = fadeOut(tween(150)) + shrinkHorizontally(tween(150)),
+            ) {
+                endContent?.invoke()
+            }
+        } else if (selected && endContent != null) {
+            endContent.invoke()
         }
     }
 }

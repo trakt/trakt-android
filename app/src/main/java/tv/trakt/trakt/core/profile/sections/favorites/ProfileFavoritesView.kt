@@ -263,7 +263,7 @@ private fun ContentLoadingList(
 private fun ContentList(
     listItems: ImmutableList<FavoriteItem>,
     listState: LazyListState = rememberLazyListState(),
-    filter: MediaMode,
+    filter: MediaMode?,
     contentPadding: PaddingValues,
     onShowClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
@@ -324,7 +324,7 @@ private fun ContentList(
 
 @Composable
 private fun ContentEmptyView(
-    filter: MediaMode,
+    filter: MediaMode?,
     modifier: Modifier = Modifier,
     onShowsClick: () -> Unit,
     onMoviesClick: () -> Unit,
@@ -373,6 +373,7 @@ private fun ContentEmptyView(
             onClick = onMoviesClick,
             modifier = modifier,
         )
+        else -> Unit
     }
 }
 
