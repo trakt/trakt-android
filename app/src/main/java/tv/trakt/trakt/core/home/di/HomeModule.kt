@@ -195,11 +195,13 @@ internal val homeModule = module {
             movieDetailsUpdates = get(),
             movieLocalDataSource = get(),
             sessionManager = get(),
+            modeManager = get(),
         )
     }
 
     viewModel {
         AllActivityPersonalViewModel(
+            savedStateHandle = get(),
             getActivityUseCase = get(),
             showLocalDataSource = get(),
             episodeLocalDataSource = get(),
@@ -208,6 +210,7 @@ internal val homeModule = module {
             episodeUpdatesSource = get(),
             movieDetailsUpdates = get(),
             sessionManager = get(),
+            modeManager = get(),
             analytics = get(),
         )
     }

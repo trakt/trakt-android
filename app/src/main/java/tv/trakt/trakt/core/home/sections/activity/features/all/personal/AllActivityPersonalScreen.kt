@@ -59,8 +59,10 @@ import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.MovieIt
 import tv.trakt.trakt.core.home.sections.activity.sheets.HomeActivityItemSheet
 import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextContent
 import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextState
+import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -120,6 +122,7 @@ internal fun AllActivityPersonalScreen(
         onMovieClick = { movie ->
             viewModel.navigateToMovie(movie)
         },
+        onFilterClick = viewModel::setFilter,
     )
 
     HomeActivityItemSheet(
@@ -163,6 +166,7 @@ internal fun AllActivityPersonalContent(
     onShowClick: (EpisodeItem) -> Unit = {},
     onEpisodeClick: (EpisodeItem) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
+    onFilterClick: (MediaMode) -> Unit,
 ) {
     val headerState = rememberHeaderState()
     val listState = rememberLazyListState(
@@ -195,6 +199,7 @@ internal fun AllActivityPersonalContent(
 
         ContentList(
             listState = listState,
+            listFilter = state.itemsFilter,
             listItems = (state.items ?: emptyList()).toImmutableList(),
             contentPadding = contentPadding,
             loadingMore = state.loadingMore.isLoading,
@@ -205,6 +210,7 @@ internal fun AllActivityPersonalContent(
             onShowClick = onShowClick,
             onEpisodeClick = onEpisodeClick,
             onMovieClick = onMovieClick,
+            onFilterClick = onFilterClick,
         )
     }
 }
@@ -214,12 +220,14 @@ private fun ContentList(
     modifier: Modifier = Modifier,
     listItems: ImmutableList<HomeActivityItem>,
     listState: LazyListState,
+    listFilter: MediaMode?,
     contentPadding: PaddingValues,
     loadingMore: Boolean,
     onTopOfList: () -> Unit,
     onEndOfList: () -> Unit,
     onLongClick: (HomeActivityItem) -> Unit,
     onBackClick: () -> Unit,
+    onFilterClick: (MediaMode) -> Unit,
     onShowClick: (EpisodeItem) -> Unit,
     onEpisodeClick: (EpisodeItem) -> Unit,
     onMovieClick: (Movie) -> Unit,
@@ -264,6 +272,15 @@ private fun ContentList(
                         onBackClick()
                     },
             )
+        }
+
+        if (listFilter != null) {
+            item {
+                ContentFilters(
+                    selectedFilter = listFilter,
+                    onFilterClick = onFilterClick,
+                )
+            }
         }
 
         items(
@@ -314,6 +331,21 @@ private fun ContentList(
             }
         }
     }
+}
+
+@Composable
+private fun ContentFilters(
+    selectedFilter: MediaMode,
+    onFilterClick: (MediaMode) -> Unit,
+) {
+    MediaModeFilters(
+        selected = selectedFilter,
+        onClick = onFilterClick,
+        paddingVertical = PaddingValues(
+            top = 0.dp,
+            bottom = 19.dp,
+        ),
+    )
 }
 
 @Preview(

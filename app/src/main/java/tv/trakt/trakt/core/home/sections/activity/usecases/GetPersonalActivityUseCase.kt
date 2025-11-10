@@ -12,15 +12,28 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
+import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
+import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
+import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
 import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 
-// TODO This should not be split. Use single history once API is fixed.
 internal class GetPersonalActivityUseCase(
     private val remoteUserSource: UserRemoteDataSource,
     private val localDataSource: HomePersonalLocalDataSource,
 ) {
-    suspend fun getLocalPersonalActivity(limit: Int): ImmutableList<HomeActivityItem> {
+    suspend fun getLocalPersonalActivity(
+        limit: Int,
+        filter: MediaMode,
+    ): ImmutableList<HomeActivityItem> {
         return localDataSource.getItems()
+            .filter {
+                when (filter) {
+                    SHOWS -> it is HomeActivityItem.EpisodeItem
+                    MOVIES -> it is HomeActivityItem.MovieItem
+                    MEDIA -> true
+                }
+            }
             .sortedByDescending { it.activityAt }
             .take(limit)
             .toImmutableList()
@@ -29,6 +42,7 @@ internal class GetPersonalActivityUseCase(
     suspend fun getPersonalActivity(
         page: Int = 1,
         limit: Int,
+        filter: MediaMode,
     ): ImmutableList<HomeActivityItem> {
         return coroutineScope {
             val remoteEpisodesAsync = async {
@@ -74,8 +88,6 @@ internal class GetPersonalActivityUseCase(
                 }
 
             return@coroutineScope (remoteEpisodes + remoteMovies)
-                .sortedByDescending { it.activityAt }
-                .toImmutableList()
                 .also {
                     if (page == 1) {
                         localDataSource.setItems(
@@ -89,6 +101,15 @@ internal class GetPersonalActivityUseCase(
                         )
                     }
                 }
+                .filter {
+                    when (filter) {
+                        SHOWS -> it is HomeActivityItem.EpisodeItem
+                        MOVIES -> it is HomeActivityItem.MovieItem
+                        MEDIA -> true
+                    }
+                }
+                .sortedByDescending { it.activityAt }
+                .toImmutableList()
         }
     }
 }

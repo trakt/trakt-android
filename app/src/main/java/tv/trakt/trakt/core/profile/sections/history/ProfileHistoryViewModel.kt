@@ -37,6 +37,7 @@ import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.features.all.data.local.AllActivityLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
+import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
@@ -98,6 +99,7 @@ internal class ProfileHistoryViewModel(
 
                 val localItems = getPersonalActivityUseCase.getLocalPersonalActivity(
                     limit = HOME_SECTION_LIMIT,
+                    filter = MediaMode.MEDIA,
                 )
 
                 if (localItems.isNotEmpty()) {
@@ -108,7 +110,11 @@ internal class ProfileHistoryViewModel(
                 }
 
                 itemsState.update {
-                    getPersonalActivityUseCase.getPersonalActivity(1, HOME_SECTION_LIMIT)
+                    getPersonalActivityUseCase.getPersonalActivity(
+                        page = 1,
+                        limit = HOME_SECTION_LIMIT,
+                        filter = MediaMode.MEDIA,
+                    )
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {

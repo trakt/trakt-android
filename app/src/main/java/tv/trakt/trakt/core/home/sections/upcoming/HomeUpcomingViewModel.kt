@@ -74,6 +74,7 @@ internal class HomeUpcomingViewModel(
 
     private fun observeMode() {
         modeManager.observeMode()
+            .distinctUntilChanged()
             .onEach { value ->
                 filterState.update { value }
                 loadData()

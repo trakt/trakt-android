@@ -1,7 +1,11 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package tv.trakt.trakt.core.home.sections.activity.features.all.personal
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
@@ -10,7 +14,6 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -38,8 +41,11 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.features.all.AllActivityState
+import tv.trakt.trakt.core.home.sections.activity.features.all.navigation.AllPersonalActivityDestination
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
+import tv.trakt.trakt.core.main.helpers.MediaModeManager
+import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
@@ -47,6 +53,8 @@ import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 
 @OptIn(FlowPreview::class)
 internal class AllActivityPersonalViewModel(
+    savedStateHandle: SavedStateHandle,
+    modeManager: MediaModeManager,
     private val getActivityUseCase: GetPersonalActivityUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
@@ -57,19 +65,29 @@ internal class AllActivityPersonalViewModel(
     private val sessionManager: SessionManager,
     analytics: Analytics,
 ) : ViewModel() {
+    private val destination = savedStateHandle.toRoute<AllPersonalActivityDestination>()
     private val initialState = AllActivityState()
+
+    private val filterState = MutableStateFlow(
+        when {
+            destination.filtersEnabled -> modeManager.getMode()
+            else -> MediaMode.MEDIA
+        },
+    )
 
     private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val itemsState = MutableStateFlow(initialState.items)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
+
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMoreState = MutableStateFlow(IDLE)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var pages: Int = 1
     private var hasMoreData: Boolean = false
+    private var dataJob: Job? = null
     private var processingJob: Job? = null
 
     init {
@@ -104,7 +122,7 @@ internal class AllActivityPersonalViewModel(
 
     private fun loadData(ignoreErrors: Boolean = false) {
         clear()
-        viewModelScope.launch {
+        dataJob = viewModelScope.launch {
             if (loadEmptyIfNeeded()) {
                 return@launch
             }
@@ -112,6 +130,7 @@ internal class AllActivityPersonalViewModel(
             try {
                 val localItems = getActivityUseCase.getLocalPersonalActivity(
                     limit = HOME_ALL_LIMIT,
+                    filter = filterState.value,
                 )
                 if (localItems.isNotEmpty()) {
                     itemsState.update { localItems }
@@ -123,6 +142,7 @@ internal class AllActivityPersonalViewModel(
                 val remoteItems = getActivityUseCase.getPersonalActivity(
                     page = 1,
                     limit = HOME_ALL_LIMIT,
+                    filter = filterState.value,
                 )
                 itemsState.update { remoteItems }
 
@@ -136,6 +156,7 @@ internal class AllActivityPersonalViewModel(
                 }
             } finally {
                 loadingState.update { DONE }
+                dataJob = null
             }
         }
     }
@@ -156,6 +177,7 @@ internal class AllActivityPersonalViewModel(
                 val nextData = getActivityUseCase.getPersonalActivity(
                     page = pages + 1,
                     limit = HOME_ALL_LIMIT,
+                    filter = filterState.value,
                 )
 
                 itemsState.update { items ->
@@ -182,6 +204,13 @@ internal class AllActivityPersonalViewModel(
         itemsState.update {
             it?.filterNot { existingItem -> existingItem.id == item.id }
                 ?.toImmutableList()
+        }
+    }
+
+    fun setFilter(newFilter: MediaMode) {
+        viewModelScope.launch {
+            filterState.update { newFilter }
+            loadData()
         }
     }
 
@@ -254,12 +283,13 @@ internal class AllActivityPersonalViewModel(
     private fun clear() {
         pages = 1
         hasMoreData = true
+        dataJob?.cancel()
     }
 
-    @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<AllActivityState> = combine(
+    val state = combine(
         backgroundState,
         itemsState,
+        filterState,
         navigateShow,
         navigateEpisode,
         navigateMovie,
@@ -270,12 +300,13 @@ internal class AllActivityPersonalViewModel(
         AllActivityState(
             backgroundUrl = state[0] as String,
             items = state[1] as ImmutableList<HomeActivityItem>?,
-            navigateShow = state[2] as TraktId?,
-            navigateEpisode = state[3] as Pair<TraktId, Episode>?,
-            navigateMovie = state[4] as TraktId?,
-            loading = state[5] as LoadingState,
-            loadingMore = state[6] as LoadingState,
-            error = state[7] as Exception?,
+            itemsFilter = state[2] as MediaMode?,
+            navigateShow = state[3] as TraktId?,
+            navigateEpisode = state[4] as Pair<TraktId, Episode>?,
+            navigateMovie = state[5] as TraktId?,
+            loading = state[6] as LoadingState,
+            loadingMore = state[7] as LoadingState,
+            error = state[8] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

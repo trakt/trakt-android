@@ -10,7 +10,9 @@ import tv.trakt.trakt.core.home.sections.activity.features.all.personal.AllActiv
 import tv.trakt.trakt.core.home.sections.activity.features.all.social.AllActivitySocialScreen
 
 @Serializable
-internal data object AllPersonalActivityDestination
+internal data class AllPersonalActivityDestination(
+    val filtersEnabled: Boolean,
+)
 
 @Serializable
 internal data object AllSocialActivityDestination
@@ -47,8 +49,12 @@ internal fun NavGraphBuilder.homeActivitySocialScreen(
     }
 }
 
-internal fun NavController.navigateToAllActivityPersonal() {
-    navigate(route = AllPersonalActivityDestination)
+internal fun NavController.navigateToAllActivityPersonal(filtersEnabled: Boolean) {
+    navigate(
+        route = AllPersonalActivityDestination(
+            filtersEnabled = filtersEnabled,
+        ),
+    )
 }
 
 internal fun NavController.navigateToAllActivitySocial() {

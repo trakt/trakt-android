@@ -22,3 +22,5 @@
 
 -keep class tv.trakt.trakt.core.comments.model.**
 -keep class tv.trakt.trakt.core.discover.model.**
+-keep class tv.trakt.trakt.core.main.model.**
+

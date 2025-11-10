@@ -40,6 +40,7 @@ import tv.trakt.trakt.core.home.sections.activity.features.all.data.local.AllAct
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
+import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
@@ -60,24 +61,38 @@ internal class HomeHistoryViewModel(
     private val movieDetailsUpdates: MovieDetailsUpdates,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
+    private val modeManager: MediaModeManager,
 ) : ViewModel() {
     private val initialState = HomeHistoryState()
+    private val initialMode = modeManager.getMode()
 
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
+    private val filterState = MutableStateFlow(initialMode)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
-    private var loadDataJob: Job? = null
+    private var dataJob: Job? = null
     private var processingJob: Job? = null
 
     init {
         loadData()
         observeUser()
         observeHome()
+        observeMode()
+    }
+
+    private fun observeMode() {
+        modeManager.observeMode()
+            .distinctUntilChanged()
+            .onEach { value ->
+                filterState.update { value }
+                loadData()
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun observeUser() {
@@ -113,8 +128,8 @@ internal class HomeHistoryViewModel(
     }
 
     fun loadData(ignoreErrors: Boolean = false) {
-        loadDataJob?.cancel()
-        loadDataJob = viewModelScope.launch {
+        dataJob?.cancel()
+        dataJob = viewModelScope.launch {
             try {
                 if (loadEmptyIfNeeded()) {
                     return@launch
@@ -122,6 +137,7 @@ internal class HomeHistoryViewModel(
 
                 val localItems = getPersonalActivityUseCase.getLocalPersonalActivity(
                     limit = HOME_SECTION_LIMIT,
+                    filter = filterState.value,
                 )
 
                 if (localItems.isNotEmpty()) {
@@ -132,7 +148,11 @@ internal class HomeHistoryViewModel(
                 }
 
                 itemsState.update {
-                    getPersonalActivityUseCase.getPersonalActivity(1, HOME_SECTION_LIMIT)
+                    getPersonalActivityUseCase.getPersonalActivity(
+                        page = 1,
+                        limit = HOME_SECTION_LIMIT,
+                        filter = filterState.value,
+                    )
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -143,6 +163,7 @@ internal class HomeHistoryViewModel(
                 }
             } finally {
                 loadingState.update { DONE }
+                dataJob = null
             }
         }
     }

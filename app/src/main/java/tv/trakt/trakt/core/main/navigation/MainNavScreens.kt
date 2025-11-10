@@ -56,7 +56,7 @@ internal fun NavGraphBuilder.homeScreens(
                 navigateToEpisode(showId, episode)
             },
             onNavigateToAllUpNext = { navigateToAllUpNext() },
-            onNavigateToAllPersonal = { navigateToAllActivityPersonal() },
+            onNavigateToAllPersonal = { navigateToAllActivityPersonal(filtersEnabled = true) },
             onNavigateToAllSocial = { navigateToAllActivitySocial() },
             onNavigateToAllWatchlist = { navigateToHomeWatchlist() },
         )
@@ -274,7 +274,7 @@ internal fun NavGraphBuilder.profileScreens(controller: NavHostController) {
                 navigateToEpisode(showId, episode)
             },
             onNavigateToHistory = {
-                navigateToAllActivityPersonal()
+                navigateToAllActivityPersonal(filtersEnabled = false)
             },
             onNavigateToFavorites = { navigateToFavorites() },
             onNavigateToDiscover = { navigateToDiscover() },

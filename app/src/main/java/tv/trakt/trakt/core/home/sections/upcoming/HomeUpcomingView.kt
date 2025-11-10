@@ -163,7 +163,7 @@ internal fun HomeUpcomingContent(
                                     when (state.filter) {
                                         MediaMode.MOVIES -> R.string.button_label_browse_movies
                                         else -> R.string.button_label_browse_shows
-                                    }
+                                    },
                                 ),
                                 backgroundImageUrl = imageUrl,
                                 backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,

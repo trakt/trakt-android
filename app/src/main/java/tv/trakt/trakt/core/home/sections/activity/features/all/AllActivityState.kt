@@ -9,10 +9,12 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
+import tv.trakt.trakt.core.main.model.MediaMode
 
 @Immutable
 internal data class AllActivityState(
     val items: ImmutableList<HomeActivityItem>? = null,
+    val itemsFilter: MediaMode? = null,
     val usersFilter: UsersFilter = UsersFilter(),
     val navigateShow: TraktId? = null,
     val navigateEpisode: Pair<TraktId, Episode>? = null,

@@ -32,9 +32,7 @@ internal class GetUpcomingUseCase(
     private val remoteUserSource: UserRemoteDataSource,
     private val localDataSource: HomeUpcomingLocalDataSource,
 ) {
-    suspend fun getLocalUpcoming(
-        filter: MediaMode
-    ): ImmutableList<HomeUpcomingItem> {
+    suspend fun getLocalUpcoming(filter: MediaMode): ImmutableList<HomeUpcomingItem> {
         return localDataSource.getItems()
             .filter {
                 when (filter) {
@@ -47,9 +45,7 @@ internal class GetUpcomingUseCase(
             .toImmutableList()
     }
 
-    suspend fun getUpcoming(
-        filter: MediaMode
-    ): ImmutableList<HomeUpcomingItem> {
+    suspend fun getUpcoming(filter: MediaMode): ImmutableList<HomeUpcomingItem> {
         return coroutineScope {
             val showsAsync = async { getShows() }
             val moviesAsync = async { getMovies() }
@@ -57,7 +53,7 @@ internal class GetUpcomingUseCase(
             return@coroutineScope (
                 showsAsync.await() +
                     moviesAsync.await()
-                )
+            )
                 .sortedBy { it.releasedAt }
                 .also {
                     localDataSource.addItems(
