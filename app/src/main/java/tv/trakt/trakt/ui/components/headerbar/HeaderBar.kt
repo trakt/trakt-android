@@ -71,10 +71,9 @@ internal fun HeaderBar(
     containerColor: Color = TraktTheme.colors.navigationHeaderContainer,
     containerAlpha: Float = 0.98F,
     title: String? = null,
-    showVip: Boolean = false,
+    showGreeting: Boolean = false,
     showLogin: Boolean = false,
     showMediaButtons: Boolean = true,
-    userVip: Boolean = false,
     userLoading: Boolean = false,
 ) {
     val mediaMode: MediaModeManager = koinInject()
@@ -154,7 +153,7 @@ internal fun HeaderBar(
             } else {
                 @SuppressLint("UnusedCrossfadeTargetStateParameter")
                 Crossfade(
-                    targetState = showVip && !userVip,
+                    targetState = showGreeting,
                     label = "header_crossfade",
                     modifier = Modifier.weight(1F, fill = false),
                 ) { vip ->
@@ -237,9 +236,7 @@ internal fun HeaderBar(
 @Composable
 private fun Preview() {
     TraktTheme {
-        HeaderBar(
-            userVip = true,
-        )
+        HeaderBar()
     }
 }
 
@@ -248,8 +245,7 @@ private fun Preview() {
 private fun Preview2() {
     TraktTheme {
         HeaderBar(
-            showVip = true,
-            userVip = false,
+            showGreeting = true,
             showMediaButtons = false,
         )
     }
@@ -270,7 +266,7 @@ private fun Preview3() {
 private fun Preview4() {
     TraktTheme {
         HeaderBar(
-            showVip = true,
+            showGreeting = true,
             showLogin = true,
         )
     }

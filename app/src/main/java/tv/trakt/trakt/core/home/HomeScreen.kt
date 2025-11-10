@@ -220,9 +220,8 @@ private fun HomeScreenHeader(
 
     HeaderBar(
         containerAlpha = if (headerState.scrolled && !isScrolledToTop) 0.98F else 0F,
-        showVip = headerState.startScrolled,
+        showGreeting = headerState.startScrolled,
         showLogin = userState.first && !userState.second,
-        userVip = state.user.user?.isAnyVip ?: false,
         userLoading = userLoading,
         modifier = Modifier.offset {
             IntOffset(0, headerState.connection.barOffset.fastRoundToInt())
