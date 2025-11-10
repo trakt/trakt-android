@@ -33,7 +33,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.favorites.FavoritesUpdates
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.CONTEXT_SHEET
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.DETAILS
-import tv.trakt.trakt.core.lists.ListsConfig.LISTS_SECTION_LIMIT
+import tv.trakt.trakt.core.lists.ListsConfig.FAVORITES_SECTION_LIMIT
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
 import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
@@ -101,7 +101,7 @@ internal class ProfileFavoritesViewModel(
                     MEDIA -> loadFavoritesUseCase.loadLocalAll()
                     SHOWS -> loadFavoritesUseCase.loadLocalShows()
                     MOVIES -> loadFavoritesUseCase.loadLocalMovies()
-                }.take(LISTS_SECTION_LIMIT)
+                }.take(FAVORITES_SECTION_LIMIT)
 
                 if (localItems.isNotEmpty()) {
                     itemsState.update {
@@ -121,7 +121,7 @@ internal class ProfileFavoritesViewModel(
                         SHOWS -> loadFavoritesUseCase.loadShows()
                         MOVIES -> loadFavoritesUseCase.loadMovies()
                     }
-                        .take(LISTS_SECTION_LIMIT)
+                        .take(FAVORITES_SECTION_LIMIT)
                         .toImmutableList()
                 }
             } catch (error: Exception) {

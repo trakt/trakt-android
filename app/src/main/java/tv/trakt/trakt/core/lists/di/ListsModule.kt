@@ -200,6 +200,7 @@ internal val listsModule = module {
     viewModel { (listId: TraktId) ->
         ListsPersonalViewModel(
             listId = listId,
+            modeManager = get(),
             getListUseCase = get(),
             getListItemsUseCase = get(),
             localListsSource = get(),
@@ -219,6 +220,7 @@ internal val listsModule = module {
             userListLocalDataSource = get(),
             sessionManager = get(),
             analytics = get(),
+            modeManager = get(),
         )
     }
 

@@ -1,7 +1,9 @@
 package tv.trakt.trakt.core.lists.sections.watchlist.usecases.filters
 
-// private val KEY_ACTIVITY_FILTER = stringPreferencesKey("key_activity_watchlist_filter")
-//
+import androidx.datastore.preferences.core.stringPreferencesKey
+
+private val KEY_ACTIVITY_FILTER = stringPreferencesKey("key_activity_watchlist_filter")
+
 // internal class GetWatchlistFilterUseCase(
 //    private val dataStore: DataStore<Preferences>,
 // ) {

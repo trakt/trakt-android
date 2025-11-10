@@ -29,6 +29,7 @@ import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
@@ -41,11 +42,14 @@ import tv.trakt.trakt.core.lists.model.PersonalListItem
 import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.ListsPersonalDestination
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
+import tv.trakt.trakt.core.main.helpers.MediaModeManager
+import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
 
 @OptIn(FlowPreview::class)
 internal class AllPersonalListViewModel(
     savedStateHandle: SavedStateHandle,
+    modeManager: MediaModeManager,
     private val getListUseCase: GetPersonalListsUseCase,
     private val getListItemsUseCase: GetPersonalListItemsUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
@@ -57,8 +61,10 @@ internal class AllPersonalListViewModel(
     private val destination = savedStateHandle.toRoute<ListsPersonalDestination>()
 
     private val initialState = AllPersonalListState()
+    private val initialMode = modeManager.getMode()
 
     private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
+    private val filterState = MutableStateFlow(initialMode)
     private val listState = MutableStateFlow(initialState.list)
     private val itemsState = MutableStateFlow(initialState.items)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
@@ -66,7 +72,7 @@ internal class AllPersonalListViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
-    private var loadDataJob: Job? = null
+    private var dataJob: Job? = null
     private var processingJob: Job? = null
 
     init {
@@ -113,14 +119,17 @@ internal class AllPersonalListViewModel(
         ignoreErrors: Boolean = false,
         localOnly: Boolean = false,
     ) {
-        loadDataJob?.cancel()
-        loadDataJob = viewModelScope.launch {
+        dataJob?.cancel()
+        dataJob = viewModelScope.launch {
             try {
                 if (loadEmptyIfNeeded()) {
                     return@launch
                 }
 
-                val localItems = getListItemsUseCase.getLocalItems(destination.listId.toTraktId())
+                val localItems = getListItemsUseCase.getLocalItems(
+                    listId = destination.listId.toTraktId(),
+                    filter = filterState.value,
+                )
                 if (localItems.isNotEmpty()) {
                     itemsState.update { localItems }
                     loadingState.update { DONE }
@@ -136,8 +145,11 @@ internal class AllPersonalListViewModel(
                         getListItemsUseCase.getItems(
                             listId = destination.listId.toTraktId(),
                             limit = LISTS_ALL_LIMIT,
+                            filter = filterState.value,
                         )
                     }
+                } else if (localItems.isEmpty()) {
+                    itemsState.update { EmptyImmutableList }
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -148,20 +160,29 @@ internal class AllPersonalListViewModel(
                 }
             } finally {
                 loadingState.update { DONE }
+                dataJob = null
             }
         }
     }
 
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {
-            itemsState.update {
-                emptyList<PersonalListItem>().toImmutableList()
-            }
+            itemsState.update { EmptyImmutableList }
             loadingState.update { DONE }
             return true
         }
 
         return false
+    }
+
+    fun setFilter(newFilter: MediaMode) {
+        if (newFilter == filterState.value || loadingState.value.isLoading) {
+            return
+        }
+        viewModelScope.launch {
+            filterState.update { newFilter }
+            loadData(localOnly = true)
+        }
     }
 
     fun removeItem(item: PersonalListItem?) {
@@ -199,7 +220,7 @@ internal class AllPersonalListViewModel(
     }
 
     override fun onCleared() {
-        loadDataJob?.cancel()
+        dataJob?.cancel()
         processingJob?.cancel()
         super.onCleared()
     }
@@ -207,6 +228,7 @@ internal class AllPersonalListViewModel(
     @Suppress("UNCHECKED_CAST")
     val state: StateFlow<AllPersonalListState> = combine(
         loadingState,
+        filterState,
         listState,
         itemsState,
         navigateShow,
@@ -216,12 +238,13 @@ internal class AllPersonalListViewModel(
     ) { state ->
         AllPersonalListState(
             loading = state[0] as LoadingState,
-            list = state[1] as? CustomList,
-            items = state[2] as? ImmutableList<PersonalListItem>,
-            navigateShow = state[3] as? TraktId,
-            navigateMovie = state[4] as? TraktId,
-            error = state[5] as? Exception,
-            backgroundUrl = state[6] as? String,
+            filter = state[1] as MediaMode?,
+            list = state[2] as? CustomList,
+            items = state[3] as? ImmutableList<PersonalListItem>,
+            navigateShow = state[4] as? TraktId,
+            navigateMovie = state[5] as? TraktId,
+            error = state[6] as? Exception,
+            backgroundUrl = state[7] as? String,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -31,7 +31,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.core.lists.ListsConfig.LISTS_SECTION_LIMIT
+import tv.trakt.trakt.core.lists.ListsConfig.WATCHLIST_SECTION_LIMIT
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistUseCase
@@ -121,9 +121,9 @@ internal class ListsWatchlistViewModel(
                 }
 
                 val localItems = when (filterState.value) {
-                    MEDIA -> getWatchlistUseCase.getLocalWatchlist(LISTS_SECTION_LIMIT)
-                    SHOWS -> getShowsWatchlistUseCase.getLocalWatchlist(LISTS_SECTION_LIMIT)
-                    MOVIES -> getMoviesWatchlistUseCase.getLocalWatchlist(LISTS_SECTION_LIMIT)
+                    MEDIA -> getWatchlistUseCase.getLocalWatchlist(WATCHLIST_SECTION_LIMIT)
+                    SHOWS -> getShowsWatchlistUseCase.getLocalWatchlist(WATCHLIST_SECTION_LIMIT)
+                    MOVIES -> getMoviesWatchlistUseCase.getLocalWatchlist(WATCHLIST_SECTION_LIMIT)
                 }
 
                 if (localItems.isNotEmpty()) {
@@ -135,9 +135,9 @@ internal class ListsWatchlistViewModel(
 
                 itemsState.update {
                     when (filterState.value) {
-                        MEDIA -> getWatchlistUseCase.getWatchlist(LISTS_SECTION_LIMIT)
-                        SHOWS -> getShowsWatchlistUseCase.getWatchlist(LISTS_SECTION_LIMIT)
-                        MOVIES -> getMoviesWatchlistUseCase.getWatchlist(LISTS_SECTION_LIMIT)
+                        MEDIA -> getWatchlistUseCase.getWatchlist(WATCHLIST_SECTION_LIMIT)
+                        SHOWS -> getShowsWatchlistUseCase.getWatchlist(WATCHLIST_SECTION_LIMIT)
+                        MOVIES -> getMoviesWatchlistUseCase.getWatchlist(WATCHLIST_SECTION_LIMIT)
                     }
                 }
             } catch (error: Exception) {
@@ -149,6 +149,7 @@ internal class ListsWatchlistViewModel(
                 }
             } finally {
                 loadingState.update { DONE }
+                dataJob = null
             }
         }
     }

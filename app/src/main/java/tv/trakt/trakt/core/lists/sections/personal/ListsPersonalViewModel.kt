@@ -11,7 +11,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -32,6 +34,7 @@ import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItems
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
+import tv.trakt.trakt.core.main.helpers.MediaModeManager
 
 @OptIn(FlowPreview::class)
 internal class ListsPersonalViewModel(
@@ -42,10 +45,13 @@ internal class ListsPersonalViewModel(
     private val localListsItemsSource: ListsPersonalItemsLocalDataSource,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
+    private val modeManager: MediaModeManager,
 ) : ViewModel() {
     private val initialState = ListsPersonalState()
+    private val initialMode = modeManager.getMode()
 
     private val userState = MutableStateFlow(initialState.user)
+    private val filterState = MutableStateFlow(initialMode)
     private val listState = MutableStateFlow(initialState.list)
     private val itemsState = MutableStateFlow(initialState.items)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
@@ -53,11 +59,22 @@ internal class ListsPersonalViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
+    private var dataJob: Job? = null
     private var processingJob: Job? = null
 
     init {
         loadData()
         observeLists()
+        observeMode()
+    }
+
+    private fun observeMode() {
+        modeManager.observeMode()
+            .onEach { value ->
+                filterState.update { value }
+                loadData()
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun observeLists() {
@@ -75,30 +92,40 @@ internal class ListsPersonalViewModel(
     }
 
     private fun loadLocalData() {
-        viewModelScope.launch {
+        dataJob?.cancel()
+        dataJob = viewModelScope.launch {
             try {
                 listState.update {
                     getListUseCase.getLocalList(listId)
                 }
                 itemsState.update {
-                    getListItemsUseCase.getLocalItems(listId)
+                    getListItemsUseCase.getLocalItems(
+                        listId = listId,
+                        filter = filterState.value,
+                    )
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
                 }
+            } finally {
+                dataJob = null
             }
         }
     }
 
     private fun loadData(ignoreErrors: Boolean = false) {
-        viewModelScope.launch {
+        dataJob?.cancel()
+        dataJob = viewModelScope.launch {
             try {
                 listState.update {
                     getListUseCase.getLocalList(listId)
                 }
 
-                val localItems = getListItemsUseCase.getLocalItems(listId)
+                val localItems = getListItemsUseCase.getLocalItems(
+                    listId = listId,
+                    filter = filterState.value,
+                )
 
                 if (localItems.isNotEmpty()) {
                     itemsState.update { localItems }
@@ -111,6 +138,7 @@ internal class ListsPersonalViewModel(
                     getListItemsUseCase.getItems(
                         listId = listId,
                         limit = LISTS_SECTION_LIMIT,
+                        filter = filterState.value,
                     )
                 }
             } catch (error: Exception) {
@@ -121,6 +149,7 @@ internal class ListsPersonalViewModel(
                 }
             } finally {
                 loadingState.update { DONE }
+                dataJob = null
             }
         }
     }

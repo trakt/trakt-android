@@ -26,6 +26,7 @@ import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -38,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
@@ -53,8 +55,10 @@ import tv.trakt.trakt.core.lists.sections.personal.features.all.views.AllPersona
 import tv.trakt.trakt.core.lists.sections.personal.features.context.movie.sheet.ListMovieContextSheet
 import tv.trakt.trakt.core.lists.sections.personal.features.context.show.sheet.ListShowContextSheet
 import tv.trakt.trakt.core.lists.sheets.EditListSheet
+import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -99,6 +103,7 @@ internal fun AllPersonalListScreen(
                 is ShowItem -> showContextSheet = it
             }
         },
+        onFilterClick = viewModel::setFilter,
         onMoreClick = {
             editListSheet = state.list
         },
@@ -143,6 +148,7 @@ internal fun AllPersonalListContent(
     onTopOfList: () -> Unit = {},
     onClick: (PersonalListItem) -> Unit = {},
     onLongClick: (PersonalListItem) -> Unit = {},
+    onFilterClick: (MediaMode) -> Unit = {},
     onBackClick: () -> Unit = {},
     onMoreClick: () -> Unit = {},
 ) {
@@ -178,11 +184,13 @@ internal fun AllPersonalListContent(
         ContentList(
             title = state.list?.name ?: "",
             subtitle = state.list?.description,
-            listItems = (state.items ?: emptyList()).toImmutableList(),
             listState = listState,
+            listFilter = state.filter,
+            listItems = (state.items ?: emptyList()).toImmutableList(),
             contentPadding = contentPadding,
             onClick = onClick,
             onLongClick = onLongClick,
+            onFilterClick = onFilterClick,
             onTopOfList = onTopOfList,
             onBackClick = onBackClick,
             onMoreClick = onMoreClick,
@@ -242,15 +250,33 @@ private fun TitleBar(
 }
 
 @Composable
+private fun ContentFilters(
+    hasSubtitle: Boolean,
+    watchlistFilter: MediaMode,
+    onFilterClick: (MediaMode) -> Unit,
+) {
+    MediaModeFilters(
+        selected = watchlistFilter,
+        onClick = onFilterClick,
+        paddingVertical = PaddingValues(
+            top = if (hasSubtitle) 8.dp else 0.dp,
+            bottom = 19.dp,
+        ),
+    )
+}
+
+@Composable
 private fun ContentList(
     modifier: Modifier = Modifier,
     title: String,
     subtitle: String?,
     listState: LazyListState,
     listItems: ImmutableList<PersonalListItem>,
+    listFilter: MediaMode?,
     contentPadding: PaddingValues,
     onClick: (PersonalListItem) -> Unit,
     onLongClick: (PersonalListItem) -> Unit,
+    onFilterClick: (MediaMode) -> Unit,
     onTopOfList: () -> Unit,
     onBackClick: () -> Unit,
     onMoreClick: () -> Unit,
@@ -281,9 +307,17 @@ private fun ContentList(
                 subtitle = subtitle,
                 onBackClick = onBackClick,
                 onMoreClick = onMoreClick,
-                modifier = Modifier
-                    .padding(bottom = 8.dp),
             )
+        }
+
+        if (listFilter != null) {
+            item {
+                ContentFilters(
+                    hasSubtitle = !subtitle.isNullOrEmpty(),
+                    watchlistFilter = listFilter,
+                    onFilterClick = onFilterClick,
+                )
+            }
         }
 
         items(
@@ -317,5 +351,20 @@ private fun ContentList(
                 )
             }
         }
+
+        if (listItems.isEmpty()) {
+            item {
+                ContentEmpty()
+            }
+        }
     }
+}
+
+@Composable
+private fun ContentEmpty() {
+    Text(
+        text = stringResource(R.string.list_placeholder_empty),
+        color = TraktTheme.colors.textSecondary,
+        style = TraktTheme.typography.heading6,
+    )
 }
