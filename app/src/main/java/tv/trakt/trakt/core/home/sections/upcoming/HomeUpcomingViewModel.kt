@@ -36,10 +36,13 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.core.home.sections.upcoming.usecases.GetUpcomingUseCase
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
+import tv.trakt.trakt.core.main.helpers.MediaModeManager
+import tv.trakt.trakt.core.main.model.MediaMode
 
 @Suppress("UNCHECKED_CAST")
 @OptIn(FlowPreview::class)
 internal class HomeUpcomingViewModel(
+    private val modeManager: MediaModeManager,
     private val getUpcomingUseCase: GetUpcomingUseCase,
     private val homeUpNextSource: HomeUpNextLocalDataSource,
     private val showLocalDataSource: ShowLocalDataSource,
@@ -48,8 +51,10 @@ internal class HomeUpcomingViewModel(
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = HomeUpcomingState()
+    private val initialMode = modeManager.getMode()
 
     private val itemsState = MutableStateFlow(initialState.items)
+    private val filterState = MutableStateFlow(initialMode)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
@@ -64,6 +69,16 @@ internal class HomeUpcomingViewModel(
         loadData()
         observeUser()
         observeHome()
+        observeMode()
+    }
+
+    private fun observeMode() {
+        modeManager.observeMode()
+            .onEach { value ->
+                filterState.update { value }
+                loadData()
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun observeUser() {
@@ -91,16 +106,17 @@ internal class HomeUpcomingViewModel(
     }
 
     private fun loadData(ignoreErrors: Boolean = false) {
-        if (dataJob?.isActive == true) {
-            return
-        }
+        dataJob?.cancel()
         dataJob = viewModelScope.launch {
             if (loadEmptyIfNeeded()) {
                 return@launch
             }
 
             try {
-                val localItems = getUpcomingUseCase.getLocalUpcoming()
+                val localItems = getUpcomingUseCase.getLocalUpcoming(
+                    filter = filterState.value,
+                )
+
                 if (localItems.isNotEmpty()) {
                     itemsState.update { localItems }
                     loadingState.update { DONE }
@@ -110,7 +126,9 @@ internal class HomeUpcomingViewModel(
 
                 itemsState.update {
                     delay(200) // Blinking workaround (Upcoming endpoint is HTTP-Cacheable)
-                    getUpcomingUseCase.getUpcoming()
+                    getUpcomingUseCase.getUpcoming(
+                        filter = filterState.value,
+                    )
                 }
             } catch (error: Exception) {
                 if (!ignoreErrors) {
@@ -184,6 +202,7 @@ internal class HomeUpcomingViewModel(
     val state: StateFlow<HomeUpcomingState> = combine(
         loadingState,
         itemsState,
+        filterState,
         navigateShow,
         navigateEpisode,
         navigateMovie,
@@ -192,9 +211,10 @@ internal class HomeUpcomingViewModel(
         HomeUpcomingState(
             loading = state[0] as LoadingState,
             items = state[1] as ImmutableList<HomeUpcomingItem>?,
-            navigateShow = state[2] as TraktId?,
-            navigateEpisode = state[3] as Pair<TraktId, Episode>?,
-            navigateMovie = state[4] as TraktId?,
+            filter = state[2] as MediaMode?,
+            navigateShow = state[3] as TraktId?,
+            navigateEpisode = state[4] as Pair<TraktId, Episode>?,
+            navigateMovie = state[5] as TraktId?,
         )
     }.stateIn(
         scope = viewModelScope,

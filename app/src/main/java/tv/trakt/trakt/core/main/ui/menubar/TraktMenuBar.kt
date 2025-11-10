@@ -218,10 +218,7 @@ private fun TraktMenuBarContent(
                     .graphicsLayer {
                         translationY = -1.dp.toPx()
                     }
-                    .padding(
-                        start = 22.dp,
-                        end = 26.dp,
-                    ),
+                    .weight(1f),
             )
         }
     }
@@ -238,6 +235,7 @@ fun ProfileItem(
     val size = 26.dp
     val border = (1.6).dp
     Box(
+        contentAlignment = Alignment.Center,
         modifier = modifier
             .size(size)
             .onClick(onClick = onClick),
@@ -262,6 +260,7 @@ fun ProfileItem(
                 contentScale = ContentScale.Crop,
                 error = painterResource(R.drawable.ic_person_placeholder),
                 modifier = Modifier
+                    .size(size)
                     .border(border, borderColor, CircleShape)
                     .clip(CircleShape),
             )
@@ -270,6 +269,7 @@ fun ProfileItem(
                 painter = painterResource(R.drawable.ic_person_placeholder),
                 contentDescription = null,
                 modifier = Modifier
+                    .size(size)
                     .border(border, borderColor, CircleShape)
                     .clip(CircleShape),
             )

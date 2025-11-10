@@ -40,6 +40,7 @@ import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.core.home.sections.upcoming.views.EpisodeUpcomingItemView
 import tv.trakt.trakt.core.home.sections.upcoming.views.MovieUpcomingItemView
 import tv.trakt.trakt.core.home.views.HomeEmptyView
+import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
@@ -54,6 +55,7 @@ internal fun HomeUpcomingView(
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
     onShowClick: (TraktId) -> Unit,
     onShowsClick: () -> Unit,
+    onMoviesClick: () -> Unit,
     onMovieClick: (TraktId) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -82,7 +84,12 @@ internal fun HomeUpcomingView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        onShowsClick = onShowsClick,
+        onEmptyClick = {
+            when (state.filter) {
+                MediaMode.MOVIES -> onMoviesClick()
+                else -> onShowsClick()
+            }
+        },
         onClick = {
             viewModel.navigateToEpisode(it.show, it.episode)
         },
@@ -103,8 +110,8 @@ internal fun HomeUpcomingContent(
     contentPadding: PaddingValues = PaddingValues(),
     onClick: (HomeUpcomingItem.EpisodeItem) -> Unit = {},
     onShowClick: (HomeUpcomingItem.EpisodeItem) -> Unit = {},
-    onShowsClick: () -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
+    onEmptyClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
@@ -152,10 +159,15 @@ internal fun HomeUpcomingContent(
                             HomeEmptyView(
                                 text = stringResource(R.string.text_cta_upcoming),
                                 icon = R.drawable.ic_empty_upcoming,
-                                buttonText = stringResource(R.string.button_label_browse_shows),
+                                buttonText = stringResource(
+                                    when (state.filter) {
+                                        MediaMode.MOVIES -> R.string.button_label_browse_movies
+                                        else -> R.string.button_label_browse_shows
+                                    }
+                                ),
                                 backgroundImageUrl = imageUrl,
                                 backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
-                                onClick = onShowsClick,
+                                onClick = onEmptyClick,
                                 modifier = Modifier
                                     .padding(contentPadding),
                             )

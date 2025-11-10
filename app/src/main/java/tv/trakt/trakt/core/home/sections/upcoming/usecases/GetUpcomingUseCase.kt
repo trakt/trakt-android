@@ -16,6 +16,10 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.home.HomeConfig.HOME_UPCOMING_DAYS_LIMIT
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
+import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
+import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
+import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
 import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 import java.time.Instant
 import java.time.LocalDate
@@ -28,13 +32,24 @@ internal class GetUpcomingUseCase(
     private val remoteUserSource: UserRemoteDataSource,
     private val localDataSource: HomeUpcomingLocalDataSource,
 ) {
-    suspend fun getLocalUpcoming(): ImmutableList<HomeUpcomingItem> {
+    suspend fun getLocalUpcoming(
+        filter: MediaMode
+    ): ImmutableList<HomeUpcomingItem> {
         return localDataSource.getItems()
+            .filter {
+                when (filter) {
+                    MEDIA -> true
+                    SHOWS -> it is HomeUpcomingItem.EpisodeItem
+                    MOVIES -> it is HomeUpcomingItem.MovieItem
+                }
+            }
             .sortedBy { it.releasedAt }
             .toImmutableList()
     }
 
-    suspend fun getUpcoming(): ImmutableList<HomeUpcomingItem> {
+    suspend fun getUpcoming(
+        filter: MediaMode
+    ): ImmutableList<HomeUpcomingItem> {
         return coroutineScope {
             val showsAsync = async { getShows() }
             val moviesAsync = async { getMovies() }
@@ -42,14 +57,21 @@ internal class GetUpcomingUseCase(
             return@coroutineScope (
                 showsAsync.await() +
                     moviesAsync.await()
-            )
+                )
                 .sortedBy { it.releasedAt }
-                .toImmutableList()
                 .also {
                     localDataSource.addItems(
                         items = it,
                     )
                 }
+                .filter {
+                    when (filter) {
+                        MEDIA -> true
+                        SHOWS -> it is HomeUpcomingItem.EpisodeItem
+                        MOVIES -> it is HomeUpcomingItem.MovieItem
+                    }
+                }
+                .toImmutableList()
         }
     }
 
