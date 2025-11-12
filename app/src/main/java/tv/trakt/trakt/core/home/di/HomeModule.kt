@@ -116,7 +116,6 @@ internal val homeModule = module {
             updateMovieHistoryUseCase = get(),
             updateEpisodeHistoryUseCase = get(),
             userWatchlistLocalSource = get(),
-            homeWatchlistLocalSource = get(),
         )
     }
 
@@ -153,7 +152,7 @@ internal val homeModule = module {
             getUpNextUseCase = get(),
             updateHistoryUseCase = get(),
             homeUpNextSource = get(),
-            homeWatchlistSource = get(),
+            userWatchlistSource = get(),
             homePersonalActivitySource = get(),
             allUpNextSource = get(),
             loadUserProgressUseCase = get(),
@@ -184,8 +183,6 @@ internal val homeModule = module {
             getMoviesUseCase = get(),
             addHistoryUseCase = get(),
             loadUserProgressUseCase = get(),
-            homeWatchlistSource = get(),
-            allWatchlistSource = get(),
             userWatchlistSource = get(),
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
@@ -201,9 +198,7 @@ internal val homeModule = module {
             getShowsUseCase = get(),
             addHistoryUseCase = get(),
             loadUserProgressUseCase = get(),
-            allWatchlistSource = get(),
             userWatchlistSource = get(),
-            homeWatchlistSource = get(),
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
             modeManager = get(),
@@ -227,7 +222,6 @@ internal val homeModule = module {
         HomeHistoryViewModel(
             getPersonalActivityUseCase = get(),
             homeUpNextSource = get(),
-            homeWatchlistSource = get(),
             userWatchlistSource = get(),
             allActivitySource = get(),
             showLocalDataSource = get(),

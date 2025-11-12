@@ -35,7 +35,6 @@ import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSo
 import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.AllUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
-import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.HOME
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
@@ -43,6 +42,7 @@ import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SE
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
+import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 
 @OptIn(FlowPreview::class)
@@ -51,7 +51,7 @@ internal class HomeUpNextViewModel(
     private val updateHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val homeUpNextSource: HomeUpNextLocalDataSource,
-    private val homeWatchlistSource: HomeWatchlistLocalDataSource,
+    private val userWatchlistSource: UserWatchlistLocalDataSource,
     private val allUpNextSource: AllUpNextLocalDataSource,
     private val homePersonalActivitySource: HomePersonalLocalDataSource,
     private val showUpdatesSource: ShowDetailsUpdates,
@@ -94,7 +94,7 @@ internal class HomeUpNextViewModel(
     @OptIn(FlowPreview::class)
     private fun observeData() {
         merge(
-            homeWatchlistSource.observeUpdates(),
+            userWatchlistSource.observeUpdates(),
             homePersonalActivitySource.observeUpdates(),
             showUpdatesSource.observeUpdates(Source.PROGRESS),
             showUpdatesSource.observeUpdates(Source.SEASONS),
@@ -186,7 +186,6 @@ internal class HomeUpNextViewModel(
             loadingState.update { DONE }
             return true
         } else {
-//            itemsState.update { ItemsState(resetScroll = false) }
             loadingState.update { IDLE }
         }
 

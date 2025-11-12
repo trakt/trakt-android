@@ -8,6 +8,7 @@ import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.networking.ProgressShowDto
 import tv.trakt.trakt.core.home.sections.upnext.model.Progress
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
@@ -33,33 +34,37 @@ internal class GetHomeShowsWatchlistUseCase(
             limit = limit ?: Int.MAX_VALUE,
             page = 1,
             intent = "start",
-        ).asyncMap { item ->
-            WatchlistItem.ShowItem(
-                show = Show.fromDto(item.show),
-                progress = Progress(
-                    lastWatchedAt = item.progress.lastWatchedAt?.toZonedDateTime(),
-                    aired = item.progress.aired,
-                    completed = item.progress.completed,
-                    stats = item.progress.stats?.let {
-                        Progress.Stats(
-                            playCount = it.playCount,
-                            minutesWatched = it.minutesWatched,
-                            minutesLeft = it.minutesLeft,
-                        )
-                    },
-                    lastEpisode = item.progress.lastEpisode?.let {
-                        Episode.fromDto(it)
-                    },
-                    nextEpisode = Episode.fromDto(item.progress.nextEpisode),
-                ),
-                rank = 0,
-                listedAt = nowUtcInstant(),
-            )
+        ).asyncMap {
+            mapShowItem(it)
         }.also {
             homeWatchlistLocalSource.setItems(items = it)
         }
             .sortedWith(SortComparator)
             .take(limit ?: Int.MAX_VALUE)
             .toImmutableList()
+    }
+
+    private fun mapShowItem(item: ProgressShowDto): WatchlistItem.ShowItem {
+        return WatchlistItem.ShowItem(
+            show = Show.fromDto(item.show),
+            progress = Progress(
+                lastWatchedAt = item.progress.lastWatchedAt?.toZonedDateTime(),
+                aired = item.progress.aired,
+                completed = item.progress.completed,
+                stats = item.progress.stats?.let {
+                    Progress.Stats(
+                        playCount = it.playCount,
+                        minutesWatched = it.minutesWatched,
+                        minutesLeft = it.minutesLeft,
+                    )
+                },
+                lastEpisode = item.progress.lastEpisode?.let {
+                    Episode.fromDto(it)
+                },
+                nextEpisode = Episode.fromDto(item.progress.nextEpisode),
+            ),
+            rank = 0,
+            listedAt = nowUtcInstant(),
+        )
     }
 }

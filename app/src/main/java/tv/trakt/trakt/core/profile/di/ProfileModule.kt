@@ -17,6 +17,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.core.profile.ProfileViewModel
 import tv.trakt.trakt.core.profile.sections.favorites.ProfileFavoritesViewModel
 import tv.trakt.trakt.core.profile.sections.favorites.all.AllFavoritesViewModel
@@ -63,7 +64,9 @@ internal val profileDataModule = module {
     }
 
     single<UserWatchlistLocalDataSource> {
-        UserWatchlistStorage()
+        UserWatchlistStorage(
+            homeWatchlistStorage = get(clazz = HomeWatchlistLocalDataSource::class),
+        )
     }
 
     single<UserProgressLocalDataSource> {

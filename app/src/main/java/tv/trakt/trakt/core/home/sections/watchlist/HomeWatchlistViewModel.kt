@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -42,12 +41,9 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.HomeConfig.HOME_WATCHLIST_LIMIT
-import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeMoviesWatchlistUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeShowsWatchlistUseCase
-import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource
-import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource.Source
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.MovieItem
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.ShowItem
@@ -63,9 +59,7 @@ internal class HomeWatchlistViewModel(
     private val getShowsUseCase: GetHomeShowsWatchlistUseCase,
     private val addHistoryUseCase: AddHomeHistoryUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
-    private val allWatchlistSource: AllWatchlistLocalDataSource,
     private val userWatchlistSource: UserWatchlistLocalDataSource,
-    private val homeWatchlistSource: HomeWatchlistLocalDataSource,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val modeManager: MediaModeManager,
@@ -120,15 +114,12 @@ internal class HomeWatchlistViewModel(
     }
 
     private fun observeData() {
-        merge(
-            allWatchlistSource.observeUpdates(Source.ALL),
-            userWatchlistSource.observeUpdates(),
-        )
+        userWatchlistSource.observeUpdates()
             .distinctUntilChanged()
             .debounce(200)
             .onEach {
                 loadData(
-                    localOnly = true,
+                    localOnly = false,
                     ignoreErrors = true,
                 )
             }
@@ -169,12 +160,13 @@ internal class HomeWatchlistViewModel(
                                 .toImmutableList()
                         }
                         loadingState.update { DONE }
-                        if (localOnly) {
-                            return@coroutineScope
-                        }
                     } else {
                         loadingState.update { LOADING }
                     }
+                }
+
+                if (localOnly) {
+                    return@launch
                 }
 
                 coroutineScope {
@@ -246,7 +238,6 @@ internal class HomeWatchlistViewModel(
                     mediaType = "episode",
                     source = "home_watchlist",
                 )
-                homeWatchlistSource.notifyUpdate()
 
                 infoState.update {
                     StaticStringResource("Added to history")

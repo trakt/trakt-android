@@ -107,24 +107,18 @@ internal fun AllHomeWatchlistScreen(
             }
         },
         onCheckClick = {
-            if (it is MovieItem) {
-                viewModel.addMovieToHistory(it.id)
+            when (it) {
+                is ShowItem -> {
+                    viewModel.addShowToHistory(
+                        showId = it.id,
+                        episodeId = it.progress?.nextEpisode?.ids?.trakt,
+                    )
+                }
+                is MovieItem -> viewModel.addMovieToHistory(it.id)
             }
         },
         onFilterClick = viewModel::setFilter,
         onBackClick = onNavigateBack,
-    )
-
-    WatchlistMovieSheet(
-        addLocally = true,
-        sheetItem = contextMovieSheet?.movie,
-        onDismiss = { contextMovieSheet = null },
-        onRemoveWatchlist = {
-//            viewModel.removeItem(contextMovieSheet)
-        },
-        onAddWatched = {
-//            viewModel.removeItem(contextMovieSheet)
-        },
     )
 
     WatchlistShowSheet(
@@ -132,10 +126,22 @@ internal fun AllHomeWatchlistScreen(
         sheetItem = contextShowSheet?.show,
         onDismiss = { contextShowSheet = null },
         onRemoveWatchlist = {
-//            viewModel.removeItem(contextShowSheet)
+            viewModel.removeItem(contextShowSheet)
         },
         onAddWatched = {
-//            viewModel.removeItem(contextShowSheet)
+            viewModel.removeItem(contextShowSheet)
+        },
+    )
+
+    WatchlistMovieSheet(
+        addLocally = true,
+        sheetItem = contextMovieSheet?.movie,
+        onDismiss = { contextMovieSheet = null },
+        onRemoveWatchlist = {
+            viewModel.removeItem(contextMovieSheet)
+        },
+        onAddWatched = {
+            viewModel.removeItem(contextMovieSheet)
         },
     )
 }

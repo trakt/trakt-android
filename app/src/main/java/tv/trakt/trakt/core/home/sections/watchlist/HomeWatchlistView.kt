@@ -262,7 +262,8 @@ internal fun HomeWatchlistContent(
                                 onClick = onEmptyClick,
                                 height = (226.25).dp,
                                 modifier = Modifier
-                                    .padding(contentPadding),
+                                    .padding(contentPadding)
+                                    .padding(bottom = 6.dp),
                             )
                         }
                         else -> {

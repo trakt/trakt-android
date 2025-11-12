@@ -19,7 +19,6 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -43,13 +42,11 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_LIMIT
 import tv.trakt.trakt.core.home.HomeConfig.HOME_WATCHLIST_LIMIT
-import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeMoviesWatchlistUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeShowsWatchlistUseCase
-import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource
-import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource.Source
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.MovieItem
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.ShowItem
@@ -65,9 +62,7 @@ internal class AllHomeWatchlistViewModel(
     private val getShowsUseCase: GetHomeShowsWatchlistUseCase,
     private val addHistoryUseCase: AddHomeHistoryUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
-    private val allWatchlistSource: AllWatchlistLocalDataSource,
     private val userWatchlistSource: UserWatchlistLocalDataSource,
-    private val homeWatchlistSource: HomeWatchlistLocalDataSource,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val modeManager: MediaModeManager,
@@ -125,10 +120,7 @@ internal class AllHomeWatchlistViewModel(
     }
 
     private fun observeData() {
-        merge(
-            allWatchlistSource.observeUpdates(Source.ALL),
-            userWatchlistSource.observeUpdates(),
-        )
+        userWatchlistSource.observeUpdates()
             .distinctUntilChanged()
             .debounce(200)
             .onEach {
@@ -185,8 +177,8 @@ internal class AllHomeWatchlistViewModel(
                     loadingState.update { LOADING }
                 }
 
-                val showsAsync = async { getShowsUseCase.getWatchlist(HOME_WATCHLIST_LIMIT) }
-                val moviesAsync = async { getMoviesUseCase.getWatchlist(HOME_WATCHLIST_LIMIT) }
+                val showsAsync = async { getShowsUseCase.getWatchlist(HOME_ALL_LIMIT) }
+                val moviesAsync = async { getMoviesUseCase.getWatchlist(HOME_ALL_LIMIT) }
 
                 itemsState.update {
                     (showsAsync.await() + moviesAsync.await())
@@ -261,7 +253,6 @@ internal class AllHomeWatchlistViewModel(
                     mediaType = "episode",
                     source = "all_home_watchlist",
                 )
-                homeWatchlistSource.notifyUpdate()
 
                 infoState.update {
                     StaticStringResource("Added to history")
@@ -323,6 +314,30 @@ internal class AllHomeWatchlistViewModel(
                 }
             } finally {
                 processingJob = null
+            }
+        }
+    }
+
+    fun removeItem(item: WatchlistItem?) {
+        val currentItems = itemsState.value ?: return
+
+        itemsState.update {
+            currentItems
+                .filterNot { it.key == item?.key }
+                .toImmutableList()
+        }
+
+        viewModelScope.launch {
+            when (item) {
+                is ShowItem -> userWatchlistSource.removeShows(
+                    ids = setOf(item.show.ids.trakt),
+                    notify = true,
+                )
+                is MovieItem -> userWatchlistSource.removeMovies(
+                    ids = setOf(item.movie.ids.trakt),
+                    notify = true,
+                )
+                else -> Unit
             }
         }
     }

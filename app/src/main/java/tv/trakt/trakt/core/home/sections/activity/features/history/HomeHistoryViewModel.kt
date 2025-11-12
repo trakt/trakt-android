@@ -40,7 +40,6 @@ import tv.trakt.trakt.core.home.sections.activity.features.all.data.local.AllAct
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
-import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
@@ -53,7 +52,6 @@ import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 internal class HomeHistoryViewModel(
     private val getPersonalActivityUseCase: GetPersonalActivityUseCase,
     private val homeUpNextSource: HomeUpNextLocalDataSource,
-    private val homeWatchlistSource: HomeWatchlistLocalDataSource,
     private val userWatchlistSource: UserWatchlistLocalDataSource,
     private val allActivitySource: AllActivityLocalDataSource,
     private val showLocalDataSource: ShowLocalDataSource,
@@ -114,7 +112,6 @@ internal class HomeHistoryViewModel(
     private fun observeHome() {
         merge(
             homeUpNextSource.observeUpdates(),
-            homeWatchlistSource.observeUpdates(),
             userWatchlistSource.observeUpdates(),
             allActivitySource.observeUpdates(),
             showUpdates.observeUpdates(Source.PROGRESS),

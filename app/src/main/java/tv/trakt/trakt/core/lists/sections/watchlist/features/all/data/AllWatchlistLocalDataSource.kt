@@ -10,6 +10,5 @@ internal interface AllWatchlistLocalDataSource {
 
     enum class Source {
         ALL,
-        WATCHLIST,
     }
 }

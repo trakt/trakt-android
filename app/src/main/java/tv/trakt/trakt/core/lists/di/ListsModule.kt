@@ -254,7 +254,6 @@ internal val listsModule = module {
             updateHistoryUseCase = get(),
             userProgressLocalSource = get(),
             userWatchlistLocalSource = get(),
-            homeWatchlistLocalSource = get(),
             loadProgressUseCase = get(),
             sessionManager = get(),
             analytics = get(),

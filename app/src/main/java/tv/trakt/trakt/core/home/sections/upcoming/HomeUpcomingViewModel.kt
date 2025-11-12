@@ -37,9 +37,9 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.core.home.sections.upcoming.usecases.GetUpcomingUseCase
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
-import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 
 @Suppress("UNCHECKED_CAST")
 @OptIn(FlowPreview::class)
@@ -47,7 +47,7 @@ internal class HomeUpcomingViewModel(
     private val modeManager: MediaModeManager,
     private val getUpcomingUseCase: GetUpcomingUseCase,
     private val homeUpNextSource: HomeUpNextLocalDataSource,
-    private val homeWatchlistSource: HomeWatchlistLocalDataSource,
+    private val homeWatchlistSource: UserWatchlistLocalDataSource,
     private val showLocalDataSource: ShowLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,

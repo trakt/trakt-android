@@ -7,17 +7,20 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistStorage
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import java.time.Instant
 
-internal class UserWatchlistStorage : UserWatchlistLocalDataSource {
+internal class UserWatchlistStorage(
+    private val homeWatchlistStorage: HomeWatchlistStorage,
+) : UserWatchlistLocalDataSource {
     private val mutex = Mutex()
 
     private var moviesStorage: MutableMap<TraktId, WatchlistItem>? = null
     private var showsStorage: MutableMap<TraktId, WatchlistItem>? = null
 
     private val updatedAt = MutableSharedFlow<Instant?>(
-        replay = 1,
+        extraBufferCapacity = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST,
     )
 
@@ -145,6 +148,9 @@ internal class UserWatchlistStorage : UserWatchlistLocalDataSource {
                 }
             }
 
+            homeWatchlistStorage
+                .removeMovies(ids)
+
             if (notify) {
                 updatedAt.tryEmit(Instant.now())
             }
@@ -161,6 +167,9 @@ internal class UserWatchlistStorage : UserWatchlistLocalDataSource {
                     storage.remove(id)
                 }
             }
+
+            homeWatchlistStorage
+                .removeShows(ids)
 
             if (notify) {
                 updatedAt.tryEmit(Instant.now())
