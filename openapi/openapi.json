@@ -3222,6 +3222,7 @@
                                     "popularity",
                                     "runtime",
                                     "total-runtime",
+                                    "recently-aired",
                                     "random"
                                   ],
                                   "nullable": true
@@ -11694,7 +11695,8 @@
       "get": {
         "tags": [
           "users",
-          "watched"
+          "watched",
+          "minimal"
         ],
         "parameters": [
           {
@@ -11705,6 +11707,17 @@
               "type": "string"
             },
             "description": "The slug that identifies the user, or \"me\" for the authenticated user."
+          },
+          {
+            "name": "extended",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "min"
+              ]
+            }
           }
         ],
         "responses": {
@@ -11713,86 +11726,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "plays": {
-                        "type": "integer"
-                      },
-                      "last_watched_at": {
-                        "type": "string"
-                      },
-                      "last_updated_at": {
-                        "type": "string"
-                      },
-                      "movie": {
-                        "type": "object",
-                        "properties": {
-                          "title": {
-                            "type": "string"
-                          },
-                          "year": {
-                            "type": "integer"
-                          },
-                          "ids": {
-                            "type": "object",
-                            "properties": {
-                              "trakt": {
-                                "type": "integer"
-                              },
-                              "slug": {
-                                "type": "string"
-                              },
-                              "imdb": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "tmdb": {
-                                "type": "integer",
-                                "nullable": true
-                              },
-                              "plex": {
-                                "type": "object",
-                                "properties": {
-                                  "guid": {
-                                    "type": "string",
-                                    "nullable": true
-                                  },
-                                  "slug": {
-                                    "type": "string",
-                                    "nullable": true
-                                  }
-                                },
-                                "nullable": true
-                              }
-                            },
-                            "required": [
-                              "trakt",
-                              "slug"
-                            ]
-                          }
-                        },
-                        "required": [
-                          "title",
-                          "year",
-                          "ids"
-                        ]
-                      }
-                    },
-                    "required": [
-                      "plays",
-                      "last_watched_at",
-                      "last_updated_at",
-                      "movie"
-                    ]
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
                   }
                 }
               }
             }
           }
         },
-        "operationId": "getUsersWatchedMovies"
+        "operationId": "getUsersWatchedMinimalMovies"
       }
     },
     "/users/{id}/watched/shows": {
@@ -11879,7 +11825,8 @@
                             "type": "string"
                           },
                           "year": {
-                            "type": "integer"
+                            "type": "integer",
+                            "nullable": true
                           },
                           "ids": {
                             "type": "object",
@@ -11926,7 +11873,6 @@
                         "required": [
                           "aired_episodes",
                           "title",
-                          "year",
                           "ids"
                         ]
                       },
@@ -17091,7 +17037,8 @@
                                 "type": "string"
                               },
                               "year": {
-                                "type": "integer"
+                                "type": "integer",
+                                "nullable": true
                               },
                               "aired_episodes": {
                                 "type": "integer"
@@ -17140,7 +17087,6 @@
                             },
                             "required": [
                               "title",
-                              "year",
                               "aired_episodes",
                               "ids"
                             ],
@@ -17777,7 +17723,8 @@
                                 "type": "string"
                               },
                               "year": {
-                                "type": "integer"
+                                "type": "integer",
+                                "nullable": true
                               },
                               "aired_episodes": {
                                 "type": "integer"
@@ -17826,7 +17773,6 @@
                             },
                             "required": [
                               "title",
-                              "year",
                               "aired_episodes",
                               "ids"
                             ],
@@ -18463,7 +18409,8 @@
                                 "type": "string"
                               },
                               "year": {
-                                "type": "integer"
+                                "type": "integer",
+                                "nullable": true
                               },
                               "aired_episodes": {
                                 "type": "integer"
@@ -18512,7 +18459,6 @@
                             },
                             "required": [
                               "title",
-                              "year",
                               "aired_episodes",
                               "ids"
                             ],

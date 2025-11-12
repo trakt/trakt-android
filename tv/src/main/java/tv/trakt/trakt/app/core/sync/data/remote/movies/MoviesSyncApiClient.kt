@@ -10,7 +10,6 @@ import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInner
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.common.networking.WatchedMovieDto
 import tv.trakt.trakt.common.networking.WatchlistMovieDto
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -82,9 +81,10 @@ internal class MoviesSyncApiClient(
         syncApi.postSyncHistoryRemove(request)
     }
 
-    override suspend fun getWatched(extended: String?): List<WatchedMovieDto> {
-        val response = watchedApi.getUsersWatchedMovies(
+    override suspend fun getWatched(extended: String?): Map<String, List<String>> {
+        val response = watchedApi.getUsersWatchedMinimalMovies(
             id = "me",
+            extended = "min",
         )
         return response.body()
     }

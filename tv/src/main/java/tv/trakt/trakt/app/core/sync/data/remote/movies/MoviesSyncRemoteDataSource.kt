@@ -1,7 +1,6 @@
 package tv.trakt.trakt.app.core.sync.data.remote.movies
 
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.networking.WatchedMovieDto
 import tv.trakt.trakt.common.networking.WatchlistMovieDto
 import java.time.ZonedDateTime
 
@@ -13,7 +12,7 @@ internal interface MoviesSyncRemoteDataSource {
         extended: String? = null,
     ): List<WatchlistMovieDto>
 
-    suspend fun getWatched(extended: String? = null): List<WatchedMovieDto>
+    suspend fun getWatched(extended: String? = null): Map<String, List<String>>
 
     suspend fun addToWatchlist(movieId: TraktId)
 

@@ -17,11 +17,11 @@ internal class GetCollectionUseCase(
         if (localWatched == null) {
             val remoteWatched = remoteSource
                 .getWatched()
-                .asyncMap {
+                .map { (movieId, plays) ->
                     WatchedMovie(
-                        movieId = it.movie.ids.trakt.toTraktId(),
-                        plays = it.plays,
-                        lastWatchedAt = it.lastWatchedAt.toZonedDateTime(),
+                        movieId = movieId.toInt().toTraktId(),
+                        plays = plays.size,
+                        lastWatchedAt = plays.maxOf { it.toZonedDateTime() },
                     )
                 }
 

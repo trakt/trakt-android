@@ -40,7 +40,6 @@ import org.openapitools.client.models.GetUsersReactionsComments200ResponseInner
 import org.openapitools.client.models.GetUsersReactionsComments200ResponseInnerCommentUser
 import org.openapitools.client.models.GetUsersSettings200Response
 import org.openapitools.client.models.GetUsersSettings200ResponseUser
-import org.openapitools.client.models.GetUsersWatchedMovies200ResponseInner
 import org.openapitools.client.models.GetUsersWatchedShows200ResponseInner
 import org.openapitools.client.models.GetUsersWatchlistAll200ResponseInner
 import org.openapitools.client.models.GetUsersWatchlistMovies200ResponseInner
@@ -95,7 +94,6 @@ typealias CalendarShowDto = GetCalendarsShows200ResponseInner
 typealias CalendarMovieDto = GetCalendarsMovies200ResponseInner
 typealias ProgressShowDto = GetSyncProgressUpNextStandard200ResponseInner
 typealias WatchedShowDto = GetUsersWatchedShows200ResponseInner
-typealias WatchedMovieDto = GetUsersWatchedMovies200ResponseInner
 typealias SyncAddHistoryResponseDto = PostSyncHistoryAdd200Response
 typealias SyncHistoryMovieItemDto = GetUsersHistoryAll200ResponseInnerOneOf
 typealias SyncHistoryEpisodeItemDto = GetUsersHistoryAll200ResponseInnerOneOf1

@@ -18,7 +18,6 @@ import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
 import tv.trakt.trakt.common.networking.UserCommentsDto
 import tv.trakt.trakt.common.networking.UserRatingDto
-import tv.trakt.trakt.common.networking.WatchedMovieDto
 import tv.trakt.trakt.common.networking.WatchedShowDto
 import tv.trakt.trakt.common.networking.WatchlistItemDto
 import java.time.LocalDate
@@ -37,43 +36,14 @@ internal class UserApiClient(
         return User.fromDto(response)
     }
 
-    override suspend fun getWatchedMovies(): List<WatchedMovieDto> {
-        val response = usersApi.getUsersWatchedMovies(
-            "me",
+    override suspend fun getWatchedMovies(): Map<String, List<String>> {
+        val response = usersApi.getUsersWatchedMinimalMovies(
+            id = "me",
+            extended = "min",
         )
 
         return response.body()
     }
-
-//    override suspend fun getProgressShows(limit: Int?): List<SyncProgressItemDto> {
-//        val allResults = mutableListOf<SyncProgressItemDto>()
-//        val defaultLimit = 200
-//
-//        var page = 1
-//        var hasMorePages = true
-//
-//        while (hasMorePages) {
-//            val response = syncApi.getProgressWatched(
-//                limit = when {
-//                    limit == null -> "all"
-//                    else -> limit.toString()
-//                },
-//                page = page,
-//            )
-//
-//            val body = response.body()
-//            if (body.isNotEmpty()) {
-//                allResults.addAll(body)
-//                page++
-//            }
-//
-//            if (limit == null || body.size < defaultLimit) {
-//                hasMorePages = false
-//            }
-//        }
-//
-//        return allResults
-//    }
 
     override suspend fun getWatchedShows(): List<WatchedShowDto> {
         val response = usersApi.getUsersWatchedShows(

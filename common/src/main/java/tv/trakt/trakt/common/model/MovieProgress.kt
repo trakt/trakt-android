@@ -9,8 +9,6 @@ import tv.trakt.trakt.common.networking.MovieProgressDto
 @Serializable
 data class MovieProgress(
     val ids: Ids,
-    val title: String,
-    val year: Int?,
 ) {
     companion object
 }
@@ -18,7 +16,5 @@ data class MovieProgress(
 fun Companion.fromDto(dto: MovieProgressDto): MovieProgress {
     return MovieProgress(
         ids = Ids.fromDto(dto.ids),
-        title = dto.title,
-        year = dto.year,
     )
 }

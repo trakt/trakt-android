@@ -13,7 +13,6 @@ import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
 import tv.trakt.trakt.common.networking.UserCommentsDto
 import tv.trakt.trakt.common.networking.UserRatingDto
-import tv.trakt.trakt.common.networking.WatchedMovieDto
 import tv.trakt.trakt.common.networking.WatchedShowDto
 import tv.trakt.trakt.common.networking.WatchlistItemDto
 import java.time.LocalDate
@@ -22,7 +21,7 @@ import java.time.ZonedDateTime
 internal interface UserRemoteDataSource {
     suspend fun getProfile(): User
 
-    suspend fun getWatchedMovies(): List<WatchedMovieDto>
+    suspend fun getWatchedMovies(): Map<String, List<String>>
 
     suspend fun getWatchedShows(): List<WatchedShowDto>
 

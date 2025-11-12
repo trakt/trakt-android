@@ -7,8 +7,9 @@ import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Ids
-import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.MovieProgress
+import tv.trakt.trakt.common.model.toSlugId
+import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.sync.model.ProgressItem
 import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
 import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
@@ -37,11 +38,16 @@ internal class LoadUserProgressUseCase(
 
     suspend fun loadMoviesProgress(): ImmutableList<ProgressItem.MovieItem> {
         val response = remoteSource.getWatchedMovies()
-            .asyncMap {
+            .map { (movieId, plays) ->
                 ProgressItem.MovieItem(
-                    plays = it.plays,
-                    movie = Movie.fromDto(it.movie),
-                    lastWatchedAt = it.lastWatchedAt.toInstant(),
+                    plays = plays.size,
+                    movie = MovieProgress(
+                        Ids(
+                            trakt = movieId.toInt().toTraktId(),
+                            slug = "".toSlugId(),
+                        ),
+                    ),
+                    lastWatchedAt = plays.maxOf { it.toInstant() },
                 )
             }
 
