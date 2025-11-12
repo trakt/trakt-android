@@ -72,6 +72,8 @@ internal class GetPersonalListItemsUseCase(
                 MediaMode.SHOWS -> it is PersonalListItem.ShowItem
                 MediaMode.MOVIES -> it is PersonalListItem.MovieItem
             }
-        }.toImmutableList()
+        }
+            .sortedByDescending { it.listedAt }
+            .toImmutableList()
     }
 }

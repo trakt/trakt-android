@@ -57,6 +57,7 @@ internal val listsDataModule = module {
     single<ListsRemoteDataSource> {
         ListsApiClient(
             listsApi = get(),
+            cacheMarker = get(),
         )
     }
 

@@ -12,9 +12,11 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.ListItemDto
 import tv.trakt.trakt.common.networking.ListMovieItemDto
 import tv.trakt.trakt.common.networking.ListShowItemDto
+import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
 internal class ListsApiClient(
     private val listsApi: ListsApi,
+    private val cacheMarker: CacheMarkerProvider,
 ) : ListsRemoteDataSource {
     override suspend fun createList(
         name: String,
@@ -46,6 +48,8 @@ internal class ListsApiClient(
             listId = listId.value.toString(),
             putUsersListsListUpdateRequest = request,
         )
+
+        cacheMarker.invalidate()
     }
 
     override suspend fun deleteList(listId: TraktId) {
@@ -53,6 +57,8 @@ internal class ListsApiClient(
             id = "me",
             listId = listId.value.toString(),
         )
+
+        cacheMarker.invalidate()
     }
 
     override suspend fun addShowToList(
@@ -78,6 +84,7 @@ internal class ListsApiClient(
                 ),
             ),
         )
+        cacheMarker.invalidate()
     }
 
     override suspend fun removeShowFromList(
@@ -103,6 +110,7 @@ internal class ListsApiClient(
                 ),
             ),
         )
+        cacheMarker.invalidate()
     }
 
     override suspend fun addMovieToList(
@@ -127,6 +135,7 @@ internal class ListsApiClient(
                 ),
             ),
         )
+        cacheMarker.invalidate()
     }
 
     override suspend fun removeMovieFromList(
@@ -151,6 +160,7 @@ internal class ListsApiClient(
                 ),
             ),
         )
+        cacheMarker.invalidate()
     }
 
     override suspend fun getAllListItems(
