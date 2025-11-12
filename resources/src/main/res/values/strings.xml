@@ -166,7 +166,7 @@
     <string name="text_movies_count">%d movies</string>
 
     <string name="list_description_released_shows">Released shows</string>
-    <string name="list_description_released_media">Released shows &amp; movies</string>
+    <string name="list_description_released_media">Released shows / movies</string>
 
     <string name="button_label_browse_movies">Discover Movies</string>
     <string name="button_label_browse_shows">Discover Shows</string>

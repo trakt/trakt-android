@@ -19,13 +19,14 @@ import tv.trakt.trakt.core.home.sections.activity.features.all.navigation.naviga
 import tv.trakt.trakt.core.home.sections.activity.features.all.navigation.navigateToAllActivitySocial
 import tv.trakt.trakt.core.home.sections.upnext.features.all.navigation.homeUpNextScreen
 import tv.trakt.trakt.core.home.sections.upnext.features.all.navigation.navigateToAllUpNext
+import tv.trakt.trakt.core.home.sections.watchlist.features.all.navigation.homeWatchlistScreen
+import tv.trakt.trakt.core.home.sections.watchlist.features.all.navigation.navigateToAllHomeWatchlist
 import tv.trakt.trakt.core.lists.features.details.navigation.listDetailsScreen
 import tv.trakt.trakt.core.lists.features.details.navigation.navigateToListDetails
 import tv.trakt.trakt.core.lists.navigation.listsScreen
 import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.allPersonalListScreen
 import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.navigateToPersonalList
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.allWatchlistScreen
-import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.navigateToHomeWatchlist
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.navigateToWatchlist
 import tv.trakt.trakt.core.profile.navigation.navigateToProfile
 import tv.trakt.trakt.core.profile.navigation.profileScreen
@@ -58,7 +59,7 @@ internal fun NavGraphBuilder.homeScreens(
             onNavigateToAllUpNext = { navigateToAllUpNext() },
             onNavigateToAllPersonal = { navigateToAllActivityPersonal(filtersEnabled = true) },
             onNavigateToAllSocial = { navigateToAllActivitySocial() },
-            onNavigateToAllWatchlist = { navigateToHomeWatchlist() },
+            onNavigateToAllWatchlist = { navigateToAllHomeWatchlist() },
         )
 
         homeUpNextScreen(
@@ -66,6 +67,12 @@ internal fun NavGraphBuilder.homeScreens(
             onNavigateToEpisode = { showId, episode ->
                 navigateToEpisode(showId, episode)
             },
+            onNavigateBack = { popBackStack() },
+        )
+
+        homeWatchlistScreen(
+            onNavigateToShow = { navigateToShow(it) },
+            onNavigateToMovie = { navigateToMovie(it) },
             onNavigateBack = { popBackStack() },
         )
 

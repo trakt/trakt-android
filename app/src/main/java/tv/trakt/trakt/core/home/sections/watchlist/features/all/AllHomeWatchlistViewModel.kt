@@ -1,16 +1,17 @@
 @file:Suppress("UNCHECKED_CAST")
 
-package tv.trakt.trakt.core.home.sections.watchlist
+package tv.trakt.trakt.core.home.sections.watchlist.features.all
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.Firebase
+import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -28,6 +29,7 @@ import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
@@ -58,7 +60,7 @@ import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import java.time.Instant
 
 @OptIn(FlowPreview::class)
-internal class HomeWatchlistViewModel(
+internal class AllHomeWatchlistViewModel(
     private val getMoviesUseCase: GetHomeMoviesWatchlistUseCase,
     private val getShowsUseCase: GetHomeShowsWatchlistUseCase,
     private val addHistoryUseCase: AddHomeHistoryUseCase,
@@ -72,9 +74,10 @@ internal class HomeWatchlistViewModel(
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
 ) : ViewModel() {
-    private val initialState = HomeWatchlistState()
+    private val initialState = AllHomeWatchlistState()
     private val initialMode = modeManager.getMode()
 
+    private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialMode)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
@@ -89,7 +92,9 @@ internal class HomeWatchlistViewModel(
     private var processingJob: Job? = null
 
     init {
+        loadBackground()
         loadData()
+
         observeMode()
         observeUser()
         observeData()
@@ -135,6 +140,11 @@ internal class HomeWatchlistViewModel(
             .launchIn(viewModelScope)
     }
 
+    private fun loadBackground() {
+        val configUrl = Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL)
+        backgroundState.update { configUrl }
+    }
+
     fun loadData(
         ignoreErrors: Boolean = false,
         localOnly: Boolean = false,
@@ -146,43 +156,14 @@ internal class HomeWatchlistViewModel(
             }
 
             try {
-                coroutineScope {
-                    val localShowsAsync = async { getShowsUseCase.getLocalWatchlist(HOME_WATCHLIST_LIMIT) }
-                    val localMoviesAsync = async { getMoviesUseCase.getLocalWatchlist(HOME_WATCHLIST_LIMIT) }
+                val localShowsAsync = async { getShowsUseCase.getLocalWatchlist(HOME_WATCHLIST_LIMIT) }
+                val localMoviesAsync = async { getMoviesUseCase.getLocalWatchlist(HOME_WATCHLIST_LIMIT) }
 
-                    val (localShows, localMovies) = awaitAll(localShowsAsync, localMoviesAsync)
+                val (localShows, localMovies) = awaitAll(localShowsAsync, localMoviesAsync)
 
-                    if (localMovies.isNotEmpty() || localShows.isNotEmpty()) {
-                        itemsState.update {
-                            (localShows + localMovies)
-                                .filter {
-                                    when (filterState.value) {
-                                        MediaMode.SHOWS -> it is ShowItem
-                                        MediaMode.MOVIES -> it is MovieItem
-                                        else -> true
-                                    }
-                                }
-                                .sortedWith(
-                                    compareByDescending<WatchlistItem> { it.released }
-                                        .thenBy { it.title },
-                                )
-                                .toImmutableList()
-                        }
-                        loadingState.update { DONE }
-                        if (localOnly) {
-                            return@coroutineScope
-                        }
-                    } else {
-                        loadingState.update { LOADING }
-                    }
-                }
-
-                coroutineScope {
-                    val showsAsync = async { getShowsUseCase.getWatchlist(HOME_WATCHLIST_LIMIT) }
-                    val moviesAsync = async { getMoviesUseCase.getWatchlist(HOME_WATCHLIST_LIMIT) }
-
+                if (localMovies.isNotEmpty() || localShows.isNotEmpty()) {
                     itemsState.update {
-                        (showsAsync.await() + moviesAsync.await())
+                        (localShows + localMovies)
                             .filter {
                                 when (filterState.value) {
                                     MediaMode.SHOWS -> it is ShowItem
@@ -196,8 +177,32 @@ internal class HomeWatchlistViewModel(
                             )
                             .toImmutableList()
                     }
+                    loadingState.update { DONE }
+                    if (localOnly) {
+                        return@launch
+                    }
+                } else {
+                    loadingState.update { LOADING }
                 }
 
+                val showsAsync = async { getShowsUseCase.getWatchlist(HOME_WATCHLIST_LIMIT) }
+                val moviesAsync = async { getMoviesUseCase.getWatchlist(HOME_WATCHLIST_LIMIT) }
+
+                itemsState.update {
+                    (showsAsync.await() + moviesAsync.await())
+                        .filter {
+                            when (filterState.value) {
+                                MediaMode.SHOWS -> it is ShowItem
+                                MediaMode.MOVIES -> it is MovieItem
+                                else -> true
+                            }
+                        }
+                        .sortedWith(
+                            compareByDescending<WatchlistItem> { it.released }
+                                .thenBy { it.title },
+                        )
+                        .toImmutableList()
+                }
                 loadedAt = nowUtcInstant()
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -210,6 +215,16 @@ internal class HomeWatchlistViewModel(
                 loadingState.update { DONE }
                 dataJob = null
             }
+        }
+    }
+
+    fun setFilter(newFilter: MediaMode) {
+        if (newFilter == filterState.value || loadingState.value.isLoading) {
+            return
+        }
+        viewModelScope.launch {
+            filterState.update { newFilter }
+            loadData(localOnly = true)
         }
     }
 
@@ -244,7 +259,7 @@ internal class HomeWatchlistViewModel(
                 )
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "episode",
-                    source = "home_watchlist",
+                    source = "all_home_watchlist",
                 )
                 homeWatchlistSource.notifyUpdate()
 
@@ -291,7 +306,7 @@ internal class HomeWatchlistViewModel(
                 addHistoryUseCase.addMovieToHistory(movieId)
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
-                    source = "home_watchlist",
+                    source = "all_home_watchlist",
                 )
 
                 infoState.update {
@@ -384,6 +399,7 @@ internal class HomeWatchlistViewModel(
     }
 
     val state = combine(
+        backgroundState,
         itemsState,
         filterState,
         loadingState,
@@ -392,14 +408,15 @@ internal class HomeWatchlistViewModel(
         navigateMovie,
         navigateShow,
     ) { state ->
-        HomeWatchlistState(
-            items = state[0] as ImmutableList<WatchlistItem>?,
-            filter = state[1] as MediaMode,
-            loading = state[2] as LoadingState,
-            info = state[3] as StringResource?,
-            error = state[4] as Exception?,
-            navigateMovie = state[5] as TraktId?,
-            navigateShow = state[6] as TraktId?,
+        AllHomeWatchlistState(
+            backgroundUrl = state[0] as String,
+            items = state[1] as ImmutableList<WatchlistItem>?,
+            filter = state[2] as MediaMode,
+            loading = state[3] as LoadingState,
+            info = state[4] as StringResource?,
+            error = state[5] as Exception?,
+            navigateMovie = state[6] as TraktId?,
+            navigateShow = state[7] as TraktId?,
         )
     }.stateIn(
         scope = viewModelScope,

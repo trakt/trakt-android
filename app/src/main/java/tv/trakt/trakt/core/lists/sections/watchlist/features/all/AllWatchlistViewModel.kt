@@ -1,9 +1,7 @@
 package tv.trakt.trakt.core.lists.sections.watchlist.features.all
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
@@ -38,10 +36,8 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
-import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeMoviesWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource.Source.ALL
-import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.ListsWatchlistDestination
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.MovieItem
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistUseCase
@@ -60,10 +56,8 @@ import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 
 @OptIn(FlowPreview::class)
 internal class AllWatchlistViewModel(
-    savedStateHandle: SavedStateHandle,
     modeManager: MediaModeManager,
     private val getWatchlistUseCase: GetWatchlistUseCase,
-    private val getHomeWatchlistUseCase: GetHomeMoviesWatchlistUseCase,
     private val getShowsWatchlistUseCase: GetShowsWatchlistUseCase,
     private val getMoviesWatchlistUseCase: GetMoviesWatchlistUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
@@ -77,12 +71,9 @@ internal class AllWatchlistViewModel(
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
 ) : ViewModel() {
-    private val destination = savedStateHandle.toRoute<ListsWatchlistDestination>()
-
     private val initialState = AllWatchlistState()
     private val initialMode = modeManager.getMode()
 
-    private val isHomeWatchlist = MutableStateFlow(destination.homeWatchlist)
     private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialMode)
@@ -136,20 +127,10 @@ internal class AllWatchlistViewModel(
                     return@launch
                 }
 
-                val filter = when {
-                    destination.homeWatchlist -> MOVIES
-                    else -> filterState.value
-                }
-
-                val localItems = when {
-                    destination.homeWatchlist -> {
-                        getHomeWatchlistUseCase.getLocalWatchlist()
-                    }
-                    else -> when (filter) {
-                        MEDIA -> getWatchlistUseCase.getLocalWatchlist()
-                        SHOWS -> getShowsWatchlistUseCase.getLocalWatchlist()
-                        MOVIES -> getMoviesWatchlistUseCase.getLocalWatchlist()
-                    }
+                val localItems = when (filterState.value) {
+                    MEDIA -> getWatchlistUseCase.getLocalWatchlist()
+                    SHOWS -> getShowsWatchlistUseCase.getLocalWatchlist()
+                    MOVIES -> getMoviesWatchlistUseCase.getLocalWatchlist()
                 }
 
                 if (localItems.isNotEmpty()) {
@@ -163,15 +144,10 @@ internal class AllWatchlistViewModel(
                 }
 
                 itemsState.update {
-                    when {
-                        destination.homeWatchlist -> {
-                            getHomeWatchlistUseCase.getWatchlist()
-                        }
-                        else -> when (filter) {
-                            MEDIA -> getWatchlistUseCase.getWatchlist()
-                            SHOWS -> getShowsWatchlistUseCase.getWatchlist()
-                            MOVIES -> getMoviesWatchlistUseCase.getWatchlist()
-                        }
+                    when (filterState.value) {
+                        MEDIA -> getWatchlistUseCase.getWatchlist()
+                        SHOWS -> getShowsWatchlistUseCase.getWatchlist()
+                        MOVIES -> getMoviesWatchlistUseCase.getWatchlist()
                     }
                 }
             } catch (error: Exception) {
@@ -324,7 +300,6 @@ internal class AllWatchlistViewModel(
         infoState,
         errorState,
         backgroundState,
-        isHomeWatchlist,
     ) { state ->
         AllWatchlistState(
             loading = state[0] as LoadingState,
@@ -335,7 +310,6 @@ internal class AllWatchlistViewModel(
             info = state[5] as? StringResource,
             error = state[6] as? Exception,
             backgroundUrl = state[7] as? String,
-            isHomeWatchlist = state[8] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

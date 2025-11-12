@@ -179,9 +179,7 @@ internal val listsModule = module {
 
     viewModel {
         AllWatchlistViewModel(
-            savedStateHandle = get(),
             getWatchlistUseCase = get(),
-            getHomeWatchlistUseCase = get(),
             getShowsWatchlistUseCase = get(),
             getMoviesWatchlistUseCase = get(),
             allWatchlistLocalDataSource = get(),

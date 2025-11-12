@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 
-package tv.trakt.trakt.core.lists.sections.watchlist.features.all
+package tv.trakt.trakt.core.home.sections.watchlist.features.all
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -44,8 +44,8 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.lists.sections.watchlist.features.all.views.AllWatchlistEpisodeView
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.views.AllWatchlistMovieView
-import tv.trakt.trakt.core.lists.sections.watchlist.features.all.views.AllWatchlistShowView
 import tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies.sheets.WatchlistMovieSheet
 import tv.trakt.trakt.core.lists.sections.watchlist.features.context.shows.sheets.WatchlistShowSheet
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
@@ -60,9 +60,9 @@ import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun AllWatchlistScreen(
+internal fun AllHomeWatchlistScreen(
     modifier: Modifier = Modifier,
-    viewModel: AllWatchlistViewModel,
+    viewModel: AllHomeWatchlistViewModel,
     onNavigateBack: () -> Unit,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
@@ -91,7 +91,7 @@ internal fun AllWatchlistScreen(
         }
     }
 
-    AllWatchlistContent(
+    AllHomeWatchlistContent(
         state = state,
         modifier = modifier,
         onClick = {
@@ -111,7 +111,7 @@ internal fun AllWatchlistScreen(
                 viewModel.addMovieToHistory(it.id)
             }
         },
-        onFilterClick = { viewModel.setFilter(it) },
+        onFilterClick = viewModel::setFilter,
         onBackClick = onNavigateBack,
     )
 
@@ -120,10 +120,10 @@ internal fun AllWatchlistScreen(
         sheetItem = contextMovieSheet?.movie,
         onDismiss = { contextMovieSheet = null },
         onRemoveWatchlist = {
-            viewModel.removeItem(contextMovieSheet)
+//            viewModel.removeItem(contextMovieSheet)
         },
         onAddWatched = {
-            viewModel.removeItem(contextMovieSheet)
+//            viewModel.removeItem(contextMovieSheet)
         },
     )
 
@@ -132,17 +132,17 @@ internal fun AllWatchlistScreen(
         sheetItem = contextShowSheet?.show,
         onDismiss = { contextShowSheet = null },
         onRemoveWatchlist = {
-            viewModel.removeItem(contextShowSheet)
+//            viewModel.removeItem(contextShowSheet)
         },
         onAddWatched = {
-            viewModel.removeItem(contextShowSheet)
+//            viewModel.removeItem(contextShowSheet)
         },
     )
 }
 
 @Composable
-internal fun AllWatchlistContent(
-    state: AllWatchlistState,
+internal fun AllHomeWatchlistContent(
+    state: AllHomeWatchlistState,
     modifier: Modifier = Modifier,
     onTopOfList: () -> Unit = {},
     onClick: (WatchlistItem) -> Unit = {},
@@ -181,7 +181,13 @@ internal fun AllWatchlistContent(
         )
 
         ContentList(
-            subtitle = stringResource(R.string.text_sort_recently_added),
+            subtitle = stringResource(
+                when (state.filter) {
+                    MediaMode.SHOWS -> R.string.list_description_released_shows
+                    MediaMode.MOVIES -> R.string.list_description_released_movies
+                    else -> R.string.list_description_released_media
+                },
+            ),
             listItems = (state.items ?: emptyList()).toImmutableList(),
             listState = listState,
             listFilter = state.filter,
@@ -282,10 +288,11 @@ private fun ContentList(
             key = { it.key },
         ) { item ->
             when (item) {
-                is ShowItem -> AllWatchlistShowView(
+                is ShowItem -> AllWatchlistEpisodeView(
                     item = item,
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
+                    onCheckClick = { onCheckClick(item) },
                     modifier = Modifier
                         .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
                         .animateItem(
@@ -334,8 +341,8 @@ private fun ContentFilters(
 @Composable
 private fun Preview() {
     TraktTheme {
-        AllWatchlistContent(
-            state = AllWatchlistState(),
+        AllHomeWatchlistContent(
+            state = AllHomeWatchlistState(),
         )
     }
 }
@@ -348,8 +355,8 @@ private fun Preview() {
 @Composable
 private fun Preview2() {
     TraktTheme {
-        AllWatchlistContent(
-            state = AllWatchlistState(),
+        AllHomeWatchlistContent(
+            state = AllHomeWatchlistState(),
         )
     }
 }

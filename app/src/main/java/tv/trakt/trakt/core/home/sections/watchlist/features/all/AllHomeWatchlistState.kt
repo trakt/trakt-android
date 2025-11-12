@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.lists.sections.watchlist.features.all
+package tv.trakt.trakt.core.home.sections.watchlist.features.all
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
@@ -9,8 +9,7 @@ import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.main.model.MediaMode
 
 @Immutable
-internal data class AllWatchlistState(
-    val backgroundUrl: String? = null,
+internal data class AllHomeWatchlistState(
     val filter: MediaMode? = null,
     val items: ImmutableList<WatchlistItem>? = null,
     val navigateShow: TraktId? = null,
@@ -18,4 +17,5 @@ internal data class AllWatchlistState(
     val loading: LoadingState = LoadingState.IDLE,
     val info: StringResource? = null,
     val error: Exception? = null,
+    val backgroundUrl: String? = null,
 )

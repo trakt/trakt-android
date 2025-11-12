@@ -44,6 +44,7 @@ import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.HomeWatchlistViewModel
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistStorage
+import tv.trakt.trakt.core.home.sections.watchlist.features.all.AllHomeWatchlistViewModel
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeMoviesWatchlistUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeShowsWatchlistUseCase
@@ -186,6 +187,23 @@ internal val homeModule = module {
             homeWatchlistSource = get(),
             allWatchlistSource = get(),
             userWatchlistSource = get(),
+            showLocalDataSource = get(),
+            movieLocalDataSource = get(),
+            modeManager = get(),
+            sessionManager = get(),
+            analytics = get(),
+        )
+    }
+
+    viewModel {
+        AllHomeWatchlistViewModel(
+            getMoviesUseCase = get(),
+            getShowsUseCase = get(),
+            addHistoryUseCase = get(),
+            loadUserProgressUseCase = get(),
+            allWatchlistSource = get(),
+            userWatchlistSource = get(),
+            homeWatchlistSource = get(),
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
             modeManager = get(),

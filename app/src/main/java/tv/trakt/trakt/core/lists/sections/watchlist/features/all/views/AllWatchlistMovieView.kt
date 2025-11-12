@@ -13,7 +13,6 @@ internal fun AllWatchlistMovieView(
     item: WatchlistItem.MovieItem,
     modifier: Modifier = Modifier,
     showCheck: Boolean = false,
-    showIcon: Boolean = false,
     onClick: () -> Unit = {},
     onCheckClick: () -> Unit,
     onLongClick: () -> Unit,
@@ -38,7 +37,7 @@ internal fun AllWatchlistMovieView(
         footerContent = {
             MovieMetaFooter(
                 movie = item.movie,
-                mediaIcon = showIcon,
+                mediaIcon = true,
                 loading = item.loading,
                 check = showCheck,
                 onCheckClick = onCheckClick,

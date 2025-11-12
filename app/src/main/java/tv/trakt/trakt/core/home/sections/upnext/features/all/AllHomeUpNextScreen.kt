@@ -277,7 +277,7 @@ private fun ContentListItem(
         titleOriginal = item.show.titleOriginal,
         subtitle = item.progress.nextEpisode.seasonEpisodeString(),
         contentImageUrl = item.show.images?.getPosterUrl(),
-        containerImageUrl = item.progress.nextEpisode.images?.getScreenshotUrl()
+        containerImageUrl = item.progress.nextEpisode.images?.getScreenshotUrl(THUMB)
             ?: item.show.images?.getFanartUrl(THUMB),
         onClick = onClick,
         onLongClick = onLongClick,
