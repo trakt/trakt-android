@@ -44,7 +44,6 @@ internal class UpNextItemContextViewModel(
 
                 upNextLocalDataSource.removeItems(
                     showIds = listOf(showId),
-                    notify = true,
                 )
 
                 upcomingLocalDataSource.removeShowItems(
@@ -52,7 +51,9 @@ internal class UpNextItemContextViewModel(
                     notify = true,
                 )
 
+                upNextLocalDataSource.notifyUpdate()
                 allUpNextLocalDataSource.notifyUpdate()
+
                 loadUserProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {

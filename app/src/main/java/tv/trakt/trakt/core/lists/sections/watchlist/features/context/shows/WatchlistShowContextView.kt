@@ -44,6 +44,7 @@ internal fun WatchlistShowContextView(
     show: Show,
     viewModel: WatchlistShowContextViewModel,
     modifier: Modifier = Modifier,
+    addLocally: Boolean,
     onAddWatched: (Show) -> Unit,
     onRemoveWatchlist: (Show) -> Unit,
     onError: () -> Unit,
@@ -71,7 +72,11 @@ internal fun WatchlistShowContextView(
         state = state,
         modifier = modifier,
         onWatchedClick = {
-            confirmAddWatchedSheet = true
+            if (addLocally) {
+                confirmAddWatchedSheet = true
+            } else {
+                onAddWatched(show)
+            }
         },
         onWatchlistClick = {
             confirmRemoveWatchlistSheet = true

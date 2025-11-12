@@ -8,6 +8,8 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -39,8 +41,10 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.HomeConfig.HOME_WATCHLIST_LIMIT
+import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
-import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeWatchlistUseCase
+import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeMoviesWatchlistUseCase
+import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeShowsWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource.Source
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
@@ -48,21 +52,21 @@ import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.MovieIte
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.ShowItem
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.main.model.MediaMode
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import java.time.Instant
 
 @OptIn(FlowPreview::class)
 internal class HomeWatchlistViewModel(
-    private val getWatchlistUseCase: GetHomeWatchlistUseCase,
+    private val getMoviesUseCase: GetHomeMoviesWatchlistUseCase,
+    private val getShowsUseCase: GetHomeShowsWatchlistUseCase,
     private val addHistoryUseCase: AddHomeHistoryUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val allWatchlistSource: AllWatchlistLocalDataSource,
     private val userWatchlistSource: UserWatchlistLocalDataSource,
+    private val homeWatchlistSource: HomeWatchlistLocalDataSource,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
-    private val episodeUpdates: EpisodeDetailsUpdates,
     private val modeManager: MediaModeManager,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
@@ -141,12 +145,27 @@ internal class HomeWatchlistViewModel(
             }
 
             try {
-                val localItems = getWatchlistUseCase.getLocalWatchlist(
-                    limit = HOME_WATCHLIST_LIMIT,
-                    filter = filterState.value,
-                )
-                if (localItems.isNotEmpty()) {
-                    itemsState.update { localItems }
+                val localShowsAsync = async { getShowsUseCase.getLocalWatchlist(HOME_WATCHLIST_LIMIT) }
+                val localMoviesAsync = async { getMoviesUseCase.getLocalWatchlist(HOME_WATCHLIST_LIMIT) }
+
+                val (localShows, localMovies) = awaitAll(localShowsAsync, localMoviesAsync)
+
+                if (localMovies.isNotEmpty() || localShows.isNotEmpty()) {
+                    itemsState.update {
+                        (localShows + localMovies)
+                            .filter {
+                                when (filterState.value) {
+                                    MediaMode.SHOWS -> it is ShowItem
+                                    MediaMode.MOVIES -> it is MovieItem
+                                    else -> true
+                                }
+                            }
+                            .sortedWith(
+                                compareByDescending<WatchlistItem> { it.released }
+                                    .thenBy { it.title },
+                            )
+                            .toImmutableList()
+                    }
                     loadingState.update { DONE }
                     if (localOnly) {
                         return@launch
@@ -155,13 +174,24 @@ internal class HomeWatchlistViewModel(
                     loadingState.update { LOADING }
                 }
 
-                itemsState.update {
-                    getWatchlistUseCase.getWatchlist(
-                        limit = HOME_WATCHLIST_LIMIT,
-                        filter = filterState.value,
-                    )
-                }
+                val showsAsync = async { getShowsUseCase.getWatchlist(HOME_WATCHLIST_LIMIT) }
+                val moviesAsync = async { getMoviesUseCase.getWatchlist(HOME_WATCHLIST_LIMIT) }
 
+                itemsState.update {
+                    (showsAsync.await() + moviesAsync.await())
+                        .filter {
+                            when (filterState.value) {
+                                MediaMode.SHOWS -> it is ShowItem
+                                MediaMode.MOVIES -> it is MovieItem
+                                else -> true
+                            }
+                        }
+                        .sortedWith(
+                            compareByDescending<WatchlistItem> { it.released }
+                                .thenBy { it.title },
+                        )
+                        .toImmutableList()
+                }
                 loadedAt = nowUtcInstant()
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -175,18 +205,6 @@ internal class HomeWatchlistViewModel(
                 dataJob = null
             }
         }
-    }
-
-    private suspend fun loadEmptyIfNeeded(): Boolean {
-        if (!sessionManager.isAuthenticated()) {
-            itemsState.update { EmptyImmutableList }
-            loadingState.update { DONE }
-            return true
-        } else {
-            loadingState.update { IDLE }
-        }
-
-        return false
     }
 
     fun addShowToHistory(
@@ -222,16 +240,10 @@ internal class HomeWatchlistViewModel(
                     mediaType = "episode",
                     source = "home_watchlist",
                 )
-                episodeUpdates.notifyUpdate(EpisodeDetailsUpdates.Source.HOME)
+                homeWatchlistSource.notifyUpdate()
 
                 infoState.update {
                     StaticStringResource("Added to history")
-                }
-
-                itemsState.update {
-                    getWatchlistUseCase.getWatchlist(
-                        filter = filterState.value,
-                    )
                 }
 
                 loadShowsProgress()
@@ -278,12 +290,6 @@ internal class HomeWatchlistViewModel(
 
                 infoState.update {
                     StaticStringResource("Added to history")
-                }
-
-                itemsState.update {
-                    getWatchlistUseCase.getWatchlist(
-                        filter = filterState.value,
-                    )
                 }
 
                 loadMoviesProgress()
@@ -351,6 +357,18 @@ internal class HomeWatchlistViewModel(
 
     fun clearInfo() {
         infoState.update { null }
+    }
+
+    private suspend fun loadEmptyIfNeeded(): Boolean {
+        if (!sessionManager.isAuthenticated()) {
+            itemsState.update { EmptyImmutableList }
+            loadingState.update { DONE }
+            return true
+        } else {
+            loadingState.update { IDLE }
+        }
+
+        return false
     }
 
     override fun onCleared() {

@@ -234,13 +234,14 @@ internal fun HomeUpNextContent(
 
 @Composable
 private fun ContentLoadingList(
+    modifier: Modifier = Modifier,
     visible: Boolean = true,
     contentPadding: PaddingValues,
 ) {
     LazyRow(
         horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
         contentPadding = contentPadding,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .alpha(if (visible) 1F else 0F),
     ) {

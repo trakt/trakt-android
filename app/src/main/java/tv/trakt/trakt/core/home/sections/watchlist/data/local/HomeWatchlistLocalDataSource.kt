@@ -5,22 +5,15 @@ import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import java.time.Instant
 
 internal interface HomeWatchlistLocalDataSource {
-    suspend fun addItems(
-        items: List<WatchlistItem>,
-        notify: Boolean,
-    )
+    suspend fun addItems(items: List<WatchlistItem>)
 
-    suspend fun setItems(
-        items: List<WatchlistItem>,
-        notify: Boolean,
-    )
+    suspend fun setItems(items: List<WatchlistItem>)
 
-    suspend fun removeItems(
-        itemsKeys: List<String>,
-        notify: Boolean,
-    )
+    suspend fun removeItems(itemsKeys: List<String>)
 
     suspend fun getItems(): List<WatchlistItem>
+
+    fun notifyUpdate()
 
     fun observeUpdates(): Flow<Instant?>
 

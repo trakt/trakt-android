@@ -16,49 +16,31 @@ internal class HomeUpNextStorage : HomeUpNextLocalDataSource {
 
     private val storage = mutableMapOf<TraktId, ProgressShow>()
     private val updatedAt = MutableSharedFlow<Instant?>(
-        replay = 1,
+        extraBufferCapacity = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST,
     )
 
-    override suspend fun addItems(
-        items: List<ProgressShow>,
-        notify: Boolean,
-    ) {
+    override suspend fun addItems(items: List<ProgressShow>) {
         mutex.withLock {
             with(storage) {
                 putAll(items.associateBy { it.show.ids.trakt })
             }
-            if (notify) {
-                updatedAt.tryEmit(nowUtcInstant())
-            }
         }
     }
 
-    override suspend fun setItems(
-        items: List<ProgressShow>,
-        notify: Boolean,
-    ) {
+    override suspend fun setItems(items: List<ProgressShow>) {
         mutex.withLock {
             with(storage) {
                 clear()
                 putAll(items.associateBy { it.show.ids.trakt })
             }
-            if (notify) {
-                updatedAt.tryEmit(nowUtcInstant())
-            }
         }
     }
 
-    override suspend fun removeItems(
-        showIds: List<TraktId>,
-        notify: Boolean,
-    ) {
+    override suspend fun removeItems(showIds: List<TraktId>) {
         mutex.withLock {
             showIds.forEach { id ->
                 storage.remove(id)
-            }
-            if (notify) {
-                updatedAt.tryEmit(nowUtcInstant())
             }
         }
     }
@@ -67,6 +49,10 @@ internal class HomeUpNextStorage : HomeUpNextLocalDataSource {
         return mutex.withLock {
             storage.values.toList()
         }
+    }
+
+    override fun notifyUpdate() {
+        updatedAt.tryEmit(nowUtcInstant())
     }
 
     override fun observeUpdates(): Flow<Instant?> {

@@ -15,35 +15,23 @@ internal class HomeWatchlistStorage : HomeWatchlistLocalDataSource {
 
     private val storage = mutableMapOf<String, WatchlistItem>()
     private val updatedAt = MutableSharedFlow<Instant?>(
-        replay = 1,
+        extraBufferCapacity = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST,
     )
 
-    override suspend fun addItems(
-        items: List<WatchlistItem>,
-        notify: Boolean,
-    ) {
+    override suspend fun addItems(items: List<WatchlistItem>) {
         mutex.withLock {
             with(storage) {
                 putAll(items.associateBy { it.key })
-            }
-            if (notify) {
-                updatedAt.tryEmit(nowUtcInstant())
             }
         }
     }
 
-    override suspend fun setItems(
-        items: List<WatchlistItem>,
-        notify: Boolean,
-    ) {
+    override suspend fun setItems(items: List<WatchlistItem>) {
         mutex.withLock {
             with(storage) {
                 clear()
                 putAll(items.associateBy { it.key })
-            }
-            if (notify) {
-                updatedAt.tryEmit(nowUtcInstant())
             }
         }
     }
@@ -54,20 +42,18 @@ internal class HomeWatchlistStorage : HomeWatchlistLocalDataSource {
         }
     }
 
-    override suspend fun removeItems(
-        itemsKeys: List<String>,
-        notify: Boolean,
-    ) {
+    override suspend fun removeItems(itemsKeys: List<String>) {
         mutex.withLock {
             with(storage) {
                 itemsKeys.forEach {
                     remove(it)
                 }
             }
-            if (notify) {
-                updatedAt.tryEmit(nowUtcInstant())
-            }
         }
+    }
+
+    override fun notifyUpdate() {
+        updatedAt.tryEmit(nowUtcInstant())
     }
 
     override fun observeUpdates(): Flow<Instant?> {

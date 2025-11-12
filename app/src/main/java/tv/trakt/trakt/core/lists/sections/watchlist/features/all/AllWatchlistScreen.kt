@@ -128,6 +128,7 @@ internal fun AllWatchlistScreen(
     )
 
     WatchlistShowSheet(
+        addLocally = true,
         sheetItem = contextShowSheet?.show,
         onDismiss = { contextShowSheet = null },
         onRemoveWatchlist = {

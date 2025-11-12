@@ -124,7 +124,6 @@ internal class AllHomeUpNextViewModel(
                 val remoteItems = getUpNextUseCase.getUpNext(
                     page = 1,
                     limit = HOME_ALL_LIMIT,
-                    notify = false,
                 )
                 itemsState.update { remoteItems }
 
@@ -159,7 +158,6 @@ internal class AllHomeUpNextViewModel(
                 val nextData = getUpNextUseCase.getUpNext(
                     page = pages + 1,
                     limit = HOME_ALL_LIMIT,
-                    notify = false,
                 )
 
                 itemsState.update { items ->
@@ -224,7 +222,6 @@ internal class AllHomeUpNextViewModel(
                     val items = getUpNextUseCase.getUpNext(
                         page = 1,
                         limit = HOME_ALL_LIMIT,
-                        notify = true,
                     )
                     itemsOrder?.let { order ->
                         items

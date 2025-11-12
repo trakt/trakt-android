@@ -6,22 +6,15 @@ import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import java.time.Instant
 
 internal interface HomeUpNextLocalDataSource {
-    suspend fun addItems(
-        items: List<ProgressShow>,
-        notify: Boolean,
-    )
+    suspend fun addItems(items: List<ProgressShow>)
 
-    suspend fun setItems(
-        items: List<ProgressShow>,
-        notify: Boolean,
-    )
+    suspend fun setItems(items: List<ProgressShow>)
 
     suspend fun getItems(): List<ProgressShow>
 
-    suspend fun removeItems(
-        showIds: List<TraktId>,
-        notify: Boolean,
-    )
+    suspend fun removeItems(showIds: List<TraktId>)
+
+    fun notifyUpdate()
 
     fun observeUpdates(): Flow<Instant?>
 

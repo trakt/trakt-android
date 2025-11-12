@@ -33,7 +33,7 @@ internal class AddHomeHistoryUseCase(
 
         homeWatchlistLocalSource.removeItems(
             itemsKeys = listOf("${showId.value}-show"),
-            notify = true,
         )
+        homeWatchlistLocalSource.notifyUpdate()
     }
 }

@@ -29,6 +29,7 @@ internal fun WatchlistShowSheet(
         skipPartiallyExpanded = true,
     ),
     sheetItem: Show?,
+    addLocally: Boolean,
     onAddWatched: (Show) -> Unit,
     onRemoveWatchlist: () -> Unit,
     onDismiss: () -> Unit,
@@ -49,6 +50,7 @@ internal fun WatchlistShowSheet(
                     key = nextInt().toString(),
                     parameters = { parametersOf(sheetItem) },
                 ),
+                addLocally = addLocally,
                 onRemoveWatchlist = {
                     onRemoveWatchlist()
                     sheetScope.run {

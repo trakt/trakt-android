@@ -56,6 +56,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies.sheets.WatchlistMovieSheet
+import tv.trakt.trakt.core.lists.sections.watchlist.features.context.shows.sheets.WatchlistShowSheet
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.MovieItem
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.ShowItem
@@ -81,7 +82,8 @@ internal fun HomeWatchlistView(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val haptic = LocalHapticFeedback.current
 
-    var contextSheet by remember { mutableStateOf<Movie?>(null) }
+    var contextShowSheet by remember { mutableStateOf<ShowItem?>(null) }
+    var contextMovieSheet by remember { mutableStateOf<Movie?>(null) }
 
     LaunchedEffect(state) {
         state.navigateShow?.let {
@@ -120,8 +122,8 @@ internal fun HomeWatchlistView(
         },
         onLongClick = {
             when (it) {
-                is ShowItem -> TODO()
-                is MovieItem -> contextSheet = it.movie
+                is ShowItem -> contextShowSheet = it
+                is MovieItem -> contextMovieSheet = it.movie
             }
         },
         onCheckClick = {
@@ -136,15 +138,33 @@ internal fun HomeWatchlistView(
         onMoreClick = onMoreClick,
     )
 
-    WatchlistMovieSheet(
+    WatchlistShowSheet(
         addLocally = false,
-        sheetItem = contextSheet,
-        onDismiss = { contextSheet = null },
+        sheetItem = contextShowSheet?.show,
+        onDismiss = { contextShowSheet = null },
+        onAddWatched = {
+            val showId = it.ids.trakt
+            val episodeId = contextShowSheet?.progress?.nextEpisode?.ids?.trakt
+
+            viewModel.addShowToHistory(
+                showId = showId,
+                episodeId = episodeId,
+            )
+        },
         onRemoveWatchlist = {
             viewModel.loadData(ignoreErrors = true)
         },
+    )
+
+    WatchlistMovieSheet(
+        addLocally = false,
+        sheetItem = contextMovieSheet,
+        onDismiss = { contextMovieSheet = null },
         onAddWatched = {
             viewModel.addMovieToHistory(it.ids.trakt)
+        },
+        onRemoveWatchlist = {
+            viewModel.loadData(ignoreErrors = true)
         },
     )
 }

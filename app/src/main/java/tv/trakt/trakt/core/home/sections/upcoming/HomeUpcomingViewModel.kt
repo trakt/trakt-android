@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -36,6 +37,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.core.home.sections.upcoming.usecases.GetUpcomingUseCase
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
+import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.main.model.MediaMode
 
@@ -45,6 +47,7 @@ internal class HomeUpcomingViewModel(
     private val modeManager: MediaModeManager,
     private val getUpcomingUseCase: GetUpcomingUseCase,
     private val homeUpNextSource: HomeUpNextLocalDataSource,
+    private val homeWatchlistSource: HomeWatchlistLocalDataSource,
     private val showLocalDataSource: ShowLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
@@ -98,7 +101,10 @@ internal class HomeUpcomingViewModel(
 
     @OptIn(FlowPreview::class)
     private fun observeHome() {
-        homeUpNextSource.observeUpdates()
+        merge(
+            homeUpNextSource.observeUpdates(),
+            homeWatchlistSource.observeUpdates(),
+        )
             .distinctUntilChanged()
             .debounce(200)
             .onEach {

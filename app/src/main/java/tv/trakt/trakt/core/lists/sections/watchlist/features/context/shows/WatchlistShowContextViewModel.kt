@@ -19,6 +19,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowWatchlistUseCase
 import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
@@ -31,6 +32,7 @@ internal class WatchlistShowContextViewModel(
     private val updateHistoryUseCase: UpdateShowHistoryUseCase,
     private val userProgressLocalSource: UserProgressLocalDataSource,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
+    private val homeWatchlistLocalSource: HomeWatchlistLocalDataSource,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
@@ -67,6 +69,7 @@ internal class WatchlistShowContextViewModel(
 
                 updateWatchlistUseCase.removeFromWatchlist(showId = show.ids.trakt)
                 userWatchlistLocalSource.removeShows(setOf(show.ids.trakt))
+                homeWatchlistLocalSource.removeItems(listOf("${show.ids.trakt.value}-show"))
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -90,6 +93,8 @@ internal class WatchlistShowContextViewModel(
 
                 updateHistoryUseCase.addToWatched(show.ids.trakt)
                 userWatchlistLocalSource.removeShows(setOf(show.ids.trakt))
+                homeWatchlistLocalSource.removeItems(listOf("${show.ids.trakt.value}-show"))
+
                 loadProgressUseCase.loadShowsProgress()
 
                 analytics.progress.logAddWatchedMedia(

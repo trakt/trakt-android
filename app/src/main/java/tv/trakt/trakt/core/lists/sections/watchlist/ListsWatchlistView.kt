@@ -114,6 +114,7 @@ internal fun ListsWatchlistView(
     )
 
     WatchlistShowSheet(
+        addLocally = true,
         sheetItem = showContextSheet,
         onDismiss = { showContextSheet = null },
         onRemoveWatchlist = {

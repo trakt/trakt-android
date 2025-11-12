@@ -31,9 +31,11 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
+import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.AllUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
+import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.HOME
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
@@ -48,6 +50,8 @@ internal class HomeUpNextViewModel(
     private val getUpNextUseCase: GetUpNextUseCase,
     private val updateHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
+    private val homeUpNextSource: HomeUpNextLocalDataSource,
+    private val homeWatchlistSource: HomeWatchlistLocalDataSource,
     private val allUpNextSource: AllUpNextLocalDataSource,
     private val homePersonalActivitySource: HomePersonalLocalDataSource,
     private val showUpdatesSource: ShowDetailsUpdates,
@@ -90,6 +94,7 @@ internal class HomeUpNextViewModel(
     @OptIn(FlowPreview::class)
     private fun observeData() {
         merge(
+            homeWatchlistSource.observeUpdates(),
             homePersonalActivitySource.observeUpdates(),
             showUpdatesSource.observeUpdates(Source.PROGRESS),
             showUpdatesSource.observeUpdates(Source.SEASONS),
@@ -153,7 +158,6 @@ internal class HomeUpNextViewModel(
                         items = getUpNextUseCase.getUpNext(
                             page = 1,
                             limit = HOME_SECTION_LIMIT,
-                            notify = false,
                         ),
                         resetScroll = resetScroll,
                     )
@@ -218,7 +222,6 @@ internal class HomeUpNextViewModel(
                     val items = getUpNextUseCase.getUpNext(
                         page = 1,
                         limit = HOME_SECTION_LIMIT,
-                        notify = true,
                     )
                     ItemsState(
                         items = itemsOrder?.let { order ->
@@ -234,6 +237,8 @@ internal class HomeUpNextViewModel(
                         resetScroll = false,
                     )
                 }
+
+                homeUpNextSource.notifyUpdate()
                 loadUserProgress()
 
                 infoState.update {

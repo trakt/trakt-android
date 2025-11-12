@@ -38,7 +38,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
-import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeWatchlistUseCase
+import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeMoviesWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource.Source.ALL
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.ListsWatchlistDestination
@@ -63,7 +63,7 @@ internal class AllWatchlistViewModel(
     savedStateHandle: SavedStateHandle,
     modeManager: MediaModeManager,
     private val getWatchlistUseCase: GetWatchlistUseCase,
-    private val getHomeWatchlistUseCase: GetHomeWatchlistUseCase,
+    private val getHomeWatchlistUseCase: GetHomeMoviesWatchlistUseCase,
     private val getShowsWatchlistUseCase: GetShowsWatchlistUseCase,
     private val getMoviesWatchlistUseCase: GetMoviesWatchlistUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,

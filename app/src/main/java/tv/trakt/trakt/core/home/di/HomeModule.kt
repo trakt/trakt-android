@@ -45,7 +45,8 @@ import tv.trakt.trakt.core.home.sections.watchlist.HomeWatchlistViewModel
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistStorage
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
-import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeWatchlistUseCase
+import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeMoviesWatchlistUseCase
+import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeShowsWatchlistUseCase
 
 internal const val HOME_PREFERENCES = "home_preferences_mobile"
 
@@ -97,10 +98,15 @@ internal val homeModule = module {
     }
 
     factory {
-        GetHomeWatchlistUseCase(
-            loadUserWatchlistUseCase = get(),
+        GetHomeShowsWatchlistUseCase(
             remoteShowsSyncSource = get(),
             homeWatchlistLocalSource = get(),
+        )
+    }
+
+    factory {
+        GetHomeMoviesWatchlistUseCase(
+            loadUserWatchlistUseCase = get(),
         )
     }
 
@@ -145,6 +151,8 @@ internal val homeModule = module {
         HomeUpNextViewModel(
             getUpNextUseCase = get(),
             updateHistoryUseCase = get(),
+            homeUpNextSource = get(),
+            homeWatchlistSource = get(),
             homePersonalActivitySource = get(),
             allUpNextSource = get(),
             loadUserProgressUseCase = get(),
@@ -171,14 +179,15 @@ internal val homeModule = module {
 
     viewModel {
         HomeWatchlistViewModel(
-            getWatchlistUseCase = get(),
+            getShowsUseCase = get(),
+            getMoviesUseCase = get(),
             addHistoryUseCase = get(),
             loadUserProgressUseCase = get(),
+            homeWatchlistSource = get(),
             allWatchlistSource = get(),
             userWatchlistSource = get(),
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
-            episodeUpdates = get(),
             modeManager = get(),
             sessionManager = get(),
             analytics = get(),
@@ -200,6 +209,7 @@ internal val homeModule = module {
         HomeHistoryViewModel(
             getPersonalActivityUseCase = get(),
             homeUpNextSource = get(),
+            homeWatchlistSource = get(),
             userWatchlistSource = get(),
             allActivitySource = get(),
             showLocalDataSource = get(),
@@ -245,6 +255,7 @@ internal val homeModule = module {
         HomeUpcomingViewModel(
             getUpcomingUseCase = get(),
             homeUpNextSource = get(),
+            homeWatchlistSource = get(),
             showLocalDataSource = get(),
             episodeLocalDataSource = get(),
             movieLocalDataSource = get(),
