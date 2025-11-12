@@ -21,10 +21,7 @@ internal class UserWatchlistStorage : UserWatchlistLocalDataSource {
         onBufferOverflow = BufferOverflow.DROP_OLDEST,
     )
 
-    override suspend fun setMovies(
-        movies: List<WatchlistItem.MovieItem>,
-        notify: Boolean,
-    ) {
+    override suspend fun setMovies(movies: List<WatchlistItem.MovieItem>) {
         mutex.withLock {
             if (moviesStorage == null) {
                 moviesStorage = mutableMapOf()
@@ -33,17 +30,10 @@ internal class UserWatchlistStorage : UserWatchlistLocalDataSource {
                 storage.clear()
                 storage.putAll(movies.associateBy { it.id })
             }
-
-            if (notify) {
-                updatedAt.tryEmit(Instant.now())
-            }
         }
     }
 
-    override suspend fun setShows(
-        shows: List<WatchlistItem.ShowItem>,
-        notify: Boolean,
-    ) {
+    override suspend fun setShows(shows: List<WatchlistItem.ShowItem>) {
         mutex.withLock {
             if (showsStorage == null) {
                 showsStorage = mutableMapOf()
@@ -52,10 +42,6 @@ internal class UserWatchlistStorage : UserWatchlistLocalDataSource {
             showsStorage?.let { storage ->
                 storage.clear()
                 storage.putAll(shows.associateBy { it.id })
-            }
-
-            if (notify) {
-                updatedAt.tryEmit(Instant.now())
             }
         }
     }

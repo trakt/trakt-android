@@ -33,6 +33,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.lists.ListsConfig.WATCHLIST_SECTION_LIMIT
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource
+import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource.Source
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetShowsWatchlistUseCase
@@ -103,7 +104,7 @@ internal class ListsWatchlistViewModel(
     private fun observeWatchlist() {
         merge(
             userWatchlistSource.observeUpdates(),
-            allWatchlistSource.observeUpdates(),
+            allWatchlistSource.observeUpdates(Source.ALL),
         )
             .distinctUntilChanged()
             .debounce(200)

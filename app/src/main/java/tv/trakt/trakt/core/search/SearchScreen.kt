@@ -363,7 +363,7 @@ private fun ContentList(
                         VerticalMediaSkeletonCard(
                             chipRatio = 0.66F,
                             modifier = Modifier
-                                .padding(bottom = 6.dp)
+                                .padding(bottom = 9.25.dp)
                                 .animateItem(
                                     fadeInSpec = fadeSpec,
                                     fadeOutSpec = fadeSpec,

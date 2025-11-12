@@ -35,6 +35,7 @@ import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.AllUpNex
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.HOME
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
@@ -94,6 +95,7 @@ internal class HomeUpNextViewModel(
             showUpdatesSource.observeUpdates(Source.SEASONS),
             episodeUpdatesSource.observeUpdates(PROGRESS),
             episodeUpdatesSource.observeUpdates(SEASON),
+            episodeUpdatesSource.observeUpdates(HOME),
         )
             .distinctUntilChanged()
             .debounce(200)

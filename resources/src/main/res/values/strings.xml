@@ -165,6 +165,9 @@
     <string name="text_shows_count">%d shows</string>
     <string name="text_movies_count">%d movies</string>
 
+    <string name="list_description_released_shows">Released shows</string>
+    <string name="list_description_released_media">Released shows &amp; movies</string>
+
     <string name="button_label_browse_movies">Discover Movies</string>
     <string name="button_label_browse_shows">Discover Shows</string>
     <string name="text_month_so_far">So far, this month</string>

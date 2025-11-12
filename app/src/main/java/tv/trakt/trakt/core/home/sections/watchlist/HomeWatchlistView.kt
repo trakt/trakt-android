@@ -35,9 +35,9 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.firebase.Firebase
@@ -57,6 +57,9 @@ import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies.sheets.WatchlistMovieSheet
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
+import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.MovieItem
+import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.ShowItem
+import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
@@ -69,6 +72,8 @@ internal fun HomeWatchlistView(
     viewModel: HomeWatchlistViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
+    onShowClick: (TraktId) -> Unit,
+    onShowsClick: () -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onMoviesClick: () -> Unit,
     onMoreClick: () -> Unit,
@@ -79,6 +84,10 @@ internal fun HomeWatchlistView(
     var contextSheet by remember { mutableStateOf<Movie?>(null) }
 
     LaunchedEffect(state) {
+        state.navigateShow?.let {
+            viewModel.clearNavigation()
+            onShowClick(it)
+        }
         state.navigateMovie?.let {
             viewModel.clearNavigation()
             onMovieClick(it)
@@ -97,15 +106,32 @@ internal fun HomeWatchlistView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        onMoviesClick = onMoviesClick,
+        onEmptyClick = {
+            when (state.filter) {
+                MediaMode.MOVIES -> onMoviesClick()
+                else -> onShowsClick()
+            }
+        },
         onClick = {
-            viewModel.navigateToMovie(it)
+            when (it) {
+                is ShowItem -> viewModel.navigateToShow(it.show)
+                is MovieItem -> viewModel.navigateToMovie(it.movie)
+            }
         },
         onLongClick = {
-            contextSheet = it
+            when (it) {
+                is ShowItem -> TODO()
+                is MovieItem -> contextSheet = it.movie
+            }
         },
         onCheckClick = {
-            viewModel.addToHistory(it.ids.trakt)
+            when (it) {
+                is ShowItem -> viewModel.addShowToHistory(
+                    showId = it.id,
+                    episodeId = it.progress?.nextEpisode?.ids?.trakt,
+                )
+                is MovieItem -> viewModel.addMovieToHistory(it.id)
+            }
         },
         onMoreClick = onMoreClick,
     )
@@ -118,7 +144,7 @@ internal fun HomeWatchlistView(
             viewModel.loadData(ignoreErrors = true)
         },
         onAddWatched = {
-            viewModel.addToHistory(it.ids.trakt)
+            viewModel.addMovieToHistory(it.ids.trakt)
         },
     )
 }
@@ -129,10 +155,10 @@ internal fun HomeWatchlistContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onMoviesClick: () -> Unit = {},
-    onClick: (Movie) -> Unit = {},
-    onLongClick: (Movie) -> Unit = {},
-    onCheckClick: (Movie) -> Unit = {},
+    onClick: (WatchlistItem) -> Unit = {},
+    onLongClick: (WatchlistItem) -> Unit = {},
+    onCheckClick: (WatchlistItem) -> Unit = {},
+    onEmptyClick: () -> Unit = {},
     onMoreClick: () -> Unit = {},
 ) {
     Column(
@@ -151,7 +177,13 @@ internal fun HomeWatchlistContent(
         ) {
             TraktHeader(
                 title = stringResource(R.string.page_title_watchlist),
-                subtitle = stringResource(R.string.list_description_released_movies),
+                subtitle = stringResource(
+                    when (state.filter) {
+                        MediaMode.SHOWS -> R.string.list_description_released_shows
+                        MediaMode.MOVIES -> R.string.list_description_released_movies
+                        else -> R.string.list_description_released_media
+                    },
+                ),
             )
             if (!state.items.isNullOrEmpty() || state.loading != DONE) {
                 Icon(
@@ -194,13 +226,20 @@ internal fun HomeWatchlistContent(
                             val imageUrl = remember {
                                 Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_2).ifBlank { null }
                             }
+
                             HomeEmptyView(
                                 text = stringResource(R.string.text_cta_watchlist_released),
                                 icon = R.drawable.ic_empty_watchlist,
-                                buttonText = stringResource(R.string.button_label_browse_movies),
+                                buttonText = when (state.filter) {
+                                    MediaMode.MOVIES -> stringResource(R.string.button_label_browse_movies)
+                                    else -> stringResource(R.string.button_label_browse_shows)
+                                },
                                 backgroundImageUrl = imageUrl,
-                                backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
-                                onClick = onMoviesClick,
+                                backgroundImage = when (imageUrl) {
+                                    null -> R.drawable.ic_splash_background_2
+                                    else -> null
+                                },
+                                onClick = onEmptyClick,
                                 height = (226.25).dp,
                                 modifier = Modifier
                                     .padding(contentPadding),
@@ -208,6 +247,7 @@ internal fun HomeWatchlistContent(
                         }
                         else -> {
                             ContentList(
+                                listFilter = state.filter,
                                 listItems = (state.items ?: emptyList()).toImmutableList(),
                                 contentPadding = contentPadding,
                                 onClick = onClick,
@@ -224,21 +264,23 @@ internal fun HomeWatchlistContent(
 
 @Composable
 private fun ContentLoadingList(
+    modifier: Modifier = Modifier,
     visible: Boolean = true,
     contentPadding: PaddingValues,
 ) {
     LazyRow(
         horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
         contentPadding = contentPadding,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .alpha(if (visible) 1F else 0F),
     ) {
         items(count = 6) {
             VerticalMediaSkeletonCard(
-                chipRatio = 0.66F,
-                modifier = Modifier
-                    .padding(bottom = 4.dp),
+                chip = true,
+                secondaryChip = true,
+                chipRatio = 0.5F,
+                secondaryChipRatio = 0.66F,
             )
         }
     }
@@ -246,13 +288,23 @@ private fun ContentLoadingList(
 
 @Composable
 private fun ContentList(
-    listItems: ImmutableList<WatchlistItem.MovieItem>,
+    listFilter: MediaMode?,
+    listItems: ImmutableList<WatchlistItem>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
-    onClick: (Movie) -> Unit,
-    onLongClick: (Movie) -> Unit,
-    onCheckClick: (Movie) -> Unit,
+    onClick: (WatchlistItem) -> Unit,
+    onLongClick: (WatchlistItem) -> Unit,
+    onCheckClick: (WatchlistItem) -> Unit,
 ) {
+    val currentFilter = remember { mutableStateOf(listFilter) }
+
+    LaunchedEffect(listFilter) {
+        if (currentFilter.value != listFilter) {
+            currentFilter.value = listFilter
+            listState.animateScrollToItem(0)
+        }
+    }
+
     LazyRow(
         state = listState,
         modifier = Modifier.fillMaxWidth(),
@@ -261,33 +313,47 @@ private fun ContentList(
     ) {
         items(
             items = listItems,
-            key = { it.movie.ids.trakt.value },
+            key = { it.key },
         ) { item ->
-            ContentListItem(
-                item = item,
-                onClick = { onClick(item.movie) },
-                onLongClick = { onLongClick(item.movie) },
-                onCheckClick = { onCheckClick(item.movie) },
-                modifier = Modifier.animateItem(
-                    fadeInSpec = null,
-                    fadeOutSpec = null,
-                ),
-            )
+            if (item is ShowItem) {
+                ContentListShowItem(
+                    item = item,
+                    onClick = { onClick(item) },
+                    onLongClick = { onLongClick(item) },
+                    onCheckClick = { onCheckClick(item) },
+                    modifier = Modifier.animateItem(
+                        fadeInSpec = null,
+                        fadeOutSpec = null,
+                    ),
+                )
+            }
+            if (item is MovieItem) {
+                ContentListMovieItem(
+                    item = item,
+                    onClick = { onClick(item) },
+                    onLongClick = { onLongClick(item) },
+                    onCheckClick = { onCheckClick(item) },
+                    modifier = Modifier.animateItem(
+                        fadeInSpec = null,
+                        fadeOutSpec = null,
+                    ),
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun ContentListItem(
-    item: WatchlistItem.MovieItem,
+private fun ContentListShowItem(
+    item: ShowItem,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
     onCheckClick: () -> Unit = {},
 ) {
     VerticalMediaCard(
-        title = item.movie.title,
-        imageUrl = item.movie.images?.getPosterUrl(),
+        title = item.title,
+        imageUrl = item.images?.getPosterUrl(),
         onClick = onClick,
         onLongClick = onLongClick,
         chipContent = {
@@ -296,48 +362,126 @@ private fun ContentListItem(
                 horizontalArrangement = SpaceBetween,
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                val footerText = remember {
-                    val runtime = item.movie.runtime?.inWholeMinutes
-                    if (runtime != null) {
-                        "${item.movie.year} • ${runtime.durationFormat()}"
-                    } else {
-                        item.movie.year.toString()
-                    }
-                }
-                Text(
-                    text = footerText,
-                    style = TraktTheme.typography.cardTitle,
-                    color = TraktTheme.colors.textPrimary,
-                    textAlign = TextAlign.Center,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1F, fill = false),
-                )
-
-                val checkSize = 20.dp
-                Box(
-                    contentAlignment = Alignment.Center,
+                Column(
+                    verticalArrangement = spacedBy(1.dp),
                     modifier = Modifier
-                        .padding(start = 8.dp, end = 2.dp)
-                        .size(checkSize),
+                        .onClick(onClick = onClick)
+                        .weight(1F, fill = false),
                 ) {
-                    if (item.loading) {
-                        FilmProgressIndicator(size = checkSize - 3.dp)
-                    } else {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_check),
-                            contentDescription = null,
-                            tint = TraktTheme.colors.accent,
-                            modifier = Modifier
-                                .size(checkSize)
-                                .onClick { onCheckClick() },
+                    Text(
+                        text = item.title,
+                        style = TraktTheme.typography.cardTitle,
+                        color = TraktTheme.colors.textPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+
+                    item.progress?.let {
+                        Text(
+                            text = item.progress.nextEpisode.seasonEpisodeString(),
+                            style = TraktTheme.typography.cardSubtitle,
+                            color = TraktTheme.colors.textSecondary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 }
+
+                ContentItemCheck(
+                    isLoading = item.loading,
+                    onCheckClick = onCheckClick,
+                    modifier = Modifier.padding(start = 4.dp),
+                )
             }
         },
         modifier = modifier,
     )
+}
+
+@Composable
+private fun ContentListMovieItem(
+    item: MovieItem,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
+    onLongClick: () -> Unit = {},
+    onCheckClick: () -> Unit = {},
+) {
+    VerticalMediaCard(
+        title = item.title,
+        imageUrl = item.images?.getPosterUrl(),
+        onClick = onClick,
+        onLongClick = onLongClick,
+        chipContent = {
+            Row(
+                verticalAlignment = CenterVertically,
+                horizontalArrangement = SpaceBetween,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                val runtimeText = remember {
+                    val runtime = item.movie.runtime?.inWholeMinutes?.durationFormat()
+                    runtime ?: "TBA"
+                }
+
+                Column(
+                    verticalArrangement = spacedBy(1.dp),
+                    modifier = Modifier
+                        .onClick(onClick = onClick)
+                        .weight(1F, fill = false),
+                ) {
+                    Text(
+                        text = item.title,
+                        style = TraktTheme.typography.cardTitle,
+                        color = TraktTheme.colors.textPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+
+                    Text(
+                        text = runtimeText,
+                        style = TraktTheme.typography.cardSubtitle,
+                        color = TraktTheme.colors.textSecondary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+
+                ContentItemCheck(
+                    isLoading = item.loading,
+                    onCheckClick = onCheckClick,
+                    modifier = Modifier.padding(start = 4.dp),
+                )
+            }
+        },
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun ContentItemCheck(
+    isLoading: Boolean,
+    modifier: Modifier = Modifier,
+    checkSize: Dp = 20.dp,
+    onCheckClick: () -> Unit,
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier
+            .padding(start = 8.dp, end = 2.dp)
+            .size(checkSize),
+    ) {
+        if (isLoading) {
+            FilmProgressIndicator(size = checkSize - 3.dp)
+        } else {
+            Icon(
+                painter = painterResource(R.drawable.ic_check),
+                contentDescription = null,
+                tint = TraktTheme.colors.accent,
+                modifier = Modifier
+                    .size(checkSize)
+                    .onClick { onCheckClick() },
+            )
+        }
+    }
 }
 
 @Preview(

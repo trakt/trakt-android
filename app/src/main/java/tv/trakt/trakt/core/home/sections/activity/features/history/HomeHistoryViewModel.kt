@@ -55,10 +55,10 @@ internal class HomeHistoryViewModel(
     private val userWatchlistSource: UserWatchlistLocalDataSource,
     private val allActivitySource: AllActivityLocalDataSource,
     private val showLocalDataSource: ShowLocalDataSource,
-    private val showUpdatesSource: ShowDetailsUpdates,
     private val episodeUpdatesSource: EpisodeDetailsUpdates,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
-    private val movieDetailsUpdates: MovieDetailsUpdates,
+    private val showUpdates: ShowDetailsUpdates,
+    private val movieUpdates: MovieDetailsUpdates,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
     private val modeManager: MediaModeManager,
@@ -114,11 +114,11 @@ internal class HomeHistoryViewModel(
             homeUpNextSource.observeUpdates(),
             userWatchlistSource.observeUpdates(),
             allActivitySource.observeUpdates(),
-            showUpdatesSource.observeUpdates(Source.PROGRESS),
-            showUpdatesSource.observeUpdates(Source.SEASONS),
+            showUpdates.observeUpdates(Source.PROGRESS),
+            showUpdates.observeUpdates(Source.SEASONS),
             episodeUpdatesSource.observeUpdates(PROGRESS),
             episodeUpdatesSource.observeUpdates(SEASON),
-            movieDetailsUpdates.observeUpdates(),
+            movieUpdates.observeUpdates(),
         )
             .distinctUntilChanged()
             .debounce(200)

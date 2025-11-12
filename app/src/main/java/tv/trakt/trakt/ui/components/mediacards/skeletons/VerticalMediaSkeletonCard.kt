@@ -9,7 +9,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -36,8 +35,10 @@ internal fun VerticalMediaSkeletonCard(
     width: Dp = Dp.Unspecified,
     corner: Dp = 15.dp,
     chipRatio: Float = 0.33F,
+    secondaryChipRatio: Float = 0.5F,
     shimmer: Boolean = true,
     chip: Boolean = true,
+    secondaryChip: Boolean = false,
     containerColor: Color = TraktTheme.colors.skeletonContainer,
     shimmerColor: Color = TraktTheme.colors.skeletonShimmer,
 ) {
@@ -59,7 +60,7 @@ internal fun VerticalMediaSkeletonCard(
     }
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
         modifier = modifier
             .widthIn(max = cardWidth),
     ) {
@@ -80,22 +81,44 @@ internal fun VerticalMediaSkeletonCard(
             },
         )
 
-        if (chip) {
-            Text(
-                text = "",
-                style = TraktTheme.typography.cardTitle,
-                color = TraktTheme.colors.textPrimary,
-                modifier = Modifier
-                    .fillMaxWidth(chipRatio)
-                    .height(16.dp)
-                    .background(
-                        color = when {
-                            shimmer -> shimmerTransition
-                            else -> containerColor
-                        },
-                        shape = RoundedCornerShape(100.dp),
-                    ),
-            )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(3.dp),
+        ) {
+            if (chip) {
+                Text(
+                    text = "",
+                    style = TraktTheme.typography.cardTitle,
+                    color = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .fillMaxWidth(chipRatio)
+                        .height(14.dp)
+                        .background(
+                            color = when {
+                                shimmer -> shimmerTransition
+                                else -> containerColor
+                            },
+                            shape = RoundedCornerShape(100.dp),
+                        ),
+                )
+            }
+
+            if (secondaryChip) {
+                Text(
+                    text = "",
+                    style = TraktTheme.typography.cardSubtitle,
+                    color = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .fillMaxWidth(secondaryChipRatio)
+                        .height(14.dp)
+                        .background(
+                            color = when {
+                                shimmer -> shimmerTransition
+                                else -> containerColor
+                            },
+                            shape = RoundedCornerShape(100.dp),
+                        ),
+                )
+            }
         }
     }
 }
@@ -104,9 +127,13 @@ internal fun VerticalMediaSkeletonCard(
 @Composable
 private fun Preview() {
     TraktTheme {
-        Row {
+        Column {
             VerticalMediaSkeletonCard(
                 modifier = Modifier.padding(16.dp),
+            )
+            VerticalMediaSkeletonCard(
+                modifier = Modifier.padding(16.dp),
+                secondaryChip = true,
             )
             VerticalMediaSkeletonCard(
                 modifier = Modifier.padding(16.dp),

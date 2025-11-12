@@ -40,6 +40,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource
+import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource.Source.ALL
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.ListsWatchlistDestination
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.MovieItem
@@ -224,7 +225,7 @@ internal class AllWatchlistViewModel(
                     currentItems.toImmutableList()
                 }
 
-                updateMovieHistoryUseCase.addToHistory(movieId)
+                updateMovieHistoryUseCase.addMovieToHistory(movieId)
                 removeItem(currentItems[itemIndex])
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
@@ -259,7 +260,7 @@ internal class AllWatchlistViewModel(
                 .toImmutableList()
         }
 
-        allWatchlistLocalDataSource.notifyUpdate()
+        allWatchlistLocalDataSource.notifyUpdate(ALL)
     }
 
     fun loadUserProgress() {

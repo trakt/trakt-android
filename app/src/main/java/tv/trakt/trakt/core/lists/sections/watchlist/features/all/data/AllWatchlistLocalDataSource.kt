@@ -4,7 +4,12 @@ import kotlinx.coroutines.flow.Flow
 import java.time.Instant
 
 internal interface AllWatchlistLocalDataSource {
-    fun notifyUpdate()
+    fun notifyUpdate(source: Source)
 
-    fun observeUpdates(): Flow<Instant?>
+    fun observeUpdates(source: Source): Flow<Instant?>
+
+    enum class Source {
+        ALL,
+        WATCHLIST,
+    }
 }

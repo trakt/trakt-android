@@ -269,7 +269,6 @@ private fun ListsScreenContent(
             state = state,
             headerState = headerState,
             isScrolledToTop = isScrolledToTop,
-            onProfileClick = onProfileClick,
         )
     }
 }
@@ -279,7 +278,6 @@ private fun ListsScreenHeader(
     state: ListsState,
     headerState: ScreenHeaderState,
     isScrolledToTop: Boolean,
-    onProfileClick: () -> Unit,
 ) {
     val userState = remember(state.user) {
         val loadingDone = state.user.loading == DONE
@@ -332,49 +330,6 @@ private fun ContentEmptyView(
         modifier = modifier,
     )
 }
-
-// @Composable
-// private fun ContentLoadingList(
-//    visible: Boolean = true,
-//    contentPadding: PaddingValues,
-// ) {
-//    val infiniteTransition = rememberInfiniteTransition(label = "infiniteTransition")
-//    val shimmerTransition by infiniteTransition
-//        .animateColor(
-//            initialValue = TraktTheme.colors.skeletonContainer,
-//            targetValue = TraktTheme.colors.skeletonShimmer,
-//            animationSpec = infiniteRepeatable(
-//                animation = tween(durationMillis = 1000),
-//                repeatMode = RepeatMode.Reverse,
-//            ),
-//            label = "shimmerTransition",
-//        )
-//
-//    Column(
-//        verticalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
-//    ) {
-//        Box(
-//            modifier = Modifier
-//                .padding(
-//                    horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
-//                )
-//                .fillMaxWidth(fraction = 0.33F)
-//                .height(18.dp)
-//                .background(shimmerTransition, RoundedCornerShape(100)),
-//        )
-//        LazyRow(
-//            horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
-//            contentPadding = contentPadding,
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .alpha(if (visible) 1F else 0F),
-//        ) {
-//            items(count = 6) {
-//                VerticalMediaSkeletonCard(chipRatio = 0.66F)
-//            }
-//        }
-//    }
-// }
 
 @Preview(
     device = "id:pixel_9",

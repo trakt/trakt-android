@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
@@ -160,6 +161,7 @@ internal fun DiscoverTrendingContent(
                     ContentLoadingList(
                         visible = loading.isLoading,
                         contentPadding = contentPadding,
+                        modifier = Modifier.padding(bottom = 3.75.dp),
                     )
                 }
                 DONE -> {
@@ -188,13 +190,14 @@ internal fun DiscoverTrendingContent(
 
 @Composable
 private fun ContentLoadingList(
+    modifier: Modifier = Modifier,
     visible: Boolean = true,
     contentPadding: PaddingValues,
 ) {
     LazyRow(
         horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
         contentPadding = contentPadding,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .alpha(if (visible) 1F else 0F),
     ) {
@@ -258,15 +261,16 @@ private fun ContentListItem(
     onLongClick: () -> Unit = {},
 ) {
     VerticalMediaCard(
+        modifier = modifier,
         title = item.title,
         imageUrl = item.images?.getPosterUrl(),
         onClick = onClick,
         onLongClick = onLongClick,
-        chipContent = { modifier ->
+        chipContent = { chipModifier ->
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = spacedBy(4.dp),
-                modifier = modifier,
+                modifier = chipModifier.height(14.dp),
             ) {
                 if (mode == MEDIA) {
                     Icon(
@@ -300,7 +304,6 @@ private fun ContentListItem(
                 )
             }
         },
-        modifier = modifier,
     )
 }
 

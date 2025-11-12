@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.home.sections.upnext.model.Progress
 import java.time.Instant
 import java.time.ZoneOffset.UTC
 import java.time.ZonedDateTime
@@ -27,6 +28,7 @@ internal sealed class WatchlistItem(
     @Immutable
     internal data class ShowItem(
         val show: Show,
+        val progress: Progress? = null,
         override val rank: Int,
         override val listedAt: Instant,
         override val loading: Boolean = false,
@@ -42,6 +44,12 @@ internal sealed class WatchlistItem(
         get() = when (this) {
             is ShowItem -> "${show.ids.trakt.value}-show"
             is MovieItem -> "${movie.ids.trakt.value}-movie"
+        }
+
+    val title: String
+        get() = when (this) {
+            is ShowItem -> show.title
+            is MovieItem -> movie.title
         }
 
     val type: MediaType

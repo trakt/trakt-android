@@ -34,6 +34,7 @@ internal class GetUpNextUseCase(
         val remoteItems = remoteSyncSource.getUpNext(
             limit = limit,
             page = page,
+            intent = "continue",
         )
         return remoteItems
             .asyncMap { item ->
@@ -53,9 +54,7 @@ internal class GetUpNextUseCase(
                         lastEpisode = item.progress.lastEpisode?.let {
                             Episode.fromDto(it)
                         },
-                        nextEpisode = Episode.fromDto(
-                            item.progress.nextEpisode,
-                        ),
+                        nextEpisode = Episode.fromDto(item.progress.nextEpisode),
                     ),
                 )
             }

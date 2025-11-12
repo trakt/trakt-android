@@ -186,6 +186,7 @@ internal fun ProfileFavoritesContent(
                     ContentLoadingList(
                         visible = loading.isLoading,
                         contentPadding = contentPadding,
+                        modifier = Modifier.padding(bottom = 3.75.dp),
                     )
                 }
                 DONE -> {
@@ -242,6 +243,7 @@ private fun ContentFilters(
 
 @Composable
 private fun ContentLoadingList(
+    modifier: Modifier = Modifier,
     visible: Boolean = true,
     contentPadding: PaddingValues,
 ) {
@@ -249,7 +251,7 @@ private fun ContentLoadingList(
         horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
         contentPadding = contentPadding,
         userScrollEnabled = false,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .alpha(if (visible) 1F else 0F),
     ) {

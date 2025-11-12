@@ -1,13 +1,15 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package tv.trakt.trakt.core.home.sections.watchlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -22,20 +24,31 @@ import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
+import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
+import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.StaticStringResource
+import tv.trakt.trakt.common.helpers.StringResource
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.HomeConfig.HOME_WATCHLIST_LIMIT
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource
+import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource.Source
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
+import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.MovieItem
+import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.ShowItem
+import tv.trakt.trakt.core.main.helpers.MediaModeManager
+import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import java.time.Instant
@@ -47,13 +60,19 @@ internal class HomeWatchlistViewModel(
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val allWatchlistSource: AllWatchlistLocalDataSource,
     private val userWatchlistSource: UserWatchlistLocalDataSource,
+    private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
+    private val episodeUpdates: EpisodeDetailsUpdates,
+    private val modeManager: MediaModeManager,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = HomeWatchlistState()
+    private val initialMode = modeManager.getMode()
 
     private val itemsState = MutableStateFlow(initialState.items)
+    private val filterState = MutableStateFlow(initialMode)
+    private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val infoState = MutableStateFlow(initialState.info)
@@ -66,8 +85,9 @@ internal class HomeWatchlistViewModel(
 
     init {
         loadData()
+        observeMode()
         observeUser()
-        observeWatchlist()
+        observeData()
     }
 
     private fun observeUser() {
@@ -84,17 +104,27 @@ internal class HomeWatchlistViewModel(
         }
     }
 
-    private fun observeWatchlist() {
+    private fun observeMode() {
+        modeManager.observeMode()
+            .distinctUntilChanged()
+            .onEach { value ->
+                filterState.update { value }
+                loadData(localOnly = true)
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeData() {
         merge(
-            allWatchlistSource.observeUpdates(),
+            allWatchlistSource.observeUpdates(Source.ALL),
             userWatchlistSource.observeUpdates(),
         )
             .distinctUntilChanged()
             .debounce(200)
             .onEach {
                 loadData(
-                    ignoreErrors = true,
                     localOnly = true,
+                    ignoreErrors = true,
                 )
             }
             .launchIn(viewModelScope)
@@ -104,14 +134,17 @@ internal class HomeWatchlistViewModel(
         ignoreErrors: Boolean = false,
         localOnly: Boolean = false,
     ) {
-        if (dataJob?.isActive == true) return
+        dataJob?.cancel()
         dataJob = viewModelScope.launch {
             if (loadEmptyIfNeeded()) {
                 return@launch
             }
 
             try {
-                val localItems = getWatchlistUseCase.getLocalWatchlist(HOME_WATCHLIST_LIMIT)
+                val localItems = getWatchlistUseCase.getLocalWatchlist(
+                    limit = HOME_WATCHLIST_LIMIT,
+                    filter = filterState.value,
+                )
                 if (localItems.isNotEmpty()) {
                     itemsState.update { localItems }
                     loadingState.update { DONE }
@@ -123,7 +156,10 @@ internal class HomeWatchlistViewModel(
                 }
 
                 itemsState.update {
-                    getWatchlistUseCase.getWatchlist(HOME_WATCHLIST_LIMIT)
+                    getWatchlistUseCase.getWatchlist(
+                        limit = HOME_WATCHLIST_LIMIT,
+                        filter = filterState.value,
+                    )
                 }
 
                 loadedAt = nowUtcInstant()
@@ -132,7 +168,7 @@ internal class HomeWatchlistViewModel(
                     if (!ignoreErrors) {
                         errorState.update { error }
                     }
-                    Timber.d(error, "Failed to load data")
+                    Timber.e(error, "Failed to load data")
                 }
             } finally {
                 loadingState.update { DONE }
@@ -143,9 +179,7 @@ internal class HomeWatchlistViewModel(
 
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {
-            itemsState.update {
-                emptyList<WatchlistItem.MovieItem>().toImmutableList()
-            }
+            itemsState.update { EmptyImmutableList }
             loadingState.update { DONE }
             return true
         } else {
@@ -155,23 +189,88 @@ internal class HomeWatchlistViewModel(
         return false
     }
 
-    fun addToHistory(movieId: TraktId) {
-        if (processingJob?.isActive == true) {
+    fun addShowToHistory(
+        showId: TraktId,
+        episodeId: TraktId?,
+    ) {
+        if (processingJob?.isActive == true || episodeId == null) {
             return
         }
+
         processingJob = viewModelScope.launch {
             try {
                 val currentItems = itemsState.value?.toMutableList() ?: return@launch
 
-                val itemIndex = currentItems.indexOfFirst { it.movie.ids.trakt == movieId }
-                val itemLoading = currentItems[itemIndex].copy(loading = true)
+                val itemIndex = currentItems
+                    .indexOfFirst {
+                        it is ShowItem &&
+                            it.show.ids.trakt == showId
+                    }
+                val itemLoading = (currentItems[itemIndex] as ShowItem)
+                    .copy(loading = true)
                 currentItems[itemIndex] = itemLoading
 
                 itemsState.update {
                     currentItems.toImmutableList()
                 }
 
-                addHistoryUseCase.addToHistory(movieId)
+                addHistoryUseCase.addEpisodeToHistory(
+                    showId = showId,
+                    episodeId = episodeId,
+                )
+                analytics.progress.logAddWatchedMedia(
+                    mediaType = "episode",
+                    source = "home_watchlist",
+                )
+                episodeUpdates.notifyUpdate(EpisodeDetailsUpdates.Source.HOME)
+
+                infoState.update {
+                    StaticStringResource("Added to history")
+                }
+
+                itemsState.update {
+                    getWatchlistUseCase.getWatchlist(
+                        filter = filterState.value,
+                    )
+                }
+
+                loadShowsProgress()
+
+                loadedAt = nowUtcInstant()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.d(error, "Failed to add episode to history")
+                }
+            } finally {
+                processingJob = null
+            }
+        }
+    }
+
+    fun addMovieToHistory(movieId: TraktId) {
+        if (processingJob?.isActive == true) {
+            return
+        }
+
+        processingJob = viewModelScope.launch {
+            try {
+                val currentItems = itemsState.value?.toMutableList() ?: return@launch
+
+                val itemIndex = currentItems
+                    .indexOfFirst {
+                        it is MovieItem &&
+                            it.movie.ids.trakt == movieId
+                    }
+                val itemLoading = (currentItems[itemIndex] as MovieItem)
+                    .copy(loading = true)
+                currentItems[itemIndex] = itemLoading
+
+                itemsState.update {
+                    currentItems.toImmutableList()
+                }
+
+                addHistoryUseCase.addMovieToHistory(movieId)
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
                     source = "home_watchlist",
@@ -182,16 +281,18 @@ internal class HomeWatchlistViewModel(
                 }
 
                 itemsState.update {
-                    getWatchlistUseCase.getWatchlist()
+                    getWatchlistUseCase.getWatchlist(
+                        filter = filterState.value,
+                    )
                 }
 
-                loadUserProgress()
+                loadMoviesProgress()
 
                 loadedAt = nowUtcInstant()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.d(error, "Failed to add movie to history")
+                    Timber.e(error, "Failed to add movie to history")
                 }
             } finally {
                 processingJob = null
@@ -199,7 +300,19 @@ internal class HomeWatchlistViewModel(
         }
     }
 
-    fun loadUserProgress() {
+    fun loadShowsProgress() {
+        viewModelScope.launch {
+            try {
+                loadUserProgressUseCase.loadShowsProgress()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.e(error)
+                }
+            }
+        }
+    }
+
+    fun loadMoviesProgress() {
         viewModelScope.launch {
             try {
                 loadUserProgressUseCase.loadMoviesProgress()
@@ -208,6 +321,16 @@ internal class HomeWatchlistViewModel(
                     Timber.e(error)
                 }
             }
+        }
+    }
+
+    fun navigateToShow(show: Show) {
+        if (navigateShow.value != null || processingJob?.isActive == true) {
+            return
+        }
+        processingJob = viewModelScope.launch {
+            showLocalDataSource.upsertShows(listOf(show))
+            navigateShow.update { show.ids.trakt }
         }
     }
 
@@ -222,6 +345,7 @@ internal class HomeWatchlistViewModel(
     }
 
     fun clearNavigation() {
+        navigateShow.update { null }
         navigateMovie.update { null }
     }
 
@@ -235,19 +359,23 @@ internal class HomeWatchlistViewModel(
         super.onCleared()
     }
 
-    val state: StateFlow<HomeWatchlistState> = combine(
+    val state = combine(
         itemsState,
+        filterState,
         loadingState,
         infoState,
         errorState,
         navigateMovie,
-    ) { s1, s2, s3, s4, s5 ->
+        navigateShow,
+    ) { state ->
         HomeWatchlistState(
-            items = s1,
-            loading = s2,
-            info = s3,
-            error = s4,
-            navigateMovie = s5,
+            items = state[0] as ImmutableList<WatchlistItem>?,
+            filter = state[1] as MediaMode,
+            loading = state[2] as LoadingState,
+            info = state[3] as StringResource?,
+            error = state[4] as Exception?,
+            navigateMovie = state[5] as TraktId?,
+            navigateShow = state[6] as TraktId?,
         )
     }.stateIn(
         scope = viewModelScope,

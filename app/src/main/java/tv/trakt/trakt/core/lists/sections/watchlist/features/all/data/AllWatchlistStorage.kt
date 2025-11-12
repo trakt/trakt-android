@@ -5,19 +5,22 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
+import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource.Source
 import java.time.Instant
 
 internal class AllWatchlistStorage : AllWatchlistLocalDataSource {
-    private val updatedAt = MutableSharedFlow<Instant?>(
-        replay = 1,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST,
-    )
-
-    override fun notifyUpdate() {
-        updatedAt.tryEmit(nowUtcInstant())
+    private val updatesMaps = Source.entries.associateWith {
+        MutableSharedFlow<Instant?>(
+            replay = 1,
+            onBufferOverflow = BufferOverflow.DROP_OLDEST,
+        )
     }
 
-    override fun observeUpdates(): Flow<Instant?> {
-        return updatedAt.asSharedFlow()
+    override fun notifyUpdate(source: Source) {
+        updatesMaps[source]?.tryEmit(nowUtcInstant())
+    }
+
+    override fun observeUpdates(source: Source): Flow<Instant?> {
+        return updatesMaps[source]?.asSharedFlow()!!
     }
 }

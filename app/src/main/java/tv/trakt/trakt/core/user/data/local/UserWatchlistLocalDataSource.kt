@@ -6,15 +6,9 @@ import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import java.time.Instant
 
 internal interface UserWatchlistLocalDataSource {
-    suspend fun setMovies(
-        movies: List<WatchlistItem.MovieItem>,
-        notify: Boolean = false,
-    )
+    suspend fun setMovies(movies: List<WatchlistItem.MovieItem>)
 
-    suspend fun setShows(
-        shows: List<WatchlistItem.ShowItem>,
-        notify: Boolean = false,
-    )
+    suspend fun setShows(shows: List<WatchlistItem.ShowItem>)
 
     suspend fun addMovies(
         movies: List<WatchlistItem.MovieItem>,
