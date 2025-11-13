@@ -47,7 +47,6 @@ import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.discover.DiscoverCollectionState
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.model.DiscoverItem.MovieItem
 import tv.trakt.trakt.core.discover.model.DiscoverItem.ShowItem
@@ -55,6 +54,7 @@ import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
+import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
@@ -67,7 +67,7 @@ internal fun DiscoverAnticipatedView(
     viewModel: DiscoverAnticipatedViewModel,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
-    collection: DiscoverCollectionState,
+    collection: UserCollectionState,
     onShowClick: (TraktId) -> Unit = {},
     onMovieClick: (TraktId) -> Unit = {},
     onMoreClick: () -> Unit = {},
@@ -119,7 +119,7 @@ internal fun DiscoverAnticipatedView(
 @Composable
 internal fun DiscoverAnticipatedContent(
     state: DiscoverAnticipatedState,
-    collectionState: DiscoverCollectionState,
+    collectionState: UserCollectionState,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
@@ -217,7 +217,7 @@ private fun ContentLoadingList(
 @Composable
 private fun ContentList(
     mode: MediaMode?,
-    collection: DiscoverCollectionState,
+    collection: UserCollectionState,
     listState: LazyListState = rememberLazyListState(),
     listItems: ImmutableList<DiscoverItem>,
     contentPadding: PaddingValues,
@@ -331,7 +331,7 @@ private fun Preview() {
             state = DiscoverAnticipatedState(
                 loading = IDLE,
             ),
-            collectionState = DiscoverCollectionState.Default,
+            collectionState = UserCollectionState.Default,
         )
     }
 }
@@ -348,7 +348,7 @@ private fun Preview2() {
             state = DiscoverAnticipatedState(
                 loading = LOADING,
             ),
-            collectionState = DiscoverCollectionState.Default,
+            collectionState = UserCollectionState.Default,
         )
     }
 }

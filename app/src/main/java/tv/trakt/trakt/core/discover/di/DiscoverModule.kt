@@ -36,11 +36,8 @@ internal val discoverModule = module {
         DiscoverViewModel(
             sessionManager = get(),
             modeManager = get(),
-            userWatchlistUseCase = get(),
-            userWatchlistLocalSource = get(),
-            userProgressUseCase = get(),
-            userProgressLocalSource = get(),
             analytics = get(),
+            collectionStateProvider = get(),
         )
     }
 
@@ -51,6 +48,7 @@ internal val discoverModule = module {
             modeManager = get(),
             getShowsUseCase = get(),
             getMoviesUseCase = get(),
+            collectionStateProvider = get(),
         )
     }
 

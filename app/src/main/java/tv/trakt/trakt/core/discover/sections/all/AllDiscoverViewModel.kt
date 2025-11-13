@@ -33,6 +33,8 @@ import tv.trakt.trakt.core.discover.sections.all.usecases.GetAllDiscoverMoviesUs
 import tv.trakt.trakt.core.discover.sections.all.usecases.GetAllDiscoverShowsUseCase
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.core.user.CollectionStateProvider
+import tv.trakt.trakt.core.user.UserCollectionState
 
 @Suppress("UNCHECKED_CAST")
 internal class AllDiscoverViewModel(
@@ -41,6 +43,7 @@ internal class AllDiscoverViewModel(
     private val modeManager: MediaModeManager,
     private val getShowsUseCase: GetAllDiscoverShowsUseCase,
     private val getMoviesUseCase: GetAllDiscoverMoviesUseCase,
+    private val collectionStateProvider: CollectionStateProvider,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<DiscoverDestination>()
 
@@ -61,7 +64,9 @@ internal class AllDiscoverViewModel(
     init {
         loadBackground()
         loadData()
+
         observeMode()
+        observeData()
 
         analytics.logScreenView(
             screenName = "all_discover_${destination.source.name.lowercase()}",
@@ -74,6 +79,11 @@ internal class AllDiscoverViewModel(
                 modeState.update { value }
                 loadData()
             }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeData() {
+        collectionStateProvider
             .launchIn(viewModelScope)
     }
 
@@ -195,6 +205,7 @@ internal class AllDiscoverViewModel(
         modeState,
         typeState,
         filterState,
+        collectionStateProvider.stateFlow,
         backgroundState,
         itemsState,
         loadingState,
@@ -205,11 +216,12 @@ internal class AllDiscoverViewModel(
             mode = state[0] as MediaMode,
             type = state[1] as DiscoverSection,
             filter = state[2] as MediaMode,
-            backgroundUrl = state[3] as String,
-            items = state[4] as ImmutableList<DiscoverItem>?,
-            loading = state[5] as LoadingState,
-            loadingMore = state[6] as LoadingState,
-            error = state[7] as Exception?,
+            collection = state[3] as UserCollectionState,
+            backgroundUrl = state[4] as String,
+            items = state[5] as ImmutableList<DiscoverItem>?,
+            loading = state[6] as LoadingState,
+            loadingMore = state[7] as LoadingState,
+            error = state[8] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

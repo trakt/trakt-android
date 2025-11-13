@@ -32,6 +32,7 @@ import tv.trakt.trakt.core.discover.model.DiscoverItem.ShowItem
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.movies.ui.MovieMetaFooter
 import tv.trakt.trakt.core.shows.ui.ShowMetaFooter
+import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -39,6 +40,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun AllDiscoverListView(
     state: LazyListState,
+    collectionState: UserCollectionState,
     filter: MediaMode,
     items: ImmutableList<DiscoverItem>,
     modifier: Modifier = Modifier,
@@ -97,6 +99,7 @@ internal fun AllDiscoverListView(
 
         listItems(
             items = items,
+            collectionState = collectionState,
             mediaIcon = (filter == MediaMode.MEDIA),
             onClick = onItemClick,
             onLongClick = onItemLongClick,
@@ -115,6 +118,7 @@ internal fun AllDiscoverListView(
 
 private fun LazyListScope.listItems(
     items: ImmutableList<DiscoverItem>,
+    collectionState: UserCollectionState,
     mediaIcon: Boolean,
     onClick: ((DiscoverItem) -> Unit)? = null,
     onLongClick: ((DiscoverItem) -> Unit)? = null,
@@ -126,6 +130,8 @@ private fun LazyListScope.listItems(
         when (item) {
             is ShowItem -> ShowListItem(
                 item = item,
+                watched = collectionState.isWatched(item.id),
+                watchlist = collectionState.isWatchlist(item.id),
                 mediaIcon = mediaIcon,
                 onClick = onClick?.let { { it(item) } },
                 onLongClick = onLongClick?.let { { it(item) } },
@@ -138,6 +144,8 @@ private fun LazyListScope.listItems(
             )
             is MovieItem -> MovieListItem(
                 item = item,
+                watched = collectionState.isWatched(item.id),
+                watchlist = collectionState.isWatchlist(item.id),
                 mediaIcon = mediaIcon,
                 onClick = onClick?.let { { it(item) } },
                 onLongClick = onLongClick?.let { { it(item) } },
@@ -155,6 +163,8 @@ private fun LazyListScope.listItems(
 @Composable
 private fun ShowListItem(
     item: ShowItem,
+    watched: Boolean,
+    watchlist: Boolean,
     modifier: Modifier = Modifier,
     mediaIcon: Boolean,
     onClick: (() -> Unit)? = null,
@@ -174,6 +184,8 @@ private fun ShowListItem(
         subtitle = genresText,
         contentImageUrl = item.images?.getPosterUrl(),
         containerImageUrl = item.images?.getFanartUrl(THUMB),
+        watched = watched,
+        watchlist = watchlist,
         onClick = onClick,
         onLongClick = onLongClick,
         footerContent = {
@@ -191,6 +203,8 @@ private fun MovieListItem(
     item: MovieItem,
     modifier: Modifier = Modifier,
     mediaIcon: Boolean,
+    watched: Boolean,
+    watchlist: Boolean,
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
 ) {
@@ -208,6 +222,8 @@ private fun MovieListItem(
         subtitle = genresText,
         contentImageUrl = item.images?.getPosterUrl(),
         containerImageUrl = item.images?.getFanartUrl(THUMB),
+        watched = watched,
+        watchlist = watchlist,
         onClick = onClick,
         onLongClick = onLongClick,
         footerContent = {
@@ -230,6 +246,7 @@ private fun AllDiscoverListViewPreview() {
     TraktTheme {
         AllDiscoverListView(
             state = LazyListState(),
+            collectionState = UserCollectionState.Default,
             filter = MediaMode.MEDIA,
             items = listOf(
                 ShowItem(

@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.model.DiscoverSection
 import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.core.user.UserCollectionState
 
 @Immutable
 internal data class AllDiscoverState(
@@ -13,6 +14,7 @@ internal data class AllDiscoverState(
     val mode: MediaMode? = null,
     val filter: MediaMode? = null,
     val type: DiscoverSection? = null,
+    val collection: UserCollectionState = UserCollectionState.Default,
     val loading: LoadingState = LoadingState.IDLE,
     val loadingMore: LoadingState = LoadingState.IDLE,
     val backgroundUrl: String? = null,

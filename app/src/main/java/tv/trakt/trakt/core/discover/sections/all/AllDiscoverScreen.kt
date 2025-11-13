@@ -126,6 +126,7 @@ private fun AllDiscoverScreenContent(
 
         AllDiscoverListView(
             state = listState,
+            collectionState = state.collection,
             filter = state.filter ?: MediaMode.MEDIA,
             items = state.items ?: EmptyImmutableList,
             loading = state.loadingMore.isLoading || state.loading.isLoading,

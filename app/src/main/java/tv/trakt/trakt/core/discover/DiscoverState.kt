@@ -3,11 +3,12 @@ package tv.trakt.trakt.core.discover
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.user.UserCollectionState
 
 @Immutable
 internal data class DiscoverState(
     val backgroundUrl: String? = null,
-    val collection: DiscoverCollectionState = DiscoverCollectionState(),
+    val collection: UserCollectionState = UserCollectionState.Default,
     val user: UserState = UserState(),
 ) {
     data class UserState(

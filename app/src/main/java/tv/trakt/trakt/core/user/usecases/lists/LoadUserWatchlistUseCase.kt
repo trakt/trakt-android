@@ -41,6 +41,10 @@ internal class LoadUserWatchlistUseCase(
         return localSource.isMoviesLoaded()
     }
 
+    suspend fun isLoaded(): Boolean {
+        return localSource.isShowsLoaded() && localSource.isMoviesLoaded()
+    }
+
     suspend fun loadWatchlist(): ImmutableList<WatchlistItem> {
         val response = remoteSource.getWatchlist(
             sort = "rank",

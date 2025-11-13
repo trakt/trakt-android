@@ -33,6 +33,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Brush.Companion.linearGradient
@@ -75,6 +76,8 @@ internal fun PanelMediaCard(
     corner: Dp = 16.dp,
     shadow: Dp = 0.dp,
     more: Boolean = true,
+    watched: Boolean = false,
+    watchlist: Boolean = false,
     containerColor: Color = TraktTheme.colors.panelCardContainer,
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
@@ -110,79 +113,139 @@ internal fun PanelMediaCard(
                 indication = ripple(),
             ),
     ) {
-        if (!contentImageUrl.isNullOrBlank() && !isPosterError) {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(contentImageUrl)
-                    .crossfade(true)
-                    .build(),
-                contentDescription = "Card image",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .padding(start = 4.dp)
-                    .padding(vertical = 4.dp)
-                    .aspectRatio(VerticalImageAspectRatio)
-                    .width(TraktTheme.size.verticalMediumMediaCardSize)
-                    .clip(RoundedCornerShape(corner - 3.dp))
-                    .onClick(onClick = onImageClick ?: {}),
-            )
-        } else {
-            Box(
-                modifier = Modifier
-                    .padding(start = 4.dp)
-                    .padding(vertical = 4.dp)
-                    .aspectRatio(VerticalImageAspectRatio)
-                    .width(TraktTheme.size.verticalMediumMediaCardSize)
-                    .clip(RoundedCornerShape(corner - 3.dp))
-                    .background(TraktTheme.colors.placeholderContainer)
-                    .onClick(onClick = onImageClick ?: {}),
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_placeholder_vertical_border),
-                    contentDescription = null,
-                    contentScale = ContentScale.Fit,
-                    colorFilter = ColorFilter.tint(TraktTheme.colors.placeholderContent),
-                    modifier = Modifier.padding(6.dp),
-                )
-                Icon(
-                    painter = painterResource(R.drawable.ic_placeholder_trakt),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.placeholderContent,
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .width(TraktTheme.size.verticalMediumMediaCardSize),
+        ) {
+            if (!contentImageUrl.isNullOrBlank() && !isPosterError) {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(contentImageUrl)
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = "Card image",
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .size(54.dp)
-                        .align(Alignment.TopEnd)
-                        .graphicsLayer {
-                            translationX = 4.dp.toPx()
-                            translationY = -4.dp.toPx()
-                        },
+                        .padding(start = 4.dp)
+                        .padding(vertical = 4.dp)
+                        .aspectRatio(VerticalImageAspectRatio)
+                        .width(TraktTheme.size.verticalMediumMediaCardSize)
+                        .clip(RoundedCornerShape(corner - 3.dp))
+                        .onClick(onClick = onImageClick ?: {}),
                 )
-                Icon(
-                    painter = painterResource(R.drawable.ic_trakt_logo),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.placeholderContent,
-                    modifier = Modifier
-                        .size(38.dp)
-                        .align(Alignment.Center)
-                        .graphicsLayer {
-                            translationY = 10.dp.toPx()
-                        },
-                )
+            } else {
                 Box(
                     modifier = Modifier
+                        .padding(start = 4.dp)
+                        .padding(vertical = 4.dp)
+                        .aspectRatio(VerticalImageAspectRatio)
+                        .width(TraktTheme.size.verticalMediumMediaCardSize)
+                        .clip(RoundedCornerShape(corner - 3.dp))
+                        .background(TraktTheme.colors.placeholderContainer)
+                        .onClick(onClick = onImageClick ?: {}),
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.ic_placeholder_vertical_border),
+                        contentDescription = null,
+                        contentScale = ContentScale.Fit,
+                        colorFilter = ColorFilter.tint(TraktTheme.colors.placeholderContent),
+                        modifier = Modifier.padding(6.dp),
+                    )
+                    Icon(
+                        painter = painterResource(R.drawable.ic_placeholder_trakt),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.placeholderContent,
+                        modifier = Modifier
+                            .size(54.dp)
+                            .align(Alignment.TopEnd)
+                            .graphicsLayer {
+                                translationX = 4.dp.toPx()
+                                translationY = -4.dp.toPx()
+                            },
+                    )
+                    Icon(
+                        painter = painterResource(R.drawable.ic_trakt_logo),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.placeholderContent,
+                        modifier = Modifier
+                            .size(38.dp)
+                            .align(Alignment.Center)
+                            .graphicsLayer {
+                                translationY = 10.dp.toPx()
+                            },
+                    )
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .fillMaxWidth()
+                            .fillMaxHeight(0.25f)
+                            .drawWithCache {
+                                onDrawBehind {
+                                    drawRect(
+                                        brush = Brush.verticalGradient(
+                                            0f to Color.Transparent,
+                                            1f to Color(0xFA212427),
+                                        ),
+                                    )
+                                }
+                            },
+                    )
+                }
+            }
+
+            if (watchlist || watched) {
+                val shape = RoundedCornerShape(100)
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(3.dp),
+                    modifier = Modifier
                         .align(Alignment.BottomCenter)
-                        .fillMaxWidth()
-                        .fillMaxHeight(0.25f)
-                        .drawWithCache {
-                            onDrawBehind {
-                                drawRect(
-                                    brush = Brush.verticalGradient(
-                                        0f to Color.Transparent,
-                                        1f to Color(0xFA212427),
-                                    ),
-                                )
-                            }
+                        .padding(start = 4.dp)
+                        .graphicsLayer {
+                            translationY = -2.25.dp.toPx()
                         },
-                )
+                ) {
+                    if (watched) {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .size(
+                                    width = 20.dp,
+                                    height = 14.dp,
+                                )
+                                .shadow(1.dp, shape)
+                                .background(TraktTheme.colors.chipContainer, shape),
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_check_double),
+                                tint = Color.White,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(8.5.dp),
+                            )
+                        }
+                    }
+
+                    if (watchlist) {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .size(
+                                    width = 20.dp,
+                                    height = 14.dp,
+                                )
+                                .shadow(1.dp, shape)
+                                .background(TraktTheme.colors.chipContainer, shape),
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_bookmark_on),
+                                tint = Color.White,
+                                contentDescription = null,
+                                modifier = Modifier.size(7.dp),
+                            )
+                        }
+                    }
+                }
             }
         }
 
@@ -303,6 +366,7 @@ private fun PosterPreview() {
                 subtitle = "Action, Adventure",
                 contentImageUrl = null,
                 containerImageUrl = null,
+                watched = true,
             )
         }
     }
@@ -318,6 +382,8 @@ private fun PosterPreviewPlaceholder() {
             subtitle = "Action, Adventure",
             contentImageUrl = null,
             containerImageUrl = null,
+            watched = true,
+            watchlist = true,
         )
     }
 }

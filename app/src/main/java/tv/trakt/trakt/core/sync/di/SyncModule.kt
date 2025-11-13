@@ -14,6 +14,7 @@ import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowFavoritesUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowWatchlistUseCase
+import tv.trakt.trakt.core.user.CollectionStateProvider
 
 internal val syncModule = module {
     single<ShowsSyncRemoteDataSource> {
@@ -35,6 +36,16 @@ internal val syncModule = module {
         EpisodesSyncApiClient(
             syncApi = get(),
             cacheMarker = get(),
+        )
+    }
+
+    single<CollectionStateProvider> {
+        CollectionStateProvider(
+            sessionManager = get(),
+            userWatchlistUseCase = get(),
+            userProgressUseCase = get(),
+            userWatchlistLocalSource = get(),
+            userProgressLocalSource = get(),
         )
     }
 

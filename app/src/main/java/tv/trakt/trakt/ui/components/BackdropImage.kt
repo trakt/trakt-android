@@ -38,9 +38,36 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 private const val PARALLAX_RATIO = 0.75F
 
+@Composable
+internal fun ScrollableBackdropImage(
+    scrollState: LazyListState,
+    imageUrl: String?,
+    modifier: Modifier = Modifier,
+) {
+//    val imageUrl = remember {
+//        Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL).ifBlank { null }
+//    }
+
+    val firstItemVisible by remember {
+        derivedStateOf { scrollState.firstVisibleItemIndex == 0 }
+    }
+
+    BackdropImage(
+        imageUrl = imageUrl,
+        imageAlpha = 0.375F,
+        modifier = modifier.graphicsLayer {
+            if (firstItemVisible) {
+                translationY = (-PARALLAX_RATIO * scrollState.firstVisibleItemScrollOffset)
+            } else {
+                alpha = 0F
+            }
+        },
+    )
+}
+
 @SuppressLint("ConfigurationScreenWidthHeight")
 @Composable
-internal fun BackdropImage(
+private fun BackdropImage(
     imageUrl: String?,
     modifier: Modifier = Modifier,
     imageAlpha: Float = 0.375F,
@@ -90,28 +117,6 @@ internal fun BackdropImage(
                 .background(linearGradient),
         )
     }
-}
-
-@Composable
-internal fun ScrollableBackdropImage(
-    scrollState: LazyListState,
-    imageUrl: String?,
-    modifier: Modifier = Modifier,
-) {
-    val firstItemVisible by remember {
-        derivedStateOf { scrollState.firstVisibleItemIndex == 0 }
-    }
-    BackdropImage(
-        imageUrl = imageUrl,
-        imageAlpha = 0.375F,
-        modifier = modifier.graphicsLayer {
-            if (firstItemVisible) {
-                translationY = (-PARALLAX_RATIO * scrollState.firstVisibleItemScrollOffset)
-            } else {
-                alpha = 0F
-            }
-        },
-    )
 }
 
 @Composable
