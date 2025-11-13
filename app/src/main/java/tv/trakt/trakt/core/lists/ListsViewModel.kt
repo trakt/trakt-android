@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,6 +25,7 @@ import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.core.lists.ListsState.UserState
@@ -46,6 +48,8 @@ internal class ListsViewModel(
     private val listsState = MutableStateFlow(initialState.lists)
     private val listsLoadingState = MutableStateFlow(initialState.listsLoading)
     private val errorState = MutableStateFlow(initialState.error)
+
+    private var listsOrder: List<Int>? = null
 
     init {
         loadBackground()
@@ -95,7 +99,7 @@ internal class ListsViewModel(
         viewModelScope.launch {
             try {
                 val localLists = getPersonalListsUseCase.getLocalLists()
-                listsState.update { localLists }
+                listsState.update { sortLists(localLists) }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.value = error
@@ -113,14 +117,16 @@ internal class ListsViewModel(
             try {
                 val localLists = getPersonalListsUseCase.getLocalLists()
                 if (localLists.isNotEmpty()) {
-                    listsState.update { localLists }
+                    listsState.update { sortLists(localLists) }
                     listsLoadingState.update { DONE }
                 } else {
                     listsLoadingState.update { LOADING }
                 }
 
                 val lists = getPersonalListsUseCase.getLists()
-                listsState.update { lists }
+                listsState.update { sortLists(lists) }
+
+                listsOrder = listsState.value?.map { it.ids.trakt.value }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.value = error
@@ -131,11 +137,26 @@ internal class ListsViewModel(
         }
     }
 
+    private fun sortLists(lists: ImmutableList<CustomList>): ImmutableList<CustomList> {
+        val order = listsOrder ?: return lists
+
+        val orderMap = order
+            .withIndex()
+            .reversed()
+            .associate {
+                it.value to it.index
+            }
+
+        return lists
+            .sortedBy {
+                orderMap[it.ids.trakt.value] ?: Int.MIN_VALUE
+            }
+            .toImmutableList()
+    }
+
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {
-            listsState.update {
-                emptyList<CustomList>().toImmutableList()
-            }
+            listsState.update { EmptyImmutableList }
             listsLoadingState.update { DONE }
             return true
         } else {

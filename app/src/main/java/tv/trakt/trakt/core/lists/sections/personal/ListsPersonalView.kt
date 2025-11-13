@@ -246,6 +246,7 @@ internal fun ListsPersonalContent(
                         state.items?.isEmpty() == true -> {
                             ContentEmptyList(
                                 contentPadding = contentPadding,
+                                modifier = Modifier.padding(bottom = 3.75.dp),
                             )
                         }
                         else -> {
@@ -288,16 +289,19 @@ private fun ContentLoadingList(
 }
 
 @Composable
-private fun ContentEmptyList(contentPadding: PaddingValues) {
+private fun ContentEmptyList(
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues,
+) {
     LazyRow(
         userScrollEnabled = false,
         horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
         contentPadding = contentPadding,
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
     ) {
         items(count = 6) {
             VerticalMediaSkeletonCard(
-                chipRatio = 0.5F,
+                chipRatio = 0.66F,
                 shimmer = false,
                 containerColor = TraktTheme.colors.skeletonContainer,
             )
