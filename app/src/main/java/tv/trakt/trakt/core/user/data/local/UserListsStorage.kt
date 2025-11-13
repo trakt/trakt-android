@@ -20,7 +20,7 @@ internal class UserListsStorage : UserListsLocalDataSource {
 
     private var storage: MutableMap<TraktId, Pair<CustomList, List<PersonalListItem>>>? = null
     private val updatedAt = MutableSharedFlow<Instant?>(
-        replay = 1,
+        extraBufferCapacity = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST,
     )
 

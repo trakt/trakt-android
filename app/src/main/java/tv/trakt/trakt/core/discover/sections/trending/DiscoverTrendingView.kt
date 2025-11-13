@@ -38,6 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
@@ -177,6 +178,8 @@ internal fun DiscoverTrendingContent(
                         ContentList(
                             mode = state.mode,
                             listItems = (state.items ?: emptyList()).toImmutableList(),
+                            watchedItems = state.watchedItems,
+                            watchlistItems = state.watchlistItems,
                             contentPadding = contentPadding,
                             onClick = onClick,
                             onLongClick = onLongClick,
@@ -214,12 +217,13 @@ private fun ContentList(
     mode: MediaMode?,
     listState: LazyListState = rememberLazyListState(),
     listItems: ImmutableList<DiscoverItem>,
+    watchedItems: ImmutableSet<String>,
+    watchlistItems: ImmutableSet<String>,
     contentPadding: PaddingValues,
     onClick: (DiscoverItem) -> Unit,
     onLongClick: (DiscoverItem) -> Unit,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
-
     LaunchedEffect(listItems) {
         val hashCode = listItems.hashCode()
         if (currentList.intValue != hashCode) {
@@ -241,6 +245,8 @@ private fun ContentList(
             ContentListItem(
                 item = item,
                 mode = mode,
+                watched = watchedItems.contains(item.key),
+                watchlist = watchlistItems.contains(item.key),
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
                     fadeOutSpec = null,
@@ -256,6 +262,8 @@ private fun ContentList(
 private fun ContentListItem(
     item: DiscoverItem,
     mode: MediaMode?,
+    watched: Boolean,
+    watchlist: Boolean,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
@@ -264,6 +272,8 @@ private fun ContentListItem(
         modifier = modifier,
         title = item.title,
         imageUrl = item.images?.getPosterUrl(),
+        watched = watched,
+        watchlist = watchlist,
         onClick = onClick,
         onLongClick = onLongClick,
         chipContent = { chipModifier ->

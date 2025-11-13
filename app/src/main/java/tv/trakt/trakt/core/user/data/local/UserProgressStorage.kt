@@ -17,7 +17,7 @@ internal class UserProgressStorage : UserProgressLocalDataSource {
     private var showsStorage: MutableMap<TraktId, ProgressItem.ShowItem>? = null
 
     private val updatedAt = MutableSharedFlow<Instant?>(
-        replay = 1,
+        extraBufferCapacity = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST,
     )
 

@@ -247,7 +247,7 @@ internal fun VerticalMediaCard(
                             translationY = 4.dp.toPx()
                         }
                         .size(
-                            width = 24.dp,
+                            width = 22.dp,
                             height = 16.dp,
                         )
                         .shadow(1.dp, shape)

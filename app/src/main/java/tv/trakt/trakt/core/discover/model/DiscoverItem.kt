@@ -38,8 +38,8 @@ internal sealed class DiscoverItem(
 
     val key: String
         get() = when (this) {
-            is ShowItem -> "${id.value}-$type"
-            is MovieItem -> "${id.value}-$type"
+            is ShowItem -> "${id.value}-show"
+            is MovieItem -> "${id.value}-movie"
         }
 
     val title: String

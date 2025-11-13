@@ -1,6 +1,7 @@
 package tv.trakt.trakt.common.helpers.extensions
 
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -40,3 +41,4 @@ fun <T> Iterable<Iterable<T>>.interleave(): List<T> {
 }
 
 val EmptyImmutableList = emptyList<Nothing>().toImmutableList()
+val EmptyImmutableSet = emptySet<Nothing>().toImmutableSet()
