@@ -38,7 +38,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
@@ -48,6 +47,7 @@ import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.discover.DiscoverCollectionState
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.model.DiscoverItem.MovieItem
 import tv.trakt.trakt.core.discover.model.DiscoverItem.ShowItem
@@ -67,6 +67,7 @@ internal fun DiscoverTrendingView(
     viewModel: DiscoverTrendingViewModel,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
+    collection: DiscoverCollectionState,
     onShowClick: (TraktId) -> Unit = {},
     onMovieClick: (TraktId) -> Unit = {},
     onMoreClick: () -> Unit = {},
@@ -78,6 +79,7 @@ internal fun DiscoverTrendingView(
 
     DiscoverTrendingContent(
         state = state,
+        collectionState = collection,
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
@@ -117,6 +119,7 @@ internal fun DiscoverTrendingView(
 @Composable
 internal fun DiscoverTrendingContent(
     state: DiscoverTrendingState,
+    collectionState: DiscoverCollectionState,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
@@ -177,9 +180,8 @@ internal fun DiscoverTrendingContent(
                     } else {
                         ContentList(
                             mode = state.mode,
+                            collection = collectionState,
                             listItems = (state.items ?: emptyList()).toImmutableList(),
-                            watchedItems = state.watchedItems,
-                            watchlistItems = state.watchlistItems,
                             contentPadding = contentPadding,
                             onClick = onClick,
                             onLongClick = onLongClick,
@@ -215,10 +217,9 @@ private fun ContentLoadingList(
 @Composable
 private fun ContentList(
     mode: MediaMode?,
+    collection: DiscoverCollectionState,
     listState: LazyListState = rememberLazyListState(),
     listItems: ImmutableList<DiscoverItem>,
-    watchedItems: ImmutableSet<String>,
-    watchlistItems: ImmutableSet<String>,
     contentPadding: PaddingValues,
     onClick: (DiscoverItem) -> Unit,
     onLongClick: (DiscoverItem) -> Unit,
@@ -245,14 +246,14 @@ private fun ContentList(
             ContentListItem(
                 item = item,
                 mode = mode,
-                watched = watchedItems.contains(item.key),
-                watchlist = watchlistItems.contains(item.key),
+                watched = collection.isWatched(item.id),
+                watchlist = collection.isWatchlist(item.id),
+                onClick = { onClick(item) },
+                onLongClick = { onLongClick(item) },
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
                     fadeOutSpec = null,
                 ),
-                onClick = { onClick(item) },
-                onLongClick = { onLongClick(item) },
             )
         }
     }
@@ -329,6 +330,7 @@ private fun Preview() {
             state = DiscoverTrendingState(
                 loading = IDLE,
             ),
+            collectionState = DiscoverCollectionState.Default,
         )
     }
 }
@@ -345,6 +347,7 @@ private fun Preview2() {
             state = DiscoverTrendingState(
                 loading = LOADING,
             ),
+            collectionState = DiscoverCollectionState.Default,
         )
     }
 }

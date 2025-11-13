@@ -156,7 +156,10 @@ internal class MovieContextViewModel(
                 loadingWatchlistState.update { LOADING }
 
                 updateMovieWatchlistUseCase.removeFromWatchlist(movieId = movie.ids.trakt)
-                userWatchlistLocalSource.removeMovies(setOf(movie.ids.trakt))
+                userWatchlistLocalSource.removeMovies(
+                    ids = setOf(movie.ids.trakt),
+                    notify = true,
+                )
 
                 analytics.progress.logRemoveWatchlistMedia(
                     mediaType = "movie",
@@ -185,7 +188,10 @@ internal class MovieContextViewModel(
 
                 updateMovieHistoryUseCase.addToWatched(movie.ids.trakt)
                 loadProgressUseCase.loadMoviesProgress()
-                userWatchlistLocalSource.removeMovies(setOf(movie.ids.trakt))
+                userWatchlistLocalSource.removeMovies(
+                    ids = setOf(movie.ids.trakt),
+                    notify = true,
+                )
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
@@ -213,7 +219,10 @@ internal class MovieContextViewModel(
                 loadingWatchedState.update { LOADING }
 
                 updateMovieHistoryUseCase.removeAllFromHistory(movie.ids.trakt)
-                userProgressLocalSource.removeMovies(setOf(movie.ids.trakt))
+                userProgressLocalSource.removeMovies(
+                    ids = setOf(movie.ids.trakt),
+                    notify = true,
+                )
 
                 analytics.progress.logRemoveWatchedMedia(
                     mediaType = "movie",

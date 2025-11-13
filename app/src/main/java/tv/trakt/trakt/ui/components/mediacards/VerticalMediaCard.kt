@@ -239,36 +239,52 @@ internal fun VerticalMediaCard(
             if (watchlist || watched) {
                 val shape = RoundedCornerShape(100)
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .graphicsLayer {
                             translationY = 4.dp.toPx()
-                        }
-                        .size(
-                            width = 22.dp,
-                            height = 16.dp,
-                        )
-                        .shadow(1.dp, shape)
-                        .background(TraktTheme.colors.chipContainer, shape),
+                        },
                 ) {
-                    Icon(
-                        painter = painterResource(
-                            when {
-                                watched -> R.drawable.ic_check
-                                else -> R.drawable.ic_bookmark_on
-                            },
-                        ),
-                        tint = Color.White,
-                        contentDescription = null,
-                        modifier = Modifier.size(
-                            when {
-                                watched -> 9.dp
-                                else -> 8.dp
-                            },
-                        ),
-                    )
+                    if (watched) {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .size(
+                                    width = 22.dp,
+                                    height = 16.dp,
+                                )
+                                .shadow(1.dp, shape)
+                                .background(TraktTheme.colors.chipContainer, shape),
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_check_double),
+                                tint = Color.White,
+                                contentDescription = null,
+                                modifier = Modifier.size(9.75.dp),
+                            )
+                        }
+                    }
+
+                    if (watchlist) {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .size(
+                                    width = 22.dp,
+                                    height = 16.dp,
+                                )
+                                .shadow(1.dp, shape)
+                                .background(TraktTheme.colors.chipContainer, shape),
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_bookmark_on),
+                                tint = Color.White,
+                                contentDescription = null,
+                                modifier = Modifier.size(8.25.dp),
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -291,6 +307,7 @@ private fun PosterPreview() {
             VerticalMediaCard(
                 title = "Placeholder",
                 watched = true,
+                watchlist = true,
                 imageUrl = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/4iWjGghUj2uyHo2Hyw8NFBvsNGm.jpg",
                 modifier = Modifier.padding(16.dp),
             )

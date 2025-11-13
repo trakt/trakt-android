@@ -130,6 +130,7 @@ private fun DiscoverScreenContent(
             item {
                 DiscoverTrendingView(
                     viewModel = koinViewModel(),
+                    collection = state.collection,
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     onShowClick = onShowClick,

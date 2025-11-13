@@ -133,6 +133,7 @@ internal class ShowContextViewModel(
                             listedAt = nowUtcInstant(),
                         ),
                     ),
+                    notify = true,
                 )
 
                 analytics.progress.logAddWatchlistMedia(
@@ -161,7 +162,10 @@ internal class ShowContextViewModel(
                 loadingWatchlistState.update { LOADING }
 
                 updateWatchlistUseCase.removeFromWatchlist(showId = show.ids.trakt)
-                userWatchlistLocalSource.removeShows(setOf(show.ids.trakt))
+                userWatchlistLocalSource.removeShows(
+                    ids = setOf(show.ids.trakt),
+                    notify = true,
+                )
 
                 analytics.progress.logRemoveWatchlistMedia(
                     mediaType = "show",
@@ -190,7 +194,10 @@ internal class ShowContextViewModel(
 
                 updateHistoryUseCase.addToWatched(show.ids.trakt)
                 loadProgressUseCase.loadShowsProgress()
-                userWatchlistLocalSource.removeShows(setOf(show.ids.trakt))
+                userWatchlistLocalSource.removeShows(
+                    ids = setOf(show.ids.trakt),
+                    notify = true,
+                )
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "show",
@@ -218,7 +225,10 @@ internal class ShowContextViewModel(
                 loadingWatchedState.update { LOADING }
 
                 updateHistoryUseCase.removeAllFromHistory(show.ids.trakt)
-                userProgressLocalSource.removeShows(setOf(show.ids.trakt))
+                userProgressLocalSource.removeShows(
+                    ids = setOf(show.ids.trakt),
+                    notify = true,
+                )
 
                 analytics.progress.logRemoveWatchedMedia(
                     mediaType = "show",

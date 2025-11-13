@@ -35,6 +35,11 @@ internal val discoverModule = module {
     viewModel {
         DiscoverViewModel(
             sessionManager = get(),
+            modeManager = get(),
+            userWatchlistUseCase = get(),
+            userWatchlistLocalSource = get(),
+            userProgressUseCase = get(),
+            userProgressLocalSource = get(),
             analytics = get(),
         )
     }
@@ -52,12 +57,8 @@ internal val discoverModule = module {
     viewModel {
         DiscoverTrendingViewModel(
             modeManager = get(),
-            sessionManager = get(),
             getTrendingShowsUseCase = get(named("defaultTrendingShowsUseCase")),
             getTrendingMoviesUseCase = get(named("defaultTrendingMoviesUseCase")),
-            userProgressUseCase = get(),
-            userWatchlistUseCase = get(),
-            userWatchlistLocalSource = get(),
         )
     }
 
