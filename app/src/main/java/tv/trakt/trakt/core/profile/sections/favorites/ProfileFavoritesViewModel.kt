@@ -6,6 +6,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -25,6 +26,7 @@ import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -98,7 +100,16 @@ internal class ProfileFavoritesViewModel(
 
                 val filter = loadFilter()
                 val localItems = when (filter) {
-                    MEDIA -> loadFavoritesUseCase.loadLocalAll()
+                    MEDIA -> {
+                        val showsLoadedAsync = async { loadFavoritesUseCase.isShowsLoaded() }
+                        val moviesLoadedAsync = async { loadFavoritesUseCase.isMoviesLoaded() }
+
+                        if (showsLoadedAsync.await() && moviesLoadedAsync.await()) {
+                            loadFavoritesUseCase.loadLocalAll()
+                        } else {
+                            EmptyImmutableList
+                        }
+                    }
                     SHOWS -> loadFavoritesUseCase.loadLocalShows()
                     MOVIES -> loadFavoritesUseCase.loadLocalMovies()
                 }.take(FAVORITES_SECTION_LIMIT)
@@ -133,6 +144,7 @@ internal class ProfileFavoritesViewModel(
                 }
             } finally {
                 loadingState.update { DONE }
+                loadDataJob = null
             }
         }
     }
