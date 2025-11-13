@@ -175,6 +175,7 @@ internal val profileModule = module {
             sessionManager = get(),
             apiClients = get(named("apiClients")),
             localUpNext = get(),
+            localWatchlistUpNext = get(),
             localUpcoming = get(),
             localSocial = get(),
             localPersonal = get(),

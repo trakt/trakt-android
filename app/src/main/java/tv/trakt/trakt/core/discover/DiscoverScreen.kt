@@ -142,6 +142,7 @@ private fun DiscoverScreenContent(
             item {
                 DiscoverAnticipatedView(
                     viewModel = koinViewModel(),
+                    collection = state.collection,
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     onShowClick = onShowClick,
@@ -153,6 +154,7 @@ private fun DiscoverScreenContent(
             item {
                 DiscoverPopularView(
                     viewModel = koinViewModel(),
+                    collection = state.collection,
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     onShowClick = onShowClick,
@@ -165,6 +167,7 @@ private fun DiscoverScreenContent(
                 item {
                     DiscoverRecommendedView(
                         viewModel = koinViewModel(),
+                        collection = state.collection,
                         headerPadding = sectionPadding,
                         contentPadding = sectionPadding,
                         onShowClick = onShowClick,

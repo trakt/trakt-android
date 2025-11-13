@@ -117,6 +117,10 @@ internal class DiscoverViewModel(
                 }
 
                 coroutineScope {
+                    if (!userWatchlistUseCase.isShowsLoaded() && !userWatchlistUseCase.isMoviesLoaded()) {
+                        userWatchlistUseCase.loadWatchlist()
+                    }
+
                     val watchlistShowsAsync = async { userWatchlistUseCase.loadLocalShows() }
                     val watchlistMoviesAsync = async { userWatchlistUseCase.loadLocalMovies() }
 
@@ -154,13 +158,20 @@ internal class DiscoverViewModel(
                     return@launch
                 }
 
+                if (!userProgressUseCase.isShowsLoaded() && !userProgressUseCase.isMoviesLoaded()) {
+                    userProgressUseCase.loadProgress()
+                }
+
+                val progressShowsAsync = async { userProgressUseCase.loadLocalShows() }
+                val progressMoviesAsync = async { userProgressUseCase.loadLocalMovies() }
+
                 coroutineScope {
                     val progressShows = when {
-                        modeState.value.isMediaOrShows -> userProgressUseCase.loadLocalShows()
+                        modeState.value.isMediaOrShows -> progressShowsAsync.await()
                         else -> emptySet()
                     }
                     val progressMovies = when {
-                        modeState.value.isMediaOrMovies -> userProgressUseCase.loadLocalMovies()
+                        modeState.value.isMediaOrMovies -> progressMoviesAsync.await()
                         else -> emptySet()
                     }
 

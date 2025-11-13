@@ -48,6 +48,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.discover.DiscoverCollectionState
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.model.DiscoverItem.MovieItem
 import tv.trakt.trakt.core.discover.model.DiscoverItem.ShowItem
@@ -67,6 +68,7 @@ internal fun DiscoverPopularView(
     viewModel: DiscoverPopularViewModel,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
+    collection: DiscoverCollectionState,
     onShowClick: (TraktId) -> Unit = {},
     onMovieClick: (TraktId) -> Unit = {},
     onMoreClick: () -> Unit = {},
@@ -78,6 +80,7 @@ internal fun DiscoverPopularView(
 
     DiscoverPopularContent(
         state = state,
+        collectionState = collection,
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
@@ -117,6 +120,7 @@ internal fun DiscoverPopularView(
 @Composable
 internal fun DiscoverPopularContent(
     state: DiscoverPopularState,
+    collectionState: DiscoverCollectionState,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
@@ -177,6 +181,7 @@ internal fun DiscoverPopularContent(
                     } else {
                         ContentList(
                             mode = state.mode,
+                            collection = collectionState,
                             listItems = (state.items ?: emptyList()).toImmutableList(),
                             contentPadding = contentPadding,
                             onClick = onClick,
@@ -213,6 +218,7 @@ private fun ContentLoadingList(
 @Composable
 private fun ContentList(
     mode: MediaMode?,
+    collection: DiscoverCollectionState,
     listState: LazyListState = rememberLazyListState(),
     listItems: ImmutableList<DiscoverItem>,
     contentPadding: PaddingValues,
@@ -242,6 +248,8 @@ private fun ContentList(
             ContentListItem(
                 item = item,
                 mode = mode,
+                watched = collection.isWatched(item.id),
+                watchlist = collection.isWatchlist(item.id),
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
                     fadeOutSpec = null,
@@ -257,6 +265,8 @@ private fun ContentList(
 private fun ContentListItem(
     item: DiscoverItem,
     mode: MediaMode?,
+    watched: Boolean,
+    watchlist: Boolean,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
@@ -265,6 +275,8 @@ private fun ContentListItem(
         modifier = modifier,
         title = item.title,
         imageUrl = item.images?.getPosterUrl(),
+        watched = watched,
+        watchlist = watchlist,
         onClick = onClick,
         onLongClick = onLongClick,
         chipContent = { chipModifier ->
@@ -342,6 +354,7 @@ private fun Preview() {
             state = DiscoverPopularState(
                 loading = IDLE,
             ),
+            collectionState = DiscoverCollectionState.Default,
         )
     }
 }

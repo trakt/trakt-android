@@ -407,7 +407,7 @@ private fun DetailsHeader(
                                     playsCount > 1 -> stringResource(R.string.text_watched_count, playsCount)
                                     else -> stringResource(R.string.text_watched)
                                 },
-                                icon = painterResource(R.drawable.ic_check),
+                                icon = painterResource(R.drawable.ic_check_double),
                             )
                         }
                     }
