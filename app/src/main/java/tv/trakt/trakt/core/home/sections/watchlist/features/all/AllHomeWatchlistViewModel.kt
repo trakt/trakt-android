@@ -42,7 +42,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_LIMIT
+import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_WATCHLIST_LIMIT
 import tv.trakt.trakt.core.home.HomeConfig.HOME_WATCHLIST_LIMIT
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeMoviesWatchlistUseCase
@@ -177,8 +177,8 @@ internal class AllHomeWatchlistViewModel(
                     loadingState.update { LOADING }
                 }
 
-                val showsAsync = async { getShowsUseCase.getWatchlist(HOME_ALL_LIMIT) }
-                val moviesAsync = async { getMoviesUseCase.getWatchlist(HOME_ALL_LIMIT) }
+                val showsAsync = async { getShowsUseCase.getWatchlist(HOME_ALL_WATCHLIST_LIMIT) }
+                val moviesAsync = async { getMoviesUseCase.getWatchlist(HOME_ALL_WATCHLIST_LIMIT) }
 
                 itemsState.update {
                     (showsAsync.await() + moviesAsync.await())

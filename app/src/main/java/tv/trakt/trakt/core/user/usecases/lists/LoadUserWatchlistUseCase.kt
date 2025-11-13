@@ -51,14 +51,14 @@ internal class LoadUserWatchlistUseCase(
             when {
                 it.movie != null -> {
                     WatchlistItem.MovieItem(
-                        movie = Movie.Companion.fromDto(it.movie!!),
+                        movie = Movie.fromDto(it.movie!!),
                         rank = it.rank,
                         listedAt = listedAt,
                     )
                 }
                 it.show != null -> {
                     WatchlistItem.ShowItem(
-                        show = Show.Companion.fromDto(it.show!!),
+                        show = Show.fromDto(it.show!!),
                         rank = it.rank,
                         listedAt = listedAt,
                     )

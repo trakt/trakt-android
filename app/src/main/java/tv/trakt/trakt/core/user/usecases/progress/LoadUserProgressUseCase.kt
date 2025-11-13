@@ -97,7 +97,7 @@ internal class LoadUserProgressUseCase(
         return response.toImmutableList()
     }
 
-    suspend fun loadAllProgress() {
+    suspend fun loadProgress() {
         return coroutineScope {
             val showsAsync = async { loadShowsProgress() }
             val moviesAsync = async { loadMoviesProgress() }

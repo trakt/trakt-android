@@ -118,7 +118,7 @@ internal class MainViewModel(
                 }
 
                 coroutineScope {
-                    val progressAsync = async { loadUserProgressUseCase.loadAllProgress() }
+                    val progressAsync = async { loadUserProgressUseCase.loadProgress() }
                     val watchlistAsync = async { loadUserWatchlistUseCase.loadWatchlist() }
                     val ratingsAsync = async { loadUserRatingsUseCase.loadAll() }
 

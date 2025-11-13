@@ -7,31 +7,36 @@ import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.core.home.HomeState.UserState
+import tv.trakt.trakt.core.main.helpers.MediaModeManager
 
 @OptIn(FlowPreview::class)
 internal class HomeViewModel(
+    private val modeManager: MediaModeManager,
     private val sessionManager: SessionManager,
     analytics: Analytics,
 ) : ViewModel() {
     private val initialState = HomeState()
+    private val initialMode = modeManager.getMode()
 
+    private val modeState = MutableStateFlow(initialMode)
     private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val userState = MutableStateFlow(initialState.user)
 
     init {
         loadBackground()
         observeUser()
+        observeMode()
 
         analytics.logScreenView(
             screenName = "home",
@@ -44,27 +49,36 @@ internal class HomeViewModel(
     }
 
     private fun observeUser() {
-        viewModelScope.launch {
-            sessionManager.observeProfile()
-                .distinctUntilChanged()
-                .collect { user ->
-                    userState.update {
-                        UserState(
-                            user = user,
-                            loading = LoadingState.DONE,
-                        )
-                    }
+        sessionManager.observeProfile()
+            .distinctUntilChanged()
+            .onEach { user ->
+                userState.update {
+                    UserState(
+                        user = user,
+                        loading = LoadingState.DONE,
+                    )
                 }
-        }
+            }
+            .launchIn(viewModelScope)
     }
 
-    val state: StateFlow<HomeState> = combine(
+    private fun observeMode() {
+        modeManager.observeMode()
+            .onEach { value ->
+                modeState.update { value }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    val state = combine(
         backgroundState,
+        modeState,
         userState,
-    ) { s1, s2 ->
+    ) { s1, s2, s3 ->
         HomeState(
             backgroundUrl = s1,
-            user = s2,
+            mode = s2,
+            user = s3,
         )
     }.stateIn(
         scope = viewModelScope,

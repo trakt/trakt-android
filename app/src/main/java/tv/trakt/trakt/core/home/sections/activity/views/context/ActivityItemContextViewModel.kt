@@ -80,7 +80,7 @@ internal class ActivityItemContextViewModel(
     fun loadUserProgress() {
         viewModelScope.launch {
             try {
-                loadUserProgressUseCase.loadAllProgress()
+                loadUserProgressUseCase.loadProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.e(error)

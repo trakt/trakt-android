@@ -143,6 +143,7 @@ internal val homeModule = module {
     viewModel {
         HomeViewModel(
             sessionManager = get(),
+            modeManager = get(),
             analytics = get(),
         )
     }
