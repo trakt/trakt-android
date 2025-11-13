@@ -3,11 +3,13 @@ package tv.trakt.trakt.ui.components.mediacards
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -70,6 +73,8 @@ internal fun VerticalMediaCard(
     enabled: Boolean = true,
     more: Boolean = true,
     blackWhite: Boolean = false,
+    watched: Boolean = false,
+    watchlist: Boolean = false,
     chipContent: @Composable (Modifier) -> Unit = {},
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
@@ -109,126 +114,164 @@ internal fun VerticalMediaCard(
         modifier = modifier
             .widthIn(max = cardWidth),
     ) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(VerticalImageAspectRatio),
-            shape = RoundedCornerShape(corner),
-            colors = cardColors(
-                containerColor = TraktTheme.colors.placeholderContainer,
-            ),
-            content = {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .ifOrElse(
-                            condition = enabled,
-                            trueModifier = Modifier.combinedClickable(
-                                onClick = onClick,
-                                onLongClick = onLongClick,
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = ripple(),
+        Box {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(VerticalImageAspectRatio),
+                shape = RoundedCornerShape(corner),
+                colors = cardColors(
+                    containerColor = TraktTheme.colors.placeholderContainer,
+                ),
+                content = {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .ifOrElse(
+                                condition = enabled,
+                                trueModifier = Modifier.combinedClickable(
+                                    onClick = onClick,
+                                    onLongClick = onLongClick,
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    indication = ripple(),
+                                ),
                             ),
-                        ),
-                ) {
-                    if (imageUrl != null && !isError) {
-                        AsyncImage(
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data(imageUrl)
-                                .crossfade(true)
-                                .build(),
-                            contentDescription = "Card image",
-                            contentScale = ContentScale.Crop,
-                            colorFilter = animatedColorFilter,
-                            onError = { isError = true },
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .alpha(animatedAlpha),
-                        )
-                    } else {
-                        Image(
-                            painter = painterResource(R.drawable.ic_placeholder_vertical_border),
-                            contentDescription = title,
-                            contentScale = ContentScale.Fit,
-                            colorFilter = ColorFilter.tint(TraktTheme.colors.placeholderContent),
-                            modifier = Modifier
-                                .padding(6.dp)
-                                .align(Alignment.Center),
-                        )
-                        Icon(
-                            painter = painterResource(R.drawable.ic_placeholder_trakt),
-                            contentDescription = title,
-                            tint = TraktTheme.colors.placeholderContent,
-                            modifier = Modifier
-                                .size(80.dp)
-                                .align(Alignment.TopEnd)
-                                .graphicsLayer {
-                                    translationX = 8.dp.toPx()
-                                    translationY = -8.dp.toPx()
-                                },
-                        )
-                        Icon(
-                            painter = painterResource(R.drawable.ic_trakt_logo),
-                            contentDescription = null,
-                            tint = TraktTheme.colors.placeholderContent,
-                            modifier = Modifier
-                                .size(64.dp)
-                                .align(Alignment.Center)
-                                .graphicsLayer {
-                                    translationY = 6.dp.toPx()
-                                },
-                        )
+                    ) {
+                        if (imageUrl != null && !isError) {
+                            AsyncImage(
+                                model = ImageRequest.Builder(LocalContext.current)
+                                    .data(imageUrl)
+                                    .crossfade(true)
+                                    .build(),
+                                contentDescription = "Card image",
+                                contentScale = ContentScale.Crop,
+                                colorFilter = animatedColorFilter,
+                                onError = { isError = true },
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .alpha(animatedAlpha),
+                            )
+                        } else {
+                            Image(
+                                painter = painterResource(R.drawable.ic_placeholder_vertical_border),
+                                contentDescription = title,
+                                contentScale = ContentScale.Fit,
+                                colorFilter = ColorFilter.tint(TraktTheme.colors.placeholderContent),
+                                modifier = Modifier
+                                    .padding(6.dp)
+                                    .align(Alignment.Center),
+                            )
+                            Icon(
+                                painter = painterResource(R.drawable.ic_placeholder_trakt),
+                                contentDescription = title,
+                                tint = TraktTheme.colors.placeholderContent,
+                                modifier = Modifier
+                                    .size(80.dp)
+                                    .align(Alignment.TopEnd)
+                                    .graphicsLayer {
+                                        translationX = 8.dp.toPx()
+                                        translationY = -8.dp.toPx()
+                                    },
+                            )
+                            Icon(
+                                painter = painterResource(R.drawable.ic_trakt_logo),
+                                contentDescription = null,
+                                tint = TraktTheme.colors.placeholderContent,
+                                modifier = Modifier
+                                    .size(64.dp)
+                                    .align(Alignment.Center)
+                                    .graphicsLayer {
+                                        translationY = 6.dp.toPx()
+                                    },
+                            )
 
-                        if ((imageUrl == null || isError) && title.isNotBlank()) {
-                            Box(
+                            if ((imageUrl == null || isError) && title.isNotBlank()) {
+                                Box(
+                                    modifier = Modifier
+                                        .align(Alignment.BottomCenter)
+                                        .fillMaxWidth()
+                                        .fillMaxHeight(0.33f)
+                                        .drawWithCache {
+                                            onDrawBehind {
+                                                drawRect(
+                                                    brush = Brush.verticalGradient(
+                                                        0f to Color.Transparent,
+                                                        1f to Color(0xFA212427),
+                                                    ),
+                                                )
+                                            }
+                                        },
+                                )
+                            }
+
+                            Text(
+                                text = title.uppercase(),
+                                style = TraktTheme.typography.buttonTertiary,
+                                color = TraktTheme.colors.textPrimary,
+                                textAlign = TextAlign.Center,
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis,
                                 modifier = Modifier
                                     .align(Alignment.BottomCenter)
-                                    .fillMaxWidth()
-                                    .fillMaxHeight(0.33f)
-                                    .drawWithCache {
-                                        onDrawBehind {
-                                            drawRect(
-                                                brush = Brush.verticalGradient(
-                                                    0f to Color.Transparent,
-                                                    1f to Color(0xFA212427),
-                                                ),
-                                            )
-                                        }
-                                    },
+                                    .padding(horizontal = 12.dp, vertical = 16.dp),
                             )
                         }
 
-                        Text(
-                            text = title.uppercase(),
-                            style = TraktTheme.typography.buttonTertiary,
-                            color = TraktTheme.colors.textPrimary,
-                            textAlign = TextAlign.Center,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier
-                                .align(Alignment.BottomCenter)
-                                .padding(horizontal = 12.dp, vertical = 16.dp),
-                        )
+                        if (more) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_more_vertical),
+                                contentDescription = null,
+                                tint = Color.White,
+                                modifier = Modifier
+                                    .padding(
+                                        horizontal = 5.dp,
+                                        vertical = 10.dp,
+                                    )
+                                    .size(14.dp)
+                                    .align(Alignment.TopEnd)
+                                    .onClick(onClick = onLongClick),
+                            )
+                        }
                     }
+                },
+            )
 
-                    if (more) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_more_vertical),
-                            contentDescription = null,
-                            tint = Color.White,
-                            modifier = Modifier
-                                .padding(
-                                    horizontal = 5.dp,
-                                    vertical = 10.dp,
-                                )
-                                .size(14.dp)
-                                .align(Alignment.TopEnd)
-                                .onClick(onClick = onLongClick),
+            if (watchlist || watched) {
+                val shape = RoundedCornerShape(100)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .graphicsLayer {
+                            translationY = 4.dp.toPx()
+                        }
+                        .size(
+                            width = 24.dp,
+                            height = 16.dp,
                         )
-                    }
+                        .shadow(1.dp, shape)
+                        .background(TraktTheme.colors.chipContainer, shape),
+                ) {
+                    Icon(
+                        painter = painterResource(
+                            when {
+                                watched -> R.drawable.ic_check
+                                else -> R.drawable.ic_bookmark_on
+                            },
+                        ),
+                        tint = Color.White,
+                        contentDescription = null,
+                        modifier = Modifier.size(
+                            when {
+                                watched -> 9.dp
+                                else -> 8.dp
+                            },
+                        ),
+                    )
                 }
-            },
-        )
+            }
+        }
 
         chipContent(
             Modifier.heightIn(min = 16.dp),
@@ -247,6 +290,7 @@ private fun PosterPreview() {
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             VerticalMediaCard(
                 title = "Placeholder",
+                watched = true,
                 imageUrl = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/4iWjGghUj2uyHo2Hyw8NFBvsNGm.jpg",
                 modifier = Modifier.padding(16.dp),
             )
@@ -274,6 +318,7 @@ private fun PosterPreviewChipPlaceholder() {
         VerticalMediaCard(
             title = "Placeholder",
             imageUrl = null,
+            watchlist = true,
             modifier = Modifier
                 .padding(16.dp),
             chipContent = {
