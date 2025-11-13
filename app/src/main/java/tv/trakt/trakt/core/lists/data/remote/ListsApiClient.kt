@@ -31,6 +31,8 @@ internal class ListsApiClient(
             id = "me",
             postUsersListsCreateRequest = request,
         )
+
+        cacheMarker.invalidate()
     }
 
     override suspend fun editList(

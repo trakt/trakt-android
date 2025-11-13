@@ -32,10 +32,10 @@ import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalStora
 import tv.trakt.trakt.core.lists.sections.personal.features.all.AllPersonalListViewModel
 import tv.trakt.trakt.core.lists.sections.personal.features.context.movie.ListMovieContextViewModel
 import tv.trakt.trakt.core.lists.sections.personal.features.context.show.ListShowContextViewModel
-import tv.trakt.trakt.core.lists.sections.personal.usecases.AddPersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
-import tv.trakt.trakt.core.lists.sections.personal.usecases.RemovePersonalListItemUseCase
+import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.AddPersonalListItemUseCase
+import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistViewModel
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.AllWatchlistViewModel
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource
@@ -143,6 +143,7 @@ internal val listsModule = module {
             remoteSource = get(),
             listsItemsLocalDataSource = get(),
             listsLocalDataSource = get(),
+            userListsLocalDataSource = get(),
         )
     }
 
@@ -150,6 +151,7 @@ internal val listsModule = module {
         AddPersonalListItemUseCase(
             remoteSource = get(),
             listsItemsLocalDataSource = get(),
+            userListsLocalDataSource = get(),
             listsLocalDataSource = get(),
         )
     }
@@ -159,6 +161,7 @@ internal val listsModule = module {
             sessionManager = get(),
             getPersonalListsUseCase = get(),
             localListsSource = get(),
+            localListsItemsSource = get(),
             analytics = get(),
         )
     }

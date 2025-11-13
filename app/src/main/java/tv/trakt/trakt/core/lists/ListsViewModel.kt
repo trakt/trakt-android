@@ -12,6 +12,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -24,6 +27,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.core.lists.ListsState.UserState
+import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
 
@@ -32,6 +36,7 @@ internal class ListsViewModel(
     private val sessionManager: SessionManager,
     private val getPersonalListsUseCase: GetPersonalListsUseCase,
     private val localListsSource: ListsPersonalLocalDataSource,
+    private val localListsItemsSource: ListsPersonalItemsLocalDataSource,
     analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ListsState()
@@ -69,14 +74,16 @@ internal class ListsViewModel(
     }
 
     private fun observeLists() {
-        viewModelScope.launch {
-            localListsSource.observeUpdates()
-                .distinctUntilChanged()
-                .debounce(200)
-                .collect {
-                    loadLocalData()
-                }
-        }
+        merge(
+            localListsSource.observeUpdates(),
+            localListsItemsSource.observeUpdates(),
+        )
+            .distinctUntilChanged()
+            .debounce(200)
+            .onEach {
+                loadLocalData()
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun loadBackground() {
@@ -87,8 +94,8 @@ internal class ListsViewModel(
     private fun loadLocalData() {
         viewModelScope.launch {
             try {
-                val localItems = getPersonalListsUseCase.getLocalLists()
-                listsState.update { localItems }
+                val localLists = getPersonalListsUseCase.getLocalLists()
+                listsState.update { localLists }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.value = error
@@ -104,9 +111,9 @@ internal class ListsViewModel(
             }
 
             try {
-                val localItems = getPersonalListsUseCase.getLocalLists()
-                if (localItems.isNotEmpty()) {
-                    listsState.update { localItems }
+                val localLists = getPersonalListsUseCase.getLocalLists()
+                if (localLists.isNotEmpty()) {
+                    listsState.update { localLists }
                     listsLoadingState.update { DONE }
                 } else {
                     listsLoadingState.update { LOADING }

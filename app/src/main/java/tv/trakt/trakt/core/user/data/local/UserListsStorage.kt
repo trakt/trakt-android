@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.MediaType
@@ -117,6 +118,11 @@ internal class UserListsStorage : UserListsLocalDataSource {
                 val entry = storage[listId]
                 if (entry != null) {
                     val (list, items) = entry
+
+                    val updatedList = list.copy(
+                        updatedAt = nowUtc(),
+                    )
+
                     val updatedItems = items
                         .plus(item)
                         .distinctBy {
@@ -125,7 +131,7 @@ internal class UserListsStorage : UserListsLocalDataSource {
                                 is ShowItem -> it.show.ids.trakt
                             }
                         }
-                    storage[listId] = list to updatedItems
+                    storage[listId] = updatedList to updatedItems
                 }
             }
 
@@ -146,11 +152,16 @@ internal class UserListsStorage : UserListsLocalDataSource {
                 val entry = storage[listId]
                 if (entry != null) {
                     val (list, items) = entry
+
+                    val updatedList = list.copy(
+                        updatedAt = nowUtc(),
+                    )
+
                     val updatedItems = items.filterNot {
                         it.id == itemId &&
                             it.type == itemType
                     }
-                    storage[listId] = list to updatedItems
+                    storage[listId] = updatedList to updatedItems
                 }
             }
 

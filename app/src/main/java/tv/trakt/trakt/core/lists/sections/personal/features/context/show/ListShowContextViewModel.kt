@@ -22,7 +22,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.core.lists.sections.personal.usecases.RemovePersonalListItemUseCase
+import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowWatchlistUseCase

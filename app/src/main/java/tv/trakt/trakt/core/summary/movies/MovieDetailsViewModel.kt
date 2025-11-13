@@ -37,8 +37,8 @@ import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.favorites.FavoritesUpdates
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.DETAILS
-import tv.trakt.trakt.core.lists.sections.personal.usecases.AddPersonalListItemUseCase
-import tv.trakt.trakt.core.lists.sections.personal.usecases.RemovePersonalListItemUseCase
+import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.AddPersonalListItemUseCase
+import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.profile.model.FavoriteItem
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker

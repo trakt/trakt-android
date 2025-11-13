@@ -290,7 +290,7 @@ internal class UserApiClient(
             listId = listId.value.toString(),
             extended = extended,
             sortBy = "added",
-            sortHow = "asc",
+            sortHow = "desc",
             watchnow = null,
             genres = null,
             years = null,

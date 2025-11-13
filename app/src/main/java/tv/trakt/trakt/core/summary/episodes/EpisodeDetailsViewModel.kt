@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -188,33 +187,21 @@ internal class EpisodeDetailsViewModel(
             try {
                 loadingProgress.update { LOADING }
 
-                coroutineScope {
-                    val progressAsync = async {
-                        if (!loadProgressUseCase.isShowsLoaded()) {
-                            loadProgressUseCase.loadShowsProgress()
-                        }
-                    }
-
-                    progressAsync.await()
+                if (!loadProgressUseCase.isShowsLoaded()) {
+                    loadProgressUseCase.loadShowsProgress()
                 }
 
-                coroutineScope {
-                    val progressAsync = async {
-                        loadProgressUseCase.loadLocalShows()
-                            .firstOrNull {
-                                it.show.ids.trakt == showId
-                            }?.seasons?.firstOrNull {
-                                it.number == seasonEpisode.season
-                            }?.episodes?.firstOrNull {
-                                it.number == seasonEpisode.episode
-                            }
+                val progress = loadProgressUseCase.loadLocalShows()
+                    .firstOrNull {
+                        it.show.ids.trakt == showId
+                    }?.seasons?.firstOrNull {
+                        it.number == seasonEpisode.season
+                    }?.episodes?.firstOrNull {
+                        it.number == seasonEpisode.episode
                     }
 
-                    val progress = progressAsync.await()
-
-                    episodeProgressState.update {
-                        EpisodeDetailsState.ProgressState(plays = progress?.plays)
-                    }
+                episodeProgressState.update {
+                    EpisodeDetailsState.ProgressState(plays = progress?.plays)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {

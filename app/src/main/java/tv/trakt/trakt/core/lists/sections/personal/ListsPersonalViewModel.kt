@@ -92,8 +92,7 @@ internal class ListsPersonalViewModel(
     }
 
     private fun loadLocalData() {
-        dataJob?.cancel()
-        dataJob = viewModelScope.launch {
+        viewModelScope.launch {
             try {
                 listState.update {
                     getListUseCase.getLocalList(listId)
@@ -108,8 +107,6 @@ internal class ListsPersonalViewModel(
                 error.rethrowCancellation {
                     errorState.update { error }
                 }
-            } finally {
-                dataJob = null
             }
         }
     }

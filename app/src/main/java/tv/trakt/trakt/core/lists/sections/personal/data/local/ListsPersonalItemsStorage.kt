@@ -18,7 +18,7 @@ internal class ListsPersonalItemsStorage : ListsPersonalItemsLocalDataSource {
 
     private val storage = mutableMapOf<TraktId, List<PersonalListItem>>()
     private val updatedAt = MutableSharedFlow<Instant?>(
-        replay = 1,
+        extraBufferCapacity = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST,
     )
 

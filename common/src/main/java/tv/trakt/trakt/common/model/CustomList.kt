@@ -23,8 +23,6 @@ data class CustomList(
     val sortOrder: SortOrder?,
     val createdAt: ZonedDateTime,
     val updatedAt: ZonedDateTime,
-    val itemCount: Int?,
-    val commentCount: Int?,
     val likes: Int?,
     val images: Images?,
     val user: User,
@@ -65,8 +63,6 @@ data class CustomList(
                 sortOrder = SortOrder.fromString(dto.sortHow.value),
                 createdAt = dto.createdAt.toZonedDateTime(),
                 updatedAt = dto.updatedAt.toZonedDateTime(),
-                itemCount = dto.itemCount,
-                commentCount = dto.commentCount,
                 likes = dto.likes,
                 images = dto.images?.let {
                     Images(

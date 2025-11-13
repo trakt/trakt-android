@@ -10,13 +10,14 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.TraktId
 import java.time.Instant
+import java.time.ZonedDateTime
 
 internal class ListsPersonalStorage : ListsPersonalLocalDataSource {
     private val mutex = Mutex()
 
     private val storage = mutableMapOf<TraktId, CustomList>()
     private val updatedAt = MutableSharedFlow<Instant?>(
-        replay = 1,
+        extraBufferCapacity = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST,
     )
 
@@ -26,6 +27,12 @@ internal class ListsPersonalStorage : ListsPersonalLocalDataSource {
                 clear()
                 putAll(items.associateBy { it.ids.trakt })
             }
+        }
+    }
+
+    override suspend fun getItems(): List<CustomList> {
+        return mutex.withLock {
+            storage.values.toList()
         }
     }
 
@@ -49,12 +56,6 @@ internal class ListsPersonalStorage : ListsPersonalLocalDataSource {
         }
     }
 
-    override suspend fun getItems(): List<CustomList> {
-        return mutex.withLock {
-            storage.values.toList()
-        }
-    }
-
     override suspend fun deleteItem(
         id: TraktId,
         notify: Boolean,
@@ -64,6 +65,18 @@ internal class ListsPersonalStorage : ListsPersonalLocalDataSource {
         }
         if (notify) {
             updatedAt.tryEmit(nowUtcInstant())
+        }
+    }
+
+    override suspend fun onUpdatedAt(
+        id: TraktId,
+        updatedAt: ZonedDateTime,
+    ) {
+        mutex.withLock {
+            val existing = storage[id] ?: return
+            storage[id] = existing.copy(
+                updatedAt = updatedAt,
+            )
         }
     }
 
