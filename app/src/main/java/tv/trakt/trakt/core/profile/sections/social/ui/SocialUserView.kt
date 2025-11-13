@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -59,11 +60,18 @@ internal fun SocialUserView(
             val avatar = user.images?.avatar?.full
             if (avatar != null) {
                 AsyncImage(
-                    model = avatar,
+                    model = remember(avatar) {
+                        avatar.let {
+                            if (it.startsWith("http")) it else "https://$it"
+                        }
+                            .replace("/medium/", "/thumb/")
+                            .replace("/original/", "/thumb/")
+                    },
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     error = painterResource(R.drawable.ic_person_placeholder),
                     modifier = Modifier
+                        .size(size)
                         .border(borderWidth, borderColor, CircleShape)
                         .clip(CircleShape),
                 )
@@ -72,6 +80,7 @@ internal fun SocialUserView(
                     painter = painterResource(R.drawable.ic_person_placeholder),
                     contentDescription = null,
                     modifier = Modifier
+                        .size(size)
                         .border(borderWidth, borderColor, CircleShape)
                         .clip(CircleShape),
                 )
