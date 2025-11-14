@@ -30,14 +30,16 @@ import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
-import tv.trakt.trakt.common.helpers.extensions.openWatchNowLink
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.helpers.streamingservices.StreamingServiceApp
+import tv.trakt.trakt.common.helpers.streamingservices.StreamingServiceLink
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
@@ -128,11 +130,14 @@ private fun ShowDetailsContextViewContent(
                 WatchButton(
                     streamingState = state.streamings,
                     onClick = {
-                        openWatchNowLink(
-                            context = context,
-                            uriHandler = uriHandler,
-                            link = state.streamings.service?.linkDirect,
-                        )
+                        state.streamings.service?.let { service ->
+                            StreamingServiceLink.openApp(
+                                packageId = StreamingServiceApp.findFromSource(service.source)?.packageId,
+                                packageName = service.source,
+                                uri = service.linkDirect?.toUri(),
+                                context = context,
+                            )
+                        }
                     },
                     modifier = Modifier
                         .weight(1f)

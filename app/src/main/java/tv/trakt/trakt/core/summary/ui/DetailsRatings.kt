@@ -49,7 +49,6 @@ internal fun DetailsRatings(
         val textStyle = TraktTheme.typography.meta.copy(fontSize = 12.sp)
         val iconSpace = spacedBy(4.dp, Alignment.Start)
         val emptyText = "— %"
-        val emptyText2 = "— %"
 
         // Trakt Rating
         val traktRating = traktRatings ?: 0
@@ -107,13 +106,13 @@ internal fun DetailsRatings(
                 Box {
                     if (hasRating) {
                         Text(
-                            text = externalRatings?.imdb?.ratingString ?: emptyText2,
+                            text = externalRatings?.imdb?.ratingString ?: emptyText,
                             color = TraktTheme.colors.textPrimary,
                             style = textStyle,
                         )
                     } else {
                         Text(
-                            text = emptyText2,
+                            text = emptyText,
                             color = TraktTheme.colors.textSecondary,
                             style = textStyle,
                         )
