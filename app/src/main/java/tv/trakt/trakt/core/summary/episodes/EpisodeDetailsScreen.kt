@@ -344,6 +344,26 @@ internal fun EpisodeDetailsContent(
                     }
 
                     item {
+                        EpisodeCommentsView(
+                            viewModel = koinViewModel(
+                                parameters = {
+                                    parametersOf(state.show, state.episode)
+                                },
+                            ),
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            onMoreClick = onMoreCommentsClick,
+                            modifier = Modifier
+                                .padding(
+                                    top = when {
+                                        streamingsVisible -> 32.dp
+                                        else -> 24.dp
+                                    },
+                                ),
+                        )
+                    }
+
+                    item {
                         EpisodeActorsView(
                             viewModel = koinViewModel(
                                 parameters = {
@@ -354,12 +374,7 @@ internal fun EpisodeDetailsContent(
                             contentPadding = sectionPadding,
                             onPersonClick = onPersonClick ?: {},
                             modifier = Modifier
-                                .padding(
-                                    top = when {
-                                        streamingsVisible -> 32.dp
-                                        else -> 24.dp
-                                    },
-                                ),
+                                .padding(top = 32.dp),
                         )
                     }
 
@@ -373,21 +388,6 @@ internal fun EpisodeDetailsContent(
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             onEpisodeClick = onEpisodeClick ?: {},
-                            modifier = Modifier
-                                .padding(top = 32.dp),
-                        )
-                    }
-
-                    item {
-                        EpisodeCommentsView(
-                            viewModel = koinViewModel(
-                                parameters = {
-                                    parametersOf(state.show, state.episode)
-                                },
-                            ),
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onMoreClick = onMoreCommentsClick,
                             modifier = Modifier
                                 .padding(top = 32.dp),
                         )

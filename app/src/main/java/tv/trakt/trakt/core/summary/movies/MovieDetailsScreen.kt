@@ -390,24 +390,6 @@ internal fun MovieDetailsContent(
                         }
                     }
 
-                    item {
-                        MovieActorsView(
-                            viewModel = koinViewModel(
-                                parameters = { parametersOf(movie) },
-                            ),
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onPersonClick = onPersonClick ?: {},
-                            modifier = Modifier
-                                .padding(
-                                    top = when {
-                                        showStreamings -> 32.dp
-                                        else -> 24.dp
-                                    },
-                                ),
-                        )
-                    }
-
                     if (isReleased) {
                         item {
                             MovieSentimentView(
@@ -417,7 +399,12 @@ internal fun MovieDetailsContent(
                                 headerPadding = sectionPadding,
                                 contentPadding = sectionPadding,
                                 modifier = Modifier
-                                    .padding(top = 32.dp),
+                                    .padding(
+                                        top = when {
+                                            showStreamings -> 32.dp
+                                            else -> 24.dp
+                                        },
+                                    ),
                             )
                         }
                     }
@@ -430,6 +417,19 @@ internal fun MovieDetailsContent(
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             onMoreClick = onMoreCommentsClick,
+                            modifier = Modifier
+                                .padding(top = 32.dp),
+                        )
+                    }
+
+                    item {
+                        MovieActorsView(
+                            viewModel = koinViewModel(
+                                parameters = { parametersOf(movie) },
+                            ),
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            onPersonClick = onPersonClick ?: {},
                             modifier = Modifier
                                 .padding(top = 32.dp),
                         )
