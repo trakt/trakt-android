@@ -2,8 +2,6 @@ package tv.trakt.trakt.core.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.Firebase
-import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -15,7 +13,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.core.home.HomeState.UserState
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
@@ -30,22 +27,15 @@ internal class HomeViewModel(
     private val initialMode = modeManager.getMode()
 
     private val modeState = MutableStateFlow(initialMode)
-    private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val userState = MutableStateFlow(initialState.user)
 
     init {
-        loadBackground()
         observeUser()
         observeMode()
 
         analytics.logScreenView(
             screenName = "home",
         )
-    }
-
-    private fun loadBackground() {
-        val configUrl = Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL)
-        backgroundState.update { configUrl }
     }
 
     private fun observeUser() {
@@ -71,14 +61,12 @@ internal class HomeViewModel(
     }
 
     val state = combine(
-        backgroundState,
         modeState,
         userState,
-    ) { s1, s2, s3 ->
+    ) { s1, s2 ->
         HomeState(
-            backgroundUrl = s1,
-            mode = s2,
-            user = s3,
+            mode = s1,
+            user = s2,
         )
     }.stateIn(
         scope = viewModelScope,

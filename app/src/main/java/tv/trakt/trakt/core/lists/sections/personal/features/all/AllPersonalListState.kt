@@ -11,7 +11,6 @@ import tv.trakt.trakt.core.user.UserCollectionState
 
 @Immutable
 internal data class AllPersonalListState(
-    val backgroundUrl: String? = null,
     val list: CustomList? = null,
     val filter: MediaMode? = null,
     val items: ImmutableList<PersonalListItem>? = null,

@@ -178,7 +178,6 @@ internal fun AllPersonalListContent(
         )
 
         ScrollableBackdropImage(
-            imageUrl = state.backgroundUrl,
             scrollState = listState,
         )
 

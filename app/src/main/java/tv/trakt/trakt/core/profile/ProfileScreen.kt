@@ -163,7 +163,6 @@ private fun ProfileScreenContent(
             .nestedScroll(listScrollConnection),
     ) {
         ScrollableBackdropImage(
-            imageUrl = state.backgroundUrl,
             scrollState = listState,
         )
 

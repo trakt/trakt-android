@@ -4,8 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.google.firebase.Firebase
-import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
@@ -21,7 +19,6 @@ import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
-import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
@@ -55,7 +52,6 @@ internal class ListDetailsViewModel(
             mediaId = destination.mediaId.toTraktId(),
         ),
     )
-    private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val itemsState = MutableStateFlow(initialState.items)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
@@ -66,15 +62,7 @@ internal class ListDetailsViewModel(
     private var processingJob: Job? = null
 
     init {
-        loadBackground()
         loadData()
-    }
-
-    private fun loadBackground() {
-        val configUrl = Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL)
-        backgroundState.update {
-            (destination.mediaImage ?: "").ifBlank { configUrl }
-        }
     }
 
     fun loadData(ignoreErrors: Boolean = false) {
@@ -157,7 +145,6 @@ internal class ListDetailsViewModel(
         navigateShow,
         navigateMovie,
         errorState,
-        backgroundState,
     ) { state ->
         ListDetailsState(
             loading = state[0] as LoadingState,
@@ -166,7 +153,6 @@ internal class ListDetailsViewModel(
             navigateShow = state[3] as? TraktId,
             navigateMovie = state[4] as? TraktId,
             error = state[5] as? Exception,
-            backgroundUrl = state[6] as? String,
         )
     }.stateIn(
         scope = viewModelScope,

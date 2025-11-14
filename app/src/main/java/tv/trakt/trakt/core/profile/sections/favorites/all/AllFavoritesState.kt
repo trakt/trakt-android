@@ -9,7 +9,6 @@ import tv.trakt.trakt.core.profile.model.FavoriteItem
 
 @Immutable
 internal data class AllFavoritesState(
-    val backgroundUrl: String? = null,
     val filter: MediaMode? = null,
     val items: ImmutableList<FavoriteItem>? = null,
     val navigateShow: TraktId? = null,

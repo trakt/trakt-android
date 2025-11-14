@@ -180,7 +180,6 @@ private fun SearchScreenContent(
             .nestedScroll(headerState.connection),
     ) {
         ScrollableBackdropImage(
-            imageUrl = state.backgroundUrl,
             scrollState = contentGridState,
         )
 

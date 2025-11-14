@@ -33,6 +33,9 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.google.firebase.Firebase
+import com.google.firebase.remoteconfig.remoteConfig
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -41,13 +44,32 @@ private const val PARALLAX_RATIO = 0.75F
 @Composable
 internal fun ScrollableBackdropImage(
     scrollState: LazyListState,
-    imageUrl: String?,
     modifier: Modifier = Modifier,
+    imageUrl: String? = null,
 ) {
-//    val imageUrl = remember {
-//        Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL).ifBlank { null }
-//    }
+    val firstItemVisible by remember {
+        derivedStateOf { scrollState.firstVisibleItemIndex == 0 }
+    }
 
+    BackdropImage(
+        imageUrl = imageUrl,
+        imageAlpha = 0.375F,
+        modifier = modifier.graphicsLayer {
+            if (firstItemVisible) {
+                translationY = (-PARALLAX_RATIO * scrollState.firstVisibleItemScrollOffset)
+            } else {
+                alpha = 0F
+            }
+        },
+    )
+}
+
+@Composable
+internal fun ScrollableBackdropImage(
+    scrollState: LazyGridState,
+    modifier: Modifier = Modifier,
+    imageUrl: String? = null,
+) {
     val firstItemVisible by remember {
         derivedStateOf { scrollState.firstVisibleItemIndex == 0 }
     }
@@ -75,6 +97,14 @@ private fun BackdropImage(
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
     val background = TraktTheme.colors.backgroundPrimary
+
+    val imageUrl = remember(imageUrl) {
+        if (imageUrl.isNullOrBlank()) {
+            Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL).ifBlank { null }
+        } else {
+            imageUrl
+        }
+    }
 
     val grayscaleColorFilter = remember {
         ColorFilter.colorMatrix(
@@ -117,28 +147,6 @@ private fun BackdropImage(
                 .background(linearGradient),
         )
     }
-}
-
-@Composable
-internal fun ScrollableBackdropImage(
-    scrollState: LazyGridState,
-    imageUrl: String?,
-    modifier: Modifier = Modifier,
-) {
-    val firstItemVisible by remember {
-        derivedStateOf { scrollState.firstVisibleItemIndex == 0 }
-    }
-    BackdropImage(
-        imageUrl = imageUrl,
-        imageAlpha = 0.375F,
-        modifier = modifier.graphicsLayer {
-            if (firstItemVisible) {
-                translationY = (-PARALLAX_RATIO * scrollState.firstVisibleItemScrollOffset)
-            } else {
-                alpha = 0F
-            }
-        },
-    )
 }
 
 @OptIn(ExperimentalCoilApi::class)

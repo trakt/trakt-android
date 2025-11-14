@@ -17,6 +17,5 @@ internal data class AllDiscoverState(
     val collection: UserCollectionState = UserCollectionState.Default,
     val loading: LoadingState = LoadingState.IDLE,
     val loadingMore: LoadingState = LoadingState.IDLE,
-    val backgroundUrl: String? = null,
     val error: Exception? = null,
 )

@@ -11,7 +11,6 @@ import tv.trakt.trakt.core.user.UserCollectionState
 
 @Immutable
 internal data class AllWatchlistState(
-    val backgroundUrl: String? = null,
     val filter: MediaMode? = null,
     val items: ImmutableList<WatchlistItem>? = null,
     val collection: UserCollectionState = UserCollectionState.Default,

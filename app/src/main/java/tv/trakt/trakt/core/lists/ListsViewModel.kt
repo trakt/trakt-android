@@ -2,8 +2,6 @@ package tv.trakt.trakt.core.lists
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.Firebase
-import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
@@ -21,7 +19,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
@@ -43,7 +40,6 @@ internal class ListsViewModel(
 ) : ViewModel() {
     private val initialState = ListsState()
 
-    private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val userState = MutableStateFlow(initialState.user)
     private val listsState = MutableStateFlow(initialState.lists)
     private val listsLoadingState = MutableStateFlow(initialState.listsLoading)
@@ -52,7 +48,6 @@ internal class ListsViewModel(
     private var listsOrder: List<Int>? = null
 
     init {
-        loadBackground()
         observeUser()
         observeLists()
 
@@ -88,11 +83,6 @@ internal class ListsViewModel(
                 loadLocalData()
             }
             .launchIn(viewModelScope)
-    }
-
-    private fun loadBackground() {
-        val configUrl = Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL)
-        backgroundState.update { configUrl }
     }
 
     private fun loadLocalData() {
@@ -168,18 +158,16 @@ internal class ListsViewModel(
     }
 
     val state: StateFlow<ListsState> = combine(
-        backgroundState,
         userState,
         listsState,
         listsLoadingState,
         errorState,
-    ) { s1, s2, s3, s4, s5 ->
+    ) { s1, s2, s3, s4 ->
         ListsState(
-            backgroundUrl = s1,
-            user = s2,
-            lists = s3,
-            listsLoading = s4,
-            error = s5,
+            user = s1,
+            lists = s2,
+            listsLoading = s3,
+            error = s4,
         )
     }.stateIn(
         scope = viewModelScope,

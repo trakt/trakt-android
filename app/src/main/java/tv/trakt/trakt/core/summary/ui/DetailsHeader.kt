@@ -470,7 +470,7 @@ private fun DetailsHeader(
                 ),
         ) {
             val genresText = remember(genres) {
-                genres.take(3).joinToString(" / ") { genre ->
+                genres.take(2).joinToString(" / ") { genre ->
                     genre.replaceFirstChar {
                         it.uppercaseChar()
                     }

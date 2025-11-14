@@ -17,5 +17,4 @@ internal data class AllHomeWatchlistState(
     val loading: LoadingState = LoadingState.IDLE,
     val info: StringResource? = null,
     val error: Exception? = null,
-    val backgroundUrl: String? = null,
 )

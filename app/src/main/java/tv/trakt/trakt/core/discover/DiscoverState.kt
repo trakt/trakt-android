@@ -7,7 +7,6 @@ import tv.trakt.trakt.core.user.UserCollectionState
 
 @Immutable
 internal data class DiscoverState(
-    val backgroundUrl: String? = null,
     val collection: UserCollectionState = UserCollectionState.Default,
     val user: UserState = UserState(),
 ) {

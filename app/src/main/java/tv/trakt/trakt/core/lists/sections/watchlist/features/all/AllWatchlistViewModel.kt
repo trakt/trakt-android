@@ -2,8 +2,6 @@ package tv.trakt.trakt.core.lists.sections.watchlist.features.all
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.Firebase
-import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
@@ -24,7 +22,6 @@ import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
-import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
@@ -76,7 +73,6 @@ internal class AllWatchlistViewModel(
     private val initialState = AllWatchlistState()
     private val initialMode = modeManager.getMode()
 
-    private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialMode)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
@@ -89,7 +85,6 @@ internal class AllWatchlistViewModel(
     private var processingJob: Job? = null
 
     init {
-        loadBackground()
         loadData()
 
         observeData()
@@ -118,11 +113,6 @@ internal class AllWatchlistViewModel(
     private fun observeCollection() {
         collectionStateProvider
             .launchIn(viewModelScope)
-    }
-
-    private fun loadBackground() {
-        val configUrl = Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL)
-        backgroundState.update { configUrl }
     }
 
     fun loadData(
@@ -309,7 +299,6 @@ internal class AllWatchlistViewModel(
         navigateMovie,
         infoState,
         errorState,
-        backgroundState,
     ) { state ->
         AllWatchlistState(
             loading = state[0] as LoadingState,
@@ -320,7 +309,6 @@ internal class AllWatchlistViewModel(
             navigateMovie = state[5] as? TraktId,
             info = state[6] as? StringResource,
             error = state[7] as? Exception,
-            backgroundUrl = state[8] as? String,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -156,7 +156,6 @@ private fun ListsScreenContent(
             .nestedScroll(headerState.connection),
     ) {
         ScrollableBackdropImage(
-            imageUrl = state.backgroundUrl,
             scrollState = lazyListState,
         )
 

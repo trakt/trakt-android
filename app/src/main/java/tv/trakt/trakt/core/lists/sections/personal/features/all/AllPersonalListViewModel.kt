@@ -4,8 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.google.firebase.Firebase
-import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
@@ -24,7 +22,6 @@ import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
-import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
@@ -65,7 +62,6 @@ internal class AllPersonalListViewModel(
     private val initialState = AllPersonalListState()
     private val initialMode = modeManager.getMode()
 
-    private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val filterState = MutableStateFlow(initialMode)
     private val listState = MutableStateFlow(initialState.list)
     private val itemsState = MutableStateFlow(initialState.items)
@@ -78,7 +74,6 @@ internal class AllPersonalListViewModel(
     private var processingJob: Job? = null
 
     init {
-        loadBackground()
         loadDetails()
         loadData()
 
@@ -109,11 +104,6 @@ internal class AllPersonalListViewModel(
     private fun observeCollection() {
         collectionStateProvider
             .launchIn(viewModelScope)
-    }
-
-    private fun loadBackground() {
-        val configUrl = Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL)
-        backgroundState.update { configUrl }
     }
 
     fun loadDetails() {
@@ -244,7 +234,6 @@ internal class AllPersonalListViewModel(
         navigateShow,
         navigateMovie,
         errorState,
-        backgroundState,
     ) { state ->
         AllPersonalListState(
             loading = state[0] as LoadingState,
@@ -255,7 +244,6 @@ internal class AllPersonalListViewModel(
             navigateShow = state[5] as? TraktId,
             navigateMovie = state[6] as? TraktId,
             error = state[7] as? Exception,
-            backgroundUrl = state[8] as? String,
         )
     }.stateIn(
         scope = viewModelScope,

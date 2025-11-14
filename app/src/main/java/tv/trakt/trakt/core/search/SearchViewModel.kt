@@ -2,8 +2,6 @@ package tv.trakt.trakt.core.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.Firebase
-import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
@@ -22,7 +20,6 @@ import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
-import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
@@ -75,7 +72,6 @@ internal class SearchViewModel(
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val navigatePerson = MutableStateFlow(initialState.navigatePerson)
     private val searchingState = MutableStateFlow(initialState.searching)
-    private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val userState = MutableStateFlow(initialState.user)
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -83,11 +79,10 @@ internal class SearchViewModel(
     private var searchJob: Job? = null
 
     init {
+        loadInitialData()
+
         observeUser()
         observeCollection()
-
-        loadBackground()
-        loadInitialData()
 
         analytics.logScreenView(
             screenName = "search",
@@ -112,11 +107,6 @@ internal class SearchViewModel(
     private fun observeCollection() {
         collectionStateProvider
             .launchIn(viewModelScope)
-    }
-
-    private fun loadBackground() {
-        val configUrl = Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL)
-        backgroundState.update { configUrl }
     }
 
     private fun loadInitialData() {
@@ -541,7 +531,6 @@ internal class SearchViewModel(
         navigateShow,
         navigateMovie,
         navigatePerson,
-        backgroundState,
         searchingState,
         userState,
         errorState,
@@ -555,10 +544,9 @@ internal class SearchViewModel(
             navigateShow = state[5] as Show?,
             navigateMovie = state[6] as Movie?,
             navigatePerson = state[7] as Person?,
-            backgroundUrl = state[8] as String?,
-            searching = state[9] as Boolean,
-            user = state[10] as UserState,
-            error = state[11] as Exception?,
+            searching = state[8] as Boolean,
+            user = state[9] as UserState,
+            error = state[10] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

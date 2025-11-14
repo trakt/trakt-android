@@ -9,7 +9,6 @@ import tv.trakt.trakt.common.model.User
 
 @Immutable
 internal data class ListsState(
-    val backgroundUrl: String? = null,
     val user: UserState = UserState(),
     val lists: ImmutableList<CustomList>? = null,
     val listsLoading: LoadingState = IDLE,

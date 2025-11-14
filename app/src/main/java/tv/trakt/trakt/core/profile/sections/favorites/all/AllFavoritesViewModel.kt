@@ -2,8 +2,6 @@ package tv.trakt.trakt.core.profile.sections.favorites.all
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.Firebase
-import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
@@ -25,7 +23,6 @@ import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
-import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
@@ -56,7 +53,6 @@ internal class AllFavoritesViewModel(
 ) : ViewModel() {
     private val initialState = AllFavoritesState()
 
-    private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialState.filter)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
@@ -68,7 +64,6 @@ internal class AllFavoritesViewModel(
     private var processingJob: Job? = null
 
     init {
-        loadBackground()
         loadData()
         observeData()
 
@@ -91,11 +86,6 @@ internal class AllFavoritesViewModel(
                 )
             }
             .launchIn(viewModelScope)
-    }
-
-    private fun loadBackground() {
-        val configUrl = Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL)
-        backgroundState.update { configUrl }
     }
 
     fun loadData(
@@ -219,7 +209,6 @@ internal class AllFavoritesViewModel(
         navigateShow,
         navigateMovie,
         errorState,
-        backgroundState,
     ) { state ->
         AllFavoritesState(
             loading = state[0] as LoadingState,
@@ -228,7 +217,6 @@ internal class AllFavoritesViewModel(
             navigateShow = state[3] as? TraktId,
             navigateMovie = state[4] as? TraktId,
             error = state[5] as? Exception,
-            backgroundUrl = state[6] as? String,
         )
     }.stateIn(
         scope = viewModelScope,

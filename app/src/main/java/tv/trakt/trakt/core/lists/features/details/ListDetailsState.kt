@@ -8,7 +8,6 @@ import tv.trakt.trakt.core.lists.model.PersonalListItem
 
 @Immutable
 internal data class ListDetailsState(
-    val backgroundUrl: String? = null,
     val list: ListDetailsInfo? = null,
     val items: ImmutableList<PersonalListItem>? = null,
     val navigateShow: TraktId? = null,

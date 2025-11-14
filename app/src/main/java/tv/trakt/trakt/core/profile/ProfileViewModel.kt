@@ -19,7 +19,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_THIS_MONTH_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
@@ -37,7 +36,6 @@ internal class ProfileViewModel(
 ) : ViewModel() {
     private val initialState = ProfileState()
 
-    private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val monthBackgroundState = MutableStateFlow(initialState.monthBackgroundUrl)
     private val monthStatsState = MutableStateFlow(initialState.monthStats)
     private val loadingState = MutableStateFlow(initialState.loading)
@@ -45,7 +43,6 @@ internal class ProfileViewModel(
     private val userState = MutableStateFlow(initialState.user)
 
     init {
-        loadBackground()
         loadMonthBackground()
         loadData()
         observeUser()
@@ -69,11 +66,6 @@ internal class ProfileViewModel(
                 userState.update { user }
             }
             .launchIn(viewModelScope)
-    }
-
-    private fun loadBackground() {
-        val configUrl = Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL)
-        backgroundState.update { configUrl }
     }
 
     private fun loadMonthBackground() {
@@ -117,7 +109,6 @@ internal class ProfileViewModel(
 
     val state: StateFlow<ProfileState> = combine(
         monthStatsState,
-        backgroundState,
         monthBackgroundState,
         loadingState,
         loadingMonthStatsState,
@@ -125,11 +116,10 @@ internal class ProfileViewModel(
     ) { state ->
         ProfileState(
             monthStats = state[0] as ThisMonthStats?,
-            backgroundUrl = state[1] as String?,
-            monthBackgroundUrl = state[2] as String?,
-            loading = state[3] as LoadingState,
-            loadingMonthStats = state[4] as LoadingState,
-            user = state[5] as User?,
+            monthBackgroundUrl = state[1] as String?,
+            loading = state[2] as LoadingState,
+            loadingMonthStats = state[3] as LoadingState,
+            user = state[4] as User?,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -193,7 +193,6 @@ internal fun AllActivityPersonalContent(
         )
 
         ScrollableBackdropImage(
-            imageUrl = state.backgroundUrl,
             scrollState = listState,
         )
 

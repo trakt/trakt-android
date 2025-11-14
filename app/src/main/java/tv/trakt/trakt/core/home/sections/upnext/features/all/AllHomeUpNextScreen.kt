@@ -160,7 +160,6 @@ internal fun AllHomeUpNextContent(
         )
 
         ScrollableBackdropImage(
-            imageUrl = state.backgroundUrl,
             scrollState = listState,
         )
 

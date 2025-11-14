@@ -4,8 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.google.firebase.Firebase
-import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
@@ -20,7 +18,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
-import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
@@ -53,7 +50,6 @@ internal class AllDiscoverViewModel(
     private val modeState = MutableStateFlow(initialMode)
     private val filterState = MutableStateFlow(initialMode)
     private val typeState = MutableStateFlow(destination.source)
-    private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMoreState = MutableStateFlow(initialState.loadingMore)
@@ -62,7 +58,6 @@ internal class AllDiscoverViewModel(
     private var currentPage: Int = 1
 
     init {
-        loadBackground()
         loadData()
 
         observeMode()
@@ -85,11 +80,6 @@ internal class AllDiscoverViewModel(
     private fun observeData() {
         collectionStateProvider
             .launchIn(viewModelScope)
-    }
-
-    private fun loadBackground() {
-        val configUrl = Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL)
-        backgroundState.update { configUrl }
     }
 
     private fun loadData() {
@@ -206,7 +196,6 @@ internal class AllDiscoverViewModel(
         typeState,
         filterState,
         collectionStateProvider.stateFlow,
-        backgroundState,
         itemsState,
         loadingState,
         loadingMoreState,
@@ -217,11 +206,10 @@ internal class AllDiscoverViewModel(
             type = state[1] as DiscoverSection,
             filter = state[2] as MediaMode,
             collection = state[3] as UserCollectionState,
-            backgroundUrl = state[4] as String,
-            items = state[5] as ImmutableList<DiscoverItem>?,
-            loading = state[6] as LoadingState,
-            loadingMore = state[7] as LoadingState,
-            error = state[8] as Exception?,
+            items = state[4] as ImmutableList<DiscoverItem>?,
+            loading = state[5] as LoadingState,
+            loadingMore = state[6] as LoadingState,
+            error = state[7] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

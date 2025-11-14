@@ -177,7 +177,6 @@ internal fun AllWatchlistContent(
         )
 
         ScrollableBackdropImage(
-            imageUrl = state.backgroundUrl,
             scrollState = listState,
         )
 

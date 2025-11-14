@@ -20,7 +20,6 @@ internal data class SearchState(
     val navigateShow: Show? = null,
     val navigateMovie: Movie? = null,
     val navigatePerson: Person? = null,
-    val backgroundUrl: String? = null,
     val collection: UserCollectionState = UserCollectionState.Default,
     val user: UserState = UserState(),
     val searching: Boolean = false,

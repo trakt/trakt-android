@@ -120,7 +120,6 @@ private fun AllDiscoverScreenContent(
             .nestedScroll(headerState.connection),
     ) {
         ScrollableBackdropImage(
-            imageUrl = state.backgroundUrl,
             scrollState = listState,
         )
 

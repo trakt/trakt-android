@@ -2,15 +2,12 @@ package tv.trakt.trakt.core.home.sections.activity.features.all.social
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.Firebase
-import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -21,7 +18,6 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
-import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
@@ -50,7 +46,6 @@ internal class AllActivitySocialViewModel(
 ) : ViewModel() {
     private val initialState = AllActivityState()
 
-    private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val itemsState = MutableStateFlow(initialState.items)
     private val itemsFilterState = MutableStateFlow(modeManager.getMode())
     private val usersFilterState = MutableStateFlow(initialState.usersFilter)
@@ -67,17 +62,11 @@ internal class AllActivitySocialViewModel(
     private var processingJob: Job? = null
 
     init {
-        loadBackground()
         loadData()
 
         analytics.logScreenView(
             screenName = "all_activity_social",
         )
-    }
-
-    private fun loadBackground() {
-        val configUrl = Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL)
-        backgroundState.update { configUrl }
     }
 
     private fun loadData(
@@ -247,8 +236,7 @@ internal class AllActivitySocialViewModel(
     }
 
     @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<AllActivityState> = combine(
-        backgroundState,
+    val state = combine(
         itemsState,
         itemsFilterState,
         usersFilterState,
@@ -260,16 +248,15 @@ internal class AllActivitySocialViewModel(
         errorState,
     ) { state ->
         AllActivityState(
-            backgroundUrl = state[0] as String,
-            items = state[1] as ImmutableList<HomeActivityItem>?,
-            itemsFilter = state[2] as MediaMode?,
-            usersFilter = state[3] as AllActivityState.UsersFilter,
-            navigateShow = state[4] as TraktId?,
-            navigateEpisode = state[5] as Pair<TraktId, Episode>?,
-            navigateMovie = state[6] as TraktId?,
-            loading = state[7] as LoadingState,
-            loadingMore = state[8] as LoadingState,
-            error = state[9] as Exception?,
+            items = state[0] as ImmutableList<HomeActivityItem>?,
+            itemsFilter = state[1] as MediaMode?,
+            usersFilter = state[2] as AllActivityState.UsersFilter,
+            navigateShow = state[3] as TraktId?,
+            navigateEpisode = state[4] as Pair<TraktId, Episode>?,
+            navigateMovie = state[5] as TraktId?,
+            loading = state[6] as LoadingState,
+            loadingMore = state[7] as LoadingState,
+            error = state[8] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -148,7 +148,6 @@ internal fun AllFavoritesContent(
         )
 
         ScrollableBackdropImage(
-            imageUrl = state.backgroundUrl,
             scrollState = listState,
         )
 

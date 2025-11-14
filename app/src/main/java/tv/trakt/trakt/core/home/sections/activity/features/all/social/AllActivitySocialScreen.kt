@@ -178,7 +178,6 @@ internal fun AllActivitySocialContent(
         )
 
         ScrollableBackdropImage(
-            imageUrl = state.backgroundUrl,
             scrollState = listState,
         )
 

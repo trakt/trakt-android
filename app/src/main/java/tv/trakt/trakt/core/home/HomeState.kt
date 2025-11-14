@@ -7,7 +7,6 @@ import tv.trakt.trakt.core.main.model.MediaMode
 
 @Immutable
 internal data class HomeState(
-    val backgroundUrl: String? = null,
     val mode: MediaMode? = null,
     val user: UserState = UserState(),
 ) {

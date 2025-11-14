@@ -128,7 +128,6 @@ private fun HomeScreenContent(
             .nestedScroll(headerState.connection),
     ) {
         ScrollableBackdropImage(
-            imageUrl = state.backgroundUrl,
             scrollState = lazyListState,
         )
 

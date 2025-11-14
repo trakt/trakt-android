@@ -6,8 +6,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.google.firebase.Firebase
-import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
@@ -29,7 +27,6 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
-import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
@@ -75,7 +72,6 @@ internal class AllActivityPersonalViewModel(
         },
     )
 
-    private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val itemsState = MutableStateFlow(initialState.items)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
@@ -91,7 +87,6 @@ internal class AllActivityPersonalViewModel(
     private var processingJob: Job? = null
 
     init {
-        loadBackground()
         loadData()
         observeData()
 
@@ -113,11 +108,6 @@ internal class AllActivityPersonalViewModel(
             .onEach {
                 loadData(ignoreErrors = true)
             }.launchIn(viewModelScope)
-    }
-
-    private fun loadBackground() {
-        val configUrl = Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL)
-        backgroundState.update { configUrl }
     }
 
     private fun loadData(ignoreErrors: Boolean = false) {
@@ -287,7 +277,6 @@ internal class AllActivityPersonalViewModel(
     }
 
     val state = combine(
-        backgroundState,
         itemsState,
         filterState,
         navigateShow,
@@ -298,15 +287,14 @@ internal class AllActivityPersonalViewModel(
         errorState,
     ) { state ->
         AllActivityState(
-            backgroundUrl = state[0] as String,
-            items = state[1] as ImmutableList<HomeActivityItem>?,
-            itemsFilter = state[2] as MediaMode?,
-            navigateShow = state[3] as TraktId?,
-            navigateEpisode = state[4] as Pair<TraktId, Episode>?,
-            navigateMovie = state[5] as TraktId?,
-            loading = state[6] as LoadingState,
-            loadingMore = state[7] as LoadingState,
-            error = state[8] as Exception?,
+            items = state[0] as ImmutableList<HomeActivityItem>?,
+            itemsFilter = state[1] as MediaMode?,
+            navigateShow = state[2] as TraktId?,
+            navigateEpisode = state[3] as Pair<TraktId, Episode>?,
+            navigateMovie = state[4] as TraktId?,
+            loading = state[5] as LoadingState,
+            loadingMore = state[6] as LoadingState,
+            error = state[7] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

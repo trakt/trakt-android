@@ -2,8 +2,6 @@ package tv.trakt.trakt.core.home.sections.upnext.features.all
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.Firebase
-import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
@@ -23,7 +21,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
@@ -60,7 +57,6 @@ internal class AllHomeUpNextViewModel(
 ) : ViewModel() {
     private val initialState = AllHomeUpNextState()
 
-    private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMoreState = MutableStateFlow(IDLE)
@@ -74,7 +70,6 @@ internal class AllHomeUpNextViewModel(
     private var hasMoreData: Boolean = true
 
     init {
-        loadBackground()
         loadData()
         observeData()
 
@@ -96,11 +91,6 @@ internal class AllHomeUpNextViewModel(
             .onEach {
                 loadData(ignoreErrors = true)
             }.launchIn(viewModelScope)
-    }
-
-    private fun loadBackground() {
-        val configUrl = Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL)
-        backgroundState.update { configUrl }
     }
 
     private fun loadData(ignoreErrors: Boolean = false) {
@@ -282,7 +272,6 @@ internal class AllHomeUpNextViewModel(
 
     @Suppress("UNCHECKED_CAST")
     val state: StateFlow<AllHomeUpNextState> = combine(
-        backgroundState,
         itemsState,
         loadingState,
         loadingMoreState,
@@ -290,12 +279,11 @@ internal class AllHomeUpNextViewModel(
         errorState,
     ) { state ->
         AllHomeUpNextState(
-            backgroundUrl = state[0] as String,
-            items = state[1] as ImmutableList<ProgressShow>?,
-            loading = state[2] as LoadingState,
-            loadingMore = state[3] as LoadingState,
-            info = state[4] as StringResource?,
-            error = state[5] as Exception?,
+            items = state[0] as ImmutableList<ProgressShow>?,
+            loading = state[1] as LoadingState,
+            loadingMore = state[2] as LoadingState,
+            info = state[3] as StringResource?,
+            error = state[4] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

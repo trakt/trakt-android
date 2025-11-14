@@ -11,7 +11,6 @@ internal data class AllHomeUpNextState(
     val items: ImmutableList<ProgressShow>? = null,
     val loading: LoadingState = LoadingState.IDLE,
     val loadingMore: LoadingState = LoadingState.IDLE,
-    val backgroundUrl: String? = null,
     val info: StringResource? = null,
     val error: Exception? = null,
 )

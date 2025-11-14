@@ -162,7 +162,6 @@ internal fun ListDetailsContent(
         )
 
         ScrollableBackdropImage(
-            imageUrl = state.backgroundUrl,
             scrollState = listState,
         )
 

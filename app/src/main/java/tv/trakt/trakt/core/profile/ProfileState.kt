@@ -8,7 +8,6 @@ import tv.trakt.trakt.core.profile.sections.thismonth.model.ThisMonthStats
 @Immutable
 internal data class ProfileState(
     val user: User? = null,
-    val backgroundUrl: String? = null,
     val monthBackgroundUrl: String? = null,
     val monthStats: ThisMonthStats? = null,
     val loading: LoadingState = LoadingState.IDLE,
