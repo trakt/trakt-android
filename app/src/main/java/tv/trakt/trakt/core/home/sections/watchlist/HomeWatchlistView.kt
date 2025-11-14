@@ -196,7 +196,7 @@ internal fun HomeWatchlistContent(
             verticalAlignment = CenterVertically,
         ) {
             TraktHeader(
-                title = stringResource(R.string.page_title_watchlist),
+                title = stringResource(R.string.list_title_from_watchlist),
                 subtitle = stringResource(
                     when (state.filter) {
                         MediaMode.SHOWS -> R.string.list_description_released_shows

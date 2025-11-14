@@ -229,7 +229,7 @@ private fun TitleBar(
             contentDescription = null,
         )
         TraktHeader(
-            title = stringResource(R.string.page_title_watchlist),
+            title = stringResource(R.string.list_title_from_watchlist),
             subtitle = subtitle,
         )
     }

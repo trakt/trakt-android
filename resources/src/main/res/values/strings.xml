@@ -191,5 +191,6 @@
     <string name="warning_prompt_remove_from_favorites">Are you sure you want to remove \"%s\" from your Favorites?</string>
     <string name="warning_prompt_mark_as_watched_multiple_episodes">Are you sure you want to mark %d episodes as watched?</string>
     <string name="list_title_watch_history">History</string>
+    <string name="list_title_from_watchlist">From Watchlist</string>
 
 </resources>
