@@ -33,9 +33,8 @@ internal class HomeViewModel(
         observeUser()
         observeMode()
 
-        analytics.logScreenView(
-            screenName = "home",
-        )
+        analytics.logScreenView(screenName = "home")
+        analytics.logMediaMode(mode = initialMode)
     }
 
     private fun observeUser() {

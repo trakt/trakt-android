@@ -2,6 +2,7 @@ package tv.trakt.trakt.analytics.implementation
 
 import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
+import tv.trakt.trakt.core.main.model.MediaMode
 
 internal class DebugAnalytics(
     override val reactions: Analytics.Reactions,
@@ -18,6 +19,14 @@ internal class DebugAnalytics(
 
     override fun logUserLogout() {
         Timber.d("logUserLogout")
+    }
+
+    override fun logMediaMode(mode: MediaMode) {
+        Timber.d("logMediaMode: mode=${mode.name.lowercase()}")
+    }
+
+    override fun logMediaModeClick(mode: MediaMode) {
+        Timber.d("logMediaModeClick: mode=${mode.name.lowercase()}")
     }
 }
 

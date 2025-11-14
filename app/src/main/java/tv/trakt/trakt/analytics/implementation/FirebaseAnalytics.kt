@@ -6,6 +6,7 @@ import com.google.firebase.analytics.FirebaseAnalytics.Event.LOGIN
 import com.google.firebase.analytics.FirebaseAnalytics.Event.SCREEN_VIEW
 import com.google.firebase.analytics.FirebaseAnalytics.Param
 import tv.trakt.trakt.analytics.Analytics
+import tv.trakt.trakt.core.main.model.MediaMode
 
 // Android V3 events identifier
 private const val EVENT_NAME_PREFIX = "av3_"
@@ -28,6 +29,8 @@ internal class FirebaseAnalytics(
 ) : Analytics {
     companion object Event {
         const val LOGOUT = "logout"
+        const val MEDIA_MODE = "media_mode"
+        const val MEDIA_MODE_CLICK = "media_mode_click"
     }
 
     init {
@@ -52,6 +55,24 @@ internal class FirebaseAnalytics(
         firebase.logEvent(
             eventName(LOGOUT),
             null,
+        )
+    }
+
+    override fun logMediaModeClick(mode: MediaMode) {
+        firebase.logEvent(
+            eventName(MEDIA_MODE_CLICK),
+            bundleOf(
+                PARAMETER_MEDIA_TYPE to mode.name.lowercase(),
+            ),
+        )
+    }
+
+    override fun logMediaMode(mode: MediaMode) {
+        firebase.logEvent(
+            eventName(MEDIA_MODE),
+            bundleOf(
+                PARAMETER_MEDIA_TYPE to mode.name.lowercase(),
+            ),
         )
     }
 }

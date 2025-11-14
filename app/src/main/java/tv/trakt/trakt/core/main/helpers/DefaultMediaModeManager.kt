@@ -10,12 +10,14 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.core.main.model.MediaMode
 
 private val KEY_MAIN_MODE = stringPreferencesKey("key_main_mode")
 
 internal class DefaultMediaModeManager(
     private val dataStore: DataStore<Preferences>,
+    private val analytics: Analytics,
 ) : MediaModeManager {
     private var currentMode = runBlocking {
         val data = dataStore.data.first()
@@ -38,6 +40,7 @@ internal class DefaultMediaModeManager(
             it[KEY_MAIN_MODE] = mode.name
         }
 
+        analytics.logMediaModeClick(mode)
         Timber.d("Media mode set: $mode")
     }
 

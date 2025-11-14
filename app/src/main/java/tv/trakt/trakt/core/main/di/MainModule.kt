@@ -46,6 +46,7 @@ internal val mainModule = module {
     single<MediaModeManager> {
         DefaultMediaModeManager(
             dataStore = get(named(MAIN_PREFERENCES)),
+            analytics = get(),
         )
     }
 
