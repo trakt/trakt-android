@@ -12,7 +12,6 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -44,6 +43,8 @@ import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItems
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.core.user.CollectionStateProvider
+import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
 
 @OptIn(FlowPreview::class)
@@ -55,6 +56,7 @@ internal class AllPersonalListViewModel(
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val userListLocalDataSource: UserListsLocalDataSource,
+    private val collectionStateProvider: CollectionStateProvider,
     private val sessionManager: SessionManager,
     analytics: Analytics,
 ) : ViewModel() {
@@ -79,7 +81,9 @@ internal class AllPersonalListViewModel(
         loadBackground()
         loadDetails()
         loadData()
+
         observeLists()
+        observeCollection()
 
         analytics.logScreenView(
             screenName = "all_personal_list",
@@ -100,6 +104,11 @@ internal class AllPersonalListViewModel(
                     )
                 }
         }
+    }
+
+    private fun observeCollection() {
+        collectionStateProvider
+            .launchIn(viewModelScope)
     }
 
     private fun loadBackground() {
@@ -226,11 +235,12 @@ internal class AllPersonalListViewModel(
     }
 
     @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<AllPersonalListState> = combine(
+    val state = combine(
         loadingState,
         filterState,
         listState,
         itemsState,
+        collectionStateProvider.stateFlow,
         navigateShow,
         navigateMovie,
         errorState,
@@ -241,10 +251,11 @@ internal class AllPersonalListViewModel(
             filter = state[1] as MediaMode?,
             list = state[2] as? CustomList,
             items = state[3] as? ImmutableList<PersonalListItem>,
-            navigateShow = state[4] as? TraktId,
-            navigateMovie = state[5] as? TraktId,
-            error = state[6] as? Exception,
-            backgroundUrl = state[7] as? String,
+            collection = state[4] as UserCollectionState,
+            navigateShow = state[5] as? TraktId,
+            navigateMovie = state[6] as? TraktId,
+            error = state[7] as? Exception,
+            backgroundUrl = state[8] as? String,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -175,6 +175,7 @@ internal val listsModule = module {
             allWatchlistSource = get(),
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
+            collectionStateProvider = get(),
             modeManager = get(),
             sessionManager = get(),
         )
@@ -193,6 +194,7 @@ internal val listsModule = module {
             showUpdatesSource = get(),
             episodeUpdatesSource = get(),
             movieDetailsUpdates = get(),
+            collectionStateProvider = get(),
             modeManager = get(),
             sessionManager = get(),
             analytics = get(),
@@ -209,6 +211,7 @@ internal val listsModule = module {
             localListsItemsSource = get(),
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
+            collectionStateProvider = get(),
         )
     }
 
@@ -220,9 +223,10 @@ internal val listsModule = module {
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
             userListLocalDataSource = get(),
+            collectionStateProvider = get(),
             sessionManager = get(),
-            analytics = get(),
             modeManager = get(),
+            analytics = get(),
         )
     }
 

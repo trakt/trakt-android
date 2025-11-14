@@ -12,6 +12,7 @@ import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 internal fun AllWatchlistShowView(
     item: WatchlistItem.ShowItem,
     modifier: Modifier = Modifier,
+    watched: Boolean = false,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
 ) {
@@ -28,6 +29,7 @@ internal fun AllWatchlistShowView(
         title = item.show.title,
         titleOriginal = item.show.titleOriginal,
         subtitle = genresText,
+        watched = watched,
         contentImageUrl = item.images?.getPosterUrl(),
         containerImageUrl = item.images?.getFanartUrl(Images.Size.THUMB),
         onClick = onClick,

@@ -43,9 +43,11 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
+import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
@@ -122,7 +124,8 @@ private fun MovieRelatedContent(
                         )
                     } else {
                         ContentList(
-                            listItems = (state.items ?: emptyList()).toImmutableList(),
+                            listItems = state.items ?: EmptyImmutableList,
+                            collection = state.collection,
                             contentPadding = contentPadding,
                             onClick = onClick,
                             onLongClick = onLongClick,
@@ -137,6 +140,7 @@ private fun MovieRelatedContent(
 @Composable
 private fun ContentList(
     listItems: ImmutableList<Movie>,
+    collection: UserCollectionState,
     contentPadding: PaddingValues,
     onClick: ((Movie) -> Unit)? = null,
     onLongClick: ((Movie) -> Unit)? = null,
@@ -161,9 +165,11 @@ private fun ContentList(
             VerticalMediaCard(
                 title = item.title,
                 imageUrl = item.images?.getPosterUrl(),
+                watched = collection.isWatched(item.ids.trakt),
+                watchlist = collection.isWatchlist(item.ids.trakt),
                 onClick = { onClick?.invoke(item) },
                 onLongClick = { onLongClick?.invoke(item) },
-                chipContent = { modifier ->
+                chipContent = { chipModifier ->
                     val footerText = remember {
                         val runtime = item.runtime?.inWholeMinutes
                         if (runtime != null) {
@@ -179,7 +185,7 @@ private fun ContentList(
                         textAlign = TextAlign.Center,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        modifier = modifier,
+                        modifier = chipModifier,
                     )
                 },
                 modifier = Modifier.animateItem(

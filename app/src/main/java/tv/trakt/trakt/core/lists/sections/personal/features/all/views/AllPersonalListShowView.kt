@@ -14,6 +14,8 @@ internal fun AllPersonalListShowView(
     item: PersonalListItem.ShowItem,
     modifier: Modifier = Modifier,
     showIcon: Boolean = false,
+    watched: Boolean = false,
+    watchlist: Boolean = false,
     onClick: (TraktId) -> Unit,
     onLongClick: () -> Unit,
 ) {
@@ -32,6 +34,8 @@ internal fun AllPersonalListShowView(
         subtitle = genresText,
         contentImageUrl = item.images?.getPosterUrl(),
         containerImageUrl = item.images?.getFanartUrl(Size.THUMB),
+        watched = watched,
+        watchlist = watchlist,
         onClick = { onClick(item.show.ids.trakt) },
         onLongClick = onLongClick,
         footerContent = {

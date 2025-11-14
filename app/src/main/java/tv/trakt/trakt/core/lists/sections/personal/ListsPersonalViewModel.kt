@@ -35,6 +35,8 @@ import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocal
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
+import tv.trakt.trakt.core.user.CollectionStateProvider
+import tv.trakt.trakt.core.user.UserCollectionState
 
 @OptIn(FlowPreview::class)
 internal class ListsPersonalViewModel(
@@ -45,6 +47,7 @@ internal class ListsPersonalViewModel(
     private val localListsItemsSource: ListsPersonalItemsLocalDataSource,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
+    private val collectionStateProvider: CollectionStateProvider,
     private val modeManager: MediaModeManager,
 ) : ViewModel() {
     private val initialState = ListsPersonalState()
@@ -64,8 +67,10 @@ internal class ListsPersonalViewModel(
 
     init {
         loadData()
+
         observeLists()
         observeMode()
+        observeCollection()
     }
 
     private fun observeMode() {
@@ -78,17 +83,19 @@ internal class ListsPersonalViewModel(
     }
 
     private fun observeLists() {
-        viewModelScope.launch {
-            merge(
-                localListsSource.observeUpdates(),
-                localListsItemsSource.observeUpdates(),
-            )
-                .distinctUntilChanged()
-                .debounce(200)
-                .collect {
-                    loadLocalData()
-                }
-        }
+        merge(
+            localListsSource.observeUpdates(),
+            localListsItemsSource.observeUpdates(),
+        )
+            .distinctUntilChanged()
+            .debounce(200)
+            .onEach { loadLocalData() }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeCollection() {
+        collectionStateProvider
+            .launchIn(viewModelScope)
     }
 
     private fun loadLocalData() {
@@ -181,6 +188,7 @@ internal class ListsPersonalViewModel(
         listState,
         userState,
         itemsState,
+        collectionStateProvider.stateFlow,
         navigateShow,
         navigateMovie,
         loadingState,
@@ -190,10 +198,11 @@ internal class ListsPersonalViewModel(
             list = states[0] as CustomList?,
             user = states[1] as User?,
             items = states[2] as ImmutableList<PersonalListItem>?,
-            navigateShow = states[3] as TraktId?,
-            navigateMovie = states[4] as TraktId?,
-            loading = states[5] as LoadingState,
-            error = states[6] as Exception?,
+            collection = states[3] as UserCollectionState,
+            navigateShow = states[4] as TraktId?,
+            navigateMovie = states[5] as TraktId?,
+            loading = states[6] as LoadingState,
+            error = states[7] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

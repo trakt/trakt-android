@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -17,10 +16,13 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.shows.features.related.usecases.GetShowRelatedUseCase
+import tv.trakt.trakt.core.user.CollectionStateProvider
+import tv.trakt.trakt.core.user.UserCollectionState
 
 internal class ShowRelatedViewModel(
     private val show: Show,
     private val getRelatedShowsUseCase: GetShowRelatedUseCase,
+    private val collectionStateProvider: CollectionStateProvider,
 ) : ViewModel() {
     private val initialState = ShowRelatedState()
 
@@ -30,6 +32,12 @@ internal class ShowRelatedViewModel(
 
     init {
         loadData()
+        observeCollection()
+    }
+
+    private fun observeCollection() {
+        collectionStateProvider
+            .launchIn(viewModelScope)
     }
 
     private fun loadData() {
@@ -52,15 +60,17 @@ internal class ShowRelatedViewModel(
     }
 
     @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<ShowRelatedState> = combine(
+    val state = combine(
         itemsState,
+        collectionStateProvider.stateFlow,
         loadingState,
         errorState,
     ) { state ->
         ShowRelatedState(
             items = state[0] as ImmutableList<Show>?,
-            loading = state[1] as LoadingState,
-            error = state[2] as Exception?,
+            collection = state[1] as UserCollectionState,
+            loading = state[2] as LoadingState,
+            error = state[3] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

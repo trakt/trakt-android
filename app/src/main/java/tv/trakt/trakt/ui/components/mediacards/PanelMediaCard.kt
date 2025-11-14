@@ -221,7 +221,7 @@ internal fun PanelMediaCard(
                                 tint = Color.White,
                                 contentDescription = null,
                                 modifier = Modifier
-                                    .size(8.5.dp),
+                                    .size(9.dp),
                             )
                         }
                     }
@@ -241,7 +241,7 @@ internal fun PanelMediaCard(
                                 painter = painterResource(R.drawable.ic_bookmark_on),
                                 tint = Color.White,
                                 contentDescription = null,
-                                modifier = Modifier.size(7.dp),
+                                modifier = Modifier.size(8.dp),
                             )
                         }
                     }

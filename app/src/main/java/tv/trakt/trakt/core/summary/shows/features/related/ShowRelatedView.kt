@@ -43,8 +43,10 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
+import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
@@ -121,7 +123,8 @@ private fun ShowRelatedContent(
                         )
                     } else {
                         ContentList(
-                            listItems = (state.items ?: emptyList()).toImmutableList(),
+                            listItems = state.items ?: EmptyImmutableList,
+                            collection = state.collection,
                             contentPadding = contentPadding,
                             onClick = onClick,
                             onLongClick = onLongClick,
@@ -136,6 +139,7 @@ private fun ShowRelatedContent(
 @Composable
 private fun ContentList(
     listItems: ImmutableList<Show>,
+    collection: UserCollectionState,
     contentPadding: PaddingValues,
     onClick: ((Show) -> Unit)? = null,
     onLongClick: ((Show) -> Unit)? = null,
@@ -160,9 +164,11 @@ private fun ContentList(
             VerticalMediaCard(
                 title = item.title,
                 imageUrl = item.images?.getPosterUrl(),
+                watched = collection.isWatched(item.ids.trakt),
+                watchlist = collection.isWatchlist(item.ids.trakt),
                 onClick = { onClick?.invoke(item) },
                 onLongClick = { onLongClick?.invoke(item) },
-                chipContent = { modifier ->
+                chipContent = { chipModifier ->
                     val airedEpisodes = stringResource(
                         R.string.tag_text_number_of_episodes,
                         item.airedEpisodes,
@@ -188,7 +194,7 @@ private fun ContentList(
                         textAlign = TextAlign.Center,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        modifier = modifier,
+                        modifier = chipModifier,
                     )
                 },
                 modifier = Modifier.animateItem(

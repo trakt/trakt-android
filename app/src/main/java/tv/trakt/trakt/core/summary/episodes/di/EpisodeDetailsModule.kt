@@ -167,6 +167,7 @@ internal val episodeDetailsModule = module {
         EpisodeRelatedViewModel(
             show = show,
             getRelatedShowsUseCase = get(),
+            collectionStateProvider = get(),
         )
     }
 

@@ -60,6 +60,7 @@ import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
 import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
 import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
+import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
@@ -235,6 +236,7 @@ internal fun ListWatchlistContent(
                             ContentList(
                                 filter = state.filter,
                                 listItems = (state.items ?: emptyList()).toImmutableList(),
+                                collection = state.collection,
                                 contentPadding = contentPadding,
                                 onShowClick = onShowClick,
                                 onMovieClick = onMovieClick,
@@ -275,6 +277,7 @@ private fun ContentList(
     listItems: ImmutableList<WatchlistItem>,
     listState: LazyListState = rememberLazyListState(),
     filter: MediaMode,
+    collection: UserCollectionState,
     contentPadding: PaddingValues,
     onShowClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
@@ -304,6 +307,7 @@ private fun ContentList(
             ListsWatchlistItemView(
                 item = item,
                 showMediaIcon = (filter == MEDIA),
+                watched = collection.isWatched(item.id),
                 onShowClick = {
                     if (item is WatchlistItem.ShowItem && !item.loading) {
                         onShowClick(item.show)

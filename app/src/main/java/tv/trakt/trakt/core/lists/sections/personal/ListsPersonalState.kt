@@ -8,12 +8,14 @@ import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.lists.model.PersonalListItem
+import tv.trakt.trakt.core.user.UserCollectionState
 
 @Immutable
 internal data class ListsPersonalState(
     val user: User? = null,
     val list: CustomList? = null,
     val items: ImmutableList<PersonalListItem>? = null,
+    val collection: UserCollectionState = UserCollectionState.Default,
     val navigateShow: TraktId? = null,
     val navigateMovie: TraktId? = null,
     val loading: LoadingState = IDLE,

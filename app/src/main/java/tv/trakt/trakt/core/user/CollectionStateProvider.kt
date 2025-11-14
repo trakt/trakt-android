@@ -24,6 +24,9 @@ import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 
+/**
+ * Provides the current state of the user's collection, including watched and watchlist items.
+ */
 internal class CollectionStateProvider(
     private val sessionManager: SessionManager,
     private val userWatchlistUseCase: LoadUserWatchlistUseCase,

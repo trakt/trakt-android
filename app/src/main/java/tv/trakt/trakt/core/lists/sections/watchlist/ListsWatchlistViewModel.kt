@@ -8,7 +8,6 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -43,6 +42,8 @@ import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
 import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
 import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
+import tv.trakt.trakt.core.user.CollectionStateProvider
+import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 
 internal class ListsWatchlistViewModel(
@@ -54,6 +55,7 @@ internal class ListsWatchlistViewModel(
     private val allWatchlistSource: AllWatchlistLocalDataSource,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
+    private val collectionStateProvider: CollectionStateProvider,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = ListsWatchlistState()
@@ -71,9 +73,11 @@ internal class ListsWatchlistViewModel(
 
     init {
         loadData()
+
         observeMode()
         observeUser()
         observeWatchlist()
+        observeCollection()
     }
 
     private fun observeMode() {
@@ -111,6 +115,11 @@ internal class ListsWatchlistViewModel(
             .onEach {
                 loadData(ignoreErrors = true)
             }.launchIn(viewModelScope)
+    }
+
+    private fun observeCollection() {
+        collectionStateProvider
+            .launchIn(viewModelScope)
     }
 
     fun loadData(ignoreErrors: Boolean = false) {
@@ -193,10 +202,11 @@ internal class ListsWatchlistViewModel(
     }
 
     @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<ListsWatchlistState> = combine(
+    val state = combine(
         loadingState,
         itemsState,
         filterState,
+        collectionStateProvider.stateFlow,
         navigateShow,
         navigateMovie,
         errorState,
@@ -206,10 +216,11 @@ internal class ListsWatchlistViewModel(
             loading = states[0] as LoadingState,
             items = states[1] as ImmutableList<WatchlistItem>?,
             filter = states[2] as MediaMode,
-            navigateShow = states[3] as TraktId?,
-            navigateMovie = states[4] as TraktId?,
-            error = states[5] as Exception?,
-            user = states[6] as User?,
+            collection = states[3] as UserCollectionState,
+            navigateShow = states[4] as TraktId?,
+            navigateMovie = states[5] as TraktId?,
+            error = states[6] as Exception?,
+            user = states[7] as User?,
         )
     }.stateIn(
         scope = viewModelScope,

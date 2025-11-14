@@ -52,6 +52,7 @@ import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.MovieItem
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.ShowItem
 import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaModeFilters
@@ -182,9 +183,10 @@ internal fun AllWatchlistContent(
 
         ContentList(
             subtitle = stringResource(R.string.text_sort_recently_added),
-            listItems = (state.items ?: emptyList()).toImmutableList(),
             listState = listState,
+            listItems = (state.items ?: emptyList()).toImmutableList(),
             listFilter = state.filter,
+            collection = state.collection,
             loading = state.loading.isLoading,
             contentPadding = contentPadding,
             onFilterClick = onFilterClick,
@@ -229,6 +231,7 @@ private fun ContentList(
     listState: LazyListState,
     listItems: ImmutableList<WatchlistItem>,
     listFilter: MediaMode?,
+    collection: UserCollectionState,
     subtitle: String,
     loading: Boolean,
     contentPadding: PaddingValues,
@@ -284,6 +287,7 @@ private fun ContentList(
             when (item) {
                 is ShowItem -> AllWatchlistShowView(
                     item = item,
+                    watched = collection.isWatched(item.id),
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
                     modifier = Modifier
@@ -295,6 +299,7 @@ private fun ContentList(
                 )
                 is MovieItem -> AllWatchlistMovieView(
                     item = item,
+                    watched = collection.isWatched(item.id),
                     showCheck = true,
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },

@@ -56,6 +56,7 @@ import tv.trakt.trakt.core.lists.sections.personal.features.context.movie.sheet.
 import tv.trakt.trakt.core.lists.sections.personal.features.context.show.sheet.ListShowContextSheet
 import tv.trakt.trakt.core.lists.sheets.EditListSheet
 import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaModeFilters
@@ -187,6 +188,7 @@ internal fun AllPersonalListContent(
             listState = listState,
             listFilter = state.filter,
             listItems = (state.items ?: emptyList()).toImmutableList(),
+            collection = state.collection,
             contentPadding = contentPadding,
             onClick = onClick,
             onLongClick = onLongClick,
@@ -273,6 +275,7 @@ private fun ContentList(
     listState: LazyListState,
     listItems: ImmutableList<PersonalListItem>,
     listFilter: MediaMode?,
+    collection: UserCollectionState,
     contentPadding: PaddingValues,
     onClick: (PersonalListItem) -> Unit,
     onLongClick: (PersonalListItem) -> Unit,
@@ -328,6 +331,8 @@ private fun ContentList(
                 is ShowItem -> AllPersonalListShowView(
                     item = item,
                     showIcon = true,
+                    watched = collection.isWatched(item.id),
+                    watchlist = collection.isWatchlist(item.id),
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
                     modifier = Modifier
@@ -340,6 +345,8 @@ private fun ContentList(
                 is MovieItem -> AllPersonalListMovieView(
                     item = item,
                     showIcon = true,
+                    watched = collection.isWatched(item.id),
+                    watchlist = collection.isWatchlist(item.id),
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
                     modifier = Modifier

@@ -10,7 +10,6 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -52,6 +51,8 @@ import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
+import tv.trakt.trakt.core.user.CollectionStateProvider
+import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 
 @OptIn(FlowPreview::class)
@@ -63,6 +64,7 @@ internal class AllWatchlistViewModel(
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val updateMovieHistoryUseCase: AddHomeHistoryUseCase,
     private val allWatchlistLocalDataSource: AllWatchlistLocalDataSource,
+    private val collectionStateProvider: CollectionStateProvider,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val showUpdatesSource: ShowDetailsUpdates,
@@ -89,7 +91,9 @@ internal class AllWatchlistViewModel(
     init {
         loadBackground()
         loadData()
+
         observeData()
+        observeCollection()
 
         analytics.logScreenView(
             screenName = "all_watchlist",
@@ -109,6 +113,11 @@ internal class AllWatchlistViewModel(
             .onEach {
                 loadData(ignoreErrors = true)
             }.launchIn(viewModelScope)
+    }
+
+    private fun observeCollection() {
+        collectionStateProvider
+            .launchIn(viewModelScope)
     }
 
     private fun loadBackground() {
@@ -291,10 +300,11 @@ internal class AllWatchlistViewModel(
     }
 
     @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<AllWatchlistState> = combine(
+    val state = combine(
         loadingState,
         itemsState,
         filterState,
+        collectionStateProvider.stateFlow,
         navigateShow,
         navigateMovie,
         infoState,
@@ -305,11 +315,12 @@ internal class AllWatchlistViewModel(
             loading = state[0] as LoadingState,
             items = state[1] as? ImmutableList<WatchlistItem>,
             filter = state[2] as? MediaMode,
-            navigateShow = state[3] as? TraktId,
-            navigateMovie = state[4] as? TraktId,
-            info = state[5] as? StringResource,
-            error = state[6] as? Exception,
-            backgroundUrl = state[7] as? String,
+            collection = state[3] as UserCollectionState,
+            navigateShow = state[4] as? TraktId,
+            navigateMovie = state[5] as? TraktId,
+            info = state[6] as? StringResource,
+            error = state[7] as? Exception,
+            backgroundUrl = state[8] as? String,
         )
     }.stateIn(
         scope = viewModelScope,

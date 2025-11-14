@@ -16,13 +16,10 @@ fun Timber.Forest.recordError(error: Exception) {
         return
     }
 
-    if (BuildConfig.DEBUG) {
-        Timber.d("Skipping recording error to Crashlytics in DEBUG build: $error")
-        return
+    if (!BuildConfig.DEBUG) {
+        Firebase.crashlytics.recordException(error)
+        Timber.d("Recorded error to Crashlytics: $error")
     }
-
-    Firebase.crashlytics.recordException(error)
-    Timber.d("Recorded error to Crashlytics: $error")
 }
 
 /**
@@ -35,11 +32,8 @@ inline fun <reified T : Exception> Timber.Forest.recordErrorIf(error: Exception)
         return
     }
 
-    if (BuildConfig.DEBUG) {
-        Timber.d("Skipping recording error to Crashlytics in DEBUG build: $error")
-        return
+    if (!BuildConfig.DEBUG) {
+        Firebase.crashlytics.recordException(error)
+        Timber.d("Recorded error to Crashlytics: $error")
     }
-
-    Firebase.crashlytics.recordException(error)
-    Timber.d("Recorded error to Crashlytics: $error")
 }

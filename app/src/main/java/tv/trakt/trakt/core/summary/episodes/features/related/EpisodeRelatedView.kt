@@ -30,6 +30,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ColorImage
@@ -41,10 +43,11 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
+import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
@@ -120,7 +123,8 @@ private fun EpisodeRelatedContent(
                         )
                     } else {
                         ContentList(
-                            listItems = (state.items ?: emptyList()).toImmutableList(),
+                            listItems = state.items ?: EmptyImmutableList,
+                            collection = state.collection,
                             contentPadding = contentPadding,
                             onClick = onClick,
                             onLongClick = onLongClick,
@@ -135,6 +139,7 @@ private fun EpisodeRelatedContent(
 @Composable
 private fun ContentList(
     listItems: ImmutableList<Show>,
+    collection: UserCollectionState,
     contentPadding: PaddingValues,
     onClick: ((Show) -> Unit)? = null,
     onLongClick: ((Show) -> Unit)? = null,
@@ -159,19 +164,38 @@ private fun ContentList(
             VerticalMediaCard(
                 title = item.title,
                 imageUrl = item.images?.getPosterUrl(),
+                watched = collection.isWatched(item.ids.trakt),
+                watchlist = collection.isWatchlist(item.ids.trakt),
                 onClick = { onClick?.invoke(item) },
                 onLongClick = { onLongClick?.invoke(item) },
-                chipContent = {
-                    Row(
-                        horizontalArrangement = spacedBy(TraktTheme.spacing.chipsSpace),
-                    ) {
-                        item.year?.let {
-                            InfoChip(text = it.toString())
-                        }
-                        item.runtime?.inWholeMinutes?.let { runtime ->
-                            InfoChip(text = "${runtime}m")
+                chipContent = { chipModifier ->
+                    val airedEpisodes = stringResource(
+                        R.string.tag_text_number_of_episodes,
+                        item.airedEpisodes,
+                    )
+
+                    val footerText = remember {
+                        buildString {
+                            item.released?.let {
+                                append(it.year.toString())
+                            } ?: append("TBA")
+
+                            if (item.airedEpisodes > 0) {
+                                append(" • ")
+                                append(airedEpisodes)
+                            }
                         }
                     }
+
+                    Text(
+                        text = footerText,
+                        style = TraktTheme.typography.cardTitle,
+                        color = TraktTheme.colors.textPrimary,
+                        textAlign = TextAlign.Center,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = chipModifier,
+                    )
                 },
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,

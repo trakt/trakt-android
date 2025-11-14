@@ -36,6 +36,8 @@ internal fun ListsPersonalItemView(
     item: PersonalListItem,
     modifier: Modifier = Modifier,
     showMediaIcon: Boolean = false,
+    watched: Boolean = false,
+    watchlist: Boolean = false,
     onMovieClick: (Movie) -> Unit = { },
     onShowClick: (Show) -> Unit = { },
     onLongClick: () -> Unit = { },
@@ -47,6 +49,8 @@ internal fun ListsPersonalItemView(
             }
             VerticalMediaCard(
                 title = item.show.title,
+                watched = watched,
+                watchlist = watchlist,
                 imageUrl = item.images?.getPosterUrl(),
                 onClick = { onShowClick(item.show) },
                 onLongClick = onLongClick,
@@ -127,6 +131,8 @@ internal fun ListsPersonalItemView(
             VerticalMediaCard(
                 title = item.movie.title,
                 imageUrl = item.images?.getPosterUrl(),
+                watched = watched,
+                watchlist = watchlist,
                 onClick = { onMovieClick(item.movie) },
                 onLongClick = onLongClick,
                 chipContent = { modifier ->

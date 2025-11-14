@@ -175,6 +175,7 @@ internal val movieDetailsModule = module {
         MovieRelatedViewModel(
             movie = movie,
             getRelatedMoviesUseCase = get(),
+            collectionStateProvider = get(),
         )
     }
 

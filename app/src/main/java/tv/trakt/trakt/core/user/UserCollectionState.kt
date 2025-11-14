@@ -7,10 +7,10 @@ import tv.trakt.trakt.common.model.TraktId
 
 @Immutable
 internal data class UserCollectionState(
-    val watchedShows: ImmutableSet<TraktId> = EmptyImmutableSet,
-    val watchedMovies: ImmutableSet<TraktId> = EmptyImmutableSet,
-    val watchlistShows: ImmutableSet<TraktId> = EmptyImmutableSet,
-    val watchlistMovies: ImmutableSet<TraktId> = EmptyImmutableSet,
+    private val watchedShows: ImmutableSet<TraktId> = EmptyImmutableSet,
+    private val watchedMovies: ImmutableSet<TraktId> = EmptyImmutableSet,
+    private val watchlistShows: ImmutableSet<TraktId> = EmptyImmutableSet,
+    private val watchlistMovies: ImmutableSet<TraktId> = EmptyImmutableSet,
 ) {
     companion object Companion {
         val Default = UserCollectionState()

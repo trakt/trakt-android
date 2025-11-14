@@ -200,6 +200,7 @@ internal val showDetailsModule = module {
         ShowRelatedViewModel(
             show = show,
             getRelatedShowsUseCase = get(),
+            collectionStateProvider = get(),
         )
     }
 
