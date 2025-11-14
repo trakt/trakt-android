@@ -12,7 +12,6 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
@@ -46,6 +45,8 @@ import tv.trakt.trakt.core.search.usecase.GetBirthdayPeopleUseCase
 import tv.trakt.trakt.core.search.usecase.GetSearchResultsUseCase
 import tv.trakt.trakt.core.search.usecase.popular.GetPopularSearchUseCase
 import tv.trakt.trakt.core.search.usecase.popular.PostUserSearchUseCase
+import tv.trakt.trakt.core.user.CollectionStateProvider
+import tv.trakt.trakt.core.user.UserCollectionState
 
 @OptIn(FlowPreview::class)
 internal class SearchViewModel(
@@ -58,6 +59,7 @@ internal class SearchViewModel(
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val peopleLocalDataSource: PeopleLocalDataSource,
+    private val collectionStateProvider: CollectionStateProvider,
     private val sessionManager: SessionManager,
     analytics: Analytics,
 ) : ViewModel() {
@@ -66,7 +68,8 @@ internal class SearchViewModel(
     private val inputState = MutableStateFlow(initialState.input)
     private val screenState = MutableStateFlow(initialState.state)
     private val popularResultState = MutableStateFlow(initialState.popularResults)
-    private val recentsResultState = MutableStateFlow(initialState.recentsResult)
+
+    //    private val recentsResultState = MutableStateFlow(initialState.recentsResult)
     private val searchResultState = MutableStateFlow(initialState.searchResult)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
@@ -81,6 +84,8 @@ internal class SearchViewModel(
 
     init {
         observeUser()
+        observeCollection()
+
         loadBackground()
         loadInitialData()
 
@@ -102,6 +107,11 @@ internal class SearchViewModel(
                     }
                 }
         }
+    }
+
+    private fun observeCollection() {
+        collectionStateProvider
+            .launchIn(viewModelScope)
     }
 
     private fun loadBackground() {
@@ -522,12 +532,12 @@ internal class SearchViewModel(
 //    }
 
     @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<SearchState> = combine(
+    val state = combine(
         screenState,
         inputState,
         searchResultState,
-        recentsResultState,
         popularResultState,
+        collectionStateProvider.stateFlow,
         navigateShow,
         navigateMovie,
         navigatePerson,
@@ -540,8 +550,8 @@ internal class SearchViewModel(
             state = state[0] as State,
             input = state[1] as SearchInput,
             searchResult = state[2] as SearchResult?,
-            recentsResult = state[3] as SearchResult?,
-            popularResults = state[4] as SearchResult?,
+            popularResults = state[3] as SearchResult?,
+            collection = state[4] as UserCollectionState,
             navigateShow = state[5] as Show?,
             navigateMovie = state[6] as Movie?,
             navigatePerson = state[7] as Person?,

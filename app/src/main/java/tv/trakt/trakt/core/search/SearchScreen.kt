@@ -39,8 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
@@ -55,6 +55,7 @@ import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.model.SearchItem
 import tv.trakt.trakt.core.search.views.SearchGridItem
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
+import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
@@ -188,9 +189,9 @@ private fun SearchScreenContent(
             searching = state.searching,
             query = state.input.query,
             filter = state.input.filter,
-            recentItems = (state.recentsResult?.items ?: emptyList()).toImmutableList(),
-            popularItems = (state.popularResults?.items ?: emptyList()).toImmutableList(),
-            resultItems = (state.searchResult?.items ?: emptyList()).toImmutableList(),
+            popularItems = state.popularResults?.items ?: EmptyImmutableList,
+            resultItems = state.searchResult?.items ?: EmptyImmutableList,
+            collection = state.collection,
             onShowClick = onShowClick,
             onShowLongClick = onShowLongClick,
             onMovieClick = onMovieClick,
@@ -213,9 +214,9 @@ private fun ContentList(
     searching: Boolean,
     query: String,
     filter: SearchFilter,
-    recentItems: ImmutableList<SearchItem>,
     popularItems: ImmutableList<SearchItem>,
     resultItems: ImmutableList<SearchItem>,
+    collection: UserCollectionState,
     onShowClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
     onShowLongClick: (Show) -> Unit = {},
@@ -248,41 +249,6 @@ private fun ContentList(
         contentPadding = contentPadding,
         overscrollEffect = null,
     ) {
-        if (!isSearching && recentItems.isNotEmpty() && query.isBlank()) {
-            item(span = { GridItemSpan(maxLineSpan) }) {
-                TraktHeader(
-                    title = stringResource(R.string.list_title_recently_searched),
-                    modifier = Modifier
-                        .padding(top = topPadding)
-                        .animateItem(
-                            fadeInSpec = fadeSpec,
-                            fadeOutSpec = fadeSpec,
-                        ),
-                )
-            }
-
-            items(
-                count = recentItems.size,
-                key = { index -> "${recentItems[index].key}_recent" },
-            ) { index ->
-                SearchGridItem(
-                    item = recentItems[index],
-                    filter = filter,
-                    onShowClick = onShowClick,
-                    onShowLongClick = onShowLongClick,
-                    onMovieClick = onMovieClick,
-                    onMovieLongClick = onMovieLongClick,
-                    onPersonClick = onPersonClick,
-                    modifier = Modifier
-                        .padding(bottom = 6.dp)
-                        .animateItem(
-                            fadeInSpec = fadeSpec,
-                            fadeOutSpec = fadeSpec,
-                        ),
-                )
-            }
-        }
-
         if (!isSearching && query.isBlank()) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 TraktHeader(
@@ -291,7 +257,7 @@ private fun ContentList(
                         PEOPLE -> stringResource(R.string.list_title_birthdays_this_month)
                     },
                     modifier = Modifier
-                        .padding(top = if (recentItems.isEmpty()) topPadding else 10.dp)
+                        .padding(top = topPadding)
                         .animateItem(
                             fadeInSpec = fadeSpec,
                             fadeOutSpec = fadeSpec,
@@ -304,9 +270,12 @@ private fun ContentList(
                     count = popularItems.size,
                     key = { index -> "${popularItems[index].key}_popular" },
                 ) { index ->
+                    val item = popularItems[index]
                     SearchGridItem(
-                        item = popularItems[index],
+                        item = item,
                         filter = filter,
+                        watched = collection.isWatched(item.id),
+                        watchlist = collection.isWatchlist(item.id),
                         onShowClick = onShowClick,
                         onShowLongClick = onShowLongClick,
                         onMovieClick = onMovieClick,
@@ -341,9 +310,12 @@ private fun ContentList(
                         count = resultItems.size,
                         key = { index -> resultItems[index].key },
                     ) { index ->
+                        val item = resultItems[index]
                         SearchGridItem(
-                            item = resultItems[index],
+                            item = item,
                             filter = filter,
+                            watched = collection.isWatched(item.id),
+                            watchlist = collection.isWatchlist(item.id),
                             onShowClick = onShowClick,
                             onShowLongClick = onShowLongClick,
                             onMovieClick = onMovieClick,

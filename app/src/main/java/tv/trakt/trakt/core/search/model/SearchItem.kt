@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.search.model
 
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.TraktId
 
 @Immutable
 internal sealed class SearchItem(
@@ -26,6 +27,13 @@ internal sealed class SearchItem(
         val person: tv.trakt.trakt.common.model.Person,
         val showBirthday: Boolean = false,
     ) : SearchItem(rank)
+
+    val id: TraktId
+        get() = when (this) {
+            is Movie -> movie.ids.trakt
+            is Show -> show.ids.trakt
+            is Person -> person.ids.trakt
+        }
 
     val key: String
         get() = when (this) {

@@ -9,18 +9,19 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.model.SearchItem
+import tv.trakt.trakt.core.user.UserCollectionState
 
 @Immutable
 internal data class SearchState(
     val input: SearchInput = SearchInput(),
     val state: State = State.IDLE,
     val popularResults: SearchResult? = null,
-    val recentsResult: SearchResult? = null,
     val searchResult: SearchResult? = null,
     val navigateShow: Show? = null,
     val navigateMovie: Movie? = null,
     val navigatePerson: Person? = null,
     val backgroundUrl: String? = null,
+    val collection: UserCollectionState = UserCollectionState.Default,
     val user: UserState = UserState(),
     val searching: Boolean = false,
     val error: Exception? = null,

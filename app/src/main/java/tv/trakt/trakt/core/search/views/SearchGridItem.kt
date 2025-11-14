@@ -37,6 +37,8 @@ internal fun SearchGridItem(
     item: SearchItem,
     filter: SearchFilter,
     modifier: Modifier = Modifier,
+    watched: Boolean = false,
+    watchlist: Boolean = false,
     onShowClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
     onShowLongClick: (Show) -> Unit = {},
@@ -44,9 +46,29 @@ internal fun SearchGridItem(
     onPersonClick: (Person) -> Unit = {},
 ) {
     when (item) {
-        is SearchItem.Show -> ShowGridItem(item, filter, onShowClick, onShowLongClick, modifier)
-        is SearchItem.Movie -> MovieGridItem(item, filter, onMovieClick, onMovieLongClick, modifier)
-        is SearchItem.Person -> PersonGridItem(item, onPersonClick, modifier)
+        is SearchItem.Show -> ShowGridItem(
+            item = item,
+            filter = filter,
+            watched = watched,
+            watchlist = watchlist,
+            onShowClick = onShowClick,
+            onShowLongClick = onShowLongClick,
+            modifier = modifier,
+        )
+        is SearchItem.Movie -> MovieGridItem(
+            item = item,
+            filter = filter,
+            watched = watched,
+            watchlist = watchlist,
+            onMovieClick = onMovieClick,
+            onMovieLongClick = onMovieLongClick,
+            modifier = modifier,
+        )
+        is SearchItem.Person -> PersonGridItem(
+            item = item,
+            onPersonClick = onPersonClick,
+            modifier = modifier,
+        )
     }
 }
 
@@ -54,6 +76,8 @@ internal fun SearchGridItem(
 private fun ShowGridItem(
     item: SearchItem.Show,
     filter: SearchFilter,
+    watched: Boolean,
+    watchlist: Boolean,
     onShowClick: (Show) -> Unit,
     onShowLongClick: (Show) -> Unit,
     modifier: Modifier,
@@ -69,6 +93,8 @@ private fun ShowGridItem(
     VerticalMediaCard(
         title = item.show.title,
         imageUrl = item.show.images?.getPosterUrl(),
+        watched = watched,
+        watchlist = watchlist,
         chipContent = { modifier ->
             Row(
                 verticalAlignment = CenterVertically,
@@ -123,6 +149,8 @@ private fun ShowGridItem(
 private fun MovieGridItem(
     item: SearchItem.Movie,
     filter: SearchFilter,
+    watched: Boolean,
+    watchlist: Boolean,
     onMovieClick: (Movie) -> Unit,
     onMovieLongClick: (Movie) -> Unit = {},
     modifier: Modifier,
@@ -138,6 +166,8 @@ private fun MovieGridItem(
     VerticalMediaCard(
         title = item.movie.title,
         imageUrl = item.movie.images?.getPosterUrl(),
+        watched = watched,
+        watchlist = watchlist,
         chipContent = { modifier ->
             Row(
                 verticalAlignment = CenterVertically,
