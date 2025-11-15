@@ -237,7 +237,6 @@ internal fun VerticalMediaCard(
             )
 
             if (watchlist || watched) {
-                val shape = RoundedCornerShape(100)
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(4.dp),
                     modifier = Modifier
@@ -247,43 +246,17 @@ internal fun VerticalMediaCard(
                         },
                 ) {
                     if (watched) {
-                        Box(
-                            contentAlignment = Alignment.Center,
-                            modifier = Modifier
-                                .size(
-                                    width = 22.dp,
-                                    height = 16.dp,
-                                )
-                                .shadow(1.dp, shape)
-                                .background(TraktTheme.colors.chipContainer, shape),
-                        ) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_check_double),
-                                tint = Color.White,
-                                contentDescription = null,
-                                modifier = Modifier.size(9.75.dp),
-                            )
-                        }
+                        CollectionChip(
+                            iconRes = R.drawable.ic_check_double,
+                            iconSize = 11.5.dp,
+                        )
                     }
 
                     if (watchlist) {
-                        Box(
-                            contentAlignment = Alignment.Center,
-                            modifier = Modifier
-                                .size(
-                                    width = 22.dp,
-                                    height = 16.dp,
-                                )
-                                .shadow(1.dp, shape)
-                                .background(TraktTheme.colors.chipContainer, shape),
-                        ) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_bookmark_on),
-                                tint = Color.White,
-                                contentDescription = null,
-                                modifier = Modifier.size(8.25.dp),
-                            )
-                        }
+                        CollectionChip(
+                            iconRes = R.drawable.ic_bookmark_on,
+                            iconSize = 9.5.dp,
+                        )
                     }
                 }
             }
@@ -291,6 +264,31 @@ internal fun VerticalMediaCard(
 
         chipContent(
             Modifier.heightIn(min = 16.dp),
+        )
+    }
+}
+
+@Composable
+private fun CollectionChip(
+    iconRes: Int,
+    iconSize: Dp,
+) {
+    val shape = RoundedCornerShape(100)
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .size(
+                width = 25.dp,
+                height = 18.dp,
+            )
+            .shadow(1.5.dp, shape)
+            .background(TraktTheme.colors.chipContainer, shape),
+    ) {
+        Icon(
+            painter = painterResource(iconRes),
+            tint = Color.White,
+            contentDescription = null,
+            modifier = Modifier.size(iconSize),
         )
     }
 }
