@@ -40,9 +40,11 @@ internal fun DetailsActions(
     secondaryVisible: Boolean = true,
     loading: Boolean = false,
     inLists: Boolean? = false,
+    trailer: Boolean = false,
     onPrimaryClick: (() -> Unit)? = null,
     onSecondaryClick: (() -> Unit)? = null,
     onSecondaryLongClick: (() -> Unit)? = null,
+    onTrailerClick: (() -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
 ) {
     val shape = RoundedCornerShape(18.dp)
@@ -131,6 +133,21 @@ internal fun DetailsActions(
                         .graphicsLayer {
                             translationX = 0.5.dp.toPx()
                         },
+                )
+
+                Icon(
+                    painter = painterResource(R.drawable.ic_trailer),
+                    tint = when {
+                        enabled && trailer -> TraktTheme.colors.primaryButtonContent
+                        else -> TraktTheme.colors.primaryButtonContainerDisabled
+                    },
+                    contentDescription = null,
+                    modifier = Modifier
+                        .onClick(
+                            enabled = enabled && trailer,
+                            onClick = onTrailerClick ?: {},
+                        )
+                        .size(21.dp),
                 )
             }
 

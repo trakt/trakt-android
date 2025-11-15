@@ -363,7 +363,6 @@ internal fun ShowDetailsContent(
                         loading = state.loading.isLoading ||
                             state.loadingProgress.isLoading,
                         onBackClick = onBackClick ?: {},
-                        onTrailerClick = onTrailerClick ?: {},
                         onShareClick = onShareClick ?: {},
                         modifier = Modifier.align(Alignment.Center),
                     )
@@ -391,12 +390,14 @@ internal fun ShowDetailsContent(
                             loading = state.loadingProgress.isLoading ||
                                 state.loadingLists.isLoading,
                             inLists = state.showProgress?.inAnyList,
+                            trailer = !show.trailer.isNullOrBlank(),
                             onPrimaryClick = onTrackClick,
                             onSecondaryClick = when {
                                 state.showProgress?.hasLists == true -> onListsClick
                                 else -> onWatchlistClick
                             },
                             onSecondaryLongClick = onListsClick,
+                            onTrailerClick = onTrailerClick,
                             onMoreClick = onMoreClick,
                             modifier = Modifier
                                 .align(Alignment.Center)

@@ -1,6 +1,5 @@
 package tv.trakt.trakt.core.summary.ui
 
-import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -24,7 +23,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
@@ -35,7 +33,6 @@ import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.net.toUri
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
@@ -62,7 +59,6 @@ internal fun DetailsHeader(
     creditsCount: Int?,
     loading: Boolean,
     onShareClick: () -> Unit,
-    onTrailerClick: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -95,7 +91,6 @@ internal fun DetailsHeader(
         },
         genres = movie.genres,
         imageUrl = movie.images?.getPosterUrl(Size.MEDIUM),
-        trailer = movie.trailer?.toUri(),
         accentColor = movie.colors?.colors?.first,
         traktRatings = when {
             isReleased -> movie.rating.ratingPercent
@@ -107,7 +102,6 @@ internal fun DetailsHeader(
         certification = movie.certification,
         loading = loading,
         onBackClick = onBackClick,
-        onTrailerClick = onTrailerClick,
         onShareClick = onShareClick,
         modifier = modifier,
     )
@@ -121,7 +115,6 @@ internal fun DetailsHeader(
     playsCount: Int,
     loading: Boolean,
     onShareClick: () -> Unit,
-    onTrailerClick: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -161,7 +154,6 @@ internal fun DetailsHeader(
         },
         genres = show.genres,
         imageUrl = show.images?.getPosterUrl(Size.MEDIUM),
-        trailer = show.trailer?.toUri(),
         accentColor = show.colors?.colors?.first,
         traktRatings = when {
             isReleased -> show.rating.ratingPercent
@@ -173,7 +165,6 @@ internal fun DetailsHeader(
         certification = show.certification,
         loading = loading,
         onBackClick = onBackClick,
-        onTrailerClick = onTrailerClick,
         onShareClick = onShareClick,
         modifier = modifier,
     )
@@ -273,7 +264,6 @@ internal fun DetailsHeader(
         },
         genres = show.genres,
         imageUrl = show.images?.getPosterUrl(Size.MEDIUM),
-        trailer = show.trailer?.toUri(),
         accentColor = show.colors?.colors?.first,
         traktRatings = when {
             isReleased -> episode.rating.ratingPercent
@@ -284,7 +274,6 @@ internal fun DetailsHeader(
         creditsCount = 0,
         loading = loading,
         onBackClick = onBackClick,
-        onTrailerClick = null,
         onShareClick = onShareClick,
         modifier = modifier,
     )
@@ -309,13 +298,11 @@ internal fun DetailsHeader(
         status = null,
         externalRatings = null,
         externalRatingsVisible = false,
-        trailer = null,
         playsCount = null,
         certification = null,
         accentColor = Shade700,
         creditsCount = null,
         traktRatings = null,
-        onTrailerClick = null,
         modifier = modifier,
     )
 }
@@ -330,7 +317,6 @@ private fun DetailsHeader(
     imageUrl: String?,
     status: String?,
     certification: String?,
-    trailer: Uri?,
     accentColor: Color?,
     traktRatings: Int?,
     externalRatings: ExternalRating?,
@@ -339,7 +325,6 @@ private fun DetailsHeader(
     playsCount: Int?,
     loading: Boolean,
     onShareClick: () -> Unit,
-    onTrailerClick: (() -> Unit)?,
     onBackClick: () -> Unit,
 ) {
     Column(
@@ -430,21 +415,6 @@ private fun DetailsHeader(
                         .size(24.dp)
                         .onClick(onClick = onShareClick),
                 )
-
-                if (onTrailerClick != null) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_trailer),
-                        tint = TraktTheme.colors.textPrimary,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .alpha(if (trailer != null) 1F else 0.25F)
-                            .size(21.dp)
-                            .onClick(
-                                enabled = trailer != null,
-                                onClick = onTrailerClick,
-                            ),
-                    )
-                }
             }
         }
 
@@ -618,7 +588,6 @@ private fun Preview() {
             date = null,
             imageUrl = null,
             status = "Released",
-            trailer = null,
             certification = "PG-13",
             accentColor = null,
             traktRatings = 72,
@@ -644,7 +613,6 @@ private fun Preview() {
                 ),
             ),
             onShareClick = {},
-            onTrailerClick = {},
             onBackClick = {},
         )
     }

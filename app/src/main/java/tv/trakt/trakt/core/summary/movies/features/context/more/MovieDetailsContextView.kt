@@ -229,18 +229,18 @@ private fun ActionButtons(
             onClick = onShareClick ?: {},
         )
 
-        GhostButton(
-            enabled = trailerEnabled,
-            text = stringResource(R.string.button_text_trailer),
-            icon = painterResource(R.drawable.ic_trailer),
-            iconSize = 21.dp,
-            iconSpace = 16.dp,
-            modifier = Modifier
-                .graphicsLayer {
-                    translationX = -3.dp.toPx()
-                },
-            onClick = onTrailerClick ?: {},
-        )
+//        GhostButton(
+//            enabled = trailerEnabled,
+//            text = stringResource(R.string.button_text_trailer),
+//            icon = painterResource(R.drawable.ic_trailer),
+//            iconSize = 21.dp,
+//            iconSpace = 16.dp,
+//            modifier = Modifier
+//                .graphicsLayer {
+//                    translationX = -3.dp.toPx()
+//                },
+//            onClick = onTrailerClick ?: {},
+//        )
     }
 }
 

@@ -310,7 +310,6 @@ internal fun MovieDetailsContent(
                         loading = state.loading.isLoading ||
                             state.loadingProgress.isLoading,
                         onBackClick = onBackClick ?: {},
-                        onTrailerClick = onTrailerClick ?: {},
                         onShareClick = onShareClick ?: {},
                         modifier = Modifier.align(Alignment.Center),
                     )
@@ -325,6 +324,8 @@ internal fun MovieDetailsContent(
                         loading = state.loadingProgress.isLoading ||
                             state.loadingLists.isLoading,
                         inLists = state.movieProgress?.inAnyList,
+                        trailer = !movie.trailer.isNullOrBlank(),
+                        onTrailerClick = onTrailerClick,
                         onPrimaryClick = onTrackClick,
                         onSecondaryClick = when {
                             state.movieProgress?.hasLists == true -> onListsClick
