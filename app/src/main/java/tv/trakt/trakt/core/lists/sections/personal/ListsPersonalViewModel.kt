@@ -7,7 +7,6 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -35,6 +34,7 @@ import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocal
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
+import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.user.CollectionStateProvider
 import tv.trakt.trakt.core.user.UserCollectionState
 
@@ -184,10 +184,11 @@ internal class ListsPersonalViewModel(
     }
 
     @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<ListsPersonalState> = combine(
+    val state = combine(
         listState,
         userState,
         itemsState,
+        filterState,
         collectionStateProvider.stateFlow,
         navigateShow,
         navigateMovie,
@@ -198,11 +199,12 @@ internal class ListsPersonalViewModel(
             list = states[0] as CustomList?,
             user = states[1] as User?,
             items = states[2] as ImmutableList<PersonalListItem>?,
-            collection = states[3] as UserCollectionState,
-            navigateShow = states[4] as TraktId?,
-            navigateMovie = states[5] as TraktId?,
-            loading = states[6] as LoadingState,
-            error = states[7] as Exception?,
+            filter = states[3] as MediaMode?,
+            collection = states[4] as UserCollectionState,
+            navigateShow = states[5] as TraktId?,
+            navigateMovie = states[6] as TraktId?,
+            loading = states[7] as LoadingState,
+            error = states[8] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

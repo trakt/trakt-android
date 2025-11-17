@@ -54,6 +54,7 @@ import tv.trakt.trakt.core.lists.model.PersonalListItem.ShowItem
 import tv.trakt.trakt.core.lists.sections.personal.features.context.movie.sheet.ListMovieContextSheet
 import tv.trakt.trakt.core.lists.sections.personal.features.context.show.sheet.ListShowContextSheet
 import tv.trakt.trakt.core.lists.sections.personal.views.ListsPersonalItemView
+import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -253,6 +254,7 @@ internal fun ListsPersonalContent(
                         else -> {
                             ContentList(
                                 listItems = (state.items ?: emptyList()).toImmutableList(),
+                                listFilter = state.filter,
                                 collectionState = state.collection,
                                 contentPadding = contentPadding,
                                 onShowLongClick = onShowLongClick,
@@ -316,6 +318,7 @@ private fun ContentEmptyList(
 private fun ContentList(
     listItems: ImmutableList<PersonalListItem>,
     listState: LazyListState = rememberLazyListState(),
+    listFilter: MediaMode?,
     collectionState: UserCollectionState,
     contentPadding: PaddingValues,
     onShowClick: (Show) -> Unit = {},
@@ -345,7 +348,7 @@ private fun ContentList(
         ) { item ->
             ListsPersonalItemView(
                 item = item,
-                showMediaIcon = true,
+                showMediaIcon = listFilter == MediaMode.MEDIA,
                 watched = collectionState.isWatched(item.id),
                 watchlist = collectionState.isWatchlist(item.id),
                 onMovieClick = onMovieClick,
