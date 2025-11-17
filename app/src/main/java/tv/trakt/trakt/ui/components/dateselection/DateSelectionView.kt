@@ -119,28 +119,28 @@ private fun ActionButtons(
             text = "Just Now",
             icon = painterResource(R.drawable.ic_check),
             iconSize = 24.dp,
-            iconSpace = 16.dp,
+            iconSpace = 18.dp,
             onClick = onNowClick,
         )
         GhostButton(
             text = "Release Date",
             icon = painterResource(R.drawable.ic_calendar_time_trakt),
             iconSize = 24.dp,
-            iconSpace = 16.dp,
+            iconSpace = 18.dp,
             onClick = onReleaseClick,
         )
-//        GhostButton(
-//            text = "Other Date",
-//            icon = painterResource(R.drawable.ic_edit),
-//            iconSize = 24.dp,
-//            iconSpace = 16.dp,
-//            onClick = onOtherClick,
-//        )
+        GhostButton(
+            text = "Other Date",
+            icon = painterResource(R.drawable.ic_edit),
+            iconSize = 24.dp,
+            iconSpace = 18.dp,
+            onClick = onOtherClick,
+        )
         GhostButton(
             text = "Unknown Date",
             icon = painterResource(R.drawable.ic_question),
             iconSize = 24.dp,
-            iconSpace = 16.dp,
+            iconSpace = 18.dp,
             onClick = onUnknownClick,
         )
     }
