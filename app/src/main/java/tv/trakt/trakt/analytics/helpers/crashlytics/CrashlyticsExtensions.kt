@@ -2,9 +2,17 @@ package tv.trakt.trakt.analytics.helpers.crashlytics
 
 import com.google.firebase.Firebase
 import com.google.firebase.crashlytics.crashlytics
+import io.ktor.client.plugins.HttpRequestTimeoutException
 import timber.log.Timber
 import tv.trakt.trakt.BuildConfig
+import java.net.UnknownHostException
 import kotlin.coroutines.cancellation.CancellationException
+
+private val ignoredExceptions = arrayOf(
+    CancellationException::class, // Ignore cancellations
+    HttpRequestTimeoutException::class, // Ignore HTTP timeouts
+    UnknownHostException::class, // Ignore no internet connection
+)
 
 /**
  * Records the given [error] to Crashlytics.
@@ -12,7 +20,7 @@ import kotlin.coroutines.cancellation.CancellationException
 fun Timber.Forest.recordError(error: Exception) {
     Timber.e(error)
 
-    if (error is CancellationException) {
+    if (ignoredExceptions.any { it.isInstance(error) }) {
         return
     }
 

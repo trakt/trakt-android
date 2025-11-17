@@ -21,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.DefaultShadowColor
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -129,10 +128,7 @@ internal fun DetailsActions(
                             interactionSource = null,
                             indication = null,
                         )
-                        .size(19.dp)
-                        .graphicsLayer {
-                            translationX = 0.5.dp.toPx()
-                        },
+                        .size(19.dp),
                 )
 
                 Icon(

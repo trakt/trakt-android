@@ -73,7 +73,7 @@ internal class GetUpcomingUseCase(
 
     private suspend fun getShows(): List<HomeUpcomingItem.EpisodeItem> {
         val remoteShows = remoteUserSource.getShowsCalendar(
-            startDate = nowLocalDay(),
+            startDate = nowLocalDay().minusDays(1),
             days = HOME_UPCOMING_DAYS_LIMIT,
         )
 
@@ -118,7 +118,7 @@ internal class GetUpcomingUseCase(
 
     private suspend fun getMovies(): List<HomeUpcomingItem.MovieItem> {
         val remoteMovies = remoteUserSource.getMoviesCalendar(
-            startDate = nowLocal().toLocalDate(),
+            startDate = nowLocal().toLocalDate().minusDays(1),
             days = HOME_UPCOMING_DAYS_LIMIT,
         )
 
