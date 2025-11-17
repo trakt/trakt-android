@@ -100,8 +100,10 @@ internal fun PanelMediaCard(
                     alpha = if (shadow > 0.dp) 0.33F else 0F,
                 ),
             )
-            .clip(RoundedCornerShape(corner))
-            .background(containerColor)
+            .graphicsLayer {
+                clip = false
+            }
+            .background(containerColor, RoundedCornerShape(corner))
             .height(TraktTheme.size.verticalMediumMediaCardSize / VerticalImageAspectRatio)
             .combinedClickable(
                 onClick = onClick ?: {},
@@ -202,7 +204,8 @@ internal fun PanelMediaCard(
                         .align(Alignment.BottomCenter)
                         .padding(start = 4.dp)
                         .graphicsLayer {
-                            translationY = -2.25.dp.toPx()
+                            clip = false
+                            translationY = 5.dp.toPx()
                         },
                 ) {
                     if (watched) {
@@ -249,7 +252,10 @@ internal fun PanelMediaCard(
             }
         }
 
-        Box {
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(corner)),
+        ) {
             if (!containerImageUrl.isNullOrBlank() && !isContainerError) {
                 val inspection = LocalInspectionMode.current
                 val gradientColor2 = when {
