@@ -210,8 +210,8 @@ internal fun PanelMediaCard(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
                                 .size(
-                                    width = 20.dp,
-                                    height = 14.dp,
+                                    width = 22.dp,
+                                    height = 16.dp,
                                 )
                                 .shadow(1.dp, shape)
                                 .background(TraktTheme.colors.chipContainer, shape),
@@ -221,7 +221,7 @@ internal fun PanelMediaCard(
                                 tint = Color.White,
                                 contentDescription = null,
                                 modifier = Modifier
-                                    .size(9.dp),
+                                    .size(10.dp),
                             )
                         }
                     }
@@ -231,8 +231,8 @@ internal fun PanelMediaCard(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
                                 .size(
-                                    width = 20.dp,
-                                    height = 14.dp,
+                                    width = 22.dp,
+                                    height = 16.dp,
                                 )
                                 .shadow(1.dp, shape)
                                 .background(TraktTheme.colors.chipContainer, shape),
@@ -241,7 +241,7 @@ internal fun PanelMediaCard(
                                 painter = painterResource(R.drawable.ic_bookmark_on),
                                 tint = Color.White,
                                 contentDescription = null,
-                                modifier = Modifier.size(8.dp),
+                                modifier = Modifier.size(9.dp),
                             )
                         }
                     }
