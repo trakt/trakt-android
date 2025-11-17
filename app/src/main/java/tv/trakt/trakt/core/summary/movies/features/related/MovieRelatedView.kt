@@ -33,6 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
@@ -169,6 +170,7 @@ private fun ContentList(
                 watchlist = collection.isWatchlist(item.ids.trakt),
                 onClick = { onClick?.invoke(item) },
                 onLongClick = { onLongClick?.invoke(item) },
+                chipSpacing = 10.dp,
                 chipContent = { chipModifier ->
                     val footerText = remember {
                         val runtime = item.runtime?.inWholeMinutes
@@ -211,7 +213,9 @@ private fun ContentLoading(
             .alpha(if (visible) 1F else 0F),
     ) {
         items(count = 6) {
-            VerticalMediaSkeletonCard()
+            VerticalMediaSkeletonCard(
+                chipSpacing = 8.dp,
+            )
         }
     }
 }

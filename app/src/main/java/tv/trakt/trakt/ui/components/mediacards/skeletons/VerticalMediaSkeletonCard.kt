@@ -36,6 +36,7 @@ internal fun VerticalMediaSkeletonCard(
     corner: Dp = 15.dp,
     chipRatio: Float = 0.33F,
     secondaryChipRatio: Float = 0.5F,
+    chipSpacing: Dp = 6.dp,
     shimmer: Boolean = true,
     chip: Boolean = true,
     secondaryChip: Boolean = false,
@@ -60,7 +61,7 @@ internal fun VerticalMediaSkeletonCard(
     }
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(6.dp),
+        verticalArrangement = Arrangement.spacedBy(chipSpacing),
         modifier = modifier
             .widthIn(max = cardWidth),
     ) {

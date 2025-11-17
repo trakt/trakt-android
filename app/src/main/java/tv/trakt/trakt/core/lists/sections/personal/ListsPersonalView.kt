@@ -284,6 +284,7 @@ private fun ContentLoadingList(
         items(count = 6) {
             VerticalMediaSkeletonCard(
                 chipRatio = 0.66F,
+                chipSpacing = 8.dp,
                 shimmer = false,
             )
         }

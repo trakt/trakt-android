@@ -51,6 +51,7 @@ internal fun ListsWatchlistItemView(
                 watched = watched,
                 onClick = onShowClick,
                 onLongClick = onShowLongClick,
+                chipSpacing = 10.dp,
                 chipContent = { modifier ->
                     if (isReleased) {
                         Row(
@@ -131,6 +132,7 @@ internal fun ListsWatchlistItemView(
                 watched = watched,
                 onClick = onMovieClick,
                 onLongClick = onMovieLongClick,
+                chipSpacing = 10.dp,
                 chipContent = { modifier ->
                     if (isReleased) {
                         Row(

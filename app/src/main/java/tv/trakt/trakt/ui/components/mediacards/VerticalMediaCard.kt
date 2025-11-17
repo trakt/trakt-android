@@ -6,7 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -75,6 +75,7 @@ internal fun VerticalMediaCard(
     blackWhite: Boolean = false,
     watched: Boolean = false,
     watchlist: Boolean = false,
+    chipSpacing: Dp = 8.dp,
     chipContent: @Composable (Modifier) -> Unit = {},
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
@@ -110,7 +111,7 @@ internal fun VerticalMediaCard(
     }
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = spacedBy(chipSpacing),
         modifier = modifier
             .widthIn(max = cardWidth),
     ) {
@@ -238,11 +239,11 @@ internal fun VerticalMediaCard(
 
             if (watchlist || watched) {
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    horizontalArrangement = spacedBy(4.dp),
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .graphicsLayer {
-                            translationY = 4.dp.toPx()
+                            translationY = 7.dp.toPx()
                         },
                 ) {
                     if (watched) {
@@ -278,8 +279,8 @@ private fun CollectionChip(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .size(
-                width = 25.dp,
-                height = 18.dp,
+                width = 24.dp,
+                height = 16.dp,
             )
             .shadow(1.5.dp, shape)
             .background(TraktTheme.colors.chipContainer, shape),

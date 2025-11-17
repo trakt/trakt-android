@@ -333,6 +333,7 @@ private fun ContentList(
                     items(count = 12) { index ->
                         VerticalMediaSkeletonCard(
                             chipRatio = 0.66F,
+                            chipSpacing = 8.dp,
                             modifier = Modifier
                                 .padding(bottom = 9.25.dp)
                                 .animateItem(

@@ -54,6 +54,7 @@ internal fun ListsPersonalItemView(
                 imageUrl = item.images?.getPosterUrl(),
                 onClick = { onShowClick(item.show) },
                 onLongClick = onLongClick,
+                chipSpacing = 10.dp,
                 chipContent = { modifier ->
                     if (isReleased) {
                         Row(
@@ -135,6 +136,7 @@ internal fun ListsPersonalItemView(
                 watchlist = watchlist,
                 onClick = { onMovieClick(item.movie) },
                 onLongClick = onLongClick,
+                chipSpacing = 10.dp,
                 chipContent = { modifier ->
                     if (isReleased) {
                         Row(

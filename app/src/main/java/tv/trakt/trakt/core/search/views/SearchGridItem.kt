@@ -95,6 +95,7 @@ private fun ShowGridItem(
         imageUrl = item.show.images?.getPosterUrl(),
         watched = watched,
         watchlist = watchlist,
+        chipSpacing = 10.dp,
         chipContent = { modifier ->
             Row(
                 verticalAlignment = CenterVertically,
@@ -168,6 +169,7 @@ private fun MovieGridItem(
         imageUrl = item.movie.images?.getPosterUrl(),
         watched = watched,
         watchlist = watchlist,
+        chipSpacing = 10.dp,
         chipContent = { modifier ->
             Row(
                 verticalAlignment = CenterVertically,

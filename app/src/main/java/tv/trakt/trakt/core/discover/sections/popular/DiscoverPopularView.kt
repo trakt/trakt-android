@@ -210,6 +210,7 @@ private fun ContentLoadingList(
         items(count = 6) {
             VerticalMediaSkeletonCard(
                 chipRatio = 0.5F,
+                chipSpacing = 8.dp,
             )
         }
     }
@@ -279,6 +280,7 @@ private fun ContentListItem(
         watchlist = watchlist,
         onClick = onClick,
         onLongClick = onLongClick,
+        chipSpacing = 10.dp,
         chipContent = { chipModifier ->
             val footerText = when (item) {
                 is MovieItem -> {
