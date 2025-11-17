@@ -4,14 +4,21 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
+import java.time.Instant
 
 internal class AddHomeHistoryUseCase(
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
 ) {
-    suspend fun addMovieToHistory(movieId: TraktId) {
-        updateMovieHistoryUseCase.addToWatched(movieId)
+    suspend fun addMovieToHistory(
+        movieId: TraktId,
+        customDate: Instant? = null,
+    ) {
+        updateMovieHistoryUseCase.addToWatched(
+            movieId,
+            customDate,
+        )
         userWatchlistLocalSource.removeMovies(
             ids = setOf(movieId),
             notify = true,
@@ -21,8 +28,12 @@ internal class AddHomeHistoryUseCase(
     suspend fun addEpisodeToHistory(
         showId: TraktId,
         episodeId: TraktId,
+        customDate: Instant? = null,
     ) {
-        updateEpisodeHistoryUseCase.addToHistory(episodeId)
+        updateEpisodeHistoryUseCase.addToHistory(
+            episodeId,
+            customDate,
+        )
         userWatchlistLocalSource.removeShows(
             ids = setOf(showId),
             notify = true,

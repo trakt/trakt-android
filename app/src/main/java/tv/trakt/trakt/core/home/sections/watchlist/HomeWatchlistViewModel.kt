@@ -209,6 +209,7 @@ internal class HomeWatchlistViewModel(
     fun addShowToHistory(
         showId: TraktId,
         episodeId: TraktId?,
+        customDate: Instant? = null,
     ) {
         if (processingJob?.isActive == true || episodeId == null) {
             return
@@ -234,7 +235,9 @@ internal class HomeWatchlistViewModel(
                 addHistoryUseCase.addEpisodeToHistory(
                     showId = showId,
                     episodeId = episodeId,
+                    customDate = customDate,
                 )
+
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "episode",
                     source = "home_watchlist",
@@ -258,7 +261,10 @@ internal class HomeWatchlistViewModel(
         }
     }
 
-    fun addMovieToHistory(movieId: TraktId) {
+    fun addMovieToHistory(
+        movieId: TraktId,
+        customDate: Instant? = null,
+    ) {
         if (processingJob?.isActive == true) {
             return
         }
@@ -280,7 +286,11 @@ internal class HomeWatchlistViewModel(
                     currentItems.toImmutableList()
                 }
 
-                addHistoryUseCase.addMovieToHistory(movieId)
+                addHistoryUseCase.addMovieToHistory(
+                    movieId = movieId,
+                    customDate = customDate,
+                )
+
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
                     source = "home_watchlist",

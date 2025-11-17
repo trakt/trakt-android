@@ -4,6 +4,7 @@ package tv.trakt.trakt.core.home.sections.watchlist
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement.SpaceBetween
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -63,9 +64,16 @@ import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.ShowItem
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.dateselection.CustomDate
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
+import tv.trakt.trakt.ui.components.dateselection.Now
+import tv.trakt.trakt.ui.components.dateselection.ReleaseDate
+import tv.trakt.trakt.ui.components.dateselection.UnknownDate
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
+import java.time.Instant
+import java.time.ZoneOffset.UTC
 
 @Composable
 internal fun HomeWatchlistView(
@@ -84,6 +92,7 @@ internal fun HomeWatchlistView(
 
     var contextShowSheet by remember { mutableStateOf<ShowItem?>(null) }
     var contextMovieSheet by remember { mutableStateOf<Movie?>(null) }
+    var dateSheet by remember { mutableStateOf<WatchlistItem?>(null) }
 
     LaunchedEffect(state) {
         state.navigateShow?.let {
@@ -135,6 +144,9 @@ internal fun HomeWatchlistView(
                 is MovieItem -> viewModel.addMovieToHistory(it.id)
             }
         },
+        onCheckLongClick = {
+            dateSheet = it
+        },
         onMoreClick = onMoreClick,
     )
 
@@ -167,6 +179,35 @@ internal fun HomeWatchlistView(
             viewModel.loadData(ignoreErrors = true)
         },
     )
+
+    HomeDateSelectionSheet(
+        item = dateSheet,
+        onDateSelected = { date ->
+            dateSheet?.let {
+                when (it) {
+                    is MovieItem -> {
+                        viewModel.addMovieToHistory(
+                            movieId = it.id,
+                            customDate = date,
+                        )
+                    }
+                    is ShowItem -> {
+                        val episode = (dateSheet as ShowItem).progress?.nextEpisode
+                            ?: return@HomeDateSelectionSheet
+
+                        viewModel.addShowToHistory(
+                            showId = it.id,
+                            episodeId = episode.ids.trakt,
+                            customDate = date,
+                        )
+                    }
+                }
+            }
+        },
+        onDismiss = {
+            dateSheet = null
+        },
+    )
 }
 
 @Composable
@@ -178,6 +219,7 @@ internal fun HomeWatchlistContent(
     onClick: (WatchlistItem) -> Unit = {},
     onLongClick: (WatchlistItem) -> Unit = {},
     onCheckClick: (WatchlistItem) -> Unit = {},
+    onCheckLongClick: (WatchlistItem) -> Unit = {},
     onEmptyClick: () -> Unit = {},
     onMoreClick: () -> Unit = {},
 ) {
@@ -274,6 +316,7 @@ internal fun HomeWatchlistContent(
                                 onClick = onClick,
                                 onLongClick = onLongClick,
                                 onCheckClick = onCheckClick,
+                                onCheckLongClick = onCheckLongClick,
                             )
                         }
                     }
@@ -316,6 +359,7 @@ private fun ContentList(
     onClick: (WatchlistItem) -> Unit,
     onLongClick: (WatchlistItem) -> Unit,
     onCheckClick: (WatchlistItem) -> Unit,
+    onCheckLongClick: (WatchlistItem) -> Unit,
 ) {
     val currentFilter = remember { mutableStateOf(listFilter) }
 
@@ -342,6 +386,7 @@ private fun ContentList(
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
                     onCheckClick = { onCheckClick(item) },
+                    onCheckLongClick = { onCheckLongClick(item) },
                     modifier = Modifier.animateItem(
                         fadeInSpec = null,
                         fadeOutSpec = null,
@@ -354,6 +399,7 @@ private fun ContentList(
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
                     onCheckClick = { onCheckClick(item) },
+                    onCheckLongClick = { onCheckLongClick(item) },
                     modifier = Modifier.animateItem(
                         fadeInSpec = null,
                         fadeOutSpec = null,
@@ -371,6 +417,7 @@ private fun ContentListShowItem(
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
     onCheckClick: () -> Unit = {},
+    onCheckLongClick: () -> Unit = {},
 ) {
     VerticalMediaCard(
         title = item.title,
@@ -411,6 +458,7 @@ private fun ContentListShowItem(
                 ContentItemCheck(
                     isLoading = item.loading,
                     onCheckClick = onCheckClick,
+                    onCheckLongClick = onCheckLongClick,
                     modifier = Modifier.padding(start = 4.dp),
                 )
             }
@@ -426,6 +474,7 @@ private fun ContentListMovieItem(
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
     onCheckClick: () -> Unit = {},
+    onCheckLongClick: () -> Unit = {},
 ) {
     VerticalMediaCard(
         title = item.title,
@@ -469,6 +518,7 @@ private fun ContentListMovieItem(
                 ContentItemCheck(
                     isLoading = item.loading,
                     onCheckClick = onCheckClick,
+                    onCheckLongClick = onCheckLongClick,
                     modifier = Modifier.padding(start = 4.dp),
                 )
             }
@@ -483,6 +533,7 @@ private fun ContentItemCheck(
     modifier: Modifier = Modifier,
     checkSize: Dp = 20.dp,
     onCheckClick: () -> Unit,
+    onCheckLongClick: () -> Unit,
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -499,10 +550,52 @@ private fun ContentItemCheck(
                 tint = TraktTheme.colors.accent,
                 modifier = Modifier
                     .size(checkSize)
-                    .onClick { onCheckClick() },
+                    .combinedClickable(
+                        onClick = onCheckClick,
+                        onLongClick = onCheckLongClick,
+                        interactionSource = null,
+                        indication = null,
+                    ),
             )
         }
     }
+}
+
+@Composable
+private fun HomeDateSelectionSheet(
+    item: WatchlistItem?,
+    onDateSelected: (Instant?) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    DateSelectionSheet(
+        active = item != null,
+        title = item?.title.orEmpty(),
+        subtitle = when (item) {
+            is ShowItem -> item.progress?.nextEpisode?.seasonEpisodeString()
+            is MovieItem -> null
+            else -> null
+        },
+        onResult = {
+            if (item == null) return@DateSelectionSheet
+            when (it) {
+                is Now -> onDateSelected(null)
+                is CustomDate -> onDateSelected(it.date)
+                is UnknownDate -> onDateSelected(it.date)
+                is ReleaseDate -> when (item) {
+                    is ShowItem -> onDateSelected(
+                        item.progress?.nextEpisode?.firstAired?.toInstant()
+                            ?: item.show.released?.toInstant(),
+                    )
+                    is MovieItem -> {
+                        val localDate = item.movie.released
+                        val instantDate = localDate?.atTime(20, 0)?.toInstant(UTC)
+                        onDateSelected(instantDate)
+                    }
+                }
+            }
+        },
+        onDismiss = onDismiss,
+    )
 }
 
 @Preview(

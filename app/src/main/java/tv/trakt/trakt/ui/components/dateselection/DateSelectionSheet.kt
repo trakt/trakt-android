@@ -46,7 +46,19 @@ import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Instant
 
-@OptIn(ExperimentalMaterial3Api::class)
+object PastSelectableDates : SelectableDates {
+    private val nowUtc = nowUtc()
+    private val nowInstantUtc = nowUtcInstant()
+
+    override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+        return utcTimeMillis <= nowInstantUtc.toEpochMilli()
+    }
+
+    override fun isSelectableYear(year: Int): Boolean {
+        return year <= nowUtc.year
+    }
+}
+
 @Composable
 internal fun DateSelectionSheet(
     state: SheetState = rememberModalBottomSheetState(
@@ -125,8 +137,9 @@ internal fun DateSelectionSheet(
                 action = {
                     val localOffset = nowLocal().offset.totalSeconds
                     val localDateTime = dateTimeUtc.plusSeconds(-localOffset.toLong())
-                    Timber.d("Selected date time: UTC=$dateTimeUtc, Local=$localDateTime")
                     onResult(CustomDate(localDateTime))
+
+                    Timber.d("Selected date time: UTC=$dateTimeUtc, Local=$localDateTime")
                 },
                 onDismiss = onDismiss,
             )
@@ -298,20 +311,6 @@ private fun TraktDatePicker(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-object PastSelectableDates : SelectableDates {
-    private val nowUtc = nowUtc()
-    private val nowInstantUtc = nowUtcInstant()
-
-    override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-        return utcTimeMillis <= nowInstantUtc.toEpochMilli()
-    }
-
-    override fun isSelectableYear(year: Int): Boolean {
-        return year <= nowUtc.year
-    }
-}
-
 private fun CoroutineScope.dismissWithAction(
     sheet: SheetState,
     action: () -> Unit = {},
@@ -327,7 +326,6 @@ private fun CoroutineScope.dismissWithAction(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 private fun Preview() {
