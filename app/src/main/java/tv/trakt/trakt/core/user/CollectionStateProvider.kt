@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
 import timber.log.Timber
+import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
@@ -66,7 +67,7 @@ internal class CollectionStateProvider(
             }
         } catch (error: Exception) {
             error.rethrowCancellation {
-                Timber.e(error, "Failed to load user collection state")
+                Timber.recordError(error)
             }
         } finally {
             loadingLock.unlock()
@@ -107,7 +108,7 @@ internal class CollectionStateProvider(
             }
         } catch (error: Exception) {
             error.rethrowCancellation {
-                Timber.e(error, "Failed to load watched data")
+                Timber.recordError(error)
             }
         }
     }
@@ -141,7 +142,7 @@ internal class CollectionStateProvider(
             }
         } catch (error: Exception) {
             error.rethrowCancellation {
-                Timber.e(error, "Failed to load watchlist data")
+                Timber.recordError(error)
             }
         }
     }

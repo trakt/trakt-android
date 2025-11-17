@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
+import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
@@ -115,7 +116,7 @@ internal class AllActivitySocialViewModel(
                     if (!ignoreErrors) {
                         errorState.update { error }
                     }
-                    Timber.e(error, "Error loading social activity")
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingState.update { DONE }
@@ -221,7 +222,7 @@ internal class AllActivitySocialViewModel(
                 navigateMovie.update { movie.ids.trakt }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error, "Failed to navigate to movie")
+                    Timber.recordError(error)
                 }
             } finally {
                 processingJob = null

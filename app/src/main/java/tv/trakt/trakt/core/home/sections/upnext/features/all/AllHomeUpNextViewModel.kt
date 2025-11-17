@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
+import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -124,7 +125,7 @@ internal class AllHomeUpNextViewModel(
                     if (!ignoreErrors) {
                         errorState.update { error }
                     }
-                    Timber.e(error, "Failed to load data")
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingState.update { DONE }
@@ -163,7 +164,7 @@ internal class AllHomeUpNextViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error, "Failed to load more page data")
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingMoreState.update { DONE }
@@ -230,7 +231,7 @@ internal class AllHomeUpNextViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.d(error, "Failed to add movie to history")
+                    Timber.recordError(error)
                 }
             } finally {
                 processingJob = null
@@ -244,7 +245,7 @@ internal class AllHomeUpNextViewModel(
                 loadUserProgressUseCase.loadShowsProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             }
         }

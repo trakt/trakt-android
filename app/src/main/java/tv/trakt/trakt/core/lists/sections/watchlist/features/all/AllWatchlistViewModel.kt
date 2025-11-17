@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
+import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
@@ -154,7 +155,7 @@ internal class AllWatchlistViewModel(
                     if (!ignoreErrors) {
                         errorState.update { error }
                     }
-                    Timber.e(error, "Failed to load data")
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingState.update { DONE }
@@ -244,7 +245,7 @@ internal class AllWatchlistViewModel(
                 loadUserProgressUseCase.loadMoviesProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             }
         }

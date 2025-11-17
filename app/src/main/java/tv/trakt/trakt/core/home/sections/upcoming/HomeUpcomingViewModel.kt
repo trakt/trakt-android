@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
@@ -141,7 +142,7 @@ internal class HomeUpcomingViewModel(
                 if (!ignoreErrors) {
                     errorState.update { error }
                 }
-                Timber.e(error, "Failed to load upcoming data")
+                Timber.recordError(error)
             } finally {
                 loadingState.update { DONE }
                 dataJob = null

@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
+import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -124,7 +125,7 @@ internal class MovieDetailsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             }
         }
@@ -147,7 +148,7 @@ internal class MovieDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingState.update { DONE }
@@ -224,7 +225,7 @@ internal class MovieDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingProgress.update { DONE }
@@ -278,7 +279,7 @@ internal class MovieDetailsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             }
         }
@@ -297,7 +298,7 @@ internal class MovieDetailsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             }
         }
@@ -311,7 +312,7 @@ internal class MovieDetailsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             }
         }
@@ -358,7 +359,7 @@ internal class MovieDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingProgress.update { DONE }
@@ -403,7 +404,7 @@ internal class MovieDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingProgress.update { DONE }
@@ -494,7 +495,7 @@ internal class MovieDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingLists.update { DONE }
@@ -528,7 +529,7 @@ internal class MovieDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingLists.update { DONE }
@@ -559,7 +560,7 @@ internal class MovieDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingLists.update { DONE }
@@ -587,7 +588,7 @@ internal class MovieDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingLists.update { DONE }
@@ -664,7 +665,7 @@ internal class MovieDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingFavorite.update { DONE }
@@ -700,7 +701,7 @@ internal class MovieDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingFavorite.update { DONE }

@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
+import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
@@ -115,7 +116,7 @@ internal class PostRatingWorker(
             if (error is CancellationException) {
                 return Result.failure()
             }
-            Timber.e(error)
+            Timber.recordError(error)
             return Result.retry()
         }
 

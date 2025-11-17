@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentReactionsUseCase
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentRepliesUseCase
@@ -69,7 +70,7 @@ internal class CommentDetailsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             }
         }
@@ -103,7 +104,7 @@ internal class CommentDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.value = error
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingState.update { DONE }
@@ -127,7 +128,7 @@ internal class CommentDetailsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             }
         }
@@ -194,7 +195,7 @@ internal class CommentDetailsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             }
         }

@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
+import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.helpers.DynamicStringResource
@@ -151,7 +152,7 @@ internal class ShowDetailsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             }
         }
@@ -175,7 +176,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingState.update { DONE }
@@ -193,7 +194,7 @@ internal class ShowDetailsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             }
         }
@@ -274,7 +275,7 @@ internal class ShowDetailsViewModel(
                     if (!ignoreErrors) {
                         errorState.update { error }
                     }
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingProgress.update { DONE }
@@ -295,7 +296,7 @@ internal class ShowDetailsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             }
         }
@@ -309,7 +310,7 @@ internal class ShowDetailsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             }
         }
@@ -360,7 +361,7 @@ internal class ShowDetailsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             }
         }
@@ -446,7 +447,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingProgress.update { DONE }
@@ -494,7 +495,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingProgress.update { DONE }
@@ -538,7 +539,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingLists.update { DONE }
@@ -572,7 +573,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingLists.update { DONE }
@@ -603,7 +604,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingLists.update { DONE }
@@ -631,7 +632,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingLists.update { DONE }
@@ -745,7 +746,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingFavorite.update { DONE }
@@ -780,7 +781,7 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingFavorite.update { DONE }

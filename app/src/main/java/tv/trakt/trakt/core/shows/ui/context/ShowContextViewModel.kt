@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
-import tv.trakt.trakt.analytics.helpers.crashlytics.recordError
+import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
@@ -144,7 +144,7 @@ internal class ShowContextViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingWatchlistState.update { DONE }
@@ -175,7 +175,7 @@ internal class ShowContextViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingWatchlistState.update { DONE }
@@ -207,7 +207,7 @@ internal class ShowContextViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingWatchedState.update { DONE }
@@ -238,7 +238,7 @@ internal class ShowContextViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingWatchedState.update { DONE }

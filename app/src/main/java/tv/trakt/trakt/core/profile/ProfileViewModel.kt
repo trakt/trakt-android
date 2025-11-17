@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
+import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_THIS_MONTH_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -82,7 +83,7 @@ internal class ProfileViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingMonthStatsState.update { LoadingState.DONE }
@@ -99,7 +100,7 @@ internal class ProfileViewModel(
                 analytics.logUserLogout()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingState.update { LoadingState.DONE }

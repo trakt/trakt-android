@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
+import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
@@ -118,7 +119,7 @@ internal class SearchViewModel(
                 error.rethrowCancellation {
                     errorState.update { error }
                     searchingState.update { false }
-                    Timber.e(error, "Error during initial load!")
+                    Timber.recordError(error)
                 }
             }
         }
@@ -303,7 +304,7 @@ internal class SearchViewModel(
                     } catch (error: Exception) {
                         error.rethrowCancellation {
                             errorState.update { error }
-                            Timber.e(error, "Error during initial load!")
+                            Timber.recordError(error)
                         }
                     } finally {
                         searchingState.update { false }
@@ -365,7 +366,7 @@ internal class SearchViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error, "Error!")
+                    Timber.recordError(error)
                 }
             } finally {
                 searchingState.update { false }
@@ -428,7 +429,7 @@ internal class SearchViewModel(
                     query = inputState.value.query,
                 )
             } catch (error: Exception) {
-                Timber.e(error, "Error posting user search")
+                Timber.recordError(error)
             }
         }
     }
@@ -444,7 +445,7 @@ internal class SearchViewModel(
                     query = inputState.value.query,
                 )
             } catch (error: Exception) {
-                Timber.e(error, "Error posting user search")
+                Timber.recordError(error)
             }
         }
     }

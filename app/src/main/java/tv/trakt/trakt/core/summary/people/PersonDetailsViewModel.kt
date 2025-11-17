@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
+import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -92,7 +93,7 @@ internal class PersonDetailsViewModel(
         } catch (error: Exception) {
             error.rethrowCancellation {
                 errorState.update { error }
-                Timber.e("Error loading person details: ${error.message}")
+                Timber.recordError(error)
             }
         }
     }
@@ -114,7 +115,7 @@ internal class PersonDetailsViewModel(
         } catch (error: Exception) {
             error.rethrowCancellation {
                 errorState.update { error }
-                Timber.e("Error loading person credits: ${error.message}")
+                Timber.recordError(error)
             }
         } finally {
             loadingCreditsState.update { LoadingState.DONE }
