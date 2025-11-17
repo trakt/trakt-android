@@ -192,5 +192,9 @@
     <string name="warning_prompt_mark_as_watched_multiple_episodes">Are you sure you want to mark %d episodes as watched?</string>
     <string name="list_title_watch_history">History</string>
     <string name="list_title_from_watchlist">From Watchlist</string>
+    <string name="button_text_just_now">Just Now</string>
+    <string name="button_text_release_date">Release Date</string>
+    <string name="button_text_other_date">Other Date</string>
+    <string name="button_text_unknown_date">Unknown Date</string>
 
 </resources>

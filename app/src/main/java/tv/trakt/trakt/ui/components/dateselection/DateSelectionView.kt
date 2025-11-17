@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -116,28 +117,28 @@ private fun ActionButtons(
             },
     ) {
         GhostButton(
-            text = "Just Now",
+            text = stringResource(R.string.button_text_just_now),
             icon = painterResource(R.drawable.ic_check),
             iconSize = 24.dp,
             iconSpace = 18.dp,
             onClick = onNowClick,
         )
         GhostButton(
-            text = "Release Date",
+            text = stringResource(R.string.button_text_release_date),
             icon = painterResource(R.drawable.ic_calendar_time_trakt),
             iconSize = 24.dp,
             iconSpace = 18.dp,
             onClick = onReleaseClick,
         )
         GhostButton(
-            text = "Other Date",
+            text = stringResource(R.string.button_text_other_date),
             icon = painterResource(R.drawable.ic_edit),
             iconSize = 24.dp,
             iconSpace = 18.dp,
             onClick = onOtherClick,
         )
         GhostButton(
-            text = "Unknown Date",
+            text = stringResource(R.string.button_text_unknown_date),
             icon = painterResource(R.drawable.ic_question),
             iconSize = 24.dp,
             iconSpace = 18.dp,
