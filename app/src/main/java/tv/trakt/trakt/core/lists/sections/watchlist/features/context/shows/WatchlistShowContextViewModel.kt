@@ -25,7 +25,7 @@ import tv.trakt.trakt.core.sync.usecases.UpdateShowWatchlistUseCase
 import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
-import java.time.Instant
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 
 internal class WatchlistShowContextViewModel(
     private val show: Show,
@@ -80,7 +80,7 @@ internal class WatchlistShowContextViewModel(
         }
     }
 
-    fun addToWatched(customDate: Instant? = null) {
+    fun addToWatched(customDate: DateSelectionResult? = null) {
         if (isLoading()) {
             return
         }

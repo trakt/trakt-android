@@ -1,6 +1,5 @@
 package tv.trakt.trakt.core.discover
 
-import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -25,7 +24,6 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
-import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.discover.sections.anticipated.DiscoverAnticipatedView
@@ -48,16 +46,10 @@ internal fun DiscoverScreen(
     onNavigateToAllAnticipated: () -> Unit,
     onNavigateToAllRecommended: () -> Unit,
 ) {
-    val localActivity = LocalActivity.current
     val state by viewModel.state.collectAsStateWithLifecycle()
-
-    val isHalloween = remember {
-        (localActivity as? MainActivity)?.halloweenConfig?.enabled == true
-    }
 
     DiscoverScreenContent(
         state = state,
-        halloween = isHalloween,
         onShowClick = onNavigateToShow,
         onMovieClick = onNavigateToMovie,
         onMoreTrendingClick = onNavigateToAllTrending,
@@ -70,7 +62,6 @@ internal fun DiscoverScreen(
 @Composable
 private fun DiscoverScreenContent(
     state: DiscoverState,
-    halloween: Boolean,
     modifier: Modifier = Modifier,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit = {},
@@ -217,7 +208,6 @@ private fun Preview() {
     TraktTheme {
         DiscoverScreenContent(
             state = DiscoverState(),
-            halloween = false,
             onShowClick = {},
         )
     }

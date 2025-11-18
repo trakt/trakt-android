@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalCoilApi::class)
 
 package tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies
 
@@ -36,15 +36,10 @@ import tv.trakt.trakt.core.movies.ui.MovieMetaFooter
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
-import tv.trakt.trakt.ui.components.dateselection.CustomDate
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
-import tv.trakt.trakt.ui.components.dateselection.Now
-import tv.trakt.trakt.ui.components.dateselection.ReleaseDate
-import tv.trakt.trakt.ui.components.dateselection.UnknownDate
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
-import java.time.Instant
-import java.time.ZoneOffset.UTC
 
 @Composable
 internal fun WatchlistMovieContextView(
@@ -199,7 +194,7 @@ private fun WatchlistMovieContextViewContent(
 @Composable
 private fun DateSelectionSheet(
     movie: Movie?,
-    onDateSelected: (Instant?) -> Unit,
+    onDateSelected: (DateSelectionResult?) -> Unit,
     onDismiss: () -> Unit,
 ) {
     DateSelectionSheet(
@@ -208,21 +203,12 @@ private fun DateSelectionSheet(
         subtitle = null,
         onResult = {
             if (movie == null) return@DateSelectionSheet
-            when (it) {
-                is Now -> onDateSelected(null)
-                is CustomDate -> onDateSelected(it.date)
-                is UnknownDate -> onDateSelected(it.date)
-                is ReleaseDate -> {
-                    val instantDate = movie.released?.atTime(20, 0)?.toInstant(UTC)
-                    onDateSelected(instantDate)
-                }
-            }
+            onDateSelected(it)
         },
         onDismiss = onDismiss,
     )
 }
 
-@OptIn(ExperimentalCoilApi::class)
 @Preview(
     device = "id:pixel_5",
     showBackground = true,

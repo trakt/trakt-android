@@ -52,6 +52,7 @@ import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 import java.time.Instant
 
 @OptIn(FlowPreview::class)
@@ -209,7 +210,7 @@ internal class HomeWatchlistViewModel(
     fun addShowToHistory(
         showId: TraktId,
         episodeId: TraktId?,
-        customDate: Instant? = null,
+        customDate: DateSelectionResult? = null,
     ) {
         if (processingJob?.isActive == true || episodeId == null) {
             return
@@ -263,7 +264,7 @@ internal class HomeWatchlistViewModel(
 
     fun addMovieToHistory(
         movieId: TraktId,
-        customDate: Instant? = null,
+        customDate: DateSelectionResult? = null,
     ) {
         if (processingJob?.isActive == true) {
             return

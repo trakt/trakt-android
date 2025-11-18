@@ -62,14 +62,10 @@ import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EpisodeProgressBar
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
-import tv.trakt.trakt.ui.components.dateselection.CustomDate
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
-import tv.trakt.trakt.ui.components.dateselection.Now
-import tv.trakt.trakt.ui.components.dateselection.ReleaseDate
-import tv.trakt.trakt.ui.components.dateselection.UnknownDate
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
-import java.time.Instant
 
 @Composable
 internal fun AllHomeUpNextScreen(
@@ -422,7 +418,7 @@ private fun TitleBar(modifier: Modifier = Modifier) {
 @Composable
 private fun HomeDateSelectionSheet(
     item: ProgressShow?,
-    onDateSelected: (Instant?) -> Unit,
+    onDateSelected: (DateSelectionResult?) -> Unit,
     onDismiss: () -> Unit,
 ) {
     DateSelectionSheet(
@@ -431,15 +427,7 @@ private fun HomeDateSelectionSheet(
         subtitle = item?.progress?.nextEpisode?.seasonEpisodeString(),
         onResult = {
             if (item == null) return@DateSelectionSheet
-            when (it) {
-                is Now -> onDateSelected(null)
-                is CustomDate -> onDateSelected(it.date)
-                is UnknownDate -> onDateSelected(it.date)
-                is ReleaseDate -> onDateSelected(
-                    item.progress.nextEpisode.firstAired?.toInstant()
-                        ?: item.show.released?.toInstant(),
-                )
-            }
+            onDateSelected(it)
         },
         onDismiss = onDismiss,
     )

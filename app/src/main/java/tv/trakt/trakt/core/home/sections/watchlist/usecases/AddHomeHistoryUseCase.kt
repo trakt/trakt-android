@@ -4,7 +4,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
-import java.time.Instant
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 
 internal class AddHomeHistoryUseCase(
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
@@ -13,7 +13,7 @@ internal class AddHomeHistoryUseCase(
 ) {
     suspend fun addMovieToHistory(
         movieId: TraktId,
-        customDate: Instant? = null,
+        customDate: DateSelectionResult? = null,
     ) {
         updateMovieHistoryUseCase.addToWatched(
             movieId,
@@ -28,7 +28,7 @@ internal class AddHomeHistoryUseCase(
     suspend fun addEpisodeToHistory(
         showId: TraktId,
         episodeId: TraktId,
-        customDate: Instant? = null,
+        customDate: DateSelectionResult? = null,
     ) {
         updateEpisodeHistoryUseCase.addToHistory(
             episodeId,

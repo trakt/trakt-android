@@ -43,7 +43,7 @@ import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.resources.R
-import java.time.Instant
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 
 @OptIn(FlowPreview::class)
 internal class AllHomeUpNextViewModel(
@@ -190,7 +190,7 @@ internal class AllHomeUpNextViewModel(
 
     fun addToHistory(
         episodeId: TraktId,
-        customDate: Instant? = null,
+        customDate: DateSelectionResult? = null,
     ) {
         if (processingJob != null) {
             return

@@ -21,7 +21,7 @@ import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
-import java.time.Instant
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 
 internal class WatchlistMovieContextViewModel(
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
@@ -38,7 +38,7 @@ internal class WatchlistMovieContextViewModel(
 
     fun addToWatched(
         movieId: TraktId,
-        customDate: Instant? = null,
+        customDate: DateSelectionResult? = null,
     ) {
         if (isLoading()) {
             return

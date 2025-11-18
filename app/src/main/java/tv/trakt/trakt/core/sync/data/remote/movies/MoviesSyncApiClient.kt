@@ -9,7 +9,6 @@ import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInner
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
-import java.time.Instant
 
 internal class MoviesSyncApiClient(
     private val syncApi: SyncApi,
@@ -17,7 +16,7 @@ internal class MoviesSyncApiClient(
 ) : MoviesSyncRemoteDataSource {
     override suspend fun addToWatched(
         movieId: TraktId,
-        watchedAt: Instant,
+        watchedAt: String,
     ) {
         val request = PostUsersListsListAddRequest(
             movies = listOf(
@@ -30,7 +29,7 @@ internal class MoviesSyncApiClient(
                     ),
                     title = "",
                     year = 0,
-                    watchedAt = watchedAt.toString(),
+                    watchedAt = watchedAt,
                 ),
             ),
         )

@@ -60,14 +60,9 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
-import tv.trakt.trakt.ui.components.dateselection.CustomDate
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
-import tv.trakt.trakt.ui.components.dateselection.Now
-import tv.trakt.trakt.ui.components.dateselection.ReleaseDate
-import tv.trakt.trakt.ui.components.dateselection.UnknownDate
 import tv.trakt.trakt.ui.theme.TraktTheme
-import java.time.Instant
-import java.time.ZoneOffset.UTC
 
 @Composable
 internal fun AllHomeWatchlistScreen(
@@ -396,7 +391,7 @@ private fun ContentFilters(
 @Composable
 private fun AllHomeDateSelectionSheet(
     item: WatchlistItem?,
-    onDateSelected: (Instant?) -> Unit,
+    onDateSelected: (DateSelectionResult?) -> Unit,
     onDismiss: () -> Unit,
 ) {
     DateSelectionSheet(
@@ -409,22 +404,7 @@ private fun AllHomeDateSelectionSheet(
         },
         onResult = {
             if (item == null) return@DateSelectionSheet
-            when (it) {
-                is Now -> onDateSelected(null)
-                is CustomDate -> onDateSelected(it.date)
-                is UnknownDate -> onDateSelected(it.date)
-                is ReleaseDate -> when (item) {
-                    is ShowItem -> onDateSelected(
-                        item.progress?.nextEpisode?.firstAired?.toInstant()
-                            ?: item.show.released?.toInstant(),
-                    )
-                    is MovieItem -> {
-                        val localDate = item.movie.released
-                        val instantDate = localDate?.atTime(20, 0)?.toInstant(UTC)
-                        onDateSelected(instantDate)
-                    }
-                }
-            }
+            onDateSelected(it)
         },
         onDismiss = onDismiss,
     )

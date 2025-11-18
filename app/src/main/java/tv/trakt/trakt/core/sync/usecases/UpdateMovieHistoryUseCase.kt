@@ -3,18 +3,21 @@ package tv.trakt.trakt.core.sync.usecases
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
-import java.time.Instant
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 
 internal class UpdateMovieHistoryUseCase(
     private val remoteSource: MoviesSyncRemoteDataSource,
 ) {
     suspend fun addToWatched(
         movieId: TraktId,
-        customDate: Instant? = null,
+        customDate: DateSelectionResult? = null,
     ) {
+        val watchedAt = customDate?.dateString
+            ?: nowUtcInstant().toString()
+
         remoteSource.addToWatched(
             movieId = movieId,
-            watchedAt = customDate ?: nowUtcInstant(),
+            watchedAt = watchedAt,
         )
     }
 

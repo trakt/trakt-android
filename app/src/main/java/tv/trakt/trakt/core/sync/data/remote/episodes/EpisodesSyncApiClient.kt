@@ -17,7 +17,7 @@ internal class EpisodesSyncApiClient(
 ) : EpisodesSyncRemoteDataSource {
     override suspend fun addToHistory(
         episodeId: TraktId,
-        watchedAt: Instant,
+        watchedAt: String,
     ) {
         val request = PostUsersListsListAddRequest(
             episodes = listOf(
@@ -26,7 +26,7 @@ internal class EpisodesSyncApiClient(
                         trakt = episodeId.value,
                         tvdb = -1,
                     ),
-                    watchedAt = watchedAt.toString(),
+                    watchedAt = watchedAt,
                 ),
             ),
         )

@@ -30,6 +30,7 @@ import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 
 internal class MovieContextViewModel(
     private val movie: Movie,
@@ -177,7 +178,7 @@ internal class MovieContextViewModel(
         }
     }
 
-    fun addToWatched() {
+    fun addToWatched(customDate: DateSelectionResult? = null) {
         if (isLoading()) {
             return
         }
@@ -187,7 +188,10 @@ internal class MovieContextViewModel(
             try {
                 loadingWatchedState.update { LOADING }
 
-                updateMovieHistoryUseCase.addToWatched(movie.ids.trakt)
+                updateMovieHistoryUseCase.addToWatched(
+                    movieId = movie.ids.trakt,
+                    customDate = customDate,
+                )
                 loadProgressUseCase.loadMoviesProgress()
                 userWatchlistLocalSource.removeMovies(
                     ids = setOf(movie.ids.trakt),

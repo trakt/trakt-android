@@ -6,7 +6,7 @@ import java.time.Instant
 internal interface EpisodesSyncRemoteDataSource {
     suspend fun addToHistory(
         episodeId: TraktId,
-        watchedAt: Instant,
+        watchedAt: String,
     )
 
     suspend fun addToHistory(

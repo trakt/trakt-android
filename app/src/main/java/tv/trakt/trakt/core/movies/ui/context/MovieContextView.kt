@@ -36,6 +36,7 @@ import tv.trakt.trakt.core.movies.ui.MovieMetaFooter
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -54,6 +55,7 @@ internal fun MovieContextView(
 
     var confirmRemoveWatchlistSheet by remember { mutableStateOf(false) }
     var confirmRemoveWatchedSheet by remember { mutableStateOf(false) }
+    var dateSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(state.loadingWatched, state.loadingWatchlist) {
         when {
@@ -81,7 +83,9 @@ internal fun MovieContextView(
         onWatchedClick = {
             when {
                 state.isWatched -> confirmRemoveWatchedSheet = true
-                else -> viewModel.addToWatched()
+                else -> {
+                    dateSheet = true
+                }
             }
         },
         onWatchlistClick = {
@@ -118,6 +122,15 @@ internal fun MovieContextView(
             R.string.warning_prompt_remove_from_watched,
             movie.title,
         ),
+    )
+
+    DateSelectionSheet(
+        active = dateSheet,
+        title = movie.title,
+        onResult = viewModel::addToWatched,
+        onDismiss = {
+            dateSheet = false
+        },
     )
 }
 

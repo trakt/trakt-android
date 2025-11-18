@@ -2,7 +2,6 @@ package tv.trakt.trakt.core.sync.data.remote.shows
 
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.ProgressShowDto
-import java.time.Instant
 
 internal interface ShowsSyncRemoteDataSource {
     suspend fun getUpNext(
@@ -13,7 +12,7 @@ internal interface ShowsSyncRemoteDataSource {
 
     suspend fun addToWatched(
         showId: TraktId,
-        watchedAt: Instant,
+        watchedAt: String,
     )
 
     suspend fun removeAllFromHistory(showId: TraktId)

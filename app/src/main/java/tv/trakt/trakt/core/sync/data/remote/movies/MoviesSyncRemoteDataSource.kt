@@ -1,12 +1,11 @@
 package tv.trakt.trakt.core.sync.data.remote.movies
 
 import tv.trakt.trakt.common.model.TraktId
-import java.time.Instant
 
 internal interface MoviesSyncRemoteDataSource {
     suspend fun addToWatched(
         movieId: TraktId,
-        watchedAt: Instant,
+        watchedAt: String,
     )
 
     suspend fun removeAllFromHistory(movieId: TraktId)

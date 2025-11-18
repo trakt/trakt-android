@@ -36,14 +36,10 @@ import tv.trakt.trakt.core.shows.ui.ShowMetaFooter
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
-import tv.trakt.trakt.ui.components.dateselection.CustomDate
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
-import tv.trakt.trakt.ui.components.dateselection.Now
-import tv.trakt.trakt.ui.components.dateselection.ReleaseDate
-import tv.trakt.trakt.ui.components.dateselection.UnknownDate
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
-import java.time.Instant
 
 @Composable
 internal fun WatchlistShowContextView(
@@ -120,11 +116,7 @@ internal fun WatchlistShowContextView(
 
     DateSelectionSheet(
         show = dateSheet,
-        onDateSelected = { selectedDate ->
-            viewModel.addToWatched(
-                customDate = selectedDate,
-            )
-        },
+        onDateSelected = viewModel::addToWatched,
         onDismiss = {
             dateSheet = null
         },
@@ -230,7 +222,7 @@ private fun ShowActionButtons(
 @Composable
 private fun DateSelectionSheet(
     show: Show?,
-    onDateSelected: (Instant?) -> Unit,
+    onDateSelected: (DateSelectionResult?) -> Unit,
     onDismiss: () -> Unit,
 ) {
     DateSelectionSheet(
@@ -239,15 +231,7 @@ private fun DateSelectionSheet(
         subtitle = null,
         onResult = {
             if (show == null) return@DateSelectionSheet
-            when (it) {
-                is Now -> onDateSelected(null)
-                is CustomDate -> onDateSelected(it.date)
-                is UnknownDate -> onDateSelected(it.date)
-                is ReleaseDate -> {
-                    val instantDate = show.released?.toInstant()
-                    onDateSelected(instantDate)
-                }
-            }
+            onDateSelected(it)
         },
         onDismiss = onDismiss,
     )

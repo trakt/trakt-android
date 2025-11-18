@@ -13,7 +13,6 @@ import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerOneO
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.ProgressShowDto
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
-import java.time.Instant
 
 internal class ShowsSyncApiClient(
     private val syncApi: SyncApi,
@@ -35,7 +34,7 @@ internal class ShowsSyncApiClient(
 
     override suspend fun addToWatched(
         showId: TraktId,
-        watchedAt: Instant,
+        watchedAt: String,
     ) {
         val request = PostUsersListsListAddRequest(
             shows = listOf(
@@ -49,7 +48,7 @@ internal class ShowsSyncApiClient(
                     ),
                     title = "",
                     year = 0,
-                    watchedAt = watchedAt.toString(),
+                    watchedAt = watchedAt,
                 ),
             ),
         )

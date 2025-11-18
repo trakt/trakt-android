@@ -159,10 +159,11 @@ private fun TraktTimePicker(
 ) {
     val context = LocalContext.current
 
+    val nowLocal = nowLocal()
     val timePickerState = rememberTimePickerState(
         is24Hour = DateFormat.is24HourFormat(context),
-        initialHour = 20,
-        initialMinute = 0,
+        initialHour = nowLocal.hour,
+        initialMinute = nowLocal.minute,
     )
 
     if (active) {
