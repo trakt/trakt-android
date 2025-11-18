@@ -29,6 +29,7 @@ internal fun WatchlistMovieSheet(
     ),
     sheetItem: Movie?,
     addLocally: Boolean,
+    skipSnack: Boolean = false,
     onAddWatched: (Movie) -> Unit,
     onRemoveWatchlist: () -> Unit,
     onDismiss: () -> Unit,
@@ -76,7 +77,7 @@ internal fun WatchlistMovieSheet(
                                     onDismiss()
                                 }
                             }
-                        if (addLocally) {
+                        if (addLocally && !skipSnack) {
                             launch {
                                 val job = sheetScope.launch {
                                     localSnack.showSnackbar(

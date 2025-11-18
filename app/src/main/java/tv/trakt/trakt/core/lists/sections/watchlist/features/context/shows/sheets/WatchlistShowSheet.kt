@@ -78,15 +78,6 @@ internal fun WatchlistShowSheet(
                                     onDismiss()
                                 }
                             }
-                        launch {
-                            val job = sheetScope.launch {
-                                localSnack.showSnackbar(
-                                    localContext.getString(R.string.text_info_history_added),
-                                )
-                            }
-                            delay(SNACK_DURATION_SHORT)
-                            job.cancel()
-                        }
                     }
                 },
                 onError = {

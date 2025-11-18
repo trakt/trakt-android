@@ -52,7 +52,6 @@ import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.home.views.HomeEmptyView
@@ -91,7 +90,7 @@ internal fun HomeWatchlistView(
     val haptic = LocalHapticFeedback.current
 
     var contextShowSheet by remember { mutableStateOf<ShowItem?>(null) }
-    var contextMovieSheet by remember { mutableStateOf<Movie?>(null) }
+    var contextMovieSheet by remember { mutableStateOf<MovieItem?>(null) }
     var dateSheet by remember { mutableStateOf<WatchlistItem?>(null) }
 
     LaunchedEffect(state) {
@@ -132,7 +131,7 @@ internal fun HomeWatchlistView(
         onLongClick = {
             when (it) {
                 is ShowItem -> contextShowSheet = it
-                is MovieItem -> contextMovieSheet = it.movie
+                is MovieItem -> contextMovieSheet = it
             }
         },
         onCheckClick = {
@@ -153,15 +152,11 @@ internal fun HomeWatchlistView(
     WatchlistShowSheet(
         addLocally = false,
         sheetItem = contextShowSheet?.show,
-        onDismiss = { contextShowSheet = null },
+        onDismiss = {
+            contextShowSheet = null
+        },
         onAddWatched = {
-            val showId = it.ids.trakt
-            val episodeId = contextShowSheet?.progress?.nextEpisode?.ids?.trakt
-
-            viewModel.addShowToHistory(
-                showId = showId,
-                episodeId = episodeId,
-            )
+            dateSheet = contextShowSheet
         },
         onRemoveWatchlist = {
             viewModel.loadData(ignoreErrors = true)
@@ -170,10 +165,13 @@ internal fun HomeWatchlistView(
 
     WatchlistMovieSheet(
         addLocally = false,
-        sheetItem = contextMovieSheet,
-        onDismiss = { contextMovieSheet = null },
+        skipSnack = true,
+        sheetItem = contextMovieSheet?.movie,
+        onDismiss = {
+            contextMovieSheet = null
+        },
         onAddWatched = {
-            viewModel.addMovieToHistory(it.ids.trakt)
+            dateSheet = contextMovieSheet
         },
         onRemoveWatchlist = {
             viewModel.loadData(ignoreErrors = true)

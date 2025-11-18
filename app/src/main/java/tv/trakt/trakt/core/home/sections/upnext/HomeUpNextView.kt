@@ -134,7 +134,7 @@ internal fun HomeUpNextView(
         sheetItem = contextSheet,
         onDismiss = { contextSheet = null },
         onAddWatched = {
-            viewModel.addToHistory(it.id)
+            dateSheet = it
         },
         onDropShow = {
             viewModel.loadData(
