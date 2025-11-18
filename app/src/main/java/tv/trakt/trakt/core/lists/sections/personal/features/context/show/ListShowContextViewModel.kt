@@ -31,6 +31,7 @@ import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 
 internal class ListShowContextViewModel(
     private val show: Show,
@@ -182,7 +183,7 @@ internal class ListShowContextViewModel(
         }
     }
 
-    fun addToWatched() {
+    fun addToWatched(customDate: DateSelectionResult? = null) {
         if (isLoading()) {
             return
         }
@@ -192,7 +193,10 @@ internal class ListShowContextViewModel(
             try {
                 loadingWatchedState.update { LOADING }
 
-                updateShowHistoryUseCase.addToWatched(show.ids.trakt)
+                updateShowHistoryUseCase.addToWatched(
+                    showId = show.ids.trakt,
+                    customDate = customDate,
+                )
                 loadProgressUseCase.loadShowsProgress()
                 userWatchlistLocalSource.removeShows(
                     ids = setOf(show.ids.trakt),

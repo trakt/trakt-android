@@ -30,6 +30,7 @@ internal fun WatchlistShowSheet(
     ),
     sheetItem: Show?,
     addLocally: Boolean,
+    skipSnack: Boolean = false,
     onAddWatched: (Show) -> Unit,
     onRemoveWatchlist: () -> Unit,
     onDismiss: () -> Unit,
@@ -51,6 +52,28 @@ internal fun WatchlistShowSheet(
                     parameters = { parametersOf(sheetItem) },
                 ),
                 addLocally = addLocally,
+                onAddWatched = {
+                    onAddWatched(it)
+                    sheetScope.run {
+                        launch { state.hide() }
+                            .invokeOnCompletion {
+                                if (!state.isVisible) {
+                                    onDismiss()
+                                }
+                            }
+                        if (addLocally && !skipSnack) {
+                            launch {
+                                val job = sheetScope.launch {
+                                    localSnack.showSnackbar(
+                                        localContext.getString(R.string.text_info_history_added),
+                                    )
+                                }
+                                delay(SNACK_DURATION_SHORT)
+                                job.cancel()
+                            }
+                        }
+                    }
+                },
                 onRemoveWatchlist = {
                     onRemoveWatchlist()
                     sheetScope.run {
@@ -67,17 +90,6 @@ internal fun WatchlistShowSheet(
                             delay(SNACK_DURATION_SHORT)
                             job.cancel()
                         }
-                    }
-                },
-                onAddWatched = {
-                    onAddWatched(it)
-                    sheetScope.run {
-                        launch { state.hide() }
-                            .invokeOnCompletion {
-                                if (!state.isVisible) {
-                                    onDismiss()
-                                }
-                            }
                     }
                 },
                 onError = {

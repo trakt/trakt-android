@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.views.AllWatchlistMovieView
@@ -58,6 +59,8 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -73,6 +76,7 @@ internal fun AllWatchlistScreen(
 
     var contextMovieSheet by remember { mutableStateOf<MovieItem?>(null) }
     var contextShowSheet by remember { mutableStateOf<ShowItem?>(null) }
+    var dateSheet by remember { mutableStateOf<WatchlistItem?>(null) }
 
     LaunchedEffect(state) {
         state.navigateShow?.let {
@@ -112,6 +116,11 @@ internal fun AllWatchlistScreen(
                 viewModel.addMovieToHistory(it.id)
             }
         },
+        onCheckLongClick = {
+            if (it is MovieItem) {
+                dateSheet = it
+            }
+        },
         onFilterClick = { viewModel.setFilter(it) },
         onBackClick = onNavigateBack,
     )
@@ -139,6 +148,26 @@ internal fun AllWatchlistScreen(
             viewModel.removeItem(contextShowSheet)
         },
     )
+
+    WatchlistDateSelectionSheet(
+        item = dateSheet,
+        onDateSelected = { date ->
+            dateSheet?.let {
+                when (it) {
+                    is MovieItem -> {
+                        viewModel.addMovieToHistory(
+                            movieId = it.id,
+                            customDate = date,
+                        )
+                    }
+                    is ShowItem -> Unit
+                }
+            }
+        },
+        onDismiss = {
+            dateSheet = null
+        },
+    )
 }
 
 @Composable
@@ -148,6 +177,7 @@ internal fun AllWatchlistContent(
     onTopOfList: () -> Unit = {},
     onClick: (WatchlistItem) -> Unit = {},
     onCheckClick: (WatchlistItem) -> Unit = {},
+    onCheckLongClick: (WatchlistItem) -> Unit = {},
     onLongClick: (WatchlistItem) -> Unit = {},
     onFilterClick: (MediaMode) -> Unit = {},
     onBackClick: () -> Unit = {},
@@ -191,6 +221,7 @@ internal fun AllWatchlistContent(
             onFilterClick = onFilterClick,
             onClick = onClick,
             onCheckClick = onCheckClick,
+            onCheckLongClick = onCheckLongClick,
             onLongClick = onLongClick,
             onTopOfList = onTopOfList,
             onBackClick = onBackClick,
@@ -236,6 +267,7 @@ private fun ContentList(
     contentPadding: PaddingValues,
     onClick: (WatchlistItem) -> Unit,
     onCheckClick: (WatchlistItem) -> Unit,
+    onCheckLongClick: (WatchlistItem) -> Unit,
     onLongClick: (WatchlistItem) -> Unit,
     onFilterClick: (MediaMode) -> Unit,
     onTopOfList: () -> Unit,
@@ -283,6 +315,9 @@ private fun ContentList(
             items = listItems,
             key = { it.key },
         ) { item ->
+            val isReleased = remember {
+                item.released?.isNowOrBefore() ?: false
+            }
             when (item) {
                 is ShowItem -> AllWatchlistShowView(
                     item = item,
@@ -299,11 +334,11 @@ private fun ContentList(
                 is MovieItem -> AllWatchlistMovieView(
                     item = item,
                     watched = collection.isWatched(item.id),
-                    showCheck = true,
+                    showCheck = isReleased,
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
                     onCheckClick = { onCheckClick(item) },
-                    onCheckLongClick = { },
+                    onCheckLongClick = { onCheckLongClick(item) },
                     modifier = Modifier
                         .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
                         .animateItem(
@@ -328,6 +363,28 @@ private fun ContentFilters(
             top = 0.dp,
             bottom = 19.dp,
         ),
+    )
+}
+
+@Composable
+private fun WatchlistDateSelectionSheet(
+    item: WatchlistItem?,
+    onDateSelected: (DateSelectionResult?) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    DateSelectionSheet(
+        active = item != null,
+        title = item?.title.orEmpty(),
+        subtitle = when (item) {
+            is ShowItem -> item.progress?.nextEpisode?.seasonEpisodeString()
+            is MovieItem -> null
+            else -> null
+        },
+        onResult = {
+            if (item == null) return@DateSelectionSheet
+            onDateSelected(it)
+        },
+        onDismiss = onDismiss,
     )
 }
 

@@ -52,6 +52,7 @@ import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.user.CollectionStateProvider
 import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 
 @OptIn(FlowPreview::class)
 internal class AllWatchlistViewModel(
@@ -185,7 +186,10 @@ internal class AllWatchlistViewModel(
         }
     }
 
-    fun addMovieToHistory(movieId: TraktId) {
+    fun addMovieToHistory(
+        movieId: TraktId,
+        customDate: DateSelectionResult? = null,
+    ) {
         if (processingJob != null) {
             return
         }
@@ -201,7 +205,10 @@ internal class AllWatchlistViewModel(
                     currentItems.toImmutableList()
                 }
 
-                updateMovieHistoryUseCase.addMovieToHistory(movieId)
+                updateMovieHistoryUseCase.addMovieToHistory(
+                    movieId = movieId,
+                    customDate = customDate,
+                )
                 removeItem(currentItems[itemIndex])
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
