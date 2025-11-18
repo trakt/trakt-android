@@ -40,6 +40,7 @@ internal fun DetailsActions(
     loading: Boolean = false,
     inLists: Boolean? = false,
     trailer: Boolean = false,
+    primaryIcon: Int = R.drawable.ic_check,
     onPrimaryClick: (() -> Unit)? = null,
     onSecondaryClick: (() -> Unit)? = null,
     onSecondaryLongClick: (() -> Unit)? = null,
@@ -94,7 +95,7 @@ internal fun DetailsActions(
             ) {
                 if (!loading) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_check_double),
+                        painter = painterResource(primaryIcon),
                         tint = when {
                             enabled && primaryEnabled -> TraktTheme.colors.primaryButtonContent
                             else -> Shade400

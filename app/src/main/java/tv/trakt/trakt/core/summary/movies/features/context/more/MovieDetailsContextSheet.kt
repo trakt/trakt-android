@@ -23,8 +23,10 @@ internal fun MovieDetailsContextSheet(
         skipPartiallyExpanded = true,
     ),
     movie: Movie?,
+    watched: Boolean,
     onShareClick: (() -> Unit)? = null,
-    onTrailerClick: (() -> Unit)? = null,
+    onCheckClick: (() -> Unit)? = null,
+    onRemoveClick: (() -> Unit)? = null,
     onDismiss: () -> Unit,
 ) {
     val sheetScope = rememberCoroutineScope()
@@ -36,6 +38,7 @@ internal fun MovieDetailsContextSheet(
         ) {
             MovieDetailsContextView(
                 movie = movie,
+                watched = watched,
                 viewModel = koinViewModel(
                     key = nextInt().toString(),
                     parameters = { parametersOf(movie) },
@@ -49,8 +52,17 @@ internal fun MovieDetailsContextSheet(
                             }
                         }
                 },
-                onTrailerClick = {
-                    onTrailerClick?.invoke()
+                onCheckClick = {
+                    onCheckClick?.invoke()
+                    sheetScope.launch { state.hide() }
+                        .invokeOnCompletion {
+                            if (!state.isVisible) {
+                                onDismiss()
+                            }
+                        }
+                },
+                onRemoveClick = {
+                    onRemoveClick?.invoke()
                     sheetScope.launch { state.hide() }
                         .invokeOnCompletion {
                             if (!state.isVisible) {

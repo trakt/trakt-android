@@ -87,6 +87,7 @@ import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.UserRatingBar
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -111,7 +112,9 @@ internal fun MovieDetailsScreen(
     var contextSheet by remember { mutableStateOf<Movie?>(null) }
     var listsSheet by remember { mutableStateOf<Movie?>(null) }
     var historySheet by remember { mutableStateOf<HomeActivityItem.MovieItem?>(null) }
+    var confirmRemoveWatchedSheet by remember { mutableStateOf(false) }
     var confirmRemoveWatchlistSheet by remember { mutableStateOf(false) }
+    var dateSheet by remember { mutableStateOf(false) }
 
     MovieDetailsContent(
         state = state,
@@ -127,7 +130,13 @@ internal fun MovieDetailsScreen(
                 onListClick(movie, it)
             }
         },
-        onTrackClick = { viewModel.addToWatched() },
+        onTrackClick = {
+            if ((state.movieProgress?.plays ?: 0) > 0) {
+                confirmRemoveWatchedSheet = true
+            } else {
+                dateSheet = true
+            }
+        },
         onShareClick = { state.movie?.let { shareMovie(it, context) } },
         onTrailerClick = { state.movie?.trailer?.let { uriHandler.openUri(it) } },
         onWatchlistClick = {
@@ -155,6 +164,20 @@ internal fun MovieDetailsScreen(
             )
         },
         onBackClick = onNavigateBack,
+    )
+
+    ConfirmationSheet(
+        active = confirmRemoveWatchedSheet,
+        onYes = {
+            confirmRemoveWatchedSheet = false
+            viewModel.removeFromWatched()
+        },
+        onNo = { confirmRemoveWatchedSheet = false },
+        title = stringResource(R.string.button_text_remove_from_history),
+        message = stringResource(
+            R.string.warning_prompt_remove_from_watched,
+            state.movie?.title ?: "",
+        ),
     )
 
     ConfirmationSheet(
@@ -190,11 +213,15 @@ internal fun MovieDetailsScreen(
 
     MovieDetailsContextSheet(
         movie = contextSheet,
+        watched = (state.movieProgress?.plays ?: 0) > 0,
         onShareClick = {
             state.movie?.let { shareMovie(it, context) }
         },
-        onTrailerClick = {
-            state.movie?.trailer?.let { uriHandler.openUri(it) }
+        onCheckClick = {
+            dateSheet = true
+        },
+        onRemoveClick = {
+            confirmRemoveWatchedSheet = true
         },
         onDismiss = {
             contextSheet = null
@@ -208,6 +235,15 @@ internal fun MovieDetailsScreen(
         },
         onDismiss = {
             historySheet = null
+        },
+    )
+
+    DateSelectionSheet(
+        active = dateSheet,
+        title = state.movie?.title ?: "",
+        onResult = viewModel::addToWatched,
+        onDismiss = {
+            dateSheet = false
         },
     )
 
@@ -286,6 +322,10 @@ internal fun MovieDetailsContent(
                 movie.released?.isTodayOrBefore() ?: false
             }
 
+            val isWatched = remember(state.movieProgress?.plays) {
+                (state.movieProgress?.plays ?: 0) > 0
+            }
+
             DetailsBackground(
                 imageUrl = movie.images?.getFanartUrl(Images.Size.THUMB),
                 color = movie.colors?.colors?.second,
@@ -303,7 +343,7 @@ internal fun MovieDetailsContent(
                         movie = movie,
                         ratings = state.movieRatings,
                         creditsCount = when {
-                            (state.movieProgress?.plays ?: 0) > 0 || state.loadingProgress.isLoading -> null
+                            isWatched || state.loadingProgress.isLoading -> null
                             else -> movie.credits
                         },
                         playsCount = state.movieProgress?.plays,
@@ -318,6 +358,10 @@ internal fun MovieDetailsContent(
                 item {
                     DetailsActions(
                         primaryEnabled = isReleased,
+                        primaryIcon = when {
+                            isWatched -> R.drawable.ic_check_double
+                            else -> R.drawable.ic_check
+                        },
                         enabled = state.user != null &&
                             !state.loadingProgress.isLoading &&
                             !state.loadingLists.isLoading,
@@ -342,7 +386,6 @@ internal fun MovieDetailsContent(
                 }
 
                 item {
-                    val isWatched = (state.movieProgress?.plays ?: 0) > 0
                     val isLoaded = state.movieUserRating?.loading == LoadingState.DONE
                     DetailsRating(
                         visible = isWatched && isLoaded,
@@ -474,7 +517,7 @@ internal fun MovieDetailsContent(
                         )
                     }
 
-                    if ((state.movieProgress?.plays ?: 0) > 0) {
+                    if (isWatched) {
                         item {
                             MovieHistoryView(
                                 viewModel = koinViewModel(

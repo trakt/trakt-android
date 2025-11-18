@@ -119,7 +119,7 @@ private fun MovieDetailsListsContent(
     onListClick: ((CustomList) -> Unit)? = null,
 ) {
     val genresText = remember(movie.genres) {
-        movie.genres.take(3).joinToString(" / ") { genre ->
+        movie.genres.take(2).joinToString(" / ") { genre ->
             genre.replaceFirstChar {
                 it.uppercaseChar()
             }

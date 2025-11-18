@@ -60,6 +60,7 @@ import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 import kotlin.time.Duration.Companion.seconds
 
 internal class MovieDetailsViewModel(
@@ -318,7 +319,7 @@ internal class MovieDetailsViewModel(
         }
     }
 
-    fun addToWatched() {
+    fun addToWatched(customDate: DateSelectionResult? = null) {
         if (movieState.value == null ||
             loadingState.value.isLoading ||
             loadingProgress.value.isLoading ||
@@ -334,7 +335,10 @@ internal class MovieDetailsViewModel(
             try {
                 loadingProgress.update { LOADING }
 
-                updateMovieHistoryUseCase.addToWatched(movieId)
+                updateMovieHistoryUseCase.addToWatched(
+                    movieId = movieId,
+                    customDate = customDate,
+                )
                 loadProgressUseCase.loadMoviesProgress()
                 userWatchlistLocalSource.removeMovies(
                     ids = setOf(movieId),
@@ -353,6 +357,50 @@ internal class MovieDetailsViewModel(
                     DynamicStringResource(R.string.text_info_history_added)
                 }
                 analytics.progress.logAddWatchedMedia(
+                    mediaType = "movie",
+                    source = "movie_details",
+                )
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            } finally {
+                loadingProgress.update { DONE }
+            }
+        }
+    }
+
+    fun removeFromWatched() {
+        if (movieState.value == null ||
+            loadingState.value.isLoading ||
+            loadingProgress.value.isLoading ||
+            loadingLists.value.isLoading
+        ) {
+            return
+        }
+
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                loadingProgress.update { LOADING }
+
+                updateMovieHistoryUseCase.removeAllFromHistory(movieId)
+                loadProgressUseCase.loadMoviesProgress()
+
+                movieProgressState.update {
+                    it?.copy(
+                        plays = 0,
+                    )
+                }
+                movieDetailsUpdates.notifyUpdate()
+
+                infoState.update {
+                    DynamicStringResource(R.string.text_info_history_removed)
+                }
+                analytics.progress.logRemoveWatchedMedia(
                     mediaType = "movie",
                     source = "movie_details",
                 )

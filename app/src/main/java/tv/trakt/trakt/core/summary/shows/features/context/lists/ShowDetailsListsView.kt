@@ -119,7 +119,7 @@ private fun ShowDetailsListsContent(
     onListClick: ((CustomList) -> Unit)? = null,
 ) {
     val genresText = remember(show.genres) {
-        show.genres.take(3).joinToString(" / ") { genre ->
+        show.genres.take(2).joinToString(" / ") { genre ->
             genre.replaceFirstChar {
                 it.uppercaseChar()
             }
