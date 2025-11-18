@@ -16,7 +16,7 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.openapitools.client.apis.CommentsApi
-import tv.trakt.trakt.common.Config.API_HD_BASE_URL
+import tv.trakt.trakt.common.Config.API_BASE_URL
 import tv.trakt.trakt.common.core.comments.data.remote.CommentsApiClient
 import tv.trakt.trakt.common.core.comments.data.remote.CommentsRemoteDataSource
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentReactionsUseCase
@@ -32,7 +32,7 @@ internal val commentsDataModule = module {
     single<CommentsRemoteDataSource> {
         CommentsApiClient(
             api = CommentsApi(
-                baseUrl = API_HD_BASE_URL,
+                baseUrl = API_BASE_URL,
                 httpClientEngine = get(),
                 httpClientConfig = get(named("clientConfig")),
             ),

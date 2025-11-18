@@ -20,7 +20,7 @@ import org.openapitools.client.apis.SearchApi
 import org.openapitools.client.apis.ShowsApi
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
-import tv.trakt.trakt.common.Config.API_HD_BASE_URL
+import tv.trakt.trakt.common.Config.API_BASE_URL
 import tv.trakt.trakt.common.networking.api.SyncExtrasApi
 import tv.trakt.trakt.common.networking.client.KtorClientFactory
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
@@ -79,7 +79,7 @@ val networkingApiModule = module {
 
     single<EpisodeApi> {
         EpisodeApi(
-            baseUrl = API_HD_BASE_URL,
+            baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("clientConfig")),
         )
@@ -87,7 +87,7 @@ val networkingApiModule = module {
 
     single<EpisodesApi> {
         EpisodesApi(
-            baseUrl = API_HD_BASE_URL,
+            baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("clientConfig")),
         )
@@ -95,7 +95,7 @@ val networkingApiModule = module {
 
     single<ShowsApi> {
         ShowsApi(
-            baseUrl = API_HD_BASE_URL,
+            baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("clientConfig")),
         )
@@ -103,7 +103,7 @@ val networkingApiModule = module {
 
     single<MoviesApi> {
         MoviesApi(
-            baseUrl = API_HD_BASE_URL,
+            baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("clientConfig")),
         )
@@ -111,7 +111,7 @@ val networkingApiModule = module {
 
     single<RecommendationsApi> {
         RecommendationsApi(
-            baseUrl = API_HD_BASE_URL,
+            baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
         )
@@ -119,7 +119,7 @@ val networkingApiModule = module {
 
     single<ReactionsApi> {
         ReactionsApi(
-            baseUrl = API_HD_BASE_URL,
+            baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
         )
@@ -127,7 +127,7 @@ val networkingApiModule = module {
 
     single<RatingsApi> {
         RatingsApi(
-            baseUrl = API_HD_BASE_URL,
+            baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
         )
@@ -135,7 +135,7 @@ val networkingApiModule = module {
 
     single<ListsApi> {
         ListsApi(
-            baseUrl = API_HD_BASE_URL,
+            baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
         )
@@ -143,7 +143,7 @@ val networkingApiModule = module {
 
     single<PeopleApi> {
         PeopleApi(
-            baseUrl = API_HD_BASE_URL,
+            baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("clientConfig")),
         )
@@ -151,7 +151,7 @@ val networkingApiModule = module {
 
     single<SearchApi> {
         SearchApi(
-            baseUrl = API_HD_BASE_URL,
+            baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("clientConfig")),
         )
@@ -159,7 +159,7 @@ val networkingApiModule = module {
 
     single<SearchApi>(named("authorizedSearchApi")) {
         SearchApi(
-            baseUrl = API_HD_BASE_URL,
+            baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
         )
@@ -167,7 +167,7 @@ val networkingApiModule = module {
 
     single<SyncApi> {
         SyncApi(
-            baseUrl = API_HD_BASE_URL,
+            baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
         )
@@ -175,7 +175,7 @@ val networkingApiModule = module {
 
     single<SyncExtrasApi> {
         SyncExtrasApi(
-            baseUrl = API_HD_BASE_URL,
+            baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
         )
@@ -183,7 +183,7 @@ val networkingApiModule = module {
 
     single<UsersApi> {
         UsersApi(
-            baseUrl = API_HD_BASE_URL,
+            baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
         )
@@ -191,7 +191,7 @@ val networkingApiModule = module {
 
     single<CalendarsApi> {
         CalendarsApi(
-            baseUrl = API_HD_BASE_URL,
+            baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
         )
@@ -199,7 +199,7 @@ val networkingApiModule = module {
 
     single<HistoryApi> {
         HistoryApi(
-            baseUrl = API_HD_BASE_URL,
+            baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
         )
@@ -207,7 +207,7 @@ val networkingApiModule = module {
 
     single<OauthApi> {
         OauthApi(
-            baseUrl = API_HD_BASE_URL,
+            baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("clientConfig")),
         )
