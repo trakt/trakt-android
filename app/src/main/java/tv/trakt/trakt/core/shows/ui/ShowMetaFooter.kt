@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.shows.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.SpaceBetween
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -24,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
-import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Show
@@ -43,6 +43,7 @@ fun ShowMetaFooter(
     check: Boolean = false,
     mediaIcon: Boolean = false,
     onCheckClick: (() -> Unit)? = null,
+    onCheckLongClick: (() -> Unit)? = null,
 ) {
     val epsString = stringResource(R.string.tag_text_number_of_episodes, show.airedEpisodes)
     val metaString = remember {
@@ -159,7 +160,12 @@ fun ShowMetaFooter(
                     tint = TraktTheme.colors.accent,
                     modifier = Modifier
                         .size(18.dp)
-                        .onClick(onClick = onCheckClick ?: {}),
+                        .combinedClickable(
+                            onClick = onCheckClick ?: {},
+                            onLongClick = onCheckLongClick ?: {},
+                            interactionSource = null,
+                            indication = null,
+                        ),
                 )
             }
         }

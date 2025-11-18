@@ -16,6 +16,7 @@ internal fun AllWatchlistMovieView(
     watched: Boolean = false,
     onClick: () -> Unit = {},
     onCheckClick: () -> Unit,
+    onCheckLongClick: () -> Unit,
     onLongClick: () -> Unit,
 ) {
     val genresText = remember(item.movie.genres) {
@@ -43,6 +44,7 @@ internal fun AllWatchlistMovieView(
                 loading = item.loading,
                 check = showCheck,
                 onCheckClick = onCheckClick,
+                onCheckLongClick = onCheckLongClick,
             )
         },
     )

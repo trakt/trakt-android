@@ -15,6 +15,7 @@ internal fun AllWatchlistEpisodeView(
     onClick: () -> Unit,
     onLongClick: () -> Unit,
     onCheckClick: () -> Unit,
+    onCheckLongClick: () -> Unit,
 ) {
     PanelMediaCard(
         modifier = modifier,
@@ -32,6 +33,7 @@ internal fun AllWatchlistEpisodeView(
                 loading = item.loading,
                 check = showCheck,
                 onCheckClick = onCheckClick,
+                onCheckLongClick = onCheckLongClick,
             )
         },
     )

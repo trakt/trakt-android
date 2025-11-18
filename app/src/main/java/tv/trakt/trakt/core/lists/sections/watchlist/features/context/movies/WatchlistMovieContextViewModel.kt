@@ -21,6 +21,7 @@ import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
+import java.time.Instant
 
 internal class WatchlistMovieContextViewModel(
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
@@ -35,7 +36,10 @@ internal class WatchlistMovieContextViewModel(
     private val loadingWatchlistState = MutableStateFlow(initialState.loadingWatchlist)
     private val errorState = MutableStateFlow(initialState.error)
 
-    fun addToWatched(movieId: TraktId) {
+    fun addToWatched(
+        movieId: TraktId,
+        customDate: Instant? = null,
+    ) {
         if (isLoading()) {
             return
         }
@@ -45,7 +49,10 @@ internal class WatchlistMovieContextViewModel(
             try {
                 loadingWatchedState.update { LOADING }
 
-                updateMovieHistoryUseCase.addToWatched(movieId)
+                updateMovieHistoryUseCase.addToWatched(
+                    movieId = movieId,
+                    customDate = customDate,
+                )
                 userWatchlistLocalSource.removeMovies(setOf(movieId))
                 loadProgressUseCase.loadMoviesProgress()
 

@@ -25,6 +25,7 @@ import tv.trakt.trakt.core.sync.usecases.UpdateShowWatchlistUseCase
 import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
+import java.time.Instant
 
 internal class WatchlistShowContextViewModel(
     private val show: Show,
@@ -79,7 +80,7 @@ internal class WatchlistShowContextViewModel(
         }
     }
 
-    fun addToWatched() {
+    fun addToWatched(customDate: Instant? = null) {
         if (isLoading()) {
             return
         }
@@ -89,7 +90,10 @@ internal class WatchlistShowContextViewModel(
             try {
                 loadingWatchedState.update { LOADING }
 
-                updateHistoryUseCase.addToWatched(show.ids.trakt)
+                updateHistoryUseCase.addToWatched(
+                    showId = show.ids.trakt,
+                    customDate = customDate,
+                )
                 userWatchlistLocalSource.removeShows(setOf(show.ids.trakt))
 
                 loadProgressUseCase.loadShowsProgress()

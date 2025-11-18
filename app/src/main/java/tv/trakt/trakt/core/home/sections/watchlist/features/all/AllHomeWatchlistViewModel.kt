@@ -214,6 +214,7 @@ internal class AllHomeWatchlistViewModel(
     fun addShowToHistory(
         showId: TraktId,
         episodeId: TraktId?,
+        customDate: Instant? = null,
     ) {
         if (processingJob?.isActive == true || episodeId == null) {
             return
@@ -239,7 +240,9 @@ internal class AllHomeWatchlistViewModel(
                 addHistoryUseCase.addEpisodeToHistory(
                     showId = showId,
                     episodeId = episodeId,
+                    customDate = customDate,
                 )
+
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "episode",
                     source = "all_home_watchlist",
@@ -249,6 +252,7 @@ internal class AllHomeWatchlistViewModel(
                     StaticStringResource("Added to history")
                 }
 
+                removeItem(currentItems[itemIndex])
                 loadShowsProgress()
 
                 loadedAt = nowUtcInstant()
@@ -263,7 +267,10 @@ internal class AllHomeWatchlistViewModel(
         }
     }
 
-    fun addMovieToHistory(movieId: TraktId) {
+    fun addMovieToHistory(
+        movieId: TraktId,
+        customDate: Instant? = null,
+    ) {
         if (processingJob?.isActive == true) {
             return
         }
@@ -285,7 +292,11 @@ internal class AllHomeWatchlistViewModel(
                     currentItems.toImmutableList()
                 }
 
-                addHistoryUseCase.addMovieToHistory(movieId)
+                addHistoryUseCase.addMovieToHistory(
+                    movieId = movieId,
+                    customDate = customDate,
+                )
+
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
                     source = "all_home_watchlist",
@@ -295,6 +306,7 @@ internal class AllHomeWatchlistViewModel(
                     StaticStringResource("Added to history")
                 }
 
+                removeItem(currentItems[itemIndex])
                 loadMoviesProgress()
 
                 loadedAt = nowUtcInstant()
@@ -321,11 +333,11 @@ internal class AllHomeWatchlistViewModel(
         viewModelScope.launch {
             when (item) {
                 is ShowItem -> userWatchlistSource.removeShows(
-                    ids = setOf(item.show.ids.trakt),
+                    ids = setOf(item.id),
                     notify = true,
                 )
                 is MovieItem -> userWatchlistSource.removeMovies(
-                    ids = setOf(item.movie.ids.trakt),
+                    ids = setOf(item.id),
                     notify = true,
                 )
                 else -> Unit

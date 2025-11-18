@@ -303,6 +303,7 @@ private fun ContentList(
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
                     onCheckClick = { onCheckClick(item) },
+                    onCheckLongClick = { },
                     modifier = Modifier
                         .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
                         .animateItem(

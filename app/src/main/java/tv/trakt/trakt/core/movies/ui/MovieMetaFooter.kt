@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.movies.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.SpaceBetween
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -24,7 +25,6 @@ import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
-import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.relativeDateString
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Movie
@@ -43,6 +43,7 @@ fun MovieMetaFooter(
     check: Boolean = false,
     mediaIcon: Boolean = false,
     onCheckClick: (() -> Unit)? = null,
+    onCheckLongClick: (() -> Unit)? = null,
 ) {
     val metaString = remember {
         buildString {
@@ -158,7 +159,12 @@ fun MovieMetaFooter(
                     tint = TraktTheme.colors.accent,
                     modifier = Modifier
                         .size(18.dp)
-                        .onClick(onClick = onCheckClick ?: {}),
+                        .combinedClickable(
+                            onClick = onCheckClick ?: {},
+                            onLongClick = onCheckLongClick ?: {},
+                            interactionSource = null,
+                            indication = null,
+                        ),
                 )
             }
         }

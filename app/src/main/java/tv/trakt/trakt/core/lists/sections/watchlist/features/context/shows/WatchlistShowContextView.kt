@@ -36,8 +36,14 @@ import tv.trakt.trakt.core.shows.ui.ShowMetaFooter
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
+import tv.trakt.trakt.ui.components.dateselection.CustomDate
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
+import tv.trakt.trakt.ui.components.dateselection.Now
+import tv.trakt.trakt.ui.components.dateselection.ReleaseDate
+import tv.trakt.trakt.ui.components.dateselection.UnknownDate
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
+import java.time.Instant
 
 @Composable
 internal fun WatchlistShowContextView(
@@ -53,6 +59,7 @@ internal fun WatchlistShowContextView(
 
     var confirmRemoveWatchlistSheet by remember { mutableStateOf(false) }
     var confirmAddWatchedSheet by remember { mutableStateOf(false) }
+    var dateSheet by remember { mutableStateOf<Show?>(null) }
 
     LaunchedEffect(state.loadingWatched, state.loadingWatchlist) {
         when {
@@ -101,7 +108,7 @@ internal fun WatchlistShowContextView(
         active = confirmAddWatchedSheet,
         onYes = {
             confirmAddWatchedSheet = false
-            viewModel.addToWatched()
+            dateSheet = show
         },
         onNo = { confirmAddWatchedSheet = false },
         title = stringResource(R.string.button_text_mark_as_watched),
@@ -109,6 +116,18 @@ internal fun WatchlistShowContextView(
             R.string.warning_prompt_mark_as_watched_show,
             show.title,
         ),
+    )
+
+    DateSelectionSheet(
+        show = dateSheet,
+        onDateSelected = { selectedDate ->
+            viewModel.addToWatched(
+                customDate = selectedDate,
+            )
+        },
+        onDismiss = {
+            dateSheet = null
+        },
     )
 }
 
@@ -206,6 +225,32 @@ private fun ShowActionButtons(
                 },
         )
     }
+}
+
+@Composable
+private fun DateSelectionSheet(
+    show: Show?,
+    onDateSelected: (Instant?) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    DateSelectionSheet(
+        active = show != null,
+        title = show?.title.orEmpty(),
+        subtitle = null,
+        onResult = {
+            if (show == null) return@DateSelectionSheet
+            when (it) {
+                is Now -> onDateSelected(null)
+                is CustomDate -> onDateSelected(it.date)
+                is UnknownDate -> onDateSelected(it.date)
+                is ReleaseDate -> {
+                    val instantDate = show.released?.toInstant()
+                    onDateSelected(instantDate)
+                }
+            }
+        },
+        onDismiss = onDismiss,
+    )
 }
 
 @OptIn(ExperimentalCoilApi::class)

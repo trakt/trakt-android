@@ -4,6 +4,7 @@ package tv.trakt.trakt.core.home.sections.upnext.features.all
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -61,8 +62,14 @@ import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EpisodeProgressBar
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
+import tv.trakt.trakt.ui.components.dateselection.CustomDate
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
+import tv.trakt.trakt.ui.components.dateselection.Now
+import tv.trakt.trakt.ui.components.dateselection.ReleaseDate
+import tv.trakt.trakt.ui.components.dateselection.UnknownDate
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
+import java.time.Instant
 
 @Composable
 internal fun AllHomeUpNextScreen(
@@ -76,6 +83,7 @@ internal fun AllHomeUpNextScreen(
     val haptic = LocalHapticFeedback.current
 
     var contextSheet by remember { mutableStateOf<ProgressShow?>(null) }
+    var dateSheet by remember { mutableStateOf<ProgressShow?>(null) }
 
     LaunchedEffect(state.info) {
         if (state.info != null) {
@@ -104,6 +112,9 @@ internal fun AllHomeUpNextScreen(
         onCheckClick = {
             viewModel.addToHistory(it.id)
         },
+        onCheckLongClick = {
+            dateSheet = it
+        },
         onShowClick = {
             if (!it.loading) {
                 onNavigateToShow(it.show.ids.trakt)
@@ -116,10 +127,26 @@ internal fun AllHomeUpNextScreen(
         sheetItem = contextSheet,
         onDismiss = { contextSheet = null },
         onAddWatched = {
-            viewModel.addToHistory(it.id)
+            dateSheet = contextSheet
         },
         onDropShow = {
             viewModel.removeShow(it.show.ids.trakt)
+        },
+    )
+
+    HomeDateSelectionSheet(
+        item = dateSheet,
+        onDateSelected = { date ->
+            val episode = dateSheet?.progress?.nextEpisode
+                ?: return@HomeDateSelectionSheet
+
+            viewModel.addToHistory(
+                episodeId = episode.ids.trakt,
+                customDate = date,
+            )
+        },
+        onDismiss = {
+            dateSheet = null
         },
     )
 }
@@ -131,6 +158,7 @@ internal fun AllHomeUpNextContent(
     onClick: (ProgressShow) -> Unit = {},
     onLongClick: (ProgressShow) -> Unit = {},
     onCheckClick: (ProgressShow) -> Unit = {},
+    onCheckLongClick: (ProgressShow) -> Unit = {},
     onShowClick: (ProgressShow) -> Unit = {},
     onBackClick: () -> Unit = {},
     onLoadMore: () -> Unit = {},
@@ -173,6 +201,7 @@ internal fun AllHomeUpNextContent(
             onClick = onClick,
             onLongClick = onLongClick,
             onCheckClick = onCheckClick,
+            onCheckLongClick = onCheckLongClick,
             onShowClick = onShowClick,
             onBackClick = onBackClick,
         )
@@ -191,6 +220,7 @@ private fun ContentList(
     onClick: (ProgressShow) -> Unit,
     onLongClick: (ProgressShow) -> Unit,
     onCheckClick: (ProgressShow) -> Unit,
+    onCheckLongClick: (ProgressShow) -> Unit,
     onShowClick: (ProgressShow) -> Unit,
     onBackClick: () -> Unit,
 ) {
@@ -243,6 +273,7 @@ private fun ContentList(
                 onClick = { onClick(item) },
                 onLongClick = { onLongClick(item) },
                 onCheckClick = { onCheckClick(item) },
+                onCheckLongClick = { onCheckLongClick(item) },
                 onShowClick = { onShowClick(item) },
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
@@ -268,6 +299,7 @@ private fun ContentListItem(
     onClick: () -> Unit,
     onLongClick: () -> Unit,
     onCheckClick: () -> Unit,
+    onCheckLongClick: () -> Unit,
     onShowClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -348,9 +380,12 @@ private fun ContentListItem(
                         tint = TraktTheme.colors.accent,
                         modifier = Modifier
                             .size(18.dp)
-                            .onClick {
-                                onCheckClick()
-                            },
+                            .combinedClickable(
+                                onClick = onCheckClick,
+                                onLongClick = onCheckLongClick,
+                                interactionSource = null,
+                                indication = null,
+                            ),
                     )
                 }
             }
@@ -382,6 +417,32 @@ private fun TitleBar(modifier: Modifier = Modifier) {
             style = TraktTheme.typography.heading5,
         )
     }
+}
+
+@Composable
+private fun HomeDateSelectionSheet(
+    item: ProgressShow?,
+    onDateSelected: (Instant?) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    DateSelectionSheet(
+        active = item != null,
+        title = item?.show?.title.orEmpty(),
+        subtitle = item?.progress?.nextEpisode?.seasonEpisodeString(),
+        onResult = {
+            if (item == null) return@DateSelectionSheet
+            when (it) {
+                is Now -> onDateSelected(null)
+                is CustomDate -> onDateSelected(it.date)
+                is UnknownDate -> onDateSelected(it.date)
+                is ReleaseDate -> onDateSelected(
+                    item.progress.nextEpisode.firstAired?.toInstant()
+                        ?: item.show.released?.toInstant(),
+                )
+            }
+        },
+        onDismiss = onDismiss,
+    )
 }
 
 @Preview(

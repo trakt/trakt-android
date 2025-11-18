@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies
 
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -34,8 +36,15 @@ import tv.trakt.trakt.core.movies.ui.MovieMetaFooter
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
+import tv.trakt.trakt.ui.components.dateselection.CustomDate
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
+import tv.trakt.trakt.ui.components.dateselection.Now
+import tv.trakt.trakt.ui.components.dateselection.ReleaseDate
+import tv.trakt.trakt.ui.components.dateselection.UnknownDate
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
+import java.time.Instant
+import java.time.ZoneOffset.UTC
 
 @Composable
 internal fun WatchlistMovieContextView(
@@ -50,6 +59,7 @@ internal fun WatchlistMovieContextView(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var confirmRemoveSheet by remember { mutableStateOf(false) }
+    var dateSheet by remember { mutableStateOf<Movie?>(null) }
 
     LaunchedEffect(state.loadingWatched, state.loadingWatchlist) {
         when {
@@ -70,7 +80,7 @@ internal fun WatchlistMovieContextView(
         modifier = modifier,
         onAddWatched = {
             if (addLocally) {
-                viewModel.addToWatched(item.ids.trakt)
+                dateSheet = item
             } else {
                 onAddWatched(item)
             }
@@ -93,6 +103,19 @@ internal fun WatchlistMovieContextView(
             R.string.warning_prompt_remove_from_watchlist,
             item.title,
         ),
+    )
+
+    DateSelectionSheet(
+        movie = dateSheet,
+        onDateSelected = { selectedDate ->
+            viewModel.addToWatched(
+                movieId = item.ids.trakt,
+                customDate = selectedDate,
+            )
+        },
+        onDismiss = {
+            dateSheet = null
+        },
     )
 }
 
@@ -171,6 +194,32 @@ private fun WatchlistMovieContextViewContent(
             )
         }
     }
+}
+
+@Composable
+private fun DateSelectionSheet(
+    movie: Movie?,
+    onDateSelected: (Instant?) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    DateSelectionSheet(
+        active = movie != null,
+        title = movie?.title.orEmpty(),
+        subtitle = null,
+        onResult = {
+            if (movie == null) return@DateSelectionSheet
+            when (it) {
+                is Now -> onDateSelected(null)
+                is CustomDate -> onDateSelected(it.date)
+                is UnknownDate -> onDateSelected(it.date)
+                is ReleaseDate -> {
+                    val instantDate = movie.released?.atTime(20, 0)?.toInstant(UTC)
+                    onDateSelected(instantDate)
+                }
+            }
+        },
+        onDismiss = onDismiss,
+    )
 }
 
 @OptIn(ExperimentalCoilApi::class)

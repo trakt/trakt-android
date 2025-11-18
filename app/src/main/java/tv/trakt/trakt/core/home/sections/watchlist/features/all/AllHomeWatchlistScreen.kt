@@ -22,6 +22,7 @@ import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -34,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -42,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.views.AllWatchlistEpisodeView
@@ -57,7 +60,14 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.dateselection.CustomDate
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
+import tv.trakt.trakt.ui.components.dateselection.Now
+import tv.trakt.trakt.ui.components.dateselection.ReleaseDate
+import tv.trakt.trakt.ui.components.dateselection.UnknownDate
 import tv.trakt.trakt.ui.theme.TraktTheme
+import java.time.Instant
+import java.time.ZoneOffset.UTC
 
 @Composable
 internal fun AllHomeWatchlistScreen(
@@ -68,10 +78,14 @@ internal fun AllHomeWatchlistScreen(
     onMovieClick: (TraktId) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
+    val snackbar = LocalSnackbarState.current
 
     var contextMovieSheet by remember { mutableStateOf<MovieItem?>(null) }
     var contextShowSheet by remember { mutableStateOf<ShowItem?>(null) }
+    var dateSheet by remember { mutableStateOf<WatchlistItem?>(null) }
 
     LaunchedEffect(state) {
         state.navigateShow?.let {
@@ -87,6 +101,10 @@ internal fun AllHomeWatchlistScreen(
     LaunchedEffect(state.info) {
         if (state.info != null) {
             haptic.performHapticFeedback(Confirm)
+            snackbar.showSnackbar(
+                message = context.getString(R.string.text_info_history_added),
+                duration = SnackbarDuration.Short,
+            )
             viewModel.clearInfo()
         }
     }
@@ -117,31 +135,63 @@ internal fun AllHomeWatchlistScreen(
                 is MovieItem -> viewModel.addMovieToHistory(it.id)
             }
         },
+        onCheckLongClick = {
+            dateSheet = it
+        },
         onFilterClick = viewModel::setFilter,
         onBackClick = onNavigateBack,
     )
 
     WatchlistShowSheet(
-        addLocally = true,
+        addLocally = false,
         sheetItem = contextShowSheet?.show,
         onDismiss = { contextShowSheet = null },
-        onRemoveWatchlist = {
-            viewModel.removeItem(contextShowSheet)
-        },
         onAddWatched = {
+            dateSheet = contextShowSheet
+        },
+        onRemoveWatchlist = {
             viewModel.removeItem(contextShowSheet)
         },
     )
 
     WatchlistMovieSheet(
-        addLocally = true,
+        addLocally = false,
         sheetItem = contextMovieSheet?.movie,
         onDismiss = { contextMovieSheet = null },
+        onAddWatched = {
+            dateSheet = contextMovieSheet
+        },
         onRemoveWatchlist = {
             viewModel.removeItem(contextMovieSheet)
         },
-        onAddWatched = {
-            viewModel.removeItem(contextMovieSheet)
+    )
+
+    AllHomeDateSelectionSheet(
+        item = dateSheet,
+        onDateSelected = { date ->
+            dateSheet?.let {
+                when (it) {
+                    is MovieItem -> {
+                        viewModel.addMovieToHistory(
+                            movieId = it.id,
+                            customDate = date,
+                        )
+                    }
+                    is ShowItem -> {
+                        val episode = (dateSheet as ShowItem).progress?.nextEpisode
+                            ?: return@AllHomeDateSelectionSheet
+
+                        viewModel.addShowToHistory(
+                            showId = it.id,
+                            episodeId = episode.ids.trakt,
+                            customDate = date,
+                        )
+                    }
+                }
+            }
+        },
+        onDismiss = {
+            dateSheet = null
         },
     )
 }
@@ -153,6 +203,7 @@ internal fun AllHomeWatchlistContent(
     onTopOfList: () -> Unit = {},
     onClick: (WatchlistItem) -> Unit = {},
     onCheckClick: (WatchlistItem) -> Unit = {},
+    onCheckLongClick: (WatchlistItem) -> Unit = {},
     onLongClick: (WatchlistItem) -> Unit = {},
     onFilterClick: (MediaMode) -> Unit = {},
     onBackClick: () -> Unit = {},
@@ -201,6 +252,7 @@ internal fun AllHomeWatchlistContent(
             onFilterClick = onFilterClick,
             onClick = onClick,
             onCheckClick = onCheckClick,
+            onCheckLongClick = onCheckLongClick,
             onLongClick = onLongClick,
             onTopOfList = onTopOfList,
             onBackClick = onBackClick,
@@ -245,6 +297,7 @@ private fun ContentList(
     contentPadding: PaddingValues,
     onClick: (WatchlistItem) -> Unit,
     onCheckClick: (WatchlistItem) -> Unit,
+    onCheckLongClick: (WatchlistItem) -> Unit,
     onLongClick: (WatchlistItem) -> Unit,
     onFilterClick: (MediaMode) -> Unit,
     onTopOfList: () -> Unit,
@@ -298,6 +351,7 @@ private fun ContentList(
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
                     onCheckClick = { onCheckClick(item) },
+                    onCheckLongClick = { onCheckLongClick(item) },
                     modifier = Modifier
                         .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
                         .animateItem(
@@ -311,6 +365,7 @@ private fun ContentList(
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
                     onCheckClick = { onCheckClick(item) },
+                    onCheckLongClick = { onCheckLongClick(item) },
                     modifier = Modifier
                         .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
                         .animateItem(
@@ -335,6 +390,43 @@ private fun ContentFilters(
             top = 0.dp,
             bottom = 19.dp,
         ),
+    )
+}
+
+@Composable
+private fun AllHomeDateSelectionSheet(
+    item: WatchlistItem?,
+    onDateSelected: (Instant?) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    DateSelectionSheet(
+        active = item != null,
+        title = item?.title.orEmpty(),
+        subtitle = when (item) {
+            is ShowItem -> item.progress?.nextEpisode?.seasonEpisodeString()
+            is MovieItem -> null
+            else -> null
+        },
+        onResult = {
+            if (item == null) return@DateSelectionSheet
+            when (it) {
+                is Now -> onDateSelected(null)
+                is CustomDate -> onDateSelected(it.date)
+                is UnknownDate -> onDateSelected(it.date)
+                is ReleaseDate -> when (item) {
+                    is ShowItem -> onDateSelected(
+                        item.progress?.nextEpisode?.firstAired?.toInstant()
+                            ?: item.show.released?.toInstant(),
+                    )
+                    is MovieItem -> {
+                        val localDate = item.movie.released
+                        val instantDate = localDate?.atTime(20, 0)?.toInstant(UTC)
+                        onDateSelected(instantDate)
+                    }
+                }
+            }
+        },
+        onDismiss = onDismiss,
     )
 }
 

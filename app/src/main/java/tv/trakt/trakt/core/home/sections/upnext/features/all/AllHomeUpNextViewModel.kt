@@ -43,6 +43,7 @@ import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.resources.R
+import java.time.Instant
 
 @OptIn(FlowPreview::class)
 internal class AllHomeUpNextViewModel(
@@ -187,7 +188,10 @@ internal class AllHomeUpNextViewModel(
         return false
     }
 
-    fun addToHistory(episodeId: TraktId) {
+    fun addToHistory(
+        episodeId: TraktId,
+        customDate: Instant? = null,
+    ) {
         if (processingJob != null) {
             return
         }
@@ -203,7 +207,11 @@ internal class AllHomeUpNextViewModel(
                     currentItems.toImmutableList()
                 }
 
-                updateHistoryUseCase.addToHistory(episodeId)
+                updateHistoryUseCase.addToHistory(
+                    episodeId = episodeId,
+                    customDate = customDate,
+                )
+
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "episode",
                     source = "all_home_up_next",
