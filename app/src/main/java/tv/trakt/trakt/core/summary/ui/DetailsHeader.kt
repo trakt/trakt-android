@@ -373,7 +373,7 @@ private fun DetailsHeader(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .graphicsLayer {
-                            translationY = 6.dp.toPx()
+                            translationY = 8.5.dp.toPx()
                         },
                 ) {
                     Row(
@@ -542,8 +542,8 @@ private fun PosterChip(
         modifier = modifier
             .background(Color.White, RoundedCornerShape(100))
             .padding(
-                horizontal = 9.dp,
-                vertical = 5.dp,
+                horizontal = 8.dp,
+                vertical = 4.dp,
             ),
     ) {
         icon?.let {

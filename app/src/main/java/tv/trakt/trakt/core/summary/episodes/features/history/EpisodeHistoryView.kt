@@ -54,6 +54,7 @@ internal fun EpisodeHistoryView(
     contentPadding: PaddingValues,
     loading: Boolean = false,
     onClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
+    onRemoveClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -65,6 +66,9 @@ internal fun EpisodeHistoryView(
         contentPadding = contentPadding,
         onClick = {
             if (!loading) onClick?.invoke(it)
+        },
+        onRemoveClick = {
+            if (!loading) onRemoveClick?.invoke(it)
         },
         onLongClick = {
             if (!loading) onClick?.invoke(it)
@@ -80,6 +84,7 @@ private fun EpisodeHistoryContent(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
+    onRemoveClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
     onLongClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
 ) {
     Column(
@@ -125,6 +130,7 @@ private fun EpisodeHistoryContent(
                             listItems = (state.items ?: emptyList()).toImmutableList(),
                             contentPadding = contentPadding,
                             onClick = onClick,
+                            onRemoveClick = onRemoveClick,
                             onLongClick = onLongClick,
                         )
                     }
@@ -140,6 +146,7 @@ private fun ContentList(
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
     onClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
+    onRemoveClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
     onLongClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
 ) {
     LazyRow(
@@ -154,7 +161,9 @@ private fun ContentList(
         ) { item ->
             ActivityEpisodeItemView(
                 item = item,
+                removeButton = true,
                 onClick = { onClick?.invoke(item) },
+                onRemoveClick = { onRemoveClick?.invoke(item) },
                 onLongClick = { onLongClick?.invoke(item) },
                 modifier = Modifier
                     .animateItem(

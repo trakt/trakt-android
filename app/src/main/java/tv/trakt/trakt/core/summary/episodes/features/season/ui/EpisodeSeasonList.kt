@@ -156,7 +156,6 @@ internal fun EpisodeSeasonList(
                                             },
                                     )
                                 }
-                                // TODO Revert if BAD idea!
                                 item.isWatched -> {
                                     Icon(
                                         painter = painterResource(R.drawable.ic_check_double),

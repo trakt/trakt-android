@@ -5,9 +5,13 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -24,9 +28,11 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
@@ -38,8 +44,10 @@ import java.time.Instant
 internal fun ActivityEpisodeItemView(
     item: HomeActivityItem.EpisodeItem,
     modifier: Modifier = Modifier,
+    removeButton: Boolean = false,
     moreButton: Boolean = false,
     onClick: () -> Unit = {},
+    onRemoveClick: () -> Unit = {},
     onShowClick: () -> Unit = {},
     onLongClick: (() -> Unit)? = null,
 ) {
@@ -107,26 +115,46 @@ internal fun ActivityEpisodeItemView(
             }
         },
         footerContent = {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(1.dp),
-                modifier = Modifier
-                    .onClick(onClick = onShowClick),
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth(),
             ) {
-                Text(
-                    text = item.show.title,
-                    style = TraktTheme.typography.cardTitle,
-                    color = TraktTheme.colors.textPrimary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(1.dp),
+                    modifier = Modifier
+                        .onClick(onClick = onShowClick),
+                ) {
+                    Text(
+                        text = item.show.title,
+                        style = TraktTheme.typography.cardTitle,
+                        color = TraktTheme.colors.textPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
 
-                Text(
-                    text = item.episode.seasonEpisodeString(),
-                    style = TraktTheme.typography.cardSubtitle,
-                    color = TraktTheme.colors.textSecondary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
+                    Text(
+                        text = item.episode.seasonEpisodeString(),
+                        style = TraktTheme.typography.cardSubtitle,
+                        color = TraktTheme.colors.textSecondary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+
+                if (removeButton) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_close),
+                        contentDescription = null,
+                        tint = Red500,
+                        modifier = Modifier
+                            .padding(start = 16.dp)
+                            .size(18.dp)
+                            .onClickCombined(
+                                onClick = onRemoveClick,
+                            ),
+                    )
+                }
             }
         },
         modifier = modifier,
