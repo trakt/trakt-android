@@ -146,7 +146,8 @@ internal fun HomeWatchlistView(
 
     WatchlistShowSheet(
         addLocally = false,
-        sheetItem = contextShowSheet?.show,
+        watched = false,
+        show = contextShowSheet?.show,
         onDismiss = {
             contextShowSheet = null
         },
@@ -161,7 +162,8 @@ internal fun HomeWatchlistView(
     WatchlistMovieSheet(
         addLocally = false,
         skipSnack = true,
-        sheetItem = contextMovieSheet?.movie,
+        watched = false,
+        movie = contextMovieSheet?.movie,
         onDismiss = {
             contextMovieSheet = null
         },

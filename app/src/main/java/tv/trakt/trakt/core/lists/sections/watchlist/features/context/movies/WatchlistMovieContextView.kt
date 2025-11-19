@@ -44,8 +44,9 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun WatchlistMovieContextView(
     item: Movie,
-    viewModel: WatchlistMovieContextViewModel,
+    watched: Boolean,
     addLocally: Boolean,
+    viewModel: WatchlistMovieContextViewModel,
     modifier: Modifier = Modifier,
     onAddWatched: (Movie) -> Unit,
     onRemoveWatchlist: () -> Unit,
@@ -71,6 +72,7 @@ internal fun WatchlistMovieContextView(
 
     WatchlistMovieContextViewContent(
         movie = item,
+        watched = watched,
         state = state,
         modifier = modifier,
         onAddWatched = {
@@ -117,6 +119,7 @@ internal fun WatchlistMovieContextView(
 @Composable
 private fun WatchlistMovieContextViewContent(
     movie: Movie,
+    watched: Boolean,
     state: WatchlistMovieContextState,
     modifier: Modifier = Modifier,
     onAddWatched: () -> Unit = {},
@@ -162,11 +165,21 @@ private fun WatchlistMovieContextViewContent(
                 GhostButton(
                     enabled = !isLoading,
                     loading = state.loadingWatched.isLoading,
-                    text = stringResource(R.string.button_text_mark_as_watched),
+                    text = stringResource(
+                        when {
+                            watched -> R.string.button_text_watch_again
+                            else -> R.string.button_text_mark_as_watched
+                        },
+                    ),
                     iconSize = 20.dp,
                     iconSpace = 16.dp,
                     onClick = onAddWatched,
-                    icon = painterResource(R.drawable.ic_check),
+                    icon = painterResource(
+                        when {
+                            watched -> R.drawable.ic_check_double
+                            else -> R.drawable.ic_check
+                        },
+                    ),
                     modifier = Modifier
                         .graphicsLayer {
                             translationX = -6.dp.toPx()
@@ -224,6 +237,7 @@ private fun Preview() {
             WatchlistMovieContextViewContent(
                 state = WatchlistMovieContextState(),
                 movie = PreviewData.movie1,
+                watched = false,
             )
         }
     }

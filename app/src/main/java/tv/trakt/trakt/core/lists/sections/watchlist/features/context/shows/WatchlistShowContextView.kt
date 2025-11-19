@@ -44,6 +44,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun WatchlistShowContextView(
     show: Show,
+    watched: Boolean,
     viewModel: WatchlistShowContextViewModel,
     modifier: Modifier = Modifier,
     addLocally: Boolean,
@@ -72,6 +73,7 @@ internal fun WatchlistShowContextView(
 
     WatchlistShowContextViewContent(
         show = show,
+        watched = watched,
         state = state,
         modifier = modifier,
         onWatchedClick = {
@@ -126,6 +128,7 @@ internal fun WatchlistShowContextView(
 @Composable
 private fun WatchlistShowContextViewContent(
     show: Show,
+    watched: Boolean,
     state: WatchlistShowContextState,
     modifier: Modifier = Modifier,
     onWatchedClick: () -> Unit = {},
@@ -158,6 +161,7 @@ private fun WatchlistShowContextViewContent(
         if (state.user != null) {
             ShowActionButtons(
                 show = show,
+                watched = watched,
                 state = state,
                 onWatchedClick = onWatchedClick,
                 onWatchlistClick = onWatchlistClick,
@@ -169,6 +173,7 @@ private fun WatchlistShowContextViewContent(
 @Composable
 private fun ShowActionButtons(
     show: Show,
+    watched: Boolean,
     state: WatchlistShowContextState,
     onWatchedClick: () -> Unit,
     onWatchlistClick: () -> Unit,
@@ -191,11 +196,21 @@ private fun ShowActionButtons(
             GhostButton(
                 enabled = !isLoadingOrDone,
                 loading = state.loadingWatched.isLoading || state.loadingWatched.isDone,
-                text = stringResource(R.string.button_text_mark_as_watched),
+                text = stringResource(
+                    when {
+                        watched -> R.string.button_text_watch_again
+                        else -> R.string.button_text_mark_as_watched
+                    },
+                ),
                 iconSize = 22.dp,
                 iconSpace = 16.dp,
                 onClick = onWatchedClick,
-                icon = painterResource(R.drawable.ic_check),
+                icon = painterResource(
+                    when {
+                        watched -> R.drawable.ic_check_double
+                        else -> R.drawable.ic_check
+                    },
+                ),
                 modifier = Modifier
                     .graphicsLayer {
                         translationX = -6.dp.toPx()
@@ -253,6 +268,7 @@ private fun Preview() {
             WatchlistShowContextViewContent(
                 state = WatchlistShowContextState(),
                 show = PreviewData.show1,
+                watched = false,
             )
         }
     }

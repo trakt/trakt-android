@@ -116,7 +116,10 @@ internal fun ListsWatchlistView(
 
     WatchlistShowSheet(
         addLocally = true,
-        sheetItem = showContextSheet,
+        show = showContextSheet,
+        watched = showContextSheet?.ids?.trakt?.let {
+            state.collection.isWatched(it)
+        } ?: false,
         onDismiss = { showContextSheet = null },
         onRemoveWatchlist = {
             viewModel.loadData(ignoreErrors = true)
@@ -128,7 +131,10 @@ internal fun ListsWatchlistView(
 
     WatchlistMovieSheet(
         addLocally = true,
-        sheetItem = movieContextSheet,
+        movie = movieContextSheet,
+        watched = movieContextSheet?.ids?.trakt?.let {
+            state.collection.isWatched(it)
+        } ?: false,
         onDismiss = { movieContextSheet = null },
         onRemoveWatchlist = {
             viewModel.loadData(ignoreErrors = true)

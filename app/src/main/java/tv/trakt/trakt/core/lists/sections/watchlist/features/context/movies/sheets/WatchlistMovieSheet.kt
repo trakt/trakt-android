@@ -27,7 +27,8 @@ internal fun WatchlistMovieSheet(
     state: SheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true,
     ),
-    sheetItem: Movie?,
+    movie: Movie?,
+    watched: Boolean,
     addLocally: Boolean,
     skipSnack: Boolean = false,
     onAddWatched: (Movie) -> Unit,
@@ -36,7 +37,7 @@ internal fun WatchlistMovieSheet(
 ) {
     val sheetScope = rememberCoroutineScope()
 
-    if (sheetItem != null) {
+    if (movie != null) {
         val localSnack = LocalSnackbarState.current
         val localContext = LocalContext.current
 
@@ -45,11 +46,12 @@ internal fun WatchlistMovieSheet(
             onDismiss = onDismiss,
         ) {
             WatchlistMovieContextView(
-                item = sheetItem,
+                item = movie,
+                watched = watched,
+                addLocally = addLocally,
                 viewModel = koinViewModel(
                     key = nextInt().toString(),
                 ),
-                addLocally = addLocally,
                 onRemoveWatchlist = {
                     onRemoveWatchlist()
                     sheetScope.run {

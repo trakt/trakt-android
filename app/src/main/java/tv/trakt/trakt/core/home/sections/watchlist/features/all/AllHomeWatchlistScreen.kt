@@ -139,7 +139,8 @@ internal fun AllHomeWatchlistScreen(
 
     WatchlistShowSheet(
         addLocally = false,
-        sheetItem = contextShowSheet?.show,
+        watched = false,
+        show = contextShowSheet?.show,
         onDismiss = { contextShowSheet = null },
         onAddWatched = {
             dateSheet = contextShowSheet
@@ -151,7 +152,8 @@ internal fun AllHomeWatchlistScreen(
 
     WatchlistMovieSheet(
         addLocally = false,
-        sheetItem = contextMovieSheet?.movie,
+        movie = contextMovieSheet?.movie,
+        watched = false,
         onDismiss = { contextMovieSheet = null },
         onAddWatched = {
             dateSheet = contextMovieSheet

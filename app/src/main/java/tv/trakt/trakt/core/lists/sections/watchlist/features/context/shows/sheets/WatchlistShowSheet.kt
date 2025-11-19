@@ -28,8 +28,9 @@ internal fun WatchlistShowSheet(
     state: SheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true,
     ),
-    sheetItem: Show?,
+    show: Show?,
     addLocally: Boolean,
+    watched: Boolean,
     skipSnack: Boolean = false,
     onAddWatched: (Show) -> Unit,
     onRemoveWatchlist: () -> Unit,
@@ -37,7 +38,7 @@ internal fun WatchlistShowSheet(
 ) {
     val sheetScope = rememberCoroutineScope()
 
-    if (sheetItem != null) {
+    if (show != null) {
         val localSnack = LocalSnackbarState.current
         val localContext = LocalContext.current
 
@@ -46,12 +47,13 @@ internal fun WatchlistShowSheet(
             onDismiss = onDismiss,
         ) {
             WatchlistShowContextView(
-                show = sheetItem,
+                show = show,
+                watched = watched,
+                addLocally = addLocally,
                 viewModel = koinViewModel(
                     key = nextInt().toString(),
-                    parameters = { parametersOf(sheetItem) },
+                    parameters = { parametersOf(show) },
                 ),
-                addLocally = addLocally,
                 onAddWatched = {
                     onAddWatched(it)
                     sheetScope.run {

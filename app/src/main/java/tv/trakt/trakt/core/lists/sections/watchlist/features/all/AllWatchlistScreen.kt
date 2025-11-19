@@ -126,8 +126,11 @@ internal fun AllWatchlistScreen(
     )
 
     WatchlistMovieSheet(
+        movie = contextMovieSheet?.movie,
         addLocally = true,
-        sheetItem = contextMovieSheet?.movie,
+        watched = contextMovieSheet?.movie?.ids?.trakt?.let {
+            state.collection.isWatched(it)
+        } ?: false,
         onDismiss = { contextMovieSheet = null },
         onRemoveWatchlist = {
             viewModel.removeItem(contextMovieSheet)
@@ -138,8 +141,11 @@ internal fun AllWatchlistScreen(
     )
 
     WatchlistShowSheet(
+        show = contextShowSheet?.show,
         addLocally = true,
-        sheetItem = contextShowSheet?.show,
+        watched = contextShowSheet?.show?.ids?.trakt?.let {
+            state.collection.isWatched(it)
+        } ?: false,
         onDismiss = { contextShowSheet = null },
         onRemoveWatchlist = {
             viewModel.removeItem(contextShowSheet)
