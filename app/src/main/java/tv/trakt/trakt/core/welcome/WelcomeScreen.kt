@@ -134,7 +134,7 @@ internal fun WelcomeScreen(
                     .padding(horizontal = 24.dp)
                     .padding(
                         top = 72.dp,
-                        bottom = 16.dp
+                        bottom = 16.dp,
                     ),
             ) {
                 WelcomeItem(
@@ -165,8 +165,8 @@ internal fun WelcomeScreen(
                 .align(Alignment.BottomCenter)
                 .padding(
                     bottom = WindowInsets.navigationBars.asPaddingValues()
-                        .calculateBottomPadding()
-                )
+                        .calculateBottomPadding(),
+                ),
         )
     }
 }
