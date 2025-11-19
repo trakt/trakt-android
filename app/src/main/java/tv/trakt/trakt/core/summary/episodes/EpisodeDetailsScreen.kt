@@ -106,7 +106,6 @@ internal fun EpisodeDetailsScreen(
     val scope = rememberCoroutineScope()
     var contextSheet by remember { mutableStateOf(false) }
     var historySheet by remember { mutableStateOf<HomeActivityItem.EpisodeItem?>(null) }
-    var confirmRemovePlaySheet by remember { mutableStateOf<HomeActivityItem.EpisodeItem?>(null) }
     var confirmRemoveWatchedSheet by remember { mutableStateOf(false) }
     var dateSheet by remember { mutableStateOf(false) }
 
@@ -138,9 +137,6 @@ internal fun EpisodeDetailsScreen(
         },
         onHistoryClick = {
             historySheet = it
-        },
-        onHistoryRemoveClick = {
-            confirmRemovePlaySheet = it
         },
         onMoreClick = {
             contextSheet = true
@@ -213,22 +209,6 @@ internal fun EpisodeDetailsScreen(
         ),
     )
 
-    ConfirmationSheet(
-        active = confirmRemovePlaySheet != null,
-        onYes = {
-            confirmRemovePlaySheet?.id?.let { playId ->
-                viewModel.removeFromWatched(playId)
-            }
-            confirmRemovePlaySheet = null
-        },
-        onNo = { confirmRemovePlaySheet = null },
-        title = stringResource(R.string.button_text_remove_from_history),
-        message = stringResource(
-            R.string.warning_prompt_remove_single_watched,
-            state.episode?.title ?: "",
-        ),
-    )
-
     DateSelectionSheet(
         active = dateSheet,
         title = state.show?.title ?: "",
@@ -268,7 +248,6 @@ internal fun EpisodeDetailsContent(
     onMoreClick: (() -> Unit)? = null,
     onMoreCommentsClick: ((CommentsFilter) -> Unit)? = null,
     onHistoryClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
-    onHistoryRemoveClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
     onPersonClick: ((Person) -> Unit)? = null,
     onRatingClick: ((Int) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
@@ -489,7 +468,6 @@ internal fun EpisodeDetailsContent(
                                 contentPadding = sectionPadding,
                                 loading = state.loadingProgress.isLoading,
                                 onClick = onHistoryClick,
-                                onRemoveClick = onHistoryRemoveClick,
                                 modifier = Modifier
                                     .padding(top = 32.dp),
                             )

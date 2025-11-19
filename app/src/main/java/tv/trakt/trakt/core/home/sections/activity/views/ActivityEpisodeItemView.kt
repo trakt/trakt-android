@@ -123,6 +123,7 @@ internal fun ActivityEpisodeItemView(
                 Column(
                     verticalArrangement = Arrangement.spacedBy(1.dp),
                     modifier = Modifier
+                        .weight(1F, fill = false)
                         .onClick(onClick = onShowClick),
                 ) {
                     Text(
@@ -148,7 +149,7 @@ internal fun ActivityEpisodeItemView(
                         contentDescription = null,
                         tint = Red500,
                         modifier = Modifier
-                            .padding(start = 16.dp)
+                            .padding(start = 12.dp)
                             .size(18.dp)
                             .onClickCombined(
                                 onClick = onRemoveClick,

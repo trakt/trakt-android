@@ -23,7 +23,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
@@ -52,18 +51,22 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun ShowDetailsContextView(
     show: Show,
+    watched: Boolean,
     viewModel: ShowDetailsContextViewModel,
     modifier: Modifier = Modifier,
     onShareClick: (() -> Unit)? = null,
-    onTrailerClick: (() -> Unit)? = null,
+    onRemoveClick: (() -> Unit)? = null,
+    onCheckClick: (() -> Unit)? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     ShowDetailsContextViewContent(
         show = show,
+        watched = watched,
         state = state,
         onShareClick = onShareClick,
-        onTrailerClick = onTrailerClick,
+        onRemoveClick = onRemoveClick,
+        onCheckClick = onCheckClick,
         modifier = modifier,
     )
 }
@@ -71,13 +74,14 @@ internal fun ShowDetailsContextView(
 @Composable
 private fun ShowDetailsContextViewContent(
     show: Show,
+    watched: Boolean,
     state: ShowDetailsContextState,
     modifier: Modifier = Modifier,
+    onCheckClick: (() -> Unit)? = null,
+    onRemoveClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
-    onTrailerClick: (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
-    val uriHandler = LocalUriHandler.current
 
     val isReleased = remember {
         show.released?.isNowOrBefore() ?: false
@@ -155,9 +159,10 @@ private fun ShowDetailsContextViewContent(
         )
 
         ActionButtons(
-            trailerEnabled = !show.trailer.isNullOrBlank(),
-            onShareClick = onShareClick,
-            onTrailerClick = onTrailerClick,
+            watched = watched,
+            onCheckClick = onCheckClick ?: {},
+            onRemoveClick = onRemoveClick ?: {},
+            onShareClick = onShareClick ?: {},
             modifier = Modifier
                 .padding(top = 12.dp),
         )
@@ -205,10 +210,11 @@ private fun WatchButton(
 
 @Composable
 private fun ActionButtons(
+    watched: Boolean,
     modifier: Modifier = Modifier,
-    trailerEnabled: Boolean = true,
-    onShareClick: (() -> Unit)? = null,
-    onTrailerClick: (() -> Unit)? = null,
+    onCheckClick: () -> Unit,
+    onShareClick: () -> Unit,
+    onRemoveClick: () -> Unit,
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
@@ -218,29 +224,52 @@ private fun ActionButtons(
             },
     ) {
         GhostButton(
-            text = stringResource(R.string.button_text_share),
-            icon = painterResource(R.drawable.ic_share),
-            iconSize = 25.dp,
-            iconSpace = 14.dp,
+            text = stringResource(
+                when {
+                    watched -> R.string.button_text_watch_again
+                    else -> R.string.button_text_mark_as_watched
+                },
+            ),
+            icon = painterResource(
+                when {
+                    watched -> R.drawable.ic_check_double
+                    else -> R.drawable.ic_check
+                },
+            ),
+            iconSize = 22.dp,
+            iconSpace = 16.dp,
             modifier = Modifier
                 .graphicsLayer {
-                    translationX = -5.dp.toPx()
+                    translationX = -4.dp.toPx()
                 },
-            onClick = onShareClick ?: {},
+            onClick = onCheckClick,
         )
 
-//        GhostButton(
-//            enabled = trailerEnabled,
-//            text = stringResource(R.string.button_text_trailer),
-//            icon = painterResource(R.drawable.ic_trailer),
-//            iconSize = 21.dp,
-//            iconSpace = 16.dp,
-//            modifier = Modifier
-//                .graphicsLayer {
-//                    translationX = -3.dp.toPx()
-//                },
-//            onClick = onTrailerClick ?: {},
-//        )
+        if (watched) {
+            GhostButton(
+                text = stringResource(R.string.button_text_remove_from_history),
+                icon = painterResource(R.drawable.ic_close),
+                iconSize = 22.dp,
+                iconSpace = 16.dp,
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationX = -4.dp.toPx()
+                    },
+                onClick = onRemoveClick,
+            )
+        }
+
+        GhostButton(
+            text = stringResource(R.string.button_text_share),
+            icon = painterResource(R.drawable.ic_share),
+            iconSize = 22.dp,
+            iconSpace = 16.dp,
+            modifier = Modifier
+                .graphicsLayer {
+                    translationX = -4.dp.toPx()
+                },
+            onClick = onShareClick,
+        )
     }
 }
 
@@ -259,6 +288,7 @@ private fun Preview() {
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             ShowDetailsContextViewContent(
                 show = PreviewData.show1,
+                watched = true,
                 state = ShowDetailsContextState(
                     streamings = StreamingsState(
                         loading = false,

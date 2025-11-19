@@ -36,6 +36,9 @@ internal data class ShowDetailsState(
         val hasLists: Boolean,
     ) {
         val inAnyList: Boolean = inWatchlist || inLists
+
+        val isWatched: Boolean
+            get() = plays != null && plays > 0
     }
 
     data class UserRatingsState(

@@ -52,7 +52,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
-import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Ids
@@ -62,7 +62,6 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toSlugId
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
 import tv.trakt.trakt.core.summary.shows.features.seasons.ui.ShowEpisodesList
@@ -70,6 +69,7 @@ import tv.trakt.trakt.core.summary.shows.features.seasons.ui.ShowSeasonsList
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
@@ -96,6 +96,9 @@ internal fun ShowSeasonsView(
     var confirmMarkSeasonSheet by remember { mutableStateOf(false) }
     var confirmRemoveSeasonSheet by remember { mutableStateOf(false) }
 
+    var episodeDateSheet by remember { mutableStateOf<EpisodeItem?>(null) }
+    var seasonDateSheet by remember { mutableStateOf(false) }
+
     ShowSeasonsContent(
         state = state,
         user = user,
@@ -106,6 +109,9 @@ internal fun ShowSeasonsView(
         onSeasonClick = viewModel::loadSeason,
         onCheckEpisodeClick = {
             viewModel.addToWatched(it.episode)
+        },
+        onCheckEpisodeLongClick = {
+            episodeDateSheet = it
         },
         onRemoveEpisodeClick = {
             confirmRemoveEpisodeSheet = it
@@ -138,7 +144,7 @@ internal fun ShowSeasonsView(
         active = confirmMarkSeasonSheet,
         onYes = {
             confirmMarkSeasonSheet = false
-            viewModel.addToWatched(state.items)
+            seasonDateSheet = true
         },
         onNo = { confirmMarkSeasonSheet = false },
         title = stringResource(R.string.button_text_mark_as_watched),
@@ -165,6 +171,36 @@ internal fun ShowSeasonsView(
                 state.items.selectedSeason?.number ?: 0,
             ),
         ),
+    )
+
+    DateSelectionSheet(
+        active = episodeDateSheet != null,
+        title = state.show?.title ?: "",
+        onResult = { result ->
+            episodeDateSheet?.let {
+                viewModel.addToWatched(
+                    episode = it.episode,
+                    customDate = result,
+                )
+            }
+        },
+        onDismiss = {
+            episodeDateSheet = null
+        },
+    )
+
+    DateSelectionSheet(
+        active = seasonDateSheet,
+        title = state.show?.title ?: "",
+        onResult = { result ->
+            viewModel.addToWatched(
+                season = state.items,
+                customDate = result,
+            )
+        },
+        onDismiss = {
+            seasonDateSheet = false
+        },
     )
 
     LaunchedEffect(state.info) {
@@ -197,6 +233,7 @@ private fun ShowSeasonsContent(
     onEpisodeClick: ((EpisodeItem) -> Unit)? = null,
     onSeasonClick: ((Season) -> Unit)? = null,
     onCheckEpisodeClick: ((EpisodeItem) -> Unit)? = null,
+    onCheckEpisodeLongClick: ((EpisodeItem) -> Unit)? = null,
     onRemoveEpisodeClick: ((EpisodeItem) -> Unit)? = null,
     onCheckSeasonClick: (() -> Unit)? = null,
     onRemoveSeasonClick: (() -> Unit)? = null,
@@ -256,16 +293,24 @@ private fun ShowSeasonsContent(
 
                         if (state.items.isSelectedSeasonWatched) {
                             Icon(
-                                painter = painterResource(R.drawable.ic_close),
+                                painter = painterResource(R.drawable.ic_check_double),
                                 contentDescription = null,
-                                tint = Red500,
+                                tint = TraktTheme.colors.textPrimary,
                                 modifier = Modifier
                                     .size(checkSize - 2.dp)
-                                    .onClick(enabled = !isLoading) {
-                                        state.items.selectedSeason?.let {
-                                            onRemoveSeasonClick?.invoke()
-                                        }
-                                    },
+                                    .onClickCombined(
+                                        enabled = !isLoading,
+                                        onClick = {
+                                            state.items.selectedSeason?.let {
+                                                onRemoveSeasonClick?.invoke()
+                                            }
+                                        },
+                                        onLongClick = {
+                                            state.items.selectedSeason?.let {
+                                                onRemoveSeasonClick?.invoke()
+                                            }
+                                        },
+                                    ),
                             )
                         } else {
                             Icon(
@@ -274,11 +319,19 @@ private fun ShowSeasonsContent(
                                 tint = TraktTheme.colors.accent,
                                 modifier = Modifier
                                     .size(checkSize)
-                                    .onClick(enabled = !isLoading) {
-                                        state.items.selectedSeason?.let {
-                                            onCheckSeasonClick?.invoke()
-                                        }
-                                    },
+                                    .onClickCombined(
+                                        enabled = !isLoading,
+                                        onClick = {
+                                            state.items.selectedSeason?.let {
+                                                onCheckSeasonClick?.invoke()
+                                            }
+                                        },
+                                        onLongClick = {
+                                            state.items.selectedSeason?.let {
+                                                onCheckSeasonClick?.invoke()
+                                            }
+                                        },
+                                    ),
                             )
                         }
                     }

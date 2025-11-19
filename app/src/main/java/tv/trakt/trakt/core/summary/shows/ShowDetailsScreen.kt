@@ -95,6 +95,7 @@ import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.UserRatingBar
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -121,7 +122,9 @@ internal fun ShowDetailsScreen(
     var listsSheet by remember { mutableStateOf<Show?>(null) }
     var historySheet by remember { mutableStateOf<HomeActivityItem.EpisodeItem?>(null) }
     var confirmAddWatchedSheet by remember { mutableStateOf(false) }
+    var confirmRemoveWatchedSheet by remember { mutableStateOf(false) }
     var confirmRemoveWatchlistSheet by remember { mutableStateOf(false) }
+    var dateSheet by remember { mutableStateOf(false) }
 
     ShowDetailsContent(
         state = state,
@@ -143,7 +146,11 @@ internal fun ShowDetailsScreen(
             }
         },
         onTrackClick = {
-            confirmAddWatchedSheet = true
+            if (state.showProgress?.isWatched == true) {
+                confirmRemoveWatchedSheet = true
+            } else {
+                confirmAddWatchedSheet = true
+            }
         },
         onShareClick = {
             state.show?.let { shareShow(it, context) }
@@ -203,11 +210,15 @@ internal fun ShowDetailsScreen(
 
     ShowDetailsContextSheet(
         show = contextSheet,
+        watched = state.showProgress?.isWatched == true,
         onShareClick = {
             state.show?.let { shareShow(it, context) }
         },
-        onTrailerClick = {
-            state.show?.trailer?.let { uriHandler.openUri(it) }
+        onCheckClick = {
+            confirmAddWatchedSheet = true
+        },
+        onRemoveClick = {
+            confirmRemoveWatchedSheet = true
         },
         onDismiss = {
             contextSheet = null
@@ -228,12 +239,26 @@ internal fun ShowDetailsScreen(
         active = confirmAddWatchedSheet,
         onYes = {
             confirmAddWatchedSheet = false
-            viewModel.addToWatched()
+            dateSheet = true
         },
         onNo = { confirmAddWatchedSheet = false },
         title = stringResource(R.string.button_text_mark_as_watched),
         message = stringResource(
             R.string.warning_prompt_mark_as_watched_show,
+            state.show?.title ?: "",
+        ),
+    )
+
+    ConfirmationSheet(
+        active = confirmRemoveWatchedSheet,
+        onYes = {
+            confirmRemoveWatchedSheet = false
+            viewModel.removeFromWatched()
+        },
+        onNo = { confirmRemoveWatchedSheet = false },
+        title = stringResource(R.string.button_text_remove_from_history),
+        message = stringResource(
+            R.string.warning_prompt_remove_from_watched,
             state.show?.title ?: "",
         ),
     )
@@ -250,6 +275,15 @@ internal fun ShowDetailsScreen(
             R.string.warning_prompt_remove_from_watchlist,
             state.show?.title ?: "",
         ),
+    )
+
+    DateSelectionSheet(
+        active = dateSheet,
+        title = state.show?.title ?: "",
+        onResult = viewModel::addToWatched,
+        onDismiss = {
+            dateSheet = false
+        },
     )
 
     LaunchedEffect(state.navigateEpisode) {
@@ -335,6 +369,10 @@ internal fun ShowDetailsContent(
                 show.released?.isNowOrBefore() ?: false
             }
 
+            val isWatched = remember(state.showProgress?.plays) {
+                state.showProgress?.isWatched == true
+            }
+
             val animatedPeekABoo by animateDpAsState(
                 targetValue = if (state.halloween) (-3.25).dp else 20.dp,
                 animationSpec = tween(
@@ -384,6 +422,10 @@ internal fun ShowDetailsContent(
 
                         DetailsActions(
                             primaryEnabled = isReleased,
+                            primaryIcon = when {
+                                isWatched -> R.drawable.ic_check_double
+                                else -> R.drawable.ic_check
+                            },
                             enabled = state.user != null &&
                                 !state.loadingProgress.isLoading &&
                                 !state.loadingLists.isLoading,
@@ -409,7 +451,6 @@ internal fun ShowDetailsContent(
                 }
 
                 item {
-                    val isWatched = (state.showProgress?.plays ?: 0) > 0
                     val isLoaded = state.showUserRating?.loading == LoadingState.DONE
                     DetailsRating(
                         visible = isWatched && isLoaded,
@@ -555,7 +596,7 @@ internal fun ShowDetailsContent(
                         )
                     }
 
-                    if ((state.showProgress?.plays ?: 0) > 0) {
+                    if (isWatched) {
                         item {
                             ShowHistoryView(
                                 viewModel = koinViewModel(

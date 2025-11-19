@@ -140,6 +140,7 @@ private fun ContentList(
         ) { item ->
             ActivityMovieItemView(
                 item = item,
+                moreButton = true,
                 onClick = { onClick?.invoke(item) },
                 onLongClick = { onLongClick?.invoke(item) },
                 modifier = Modifier

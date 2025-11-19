@@ -69,6 +69,7 @@ import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(FlowPreview::class)
@@ -401,7 +402,7 @@ internal class ShowDetailsViewModel(
         }
     }
 
-    fun addToWatched() {
+    fun addToWatched(customDate: DateSelectionResult? = null) {
         if (showState.value == null ||
             loadingState.value.isLoading ||
             loadingProgress.value.isLoading ||
@@ -417,7 +418,10 @@ internal class ShowDetailsViewModel(
             try {
                 loadingProgress.update { LOADING }
 
-                updateShowHistoryUseCase.addToWatched(showId)
+                updateShowHistoryUseCase.addToWatched(
+                    showId = showId,
+                    customDate = customDate,
+                )
                 val progress = loadProgressUseCase.loadShowsProgress()
                     .firstOrNull {
                         it.show.ids.trakt == showId
@@ -441,6 +445,51 @@ internal class ShowDetailsViewModel(
                     DynamicStringResource(R.string.text_info_history_added)
                 }
                 analytics.progress.logAddWatchedMedia(
+                    mediaType = "show",
+                    source = "show_details",
+                )
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            } finally {
+                loadingProgress.update { DONE }
+            }
+        }
+    }
+
+    fun removeFromWatched() {
+        if (showState.value == null ||
+            loadingState.value.isLoading ||
+            loadingProgress.value.isLoading ||
+            loadingLists.value.isLoading
+        ) {
+            return
+        }
+
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                loadingProgress.update { LOADING }
+
+                updateShowHistoryUseCase.removeAllFromHistory(showId)
+                loadProgressUseCase.loadShowsProgress()
+                    .firstOrNull {
+                        it.show.ids.trakt == showId
+                    }
+
+                showProgressState.update {
+                    it?.copy(plays = 0)
+                }
+
+                showDetailsUpdates.notifyUpdate(Source.PROGRESS)
+                infoState.update {
+                    DynamicStringResource(R.string.text_info_history_removed)
+                }
+                analytics.progress.logRemoveWatchedMedia(
                     mediaType = "show",
                     source = "show_details",
                 )

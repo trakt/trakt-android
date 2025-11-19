@@ -43,6 +43,7 @@ import tv.trakt.trakt.core.sync.model.ProgressItem
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 
 @OptIn(FlowPreview::class)
 internal class ShowSeasonsViewModel(
@@ -191,7 +192,10 @@ internal class ShowSeasonsViewModel(
         }
     }
 
-    fun addToWatched(episode: Episode) {
+    fun addToWatched(
+        episode: Episode,
+        customDate: DateSelectionResult? = null,
+    ) {
         if (loadingState.value.isLoading ||
             loadingEpisodeState.value.isLoading ||
             loadingSeasonState.value.isLoading
@@ -209,7 +213,10 @@ internal class ShowSeasonsViewModel(
                 loadingEpisodeState.update { LOADING }
                 setLoadingEpisode(episode)
 
-                updateEpisodeHistoryUseCase.addToHistory(episode.ids.trakt)
+                updateEpisodeHistoryUseCase.addToHistory(
+                    episodeId = episode.ids.trakt,
+                    customDate = customDate,
+                )
                 val progress = loadUserProgressUseCase.loadShowsProgress()
                     .firstOrNull {
                         it.show.ids.trakt == show.ids.trakt
@@ -245,7 +252,10 @@ internal class ShowSeasonsViewModel(
         }
     }
 
-    fun addToWatched(season: ShowSeasons) {
+    fun addToWatched(
+        season: ShowSeasons,
+        customDate: DateSelectionResult? = null,
+    ) {
         if (loadingState.value.isLoading ||
             loadingEpisodeState.value.isLoading ||
             loadingSeasonState.value.isLoading
@@ -266,7 +276,10 @@ internal class ShowSeasonsViewModel(
                     .filter { !it.isWatched }
                     .map { it.episode.ids.trakt }
 
-                updateEpisodeHistoryUseCase.addToHistory(episodesToAdd)
+                updateEpisodeHistoryUseCase.addToHistory(
+                    episodeIds = episodesToAdd,
+                    customDate = customDate,
+                )
                 val progress = loadUserProgressUseCase.loadShowsProgress()
                     .firstOrNull {
                         it.show.ids.trakt == show.ids.trakt

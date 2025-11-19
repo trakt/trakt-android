@@ -9,7 +9,6 @@ import org.openapitools.client.models.PostUsersListsListAddRequestSeasonsInner
 import org.openapitools.client.models.PostUsersListsListAddRequestSeasonsInnerIds
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
-import java.time.Instant
 
 internal class EpisodesSyncApiClient(
     private val syncApi: SyncApi,
@@ -36,7 +35,7 @@ internal class EpisodesSyncApiClient(
 
     override suspend fun addToHistory(
         episodeIds: List<TraktId>,
-        watchedAt: Instant,
+        watchedAt: String,
     ) {
         val request = PostUsersListsListAddRequest(
             episodes = episodeIds.map {
@@ -45,7 +44,7 @@ internal class EpisodesSyncApiClient(
                         trakt = it.value,
                         tvdb = -1,
                     ),
-                    watchedAt = watchedAt.toString(),
+                    watchedAt = watchedAt,
                 )
             },
         )

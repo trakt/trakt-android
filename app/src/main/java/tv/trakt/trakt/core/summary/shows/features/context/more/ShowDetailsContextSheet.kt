@@ -23,8 +23,10 @@ internal fun ShowDetailsContextSheet(
         skipPartiallyExpanded = true,
     ),
     show: Show?,
+    watched: Boolean,
     onShareClick: (() -> Unit)? = null,
-    onTrailerClick: (() -> Unit)? = null,
+    onCheckClick: (() -> Unit)? = null,
+    onRemoveClick: (() -> Unit)? = null,
     onDismiss: () -> Unit,
 ) {
     val sheetScope = rememberCoroutineScope()
@@ -36,6 +38,7 @@ internal fun ShowDetailsContextSheet(
         ) {
             ShowDetailsContextView(
                 show = show,
+                watched = watched,
                 viewModel = koinViewModel(
                     key = nextInt().toString(),
                     parameters = { parametersOf(show) },
@@ -49,8 +52,17 @@ internal fun ShowDetailsContextSheet(
                             }
                         }
                 },
-                onTrailerClick = {
-                    onTrailerClick?.invoke()
+                onCheckClick = {
+                    onCheckClick?.invoke()
+                    sheetScope.launch { state.hide() }
+                        .invokeOnCompletion {
+                            if (!state.isVisible) {
+                                onDismiss()
+                            }
+                        }
+                },
+                onRemoveClick = {
+                    onRemoveClick?.invoke()
                     sheetScope.launch { state.hide() }
                         .invokeOnCompletion {
                             if (!state.isVisible) {

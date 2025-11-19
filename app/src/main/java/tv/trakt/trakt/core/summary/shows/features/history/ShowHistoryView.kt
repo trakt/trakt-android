@@ -154,6 +154,7 @@ private fun ContentList(
         ) { item ->
             ActivityEpisodeItemView(
                 item = item,
+                moreButton = true,
                 onClick = { onClick?.invoke(item) },
                 onLongClick = { onLongClick?.invoke(item) },
                 modifier = Modifier

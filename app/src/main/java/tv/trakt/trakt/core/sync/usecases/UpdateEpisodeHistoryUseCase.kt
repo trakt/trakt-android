@@ -21,10 +21,16 @@ internal class UpdateEpisodeHistoryUseCase(
         )
     }
 
-    suspend fun addToHistory(episodeIds: List<TraktId>) {
+    suspend fun addToHistory(
+        episodeIds: List<TraktId>,
+        customDate: DateSelectionResult? = null,
+    ) {
+        val watchedAt = customDate?.dateString
+            ?: nowUtcInstant().toString()
+
         remoteSource.addToHistory(
             episodeIds = episodeIds,
-            watchedAt = nowUtcInstant(),
+            watchedAt = watchedAt,
         )
     }
 
