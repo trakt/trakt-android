@@ -297,7 +297,7 @@ private fun ShowSeasonsContent(
                                 contentDescription = null,
                                 tint = TraktTheme.colors.textPrimary,
                                 modifier = Modifier
-                                    .size(checkSize - 2.dp)
+                                    .size(checkSize)
                                     .onClickCombined(
                                         enabled = !isLoading,
                                         onClick = {
@@ -363,6 +363,7 @@ private fun ShowSeasonsContent(
                             onEpisodeClick = onEpisodeClick,
                             onSeasonClick = onSeasonClick,
                             onCheckEpisodeClick = onCheckEpisodeClick,
+                            onCheckEpisodeLongClick = onCheckEpisodeLongClick,
                             onRemoveEpisodeClick = onRemoveEpisodeClick,
                         )
                     }
@@ -380,6 +381,7 @@ private fun ContentList(
     onSeasonClick: ((Season) -> Unit)? = null,
     onEpisodeClick: ((EpisodeItem) -> Unit)? = null,
     onCheckEpisodeClick: ((EpisodeItem) -> Unit)? = null,
+    onCheckEpisodeLongClick: ((EpisodeItem) -> Unit)? = null,
     onRemoveEpisodeClick: ((EpisodeItem) -> Unit)? = null,
 ) {
     Column(
@@ -401,6 +403,7 @@ private fun ContentList(
             episodes = seasons.selectedSeasonEpisodes,
             onEpisodeClick = onEpisodeClick ?: {},
             onCheckClick = onCheckEpisodeClick ?: {},
+            onCheckLongClick = onCheckEpisodeLongClick ?: {},
             onRemoveClick = onRemoveEpisodeClick ?: {},
             contentPadding = contentPadding,
             modifier = Modifier.fillMaxWidth(),

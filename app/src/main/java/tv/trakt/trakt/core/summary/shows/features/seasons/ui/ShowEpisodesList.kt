@@ -36,6 +36,7 @@ import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
@@ -54,6 +55,7 @@ internal fun ShowEpisodesList(
     episodes: ImmutableList<EpisodeItem>,
     onEpisodeClick: (episode: EpisodeItem) -> Unit,
     onCheckClick: (episode: EpisodeItem) -> Unit,
+    onCheckLongClick: (episode: EpisodeItem) -> Unit,
     onRemoveClick: (episode: EpisodeItem) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
@@ -175,10 +177,7 @@ internal fun ShowEpisodesList(
                                                 contentDescription = null,
                                                 tint = TraktTheme.colors.textPrimary,
                                                 modifier = Modifier
-                                                    .size(18.dp)
-                                                    .graphicsLayer {
-                                                        translationX = 3.dp.toPx()
-                                                    }
+                                                    .size(19.dp)
                                                     .onClick {
                                                         onRemoveClick(item)
                                                     },
@@ -191,9 +190,14 @@ internal fun ShowEpisodesList(
                                                 tint = TraktTheme.colors.accent,
                                                 modifier = Modifier
                                                     .size(19.dp)
-                                                    .onClick {
-                                                        onCheckClick(item)
-                                                    },
+                                                    .onClickCombined(
+                                                        onClick = {
+                                                            onCheckClick(item)
+                                                        },
+                                                        onLongClick = {
+                                                            onCheckLongClick(item)
+                                                        },
+                                                    ),
                                             )
                                         }
                                     }
