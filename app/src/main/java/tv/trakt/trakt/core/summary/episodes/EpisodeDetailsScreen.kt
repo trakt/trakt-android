@@ -54,7 +54,7 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
-import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -82,6 +82,8 @@ import tv.trakt.trakt.core.summary.ui.DetailsMetaInfo
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.UserRatingBar
+import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -104,6 +106,8 @@ internal fun EpisodeDetailsScreen(
     val scope = rememberCoroutineScope()
     var contextSheet by remember { mutableStateOf(false) }
     var historySheet by remember { mutableStateOf<HomeActivityItem.EpisodeItem?>(null) }
+    var confirmRemoveWatchedSheet by remember { mutableStateOf(false) }
+    var dateSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(state.navigateEpisode) {
         state.navigateEpisode?.let {
@@ -117,7 +121,13 @@ internal fun EpisodeDetailsScreen(
         modifier = modifier,
         onShowClick = onShowClick,
         onEpisodeClick = viewModel::navigateToEpisode,
-        onTrackClick = viewModel::addToWatched,
+        onTrackClick = {
+            if (state.episodeProgress?.watched == true) {
+                confirmRemoveWatchedSheet = true
+            } else {
+                dateSheet = true
+            }
+        },
         onShareClick = {
             shareEpisode(
                 show = state.show,
@@ -156,6 +166,13 @@ internal fun EpisodeDetailsScreen(
         active = contextSheet,
         show = state.show,
         episode = state.episode,
+        watched = state.episodeProgress?.watched == true,
+        onCheckClick = {
+            dateSheet = true
+        },
+        onRemoveClick = {
+            confirmRemoveWatchedSheet = true
+        },
         onShareClick = {
             shareEpisode(
                 show = state.show,
@@ -175,6 +192,30 @@ internal fun EpisodeDetailsScreen(
         },
         onDismiss = {
             historySheet = null
+        },
+    )
+
+    ConfirmationSheet(
+        active = confirmRemoveWatchedSheet,
+        onYes = {
+            confirmRemoveWatchedSheet = false
+            viewModel.removeFromWatched()
+        },
+        onNo = { confirmRemoveWatchedSheet = false },
+        title = stringResource(R.string.button_text_remove_from_history),
+        message = stringResource(
+            R.string.warning_prompt_remove_from_watched,
+            state.episode?.title ?: "",
+        ),
+    )
+
+    DateSelectionSheet(
+        active = dateSheet,
+        title = state.show?.title ?: "",
+        subtitle = state.episode?.title ?: "",
+        onResult = viewModel::addToWatched,
+        onDismiss = {
+            dateSheet = false
         },
     )
 
@@ -257,6 +298,10 @@ internal fun EpisodeDetailsContent(
                 state.episode.firstAired?.isNowOrBefore() ?: false
             }
 
+            val isWatched = remember(state.episodeProgress?.plays) {
+                state.episodeProgress?.watched == true
+            }
+
             LazyColumn(
                 state = listState,
                 verticalArrangement = spacedBy(0.dp),
@@ -280,6 +325,10 @@ internal fun EpisodeDetailsContent(
                 item {
                     DetailsActions(
                         primaryEnabled = isReleased,
+                        primaryIcon = when {
+                            isWatched -> R.drawable.ic_check_double
+                            else -> R.drawable.ic_check
+                        },
                         secondaryVisible = false,
                         enabled = state.user != null &&
                             !state.loadingProgress.isLoading,
@@ -295,8 +344,7 @@ internal fun EpisodeDetailsContent(
                 }
 
                 item {
-                    val isWatched = (state.episodeProgress?.plays ?: 0) > 0
-                    val isLoaded = state.episodeUserRating?.loading == LoadingState.DONE
+                    val isLoaded = state.episodeUserRating?.loading == DONE
                     DetailsRating(
                         visible = isWatched && isLoaded,
                         rating = state.episodeUserRating?.rating,
@@ -408,7 +456,7 @@ internal fun EpisodeDetailsContent(
                         )
                     }
 
-                    if ((state.episodeProgress?.plays ?: 0) > 0) {
+                    if (isWatched) {
                         item {
                             EpisodeHistoryView(
                                 viewModel = koinViewModel(

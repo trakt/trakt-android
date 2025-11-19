@@ -56,6 +56,7 @@ import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(FlowPreview::class)
@@ -272,7 +273,7 @@ internal class EpisodeDetailsViewModel(
         }
     }
 
-    fun addToWatched() {
+    fun addToWatched(customDate: DateSelectionResult? = null) {
         if (isLoading()) {
             return
         }
@@ -283,7 +284,10 @@ internal class EpisodeDetailsViewModel(
             try {
                 loadingProgress.update { LOADING }
 
-                updateHistoryUseCase.addToHistory(episodeId)
+                updateHistoryUseCase.addToHistory(
+                    episodeId = episodeId,
+                    customDate = customDate,
+                )
                 val progress = loadProgressUseCase.loadShowsProgress()
                     .firstOrNull {
                         it.show.ids.trakt == showId
@@ -308,6 +312,50 @@ internal class EpisodeDetailsViewModel(
                 error.rethrowCancellation {
                     errorState.update { error }
                     Timber.d(error, "Failed to add movie to history")
+                }
+            } finally {
+                loadingProgress.update { DONE }
+            }
+        }
+    }
+
+    fun removeFromWatched() {
+        if (isLoading()) {
+            return
+        }
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                loadingProgress.update { LOADING }
+
+                updateHistoryUseCase.removeEpisodeFromHistory(episodeId.value)
+                loadProgressUseCase.loadShowsProgress()
+                    .firstOrNull {
+                        it.show.ids.trakt == showId
+                    }?.seasons?.firstOrNull {
+                        it.number == seasonEpisode.season
+                    }?.episodes?.firstOrNull {
+                        it.number == seasonEpisode.episode
+                    }
+
+                episodeProgressState.update { state ->
+                    state?.copy(plays = 0)
+                }
+
+                episodeUpdatesSource.notifyUpdate(PROGRESS)
+                infoState.update {
+                    DynamicStringResource(R.string.text_info_history_removed)
+                }
+                analytics.progress.logRemoveWatchedMedia(
+                    mediaType = "episode",
+                    source = "episode_details",
+                )
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingProgress.update { DONE }

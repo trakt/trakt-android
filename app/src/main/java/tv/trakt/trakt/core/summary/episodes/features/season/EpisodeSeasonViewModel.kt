@@ -42,6 +42,7 @@ import tv.trakt.trakt.core.sync.model.ProgressItem
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 
 @OptIn(FlowPreview::class)
 internal class EpisodeSeasonViewModel(
@@ -135,7 +136,10 @@ internal class EpisodeSeasonViewModel(
         }
     }
 
-    fun addToWatched(episodeToAdd: Episode) {
+    fun addToWatched(
+        episodeToAdd: Episode,
+        customDate: DateSelectionResult? = null,
+    ) {
         if (loadingState.value.isLoading || loadingEpisodeState.value.isLoading) {
             return
         }
@@ -149,7 +153,10 @@ internal class EpisodeSeasonViewModel(
                 loadingEpisodeState.update { LOADING }
                 setLoadingEpisode(episodeToAdd)
 
-                updateEpisodeHistoryUseCase.addToHistory(episodeToAdd.ids.trakt)
+                updateEpisodeHistoryUseCase.addToHistory(
+                    episodeId = episodeToAdd.ids.trakt,
+                    customDate = customDate,
+                )
                 val progress = loadUserProgressUseCase.loadShowsProgress()
                     .firstOrNull {
                         it.show.ids.trakt == show.ids.trakt

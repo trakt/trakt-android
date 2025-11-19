@@ -38,6 +38,7 @@ import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -58,6 +59,7 @@ internal fun EpisodeSeasonView(
 
     val scope = rememberCoroutineScope()
     var confirmRemoveSheet by remember { mutableStateOf<EpisodeItem?>(null) }
+    var dateSheet by remember { mutableStateOf<EpisodeItem?>(null) }
 
     EpisodeSeasonContent(
         state = state,
@@ -65,10 +67,13 @@ internal fun EpisodeSeasonView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onEpisodeClick = { onEpisodeClick(it.episode) },
-        onCheckEpisodeClick = {
+        onCheckClick = {
             viewModel.addToWatched(it.episode)
         },
-        onRemoveEpisodeClick = {
+        onCheckLongClick = {
+            dateSheet = it
+        },
+        onRemoveClick = {
             confirmRemoveSheet = it
         },
     )
@@ -87,6 +92,23 @@ internal fun EpisodeSeasonView(
             R.string.warning_prompt_remove_from_watched,
             "${confirmRemoveSheet?.episode?.title}",
         ),
+    )
+
+    DateSelectionSheet(
+        active = dateSheet != null,
+        title = state.show?.title ?: "",
+        subtitle = state.episode?.title ?: "",
+        onResult = { result ->
+            dateSheet?.let {
+                viewModel.addToWatched(
+                    episodeToAdd = it.episode,
+                    customDate = result,
+                )
+            }
+        },
+        onDismiss = {
+            dateSheet = null
+        },
     )
 
     LaunchedEffect(state.info) {
@@ -116,8 +138,9 @@ private fun EpisodeSeasonContent(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onEpisodeClick: ((EpisodeItem) -> Unit)? = null,
-    onCheckEpisodeClick: ((EpisodeItem) -> Unit)? = null,
-    onRemoveEpisodeClick: ((EpisodeItem) -> Unit)? = null,
+    onCheckClick: ((EpisodeItem) -> Unit)? = null,
+    onCheckLongClick: ((EpisodeItem) -> Unit)? = null,
+    onRemoveClick: ((EpisodeItem) -> Unit)? = null,
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
@@ -160,8 +183,9 @@ private fun EpisodeSeasonContent(
                             currentEpisode = state.episode?.number,
                             contentPadding = contentPadding,
                             onEpisodeClick = onEpisodeClick ?: {},
-                            onCheckClick = onCheckEpisodeClick ?: {},
-                            onRemoveClick = onRemoveEpisodeClick ?: {},
+                            onCheckClick = onCheckClick ?: {},
+                            onCheckLongClick = onCheckLongClick ?: {},
+                            onRemoveClick = onRemoveClick ?: {},
                             modifier = Modifier.fillMaxWidth(),
                         )
                     }

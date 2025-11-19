@@ -35,10 +35,10 @@ import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
@@ -52,6 +52,7 @@ internal fun EpisodeSeasonList(
     currentEpisode: Int?,
     onEpisodeClick: (episode: EpisodeItem) -> Unit,
     onCheckClick: (episode: EpisodeItem) -> Unit,
+    onCheckLongClick: (episode: EpisodeItem) -> Unit,
     onRemoveClick: (episode: EpisodeItem) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
@@ -155,11 +156,12 @@ internal fun EpisodeSeasonList(
                                             },
                                     )
                                 }
+                                // TODO Revert if BAD idea!
                                 item.isWatched -> {
                                     Icon(
-                                        painter = painterResource(R.drawable.ic_close),
+                                        painter = painterResource(R.drawable.ic_check_double),
                                         contentDescription = null,
-                                        tint = Red500,
+                                        tint = TraktTheme.colors.textPrimary,
                                         modifier = Modifier
                                             .size(18.dp)
                                             .graphicsLayer {
@@ -177,9 +179,10 @@ internal fun EpisodeSeasonList(
                                         tint = TraktTheme.colors.accent,
                                         modifier = Modifier
                                             .size(19.dp)
-                                            .onClick {
-                                                onCheckClick(item)
-                                            },
+                                            .onClickCombined(
+                                                onClick = { onCheckClick(item) },
+                                                onLongClick = { onCheckLongClick(item) },
+                                            ),
                                     )
                                 }
                             }

@@ -26,7 +26,10 @@ internal data class EpisodeDetailsState(
 ) {
     data class ProgressState(
         val plays: Int?,
-    )
+    ) {
+        val watched: Boolean
+            get() = (plays ?: 0) > 0
+    }
 
     data class UserRatingsState(
         val rating: UserRating? = null,

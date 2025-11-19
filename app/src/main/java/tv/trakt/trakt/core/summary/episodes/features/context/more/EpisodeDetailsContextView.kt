@@ -23,7 +23,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
@@ -41,7 +40,6 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.helpers.streamingservices.StreamingServiceApp
 import tv.trakt.trakt.common.helpers.streamingservices.StreamingServiceLink
 import tv.trakt.trakt.common.model.Episode
-import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.core.summary.episodes.features.context.more.EpisodeDetailsContextState.StreamingsState
@@ -52,18 +50,22 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 internal fun EpisodeDetailsContextView(
-    show: Show,
     episode: Episode,
+    watched: Boolean,
     viewModel: EpisodeDetailsContextViewModel,
     modifier: Modifier = Modifier,
+    onCheckClick: (() -> Unit)? = null,
+    onRemoveClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     EpisodeDetailsContextViewContent(
-        show = show,
         episode = episode,
+        watched = watched,
         state = state,
+        onCheckClick = onCheckClick,
+        onRemoveClick = onRemoveClick,
         onShareClick = onShareClick,
         modifier = modifier,
     )
@@ -71,14 +73,15 @@ internal fun EpisodeDetailsContextView(
 
 @Composable
 private fun EpisodeDetailsContextViewContent(
-    show: Show,
     episode: Episode,
+    watched: Boolean,
     state: EpisodeDetailsContextState,
     modifier: Modifier = Modifier,
+    onCheckClick: (() -> Unit)? = null,
+    onRemoveClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
-    val uriHandler = LocalUriHandler.current
 
     val isReleased = remember {
         episode.firstAired?.isNowOrBefore() ?: false
@@ -148,7 +151,10 @@ private fun EpisodeDetailsContextViewContent(
         )
 
         ActionButtons(
-            onShareClick = onShareClick,
+            watched = watched,
+            onCheckClick = onCheckClick ?: {},
+            onRemoveClick = onRemoveClick ?: {},
+            onShareClick = onShareClick ?: {},
             modifier = Modifier
                 .padding(top = 12.dp),
         )
@@ -196,8 +202,11 @@ private fun WatchButton(
 
 @Composable
 private fun ActionButtons(
+    watched: Boolean,
     modifier: Modifier = Modifier,
-    onShareClick: (() -> Unit)? = null,
+    onCheckClick: () -> Unit,
+    onShareClick: () -> Unit,
+    onRemoveClick: () -> Unit,
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
@@ -207,15 +216,51 @@ private fun ActionButtons(
             },
     ) {
         GhostButton(
-            text = stringResource(R.string.button_text_share),
-            icon = painterResource(R.drawable.ic_share),
-            iconSize = 25.dp,
-            iconSpace = 14.dp,
+            text = stringResource(
+                when {
+                    watched -> R.string.button_text_watch_again
+                    else -> R.string.button_text_mark_as_watched
+                },
+            ),
+            icon = painterResource(
+                when {
+                    watched -> R.drawable.ic_check_double
+                    else -> R.drawable.ic_check
+                },
+            ),
+            iconSize = 22.dp,
+            iconSpace = 16.dp,
             modifier = Modifier
                 .graphicsLayer {
-                    translationX = -5.dp.toPx()
+                    translationX = -4.dp.toPx()
                 },
-            onClick = onShareClick ?: {},
+            onClick = onCheckClick,
+        )
+
+        if (watched) {
+            GhostButton(
+                text = stringResource(R.string.button_text_remove_from_history),
+                icon = painterResource(R.drawable.ic_close),
+                iconSize = 22.dp,
+                iconSpace = 16.dp,
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationX = -4.dp.toPx()
+                    },
+                onClick = onRemoveClick,
+            )
+        }
+
+        GhostButton(
+            text = stringResource(R.string.button_text_share),
+            icon = painterResource(R.drawable.ic_share),
+            iconSize = 22.dp,
+            iconSpace = 16.dp,
+            modifier = Modifier
+                .graphicsLayer {
+                    translationX = -4.dp.toPx()
+                },
+            onClick = onShareClick,
         )
     }
 }
@@ -228,34 +273,48 @@ private fun ActionButtons(
 )
 @Composable
 private fun Preview() {
+    val state = EpisodeDetailsContextState(
+        streamings = StreamingsState(
+            loading = false,
+            service = StreamingService(
+                source = "Hello",
+                name = "Hello",
+                logo = null,
+                channel = "Hello",
+                linkDirect = "Hello",
+                linkAndroid = "Hello",
+                uhd = false,
+                color = null,
+                country = "Hello",
+                currency = null,
+                purchasePrice = "Hello",
+                rentPrice = "Hello",
+            ),
+        ),
+    )
+
     TraktTheme {
         val previewHandler = AsyncImagePreviewHandler {
             ColorImage(Color.Blue.toArgb())
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            EpisodeDetailsContextViewContent(
-                show = PreviewData.show1,
-                episode = PreviewData.episode1,
-                state = EpisodeDetailsContextState(
-                    streamings = StreamingsState(
-                        loading = false,
-                        service = StreamingService(
-                            source = "Hello",
-                            name = "Hello",
-                            logo = null,
-                            channel = "Hello",
-                            linkDirect = "Hello",
-                            linkAndroid = "Hello",
-                            uhd = false,
-                            color = null,
-                            country = "Hello",
-                            currency = null,
-                            purchasePrice = "Hello",
-                            rentPrice = "Hello",
-                        ),
-                    ),
-                ),
-            )
+            Column(
+                verticalArrangement = spacedBy(64.dp),
+                modifier = Modifier
+                    .padding(24.dp),
+            ) {
+                EpisodeDetailsContextViewContent(
+                    episode = PreviewData.episode1,
+                    watched = false,
+                    state = state,
+                )
+
+                EpisodeDetailsContextViewContent(
+                    episode = PreviewData.episode1,
+                    watched = true,
+                    state = state,
+                )
+            }
         }
     }
 }

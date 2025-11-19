@@ -26,6 +26,9 @@ internal fun EpisodeDetailsContextSheet(
     active: Boolean,
     show: Show?,
     episode: Episode?,
+    watched: Boolean,
+    onCheckClick: (() -> Unit)? = null,
+    onRemoveClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onDismiss: () -> Unit,
 ) {
@@ -37,12 +40,30 @@ internal fun EpisodeDetailsContextSheet(
             onDismiss = onDismiss,
         ) {
             EpisodeDetailsContextView(
-                show = show,
                 episode = episode,
+                watched = watched,
                 viewModel = koinViewModel(
                     key = nextInt().toString(),
                     parameters = { parametersOf(show, episode) },
                 ),
+                onCheckClick = {
+                    onCheckClick?.invoke()
+                    sheetScope.launch { state.hide() }
+                        .invokeOnCompletion {
+                            if (!state.isVisible) {
+                                onDismiss()
+                            }
+                        }
+                },
+                onRemoveClick = {
+                    onRemoveClick?.invoke()
+                    sheetScope.launch { state.hide() }
+                        .invokeOnCompletion {
+                            if (!state.isVisible) {
+                                onDismiss()
+                            }
+                        }
+                },
                 onShareClick = {
                     onShareClick?.invoke()
                     sheetScope.launch { state.hide() }
