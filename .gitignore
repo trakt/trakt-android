@@ -10,3 +10,4 @@
 *.jks
 local.properties
 /fastlane/report.xml
+/fastlane/service-account-supply.json

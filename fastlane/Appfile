@@ -1,0 +1,2 @@
+json_key_file "fastlane/service-account-supply.json"
+package_name "tv.trakt.trakt"
