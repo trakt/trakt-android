@@ -1,7 +1,6 @@
 package tv.trakt.trakt.core.movies.ui
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.SpaceBetween
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -25,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
+import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativeDateString
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Movie
@@ -159,11 +159,9 @@ fun MovieMetaFooter(
                     tint = TraktTheme.colors.accent,
                     modifier = Modifier
                         .size(18.dp)
-                        .combinedClickable(
+                        .onClickCombined(
                             onClick = onCheckClick ?: {},
-                            onLongClick = onCheckLongClick ?: {},
-                            interactionSource = null,
-                            indication = null,
+                            onLongClick = onCheckLongClick,
                         ),
                 )
             }

@@ -1,7 +1,6 @@
 package tv.trakt.trakt.core.summary.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Shade400
 import tv.trakt.trakt.common.ui.theme.colors.Shade920
@@ -123,11 +123,9 @@ internal fun DetailsActions(
                     },
                     contentDescription = null,
                     modifier = Modifier
-                        .combinedClickable(
-                            onClick = onSecondaryClick ?: {},
-                            onLongClick = onSecondaryLongClick ?: {},
-                            interactionSource = null,
-                            indication = null,
+                        .onClickCombined(
+                            onClick = onSecondaryClick,
+                            onLongClick = onSecondaryLongClick,
                         )
                         .size(19.dp),
                 )

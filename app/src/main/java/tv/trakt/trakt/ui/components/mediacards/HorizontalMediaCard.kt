@@ -1,8 +1,6 @@
 package tv.trakt.trakt.ui.components.mediacards
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -22,7 +20,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults.cardColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -54,6 +51,7 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
@@ -96,11 +94,9 @@ internal fun HorizontalMediaCard(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .combinedClickable(
-                            onClick = onClick ?: {},
+                        .onClickCombined(
+                            onClick = onClick,
                             onLongClick = onLongClick,
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = ripple(),
                         ),
                 ) {
                     val isErrorContainer = containerImageUrl == null || isContainerError

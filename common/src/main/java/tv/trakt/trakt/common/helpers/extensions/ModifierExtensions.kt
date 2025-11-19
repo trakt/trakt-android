@@ -43,20 +43,22 @@ fun Modifier.onClickCombined(
     enabled: Boolean = true,
     throttle: Boolean = true,
     onLongClick: (() -> Unit)? = null,
-    onClick: () -> Unit,
+    onClick: (() -> Unit)? = null,
 ): Modifier {
     return composed {
         val lastClickMs = remember { mutableLongStateOf(0L) }
         val delaysMs = remember(throttle) { if (throttle) 350L else 0L }
         combinedClickable(
             enabled = enabled,
-            onClick = {
-                val currentTime = currentTimeMillis()
-                if (currentTime - lastClickMs.longValue > delaysMs) {
-                    lastClickMs.longValue = currentTime
-                    onClick()
+            onClick = onClick?.let {
+                {
+                    val currentTime = currentTimeMillis()
+                    if (currentTime - lastClickMs.longValue > delaysMs) {
+                        lastClickMs.longValue = currentTime
+                        onClick()
+                    }
                 }
-            },
+            } ?: {},
             onLongClick = onLongClick?.let {
                 {
                     val currentTime = currentTimeMillis()

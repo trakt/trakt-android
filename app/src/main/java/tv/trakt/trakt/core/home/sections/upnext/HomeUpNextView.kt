@@ -4,7 +4,6 @@ package tv.trakt.trakt.core.home.sections.upnext
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -53,6 +52,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
@@ -409,11 +409,9 @@ private fun ContentListItem(
                             tint = TraktTheme.colors.accent,
                             modifier = Modifier
                                 .size(checkSize)
-                                .combinedClickable(
+                                .onClickCombined(
                                     onClick = onCheckClick,
                                     onLongClick = onCheckLongClick,
-                                    interactionSource = null,
-                                    indication = null,
                                 ),
                         )
                     }

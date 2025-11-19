@@ -1,7 +1,6 @@
 package tv.trakt.trakt.core.shows.ui
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.SpaceBetween
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -25,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
+import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Show
@@ -160,11 +160,9 @@ fun ShowMetaFooter(
                     tint = TraktTheme.colors.accent,
                     modifier = Modifier
                         .size(18.dp)
-                        .combinedClickable(
-                            onClick = onCheckClick ?: {},
-                            onLongClick = onCheckLongClick ?: {},
-                            interactionSource = null,
-                            indication = null,
+                        .onClickCombined(
+                            onClick = onCheckClick,
+                            onLongClick = onCheckLongClick,
                         ),
                 )
             }

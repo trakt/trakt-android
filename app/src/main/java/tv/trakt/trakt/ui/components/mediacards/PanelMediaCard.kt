@@ -2,8 +2,6 @@ package tv.trakt.trakt.ui.components.mediacards
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -20,7 +18,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -59,6 +56,7 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.ui.theme.colors.Shade940
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
@@ -105,14 +103,9 @@ internal fun PanelMediaCard(
             }
             .background(containerColor, RoundedCornerShape(corner))
             .height(TraktTheme.size.verticalMediumMediaCardSize / VerticalImageAspectRatio)
-            .combinedClickable(
-                onClick = onClick ?: {},
-                onLongClick = when {
-                    onLongClick != null -> onLongClick
-                    else -> null
-                },
-                interactionSource = remember { MutableInteractionSource() },
-                indication = ripple(),
+            .onClickCombined(
+                onClick = onClick,
+                onLongClick = onLongClick,
             ),
     ) {
         Box(

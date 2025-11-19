@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,7 +24,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults.cardColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -58,6 +58,7 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import tv.trakt.trakt.common.helpers.extensions.ifOrElse
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -130,12 +131,11 @@ internal fun VerticalMediaCard(
                             .fillMaxSize()
                             .ifOrElse(
                                 condition = enabled,
-                                trueModifier = Modifier.combinedClickable(
-                                    onClick = onClick,
-                                    onLongClick = onLongClick,
-                                    interactionSource = remember { MutableInteractionSource() },
-                                    indication = ripple(),
-                                ),
+                                trueModifier = Modifier
+                                    .onClickCombined(
+                                        onClick = onClick,
+                                        onLongClick = onLongClick,
+                                    ),
                             ),
                     ) {
                         if (imageUrl != null && !isError) {
