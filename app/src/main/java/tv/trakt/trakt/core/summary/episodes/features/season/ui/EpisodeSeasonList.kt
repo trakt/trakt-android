@@ -162,10 +162,7 @@ internal fun EpisodeSeasonList(
                                         contentDescription = null,
                                         tint = TraktTheme.colors.textPrimary,
                                         modifier = Modifier
-                                            .size(18.dp)
-                                            .graphicsLayer {
-                                                translationX = 3.dp.toPx()
-                                            }
+                                            .size(19.dp)
                                             .onClick {
                                                 onRemoveClick(item)
                                             },
