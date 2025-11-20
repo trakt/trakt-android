@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -49,6 +50,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.common.ui.theme.colors.Shade700
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.extensions.isAtLeastMedium
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -327,6 +329,8 @@ private fun DetailsHeader(
     onShareClick: () -> Unit,
     onBackClick: () -> Unit,
 ) {
+    val windowClass = currentWindowAdaptiveInfo().windowSizeClass
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = spacedBy(0.dp),
@@ -337,9 +341,12 @@ private fun DetailsHeader(
             contentAlignment = TopCenter,
             modifier = Modifier.fillMaxWidth(),
         ) {
-            val posterSpace = 64.dp
+            val posterSpace = TraktTheme.spacing.detailsHeaderHorizontalSpace
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
+                horizontalAlignment = when {
+                    windowClass.isAtLeastMedium() -> Alignment.End
+                    else -> Alignment.CenterHorizontally
+                },
                 modifier = Modifier
                     .align(Alignment.TopStart)
                     .width(posterSpace)
@@ -350,6 +357,12 @@ private fun DetailsHeader(
                     tint = TraktTheme.colors.textPrimary,
                     contentDescription = null,
                     modifier = Modifier
+                        .padding(
+                            horizontal = when {
+                                windowClass.isAtLeastMedium() -> 32.dp
+                                else -> 0.dp
+                            },
+                        )
                         .size(24.dp)
                         .onClick(onClick = onBackClick),
                 )
@@ -400,7 +413,10 @@ private fun DetailsHeader(
             }
 
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
+                horizontalAlignment = when {
+                    windowClass.isAtLeastMedium() -> Alignment.Start
+                    else -> Alignment.CenterHorizontally
+                },
                 verticalArrangement = spacedBy(24.dp),
                 modifier = Modifier
                     .align(Alignment.TopEnd)
@@ -412,6 +428,12 @@ private fun DetailsHeader(
                     tint = TraktTheme.colors.textPrimary,
                     contentDescription = null,
                     modifier = Modifier
+                        .padding(
+                            horizontal = when {
+                                windowClass.isAtLeastMedium() -> 32.dp
+                                else -> 0.dp
+                            },
+                        )
                         .size(24.dp)
                         .onClick(onClick = onShareClick),
                 )

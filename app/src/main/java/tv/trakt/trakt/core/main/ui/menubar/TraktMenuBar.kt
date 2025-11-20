@@ -69,12 +69,6 @@ private val navigationItems = listOf(
         iconOn = R.drawable.ic_home_on,
         iconOff = R.drawable.ic_home_off,
     ),
-//    NavigationItem(
-//        destination = MoviesDestination,
-//        label = R.string.page_title_movies,
-//        iconOn = R.drawable.ic_movies_on,
-//        iconOff = R.drawable.ic_movies_off,
-//    ),
     NavigationItem(
         destination = DiscoverDestination,
         label = R.string.page_title_shows,

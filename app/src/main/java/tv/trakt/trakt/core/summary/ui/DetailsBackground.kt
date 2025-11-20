@@ -29,7 +29,6 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import tv.trakt.trakt.ui.theme.TraktTheme
-import tv.trakt.trakt.ui.theme.VerticalImageAspectRatio
 
 private const val PARALLAX_RATIO = 0.7F
 
@@ -66,7 +65,7 @@ internal fun DetailsBackground(
     Box(
         modifier = modifier
             .width(screenWidth)
-            .aspectRatio(VerticalImageAspectRatio)
+            .aspectRatio(TraktTheme.size.detailsBackgroundRatio)
             .graphicsLayer {
                 translationY = translation * PARALLAX_RATIO
             },

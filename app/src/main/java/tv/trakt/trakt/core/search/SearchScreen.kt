@@ -242,7 +242,7 @@ private fun ContentList(
 
     LazyVerticalGrid(
         state = listState,
-        columns = GridCells.Fixed(3),
+        columns = GridCells.Fixed(TraktTheme.size.mainGridColumns),
         horizontalArrangement = spacedBy(TraktTheme.spacing.mainGridHorizontalSpace),
         verticalArrangement = spacedBy(TraktTheme.spacing.mainGridVerticalSpace),
         contentPadding = contentPadding,

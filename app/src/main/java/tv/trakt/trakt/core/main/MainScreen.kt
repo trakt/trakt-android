@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.main
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import androidx.activity.compose.BackHandler
@@ -95,6 +96,7 @@ internal fun MainScreen(
         viewModel.loadData()
     }
 
+    @SuppressLint("LocalContextGetResourceValueCall")
     LaunchedUpdateEffect(state.user) {
         if (state.loadingUser == DONE && state.user != null) {
             localSnackbar.showSnackbar(
@@ -149,7 +151,7 @@ internal fun MainScreen(
                         containerColor = TraktTheme.colors.navigationContainer,
                         contentColor = TraktTheme.colors.accent,
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .fillMaxWidth(TraktTheme.size.navigationBarRatio)
                             .dropShadow(
                                 shape = RoundedCornerShape(
                                     topStart = 24.dp,

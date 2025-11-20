@@ -26,6 +26,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
@@ -49,6 +50,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.window.core.layout.WindowSizeClass
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
@@ -61,6 +63,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Purple900
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
+import tv.trakt.trakt.ui.extensions.isAtLeastMedium
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -68,6 +71,8 @@ internal fun WelcomeScreen(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit,
 ) {
+    val windowClass = currentWindowAdaptiveInfo().windowSizeClass
+
     val backgroundColor1 = TraktTheme.colors.backgroundPrimary
     val backgroundColor2 = Purple900.copy(alpha = 0.75F)
 
@@ -83,7 +88,12 @@ internal fun WelcomeScreen(
     val contentPadding = PaddingValues(
         top = WindowInsets.statusBars.asPaddingValues()
             .calculateTopPadding()
-            .plus(32.dp),
+            .plus(
+                when {
+                    windowClass.isAtLeastMedium() -> 64.dp
+                    else -> 32.dp
+                },
+            ),
         bottom = WindowInsets.navigationBars.asPaddingValues()
             .calculateBottomPadding(),
     )
@@ -108,6 +118,7 @@ internal fun WelcomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxHeight()
+                .fillMaxWidth()
                 .verticalScroll(scrollState)
                 .padding(contentPadding),
         ) {
@@ -161,6 +172,7 @@ internal fun WelcomeScreen(
 
         WelcomeFooter(
             onDismiss = onDismiss,
+            windowClass = windowClass,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(
@@ -245,6 +257,7 @@ private fun WelcomeItem(
 @Composable
 private fun WelcomeFooter(
     modifier: Modifier = Modifier,
+    windowClass: WindowSizeClass,
     onDismiss: () -> Unit = {},
 ) {
     val uriHandler = LocalUriHandler.current
@@ -254,7 +267,12 @@ private fun WelcomeFooter(
         verticalArrangement = spacedBy(16.dp),
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp)
+            .padding(
+                horizontal = when {
+                    windowClass.isAtLeastMedium() -> 128.dp
+                    else -> 24.dp
+                },
+            )
             .padding(bottom = 16.dp)
             .shadow(4.dp, shape)
             .clip(shape)

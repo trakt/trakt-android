@@ -36,6 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -339,7 +340,7 @@ internal fun EpisodeDetailsContent(
                             .align(Center)
                             .fillMaxWidth()
                             .padding(top = 16.dp)
-                            .padding(horizontal = 42.dp),
+                            .padding(horizontal = TraktTheme.spacing.detailsActionsHorizontalSpace),
                     )
                 }
 
@@ -547,7 +548,7 @@ private fun DetailsMeta(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    color = TraktTheme.colors.backgroundPrimary,
+                    color = Color.Transparent,
                     shape = RoundedCornerShape(100),
                 )
                 .border(
