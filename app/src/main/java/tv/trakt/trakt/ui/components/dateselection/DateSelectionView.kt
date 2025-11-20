@@ -62,15 +62,15 @@ internal fun DateSelectionView(
                     ),
                 )
 
-                if (!subtitle.isNullOrBlank()) {
-                    Text(
-                        text = subtitle,
-                        color = TraktTheme.colors.textSecondary,
-                        style = TraktTheme.typography.paragraphSmaller,
-                        maxLines = 1,
-                        overflow = Ellipsis,
-                    )
-                }
+                Text(
+                    text = (subtitle ?: "").ifBlank {
+                        stringResource(R.string.button_text_mark_as_watched)
+                    },
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.paragraphSmaller,
+                    maxLines = 1,
+                    overflow = Ellipsis,
+                )
             }
         }
 
