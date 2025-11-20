@@ -1,7 +1,7 @@
 default_platform(:android)
 
 platform :android do
-  desc "Distribute a new version to me only"
+  desc "Distribute Firebase version to me only"
   lane :firebase_distribute_me do
     gradle(
       task: "assembleInternalRelease"
@@ -21,7 +21,7 @@ platform :android do
     )
   end
 
-  desc "Distribute a new version to Internal Testers group"
+  desc "Distribute Firebase version to Internal Testers group"
   lane :firebase_distribute_internal do
     # Ask for optional release notes
     release_notes = prompt(
@@ -45,5 +45,22 @@ platform :android do
       groups: "trakt-internal-testers",
       release_notes: release_notes
     )
+  end
+
+  desc "Upload version to PlayStore Internal Track"
+    lane :playstore_upload_internal do
+      gradle(
+        task: "app:bundlePlaystoreRelease"
+      )
+
+      supply(
+        track: "internal",
+        aab: "app/build/outputs/bundle/playstoreRelease/app-playstore-release.aab",
+        rollout: "1",
+        skip_upload_apk: true,
+        skip_upload_metadata: true,
+        skip_upload_images: true,
+        skip_upload_screenshots: true
+      )
   end
 end
