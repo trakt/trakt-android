@@ -195,6 +195,10 @@ fun ZonedDateTime.relativeDateTimeString(locale: Locale = Locale.US): String {
 }
 
 fun ZonedDateTime.relativePastDateString(locale: Locale = Locale.US): String {
+    if (year == 1970 && monthValue == 1 && dayOfMonth == 1) {
+        return "Unknown Date"
+    }
+
     val formatter = RelativeDateTimeFormatter.getInstance(locale)
     val now = ZonedDateTime.now()
 
