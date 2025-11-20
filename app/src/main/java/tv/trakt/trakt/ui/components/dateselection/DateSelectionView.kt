@@ -45,11 +45,12 @@ internal fun DateSelectionView(
             modifier = Modifier.fillMaxWidth(),
         ) {
             Column(
-                verticalArrangement = spacedBy(2.dp),
-                modifier = Modifier.weight(2f),
+                verticalArrangement = spacedBy(1.dp),
             ) {
                 Text(
-                    text = title.ifBlank { "Mark as Watched" },
+                    text = title.ifBlank {
+                        stringResource(R.string.button_text_mark_as_watched)
+                    },
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.heading3,
                     maxLines = 1,
@@ -64,21 +65,12 @@ internal fun DateSelectionView(
                 if (!subtitle.isNullOrBlank()) {
                     Text(
                         text = subtitle,
-                        color = TraktTheme.colors.textPrimary,
+                        color = TraktTheme.colors.textSecondary,
                         style = TraktTheme.typography.paragraphSmaller,
                         maxLines = 1,
                         overflow = Ellipsis,
-                        modifier = Modifier.padding(bottom = 16.dp),
                     )
                 }
-
-                Text(
-                    text = "When did you see it?",
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.paragraphSmaller,
-                    maxLines = 1,
-                    overflow = Ellipsis,
-                )
             }
         }
 
