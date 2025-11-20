@@ -1,0 +1,87 @@
+Trakt is a community of TV and movie lovers. It's free to join!
+
+DISCOVER what's hot and where to stream it.
+TRACK shows and movies you watch.
+SHARE comments, recommendations, and ratings.
+
+TRACK
+- Check in to shows and movies you're watching.
+- Sync with popular media centers to automatically track what you're watching.
+- Automatic tracking of popular streaming services.
+- We index over 1 million shows and movies.
+- Mark episodes and movies you've previously watched.
+- Detailed history of everything you've watched.
+- Import metadata from IMDb, Plex, Letterboxd, TV Time.
+
+DISCOVER
+- See what's trending in real time.
+- Browse anticipated shows and movies.
+- See what's popular in the community.
+- Advanced filters to find exactly what you're looking for. (VIP only)
+- Saved filters add new cards for quick access (VIP only)
+
+FIND WHERE TO STREAM
+- We partner with JustWatch to provide direct streaming links.
+- Hundreds of streaming services are indexed worldwide.
+- Select your favorite services and bump those to the top, like Netflix, HBO Max, Apple TV+, Disney+ or Prime Video.
+
+LISTS
+- Watchlist to track what you want to watch.
+- Personal lists to organize things however you want.
+- Recommended lists from the community.
+- Unlimited lists and expanded item limits. (VIP only)
+
+CALENDAR
+- Personalized and global calendars of episodes and movies.
+
+STATS
+- Personalized stats about your watching habits.
+- Year in review for each year you've watched something. (VIP only)
+- All time stats to summarize your entire watching career. (VIP only)
+
+SHOW PROGRESS
+- Quickly see what you should watch next.
+- Get super detailed progress about episodes you've watched and what's left.
+- View show, season, and episodes and how many times you've watched them.
+- Rewatch shows and recalculate progress. (VIP only)
+
+SEARCH
+- Search for shows, movies, episodes, people, and lists.
+- Advanced filters to find exactly what you're looking for. (VIP only)
+
+NOTIFICATIONS
+- Push notifications when new episodes air.
+
+SOCIAL
+- See what your friends have been recently watching.
+- Comment and rate what you've watched.
+- Follow other members with similar interests.
+- Automatically share what you're watching.
+
+RECOMMENDATIONS
+- Personalized show and movie recommendations.
+- Recommend your favorites to others.
+
+TRAKT VIP
+- Support Trakt and unlock some awesome VIP features!
+- VIP applies to all official Trakt apps and the Trakt website.
+- No ads anywhere on Trakt.
+- Year in review stats.
+- Beta versions to test new features before anyone else.
+- Advanced filtering and saved filters.
+- Unlimited personal lists.
+- Notes on list items.
+- Rewatch shows and recalculate progress.
+- VIP badge.
+
+====
+
+Handcrafted by Trakt around the world.
+We don't sell your data and respect your privacy.
+
+====
+
+Web: https://trakt.tv
+Help: support@trakt.tv
+Privacy Policy: https://trakt.tv/privacy
+Terms of Service: https://trakt.tv/terms
