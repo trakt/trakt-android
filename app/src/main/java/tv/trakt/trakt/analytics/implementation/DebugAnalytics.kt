@@ -67,8 +67,12 @@ internal class DebugAnalyticsProgress : Analytics.Progress {
     override fun logAddWatchedMedia(
         mediaType: String,
         source: String,
+        date: String?,
     ) {
-        Timber.d("logAddWatchedMedia: mediaType=${mediaType.lowercase()}, source=${source.lowercase()}")
+        val dateParam = date ?: "now"
+        Timber.d(
+            "logAddWatchedMedia: mediaType=${mediaType.lowercase()}, source=${source.lowercase()}, date=$dateParam",
+        )
     }
 
     override fun logAddWatchlistMedia(

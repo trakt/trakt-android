@@ -447,6 +447,7 @@ internal class ShowDetailsViewModel(
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "show",
                     source = "show_details",
+                    date = customDate?.analyticsStrings,
                 )
             } catch (error: Exception) {
                 error.rethrowCancellation {

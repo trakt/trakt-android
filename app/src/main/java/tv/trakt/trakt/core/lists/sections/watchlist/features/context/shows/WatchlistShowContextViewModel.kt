@@ -101,6 +101,7 @@ internal class WatchlistShowContextViewModel(
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "show",
                     source = "watchlist_show_context",
+                    date = customDate?.analyticsStrings,
                 )
             } catch (error: Exception) {
                 error.rethrowCancellation {

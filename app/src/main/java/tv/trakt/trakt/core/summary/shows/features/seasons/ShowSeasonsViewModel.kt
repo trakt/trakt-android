@@ -240,6 +240,7 @@ internal class ShowSeasonsViewModel(
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "episode",
                     source = "show_seasons_view",
+                    date = customDate?.analyticsStrings,
                 )
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -303,6 +304,7 @@ internal class ShowSeasonsViewModel(
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "season",
                     source = "show_seasons_view",
+                    date = customDate?.analyticsStrings,
                 )
             } catch (error: Exception) {
                 error.rethrowCancellation {

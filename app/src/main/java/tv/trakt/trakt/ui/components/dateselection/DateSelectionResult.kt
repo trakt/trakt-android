@@ -11,6 +11,14 @@ sealed interface DateSelectionResult {
             is ReleaseDate -> "released"
             is UnknownDate -> "unknown" // Maps to 1970-01-01T00:00:00Z in Trakt
         }
+
+    val analyticsStrings: String
+        get() = when (this) {
+            is Now -> "now"
+            is CustomDate -> "custom"
+            is ReleaseDate -> "released"
+            is UnknownDate -> "unknown"
+        }
 }
 
 data object Now : DateSelectionResult

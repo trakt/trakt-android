@@ -80,6 +80,7 @@ interface Analytics {
         fun logAddWatchedMedia(
             mediaType: String,
             source: String,
+            date: String?,
         )
 
         /**

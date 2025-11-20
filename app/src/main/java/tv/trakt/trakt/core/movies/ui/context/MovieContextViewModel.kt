@@ -201,6 +201,7 @@ internal class MovieContextViewModel(
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
                     source = "movie_context",
+                    date = customDate?.analyticsStrings,
                 )
             } catch (error: Exception) {
                 error.rethrowCancellation {

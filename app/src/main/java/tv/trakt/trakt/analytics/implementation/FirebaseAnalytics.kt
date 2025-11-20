@@ -7,6 +7,7 @@ import com.google.firebase.analytics.FirebaseAnalytics.Event.SCREEN_VIEW
 import com.google.firebase.analytics.FirebaseAnalytics.Param
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.ui.components.dateselection.Now
 
 // Android V3 events identifier
 private const val EVENT_NAME_PREFIX = "av3_"
@@ -16,6 +17,7 @@ private const val EVENT_NAME_ERROR = "Firebase event names must be less than 40 
 
 private const val PARAMETER_MEDIA_TYPE = "media_type"
 private const val PARAMETER_SOURCE = "source"
+private const val PARAMETER_DATE = "date"
 private const val PARAMETER_REACTION = "reaction"
 private const val PARAMETER_RATING = "rating_value"
 
@@ -184,12 +186,14 @@ internal class FirebaseAnalyticsProgress(
     override fun logAddWatchedMedia(
         mediaType: String,
         source: String,
+        date: String?,
     ) {
         firebase.logEvent(
             eventName(PROGRESS_WATCHED_ADD),
             bundleOf(
                 PARAMETER_MEDIA_TYPE to mediaType.lowercase(),
                 PARAMETER_SOURCE to source.lowercase(),
+                PARAMETER_DATE to (date ?: Now.analyticsStrings).lowercase(),
             ),
         )
     }

@@ -242,6 +242,7 @@ internal class HomeWatchlistViewModel(
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "episode",
                     source = "home_watchlist",
+                    date = customDate?.analyticsStrings,
                 )
 
                 infoState.update {
@@ -295,6 +296,7 @@ internal class HomeWatchlistViewModel(
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
                     source = "home_watchlist",
+                    date = customDate?.analyticsStrings,
                 )
 
                 infoState.update {

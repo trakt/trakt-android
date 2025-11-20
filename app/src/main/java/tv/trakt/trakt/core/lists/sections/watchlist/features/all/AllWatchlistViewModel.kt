@@ -213,6 +213,7 @@ internal class AllWatchlistViewModel(
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
                     source = "all_watchlist",
+                    date = customDate?.analyticsStrings,
                 )
 
                 infoState.update {

@@ -224,6 +224,7 @@ internal class HomeUpNextViewModel(
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "episode",
                     source = "home_up_next",
+                    date = customDate?.analyticsStrings,
                 )
 
                 itemsState.update {

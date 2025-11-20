@@ -179,6 +179,7 @@ internal class EpisodeSeasonViewModel(
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "episode",
                     source = "episode_season_view",
+                    date = customDate?.analyticsStrings,
                 )
             } catch (error: Exception) {
                 error.rethrowCancellation {
