@@ -5,28 +5,30 @@ import java.time.Instant
 
 sealed interface DateSelectionResult {
     val dateString: String
-        get() = when (this) {
-            is Now -> nowUtcInstant().toString()
-            is CustomDate -> date.toString()
-            is ReleaseDate -> "released"
-            is UnknownDate -> "unknown" // Maps to 1970-01-01T00:00:00Z in Trakt
-        }
-
     val analyticsStrings: String
-        get() = when (this) {
-            is Now -> "now"
-            is CustomDate -> "custom"
-            is ReleaseDate -> "released"
-            is UnknownDate -> "unknown"
-        }
 }
 
-data object Now : DateSelectionResult
+data object Now : DateSelectionResult {
+    override val dateString: String
+        get() = nowUtcInstant().toString()
+    override val analyticsStrings: String = "now"
+}
 
-data object ReleaseDate : DateSelectionResult
+data object ReleaseDate : DateSelectionResult {
+    override val dateString: String = "released"
+    override val analyticsStrings: String = "released"
+}
 
-data object UnknownDate : DateSelectionResult
+data object UnknownDate : DateSelectionResult {
+    // Maps to 1970-01-01T00:00:00Z in Trakt
+    override val dateString: String = "unknown"
+    override val analyticsStrings: String = "unknown"
+}
 
 data class CustomDate(
     val date: Instant,
-) : DateSelectionResult
+) : DateSelectionResult {
+    override val dateString: String
+        get() = date.toString()
+    override val analyticsStrings: String = "custom"
+}
