@@ -429,7 +429,7 @@ private fun ContentLoading(
         ) {
             items(count = 6) {
                 VerticalMediaSkeletonCard(
-                    modifier = Modifier.padding(bottom = 6.dp),
+                    secondaryChip = true,
                 )
             }
         }

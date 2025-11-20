@@ -261,7 +261,7 @@ private fun ContentLoading(
         ) {
             items(count = 3) {
                 HorizontalMediaSkeletonCard(
-                    modifier = Modifier.padding(bottom = 6.dp),
+                    modifier = Modifier.padding(bottom = 8.dp),
                 )
             }
         }
