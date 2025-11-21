@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.comments.details
+package tv.trakt.trakt.core.comments.features.details
 
 import android.content.Context
 import androidx.lifecycle.ViewModel

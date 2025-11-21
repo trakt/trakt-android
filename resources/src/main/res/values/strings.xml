@@ -8,7 +8,7 @@
     <string name="list_title_recommended_shows">Recommended Shows</string>
     <string name="tag_text_number_of_episodes">%d eps.</string>
     <string name="button_text_watchlist">Watchlist</string>
-    <string name="button_text_mark_as_watched">Mark as Watched</string>
+    <string name="button_text_mark_as_watched">Mark as watched</string>
     <string name="button_text_watch_again">Watch again</string>
     <string name="input_placeholder_search">Search shows &amp; movies…</string>
     <string name="input_placeholder_search_movies">Search movies…</string>
@@ -74,7 +74,7 @@
     <string name="tag_text_watch_count">Watch count</string>
     <string name="button_text_comment_likes">%d likes</string>
     <string name="button_text_comment_replies">%d replies</string>
-    <string name="list_title_comments">Comments</string>
+    <string name="list_title_comments">Reviews</string>
     <string name="header_original_title">Original Title</string>
     <string name="button_text_remove_from_list">Remove from list</string>
     <string name="button_text_retry">Retry</string>
@@ -175,7 +175,7 @@
     <string name="text_watched">Watched</string>
     <string name="text_watched_count">Watched: %d</string>
     <string name="text_job_acting">Acting</string>
-    <string name="text_comments_reactions">Comments Reactions</string>
+    <string name="text_comments_reactions">Reactions</string>
     <string name="text_following">Following</string>
     <string name="text_followers">Followers</string>
     <string name="page_title_profile">Profile</string>
@@ -196,5 +196,7 @@
     <string name="button_text_release_date">Release Date</string>
     <string name="button_text_other_date">Other Date</string>
     <string name="button_text_unknown_date">Unknown Date</string>
+    <string name="button_text_submit">Submit</string>
+    <string name="button_text_comment">Review</string>
 
 </resources>

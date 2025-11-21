@@ -2,8 +2,13 @@
 
 package tv.trakt.trakt.core.comments
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -22,6 +27,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
@@ -31,9 +37,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -50,7 +60,8 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
-import tv.trakt.trakt.core.comments.details.CommentDetailsSheet
+import tv.trakt.trakt.core.comments.features.details.CommentDetailsSheet
+import tv.trakt.trakt.core.comments.features.postcomment.PostCommentSheet
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.ui.CommentCard
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
@@ -59,6 +70,7 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.FilterChip
 import tv.trakt.trakt.ui.components.FilterChipGroup
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
+import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -70,6 +82,7 @@ internal fun CommentsScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var commentSheet by remember { mutableStateOf<Comment?>(null) }
+    var postCommentSheet by remember { mutableStateOf(false) }
 
     CommentsContent(
         state = state,
@@ -86,6 +99,9 @@ internal fun CommentsScreen(
         onReactionClick = { reaction, comment ->
             viewModel.setReaction(reaction, comment.id)
         },
+        onNewCommentClick = {
+            postCommentSheet = true
+        },
         onBackClick = onNavigateBack,
     )
 
@@ -93,6 +109,13 @@ internal fun CommentsScreen(
         comment = commentSheet,
         onDismiss = {
             commentSheet = null
+        },
+    )
+
+    PostCommentSheet(
+        active = postCommentSheet,
+        onDismiss = {
+            postCommentSheet = false
         },
     )
 }
@@ -105,6 +128,7 @@ internal fun CommentsContent(
     onCommentClick: ((Comment) -> Unit)? = null,
     onFilterClick: ((CommentsFilter) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
+    onNewCommentClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     val headerState = rememberHeaderState()
@@ -144,13 +168,46 @@ internal fun CommentsContent(
             userReactions = (state.userReactions ?: emptyMap()).toImmutableMap(),
             contentPadding = contentPadding,
             loading = state.loading.isLoading,
-            reactionsEnabled = state.user != null,
+            authenticated = state.user != null,
             onCommentLoaded = onCommentLoaded,
             onCommentClick = onCommentClick,
             onFilterClick = onFilterClick,
             onReactionClick = onReactionClick,
             onBackClick = onBackClick,
         )
+
+        AnimatedVisibility(
+            visible = state.user != null && !state.loading.isLoading,
+            enter = fadeIn(tween(delayMillis = 250)),
+            exit = fadeOut(),
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(
+                    end = TraktTheme.spacing.mainPageHorizontalSpace + 10.dp,
+                    bottom = WindowInsets.navigationBars.asPaddingValues()
+                        .calculateBottomPadding()
+                        .plus(TraktTheme.size.navigationBarHeight)
+                        .plus(10.dp),
+                ),
+        ) {
+            TertiaryButton(
+                text = stringResource(R.string.button_text_comment),
+                icon = painterResource(R.drawable.ic_comment_plus),
+                height = 36.dp,
+                onClick = onNewCommentClick ?: {},
+                modifier = Modifier
+//                    .shadow(2.5.dp, RoundedCornerShape(12.dp))
+                    .dropShadow(
+                        shape = RoundedCornerShape(12.dp),
+                        shadow = Shadow(
+                            radius = 4.dp,
+                            color = Color.Black,
+                            spread = 2.dp,
+                            alpha = 0.2f,
+                        ),
+                    ),
+            )
+        }
     }
 }
 
@@ -163,7 +220,7 @@ private fun ContentList(
     listState: LazyListState,
     listFilter: CommentsFilter?,
     loading: Boolean,
-    reactionsEnabled: Boolean,
+    authenticated: Boolean,
     userReactions: ImmutableMap<Int, Reaction?>,
     onCommentLoaded: ((Comment) -> Unit)? = null,
     onCommentClick: ((Comment) -> Unit)? = null,
@@ -207,7 +264,7 @@ private fun ContentList(
                     reactions = listReactions?.get(comment.id),
                     userReaction = userReactions[comment.id],
                     onRequestReactions = { onCommentLoaded?.invoke(comment) },
-                    reactionsEnabled = reactionsEnabled,
+                    reactionsEnabled = authenticated,
                     onReactionClick = { onReactionClick?.invoke(it, comment) },
                     maxLines = Int.MAX_VALUE,
                     corner = 20.dp,
@@ -275,23 +332,30 @@ private fun ContentFilters(
 private fun TitleBar(modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = CenterVertically,
-        horizontalArrangement = spacedBy(12.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
-            .height(TraktTheme.size.titleBarHeight)
-            .graphicsLayer {
-                translationX = -2.dp.toPx()
-            },
+            .fillMaxWidth(),
     ) {
-        Icon(
-            painter = painterResource(R.drawable.ic_back_arrow),
-            tint = TraktTheme.colors.textPrimary,
-            contentDescription = null,
-        )
-        Text(
-            text = stringResource(R.string.list_title_comments),
-            color = TraktTheme.colors.textPrimary,
-            style = TraktTheme.typography.heading5,
-        )
+        Row(
+            verticalAlignment = CenterVertically,
+            horizontalArrangement = spacedBy(12.dp),
+            modifier = Modifier
+                .height(TraktTheme.size.titleBarHeight)
+                .graphicsLayer {
+                    translationX = -2.dp.toPx()
+                },
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_back_arrow),
+                tint = TraktTheme.colors.textPrimary,
+                contentDescription = null,
+            )
+            Text(
+                text = stringResource(R.string.list_title_comments),
+                color = TraktTheme.colors.textPrimary,
+                style = TraktTheme.typography.heading5,
+            )
+        }
     }
 }
 

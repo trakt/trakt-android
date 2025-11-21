@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.TextFieldLineLimits.MultiLine
 import androidx.compose.foundation.text.input.TextFieldLineLimits.SingleLine
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
@@ -33,6 +35,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization.Companion.None
 import androidx.compose.ui.text.input.KeyboardType.Companion.Text
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
@@ -46,7 +49,9 @@ internal fun InputField(
     placeholder: String? = null,
     loading: Boolean = false,
     enabled: Boolean = true,
+    height: Dp = 48.dp,
     containerColor: Color = TraktTheme.colors.inputContainer.copy(alpha = 0.8F),
+    lineLimits: TextFieldLineLimits = SingleLine,
     endSlot: @Composable (() -> Unit)? = null,
 ) {
     var isFocused by remember { mutableStateOf(false) }
@@ -61,7 +66,7 @@ internal fun InputField(
                 else -> TraktTheme.colors.textSecondary
             },
         ),
-        lineLimits = SingleLine,
+        lineLimits = lineLimits,
         cursorBrush = when {
             isFocused -> SolidColor(TraktTheme.colors.textPrimary)
             else -> SolidColor(TraktTheme.colors.textSecondary)
@@ -74,7 +79,10 @@ internal fun InputField(
         ),
         decorator = { innerField ->
             Row(
-                verticalAlignment = Alignment.CenterVertically,
+                verticalAlignment = when {
+                    lineLimits is MultiLine -> Alignment.Top
+                    else -> Alignment.CenterVertically
+                },
                 modifier = Modifier
                     .background(
                         color = containerColor,
@@ -114,6 +122,17 @@ internal fun InputField(
                         style = TraktTheme.typography.paragraph.copy(
                             color = TraktTheme.colors.textSecondary,
                         ),
+                        modifier = Modifier
+                            .padding(
+                                start = when {
+                                    lineLimits is MultiLine -> 4.dp
+                                    else -> 0.dp
+                                },
+                                top = when {
+                                    lineLimits is MultiLine -> 4.dp
+                                    else -> 0.dp
+                                },
+                            ),
                     )
                 } else {
                     innerField()
@@ -126,7 +145,7 @@ internal fun InputField(
             }
         },
         modifier = modifier
-            .height(48.dp)
+            .height(height)
             .onFocusChanged {
                 isFocused = it.hasFocus
             },

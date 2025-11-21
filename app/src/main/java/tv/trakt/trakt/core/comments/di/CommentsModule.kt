@@ -23,7 +23,8 @@ import tv.trakt.trakt.common.core.comments.usecases.GetCommentReactionsUseCase
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentRepliesUseCase
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.core.comments.CommentsViewModel
-import tv.trakt.trakt.core.comments.details.CommentDetailsViewModel
+import tv.trakt.trakt.core.comments.features.details.CommentDetailsViewModel
+import tv.trakt.trakt.core.comments.features.postcomment.PostCommentViewModel
 import tv.trakt.trakt.core.comments.usecases.GetCommentsFilterUseCase
 
 internal const val COMMENTS_PREFERENCES = "comments_preferences_mobile"
@@ -88,6 +89,12 @@ internal val commentsModule = module {
             getRepliesUseCase = get(),
             getCommentReactionsUseCase = get(),
             loadUserReactionsUseCase = get(),
+        )
+    }
+
+    viewModel {
+        PostCommentViewModel(
+            sessionManager = get(),
         )
     }
 }

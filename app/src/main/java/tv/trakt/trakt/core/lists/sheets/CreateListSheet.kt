@@ -38,7 +38,7 @@ internal fun CreateListSheet(
         ) {
             CreateListView(
                 viewModel = koinViewModel(
-                    key = Random.Default.nextInt().toString(),
+                    key = Random.nextInt().toString(),
                 ),
                 onListCreated = {
                     sheetScope

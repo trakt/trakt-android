@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package tv.trakt.trakt.core.comments.details
+package tv.trakt.trakt.core.comments.features.details
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
