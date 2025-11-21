@@ -176,7 +176,7 @@ internal fun NavGraphBuilder.episodesScreens(controller: NavHostController) {
                     filter = filter,
                 )
             },
-            onPersonClick = { show, episode, person ->
+            onPersonClick = { show, _, person ->
                 navigateToPerson(
                     personId = person.ids.trakt,
                     sourceMediaId = show.ids.trakt,

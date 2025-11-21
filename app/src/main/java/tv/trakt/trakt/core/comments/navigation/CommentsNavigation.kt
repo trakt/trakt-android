@@ -14,7 +14,7 @@ import tv.trakt.trakt.core.comments.model.CommentsFilter
 @Serializable
 internal data class CommentsDestination(
     val mediaId: Int,
-    val mediaType: String,
+    val mediaType: MediaType,
     val mediaImage: String?,
     val mediaEpisode: Int? = null,
     val mediaSeason: Int? = null,
@@ -39,7 +39,7 @@ internal fun NavController.navigateToComments(
     navigate(
         route = CommentsDestination(
             mediaId = mediaId.value,
-            mediaType = mediaType.name,
+            mediaType = mediaType,
             mediaImage = mediaImage,
             initialFilter = filter,
         ),
@@ -55,7 +55,7 @@ internal fun NavController.navigateToComments(
     navigate(
         route = CommentsDestination(
             mediaId = showId.value,
-            mediaType = MediaType.EPISODE.name,
+            mediaType = MediaType.EPISODE,
             mediaImage = showImage,
             mediaEpisode = seasonEpisode.episode,
             mediaSeason = seasonEpisode.season,

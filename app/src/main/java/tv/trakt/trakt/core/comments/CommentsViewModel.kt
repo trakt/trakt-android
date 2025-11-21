@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
@@ -68,6 +69,13 @@ internal class CommentsViewModel(
     private val destination = savedStateHandle.toRoute<CommentsDestination>()
     private val initialState = CommentsState()
 
+    private val mediaState = MutableStateFlow(
+        CommentsState.MediaState(
+            id = destination.mediaId.toTraktId(),
+            type = destination.mediaType,
+        ),
+    )
+
     private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(destination.initialFilter)
@@ -76,9 +84,6 @@ internal class CommentsViewModel(
     private val userState = MutableStateFlow(initialState.user)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
-
-    private val mediaId = destination.mediaId.toTraktId()
-    private val mediaType = MediaType.valueOf(destination.mediaType)
 
     private var reactionJob: Job? = null
 
@@ -163,19 +168,19 @@ internal class CommentsViewModel(
 
     private suspend fun fetchComments(): ImmutableList<Comment> {
         val filter = loadFilter()
-        return when (mediaType) {
+        return when (destination.mediaType) {
             MediaType.MOVIE -> getMovieCommentsUseCase.getComments(
-                movieId = mediaId,
+                movieId = destination.mediaId.toTraktId(),
                 filter = filter,
                 limit = 50,
             )
             MediaType.SHOW -> getShowCommentsUseCase.getComments(
-                showId = mediaId,
+                showId = destination.mediaId.toTraktId(),
                 filter = filter,
                 limit = 50,
             )
             MediaType.EPISODE -> getEpisodeCommentsUseCase.getComments(
-                showId = mediaId,
+                showId = destination.mediaId.toTraktId(),
                 seasonEpisode = SeasonEpisode(
                     season = destination.mediaSeason ?: -1,
                     episode = destination.mediaEpisode ?: -1,
@@ -184,7 +189,7 @@ internal class CommentsViewModel(
                 limit = 50,
             )
 
-            else -> throw IllegalArgumentException("Unsupported media type: $mediaType")
+            else -> throw IllegalArgumentException("Unsupported media type: ${destination.mediaType}")
         }
     }
 
@@ -288,6 +293,14 @@ internal class CommentsViewModel(
         }
     }
 
+    fun addComment(comment: Comment) {
+        itemsState.update {
+            val mutable = it?.toMutableList() ?: mutableListOf()
+            mutable.add(0, comment)
+            mutable.toImmutableList()
+        }
+    }
+
     private fun updateReactions(commentId: Int) {
         viewModelScope.launch {
             try {
@@ -348,6 +361,7 @@ internal class CommentsViewModel(
     @Suppress("UNCHECKED_CAST")
     val state: StateFlow<CommentsState> = combine(
         backgroundState,
+        mediaState,
         itemsState,
         filterState,
         reactionsState,
@@ -358,13 +372,14 @@ internal class CommentsViewModel(
     ) { state ->
         CommentsState(
             backgroundUrl = state[0] as String?,
-            items = state[1] as ImmutableList<Comment>?,
-            filter = state[2] as CommentsFilter,
-            reactions = state[3] as ImmutableMap<Int, ReactionsSummary>?,
-            userReactions = state[4] as ImmutableMap<Int, Reaction?>?,
-            user = state[5] as User?,
-            loading = state[6] as LoadingState,
-            error = state[7] as Exception?,
+            media = state[1] as CommentsState.MediaState?,
+            items = state[2] as ImmutableList<Comment>?,
+            filter = state[3] as CommentsFilter,
+            reactions = state[4] as ImmutableMap<Int, ReactionsSummary>?,
+            userReactions = state[5] as ImmutableMap<Int, Reaction?>?,
+            user = state[6] as User?,
+            loading = state[7] as LoadingState,
+            error = state[8] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

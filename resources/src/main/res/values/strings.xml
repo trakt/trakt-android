@@ -198,5 +198,6 @@
     <string name="button_text_unknown_date">Unknown Date</string>
     <string name="button_text_submit">Submit</string>
     <string name="button_text_comment">Review</string>
+    <string name="text_info_comment_added">Review has been added.</string>
 
 </resources>

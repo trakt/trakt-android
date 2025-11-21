@@ -19,6 +19,7 @@ internal val commentsDataModule = module {
                 httpClientEngine = get(),
                 httpClientConfig = get(named("clientConfig")),
             ),
+            cacheMarker = get(),
         )
     }
 }

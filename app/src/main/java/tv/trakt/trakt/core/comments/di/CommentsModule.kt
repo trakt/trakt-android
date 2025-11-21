@@ -22,10 +22,13 @@ import tv.trakt.trakt.common.core.comments.data.remote.CommentsRemoteDataSource
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentReactionsUseCase
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentRepliesUseCase
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.comments.CommentsViewModel
 import tv.trakt.trakt.core.comments.features.details.CommentDetailsViewModel
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentViewModel
 import tv.trakt.trakt.core.comments.usecases.GetCommentsFilterUseCase
+import tv.trakt.trakt.core.comments.usecases.PostCommentUseCase
 
 internal const val COMMENTS_PREFERENCES = "comments_preferences_mobile"
 
@@ -35,8 +38,9 @@ internal val commentsDataModule = module {
             api = CommentsApi(
                 baseUrl = API_BASE_URL,
                 httpClientEngine = get(),
-                httpClientConfig = get(named("clientConfig")),
+                httpClientConfig = get(named("authorizedClientConfig")),
             ),
+            cacheMarker = get(),
         )
     }
 
@@ -66,6 +70,12 @@ internal val commentsModule = module {
         )
     }
 
+    factory {
+        PostCommentUseCase(
+            remoteSource = get(),
+        )
+    }
+
     viewModel {
         CommentsViewModel(
             appContext = androidApplication(),
@@ -92,9 +102,12 @@ internal val commentsModule = module {
         )
     }
 
-    viewModel {
+    viewModel { (mediaId: TraktId, mediaType: MediaType) ->
         PostCommentViewModel(
+            mediaId = mediaId,
+            mediaType = mediaType,
             sessionManager = get(),
+            postCommentUseCase = get(),
         )
     }
 }

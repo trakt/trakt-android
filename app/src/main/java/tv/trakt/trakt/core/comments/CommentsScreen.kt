@@ -58,6 +58,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.core.comments.features.details.CommentDetailsSheet
@@ -114,6 +115,9 @@ internal fun CommentsScreen(
 
     PostCommentSheet(
         active = postCommentSheet,
+        mediaId = state.media?.id,
+        mediaType = state.media?.type,
+        onCommentPost = viewModel::addComment,
         onDismiss = {
             postCommentSheet = false
         },
@@ -168,7 +172,7 @@ internal fun CommentsContent(
             userReactions = (state.userReactions ?: emptyMap()).toImmutableMap(),
             contentPadding = contentPadding,
             loading = state.loading.isLoading,
-            authenticated = state.user != null,
+            user = state.user,
             onCommentLoaded = onCommentLoaded,
             onCommentClick = onCommentClick,
             onFilterClick = onFilterClick,
@@ -178,8 +182,8 @@ internal fun CommentsContent(
 
         AnimatedVisibility(
             visible = state.user != null && !state.loading.isLoading,
-            enter = fadeIn(tween(delayMillis = 250)),
-            exit = fadeOut(),
+            enter = fadeIn(tween(delayMillis = 300)),
+            exit = fadeOut(tween(delayMillis = 300)),
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(
@@ -220,7 +224,7 @@ private fun ContentList(
     listState: LazyListState,
     listFilter: CommentsFilter?,
     loading: Boolean,
-    authenticated: Boolean,
+    user: User?,
     userReactions: ImmutableMap<Int, Reaction?>,
     onCommentLoaded: ((Comment) -> Unit)? = null,
     onCommentClick: ((Comment) -> Unit)? = null,
@@ -259,12 +263,17 @@ private fun ContentList(
                 items = listItems,
                 key = { it.id },
             ) { comment ->
+                val isUserComment = remember(user) {
+                    comment.user.ids.trakt == user?.ids?.trakt
+                }
+
                 CommentCard(
                     comment = comment,
                     reactions = listReactions?.get(comment.id),
                     userReaction = userReactions[comment.id],
                     onRequestReactions = { onCommentLoaded?.invoke(comment) },
-                    reactionsEnabled = authenticated,
+                    reactionsEnabled = user != null,
+                    userComment = isUserComment,
                     onReactionClick = { onReactionClick?.invoke(it, comment) },
                     maxLines = Int.MAX_VALUE,
                     corner = 20.dp,

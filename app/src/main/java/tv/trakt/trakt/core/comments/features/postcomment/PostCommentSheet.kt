@@ -12,10 +12,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
+import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
+import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
 import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -25,6 +32,9 @@ internal fun PostCommentSheet(
         skipPartiallyExpanded = true,
     ),
     active: Boolean,
+    mediaId: TraktId?,
+    mediaType: MediaType?,
+    onCommentPost: (Comment) -> Unit,
     onDismiss: () -> Unit,
 ) {
     val localSnack = LocalSnackbarState.current
@@ -40,69 +50,31 @@ internal fun PostCommentSheet(
             PostCommentView(
                 viewModel = koinViewModel(
                     key = Random.nextInt().toString(),
+                    parameters = {
+                        parametersOf(mediaId, mediaType)
+                    },
                 ),
+                onCommentPost = {
+                    onCommentPost(it)
+                    sheetScope.dismissWithAction(
+                        sheet = state,
+                        onDismiss = onDismiss,
+                        action = {
+                            sheetScope.launch {
+                                val job = sheetScope.launch {
+                                    val message = localContext.getString(R.string.text_info_comment_added)
+                                    localSnack.showSnackbar(message)
+                                }
+                                delay(SNACK_DURATION_SHORT)
+                                job.cancel()
+                            }
+                        },
+                    )
+                },
                 modifier = Modifier
                     .padding(horizontal = 24.dp)
                     .padding(bottom = 24.dp),
             )
-
-//            CreateListView(
-//                viewModel = koinViewModel(
-//                    key = Random.nextInt().toString(),
-//                ),
-//                onListCreated = {
-//                    sheetScope
-//                        .launch { state.hide() }
-//                        .invokeOnCompletion {
-//                            if (!state.isVisible) {
-//                                onListCreated()
-//                                onDismiss()
-//                            }
-//                        }
-//
-//                    sheetScope.launch {
-//                        val job = sheetScope.launch {
-//                            localSnack.showSnackbar(localContext.getString(R.string.text_info_list_created))
-//                        }
-//                        delay(SNACK_DURATION_SHORT)
-//                        job.cancel()
-//                    }
-//                },
-//                onError = {
-//                    sheetScope
-//                        .launch { state.hide() }
-//                        .invokeOnCompletion {
-//                            if (!state.isVisible) {
-//                                onDismiss()
-//                            }
-//                        }
-//
-//                    sheetScope.launch {
-//                        val job = sheetScope.launch {
-//                            localSnack.showSnackbar(localContext.getString(R.string.error_text_unexpected_error_short))
-//                        }
-//                        delay(SNACK_DURATION_SHORT)
-//                        job.cancel()
-//                    }
-//                },
-//                onListLimitError = {
-//                    sheetScope
-//                        .launch { state.hide() }
-//                        .invokeOnCompletion {
-//                            if (!state.isVisible) {
-//                                onDismiss()
-//                            }
-//                        }
-//
-//                    sheetScope.launch {
-//                        val job = sheetScope.launch {
-//                            localSnack.showSnackbar(localContext.getString(R.string.error_text_lists_limit))
-//                        }
-//                        delay(SNACK_DURATION_SHORT)
-//                        job.cancel()
-//                    }
-//                },
-//            )
         }
     }
 }

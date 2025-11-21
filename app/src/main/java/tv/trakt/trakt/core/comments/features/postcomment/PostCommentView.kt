@@ -12,7 +12,9 @@ import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -24,6 +26,8 @@ import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
+import tv.trakt.trakt.common.helpers.LaunchedUpdateEffect
+import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
@@ -33,12 +37,23 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun PostCommentView(
     viewModel: PostCommentViewModel,
     modifier: Modifier = Modifier,
+    onCommentPost: (Comment) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    LaunchedUpdateEffect(state.result) {
+        state.result?.let {
+            onCommentPost(it)
+        }
+    }
+
     ViewContent(
         state = state,
-        onSubmitClick = { comment ->
+        onSubmitClick = { comment, spoiler ->
+            viewModel.submitComment(
+                comment = comment,
+                spoiler = spoiler,
+            )
         },
         modifier = modifier,
     )
@@ -48,10 +63,18 @@ internal fun PostCommentView(
 private fun ViewContent(
     state: PostCommentState,
     modifier: Modifier = Modifier,
-    onSubmitClick: (comment: String) -> Unit,
+    onSubmitClick: (comment: String, spoiler: Boolean) -> Unit,
 ) {
     val inputState = rememberTextFieldState()
     val isLoading = state.loading.isLoading
+
+    val isValid = remember {
+        val spaceRegex = "\\s+".toRegex()
+        derivedStateOf {
+            val input = inputState.text.toString().trim()
+            input.isNotBlank() && input.split(spaceRegex).size >= 5
+        }
+    }
 
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -64,10 +87,10 @@ private fun ViewContent(
 
         InputField(
             state = inputState,
-            enabled = isLoading,
+            enabled = !isLoading,
             placeholder = "What do you think?",
             containerColor = Color.Transparent,
-            height = 192.dp,
+            height = 164.dp,
             lineLimits = TextFieldLineLimits.MultiLine(
                 minHeightInLines = 3,
                 maxHeightInLines = Int.MAX_VALUE,
@@ -79,13 +102,13 @@ private fun ViewContent(
 
         PrimaryButton(
             text = stringResource(R.string.button_text_submit),
-            enabled = !isLoading,
+            enabled = !isLoading && isValid.value,
             loading = isLoading,
             onClick = {
                 val input = inputState.text
                     .toString()
                     .trim()
-                onSubmitClick(input)
+                onSubmitClick(input, false)
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -109,7 +132,7 @@ private fun Preview() {
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             ViewContent(
                 state = PostCommentState(),
-                onSubmitClick = { },
+                onSubmitClick = { _, _ -> },
             )
         }
     }

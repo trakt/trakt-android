@@ -16,7 +16,6 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TmdbId
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.model.TvdbId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.sorting.SortOrder
 import tv.trakt.trakt.common.model.sorting.SortType
@@ -28,7 +27,6 @@ object PreviewData {
         ids = Ids(
             trakt = TraktId(1),
             slug = SlugId("slug2"),
-            tvdb = TvdbId(1),
             tmdb = TmdbId(1),
             imdb = ImdbId("tt1234562"),
         ),
@@ -70,7 +68,6 @@ object PreviewData {
         ids = Ids(
             trakt = TraktId(1),
             slug = SlugId("slug2"),
-            tvdb = TvdbId(1),
             tmdb = TmdbId(1),
             imdb = ImdbId("tt1234562"),
         ),
@@ -114,7 +111,6 @@ object PreviewData {
             slug = SlugId("john-doe"),
             imdb = ImdbId("tt1234567"),
             tmdb = TmdbId(67890),
-            tvdb = TvdbId(112233),
         ),
         name = "John",
         username = "johndoe69",
@@ -133,7 +129,6 @@ object PreviewData {
         ids = Ids(
             trakt = TraktId(1),
             slug = SlugId("slug2"),
-            tvdb = TvdbId(1),
             tmdb = TmdbId(1),
             imdb = ImdbId("tt1234562"),
         ),
@@ -201,7 +196,6 @@ object PreviewData {
             slug = SlugId("john-doe"),
             imdb = ImdbId("tt1234567"),
             tmdb = TmdbId(67890),
-            tvdb = TvdbId(112233),
         ),
         knownForDepartment = "Acting",
         birthday = nowLocalDay(),

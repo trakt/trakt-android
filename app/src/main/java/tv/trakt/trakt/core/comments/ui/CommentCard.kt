@@ -2,6 +2,7 @@
 
 package tv.trakt.trakt.core.comments.ui
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -68,6 +69,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun CommentCard(
     comment: Comment,
     modifier: Modifier = Modifier,
+    userComment: Boolean = false,
     reactions: ReactionsSummary? = null,
     reactionsEnabled: Boolean = true,
     userReaction: Reaction? = null,
@@ -92,11 +94,16 @@ internal fun CommentCard(
         colors = cardColors(
             containerColor = TraktTheme.colors.commentContainer,
         ),
+        border = when {
+            userComment -> BorderStroke(2.dp, TraktTheme.colors.accent)
+            else -> null
+        },
         content = {
             CommentCardContent(
                 comment = comment,
                 maxLines = maxLines,
                 reactions = reactions,
+                reactionsVisible = !userComment,
                 reactionsEnabled = reactionsEnabled,
                 userReaction = userReaction,
                 onReactionClick = onReactionClick,
@@ -114,6 +121,7 @@ internal fun CommentCard(
 private fun CommentCardContent(
     comment: Comment,
     reactions: ReactionsSummary?,
+    reactionsVisible: Boolean,
     reactionsEnabled: Boolean,
     userReaction: Reaction?,
     maxLines: Int,
@@ -158,6 +166,7 @@ private fun CommentCardContent(
         CommentFooter(
             comment = comment,
             reactions = reactions,
+            reactionsVisible = reactionsVisible,
             reactionsEnabled = reactionsEnabled,
             userReaction = userReaction,
             onReactionClick = onReactionClick,
@@ -263,6 +272,7 @@ private fun CommentHeader(
 private fun CommentFooter(
     comment: Comment,
     reactions: ReactionsSummary?,
+    reactionsVisible: Boolean,
     reactionsEnabled: Boolean,
     userReaction: Reaction?,
     modifier: Modifier = Modifier,
@@ -278,29 +288,33 @@ private fun CommentFooter(
             .fillMaxWidth()
             .padding(horizontal = 2.dp),
     ) {
-        ReactionsToolTip(
-            state = tooltipState,
-            reactions = reactions,
-            userReaction = userReaction,
-            onReactionClick = onReactionClick,
-        ) {
-            ReactionsSummaryChip(
+        if (reactionsVisible) {
+            ReactionsToolTip(
+                state = tooltipState,
                 reactions = reactions,
                 userReaction = userReaction,
-                enabled = reactionsEnabled,
-                modifier = Modifier.onClick {
-                    if (reactions == null || !reactionsEnabled) {
-                        return@onClick
-                    }
-                    scope.launch {
-                        if (tooltipState.isVisible) {
-                            tooltipState.dismiss()
-                        } else {
-                            tooltipState.show()
+                onReactionClick = onReactionClick,
+            ) {
+                ReactionsSummaryChip(
+                    reactions = reactions,
+                    userReaction = userReaction,
+                    enabled = reactionsEnabled,
+                    modifier = Modifier.onClick {
+                        if (reactions == null || !reactionsEnabled) {
+                            return@onClick
                         }
-                    }
-                },
-            )
+                        scope.launch {
+                            if (tooltipState.isVisible) {
+                                tooltipState.dismiss()
+                            } else {
+                                tooltipState.show()
+                            }
+                        }
+                    },
+                )
+            }
+        } else {
+            Spacer(modifier = Modifier.size(18.dp))
         }
 
         Row(
