@@ -111,11 +111,11 @@ private fun MovieDetailsContextViewContent(
                 Text(
                     text = movie.title,
                     color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.heading2,
+                    style = TraktTheme.typography.heading3,
                     maxLines = 1,
                     overflow = Ellipsis,
                     autoSize = TextAutoSize.StepBased(
-                        maxFontSize = TraktTheme.typography.heading2.fontSize,
+                        maxFontSize = TraktTheme.typography.heading3.fontSize,
                         minFontSize = 16.sp,
                         stepSize = 2.sp,
                     ),
@@ -164,7 +164,7 @@ private fun MovieDetailsContextViewContent(
             onRemoveClick = onRemoveClick ?: {},
             onShareClick = onShareClick ?: {},
             modifier = Modifier
-                .padding(top = 12.dp),
+                .padding(top = 14.dp),
         )
     }
 }

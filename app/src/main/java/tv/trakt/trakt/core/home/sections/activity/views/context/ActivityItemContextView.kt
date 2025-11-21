@@ -1,10 +1,15 @@
 package tv.trakt.trakt.core.home.sections.activity.views.context
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -15,13 +20,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,18 +37,17 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
+import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
-import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.EpisodeItem
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.MovieItem
+import tv.trakt.trakt.core.movies.ui.MovieMetaFooter
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
-import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Instant
 
@@ -111,45 +116,111 @@ private fun ActivityItemContextViewContent(
         verticalArrangement = spacedBy(0.dp),
         modifier = modifier,
     ) {
-        PanelMediaCard(
-            title = item.title,
-            titleOriginal = item.titleOriginal,
-            subtitle = when (item) {
-                is EpisodeItem -> item.episode.seasonEpisodeString()
-                is MovieItem -> stringResource(R.string.translated_value_type_movie)
-            },
-            shadow = 4.dp,
-            more = false,
-            containerColor = Shade910,
-            contentImageUrl = item.images?.getPosterUrl(),
-            containerImageUrl = when (item) {
-                is EpisodeItem -> item.episode.images?.getScreenshotUrl(THUMB)
-                    ?: item.episode.images?.getFanartUrl(THUMB)
-                is MovieItem -> item.movie.images?.getFanartUrl(THUMB)
-            },
-            footerContent = {
-                Row(
-                    horizontalArrangement = spacedBy(3.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_calendar_check),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.textSecondary,
-                        modifier = Modifier.size(14.dp),
-                    )
-                    Text(
-                        text = item.activityAt.toLocal().relativePastDateString(),
-                        color = TraktTheme.colors.textSecondary,
-                        style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
-                    )
+//        PanelMediaCard(
+//            title = item.title,
+//            titleOriginal = item.titleOriginal,
+//            subtitle = when (item) {
+//                is EpisodeItem -> item.episode.seasonEpisodeString()
+//                is MovieItem -> stringResource(R.string.translated_value_type_movie)
+//            },
+//            shadow = 4.dp,
+//            more = false,
+//            containerColor = Shade910,
+//            contentImageUrl = item.images?.getPosterUrl(),
+//            containerImageUrl = when (item) {
+//                is EpisodeItem -> item.episode.images?.getScreenshotUrl(THUMB)
+//                    ?: item.episode.images?.getFanartUrl(THUMB)
+//                is MovieItem -> item.movie.images?.getFanartUrl(THUMB)
+//            },
+//            footerContent = {
+//                Row(
+//                    horizontalArrangement = spacedBy(3.dp),
+//                    verticalAlignment = Alignment.CenterVertically,
+//                ) {
+//                    Icon(
+//                        painter = painterResource(R.drawable.ic_calendar_check),
+//                        contentDescription = null,
+//                        tint = TraktTheme.colors.textSecondary,
+//                        modifier = Modifier.size(14.dp),
+//                    )
+//                    Text(
+//                        text = item.activityAt.toLocal().relativePastDateString(),
+//                        color = TraktTheme.colors.textSecondary,
+//                        style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
+//                    )
+//                }
+//            },
+//        )
+
+        Column(
+            verticalArrangement = spacedBy(2.dp),
+        ) {
+            Text(
+                text = item.title,
+                color = TraktTheme.colors.textPrimary,
+                style = TraktTheme.typography.heading3,
+                maxLines = 1,
+                overflow = Ellipsis,
+                autoSize = TextAutoSize.StepBased(
+                    maxFontSize = TraktTheme.typography.heading3.fontSize,
+                    minFontSize = 20.sp,
+                    stepSize = 2.sp,
+                ),
+            )
+
+            if (item is MovieItem) {
+                MovieMetaFooter(
+                    movie = item.movie,
+                    secondary = true,
+                    textStyle = TraktTheme.typography.paragraphSmall,
+                )
+            }
+
+            if (item is EpisodeItem) {
+                Text(
+                    text = item.episode.seasonEpisodeString(),
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.paragraphSmall,
+                )
+            }
+
+            Row(
+                horizontalArrangement = spacedBy(4.dp),
+                verticalAlignment = CenterVertically,
+                modifier = Modifier
+                    .padding(top = 18.dp)
+                    .graphicsLayer {
+                        translationX = -1.75.dp.toPx()
+                    },
+            ) {
+                val dateText = remember(item.activityAt) {
+                    item.activityAt.toLocal().format(longDateTimeFormat)
                 }
-            },
+                Icon(
+                    painter = painterResource(R.drawable.ic_calendar_check),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier.size(15.dp),
+                )
+                Text(
+                    text = dateText,
+                    color = TraktTheme.colors.textPrimary,
+                    style = TraktTheme.typography.paragraphSmaller,
+                )
+            }
+        }
+
+        Spacer(
+            modifier = Modifier
+                .padding(top = 22.dp)
+                .background(Shade910)
+                .fillMaxWidth()
+                .height(1.dp),
         )
 
         Column(
             verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
-            modifier = Modifier.padding(top = 16.dp),
+            modifier = Modifier.padding(top = 14.dp),
         ) {
             GhostButton(
                 enabled = !state.loadingRemove.isLoading,
@@ -157,7 +228,8 @@ private fun ActivityItemContextViewContent(
                 text = stringResource(R.string.button_text_remove_from_history),
                 onClick = onRemoveWatchedClick,
                 icon = painterResource(R.drawable.ic_close),
-                iconSize = 18.dp,
+                iconSize = 20.dp,
+                iconSpace = 12.dp,
                 modifier = Modifier
                     .graphicsLayer {
                         translationX = -8.dp.toPx()

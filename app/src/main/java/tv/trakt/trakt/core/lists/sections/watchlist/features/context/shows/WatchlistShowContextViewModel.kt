@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -153,7 +152,7 @@ internal class WatchlistShowContextViewModel(
         return loadingWatchedState.value.isLoading || loadingWatchlistState.value.isLoading
     }
 
-    val state: StateFlow<WatchlistShowContextState> = combine(
+    val state = combine(
         loadingWatchedState,
         loadingWatchlistState,
         userState,

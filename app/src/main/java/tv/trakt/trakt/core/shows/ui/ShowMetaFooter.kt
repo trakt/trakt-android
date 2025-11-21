@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,10 +39,14 @@ private const val SEPARATOR = "  •  "
 fun ShowMetaFooter(
     show: Show,
     modifier: Modifier = Modifier,
+    secondary: Boolean = false,
     loading: Boolean = false,
     rating: Boolean = true,
     check: Boolean = false,
     mediaIcon: Boolean = false,
+    textStyle: TextStyle = TraktTheme.typography.cardSubtitle.copy(
+        fontWeight = W500,
+    ),
     onCheckClick: (() -> Unit)? = null,
     onCheckLongClick: (() -> Unit)? = null,
 ) {
@@ -75,6 +80,11 @@ fun ShowMetaFooter(
         modifier = modifier
             .fillMaxWidth(),
     ) {
+        val textColor = when {
+            secondary -> TraktTheme.colors.textSecondary
+            else -> TraktTheme.colors.textPrimary
+        }
+
         if (isReleased) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -84,7 +94,7 @@ fun ShowMetaFooter(
                     Icon(
                         painter = painterResource(R.drawable.ic_shows_off),
                         contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
+                        tint = textColor,
                         modifier = Modifier
                             .size(14.dp)
                             .graphicsLayer {
@@ -94,10 +104,8 @@ fun ShowMetaFooter(
                 }
                 Text(
                     text = metaString,
-                    color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.cardSubtitle.copy(
-                        fontWeight = W500,
-                    ),
+                    color = textColor,
+                    style = textStyle,
                 )
             }
         } else {
@@ -108,20 +116,18 @@ fun ShowMetaFooter(
                 Icon(
                     painter = painterResource(R.drawable.ic_calendar_upcoming),
                     contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
+                    tint = textColor,
                     modifier = Modifier.size(14.dp),
                 )
                 Text(
                     text = show.released?.relativeDateTimeString() ?: "TBA",
-                    color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.cardSubtitle.copy(
-                        fontWeight = W500,
-                    ),
+                    color = textColor,
+                    style = textStyle,
                 )
             }
         }
 
-        if (rating && isReleased && !check) {
+        if (rating && !secondary && isReleased && !check) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = spacedBy(4.dp),
@@ -148,7 +154,7 @@ fun ShowMetaFooter(
             }
         }
 
-        if (check) {
+        if (check && !secondary) {
             if (loading) {
                 FilmProgressIndicator(
                     size = 16.dp,
@@ -219,6 +225,23 @@ private fun Preview4() {
             check = true,
             loading = true,
             mediaIcon = true,
+        )
+    }
+}
+
+@Preview(widthDp = 300)
+@Composable
+private fun Preview5() {
+    TraktTheme {
+        ShowMetaFooter(
+            show = PreviewData.show1.copy(
+                released = nowUtc().minusDays(3),
+            ),
+            rating = false,
+            check = true,
+            loading = true,
+            mediaIcon = true,
+            secondary = true,
         )
     }
 }

@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -12,11 +11,14 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.crashlytics.recordError
+import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
@@ -28,13 +30,28 @@ internal class WatchlistMovieContextViewModel(
     private val updateMovieWatchlistUseCase: UpdateMovieWatchlistUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
     private val loadProgressUseCase: LoadUserProgressUseCase,
+    private val sessionManager: SessionManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = WatchlistMovieContextState()
 
     private val loadingWatchedState = MutableStateFlow(initialState.loadingWatched)
     private val loadingWatchlistState = MutableStateFlow(initialState.loadingWatchlist)
+
+    private val userState = MutableStateFlow(initialState.user)
     private val errorState = MutableStateFlow(initialState.error)
+
+    init {
+        loadUser()
+    }
+
+    private fun loadUser() {
+        viewModelScope.launch {
+            userState.update {
+                sessionManager.getProfile()
+            }
+        }
+    }
 
     fun addToWatched(
         movieId: TraktId,
@@ -102,15 +119,17 @@ internal class WatchlistMovieContextViewModel(
         return loadingWatchedState.value.isLoading || loadingWatchlistState.value.isLoading
     }
 
-    val state: StateFlow<WatchlistMovieContextState> = combine(
+    val state = combine(
         loadingWatchedState,
         loadingWatchlistState,
+        userState,
         errorState,
-    ) { s1, s2, s3 ->
+    ) { state ->
         WatchlistMovieContextState(
-            loadingWatched = s1,
-            loadingWatchlist = s2,
-            error = s3,
+            loadingWatched = state[0] as LoadingState,
+            loadingWatchlist = state[1] as LoadingState,
+            user = state[2] as User?,
+            error = state[3] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

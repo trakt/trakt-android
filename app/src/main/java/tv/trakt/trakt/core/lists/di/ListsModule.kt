@@ -250,6 +250,7 @@ internal val listsModule = module {
             userWatchlistLocalSource = get(),
             updateMovieHistoryUseCase = get(),
             loadProgressUseCase = get(),
+            sessionManager = get(),
             analytics = get(),
         )
     }

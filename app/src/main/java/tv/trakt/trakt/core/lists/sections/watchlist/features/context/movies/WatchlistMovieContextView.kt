@@ -2,10 +2,16 @@
 
 package tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -19,8 +25,10 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
@@ -29,7 +37,6 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.preview.PreviewData
-import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.core.movies.ui.MovieMetaFooter
@@ -38,7 +45,6 @@ import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
-import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -129,78 +135,111 @@ private fun WatchlistMovieContextViewContent(
         verticalArrangement = spacedBy(0.dp),
         modifier = modifier,
     ) {
-        PanelMediaCard(
-            title = movie.title,
-            titleOriginal = movie.titleOriginal,
-            subtitle = remember(movie.genres) {
-                movie.genres.take(2).joinToString(", ") { genre ->
-                    genre.replaceFirstChar {
-                        it.uppercaseChar()
-                    }
-                }
-            },
-            shadow = 4.dp,
-            more = false,
-            containerColor = Shade910,
-            contentImageUrl = movie.images?.getPosterUrl(),
-            containerImageUrl = movie.images?.getFanartUrl(THUMB),
-            footerContent = {
-                MovieMetaFooter(movie)
-            },
+        Column(
+            verticalArrangement = spacedBy(2.dp),
+        ) {
+            Text(
+                text = movie.title,
+                color = TraktTheme.colors.textPrimary,
+                style = TraktTheme.typography.heading3,
+                maxLines = 1,
+                overflow = Ellipsis,
+                autoSize = TextAutoSize.StepBased(
+                    maxFontSize = TraktTheme.typography.heading3.fontSize,
+                    minFontSize = 20.sp,
+                    stepSize = 2.sp,
+                ),
+            )
+
+            MovieMetaFooter(
+                movie = movie,
+                secondary = true,
+                textStyle = TraktTheme.typography.paragraphSmaller,
+            )
+        }
+
+        Spacer(
+            modifier = Modifier
+                .padding(top = 22.dp)
+                .background(Shade910)
+                .fillMaxWidth()
+                .height(1.dp),
         )
 
-        Column(
-            verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
-            modifier = Modifier.padding(top = 20.dp),
-        ) {
-            val isLoading =
-                state.loadingWatched.isLoading ||
-                    state.loadingWatchlist.isLoading
+        if (state.user != null) {
+            MovieActionButtons(
+                movie = movie,
+                watched = watched,
+                onWatchedClick = onAddWatched,
+                onWatchlistClick = onRemoveWatchlist,
+                state = state,
+                modifier = Modifier
+                    .padding(top = 14.dp),
+            )
+        }
+    }
+}
 
-            val isReleased = remember {
-                movie.released?.isTodayOrBefore() ?: false
-            }
+@Composable
+private fun MovieActionButtons(
+    modifier: Modifier = Modifier,
+    movie: Movie,
+    watched: Boolean,
+    onWatchedClick: () -> Unit,
+    onWatchlistClick: () -> Unit,
+    state: WatchlistMovieContextState,
+) {
+    Column(
+        verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
+        modifier = modifier,
+    ) {
+        val isLoading =
+            state.loadingWatched.isLoading ||
+                state.loadingWatchlist.isLoading
 
-            if (isReleased) {
-                GhostButton(
-                    enabled = !isLoading,
-                    loading = state.loadingWatched.isLoading,
-                    text = stringResource(
-                        when {
-                            watched -> R.string.button_text_watch_again
-                            else -> R.string.button_text_mark_as_watched
-                        },
-                    ),
-                    iconSize = 20.dp,
-                    iconSpace = 16.dp,
-                    onClick = onAddWatched,
-                    icon = painterResource(
-                        when {
-                            watched -> R.drawable.ic_check_double
-                            else -> R.drawable.ic_check
-                        },
-                    ),
-                    modifier = Modifier
-                        .graphicsLayer {
-                            translationX = -6.dp.toPx()
-                        },
-                )
-            }
+        val isReleased = remember {
+            movie.released?.isTodayOrBefore() ?: false
+        }
 
+        if (isReleased) {
             GhostButton(
                 enabled = !isLoading,
-                loading = state.loadingWatchlist.isLoading,
-                text = stringResource(R.string.button_text_watchlist),
-                onClick = onRemoveWatchlist,
-                iconSize = 23.dp,
+                loading = state.loadingWatched.isLoading,
+                text = stringResource(
+                    when {
+                        watched -> R.string.button_text_watch_again
+                        else -> R.string.button_text_mark_as_watched
+                    },
+                ),
+                iconSize = 20.dp,
                 iconSpace = 16.dp,
-                icon = painterResource(R.drawable.ic_minus),
+                onClick = onWatchedClick,
+                icon = painterResource(
+                    when {
+                        watched -> R.drawable.ic_check_double
+                        else -> R.drawable.ic_check
+                    },
+                ),
                 modifier = Modifier
                     .graphicsLayer {
-                        translationX = -7.dp.toPx()
+                        translationX = -6.dp.toPx()
                     },
             )
         }
+
+        GhostButton(
+            enabled = !isLoading,
+            loading = state.loadingWatchlist.isLoading,
+            text = stringResource(R.string.button_text_watchlist),
+            onClick = onWatchlistClick,
+            iconSize = 23.dp,
+            iconSpace = 16.dp,
+            icon = painterResource(R.drawable.ic_minus),
+            modifier = Modifier
+                .graphicsLayer {
+                    translationX = -7.dp.toPx()
+                },
+        )
     }
 }
 
