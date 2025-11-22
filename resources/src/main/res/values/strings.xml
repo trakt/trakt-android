@@ -199,5 +199,7 @@
     <string name="button_text_submit">Submit</string>
     <string name="button_text_comment">Review</string>
     <string name="text_info_comment_added">Review has been added.</string>
+    <string name="page_description_add_comment">Minimum 5 words, be respectful, mark spoilers.</string>
+    <string name="input_placeholder_comment">What do you think?</string>
 
 </resources>

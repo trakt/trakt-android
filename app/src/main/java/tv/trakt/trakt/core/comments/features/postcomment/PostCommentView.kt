@@ -81,14 +81,14 @@ private fun ViewContent(
         modifier = modifier,
     ) {
         TraktHeader(
-            title = "Add Review",
-            subtitle = "Minimum 5 words, be respectful, mark spoilers.",
+            title = stringResource(R.string.button_text_comment),
+            subtitle = stringResource(R.string.page_description_add_comment),
         )
 
         InputField(
             state = inputState,
             enabled = !isLoading,
-            placeholder = "What do you think?",
+            placeholder = stringResource(R.string.input_placeholder_comment),
             containerColor = Color.Transparent,
             height = 164.dp,
             lineLimits = TextFieldLineLimits.MultiLine(

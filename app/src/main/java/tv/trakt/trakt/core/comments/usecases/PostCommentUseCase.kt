@@ -32,4 +32,17 @@ internal class PostCommentUseCase(
         )
         return Comment.fromDto(responseComment)
     }
+
+    suspend fun postEpisodeComment(
+        episodeId: TraktId,
+        comment: String,
+        spoiler: Boolean,
+    ): Comment {
+        val responseComment = remoteSource.postEpisodeComment(
+            episodeId = episodeId,
+            text = comment,
+            spoiler = spoiler,
+        )
+        return Comment.fromDto(responseComment)
+    }
 }
