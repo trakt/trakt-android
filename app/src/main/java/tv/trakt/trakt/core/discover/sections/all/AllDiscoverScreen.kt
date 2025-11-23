@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -44,7 +45,7 @@ import tv.trakt.trakt.core.discover.ui.AllDiscoverListView
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
-import tv.trakt.trakt.helpers.rememberHeaderState
+import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
@@ -105,7 +106,6 @@ private fun AllDiscoverScreenContent(
     onFilterClick: (MediaMode) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
-    val headerState = rememberHeaderState()
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
             aheadFraction = 0.5F,
@@ -113,14 +113,18 @@ private fun AllDiscoverScreenContent(
         ),
     )
 
+    val listScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
+        SimpleScrollConnection()
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(TraktTheme.colors.backgroundPrimary)
-            .nestedScroll(headerState.connection),
+            .nestedScroll(listScrollConnection),
     ) {
         ScrollableBackdropImage(
-            scrollState = listState,
+            translation = listScrollConnection.resultOffset,
         )
 
         AllDiscoverListView(
@@ -151,7 +155,6 @@ private fun AllDiscoverScreenContent(
             },
             onItemClick = onItemClick,
             onItemLongClick = onItemLongClick,
-            onTopOfList = { headerState.resetScrolled() },
             onEndOfList = { onLoadMoreData() },
             modifier = Modifier.fillMaxSize(),
         )

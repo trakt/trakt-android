@@ -33,6 +33,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -57,7 +58,7 @@ import tv.trakt.trakt.core.lists.sections.personal.features.context.show.sheet.L
 import tv.trakt.trakt.core.lists.sheets.EditListSheet
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.user.UserCollectionState
-import tv.trakt.trakt.helpers.rememberHeaderState
+import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
@@ -153,7 +154,6 @@ internal fun AllPersonalListContent(
     onBackClick: () -> Unit = {},
     onMoreClick: () -> Unit = {},
 ) {
-    val headerState = rememberHeaderState()
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
             aheadFraction = 0.5F,
@@ -161,11 +161,15 @@ internal fun AllPersonalListContent(
         ),
     )
 
+    val listScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
+        SimpleScrollConnection()
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(TraktTheme.colors.backgroundPrimary)
-            .nestedScroll(headerState.connection),
+            .nestedScroll(listScrollConnection),
     ) {
         val contentPadding = PaddingValues(
             start = TraktTheme.spacing.mainPageHorizontalSpace,
@@ -178,7 +182,7 @@ internal fun AllPersonalListContent(
         )
 
         ScrollableBackdropImage(
-            scrollState = listState,
+            translation = listScrollConnection.resultOffset,
         )
 
         ContentList(

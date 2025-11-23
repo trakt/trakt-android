@@ -36,6 +36,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -66,7 +67,7 @@ import tv.trakt.trakt.core.comments.features.postcomment.PostCommentSheet
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.ui.CommentCard
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
-import tv.trakt.trakt.helpers.rememberHeaderState
+import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.FilterChip
 import tv.trakt.trakt.ui.components.FilterChipGroup
@@ -135,7 +136,6 @@ internal fun CommentsContent(
     onNewCommentClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
-    val headerState = rememberHeaderState()
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
             aheadFraction = 0.5F,
@@ -143,11 +143,15 @@ internal fun CommentsContent(
         ),
     )
 
+    val listScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
+        SimpleScrollConnection()
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(TraktTheme.colors.backgroundPrimary)
-            .nestedScroll(headerState.connection),
+            .nestedScroll(listScrollConnection),
     ) {
         val contentPadding = PaddingValues(
             start = TraktTheme.spacing.mainPageHorizontalSpace,
@@ -161,7 +165,7 @@ internal fun CommentsContent(
 
         ScrollableBackdropImage(
             imageUrl = state.backgroundUrl,
-            scrollState = listState,
+            translation = listScrollConnection.resultOffset,
         )
 
         ContentList(

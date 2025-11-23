@@ -29,6 +29,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -58,7 +59,7 @@ import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.MovieIt
 import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextContent
 import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextState
 import tv.trakt.trakt.core.main.model.MediaMode
-import tv.trakt.trakt.helpers.rememberHeaderState
+import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.FilterChip
 import tv.trakt.trakt.ui.components.FilterChipGroup
@@ -155,7 +156,6 @@ internal fun AllActivitySocialContent(
     onEpisodeClick: (EpisodeItem) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
 ) {
-    val headerState = rememberHeaderState()
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
             aheadFraction = 0.5F,
@@ -163,11 +163,15 @@ internal fun AllActivitySocialContent(
         ),
     )
 
+    val listScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
+        SimpleScrollConnection()
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(TraktTheme.colors.backgroundPrimary)
-            .nestedScroll(headerState.connection),
+            .nestedScroll(listScrollConnection),
     ) {
         val contentPadding = PaddingValues(
             top = WindowInsets.statusBars.asPaddingValues()
@@ -178,7 +182,7 @@ internal fun AllActivitySocialContent(
         )
 
         ScrollableBackdropImage(
-            scrollState = listState,
+            translation = listScrollConnection.resultOffset,
         )
 
         ContentList(
@@ -187,7 +191,6 @@ internal fun AllActivitySocialContent(
             listUsersFilters = state.usersFilter,
             listItemsFilters = state.itemsFilter,
             contentPadding = contentPadding,
-            onTopOfList = { headerState.resetScrolled() },
             onEndOfList = onLoadMore,
             onItemsFilterClick = onItemsFilterClick,
             onUserFilterClick = onUsersFilterClick,
@@ -209,7 +212,6 @@ private fun ContentList(
     contentPadding: PaddingValues,
     onUserFilterClick: (User) -> Unit,
     onItemsFilterClick: (MediaMode) -> Unit,
-    onTopOfList: () -> Unit,
     onEndOfList: () -> Unit,
     onBackClick: () -> Unit,
     onShowClick: (EpisodeItem) -> Unit,
@@ -219,19 +221,6 @@ private fun ContentList(
     val isScrolledToBottom by remember(listItems.size) {
         derivedStateOf {
             listState.firstVisibleItemIndex >= (listItems.size - 5)
-        }
-    }
-
-    val isScrolledToTop by remember {
-        derivedStateOf {
-            listState.firstVisibleItemIndex == 0 &&
-                listState.firstVisibleItemScrollOffset == 0
-        }
-    }
-
-    LaunchedEffect(isScrolledToTop) {
-        if (isScrolledToTop) {
-            onTopOfList()
         }
     }
 

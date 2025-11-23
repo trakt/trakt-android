@@ -163,7 +163,7 @@ private fun ProfileScreenContent(
             .nestedScroll(listScrollConnection),
     ) {
         ScrollableBackdropImage(
-            scrollState = listState,
+            translation = listScrollConnection.resultOffset,
         )
 
         LazyColumn(

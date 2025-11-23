@@ -30,6 +30,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -60,7 +61,7 @@ import tv.trakt.trakt.core.home.sections.activity.sheets.HomeActivityItemSheet
 import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextContent
 import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextState
 import tv.trakt.trakt.core.main.model.MediaMode
-import tv.trakt.trakt.helpers.rememberHeaderState
+import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
@@ -168,7 +169,6 @@ internal fun AllActivityPersonalContent(
     onMovieClick: (Movie) -> Unit = {},
     onFilterClick: (MediaMode) -> Unit,
 ) {
-    val headerState = rememberHeaderState()
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
             aheadFraction = 0.5F,
@@ -176,11 +176,15 @@ internal fun AllActivityPersonalContent(
         ),
     )
 
+    val listScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
+        SimpleScrollConnection()
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(TraktTheme.colors.backgroundPrimary)
-            .nestedScroll(headerState.connection),
+            .nestedScroll(listScrollConnection),
     ) {
         val contentPadding = PaddingValues(
             start = TraktTheme.spacing.mainPageHorizontalSpace,
@@ -193,7 +197,7 @@ internal fun AllActivityPersonalContent(
         )
 
         ScrollableBackdropImage(
-            scrollState = listState,
+            translation = listScrollConnection.resultOffset,
         )
 
         ContentList(
@@ -202,7 +206,6 @@ internal fun AllActivityPersonalContent(
             listItems = (state.items ?: emptyList()).toImmutableList(),
             contentPadding = contentPadding,
             loadingMore = state.loadingMore.isLoading,
-            onTopOfList = { headerState.resetScrolled() },
             onEndOfList = onLoadMore,
             onLongClick = onLongClick,
             onBackClick = onBackClick,
@@ -222,7 +225,6 @@ private fun ContentList(
     listFilter: MediaMode?,
     contentPadding: PaddingValues,
     loadingMore: Boolean,
-    onTopOfList: () -> Unit,
     onEndOfList: () -> Unit,
     onLongClick: (HomeActivityItem) -> Unit,
     onBackClick: () -> Unit,
@@ -234,19 +236,6 @@ private fun ContentList(
     val isScrolledToBottom by remember(listItems.size) {
         derivedStateOf {
             listState.firstVisibleItemIndex >= (listItems.size - 5)
-        }
-    }
-
-    val isScrolledToTop by remember {
-        derivedStateOf {
-            listState.firstVisibleItemIndex == 0 &&
-                listState.firstVisibleItemScrollOffset == 0
-        }
-    }
-
-    LaunchedEffect(isScrolledToTop) {
-        if (isScrolledToTop) {
-            onTopOfList()
         }
     }
 

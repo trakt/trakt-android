@@ -18,9 +18,9 @@ internal class SimpleScrollConnection : NestedScrollConnection {
         source: NestedScrollSource,
     ): Offset {
         val delta = consumed.y
-        resultOffset = resultOffset + delta
+        resultOffset += delta
 
-        return Offset.Companion.Zero
+        return Offset.Zero
     }
 
     companion object {

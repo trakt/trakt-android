@@ -25,10 +25,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -55,7 +55,7 @@ import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.MovieItem
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.ShowItem
 import tv.trakt.trakt.core.main.model.MediaMode
-import tv.trakt.trakt.helpers.rememberHeaderState
+import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
@@ -197,7 +197,6 @@ internal fun AllHomeWatchlistScreen(
 internal fun AllHomeWatchlistContent(
     state: AllHomeWatchlistState,
     modifier: Modifier = Modifier,
-    onTopOfList: () -> Unit = {},
     onClick: (WatchlistItem) -> Unit = {},
     onCheckClick: (WatchlistItem) -> Unit = {},
     onCheckLongClick: (WatchlistItem) -> Unit = {},
@@ -205,7 +204,6 @@ internal fun AllHomeWatchlistContent(
     onFilterClick: (MediaMode) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
-    val headerState = rememberHeaderState()
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
             aheadFraction = 0.5F,
@@ -213,11 +211,15 @@ internal fun AllHomeWatchlistContent(
         ),
     )
 
+    val listScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
+        SimpleScrollConnection()
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(TraktTheme.colors.backgroundPrimary)
-            .nestedScroll(headerState.connection),
+            .nestedScroll(listScrollConnection),
     ) {
         val contentPadding = PaddingValues(
             start = TraktTheme.spacing.mainPageHorizontalSpace,
@@ -230,7 +232,7 @@ internal fun AllHomeWatchlistContent(
         )
 
         ScrollableBackdropImage(
-            scrollState = listState,
+            translation = listScrollConnection.resultOffset,
         )
 
         ContentList(
@@ -251,7 +253,6 @@ internal fun AllHomeWatchlistContent(
             onCheckClick = onCheckClick,
             onCheckLongClick = onCheckLongClick,
             onLongClick = onLongClick,
-            onTopOfList = onTopOfList,
             onBackClick = onBackClick,
         )
     }
@@ -297,22 +298,8 @@ private fun ContentList(
     onCheckLongClick: (WatchlistItem) -> Unit,
     onLongClick: (WatchlistItem) -> Unit,
     onFilterClick: (MediaMode) -> Unit,
-    onTopOfList: () -> Unit,
     onBackClick: () -> Unit,
 ) {
-    val isScrolledToTop by remember {
-        derivedStateOf {
-            listState.firstVisibleItemIndex == 0 &&
-                listState.firstVisibleItemScrollOffset == 0
-        }
-    }
-
-    LaunchedEffect(isScrolledToTop) {
-        if (isScrolledToTop) {
-            onTopOfList()
-        }
-    }
-
     LazyColumn(
         state = listState,
         verticalArrangement = spacedBy(0.dp),

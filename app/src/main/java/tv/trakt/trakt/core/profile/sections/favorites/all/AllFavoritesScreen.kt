@@ -26,10 +26,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -52,7 +52,7 @@ import tv.trakt.trakt.core.profile.sections.favorites.all.views.AllFavoritesMovi
 import tv.trakt.trakt.core.profile.sections.favorites.all.views.AllFavoritesShowView
 import tv.trakt.trakt.core.profile.sections.favorites.context.movie.FavoriteMovieContextSheet
 import tv.trakt.trakt.core.profile.sections.favorites.context.show.FavoriteShowContextSheet
-import tv.trakt.trakt.helpers.rememberHeaderState
+import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
@@ -117,13 +117,11 @@ internal fun AllFavoritesScreen(
 internal fun AllFavoritesContent(
     state: AllFavoritesState,
     modifier: Modifier = Modifier,
-    onTopOfList: () -> Unit = {},
     onClick: (FavoriteItem) -> Unit = {},
     onLongClick: (FavoriteItem) -> Unit = {},
     onFilterClick: (MediaMode) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
-    val headerState = rememberHeaderState()
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
             aheadFraction = 0.5F,
@@ -131,11 +129,15 @@ internal fun AllFavoritesContent(
         ),
     )
 
+    val listScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
+        SimpleScrollConnection()
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(TraktTheme.colors.backgroundPrimary)
-            .nestedScroll(headerState.connection),
+            .nestedScroll(listScrollConnection),
     ) {
         val contentPadding = PaddingValues(
             start = TraktTheme.spacing.mainPageHorizontalSpace,
@@ -148,7 +150,7 @@ internal fun AllFavoritesContent(
         )
 
         ScrollableBackdropImage(
-            scrollState = listState,
+            translation = listScrollConnection.resultOffset,
         )
 
         ContentList(
@@ -160,7 +162,6 @@ internal fun AllFavoritesContent(
             onFilterClick = onFilterClick,
             onClick = onClick,
             onLongClick = onLongClick,
-            onTopOfList = onTopOfList,
             onBackClick = onBackClick,
         )
     }
@@ -203,22 +204,8 @@ private fun ContentList(
     onClick: (FavoriteItem) -> Unit,
     onLongClick: (FavoriteItem) -> Unit,
     onFilterClick: (MediaMode) -> Unit,
-    onTopOfList: () -> Unit,
     onBackClick: () -> Unit,
 ) {
-    val isScrolledToTop by remember {
-        derivedStateOf {
-            listState.firstVisibleItemIndex == 0 &&
-                listState.firstVisibleItemScrollOffset == 0
-        }
-    }
-
-    LaunchedEffect(isScrolledToTop) {
-        if (isScrolledToTop) {
-            onTopOfList()
-        }
-    }
-
     LazyColumn(
         state = listState,
         verticalArrangement = spacedBy(0.dp),

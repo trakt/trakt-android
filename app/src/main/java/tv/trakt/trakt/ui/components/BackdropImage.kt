@@ -43,6 +43,21 @@ private const val PARALLAX_RATIO = 0.75F
 
 @Composable
 internal fun ScrollableBackdropImage(
+    modifier: Modifier = Modifier,
+    imageUrl: String? = null,
+    translation: Float,
+) {
+    BackdropImage(
+        imageUrl = imageUrl,
+        imageAlpha = 0.375F,
+        modifier = modifier.graphicsLayer {
+            translationY = translation * PARALLAX_RATIO
+        },
+    )
+}
+
+@Composable
+internal fun ScrollableBackdropImage(
     scrollState: LazyListState,
     modifier: Modifier = Modifier,
     imageUrl: String? = null,

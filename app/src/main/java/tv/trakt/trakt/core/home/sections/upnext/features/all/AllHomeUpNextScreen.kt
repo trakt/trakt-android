@@ -32,6 +32,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -58,7 +59,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.home.sections.upnext.features.context.sheets.UpNextItemContextSheet
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
-import tv.trakt.trakt.helpers.rememberHeaderState
+import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EpisodeProgressBar
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
@@ -159,7 +160,6 @@ internal fun AllHomeUpNextContent(
     onBackClick: () -> Unit = {},
     onLoadMore: () -> Unit = {},
 ) {
-    val headerState = rememberHeaderState()
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
             aheadFraction = 0.5F,
@@ -167,11 +167,15 @@ internal fun AllHomeUpNextContent(
         ),
     )
 
+    val listScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
+        SimpleScrollConnection()
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(TraktTheme.colors.backgroundPrimary)
-            .nestedScroll(headerState.connection),
+            .nestedScroll(listScrollConnection),
     ) {
         val contentPadding = PaddingValues(
             start = TraktTheme.spacing.mainPageHorizontalSpace,
@@ -184,7 +188,7 @@ internal fun AllHomeUpNextContent(
         )
 
         ScrollableBackdropImage(
-            scrollState = listState,
+            translation = listScrollConnection.resultOffset,
         )
 
         ContentList(
@@ -192,7 +196,6 @@ internal fun AllHomeUpNextContent(
             listItems = (state.items ?: emptyList()).toImmutableList(),
             contentPadding = contentPadding,
             loadingMore = state.loadingMore.isLoading,
-            onTopOfList = { headerState.resetScrolled() },
             onEndOfList = onLoadMore,
             onClick = onClick,
             onLongClick = onLongClick,
@@ -211,7 +214,6 @@ private fun ContentList(
     listState: LazyListState,
     contentPadding: PaddingValues,
     loadingMore: Boolean,
-    onTopOfList: () -> Unit,
     onEndOfList: () -> Unit,
     onClick: (ProgressShow) -> Unit,
     onLongClick: (ProgressShow) -> Unit,
@@ -223,19 +225,6 @@ private fun ContentList(
     val isScrolledToBottom by remember(listItems.size) {
         derivedStateOf {
             listState.firstVisibleItemIndex >= (listItems.size - 5)
-        }
-    }
-
-    val isScrolledToTop by remember {
-        derivedStateOf {
-            listState.firstVisibleItemIndex == 0 &&
-                listState.firstVisibleItemScrollOffset == 0
-        }
-    }
-
-    LaunchedEffect(isScrolledToTop) {
-        if (isScrolledToTop) {
-            onTopOfList()
         }
     }
 

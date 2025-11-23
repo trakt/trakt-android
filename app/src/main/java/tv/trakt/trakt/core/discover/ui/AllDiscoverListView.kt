@@ -48,7 +48,6 @@ internal fun AllDiscoverListView(
     loading: Boolean = false,
     onItemClick: (DiscoverItem) -> Unit = {},
     onItemLongClick: (DiscoverItem) -> Unit = {},
-    onTopOfList: () -> Unit = {},
     onEndOfList: () -> Unit = {},
 ) {
     val contentPadding = PaddingValues(
@@ -64,19 +63,6 @@ internal fun AllDiscoverListView(
     val isScrolledToBottom by remember(items.size) {
         derivedStateOf {
             state.firstVisibleItemIndex >= (items.size - 5)
-        }
-    }
-
-    val isScrolledToTop by remember {
-        derivedStateOf {
-            state.firstVisibleItemIndex == 0 &&
-                state.firstVisibleItemScrollOffset == 0
-        }
-    }
-
-    LaunchedEffect(isScrolledToTop) {
-        if (isScrolledToTop) {
-            onTopOfList()
         }
     }
 
