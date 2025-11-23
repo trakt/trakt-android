@@ -180,7 +180,7 @@ internal class CommentsViewModel(
                 limit = 50,
             )
             MediaType.EPISODE -> getEpisodeCommentsUseCase.getComments(
-                showId = destination.mediaId.toTraktId(),
+                showId = destination.mediaShowId!!.toTraktId(),
                 seasonEpisode = SeasonEpisode(
                     season = destination.mediaSeason ?: -1,
                     episode = destination.mediaEpisode ?: -1,

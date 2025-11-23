@@ -16,6 +16,7 @@ internal data class CommentsDestination(
     val mediaId: Int,
     val mediaType: MediaType,
     val mediaImage: String?,
+    val mediaShowId: Int? = null,
     val mediaEpisode: Int? = null,
     val mediaSeason: Int? = null,
     val initialFilter: CommentsFilter,
@@ -47,6 +48,7 @@ internal fun NavController.navigateToComments(
 }
 
 internal fun NavController.navigateToComments(
+    episodeId: TraktId,
     showId: TraktId,
     showImage: String?,
     seasonEpisode: SeasonEpisode,
@@ -54,11 +56,12 @@ internal fun NavController.navigateToComments(
 ) {
     navigate(
         route = CommentsDestination(
-            mediaId = showId.value,
             mediaType = MediaType.EPISODE,
-            mediaImage = showImage,
+            mediaId = episodeId.value,
+            mediaShowId = showId.value,
             mediaEpisode = seasonEpisode.episode,
             mediaSeason = seasonEpisode.season,
+            mediaImage = showImage,
             initialFilter = filter,
         ),
     )

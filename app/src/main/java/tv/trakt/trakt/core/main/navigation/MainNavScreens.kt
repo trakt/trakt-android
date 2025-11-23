@@ -170,6 +170,7 @@ internal fun NavGraphBuilder.episodesScreens(controller: NavHostController) {
             },
             onCommentsClick = { show, episode, filter ->
                 navigateToComments(
+                    episodeId = episode.ids.trakt,
                     showId = show.ids.trakt,
                     showImage = show.images?.getFanartUrl(),
                     seasonEpisode = episode.seasonEpisode,
