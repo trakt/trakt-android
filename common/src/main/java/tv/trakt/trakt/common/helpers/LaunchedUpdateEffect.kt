@@ -13,12 +13,32 @@ import kotlinx.coroutines.CoroutineScope
  */
 @Composable
 fun LaunchedUpdateEffect(
-    key: Any?,
+    key1: Any?,
     block: suspend CoroutineScope.() -> Unit,
 ) {
     var isTriggered by remember { mutableStateOf(false) }
 
-    LaunchedEffect(key) {
+    LaunchedEffect(key1) {
+        if (isTriggered) {
+            block()
+        } else {
+            isTriggered = true
+        }
+    }
+}
+
+/**
+ * The same as [LaunchedEffect] but skips the first invocation
+ */
+@Composable
+fun LaunchedUpdateEffect(
+    key1: Any?,
+    key2: Any?,
+    block: suspend CoroutineScope.() -> Unit,
+) {
+    var isTriggered by remember { mutableStateOf(false) }
+
+    LaunchedEffect(key1, key2) {
         if (isTriggered) {
             block()
         } else {

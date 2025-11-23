@@ -19,6 +19,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.MediaType.EPISODE
 import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.MediaType.SHOW
 import tv.trakt.trakt.common.model.TraktId
@@ -82,7 +83,7 @@ internal class PostCommentViewModel(
                             comment = comment,
                             spoiler = spoiler,
                         )
-                        MediaType.EPISODE -> postCommentUseCase.postEpisodeComment(
+                        EPISODE -> postCommentUseCase.postEpisodeComment(
                             episodeId = mediaId,
                             comment = comment,
                             spoiler = spoiler,
@@ -93,13 +94,17 @@ internal class PostCommentViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.recordError(error)
                     loadingState.update { DONE }
+                    Timber.recordError(error)
                 }
             } finally {
                 job = null
             }
         }
+    }
+
+    fun clearError() {
+        errorState.update { null }
     }
 
     override fun onCleared() {

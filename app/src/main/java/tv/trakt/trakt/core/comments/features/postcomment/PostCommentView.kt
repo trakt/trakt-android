@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.derivedStateOf
@@ -19,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -27,7 +29,9 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.LaunchedUpdateEffect
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
@@ -41,7 +45,7 @@ internal fun PostCommentView(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedUpdateEffect(state.result) {
+    LaunchedUpdateEffect(state.result, state.error) {
         state.result?.let {
             onCommentPost(it)
         }
@@ -55,6 +59,9 @@ internal fun PostCommentView(
                 spoiler = spoiler,
             )
         },
+        onErrorClick = {
+            viewModel.clearError()
+        },
         modifier = modifier,
     )
 }
@@ -64,6 +71,7 @@ private fun ViewContent(
     state: PostCommentState,
     modifier: Modifier = Modifier,
     onSubmitClick: (comment: String, spoiler: Boolean) -> Unit,
+    onErrorClick: () -> Unit,
 ) {
     val inputState = rememberTextFieldState()
     val isLoading = state.loading.isLoading
@@ -100,6 +108,20 @@ private fun ViewContent(
                 .padding(top = 24.dp),
         )
 
+        if (state.error != null) {
+            Text(
+                text = state.error.message
+                    ?: stringResource(R.string.error_text_unexpected_error_short),
+                color = Red500,
+                style = TraktTheme.typography.paragraphSmaller,
+                maxLines = 10,
+                overflow = Ellipsis,
+                modifier = Modifier
+                    .padding(top = 26.dp)
+                    .onClick(onClick = onErrorClick),
+            )
+        }
+
         PrimaryButton(
             text = stringResource(R.string.button_text_submit),
             enabled = !isLoading && isValid.value,
@@ -133,6 +155,7 @@ private fun Preview() {
             ViewContent(
                 state = PostCommentState(),
                 onSubmitClick = { _, _ -> },
+                onErrorClick = { },
             )
         }
     }
