@@ -95,7 +95,7 @@ internal fun CommentCard(
             containerColor = TraktTheme.colors.commentContainer,
         ),
         border = when {
-            userComment -> BorderStroke(2.dp, TraktTheme.colors.accent)
+            userComment -> BorderStroke(1.5.dp, TraktTheme.colors.accent)
             else -> null
         },
         content = {
@@ -355,6 +355,7 @@ fun CommentPreview() {
                 CommentCard(
                     onClick = {},
                     comment = PreviewData.comment1.copy(userRating = 1, comment = "Lorem Ipsum"),
+                    userComment = true,
                     modifier = Modifier
                         .height(TraktTheme.size.commentCardSize)
                         .aspectRatio(HorizontalImageAspectRatio),

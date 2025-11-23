@@ -71,7 +71,6 @@ internal class MovieCommentsViewModel(
 
     init {
         loadData()
-        loadUser()
         observeData()
     }
 
@@ -99,10 +98,12 @@ internal class MovieCommentsViewModel(
             try {
                 loadingState.update { LOADING }
 
+                loadUser()
                 coroutineScope {
                     val commentsAsync = async {
                         getCommentsUseCase.getComments(
                             movieId = movie.ids.trakt,
+                            user = userState.value,
                             filter = loadFilter(),
                         )
                     }
@@ -135,16 +136,14 @@ internal class MovieCommentsViewModel(
         }
     }
 
-    private fun loadUser() {
-        viewModelScope.launch {
-            try {
-                userState.update {
-                    sessionManager.getProfile()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
+    private suspend fun loadUser() {
+        try {
+            userState.update {
+                sessionManager.getProfile()
+            }
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
             }
         }
     }

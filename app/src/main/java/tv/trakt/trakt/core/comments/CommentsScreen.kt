@@ -197,7 +197,7 @@ internal fun CommentsContent(
             TertiaryButton(
                 text = stringResource(R.string.button_text_comment),
                 icon = painterResource(R.drawable.ic_comment_plus),
-                height = 36.dp,
+                height = 38.dp,
                 onClick = onNewCommentClick ?: {},
                 modifier = Modifier
 //                    .shadow(2.5.dp, RoundedCornerShape(12.dp))

@@ -56,6 +56,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.core.comments.features.details.CommentDetailsSheet
@@ -190,6 +191,7 @@ private fun ShowCommentsContent(
                             ContentList(
                                 listItems = (state.items ?: emptyList()).toImmutableList(),
                                 listReactions = state.reactions,
+                                user = state.user,
                                 userReactions = (state.userReactions ?: emptyMap()).toImmutableMap(),
                                 reactionsEnabled = state.user != null,
                                 contentPadding = contentPadding,
@@ -211,6 +213,7 @@ private fun ContentList(
     listReactions: ImmutableMap<Int, ReactionsSummary>?,
     listState: LazyListState = rememberLazyListState(),
     reactionsEnabled: Boolean,
+    user: User?,
     userReactions: ImmutableMap<Int, Reaction?>,
     contentPadding: PaddingValues,
     onCommentLoaded: ((Comment) -> Unit)? = null,
@@ -237,10 +240,14 @@ private fun ContentList(
             items = listItems,
             key = { it.id },
         ) { comment ->
+            val isUserComment = remember(user) {
+                comment.user.ids.trakt == user?.ids?.trakt
+            }
             CommentCard(
                 comment = comment,
                 reactions = listReactions?.get(comment.id),
                 userReaction = userReactions[comment.id],
+                userComment = isUserComment,
                 onClick = { onCommentClick?.invoke(comment) },
                 onRequestReactions = { onCommentLoaded?.invoke(comment) },
                 reactionsEnabled = reactionsEnabled,

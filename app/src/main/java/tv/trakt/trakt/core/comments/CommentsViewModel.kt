@@ -90,7 +90,6 @@ internal class CommentsViewModel(
     init {
         loadBackground()
         loadData()
-        loadUser()
         observeData()
     }
 
@@ -121,6 +120,7 @@ internal class CommentsViewModel(
             try {
                 loadingState.update { LOADING }
 
+                loadUser()
                 coroutineScope {
                     val commentsAsync = async { fetchComments() }
 
@@ -152,16 +152,14 @@ internal class CommentsViewModel(
         }
     }
 
-    private fun loadUser() {
-        viewModelScope.launch {
-            try {
-                userState.update {
-                    sessionManager.getProfile()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
+    private suspend fun loadUser() {
+        try {
+            userState.update {
+                sessionManager.getProfile()
+            }
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
             }
         }
     }
@@ -171,13 +169,15 @@ internal class CommentsViewModel(
         return when (destination.mediaType) {
             MediaType.MOVIE -> getMovieCommentsUseCase.getComments(
                 movieId = destination.mediaId.toTraktId(),
+                user = userState.value,
                 filter = filter,
-                limit = 50,
+                limit = 100,
             )
             MediaType.SHOW -> getShowCommentsUseCase.getComments(
                 showId = destination.mediaId.toTraktId(),
+                user = userState.value,
                 filter = filter,
-                limit = 50,
+                limit = 100,
             )
             MediaType.EPISODE -> getEpisodeCommentsUseCase.getComments(
                 showId = destination.mediaShowId!!.toTraktId(),
@@ -185,8 +185,9 @@ internal class CommentsViewModel(
                     season = destination.mediaSeason ?: -1,
                     episode = destination.mediaEpisode ?: -1,
                 ),
+                user = userState.value,
                 filter = filter,
-                limit = 50,
+                limit = 100,
             )
 
             else -> throw IllegalArgumentException("Unsupported media type: ${destination.mediaType}")

@@ -73,7 +73,6 @@ internal class EpisodeCommentsViewModel(
 
     init {
         loadData()
-        loadUser()
         observeData()
     }
 
@@ -101,11 +100,13 @@ internal class EpisodeCommentsViewModel(
             try {
                 loadingState.update { LOADING }
 
+                loadUser()
                 coroutineScope {
                     val commentsAsync = async {
                         getCommentsUseCase.getComments(
                             showId = show.ids.trakt,
                             seasonEpisode = episode.seasonEpisode,
+                            user = userState.value,
                             filter = loadFilter(),
                         )
                     }
@@ -138,16 +139,14 @@ internal class EpisodeCommentsViewModel(
         }
     }
 
-    private fun loadUser() {
-        viewModelScope.launch {
-            try {
-                userState.update {
-                    sessionManager.getProfile()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
+    private suspend fun loadUser() {
+        try {
+            userState.update {
+                sessionManager.getProfile()
+            }
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
             }
         }
     }

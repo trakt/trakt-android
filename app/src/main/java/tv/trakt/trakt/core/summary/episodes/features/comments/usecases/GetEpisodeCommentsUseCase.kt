@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.model.CommentsFilter.POPULAR
 import tv.trakt.trakt.core.comments.model.CommentsFilter.RECENT
@@ -17,6 +18,7 @@ internal class GetEpisodeCommentsUseCase(
     suspend fun getComments(
         showId: TraktId,
         seasonEpisode: SeasonEpisode,
+        user: User? = null,
         filter: CommentsFilter = POPULAR,
         limit: Int = 20,
     ): ImmutableList<Comment> {
@@ -30,10 +32,13 @@ internal class GetEpisodeCommentsUseCase(
                 RECENT -> "newest"
             },
         ).asyncMap {
-            Comment.Companion.fromDto(it)
+            Comment.fromDto(it)
         }
 
         return remoteComments
+            .sortedByDescending { comment ->
+                user?.let { comment.user.ids.slug == it.ids.slug } ?: false
+            }
             .toImmutableList()
     }
 }

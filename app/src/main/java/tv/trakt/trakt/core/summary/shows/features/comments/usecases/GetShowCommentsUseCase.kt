@@ -5,6 +5,7 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.model.CommentsFilter.POPULAR
 import tv.trakt.trakt.core.comments.model.CommentsFilter.RECENT
@@ -15,6 +16,7 @@ internal class GetShowCommentsUseCase(
 ) {
     suspend fun getComments(
         showId: TraktId,
+        user: User? = null,
         filter: CommentsFilter = POPULAR,
         limit: Int = 20,
     ): ImmutableList<Comment> {
@@ -30,6 +32,9 @@ internal class GetShowCommentsUseCase(
         }
 
         return remoteComments
+            .sortedByDescending { comment ->
+                user?.let { comment.user.ids.slug == it.ids.slug } ?: false
+            }
             .toImmutableList()
     }
 }
