@@ -30,6 +30,12 @@ data class Comment(
     val userLiteRating: LiteRating?
         get() = userRating?.let { LiteRating.fromValue(it) }
 
+    val user5Rating: String?
+        get() = when {
+            userRating == null -> null
+            else -> "${userRating / 2F}".replace(".0", "")
+        }
+
     companion object {
         fun fromDto(dto: CommentDto): Comment {
             return Comment(
