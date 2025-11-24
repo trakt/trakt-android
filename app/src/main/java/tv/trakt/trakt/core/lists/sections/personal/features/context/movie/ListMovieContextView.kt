@@ -43,7 +43,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.core.movies.ui.MovieMetaFooter
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
-import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
+import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -116,7 +116,7 @@ internal fun ListMovieContextView(
         },
     )
 
-    ConfirmationSheet(
+    RemoveConfirmationSheet(
         active = confirmRemoveWatchlistSheet,
         onYes = {
             confirmRemoveWatchlistSheet = false
@@ -130,7 +130,7 @@ internal fun ListMovieContextView(
         ),
     )
 
-    ConfirmationSheet(
+    RemoveConfirmationSheet(
         active = confirmRemoveWatchedSheet,
         onYes = {
             confirmRemoveWatchedSheet = false
@@ -144,7 +144,7 @@ internal fun ListMovieContextView(
         ),
     )
 
-    ConfirmationSheet(
+    RemoveConfirmationSheet(
         active = confirmRemoveListSheet,
         onYes = {
             confirmRemoveListSheet = false

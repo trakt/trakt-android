@@ -43,6 +43,7 @@ import tv.trakt.trakt.core.shows.ui.ShowMetaFooter
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
+import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -115,7 +116,7 @@ internal fun ShowContextView(
         ),
     )
 
-    ConfirmationSheet(
+    RemoveConfirmationSheet(
         active = confirmRemoveWatchlistSheet,
         onYes = {
             confirmRemoveWatchlistSheet = false
@@ -129,7 +130,7 @@ internal fun ShowContextView(
         ),
     )
 
-    ConfirmationSheet(
+    RemoveConfirmationSheet(
         active = confirmRemoveWatchedSheet,
         onYes = {
             confirmRemoveWatchedSheet = false

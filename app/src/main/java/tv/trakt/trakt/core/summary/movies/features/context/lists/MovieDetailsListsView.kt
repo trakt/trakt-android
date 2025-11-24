@@ -38,7 +38,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
-import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
+import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -77,7 +77,7 @@ internal fun MovieDetailsListsView(
         modifier = modifier,
     )
 
-    ConfirmationSheet(
+    RemoveConfirmationSheet(
         active = confirmRemoveWatchlistSheet,
         onYes = {
             confirmRemoveWatchlistSheet = false
@@ -91,7 +91,7 @@ internal fun MovieDetailsListsView(
         ),
     )
 
-    ConfirmationSheet(
+    RemoveConfirmationSheet(
         active = confirmRemoveListSheet != null,
         onYes = {
             confirmRemoveListSheet?.let {

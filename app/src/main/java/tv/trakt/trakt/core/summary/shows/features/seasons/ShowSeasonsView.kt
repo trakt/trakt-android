@@ -69,6 +69,7 @@ import tv.trakt.trakt.core.summary.shows.features.seasons.ui.ShowSeasonsList
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
+import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
@@ -124,7 +125,7 @@ internal fun ShowSeasonsView(
         },
     )
 
-    ConfirmationSheet(
+    RemoveConfirmationSheet(
         active = confirmRemoveEpisodeSheet != null,
         onYes = {
             confirmRemoveEpisodeSheet?.let {
@@ -154,7 +155,7 @@ internal fun ShowSeasonsView(
         ),
     )
 
-    ConfirmationSheet(
+    RemoveConfirmationSheet(
         active = confirmRemoveSeasonSheet,
         onYes = {
             confirmRemoveSeasonSheet = false

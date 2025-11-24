@@ -24,6 +24,7 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.LaunchedUpdateEffect
+import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -93,6 +94,7 @@ private fun ViewContent(
                 enabled = !state.loading.isLoading,
                 loading = state.loading.isLoading,
                 onClick = onDeleteClick,
+                containerColor = Red500,
                 modifier = Modifier.fillMaxWidth(),
             )
 

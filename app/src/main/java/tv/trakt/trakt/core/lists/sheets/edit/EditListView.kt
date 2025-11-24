@@ -35,7 +35,7 @@ import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
-import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
+import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -79,7 +79,7 @@ internal fun EditListView(
     )
 
     @OptIn(ExperimentalMaterial3Api::class)
-    ConfirmationSheet(
+    RemoveConfirmationSheet(
         active = confirmationSheet,
         onYes = {
             confirmationSheet = false

@@ -91,6 +91,7 @@ import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.UserRatingBar
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
+import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -245,7 +246,7 @@ internal fun ShowDetailsScreen(
         ),
     )
 
-    ConfirmationSheet(
+    RemoveConfirmationSheet(
         active = confirmRemoveWatchedSheet,
         onYes = {
             confirmRemoveWatchedSheet = false
@@ -259,7 +260,7 @@ internal fun ShowDetailsScreen(
         ),
     )
 
-    ConfirmationSheet(
+    RemoveConfirmationSheet(
         active = confirmRemoveWatchlistSheet,
         onYes = {
             confirmRemoveWatchlistSheet = false
