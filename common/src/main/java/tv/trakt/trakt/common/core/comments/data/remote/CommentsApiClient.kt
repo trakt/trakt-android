@@ -5,6 +5,7 @@ import org.openapitools.client.models.GetCommentsReactionsSummary200Response
 import org.openapitools.client.models.PostCommentsPostRequest
 import org.openapitools.client.models.PostCommentsPostRequestAllOfOneOfMovie
 import org.openapitools.client.models.PostCommentsPostRequestAllOfOneOfMovieIds
+import org.openapitools.client.models.PostCommentsReplyRequest
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
@@ -71,6 +72,25 @@ class CommentsApiClient(
         )
 
         val result = api.postCommentsPost(request)
+        cacheMarker.invalidate()
+
+        return result.body()
+    }
+
+    override suspend fun postReply(
+        commentId: TraktId,
+        text: String,
+        spoiler: Boolean,
+    ): CommentDto {
+        val request = PostCommentsReplyRequest(
+            comment = text,
+            spoiler = spoiler,
+        )
+
+        val result = api.postCommentsReply(
+            id = commentId.value.toString(),
+            postCommentsReplyRequest = request,
+        )
         cacheMarker.invalidate()
 
         return result.body()

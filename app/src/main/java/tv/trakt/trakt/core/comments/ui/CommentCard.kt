@@ -28,7 +28,11 @@ import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -74,11 +78,13 @@ internal fun CommentCard(
     reactionsEnabled: Boolean = true,
     userReaction: Reaction? = null,
     deleteEnabled: Boolean = true,
+    replyEnabled: Boolean = false,
     maxLines: Int = 4,
     corner: Dp = 24.dp,
     onClick: () -> Unit = {},
     onRequestReactions: (() -> Unit)? = null,
     onReactionClick: ((Reaction) -> Unit)? = null,
+    onReplyClick: ((Comment) -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
 ) {
     val uriHandler = LocalUriHandler.current
@@ -97,7 +103,7 @@ internal fun CommentCard(
             containerColor = TraktTheme.colors.commentContainer,
         ),
         border = when {
-            userComment -> BorderStroke(1.5.dp, TraktTheme.colors.accent)
+            userComment -> BorderStroke(2.dp, TraktTheme.colors.accent)
             else -> null
         },
         content = {
@@ -109,7 +115,9 @@ internal fun CommentCard(
                 userComment = userComment,
                 userReaction = userReaction,
                 deleteEnabled = deleteEnabled,
+                replyEnabled = replyEnabled,
                 onReactionClick = onReactionClick,
+                onReplyClick = { onReplyClick?.invoke(comment) },
                 onDeleteClick = onDeleteClick,
                 onUserClick = {
                     uriHandler.openUri(
@@ -129,12 +137,16 @@ private fun CommentCardContent(
     userComment: Boolean,
     userReaction: Reaction?,
     deleteEnabled: Boolean,
+    replyEnabled: Boolean,
     maxLines: Int,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
     onReactionClick: ((Reaction) -> Unit)? = null,
+    onReplyClick: (() -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
 ) {
+    var isSpoilerRevealed by remember { mutableStateOf(false) }
+
     Column(
         verticalArrangement = spacedBy(0.dp),
         modifier = modifier
@@ -157,11 +169,14 @@ private fun CommentCardContent(
             maxLines = maxLines,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.then(
-                if (comment.hasSpoilers && !userComment) {
+                if (comment.hasSpoilers && !userComment && !isSpoilerRevealed) {
                     Modifier
                         .blur(4.dp)
                         .padding(horizontal = 16.dp)
                         .padding(top = 14.dp, bottom = 20.dp)
+                        .onClick {
+                            isSpoilerRevealed = true
+                        }
                 } else {
                     Modifier
                         .padding(horizontal = 16.dp)
@@ -178,6 +193,8 @@ private fun CommentCardContent(
             reactionsEnabled = reactionsEnabled && !userComment,
             userReaction = userReaction,
             onReactionClick = onReactionClick,
+            onReplyClick = onReplyClick,
+            replyEnabled = replyEnabled,
             modifier = Modifier
                 .padding(
                     start = 16.dp,
@@ -299,9 +316,11 @@ private fun CommentFooter(
     comment: Comment,
     reactions: ReactionsSummary?,
     reactionsEnabled: Boolean,
+    replyEnabled: Boolean,
     userReaction: Reaction?,
     modifier: Modifier = Modifier,
     onReactionClick: ((Reaction) -> Unit)? = null,
+    onReplyClick: (() -> Unit)? = null,
 ) {
     val scope = rememberCoroutineScope()
     val tooltipState = rememberTooltipState(isPersistent = true)
@@ -311,7 +330,7 @@ private fun CommentFooter(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 2.dp),
+            .padding(start = 2.dp),
     ) {
         ReactionsToolTip(
             state = tooltipState,
@@ -339,24 +358,42 @@ private fun CommentFooter(
         }
 
         Row(
-            horizontalArrangement = spacedBy(4.dp),
+            horizontalArrangement = spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            val tint = when (comment.replies) {
-                0 -> TraktTheme.colors.textSecondary
-                else -> TraktTheme.colors.textPrimary
+            Row(
+                horizontalArrangement = spacedBy(2.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                val tint = when (comment.replies) {
+                    0 -> TraktTheme.colors.textSecondary
+                    else -> TraktTheme.colors.textPrimary
+                }
+                Icon(
+                    painter = painterResource(R.drawable.ic_comment),
+                    contentDescription = "Replies",
+                    tint = tint,
+                    modifier = Modifier.size(18.dp),
+                )
+                Text(
+                    text = "${comment.replies}",
+                    style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
+                    color = tint,
+                )
             }
-            Icon(
-                painter = painterResource(R.drawable.ic_comment),
-                contentDescription = "Replies",
-                tint = tint,
-                modifier = Modifier.size(18.dp),
-            )
-            Text(
-                text = "${comment.replies}",
-                style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
-                color = tint,
-            )
+
+            if (replyEnabled) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_comment_plus),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .size(18.dp)
+                        .onClick {
+                            onReplyClick?.invoke()
+                        },
+                )
+            }
         }
     }
 }
@@ -391,6 +428,7 @@ fun CommentPreview() {
 
                 CommentCard(
                     onClick = {},
+                    replyEnabled = true,
                     comment = PreviewData.comment1.copy(userRating = 7, replies = 0),
                     modifier = Modifier
                         .height(TraktTheme.size.commentCardSize)

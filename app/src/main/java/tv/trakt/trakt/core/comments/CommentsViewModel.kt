@@ -119,7 +119,7 @@ internal class CommentsViewModel(
         return filter
     }
 
-    private fun loadData() {
+    fun loadData() {
         viewModelScope.launch {
             try {
                 loadingState.update { LOADING }
@@ -304,6 +304,11 @@ internal class CommentsViewModel(
             mutable.add(0, comment)
             mutable.toImmutableList()
         }
+        commentsUpdates.notifyUpdate(ALL_COMMENTS)
+    }
+
+    fun addReply(comment: Comment) {
+        loadData()
         commentsUpdates.notifyUpdate(ALL_COMMENTS)
     }
 

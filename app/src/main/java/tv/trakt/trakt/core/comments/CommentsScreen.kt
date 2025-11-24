@@ -65,6 +65,7 @@ import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentSheet
+import tv.trakt.trakt.core.comments.features.postreply.PostReplySheet
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.ui.CommentCard
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
@@ -85,6 +86,7 @@ internal fun CommentsScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var postCommentSheet by remember { mutableStateOf(false) }
+    var postReplySheet by remember { mutableStateOf<Comment?>(null) }
     var deleteCommentSheet by remember { mutableStateOf<Comment?>(null) }
 
     CommentsContent(
@@ -105,6 +107,9 @@ internal fun CommentsScreen(
         onDeleteCommentClick = {
             deleteCommentSheet = it
         },
+        onReplyClick = {
+            postReplySheet = it
+        },
         onBackClick = onNavigateBack,
     )
 
@@ -115,6 +120,15 @@ internal fun CommentsScreen(
         onCommentPost = viewModel::addComment,
         onDismiss = {
             postCommentSheet = false
+        },
+    )
+
+    PostReplySheet(
+        active = postReplySheet != null,
+        comment = postReplySheet,
+        onReplyPost = viewModel::addReply,
+        onDismiss = {
+            postReplySheet = null
         },
     )
 
@@ -135,6 +149,7 @@ internal fun CommentsContent(
     onCommentLoaded: ((Comment) -> Unit)? = null,
     onFilterClick: ((CommentsFilter) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
+    onReplyClick: ((Comment) -> Unit)? = null,
     onNewCommentClick: (() -> Unit)? = null,
     onDeleteCommentClick: ((Comment) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
@@ -183,6 +198,7 @@ internal fun CommentsContent(
             onCommentLoaded = onCommentLoaded,
             onFilterClick = onFilterClick,
             onReactionClick = onReactionClick,
+            onReplyClick = onReplyClick,
             onDeleteCommentClick = onDeleteCommentClick,
             onBackClick = onBackClick,
         )
@@ -236,6 +252,7 @@ private fun ContentList(
     onDeleteCommentClick: ((Comment) -> Unit)? = null,
     onFilterClick: ((CommentsFilter) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
+    onReplyClick: ((Comment) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     LazyColumn(
@@ -279,8 +296,10 @@ private fun ContentList(
                     userReaction = userReactions[comment.id],
                     onRequestReactions = { onCommentLoaded?.invoke(comment) },
                     reactionsEnabled = user != null,
+                    replyEnabled = user != null && !isUserComment,
                     userComment = isUserComment,
                     onReactionClick = { onReactionClick?.invoke(it, comment) },
+                    onReplyClick = { onReplyClick?.invoke(it) },
                     maxLines = Int.MAX_VALUE,
                     corner = 20.dp,
                     onDeleteClick = { onDeleteCommentClick?.invoke(comment) },

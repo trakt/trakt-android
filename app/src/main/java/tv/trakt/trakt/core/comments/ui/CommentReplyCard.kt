@@ -2,6 +2,7 @@
 
 package tv.trakt.trakt.core.comments.ui
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -67,6 +68,7 @@ internal fun CommentReplyCard(
     modifier: Modifier = Modifier,
     reactions: ReactionsSummary? = null,
     reactionsEnabled: Boolean = true,
+    userComment: Boolean = false,
     userReaction: Reaction? = null,
     onClick: (() -> Unit)? = null,
     onRequestReactions: (() -> Unit)? = null,
@@ -87,6 +89,10 @@ internal fun CommentReplyCard(
         colors = cardColors(
             containerColor = TraktTheme.colors.commentReplyContainer,
         ),
+        border = when {
+            userComment -> BorderStroke(2.dp, TraktTheme.colors.accent)
+            else -> null
+        },
         content = {
             CommentReplyCardContent(
                 comment = comment,
@@ -330,6 +336,7 @@ private fun Preview() {
 
                 CommentReplyCard(
                     onClick = {},
+                    userComment = true,
                     comment = PreviewData.comment1.copy(userRating = 7),
                 )
             }

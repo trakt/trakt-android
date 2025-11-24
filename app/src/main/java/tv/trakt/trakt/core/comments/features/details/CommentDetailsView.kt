@@ -235,12 +235,16 @@ private fun CommentContent(
                         .padding(top = 20.dp),
                 ) {
                     for (reply in replies) {
+                        val isUserReply = remember(user) {
+                            reply.user.ids.trakt == user?.ids?.trakt
+                        }
                         CommentReplyCard(
                             comment = reply,
                             reactions = listReactions?.get(reply.id),
                             userReaction = userReactions[reply.id],
+                            userComment = isUserReply,
                             onRequestReactions = { onReplyLoaded?.invoke(reply) },
-                            reactionsEnabled = reactionsEnabled,
+                            reactionsEnabled = reactionsEnabled && !isUserReply,
                             onReactionClick = { onReactionClick?.invoke(it, reply) },
                             modifier = Modifier.fillMaxWidth(),
                         )

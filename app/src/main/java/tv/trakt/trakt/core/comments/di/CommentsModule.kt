@@ -30,9 +30,11 @@ import tv.trakt.trakt.core.comments.data.CommentsUpdatesStorage
 import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentViewModel
 import tv.trakt.trakt.core.comments.features.details.CommentDetailsViewModel
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentViewModel
+import tv.trakt.trakt.core.comments.features.postreply.PostReplyViewModel
 import tv.trakt.trakt.core.comments.usecases.DeleteCommentUseCase
 import tv.trakt.trakt.core.comments.usecases.GetCommentsFilterUseCase
 import tv.trakt.trakt.core.comments.usecases.PostCommentUseCase
+import tv.trakt.trakt.core.comments.usecases.PostReplyUseCase
 
 internal const val COMMENTS_PREFERENCES = "comments_preferences_mobile"
 
@@ -85,6 +87,12 @@ internal val commentsModule = module {
     }
 
     factory {
+        PostReplyUseCase(
+            remoteSource = get(),
+        )
+    }
+
+    factory {
         DeleteCommentUseCase(
             remoteSource = get(),
         )
@@ -123,6 +131,14 @@ internal val commentsModule = module {
             mediaType = mediaType,
             sessionManager = get(),
             postCommentUseCase = get(),
+        )
+    }
+
+    viewModel { (comment: Comment) ->
+        PostReplyViewModel(
+            comment = comment,
+            sessionManager = get(),
+            postReplyUseCase = get(),
         )
     }
 

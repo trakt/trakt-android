@@ -198,7 +198,9 @@
     <string name="button_text_unknown_date">Unknown Date</string>
     <string name="button_text_submit">Submit</string>
     <string name="button_text_comment">Review</string>
+    <string name="button_text_reply">Reply</string>
     <string name="text_info_comment_added">Review has been added.</string>
+    <string name="text_info_reply_added">Reply has been added.</string>
     <string name="page_description_add_comment">Minimum 5 words, be respectful, mark spoilers.</string>
     <string name="input_placeholder_comment">What do you think?</string>
     <string name="button_text_delete_review">Delete Review</string>
