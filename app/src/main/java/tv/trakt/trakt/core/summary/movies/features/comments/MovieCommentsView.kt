@@ -120,6 +120,7 @@ internal fun MovieCommentsView(
 
     CommentDetailsSheet(
         comment = commentSheet,
+        onDeleteComment = viewModel::deleteComment,
         onDismiss = {
             commentSheet = null
         },
@@ -174,7 +175,7 @@ private fun MovieCommentsContent(
             verticalAlignment = CenterVertically,
         ) {
             Row(
-                horizontalArrangement = spacedBy(12.dp),
+                horizontalArrangement = spacedBy(8.dp),
                 verticalAlignment = CenterVertically,
             ) {
                 TraktHeader(
@@ -305,6 +306,7 @@ private fun ContentList(
                 reactions = listReactions?.get(comment.id),
                 userComment = isUserComment,
                 userReaction = userReactions[comment.id],
+                deleteEnabled = false,
                 onClick = { onCommentClick?.invoke(comment) },
                 onDeleteClick = { onDeleteCommentClick?.invoke(comment) },
                 onRequestReactions = { onCommentLoaded?.invoke(comment) },

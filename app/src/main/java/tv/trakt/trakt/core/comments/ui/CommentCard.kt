@@ -73,9 +73,10 @@ internal fun CommentCard(
     reactions: ReactionsSummary? = null,
     reactionsEnabled: Boolean = true,
     userReaction: Reaction? = null,
+    deleteEnabled: Boolean = true,
     maxLines: Int = 4,
     corner: Dp = 24.dp,
-    onClick: () -> Unit,
+    onClick: () -> Unit = {},
     onRequestReactions: (() -> Unit)? = null,
     onReactionClick: ((Reaction) -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
@@ -104,10 +105,10 @@ internal fun CommentCard(
                 comment = comment,
                 maxLines = maxLines,
                 reactions = reactions,
-                reactionsVisible = !userComment,
                 reactionsEnabled = reactionsEnabled,
                 userComment = userComment,
                 userReaction = userReaction,
+                deleteEnabled = deleteEnabled,
                 onReactionClick = onReactionClick,
                 onDeleteClick = onDeleteClick,
                 onUserClick = {
@@ -124,10 +125,10 @@ internal fun CommentCard(
 private fun CommentCardContent(
     comment: Comment,
     reactions: ReactionsSummary?,
-    reactionsVisible: Boolean,
     reactionsEnabled: Boolean,
     userComment: Boolean,
     userReaction: Reaction?,
+    deleteEnabled: Boolean,
     maxLines: Int,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
@@ -143,6 +144,7 @@ private fun CommentCardContent(
         CommentHeader(
             comment = comment,
             userComment = userComment,
+            deleteEnabled = deleteEnabled,
             onUserClick = onUserClick,
             onDeleteClick = onDeleteClick,
             modifier = Modifier.padding(horizontal = 16.dp),
@@ -173,8 +175,7 @@ private fun CommentCardContent(
         CommentFooter(
             comment = comment,
             reactions = reactions,
-            reactionsVisible = reactionsVisible,
-            reactionsEnabled = reactionsEnabled,
+            reactionsEnabled = reactionsEnabled && !userComment,
             userReaction = userReaction,
             onReactionClick = onReactionClick,
             modifier = Modifier
@@ -190,6 +191,7 @@ private fun CommentCardContent(
 private fun CommentHeader(
     comment: Comment,
     userComment: Boolean,
+    deleteEnabled: Boolean,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
@@ -265,6 +267,7 @@ private fun CommentHeader(
                     },
                 )
             }
+
             Text(
                 text = comment.createdAt.format(longDateTimeFormat),
                 style = TraktTheme.typography.meta,
@@ -275,7 +278,7 @@ private fun CommentHeader(
             )
         }
 
-        if (userComment) {
+        if (userComment && deleteEnabled) {
             Spacer(modifier = Modifier.weight(1f))
             Icon(
                 painter = painterResource(R.drawable.ic_trash),
@@ -295,7 +298,6 @@ private fun CommentHeader(
 private fun CommentFooter(
     comment: Comment,
     reactions: ReactionsSummary?,
-    reactionsVisible: Boolean,
     reactionsEnabled: Boolean,
     userReaction: Reaction?,
     modifier: Modifier = Modifier,
@@ -311,33 +313,29 @@ private fun CommentFooter(
             .fillMaxWidth()
             .padding(horizontal = 2.dp),
     ) {
-        if (reactionsVisible) {
-            ReactionsToolTip(
-                state = tooltipState,
+        ReactionsToolTip(
+            state = tooltipState,
+            reactions = reactions,
+            userReaction = userReaction,
+            onReactionClick = onReactionClick,
+        ) {
+            ReactionsSummaryChip(
                 reactions = reactions,
                 userReaction = userReaction,
-                onReactionClick = onReactionClick,
-            ) {
-                ReactionsSummaryChip(
-                    reactions = reactions,
-                    userReaction = userReaction,
-                    enabled = reactionsEnabled,
-                    modifier = Modifier.onClick {
-                        if (reactions == null || !reactionsEnabled) {
-                            return@onClick
+                enabled = reactionsEnabled,
+                modifier = Modifier.onClick {
+                    if (reactions == null || !reactionsEnabled) {
+                        return@onClick
+                    }
+                    scope.launch {
+                        if (tooltipState.isVisible) {
+                            tooltipState.dismiss()
+                        } else {
+                            tooltipState.show()
                         }
-                        scope.launch {
-                            if (tooltipState.isVisible) {
-                                tooltipState.dismiss()
-                            } else {
-                                tooltipState.show()
-                            }
-                        }
-                    },
-                )
-            }
-        } else {
-            Spacer(modifier = Modifier.size(18.dp))
+                    }
+                },
+            )
         }
 
         Row(

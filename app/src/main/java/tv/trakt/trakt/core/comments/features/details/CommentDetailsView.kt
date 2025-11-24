@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
@@ -33,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -60,9 +62,13 @@ import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
+import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.ui.theme.colors.Shade800
+import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
 import tv.trakt.trakt.core.comments.ui.CommentReplyCard
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
 import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryChip
@@ -74,8 +80,11 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun CommentDetailsView(
     viewModel: CommentDetailsViewModel,
     modifier: Modifier = Modifier,
+    onDeleteComment: (commentId: TraktId) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    var deleteCommentSheet by remember { mutableStateOf<Comment?>(null) }
 
     CommentDetailsViewContent(
         state = state,
@@ -86,6 +95,18 @@ internal fun CommentDetailsView(
         onReactionClick = { reaction, comment ->
             viewModel.setReaction(reaction, comment.id)
         },
+        onDeleteClick = { comment ->
+            deleteCommentSheet = comment
+        },
+    )
+
+    DeleteCommentSheet(
+        active = deleteCommentSheet != null,
+        commentId = deleteCommentSheet?.id?.toTraktId(),
+        onDeleted = onDeleteComment,
+        onDismiss = {
+            deleteCommentSheet = null
+        },
     )
 }
 
@@ -95,6 +116,7 @@ private fun CommentDetailsViewContent(
     modifier: Modifier = Modifier,
     onReplyLoaded: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
+    onDeleteClick: ((Comment) -> Unit)? = null,
 ) {
     LazyColumn(
         verticalArrangement = spacedBy(16.dp),
@@ -103,14 +125,17 @@ private fun CommentDetailsViewContent(
     ) {
         state.comment?.let { comment ->
             item {
+                val isUserComment = state.user?.ids?.trakt == comment.user.ids.trakt
                 CommentContent(
+                    user = state.user,
                     comment = comment,
                     commentReplies = state.replies,
                     listReactions = state.reactions,
                     userReactions = (state.userReactions ?: emptyMap()).toImmutableMap(),
-                    reactionsEnabled = state.user != null,
+                    reactionsEnabled = state.user != null && !isUserComment,
                     onReplyLoaded = onReplyLoaded,
                     onReactionClick = onReactionClick,
+                    onDeleteClick = { onDeleteClick?.invoke(comment) },
                 )
             }
         }
@@ -155,6 +180,7 @@ private fun CommentDetailsViewContent(
 
 @Composable
 private fun CommentContent(
+    user: User?,
     comment: Comment,
     commentReplies: ImmutableList<Comment>?,
     listReactions: ImmutableMap<Int, ReactionsSummary>?,
@@ -162,6 +188,7 @@ private fun CommentContent(
     userReactions: ImmutableMap<Int, Reaction?>,
     onReplyLoaded: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
+    onDeleteClick: (() -> Unit)? = null,
 ) {
     var isCollapsed by remember { mutableStateOf(true) }
 
@@ -170,6 +197,8 @@ private fun CommentContent(
     ) {
         CommentHeader(
             comment = comment,
+            deleteEnabled = user?.ids?.trakt == comment.user.ids.trakt,
+            onDeleteClick = onDeleteClick,
             modifier = Modifier.padding(top = 5.dp),
         )
 
@@ -225,7 +254,9 @@ private fun CommentContent(
 @Composable
 private fun CommentHeader(
     comment: Comment,
+    deleteEnabled: Boolean,
     modifier: Modifier = Modifier,
+    onDeleteClick: (() -> Unit)? = null,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -300,6 +331,24 @@ private fun CommentHeader(
                 overflow = TextOverflow.Ellipsis,
             )
         }
+
+        if (deleteEnabled) {
+            Spacer(modifier = Modifier.weight(1f))
+            Icon(
+                painter = painterResource(R.drawable.ic_trash),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .align(Alignment.Top)
+                    .size(20.dp)
+                    .graphicsLayer {
+                        translationY = (-1).dp.toPx()
+                    }
+                    .onClick {
+                        onDeleteClick?.invoke()
+                    },
+            )
+        }
     }
 }
 
@@ -372,6 +421,7 @@ private fun Preview() {
 
                 CommentDetailsViewContent(
                     state = CommentDetailsState(
+                        user = PreviewData.user1,
                         comment = PreviewData.comment1,
                         replies = listOf(
                             PreviewData.comment1,

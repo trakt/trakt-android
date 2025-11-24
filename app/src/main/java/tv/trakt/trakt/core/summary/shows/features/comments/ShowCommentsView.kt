@@ -120,6 +120,7 @@ internal fun ShowCommentsView(
 
     CommentDetailsSheet(
         comment = commentSheet,
+        onDeleteComment = viewModel::deleteComment,
         onDismiss = {
             commentSheet = null
         },
@@ -174,7 +175,7 @@ private fun ShowCommentsContent(
             verticalAlignment = CenterVertically,
         ) {
             Row(
-                horizontalArrangement = spacedBy(12.dp),
+                horizontalArrangement = spacedBy(8.dp),
                 verticalAlignment = CenterVertically,
             ) {
                 TraktHeader(
@@ -304,6 +305,7 @@ private fun ContentList(
                 reactions = listReactions?.get(comment.id),
                 userReaction = userReactions[comment.id],
                 userComment = isUserComment,
+                deleteEnabled = false,
                 onClick = { onCommentClick?.invoke(comment) },
                 onDeleteClick = { onDeleteCommentClick?.invoke(comment) },
                 onRequestReactions = { onCommentLoaded?.invoke(comment) },

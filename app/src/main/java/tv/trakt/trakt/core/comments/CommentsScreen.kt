@@ -64,7 +64,6 @@ import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
-import tv.trakt.trakt.core.comments.features.details.CommentDetailsSheet
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentSheet
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.ui.CommentCard
@@ -85,7 +84,6 @@ internal fun CommentsScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    var commentSheet by remember { mutableStateOf<Comment?>(null) }
     var postCommentSheet by remember { mutableStateOf(false) }
     var deleteCommentSheet by remember { mutableStateOf<Comment?>(null) }
 
@@ -94,9 +92,6 @@ internal fun CommentsScreen(
         modifier = modifier,
         onCommentLoaded = {
             viewModel.loadReactions(it.id)
-        },
-        onCommentClick = {
-            commentSheet = it
         },
         onFilterClick = {
             viewModel.setFilter(it)
@@ -111,13 +106,6 @@ internal fun CommentsScreen(
             deleteCommentSheet = it
         },
         onBackClick = onNavigateBack,
-    )
-
-    CommentDetailsSheet(
-        comment = commentSheet,
-        onDismiss = {
-            commentSheet = null
-        },
     )
 
     PostCommentSheet(
@@ -145,7 +133,6 @@ internal fun CommentsContent(
     state: CommentsState,
     modifier: Modifier = Modifier,
     onCommentLoaded: ((Comment) -> Unit)? = null,
-    onCommentClick: ((Comment) -> Unit)? = null,
     onFilterClick: ((CommentsFilter) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onNewCommentClick: (() -> Unit)? = null,
@@ -194,7 +181,6 @@ internal fun CommentsContent(
             loading = state.loading.isLoading,
             user = state.user,
             onCommentLoaded = onCommentLoaded,
-            onCommentClick = onCommentClick,
             onFilterClick = onFilterClick,
             onReactionClick = onReactionClick,
             onDeleteCommentClick = onDeleteCommentClick,
@@ -247,7 +233,6 @@ private fun ContentList(
     user: User?,
     userReactions: ImmutableMap<Int, Reaction?>,
     onCommentLoaded: ((Comment) -> Unit)? = null,
-    onCommentClick: ((Comment) -> Unit)? = null,
     onDeleteCommentClick: ((Comment) -> Unit)? = null,
     onFilterClick: ((CommentsFilter) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
@@ -298,7 +283,6 @@ private fun ContentList(
                     onReactionClick = { onReactionClick?.invoke(it, comment) },
                     maxLines = Int.MAX_VALUE,
                     corner = 20.dp,
-                    onClick = { onCommentClick?.invoke(comment) },
                     onDeleteClick = { onDeleteCommentClick?.invoke(comment) },
                     modifier = Modifier
                         .padding(bottom = 16.dp)

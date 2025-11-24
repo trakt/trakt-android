@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package tv.trakt.trakt.core.comments.features.details
 
 import android.content.Context
@@ -12,7 +14,6 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -57,21 +58,18 @@ internal class CommentDetailsViewModel(
     private var reactionJob: Job? = null
 
     init {
-        loadUser()
         loadData()
         loadReactions(comment.id)
     }
 
-    private fun loadUser() {
-        viewModelScope.launch {
-            try {
-                userState.update {
-                    sessionManager.getProfile()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
+    private suspend fun loadUser() {
+        try {
+            userState.update {
+                sessionManager.getProfile()
+            }
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
             }
         }
     }
@@ -81,6 +79,7 @@ internal class CommentDetailsViewModel(
             try {
                 loadingState.update { LOADING }
 
+                loadUser()
                 coroutineScope {
                     val repliesAsync = async { getRepliesUseCase.getCommentReplies(comment.id) }
 
@@ -229,8 +228,7 @@ internal class CommentDetailsViewModel(
         )
     }
 
-    @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<CommentDetailsState> = combine(
+    val state = combine(
         commentState,
         commentReplies,
         reactionsState,
