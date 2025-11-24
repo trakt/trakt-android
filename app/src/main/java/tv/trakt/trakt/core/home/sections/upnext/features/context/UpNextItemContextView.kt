@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package tv.trakt.trakt.core.home.sections.upnext.features.context
 
 import androidx.compose.foundation.background
@@ -40,7 +42,7 @@ import tv.trakt.trakt.core.home.sections.upnext.model.Progress
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
-import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
+import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -81,8 +83,7 @@ internal fun UpNextItemContextView(
         },
     )
 
-    @OptIn(ExperimentalMaterial3Api::class)
-    ConfirmationSheet(
+    RemoveConfirmationSheet(
         active = confirmDropSheet,
         onYes = {
             confirmDropSheet = false

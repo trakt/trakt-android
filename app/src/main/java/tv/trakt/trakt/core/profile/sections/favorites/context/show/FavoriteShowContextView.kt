@@ -41,7 +41,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.core.shows.ui.ShowMetaFooter
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
-import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
+import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -79,7 +79,7 @@ internal fun FavoriteShowContextView(
         },
     )
 
-    ConfirmationSheet(
+    RemoveConfirmationSheet(
         active = confirmRemoveSheet,
         onYes = {
             confirmRemoveSheet = false

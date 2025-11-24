@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,6 +20,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun ConfirmationView(
     title: String,
     message: String,
+    yesColor: Color = TraktTheme.colors.primaryButtonContainer,
     yesText: String = stringResource(R.string.button_text_yes),
     noText: String = stringResource(R.string.button_text_cancel),
     onYes: () -> Unit = {},
@@ -56,6 +58,7 @@ internal fun ConfirmationView(
             PrimaryButton(
                 text = yesText,
                 onClick = onYes,
+                containerColor = yesColor,
                 modifier = Modifier.fillMaxWidth(),
             )
 

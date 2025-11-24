@@ -47,7 +47,7 @@ import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.MovieIt
 import tv.trakt.trakt.core.movies.ui.MovieMetaFooter
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
-import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
+import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Instant
 
@@ -87,7 +87,7 @@ internal fun ActivityItemContextView(
     )
 
     @OptIn(ExperimentalMaterial3Api::class)
-    ConfirmationSheet(
+    RemoveConfirmationSheet(
         active = confirmRemoveSheet,
         onYes = {
             confirmRemoveSheet = false
