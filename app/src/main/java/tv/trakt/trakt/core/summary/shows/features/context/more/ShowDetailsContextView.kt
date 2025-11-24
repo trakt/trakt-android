@@ -160,6 +160,7 @@ private fun ShowDetailsContextViewContent(
 
         ActionButtons(
             watched = watched,
+            released = isReleased,
             onCheckClick = onCheckClick ?: {},
             onRemoveClick = onRemoveClick ?: {},
             onShareClick = onShareClick ?: {},
@@ -211,6 +212,7 @@ private fun WatchButton(
 @Composable
 private fun ActionButtons(
     watched: Boolean,
+    released: Boolean,
     modifier: Modifier = Modifier,
     onCheckClick: () -> Unit,
     onShareClick: () -> Unit,
@@ -224,6 +226,7 @@ private fun ActionButtons(
             },
     ) {
         GhostButton(
+            enabled = released,
             text = stringResource(
                 when {
                     watched -> R.string.button_text_watch_again

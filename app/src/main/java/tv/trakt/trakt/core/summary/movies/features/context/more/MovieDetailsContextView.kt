@@ -160,6 +160,7 @@ private fun MovieDetailsContextViewContent(
 
         ActionButtons(
             watched = watched,
+            released = isReleased,
             onCheckClick = onCheckClick ?: {},
             onRemoveClick = onRemoveClick ?: {},
             onShareClick = onShareClick ?: {},
@@ -211,6 +212,7 @@ private fun WatchButton(
 @Composable
 private fun ActionButtons(
     watched: Boolean,
+    released: Boolean,
     modifier: Modifier = Modifier,
     onCheckClick: () -> Unit,
     onShareClick: () -> Unit,
@@ -236,6 +238,7 @@ private fun ActionButtons(
                     else -> R.drawable.ic_check
                 },
             ),
+            enabled = released,
             iconSize = 22.dp,
             iconSpace = 16.dp,
             modifier = Modifier
