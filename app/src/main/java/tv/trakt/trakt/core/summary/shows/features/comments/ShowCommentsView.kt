@@ -56,10 +56,14 @@ import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
+import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
 import tv.trakt.trakt.core.comments.features.details.CommentDetailsSheet
+import tv.trakt.trakt.core.comments.features.postcomment.PostCommentSheet
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.ui.CommentCard
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
@@ -81,6 +85,8 @@ internal fun ShowCommentsView(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var commentSheet by remember { mutableStateOf<Comment?>(null) }
+    var postCommentSheet by remember { mutableStateOf(false) }
+    var deleteCommentSheet by remember { mutableStateOf<Comment?>(null) }
 
     ShowCommentsContent(
         state = state,
@@ -98,6 +104,12 @@ internal fun ShowCommentsView(
         onCommentClick = {
             commentSheet = it
         },
+        onAddCommentClick = {
+            postCommentSheet = true
+        },
+        onDeleteCommentClick = {
+            deleteCommentSheet = it
+        },
         onFilterClick = {
             viewModel.setFilter(it)
         },
@@ -112,6 +124,25 @@ internal fun ShowCommentsView(
             commentSheet = null
         },
     )
+
+    PostCommentSheet(
+        active = postCommentSheet,
+        mediaId = state.show?.ids?.trakt,
+        mediaType = MediaType.SHOW,
+        onCommentPost = viewModel::addComment,
+        onDismiss = {
+            postCommentSheet = false
+        },
+    )
+
+    DeleteCommentSheet(
+        active = deleteCommentSheet != null,
+        commentId = deleteCommentSheet?.id?.toTraktId(),
+        onDeleted = viewModel::deleteComment,
+        onDismiss = {
+            deleteCommentSheet = null
+        },
+    )
 }
 
 @Composable
@@ -124,6 +155,8 @@ private fun ShowCommentsContent(
     onCommentClick: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onFilterClick: ((CommentsFilter) -> Unit)? = null,
+    onAddCommentClick: (() -> Unit)? = null,
+    onDeleteCommentClick: ((Comment) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
 ) {
     Column(
@@ -140,9 +173,30 @@ private fun ShowCommentsContent(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = CenterVertically,
         ) {
-            TraktHeader(
-                title = stringResource(R.string.list_title_comments),
-            )
+            Row(
+                horizontalArrangement = spacedBy(12.dp),
+                verticalAlignment = CenterVertically,
+            ) {
+                TraktHeader(
+                    title = stringResource(R.string.list_title_comments),
+                )
+
+                if (state.user != null) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_comment_plus),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier
+                            .size(18.dp)
+                            .onClick(enabled = state.loading == DONE) {
+                                onAddCommentClick?.invoke()
+                            }
+                            .graphicsLayer {
+                                translationY = 0.75.dp.toPx()
+                            },
+                    )
+                }
+            }
 
             if (state.loading.isLoading || !state.items.isNullOrEmpty()) {
                 Icon(
@@ -196,6 +250,7 @@ private fun ShowCommentsContent(
                                 reactionsEnabled = state.user != null,
                                 contentPadding = contentPadding,
                                 onCommentClick = onCommentClick,
+                                onDeleteCommentClick = onDeleteCommentClick,
                                 onCommentLoaded = onCommentLoaded,
                                 onReactionClick = onReactionClick,
                             )
@@ -218,6 +273,7 @@ private fun ContentList(
     contentPadding: PaddingValues,
     onCommentLoaded: ((Comment) -> Unit)? = null,
     onCommentClick: ((Comment) -> Unit)? = null,
+    onDeleteCommentClick: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
@@ -249,12 +305,17 @@ private fun ContentList(
                 userReaction = userReactions[comment.id],
                 userComment = isUserComment,
                 onClick = { onCommentClick?.invoke(comment) },
+                onDeleteClick = { onDeleteCommentClick?.invoke(comment) },
                 onRequestReactions = { onCommentLoaded?.invoke(comment) },
                 reactionsEnabled = reactionsEnabled,
                 onReactionClick = { onReactionClick?.invoke(it, comment) },
                 modifier = Modifier
                     .height(TraktTheme.size.commentCardSize)
-                    .aspectRatio(HorizontalImageAspectRatio),
+                    .aspectRatio(HorizontalImageAspectRatio)
+                    .animateItem(
+                        fadeInSpec = null,
+                        fadeOutSpec = null,
+                    ),
             )
         }
     }

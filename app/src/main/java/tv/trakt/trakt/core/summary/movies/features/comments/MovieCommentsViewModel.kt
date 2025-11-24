@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
@@ -33,6 +34,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
@@ -62,6 +64,7 @@ internal class MovieCommentsViewModel(
 ) : ViewModel() {
     private val initialState = MovieCommentsState()
 
+    private val movieState = MutableStateFlow<Movie?>(movie)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialState.filter)
     private val reactionsState = MutableStateFlow(initialState.reactions)
@@ -317,8 +320,23 @@ internal class MovieCommentsViewModel(
         )
     }
 
+    fun addComment(comment: Comment) {
+        itemsState.update {
+            val mutable = it?.toMutableList() ?: mutableListOf()
+            mutable.add(0, comment)
+            mutable.toImmutableList()
+        }
+    }
+
+    fun deleteComment(commentId: TraktId) {
+        itemsState.update {
+            it?.filterNot { comment -> comment.id == commentId.value }?.toImmutableList()
+        }
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state: StateFlow<MovieCommentsState> = combine(
+        movieState,
         itemsState,
         filterState,
         reactionsState,
@@ -328,13 +346,14 @@ internal class MovieCommentsViewModel(
         errorState,
     ) { state ->
         MovieCommentsState(
-            items = state[0] as ImmutableList<Comment>?,
-            filter = state[1] as CommentsFilter,
-            reactions = state[2] as ImmutableMap<Int, ReactionsSummary>?,
-            userReactions = state[3] as ImmutableMap<Int, Reaction?>?,
-            loading = state[4] as LoadingState,
-            user = state[5] as User?,
-            error = state[6] as Exception?,
+            movie = state[0] as Movie?,
+            items = state[1] as ImmutableList<Comment>?,
+            filter = state[2] as CommentsFilter,
+            reactions = state[3] as ImmutableMap<Int, ReactionsSummary>?,
+            userReactions = state[4] as ImmutableMap<Int, Reaction?>?,
+            loading = state[5] as LoadingState,
+            user = state[6] as User?,
+            error = state[7] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

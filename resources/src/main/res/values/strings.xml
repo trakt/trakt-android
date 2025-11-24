@@ -61,7 +61,7 @@
     <string name="button_text_stream_on">Stream on</string>
     <string name="list_title_popular_lists">Popular Lists</string>
     <string name="text_by">by</string>
-    <string name="list_placeholder_comments">No comments yet.</string>
+    <string name="list_placeholder_comments">No reviews yet.</string>
     <string name="list_placeholder_replies">No replies yet.</string>
     <string name="list_title_social_activity">Social Activity</string>
     <string name="list_title_personal_lists">My Lists</string>
@@ -203,5 +203,5 @@
     <string name="input_placeholder_comment">What do you think?</string>
     <string name="button_text_delete_review">Delete Review</string>
     <string name="warning_prompt_delete_review">Are you sure you want to delete your review?</string>
-    <string name="text_info_comment_deleted">Comment has been deleted.</string>
+    <string name="text_info_comment_deleted">Review has been deleted.</string>
 </resources>
