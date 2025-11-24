@@ -5,6 +5,7 @@ package tv.trakt.trakt.core.comments.features.postcomment
 import InputField
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.input.TextFieldLineLimits
@@ -15,7 +16,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -34,6 +38,7 @@ import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.TraktSwitch
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -84,6 +89,8 @@ private fun ViewContent(
         }
     }
 
+    var isSpoiler by remember { mutableStateOf(false) }
+
     Column(
         verticalArrangement = spacedBy(0.dp),
         modifier = modifier,
@@ -122,6 +129,26 @@ private fun ViewContent(
             )
         }
 
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = spacedBy(16.dp),
+            modifier = Modifier.padding(vertical = 12.dp),
+        ) {
+            Text(
+                text = stringResource(R.string.button_text_spoilers),
+                color = TraktTheme.colors.textPrimary,
+                style = TraktTheme.typography.paragraph,
+                maxLines = 1,
+                overflow = Ellipsis,
+            )
+
+            TraktSwitch(
+                checked = isSpoiler,
+                onCheckedChange = { isSpoiler = it },
+                enabled = !isLoading,
+            )
+        }
+
         PrimaryButton(
             text = stringResource(R.string.button_text_submit),
             enabled = !isLoading && isValid.value,
@@ -130,11 +157,13 @@ private fun ViewContent(
                 val input = inputState.text
                     .toString()
                     .trim()
-                onSubmitClick(input, false)
+
+                onSubmitClick(
+                    input,
+                    isSpoiler,
+                )
             },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 29.dp),
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }

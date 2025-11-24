@@ -10,6 +10,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Orange900
 import tv.trakt.trakt.common.ui.theme.colors.Purple100
 import tv.trakt.trakt.common.ui.theme.colors.Purple300
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
+import tv.trakt.trakt.common.ui.theme.colors.Purple800
 import tv.trakt.trakt.common.ui.theme.colors.Purple900
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.common.ui.theme.colors.Shade300
@@ -56,6 +57,11 @@ internal val DarkColors: TraktColors = TraktColors(
     // Snackbar
     snackbarContainer = White,
     snackbarContent = Shade940,
+    // Switches
+    switchContainerChecked = Purple800,
+    switchContainerUnchecked = White,
+    switchThumbChecked = Purple500,
+    switchThumbUnchecked = Purple500,
 )
 
 internal val HalloweenColors: TraktColors = DarkColors.copy(
@@ -105,4 +111,9 @@ internal data class TraktColors(
     // Snackbar
     val snackbarContainer: Color = Color.Unspecified,
     val snackbarContent: Color = Color.Unspecified,
+    // Switches
+    val switchContainerChecked: Color = Color.Unspecified,
+    val switchContainerUnchecked: Color = Color.Unspecified,
+    val switchThumbChecked: Color = Color.Unspecified,
+    val switchThumbUnchecked: Color = Color.Unspecified,
 )

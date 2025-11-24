@@ -157,7 +157,7 @@ private fun CommentCardContent(
             maxLines = maxLines,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.then(
-                if (comment.hasSpoilers) {
+                if (comment.hasSpoilers && !userComment) {
                     Modifier
                         .blur(4.dp)
                         .padding(horizontal = 16.dp)

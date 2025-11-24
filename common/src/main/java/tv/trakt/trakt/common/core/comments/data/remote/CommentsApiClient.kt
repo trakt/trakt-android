@@ -20,7 +20,7 @@ class CommentsApiClient(
     ): CommentDto {
         val request = PostCommentsPostRequest(
             comment = text,
-            spoiler = false,
+            spoiler = spoiler,
             show = PostCommentsPostRequestAllOfOneOfMovie(
                 ids = PostCommentsPostRequestAllOfOneOfMovieIds(
                     trakt = showId.value,
@@ -41,7 +41,7 @@ class CommentsApiClient(
     ): CommentDto {
         val request = PostCommentsPostRequest(
             comment = text,
-            spoiler = false,
+            spoiler = spoiler,
             movie = PostCommentsPostRequestAllOfOneOfMovie(
                 ids = PostCommentsPostRequestAllOfOneOfMovieIds(
                     trakt = movieId.value,
@@ -62,7 +62,7 @@ class CommentsApiClient(
     ): CommentDto {
         val request = PostCommentsPostRequest(
             comment = text,
-            spoiler = false,
+            spoiler = spoiler,
             episode = PostCommentsPostRequestAllOfOneOfMovie(
                 ids = PostCommentsPostRequestAllOfOneOfMovieIds(
                     trakt = episodeId.value,
