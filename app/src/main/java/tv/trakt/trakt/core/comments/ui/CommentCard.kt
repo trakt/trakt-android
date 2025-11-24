@@ -78,6 +78,7 @@ internal fun CommentCard(
     onClick: () -> Unit,
     onRequestReactions: (() -> Unit)? = null,
     onReactionClick: ((Reaction) -> Unit)? = null,
+    onDeleteClick: (() -> Unit)? = null,
 ) {
     val uriHandler = LocalUriHandler.current
 
@@ -105,8 +106,10 @@ internal fun CommentCard(
                 reactions = reactions,
                 reactionsVisible = !userComment,
                 reactionsEnabled = reactionsEnabled,
+                userComment = userComment,
                 userReaction = userReaction,
                 onReactionClick = onReactionClick,
+                onDeleteClick = onDeleteClick,
                 onUserClick = {
                     uriHandler.openUri(
                         webUserUrl(it.username),
@@ -123,11 +126,13 @@ private fun CommentCardContent(
     reactions: ReactionsSummary?,
     reactionsVisible: Boolean,
     reactionsEnabled: Boolean,
+    userComment: Boolean,
     userReaction: Reaction?,
     maxLines: Int,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
     onReactionClick: ((Reaction) -> Unit)? = null,
+    onDeleteClick: (() -> Unit)? = null,
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -137,7 +142,9 @@ private fun CommentCardContent(
     ) {
         CommentHeader(
             comment = comment,
+            userComment = userComment,
             onUserClick = onUserClick,
+            onDeleteClick = onDeleteClick,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
@@ -182,8 +189,10 @@ private fun CommentCardContent(
 @Composable
 private fun CommentHeader(
     comment: Comment,
+    userComment: Boolean,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
+    onDeleteClick: (() -> Unit)? = null,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -263,6 +272,20 @@ private fun CommentHeader(
                     .copy(alpha = 0.66f),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
+            )
+        }
+
+        if (userComment) {
+            Spacer(modifier = Modifier.weight(1f))
+            Icon(
+                painter = painterResource(R.drawable.ic_trash),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .size(20.dp)
+                    .onClick {
+                        onDeleteClick?.invoke()
+                    },
             )
         }
     }

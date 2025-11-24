@@ -76,6 +76,11 @@ class CommentsApiClient(
         return result.body()
     }
 
+    override suspend fun deleteComment(commentId: TraktId) {
+        api.deleteCommentsDelete(commentId.value.toString())
+        cacheMarker.invalidate()
+    }
+
     override suspend fun getCommentReplies(commentId: Int): List<CommentDto> {
         val response = api.getCommentsReplies(
             id = commentId.toString(),

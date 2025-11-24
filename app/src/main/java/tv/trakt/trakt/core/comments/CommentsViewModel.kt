@@ -36,10 +36,13 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.SeasonEpisode
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.comments.data.CommentsUpdates
+import tv.trakt.trakt.core.comments.data.CommentsUpdates.Source.ALL_COMMENTS
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.navigation.CommentsDestination
 import tv.trakt.trakt.core.comments.usecases.GetCommentsFilterUseCase
@@ -65,6 +68,7 @@ internal class CommentsViewModel(
     private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
     private val loadUserReactionsUseCase: LoadUserReactionsUseCase,
     private val reactionsUpdates: ReactionsUpdates,
+    private val commentsUpdates: CommentsUpdates,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<CommentsDestination>()
     private val initialState = CommentsState()
@@ -300,6 +304,14 @@ internal class CommentsViewModel(
             mutable.add(0, comment)
             mutable.toImmutableList()
         }
+        commentsUpdates.notifyUpdate(ALL_COMMENTS)
+    }
+
+    fun deleteComment(commentId: TraktId) {
+        itemsState.update {
+            it?.filterNot { comment -> comment.id == commentId.value }?.toImmutableList()
+        }
+        commentsUpdates.notifyUpdate(ALL_COMMENTS)
     }
 
     private fun updateReactions(commentId: Int) {

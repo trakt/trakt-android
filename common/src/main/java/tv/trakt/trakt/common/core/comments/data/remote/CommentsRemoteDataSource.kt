@@ -23,6 +23,8 @@ interface CommentsRemoteDataSource {
         spoiler: Boolean,
     ): CommentDto
 
+    suspend fun deleteComment(commentId: TraktId)
+
     suspend fun getCommentReplies(commentId: Int): List<CommentDto>
 
     suspend fun getCommentReactions(commentId: Int): GetCommentsReactionsSummary200Response

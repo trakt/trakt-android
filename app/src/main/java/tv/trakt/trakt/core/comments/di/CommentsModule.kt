@@ -25,8 +25,12 @@ import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.comments.CommentsViewModel
+import tv.trakt.trakt.core.comments.data.CommentsUpdates
+import tv.trakt.trakt.core.comments.data.CommentsUpdatesStorage
+import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentViewModel
 import tv.trakt.trakt.core.comments.features.details.CommentDetailsViewModel
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentViewModel
+import tv.trakt.trakt.core.comments.usecases.DeleteCommentUseCase
 import tv.trakt.trakt.core.comments.usecases.GetCommentsFilterUseCase
 import tv.trakt.trakt.core.comments.usecases.PostCommentUseCase
 
@@ -48,6 +52,10 @@ internal val commentsDataModule = module {
         createStore(
             context = androidApplication(),
         )
+    }
+
+    single<CommentsUpdates> {
+        CommentsUpdatesStorage()
     }
 }
 
@@ -76,6 +84,12 @@ internal val commentsModule = module {
         )
     }
 
+    factory {
+        DeleteCommentUseCase(
+            remoteSource = get(),
+        )
+    }
+
     viewModel {
         CommentsViewModel(
             appContext = androidApplication(),
@@ -88,6 +102,7 @@ internal val commentsModule = module {
             sessionManager = get(),
             loadUserReactionsUseCase = get(),
             reactionsUpdates = get(),
+            commentsUpdates = get(),
         )
     }
 
@@ -108,6 +123,13 @@ internal val commentsModule = module {
             mediaType = mediaType,
             sessionManager = get(),
             postCommentUseCase = get(),
+        )
+    }
+
+    viewModel { (commentId: TraktId) ->
+        DeleteCommentViewModel(
+            commentId = commentId,
+            deleteCommentUseCase = get(),
         )
     }
 }

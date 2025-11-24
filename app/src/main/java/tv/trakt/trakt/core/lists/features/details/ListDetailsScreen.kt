@@ -149,7 +149,6 @@ internal fun ListDetailsContent(
         SimpleScrollConnection()
     }
 
-
     Box(
         modifier = modifier
             .fillMaxSize()

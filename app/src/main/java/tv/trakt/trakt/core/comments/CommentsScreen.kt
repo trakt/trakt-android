@@ -62,6 +62,8 @@ import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
+import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
 import tv.trakt.trakt.core.comments.features.details.CommentDetailsSheet
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentSheet
 import tv.trakt.trakt.core.comments.model.CommentsFilter
@@ -85,6 +87,7 @@ internal fun CommentsScreen(
 
     var commentSheet by remember { mutableStateOf<Comment?>(null) }
     var postCommentSheet by remember { mutableStateOf(false) }
+    var deleteCommentSheet by remember { mutableStateOf<Comment?>(null) }
 
     CommentsContent(
         state = state,
@@ -103,6 +106,9 @@ internal fun CommentsScreen(
         },
         onNewCommentClick = {
             postCommentSheet = true
+        },
+        onDeleteCommentClick = {
+            deleteCommentSheet = it
         },
         onBackClick = onNavigateBack,
     )
@@ -123,6 +129,15 @@ internal fun CommentsScreen(
             postCommentSheet = false
         },
     )
+
+    DeleteCommentSheet(
+        active = deleteCommentSheet != null,
+        commentId = deleteCommentSheet?.id?.toTraktId(),
+        onDeleted = viewModel::deleteComment,
+        onDismiss = {
+            deleteCommentSheet = null
+        },
+    )
 }
 
 @Composable
@@ -134,6 +149,7 @@ internal fun CommentsContent(
     onFilterClick: ((CommentsFilter) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onNewCommentClick: (() -> Unit)? = null,
+    onDeleteCommentClick: ((Comment) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     val listState = rememberLazyListState(
@@ -181,6 +197,7 @@ internal fun CommentsContent(
             onCommentClick = onCommentClick,
             onFilterClick = onFilterClick,
             onReactionClick = onReactionClick,
+            onDeleteCommentClick = onDeleteCommentClick,
             onBackClick = onBackClick,
         )
 
@@ -204,7 +221,6 @@ internal fun CommentsContent(
                 height = 38.dp,
                 onClick = onNewCommentClick ?: {},
                 modifier = Modifier
-//                    .shadow(2.5.dp, RoundedCornerShape(12.dp))
                     .dropShadow(
                         shape = RoundedCornerShape(12.dp),
                         shadow = Shadow(
@@ -232,6 +248,7 @@ private fun ContentList(
     userReactions: ImmutableMap<Int, Reaction?>,
     onCommentLoaded: ((Comment) -> Unit)? = null,
     onCommentClick: ((Comment) -> Unit)? = null,
+    onDeleteCommentClick: ((Comment) -> Unit)? = null,
     onFilterClick: ((CommentsFilter) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
@@ -282,6 +299,7 @@ private fun ContentList(
                     maxLines = Int.MAX_VALUE,
                     corner = 20.dp,
                     onClick = { onCommentClick?.invoke(comment) },
+                    onDeleteClick = { onDeleteCommentClick?.invoke(comment) },
                     modifier = Modifier
                         .padding(bottom = 16.dp)
                         .animateItem(

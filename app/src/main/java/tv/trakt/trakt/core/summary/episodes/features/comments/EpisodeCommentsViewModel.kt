@@ -37,6 +37,8 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
+import tv.trakt.trakt.core.comments.data.CommentsUpdates
+import tv.trakt.trakt.core.comments.data.CommentsUpdates.Source.ALL_COMMENTS
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.usecases.GetCommentsFilterUseCase
 import tv.trakt.trakt.core.reactions.data.ReactionsUpdates
@@ -58,6 +60,7 @@ internal class EpisodeCommentsViewModel(
     private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
     private val loadUserReactionsUseCase: LoadUserReactionsUseCase,
     private val reactionsUpdates: ReactionsUpdates,
+    private val commentsUpdates: CommentsUpdates,
 ) : ViewModel() {
     private val initialState = EpisodeCommentsState()
 
@@ -85,6 +88,14 @@ internal class EpisodeCommentsViewModel(
             .debounce(200)
             .onEach {
                 updateReactions(it.first)
+            }
+            .launchIn(viewModelScope)
+
+        commentsUpdates.observeUpdates(ALL_COMMENTS)
+            .distinctUntilChanged()
+            .debounce(200)
+            .onEach {
+                loadData()
             }
             .launchIn(viewModelScope)
     }

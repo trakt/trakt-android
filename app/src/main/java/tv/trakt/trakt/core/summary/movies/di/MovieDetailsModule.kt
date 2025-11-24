@@ -211,6 +211,7 @@ internal val movieDetailsModule = module {
             loadUserReactionsUseCase = get(),
             reactionsUpdates = get(),
             sessionManager = get(),
+            commentsUpdates = get(),
         )
     }
 
