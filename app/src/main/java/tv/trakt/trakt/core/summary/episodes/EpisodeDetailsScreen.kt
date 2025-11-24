@@ -340,7 +340,7 @@ internal fun EpisodeDetailsContent(
                             .align(Center)
                             .fillMaxWidth()
                             .padding(top = 16.dp)
-                            .padding(horizontal = TraktTheme.spacing.detailsActionsHorizontalSpace),
+                            .padding(horizontal = TraktTheme.spacing.detailsHeaderHorizontalSpace),
                     )
                 }
 

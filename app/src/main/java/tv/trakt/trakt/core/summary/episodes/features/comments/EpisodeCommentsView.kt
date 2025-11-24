@@ -56,10 +56,14 @@ import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
+import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
 import tv.trakt.trakt.core.comments.features.details.CommentDetailsSheet
+import tv.trakt.trakt.core.comments.features.postcomment.PostCommentSheet
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.ui.CommentCard
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
@@ -81,6 +85,8 @@ internal fun EpisodeCommentsView(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var commentSheet by remember { mutableStateOf<Comment?>(null) }
+    var postCommentSheet by remember { mutableStateOf(false) }
+    var deleteCommentSheet by remember { mutableStateOf<Comment?>(null) }
 
     EpisodeCommentsContent(
         state = state,
@@ -98,9 +104,13 @@ internal fun EpisodeCommentsView(
         onCommentClick = {
             commentSheet = it
         },
-        onFilterClick = {
-            viewModel.setFilter(it)
+        onAddCommentClick = {
+            postCommentSheet = true
         },
+        onDeleteCommentClick = {
+            deleteCommentSheet = it
+        },
+        onFilterClick = viewModel::setFilter,
         onReactionClick = { reaction, comment ->
             viewModel.setReaction(reaction, comment.id)
         },
@@ -110,6 +120,25 @@ internal fun EpisodeCommentsView(
         comment = commentSheet,
         onDismiss = {
             commentSheet = null
+        },
+    )
+
+    PostCommentSheet(
+        active = postCommentSheet,
+        mediaId = state.media?.second?.ids?.trakt,
+        mediaType = MediaType.EPISODE,
+        onCommentPost = viewModel::addComment,
+        onDismiss = {
+            postCommentSheet = false
+        },
+    )
+
+    DeleteCommentSheet(
+        active = deleteCommentSheet != null,
+        commentId = deleteCommentSheet?.id?.toTraktId(),
+        onDeleted = viewModel::deleteComment,
+        onDismiss = {
+            deleteCommentSheet = null
         },
     )
 }
@@ -124,6 +153,8 @@ private fun EpisodeCommentsContent(
     onCommentClick: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onFilterClick: ((CommentsFilter) -> Unit)? = null,
+    onAddCommentClick: (() -> Unit)? = null,
+    onDeleteCommentClick: ((Comment) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
 ) {
     Column(
@@ -140,11 +171,32 @@ private fun EpisodeCommentsContent(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = CenterVertically,
         ) {
-            TraktHeader(
-                title = stringResource(R.string.list_title_comments),
-            )
+            Row(
+                horizontalArrangement = spacedBy(12.dp),
+                verticalAlignment = CenterVertically,
+            ) {
+                TraktHeader(
+                    title = stringResource(R.string.list_title_comments),
+                )
 
-            if (state.loading.isLoading || !state.items.isNullOrEmpty()) {
+                if (state.user != null) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_comment_plus),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier
+                            .size(18.dp)
+                            .onClick(enabled = state.loading == DONE) {
+                                onAddCommentClick?.invoke()
+                            }
+                            .graphicsLayer {
+                                translationY = 0.75.dp.toPx()
+                            },
+                    )
+                }
+            }
+
+            if (!state.items.isNullOrEmpty() || state.loading.isLoading) {
                 Icon(
                     painter = painterResource(R.drawable.ic_chevron_right),
                     contentDescription = null,
@@ -196,6 +248,7 @@ private fun EpisodeCommentsContent(
                                 reactionsEnabled = state.user != null,
                                 contentPadding = contentPadding,
                                 onCommentClick = onCommentClick,
+                                onDeleteCommentClick = onDeleteCommentClick,
                                 onCommentLoaded = onCommentLoaded,
                                 onReactionClick = onReactionClick,
                             )
@@ -218,6 +271,7 @@ private fun ContentList(
     contentPadding: PaddingValues,
     onCommentLoaded: ((Comment) -> Unit)? = null,
     onCommentClick: ((Comment) -> Unit)? = null,
+    onDeleteCommentClick: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
@@ -249,12 +303,17 @@ private fun ContentList(
                 userReaction = userReactions[comment.id],
                 userComment = isUserComment,
                 onClick = { onCommentClick?.invoke(comment) },
+                onDeleteClick = { onDeleteCommentClick?.invoke(comment) },
                 onRequestReactions = { onCommentLoaded?.invoke(comment) },
                 reactionsEnabled = reactionsEnabled,
                 onReactionClick = { onReactionClick?.invoke(it, comment) },
                 modifier = Modifier
                     .height(TraktTheme.size.commentCardSize)
-                    .aspectRatio(HorizontalImageAspectRatio),
+                    .aspectRatio(HorizontalImageAspectRatio)
+                    .animateItem(
+                        fadeInSpec = null,
+                        fadeOutSpec = null,
+                    ),
             )
         }
     }
