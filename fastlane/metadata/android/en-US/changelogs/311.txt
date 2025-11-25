@@ -1,0 +1,6 @@
+New Trakt Android App (Beta) 🚀
+
+- Added comments support for shows, movies and episodes.
+- Added option to mark episodes at custom dates from summary pages or by long-pressing check buttons.
+- Adjusted UI for better tablet support.
+- Improved performance and fixed various bugs for a smoother experience.
