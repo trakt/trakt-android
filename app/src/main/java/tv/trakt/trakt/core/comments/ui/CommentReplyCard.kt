@@ -133,6 +133,10 @@ private fun CommentReplyCardContent(
 ) {
     var showSpoilers by remember { mutableStateOf(false) }
 
+    val isUserReply = remember(user) {
+        comment.user.ids.trakt == user?.ids?.trakt
+    }
+
     Column(
         verticalArrangement = spacedBy(0.dp),
         modifier = modifier
@@ -163,7 +167,7 @@ private fun CommentReplyCardContent(
                     }
                 }
                 .then(
-                    if (comment.hasSpoilers && !showSpoilers) {
+                    if (comment.hasSpoilers && !isUserReply && !showSpoilers) {
                         Modifier
                             .blur(4.dp)
                             .padding(top = 12.dp)

@@ -456,7 +456,7 @@ private fun CommentFooter(
         }
 
         Row(
-            horizontalArrangement = spacedBy(16.dp),
+            horizontalArrangement = spacedBy(24.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Row(

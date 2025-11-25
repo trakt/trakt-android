@@ -41,6 +41,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 fun ReactionsToolTip(
     state: TooltipState,
     reactions: ReactionsSummary?,
+    modifier: Modifier = Modifier,
     userReaction: Reaction? = null,
     onReactionClick: ((Reaction) -> Unit)? = null,
     contentAnchor: @Composable () -> Unit,
@@ -66,6 +67,7 @@ fun ReactionsToolTip(
                 },
             )
         },
+        modifier = modifier,
     )
 }
 

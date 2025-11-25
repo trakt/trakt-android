@@ -125,6 +125,7 @@ internal fun CommentDetailsView(
     DeleteCommentSheet(
         active = deleteCommentSheet != null,
         commentId = deleteCommentSheet?.id?.toTraktId(),
+        skipSnack = true,
         onDeleted = onDeleteComment,
         onDismiss = {
             deleteCommentSheet = null
@@ -132,9 +133,10 @@ internal fun CommentDetailsView(
     )
 
     DeleteCommentSheet(
-        isReply = true,
         active = deleteReplySheet != null,
         commentId = deleteReplySheet?.id?.toTraktId(),
+        isReply = true,
+        skipSnack = true,
         onDeleted = {
             deleteReplySheet?.let {
                 viewModel.deleteReply(replyId = it.id)
