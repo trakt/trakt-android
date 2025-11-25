@@ -12,6 +12,7 @@ import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
 class CommentsApiClient(
     private val api: CommentsApi,
+    private val authedApi: CommentsApi,
     private val cacheMarker: CacheMarkerProvider,
 ) : CommentsRemoteDataSource {
     override suspend fun postShowComment(
@@ -29,7 +30,7 @@ class CommentsApiClient(
             ),
         )
 
-        val result = api.postCommentsPost(request)
+        val result = authedApi.postCommentsPost(request)
         cacheMarker.invalidate()
 
         return result.body()
@@ -50,7 +51,7 @@ class CommentsApiClient(
             ),
         )
 
-        val result = api.postCommentsPost(request)
+        val result = authedApi.postCommentsPost(request)
         cacheMarker.invalidate()
 
         return result.body()
@@ -71,7 +72,7 @@ class CommentsApiClient(
             ),
         )
 
-        val result = api.postCommentsPost(request)
+        val result = authedApi.postCommentsPost(request)
         cacheMarker.invalidate()
 
         return result.body()
@@ -87,7 +88,7 @@ class CommentsApiClient(
             spoiler = spoiler,
         )
 
-        val result = api.postCommentsReply(
+        val result = authedApi.postCommentsReply(
             id = commentId.value.toString(),
             postCommentsReplyRequest = request,
         )
@@ -97,7 +98,7 @@ class CommentsApiClient(
     }
 
     override suspend fun deleteComment(commentId: TraktId) {
-        api.deleteCommentsDelete(commentId.value.toString())
+        authedApi.deleteCommentsDelete(commentId.value.toString())
         cacheMarker.invalidate()
     }
 

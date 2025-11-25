@@ -14,6 +14,11 @@ import tv.trakt.trakt.common.core.comments.usecases.GetCommentRepliesUseCase
 internal val commentsDataModule = module {
     single<CommentsRemoteDataSource> {
         CommentsApiClient(
+            authedApi = CommentsApi(
+                baseUrl = API_BASE_URL,
+                httpClientEngine = get(),
+                httpClientConfig = get(named("authorizedClientConfig")),
+            ),
             api = CommentsApi(
                 baseUrl = API_BASE_URL,
                 httpClientEngine = get(),

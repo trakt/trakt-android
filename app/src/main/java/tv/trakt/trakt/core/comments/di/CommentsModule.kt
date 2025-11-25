@@ -41,10 +41,15 @@ internal const val COMMENTS_PREFERENCES = "comments_preferences_mobile"
 internal val commentsDataModule = module {
     single<CommentsRemoteDataSource> {
         CommentsApiClient(
-            api = CommentsApi(
+            authedApi = CommentsApi(
                 baseUrl = API_BASE_URL,
                 httpClientEngine = get(),
                 httpClientConfig = get(named("authorizedClientConfig")),
+            ),
+            api = CommentsApi(
+                baseUrl = API_BASE_URL,
+                httpClientEngine = get(),
+                httpClientConfig = get(named("clientConfig")),
             ),
             cacheMarker = get(),
         )

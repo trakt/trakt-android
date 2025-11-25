@@ -252,7 +252,7 @@ private fun CommentRepliesContent(
     onDeleteClick: ((Comment) -> Unit)? = null,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier
             .padding(top = 20.dp)
             .padding(horizontal = 16.dp),
