@@ -107,6 +107,7 @@ internal val commentsModule = module {
             getMovieCommentsUseCase = get(),
             getEpisodeCommentsUseCase = get(),
             getCommentReactionsUseCase = get(),
+            getCommentRepliesUseCase = get(),
             sessionManager = get(),
             loadUserReactionsUseCase = get(),
             reactionsUpdates = get(),

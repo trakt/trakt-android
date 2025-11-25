@@ -204,7 +204,10 @@
     <string name="page_description_add_comment">Minimum 5 words, be respectful, mark spoilers.</string>
     <string name="input_placeholder_comment">What do you think?</string>
     <string name="button_text_delete_review">Delete Review</string>
+    <string name="button_text_delete_reply">Delete Reply</string>
     <string name="button_text_spoilers">Spoilers</string>
     <string name="warning_prompt_delete_review">Are you sure you want to delete your review?</string>
+    <string name="warning_prompt_delete_reply">Are you sure you want to delete your reply?</string>
     <string name="text_info_comment_deleted">Review has been deleted.</string>
+    <string name="text_info_reply_deleted">Reply has been deleted.</string>
 </resources>

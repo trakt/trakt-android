@@ -30,6 +30,7 @@ internal fun DeleteCommentSheet(
         skipPartiallyExpanded = true,
     ),
     active: Boolean,
+    isReply: Boolean = false,
     commentId: TraktId?,
     onDeleted: (commentId: TraktId) -> Unit,
     onDismiss: () -> Unit,
@@ -59,8 +60,10 @@ internal fun DeleteCommentSheet(
                         action = {
                             sheetScope.launch {
                                 val job = sheetScope.launch {
-                                    val message =
-                                        localContext.getString(R.string.text_info_comment_deleted)
+                                    val message = when {
+                                        isReply -> localContext.getString(R.string.text_info_reply_deleted)
+                                        else -> localContext.getString(R.string.text_info_comment_deleted)
+                                    }
                                     localSnack.showSnackbar(message)
                                 }
                                 delay(SNACK_DURATION_SHORT)

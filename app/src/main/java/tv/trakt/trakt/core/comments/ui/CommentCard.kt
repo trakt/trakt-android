@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -49,7 +48,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.W700
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
@@ -58,8 +56,13 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.Config.webUserUrl
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -70,59 +73,69 @@ import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryChip
 import tv.trakt.trakt.core.reactions.ui.ReactionsToolTip
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
+
+private val EmptyReactionsSummary = emptyMap<Int, ReactionsSummary>().toImmutableMap()
+private val EmptyReactions = emptyMap<Int, Reaction?>().toImmutableMap()
 
 @Composable
 internal fun CommentCard(
+    user: User?,
     comment: Comment,
     modifier: Modifier = Modifier,
-    userComment: Boolean = false,
-    reactions: ReactionsSummary? = null,
-    reactionsEnabled: Boolean = true,
-    userReaction: Reaction? = null,
+    replies: ImmutableList<Comment> = EmptyImmutableList,
+    reactions: ImmutableMap<Int, ReactionsSummary> = EmptyReactionsSummary,
+    userReactions: ImmutableMap<Int, Reaction?> = EmptyReactions,
     deleteEnabled: Boolean = true,
     replyEnabled: Boolean = false,
-    maxLines: Int = 4,
-    corner: Dp = 24.dp,
+    repliesLoading: Boolean = false,
     onClick: () -> Unit = {},
-    onRequestReactions: (() -> Unit)? = null,
-    onReactionClick: ((Reaction) -> Unit)? = null,
+    onRequestReactions: ((Comment) -> Unit)? = null,
+    onReactionClick: ((Reaction, Comment) -> Unit)? = null,
+    onRepliesClick: (() -> Unit)? = null,
     onReplyClick: ((Comment) -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
+    onDeleteReplyClick: ((Comment) -> Unit)? = null,
 ) {
     val uriHandler = LocalUriHandler.current
 
     LaunchedEffect(comment.id) {
-        if (reactions == null) {
-            onRequestReactions?.invoke()
+        if (reactions[comment.id] == null) {
+            onRequestReactions?.invoke(comment)
         }
+    }
+
+    val isUserComment = remember(user) {
+        comment.user.ids.trakt == user?.ids?.trakt
     }
 
     Card(
         onClick = onClick,
         modifier = modifier,
-        shape = RoundedCornerShape(corner),
+        shape = RoundedCornerShape(24.dp),
         colors = cardColors(
             containerColor = TraktTheme.colors.commentContainer,
         ),
         border = when {
-            userComment -> BorderStroke(2.dp, TraktTheme.colors.accent)
+            isUserComment -> BorderStroke(2.dp, TraktTheme.colors.accent)
             else -> null
         },
         content = {
             CommentCardContent(
+                user = user,
                 comment = comment,
-                maxLines = maxLines,
+                replies = replies,
                 reactions = reactions,
-                reactionsEnabled = reactionsEnabled,
-                userComment = userComment,
-                userReaction = userReaction,
+                userReactions = userReactions,
                 deleteEnabled = deleteEnabled,
                 replyEnabled = replyEnabled,
+                repliesLoading = repliesLoading,
+                onRequestReactions = onRequestReactions,
                 onReactionClick = onReactionClick,
                 onReplyClick = { onReplyClick?.invoke(comment) },
+                onRepliesClick = onRepliesClick,
                 onDeleteClick = onDeleteClick,
+                onDeleteReplyClick = onDeleteReplyClick,
                 onUserClick = {
                     uriHandler.openUri(
                         webUserUrl(it.username),
@@ -135,21 +148,28 @@ internal fun CommentCard(
 
 @Composable
 private fun CommentCardContent(
+    user: User?,
     comment: Comment,
-    reactions: ReactionsSummary?,
-    reactionsEnabled: Boolean,
-    userComment: Boolean,
-    userReaction: Reaction?,
+    replies: ImmutableList<Comment>,
+    reactions: ImmutableMap<Int, ReactionsSummary>,
+    userReactions: ImmutableMap<Int, Reaction?>,
     deleteEnabled: Boolean,
     replyEnabled: Boolean,
-    maxLines: Int,
+    repliesLoading: Boolean,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
-    onReactionClick: ((Reaction) -> Unit)? = null,
+    onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onReplyClick: (() -> Unit)? = null,
+    onRepliesClick: (() -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
+    onDeleteReplyClick: ((Comment) -> Unit)? = null,
+    onRequestReactions: ((Comment) -> Unit)? = null,
 ) {
     var isSpoilerRevealed by remember { mutableStateOf(false) }
+
+    val isUserComment = remember(user) {
+        comment.user.ids.trakt == user?.ids?.trakt
+    }
 
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -159,7 +179,7 @@ private fun CommentCardContent(
     ) {
         CommentHeader(
             comment = comment,
-            userComment = userComment,
+            userComment = isUserComment,
             deleteEnabled = deleteEnabled,
             onUserClick = onUserClick,
             onDeleteClick = onDeleteClick,
@@ -170,10 +190,9 @@ private fun CommentCardContent(
             text = comment.commentNoSpoilers,
             style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.3.em),
             color = TraktTheme.colors.textSecondary,
-            maxLines = maxLines,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.then(
-                if (comment.hasSpoilers && !userComment && !isSpoilerRevealed) {
+                if (comment.hasSpoilers && !isUserComment && !isSpoilerRevealed) {
                     Modifier
                         .blur(4.dp)
                         .padding(horizontal = 16.dp)
@@ -193,11 +212,13 @@ private fun CommentCardContent(
 
         CommentFooter(
             comment = comment,
-            reactions = reactions,
-            reactionsEnabled = reactionsEnabled && !userComment,
-            userReaction = userReaction,
+            reactions = reactions[comment.id],
+            reactionsEnabled = user != null && !isUserComment,
+            repliesLoading = repliesLoading,
+            userReaction = userReactions[comment.id],
             onReactionClick = onReactionClick,
             onReplyClick = onReplyClick,
+            onRepliesClick = onRepliesClick,
             replyEnabled = replyEnabled,
             modifier = Modifier
                 .padding(
@@ -205,6 +226,53 @@ private fun CommentCardContent(
                     end = 20.dp,
                 ),
         )
+
+        if (replies.isNotEmpty()) {
+            CommentRepliesContent(
+                user = user,
+                replies = replies,
+                reactions = reactions,
+                userReactions = userReactions,
+                onReactionClick = onReactionClick,
+                onDeleteClick = onDeleteReplyClick,
+                onRequestReactions = onRequestReactions,
+            )
+        }
+    }
+}
+
+@Composable
+private fun CommentRepliesContent(
+    user: User?,
+    replies: ImmutableList<Comment>,
+    reactions: ImmutableMap<Int, ReactionsSummary>,
+    userReactions: ImmutableMap<Int, Reaction?>,
+    onReactionClick: ((Reaction, Comment) -> Unit)? = null,
+    onRequestReactions: ((Comment) -> Unit)? = null,
+    onDeleteClick: ((Comment) -> Unit)? = null,
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier
+            .padding(top = 20.dp)
+            .padding(horizontal = 16.dp),
+    ) {
+        for (reply in replies) {
+            val isUserReply = remember(user) {
+                reply.user.ids.trakt == user?.ids?.trakt
+            }
+            CommentReplyCard(
+                user = user,
+                reply = reply,
+                reactions = reactions[reply.id],
+                userReaction = userReactions[reply.id],
+                reactionsEnabled = user != null && !isUserReply,
+                onReactionClick = { onReactionClick?.invoke(it, reply) },
+                onRequestReactions = { onRequestReactions?.invoke(reply) },
+                onDeleteClick = { onDeleteClick?.invoke(reply) },
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
     }
 }
 
@@ -341,10 +409,12 @@ private fun CommentFooter(
     reactions: ReactionsSummary?,
     reactionsEnabled: Boolean,
     replyEnabled: Boolean,
+    repliesLoading: Boolean,
     userReaction: Reaction?,
     modifier: Modifier = Modifier,
-    onReactionClick: ((Reaction) -> Unit)? = null,
+    onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onReplyClick: (() -> Unit)? = null,
+    onRepliesClick: (() -> Unit)? = null,
 ) {
     val scope = rememberCoroutineScope()
     val tooltipState = rememberTooltipState(isPersistent = true)
@@ -354,13 +424,15 @@ private fun CommentFooter(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = 2.dp),
+            .padding(start = 1.dp),
     ) {
         ReactionsToolTip(
             state = tooltipState,
             reactions = reactions,
             userReaction = userReaction,
-            onReactionClick = onReactionClick,
+            onReactionClick = { reaction ->
+                onReactionClick?.invoke(reaction, comment)
+            },
         ) {
             ReactionsSummaryChip(
                 reactions = reactions,
@@ -388,9 +460,14 @@ private fun CommentFooter(
             Row(
                 horizontalArrangement = spacedBy(2.dp),
                 verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.onClick(
+                    enabled = !repliesLoading && comment.replies > 0,
+                ) {
+                    onRepliesClick?.invoke()
+                },
             ) {
-                val tint = when (comment.replies) {
-                    0 -> TraktTheme.colors.textSecondary
+                val tint = when {
+                    comment.replies == 0 || repliesLoading -> TraktTheme.colors.textSecondary
                     else -> TraktTheme.colors.textPrimary
                 }
                 Icon(
@@ -413,7 +490,7 @@ private fun CommentFooter(
                     tint = TraktTheme.colors.textPrimary,
                     modifier = Modifier
                         .size(18.dp)
-                        .onClick {
+                        .onClick(enabled = !repliesLoading) {
                             onReplyClick?.invoke()
                         },
                 )
@@ -436,27 +513,19 @@ fun CommentPreview() {
             ) {
                 CommentCard(
                     onClick = {},
+                    user = PreviewData.user1,
                     comment = PreviewData.comment1.copy(userRating = 1, comment = "Lorem Ipsum"),
-                    userComment = true,
+                    replies = EmptyImmutableList,
                     modifier = Modifier
-                        .height(TraktTheme.size.commentCardSize)
-                        .aspectRatio(HorizontalImageAspectRatio),
+                        .height(TraktTheme.size.commentCardSize),
                 )
                 CommentCard(
                     onClick = {},
+                    user = PreviewData.user1,
                     comment = PreviewData.comment1.copy(userRating = 10),
+                    replies = listOf(PreviewData.comment1).toImmutableList(),
                     modifier = Modifier
-                        .height(TraktTheme.size.commentCardSize)
-                        .aspectRatio(HorizontalImageAspectRatio),
-                )
-
-                CommentCard(
-                    onClick = {},
-                    replyEnabled = true,
-                    comment = PreviewData.comment1.copy(userRating = 7, replies = 0),
-                    modifier = Modifier
-                        .height(TraktTheme.size.commentCardSize)
-                        .aspectRatio(HorizontalImageAspectRatio),
+                        .height(400.dp),
                 )
             }
         }

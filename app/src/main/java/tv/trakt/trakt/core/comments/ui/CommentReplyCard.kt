@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -18,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults.cardColors
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
@@ -64,22 +66,27 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 internal fun CommentReplyCard(
-    comment: Comment,
+    user: User?,
+    reply: Comment,
     modifier: Modifier = Modifier,
     reactions: ReactionsSummary? = null,
     reactionsEnabled: Boolean = true,
-    userComment: Boolean = false,
     userReaction: Reaction? = null,
     onClick: (() -> Unit)? = null,
     onRequestReactions: (() -> Unit)? = null,
     onReactionClick: ((Reaction) -> Unit)? = null,
+    onDeleteClick: (() -> Unit)? = null,
 ) {
     val uriHandler = LocalUriHandler.current
 
-    LaunchedEffect(comment.id) {
+    LaunchedEffect(reply.id) {
         if (reactions == null) {
             onRequestReactions?.invoke()
         }
+    }
+
+    val isUserReply = remember {
+        user?.username == reply.user.username
     }
 
     Card(
@@ -90,16 +97,18 @@ internal fun CommentReplyCard(
             containerColor = TraktTheme.colors.commentReplyContainer,
         ),
         border = when {
-            userComment -> BorderStroke(2.dp, TraktTheme.colors.accent)
+            isUserReply -> BorderStroke(2.dp, TraktTheme.colors.accent)
             else -> null
         },
         content = {
             CommentReplyCardContent(
-                comment = comment,
+                user = user,
+                comment = reply,
                 reactions = reactions,
                 reactionsEnabled = reactionsEnabled,
                 userReaction = userReaction,
                 onReactionClick = onReactionClick,
+                onDeleteClick = onDeleteClick,
                 onUserClick = {
                     uriHandler.openUri(
                         webUserUrl(it.username),
@@ -112,6 +121,7 @@ internal fun CommentReplyCard(
 
 @Composable
 private fun CommentReplyCardContent(
+    user: User?,
     comment: Comment,
     reactions: ReactionsSummary?,
     reactionsEnabled: Boolean,
@@ -119,6 +129,7 @@ private fun CommentReplyCardContent(
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
     onReactionClick: ((Reaction) -> Unit)? = null,
+    onDeleteClick: (() -> Unit)? = null,
 ) {
     var showSpoilers by remember { mutableStateOf(false) }
 
@@ -128,8 +139,10 @@ private fun CommentReplyCardContent(
             .padding(vertical = 16.dp),
     ) {
         CommentHeader(
+            user = user,
             comment = comment,
             onUserClick = onUserClick,
+            onDeleteClick = onDeleteClick,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
@@ -180,10 +193,16 @@ private fun CommentReplyCardContent(
 
 @Composable
 private fun CommentHeader(
+    user: User?,
     comment: Comment,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
+    onDeleteClick: (() -> Unit)? = null,
 ) {
+    val isUserReply = remember {
+        user?.ids?.trakt == comment.user.ids.trakt
+    }
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = spacedBy(12.dp),
@@ -220,23 +239,6 @@ private fun CommentHeader(
                         .clip(CircleShape),
                 )
             }
-
-//            comment.userLiteRating?.let {
-//                Icon(
-//                    painter = painterResource(it.iconRes),
-//                    contentDescription = it.name,
-//                    tint = it.tint,
-//                    modifier = Modifier
-//                        .align(Alignment.TopEnd)
-//                        .graphicsLayer {
-//                            translationX = 4.dp.toPx()
-//                            translationY = -4.dp.toPx()
-//                        }
-//                        .background(Shade500, shape = CircleShape)
-//                        .size(18.dp)
-//                        .padding(3.dp),
-//                )
-//            }
         }
 
         Column(verticalArrangement = spacedBy(2.dp)) {
@@ -264,6 +266,20 @@ private fun CommentHeader(
                 overflow = TextOverflow.Ellipsis,
             )
         }
+
+        if (isUserReply) {
+            Spacer(modifier = Modifier.weight(1f))
+            Icon(
+                painter = painterResource(R.drawable.ic_trash),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .size(20.dp)
+                    .onClick {
+                        onDeleteClick?.invoke()
+                    },
+            )
+        }
     }
 }
 
@@ -283,7 +299,7 @@ private fun CommentFooter(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 2.dp),
+            .padding(horizontal = 1.dp),
     ) {
         ReactionsToolTip(
             state = tooltipState,
@@ -326,18 +342,20 @@ private fun Preview() {
             ) {
                 CommentReplyCard(
                     onClick = {},
-                    comment = PreviewData.comment1
-                        .copy(userRating = 1, comment = "Lorem Ipsum with @johnlegend"),
+                    user = null,
+                    reply = PreviewData.comment1
+                        .copy(userRating = 1, comment = "Lorem Ipsum with @john"),
                 )
                 CommentReplyCard(
                     onClick = {},
-                    comment = PreviewData.comment1.copy(userRating = 10),
+                    user = PreviewData.user1,
+                    reply = PreviewData.comment1.copy(userRating = 10),
                 )
 
                 CommentReplyCard(
                     onClick = {},
-                    userComment = true,
-                    comment = PreviewData.comment1.copy(userRating = 7),
+                    user = PreviewData.user1,
+                    reply = PreviewData.comment1.copy(userRating = 7),
                 )
             }
         }

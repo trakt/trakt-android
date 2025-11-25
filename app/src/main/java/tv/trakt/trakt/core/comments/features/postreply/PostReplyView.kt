@@ -81,7 +81,7 @@ private fun ViewContent(
     onSubmitClick: (comment: String, spoiler: Boolean) -> Unit,
     onErrorClick: () -> Unit,
 ) {
-    val inputInitial = "@${state.commentUser?.displayName} "
+    val inputInitial = "@${state.commentUser?.username} "
     val inputState = rememberTextFieldState()
 
     val isValid = remember {

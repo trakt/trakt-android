@@ -239,10 +239,10 @@ private fun CommentContent(
                             reply.user.ids.trakt == user?.ids?.trakt
                         }
                         CommentReplyCard(
-                            comment = reply,
+                            user = user,
+                            reply = reply,
                             reactions = listReactions?.get(reply.id),
                             userReaction = userReactions[reply.id],
-                            userComment = isUserReply,
                             onRequestReactions = { onReplyLoaded?.invoke(reply) },
                             reactionsEnabled = reactionsEnabled && !isUserReply,
                             onReactionClick = { onReactionClick?.invoke(it, reply) },

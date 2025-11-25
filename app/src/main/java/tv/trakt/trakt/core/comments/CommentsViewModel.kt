@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package tv.trakt.trakt.core.comments
 
 import android.content.Context
@@ -7,8 +9,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
+import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -16,7 +20,6 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -29,6 +32,7 @@ import timber.log.Timber
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentReactionsUseCase
+import tv.trakt.trakt.common.core.comments.usecases.GetCommentRepliesUseCase
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
@@ -66,6 +70,7 @@ internal class CommentsViewModel(
     private val getMovieCommentsUseCase: GetMovieCommentsUseCase,
     private val getEpisodeCommentsUseCase: GetEpisodeCommentsUseCase,
     private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
+    private val getCommentRepliesUseCase: GetCommentRepliesUseCase,
     private val loadUserReactionsUseCase: LoadUserReactionsUseCase,
     private val reactionsUpdates: ReactionsUpdates,
     private val commentsUpdates: CommentsUpdates,
@@ -81,7 +86,9 @@ internal class CommentsViewModel(
     )
 
     private val backgroundState = MutableStateFlow(initialState.backgroundUrl)
-    private val itemsState = MutableStateFlow(initialState.items)
+    private val commentsState = MutableStateFlow(initialState.comments)
+    private val repliesState = MutableStateFlow(initialState.replies)
+    private val repliesLoadingState = MutableStateFlow(initialState.loadingReplies)
     private val filterState = MutableStateFlow(destination.initialFilter)
     private val reactionsState = MutableStateFlow(initialState.reactions)
     private val userReactionsState = MutableStateFlow(initialState.userReactions)
@@ -90,6 +97,7 @@ internal class CommentsViewModel(
     private val errorState = MutableStateFlow(initialState.error)
 
     private var reactionJob: Job? = null
+    private var repliesJob: Job? = null
 
     init {
         loadBackground()
@@ -119,7 +127,7 @@ internal class CommentsViewModel(
         return filter
     }
 
-    fun loadData() {
+    private fun loadData() {
         viewModelScope.launch {
             try {
                 loadingState.update { LOADING }
@@ -142,7 +150,7 @@ internal class CommentsViewModel(
                     val comments = commentsAsync.await()
                     val userReactions = userReactionsAsync.await()
 
-                    itemsState.update { comments }
+                    commentsState.update { comments }
                     userReactionsState.update { userReactions }
                 }
             } catch (error: Exception) {
@@ -198,6 +206,46 @@ internal class CommentsViewModel(
         }
     }
 
+    fun loadReplies(commentId: Int) {
+        // Already loading replies.
+        if (repliesJob?.isActive == true) {
+            return
+        }
+
+        // Replies already loaded for this comment.
+        if (repliesState.value?.containsKey(commentId) == true) {
+            return
+        }
+
+        viewModelScope.launch {
+            try {
+                repliesLoadingState.update {
+                    val mutable = it?.toMutableSet() ?: mutableSetOf()
+                    mutable.add(commentId)
+                    mutable.toImmutableSet()
+                }
+
+                val replies = getCommentRepliesUseCase.getCommentReplies(commentId)
+                repliesState.update { current ->
+                    val mutable = current?.toMutableMap() ?: mutableMapOf()
+                    mutable[commentId] = replies
+                    mutable.toImmutableMap()
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            } finally {
+                repliesLoadingState.update {
+                    val mutable = it?.toMutableSet()
+                    mutable?.remove(commentId)
+                    mutable?.toImmutableSet()
+                }
+                repliesJob = null
+            }
+        }
+    }
+
     fun setFilter(filter: CommentsFilter) {
         if (loadingState.value != DONE || filter == filterState.value) {
             return
@@ -212,7 +260,7 @@ internal class CommentsViewModel(
     fun loadReactions(commentId: Int) {
         viewModelScope.launch {
             if (reactionsState.value?.containsKey(commentId) == true) {
-                // Reactions already loaded for this comment.
+                Timber.d("Reactions already loaded for comment $commentId")
                 return@launch
             }
 
@@ -299,7 +347,7 @@ internal class CommentsViewModel(
     }
 
     fun addComment(comment: Comment) {
-        itemsState.update {
+        commentsState.update {
             val mutable = it?.toMutableList() ?: mutableListOf()
             mutable.add(0, comment)
             mutable.toImmutableList()
@@ -307,15 +355,58 @@ internal class CommentsViewModel(
         commentsUpdates.notifyUpdate(ALL_COMMENTS)
     }
 
-    fun addReply(comment: Comment) {
-        loadData()
+    fun deleteComment(commentId: TraktId) {
+        commentsState.update {
+            it?.filterNot { comment -> comment.id == commentId.value }?.toImmutableList()
+        }
         commentsUpdates.notifyUpdate(ALL_COMMENTS)
     }
 
-    fun deleteComment(commentId: TraktId) {
-        itemsState.update {
-            it?.filterNot { comment -> comment.id == commentId.value }?.toImmutableList()
+    fun addReply(comment: Comment) {
+        repliesState.update { current ->
+            val mutable = current?.toMutableMap() ?: mutableMapOf()
+            val replies = mutable[comment.parentId]?.toMutableList() ?: mutableListOf()
+            replies.add(0, comment)
+            mutable[comment.parentId] = replies.toImmutableList()
+            mutable.toImmutableMap()
         }
+
+        commentsState.update {
+            it?.map { existingComment ->
+                if (existingComment.id == comment.parentId) {
+                    existingComment.copy(replies = existingComment.replies + 1)
+                } else {
+                    existingComment
+                }
+            }?.toImmutableList()
+        }
+
+        commentsUpdates.notifyUpdate(ALL_COMMENTS)
+    }
+
+    fun deleteReply(
+        parentId: TraktId,
+        replyId: TraktId,
+    ) {
+        repliesState.update { current ->
+            val mutable = current?.toMutableMap() ?: mutableMapOf()
+            val replies = mutable[parentId.value]?.filterNot { reply -> reply.id == replyId.value }?.toImmutableList()
+            if (replies != null) {
+                mutable[parentId.value] = replies
+            }
+            mutable.toImmutableMap()
+        }
+
+        commentsState.update {
+            it?.map { existingComment ->
+                if (existingComment.id == parentId.value) {
+                    existingComment.copy(replies = (existingComment.replies - 1).coerceAtLeast(0))
+                } else {
+                    existingComment
+                }
+            }?.toImmutableList()
+        }
+
         commentsUpdates.notifyUpdate(ALL_COMMENTS)
     }
 
@@ -376,11 +467,12 @@ internal class CommentsViewModel(
         )
     }
 
-    @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<CommentsState> = combine(
+    val state = combine(
         backgroundState,
         mediaState,
-        itemsState,
+        commentsState,
+        repliesState,
+        repliesLoadingState,
         filterState,
         reactionsState,
         userReactionsState,
@@ -391,13 +483,15 @@ internal class CommentsViewModel(
         CommentsState(
             backgroundUrl = state[0] as String?,
             media = state[1] as CommentsState.MediaState?,
-            items = state[2] as ImmutableList<Comment>?,
-            filter = state[3] as CommentsFilter,
-            reactions = state[4] as ImmutableMap<Int, ReactionsSummary>?,
-            userReactions = state[5] as ImmutableMap<Int, Reaction?>?,
-            user = state[6] as User?,
-            loading = state[7] as LoadingState,
-            error = state[8] as Exception?,
+            comments = state[2] as ImmutableList<Comment>?,
+            replies = state[3] as ImmutableMap<Int, ImmutableList<Comment>>?,
+            loadingReplies = state[4] as ImmutableSet<Int>?,
+            filter = state[5] as CommentsFilter,
+            reactions = state[6] as ImmutableMap<Int, ReactionsSummary>?,
+            userReactions = state[7] as ImmutableMap<Int, Reaction?>?,
+            user = state[8] as User?,
+            loading = state[9] as LoadingState,
+            error = state[10] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

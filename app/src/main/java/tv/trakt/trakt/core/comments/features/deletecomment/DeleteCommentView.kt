@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalCoilApi::class)
 
 package tv.trakt.trakt.core.comments.features.deletecomment
 
@@ -33,6 +33,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun DeleteCommentView(
     viewModel: DeleteCommentViewModel,
     modifier: Modifier = Modifier,
+    isReply: Boolean = false,
     onDelete: () -> Unit = {},
     onCancel: () -> Unit = {},
 ) {
@@ -46,6 +47,7 @@ internal fun DeleteCommentView(
 
     ViewContent(
         state = state,
+        isReply = isReply,
         modifier = modifier,
         onDeleteClick = viewModel::deleteComment,
         onCancelClick = onCancel,
@@ -55,6 +57,7 @@ internal fun DeleteCommentView(
 @Composable
 private fun ViewContent(
     state: DeleteCommentState,
+    isReply: Boolean,
     modifier: Modifier = Modifier,
     onDeleteClick: () -> Unit,
     onCancelClick: () -> Unit,
@@ -63,7 +66,12 @@ private fun ViewContent(
         modifier = modifier,
     ) {
         Text(
-            text = stringResource(R.string.button_text_delete_review).uppercase(),
+            text = stringResource(
+                when {
+                    isReply -> R.string.button_text_delete_reply
+                    else -> R.string.button_text_delete_review
+                },
+            ).uppercase(),
             style = TraktTheme.typography.heading6,
             color = TraktTheme.colors.textSecondary,
             maxLines = 1,
@@ -73,7 +81,12 @@ private fun ViewContent(
         )
 
         Text(
-            text = stringResource(R.string.warning_prompt_delete_review),
+            text = stringResource(
+                when {
+                    isReply -> R.string.warning_prompt_delete_reply
+                    else -> R.string.warning_prompt_delete_review
+                },
+            ),
             style = TraktTheme.typography.paragraph,
             color = TraktTheme.colors.textPrimary,
             maxLines = 5,
@@ -109,12 +122,7 @@ private fun ViewContent(
     }
 }
 
-@OptIn(ExperimentalCoilApi::class)
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF212427,
-)
+@Preview
 @Composable
 private fun Preview() {
     TraktTheme {
@@ -124,6 +132,25 @@ private fun Preview() {
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             ViewContent(
                 state = DeleteCommentState(),
+                isReply = false,
+                onDeleteClick = {},
+                onCancelClick = {},
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun Preview2() {
+    TraktTheme {
+        val previewHandler = AsyncImagePreviewHandler {
+            ColorImage(Color.Blue.toArgb())
+        }
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            ViewContent(
+                state = DeleteCommentState(),
+                isReply = true,
                 onDeleteClick = {},
                 onCancelClick = {},
             )

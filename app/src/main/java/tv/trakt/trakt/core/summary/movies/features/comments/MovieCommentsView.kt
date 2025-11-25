@@ -245,10 +245,9 @@ private fun MovieCommentsContent(
                         } else {
                             ContentList(
                                 listItems = (state.items ?: emptyList()).toImmutableList(),
-                                listReactions = state.reactions,
+                                listReactions = (state.reactions ?: emptyMap()).toImmutableMap(),
                                 user = state.user,
                                 userReactions = (state.userReactions ?: emptyMap()).toImmutableMap(),
-                                reactionsEnabled = state.user != null,
                                 contentPadding = contentPadding,
                                 onCommentClick = onCommentClick,
                                 onDeleteCommentClick = onDeleteCommentClick,
@@ -266,9 +265,8 @@ private fun MovieCommentsContent(
 @Composable
 private fun ContentList(
     listItems: ImmutableList<Comment>,
-    listReactions: ImmutableMap<Int, ReactionsSummary>?,
+    listReactions: ImmutableMap<Int, ReactionsSummary>,
     listState: LazyListState = rememberLazyListState(),
-    reactionsEnabled: Boolean,
     user: User?,
     userReactions: ImmutableMap<Int, Reaction?>,
     contentPadding: PaddingValues,
@@ -297,21 +295,16 @@ private fun ContentList(
             items = listItems,
             key = { it.id },
         ) { comment ->
-            val isUserComment = remember(user) {
-                comment.user.ids.trakt == user?.ids?.trakt
-            }
-
             CommentCard(
+                user = user,
                 comment = comment,
-                reactions = listReactions?.get(comment.id),
-                userComment = isUserComment,
-                userReaction = userReactions[comment.id],
+                reactions = listReactions,
+                userReactions = userReactions,
                 deleteEnabled = false,
                 onClick = { onCommentClick?.invoke(comment) },
                 onDeleteClick = { onDeleteCommentClick?.invoke(comment) },
                 onRequestReactions = { onCommentLoaded?.invoke(comment) },
-                reactionsEnabled = reactionsEnabled,
-                onReactionClick = { onReactionClick?.invoke(it, comment) },
+                onReactionClick = onReactionClick,
                 modifier = Modifier
                     .height(TraktTheme.size.commentCardSize)
                     .aspectRatio(HorizontalImageAspectRatio)

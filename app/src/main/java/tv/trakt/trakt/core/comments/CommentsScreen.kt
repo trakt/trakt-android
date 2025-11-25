@@ -53,10 +53,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
-import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableMap
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableSet
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.User
@@ -74,7 +76,6 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.FilterChip
 import tv.trakt.trakt.ui.components.FilterChipGroup
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
-import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -88,16 +89,15 @@ internal fun CommentsScreen(
     var postCommentSheet by remember { mutableStateOf(false) }
     var postReplySheet by remember { mutableStateOf<Comment?>(null) }
     var deleteCommentSheet by remember { mutableStateOf<Comment?>(null) }
+    var deleteReplySheet by remember { mutableStateOf<Comment?>(null) }
 
     CommentsContent(
         state = state,
         modifier = modifier,
-        onCommentLoaded = {
+        onRequestReactions = {
             viewModel.loadReactions(it.id)
         },
-        onFilterClick = {
-            viewModel.setFilter(it)
-        },
+        onFilterClick = viewModel::setFilter,
         onReactionClick = { reaction, comment ->
             viewModel.setReaction(reaction, comment.id)
         },
@@ -107,8 +107,14 @@ internal fun CommentsScreen(
         onDeleteCommentClick = {
             deleteCommentSheet = it
         },
+        onDeleteReplyClick = {
+            deleteReplySheet = it
+        },
         onReplyClick = {
             postReplySheet = it
+        },
+        onRepliesClick = {
+            viewModel.loadReplies(it.id)
         },
         onBackClick = onNavigateBack,
     )
@@ -140,18 +146,37 @@ internal fun CommentsScreen(
             deleteCommentSheet = null
         },
     )
+
+    DeleteCommentSheet(
+        isReply = true,
+        active = deleteReplySheet != null,
+        commentId = deleteReplySheet?.id?.toTraktId(),
+        onDeleted = {
+            deleteReplySheet?.let {
+                viewModel.deleteReply(
+                    parentId = it.parentId.toTraktId(),
+                    replyId = it.id.toTraktId(),
+                )
+            }
+        },
+        onDismiss = {
+            deleteReplySheet = null
+        },
+    )
 }
 
 @Composable
 internal fun CommentsContent(
     state: CommentsState,
     modifier: Modifier = Modifier,
-    onCommentLoaded: ((Comment) -> Unit)? = null,
+    onRequestReactions: ((Comment) -> Unit)? = null,
     onFilterClick: ((CommentsFilter) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onReplyClick: ((Comment) -> Unit)? = null,
+    onRepliesClick: ((Comment) -> Unit)? = null,
     onNewCommentClick: (() -> Unit)? = null,
     onDeleteCommentClick: ((Comment) -> Unit)? = null,
+    onDeleteReplyClick: ((Comment) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     val listState = rememberLazyListState(
@@ -188,25 +213,29 @@ internal fun CommentsContent(
 
         ContentList(
             listState = listState,
-            listItems = (state.items ?: emptyList()).toImmutableList(),
             listFilter = state.filter,
-            listReactions = state.reactions,
+            listItems = state.comments ?: EmptyImmutableList,
+            listReplies = (state.replies ?: emptyMap()).toImmutableMap(),
+            listRepliesLoading = state.loadingReplies ?: EmptyImmutableSet,
+            listReactions = (state.reactions ?: emptyMap()).toImmutableMap(),
             userReactions = (state.userReactions ?: emptyMap()).toImmutableMap(),
             contentPadding = contentPadding,
             loading = state.loading.isLoading,
             user = state.user,
-            onCommentLoaded = onCommentLoaded,
+            onRequestReactions = onRequestReactions,
             onFilterClick = onFilterClick,
             onReactionClick = onReactionClick,
             onReplyClick = onReplyClick,
+            onRepliesClick = onRepliesClick,
             onDeleteCommentClick = onDeleteCommentClick,
+            onDeleteReplyClick = onDeleteReplyClick,
             onBackClick = onBackClick,
         )
 
         AnimatedVisibility(
             visible = state.user != null && !state.loading.isLoading,
-            enter = fadeIn(tween(delayMillis = 300)),
-            exit = fadeOut(tween(delayMillis = 300)),
+            enter = fadeIn(tween(delayMillis = 250)),
+            exit = fadeOut(tween(delayMillis = 250)),
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(
@@ -217,22 +246,34 @@ internal fun CommentsContent(
                         .plus(10.dp),
                 ),
         ) {
-            TertiaryButton(
-                text = stringResource(R.string.button_text_comment),
-                icon = painterResource(R.drawable.ic_comment_plus),
-                height = 38.dp,
-                onClick = onNewCommentClick ?: {},
+            Box(
+                contentAlignment = Alignment.Center,
                 modifier = Modifier
+                    .size(52.dp)
                     .dropShadow(
-                        shape = RoundedCornerShape(12.dp),
+                        shape = RoundedCornerShape(16.dp),
                         shadow = Shadow(
                             radius = 4.dp,
                             color = Color.Black,
                             spread = 2.dp,
                             alpha = 0.2f,
                         ),
-                    ),
-            )
+                    )
+                    .background(
+                        TraktTheme.colors.accent,
+                        RoundedCornerShape(16.dp),
+                    )
+                    .onClick {
+                        onNewCommentClick?.invoke()
+                    },
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_comment_plus),
+                    contentDescription = stringResource(R.string.button_text_comment),
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier.size(24.dp),
+                )
+            }
         }
     }
 }
@@ -242,17 +283,21 @@ private fun ContentList(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues,
     listItems: ImmutableList<Comment>,
-    listReactions: ImmutableMap<Int, ReactionsSummary>?,
+    listReactions: ImmutableMap<Int, ReactionsSummary>,
+    listReplies: ImmutableMap<Int, ImmutableList<Comment>>,
+    listRepliesLoading: ImmutableSet<Int>,
     listState: LazyListState,
     listFilter: CommentsFilter?,
     loading: Boolean,
     user: User?,
     userReactions: ImmutableMap<Int, Reaction?>,
-    onCommentLoaded: ((Comment) -> Unit)? = null,
+    onRequestReactions: ((Comment) -> Unit)? = null,
     onDeleteCommentClick: ((Comment) -> Unit)? = null,
+    onDeleteReplyClick: ((Comment) -> Unit)? = null,
     onFilterClick: ((CommentsFilter) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onReplyClick: ((Comment) -> Unit)? = null,
+    onRepliesClick: ((Comment) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     LazyColumn(
@@ -291,18 +336,19 @@ private fun ContentList(
                 }
 
                 CommentCard(
+                    user = user,
                     comment = comment,
-                    reactions = listReactions?.get(comment.id),
-                    userReaction = userReactions[comment.id],
-                    onRequestReactions = { onCommentLoaded?.invoke(comment) },
-                    reactionsEnabled = user != null,
+                    reactions = listReactions,
+                    replies = listReplies[comment.id] ?: EmptyImmutableList,
+                    repliesLoading = listRepliesLoading.contains(comment.id),
+                    userReactions = userReactions,
+                    onRequestReactions = onRequestReactions,
                     replyEnabled = user != null && !isUserComment,
-                    userComment = isUserComment,
-                    onReactionClick = { onReactionClick?.invoke(it, comment) },
+                    onReactionClick = onReactionClick,
                     onReplyClick = { onReplyClick?.invoke(it) },
-                    maxLines = Int.MAX_VALUE,
-                    corner = 20.dp,
+                    onRepliesClick = { onRepliesClick?.invoke(comment) },
                     onDeleteClick = { onDeleteCommentClick?.invoke(comment) },
+                    onDeleteReplyClick = { onDeleteReplyClick?.invoke(it) },
                     modifier = Modifier
                         .padding(bottom = 16.dp)
                         .animateItem(
