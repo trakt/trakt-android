@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -28,6 +29,7 @@ internal class PostReplyViewModel(
     private val commentUser: User?,
     private val sessionManager: SessionManager,
     private val postReplyUseCase: PostReplyUseCase,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = PostReplyState()
 
@@ -75,6 +77,8 @@ internal class PostReplyViewModel(
                         spoiler = spoiler,
                     )
                 }
+
+                analytics.comments.logReplyAdd()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

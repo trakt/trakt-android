@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -32,6 +33,7 @@ internal class PostCommentViewModel(
     private val mediaType: MediaType,
     private val sessionManager: SessionManager,
     private val postCommentUseCase: PostCommentUseCase,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = PostCommentState()
 
@@ -91,6 +93,10 @@ internal class PostCommentViewModel(
                         else -> throw IllegalStateException("Invalid media type for new comment.")
                     }
                 }
+
+                analytics.comments.logCommentAdd(
+                    mediaType = mediaType.value,
+                )
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

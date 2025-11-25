@@ -139,6 +139,7 @@ internal val commentsModule = module {
             mediaType = mediaType,
             sessionManager = get(),
             postCommentUseCase = get(),
+            analytics = get(),
         )
     }
 
@@ -148,6 +149,7 @@ internal val commentsModule = module {
             commentUser = user,
             sessionManager = get(),
             postReplyUseCase = get(),
+            analytics = get(),
         )
     }
 
@@ -155,6 +157,7 @@ internal val commentsModule = module {
         DeleteCommentViewModel(
             commentId = commentId,
             deleteCommentUseCase = get(),
+            analytics = get(),
         )
     }
 }

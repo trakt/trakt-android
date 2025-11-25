@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
@@ -17,6 +18,7 @@ import tv.trakt.trakt.core.comments.usecases.DeleteCommentUseCase
 internal class DeleteCommentViewModel(
     private val commentId: TraktId,
     private val deleteCommentUseCase: DeleteCommentUseCase,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = DeleteCommentState()
 
@@ -36,6 +38,7 @@ internal class DeleteCommentViewModel(
         job = viewModelScope.launch {
             try {
                 deleteCommentUseCase.deleteComment(commentId)
+                analytics.comments.logCommentRemove()
                 deletedState.update { true }
             } catch (error: Exception) {
                 loadingState.update { LoadingState.DONE }

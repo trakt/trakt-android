@@ -7,6 +7,7 @@ import tv.trakt.trakt.core.main.model.MediaMode
 internal class DebugAnalytics(
     override val reactions: Analytics.Reactions,
     override val ratings: Analytics.Ratings,
+    override val comments: Analytics.Comments,
     override val progress: Analytics.Progress,
 ) : Analytics {
     override fun logScreenView(screenName: String) {
@@ -60,6 +61,24 @@ internal class DebugAnalyticsRatings : Analytics.Ratings {
         source: String,
     ) {
         Timber.d("logFavoriteRemove: mediaType=${mediaType.lowercase()}, source=${source.lowercase()}")
+    }
+}
+
+internal class DebugAnalyticsComments : Analytics.Comments {
+    override fun logCommentAdd(mediaType: String) {
+        Timber.d("logCommentAdd: mediaType=${mediaType.lowercase()}")
+    }
+
+    override fun logCommentRemove() {
+        Timber.d("logCommentRemove")
+    }
+
+    override fun logReplyAdd() {
+        Timber.d("logReplyAdd")
+    }
+
+    override fun logReplyRemove() {
+        Timber.d("logReplyRemove")
     }
 }
 

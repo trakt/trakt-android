@@ -8,6 +8,7 @@ import tv.trakt.trakt.core.main.model.MediaMode
 interface Analytics {
     val reactions: Reactions
     val ratings: Ratings
+    val comments: Comments
     val progress: Progress
 
     /**
@@ -71,6 +72,28 @@ interface Analytics {
             mediaType: String,
             source: String,
         )
+    }
+
+    interface Comments {
+        /**
+         * Logs the addition of a comment.
+         */
+        fun logCommentAdd(mediaType: String)
+
+        /**
+         * Logs the removal of a comment.
+         */
+        fun logCommentRemove()
+
+        /**
+         * Logs the addition of a reply to a comment.
+         */
+        fun logReplyAdd()
+
+        /**
+         * Logs the removal of a reply to a comment.
+         */
+        fun logReplyRemove()
     }
 
     interface Progress {

@@ -27,6 +27,7 @@ internal class FirebaseAnalytics(
     private val firebase: FirebaseAnalytics,
     override val reactions: Analytics.Reactions,
     override val ratings: Analytics.Ratings,
+    override val comments: Analytics.Comments,
     override val progress: Analytics.Progress,
 ) : Analytics {
     companion object Event {
@@ -162,6 +163,50 @@ internal class FirebaseAnalyticsRatings(
                 PARAMETER_MEDIA_TYPE to mediaType.lowercase(),
                 PARAMETER_SOURCE to source.lowercase(),
             ),
+        )
+    }
+}
+
+internal class FirebaseAnalyticsComments(
+    private val firebase: FirebaseAnalytics,
+) : Analytics.Comments {
+    companion object Event {
+        const val COMMENTS_ADD = "comments_add"
+        const val COMMENTS_REMOVE = "comments_remove"
+    }
+
+    init {
+        require(eventName(COMMENTS_ADD).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
+        require(eventName(COMMENTS_REMOVE).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
+    }
+
+    override fun logCommentAdd(mediaType: String) {
+        firebase.logEvent(
+            eventName(COMMENTS_ADD),
+            bundleOf(
+                PARAMETER_MEDIA_TYPE to mediaType.lowercase(),
+            ),
+        )
+    }
+
+    override fun logReplyAdd() {
+        firebase.logEvent(
+            eventName(COMMENTS_ADD),
+            null,
+        )
+    }
+
+    override fun logCommentRemove() {
+        firebase.logEvent(
+            eventName(COMMENTS_REMOVE),
+            null,
+        )
+    }
+
+    override fun logReplyRemove() {
+        firebase.logEvent(
+            eventName(COMMENTS_REMOVE),
+            null,
         )
     }
 }

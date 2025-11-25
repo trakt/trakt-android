@@ -20,10 +20,12 @@ import org.koin.dsl.module
 import tv.trakt.trakt.BuildConfig
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.implementation.DebugAnalytics
+import tv.trakt.trakt.analytics.implementation.DebugAnalyticsComments
 import tv.trakt.trakt.analytics.implementation.DebugAnalyticsProgress
 import tv.trakt.trakt.analytics.implementation.DebugAnalyticsRatings
 import tv.trakt.trakt.analytics.implementation.DebugAnalyticsReactions
 import tv.trakt.trakt.analytics.implementation.FirebaseAnalytics
+import tv.trakt.trakt.analytics.implementation.FirebaseAnalyticsComments
 import tv.trakt.trakt.analytics.implementation.FirebaseAnalyticsProgress
 import tv.trakt.trakt.analytics.implementation.FirebaseAnalyticsRatings
 import tv.trakt.trakt.analytics.implementation.FirebaseAnalyticsReactions
@@ -55,6 +57,7 @@ internal val mainModule = module {
             DebugAnalytics(
                 reactions = DebugAnalyticsReactions(),
                 ratings = DebugAnalyticsRatings(),
+                comments = DebugAnalyticsComments(),
                 progress = DebugAnalyticsProgress(),
             )
         } else {
@@ -65,6 +68,9 @@ internal val mainModule = module {
                     firebase = firebase,
                 ),
                 ratings = FirebaseAnalyticsRatings(
+                    firebase = firebase,
+                ),
+                comments = FirebaseAnalyticsComments(
                     firebase = firebase,
                 ),
                 progress = FirebaseAnalyticsProgress(
