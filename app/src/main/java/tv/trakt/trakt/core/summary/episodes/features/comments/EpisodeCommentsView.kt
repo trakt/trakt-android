@@ -300,6 +300,7 @@ private fun ContentList(
                 userReactions = userReactions,
                 deleteEnabled = false,
                 onClick = { onCommentClick?.invoke(comment) },
+                onRepliesClick = { onCommentClick?.invoke(comment) },
                 onDeleteClick = { onDeleteCommentClick?.invoke(comment) },
                 onRequestReactions = { onCommentLoaded?.invoke(comment) },
                 onReactionClick = onReactionClick,
