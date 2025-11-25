@@ -147,7 +147,7 @@
     <string name="button_text_cancel">Cancel</string>
     <string name="button_text_where_to_watch">Where to watch</string>
     <string name="button_text_no_services">No services</string>
-    <string name="list_title_most_popular_searches">Most Popular Searches</string>
+    <string name="list_title_most_popular_searches">Top Searches</string>
     <string name="list_title_birthdays_this_month">Birthdays This Month</string>
     <string name="text_sort_recently_updated">Recently updated</string>
     <string name="text_sort_recently_added">Recently added</string>

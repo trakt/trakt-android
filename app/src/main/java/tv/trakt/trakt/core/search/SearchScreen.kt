@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -25,21 +24,16 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
@@ -56,12 +50,9 @@ import tv.trakt.trakt.core.search.model.SearchItem
 import tv.trakt.trakt.core.search.views.SearchGridItem
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.core.user.UserCollectionState
-import tv.trakt.trakt.helpers.ScreenHeaderState
-import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
-import tv.trakt.trakt.ui.components.headerbar.HeaderBar
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -79,7 +70,6 @@ internal fun SearchScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    val headerState = rememberHeaderState()
     val contentGridState = rememberLazyGridState(
         cacheWindow = LazyLayoutCacheWindow(
             aheadFraction = 0.5F,
@@ -109,8 +99,6 @@ internal fun SearchScreen(
         viewModel.updateSearch(searchInput)
 
         contentGridState.scrollToItem(0)
-        headerState.resetScrolled()
-        headerState.resetOffset()
     }
 
     LaunchedEffect(state.searching) {
@@ -118,7 +106,6 @@ internal fun SearchScreen(
     }
 
     SearchScreenContent(
-        headerState = headerState,
         state = state,
         contentGridState = contentGridState,
         onShowClick = { viewModel.navigateToShow(it) },
@@ -150,7 +137,6 @@ internal fun SearchScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun SearchScreenContent(
-    headerState: ScreenHeaderState,
     state: SearchState,
     contentGridState: LazyGridState,
     modifier: Modifier = Modifier,
@@ -160,24 +146,10 @@ private fun SearchScreenContent(
     onMovieLongClick: (Movie) -> Unit = {},
     onPersonClick: (Person) -> Unit = {},
 ) {
-    val isScrolledToTop by remember {
-        derivedStateOf {
-            contentGridState.firstVisibleItemIndex == 0 &&
-                contentGridState.firstVisibleItemScrollOffset == 0
-        }
-    }
-
-    LaunchedEffect(isScrolledToTop) {
-        if (isScrolledToTop) {
-            headerState.resetScrolled()
-        }
-    }
-
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(TraktTheme.colors.backgroundPrimary)
-            .nestedScroll(headerState.connection),
+            .background(TraktTheme.colors.backgroundPrimary),
     ) {
         ScrollableBackdropImage(
             scrollState = contentGridState,
@@ -197,12 +169,6 @@ private fun SearchScreenContent(
             onMovieLongClick = onMovieLongClick,
             onPersonClick = onPersonClick,
             error = state.error,
-        )
-
-        SearchScreenHeader(
-            state = state,
-            headerState = headerState,
-            isScrolledToTop = isScrolledToTop,
         )
     }
 }
@@ -225,7 +191,7 @@ private fun ContentList(
 ) {
     val topPadding = WindowInsets.statusBars.asPaddingValues()
         .calculateTopPadding()
-        .plus(TraktTheme.spacing.mainPageTopSpace)
+        .plus(8.dp)
 
     val contentPadding = PaddingValues(
         start = TraktTheme.spacing.mainPageHorizontalSpace,
@@ -330,7 +296,7 @@ private fun ContentList(
                     }
                 }
                 else -> {
-                    items(count = 12) { index ->
+                    items(count = 12) {
                         VerticalMediaSkeletonCard(
                             chipRatio = 0.66F,
                             chipSpacing = 8.dp,
@@ -359,29 +325,6 @@ private fun ContentList(
     }
 }
 
-@Composable
-private fun SearchScreenHeader(
-    state: SearchState,
-    headerState: ScreenHeaderState,
-    isScrolledToTop: Boolean,
-) {
-    val userState = remember(state.user) {
-        val loadingDone = state.user.loading == DONE
-        val userNotNull = state.user.user != null
-        loadingDone to userNotNull
-    }
-
-    HeaderBar(
-        containerAlpha = if (headerState.scrolled && !isScrolledToTop) 0.98F else 0F,
-        showGreeting = headerState.startScrolled,
-        showLogin = userState.first && !userState.second,
-        showMediaButtons = false,
-        modifier = Modifier.offset {
-            IntOffset(0, headerState.connection.barOffset.fastRoundToInt())
-        },
-    )
-}
-
 @Preview(
     device = "id:pixel_9",
     showBackground = true,
@@ -392,7 +335,6 @@ private fun Preview() {
     TraktTheme {
         SearchScreenContent(
             state = SearchState(),
-            headerState = rememberHeaderState(),
             contentGridState = rememberLazyGridState(),
         )
     }
