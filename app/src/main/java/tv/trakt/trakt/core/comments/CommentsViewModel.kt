@@ -366,7 +366,7 @@ internal class CommentsViewModel(
         repliesState.update { current ->
             val mutable = current?.toMutableMap() ?: mutableMapOf()
             val replies = mutable[comment.parentId]?.toMutableList() ?: mutableListOf()
-            replies.add(0, comment)
+            replies.add(comment)
             mutable[comment.parentId] = replies.toImmutableList()
             mutable.toImmutableMap()
         }

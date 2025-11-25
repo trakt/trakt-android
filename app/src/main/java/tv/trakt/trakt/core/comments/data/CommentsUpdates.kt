@@ -10,5 +10,6 @@ internal interface CommentsUpdates {
 
     enum class Source {
         ALL_COMMENTS,
+        COMMENT_DETAILS,
     }
 }

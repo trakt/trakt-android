@@ -94,6 +94,7 @@ internal fun CommentCard(
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onRepliesClick: (() -> Unit)? = null,
     onReplyClick: ((Comment) -> Unit)? = null,
+    onReplyUserClick: ((Comment, User) -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
     onDeleteReplyClick: ((Comment) -> Unit)? = null,
 ) {
@@ -133,6 +134,7 @@ internal fun CommentCard(
                 onRequestReactions = onRequestReactions,
                 onReactionClick = onReactionClick,
                 onReplyClick = { onReplyClick?.invoke(comment) },
+                onReplyUserClick = { onReplyUserClick?.invoke(comment, it) },
                 onRepliesClick = onRepliesClick,
                 onDeleteClick = onDeleteClick,
                 onDeleteReplyClick = onDeleteReplyClick,
@@ -160,6 +162,7 @@ private fun CommentCardContent(
     onUserClick: ((User) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onReplyClick: (() -> Unit)? = null,
+    onReplyUserClick: ((User) -> Unit)? = null,
     onRepliesClick: (() -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
     onDeleteReplyClick: ((Comment) -> Unit)? = null,
@@ -234,6 +237,7 @@ private fun CommentCardContent(
                 reactions = reactions,
                 userReactions = userReactions,
                 onReactionClick = onReactionClick,
+                onReplyClick = { onReplyUserClick?.invoke(it.user) },
                 onDeleteClick = onDeleteReplyClick,
                 onRequestReactions = onRequestReactions,
             )
@@ -249,6 +253,7 @@ private fun CommentRepliesContent(
     userReactions: ImmutableMap<Int, Reaction?>,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onRequestReactions: ((Comment) -> Unit)? = null,
+    onReplyClick: ((Comment) -> Unit)? = null,
     onDeleteClick: ((Comment) -> Unit)? = null,
 ) {
     Column(
@@ -258,18 +263,15 @@ private fun CommentRepliesContent(
             .padding(horizontal = 16.dp),
     ) {
         for (reply in replies) {
-            val isUserReply = remember(user) {
-                reply.user.ids.trakt == user?.ids?.trakt
-            }
             CommentReplyCard(
                 user = user,
                 reply = reply,
                 reactions = reactions[reply.id],
                 userReaction = userReactions[reply.id],
-                reactionsEnabled = user != null && !isUserReply,
                 onReactionClick = { onReactionClick?.invoke(it, reply) },
                 onRequestReactions = { onRequestReactions?.invoke(reply) },
                 onDeleteClick = { onDeleteClick?.invoke(reply) },
+                onReplyClick = { onReplyClick?.invoke(reply) },
                 modifier = Modifier.fillMaxWidth(),
             )
         }

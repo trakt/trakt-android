@@ -24,6 +24,7 @@ import tv.trakt.trakt.common.core.comments.usecases.GetCommentRepliesUseCase
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.comments.CommentsViewModel
 import tv.trakt.trakt.core.comments.data.CommentsUpdates
 import tv.trakt.trakt.core.comments.data.CommentsUpdatesStorage
@@ -128,6 +129,7 @@ internal val commentsModule = module {
             getRepliesUseCase = get(),
             getCommentReactionsUseCase = get(),
             loadUserReactionsUseCase = get(),
+            commentsUpdates = get(),
         )
     }
 
@@ -140,9 +142,10 @@ internal val commentsModule = module {
         )
     }
 
-    viewModel { (comment: Comment) ->
+    viewModel { (comment: Comment, user: User?) ->
         PostReplyViewModel(
             comment = comment,
+            commentUser = user,
             sessionManager = get(),
             postReplyUseCase = get(),
         )

@@ -25,6 +25,7 @@ import kotlin.time.Duration.Companion.seconds
 
 internal class PostReplyViewModel(
     private val comment: Comment,
+    private val commentUser: User?,
     private val sessionManager: SessionManager,
     private val postReplyUseCase: PostReplyUseCase,
 ) : ViewModel() {
@@ -32,7 +33,7 @@ internal class PostReplyViewModel(
 
     private val loadingState = MutableStateFlow(initialState.loading)
     private val userState = MutableStateFlow(initialState.user)
-    private val commentUserState = MutableStateFlow(comment.user)
+    private val commentUserState = MutableStateFlow(commentUser ?: comment.user)
     private val resultState = MutableStateFlow(initialState.result)
     private val errorState = MutableStateFlow(initialState.error)
 

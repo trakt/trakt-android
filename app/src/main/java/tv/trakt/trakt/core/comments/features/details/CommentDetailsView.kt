@@ -5,6 +5,7 @@ package tv.trakt.trakt.core.comments.features.details
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -33,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
@@ -45,6 +47,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
@@ -69,6 +72,7 @@ import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.ui.theme.colors.Shade800
 import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
+import tv.trakt.trakt.core.comments.features.postreply.PostReplySheet
 import tv.trakt.trakt.core.comments.ui.CommentReplyCard
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
 import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryChip
@@ -84,7 +88,9 @@ internal fun CommentDetailsView(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    var postReplySheet by remember { mutableStateOf<User?>(null) }
     var deleteCommentSheet by remember { mutableStateOf<Comment?>(null) }
+    var deleteReplySheet by remember { mutableStateOf<Comment?>(null) }
 
     CommentDetailsViewContent(
         state = state,
@@ -95,8 +101,24 @@ internal fun CommentDetailsView(
         onReactionClick = { reaction, comment ->
             viewModel.setReaction(reaction, comment.id)
         },
+        onReplyClick = { user ->
+            postReplySheet = user
+        },
         onDeleteClick = { comment ->
             deleteCommentSheet = comment
+        },
+        onDeleteReplyClick = { reply ->
+            deleteReplySheet = reply
+        },
+    )
+
+    PostReplySheet(
+        active = postReplySheet != null,
+        comment = state.comment,
+        user = postReplySheet,
+        onReplyPost = viewModel::addReply,
+        onDismiss = {
+            postReplySheet = null
         },
     )
 
@@ -108,6 +130,20 @@ internal fun CommentDetailsView(
             deleteCommentSheet = null
         },
     )
+
+    DeleteCommentSheet(
+        isReply = true,
+        active = deleteReplySheet != null,
+        commentId = deleteReplySheet?.id?.toTraktId(),
+        onDeleted = {
+            deleteReplySheet?.let {
+                viewModel.deleteReply(replyId = it.id)
+            }
+        },
+        onDismiss = {
+            deleteReplySheet = null
+        },
+    )
 }
 
 @Composable
@@ -117,6 +153,8 @@ private fun CommentDetailsViewContent(
     onReplyLoaded: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onDeleteClick: ((Comment) -> Unit)? = null,
+    onReplyClick: ((User) -> Unit)? = null,
+    onDeleteReplyClick: ((Comment) -> Unit)? = null,
 ) {
     LazyColumn(
         verticalArrangement = spacedBy(16.dp),
@@ -125,17 +163,17 @@ private fun CommentDetailsViewContent(
     ) {
         state.comment?.let { comment ->
             item {
-                val isUserComment = state.user?.ids?.trakt == comment.user.ids.trakt
                 CommentContent(
                     user = state.user,
                     comment = comment,
                     commentReplies = state.replies,
                     listReactions = state.reactions,
                     userReactions = (state.userReactions ?: emptyMap()).toImmutableMap(),
-                    reactionsEnabled = state.user != null && !isUserComment,
                     onReplyLoaded = onReplyLoaded,
                     onReactionClick = onReactionClick,
+                    onReplyClick = onReplyClick,
                     onDeleteClick = { onDeleteClick?.invoke(comment) },
+                    onDeleteReplyClick = onDeleteReplyClick,
                 )
             }
         }
@@ -184,11 +222,12 @@ private fun CommentContent(
     comment: Comment,
     commentReplies: ImmutableList<Comment>?,
     listReactions: ImmutableMap<Int, ReactionsSummary>?,
-    reactionsEnabled: Boolean,
     userReactions: ImmutableMap<Int, Reaction?>,
     onReplyLoaded: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
+    onReplyClick: ((User) -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
+    onDeleteReplyClick: ((Comment) -> Unit)? = null,
 ) {
     var isCollapsed by remember { mutableStateOf(true) }
 
@@ -216,10 +255,12 @@ private fun CommentContent(
         )
 
         CommentFooter(
+            user = user,
+            comment = comment,
             reactions = listReactions?.get(comment.id),
-            reactionsEnabled = reactionsEnabled,
             userReaction = userReactions[comment.id],
             onReactionClick = { onReactionClick?.invoke(it, comment) },
+            onReplyClick = { onReplyClick?.invoke(comment.user) },
             modifier = Modifier
                 .padding(top = 16.dp),
         )
@@ -235,17 +276,15 @@ private fun CommentContent(
                         .padding(top = 20.dp),
                 ) {
                     for (reply in replies) {
-                        val isUserReply = remember(user) {
-                            reply.user.ids.trakt == user?.ids?.trakt
-                        }
                         CommentReplyCard(
                             user = user,
                             reply = reply,
                             reactions = listReactions?.get(reply.id),
                             userReaction = userReactions[reply.id],
                             onRequestReactions = { onReplyLoaded?.invoke(reply) },
-                            reactionsEnabled = reactionsEnabled && !isUserReply,
                             onReactionClick = { onReactionClick?.invoke(it, reply) },
+                            onReplyClick = { onReplyClick?.invoke(reply.user) },
+                            onDeleteClick = { onDeleteReplyClick?.invoke(reply) },
                             modifier = Modifier.fillMaxWidth(),
                         )
                     }
@@ -295,22 +334,42 @@ private fun CommentHeader(
                 )
             }
 
-//            comment.userLiteRating?.let {
-//                Icon(
-//                    painter = painterResource(it.iconRes),
-//                    contentDescription = it.name,
-//                    tint = it.tint,
-//                    modifier = Modifier
-//                        .align(Alignment.TopEnd)
-//                        .graphicsLayer {
-//                            translationX = 4.dp.toPx()
-//                            translationY = -4.dp.toPx()
-//                        }
-//                        .background(Shade500, shape = CircleShape)
-//                        .size(18.dp)
-//                        .padding(3.dp),
-//                )
-//            }
+            comment.user5Rating?.let { rating ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = spacedBy(0.5.dp),
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .graphicsLayer {
+                            translationY = 6.dp.toPx()
+                        }
+                        .shadow(1.dp, CircleShape)
+                        .background(TraktTheme.colors.chipContainer, shape = CircleShape)
+                        .padding(
+                            start = 4.dp,
+                            end = 3.dp,
+                            top = 1.dp,
+                            bottom = 1.dp,
+                        ),
+                ) {
+                    Text(
+                        text = rating,
+                        style = TraktTheme.typography.meta.copy(
+                            fontSize = 10.sp,
+                        ),
+                        color = TraktTheme.colors.textPrimary,
+                        maxLines = 1,
+                    )
+
+                    Icon(
+                        painter = painterResource(R.drawable.ic_star_trakt_on),
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier
+                            .size(9.dp),
+                    )
+                }
+            }
         }
 
         Column(verticalArrangement = Arrangement.Absolute.spacedBy(2.dp)) {
@@ -358,21 +417,24 @@ private fun CommentHeader(
 
 @Composable
 private fun CommentFooter(
+    user: User?,
+    comment: Comment,
     reactions: ReactionsSummary?,
-    reactionsEnabled: Boolean,
     userReaction: Reaction?,
     modifier: Modifier = Modifier,
+    onReplyClick: (() -> Unit)? = null,
     onReactionClick: ((Reaction) -> Unit)? = null,
 ) {
     val scope = rememberCoroutineScope()
     val tooltipState = rememberTooltipState(isPersistent = true)
 
+    val reactionsEnabled =
+        user != null && user.ids.trakt != comment.user.ids.trakt
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 2.dp),
+        modifier = modifier.fillMaxWidth(),
     ) {
         ReactionsToolTip(
             state = tooltipState,
@@ -396,6 +458,19 @@ private fun CommentFooter(
                         }
                     }
                 },
+            )
+        }
+
+        if (reactionsEnabled) {
+            Icon(
+                painter = painterResource(R.drawable.ic_comment_plus),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .size(18.dp)
+                    .onClick {
+                        onReplyClick?.invoke()
+                    },
             )
         }
     }

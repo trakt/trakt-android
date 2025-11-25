@@ -40,6 +40,7 @@ import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.core.comments.data.CommentsUpdates
 import tv.trakt.trakt.core.comments.data.CommentsUpdates.Source.ALL_COMMENTS
+import tv.trakt.trakt.core.comments.data.CommentsUpdates.Source.COMMENT_DETAILS
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.usecases.GetCommentsFilterUseCase
 import tv.trakt.trakt.core.reactions.data.ReactionsUpdates
@@ -92,7 +93,10 @@ internal class ShowCommentsViewModel(
             }
             .launchIn(viewModelScope)
 
-        commentsUpdates.observeUpdates(ALL_COMMENTS)
+        merge(
+            commentsUpdates.observeUpdates(ALL_COMMENTS),
+            commentsUpdates.observeUpdates(COMMENT_DETAILS),
+        )
             .distinctUntilChanged()
             .debounce(200)
             .onEach {

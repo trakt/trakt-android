@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -31,6 +32,8 @@ import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
+import tv.trakt.trakt.core.comments.data.CommentsUpdates
+import tv.trakt.trakt.core.comments.data.CommentsUpdates.Source.COMMENT_DETAILS
 import tv.trakt.trakt.core.reactions.data.ReactionsUpdates.Source
 import tv.trakt.trakt.core.reactions.data.work.DeleteReactionWorker
 import tv.trakt.trakt.core.reactions.data.work.PostReactionWorker
@@ -44,6 +47,7 @@ internal class CommentDetailsViewModel(
     private val getRepliesUseCase: GetCommentRepliesUseCase,
     private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
     private val loadUserReactionsUseCase: LoadUserReactionsUseCase,
+    private val commentsUpdates: CommentsUpdates,
 ) : ViewModel() {
     private val initialState = CommentDetailsState()
 
@@ -109,6 +113,24 @@ internal class CommentDetailsViewModel(
                 loadingState.update { DONE }
             }
         }
+    }
+
+    fun addReply(comment: Comment) {
+        commentReplies.update { current ->
+            val mutable = current?.toMutableList() ?: mutableListOf()
+            mutable.add(comment)
+            mutable.toImmutableList()
+        }
+
+        commentsUpdates.notifyUpdate(COMMENT_DETAILS)
+    }
+
+    fun deleteReply(replyId: Int) {
+        commentReplies.update { current ->
+            current?.filterNot { it.id == replyId }?.toImmutableList()
+        }
+
+        commentsUpdates.notifyUpdate(COMMENT_DETAILS)
     }
 
     fun loadReactions(commentId: Int) {

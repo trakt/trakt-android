@@ -70,11 +70,11 @@ internal fun CommentReplyCard(
     reply: Comment,
     modifier: Modifier = Modifier,
     reactions: ReactionsSummary? = null,
-    reactionsEnabled: Boolean = true,
     userReaction: Reaction? = null,
     onClick: (() -> Unit)? = null,
     onRequestReactions: (() -> Unit)? = null,
     onReactionClick: ((Reaction) -> Unit)? = null,
+    onReplyClick: (() -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
 ) {
     val uriHandler = LocalUriHandler.current
@@ -85,8 +85,8 @@ internal fun CommentReplyCard(
         }
     }
 
-    val isUserReply = remember {
-        user?.username == reply.user.username
+    val isUserReply = remember(reply.user) {
+        user?.ids?.trakt == reply.user.ids.trakt
     }
 
     Card(
@@ -105,9 +105,9 @@ internal fun CommentReplyCard(
                 user = user,
                 comment = reply,
                 reactions = reactions,
-                reactionsEnabled = reactionsEnabled,
                 userReaction = userReaction,
                 onReactionClick = onReactionClick,
+                onReplyClick = onReplyClick,
                 onDeleteClick = onDeleteClick,
                 onUserClick = {
                     uriHandler.openUri(
@@ -124,11 +124,11 @@ private fun CommentReplyCardContent(
     user: User?,
     comment: Comment,
     reactions: ReactionsSummary?,
-    reactionsEnabled: Boolean,
     userReaction: Reaction?,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
     onReactionClick: ((Reaction) -> Unit)? = null,
+    onReplyClick: (() -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
 ) {
     var showSpoilers by remember { mutableStateOf(false) }
@@ -177,10 +177,12 @@ private fun CommentReplyCardContent(
         )
 
         CommentFooter(
+            user = user,
+            comment = comment,
             reactions = reactions,
-            reactionsEnabled = reactionsEnabled,
             userReaction = userReaction,
             onReactionClick = onReactionClick,
+            onReplyClick = onReplyClick,
             modifier = Modifier
                 .padding(
                     top = 16.dp,
@@ -285,14 +287,20 @@ private fun CommentHeader(
 
 @Composable
 private fun CommentFooter(
+    user: User?,
+    comment: Comment,
     reactions: ReactionsSummary?,
-    reactionsEnabled: Boolean,
     userReaction: Reaction?,
     modifier: Modifier = Modifier,
     onReactionClick: ((Reaction) -> Unit)? = null,
+    onReplyClick: (() -> Unit)? = null,
 ) {
     val scope = rememberCoroutineScope()
     val tooltipState = rememberTooltipState(isPersistent = true)
+
+    val reactionsEnabled = remember(comment.user) {
+        user != null && user.ids.trakt != comment.user.ids.trakt
+    }
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -311,18 +319,32 @@ private fun CommentFooter(
                 reactions = reactions,
                 userReaction = userReaction,
                 enabled = reactionsEnabled,
-                modifier = Modifier.onClick {
-                    if (reactions == null || !reactionsEnabled) {
-                        return@onClick
-                    }
-                    scope.launch {
-                        if (tooltipState.isVisible) {
-                            tooltipState.dismiss()
-                        } else {
-                            tooltipState.show()
+                modifier = Modifier
+                    .onClick {
+                        if (reactions == null || !reactionsEnabled) {
+                            return@onClick
                         }
-                    }
-                },
+                        scope.launch {
+                            if (tooltipState.isVisible) {
+                                tooltipState.dismiss()
+                            } else {
+                                tooltipState.show()
+                            }
+                        }
+                    },
+            )
+        }
+
+        if (reactionsEnabled) {
+            Icon(
+                painter = painterResource(R.drawable.ic_comment_plus),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .size(18.dp)
+                    .onClick {
+                        onReplyClick?.invoke()
+                    },
             )
         }
     }
@@ -354,7 +376,7 @@ private fun Preview() {
 
                 CommentReplyCard(
                     onClick = {},
-                    user = PreviewData.user1,
+                    user = null,
                     reply = PreviewData.comment1.copy(userRating = 7),
                 )
             }

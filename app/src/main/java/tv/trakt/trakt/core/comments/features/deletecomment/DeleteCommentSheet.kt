@@ -52,6 +52,7 @@ internal fun DeleteCommentSheet(
                         parametersOf(commentId)
                     },
                 ),
+                isReply = isReply,
                 onDelete = {
                     onDeleted(commentId)
                     sheetScope.dismissWithAction(

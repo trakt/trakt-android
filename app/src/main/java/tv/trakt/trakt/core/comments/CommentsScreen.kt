@@ -87,7 +87,7 @@ internal fun CommentsScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var postCommentSheet by remember { mutableStateOf(false) }
-    var postReplySheet by remember { mutableStateOf<Comment?>(null) }
+    var postReplySheet by remember { mutableStateOf<Pair<Comment, User?>?>(null) }
     var deleteCommentSheet by remember { mutableStateOf<Comment?>(null) }
     var deleteReplySheet by remember { mutableStateOf<Comment?>(null) }
 
@@ -111,7 +111,10 @@ internal fun CommentsScreen(
             deleteReplySheet = it
         },
         onReplyClick = {
-            postReplySheet = it
+            postReplySheet = it to null
+        },
+        onReplyUserClick = { comment, user ->
+            postReplySheet = comment to user
         },
         onRepliesClick = {
             viewModel.loadReplies(it.id)
@@ -131,7 +134,8 @@ internal fun CommentsScreen(
 
     PostReplySheet(
         active = postReplySheet != null,
-        comment = postReplySheet,
+        comment = postReplySheet?.first,
+        user = postReplySheet?.second,
         onReplyPost = viewModel::addReply,
         onDismiss = {
             postReplySheet = null
@@ -173,6 +177,7 @@ internal fun CommentsContent(
     onFilterClick: ((CommentsFilter) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onReplyClick: ((Comment) -> Unit)? = null,
+    onReplyUserClick: ((Comment, User) -> Unit)? = null,
     onRepliesClick: ((Comment) -> Unit)? = null,
     onNewCommentClick: (() -> Unit)? = null,
     onDeleteCommentClick: ((Comment) -> Unit)? = null,
@@ -226,6 +231,7 @@ internal fun CommentsContent(
             onFilterClick = onFilterClick,
             onReactionClick = onReactionClick,
             onReplyClick = onReplyClick,
+            onReplyUserClick = onReplyUserClick,
             onRepliesClick = onRepliesClick,
             onDeleteCommentClick = onDeleteCommentClick,
             onDeleteReplyClick = onDeleteReplyClick,
@@ -297,6 +303,7 @@ private fun ContentList(
     onFilterClick: ((CommentsFilter) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onReplyClick: ((Comment) -> Unit)? = null,
+    onReplyUserClick: ((Comment, User) -> Unit)? = null,
     onRepliesClick: ((Comment) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
@@ -346,6 +353,7 @@ private fun ContentList(
                     replyEnabled = user != null && !isUserComment,
                     onReactionClick = onReactionClick,
                     onReplyClick = { onReplyClick?.invoke(it) },
+                    onReplyUserClick = onReplyUserClick,
                     onRepliesClick = { onRepliesClick?.invoke(comment) },
                     onDeleteClick = { onDeleteCommentClick?.invoke(comment) },
                     onDeleteReplyClick = { onDeleteReplyClick?.invoke(it) },

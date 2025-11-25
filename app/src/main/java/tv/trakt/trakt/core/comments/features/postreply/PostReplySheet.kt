@@ -18,6 +18,7 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
@@ -30,6 +31,7 @@ internal fun PostReplySheet(
     ),
     active: Boolean,
     comment: Comment?,
+    user: User? = null,
     onReplyPost: (Comment) -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -47,7 +49,7 @@ internal fun PostReplySheet(
                 viewModel = koinViewModel(
                     key = Random.nextInt().toString(),
                     parameters = {
-                        parametersOf(comment)
+                        parametersOf(comment, user)
                     },
                 ),
                 onReplyPost = {
