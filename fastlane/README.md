@@ -39,6 +39,14 @@ Distribute Firebase version to Internal Testers group
 
 Upload version to PlayStore Internal Track
 
+### android playstore_promote_internal_to_trakt_beta
+
+```sh
+[bundle exec] fastlane android playstore_promote_internal_to_trakt_beta
+```
+
+Promote PlayStore Internal Track to Closed Beta Track
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.

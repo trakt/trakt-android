@@ -63,4 +63,19 @@ platform :android do
         skip_upload_screenshots: true
       )
   end
+
+  desc "Promote PlayStore Internal Track to Closed Beta Track"
+    lane :playstore_promote_internal_to_trakt_beta do
+      supply(
+        track: "internal",
+        track_promote_to: "Trakt Beta",
+        rollout: "1",
+        skip_upload_apk: true,
+        skip_upload_aab: true,
+        skip_upload_metadata: true,
+        skip_upload_changelogs: true,
+        skip_upload_images: true,
+        skip_upload_screenshots: true
+      )
+  end
 end
