@@ -22,7 +22,7 @@ import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.TopCenter
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
+import tv.trakt.trakt.common.helpers.extensions.ifOrElse
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
@@ -52,6 +53,8 @@ import tv.trakt.trakt.common.ui.theme.colors.Shade700
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
 import tv.trakt.trakt.ui.theme.TraktTheme
+
+internal const val POSTER_SPACE_WEIGHT = 0.6F
 
 @Composable
 internal fun DetailsHeader(
@@ -332,51 +335,45 @@ private fun DetailsHeader(
     val windowClass = currentWindowAdaptiveInfo().windowSizeClass
 
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = CenterHorizontally,
         verticalArrangement = spacedBy(0.dp),
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
     ) {
-        Box(
-            contentAlignment = TopCenter,
+        Row(
             modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = spacedBy(0.dp, CenterHorizontally),
+            verticalAlignment = Alignment.Top,
         ) {
             val posterSpace = TraktTheme.spacing.detailsHeaderHorizontalSpace
+
             Column(
-                horizontalAlignment = when {
-                    windowClass.isAtLeastMedium() -> Alignment.End
-                    else -> Alignment.CenterHorizontally
-                },
                 modifier = Modifier
-                    .align(Alignment.TopStart)
-                    .width(posterSpace)
+                    .ifOrElse(
+                        condition = windowClass.isAtLeastMedium(),
+                        trueModifier = Modifier.weight(POSTER_SPACE_WEIGHT, false),
+                        falseModifier = Modifier.width(posterSpace),
+                    )
                     .padding(top = 8.dp),
+                horizontalAlignment = Alignment.End,
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_back_arrow),
                     tint = TraktTheme.colors.textPrimary,
                     contentDescription = null,
                     modifier = Modifier
-                        .padding(
-                            horizontal = when {
-                                windowClass.isAtLeastMedium() -> 32.dp
-                                else -> 0.dp
-                            },
-                        )
+                        .padding(end = 20.dp)
                         .size(24.dp)
                         .onClick(onClick = onBackClick),
                 )
             }
 
             Box(
-                modifier = Modifier
-                    .padding(horizontal = posterSpace),
+                modifier = Modifier.weight(1F, false),
             ) {
                 DetailsPoster(
                     imageUrl = imageUrl,
                     color = accentColor,
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                 )
 
                 this@Column.AnimatedVisibility(
@@ -413,27 +410,21 @@ private fun DetailsHeader(
             }
 
             Column(
-                horizontalAlignment = when {
-                    windowClass.isAtLeastMedium() -> Alignment.Start
-                    else -> Alignment.CenterHorizontally
-                },
-                verticalArrangement = spacedBy(24.dp),
                 modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .width(posterSpace)
+                    .ifOrElse(
+                        condition = windowClass.isAtLeastMedium(),
+                        trueModifier = Modifier.weight(POSTER_SPACE_WEIGHT, false),
+                        falseModifier = Modifier.width(posterSpace),
+                    )
                     .padding(top = 8.dp),
+                horizontalAlignment = Alignment.Start,
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_share),
                     tint = TraktTheme.colors.textPrimary,
                     contentDescription = null,
                     modifier = Modifier
-                        .padding(
-                            horizontal = when {
-                                windowClass.isAtLeastMedium() -> 32.dp
-                                else -> 0.dp
-                            },
-                        )
+                        .padding(start = 20.dp)
                         .size(24.dp)
                         .onClick(onClick = onShareClick),
                 )
@@ -452,7 +443,7 @@ private fun DetailsHeader(
         }
 
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(

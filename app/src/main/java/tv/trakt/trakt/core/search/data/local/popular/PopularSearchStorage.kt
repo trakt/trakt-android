@@ -8,9 +8,11 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.decodeFromByteArray
 import kotlinx.serialization.encodeToByteArray
 import kotlinx.serialization.protobuf.ProtoBuf
+import timber.log.Timber
 import tv.trakt.trakt.core.search.data.local.model.PopularMovieEntity
 import tv.trakt.trakt.core.search.data.local.model.PopularShowEntity
 
@@ -81,13 +83,20 @@ internal class PopularSearchStorage(
         if (!isInitialized) {
             mutex.withLock {
                 if (!isInitialized) {
-                    with(dataStore.data.first()) {
-                        get(KEY_POPULAR_SEARCH_SHOWS)?.let {
-                            showsCache.putAll(ProtoBuf.decodeFromByteArray(it))
+                    try {
+                        with(dataStore.data.first()) {
+                            get(KEY_POPULAR_SEARCH_SHOWS)?.let {
+                                showsCache.putAll(ProtoBuf.decodeFromByteArray(it))
+                            }
+                            get(KEY_POPULAR_SEARCH_MOVIES)?.let {
+                                moviesCache.putAll(ProtoBuf.decodeFromByteArray(it))
+                            }
                         }
-                        get(KEY_POPULAR_SEARCH_MOVIES)?.let {
-                            moviesCache.putAll(ProtoBuf.decodeFromByteArray(it))
-                        }
+                    } catch (exception: SerializationException) {
+                        clear()
+                        Timber.e(exception)
+                    } finally {
+                        isInitialized = true
                     }
                 }
             }

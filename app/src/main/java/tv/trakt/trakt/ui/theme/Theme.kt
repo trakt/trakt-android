@@ -3,7 +3,10 @@ package tv.trakt.trakt.ui.theme
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.staticCompositionLocalOf
+import timber.log.Timber
+import tv.trakt.trakt.ui.extensions.isAtLeastLarge
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
 import tv.trakt.trakt.ui.theme.colors.DarkColors
 import tv.trakt.trakt.ui.theme.colors.TraktColors
@@ -38,14 +41,20 @@ internal fun TraktTheme(
 ) {
     val windowClass = currentWindowAdaptiveInfo().windowSizeClass
 
+    LaunchedEffect(windowClass.minWidthDp) {
+        Timber.i("Window width: ${windowClass.minWidthDp}dp")
+    }
+
     CompositionLocalProvider(
         LocalTraktColors provides colors,
         LocalTraktTypography provides Typography,
         LocalTraktSpacing provides when {
+            windowClass.isAtLeastLarge() -> LargeSpacing
             windowClass.isAtLeastMedium() -> MediumSpacing
             else -> Spacing
         },
         LocalTraktSize provides when {
+            windowClass.isAtLeastLarge() -> LargeSize
             windowClass.isAtLeastMedium() -> MediumSize
             else -> Size
         },

@@ -28,6 +28,13 @@ internal val Size: TraktSize = TraktSize(
 internal val MediumSize: TraktSize = Size.copy(
     navigationBarRatio = 0.66F,
     navigationHeaderHeight = 80.dp,
+    detailsBackgroundRatio = VerticalImageAspectRatio * 1.6F,
+    mainGridColumns = 4,
+)
+
+internal val LargeSize: TraktSize = Size.copy(
+    navigationBarRatio = 0.66F,
+    navigationHeaderHeight = 80.dp,
     detailsBackgroundRatio = VerticalImageAspectRatio * 1.5F,
     mainGridColumns = 5,
 )

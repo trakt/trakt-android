@@ -15,7 +15,6 @@ import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSo
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
-import tv.trakt.trakt.core.search.data.local.RecentSearchLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
@@ -32,7 +31,7 @@ internal class LogoutUserUseCase(
     private val localUpcoming: HomeUpcomingLocalDataSource,
     private val localSocial: HomeSocialLocalDataSource,
     private val localPersonal: HomePersonalLocalDataSource,
-    private val localRecentSearch: RecentSearchLocalDataSource,
+//    private val localRecentSearch: RecentSearchLocalDataSource,
     private val localListsPersonal: ListsPersonalLocalDataSource,
     private val localListsItemsPersonal: ListsPersonalItemsLocalDataSource,
     private val localRecommendedShows: RecommendedShowsLocalDataSource,
@@ -55,7 +54,7 @@ internal class LogoutUserUseCase(
         localUpcoming.clear()
         localSocial.clear()
         localPersonal.clear()
-        localRecentSearch.clear()
+//        localRecentSearch.clear()
         localListsPersonal.clear()
         localListsItemsPersonal.clear()
         localUserProgress.clear()

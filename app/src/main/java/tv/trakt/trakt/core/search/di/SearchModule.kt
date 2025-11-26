@@ -17,8 +17,6 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.core.search.SearchViewModel
-import tv.trakt.trakt.core.search.data.local.RecentSearchLocalDataSource
-import tv.trakt.trakt.core.search.data.local.RecentSearchStorage
 import tv.trakt.trakt.core.search.data.local.people.SearchPeopleLocalDataSource
 import tv.trakt.trakt.core.search.data.local.people.SearchPeopleStorage
 import tv.trakt.trakt.core.search.data.local.popular.PopularSearchLocalDataSource
@@ -29,8 +27,6 @@ import tv.trakt.trakt.core.search.usecase.GetBirthdayPeopleUseCase
 import tv.trakt.trakt.core.search.usecase.GetSearchResultsUseCase
 import tv.trakt.trakt.core.search.usecase.popular.GetPopularSearchUseCase
 import tv.trakt.trakt.core.search.usecase.popular.PostUserSearchUseCase
-import tv.trakt.trakt.core.search.usecase.recents.AddRecentSearchUseCase
-import tv.trakt.trakt.core.search.usecase.recents.GetRecentSearchUseCase
 
 private const val SEARCH_PREFERENCES = "search_preferences"
 
@@ -48,11 +44,11 @@ internal val searchDataModule = module {
         )
     }
 
-    single<RecentSearchLocalDataSource> {
-        RecentSearchStorage(
-            dataStore = get(named(SEARCH_PREFERENCES)),
-        )
-    }
+//    single<RecentSearchLocalDataSource> {
+//        RecentSearchStorage(
+//            dataStore = get(named(SEARCH_PREFERENCES)),
+//        )
+//    }
 
     single<PopularSearchLocalDataSource> {
         PopularSearchStorage(
@@ -72,19 +68,6 @@ internal val searchModule = module {
     factory {
         GetSearchResultsUseCase(
             remoteSource = get(),
-        )
-    }
-
-    factory {
-        AddRecentSearchUseCase(
-            sessionManager = get(),
-            recentsLocalSource = get(),
-        )
-    }
-
-    factory {
-        GetRecentSearchUseCase(
-            recentsLocalSource = get(),
         )
     }
 

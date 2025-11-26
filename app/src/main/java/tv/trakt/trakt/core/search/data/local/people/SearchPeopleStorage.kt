@@ -8,9 +8,11 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.decodeFromByteArray
 import kotlinx.serialization.encodeToByteArray
 import kotlinx.serialization.protobuf.ProtoBuf
+import timber.log.Timber
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.search.data.local.model.PersonEntity
@@ -60,14 +62,28 @@ internal class SearchPeopleStorage(
         }
     }
 
+    private suspend fun clear() {
+        mutex.withLock {
+            cache.clear()
+            dataStore.edit { it.clear() }
+        }
+    }
+
     private suspend fun ensureInitialized() {
         if (!isInitialized) {
             mutex.withLock {
                 if (!isInitialized) {
-                    with(dataStore.data.first()) {
-                        get(KEY_BIRTHDAY_SEARCH_PEOPLE)?.let {
-                            cache.putAll(ProtoBuf.decodeFromByteArray(it))
+                    try {
+                        with(dataStore.data.first()) {
+                            get(KEY_BIRTHDAY_SEARCH_PEOPLE)?.let {
+                                cache.putAll(ProtoBuf.decodeFromByteArray(it))
+                            }
                         }
+                    } catch (exception: SerializationException) {
+                        clear()
+                        Timber.e(exception)
+                    } finally {
+                        isInitialized = true
                     }
                 }
             }

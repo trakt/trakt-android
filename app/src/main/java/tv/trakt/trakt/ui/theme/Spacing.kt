@@ -24,8 +24,11 @@ internal val Spacing: TraktSpacing = TraktSpacing(
 internal val MediumSpacing: TraktSpacing = Spacing.copy(
     mainPageTopSpace = 90.dp,
     mainPageHorizontalSpace = 24.dp,
-    detailsHeaderHorizontalSpace = 192.dp,
-    detailsActionsHorizontalSpace = 192.dp,
+)
+
+internal val LargeSpacing: TraktSpacing = Spacing.copy(
+    mainPageTopSpace = 90.dp,
+    mainPageHorizontalSpace = 24.dp,
 )
 
 @Immutable

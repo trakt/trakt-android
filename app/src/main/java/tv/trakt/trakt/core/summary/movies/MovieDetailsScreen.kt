@@ -25,6 +25,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -58,6 +59,7 @@ import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.extensions.ifOrElse
 import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -84,11 +86,13 @@ import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.DetailsHeader
 import tv.trakt.trakt.core.summary.ui.DetailsMetaInfo
+import tv.trakt.trakt.core.summary.ui.POSTER_SPACE_WEIGHT
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.UserRatingBar
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
+import tv.trakt.trakt.ui.extensions.isAtLeastMedium
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -286,6 +290,7 @@ internal fun MovieDetailsContent(
     onBackClick: (() -> Unit)? = null,
 ) {
     val previewMode = LocalInspectionMode.current
+    val windowClass = currentWindowAdaptiveInfo().windowSizeClass
 
     val contentPadding = PaddingValues(
         top = WindowInsets.statusBars.asPaddingValues()
@@ -335,6 +340,7 @@ internal fun MovieDetailsContent(
 
             LazyColumn(
                 state = listState,
+                horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = spacedBy(0.dp),
                 contentPadding = contentPadding,
                 overscrollEffect = null,
@@ -379,10 +385,17 @@ internal fun MovieDetailsContent(
                         onSecondaryLongClick = onListsClick,
                         onMoreClick = onMoreClick,
                         modifier = Modifier
-                            .align(Alignment.Center)
-                            .fillMaxWidth()
                             .padding(top = 16.dp)
-                            .padding(horizontal = TraktTheme.spacing.detailsActionsHorizontalSpace),
+                            .ifOrElse(
+                                windowClass.isAtLeastMedium(),
+                                trueModifier = Modifier
+                                    .fillMaxWidth(POSTER_SPACE_WEIGHT),
+                                falseModifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(
+                                        horizontal = TraktTheme.spacing.detailsActionsHorizontalSpace,
+                                    ),
+                            ),
                     )
                 }
 
