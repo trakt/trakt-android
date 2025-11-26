@@ -255,7 +255,7 @@ internal fun CommentsContent(
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .size(52.dp)
+                    .size(54.dp)
                     .dropShadow(
                         shape = RoundedCornerShape(16.dp),
                         shadow = Shadow(
