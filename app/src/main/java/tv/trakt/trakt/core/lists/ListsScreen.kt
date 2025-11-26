@@ -286,7 +286,6 @@ private fun ListsScreenHeader(
 
     HeaderBar(
         containerAlpha = if (headerState.scrolled && !isScrolledToTop) 0.98F else 0F,
-        showGreeting = headerState.startScrolled,
         showLogin = userState.first && !userState.second,
         modifier = Modifier.offset {
             IntOffset(0, headerState.connection.barOffset.fastRoundToInt())

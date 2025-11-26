@@ -223,7 +223,6 @@ private fun HomeScreenHeader(
 
     HeaderBar(
         containerAlpha = if (headerState.scrolled && !isScrolledToTop) 0.98F else 0F,
-        showGreeting = headerState.startScrolled,
         showLogin = userState.first && !userState.second,
         userLoading = userLoading,
         modifier = Modifier.offset {
