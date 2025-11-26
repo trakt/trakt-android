@@ -107,7 +107,8 @@ internal val homeModule = module {
 
     factory {
         GetHomeMoviesWatchlistUseCase(
-            loadUserWatchlistUseCase = get(),
+            homeWatchlistLocalSource = get(),
+            userRemoteSource = get(),
         )
     }
 

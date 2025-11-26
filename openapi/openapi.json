@@ -329,6 +329,72 @@
             "schema": {
               "nullable": true
             }
+          },
+          {
+            "name": "watchnow",
+            "in": "query",
+            "description": "Use \"favorites\" for streaming on a favorite service of the user.\n      Use \"any\" for streaming on any service in the user's country.\n      Use \"any_all\" for streaming on any service in all countries.\n      Use \"free\" for streaming for free in the user's country.\n      Use \"free_all\" for streaming for free in all countries.\n      Use \"subscriptions\" for streaming on any subscription service (Netflix, Hulu, etc) in the user's country.\n      Use \"subscriptions_all\" streaming on any subscription service in all countries",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "favorites",
+                "any",
+                "any_all",
+                "free",
+                "free_all",
+                "subscriptions",
+                "subscriptions_all"
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "genres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "subgenres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "years",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ratings",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -773,6 +839,72 @@
             "in": "query",
             "description": "Extended information to include in the response.",
             "schema": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "watchnow",
+            "in": "query",
+            "description": "Use \"favorites\" for streaming on a favorite service of the user.\n      Use \"any\" for streaming on any service in the user's country.\n      Use \"any_all\" for streaming on any service in all countries.\n      Use \"free\" for streaming for free in the user's country.\n      Use \"free_all\" for streaming for free in all countries.\n      Use \"subscriptions\" for streaming on any subscription service (Netflix, Hulu, etc) in the user's country.\n      Use \"subscriptions_all\" streaming on any subscription service in all countries",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "favorites",
+                "any",
+                "any_all",
+                "free",
+                "free_all",
+                "subscriptions",
+                "subscriptions_all"
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "genres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "subgenres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "years",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ratings",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
               "nullable": true
             }
           }
@@ -1221,6 +1353,72 @@
             "schema": {
               "nullable": true
             }
+          },
+          {
+            "name": "watchnow",
+            "in": "query",
+            "description": "Use \"favorites\" for streaming on a favorite service of the user.\n      Use \"any\" for streaming on any service in the user's country.\n      Use \"any_all\" for streaming on any service in all countries.\n      Use \"free\" for streaming for free in the user's country.\n      Use \"free_all\" for streaming for free in all countries.\n      Use \"subscriptions\" for streaming on any subscription service (Netflix, Hulu, etc) in the user's country.\n      Use \"subscriptions_all\" streaming on any subscription service in all countries",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "favorites",
+                "any",
+                "any_all",
+                "free",
+                "free_all",
+                "subscriptions",
+                "subscriptions_all"
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "genres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "subgenres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "years",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ratings",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -1665,6 +1863,72 @@
             "in": "query",
             "description": "Extended information to include in the response.",
             "schema": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "watchnow",
+            "in": "query",
+            "description": "Use \"favorites\" for streaming on a favorite service of the user.\n      Use \"any\" for streaming on any service in the user's country.\n      Use \"any_all\" for streaming on any service in all countries.\n      Use \"free\" for streaming for free in the user's country.\n      Use \"free_all\" for streaming for free in all countries.\n      Use \"subscriptions\" for streaming on any subscription service (Netflix, Hulu, etc) in the user's country.\n      Use \"subscriptions_all\" streaming on any subscription service in all countries",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "favorites",
+                "any",
+                "any_all",
+                "free",
+                "free_all",
+                "subscriptions",
+                "subscriptions_all"
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "genres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "subgenres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "years",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ratings",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
               "nullable": true
             }
           }
@@ -2113,6 +2377,72 @@
             "schema": {
               "nullable": true
             }
+          },
+          {
+            "name": "watchnow",
+            "in": "query",
+            "description": "Use \"favorites\" for streaming on a favorite service of the user.\n      Use \"any\" for streaming on any service in the user's country.\n      Use \"any_all\" for streaming on any service in all countries.\n      Use \"free\" for streaming for free in the user's country.\n      Use \"free_all\" for streaming for free in all countries.\n      Use \"subscriptions\" for streaming on any subscription service (Netflix, Hulu, etc) in the user's country.\n      Use \"subscriptions_all\" streaming on any subscription service in all countries",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "favorites",
+                "any",
+                "any_all",
+                "free",
+                "free_all",
+                "subscriptions",
+                "subscriptions_all"
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "genres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "subgenres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "years",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ratings",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -2397,6 +2727,72 @@
             "in": "query",
             "description": "Extended information to include in the response.",
             "schema": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "watchnow",
+            "in": "query",
+            "description": "Use \"favorites\" for streaming on a favorite service of the user.\n      Use \"any\" for streaming on any service in the user's country.\n      Use \"any_all\" for streaming on any service in all countries.\n      Use \"free\" for streaming for free in the user's country.\n      Use \"free_all\" for streaming for free in all countries.\n      Use \"subscriptions\" for streaming on any subscription service (Netflix, Hulu, etc) in the user's country.\n      Use \"subscriptions_all\" streaming on any subscription service in all countries",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "favorites",
+                "any",
+                "any_all",
+                "free",
+                "free_all",
+                "subscriptions",
+                "subscriptions_all"
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "genres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "subgenres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "years",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ratings",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
               "nullable": true
             }
           }
@@ -46484,7 +46880,7 @@
         "operationId": "getMoviesStudios"
       }
     },
-    "/movies/{id}/watchnow/{country}": {
+    "/movies/{id}/watchnow/{country}?": {
       "get": {
         "tags": [
           "movies"
@@ -46920,6 +47316,49 @@
           }
         },
         "operationId": "getMoviesWatchnow"
+      }
+    },
+    "/movies/{id}/watchnow/justwatch_links/{country}": {
+      "get": {
+        "tags": [
+          "movies",
+          "justwatch"
+        ],
+        "parameters": [
+          {
+            "name": "country",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug of the resource."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getMoviesJustwatchLink"
       }
     },
     "/movies/{id}/people": {
@@ -51774,7 +52213,7 @@
         "operationId": "getShowsStudios"
       }
     },
-    "/shows/{id}/watchnow/{country}": {
+    "/shows/{id}/watchnow/{country}?": {
       "get": {
         "tags": [
           "shows"
@@ -52210,6 +52649,49 @@
           }
         },
         "operationId": "getShowsWatchnow"
+      }
+    },
+    "/shows/{id}/watchnow/justwatch_links/{country}": {
+      "get": {
+        "tags": [
+          "shows",
+          "justwatch"
+        ],
+        "parameters": [
+          {
+            "name": "country",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug of the resource."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getShowsJustwatchLink"
       }
     },
     "/shows/{id}/people": {
@@ -52968,6 +53450,58 @@
           }
         },
         "operationId": "getShowsSeasonVideos"
+      }
+    },
+    "/shows/{id}/seasons/{season}/watchnow/justwatch_links/{country}": {
+      "get": {
+        "tags": [
+          "shows",
+          "season",
+          "justwatch"
+        ],
+        "parameters": [
+          {
+            "name": "season",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug of the resource."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getShowsSeasonJustwatchLink"
       }
     },
     "/shows/{id}/videos": {
@@ -55060,7 +55594,7 @@
         "operationId": "getShowsEpisodePeople"
       }
     },
-    "/shows/{id}/seasons/{season}/episodes/{episode}/watchnow/{country}": {
+    "/shows/{id}/seasons/{season}/episodes/{episode}/watchnow/{country}?": {
       "get": {
         "tags": [
           "shows",
@@ -60791,7 +61325,7 @@
         "operationId": "getWatchnowSourcesCountry"
       }
     },
-    "/episodes/{id}/watchnow/{country}": {
+    "/episodes/{id}/watchnow/{country}?": {
       "get": {
         "tags": [
           "episodes"

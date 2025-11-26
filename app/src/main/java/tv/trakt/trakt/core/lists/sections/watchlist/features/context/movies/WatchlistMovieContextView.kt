@@ -232,12 +232,12 @@ private fun MovieActionButtons(
             loading = state.loadingWatchlist.isLoading,
             text = stringResource(R.string.button_text_watchlist),
             onClick = onWatchlistClick,
-            iconSize = 23.dp,
+            iconSize = 24.dp,
             iconSpace = 16.dp,
             icon = painterResource(R.drawable.ic_minus),
             modifier = Modifier
                 .graphicsLayer {
-                    translationX = -7.dp.toPx()
+                    translationX = -8.5.dp.toPx()
                 },
         )
     }
@@ -274,7 +274,9 @@ private fun Preview() {
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             WatchlistMovieContextViewContent(
-                state = WatchlistMovieContextState(),
+                state = WatchlistMovieContextState(
+                    user = PreviewData.user1,
+                ),
                 movie = PreviewData.movie1,
                 watched = false,
             )

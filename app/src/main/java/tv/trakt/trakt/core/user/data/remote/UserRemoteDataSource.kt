@@ -15,6 +15,7 @@ import tv.trakt.trakt.common.networking.UserCommentsDto
 import tv.trakt.trakt.common.networking.UserRatingDto
 import tv.trakt.trakt.common.networking.WatchedShowDto
 import tv.trakt.trakt.common.networking.WatchlistItemDto
+import tv.trakt.trakt.common.networking.WatchlistMovieDto
 import java.time.LocalDate
 import java.time.ZonedDateTime
 
@@ -51,6 +52,14 @@ internal interface UserRemoteDataSource {
         extended: String? = null,
         sort: String? = null,
     ): List<WatchlistItemDto>
+
+    suspend fun getWatchlistMovies(
+        page: Int? = null,
+        limit: Int? = null,
+        extended: String? = null,
+        sort: String? = null,
+        hide: String? = null,
+    ): List<WatchlistMovieDto>
 
     suspend fun getSocialActivity(
         page: Int? = null,

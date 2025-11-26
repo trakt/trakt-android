@@ -9,18 +9,9 @@ internal class HomeWatchlistStorage : HomeWatchlistLocalDataSource {
     private val mutex = Mutex()
     private val storage = mutableMapOf<String, WatchlistItem>()
 
-    override suspend fun addItems(items: List<WatchlistItem>) {
-        mutex.withLock {
-            with(storage) {
-                putAll(items.associateBy { it.key })
-            }
-        }
-    }
-
     override suspend fun setItems(items: List<WatchlistItem>) {
         mutex.withLock {
             with(storage) {
-                clear()
                 putAll(items.associateBy { it.key })
             }
         }
@@ -29,6 +20,18 @@ internal class HomeWatchlistStorage : HomeWatchlistLocalDataSource {
     override suspend fun getItems(): List<WatchlistItem> {
         return mutex.withLock {
             storage.values.toList()
+        }
+    }
+
+    override suspend fun getMovieItems(): List<WatchlistItem.MovieItem> {
+        return mutex.withLock {
+            storage.values.filterIsInstance<WatchlistItem.MovieItem>()
+        }
+    }
+
+    override suspend fun getShowItems(): List<WatchlistItem.ShowItem> {
+        return mutex.withLock {
+            storage.values.filterIsInstance<WatchlistItem.ShowItem>()
         }
     }
 

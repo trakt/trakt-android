@@ -42,8 +42,8 @@ internal sealed class WatchlistItem(
 
     val key: String
         get() = when (this) {
-            is ShowItem -> "${show.ids.trakt.value}-show"
-            is MovieItem -> "${movie.ids.trakt.value}-movie"
+            is ShowItem -> "${show.ids.trakt.value}-${type.value}"
+            is MovieItem -> "${movie.ids.trakt.value}-${type.value}"
         }
 
     val title: String

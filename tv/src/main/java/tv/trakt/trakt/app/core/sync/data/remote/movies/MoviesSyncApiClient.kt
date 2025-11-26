@@ -108,6 +108,7 @@ internal class MoviesSyncApiClient(
             startDate = null,
             endDate = null,
             subgenres = null,
+            hide = null,
         )
 
         return response.body()

@@ -16,7 +16,7 @@ import tv.trakt.trakt.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 
 private val SortComparator =
     compareByDescending<WatchlistItem> { it.released }
-        .thenBy { it.title }
+        .thenByDescending { it.listedAt }
 
 internal class GetHomeShowsWatchlistUseCase(
     private val remoteShowsSyncSource: ShowsSyncRemoteDataSource,

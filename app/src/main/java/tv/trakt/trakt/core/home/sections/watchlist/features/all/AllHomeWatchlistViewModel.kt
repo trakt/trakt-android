@@ -157,8 +157,9 @@ internal class AllHomeWatchlistViewModel(
                             }
                             .sortedWith(
                                 compareByDescending<WatchlistItem> { it.released }
-                                    .thenBy { it.title },
+                                    .thenByDescending { it.listedAt },
                             )
+                            .distinctBy { it.key }
                             .toImmutableList()
                     }
                     loadingState.update { DONE }
@@ -183,8 +184,9 @@ internal class AllHomeWatchlistViewModel(
                         }
                         .sortedWith(
                             compareByDescending<WatchlistItem> { it.released }
-                                .thenBy { it.title },
+                                .thenByDescending { it.listedAt },
                         )
+                        .distinctBy { it.key }
                         .toImmutableList()
                 }
                 loadedAt = nowUtcInstant()

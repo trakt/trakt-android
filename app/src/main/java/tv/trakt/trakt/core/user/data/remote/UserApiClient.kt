@@ -20,6 +20,7 @@ import tv.trakt.trakt.common.networking.UserCommentsDto
 import tv.trakt.trakt.common.networking.UserRatingDto
 import tv.trakt.trakt.common.networking.WatchedShowDto
 import tv.trakt.trakt.common.networking.WatchlistItemDto
+import tv.trakt.trakt.common.networking.WatchlistMovieDto
 import java.time.LocalDate
 import java.time.ZonedDateTime
 
@@ -69,6 +70,32 @@ internal class UserApiClient(
             extended = extended,
             page = page,
             limit = limit,
+            watchnow = null,
+            genres = null,
+            subgenres = null,
+            years = null,
+            ratings = null,
+            startDate = null,
+            endDate = null,
+        )
+
+        return response.body()
+    }
+
+    override suspend fun getWatchlistMovies(
+        page: Int?,
+        limit: Int?,
+        extended: String?,
+        sort: String?,
+        hide: String?,
+    ): List<WatchlistMovieDto> {
+        val response = usersApi.getUsersWatchlistMovies(
+            id = "me",
+            sort = sort ?: "rank",
+            extended = extended,
+            page = page,
+            limit = limit,
+            hide = hide,
             watchnow = null,
             genres = null,
             subgenres = null,
@@ -254,6 +281,13 @@ internal class UserApiClient(
             startDate = startDate.toString(),
             days = days,
             extended = "full,cloud9,colors",
+            watchnow = null,
+            genres = null,
+            subgenres = null,
+            years = null,
+            ratings = null,
+            startDate2 = null,
+            endDate = null,
         )
         return response.body()
     }
@@ -267,6 +301,13 @@ internal class UserApiClient(
             startDate = startDate.toString(),
             days = days,
             extended = "full,cloud9,colors",
+            watchnow = null,
+            genres = null,
+            subgenres = null,
+            years = null,
+            ratings = null,
+            startDate2 = null,
+            endDate = null,
         )
         return response.body()
     }

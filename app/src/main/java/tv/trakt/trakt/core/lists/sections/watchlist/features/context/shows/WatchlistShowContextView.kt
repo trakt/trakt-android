@@ -220,7 +220,7 @@ private fun ShowActionButtons(
                         else -> R.string.button_text_mark_as_watched
                     },
                 ),
-                iconSize = 22.dp,
+                iconSize = 20.dp,
                 iconSpace = 16.dp,
                 onClick = onWatchedClick,
                 icon = painterResource(
@@ -241,12 +241,12 @@ private fun ShowActionButtons(
             loading = state.loadingWatchlist.isLoading || state.loadingWatchlist.isDone,
             text = stringResource(R.string.button_text_watchlist),
             onClick = onWatchlistClick,
-            iconSize = 22.dp,
-            iconSpace = 17.dp,
+            iconSize = 24.dp,
+            iconSpace = 16.dp,
             icon = painterResource(R.drawable.ic_minus),
             modifier = Modifier
                 .graphicsLayer {
-                    translationX = -6.dp.toPx()
+                    translationX = -8.5.dp.toPx()
                 },
         )
     }

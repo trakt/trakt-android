@@ -39,6 +39,13 @@ internal class ProfileApiClient(
             startDate = startDate.toString(),
             days = days,
             extended = "full,cloud9,colors,streaming_ids",
+            watchnow = null,
+            genres = null,
+            subgenres = null,
+            years = null,
+            ratings = null,
+            startDate2 = null,
+            endDate = null,
         )
         return response.body()
     }

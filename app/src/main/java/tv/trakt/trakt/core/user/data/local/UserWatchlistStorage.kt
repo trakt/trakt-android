@@ -148,8 +148,7 @@ internal class UserWatchlistStorage(
                 }
             }
 
-            homeWatchlistStorage
-                .removeMovies(ids)
+            homeWatchlistStorage.removeMovies(ids)
 
             if (notify) {
                 updatedAt.tryEmit(Instant.now())
@@ -168,8 +167,7 @@ internal class UserWatchlistStorage(
                 }
             }
 
-            homeWatchlistStorage
-                .removeShows(ids)
+            homeWatchlistStorage.removeShows(ids)
 
             if (notify) {
                 updatedAt.tryEmit(Instant.now())
@@ -183,6 +181,8 @@ internal class UserWatchlistStorage(
 
         moviesStorage = null
         showsStorage = null
+
+        homeWatchlistStorage.clear()
 
         updatedAt.tryEmit(null)
     }
