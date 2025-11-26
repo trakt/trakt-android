@@ -18,13 +18,13 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
-import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.AllUpNextLocalDataSource
+import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 
 internal class UpNextItemContextViewModel(
     private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
-    private val allUpNextLocalDataSource: AllUpNextLocalDataSource,
+    private val upNextUpdates: UpNextUpdates,
     private val upNextLocalDataSource: HomeUpNextLocalDataSource,
     private val upcomingLocalDataSource: HomeUpcomingLocalDataSource,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
@@ -53,7 +53,7 @@ internal class UpNextItemContextViewModel(
                 )
 
                 upNextLocalDataSource.notifyUpdate()
-                allUpNextLocalDataSource.notifyUpdate()
+                upNextUpdates.notifyUpdate()
 
                 loadUserProgress()
             } catch (error: Exception) {

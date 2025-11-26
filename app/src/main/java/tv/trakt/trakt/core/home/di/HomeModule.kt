@@ -37,8 +37,8 @@ import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextViewModel
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextStorage
 import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextViewModel
-import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.AllUpNextLocalDataSource
-import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.AllUpNextStorage
+import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
+import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdatesStorage
 import tv.trakt.trakt.core.home.sections.upnext.features.context.UpNextItemContextViewModel
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.HomeWatchlistViewModel
@@ -62,8 +62,8 @@ internal val homeDataModule = module {
         HomeUpNextStorage()
     }
 
-    single<AllUpNextLocalDataSource> {
-        AllUpNextStorage()
+    single<UpNextUpdates> {
+        UpNextUpdatesStorage()
     }
 
     single<HomeWatchlistLocalDataSource> {
@@ -155,10 +155,10 @@ internal val homeModule = module {
             homeUpNextSource = get(),
             userWatchlistSource = get(),
             homePersonalActivitySource = get(),
-            allUpNextSource = get(),
+            upNextUpdates = get(),
             loadUserProgressUseCase = get(),
-            showUpdatesSource = get(),
-            episodeUpdatesSource = get(),
+            showUpdates = get(),
+            episodeUpdates = get(),
             sessionManager = get(),
             analytics = get(),
         )
@@ -292,7 +292,7 @@ internal val homeModule = module {
         UpNextItemContextViewModel(
             updateShowHistoryUseCase = get(),
             upNextLocalDataSource = get(),
-            allUpNextLocalDataSource = get(),
+            upNextUpdates = get(),
             upcomingLocalDataSource = get(),
             loadUserProgressUseCase = get(),
         )

@@ -7,9 +7,9 @@ import kotlinx.coroutines.flow.asSharedFlow
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import java.time.Instant
 
-internal class AllUpNextStorage : AllUpNextLocalDataSource {
+internal class UpNextUpdatesStorage : UpNextUpdates {
     private val updatedAt = MutableSharedFlow<Instant?>(
-        replay = 1,
+        extraBufferCapacity = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST,
     )
 

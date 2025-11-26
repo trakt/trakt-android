@@ -33,7 +33,7 @@ import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
-import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.AllUpNextLocalDataSource
+import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
@@ -54,10 +54,10 @@ internal class HomeUpNextViewModel(
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val homeUpNextSource: HomeUpNextLocalDataSource,
     private val userWatchlistSource: UserWatchlistLocalDataSource,
-    private val allUpNextSource: AllUpNextLocalDataSource,
     private val homePersonalActivitySource: HomePersonalLocalDataSource,
-    private val showUpdatesSource: ShowDetailsUpdates,
-    private val episodeUpdatesSource: EpisodeDetailsUpdates,
+    private val upNextUpdates: UpNextUpdates,
+    private val showUpdates: ShowDetailsUpdates,
+    private val episodeUpdates: EpisodeDetailsUpdates,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
 ) : ViewModel() {
@@ -98,11 +98,11 @@ internal class HomeUpNextViewModel(
         merge(
             userWatchlistSource.observeUpdates(),
             homePersonalActivitySource.observeUpdates(),
-            showUpdatesSource.observeUpdates(Source.PROGRESS),
-            showUpdatesSource.observeUpdates(Source.SEASONS),
-            episodeUpdatesSource.observeUpdates(PROGRESS),
-            episodeUpdatesSource.observeUpdates(SEASON),
-            episodeUpdatesSource.observeUpdates(HOME),
+            showUpdates.observeUpdates(Source.PROGRESS),
+            showUpdates.observeUpdates(Source.SEASONS),
+            episodeUpdates.observeUpdates(PROGRESS),
+            episodeUpdates.observeUpdates(SEASON),
+            episodeUpdates.observeUpdates(HOME),
         )
             .distinctUntilChanged()
             .debounce(200)
@@ -112,7 +112,7 @@ internal class HomeUpNextViewModel(
                 )
             }.launchIn(viewModelScope)
 
-        allUpNextSource.observeUpdates()
+        upNextUpdates.observeUpdates()
             .distinctUntilChanged()
             .debounce(200)
             .onEach {
