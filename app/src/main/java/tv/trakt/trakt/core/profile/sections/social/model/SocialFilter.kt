@@ -9,11 +9,11 @@ enum class SocialFilter(
     @param:DrawableRes val iconRes: Int,
 ) {
     FOLLOWING(
-        displayRes = R.string.text_following,
+        displayRes = R.string.button_text_following,
         iconRes = R.drawable.ic_following,
     ),
     FOLLOWERS(
-        displayRes = R.string.text_followers,
+        displayRes = R.string.button_text_followers,
         iconRes = R.drawable.ic_followers,
     ),
 }

@@ -275,7 +275,7 @@ internal fun CommentsContent(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_comment_plus),
-                    contentDescription = stringResource(R.string.button_text_comment),
+                    contentDescription = stringResource(R.string.dialog_title_comment),
                     tint = TraktTheme.colors.textPrimary,
                     modifier = Modifier.size(24.dp),
                 )

@@ -140,6 +140,7 @@ internal fun HomeUpcomingContent(
                         contentPadding = contentPadding,
                     )
                 }
+
                 DONE -> {
                     when {
                         state.error != null -> {
@@ -152,6 +153,7 @@ internal fun HomeUpcomingContent(
                                 modifier = Modifier.padding(contentPadding),
                             )
                         }
+
                         state.items?.isEmpty() == true -> {
                             val imageUrl = remember {
                                 Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_3).ifBlank { null }
@@ -161,8 +163,8 @@ internal fun HomeUpcomingContent(
                                 icon = R.drawable.ic_empty_upcoming,
                                 buttonText = stringResource(
                                     when (state.filter) {
-                                        MediaMode.MOVIES -> R.string.button_label_browse_movies
-                                        else -> R.string.button_label_browse_shows
+                                        MediaMode.MOVIES -> R.string.link_text_discover_movies
+                                        else -> R.string.link_text_discover_shows
                                     },
                                 ),
                                 backgroundImageUrl = imageUrl,
@@ -172,6 +174,7 @@ internal fun HomeUpcomingContent(
                                     .padding(contentPadding),
                             )
                         }
+
                         else -> {
                             ContentList(
                                 listItems = (state.items ?: emptyList()).toImmutableList(),
@@ -236,7 +239,7 @@ private fun ContentList(
             key = { it.id.value },
         ) { item ->
             when (item) {
-                is HomeUpcomingItem.MovieItem ->
+                is HomeUpcomingItem.MovieItem -> {
                     MovieUpcomingItemView(
                         item = item,
                         onClick = { onMovieClick(item.movie) },
@@ -245,7 +248,9 @@ private fun ContentList(
                             fadeOutSpec = null,
                         ),
                     )
-                is HomeUpcomingItem.EpisodeItem ->
+                }
+
+                is HomeUpcomingItem.EpisodeItem -> {
                     EpisodeUpcomingItemView(
                         item = item,
                         onClick = { onClick(item) },
@@ -255,6 +260,7 @@ private fun ContentList(
                             fadeOutSpec = null,
                         ),
                     )
+                }
             }
         }
     }

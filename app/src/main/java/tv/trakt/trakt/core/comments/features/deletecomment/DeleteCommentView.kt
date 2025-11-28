@@ -69,7 +69,7 @@ private fun ViewContent(
             text = stringResource(
                 when {
                     isReply -> R.string.button_text_delete_reply
-                    else -> R.string.button_text_delete_review
+                    else -> R.string.button_text_delete_comment
                 },
             ).uppercase(),
             style = TraktTheme.typography.heading6,
@@ -84,7 +84,7 @@ private fun ViewContent(
             text = stringResource(
                 when {
                     isReply -> R.string.warning_prompt_delete_reply
-                    else -> R.string.warning_prompt_delete_review
+                    else -> R.string.warning_prompt_delete_comment
                 },
             ),
             style = TraktTheme.typography.paragraph,

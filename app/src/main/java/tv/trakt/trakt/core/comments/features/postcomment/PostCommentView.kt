@@ -96,14 +96,13 @@ private fun ViewContent(
         modifier = modifier,
     ) {
         TraktHeader(
-            title = stringResource(R.string.button_text_comment),
-            subtitle = stringResource(R.string.page_description_add_comment),
+            title = stringResource(R.string.dialog_title_comment),
+            subtitle = stringResource(R.string.dialog_title_comments_warning),
         )
 
         InputField(
             state = inputState,
             enabled = !isLoading,
-            placeholder = stringResource(R.string.input_placeholder_comment),
             containerColor = Color.Transparent,
             height = 164.dp,
             lineLimits = TextFieldLineLimits.MultiLine(
@@ -135,7 +134,7 @@ private fun ViewContent(
             modifier = Modifier.padding(vertical = 12.dp),
         ) {
             Text(
-                text = stringResource(R.string.button_text_spoilers),
+                text = stringResource(R.string.text_spoiler),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.paragraph,
                 maxLines = 1,

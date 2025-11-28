@@ -150,7 +150,7 @@ private fun TitleBar(modifier: Modifier = Modifier) {
             contentDescription = null,
         )
         Text(
-            text = stringResource(R.string.list_title_watch_history),
+            text = stringResource(R.string.list_title_history),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.heading5,
         )
@@ -292,6 +292,7 @@ private fun ContentList(
                             ),
                     )
                 }
+
                 is EpisodeItem -> {
                     AllActivityEpisodeItem(
                         item = item,

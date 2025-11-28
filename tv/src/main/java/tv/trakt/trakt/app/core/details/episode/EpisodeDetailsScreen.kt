@@ -121,7 +121,7 @@ internal fun EpisodeDetailsScreen(
     if (historyConfirmationDialog != null) {
         HistoryConfirmationOverlay(
             title = state.episodeDetails?.seasonEpisodeString()
-                ?: stringResource(R.string.list_title_watch_history),
+                ?: stringResource(R.string.list_title_history),
             episodePlayId = historyConfirmationDialog ?: -1L,
             onConfirm = viewModel::removeFromHistory,
             onDismiss = { historyConfirmationDialog = null },
@@ -457,7 +457,7 @@ private fun MainContent(
             }
 
             EpisodeRecentlyWatchedList(
-                header = stringResource(R.string.list_title_watch_history),
+                header = stringResource(R.string.list_title_history),
                 items = { state.episodeHistory.episodes ?: emptyList<SyncHistoryEpisodeItem>().toImmutableList() },
                 onFocused = { onFocused("history") },
                 onClicked = {

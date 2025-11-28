@@ -106,8 +106,8 @@ private fun ViewContent(
         modifier = modifier,
     ) {
         TraktHeader(
-            title = stringResource(R.string.button_text_reply),
-            subtitle = stringResource(R.string.page_description_add_comment),
+            title = stringResource(R.string.dialog_title_reply),
+            subtitle = stringResource(R.string.dialog_title_comments_warning),
         )
 
         InputField(
@@ -145,7 +145,7 @@ private fun ViewContent(
             modifier = Modifier.padding(vertical = 12.dp),
         ) {
             Text(
-                text = stringResource(R.string.button_text_spoilers),
+                text = stringResource(R.string.text_spoiler),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.paragraph,
                 maxLines = 1,
@@ -160,7 +160,7 @@ private fun ViewContent(
         }
 
         PrimaryButton(
-            text = stringResource(R.string.button_text_reply),
+            text = stringResource(R.string.dialog_title_reply),
             enabled = !isLoading && isValid.value,
             loading = isLoading,
             onClick = {

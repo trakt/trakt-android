@@ -82,7 +82,7 @@ internal fun MoviesCreditsList(
             TraktHeader(
                 title = stringResource(R.string.page_title_movies),
                 subtitle = when (listItems.keys.size) {
-                    1 -> stringResource(R.string.text_job_acting)
+                    1 -> stringResource(R.string.translated_value_position_acting)
                     else -> null
                 },
             )
@@ -99,6 +99,7 @@ internal fun MoviesCreditsList(
                         contentPadding = contentPadding,
                     )
                 }
+
                 DONE -> {
                     if (listItems.isEmpty()) {
                         ListEmptyView(

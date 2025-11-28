@@ -113,7 +113,7 @@ internal fun ProfileScreen(
             confirmLogout = false
         },
         title = stringResource(R.string.button_text_logout),
-        message = stringResource(R.string.warning_prompt_logout),
+        message = stringResource(R.string.warning_prompt_log_out),
     )
 }
 
@@ -207,7 +207,7 @@ private fun ProfileScreenContent(
                                 .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
                         ) {
                             Text(
-                                text = stringResource(R.string.page_title_about_me).uppercase(),
+                                text = stringResource(R.string.text_about).uppercase(),
                                 color = TraktTheme.colors.textSecondary,
                                 style = TraktTheme.typography.heading6.copy(
                                     fontWeight = W500,

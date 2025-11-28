@@ -135,6 +135,7 @@ internal fun HomeWatchlistView(
                     showId = it.id,
                     episodeId = it.progress?.nextEpisode?.ids?.trakt,
                 )
+
                 is MovieItem -> viewModel.addMovieToHistory(it.id)
             }
         },
@@ -186,6 +187,7 @@ internal fun HomeWatchlistView(
                             customDate = date,
                         )
                     }
+
                     is ShowItem -> {
                         val episode = (dateSheet as ShowItem).progress?.nextEpisode
                             ?: return@HomeDateSelectionSheet
@@ -267,6 +269,7 @@ internal fun HomeWatchlistContent(
                         contentPadding = contentPadding,
                     )
                 }
+
                 DONE -> {
                     when {
                         state.error != null -> {
@@ -279,6 +282,7 @@ internal fun HomeWatchlistContent(
                                 modifier = Modifier.padding(contentPadding),
                             )
                         }
+
                         state.items?.isEmpty() == true -> {
                             val imageUrl = remember {
                                 Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_2).ifBlank { null }
@@ -288,8 +292,8 @@ internal fun HomeWatchlistContent(
                                 text = stringResource(R.string.text_cta_watchlist_released),
                                 icon = R.drawable.ic_empty_watchlist,
                                 buttonText = when (state.filter) {
-                                    MediaMode.MOVIES -> stringResource(R.string.button_label_browse_movies)
-                                    else -> stringResource(R.string.button_label_browse_shows)
+                                    MediaMode.MOVIES -> stringResource(R.string.link_text_discover_movies)
+                                    else -> stringResource(R.string.link_text_discover_shows)
                                 },
                                 backgroundImageUrl = imageUrl,
                                 backgroundImage = when (imageUrl) {
@@ -303,6 +307,7 @@ internal fun HomeWatchlistContent(
                                     .padding(bottom = 6.dp),
                             )
                         }
+
                         else -> {
                             ContentList(
                                 listFilter = state.filter,

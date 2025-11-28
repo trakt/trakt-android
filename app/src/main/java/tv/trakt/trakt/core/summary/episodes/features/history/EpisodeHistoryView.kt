@@ -94,7 +94,7 @@ private fun EpisodeHistoryContent(
             verticalAlignment = CenterVertically,
         ) {
             TraktHeader(
-                title = stringResource(R.string.list_title_watch_history),
+                title = stringResource(R.string.list_title_history),
             )
 
             if (loading) {
@@ -115,6 +115,7 @@ private fun EpisodeHistoryContent(
                         contentPadding = contentPadding,
                     )
                 }
+
                 DONE -> {
                     if (state.items?.isEmpty() == true) {
                         ContentEmpty(

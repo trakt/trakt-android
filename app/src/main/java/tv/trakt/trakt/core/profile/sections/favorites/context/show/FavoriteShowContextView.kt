@@ -86,7 +86,7 @@ internal fun FavoriteShowContextView(
             viewModel.removeFromFavorites()
         },
         onNo = { confirmRemoveSheet = false },
-        title = stringResource(R.string.button_text_remove_favorites),
+        title = stringResource(R.string.button_text_remove_from_favorites),
         message = stringResource(
             R.string.warning_prompt_remove_from_favorites,
             show.title,
@@ -161,7 +161,7 @@ private fun ShowActionButtons(
         GhostButton(
             enabled = !isLoadingOrDone,
             loading = isLoadingOrDone,
-            text = stringResource(R.string.button_text_remove_favorites),
+            text = stringResource(R.string.button_text_remove_from_favorites),
             onClick = onRemoveClick,
             icon = painterResource(R.drawable.ic_close),
             iconSize = 20.dp,

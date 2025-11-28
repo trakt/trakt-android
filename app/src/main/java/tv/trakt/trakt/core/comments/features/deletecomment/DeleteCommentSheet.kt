@@ -67,7 +67,7 @@ internal fun DeleteCommentSheet(
                                 val job = sheetScope.launch {
                                     val message = when {
                                         isReply -> localContext.getString(R.string.text_info_reply_deleted)
-                                        else -> localContext.getString(R.string.text_info_comment_deleted)
+                                        else -> localContext.getString(R.string.text_info_review_deleted)
                                     }
                                     localSnack.showSnackbar(message)
                                 }

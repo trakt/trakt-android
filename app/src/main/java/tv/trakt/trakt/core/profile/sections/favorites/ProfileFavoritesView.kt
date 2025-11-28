@@ -153,7 +153,7 @@ internal fun ProfileFavoritesContent(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             TraktHeader(
-                title = stringResource(R.string.page_title_favorites),
+                title = stringResource(R.string.list_title_favorites),
                 subtitle = stringResource(R.string.text_sort_recently_added),
             )
 
@@ -189,6 +189,7 @@ internal fun ProfileFavoritesContent(
                         modifier = Modifier.padding(bottom = 3.75.dp),
                     )
                 }
+
                 DONE -> {
                     when {
                         state.error != null -> {
@@ -201,6 +202,7 @@ internal fun ProfileFavoritesContent(
                                 modifier = Modifier.padding(contentPadding),
                             )
                         }
+
                         state.items?.isEmpty() == true -> {
                             ContentEmptyView(
                                 filter = state.filter,
@@ -209,6 +211,7 @@ internal fun ProfileFavoritesContent(
                                 modifier = Modifier.padding(contentPadding),
                             )
                         }
+
                         else -> {
                             ContentList(
                                 filter = state.filter,
@@ -348,34 +351,43 @@ private fun ContentEmptyView(
                 text = stringResource(R.string.text_cta_favorites),
                 icon = R.drawable.ic_empty_watchlist,
                 height = height,
-                buttonText = stringResource(R.string.button_label_browse_shows),
+                buttonText = stringResource(R.string.link_text_discover_shows),
                 backgroundImageUrl = imageUrls.getOrNull(0),
                 backgroundImage = if (imageUrls.getOrNull(0) == null) R.drawable.ic_splash_background else null,
                 onClick = onShowsClick,
                 modifier = modifier,
             )
         }
-        SHOWS -> HomeEmptyView(
-            text = stringResource(R.string.text_cta_favorites_shows),
-            icon = R.drawable.ic_empty_watchlist,
-            height = height,
-            buttonText = stringResource(R.string.button_label_browse_shows),
-            backgroundImageUrl = imageUrls.getOrNull(2),
-            backgroundImage = if (imageUrls.getOrNull(2) == null) R.drawable.ic_splash_background_2 else null,
-            onClick = onShowsClick,
-            modifier = modifier,
-        )
-        MOVIES -> HomeEmptyView(
-            text = stringResource(R.string.text_cta_favorites_movies),
-            icon = R.drawable.ic_empty_watchlist,
-            height = height,
-            buttonText = stringResource(R.string.button_label_browse_movies),
-            backgroundImageUrl = imageUrls.getOrNull(1),
-            backgroundImage = if (imageUrls.getOrNull(1) == null) R.drawable.ic_splash_background_2 else null,
-            onClick = onMoviesClick,
-            modifier = modifier,
-        )
-        else -> Unit
+
+        SHOWS -> {
+            HomeEmptyView(
+                text = stringResource(R.string.text_cta_favorites_shows),
+                icon = R.drawable.ic_empty_watchlist,
+                height = height,
+                buttonText = stringResource(R.string.link_text_discover_shows),
+                backgroundImageUrl = imageUrls.getOrNull(2),
+                backgroundImage = if (imageUrls.getOrNull(2) == null) R.drawable.ic_splash_background_2 else null,
+                onClick = onShowsClick,
+                modifier = modifier,
+            )
+        }
+
+        MOVIES -> {
+            HomeEmptyView(
+                text = stringResource(R.string.text_cta_favorites_movies),
+                icon = R.drawable.ic_empty_watchlist,
+                height = height,
+                buttonText = stringResource(R.string.link_text_discover_movies),
+                backgroundImageUrl = imageUrls.getOrNull(1),
+                backgroundImage = if (imageUrls.getOrNull(1) == null) R.drawable.ic_splash_background_2 else null,
+                onClick = onMoviesClick,
+                modifier = modifier,
+            )
+        }
+
+        else -> {
+            Unit
+        }
     }
 }
 

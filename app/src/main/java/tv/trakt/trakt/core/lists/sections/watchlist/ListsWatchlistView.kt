@@ -209,6 +209,7 @@ internal fun ListWatchlistContent(
                         modifier = Modifier.padding(bottom = 3.75.dp),
                     )
                 }
+
                 DONE -> {
                     when {
                         state.error != null -> {
@@ -221,6 +222,7 @@ internal fun ListWatchlistContent(
                                 modifier = Modifier.padding(contentPadding),
                             )
                         }
+
                         state.items?.isEmpty() == true -> {
                             ContentEmptyView(
                                 authenticated = (state.user != null),
@@ -238,6 +240,7 @@ internal fun ListWatchlistContent(
                                 modifier = Modifier.padding(contentPadding),
                             )
                         }
+
                         else -> {
                             ContentList(
                                 filter = state.filter,
@@ -364,8 +367,8 @@ private fun ContentEmptyView(
             return@remember R.string.button_text_join_trakt
         }
         when (filter) {
-            MEDIA, SHOWS -> R.string.button_label_browse_shows
-            MOVIES -> R.string.button_label_browse_movies
+            MEDIA, SHOWS -> R.string.link_text_discover_shows
+            MOVIES -> R.string.link_text_discover_movies
         }
     }
 

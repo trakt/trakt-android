@@ -136,7 +136,7 @@ internal fun ThisMonthCard(
                             .size(18.dp),
                     )
                     Text(
-                        text = stringResource(R.string.text_month_so_far).uppercase(),
+                        text = stringResource(R.string.text_this_month_so_far).uppercase(),
                         color = TraktTheme.colors.textPrimary,
                         style = TraktTheme.typography.heading6,
                         textAlign = TextAlign.Center,
@@ -186,15 +186,15 @@ internal fun ThisMonthCard(
                     .padding(bottom = 2.dp),
             ) {
                 StatsChip(
-                    text = stringResource(R.string.text_episodes_count, stats?.episodesCount ?: 0),
+                    text = stringResource(R.string.text_episodes_watched, stats?.episodesCount ?: 0),
                     icon = painterResource(R.drawable.ic_shows_off),
                 )
                 StatsChip(
-                    text = stringResource(R.string.text_shows_count, stats?.showsCount ?: 0),
+                    text = stringResource(R.string.text_shows_watched, stats?.showsCount ?: 0),
                     icon = painterResource(R.drawable.ic_shows_off),
                 )
                 StatsChip(
-                    text = stringResource(R.string.text_movies_count, stats?.moviesCount ?: 0),
+                    text = stringResource(R.string.text_movies_watched, stats?.moviesCount ?: 0),
                     icon = painterResource(R.drawable.ic_movies_off),
                 )
             }
@@ -223,7 +223,7 @@ internal fun ThisMonthCard(
                 )
                 Text(
                     text = stringResource(
-                        R.string.text_month_in_review,
+                        R.string.text_this_month_in_review,
                         previousMonth.month.getDisplayName(TextStyle.FULL, Locale.US),
                     ).uppercase(),
                     color = TraktTheme.colors.textPrimary,

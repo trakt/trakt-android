@@ -187,7 +187,7 @@ private fun TitleBar(
             contentDescription = null,
         )
         TraktHeader(
-            title = stringResource(R.string.page_title_favorites),
+            title = stringResource(R.string.list_title_favorites),
             subtitle = subtitle,
         )
     }
@@ -246,6 +246,7 @@ private fun ContentList(
                             fadeOutSpec = null,
                         ),
                 )
+
                 is FavoriteItem.MovieItem -> AllFavoritesMovieView(
                     item = item,
                     mediaIcon = listFilter == MediaMode.MEDIA,

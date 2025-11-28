@@ -86,7 +86,7 @@ private fun MovieHistoryContent(
             verticalAlignment = CenterVertically,
         ) {
             TraktHeader(
-                title = stringResource(R.string.list_title_watch_history),
+                title = stringResource(R.string.list_title_history),
             )
         }
 
@@ -101,6 +101,7 @@ private fun MovieHistoryContent(
                         contentPadding = contentPadding,
                     )
                 }
+
                 DONE -> {
                     if (state.items?.isEmpty() == true) {
                         ContentEmpty(

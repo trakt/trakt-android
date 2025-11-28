@@ -213,6 +213,7 @@ internal fun HomeUpNextContent(
                         contentPadding = contentPadding,
                     )
                 }
+
                 DONE -> {
                     when {
                         state.error != null -> {
@@ -225,6 +226,7 @@ internal fun HomeUpNextContent(
                                 modifier = Modifier.padding(contentPadding),
                             )
                         }
+
                         state.items.items?.isEmpty() == true -> {
                             val imageUrl = remember {
                                 Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_1).ifBlank { null }
@@ -232,13 +234,14 @@ internal fun HomeUpNextContent(
                             HomeEmptyView(
                                 text = stringResource(R.string.text_cta_up_next),
                                 icon = R.drawable.ic_empty_upnext,
-                                buttonText = stringResource(R.string.button_label_browse_shows),
+                                buttonText = stringResource(R.string.link_text_discover_shows),
                                 backgroundImageUrl = imageUrl,
                                 backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
                                 modifier = Modifier.padding(contentPadding),
                                 onClick = onShowsClick,
                             )
                         }
+
                         else -> {
                             ContentList(
                                 listItems = state.items,

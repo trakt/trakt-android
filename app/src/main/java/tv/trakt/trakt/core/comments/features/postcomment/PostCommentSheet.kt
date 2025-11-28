@@ -62,7 +62,7 @@ internal fun PostCommentSheet(
                         action = {
                             sheetScope.launch {
                                 val job = sheetScope.launch {
-                                    val message = localContext.getString(R.string.text_info_comment_added)
+                                    val message = localContext.getString(R.string.text_info_review_added)
                                     localSnack.showSnackbar(message)
                                 }
                                 delay(SNACK_DURATION_SHORT)

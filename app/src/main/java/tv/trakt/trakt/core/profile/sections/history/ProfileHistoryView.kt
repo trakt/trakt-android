@@ -159,7 +159,7 @@ internal fun ProfileHistoryContent(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             TraktHeader(
-                title = stringResource(R.string.list_title_watch_history),
+                title = stringResource(R.string.list_title_history),
             )
 
             if (!state.items.isNullOrEmpty() || state.loading != DONE) {
@@ -189,6 +189,7 @@ internal fun ProfileHistoryContent(
                         contentPadding = contentPadding,
                     )
                 }
+
                 DONE -> {
                     when {
                         state.error != null -> {
@@ -201,12 +202,14 @@ internal fun ProfileHistoryContent(
                                 modifier = Modifier.padding(contentPadding),
                             )
                         }
+
                         state.items?.isEmpty() == true -> {
                             HomeEmptySocialView(
                                 modifier = Modifier
                                     .padding(contentPadding),
                             )
                         }
+
                         else -> {
                             ContentList(
                                 listItems = (state.items ?: emptyList()).toImmutableList(),
@@ -275,7 +278,7 @@ private fun ContentList(
             key = { it.id },
         ) { item ->
             when (item) {
-                is HomeActivityItem.MovieItem ->
+                is HomeActivityItem.MovieItem -> {
                     ActivityMovieItemView(
                         item = item,
                         onClick = { onMovieClick(item.movie) },
@@ -287,7 +290,9 @@ private fun ContentList(
                                 fadeOutSpec = null,
                             ),
                     )
-                is HomeActivityItem.EpisodeItem ->
+                }
+
+                is HomeActivityItem.EpisodeItem -> {
                     ActivityEpisodeItemView(
                         item = item,
                         onClick = { onEpisodeClick(item) },
@@ -300,6 +305,7 @@ private fun ContentList(
                                 fadeOutSpec = null,
                             ),
                     )
+                }
             }
         }
     }

@@ -298,7 +298,7 @@ private fun DetailsBirthday(
             modifier = Modifier.weight(1f),
         ) {
             Text(
-                text = stringResource(R.string.text_birthday).uppercase(),
+                text = stringResource(R.string.header_birthday).uppercase(),
                 style = TraktTheme.typography.meta,
                 color = TraktTheme.colors.textSecondary.copy(alpha = 0.7f),
             )
@@ -334,7 +334,7 @@ private fun DetailsBirthday(
             }
 
             Text(
-                text = stringResource(R.string.text_age).uppercase(),
+                text = stringResource(R.string.header_age).uppercase(),
                 style = TraktTheme.typography.meta,
                 color = TraktTheme.colors.textSecondary.copy(alpha = 0.7f),
             )

@@ -88,7 +88,7 @@ internal fun ProfileSocialContent(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             TraktHeader(
-                title = stringResource(R.string.page_title_social),
+                title = stringResource(R.string.list_title_social),
             )
         }
 
@@ -109,6 +109,7 @@ internal fun ProfileSocialContent(
                         contentPadding = contentPadding,
                     )
                 }
+
                 DONE -> {
                     when {
                         state.error != null -> {
@@ -121,11 +122,13 @@ internal fun ProfileSocialContent(
                                 modifier = Modifier.padding(contentPadding),
                             )
                         }
+
                         state.items?.isEmpty() == true -> {
                             HomeEmptySocialView(
                                 modifier = Modifier.padding(contentPadding),
                             )
                         }
+
                         else -> {
                             ContentList(
                                 listItems = (state.items ?: emptyList()).toImmutableList(),

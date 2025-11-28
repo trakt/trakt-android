@@ -80,7 +80,7 @@ fun ReactionsSummaryGrid(
             )
 
             Text(
-                text = stringResource(R.string.text_comments_reactions).uppercase(),
+                text = stringResource(R.string.button_label_popup_reactions).uppercase(),
                 style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700, fontSize = 12.sp),
                 color = TraktTheme.colors.textSecondary,
             )
