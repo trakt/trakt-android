@@ -12,14 +12,19 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
@@ -33,6 +38,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -49,12 +55,15 @@ import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
+import tv.trakt.trakt.common.helpers.extensions.longDateFormat
+import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.ui.theme.colors.Shade900
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.core.summary.people.ui.MoviesCreditsList
@@ -65,6 +74,7 @@ import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
+import java.time.LocalDate
 
 @Composable
 internal fun PersonDetailsScreen(
@@ -200,6 +210,19 @@ internal fun PersonDetailsContent(
                 }
 
                 item {
+                    DetailsBirthday(
+                        birthday = person.birthday,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                start = TraktTheme.spacing.mainPageHorizontalSpace,
+                                end = TraktTheme.spacing.mainPageHorizontalSpace,
+                                bottom = 24.dp,
+                            ),
+                    )
+                }
+
+                item {
                     AnimatedVisibility(
                         visible = state.loadingDetails == DONE,
                         enter = fadeIn(),
@@ -255,6 +278,72 @@ internal fun PersonDetailsContent(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun DetailsBirthday(
+    modifier: Modifier = Modifier,
+    birthday: LocalDate? = null,
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = spacedBy(24.dp, Alignment.CenterHorizontally),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalAlignment = Alignment.End,
+            modifier = Modifier.weight(1f),
+        ) {
+            Text(
+                text = stringResource(R.string.text_birthday).uppercase(),
+                style = TraktTheme.typography.meta,
+                color = TraktTheme.colors.textSecondary.copy(alpha = 0.7f),
+            )
+            Text(
+                text = birthday?.format(longDateFormat) ?: "-",
+                style = TraktTheme.typography.paragraphSmall,
+                color = TraktTheme.colors.textPrimary,
+                textAlign = TextAlign.Start,
+            )
+        }
+
+        Spacer(
+            modifier = Modifier
+                .width(1.dp)
+                .height(42.dp)
+                .background(Shade900),
+        )
+
+        Column(
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalAlignment = Alignment.Start,
+            modifier = Modifier.weight(1f),
+        ) {
+            val ageText: String = remember {
+                birthday?.let {
+                    val today = nowLocalDay()
+                    val age = (today.year - it.year) - when {
+                        it.dayOfYear <= today.dayOfYear -> 0
+                        else -> 1
+                    }
+                    age.toString()
+                } ?: "-"
+            }
+
+            Text(
+                text = stringResource(R.string.text_age).uppercase(),
+                style = TraktTheme.typography.meta,
+                color = TraktTheme.colors.textSecondary.copy(alpha = 0.7f),
+            )
+            Text(
+                text = ageText,
+                style = TraktTheme.typography.paragraphSmall,
+                color = TraktTheme.colors.textPrimary,
+                textAlign = TextAlign.Start,
+            )
         }
     }
 }
@@ -339,6 +428,7 @@ private fun Preview() {
         PersonDetailsContent(
             state = PersonDetailsState(
                 personDetails = PreviewData.person1,
+                loadingDetails = DONE,
             ),
         )
     }

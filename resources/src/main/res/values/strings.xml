@@ -210,4 +210,7 @@
     <string name="warning_prompt_delete_reply">Are you sure you want to delete your reply?</string>
     <string name="text_info_comment_deleted">Review has been deleted.</string>
     <string name="text_info_reply_deleted">Reply has been deleted.</string>
+    <string name="text_birthday">Birthday</string>
+    <string name="text_age">Age</string>
+    <string name="text_birthplace">Birthplace</string>
 </resources>

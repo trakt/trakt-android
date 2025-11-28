@@ -302,6 +302,15 @@ internal fun DetailsHeader(
     DetailsHeader(
         loading = loading,
         title = person.name,
+        titleFooter = person.knownForDepartment?.let {
+            {
+                Text(
+                    text = it.capitalize(),
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.paragraphSmaller,
+                )
+            }
+        },
         genres = EmptyImmutableList,
         imageUrl = person.images?.getHeadshotUrl(),
         onShareClick = onShareClick,
@@ -315,7 +324,7 @@ internal fun DetailsHeader(
         accentColor = Shade700,
         creditsCount = null,
         traktRatings = null,
-        imdbId = person.ids.imdb,
+        personImdb = person.ids.imdb,
         modifier = modifier,
     )
 }
@@ -324,6 +333,7 @@ internal fun DetailsHeader(
 private fun DetailsHeader(
     modifier: Modifier = Modifier,
     titleHeader: @Composable (() -> Unit)? = null,
+    titleFooter: @Composable (() -> Unit)? = null,
     title: String,
     genres: ImmutableList<String>,
     date: @Composable (() -> Unit)?,
@@ -336,7 +346,7 @@ private fun DetailsHeader(
     externalRatingsVisible: Boolean = true,
     creditsCount: Int?,
     playsCount: Int?,
-    imdbId: ImdbId? = null,
+    personImdb: ImdbId? = null,
     loading: Boolean,
     onShareClick: () -> Unit,
     onBackClick: () -> Unit,
@@ -416,7 +426,7 @@ private fun DetailsHeader(
                             )
                         }
 
-                        if (imdbId != null) {
+                        if (personImdb != null) {
                             Image(
                                 painter = painterResource(R.drawable.ic_imdb_color),
                                 contentDescription = null,
@@ -430,7 +440,7 @@ private fun DetailsHeader(
                                             context = context,
                                             packageId = "com.imdb.mobile",
                                             packageName = "imdb",
-                                            uri = webImdbPersonUrl(imdbId.value).toUri(),
+                                            uri = webImdbPersonUrl(personImdb.value).toUri(),
                                         )
                                     },
                             )
@@ -506,6 +516,10 @@ private fun DetailsHeader(
                     stepSize = 2.sp,
                 ),
             )
+
+            if (titleFooter != null) {
+                titleFooter()
+            }
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,

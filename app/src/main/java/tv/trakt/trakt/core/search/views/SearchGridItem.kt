@@ -55,6 +55,7 @@ internal fun SearchGridItem(
             onShowLongClick = onShowLongClick,
             modifier = modifier,
         )
+
         is SearchItem.Movie -> MovieGridItem(
             item = item,
             filter = filter,
@@ -64,6 +65,7 @@ internal fun SearchGridItem(
             onMovieLongClick = onMovieLongClick,
             modifier = modifier,
         )
+
         is SearchItem.Person -> PersonGridItem(
             item = item,
             onPersonClick = onPersonClick,
@@ -222,7 +224,7 @@ private fun PersonGridItem(
         title = item.person.name,
         more = false,
         imageUrl = item.person.images?.getHeadshotUrl(),
-        chipContent = { modifier ->
+        chipContent = {
             Column(
                 verticalArrangement = spacedBy(1.dp),
             ) {

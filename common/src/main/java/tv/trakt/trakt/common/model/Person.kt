@@ -17,6 +17,7 @@ data class Person(
     val biography: String?,
     @Serializable(LocalDateSerializer::class)
     val birthday: LocalDate?,
+    val birthplace: String?,
     val images: Images?,
     val knownForDepartment: String?,
 ) {
@@ -34,6 +35,7 @@ fun Companion.fromDto(dto: PersonDto): Person {
         name = dto.name,
         biography = dto.biography,
         birthday = dto.birthday?.let { LocalDate.parse(it) },
+        birthplace = dto.birthplace,
         knownForDepartment = dto.knownForDepartment,
         images = dto.images?.let {
             Images(
@@ -55,6 +57,7 @@ fun Companion.fromDto(dto: PersonSearchDto): Person {
         biography = dto.biography,
         birthday = dto.birthday?.let { LocalDate.parse(it) },
         knownForDepartment = dto.knownForDepartment,
+        birthplace = dto.birthplace,
         images = dto.images?.let {
             Images(
                 headshot = it.headshot.toImmutableList(),

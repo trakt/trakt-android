@@ -198,7 +198,8 @@ object PreviewData {
             tmdb = TmdbId(67890),
         ),
         knownForDepartment = "Acting",
-        birthday = nowLocalDay(),
+        birthday = nowLocalDay().minusYears(32),
+        birthplace = "Los Angeles, California, USA",
         biography = "John Doe is a fictional character often used as a placeholder name in various contexts. " +
             "He represents an average person and is commonly used in legal cases, examples, and discussions.",
         images = Images(
