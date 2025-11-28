@@ -322,7 +322,7 @@ private fun DetailsBirthday(
             horizontalAlignment = Alignment.Start,
             modifier = Modifier.weight(1f),
         ) {
-            val ageText: String = remember {
+            val ageText: String = remember(birthday) {
                 birthday?.let {
                     val today = nowLocalDay()
                     val age = (today.year - it.year) - when {

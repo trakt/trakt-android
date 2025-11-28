@@ -302,14 +302,14 @@ internal fun DetailsHeader(
     DetailsHeader(
         loading = loading,
         title = person.name,
-        titleFooter = person.knownForDepartment?.let {
-            {
-                Text(
-                    text = it.capitalize(),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.paragraphSmaller,
-                )
-            }
+        titleFooter = {
+            Text(
+                text = person.knownForDepartment
+                    ?.replaceFirstChar { it.uppercaseChar() }
+                    ?: "-",
+                color = TraktTheme.colors.textSecondary,
+                style = TraktTheme.typography.paragraphSmaller,
+            )
         },
         genres = EmptyImmutableList,
         imageUrl = person.images?.getHeadshotUrl(),
