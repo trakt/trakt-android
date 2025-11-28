@@ -41,8 +41,8 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
 import tv.trakt.trakt.common.helpers.streamingservices.StreamingServiceApp
-import tv.trakt.trakt.common.helpers.streamingservices.StreamingServiceLink
 import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.StreamingType
 import tv.trakt.trakt.core.summary.ui.views.DetailsStreamingItem
@@ -67,7 +67,7 @@ internal fun EpisodeStreamingsView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onClick = { service ->
-            StreamingServiceLink.openApp(
+            openExternalAppLink(
                 packageId = StreamingServiceApp.findFromSource(service.source)?.packageId,
                 packageName = service.source,
                 uri = service.linkDirect?.toUri(),
@@ -112,6 +112,7 @@ private fun EpisodeStreamingsContent(
                         contentPadding = contentPadding,
                     )
                 }
+
                 DONE -> {
                     if (state.items?.isEmpty() == true) {
                         ContentEmpty(

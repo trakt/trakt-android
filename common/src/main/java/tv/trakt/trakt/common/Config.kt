@@ -4,6 +4,7 @@ object Config {
     const val DEFAULT_COUNTRY_CODE: String = "us"
 
     const val API_BASE_URL: String = "https://apiz.trakt.tv/"
+    const val PLEX_BASE_URL: String = "https://watch.plex.tv/"
 
     const val WEB_BASE_URL: String = "https://trakt.tv/"
     const val WEB_V3_BASE_URL: String = "https://app.trakt.tv/"
@@ -25,5 +26,7 @@ object Config {
         return "https://trakt.tv/users/$user/mir/$year/$month?native_app_mode=true"
     }
 
-    const val PLEX_BASE_URL: String = "https://watch.plex.tv/"
+    fun webImdbPersonUrl(imdbId: String): String {
+        return "https://www.imdb.com/name/$imdbId/"
+    }
 }

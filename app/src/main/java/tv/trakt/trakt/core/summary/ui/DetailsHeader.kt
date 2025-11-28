@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -27,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W700
@@ -34,17 +37,21 @@ import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.Config.webImdbPersonUrl
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.ifOrElse
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Images.Size
+import tv.trakt.trakt.common.model.ImdbId
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
@@ -308,6 +315,7 @@ internal fun DetailsHeader(
         accentColor = Shade700,
         creditsCount = null,
         traktRatings = null,
+        imdbId = person.ids.imdb,
         modifier = modifier,
     )
 }
@@ -328,10 +336,12 @@ private fun DetailsHeader(
     externalRatingsVisible: Boolean = true,
     creditsCount: Int?,
     playsCount: Int?,
+    imdbId: ImdbId? = null,
     loading: Boolean,
     onShareClick: () -> Unit,
     onBackClick: () -> Unit,
 ) {
+    val context = LocalContext.current
     val windowClass = currentWindowAdaptiveInfo().windowSizeClass
 
     Column(
@@ -403,6 +413,26 @@ private fun DetailsHeader(
                                     else -> stringResource(R.string.text_watched)
                                 },
                                 icon = painterResource(R.drawable.ic_check_double),
+                            )
+                        }
+
+                        if (imdbId != null) {
+                            Image(
+                                painter = painterResource(R.drawable.ic_imdb_color),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .height(22.dp)
+                                    .graphicsLayer {
+                                        translationY = 1.dp.toPx()
+                                    }
+                                    .onClick {
+                                        openExternalAppLink(
+                                            context = context,
+                                            packageId = "com.imdb.mobile",
+                                            packageName = "imdb",
+                                            uri = webImdbPersonUrl(imdbId.value).toUri(),
+                                        )
+                                    },
                             )
                         }
                     }
@@ -604,9 +634,9 @@ private fun Preview() {
             certification = "PG-13",
             accentColor = null,
             traktRatings = 72,
-            playsCount = 2,
-            creditsCount = 2,
-            loading = true,
+            playsCount = 0,
+            creditsCount = 0,
+            loading = false,
             externalRatings = ExternalRating(
                 imdb = ExternalRating.ImdbRating(
                     rating = 7.5F,

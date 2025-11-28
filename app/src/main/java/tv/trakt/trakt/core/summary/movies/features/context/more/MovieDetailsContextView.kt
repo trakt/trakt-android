@@ -36,9 +36,9 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
+import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.helpers.streamingservices.StreamingServiceApp
-import tv.trakt.trakt.common.helpers.streamingservices.StreamingServiceLink
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
@@ -135,7 +135,7 @@ private fun MovieDetailsContextViewContent(
                     streamingState = state.streamings,
                     onClick = {
                         state.streamings.service?.let { service ->
-                            StreamingServiceLink.openApp(
+                            openExternalAppLink(
                                 packageId = StreamingServiceApp.findFromSource(service.source)?.packageId,
                                 packageName = service.source,
                                 uri = service.linkDirect?.toUri(),
