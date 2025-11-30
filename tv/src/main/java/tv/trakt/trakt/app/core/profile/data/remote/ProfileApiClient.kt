@@ -112,6 +112,8 @@ internal class ProfileApiClient(
         val response = api.getUsersListsPersonal(
             id = "me",
             extended = "images",
+            page = null,
+            limit = null,
         )
         return response.body()
     }

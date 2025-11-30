@@ -316,6 +316,8 @@ internal class UserApiClient(
         val response = usersApi.getUsersListsPersonal(
             id = "me",
             extended = "cloud9",
+            page = null,
+            limit = null,
         )
         return response.body()
     }

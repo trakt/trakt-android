@@ -20280,6 +20280,24 @@
             "schema": {
               "nullable": true
             }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page number to retrieve",
+            "schema": {
+              "type": "integer",
+              "nullable": true
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of items per page",
+            "schema": {
+              "type": "integer",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -46880,7 +46898,7 @@
         "operationId": "getMoviesStudios"
       }
     },
-    "/movies/{id}/watchnow/{country}?": {
+    "/movies/{id}/watchnow/{country}": {
       "get": {
         "tags": [
           "movies"
@@ -52213,7 +52231,7 @@
         "operationId": "getShowsStudios"
       }
     },
-    "/shows/{id}/watchnow/{country}?": {
+    "/shows/{id}/watchnow/{country}": {
       "get": {
         "tags": [
           "shows"
@@ -55594,7 +55612,7 @@
         "operationId": "getShowsEpisodePeople"
       }
     },
-    "/shows/{id}/seasons/{season}/episodes/{episode}/watchnow/{country}?": {
+    "/shows/{id}/seasons/{season}/episodes/{episode}/watchnow/{country}": {
       "get": {
         "tags": [
           "shows",
@@ -61325,7 +61343,7 @@
         "operationId": "getWatchnowSourcesCountry"
       }
     },
-    "/episodes/{id}/watchnow/{country}?": {
+    "/episodes/{id}/watchnow/{country}": {
       "get": {
         "tags": [
           "episodes"
