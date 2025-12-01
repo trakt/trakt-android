@@ -23,6 +23,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
@@ -83,6 +85,7 @@ private fun ViewContent(
 ) {
     val inputInitial = "@${state.commentUser?.username} "
     val inputState = rememberTextFieldState()
+    val focusRequester = remember { FocusRequester() }
 
     val isValid = remember {
         val spaceRegex = "\\s+".toRegex()
@@ -98,6 +101,7 @@ private fun ViewContent(
     LaunchedEffect(state.commentUser) {
         if (state.commentUser != null) {
             inputState.setTextAndPlaceCursorAtEnd(inputInitial)
+            focusRequester.requestFocus()
         }
     }
 
@@ -115,14 +119,14 @@ private fun ViewContent(
             enabled = !isLoading,
             placeholder = inputInitial,
             containerColor = Color.Transparent,
-            height = 130.dp,
             lineLimits = TextFieldLineLimits.MultiLine(
                 minHeightInLines = 3,
                 maxHeightInLines = Int.MAX_VALUE,
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 24.dp),
+                .padding(top = 24.dp)
+                .focusRequester(focusRequester),
         )
 
         if (state.error != null) {
@@ -160,7 +164,7 @@ private fun ViewContent(
         }
 
         PrimaryButton(
-            text = stringResource(R.string.dialog_title_reply),
+            text = stringResource(R.string.button_text_submit),
             enabled = !isLoading && isValid.value,
             loading = isLoading,
             onClick = {

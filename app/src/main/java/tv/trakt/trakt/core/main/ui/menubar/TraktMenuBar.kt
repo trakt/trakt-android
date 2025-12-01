@@ -316,6 +316,7 @@ private fun SearchContent(
                 modifier = Modifier
                     .fillMaxWidth(),
             )
+
             InputField(
                 state = searchQuery,
                 placeholder = stringResource(searchInput.filter.placeholderRes),

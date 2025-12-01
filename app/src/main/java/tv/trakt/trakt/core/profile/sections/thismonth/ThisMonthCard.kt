@@ -222,9 +222,9 @@ internal fun ThisMonthCard(
                         .size(18.dp),
                 )
                 Text(
-                    text = stringResource(
-                        R.string.text_month_in_review,
-                        previousMonth.month.getDisplayName(TextStyle.FULL, Locale.US),
+                    text = previousMonth.month.getDisplayName(
+                        TextStyle.FULL,
+                        Locale.US,
                     ).uppercase(),
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.heading6,

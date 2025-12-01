@@ -104,9 +104,8 @@ private fun ViewContent(
             state = inputState,
             enabled = !isLoading,
             containerColor = Color.Transparent,
-            height = 130.dp,
             lineLimits = TextFieldLineLimits.MultiLine(
-                minHeightInLines = 3,
+                minHeightInLines = 5,
                 maxHeightInLines = Int.MAX_VALUE,
             ),
             modifier = Modifier
