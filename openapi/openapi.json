@@ -46905,14 +46905,6 @@
         ],
         "parameters": [
           {
-            "name": "country",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "name": "id",
             "in": "path",
             "required": true,
@@ -46920,6 +46912,15 @@
               "type": "string"
             },
             "description": "The slug of the resource."
+          },
+          {
+            "name": "country",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "2 character country code."
           },
           {
             "name": "links",
@@ -52238,14 +52239,6 @@
         ],
         "parameters": [
           {
-            "name": "country",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "name": "id",
             "in": "path",
             "required": true,
@@ -52253,6 +52246,15 @@
               "type": "string"
             },
             "description": "The slug of the resource."
+          },
+          {
+            "name": "country",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "2 character country code."
           },
           {
             "name": "links",
@@ -55620,14 +55622,6 @@
         ],
         "parameters": [
           {
-            "name": "country",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "name": "id",
             "in": "path",
             "required": true,
@@ -55635,6 +55629,15 @@
               "type": "string"
             },
             "description": "The slug of the resource."
+          },
+          {
+            "name": "country",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "2 character country code."
           },
           {
             "name": "season",
