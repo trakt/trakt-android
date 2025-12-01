@@ -97,7 +97,7 @@ internal class EpisodesApiClient(
             id = showId.value.toString(),
             season = season,
             episode = episode,
-            extended = "cloud9",
+            extended = "cloud9,full",
         )
         return response.body()
     }

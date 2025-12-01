@@ -202,7 +202,7 @@ internal class ShowsApiClient(
     override suspend fun getCastCrew(showId: TraktId): CastCrewDto {
         val response = showsApi.getShowsPeople(
             id = showId.value.toString(),
-            extended = "cloud9",
+            extended = "cloud9,full",
         )
         return response.body()
     }

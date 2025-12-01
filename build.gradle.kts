@@ -49,6 +49,17 @@ tasks.register<ReplaceInFilesTask>("publicApiClient") {
     replacementString.set("val client: HttpClient by lazy")
 }
 
+// Remove unused gender param for people
+tasks.register<ReplaceInFilesTask>("removeGenders") {
+    group = "Custom"
+    description = "Makes ApiClient class and its HttpClient property public"
+
+    sourceDir.set(file("build/generate-resources/main/src"))
+    targetString.set("@SerialName(value = \"gender\")\n" +
+        "    val gender: kotlin.String? = null,")
+    replacementString.set("")
+}
+
 abstract class ReplaceInFilesTask : DefaultTask() {
     @get:InputDirectory
     abstract val sourceDir: DirectoryProperty
@@ -85,5 +96,6 @@ abstract class ReplaceInFilesTask : DefaultTask() {
 tasks.getByName("openApiGenerate")
     .finalizedBy(
         "dedupeSerializable",
-        "publicApiClient"
+        "publicApiClient",
+        "removeGenders"
     )
