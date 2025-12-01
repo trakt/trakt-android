@@ -27,13 +27,11 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.profile.sections.thismonth.model.ThisMonthStats
 import tv.trakt.trakt.core.profile.sections.thismonth.usecases.GetThisMonthUseCase
-import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 
 internal class ProfileViewModel(
     private val sessionManager: SessionManager,
     private val getThisMonthUseCase: GetThisMonthUseCase,
-    private val logoutUseCase: LogoutUserUseCase,
-    private val analytics: Analytics,
+    analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ProfileState()
 
@@ -87,23 +85,6 @@ internal class ProfileViewModel(
                 }
             } finally {
                 loadingMonthStatsState.update { LoadingState.DONE }
-            }
-        }
-    }
-
-    fun logoutUser() {
-        viewModelScope.launch {
-            try {
-                loadingState.update { LOADING }
-
-                logoutUseCase.logoutUser()
-                analytics.logUserLogout()
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            } finally {
-                loadingState.update { LoadingState.DONE }
             }
         }
     }

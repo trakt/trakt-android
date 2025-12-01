@@ -213,4 +213,6 @@
     <string name="button_text_mark_as_watched_other_date">Other date</string>
     <string name="button_text_mark_as_watched_unknown_date">Unknown date</string>
     <string name="text_this_month">This month</string>
+
+    <string name="page_title_settings">Settings</string>
 </resources>

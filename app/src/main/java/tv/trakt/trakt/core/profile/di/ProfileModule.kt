@@ -196,7 +196,6 @@ internal val profileModule = module {
         ProfileViewModel(
             sessionManager = get(),
             getThisMonthUseCase = get(),
-            logoutUseCase = get(),
             analytics = get(),
         )
     }

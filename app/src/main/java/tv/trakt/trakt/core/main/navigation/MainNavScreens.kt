@@ -34,6 +34,8 @@ import tv.trakt.trakt.core.profile.sections.favorites.all.navigation.allFavorite
 import tv.trakt.trakt.core.profile.sections.favorites.all.navigation.navigateToFavorites
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.searchScreen
+import tv.trakt.trakt.core.settings.navigation.navigateToSettings
+import tv.trakt.trakt.core.settings.navigation.settingsScreen
 import tv.trakt.trakt.core.summary.episodes.navigation.episodeDetailsScreen
 import tv.trakt.trakt.core.summary.episodes.navigation.navigateToEpisode
 import tv.trakt.trakt.core.summary.movies.navigation.movieDetailsScreen
@@ -286,6 +288,7 @@ internal fun NavGraphBuilder.profileScreens(controller: NavHostController) {
             },
             onNavigateToFavorites = { navigateToFavorites() },
             onNavigateToDiscover = { navigateToDiscover() },
+            onNavigateToSettings = { navigateToSettings() },
             onNavigateBack = { popBackStack() },
         )
 
@@ -310,6 +313,14 @@ internal fun NavGraphBuilder.peopleScreens(controller: NavHostController) {
 internal fun NavGraphBuilder.commentsScreens(controller: NavHostController) {
     with(controller) {
         commentsScreen(
+            onNavigateBack = { popBackStack() },
+        )
+    }
+}
+
+internal fun NavGraphBuilder.settingsScreens(controller: NavHostController) {
+    with(controller) {
+        settingsScreen(
             onNavigateBack = { popBackStack() },
         )
     }

@@ -25,16 +25,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -66,7 +63,6 @@ import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
-import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -78,11 +74,10 @@ internal fun ProfileScreen(
     onNavigateToHistory: () -> Unit,
     onNavigateToFavorites: () -> Unit,
     onNavigateToDiscover: () -> Unit,
+    onNavigateToSettings: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-
-    var confirmLogout by remember { mutableStateOf(false) }
 
     LaunchedEffect(state.user) {
         if (state.loading == DONE && state.user == null) {
@@ -99,21 +94,7 @@ internal fun ProfileScreen(
         onNavigateToFavorites = onNavigateToFavorites,
         onNavigateToShows = onNavigateToDiscover,
         onNavigateToMovies = onNavigateToDiscover,
-        onLogoutClick = { confirmLogout = true },
-    )
-
-    @OptIn(ExperimentalMaterial3Api::class)
-    ConfirmationSheet(
-        active = confirmLogout,
-        onYes = {
-            confirmLogout = false
-            viewModel.logoutUser()
-        },
-        onNo = {
-            confirmLogout = false
-        },
-        title = stringResource(R.string.button_text_logout),
-        message = stringResource(R.string.warning_prompt_log_out),
+        onSettingsClick = onNavigateToSettings,
     )
 }
 
@@ -128,7 +109,7 @@ private fun ProfileScreenContent(
     onNavigateToFavorites: () -> Unit = {},
     onNavigateToShows: () -> Unit = {},
     onNavigateToMovies: () -> Unit = {},
-    onLogoutClick: () -> Unit = {},
+    onSettingsClick: () -> Unit = {},
 ) {
     val listPadding = PaddingValues(
         top = WindowInsets.statusBars.asPaddingValues()
@@ -175,7 +156,7 @@ private fun ProfileScreenContent(
             item {
                 TitleBar(
                     user = state.user,
-                    onLogoutClick = onLogoutClick,
+                    onSettingsClick = onSettingsClick,
                     modifier = Modifier
                         .padding(bottom = 8.dp),
                 )
@@ -291,7 +272,7 @@ private fun ProfileScreenContent(
 private fun TitleBar(
     user: User?,
     modifier: Modifier = Modifier,
-    onLogoutClick: () -> Unit = {},
+    onSettingsClick: () -> Unit = {},
 ) {
     Row(
         verticalAlignment = CenterVertically,
@@ -360,19 +341,14 @@ private fun TitleBar(
                     subtitle = "$vipPrefix${user.location}",
                 )
             }
-        }
 
-        Row(
-            verticalAlignment = CenterVertically,
-            horizontalArrangement = spacedBy(16.dp),
-        ) {
             Icon(
-                painter = painterResource(R.drawable.ic_logout),
+                painter = painterResource(R.drawable.ic_settings),
                 contentDescription = null,
                 tint = TraktTheme.colors.textPrimary,
                 modifier = Modifier
-                    .size(24.dp)
-                    .onClick(onClick = onLogoutClick),
+                    .size(22.dp)
+                    .onClick(onClick = onSettingsClick),
             )
         }
     }
