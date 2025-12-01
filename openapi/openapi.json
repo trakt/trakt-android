@@ -15772,6 +15772,29 @@
               "type": "string",
               "nullable": true
             }
+          },
+          {
+            "name": "hide",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "unwatched",
+                "collected",
+                "uncollected",
+                "rated",
+                "unrated",
+                "unreleased",
+                "noreleasedate",
+                "ended",
+                "airing",
+                "unwatchlisted",
+                "listed",
+                "notes",
+                "nonotes"
+              ],
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -16146,6 +16169,29 @@
             "in": "query",
             "schema": {
               "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "hide",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "unwatched",
+                "collected",
+                "uncollected",
+                "rated",
+                "unrated",
+                "unreleased",
+                "noreleasedate",
+                "ended",
+                "airing",
+                "unwatchlisted",
+                "listed",
+                "notes",
+                "nonotes"
+              ],
               "nullable": true
             }
           }
@@ -16544,6 +16590,29 @@
             "in": "query",
             "schema": {
               "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "hide",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "unwatched",
+                "collected",
+                "uncollected",
+                "rated",
+                "unrated",
+                "unreleased",
+                "noreleasedate",
+                "ended",
+                "airing",
+                "unwatchlisted",
+                "listed",
+                "notes",
+                "nonotes"
+              ],
               "nullable": true
             }
           }
@@ -65711,12 +65780,10 @@
                             },
                             "required": [
                               "ids"
-                            ]
+                            ],
+                            "nullable": true
                           }
-                        },
-                        "required": [
-                          "movie"
-                        ]
+                        }
                       },
                       {
                         "type": "object",
@@ -65738,12 +65805,10 @@
                             },
                             "required": [
                               "ids"
-                            ]
+                            ],
+                            "nullable": true
                           }
-                        },
-                        "required": [
-                          "show"
-                        ]
+                        }
                       },
                       {
                         "type": "object",
@@ -65765,12 +65830,10 @@
                             },
                             "required": [
                               "ids"
-                            ]
+                            ],
+                            "nullable": true
                           }
-                        },
-                        "required": [
-                          "season"
-                        ]
+                        }
                       },
                       {
                         "type": "object",
@@ -65792,12 +65855,10 @@
                             },
                             "required": [
                               "ids"
-                            ]
+                            ],
+                            "nullable": true
                           }
-                        },
-                        "required": [
-                          "episode"
-                        ]
+                        }
                       },
                       {
                         "type": "object",
@@ -65819,12 +65880,10 @@
                             },
                             "required": [
                               "ids"
-                            ]
+                            ],
+                            "nullable": true
                           }
-                        },
-                        "required": [
-                          "list"
-                        ]
+                        }
                       }
                     ]
                   }

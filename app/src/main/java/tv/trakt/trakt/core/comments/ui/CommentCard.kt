@@ -353,8 +353,8 @@ private fun CommentHeader(
             horizontalArrangement = spacedBy(12.dp),
             modifier = Modifier.fillMaxWidth(),
         ) {
+            Spacer(modifier = Modifier.weight(1f))
             comment.user5Rating?.let { rating ->
-                Spacer(modifier = Modifier.weight(1f))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(3.dp),

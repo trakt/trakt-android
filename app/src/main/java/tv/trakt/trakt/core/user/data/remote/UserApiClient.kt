@@ -77,6 +77,7 @@ internal class UserApiClient(
             ratings = null,
             startDate = null,
             endDate = null,
+            hide = null,
         )
 
         return response.body()
