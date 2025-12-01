@@ -13,6 +13,7 @@ import tv.trakt.trakt.core.discover.navigation.navigateToDiscover
 import tv.trakt.trakt.core.discover.sections.all.navigation.discoverAllScreen
 import tv.trakt.trakt.core.discover.sections.all.navigation.navigateToDiscoverAll
 import tv.trakt.trakt.core.home.navigation.homeScreen
+import tv.trakt.trakt.core.home.navigation.navigateToHome
 import tv.trakt.trakt.core.home.sections.activity.features.all.navigation.homeActivityPersonalScreen
 import tv.trakt.trakt.core.home.sections.activity.features.all.navigation.homeActivitySocialScreen
 import tv.trakt.trakt.core.home.sections.activity.features.all.navigation.navigateToAllActivityPersonal
@@ -289,7 +290,6 @@ internal fun NavGraphBuilder.profileScreens(controller: NavHostController) {
             onNavigateToFavorites = { navigateToFavorites() },
             onNavigateToDiscover = { navigateToDiscover() },
             onNavigateToSettings = { navigateToSettings() },
-            onNavigateBack = { popBackStack() },
         )
 
         allFavoritesScreen(
@@ -321,6 +321,7 @@ internal fun NavGraphBuilder.commentsScreens(controller: NavHostController) {
 internal fun NavGraphBuilder.settingsScreens(controller: NavHostController) {
     with(controller) {
         settingsScreen(
+            onNavigateHome = { navigateToHome() },
             onNavigateBack = { popBackStack() },
         )
     }

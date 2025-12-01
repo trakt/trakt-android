@@ -28,6 +28,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,6 +50,8 @@ import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import timber.log.Timber
 import tv.trakt.trakt.common.Config
+import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.ui.theme.colors.Red400
@@ -63,11 +66,18 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun SettingsScreen(
     viewModel: SettingsViewModel,
+    onNavigateHome: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var confirmLogout by remember { mutableStateOf(false) }
+
+    LaunchedEffect(state.user) {
+        if (state.logoutLoading == DONE && state.user == null) {
+            onNavigateHome()
+        }
+    }
 
     SettingsScreenContent(
         state = state,
@@ -157,7 +167,7 @@ private fun SettingsScreenContent(
         PrimaryButton(
             text = stringResource(R.string.button_text_logout),
             containerColor = Red400,
-            enabled = !state.loading.isLoading,
+            enabled = state.logoutLoading == LoadingState.IDLE,
             onClick = onLogoutClick,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -226,7 +236,7 @@ private fun SettingsStreaming(
 
         SettingsTextField(
             text = stringResource(R.string.header_settings_automatic_tracking),
-            enabled = !state.loading.isLoading,
+            enabled = !state.logoutLoading.isLoading,
             onClick = onAutomaticTrackingClick,
         )
     }
@@ -252,12 +262,12 @@ private fun SettingsMisc(
 
         SettingsTextField(
             text = stringResource(R.string.header_settings_support_contact),
-            enabled = !state.loading.isLoading,
+            enabled = !state.logoutLoading.isLoading,
             onClick = {
                 val intent = Intent(Intent.ACTION_SENDTO).apply {
                     data = "mailto:".toUri()
                     putExtra(Intent.EXTRA_EMAIL, arrayOf(Config.WEB_SUPPORT_MAIL))
-                    putExtra(Intent.EXTRA_SUBJECT, "Trakt Issue (Android ${Build.VERSION.RELEASE})")
+                    putExtra(Intent.EXTRA_SUBJECT, "Trakt Support (Android ${Build.VERSION.RELEASE})")
                 }
 
                 try {
@@ -271,7 +281,7 @@ private fun SettingsMisc(
 
         SettingsTextField(
             text = stringResource(R.string.header_settings_forums),
-            enabled = !state.loading.isLoading,
+            enabled = !state.logoutLoading.isLoading,
             onClick = {
                 uriHandler.openUri(Config.WEB_FORUMS_URL)
             },
@@ -279,7 +289,7 @@ private fun SettingsMisc(
 
         SettingsTextField(
             text = stringResource(R.string.header_settings_terms),
-            enabled = !state.loading.isLoading,
+            enabled = !state.logoutLoading.isLoading,
             onClick = {
                 uriHandler.openUri(Config.WEB_TERMS_URL)
             },
@@ -287,7 +297,7 @@ private fun SettingsMisc(
 
         SettingsTextField(
             text = stringResource(R.string.header_settings_policy),
-            enabled = !state.loading.isLoading,
+            enabled = !state.logoutLoading.isLoading,
             onClick = {
                 uriHandler.openUri(Config.WEB_PRIVACY_URL)
             },

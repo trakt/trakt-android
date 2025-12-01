@@ -10,10 +10,14 @@ import tv.trakt.trakt.core.settings.SettingsScreen
 @Serializable
 internal data object SettingsDestination
 
-internal fun NavGraphBuilder.settingsScreen(onNavigateBack: () -> Unit) {
+internal fun NavGraphBuilder.settingsScreen(
+    onNavigateHome: () -> Unit,
+    onNavigateBack: () -> Unit,
+) {
     composable<SettingsDestination> {
         SettingsScreen(
             viewModel = koinViewModel(),
+            onNavigateHome = onNavigateHome,
             onNavigateBack = onNavigateBack,
         )
     }

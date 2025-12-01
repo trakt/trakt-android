@@ -20,6 +20,7 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 
 internal class SettingsViewModel(
@@ -30,7 +31,7 @@ internal class SettingsViewModel(
     private val initialState = SettingsState()
 
     private val userState = MutableStateFlow(initialState.user)
-    private val loadingState = MutableStateFlow(initialState.loading)
+    private val logoutLoadingState = MutableStateFlow(initialState.logoutLoading)
 
     init {
         loadUser()
@@ -60,25 +61,28 @@ internal class SettingsViewModel(
     fun logoutUser() {
         viewModelScope.launch {
             try {
-                loadingState.update { LOADING }
+                logoutLoadingState.update { LOADING }
 
                 logoutUseCase.logoutUser()
                 analytics.logUserLogout()
+
+                logoutLoadingState.update { LoadingState.DONE }
             } catch (error: Exception) {
                 error.rethrowCancellation {
+                    logoutLoadingState.update { LoadingState.IDLE }
                     Timber.recordError(error)
                 }
-            } finally {
-                loadingState.update { LoadingState.DONE }
             }
         }
     }
 
     val state = combine(
         userState,
+        logoutLoadingState,
     ) { state ->
         SettingsState(
-            user = state[0],
+            user = state[0] as User?,
+            logoutLoading = state[1] as LoadingState,
         )
     }.stateIn(
         scope = viewModelScope,
