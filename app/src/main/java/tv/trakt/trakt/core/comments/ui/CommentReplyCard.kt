@@ -139,8 +139,7 @@ private fun CommentReplyCardContent(
 
     Column(
         verticalArrangement = spacedBy(0.dp),
-        modifier = modifier
-            .padding(vertical = 16.dp),
+        modifier = modifier.padding(vertical = 16.dp),
     ) {
         CommentHeader(
             user = user,
@@ -211,7 +210,7 @@ private fun CommentHeader(
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy(12.dp),
+        horizontalArrangement = spacedBy(10.dp),
         modifier = modifier,
     ) {
         Box(

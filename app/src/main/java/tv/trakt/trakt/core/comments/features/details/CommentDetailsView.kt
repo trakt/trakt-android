@@ -180,19 +180,19 @@ private fun CommentDetailsViewContent(
             }
         }
 
-        when {
-            state.loading.isLoading &&
-                (state.comment?.replies ?: 0) > 0 -> {
-                item {
-                    CommentSkeletonCard(
-                        containerColor = TraktTheme.colors.commentReplyContainer,
-                        shimmerColor = Shade800,
-                        modifier = Modifier
-                            .height(132.dp)
-                            .fillMaxWidth(),
-                    )
-                }
+        if (state.loading.isLoading && (state.comment?.replies ?: 0) > 0) {
+            item {
+                CommentSkeletonCard(
+                    containerColor = TraktTheme.colors.commentReplyContainer,
+                    shimmerColor = Shade800,
+                    modifier = Modifier
+                        .height(132.dp)
+                        .fillMaxWidth(),
+                )
             }
+        }
+
+        when {
             state.loading == DONE && state.replies.isNullOrEmpty() -> {
                 item {
                     Text(

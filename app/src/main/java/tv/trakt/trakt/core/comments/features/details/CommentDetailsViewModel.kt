@@ -60,6 +60,7 @@ internal class CommentDetailsViewModel(
     private val errorState = MutableStateFlow(initialState.error)
 
     private var reactionJob: Job? = null
+    private var loadingJob: Job? = null
 
     init {
         loadData()
@@ -79,14 +80,18 @@ internal class CommentDetailsViewModel(
     }
 
     private fun loadData() {
+        loadingJob = viewModelScope.launch {
+            delay(750)
+            loadingState.update { LOADING }
+        }
+
         viewModelScope.launch {
             try {
-                loadingState.update { LOADING }
-
                 loadUser()
                 coroutineScope {
-                    val repliesAsync = async { getRepliesUseCase.getCommentReplies(comment.id) }
-
+                    val repliesAsync = async {
+                        getRepliesUseCase.getCommentReplies(comment.id)
+                    }
                     val userReactionsAsync = async {
                         if (!sessionManager.isAuthenticated()) {
                             return@async null
@@ -111,6 +116,7 @@ internal class CommentDetailsViewModel(
                 }
             } finally {
                 loadingState.update { DONE }
+                loadingJob?.cancel()
             }
         }
     }

@@ -289,7 +289,7 @@ private fun CommentHeader(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy(12.dp),
+        horizontalArrangement = spacedBy(10.dp),
         modifier = modifier,
     ) {
         Box(
