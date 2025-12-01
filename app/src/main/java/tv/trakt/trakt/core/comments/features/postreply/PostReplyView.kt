@@ -23,8 +23,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
@@ -85,7 +83,6 @@ private fun ViewContent(
 ) {
     val inputInitial = "@${state.commentUser?.username} "
     val inputState = rememberTextFieldState()
-    val focusRequester = remember { FocusRequester() }
 
     val isValid = remember {
         val spaceRegex = "\\s+".toRegex()
@@ -101,7 +98,6 @@ private fun ViewContent(
     LaunchedEffect(state.commentUser) {
         if (state.commentUser != null) {
             inputState.setTextAndPlaceCursorAtEnd(inputInitial)
-            focusRequester.requestFocus()
         }
     }
 
@@ -125,8 +121,7 @@ private fun ViewContent(
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 24.dp)
-                .focusRequester(focusRequester),
+                .padding(top = 24.dp),
         )
 
         if (state.error != null) {
