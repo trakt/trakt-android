@@ -91,33 +91,40 @@ fun LocalDate.relativeDateString(locale: Locale = Locale.US): String {
             RelativeDateTimeFormatter.Direction.THIS,
             RelativeDateTimeFormatter.AbsoluteUnit.DAY,
         )
+
         daysBetween == 1L -> formatter.format(
             RelativeDateTimeFormatter.Direction.NEXT,
             RelativeDateTimeFormatter.AbsoluteUnit.DAY,
         )
+
         daysBetween <= 6L -> formatter.format(
             daysBetween.toDouble(),
             RelativeDateTimeFormatter.Direction.NEXT,
             RelativeDateTimeFormatter.RelativeUnit.DAYS,
         )
+
         weeksBetween == 1L -> formatter.format(
             RelativeDateTimeFormatter.Direction.NEXT,
             RelativeDateTimeFormatter.AbsoluteUnit.WEEK,
         )
+
         weeksBetween <= 4L -> formatter.format(
             weeksBetween.toDouble(),
             RelativeDateTimeFormatter.Direction.NEXT,
             RelativeDateTimeFormatter.RelativeUnit.WEEKS,
         )
+
         monthsBetween == 1L -> formatter.format(
             RelativeDateTimeFormatter.Direction.NEXT,
             RelativeDateTimeFormatter.AbsoluteUnit.MONTH,
         )
+
         monthsBetween <= 6L -> formatter.format(
             monthsBetween.toDouble(),
             RelativeDateTimeFormatter.Direction.NEXT,
             RelativeDateTimeFormatter.RelativeUnit.MONTHS,
         )
+
         else -> this.year.toString()
     }.replaceFirstChar {
         it.titlecase(locale)
@@ -147,47 +154,57 @@ fun ZonedDateTime.relativeDateTimeString(locale: Locale = Locale.US): String {
             RelativeDateTimeFormatter.Direction.PLAIN,
             RelativeDateTimeFormatter.AbsoluteUnit.NOW,
         )
+
         minutesBetween <= 59 -> formatter.format(
             minutesBetween.toDouble(),
             RelativeDateTimeFormatter.Direction.NEXT,
             RelativeDateTimeFormatter.RelativeUnit.MINUTES,
         )
+
         hoursBetween <= 11 -> formatter.format(
             hoursBetween.toDouble(),
             RelativeDateTimeFormatter.Direction.NEXT,
             RelativeDateTimeFormatter.RelativeUnit.HOURS,
         )
+
         daysBetween == 0L -> formatter.format(
             RelativeDateTimeFormatter.Direction.THIS,
             RelativeDateTimeFormatter.AbsoluteUnit.DAY,
         )
+
         daysBetween == 1L -> formatter.format(
             RelativeDateTimeFormatter.Direction.NEXT,
             RelativeDateTimeFormatter.AbsoluteUnit.DAY,
         )
+
         daysBetween <= 6L -> formatter.format(
             daysBetween.toDouble(),
             RelativeDateTimeFormatter.Direction.NEXT,
             RelativeDateTimeFormatter.RelativeUnit.DAYS,
         )
+
         weeksBetween == 1L -> formatter.format(
             RelativeDateTimeFormatter.Direction.NEXT,
             RelativeDateTimeFormatter.AbsoluteUnit.WEEK,
         )
+
         weeksBetween <= 4L -> formatter.format(
             weeksBetween.toDouble(),
             RelativeDateTimeFormatter.Direction.NEXT,
             RelativeDateTimeFormatter.RelativeUnit.WEEKS,
         )
+
         monthsBetween == 1L -> formatter.format(
             RelativeDateTimeFormatter.Direction.NEXT,
             RelativeDateTimeFormatter.AbsoluteUnit.MONTH,
         )
+
         monthsBetween <= 6 -> formatter.format(
             monthsBetween.toDouble(),
             RelativeDateTimeFormatter.Direction.NEXT,
             RelativeDateTimeFormatter.RelativeUnit.MONTHS,
         )
+
         else -> this.year.toString()
     }.replaceFirstChar {
         it.titlecase(locale)
@@ -212,15 +229,18 @@ fun ZonedDateTime.relativePastDateString(locale: Locale = Locale.US): String {
             RelativeDateTimeFormatter.Direction.THIS,
             RelativeDateTimeFormatter.AbsoluteUnit.DAY,
         )
+
         daysBetween == 1L -> formatter.format(
             RelativeDateTimeFormatter.Direction.LAST,
             RelativeDateTimeFormatter.AbsoluteUnit.DAY,
         )
+
         daysBetween <= 3L -> formatter.format(
             daysBetween.toDouble(),
             RelativeDateTimeFormatter.Direction.LAST,
             RelativeDateTimeFormatter.RelativeUnit.DAYS,
         )
+
         else -> this.format(longDateFormat)
     }.replaceFirstChar {
         it.titlecase(locale)

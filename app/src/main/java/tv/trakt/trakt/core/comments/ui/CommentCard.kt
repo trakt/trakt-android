@@ -4,7 +4,6 @@ package tv.trakt.trakt.core.comments.ui
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -37,9 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
@@ -50,7 +47,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
-import androidx.compose.ui.unit.sp
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
@@ -323,46 +319,9 @@ private fun CommentHeader(
                         .clip(CircleShape),
                 )
             }
-
-            comment.user5Rating?.let { rating ->
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(0.5.dp),
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .graphicsLayer {
-                            translationY = 6.dp.toPx()
-                        }
-                        .shadow(1.dp, CircleShape)
-                        .background(TraktTheme.colors.chipContainer, shape = CircleShape)
-                        .padding(
-                            start = 4.dp,
-                            end = 3.dp,
-                            top = 1.dp,
-                            bottom = 1.dp,
-                        ),
-                ) {
-                    Text(
-                        text = rating,
-                        style = TraktTheme.typography.meta.copy(
-                            fontSize = 10.sp,
-                        ),
-                        color = TraktTheme.colors.textPrimary,
-                        maxLines = 1,
-                    )
-
-                    Icon(
-                        painter = painterResource(R.drawable.ic_star_trakt_on),
-                        contentDescription = null,
-                        tint = Color.White,
-                        modifier = Modifier
-                            .size(9.dp),
-                    )
-                }
-            }
         }
 
-        Column(verticalArrangement = spacedBy(2.dp)) {
+        Column(verticalArrangement = spacedBy(1.dp)) {
             Row(
                 horizontalArrangement = spacedBy(4.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -389,18 +348,46 @@ private fun CommentHeader(
             )
         }
 
-        if (userComment && deleteEnabled) {
-            Spacer(modifier = Modifier.weight(1f))
-            Icon(
-                painter = painterResource(R.drawable.ic_trash),
-                contentDescription = null,
-                tint = TraktTheme.colors.textPrimary,
-                modifier = Modifier
-                    .size(20.dp)
-                    .onClick {
-                        onDeleteClick?.invoke()
-                    },
-            )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = spacedBy(12.dp),
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            comment.user5Rating?.let { rating ->
+                Spacer(modifier = Modifier.weight(1f))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(3.dp),
+                ) {
+                    Text(
+                        text = rating,
+                        style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
+                        color = TraktTheme.colors.textPrimary,
+                        maxLines = 1,
+                    )
+
+                    Icon(
+                        painter = painterResource(R.drawable.ic_star_trakt_on),
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier
+                            .size(15.dp),
+                    )
+                }
+            }
+
+            if (userComment && deleteEnabled) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_trash),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .onClick {
+                            onDeleteClick?.invoke()
+                        },
+                )
+            }
         }
     }
 }

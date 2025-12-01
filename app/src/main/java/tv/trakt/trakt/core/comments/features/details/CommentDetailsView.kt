@@ -5,7 +5,6 @@ package tv.trakt.trakt.core.comments.features.details
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -34,7 +33,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
@@ -42,12 +40,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontWeight.Companion.W700
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
@@ -335,46 +333,9 @@ private fun CommentHeader(
                         .clip(CircleShape),
                 )
             }
-
-            comment.user5Rating?.let { rating ->
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = spacedBy(0.5.dp),
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .graphicsLayer {
-                            translationY = 6.dp.toPx()
-                        }
-                        .shadow(1.dp, CircleShape)
-                        .background(TraktTheme.colors.chipContainer, shape = CircleShape)
-                        .padding(
-                            start = 4.dp,
-                            end = 3.dp,
-                            top = 1.dp,
-                            bottom = 1.dp,
-                        ),
-                ) {
-                    Text(
-                        text = rating,
-                        style = TraktTheme.typography.meta.copy(
-                            fontSize = 10.sp,
-                        ),
-                        color = TraktTheme.colors.textPrimary,
-                        maxLines = 1,
-                    )
-
-                    Icon(
-                        painter = painterResource(R.drawable.ic_star_trakt_on),
-                        contentDescription = null,
-                        tint = Color.White,
-                        modifier = Modifier
-                            .size(9.dp),
-                    )
-                }
-            }
         }
 
-        Column(verticalArrangement = Arrangement.Absolute.spacedBy(2.dp)) {
+        Column(verticalArrangement = Arrangement.Absolute.spacedBy(1.dp)) {
             Row(
                 horizontalArrangement = Arrangement.Absolute.spacedBy(4.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -397,22 +358,50 @@ private fun CommentHeader(
             )
         }
 
-        if (deleteEnabled) {
-            Spacer(modifier = Modifier.weight(1f))
-            Icon(
-                painter = painterResource(R.drawable.ic_trash),
-                contentDescription = null,
-                tint = TraktTheme.colors.textPrimary,
-                modifier = Modifier
-                    .align(Alignment.Top)
-                    .size(20.dp)
-                    .graphicsLayer {
-                        translationY = (-1).dp.toPx()
-                    }
-                    .onClick {
-                        onDeleteClick?.invoke()
-                    },
-            )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Absolute.spacedBy(12.dp),
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            comment.user5Rating?.let { rating ->
+                Spacer(modifier = Modifier.weight(1f))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(3.dp),
+                ) {
+                    Text(
+                        text = rating,
+                        style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
+                        color = TraktTheme.colors.textPrimary,
+                        maxLines = 1,
+                    )
+
+                    Icon(
+                        painter = painterResource(R.drawable.ic_star_trakt_on),
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier
+                            .size(15.dp),
+                    )
+                }
+            }
+
+            if (deleteEnabled) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_trash),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .align(Alignment.Top)
+                        .size(20.dp)
+                        .graphicsLayer {
+                            translationY = (-1).dp.toPx()
+                        }
+                        .onClick {
+                            onDeleteClick?.invoke()
+                        },
+                )
+            }
         }
     }
 }
