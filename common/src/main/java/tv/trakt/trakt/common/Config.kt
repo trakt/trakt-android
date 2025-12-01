@@ -10,6 +10,10 @@ object Config {
     const val WEB_V3_BASE_URL: String = "https://app.trakt.tv/"
     const val WEB_VIP_URL: String = "https://trakt.tv/vip?native_app_mode=true"
     const val WEB_ABOUT_US_URL: String = "https://trakt.tv/about?native_app_mode=true"
+    const val WEB_TERMS_URL: String = "https://trakt.tv/terms?native_app_mode=true"
+    const val WEB_PRIVACY_URL: String = "https://trakt.tv/privacy?native_app_mode=true"
+    const val WEB_FORUMS_URL: String = "https://forums.trakt.tv/"
+    const val WEB_SUPPORT_MAIL: String = "support@trakt.tv"
 
     fun webUserUrl(userId: String): String = "https://trakt.tv/users/$userId?native_app_mode=true"
 

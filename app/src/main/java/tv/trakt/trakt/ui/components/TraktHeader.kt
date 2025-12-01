@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,6 +26,7 @@ internal fun TraktHeader(
     modifier: Modifier = Modifier,
     subtitle: String? = null,
     icon: Painter? = null,
+    titleStyle: TextStyle = TraktTheme.typography.heading5,
     titleColor: Color = TraktTheme.colors.textPrimary,
 ) {
     Row(
@@ -51,7 +53,7 @@ internal fun TraktHeader(
                 Text(
                     text = title,
                     color = titleColor,
-                    style = TraktTheme.typography.heading5,
+                    style = titleStyle,
                     maxLines = 1,
                     overflow = Ellipsis,
                 )

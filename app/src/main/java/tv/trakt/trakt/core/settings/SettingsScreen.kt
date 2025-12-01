@@ -2,6 +2,8 @@
 
 package tv.trakt.trakt.core.settings
 
+import android.content.Intent
+import android.os.Build
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,20 +33,30 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import timber.log.Timber
+import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
+import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -69,13 +82,14 @@ internal fun SettingsScreen(
         active = confirmLogout,
         onYes = {
             confirmLogout = false
-//            viewModel.logoutUser()
+            viewModel.logoutUser()
         },
         onNo = {
             confirmLogout = false
         },
         title = stringResource(R.string.button_text_logout),
         message = stringResource(R.string.warning_prompt_log_out),
+        yesColor = Red400,
     )
 }
 
@@ -112,28 +126,58 @@ private fun SettingsScreenContent(
         )
 
         Column(
-            verticalArrangement = spacedBy(0.dp),
             modifier = Modifier
                 .padding(contentPadding)
                 .verticalScroll(rememberScrollState()),
         ) {
             TitleBar(
-                onLogoutClick = onLogoutClick,
                 modifier = Modifier
-                    .padding(bottom = 2.dp)
                     .onClick {
                         onBackClick()
                     },
             )
+
+            Column(
+                verticalArrangement = spacedBy(42.dp),
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(top = 16.dp),
+            ) {
+                SettingsStreaming(
+                    state = state,
+                    onAutomaticTrackingClick = { },
+                )
+
+                SettingsMisc(
+                    state = state,
+                )
+            }
         }
+
+        PrimaryButton(
+            text = stringResource(R.string.button_text_logout),
+            containerColor = Red400,
+            enabled = !state.loading.isLoading,
+            onClick = onLogoutClick,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .padding(
+                    PaddingValues(
+                        start = TraktTheme.spacing.mainPageHorizontalSpace,
+                        end = TraktTheme.spacing.mainPageHorizontalSpace,
+                        bottom = WindowInsets.navigationBars.asPaddingValues()
+                            .calculateBottomPadding()
+                            .plus(TraktTheme.size.navigationBarHeight)
+                            .plus(16.dp),
+                    ),
+                ),
+        )
     }
 }
 
 @Composable
-private fun TitleBar(
-    modifier: Modifier = Modifier,
-    onLogoutClick: () -> Unit,
-) {
+private fun TitleBar(modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -160,14 +204,128 @@ private fun TitleBar(
                 style = TraktTheme.typography.heading5,
             )
         }
+    }
+}
+
+@Composable
+private fun SettingsStreaming(
+    state: SettingsState,
+    modifier: Modifier = Modifier,
+    onAutomaticTrackingClick: () -> Unit = {},
+) {
+    Column(
+        verticalArrangement = spacedBy(22.dp),
+        modifier = modifier,
+    ) {
+        TraktHeader(
+            title = stringResource(R.string.header_settings_streaming).uppercase(),
+            titleColor = TraktTheme.colors.textPrimary,
+            titleStyle = TraktTheme.typography.heading6,
+            subtitle = stringResource(R.string.header_settings_streaming_description),
+        )
+
+        SettingsTextField(
+            text = stringResource(R.string.header_settings_automatic_tracking),
+            enabled = !state.loading.isLoading,
+            onClick = onAutomaticTrackingClick,
+        )
+    }
+}
+
+@Composable
+private fun SettingsMisc(
+    state: SettingsState,
+    modifier: Modifier = Modifier,
+) {
+    val context = LocalContext.current
+    val uriHandler = LocalUriHandler.current
+
+    Column(
+        verticalArrangement = spacedBy(22.dp),
+        modifier = modifier,
+    ) {
+        TraktHeader(
+            title = stringResource(R.string.header_settings_account_support).uppercase(),
+            titleStyle = TraktTheme.typography.heading6,
+            subtitle = stringResource(R.string.header_settings_account_support_description),
+        )
+
+        SettingsTextField(
+            text = stringResource(R.string.header_settings_support_contact),
+            enabled = !state.loading.isLoading,
+            onClick = {
+                val intent = Intent(Intent.ACTION_SENDTO).apply {
+                    data = "mailto:".toUri()
+                    putExtra(Intent.EXTRA_EMAIL, arrayOf(Config.WEB_SUPPORT_MAIL))
+                    putExtra(Intent.EXTRA_SUBJECT, "Trakt Issue (Android ${Build.VERSION.RELEASE})")
+                }
+
+                try {
+                    context.startActivity(intent)
+                } catch (error: Exception) {
+                    // No email client installed
+                    Timber.w(error, "Unable to start email client")
+                }
+            },
+        )
+
+        SettingsTextField(
+            text = stringResource(R.string.header_settings_forums),
+            enabled = !state.loading.isLoading,
+            onClick = {
+                uriHandler.openUri(Config.WEB_FORUMS_URL)
+            },
+        )
+
+        SettingsTextField(
+            text = stringResource(R.string.header_settings_terms),
+            enabled = !state.loading.isLoading,
+            onClick = {
+                uriHandler.openUri(Config.WEB_TERMS_URL)
+            },
+        )
+
+        SettingsTextField(
+            text = stringResource(R.string.header_settings_policy),
+            enabled = !state.loading.isLoading,
+            onClick = {
+                uriHandler.openUri(Config.WEB_PRIVACY_URL)
+            },
+        )
+    }
+}
+
+@Composable
+fun SettingsTextField(
+    text: String,
+    enabled: Boolean = true,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = { },
+) {
+    Row(
+        verticalAlignment = CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = modifier
+            .fillMaxWidth()
+            .onClick(
+                onClick = onClick,
+                enabled = enabled,
+            ),
+    ) {
+        Text(
+            text = text,
+            color = TraktTheme.colors.textSecondary,
+            style = TraktTheme.typography.paragraph.copy(
+                fontSize = 14.sp,
+            ),
+        )
 
         Icon(
-            painter = painterResource(R.drawable.ic_logout),
+            painter = painterResource(R.drawable.ic_chevron_right),
             contentDescription = null,
             tint = TraktTheme.colors.textPrimary,
             modifier = Modifier
-                .size(24.dp)
-                .onClick(onClick = onLogoutClick),
+                .size(20.dp),
         )
     }
 }

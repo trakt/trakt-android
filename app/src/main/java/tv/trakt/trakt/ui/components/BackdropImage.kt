@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.ColorImage
@@ -110,11 +111,13 @@ private fun BackdropImage(
     imageAlpha: Float = 0.375F,
 ) {
     val configuration = LocalConfiguration.current
+    val inspection = LocalInspectionMode.current
+
     val screenWidth = configuration.screenWidthDp.dp
     val background = TraktTheme.colors.backgroundPrimary
 
     val imageUrl = remember(imageUrl) {
-        if (imageUrl.isNullOrBlank()) {
+        if (imageUrl.isNullOrBlank() && !inspection) {
             Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL).ifBlank { null }
         } else {
             imageUrl
