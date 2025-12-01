@@ -29,6 +29,8 @@ android {
 
         buildConfigField("String", "TRAKT_API_KEY", localProperties.getProperty("TRAKT_API_KEY"))
         buildConfigField("String", "TRAKT_API_SECRET", localProperties.getProperty("TRAKT_API_SECRET"))
+        buildConfigField("int", "VERSION_CODE", versionCode.toString())
+        buildConfigField("String", "VERSION_NAME", "\"${versionName}\"")
 
         ndk {
             debugSymbolLevel = "SYMBOL_TABLE"

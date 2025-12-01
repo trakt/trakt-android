@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import timber.log.Timber
+import tv.trakt.trakt.BuildConfig
 import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
@@ -151,7 +152,7 @@ private fun SettingsScreenContent(
                 verticalArrangement = spacedBy(42.dp),
                 modifier = Modifier
                     .fillMaxHeight()
-                    .padding(top = 16.dp),
+                    .padding(top = 24.dp),
             ) {
                 SettingsStreaming(
                     state = state,
@@ -208,10 +209,9 @@ private fun TitleBar(modifier: Modifier = Modifier) {
                 tint = TraktTheme.colors.textPrimary,
                 contentDescription = null,
             )
-            Text(
-                text = stringResource(R.string.page_title_settings),
-                color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.heading5,
+            TraktHeader(
+                title = stringResource(R.string.page_title_settings),
+                subtitle = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
             )
         }
     }
