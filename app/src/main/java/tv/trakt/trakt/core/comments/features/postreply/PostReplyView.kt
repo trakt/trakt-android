@@ -115,7 +115,7 @@ private fun ViewContent(
             enabled = !isLoading,
             placeholder = inputInitial,
             containerColor = Color.Transparent,
-            height = 164.dp,
+            height = 130.dp,
             lineLimits = TextFieldLineLimits.MultiLine(
                 minHeightInLines = 3,
                 maxHeightInLines = Int.MAX_VALUE,
@@ -141,7 +141,7 @@ private fun ViewContent(
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = spacedBy(16.dp),
+            horizontalArrangement = spacedBy(12.dp),
             modifier = Modifier.padding(vertical = 12.dp),
         ) {
             Text(

@@ -419,7 +419,7 @@ private fun DetailsHeader(
                         if (playsCount != null && playsCount > 0) {
                             PosterChip(
                                 text = when {
-                                    playsCount > 1 -> stringResource(R.string.tag_text_watched_count, playsCount)
+                                    playsCount > 1 -> "${stringResource(R.string.tag_text_watched)} • $playsCount"
                                     else -> stringResource(R.string.tag_text_watched)
                                 },
                                 icon = painterResource(R.drawable.ic_check_double),

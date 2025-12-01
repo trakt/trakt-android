@@ -82,9 +82,6 @@
     <string name="link_text_discover_movies">Discover movies</string>
     <string name="link_text_discover_shows">Discover shows</string>
     <string name="link_text_view_profile">View profile</string>
-    <string name="list_description_released_media">Released shows &amp; movies</string>
-    <string name="list_description_released_movies">Released movies</string>
-    <string name="list_description_released_shows">Released shows</string>
     <string name="list_placeholder_comments">No reviews yet.</string>
     <string name="list_placeholder_empty">There is nothing in this list.</string>
     <string name="list_placeholder_replies">No replies yet.</string>
@@ -100,7 +97,7 @@
     <string name="list_title_favorite_movies">Favorite Movies</string>
     <string name="list_title_favorite_shows">Favorite Shows</string>
     <string name="list_title_favorites">Favorites</string>
-    <string name="list_title_from_watchlist">From Watchlist</string>
+    <string name="list_title_start_watching">Start Watching</string>
     <string name="list_title_history">History</string>
     <string name="list_title_most_anticipated">Anticipated</string>
     <string name="list_title_most_popular">Popular</string>
@@ -154,7 +151,6 @@
     <string name="tag_text_remaining_episodes">%d remaining</string>
     <string name="tag_text_watch_count">Watch count</string>
     <string name="tag_text_watched">Watched</string>
-    <string name="tag_text_watched_count">Watched: %s</string>
     <string name="text_about">About me</string>
     <string name="text_by">by</string>
     <string name="text_cta_activity_list">Start making friends quickly by following the Trakt Team and explore what they are watching.</string>

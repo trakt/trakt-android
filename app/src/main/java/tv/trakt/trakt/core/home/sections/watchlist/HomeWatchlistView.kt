@@ -235,14 +235,7 @@ internal fun HomeWatchlistContent(
             verticalAlignment = CenterVertically,
         ) {
             TraktHeader(
-                title = stringResource(R.string.list_title_from_watchlist),
-                subtitle = stringResource(
-                    when (state.filter) {
-                        MediaMode.SHOWS -> R.string.list_description_released_shows
-                        MediaMode.MOVIES -> R.string.list_description_released_movies
-                        else -> R.string.list_description_released_media
-                    },
-                ),
+                title = stringResource(R.string.list_title_start_watching),
             )
             if (!state.items.isNullOrEmpty() || state.loading != DONE) {
                 Icon(

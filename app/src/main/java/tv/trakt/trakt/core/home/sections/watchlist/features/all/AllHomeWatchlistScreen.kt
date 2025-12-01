@@ -127,7 +127,10 @@ internal fun AllHomeWatchlistScreen(
                         episodeId = it.progress?.nextEpisode?.ids?.trakt,
                     )
                 }
-                is MovieItem -> viewModel.addMovieToHistory(it.id)
+
+                is MovieItem -> {
+                    viewModel.addMovieToHistory(it.id)
+                }
             }
         },
         onCheckLongClick = {
@@ -174,6 +177,7 @@ internal fun AllHomeWatchlistScreen(
                             customDate = date,
                         )
                     }
+
                     is ShowItem -> {
                         val episode = (dateSheet as ShowItem).progress?.nextEpisode
                             ?: return@AllHomeDateSelectionSheet
@@ -236,13 +240,6 @@ internal fun AllHomeWatchlistContent(
         )
 
         ContentList(
-            subtitle = stringResource(
-                when (state.filter) {
-                    MediaMode.SHOWS -> R.string.list_description_released_shows
-                    MediaMode.MOVIES -> R.string.list_description_released_movies
-                    else -> R.string.list_description_released_media
-                },
-            ),
             listItems = (state.items ?: emptyList()).toImmutableList(),
             listState = listState,
             listFilter = state.filter,
@@ -259,10 +256,7 @@ internal fun AllHomeWatchlistContent(
 }
 
 @Composable
-private fun TitleBar(
-    subtitle: String,
-    modifier: Modifier = Modifier,
-) {
+private fun TitleBar(modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = spacedBy(12.dp),
@@ -278,8 +272,7 @@ private fun TitleBar(
             contentDescription = null,
         )
         TraktHeader(
-            title = stringResource(R.string.list_title_from_watchlist),
-            subtitle = subtitle,
+            title = stringResource(R.string.list_title_start_watching),
         )
     }
 }
@@ -290,7 +283,6 @@ private fun ContentList(
     listState: LazyListState,
     listItems: ImmutableList<WatchlistItem>,
     listFilter: MediaMode?,
-    subtitle: String,
     loading: Boolean,
     contentPadding: PaddingValues,
     onClick: (WatchlistItem) -> Unit,
@@ -309,9 +301,7 @@ private fun ContentList(
     ) {
         item {
             TitleBar(
-                subtitle = subtitle,
                 modifier = Modifier
-                    .padding(bottom = 8.dp)
                     .onClick { onBackClick() },
             )
         }
@@ -343,6 +333,7 @@ private fun ContentList(
                             fadeOutSpec = null,
                         ),
                 )
+
                 is MovieItem -> AllWatchlistMovieView(
                     item = item,
                     showCheck = true,
