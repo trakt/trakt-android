@@ -136,7 +136,7 @@ internal fun ThisMonthCard(
                             .size(18.dp),
                     )
                     Text(
-                        text = stringResource(R.string.text_this_month_so_far).uppercase(),
+                        text = stringResource(R.string.text_this_month).uppercase(),
                         color = TraktTheme.colors.textPrimary,
                         style = TraktTheme.typography.heading6,
                         textAlign = TextAlign.Center,
@@ -223,7 +223,7 @@ internal fun ThisMonthCard(
                 )
                 Text(
                     text = stringResource(
-                        R.string.text_this_month_in_review,
+                        R.string.text_month_in_review,
                         previousMonth.month.getDisplayName(TextStyle.FULL, Locale.US),
                     ).uppercase(),
                     color = TraktTheme.colors.textPrimary,
