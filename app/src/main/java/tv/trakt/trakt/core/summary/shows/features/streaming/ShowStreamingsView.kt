@@ -41,6 +41,7 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
 import tv.trakt.trakt.common.helpers.streamingservices.StreamingServiceApp
 import tv.trakt.trakt.common.model.streamings.StreamingService
@@ -178,12 +179,15 @@ private fun ContentLoading(
 }
 
 @Composable
-private fun ContentEmpty(contentPadding: PaddingValues) {
+private fun ContentEmpty(
+    contentPadding: PaddingValues,
+    modifier: Modifier = Modifier,
+) {
     Text(
         text = stringResource(R.string.button_text_no_services),
         color = TraktTheme.colors.textSecondary,
         style = TraktTheme.typography.heading6,
-        modifier = Modifier.padding(contentPadding),
+        modifier = modifier.padding(contentPadding),
     )
 }
 
@@ -195,6 +199,29 @@ private fun ContentEmpty(contentPadding: PaddingValues) {
 )
 @Composable
 private fun Preview() {
+    TraktTheme {
+        val previewHandler = AsyncImagePreviewHandler {
+            ColorImage(Color.Blue.toArgb())
+        }
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            ShowStreamingsContent(
+                state = ShowStreamingsState(
+                    loading = DONE,
+                    items = EmptyImmutableList,
+                ),
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalCoilApi::class)
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun Preview2() {
     TraktTheme {
         val previewHandler = AsyncImagePreviewHandler {
             ColorImage(Color.Blue.toArgb())
