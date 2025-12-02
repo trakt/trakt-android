@@ -152,7 +152,7 @@ private fun ViewContent(
             horizontalArrangement = spacedBy(12.dp),
             modifier = Modifier.padding(
                 top = 0.dp,
-                bottom = 16.dp,
+                bottom = 17.dp,
             ),
         ) {
             Text(

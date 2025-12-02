@@ -163,7 +163,7 @@ private fun ViewContent(
             horizontalArrangement = spacedBy(12.dp),
             modifier = Modifier.padding(
                 top = 0.dp,
-                bottom = 16.dp,
+                bottom = 17.dp,
             ),
         ) {
             Text(
@@ -182,7 +182,7 @@ private fun ViewContent(
         }
 
         PrimaryButton(
-            text = stringResource(R.string.button_text__add_reply),
+            text = stringResource(R.string.button_text_add_reply),
             enabled = !isLoading && isValid.value,
             loading = isLoading,
             onClick = {
