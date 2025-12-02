@@ -222,7 +222,7 @@
     <string name="header_settings_streaming">Streaming Sync</string>
     <string name="header_settings_account_support">Account &amp; Support</string>
 
-    <string name="header_settings_automatic_tracking">Automatic Tracking</string>
+    <string name="header_settings_automatic_tracking">Automatic Tracking [WIP!]</string>
     <string name="header_settings_terms">Terms of Use</string>
     <string name="header_settings_policy">Privacy Policy</string>
     <string name="header_settings_forums">Forums</string>

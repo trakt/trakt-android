@@ -73,6 +73,7 @@ internal class YounifyViewModel(
             .launchIn(viewModelScope)
     }
 
+    // TODO Check VIP and message accordingly
     private fun loadData() {
         viewModelScope.launch {
             loadingState.update { LoadingState.LOADING }

@@ -24,10 +24,7 @@ platform :android do
   desc "Distribute Firebase version to Internal Testers group"
   lane :firebase_distribute_internal do
     # Ask for optional release notes
-    release_notes = prompt(
-      text: "Enter release notes (optional, press Enter to skip): ",
-      ci_input: ""
-    )
+    release_notes = UI.input("Enter release notes (optional, press Enter to skip): ") || ""
 
     gradle(
       task: "assembleInternalRelease"
