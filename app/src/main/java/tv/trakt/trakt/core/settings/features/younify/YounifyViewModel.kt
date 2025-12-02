@@ -1,8 +1,11 @@
+@file:OptIn(FlowPreview::class)
+
 package tv.trakt.trakt.core.settings.features.younify
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -23,6 +26,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.settings.features.younify.data.remote.model.YounifyDetails
 import tv.trakt.trakt.core.settings.features.younify.usecases.GetYounifyDetailsUseCase
+import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyTokensUseCase
 import tv.younify.sdk.connect.Connect
 import tv.younify.sdk.connect.ConnectOptions
 import tv.younify.sdk.connect.LogLevel
@@ -33,6 +37,7 @@ import tv.younify.sdk.connect.TokenHandler
 internal class YounifyViewModel(
     private val sessionManager: SessionManager,
     private val getYounifyDetailsUseCase: GetYounifyDetailsUseCase,
+    private val refreshYounifyTokensUseCase: RefreshYounifyTokensUseCase,
     analytics: Analytics,
 ) : ViewModel() {
     private val initialState = YounifyState()
@@ -40,6 +45,8 @@ internal class YounifyViewModel(
     private val userState = MutableStateFlow(initialState.user)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
+
+    private var refreshTokenJob: Job? = null
 
     init {
         loadUser()
@@ -50,7 +57,6 @@ internal class YounifyViewModel(
         )
     }
 
-    @OptIn(FlowPreview::class)
     private fun loadUser() {
         viewModelScope.launch {
             userState.update {
@@ -98,40 +104,59 @@ internal class YounifyViewModel(
             key = BuildConfig.YOUNIFY_API_KEY,
             accessToken = details.tokens.accessToken,
             refreshToken = details.tokens.refreshToken,
-            tokenHandler = object : TokenHandler {
-                override fun renewTokens(
-                    expiredAccessToken: String?,
-                    refreshToken: String?,
-                    complete: RenewTokensCallback,
-                ) {
-                    // TODO Domain.shared.refreshYounifyTokens
-                    complete(null, null)
-                }
-
-                override fun renewedTokens(
-                    newAccessToken: String,
-                    newRefreshToken: String,
-                ) = Unit
-            },
+            tokenHandler = younifyTokenHandler,
             logLevel = when {
                 BuildConfig.DEBUG -> LogLevel.Trace
                 else -> LogLevel.Debug
             },
-            logListener = object : LogListener {
-                override fun log(
-                    level: LogLevel,
-                    message: String,
-                ) {
-                    Timber.log(level.value, "Younify: $message")
-                }
-            },
+            logListener = younifyLogListener,
             extra = null,
         )
         Connect.configure(options)
     }
 
-    fun clearErrors() {
-        errorState.update { null }
+    override fun onCleared() {
+        refreshTokenJob?.cancel()
+        super.onCleared()
+    }
+
+    private val younifyTokenHandler = object : TokenHandler {
+        override fun renewTokens(
+            expiredAccessToken: String?,
+            refreshToken: String?,
+            complete: RenewTokensCallback,
+        ) {
+            refreshTokenJob?.cancel()
+            refreshTokenJob = viewModelScope.launch {
+                try {
+                    refreshYounifyTokensUseCase.refreshTokens()
+                        .apply {
+                            complete(
+                                tokens.accessToken,
+                                tokens.refreshToken,
+                            )
+                        }
+                } catch (error: Exception) {
+                    error.rethrowCancellation {
+                        Timber.recordError(error)
+                    }
+                }
+            }
+        }
+
+        override fun renewedTokens(
+            newAccessToken: String,
+            newRefreshToken: String,
+        ) = Unit
+    }
+
+    private val younifyLogListener = object : LogListener {
+        override fun log(
+            level: LogLevel,
+            message: String,
+        ) {
+            Timber.log(level.value, "Younify: $message")
+        }
     }
 
     val state = combine(

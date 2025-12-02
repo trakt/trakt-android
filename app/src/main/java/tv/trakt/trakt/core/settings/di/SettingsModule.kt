@@ -21,6 +21,7 @@ import tv.trakt.trakt.core.settings.features.younify.YounifyViewModel
 import tv.trakt.trakt.core.settings.features.younify.data.remote.YounifyApiClient
 import tv.trakt.trakt.core.settings.features.younify.data.remote.YounifyRemoteDataSource
 import tv.trakt.trakt.core.settings.features.younify.usecases.GetYounifyDetailsUseCase
+import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyTokensUseCase
 
 internal const val SETTINGS_PREFERENCES = "settings_preferences_mobile"
 
@@ -42,6 +43,12 @@ internal val settingsModule = module {
         )
     }
 
+    factory {
+        RefreshYounifyTokensUseCase(
+            remoteSource = get(),
+        )
+    }
+
     viewModel {
         SettingsViewModel(
             sessionManager = get(),
@@ -55,6 +62,7 @@ internal val settingsModule = module {
             sessionManager = get(),
             analytics = get(),
             getYounifyDetailsUseCase = get(),
+            refreshYounifyTokensUseCase = get(),
         )
     }
 }

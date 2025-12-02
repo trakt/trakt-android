@@ -4,14 +4,14 @@ import timber.log.Timber
 import tv.trakt.trakt.core.settings.features.younify.data.remote.YounifyRemoteDataSource
 import tv.trakt.trakt.core.settings.features.younify.data.remote.model.YounifyDetails
 
-internal class GetYounifyDetailsUseCase(
+internal class RefreshYounifyTokensUseCase(
     private val remoteSource: YounifyRemoteDataSource,
 ) {
-    suspend fun getYounifyDetails(generateTokens: Boolean): YounifyDetails {
-        Timber.d("Getting Younify details...")
+    suspend fun refreshTokens(): YounifyDetails {
+        Timber.d("Refreshing Younify tokens...")
 
         val detailsDto = remoteSource.getYounifyDetails(
-            generateTokens = generateTokens,
+            generateTokens = true,
         )
 
         return YounifyDetails.fromDto(detailsDto)
