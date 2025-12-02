@@ -88,7 +88,8 @@
     <string name="button_text_comment_likes">%d likes</string>
     <string name="button_text_comment_replies">%d replies</string>
     <string name="list_title_comments">Reviews</string>
-    <string name="dialog_title_comments_warning">Minimum 5 words, be respectful, mark spoilers.</string>
+    <string name="translated_value_error_comment_invalid_content">Reviews must be at least 5 words.</string>
+    <string name="translated_value_error_reply_invalid_content">Replies must be at least 5 words.</string>
     <string name="dialog_title_comment">Review</string>
     <string name="dialog_title_reply">Reply</string>
     <string name="text_spoiler">Spoiler</string>
@@ -213,12 +214,16 @@
     <string name="button_text_mark_as_watched_other_date">Other date</string>
     <string name="button_text_mark_as_watched_unknown_date">Unknown date</string>
     <string name="text_this_month">This month</string>
+    <string name="textarea_placeholder_comment">Add a review…</string>
 
     <!--  TODO Sync strings below  -->
 
+    <string name="button_text_add_review">Add Review</string>
+    <string name="button_text__add_reply">Add Reply</string>
+
     <string name="page_title_settings">Settings</string>
-    <string name="header_settings_streaming">Streaming</string>
-    <string name="header_settings_streaming_description">Manage automatic tracking for your streaming services.</string>
+    <string name="header_settings_streaming">Streaming Sync</string>
+    <string name="header_settings_streaming_description">Automatically sync your watched history and ratings.</string>
     <string name="header_settings_account_support">Account &amp; Support</string>
     <string name="header_settings_account_support_description">Account settings, support, and more.</string>
 

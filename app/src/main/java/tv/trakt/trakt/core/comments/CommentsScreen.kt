@@ -351,6 +351,8 @@ private fun ContentList(
                     userReactions = userReactions,
                     onRequestReactions = onRequestReactions,
                     replyEnabled = user != null && !isUserComment,
+                    repliesCountEnabled = false,
+                    repliesButtonEnabled = true,
                     onReactionClick = onReactionClick,
                     onReplyClick = { onReplyClick?.invoke(it) },
                     onReplyUserClick = onReplyUserClick,

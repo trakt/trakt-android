@@ -185,12 +185,14 @@ internal class CommentsViewModel(
                 filter = filter,
                 limit = 100,
             )
+
             MediaType.SHOW -> getShowCommentsUseCase.getComments(
                 showId = destination.mediaId.toTraktId(),
                 user = userState.value,
                 filter = filter,
                 limit = 100,
             )
+
             MediaType.EPISODE -> getEpisodeCommentsUseCase.getComments(
                 showId = destination.mediaShowId!!.toTraktId(),
                 seasonEpisode = SeasonEpisode(
@@ -214,6 +216,11 @@ internal class CommentsViewModel(
 
         // Replies already loaded for this comment.
         if (repliesState.value?.containsKey(commentId) == true) {
+            repliesState.update {
+                val mutable = it?.toMutableMap()
+                mutable?.remove(commentId)
+                mutable?.toImmutableMap()
+            }
             return
         }
 
@@ -422,7 +429,10 @@ internal class CommentsViewModel(
                     loadUserReactionsUseCase.isLoaded() -> {
                         loadUserReactionsUseCase.loadLocalReactions()
                     }
-                    else -> loadUserReactionsUseCase.loadReactions()
+
+                    else -> {
+                        loadUserReactionsUseCase.loadReactions()
+                    }
                 }
 
                 userReactionsState.update { userReactions }

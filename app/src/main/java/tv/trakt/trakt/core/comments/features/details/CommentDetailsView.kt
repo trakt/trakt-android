@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -38,10 +37,8 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.W700
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -187,23 +184,6 @@ private fun CommentDetailsViewContent(
                         .height(132.dp)
                         .fillMaxWidth(),
                 )
-            }
-        }
-
-        when {
-            state.loading == DONE && state.replies.isNullOrEmpty() -> {
-                item {
-                    Text(
-                        text = stringResource(R.string.list_placeholder_replies),
-                        color = TraktTheme.colors.textPrimary,
-                        style = TraktTheme.typography.heading6,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .height(24.dp)
-                            .wrapContentHeight()
-                            .fillMaxWidth(),
-                    )
-                }
             }
         }
 

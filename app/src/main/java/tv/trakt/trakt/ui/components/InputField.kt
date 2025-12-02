@@ -51,6 +51,7 @@ internal fun InputField(
     enabled: Boolean = true,
     height: Dp = 48.dp,
     containerColor: Color = TraktTheme.colors.inputContainer.copy(alpha = 0.8F),
+    borderColor: Color = TraktTheme.colors.accent,
     lineLimits: TextFieldLineLimits = SingleLine,
     endSlot: @Composable (() -> Unit)? = null,
 ) {
@@ -91,7 +92,7 @@ internal fun InputField(
                     .border(
                         width = 2.dp,
                         color = when {
-                            isFocused -> TraktTheme.colors.accent
+                            isFocused -> borderColor
                             else -> TraktTheme.colors.chipContainer
                         },
                         shape = RoundedCornerShape(16.dp),
@@ -122,13 +123,13 @@ internal fun InputField(
                         style = TraktTheme.typography.paragraph.copy(
                             color = TraktTheme.colors.textSecondary,
                         ),
+                        minLines = when {
+                            lineLimits is MultiLine -> lineLimits.minHeightInLines
+                            else -> 1
+                        },
                         modifier = Modifier
                             .padding(
                                 start = when {
-                                    lineLimits is MultiLine -> 4.dp
-                                    else -> 0.dp
-                                },
-                                top = when {
                                     lineLimits is MultiLine -> 4.dp
                                     else -> 0.dp
                                 },

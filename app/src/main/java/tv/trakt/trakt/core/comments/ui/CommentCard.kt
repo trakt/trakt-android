@@ -41,12 +41,14 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.W700
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
@@ -66,6 +68,7 @@ import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
+import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryChip
 import tv.trakt.trakt.core.reactions.ui.ReactionsToolTip
 import tv.trakt.trakt.resources.R
@@ -84,6 +87,8 @@ internal fun CommentCard(
     userReactions: ImmutableMap<Int, Reaction?> = EmptyReactions,
     deleteEnabled: Boolean = true,
     replyEnabled: Boolean = false,
+    repliesButtonEnabled: Boolean = false,
+    repliesCountEnabled: Boolean = true,
     repliesLoading: Boolean = false,
     onClick: () -> Unit = {},
     onRequestReactions: ((Comment) -> Unit)? = null,
@@ -126,6 +131,8 @@ internal fun CommentCard(
                 userReactions = userReactions,
                 deleteEnabled = deleteEnabled,
                 replyEnabled = replyEnabled,
+                repliesButtonEnabled = repliesButtonEnabled,
+                repliesCountEnabled = repliesCountEnabled,
                 repliesLoading = repliesLoading,
                 onRequestReactions = onRequestReactions,
                 onReactionClick = onReactionClick,
@@ -153,6 +160,8 @@ private fun CommentCardContent(
     userReactions: ImmutableMap<Int, Reaction?>,
     deleteEnabled: Boolean,
     replyEnabled: Boolean,
+    repliesButtonEnabled: Boolean,
+    repliesCountEnabled: Boolean,
     repliesLoading: Boolean,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
@@ -211,9 +220,12 @@ private fun CommentCardContent(
 
         CommentFooter(
             comment = comment,
+            replies = replies,
             reactions = reactions[comment.id],
             reactionsEnabled = user != null && !isUserComment,
             repliesLoading = repliesLoading,
+            repliesCountEnabled = repliesCountEnabled,
+            repliesButtonEnabled = repliesButtonEnabled,
             userReaction = userReactions[comment.id],
             onReactionClick = onReactionClick,
             onReplyClick = onReplyClick,
@@ -247,6 +259,7 @@ private fun CommentRepliesContent(
     replies: ImmutableList<Comment>,
     reactions: ImmutableMap<Int, ReactionsSummary>,
     userReactions: ImmutableMap<Int, Reaction?>,
+    modifier: Modifier = Modifier,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onRequestReactions: ((Comment) -> Unit)? = null,
     onReplyClick: ((Comment) -> Unit)? = null,
@@ -254,7 +267,7 @@ private fun CommentRepliesContent(
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = Modifier
+        modifier = modifier
             .padding(top = 20.dp)
             .padding(horizontal = 16.dp),
     ) {
@@ -395,8 +408,11 @@ private fun CommentHeader(
 @Composable
 private fun CommentFooter(
     comment: Comment,
+    replies: ImmutableList<Comment>,
     reactions: ReactionsSummary?,
     reactionsEnabled: Boolean,
+    repliesCountEnabled: Boolean,
+    repliesButtonEnabled: Boolean,
     replyEnabled: Boolean,
     repliesLoading: Boolean,
     userReaction: Reaction?,
@@ -408,81 +424,119 @@ private fun CommentFooter(
     val scope = rememberCoroutineScope()
     val tooltipState = rememberTooltipState(isPersistent = true)
 
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(start = 1.dp),
+    Column(
+        modifier = modifier,
+        verticalArrangement = spacedBy(22.dp),
     ) {
-        ReactionsToolTip(
-            state = tooltipState,
-            reactions = reactions,
-            userReaction = userReaction,
-            onReactionClick = { reaction ->
-                onReactionClick?.invoke(reaction, comment)
-            },
-        ) {
-            ReactionsSummaryChip(
-                reactions = reactions,
-                userReaction = userReaction,
-                enabled = reactionsEnabled,
-                modifier = Modifier.onClick {
-                    if (reactions == null || !reactionsEnabled) {
-                        return@onClick
-                    }
-                    scope.launch {
-                        if (tooltipState.isVisible) {
-                            tooltipState.dismiss()
-                        } else {
-                            tooltipState.show()
-                        }
-                    }
-                },
-            )
-        }
-
-        Row(
-            horizontalArrangement = spacedBy(24.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
+        if (repliesButtonEnabled && comment.replies > 0) {
             Row(
-                horizontalArrangement = spacedBy(2.dp),
                 verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(3.dp),
                 modifier = Modifier.onClick(
-                    enabled = !repliesLoading && comment.replies > 0,
+                    enabled = !repliesLoading,
                 ) {
                     onRepliesClick?.invoke()
                 },
             ) {
-                val tint = when {
-                    comment.replies == 0 || repliesLoading -> TraktTheme.colors.textSecondary
-                    else -> TraktTheme.colors.textPrimary
-                }
                 Icon(
-                    painter = painterResource(R.drawable.ic_comment),
+                    painter = painterResource(
+                        when {
+                            replies.isNotEmpty() -> R.drawable.ic_collapsed
+                            else -> R.drawable.ic_chevron_down_small
+                        },
+                    ),
                     contentDescription = "Replies",
-                    tint = tint,
-                    modifier = Modifier.size(18.dp),
+                    tint = when {
+                        repliesLoading -> TraktTheme.colors.textSecondary.copy(alpha = 0.5f)
+                        else -> Purple400
+                    },
+                    modifier = Modifier.size(16.dp),
                 )
                 Text(
-                    text = "${comment.replies}",
-                    style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
-                    color = tint,
+                    text = stringResource(R.string.button_text_comment_replies, comment.replies),
+                    style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
+                    color = when {
+                        repliesLoading -> TraktTheme.colors.textSecondary.copy(alpha = 0.5f)
+                        else -> Purple400
+                    },
+                )
+            }
+        }
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 1.dp),
+        ) {
+            ReactionsToolTip(
+                state = tooltipState,
+                reactions = reactions,
+                userReaction = userReaction,
+                onReactionClick = { reaction ->
+                    onReactionClick?.invoke(reaction, comment)
+                },
+            ) {
+                ReactionsSummaryChip(
+                    reactions = reactions,
+                    userReaction = userReaction,
+                    enabled = reactionsEnabled,
+                    modifier = Modifier.onClick {
+                        if (reactions == null || !reactionsEnabled) {
+                            return@onClick
+                        }
+                        scope.launch {
+                            if (tooltipState.isVisible) {
+                                tooltipState.dismiss()
+                            } else {
+                                tooltipState.show()
+                            }
+                        }
+                    },
                 )
             }
 
-            if (replyEnabled) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_comment_plus),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .size(18.dp)
-                        .onClick(enabled = !repliesLoading) {
-                            onReplyClick?.invoke()
+            Row(
+                horizontalArrangement = spacedBy(24.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                if (repliesCountEnabled && comment.replies > 0) {
+                    Row(
+                        horizontalArrangement = spacedBy(2.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.onClick(
+                            enabled = !repliesLoading,
+                        ) {
+                            onRepliesClick?.invoke()
                         },
-                )
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_comment),
+                            contentDescription = "Replies",
+                            tint = TraktTheme.colors.textPrimary,
+                            modifier = Modifier.size(18.dp),
+                        )
+                        Text(
+                            text = "${comment.replies}",
+                            style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
+                            color = TraktTheme.colors.textPrimary,
+                        )
+                    }
+                }
+
+                if (replyEnabled) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_comment_plus),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier
+                            .size(18.dp)
+                            .onClick(enabled = !repliesLoading) {
+                                onReplyClick?.invoke()
+                            },
+                    )
+                }
             }
         }
     }

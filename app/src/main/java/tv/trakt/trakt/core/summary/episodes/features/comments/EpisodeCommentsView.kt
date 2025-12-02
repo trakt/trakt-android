@@ -172,14 +172,14 @@ private fun EpisodeCommentsContent(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = CenterVertically,
         ) {
+            TraktHeader(
+                title = stringResource(R.string.list_title_comments),
+            )
+
             Row(
-                horizontalArrangement = spacedBy(8.dp),
+                horizontalArrangement = spacedBy(12.dp),
                 verticalAlignment = CenterVertically,
             ) {
-                TraktHeader(
-                    title = stringResource(R.string.list_title_comments),
-                )
-
                 if (state.user != null) {
                     Icon(
                         painter = painterResource(R.drawable.ic_comment_plus),
@@ -195,19 +195,19 @@ private fun EpisodeCommentsContent(
                             },
                     )
                 }
-            }
 
-            if (!state.items.isNullOrEmpty() || state.loading.isLoading) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_chevron_right),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .size(20.dp)
-                        .graphicsLayer {
-                            translationX = (4.9).dp.toPx()
-                        },
-                )
+                if (state.loading.isLoading || !state.items.isNullOrEmpty()) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_chevron_right),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier
+                            .size(20.dp)
+                            .graphicsLayer {
+                                translationX = (4.9).dp.toPx()
+                            },
+                    )
+                }
             }
         }
 
@@ -232,6 +232,7 @@ private fun EpisodeCommentsContent(
                         contentPadding = contentPadding,
                     )
                 }
+
                 DONE -> {
                     Column(
                         verticalArrangement = spacedBy(0.dp),

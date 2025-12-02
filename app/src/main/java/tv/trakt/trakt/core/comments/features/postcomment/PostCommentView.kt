@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,9 +36,9 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.LaunchedUpdateEffect
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.TraktSwitch
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -89,28 +90,47 @@ private fun ViewContent(
         }
     }
 
+    val isNotEmpty = remember {
+        derivedStateOf {
+            val input = inputState.text.toString().trim()
+            input.isNotBlank()
+        }
+    }
+
     var isSpoiler by remember { mutableStateOf(false) }
 
     Column(
         verticalArrangement = spacedBy(0.dp),
         modifier = modifier,
     ) {
-        TraktHeader(
-            title = stringResource(R.string.dialog_title_comment),
-            subtitle = stringResource(R.string.dialog_title_comments_warning),
-        )
-
         InputField(
             state = inputState,
             enabled = !isLoading,
+            placeholder = stringResource(R.string.textarea_placeholder_comment),
             containerColor = Color.Transparent,
+            borderColor = when {
+                isNotEmpty.value && !isValid.value -> Red400
+                else -> TraktTheme.colors.accent
+            },
             lineLimits = TextFieldLineLimits.MultiLine(
                 minHeightInLines = 5,
                 maxHeightInLines = Int.MAX_VALUE,
             ),
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        Text(
+            text = stringResource(R.string.translated_value_error_comment_invalid_content),
+            color = when {
+                isNotEmpty.value && !isValid.value -> Red400
+                else -> TraktTheme.colors.textSecondary
+            },
+            style = TraktTheme.typography.meta.copy(fontWeight = W400),
+            maxLines = 1,
+            overflow = Ellipsis,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 24.dp),
+                .align(Alignment.End)
+                .padding(top = 4.dp, end = 10.dp),
         )
 
         if (state.error != null) {
@@ -130,7 +150,10 @@ private fun ViewContent(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = spacedBy(12.dp),
-            modifier = Modifier.padding(vertical = 12.dp),
+            modifier = Modifier.padding(
+                top = 0.dp,
+                bottom = 16.dp,
+            ),
         ) {
             Text(
                 text = stringResource(R.string.text_spoiler),
@@ -148,7 +171,7 @@ private fun ViewContent(
         }
 
         PrimaryButton(
-            text = stringResource(R.string.button_text_submit),
+            text = stringResource(R.string.button_text_add_review),
             enabled = !isLoading && isValid.value,
             loading = isLoading,
             onClick = {
