@@ -45,6 +45,8 @@ import tv.trakt.trakt.core.summary.people.navigation.navigateToPerson
 import tv.trakt.trakt.core.summary.people.navigation.personDetailsScreen
 import tv.trakt.trakt.core.summary.shows.navigation.navigateToShow
 import tv.trakt.trakt.core.summary.shows.navigation.showDetailsScreen
+import tv.trakt.trakt.core.younify.features.younify.navigation.navigateToYounify
+import tv.trakt.trakt.core.younify.features.younify.navigation.younifyScreen
 
 internal fun NavGraphBuilder.homeScreens(
     controller: NavHostController,
@@ -322,6 +324,11 @@ internal fun NavGraphBuilder.settingsScreens(controller: NavHostController) {
     with(controller) {
         settingsScreen(
             onNavigateHome = { navigateToHome() },
+            onNavigateYounify = { navigateToYounify() },
+            onNavigateBack = { popBackStack() },
+        )
+
+        younifyScreen(
             onNavigateBack = { popBackStack() },
         )
     }

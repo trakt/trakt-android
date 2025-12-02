@@ -12,12 +12,14 @@ internal data object SettingsDestination
 
 internal fun NavGraphBuilder.settingsScreen(
     onNavigateHome: () -> Unit,
+    onNavigateYounify: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     composable<SettingsDestination> {
         SettingsScreen(
             viewModel = koinViewModel(),
             onNavigateHome = onNavigateHome,
+            onNavigateYounify = onNavigateYounify,
             onNavigateBack = onNavigateBack,
         )
     }

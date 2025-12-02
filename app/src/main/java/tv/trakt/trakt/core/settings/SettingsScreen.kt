@@ -68,6 +68,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun SettingsScreen(
     viewModel: SettingsViewModel,
     onNavigateHome: () -> Unit,
+    onNavigateYounify: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -85,6 +86,7 @@ internal fun SettingsScreen(
         onLogoutClick = {
             confirmLogout = true
         },
+        onYounifyClick = onNavigateYounify,
         onBackClick = onNavigateBack,
     )
 
@@ -108,6 +110,7 @@ internal fun SettingsScreen(
 private fun SettingsScreenContent(
     state: SettingsState,
     modifier: Modifier = Modifier,
+    onYounifyClick: () -> Unit = { },
     onLogoutClick: () -> Unit = { },
     onBackClick: () -> Unit = { },
 ) {
@@ -156,7 +159,7 @@ private fun SettingsScreenContent(
             ) {
                 SettingsStreaming(
                     state = state,
-                    onAutomaticTrackingClick = { },
+                    onAutomaticTrackingClick = onYounifyClick,
                 )
 
                 SettingsMisc(

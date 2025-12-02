@@ -14,6 +14,7 @@ import kotlinx.coroutines.SupervisorJob
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import tv.trakt.trakt.core.settings.SettingsViewModel
+import tv.trakt.trakt.core.settings.features.younify.YounifyViewModel
 
 internal const val SETTINGS_PREFERENCES = "settings_preferences_mobile"
 
@@ -23,6 +24,13 @@ internal val settingsModule = module {
             sessionManager = get(),
             analytics = get(),
             logoutUseCase = get(),
+        )
+    }
+
+    viewModel {
+        YounifyViewModel(
+            sessionManager = get(),
+            analytics = get(),
         )
     }
 }
