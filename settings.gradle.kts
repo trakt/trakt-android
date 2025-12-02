@@ -18,6 +18,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url = rootProject.projectDir.resolve("./external/younify").toURI() }
         maven { url = URI("https://jitpack.io") }
     }
 }

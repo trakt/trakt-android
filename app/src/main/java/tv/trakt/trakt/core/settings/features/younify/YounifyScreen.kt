@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -32,7 +33,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
@@ -93,6 +97,24 @@ private fun YounifyScreenContent(
                     .onClick {
                         onBackClick()
                     },
+            )
+
+            state.error?.let { error ->
+                Text(
+                    text = error.message ?: stringResource(R.string.error_text_unexpected_error_short),
+                    style = TraktTheme.typography.paragraphSmaller,
+                    color = Red400,
+                    modifier = Modifier
+                        .padding(top = 16.dp),
+                )
+            }
+        }
+
+        if (state.loading == LoadingState.LOADING) {
+            FilmProgressIndicator(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .padding(contentPadding),
             )
         }
     }

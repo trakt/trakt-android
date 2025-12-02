@@ -39,6 +39,7 @@ import tv.trakt.trakt.core.reactions.di.reactionsDataModule
 import tv.trakt.trakt.core.reactions.di.reactionsModule
 import tv.trakt.trakt.core.search.di.searchDataModule
 import tv.trakt.trakt.core.search.di.searchModule
+import tv.trakt.trakt.core.settings.di.settingsDataModule
 import tv.trakt.trakt.core.settings.di.settingsModule
 import tv.trakt.trakt.core.shows.di.showsDataModule
 import tv.trakt.trakt.core.shows.di.showsModule
@@ -136,6 +137,7 @@ internal class TraktApplication : Application() {
                 favoritesDataModule,
                 syncModule,
                 settingsModule,
+                settingsDataModule,
             )
         }
     }

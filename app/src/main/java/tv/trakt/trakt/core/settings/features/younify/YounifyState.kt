@@ -7,5 +7,7 @@ import tv.trakt.trakt.common.model.User
 @Immutable
 internal data class YounifyState(
     val user: User? = null,
+    val younifyDetails: User? = null,
     val loading: LoadingState = LoadingState.IDLE,
+    val error: Exception? = null,
 )
