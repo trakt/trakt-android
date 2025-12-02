@@ -224,7 +224,7 @@ private fun SettingsStreaming(
     onAutomaticTrackingClick: () -> Unit = {},
 ) {
     Column(
-        verticalArrangement = spacedBy(22.dp),
+        verticalArrangement = spacedBy(24.dp),
         modifier = modifier,
     ) {
         TraktHeader(
@@ -251,7 +251,7 @@ private fun SettingsMisc(
     val uriHandler = LocalUriHandler.current
 
     Column(
-        verticalArrangement = spacedBy(22.dp),
+        verticalArrangement = spacedBy(24.dp),
         modifier = modifier,
     ) {
         TraktHeader(
