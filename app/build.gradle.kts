@@ -29,6 +29,7 @@ android {
 
         buildConfigField("String", "TRAKT_API_KEY", localProperties.getProperty("TRAKT_API_KEY"))
         buildConfigField("String", "TRAKT_API_SECRET", localProperties.getProperty("TRAKT_API_SECRET"))
+        buildConfigField("String", "YOUNIFY_API_KEY", localProperties.getProperty("YOUNIFY_API_KEY"))
         buildConfigField("int", "VERSION_CODE", versionCode.toString())
         buildConfigField("String", "VERSION_NAME", "\"${versionName}\"")
 
@@ -135,6 +136,7 @@ dependencies {
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.timber)
     implementation(libs.phoenix)
+    implementation(libs.younify)
 
     // Testing
 

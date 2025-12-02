@@ -1,0 +1,512 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "tv.younify.sdk",
+    "module": "connect",
+    "version": "0.9.39",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.14.3"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "io.opentelemetry.android",
+          "module": "opentelemetry-android-bom",
+          "version": {
+            "requires": "0.13.0-alpha"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ],
+          "attributes": {
+            "org.gradle.category": "platform"
+          },
+          "endorseStrictVersions": true
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.2.10"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        }
+      ],
+      "files": [
+        {
+          "name": "connect-0.9.39.aar",
+          "url": "connect-0.9.39.aar",
+          "size": 1180598,
+          "sha512": "d7bd49d664978873f40ee977343d9344254c0c792d5925c4cdf37e43a584a59e47e28eb384140092bcaab3bc4a81b0630f7ce5749d84dc545e37c338390c81aa",
+          "sha256": "f16001a0e39014294b3ca51a97c6e6fe643ec6b9e489e52b8413eccde0a7aa41",
+          "sha1": "47a77431bed24fa3379049065da4e98e61f894ac",
+          "md5": "f8ff02e6c90b24e152b98e871d35dee1"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-parcelize-runtime",
+          "version": {
+            "requires": "2.2.10"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "androidx.core",
+          "module": "core-ktx",
+          "version": {
+            "requires": "1.17.0"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "androidx.appcompat",
+          "module": "appcompat",
+          "version": {
+            "requires": "1.7.1"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "androidx.constraintlayout",
+          "module": "constraintlayout",
+          "version": {
+            "requires": "2.2.1"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "androidx.navigation",
+          "module": "navigation-fragment-ktx",
+          "version": {
+            "requires": "2.9.3"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "androidx.navigation",
+          "module": "navigation-ui-ktx",
+          "version": {
+            "requires": "2.9.3"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "com.google.android.material",
+          "module": "material",
+          "version": {
+            "requires": "1.12.0"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "org.slf4j",
+          "module": "slf4j-api",
+          "version": {
+            "requires": "2.0.17"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "com.github.tony19",
+          "module": "logback-android",
+          "version": {
+            "requires": "3.0.0"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "io.ktor",
+          "module": "ktor-client-core",
+          "version": {
+            "requires": "3.2.3"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "io.ktor",
+          "module": "ktor-client-cio",
+          "version": {
+            "requires": "3.2.3"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "io.ktor",
+          "module": "ktor-client-content-negotiation",
+          "version": {
+            "requires": "3.2.3"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "io.ktor",
+          "module": "ktor-serialization-gson",
+          "version": {
+            "requires": "3.2.3"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "io.ktor",
+          "module": "ktor-client-okhttp",
+          "version": {
+            "requires": "3.2.3"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "com.squareup.okhttp3",
+          "module": "okhttp",
+          "version": {
+            "requires": "5.1.0"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "com.squareup.okhttp3",
+          "module": "okhttp-sse",
+          "version": {
+            "requires": "5.1.0"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "com.google.code.gson",
+          "module": "gson",
+          "version": {
+            "requires": "2.13.1"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.10.2"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-android",
+          "version": {
+            "requires": "1.10.2"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "androidx.security",
+          "module": "security-crypto",
+          "version": {
+            "requires": "1.1.0"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "org.bouncycastle",
+          "module": "bcpkix-jdk15to18",
+          "version": {
+            "requires": "1.81"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "org.bouncycastle",
+          "module": "bcprov-jdk15to18",
+          "version": {
+            "requires": "1.81"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "androidx.recyclerview",
+          "module": "recyclerview",
+          "version": {
+            "requires": "1.4.0"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "com.github.bumptech.glide",
+          "module": "glide",
+          "version": {
+            "requires": "4.16.0"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "io.opentelemetry.android",
+          "module": "android-agent",
+          "version": {
+            "requires": "0.13.0-alpha"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "io.opentelemetry.android",
+          "module": "services",
+          "version": {
+            "requires": "0.13.0-alpha"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "io.opentelemetry",
+          "module": "opentelemetry-sdk",
+          "version": {
+            "requires": "1.53.0"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "io.opentelemetry",
+          "module": "opentelemetry-extension-kotlin",
+          "version": {
+            "requires": "1.53.0"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "io.opentelemetry",
+          "module": "opentelemetry-exporter-otlp",
+          "version": {
+            "requires": "1.53.0"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "io.opentelemetry.contrib",
+          "module": "opentelemetry-disk-buffering",
+          "version": {
+            "requires": "1.48.0-alpha"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "io.opentelemetry.android",
+          "module": "opentelemetry-android-bom",
+          "version": {
+            "requires": "0.13.0-alpha"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ],
+          "attributes": {
+            "org.gradle.category": "platform"
+          },
+          "endorseStrictVersions": true
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.2.10"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        }
+      ],
+      "files": [
+        {
+          "name": "connect-0.9.39.aar",
+          "url": "connect-0.9.39.aar",
+          "size": 1180598,
+          "sha512": "d7bd49d664978873f40ee977343d9344254c0c792d5925c4cdf37e43a584a59e47e28eb384140092bcaab3bc4a81b0630f7ce5749d84dc545e37c338390c81aa",
+          "sha256": "f16001a0e39014294b3ca51a97c6e6fe643ec6b9e489e52b8413eccde0a7aa41",
+          "sha1": "47a77431bed24fa3379049065da4e98e61f894ac",
+          "md5": "f8ff02e6c90b24e152b98e871d35dee1"
+        }
+      ]
+    }
+  ]
+}

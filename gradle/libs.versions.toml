@@ -39,6 +39,7 @@ tvFoundation = "1.0.0-alpha12"
 tvMaterial = "1.0.1"
 workManager = "2.11.0"
 youtube-player = "13.0.0"
+younify = "0.9.39"
 
 # Testing Libraries
 
@@ -84,6 +85,7 @@ youtube-player-ui = { group = "com.pierfrancescosoffritti.androidyoutubeplayer",
 flagkit = { module = "com.github.murgupluoglu:flagkit-android", version.ref = "flagkit" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 phoenix = { group = "com.jakewharton", name = "process-phoenix", version.ref = "phoenix" }
+younify = { module = "tv.younify.sdk:connect", version.ref = "younify" }
 
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
