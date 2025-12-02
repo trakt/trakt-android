@@ -231,7 +231,6 @@ private fun SettingsStreaming(
             title = stringResource(R.string.header_settings_streaming).uppercase(),
             titleColor = TraktTheme.colors.textPrimary,
             titleStyle = TraktTheme.typography.heading6,
-            subtitle = stringResource(R.string.header_settings_streaming_description),
         )
 
         SettingsTextField(
@@ -257,7 +256,6 @@ private fun SettingsMisc(
         TraktHeader(
             title = stringResource(R.string.header_settings_account_support).uppercase(),
             titleStyle = TraktTheme.typography.heading6,
-            subtitle = stringResource(R.string.header_settings_account_support_description),
         )
 
         SettingsTextField(
