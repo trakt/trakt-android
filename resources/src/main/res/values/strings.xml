@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="badge_text_get_vip">Get VIP</string>
     <string name="button_label_browse_movies">Browse Movies</string>
     <string name="button_label_browse_shows">Browse Shows</string>
     <string name="button_label_popup_reactions">Reactions</string>
@@ -227,4 +226,6 @@
     <string name="header_settings_policy">Privacy Policy</string>
     <string name="header_settings_forums">Forums</string>
     <string name="header_settings_support_contact">Contact Support</string>
+
+    <string name="badge_text_get_vip">VIP</string>
 </resources>

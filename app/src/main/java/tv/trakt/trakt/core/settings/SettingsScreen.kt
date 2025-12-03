@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -60,9 +61,13 @@ import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.VipChip
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
+
+private const val SECTION_SPACING_DP = 20
+private const val SECTION_ITEM_HEIGHT_DP = 32
 
 @Composable
 internal fun SettingsScreen(
@@ -71,6 +76,8 @@ internal fun SettingsScreen(
     onNavigateYounify: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
+    val uriHandler = LocalUriHandler.current
+
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var confirmLogout by remember { mutableStateOf(false) }
@@ -87,6 +94,9 @@ internal fun SettingsScreen(
             confirmLogout = true
         },
         onYounifyClick = onNavigateYounify,
+        onVipClick = {
+            uriHandler.openUri(Config.WEB_VIP_URL)
+        },
         onBackClick = onNavigateBack,
     )
 
@@ -112,6 +122,7 @@ private fun SettingsScreenContent(
     modifier: Modifier = Modifier,
     onYounifyClick: () -> Unit = { },
     onLogoutClick: () -> Unit = { },
+    onVipClick: () -> Unit = { },
     onBackClick: () -> Unit = { },
 ) {
     val contentPadding = PaddingValues(
@@ -160,6 +171,7 @@ private fun SettingsScreenContent(
                 SettingsStreaming(
                     state = state,
                     onAutomaticTrackingClick = onYounifyClick,
+                    onVipClick = onVipClick,
                 )
 
                 SettingsMisc(
@@ -225,9 +237,14 @@ private fun SettingsStreaming(
     state: SettingsState,
     modifier: Modifier = Modifier,
     onAutomaticTrackingClick: () -> Unit = {},
+    onVipClick: () -> Unit = {},
 ) {
+    val isVip = remember(state.user) {
+        state.user?.isAnyVip == true
+    }
+
     Column(
-        verticalArrangement = spacedBy(24.dp),
+        verticalArrangement = spacedBy(SECTION_SPACING_DP.dp),
         modifier = modifier,
     ) {
         TraktHeader(
@@ -238,8 +255,10 @@ private fun SettingsStreaming(
 
         SettingsTextField(
             text = stringResource(R.string.header_settings_automatic_tracking),
-            enabled = !state.logoutLoading.isLoading,
+            enabled = !state.logoutLoading.isLoading && isVip,
+            vipLocked = !isVip,
             onClick = onAutomaticTrackingClick,
+            onVipClick = onVipClick,
         )
     }
 }
@@ -253,7 +272,7 @@ private fun SettingsMisc(
     val uriHandler = LocalUriHandler.current
 
     Column(
-        verticalArrangement = spacedBy(24.dp),
+        verticalArrangement = spacedBy(SECTION_SPACING_DP.dp),
         modifier = modifier,
     ) {
         TraktHeader(
@@ -309,15 +328,18 @@ private fun SettingsMisc(
 @Composable
 fun SettingsTextField(
     text: String,
-    enabled: Boolean = true,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    vipLocked: Boolean = false,
     onClick: () -> Unit = { },
+    onVipClick: () -> Unit = { },
 ) {
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
             .fillMaxWidth()
+            .heightIn(SECTION_ITEM_HEIGHT_DP.dp)
             .onClick(
                 onClick = onClick,
                 enabled = enabled,
@@ -331,13 +353,19 @@ fun SettingsTextField(
             ),
         )
 
-        Icon(
-            painter = painterResource(R.drawable.ic_chevron_right),
-            contentDescription = null,
-            tint = TraktTheme.colors.textPrimary,
-            modifier = Modifier
-                .size(20.dp),
-        )
+        if (!vipLocked) {
+            Icon(
+                painter = painterResource(R.drawable.ic_chevron_right),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .size(20.dp),
+            )
+        } else {
+            VipChip(
+                onClick = onVipClick,
+            )
+        }
     }
 }
 
