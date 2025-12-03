@@ -207,8 +207,7 @@ private fun TitleBar(modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier = modifier,
     ) {
         Row(
             verticalAlignment = CenterVertically,

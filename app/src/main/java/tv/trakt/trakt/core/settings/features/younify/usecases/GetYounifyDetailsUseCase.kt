@@ -2,7 +2,7 @@ package tv.trakt.trakt.core.settings.features.younify.usecases
 
 import timber.log.Timber
 import tv.trakt.trakt.core.settings.features.younify.data.remote.YounifyRemoteDataSource
-import tv.trakt.trakt.core.settings.features.younify.data.remote.model.YounifyDetails
+import tv.trakt.trakt.core.settings.features.younify.model.YounifyDetails
 
 internal class GetYounifyDetailsUseCase(
     private val remoteSource: YounifyRemoteDataSource,

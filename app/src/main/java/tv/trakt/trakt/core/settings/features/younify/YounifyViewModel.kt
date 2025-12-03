@@ -27,8 +27,8 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.core.settings.features.younify.data.remote.model.YounifyDetails
-import tv.trakt.trakt.core.settings.features.younify.data.remote.model.YounifyServices
+import tv.trakt.trakt.core.settings.features.younify.model.YounifyDetails
+import tv.trakt.trakt.core.settings.features.younify.model.YounifyServices
 import tv.trakt.trakt.core.settings.features.younify.usecases.GetYounifyDetailsUseCase
 import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyTokensUseCase
 import tv.younify.sdk.connect.Connect
@@ -53,6 +53,7 @@ internal class YounifyViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
+    private var dataJob: Job? = null
     private var refreshTokenJob: Job? = null
 
     init {
@@ -65,12 +66,6 @@ internal class YounifyViewModel(
     }
 
     private fun loadUser() {
-        viewModelScope.launch {
-            userState.update {
-                sessionManager.getProfile()
-            }
-        }
-
         sessionManager.observeProfile()
             .distinctUntilChanged()
             .debounce(200)
@@ -81,9 +76,15 @@ internal class YounifyViewModel(
     }
 
     private fun loadData() {
-        viewModelScope.launch {
+        dataJob?.cancel()
+        dataJob = viewModelScope.launch {
             loadingState.update { LoadingState.LOADING }
+
             try {
+                userState.update {
+                    sessionManager.getProfile()
+                }
+
                 if (!sessionManager.isAuthenticated() || userState.value?.isAnyVip != true) {
                     Timber.w("Not authenticated, skipping Younify details load")
                     return@launch
@@ -135,6 +136,7 @@ internal class YounifyViewModel(
     }
 
     override fun onCleared() {
+        dataJob?.cancel()
         refreshTokenJob?.cancel()
         super.onCleared()
     }

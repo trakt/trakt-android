@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.settings.features.younify.data.remote.model
+package tv.trakt.trakt.core.settings.features.younify.model
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.serialization.Serializable
