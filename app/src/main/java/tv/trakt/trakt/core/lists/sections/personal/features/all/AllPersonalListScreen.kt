@@ -249,7 +249,7 @@ private fun TitleBar(
                 .padding(start = 16.dp)
                 .fillMaxHeight()
                 .onClick { onMoreClick() }
-                .size(18.dp),
+                .size(20.dp),
         )
     }
 }
@@ -345,6 +345,7 @@ private fun ContentList(
                             fadeOutSpec = null,
                         ),
                 )
+
                 is MovieItem -> AllPersonalListMovieView(
                     item = item,
                     showIcon = true,

@@ -228,7 +228,7 @@ internal fun HomeWatchlistContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(headerPadding)
-                .onClick(enabled = state.loading == DONE) {
+                .onClick(enabled = state.loading == DONE && state.items?.isNotEmpty() == true) {
                     onMoreClick()
                 },
             horizontalArrangement = SpaceBetween,

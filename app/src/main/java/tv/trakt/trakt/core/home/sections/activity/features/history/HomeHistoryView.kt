@@ -114,7 +114,7 @@ internal fun HomeHistoryView(
             contextSheet = it
         },
         onMoreClick = {
-            if (state.loading.isLoading) {
+            if (state.loading.isLoading || state.items.isNullOrEmpty()) {
                 return@HomeHistoryContent
             }
             onMoreClick()

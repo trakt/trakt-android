@@ -101,7 +101,7 @@ internal fun HomeUpNextView(
         onShowsClick = onShowsClick,
         onShowClick = { onShowClick(it.show.ids.trakt) },
         onMoreClick = {
-            if (state.loading == DONE) {
+            if (state.loading == DONE && !state.items.items.isNullOrEmpty()) {
                 onMoreClick()
             }
         },
