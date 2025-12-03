@@ -215,7 +215,7 @@ private fun YounifyServiceView(
             ) {
                 Text(
                     text = service.name,
-                    style = TraktTheme.typography.buttonSecondary,
+                    style = TraktTheme.typography.cardTitle.copy(fontSize = 15.sp),
                     color = TraktTheme.colors.textPrimary,
                 )
                 Text(
