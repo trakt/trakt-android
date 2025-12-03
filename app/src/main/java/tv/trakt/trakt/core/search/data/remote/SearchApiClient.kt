@@ -99,6 +99,7 @@ internal class SearchApiClient(
             page = 1,
             limit = limit,
             extended = "full,cloud9,colors",
+            query = null,
         )
 
         return response.body()
@@ -110,6 +111,7 @@ internal class SearchApiClient(
             page = 1,
             limit = limit,
             extended = "full,cloud9,colors",
+            query = null,
         )
 
         return response.body()

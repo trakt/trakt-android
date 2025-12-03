@@ -59249,6 +59249,15 @@
             }
           },
           {
+            "name": "query",
+            "in": "query",
+            "description": "The search query to search all text based fields.",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "extended",
             "in": "query",
             "description": "Extended information to include in the response.",
@@ -62854,6 +62863,28 @@
             }
           },
           {
+            "name": "sort_by",
+            "in": "query",
+            "description": "The field to sort by",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "sort_how",
+            "in": "query",
+            "description": "The direction to sort in",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "nullable": true
+            }
+          },
+          {
             "name": "watchnow",
             "in": "query",
             "description": "Use \"favorites\" for streaming on a favorite service of the user.\n      Use \"any\" for streaming on any service in the user's country.\n      Use \"any_all\" for streaming on any service in all countries.\n      Use \"free\" for streaming for free in the user's country.\n      Use \"free_all\" for streaming for free in all countries.\n      Use \"subscriptions\" for streaming on any subscription service (Netflix, Hulu, etc) in the user's country.\n      Use \"subscriptions_all\" streaming on any subscription service in all countries",
@@ -63218,6 +63249,28 @@
             "in": "query",
             "description": "Extended information to include in the response.",
             "schema": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "description": "The field to sort by",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "sort_how",
+            "in": "query",
+            "description": "The direction to sort in",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
               "nullable": true
             }
           },
@@ -63608,6 +63661,28 @@
             "in": "query",
             "description": "Extended information to include in the response.",
             "schema": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "description": "The field to sort by",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "sort_how",
+            "in": "query",
+            "description": "The direction to sort in",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
               "nullable": true
             }
           },
@@ -64705,6 +64780,14 @@
             "description": "The slug of the resource."
           },
           {
+            "name": "extended",
+            "in": "query",
+            "description": "Extended information to include in the response.",
+            "schema": {
+              "nullable": true
+            }
+          },
+          {
             "name": "page",
             "in": "query",
             "description": "The page number to retrieve",
@@ -65780,10 +65863,12 @@
                             },
                             "required": [
                               "ids"
-                            ],
-                            "nullable": true
+                            ]
                           }
-                        }
+                        },
+                        "required": [
+                          "movie"
+                        ]
                       },
                       {
                         "type": "object",
@@ -65805,10 +65890,12 @@
                             },
                             "required": [
                               "ids"
-                            ],
-                            "nullable": true
+                            ]
                           }
-                        }
+                        },
+                        "required": [
+                          "show"
+                        ]
                       },
                       {
                         "type": "object",
@@ -65830,10 +65917,12 @@
                             },
                             "required": [
                               "ids"
-                            ],
-                            "nullable": true
+                            ]
                           }
-                        }
+                        },
+                        "required": [
+                          "season"
+                        ]
                       },
                       {
                         "type": "object",
@@ -65855,10 +65944,12 @@
                             },
                             "required": [
                               "ids"
-                            ],
-                            "nullable": true
+                            ]
                           }
-                        }
+                        },
+                        "required": [
+                          "episode"
+                        ]
                       },
                       {
                         "type": "object",
@@ -65880,10 +65971,12 @@
                             },
                             "required": [
                               "ids"
-                            ],
-                            "nullable": true
+                            ]
                           }
-                        }
+                        },
+                        "required": [
+                          "list"
+                        ]
                       }
                     ]
                   }

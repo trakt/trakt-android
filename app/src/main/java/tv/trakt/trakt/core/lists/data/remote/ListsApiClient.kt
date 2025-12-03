@@ -182,6 +182,8 @@ internal class ListsApiClient(
             page = null,
             limit = limit,
             subgenres = null,
+            sortBy = null,
+            sortHow = null,
         )
 
         return response.body()
@@ -204,6 +206,8 @@ internal class ListsApiClient(
             endDate = null,
             page = null,
             limit = limit,
+            sortBy = null,
+            sortHow = null,
         )
         return response.body()
     }
@@ -225,6 +229,8 @@ internal class ListsApiClient(
             page = null,
             subgenres = null,
             limit = limit,
+            sortBy = null,
+            sortHow = null,
         )
         return response.body()
     }
