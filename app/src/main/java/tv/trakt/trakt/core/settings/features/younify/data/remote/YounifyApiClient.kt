@@ -4,6 +4,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.call.body
 import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.request.delete
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -30,17 +31,23 @@ internal class YounifyApiClient(
     }
 
     override suspend fun postYounifyRefresh(
-        serviceID: String,
+        serviceId: String,
         skipSync: Boolean,
     ) {
         httpClient.post {
             url("${baseUrl}younify/users/refresh")
             setBody(
                 YounifyRefreshRequest(
-                    serviceID = serviceID,
+                    serviceID = serviceId,
                     skipSync = skipSync,
                 ),
             )
+        }
+    }
+
+    override suspend fun postYounifyUnlink(serviceId: String) {
+        httpClient.delete {
+            url("${baseUrl}younify/users/services/$serviceId")
         }
     }
 }

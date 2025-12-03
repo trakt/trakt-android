@@ -3,17 +3,13 @@ package tv.trakt.trakt.core.settings.features.younify.usecases
 import timber.log.Timber
 import tv.trakt.trakt.core.settings.features.younify.data.remote.YounifyRemoteDataSource
 
-internal class RefreshYounifyDataUseCase(
+internal class UnlinkYounifyServiceUseCase(
     private val remoteSource: YounifyRemoteDataSource,
 ) {
-    suspend fun refresh(
-        serviceId: String,
-        skipSync: Boolean,
-    ) {
-        Timber.d("Refreshing Younify data...")
-        remoteSource.postYounifyRefresh(
+    suspend fun unlinkService(serviceId: String) {
+        Timber.d("Unlinking Younify service: $serviceId")
+        remoteSource.postYounifyUnlink(
             serviceId = serviceId,
-            skipSync = skipSync,
         )
     }
 }

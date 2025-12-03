@@ -25,7 +25,9 @@ import tv.trakt.trakt.BuildConfig
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
@@ -36,6 +38,8 @@ import tv.trakt.trakt.core.settings.features.younify.model.linkStatus
 import tv.trakt.trakt.core.settings.features.younify.usecases.GetYounifyDetailsUseCase
 import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyDataUseCase
 import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyTokensUseCase
+import tv.trakt.trakt.core.settings.features.younify.usecases.UnlinkYounifyServiceUseCase
+import tv.trakt.trakt.resources.R
 import tv.younify.sdk.connect.Connect
 import tv.younify.sdk.connect.ConnectOptions
 import tv.younify.sdk.connect.LogLevel
@@ -51,6 +55,7 @@ internal class YounifyViewModel(
     private val getYounifyDetailsUseCase: GetYounifyDetailsUseCase,
     private val refreshYounifyTokensUseCase: RefreshYounifyTokensUseCase,
     private val refreshYounifyDataUseCase: RefreshYounifyDataUseCase,
+    private val unlinkYounifyServiceUseCase: UnlinkYounifyServiceUseCase,
     analytics: Analytics,
 ) : ViewModel() {
     private val initialState = YounifyState()
@@ -59,6 +64,7 @@ internal class YounifyViewModel(
     private val servicesState = MutableStateFlow(initialState.younifyServices)
     private val syncDataPromptState = MutableStateFlow(initialState.syncDataPrompt)
     private val loadingState = MutableStateFlow(initialState.loading)
+    private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var dataJob: Job? = null
@@ -84,7 +90,7 @@ internal class YounifyViewModel(
             .launchIn(viewModelScope)
     }
 
-    private fun loadData() {
+    private fun loadData(info: StringResource? = null) {
         dataJob?.cancel()
         dataJob = viewModelScope.launch {
             loadingState.update { LoadingState.LOADING }
@@ -105,6 +111,10 @@ internal class YounifyViewModel(
 
                 connectYounify(younifyDetails)
                 loadYounifyServices(younifyDetails.services)
+
+                info?.let { info ->
+                    infoState.update { info }
+                }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -181,10 +191,12 @@ internal class YounifyViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
+                    loadingState.update { LoadingState.DONE }
+
                     if (error is UserConsentRequiredException) {
                         return@rethrowCancellation
                     }
-                    loadingState.update { LoadingState.DONE }
+
                     errorState.update { error }
                     Timber.recordError(error)
                 }
@@ -212,7 +224,9 @@ internal class YounifyViewModel(
             }
         }
 
-        loadData()
+        loadData(
+            info = DynamicStringResource(R.string.text_info_younify_linked),
+        )
     }
 
     fun onServiceAction(
@@ -242,6 +256,30 @@ internal class YounifyViewModel(
                 registry = registry,
             )
         }
+    }
+
+    fun onServiceUnlink(service: StreamingService) {
+        viewModelScope.launch {
+            try {
+                loadingState.update { LoadingState.LOADING }
+
+                unlinkYounifyServiceUseCase.unlinkService(service.id)
+
+                loadData(
+                    info = DynamicStringResource(R.string.text_info_younify_unlinked),
+                )
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    loadingState.update { LoadingState.LOADING }
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    fun clearInfo() {
+        infoState.update { null }
     }
 
     override fun onCleared() {
@@ -295,6 +333,7 @@ internal class YounifyViewModel(
         servicesState,
         syncDataPromptState,
         loadingState,
+        infoState,
         errorState,
     ) { state ->
         @Suppress("UNCHECKED_CAST")
@@ -303,7 +342,8 @@ internal class YounifyViewModel(
             younifyServices = state[1] as ImmutableList<StreamingService>?,
             syncDataPrompt = state[2] as String?,
             loading = state[3] as LoadingState,
-            error = state[4] as Exception?,
+            info = state[4] as StringResource?,
+            error = state[5] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

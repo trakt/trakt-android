@@ -6,7 +6,9 @@ internal interface YounifyRemoteDataSource {
     suspend fun getYounifyDetails(generateTokens: Boolean): YounifyDetailsDto
 
     suspend fun postYounifyRefresh(
-        serviceID: String,
+        serviceId: String,
         skipSync: Boolean,
     )
+
+    suspend fun postYounifyUnlink(serviceId: String)
 }

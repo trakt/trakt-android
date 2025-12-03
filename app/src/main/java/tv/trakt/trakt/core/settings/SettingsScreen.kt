@@ -255,7 +255,7 @@ private fun SettingsStreaming(
         SettingsTextField(
             text = stringResource(R.string.header_settings_automatic_tracking),
             enabled = !state.logoutLoading.isLoading && isVip,
-            vipLocked = !isVip,
+            vipLocked = state.user != null && !isVip,
             onClick = onAutomaticTrackingClick,
             onVipClick = onVipClick,
         )

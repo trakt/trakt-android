@@ -26,8 +26,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,7 +42,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
-import androidx.compose.ui.text.font.FontWeight.Companion.W500
+import androidx.compose.ui.text.font.FontWeight.Companion.W600
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,6 +51,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
@@ -68,9 +74,12 @@ internal fun YounifyScreen(
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
+    val snack = LocalSnackbarState.current
     val registry = LocalActivityResultRegistryOwner.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    var confirmUnlinkSheet by remember { mutableStateOf<StreamingService?>(null) }
 
     YounifyScreenContent(
         state = state,
@@ -81,15 +90,21 @@ internal fun YounifyScreen(
                 registry = registry?.activityResultRegistry,
             )
         },
+        onServiceUnlinkClick = {
+            confirmUnlinkSheet = it
+        },
+        onServiceEditClick = {
+            // TODO
+        },
         onBackClick = onNavigateBack,
     )
 
     ConfirmationSheet(
         active = !state.syncDataPrompt.isNullOrEmpty(),
-        title = "Sync Existing Data",
-        message = "Would you like to sync your existing data to your account, or only sync new data from now on?",
-        yesText = "Sync existing data",
-        noText = "Ignore existing data",
+        title = stringResource(R.string.dialog_title_younify_data_sync),
+        message = stringResource(R.string.dialog_prompt_younify_data_sync),
+        yesText = stringResource(R.string.button_text_data_sync_yes),
+        noText = stringResource(R.string.button_text_data_sync_ignore),
         onYes = {
             state.syncDataPrompt?.let { serviceId ->
                 viewModel.notifyYounifyRefresh(
@@ -107,6 +122,37 @@ internal fun YounifyScreen(
             }
         },
     )
+
+    ConfirmationSheet(
+        active = confirmUnlinkSheet != null,
+        title = stringResource(R.string.button_text_younify_unlink),
+        message = stringResource(
+            R.string.warning_prompt_younify_unlink,
+            confirmUnlinkSheet?.name ?: "",
+        ),
+        onYes = {
+            confirmUnlinkSheet?.let {
+                viewModel.onServiceUnlink(it)
+                confirmUnlinkSheet = null
+            }
+        },
+        yesColor = Red400,
+        onNo = {
+            confirmUnlinkSheet = null
+        },
+    )
+
+    LaunchedEffect(state.info) {
+        if (state.info == null) {
+            return@LaunchedEffect
+        }
+
+        state.info?.get(context)?.let {
+            snack.showSnackbar(it)
+        }
+
+        viewModel.clearInfo()
+    }
 }
 
 @Composable
@@ -114,6 +160,8 @@ private fun YounifyScreenContent(
     state: YounifyState,
     modifier: Modifier = Modifier,
     onServiceActionClick: (StreamingService) -> Unit = { },
+    onServiceUnlinkClick: (StreamingService) -> Unit = { },
+    onServiceEditClick: (StreamingService) -> Unit = { },
     onBackClick: () -> Unit = { },
 ) {
     val contentPadding = PaddingValues(
@@ -180,6 +228,12 @@ private fun YounifyScreenContent(
                             onActionClick = {
                                 onServiceActionClick(service)
                             },
+                            onEditClick = {
+                                onServiceEditClick(service)
+                            },
+                            onUnlinkClick = {
+                                onServiceUnlinkClick(service)
+                            },
                             modifier = Modifier
                                 .fillMaxWidth(),
                         )
@@ -203,6 +257,8 @@ private fun YounifyServiceView(
     service: StreamingService,
     modifier: Modifier = Modifier,
     onActionClick: () -> Unit = { },
+    onEditClick: () -> Unit = { },
+    onUnlinkClick: () -> Unit = { },
 ) {
     val context = LocalContext.current
 
@@ -215,15 +271,16 @@ private fun YounifyServiceView(
                 shape = RoundedCornerShape(16.dp),
             )
             .padding(
-                top = 4.dp,
-                bottom = 4.dp,
-                start = 4.dp,
-                end = 15.dp,
+                top = 5.dp,
+                bottom = 5.dp,
+                start = 5.dp,
+                end = 16.dp,
             ),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.weight(1F, fill = false),
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(context)
@@ -233,25 +290,25 @@ private fun YounifyServiceView(
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(60.dp)
+                    .size(72.dp)
                     .clip(RoundedCornerShape(12.dp)),
             )
 
             Column(
                 horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.spacedBy(2.dp),
+                verticalArrangement = Arrangement.spacedBy(1.dp),
             ) {
                 Text(
                     text = service.name,
                     style = TraktTheme.typography.cardTitle.copy(fontSize = 15.sp),
                     color = TraktTheme.colors.textPrimary,
                 )
+
                 Text(
                     text = stringResource(service.linkStatus.displayTextRes),
                     style = TraktTheme.typography.meta.copy(
-                        fontSize = 10.sp,
                         fontWeight = when (service.linkStatus) {
-                            LinkStatus.LINKED, LinkStatus.BROKEN -> W500
+                            LinkStatus.LINKED, LinkStatus.BROKEN -> W600
                             else -> W400
                         },
                     ),
@@ -261,6 +318,30 @@ private fun YounifyServiceView(
                         else -> TraktTheme.colors.textSecondary
                     },
                 )
+
+                service.link?.username?.let {
+                    Text(
+                        text = "${stringResource(R.string.text_younify_user)}: $it",
+                        style = TraktTheme.typography.meta.copy(
+                            fontWeight = W400,
+                        ),
+                        color = TraktTheme.colors.textSecondary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+
+                service.link?.profileName?.let {
+                    Text(
+                        text = "${stringResource(R.string.text_younify_profile)}: $it",
+                        style = TraktTheme.typography.meta.copy(
+                            fontWeight = W400,
+                        ),
+                        color = TraktTheme.colors.textSecondary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
             }
         }
 
@@ -271,8 +352,37 @@ private fun YounifyServiceView(
                     LinkStatus.BROKEN -> stringResource(R.string.button_text_younify_fix)
                     LinkStatus.LINKED -> ""
                 },
+                containerColor = when (service.linkStatus) {
+                    LinkStatus.UNLINKED -> TraktTheme.colors.primaryButtonContainer
+                    LinkStatus.BROKEN -> Red400
+                    LinkStatus.LINKED -> TraktTheme.colors.primaryButtonContainer
+                },
                 onClick = onActionClick,
             )
+        } else if (service.linkStatus == LinkStatus.LINKED) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.padding(start = 12.dp),
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_edit),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .size(18.dp)
+                        .onClick(onClick = onEditClick),
+                )
+
+                Icon(
+                    painter = painterResource(R.drawable.ic_trash),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .size(21.dp)
+                        .onClick(onClick = onUnlinkClick),
+                )
+            }
         }
     }
 }
