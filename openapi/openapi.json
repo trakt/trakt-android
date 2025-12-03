@@ -65863,12 +65863,10 @@
                             },
                             "required": [
                               "ids"
-                            ]
+                            ],
+                            "nullable": true
                           }
-                        },
-                        "required": [
-                          "movie"
-                        ]
+                        }
                       },
                       {
                         "type": "object",
@@ -65890,12 +65888,10 @@
                             },
                             "required": [
                               "ids"
-                            ]
+                            ],
+                            "nullable": true
                           }
-                        },
-                        "required": [
-                          "show"
-                        ]
+                        }
                       },
                       {
                         "type": "object",
@@ -65917,12 +65913,10 @@
                             },
                             "required": [
                               "ids"
-                            ]
+                            ],
+                            "nullable": true
                           }
-                        },
-                        "required": [
-                          "season"
-                        ]
+                        }
                       },
                       {
                         "type": "object",
@@ -65944,12 +65938,10 @@
                             },
                             "required": [
                               "ids"
-                            ]
+                            ],
+                            "nullable": true
                           }
-                        },
-                        "required": [
-                          "episode"
-                        ]
+                        }
                       },
                       {
                         "type": "object",
@@ -65971,12 +65963,10 @@
                             },
                             "required": [
                               "ids"
-                            ]
+                            ],
+                            "nullable": true
                           }
-                        },
-                        "required": [
-                          "list"
-                        ]
+                        }
                       }
                     ]
                   }

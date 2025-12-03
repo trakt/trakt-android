@@ -107,7 +107,7 @@ class CommentsApiClient(
             id = commentId.toString(),
             page = null,
             limit = 99,
-            extended = "cloud9",
+            extended = "images",
         )
 
         return response.body()
