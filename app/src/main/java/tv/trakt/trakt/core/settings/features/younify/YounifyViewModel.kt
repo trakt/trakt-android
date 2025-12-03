@@ -2,6 +2,8 @@
 
 package tv.trakt.trakt.core.settings.features.younify
 
+import android.content.Context
+import androidx.activity.result.ActivityResultRegistry
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
@@ -27,8 +29,10 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.settings.features.younify.model.LinkStatus
 import tv.trakt.trakt.core.settings.features.younify.model.YounifyDetails
 import tv.trakt.trakt.core.settings.features.younify.model.YounifyServices
+import tv.trakt.trakt.core.settings.features.younify.model.linkStatus
 import tv.trakt.trakt.core.settings.features.younify.usecases.GetYounifyDetailsUseCase
 import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyTokensUseCase
 import tv.younify.sdk.connect.Connect
@@ -38,6 +42,7 @@ import tv.younify.sdk.connect.LogListener
 import tv.younify.sdk.connect.RenewTokensCallback
 import tv.younify.sdk.connect.StreamingService
 import tv.younify.sdk.connect.TokenHandler
+import tv.younify.sdk.connect.UserConsentRequiredException
 
 internal class YounifyViewModel(
     private val younify: Connect,
@@ -132,6 +137,66 @@ internal class YounifyViewModel(
                 .filter { it.id in knownServicesIds }
                 .sortedBy { it.name.lowercase() }
                 .toImmutableList()
+        }
+    }
+
+    private fun linkService(
+        service: StreamingService,
+        context: Context,
+        registry: ActivityResultRegistry,
+        promptSync: Boolean,
+    ) {
+        viewModelScope.launch {
+            try {
+                val resultSuccess = younify.linkService(
+                    context = context,
+                    registry = registry,
+                    service = service,
+                )
+
+                if (resultSuccess) {
+                    Timber.d("Successfully linked service ${service.name}")
+                } else {
+                    // TODO
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    if (error is UserConsentRequiredException) {
+                        return@rethrowCancellation
+                    }
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    fun onServiceAction(
+        service: StreamingService,
+        context: Context,
+        registry: ActivityResultRegistry?,
+    ) {
+        if (registry == null) {
+            Timber.e("No activity registry")
+            return
+        }
+
+        when (service.linkStatus) {
+            LinkStatus.LINKED -> TODO()
+
+            LinkStatus.UNLINKED -> linkService(
+                service = service,
+                promptSync = true,
+                context = context,
+                registry = registry,
+            )
+
+            LinkStatus.BROKEN -> linkService(
+                service = service,
+                promptSync = false,
+                context = context,
+                registry = registry,
+            )
         }
     }
 

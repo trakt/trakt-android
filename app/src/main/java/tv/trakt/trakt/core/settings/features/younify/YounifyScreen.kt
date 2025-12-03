@@ -2,6 +2,7 @@
 
 package tv.trakt.trakt.core.settings.features.younify
 
+import androidx.activity.compose.LocalActivityResultRegistryOwner
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -62,10 +63,20 @@ internal fun YounifyScreen(
     viewModel: YounifyViewModel,
     onNavigateBack: () -> Unit,
 ) {
+    val context = LocalContext.current
+    val registry = LocalActivityResultRegistryOwner.current
+
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     YounifyScreenContent(
         state = state,
+        onServiceActionClick = {
+            viewModel.onServiceAction(
+                service = it,
+                context = context,
+                registry = registry?.activityResultRegistry,
+            )
+        },
         onBackClick = onNavigateBack,
     )
 }
@@ -74,6 +85,7 @@ internal fun YounifyScreen(
 private fun YounifyScreenContent(
     state: YounifyState,
     modifier: Modifier = Modifier,
+    onServiceActionClick: (StreamingService) -> Unit = { },
     onBackClick: () -> Unit = { },
 ) {
     val contentPadding = PaddingValues(
@@ -122,7 +134,10 @@ private fun YounifyScreenContent(
                     style = TraktTheme.typography.paragraphSmaller,
                     color = Red400,
                     modifier = Modifier
-                        .padding(vertical = 16.dp),
+                        .padding(
+                            top = 8.dp,
+                            bottom = 16.dp,
+                        ),
                 )
             }
 
@@ -133,7 +148,10 @@ private fun YounifyScreenContent(
                 ) {
                     for (service in state.younifyServices) {
                         YounifyServiceView(
-                            service,
+                            service = service,
+                            onActionClick = {
+                                onServiceActionClick(service)
+                            },
                             modifier = Modifier
                                 .fillMaxWidth(),
                         )
@@ -156,6 +174,7 @@ private fun YounifyScreenContent(
 private fun YounifyServiceView(
     service: StreamingService,
     modifier: Modifier = Modifier,
+    onActionClick: () -> Unit = { },
 ) {
     val context = LocalContext.current
 
@@ -217,6 +236,7 @@ private fun YounifyServiceView(
                     LinkStatus.BROKEN -> stringResource(R.string.button_text_younify_fix)
                     LinkStatus.LINKED -> ""
                 },
+                onClick = onActionClick,
             )
         }
     }
