@@ -15,5 +15,8 @@ internal class GetYounifyDetailsUseCase(
         )
 
         return YounifyDetails.fromDto(detailsDto)
+            .also {
+                Timber.d("Younify details: $it")
+            }
     }
 }

@@ -5,9 +5,21 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class YounifyServices(
-    val available: ImmutableList<YounifyService>,
-    val linked: ImmutableList<YounifyService>,
-)
+    val available: Available,
+//    val linked: Linked,
+) {
+    @Serializable
+    internal data class Available(
+        val watched: ImmutableList<YounifyService>,
+//        val ratings: ImmutableList<YounifyService>,
+    )
+
+    @Serializable
+    internal data class Linked(
+        val active: ImmutableList<YounifyService>,
+        val inactive: ImmutableList<YounifyService>,
+    )
+}
 
 @Serializable
 internal data class YounifyService(

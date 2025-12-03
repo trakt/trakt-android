@@ -1,7 +1,7 @@
 package tv.trakt.trakt.core.settings.features.younify.data.remote.model
 
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.Serializable
-import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.core.settings.features.younify.data.remote.model.dto.YounifyDetailsDto
 
 @Serializable
@@ -19,8 +19,24 @@ internal data class YounifyDetails(
                     refreshToken = dto.refreshToken,
                 ),
                 services = YounifyServices(
-                    available = EmptyImmutableList,
-                    linked = EmptyImmutableList,
+                    available = YounifyServices.Available(
+                        watched = dto.availableServices.watched
+                            .map {
+                                YounifyService(
+                                    id = it.id,
+                                    name = it.name,
+                                    color = it.color,
+                                    images = YounifyService.Images(
+                                        logo = it.images.logo,
+                                    ),
+                                )
+                            }
+                            .toImmutableList(),
+                    ),
+//                    linked = YounifyServices.Linked(
+//                        active = EmptyImmutableList,
+//                        inactive = EmptyImmutableList,
+//                    ),
                 ),
             )
         }

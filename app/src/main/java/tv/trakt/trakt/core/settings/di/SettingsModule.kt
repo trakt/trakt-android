@@ -22,6 +22,7 @@ import tv.trakt.trakt.core.settings.features.younify.data.remote.YounifyApiClien
 import tv.trakt.trakt.core.settings.features.younify.data.remote.YounifyRemoteDataSource
 import tv.trakt.trakt.core.settings.features.younify.usecases.GetYounifyDetailsUseCase
 import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyTokensUseCase
+import tv.younify.sdk.connect.Connect
 
 internal const val SETTINGS_PREFERENCES = "settings_preferences_mobile"
 
@@ -59,6 +60,7 @@ internal val settingsModule = module {
 
     viewModel {
         YounifyViewModel(
+            younify = Connect,
             sessionManager = get(),
             analytics = get(),
             getYounifyDetailsUseCase = get(),

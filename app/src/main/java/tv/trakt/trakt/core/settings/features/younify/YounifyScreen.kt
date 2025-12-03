@@ -108,6 +108,21 @@ private fun YounifyScreenContent(
                         .padding(top = 16.dp),
                 )
             }
+
+            if (state.loading.isDone && !state.younifyServices.isNullOrEmpty()) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(32.dp),
+                    modifier = Modifier.padding(top = 24.dp),
+                ) {
+                    state.younifyServices.forEach { service ->
+                        Text(
+                            text = service.name,
+                            style = TraktTheme.typography.buttonSecondary,
+                            color = TraktTheme.colors.textPrimary,
+                        )
+                    }
+                }
+            }
         }
 
         if (state.loading == LoadingState.LOADING) {

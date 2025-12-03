@@ -4,6 +4,8 @@ package tv.trakt.trakt.core.settings.features.younify
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,9 +24,11 @@ import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.settings.features.younify.data.remote.model.YounifyDetails
+import tv.trakt.trakt.core.settings.features.younify.data.remote.model.YounifyServices
 import tv.trakt.trakt.core.settings.features.younify.usecases.GetYounifyDetailsUseCase
 import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyTokensUseCase
 import tv.younify.sdk.connect.Connect
@@ -32,9 +36,11 @@ import tv.younify.sdk.connect.ConnectOptions
 import tv.younify.sdk.connect.LogLevel
 import tv.younify.sdk.connect.LogListener
 import tv.younify.sdk.connect.RenewTokensCallback
+import tv.younify.sdk.connect.StreamingService
 import tv.younify.sdk.connect.TokenHandler
 
 internal class YounifyViewModel(
+    private val younify: Connect,
     private val sessionManager: SessionManager,
     private val getYounifyDetailsUseCase: GetYounifyDetailsUseCase,
     private val refreshYounifyTokensUseCase: RefreshYounifyTokensUseCase,
@@ -43,6 +49,7 @@ internal class YounifyViewModel(
     private val initialState = YounifyState()
 
     private val userState = MutableStateFlow(initialState.user)
+    private val servicesState = MutableStateFlow(initialState.younifyServices)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -73,22 +80,21 @@ internal class YounifyViewModel(
             .launchIn(viewModelScope)
     }
 
-    // TODO Check VIP and message accordingly
     private fun loadData() {
         viewModelScope.launch {
             loadingState.update { LoadingState.LOADING }
             try {
-                if (!sessionManager.isAuthenticated()) {
+                if (!sessionManager.isAuthenticated() || userState.value?.isAnyVip != true) {
                     Timber.w("Not authenticated, skipping Younify details load")
                     return@launch
                 }
 
-                getYounifyDetailsUseCase.getYounifyDetails(
+                val younifyDetails = getYounifyDetailsUseCase.getYounifyDetails(
                     generateTokens = false,
-                ).apply {
-                    Timber.d("Younify details loaded: $this")
-                    connectYounify(this)
-                }
+                )
+
+                connectYounify(younifyDetails)
+                loadYounifyServices(younifyDetails.services)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -113,7 +119,19 @@ internal class YounifyViewModel(
             logListener = younifyLogListener,
             extra = null,
         )
-        Connect.configure(options)
+        younify.configure(options)
+    }
+
+    private suspend fun loadYounifyServices(knownServices: YounifyServices) {
+        val knownServicesIds = knownServices.available.watched.asyncMap { it.id }
+        val remoteServices = younify.fetchServices()
+
+        servicesState.update {
+            remoteServices
+                .filter { it.id in knownServicesIds }
+                .sortedBy { it.name.lowercase() }
+                .toImmutableList()
+        }
     }
 
     override fun onCleared() {
@@ -162,13 +180,16 @@ internal class YounifyViewModel(
 
     val state = combine(
         userState,
+        servicesState,
         loadingState,
         errorState,
     ) { state ->
+        @Suppress("UNCHECKED_CAST")
         YounifyState(
             user = state[0] as User?,
-            loading = state[1] as LoadingState,
-            error = state[2] as Exception?,
+            younifyServices = state[1] as ImmutableList<StreamingService>?,
+            loading = state[2] as LoadingState,
+            error = state[3] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,
