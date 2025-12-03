@@ -4,4 +4,9 @@ import tv.trakt.trakt.core.settings.features.younify.data.remote.model.dto.Youni
 
 internal interface YounifyRemoteDataSource {
     suspend fun getYounifyDetails(generateTokens: Boolean): YounifyDetailsDto
+
+    suspend fun postYounifyRefresh(
+        serviceID: String,
+        skipSync: Boolean,
+    )
 }

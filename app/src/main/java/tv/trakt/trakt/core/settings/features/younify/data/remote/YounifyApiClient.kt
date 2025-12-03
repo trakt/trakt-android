@@ -6,8 +6,10 @@ import io.ktor.client.call.body
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 import tv.trakt.trakt.core.settings.features.younify.data.remote.model.dto.YounifyDetailsDto
+import tv.trakt.trakt.core.settings.features.younify.data.remote.model.request.YounifyRefreshRequest
 
 internal class YounifyApiClient(
     private val baseUrl: String,
@@ -20,10 +22,25 @@ internal class YounifyApiClient(
 
     override suspend fun getYounifyDetails(generateTokens: Boolean): YounifyDetailsDto {
         val result = httpClient.post {
-            url("$baseUrl/younify/users")
+            url("${baseUrl}younify/users")
             parameter("generate_tokens", generateTokens)
         }
 
         return result.body()
+    }
+
+    override suspend fun postYounifyRefresh(
+        serviceID: String,
+        skipSync: Boolean,
+    ) {
+        httpClient.post {
+            url("${baseUrl}younify/users/refresh")
+            setBody(
+                YounifyRefreshRequest(
+                    serviceID = serviceID,
+                    skipSync = skipSync,
+                ),
+            )
+        }
     }
 }

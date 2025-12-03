@@ -10,6 +10,7 @@ import tv.younify.sdk.connect.StreamingService
 internal data class YounifyState(
     val user: User? = null,
     val younifyServices: ImmutableList<StreamingService>? = null,
+    val syncDataPrompt: String? = null,
     val loading: LoadingState = LoadingState.IDLE,
     val error: Exception? = null,
 )

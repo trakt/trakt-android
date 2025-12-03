@@ -21,6 +21,7 @@ import tv.trakt.trakt.core.settings.features.younify.YounifyViewModel
 import tv.trakt.trakt.core.settings.features.younify.data.remote.YounifyApiClient
 import tv.trakt.trakt.core.settings.features.younify.data.remote.YounifyRemoteDataSource
 import tv.trakt.trakt.core.settings.features.younify.usecases.GetYounifyDetailsUseCase
+import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyDataUseCase
 import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyTokensUseCase
 import tv.younify.sdk.connect.Connect
 
@@ -50,6 +51,12 @@ internal val settingsModule = module {
         )
     }
 
+    factory {
+        RefreshYounifyDataUseCase(
+            remoteSource = get(),
+        )
+    }
+
     viewModel {
         SettingsViewModel(
             sessionManager = get(),
@@ -65,6 +72,7 @@ internal val settingsModule = module {
             analytics = get(),
             getYounifyDetailsUseCase = get(),
             refreshYounifyTokensUseCase = get(),
+            refreshYounifyDataUseCase = get(),
         )
     }
 }

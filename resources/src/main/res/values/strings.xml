@@ -228,7 +228,7 @@
     <string name="header_settings_support_contact">Contact Support</string>
 
     <string name="text_younify_link_linked">Linked</string>
-    <string name="text_younify_link_unlinked">Unlinked</string>
+    <string name="text_younify_link_unlinked">Not Linked</string>
     <string name="text_younify_link_broken">Broken</string>
 
     <string name="button_text_younify_sign_in">Sign In</string>

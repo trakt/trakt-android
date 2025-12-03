@@ -34,6 +34,7 @@ import tv.trakt.trakt.core.settings.features.younify.model.YounifyDetails
 import tv.trakt.trakt.core.settings.features.younify.model.YounifyServices
 import tv.trakt.trakt.core.settings.features.younify.model.linkStatus
 import tv.trakt.trakt.core.settings.features.younify.usecases.GetYounifyDetailsUseCase
+import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyDataUseCase
 import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyTokensUseCase
 import tv.younify.sdk.connect.Connect
 import tv.younify.sdk.connect.ConnectOptions
@@ -49,17 +50,20 @@ internal class YounifyViewModel(
     private val sessionManager: SessionManager,
     private val getYounifyDetailsUseCase: GetYounifyDetailsUseCase,
     private val refreshYounifyTokensUseCase: RefreshYounifyTokensUseCase,
+    private val refreshYounifyDataUseCase: RefreshYounifyDataUseCase,
     analytics: Analytics,
 ) : ViewModel() {
     private val initialState = YounifyState()
 
     private val userState = MutableStateFlow(initialState.user)
     private val servicesState = MutableStateFlow(initialState.younifyServices)
+    private val syncDataPromptState = MutableStateFlow(initialState.syncDataPrompt)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var dataJob: Job? = null
     private var refreshTokenJob: Job? = null
+    private var refreshDataJob: Job? = null
 
     init {
         loadUser()
@@ -135,7 +139,13 @@ internal class YounifyViewModel(
         servicesState.update {
             remoteServices
                 .filter { it.id in knownServicesIds }
-                .sortedBy { it.name.lowercase() }
+                .sortedWith(
+                    compareByDescending<StreamingService> {
+                        it.linkStatus == LinkStatus.LINKED
+                    }.thenBy {
+                        it.name.lowercase()
+                    },
+                )
                 .toImmutableList()
         }
     }
@@ -147,6 +157,7 @@ internal class YounifyViewModel(
         promptSync: Boolean,
     ) {
         viewModelScope.launch {
+            loadingState.update { LoadingState.LOADING }
             try {
                 val resultSuccess = younify.linkService(
                     context = context,
@@ -156,19 +167,52 @@ internal class YounifyViewModel(
 
                 if (resultSuccess) {
                     Timber.d("Successfully linked service ${service.name}")
+
+                    if (promptSync) {
+                        syncDataPromptState.update { service.id }
+                    } else {
+                        notifyYounifyRefresh(
+                            serviceId = service.id,
+                            syncData = false,
+                        )
+                    }
                 } else {
-                    // TODO
+                    loadingState.update { LoadingState.DONE }
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     if (error is UserConsentRequiredException) {
                         return@rethrowCancellation
                     }
+                    loadingState.update { LoadingState.DONE }
                     errorState.update { error }
                     Timber.recordError(error)
                 }
             }
         }
+    }
+
+    fun notifyYounifyRefresh(
+        serviceId: String,
+        syncData: Boolean,
+    ) {
+        syncDataPromptState.update { null }
+
+        refreshDataJob?.cancel()
+        refreshDataJob = viewModelScope.launch {
+            try {
+                refreshYounifyDataUseCase.refresh(
+                    serviceId = serviceId,
+                    skipSync = !syncData,
+                )
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+
+        loadData()
     }
 
     fun onServiceAction(
@@ -203,6 +247,7 @@ internal class YounifyViewModel(
     override fun onCleared() {
         dataJob?.cancel()
         refreshTokenJob?.cancel()
+        refreshDataJob?.cancel()
         super.onCleared()
     }
 
@@ -248,6 +293,7 @@ internal class YounifyViewModel(
     val state = combine(
         userState,
         servicesState,
+        syncDataPromptState,
         loadingState,
         errorState,
     ) { state ->
@@ -255,8 +301,9 @@ internal class YounifyViewModel(
         YounifyState(
             user = state[0] as User?,
             younifyServices = state[1] as ImmutableList<StreamingService>?,
-            loading = state[2] as LoadingState,
-            error = state[3] as Exception?,
+            syncDataPrompt = state[2] as String?,
+            loading = state[3] as LoadingState,
+            error = state[4] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -8,9 +8,11 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.ui.theme.colors.Red500
+import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -44,6 +46,8 @@ internal fun ConfirmationSheet(
     active: Boolean = false,
     title: String,
     message: String,
+    yesText: String = stringResource(R.string.button_text_yes),
+    noText: String = stringResource(R.string.button_text_cancel),
     yesColor: Color = TraktTheme.colors.primaryButtonContainer,
     onYes: () -> Unit = {},
     onNo: () -> Unit = {},
@@ -59,6 +63,8 @@ internal fun ConfirmationSheet(
                 title = title,
                 message = message,
                 yesColor = yesColor,
+                yesText = yesText,
+                noText = noText,
                 onYes = {
                     sheetScope
                         .launch { state.hide() }

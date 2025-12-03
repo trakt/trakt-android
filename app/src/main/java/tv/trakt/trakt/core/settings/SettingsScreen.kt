@@ -66,7 +66,7 @@ import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-private const val SECTION_SPACING_DP = 20
+private const val SECTION_SPACING_DP = 16
 private const val SECTION_ITEM_HEIGHT_DP = 32
 
 @Composable

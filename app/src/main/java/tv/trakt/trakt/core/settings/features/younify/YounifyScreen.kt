@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 
 package tv.trakt.trakt.core.settings.features.younify
 
@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,6 +38,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
+import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -47,6 +49,7 @@ import coil3.request.crossfade
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.core.settings.features.younify.model.LinkStatus
 import tv.trakt.trakt.core.settings.features.younify.model.linkStatus
@@ -55,6 +58,7 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
+import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.younify.sdk.connect.StreamingService
 
@@ -78,6 +82,30 @@ internal fun YounifyScreen(
             )
         },
         onBackClick = onNavigateBack,
+    )
+
+    ConfirmationSheet(
+        active = !state.syncDataPrompt.isNullOrEmpty(),
+        title = "Sync Existing Data",
+        message = "Would you like to sync your existing data to your account, or only sync new data from now on?",
+        yesText = "Sync existing data",
+        noText = "Ignore existing data",
+        onYes = {
+            state.syncDataPrompt?.let { serviceId ->
+                viewModel.notifyYounifyRefresh(
+                    serviceId = serviceId,
+                    syncData = true,
+                )
+            }
+        },
+        onNo = {
+            state.syncDataPrompt?.let { serviceId ->
+                viewModel.notifyYounifyRefresh(
+                    serviceId = serviceId,
+                    syncData = false,
+                )
+            }
+        },
     )
 }
 
@@ -222,9 +250,16 @@ private fun YounifyServiceView(
                     text = stringResource(service.linkStatus.displayTextRes),
                     style = TraktTheme.typography.meta.copy(
                         fontSize = 10.sp,
-                        fontWeight = W400,
+                        fontWeight = when (service.linkStatus) {
+                            LinkStatus.LINKED, LinkStatus.BROKEN -> W500
+                            else -> W400
+                        },
                     ),
-                    color = TraktTheme.colors.textSecondary,
+                    color = when (service.linkStatus) {
+                        LinkStatus.LINKED -> Purple400
+                        LinkStatus.BROKEN -> Red400
+                        else -> TraktTheme.colors.textSecondary
+                    },
                 )
             }
         }

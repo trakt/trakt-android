@@ -12,8 +12,8 @@ internal data class YounifyDetailsDto(
     val refreshToken: String,
     @SerialName("available_services")
     val availableServices: YounifyAvailableServicesDto,
-    @SerialName("linked_services")
-    val linkedServices: YounifyLinkedServicesDto,
+//    @SerialName("linked_services")
+//    val linkedServices: YounifyLinkedServicesDto,
 )
 
 @Serializable
