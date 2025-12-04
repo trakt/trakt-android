@@ -148,7 +148,7 @@ internal fun ThisMonthCard(
 
                 Row(
                     verticalAlignment = CenterVertically,
-                    horizontalArrangement = spacedBy(6.dp),
+                    horizontalArrangement = spacedBy(8.dp),
                     modifier = Modifier.onClick {
                         uriHandler.openUri(
                             webYearReviewUrl(
@@ -161,7 +161,7 @@ internal fun ThisMonthCard(
                     Text(
                         text = currentDate.year.toString(),
                         color = TraktTheme.colors.textPrimary,
-                        style = TraktTheme.typography.heading5,
+                        style = TraktTheme.typography.heading6,
                         textAlign = TextAlign.Center,
                     )
                     Icon(
@@ -169,7 +169,7 @@ internal fun ThisMonthCard(
                         contentDescription = null,
                         tint = TraktTheme.colors.textPrimary,
                         modifier = Modifier
-                            .size(18.dp),
+                            .size(16.dp),
                     )
                 }
             }
@@ -219,7 +219,7 @@ internal fun ThisMonthCard(
                     contentDescription = null,
                     tint = TraktTheme.colors.textPrimary,
                     modifier = Modifier
-                        .size(18.dp),
+                        .size(16.dp),
                 )
                 Text(
                     text = previousMonth.month.getDisplayName(

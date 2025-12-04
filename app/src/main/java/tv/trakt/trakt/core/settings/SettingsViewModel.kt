@@ -58,7 +58,7 @@ internal class SettingsViewModel(
             .launchIn(viewModelScope)
     }
 
-    fun logoutUser() {
+    fun logout() {
         viewModelScope.launch {
             try {
                 logoutLoadingState.update { LOADING }

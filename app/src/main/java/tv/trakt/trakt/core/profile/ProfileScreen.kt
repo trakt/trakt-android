@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 
 package tv.trakt.trakt.core.profile
 
@@ -25,12 +25,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,6 +41,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -54,6 +58,7 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.core.profile.sections.favorites.ProfileFavoritesView
 import tv.trakt.trakt.core.profile.sections.history.ProfileHistoryView
 import tv.trakt.trakt.core.profile.sections.social.ProfileSocialView
@@ -63,6 +68,7 @@ import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -77,7 +83,10 @@ internal fun ProfileScreen(
     onNavigateToSettings: () -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
+
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    var confirmLogout by remember { mutableStateOf(false) }
 
     ProfileScreenContent(
         state = state,
@@ -89,9 +98,26 @@ internal fun ProfileScreen(
         onNavigateToShows = onNavigateToDiscover,
         onNavigateToMovies = onNavigateToDiscover,
         onSettingsClick = onNavigateToSettings,
+        onLogoutClick = {
+            confirmLogout = true
+        },
         onVipClick = {
             uriHandler.openUri(Config.WEB_VIP_URL)
         },
+    )
+
+    ConfirmationSheet(
+        active = confirmLogout,
+        onYes = {
+            confirmLogout = false
+            viewModel.logout()
+        },
+        onNo = {
+            confirmLogout = false
+        },
+        title = stringResource(R.string.button_text_logout),
+        message = stringResource(R.string.warning_prompt_log_out),
+        yesColor = Red400,
     )
 }
 
@@ -108,7 +134,10 @@ private fun ProfileScreenContent(
     onNavigateToMovies: () -> Unit = {},
     onVipClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
+    onLogoutClick: () -> Unit = {},
 ) {
+    val inspection = LocalInspectionMode.current
+
     val listPadding = PaddingValues(
         top = WindowInsets.statusBars.asPaddingValues()
             .calculateTopPadding()
@@ -154,6 +183,7 @@ private fun ProfileScreenContent(
             item {
                 TitleBar(
                     user = state.user,
+                    onLogoutClick = onLogoutClick,
                     onSettingsClick = onSettingsClick,
                     modifier = Modifier
                         .padding(bottom = 8.dp),
@@ -226,59 +256,44 @@ private fun ProfileScreenContent(
                     }
                 }
 
-                item {
-                    ProfileHistoryView(
-                        headerPadding = sectionPadding,
-                        contentPadding = sectionPadding,
-                        onMoreClick = onNavigateToHistory,
-                        onEpisodeClick = onNavigateToEpisode,
-                        onShowClick = onNavigateToShow,
-                        onMovieClick = onNavigateToMovie,
-                        modifier = Modifier
-                            .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
-                    )
-                }
+                if (!inspection) {
+                    item {
+                        ProfileHistoryView(
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            onMoreClick = onNavigateToHistory,
+                            onEpisodeClick = onNavigateToEpisode,
+                            onShowClick = onNavigateToShow,
+                            onMovieClick = onNavigateToMovie,
+                            modifier = Modifier
+                                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+                        )
+                    }
 
-                item {
-                    ProfileFavoritesView(
-                        headerPadding = sectionPadding,
-                        contentPadding = sectionPadding,
-                        onShowClick = onNavigateToShow,
-                        onMovieClick = onNavigateToMovie,
-                        onMoreClick = onNavigateToFavorites,
-                        onShowsClick = onNavigateToShows,
-                        onMoviesClick = onNavigateToMovies,
-                        modifier = Modifier
-                            .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
-                    )
-                }
+                    item {
+                        ProfileFavoritesView(
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            onShowClick = onNavigateToShow,
+                            onMovieClick = onNavigateToMovie,
+                            onMoreClick = onNavigateToFavorites,
+                            onShowsClick = onNavigateToShows,
+                            onMoviesClick = onNavigateToMovies,
+                            modifier = Modifier
+                                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+                        )
+                    }
 
-                item {
-                    ProfileSocialView(
-                        headerPadding = sectionPadding,
-                        contentPadding = sectionPadding,
-                        modifier = Modifier
-                            .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
-                    )
+                    item {
+                        ProfileSocialView(
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            modifier = Modifier
+                                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+                        )
+                    }
                 }
             }
-//            } else {
-//                item {
-//                    TertiaryButton(
-//                        text = stringResource(R.string.button_text_login),
-//                        icon = painterResource(R.drawable.ic_trakt_icon),
-//                        height = 42.dp,
-//                        enabled = !state.loading.isLoading,
-//                        loading = state.loading.isLoading,
-//                        onClick = {
-//                            uriHandler.openUri(ConfigAuth.authCodeUrl)
-//                        },
-//                        modifier = Modifier
-//                            .padding(top = 16.dp)
-//                            .widthIn(112.dp),
-//                    )
-//                }
-//            }
         }
     }
 }
@@ -287,6 +302,7 @@ private fun ProfileScreenContent(
 private fun TitleBar(
     user: User?,
     modifier: Modifier = Modifier,
+    onLogoutClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
 ) {
     Row(
@@ -357,14 +373,28 @@ private fun TitleBar(
                 )
             }
 
-            Icon(
-                painter = painterResource(R.drawable.ic_settings),
-                contentDescription = null,
-                tint = TraktTheme.colors.textPrimary,
-                modifier = Modifier
-                    .size(22.dp)
-                    .onClick(onClick = onSettingsClick),
-            )
+            Row(
+                verticalAlignment = CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_logout),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .onClick(onClick = onLogoutClick),
+                )
+
+                Icon(
+                    painter = painterResource(R.drawable.ic_settings),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .size(22.dp)
+                        .onClick(onClick = onSettingsClick),
+                )
+            }
         }
     }
 }
@@ -382,22 +412,6 @@ private fun Preview() {
         ProfileScreenContent(
             state = ProfileState(
                 user = PreviewData.user1,
-            ),
-        )
-    }
-}
-
-@Preview(
-    device = "id:pixel_6",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
-@Composable
-private fun Preview2() {
-    TraktTheme {
-        ProfileScreenContent(
-            state = ProfileState(
-                user = null,
             ),
         )
     }

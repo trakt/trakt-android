@@ -35,7 +35,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -45,6 +44,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
@@ -52,7 +52,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import timber.log.Timber
 import tv.trakt.trakt.BuildConfig
 import tv.trakt.trakt.common.Config
-import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -62,11 +61,10 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.VipChip
-import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-private const val SECTION_SPACING_DP = 16
+private const val SECTION_SPACING_DP = 12
 private const val SECTION_ITEM_HEIGHT_DP = 32
 
 @Composable
@@ -97,6 +95,12 @@ internal fun SettingsScreen(
         onVipClick = {
             uriHandler.openUri(Config.WEB_VIP_URL)
         },
+        onInstagramClick = {
+            uriHandler.openUri(Config.WEB_SOCIAL_INSTAGRAM_URL)
+        },
+        onTwitterClick = {
+            uriHandler.openUri(Config.WEB_SOCIAL_X_URL)
+        },
         onBackClick = onNavigateBack,
     )
 
@@ -105,7 +109,7 @@ internal fun SettingsScreen(
         active = confirmLogout,
         onYes = {
             confirmLogout = false
-            viewModel.logoutUser()
+            viewModel.logout()
         },
         onNo = {
             confirmLogout = false
@@ -123,6 +127,8 @@ private fun SettingsScreenContent(
     onYounifyClick: () -> Unit = { },
     onLogoutClick: () -> Unit = { },
     onVipClick: () -> Unit = { },
+    onInstagramClick: () -> Unit = { },
+    onTwitterClick: () -> Unit = { },
     onBackClick: () -> Unit = { },
 ) {
     val contentPadding = PaddingValues(
@@ -156,18 +162,25 @@ private fun SettingsScreenContent(
                 .verticalScroll(rememberScrollState()),
         ) {
             TitleBar(
+                onInstagramClick = onInstagramClick,
+                onTwitterClick = onTwitterClick,
                 modifier = Modifier
+                    .fillMaxWidth()
                     .onClick {
                         onBackClick()
                     },
             )
 
             Column(
-                verticalArrangement = spacedBy(42.dp),
+                verticalArrangement = spacedBy(34.dp),
                 modifier = Modifier
                     .fillMaxHeight()
                     .padding(top = 24.dp),
             ) {
+                SettingsAccount(
+                    state = state,
+                )
+
                 SettingsStreaming(
                     state = state,
                     onAutomaticTrackingClick = onYounifyClick,
@@ -176,34 +189,19 @@ private fun SettingsScreenContent(
 
                 SettingsMisc(
                     state = state,
+                    onLogoutClick = onLogoutClick,
                 )
             }
         }
-
-        PrimaryButton(
-            text = stringResource(R.string.button_text_logout),
-            containerColor = Red400,
-            enabled = state.logoutLoading == LoadingState.IDLE,
-            onClick = onLogoutClick,
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth()
-                .padding(
-                    PaddingValues(
-                        start = TraktTheme.spacing.mainPageHorizontalSpace,
-                        end = TraktTheme.spacing.mainPageHorizontalSpace,
-                        bottom = WindowInsets.navigationBars.asPaddingValues()
-                            .calculateBottomPadding()
-                            .plus(TraktTheme.size.navigationBarHeight)
-                            .plus(16.dp),
-                    ),
-                ),
-        )
     }
 }
 
 @Composable
-private fun TitleBar(modifier: Modifier = Modifier) {
+private fun TitleBar(
+    modifier: Modifier = Modifier,
+    onInstagramClick: () -> Unit = { },
+    onTwitterClick: () -> Unit = {},
+) {
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -226,6 +224,29 @@ private fun TitleBar(modifier: Modifier = Modifier) {
             TraktHeader(
                 title = stringResource(R.string.page_title_settings),
                 subtitle = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
+            )
+        }
+
+        Row(
+            verticalAlignment = CenterVertically,
+            horizontalArrangement = spacedBy(12.dp),
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_instagram),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .size(32.dp)
+                    .onClick(onClick = onInstagramClick),
+            )
+
+            Icon(
+                painter = painterResource(R.drawable.ic_x_twitter),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .size(32.dp)
+                    .onClick(onClick = onTwitterClick),
             )
         }
     }
@@ -263,9 +284,36 @@ private fun SettingsStreaming(
 }
 
 @Composable
+private fun SettingsAccount(
+    state: SettingsState,
+    modifier: Modifier = Modifier,
+) {
+    val uriHandler = LocalUriHandler.current
+
+    Column(
+        verticalArrangement = spacedBy(SECTION_SPACING_DP.dp),
+        modifier = modifier,
+    ) {
+        TraktHeader(
+            title = stringResource(R.string.header_settings_account).uppercase(),
+            titleStyle = TraktTheme.typography.heading6,
+        )
+
+        SettingsTextField(
+            text = stringResource(R.string.header_settings_all_settings),
+            enabled = !state.logoutLoading.isLoading,
+            onClick = {
+                uriHandler.openUri(Config.WEB_SETTINGS_URL)
+            },
+        )
+    }
+}
+
+@Composable
 private fun SettingsMisc(
     state: SettingsState,
     modifier: Modifier = Modifier,
+    onLogoutClick: () -> Unit = { },
 ) {
     val context = LocalContext.current
     val uriHandler = LocalUriHandler.current
@@ -321,6 +369,14 @@ private fun SettingsMisc(
                 uriHandler.openUri(Config.WEB_PRIVACY_URL)
             },
         )
+
+        SettingsTextField(
+            text = stringResource(R.string.button_text_logout),
+            icon = R.drawable.ic_logout,
+            iconSize = 18.dp,
+            enabled = !state.logoutLoading.isLoading,
+            onClick = onLogoutClick,
+        )
     }
 }
 
@@ -328,6 +384,8 @@ private fun SettingsMisc(
 fun SettingsTextField(
     text: String,
     modifier: Modifier = Modifier,
+    icon: Int = R.drawable.ic_chevron_right,
+    iconSize: Dp = 20.dp,
     enabled: Boolean = true,
     vipLocked: Boolean = false,
     onClick: () -> Unit = { },
@@ -354,11 +412,11 @@ fun SettingsTextField(
 
         if (!vipLocked) {
             Icon(
-                painter = painterResource(R.drawable.ic_chevron_right),
+                painter = painterResource(icon),
                 contentDescription = null,
                 tint = TraktTheme.colors.textPrimary,
                 modifier = Modifier
-                    .size(20.dp),
+                    .size(iconSize),
             )
         } else {
             VipChip(
