@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="badge_text_get_vip">Get VIP</string>
     <string name="button_label_browse_movies">Browse Movies</string>
     <string name="button_label_browse_shows">Browse Shows</string>
     <string name="button_label_popup_reactions">Reactions</string>
@@ -228,16 +229,15 @@
     <string name="header_settings_support_contact">Contact Support</string>
 
     <string name="text_younify_link_linked">Linked</string>
-    <string name="text_younify_link_unlinked">Not Linked</string>
+    <string name="text_younify_link_unlinked">Not linked</string>
     <string name="text_younify_link_broken">Broken</string>
     <string name="text_younify_user">Username</string>
     <string name="text_younify_profile">Profile</string>
 
     <string name="dialog_title_younify_data_sync">Sync Existing Data</string>
-    <string name="dialog_prompt_younify_data_sync">Would you like to sync your existing data to your Trakt account, or only sync new data from now on?</string>
+    <string name="dialog_prompt_younify_data_sync">Would you like to import your existing data to your Trakt account, or only sync new data from now on?</string>
     <string name="warning_prompt_younify_unlink">Are you sure you want to unlink \"%s\"?</string>
 
-    <string name="button_text_younify_sign_in">Sign In</string>
     <string name="button_text_younify_fix">Fix</string>
     <string name="button_text_younify_unlink">Unlink</string>
     <string name="button_text_data_sync_yes">Sync existing data</string>

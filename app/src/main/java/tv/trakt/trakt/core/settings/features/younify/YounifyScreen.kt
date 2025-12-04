@@ -52,6 +52,7 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import tv.trakt.trakt.LocalSnackbarState
+import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
@@ -90,11 +91,15 @@ internal fun YounifyScreen(
                 registry = registry?.activityResultRegistry,
             )
         },
+        onServiceEditClick = {
+            viewModel.onServiceEdit(
+                service = it,
+                context = context,
+                registry = registry?.activityResultRegistry,
+            )
+        },
         onServiceUnlinkClick = {
             confirmUnlinkSheet = it
-        },
-        onServiceEditClick = {
-            // TODO
         },
         onBackClick = onNavigateBack,
     )
@@ -110,6 +115,7 @@ internal fun YounifyScreen(
                 viewModel.notifyYounifyRefresh(
                     serviceId = serviceId,
                     syncData = true,
+                    info = DynamicStringResource(R.string.text_info_younify_linked),
                 )
             }
         },
@@ -118,6 +124,7 @@ internal fun YounifyScreen(
                 viewModel.notifyYounifyRefresh(
                     serviceId = serviceId,
                     syncData = false,
+                    info = DynamicStringResource(R.string.text_info_younify_linked),
                 )
             }
         },
@@ -348,7 +355,7 @@ private fun YounifyServiceView(
         if (service.linkStatus != LinkStatus.LINKED) {
             TertiaryButton(
                 text = when (service.linkStatus) {
-                    LinkStatus.UNLINKED -> stringResource(R.string.button_text_younify_sign_in)
+                    LinkStatus.UNLINKED -> stringResource(R.string.button_text_login)
                     LinkStatus.BROKEN -> stringResource(R.string.button_text_younify_fix)
                     LinkStatus.LINKED -> ""
                 },

@@ -184,6 +184,7 @@ internal class YounifyViewModel(
                         notifyYounifyRefresh(
                             serviceId = service.id,
                             syncData = false,
+                            info = DynamicStringResource(R.string.text_info_younify_linked),
                         )
                     }
                 } else {
@@ -207,6 +208,7 @@ internal class YounifyViewModel(
     fun notifyYounifyRefresh(
         serviceId: String,
         syncData: Boolean,
+        info: StringResource?,
     ) {
         syncDataPromptState.update { null }
 
@@ -224,9 +226,7 @@ internal class YounifyViewModel(
             }
         }
 
-        loadData(
-            info = DynamicStringResource(R.string.text_info_younify_linked),
-        )
+        loadData(info = info)
     }
 
     fun onServiceAction(
@@ -240,8 +240,6 @@ internal class YounifyViewModel(
         }
 
         when (service.linkStatus) {
-            LinkStatus.LINKED -> TODO()
-
             LinkStatus.UNLINKED -> linkService(
                 service = service,
                 promptSync = true,
@@ -255,6 +253,41 @@ internal class YounifyViewModel(
                 context = context,
                 registry = registry,
             )
+
+            LinkStatus.LINKED -> Unit
+        }
+    }
+
+    fun onServiceEdit(
+        service: StreamingService,
+        context: Context,
+        registry: ActivityResultRegistry?,
+    ) {
+        if (registry == null) {
+            Timber.e("No activity registry")
+            return
+        }
+
+        viewModelScope.launch {
+            try {
+                loadingState.update { LoadingState.LOADING }
+                younify.manageLinkedService(
+                    service = service,
+                    context = context,
+                    registry = registry,
+                )
+                notifyYounifyRefresh(
+                    serviceId = service.id,
+                    syncData = false,
+                    info = null,
+                )
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    loadingState.update { LoadingState.DONE }
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            }
         }
     }
 
