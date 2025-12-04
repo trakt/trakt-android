@@ -38,16 +38,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W500
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
@@ -57,6 +58,7 @@ import tv.trakt.trakt.core.profile.sections.favorites.ProfileFavoritesView
 import tv.trakt.trakt.core.profile.sections.history.ProfileHistoryView
 import tv.trakt.trakt.core.profile.sections.social.ProfileSocialView
 import tv.trakt.trakt.core.profile.sections.thismonth.ThisMonthCard
+import tv.trakt.trakt.core.profile.sections.thismonth.ThisMonthVipCard
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
@@ -74,6 +76,7 @@ internal fun ProfileScreen(
     onNavigateToDiscover: () -> Unit,
     onNavigateToSettings: () -> Unit,
 ) {
+    val uriHandler = LocalUriHandler.current
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     ProfileScreenContent(
@@ -86,6 +89,9 @@ internal fun ProfileScreen(
         onNavigateToShows = onNavigateToDiscover,
         onNavigateToMovies = onNavigateToDiscover,
         onSettingsClick = onNavigateToSettings,
+        onVipClick = {
+            uriHandler.openUri(Config.WEB_VIP_URL)
+        },
     )
 }
 
@@ -100,6 +106,7 @@ private fun ProfileScreenContent(
     onNavigateToFavorites: () -> Unit = {},
     onNavigateToShows: () -> Unit = {},
     onNavigateToMovies: () -> Unit = {},
+    onVipClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
 ) {
     val listPadding = PaddingValues(
@@ -154,20 +161,38 @@ private fun ProfileScreenContent(
             }
 
             if (state.user != null) {
-                item {
-                    ThisMonthCard(
-                        user = state.user,
-                        stats = state.monthStats,
-                        containerImage = state.monthBackgroundUrl,
-                        modifier = Modifier
-                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
-                            .padding(
-                                bottom = when {
-                                    state.user.about.isNullOrBlank() -> TraktTheme.spacing.mainSectionVerticalSpace
-                                    else -> TraktTheme.spacing.mainSectionVerticalSpace / 1.5F
-                                },
-                            ),
-                    )
+                if (state.user.isAnyVip) {
+                    item {
+                        ThisMonthCard(
+                            user = state.user,
+                            stats = state.monthStats,
+                            containerImage = state.monthBackgroundUrl,
+                            modifier = Modifier
+                                .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+                                .padding(
+                                    bottom = when {
+                                        state.user.about.isNullOrBlank() -> TraktTheme.spacing.mainSectionVerticalSpace
+                                        else -> TraktTheme.spacing.mainSectionVerticalSpace / 1.5F
+                                    },
+                                ),
+                        )
+                    }
+                } else {
+                    item {
+                        ThisMonthVipCard(
+                            modifier = Modifier
+                                .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+                                .padding(
+                                    bottom = when {
+                                        state.user.about.isNullOrBlank() -> TraktTheme.spacing.mainSectionVerticalSpace
+                                        else -> TraktTheme.spacing.mainSectionVerticalSpace / 1.5F
+                                    },
+                                )
+                                .onClick(
+                                    onClick = onVipClick,
+                                ),
+                        )
+                    }
                 }
 
                 if (!state.user.about.isNullOrBlank()) {
@@ -195,7 +220,6 @@ private fun ProfileScreenContent(
                                 ),
                                 color = TraktTheme.colors.textPrimary,
                                 maxLines = 3,
-                                textAlign = TextAlign.Center,
                                 overflow = Ellipsis,
                             )
                         }

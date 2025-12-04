@@ -275,7 +275,7 @@ private fun SettingsMisc(
         modifier = modifier,
     ) {
         TraktHeader(
-            title = stringResource(R.string.header_settings_account_support).uppercase(),
+            title = stringResource(R.string.header_settings_general).uppercase(),
             titleStyle = TraktTheme.typography.heading6,
         )
 

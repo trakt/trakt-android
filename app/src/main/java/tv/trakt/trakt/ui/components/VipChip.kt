@@ -24,7 +24,7 @@ internal fun VipChip(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy(5.dp),
+        horizontalArrangement = spacedBy(5.dp, Alignment.CenterHorizontally),
         modifier = modifier
             .clip(RoundedCornerShape(100))
             .clickable(onClick = onClick)

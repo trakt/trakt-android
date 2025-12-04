@@ -235,7 +235,7 @@ internal fun ThisMonthCard(
 }
 
 @Composable
-fun StatsChip(
+private fun StatsChip(
     modifier: Modifier = Modifier,
     text: String,
     icon: Painter,
@@ -273,7 +273,7 @@ fun StatsChip(
 
 @Preview(widthDp = 350)
 @Composable
-fun Preview() {
+private fun Preview() {
     TraktTheme {
         ThisMonthCard(
             user = PreviewData.user1,
