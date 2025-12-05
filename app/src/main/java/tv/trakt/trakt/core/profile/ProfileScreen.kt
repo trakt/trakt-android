@@ -406,8 +406,8 @@ private fun TitleBar(
                     contentDescription = null,
                     tint = TraktTheme.colors.textPrimary,
                     modifier = Modifier
-                        .padding(end = 4.dp)
-                        .size(22.dp)
+                        .padding(end = 5.5.dp)
+                        .size(24.dp)
                         .onClick(onClick = onShareClick),
                 )
 
@@ -416,7 +416,7 @@ private fun TitleBar(
                     contentDescription = null,
                     tint = TraktTheme.colors.textPrimary,
                     modifier = Modifier
-                        .size(21.dp)
+                        .size(23.dp)
                         .graphicsLayer {
                             translationY = 0.5.dp.toPx()
                         }
@@ -428,7 +428,7 @@ private fun TitleBar(
                     contentDescription = null,
                     tint = TraktTheme.colors.textPrimary,
                     modifier = Modifier
-                        .size(20.dp)
+                        .size(22.dp)
                         .onClick(onClick = onSettingsClick),
                 )
             }
