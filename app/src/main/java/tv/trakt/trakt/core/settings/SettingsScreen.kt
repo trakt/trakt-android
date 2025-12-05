@@ -189,7 +189,7 @@ private fun SettingsScreenContent(
                 verticalArrangement = spacedBy(36.dp),
                 modifier = Modifier
                     .fillMaxHeight()
-                    .padding(top = 16.dp),
+                    .padding(top = 20.dp),
             ) {
                 SettingsAccount(
                     state = state,
