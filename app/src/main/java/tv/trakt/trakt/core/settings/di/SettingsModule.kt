@@ -24,6 +24,7 @@ import tv.trakt.trakt.core.settings.features.younify.usecases.GetYounifyDetailsU
 import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyDataUseCase
 import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyTokensUseCase
 import tv.trakt.trakt.core.settings.features.younify.usecases.UnlinkYounifyServiceUseCase
+import tv.trakt.trakt.core.settings.usecases.UpdateUserSettingsUseCase
 import tv.younify.sdk.connect.Connect
 
 internal const val SETTINGS_PREFERENCES = "settings_preferences_mobile"
@@ -39,6 +40,13 @@ internal val settingsDataModule = module {
 }
 
 internal val settingsModule = module {
+
+    factory {
+        UpdateUserSettingsUseCase(
+            remoteSource = get(),
+            sessionManager = get(),
+        )
+    }
 
     factory {
         GetYounifyDetailsUseCase(
@@ -68,6 +76,7 @@ internal val settingsModule = module {
         SettingsViewModel(
             sessionManager = get(),
             analytics = get(),
+            updateSettingsUseCase = get(),
             logoutUseCase = get(),
         )
     }

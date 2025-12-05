@@ -292,6 +292,7 @@ internal fun NavGraphBuilder.profileScreens(controller: NavHostController) {
             onNavigateToFavorites = { navigateToFavorites() },
             onNavigateToDiscover = { navigateToDiscover() },
             onNavigateToSettings = { navigateToSettings() },
+            onNavigateToHome = { navigateToHome() },
         )
 
         allFavoritesScreen(

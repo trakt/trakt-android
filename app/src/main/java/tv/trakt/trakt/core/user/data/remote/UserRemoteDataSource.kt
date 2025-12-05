@@ -22,6 +22,12 @@ import java.time.ZonedDateTime
 internal interface UserRemoteDataSource {
     suspend fun getProfile(): User
 
+    suspend fun updateProfileLocation(location: String?)
+
+    suspend fun updateProfileDisplayName(displayName: String?)
+
+    suspend fun updateProfileAbout(about: String?)
+
     suspend fun getWatchedMovies(): Map<String, List<String>>
 
     suspend fun getWatchedShows(): List<WatchedShowDto>

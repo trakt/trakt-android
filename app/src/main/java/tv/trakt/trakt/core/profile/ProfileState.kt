@@ -12,4 +12,5 @@ internal data class ProfileState(
     val monthStats: ThisMonthStats? = null,
     val loading: LoadingState = LoadingState.IDLE,
     val loadingMonthStats: LoadingState = LoadingState.IDLE,
+    val logoutLoading: LoadingState = LoadingState.IDLE,
 )

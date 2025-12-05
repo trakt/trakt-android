@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 
 package tv.trakt.trakt.core.settings
 
@@ -43,6 +43,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -55,6 +57,7 @@ import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
@@ -62,6 +65,7 @@ import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.VipChip
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
+import tv.trakt.trakt.ui.components.input.SingleInputSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private const val SECTION_SPACING_DP = 12
@@ -80,7 +84,7 @@ internal fun SettingsScreen(
 
     var confirmLogout by remember { mutableStateOf(false) }
 
-    LaunchedEffect(state.user) {
+    LaunchedEffect(state.user, state.logoutLoading) {
         if (state.logoutLoading == DONE && state.user == null) {
             onNavigateHome()
         }
@@ -88,9 +92,9 @@ internal fun SettingsScreen(
 
     SettingsScreenContent(
         state = state,
-        onLogoutClick = {
-            confirmLogout = true
-        },
+        onSetDisplayName = viewModel::updateUserDisplayName,
+        onSetLocation = viewModel::updateUserLocation,
+        onSetAbout = viewModel::updateUserAbout,
         onYounifyClick = onNavigateYounify,
         onVipClick = {
             uriHandler.openUri(Config.WEB_VIP_URL)
@@ -100,6 +104,9 @@ internal fun SettingsScreen(
         },
         onTwitterClick = {
             uriHandler.openUri(Config.WEB_SOCIAL_X_URL)
+        },
+        onLogoutClick = {
+            confirmLogout = true
         },
         onBackClick = onNavigateBack,
     )
@@ -124,6 +131,9 @@ internal fun SettingsScreen(
 private fun SettingsScreenContent(
     state: SettingsState,
     modifier: Modifier = Modifier,
+    onSetDisplayName: (String?) -> Unit = { },
+    onSetLocation: (String?) -> Unit = { },
+    onSetAbout: (String?) -> Unit = { },
     onYounifyClick: () -> Unit = { },
     onLogoutClick: () -> Unit = { },
     onVipClick: () -> Unit = { },
@@ -139,7 +149,8 @@ private fun SettingsScreenContent(
             .plus(4.dp),
         bottom = WindowInsets.navigationBars.asPaddingValues()
             .calculateBottomPadding()
-            .plus(TraktTheme.size.navigationBarHeight * 2),
+            .plus(TraktTheme.size.navigationBarHeight)
+            .plus(32.dp),
     )
 
     val scrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
@@ -158,8 +169,11 @@ private fun SettingsScreenContent(
 
         Column(
             modifier = Modifier
-                .padding(contentPadding)
-                .verticalScroll(rememberScrollState()),
+                .verticalScroll(
+                    state = rememberScrollState(),
+                    overscrollEffect = null,
+                )
+                .padding(contentPadding),
         ) {
             TitleBar(
                 onInstagramClick = onInstagramClick,
@@ -172,13 +186,16 @@ private fun SettingsScreenContent(
             )
 
             Column(
-                verticalArrangement = spacedBy(34.dp),
+                verticalArrangement = spacedBy(36.dp),
                 modifier = Modifier
                     .fillMaxHeight()
-                    .padding(top = 24.dp),
+                    .padding(top = 16.dp),
             ) {
                 SettingsAccount(
                     state = state,
+                    onSetDisplayName = onSetDisplayName,
+                    onSetLocation = onSetLocation,
+                    onSetAbout = onSetAbout,
                 )
 
                 SettingsStreaming(
@@ -253,6 +270,125 @@ private fun TitleBar(
 }
 
 @Composable
+private fun SettingsAccount(
+    state: SettingsState,
+    modifier: Modifier = Modifier,
+    onSetDisplayName: (String?) -> Unit = { },
+    onSetLocation: (String?) -> Unit = { },
+    onSetAbout: (String?) -> Unit = { },
+) {
+    val uriHandler = LocalUriHandler.current
+
+    var displayNameSheet by remember { mutableStateOf<String?>(null) }
+    var locationSheet by remember { mutableStateOf<String?>(null) }
+    var aboutSheet by remember { mutableStateOf<String?>(null) }
+
+    Column(
+        verticalArrangement = spacedBy(SECTION_SPACING_DP.dp),
+        modifier = modifier,
+    ) {
+        Row(
+            verticalAlignment = CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            TraktHeader(
+                title = stringResource(R.string.header_settings_account).uppercase(),
+                titleStyle = TraktTheme.typography.heading6,
+                subtitle = "@${state.user?.username}",
+                modifier = Modifier.padding(bottom = 4.dp),
+            )
+
+            if (state.accountLoading.isLoading) {
+                FilmProgressIndicator(
+                    size = 18.dp,
+                )
+            }
+        }
+
+        SettingsValueField(
+            text = stringResource(R.string.header_settings_display_name),
+            value = state.user?.name,
+            enabled = !state.logoutLoading.isLoading && !state.accountLoading.isLoading,
+            onClick = {
+                displayNameSheet = state.user?.name
+            },
+        )
+
+        SettingsValueField(
+            text = stringResource(R.string.header_settings_location),
+            value = state.user?.location,
+            enabled = !state.logoutLoading.isLoading && !state.accountLoading.isLoading,
+            onClick = {
+                locationSheet = state.user?.location
+            },
+        )
+
+        SettingsValueField(
+            text = stringResource(R.string.header_settings_about),
+            value = state.user?.about,
+            enabled = !state.logoutLoading.isLoading && !state.accountLoading.isLoading,
+            onClick = {
+                aboutSheet = state.user?.about
+            },
+        )
+
+        SettingsTextField(
+            text = stringResource(R.string.header_settings_all_settings),
+            enabled = !state.logoutLoading.isLoading,
+            onClick = {
+                uriHandler.openUri(Config.WEB_SETTINGS_URL)
+            },
+        )
+    }
+
+    // Sheets
+
+    SingleInputSheet(
+        active = displayNameSheet != null,
+        title = stringResource(R.string.header_settings_display_name),
+        description = stringResource(R.string.input_prompt_display_name),
+        initialInput = displayNameSheet,
+        nullable = true,
+        onApply = {
+            onSetDisplayName(it)
+        },
+        onDismiss = {
+            displayNameSheet = null
+        },
+    )
+
+    SingleInputSheet(
+        active = locationSheet != null,
+        title = stringResource(R.string.header_settings_location),
+        description = stringResource(R.string.input_prompt_location),
+        initialInput = locationSheet,
+        nullable = true,
+        onApply = {
+            onSetLocation(it)
+        },
+        onDismiss = {
+            locationSheet = null
+        },
+    )
+
+    SingleInputSheet(
+        active = aboutSheet != null,
+        title = stringResource(R.string.header_settings_about),
+        description = stringResource(R.string.input_prompt_about),
+        initialInput = aboutSheet,
+        nullable = true,
+        multiline = true,
+        onApply = {
+            onSetAbout(it)
+        },
+        onDismiss = {
+            aboutSheet = null
+        },
+    )
+}
+
+@Composable
 private fun SettingsStreaming(
     state: SettingsState,
     modifier: Modifier = Modifier,
@@ -279,32 +415,6 @@ private fun SettingsStreaming(
             vipLocked = state.user != null && !isVip,
             onClick = onAutomaticTrackingClick,
             onVipClick = onVipClick,
-        )
-    }
-}
-
-@Composable
-private fun SettingsAccount(
-    state: SettingsState,
-    modifier: Modifier = Modifier,
-) {
-    val uriHandler = LocalUriHandler.current
-
-    Column(
-        verticalArrangement = spacedBy(SECTION_SPACING_DP.dp),
-        modifier = modifier,
-    ) {
-        TraktHeader(
-            title = stringResource(R.string.header_settings_account).uppercase(),
-            titleStyle = TraktTheme.typography.heading6,
-        )
-
-        SettingsTextField(
-            text = stringResource(R.string.header_settings_all_settings),
-            enabled = !state.logoutLoading.isLoading,
-            onClick = {
-                uriHandler.openUri(Config.WEB_SETTINGS_URL)
-            },
         )
     }
 }
@@ -384,7 +494,7 @@ private fun SettingsMisc(
 fun SettingsTextField(
     text: String,
     modifier: Modifier = Modifier,
-    icon: Int = R.drawable.ic_chevron_right,
+    icon: Int? = R.drawable.ic_chevron_right,
     iconSize: Dp = 20.dp,
     enabled: Boolean = true,
     vipLocked: Boolean = false,
@@ -410,7 +520,7 @@ fun SettingsTextField(
             ),
         )
 
-        if (!vipLocked) {
+        if (!vipLocked && icon != null) {
             Icon(
                 painter = painterResource(icon),
                 contentDescription = null,
@@ -418,7 +528,7 @@ fun SettingsTextField(
                 modifier = Modifier
                     .size(iconSize),
             )
-        } else {
+        } else if (vipLocked) {
             VipChip(
                 onClick = onVipClick,
             )
@@ -426,6 +536,60 @@ fun SettingsTextField(
     }
 }
 
+@Composable
+fun SettingsValueField(
+    text: String,
+    value: String?,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    onClick: () -> Unit = { },
+) {
+    Row(
+        verticalAlignment = CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = modifier
+            .fillMaxWidth()
+            .heightIn(SECTION_ITEM_HEIGHT_DP.dp)
+            .onClick(
+                onClick = onClick,
+                enabled = enabled,
+            ),
+    ) {
+        Text(
+            text = text,
+            color = TraktTheme.colors.textSecondary,
+            style = TraktTheme.typography.paragraph.copy(
+                fontSize = 14.sp,
+            ),
+        )
+
+        if (value.isNullOrBlank()) {
+            Icon(
+                painter = painterResource(R.drawable.ic_chevron_right),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .size(20.dp),
+            )
+        } else {
+            Text(
+                text = value,
+                color = TraktTheme.colors.textPrimary,
+                style = TraktTheme.typography.paragraph.copy(
+                    fontSize = 14.sp,
+                ),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.End,
+                modifier = Modifier
+                    .padding(
+                        start = 32.dp,
+                        end = 4.dp,
+                    ),
+            )
+        }
+    }
+}
 // Previews
 
 @Preview(

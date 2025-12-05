@@ -229,6 +229,9 @@
     <string name="header_settings_forums">Forums</string>
     <string name="header_settings_support_contact">Support</string>
     <string name="header_settings_all_settings">All Settings</string>
+    <string name="header_settings_display_name">Display Name</string>
+    <string name="header_settings_location">Location</string>
+    <string name="header_settings_about">About Me</string>
 
     <string name="text_younify_link_linked">Linked</string>
     <string name="text_younify_link_unlinked">Not linked</string>
@@ -251,5 +254,8 @@
     <string name="text_info_mir_vip_title">Enhance your Trakt experience</string>
     <string name="text_info_mir_vip_description">Upgrade to VIP and unlock the full Trakt experience, packed with features built for TV Shows and Movies lovers.</string>
 
+    <string name="input_prompt_display_name">What should your display name be?</string>
+    <string name="input_prompt_location">Where are you located?</string>
+    <string name="input_prompt_about">Tell us a bit about yourself.</string>
     <string name="error_text_vip_only_feature">This feature can be accessed only by VIP users. Upgrade your account to VIP and unlock the full Trakt experience!</string>
 </resources>

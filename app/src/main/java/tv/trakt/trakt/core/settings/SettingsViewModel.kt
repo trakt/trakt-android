@@ -21,16 +21,19 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.settings.usecases.UpdateUserSettingsUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 
 internal class SettingsViewModel(
     private val sessionManager: SessionManager,
     private val logoutUseCase: LogoutUserUseCase,
+    private val updateSettingsUseCase: UpdateUserSettingsUseCase,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = SettingsState()
 
     private val userState = MutableStateFlow(initialState.user)
+    private val accountLoadingState = MutableStateFlow(initialState.accountLoading)
     private val logoutLoadingState = MutableStateFlow(initialState.logoutLoading)
 
     init {
@@ -58,6 +61,51 @@ internal class SettingsViewModel(
             .launchIn(viewModelScope)
     }
 
+    fun updateUserLocation(location: String?) {
+        viewModelScope.launch {
+            try {
+                accountLoadingState.update { LOADING }
+                updateSettingsUseCase.updateLocation(location)
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            } finally {
+                accountLoadingState.update { LoadingState.DONE }
+            }
+        }
+    }
+
+    fun updateUserDisplayName(displayName: String?) {
+        viewModelScope.launch {
+            try {
+                accountLoadingState.update { LOADING }
+                updateSettingsUseCase.updateDisplayName(displayName)
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            } finally {
+                accountLoadingState.update { LoadingState.DONE }
+            }
+        }
+    }
+
+    fun updateUserAbout(about: String?) {
+        viewModelScope.launch {
+            try {
+                accountLoadingState.update { LOADING }
+                updateSettingsUseCase.updateAbout(about)
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            } finally {
+                accountLoadingState.update { LoadingState.DONE }
+            }
+        }
+    }
+
     fun logout() {
         viewModelScope.launch {
             try {
@@ -78,11 +126,13 @@ internal class SettingsViewModel(
 
     val state = combine(
         userState,
+        accountLoadingState,
         logoutLoadingState,
     ) { state ->
         SettingsState(
             user = state[0] as User?,
-            logoutLoading = state[1] as LoadingState,
+            accountLoading = state[1] as LoadingState,
+            logoutLoading = state[2] as LoadingState,
         )
     }.stateIn(
         scope = viewModelScope,

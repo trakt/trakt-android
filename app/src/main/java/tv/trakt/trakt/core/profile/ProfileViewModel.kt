@@ -37,11 +37,12 @@ internal class ProfileViewModel(
 ) : ViewModel() {
     private val initialState = ProfileState()
 
+    private val userState = MutableStateFlow(initialState.user)
     private val monthBackgroundState = MutableStateFlow(initialState.monthBackgroundUrl)
     private val monthStatsState = MutableStateFlow(initialState.monthStats)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMonthStatsState = MutableStateFlow(initialState.loadingMonthStats)
-    private val userState = MutableStateFlow(initialState.user)
+    private val logoutLoadingState = MutableStateFlow(initialState.logoutLoading)
 
     init {
         loadMonthBackground()
@@ -94,10 +95,15 @@ internal class ProfileViewModel(
     fun logout() {
         viewModelScope.launch {
             try {
+                logoutLoadingState.update { LOADING }
+
                 logoutUseCase.logoutUser()
                 analytics.logUserLogout()
+
+                logoutLoadingState.update { LoadingState.DONE }
             } catch (error: Exception) {
                 error.rethrowCancellation {
+                    logoutLoadingState.update { LoadingState.IDLE }
                     Timber.recordError(error)
                 }
             }
@@ -109,6 +115,7 @@ internal class ProfileViewModel(
         monthBackgroundState,
         loadingState,
         loadingMonthStatsState,
+        logoutLoadingState,
         userState,
     ) { state ->
         ProfileState(
@@ -116,7 +123,8 @@ internal class ProfileViewModel(
             monthBackgroundUrl = state[1] as String?,
             loading = state[2] as LoadingState,
             loadingMonthStats = state[3] as LoadingState,
-            user = state[4] as User?,
+            logoutLoading = state[4] as LoadingState,
+            user = state[5] as User?,
         )
     }.stateIn(
         scope = viewModelScope,

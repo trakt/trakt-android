@@ -3,6 +3,8 @@ package tv.trakt.trakt.core.user.data.remote
 import org.openapitools.client.apis.CalendarsApi
 import org.openapitools.client.apis.HistoryApi
 import org.openapitools.client.apis.UsersApi
+import org.openapitools.client.models.PutUsersSaveSettingsRequest
+import org.openapitools.client.models.PutUsersSaveSettingsRequestUser
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
@@ -21,6 +23,7 @@ import tv.trakt.trakt.common.networking.UserRatingDto
 import tv.trakt.trakt.common.networking.WatchedShowDto
 import tv.trakt.trakt.common.networking.WatchlistItemDto
 import tv.trakt.trakt.common.networking.WatchlistMovieDto
+import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import java.time.LocalDate
 import java.time.ZonedDateTime
 
@@ -28,6 +31,7 @@ internal class UserApiClient(
     private val usersApi: UsersApi,
     private val historyApi: HistoryApi,
     private val calendarsApi: CalendarsApi,
+    private val cacheMarkerProvider: CacheMarkerProvider,
 ) : UserRemoteDataSource {
     override suspend fun getProfile(): User {
         val response = usersApi.getUsersSettings(
@@ -35,6 +39,42 @@ internal class UserApiClient(
         ).body()
 
         return User.fromDto(response)
+    }
+
+    override suspend fun updateProfileLocation(location: String?) {
+        usersApi.putUsersSaveSettings(
+            putUsersSaveSettingsRequest = PutUsersSaveSettingsRequest(
+                user = PutUsersSaveSettingsRequestUser(
+                    location = location,
+                ),
+            ),
+        )
+
+        cacheMarkerProvider.invalidate()
+    }
+
+    override suspend fun updateProfileDisplayName(displayName: String?) {
+        usersApi.putUsersSaveSettings(
+            putUsersSaveSettingsRequest = PutUsersSaveSettingsRequest(
+                user = PutUsersSaveSettingsRequestUser(
+                    name = displayName,
+                ),
+            ),
+        )
+
+        cacheMarkerProvider.invalidate()
+    }
+
+    override suspend fun updateProfileAbout(about: String?) {
+        usersApi.putUsersSaveSettings(
+            putUsersSaveSettingsRequest = PutUsersSaveSettingsRequest(
+                user = PutUsersSaveSettingsRequestUser(
+                    about = about,
+                ),
+            ),
+        )
+
+        cacheMarkerProvider.invalidate()
     }
 
     override suspend fun getWatchedMovies(): Map<String, List<String>> {

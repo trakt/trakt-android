@@ -60,6 +60,7 @@ internal val profileDataModule = module {
             usersApi = get(),
             historyApi = get(),
             calendarsApi = get(),
+            cacheMarkerProvider = get(),
         )
     }
 
