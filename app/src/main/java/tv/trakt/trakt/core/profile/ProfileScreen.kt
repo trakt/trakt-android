@@ -2,6 +2,8 @@
 
 package tv.trakt.trakt.core.profile
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -42,6 +44,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
@@ -53,7 +56,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import timber.log.Timber
 import tv.trakt.trakt.common.Config
+import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -86,6 +91,7 @@ internal fun ProfileScreen(
     onNavigateToHome: () -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
+    val context = LocalContext.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -107,6 +113,12 @@ internal fun ProfileScreen(
         onNavigateToShows = onNavigateToDiscover,
         onNavigateToMovies = onNavigateToDiscover,
         onSettingsClick = onNavigateToSettings,
+        onShareClick = {
+            shareProfile(
+                user = state.user,
+                context = context,
+            )
+        },
         onLogoutClick = {
             confirmLogout = true
         },
@@ -142,6 +154,7 @@ private fun ProfileScreenContent(
     onNavigateToShows: () -> Unit = {},
     onNavigateToMovies: () -> Unit = {},
     onVipClick: () -> Unit = {},
+    onShareClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
     onLogoutClick: () -> Unit = {},
 ) {
@@ -192,6 +205,7 @@ private fun ProfileScreenContent(
             item {
                 TitleBar(
                     user = state.user,
+                    onShareClick = onShareClick,
                     onLogoutClick = onLogoutClick,
                     onSettingsClick = onSettingsClick,
                     modifier = Modifier
@@ -311,6 +325,7 @@ private fun ProfileScreenContent(
 private fun TitleBar(
     user: User?,
     modifier: Modifier = Modifier,
+    onShareClick: () -> Unit = {},
     onLogoutClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
 ) {
@@ -387,6 +402,16 @@ private fun TitleBar(
                 horizontalArrangement = Arrangement.spacedBy(20.dp),
             ) {
                 Icon(
+                    painter = painterResource(R.drawable.ic_share),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .padding(end = 4.dp)
+                        .size(24.dp)
+                        .onClick(onClick = onShareClick),
+                )
+
+                Icon(
                     painter = painterResource(R.drawable.ic_logout),
                     contentDescription = null,
                     tint = TraktTheme.colors.textPrimary,
@@ -406,6 +431,25 @@ private fun TitleBar(
             }
         }
     }
+}
+
+private fun shareProfile(
+    user: User?,
+    context: Context,
+) {
+    if (user == null) {
+        Timber.e("Unable to share profile: user is null")
+        return
+    }
+
+    val shareText = "${WEB_V3_BASE_URL}profile/${user.ids.slug.value}"
+    val intent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_TEXT, shareText)
+        type = "text/plain"
+    }
+
+    context.startActivity(Intent.createChooser(intent, user.displayName))
 }
 
 // Previews

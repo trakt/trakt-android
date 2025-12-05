@@ -87,7 +87,10 @@ private fun SingleInputContent(
             text = "OK",
             enabled = inputValid,
             onClick = {
-                val inputText = nameInputState.text.ifBlank { "" }
+                val inputText = nameInputState.text
+                    .trim()
+                    .ifBlank { "" }
+
                 onApplyClick(inputText.toString())
             },
             modifier = Modifier

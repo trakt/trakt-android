@@ -21,6 +21,5 @@
         android:pathData="M4,12V20H20V12"
         android:strokeWidth="2"
         android:strokeColor="#FFFFFF"
-        android:strokeLineJoin="round"
         />
 </vector>

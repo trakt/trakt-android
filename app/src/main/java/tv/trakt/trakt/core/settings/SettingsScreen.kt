@@ -351,7 +351,9 @@ private fun SettingsAccount(
         initialInput = displayNameSheet,
         nullable = true,
         onApply = {
-            onSetDisplayName(it)
+            if (displayNameSheet != it) {
+                onSetDisplayName(it)
+            }
         },
         onDismiss = {
             displayNameSheet = null
@@ -365,7 +367,9 @@ private fun SettingsAccount(
         initialInput = locationSheet,
         nullable = true,
         onApply = {
-            onSetLocation(it)
+            if (locationSheet != it) {
+                onSetLocation(it)
+            }
         },
         onDismiss = {
             locationSheet = null
@@ -380,7 +384,9 @@ private fun SettingsAccount(
         nullable = true,
         multiline = true,
         onApply = {
-            onSetAbout(it)
+            if (aboutSheet != it) {
+                onSetAbout(it)
+            }
         },
         onDismiss = {
             aboutSheet = null
@@ -483,7 +489,7 @@ private fun SettingsMisc(
         SettingsTextField(
             text = stringResource(R.string.button_text_logout),
             icon = R.drawable.ic_logout,
-            iconSize = 18.dp,
+            iconSize = 17.dp,
             enabled = !state.logoutLoading.isLoading,
             onClick = onLogoutClick,
         )
