@@ -92,7 +92,7 @@ internal fun ThisMonthVipCard(
                 text = stringResource(R.string.badge_text_get_vip),
                 modifier = Modifier
                     .widthIn(min = 92.dp)
-                    .padding(top = 6.dp),
+                    .padding(top = 4.dp),
             )
         }
     }

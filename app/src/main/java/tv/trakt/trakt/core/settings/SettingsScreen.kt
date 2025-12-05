@@ -229,14 +229,14 @@ private fun TitleBar(
 
         Row(
             verticalAlignment = CenterVertically,
-            horizontalArrangement = spacedBy(12.dp),
+            horizontalArrangement = spacedBy(14.dp),
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_instagram),
                 contentDescription = null,
                 tint = TraktTheme.colors.textPrimary,
                 modifier = Modifier
-                    .size(32.dp)
+                    .size(28.dp)
                     .onClick(onClick = onInstagramClick),
             )
 
@@ -245,7 +245,7 @@ private fun TitleBar(
                 contentDescription = null,
                 tint = TraktTheme.colors.textPrimary,
                 modifier = Modifier
-                    .size(32.dp)
+                    .size(28.dp)
                     .onClick(onClick = onTwitterClick),
             )
         }

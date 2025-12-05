@@ -375,7 +375,7 @@ private fun TitleBar(
 
             Row(
                 verticalAlignment = CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(20.dp),
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_logout),
