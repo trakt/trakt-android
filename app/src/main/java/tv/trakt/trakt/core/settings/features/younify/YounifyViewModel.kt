@@ -27,8 +27,11 @@ import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.StaticStringResource
 import tv.trakt.trakt.common.helpers.StringResource
+import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_ONLY
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.helpers.extensions.getHttpErrorCode
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.settings.features.younify.model.LinkStatus
@@ -101,7 +104,9 @@ internal class YounifyViewModel(
                 }
 
                 if (!sessionManager.isAuthenticated() || userState.value?.isAnyVip != true) {
-                    Timber.w("Not authenticated, skipping Younify details load")
+                    errorState.update {
+                        DynamicStringResource(R.string.error_text_vip_only_feature)
+                    }
                     return@launch
                 }
 
@@ -117,7 +122,17 @@ internal class YounifyViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.update { error }
+                    if (error.getHttpErrorCode() == HTTP_ERROR_TRAKT_VIP_ONLY) {
+                        errorState.update {
+                            DynamicStringResource(R.string.error_text_vip_only_feature)
+                        }
+                        return@rethrowCancellation
+                    }
+
+                    errorState.update {
+                        StaticStringResource(error.message ?: "Unknown error")
+                    }
+
                     Timber.recordError(error)
                 }
             } finally {
@@ -198,7 +213,9 @@ internal class YounifyViewModel(
                         return@rethrowCancellation
                     }
 
-                    errorState.update { error }
+                    errorState.update {
+                        StaticStringResource(error.message ?: "Unknown error")
+                    }
                     Timber.recordError(error)
                 }
             }
@@ -284,7 +301,9 @@ internal class YounifyViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     loadingState.update { LoadingState.DONE }
-                    errorState.update { error }
+                    errorState.update {
+                        StaticStringResource(error.message ?: "Unknown error")
+                    }
                     Timber.recordError(error)
                 }
             }
@@ -304,7 +323,9 @@ internal class YounifyViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     loadingState.update { LoadingState.LOADING }
-                    errorState.update { error }
+                    errorState.update {
+                        StaticStringResource(error.message ?: "Unknown error")
+                    }
                     Timber.recordError(error)
                 }
             }
@@ -376,7 +397,7 @@ internal class YounifyViewModel(
             syncDataPrompt = state[2] as String?,
             loading = state[3] as LoadingState,
             info = state[4] as StringResource?,
-            error = state[5] as Exception?,
+            error = state[5] as StringResource?,
         )
     }.stateIn(
         scope = viewModelScope,

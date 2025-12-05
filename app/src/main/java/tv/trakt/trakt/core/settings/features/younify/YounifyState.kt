@@ -14,5 +14,5 @@ internal data class YounifyState(
     val syncDataPrompt: String? = null,
     val loading: LoadingState = LoadingState.IDLE,
     val info: StringResource? = null,
-    val error: Exception? = null,
+    val error: StringResource? = null,
 )

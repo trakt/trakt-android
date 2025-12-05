@@ -250,4 +250,6 @@
 
     <string name="text_info_mir_vip_title">Enhance your Trakt experience</string>
     <string name="text_info_mir_vip_description">Upgrade to VIP and unlock the full Trakt experience, packed with features built for TV Shows and Movies lovers.</string>
+
+    <string name="error_text_vip_only_feature">This feature can be accessed only by VIP users. Upgrade your account to VIP and unlock the full Trakt experience!</string>
 </resources>

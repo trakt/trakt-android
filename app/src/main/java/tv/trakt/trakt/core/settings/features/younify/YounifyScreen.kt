@@ -171,6 +171,8 @@ private fun YounifyScreenContent(
     onServiceEditClick: (StreamingService) -> Unit = { },
     onBackClick: () -> Unit = { },
 ) {
+    val context = LocalContext.current
+
     val contentPadding = PaddingValues(
         start = TraktTheme.spacing.mainPageHorizontalSpace,
         end = TraktTheme.spacing.mainPageHorizontalSpace,
@@ -213,7 +215,7 @@ private fun YounifyScreenContent(
 
             state.error?.let { error ->
                 Text(
-                    text = error.message ?: stringResource(R.string.error_text_unexpected_error_short),
+                    text = error.get(context),
                     style = TraktTheme.typography.paragraphSmaller,
                     color = Red400,
                     modifier = Modifier
