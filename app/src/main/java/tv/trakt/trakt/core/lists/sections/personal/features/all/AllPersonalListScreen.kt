@@ -48,6 +48,8 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.sorting.SortTypeList
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 import tv.trakt.trakt.core.lists.model.PersonalListItem.MovieItem
 import tv.trakt.trakt.core.lists.model.PersonalListItem.ShowItem
@@ -63,6 +65,8 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.sorting.SortingSplitButton
+import tv.trakt.trakt.ui.components.sorting.sheets.SortSelectionSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -89,6 +93,7 @@ internal fun AllPersonalListScreen(
     var showContextSheet by remember { mutableStateOf<ShowItem?>(null) }
     var movieContextSheet by remember { mutableStateOf<MovieItem?>(null) }
     var editListSheet by remember { mutableStateOf<CustomList?>(null) }
+    var sortSheet by remember { mutableStateOf<SortTypeList?>(null) }
 
     AllPersonalListContent(
         state = state,
@@ -106,6 +111,17 @@ internal fun AllPersonalListScreen(
             }
         },
         onFilterClick = viewModel::setFilter,
+        onSortTypeClick = {
+            sortSheet = state.sorting.type
+        },
+        onSortOrderClick = {
+            val sorting = state.sorting
+            viewModel.setSorting(
+                sorting.copy(
+                    order = sorting.order.toggle(),
+                ),
+            )
+        },
         onMoreClick = {
             editListSheet = state.list
         },
@@ -141,6 +157,21 @@ internal fun AllPersonalListScreen(
         onListDeleted = onNavigateBack,
         onDismiss = { editListSheet = null },
     )
+
+    SortSelectionSheet(
+        active = sortSheet != null,
+        selected = sortSheet,
+        onResult = {
+            viewModel.setSorting(
+                state.sorting.copy(
+                    type = it,
+                ),
+            )
+        },
+        onDismiss = {
+            sortSheet = null
+        },
+    )
 }
 
 @Composable
@@ -151,6 +182,8 @@ internal fun AllPersonalListContent(
     onClick: (PersonalListItem) -> Unit = {},
     onLongClick: (PersonalListItem) -> Unit = {},
     onFilterClick: (MediaMode) -> Unit = {},
+    onSortTypeClick: () -> Unit = {},
+    onSortOrderClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
     onMoreClick: () -> Unit = {},
 ) {
@@ -190,12 +223,15 @@ internal fun AllPersonalListContent(
             subtitle = state.list?.description,
             listState = listState,
             listFilter = state.filter,
+            listSorting = state.sorting,
             listItems = (state.items ?: emptyList()).toImmutableList(),
             collection = state.collection,
             contentPadding = contentPadding,
             onClick = onClick,
             onLongClick = onLongClick,
             onFilterClick = onFilterClick,
+            onSortTypeClick = onSortTypeClick,
+            onSortOrderClick = onSortOrderClick,
             onTopOfList = onTopOfList,
             onBackClick = onBackClick,
             onMoreClick = onMoreClick,
@@ -258,16 +294,36 @@ private fun TitleBar(
 private fun ContentFilters(
     hasSubtitle: Boolean,
     watchlistFilter: MediaMode,
+    watchlistSort: Sorting,
+    onSortTypeClick: () -> Unit,
+    onSortOrderClick: () -> Unit,
     onFilterClick: (MediaMode) -> Unit,
 ) {
-    MediaModeFilters(
-        selected = watchlistFilter,
-        onClick = onFilterClick,
-        paddingVertical = PaddingValues(
-            top = if (hasSubtitle) 8.dp else 0.dp,
-            bottom = 19.dp,
-        ),
-    )
+    Row(
+        verticalAlignment = CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                top = if (hasSubtitle) 8.dp else 0.dp,
+                bottom = 19.dp,
+            ),
+    ) {
+        MediaModeFilters(
+            selected = watchlistFilter,
+            onClick = onFilterClick,
+            height = 32.dp,
+            unselectedTextVisible = false,
+        )
+
+        SortingSplitButton(
+            text = stringResource(watchlistSort.type.displayStringRes),
+            order = watchlistSort.order,
+            height = 32.dp,
+            onLeadingClick = onSortTypeClick,
+            onTrailingClick = onSortOrderClick,
+        )
+    }
 }
 
 @Composable
@@ -278,11 +334,14 @@ private fun ContentList(
     listState: LazyListState,
     listItems: ImmutableList<PersonalListItem>,
     listFilter: MediaMode?,
+    listSorting: Sorting?,
     collection: UserCollectionState,
     contentPadding: PaddingValues,
     onClick: (PersonalListItem) -> Unit,
     onLongClick: (PersonalListItem) -> Unit,
     onFilterClick: (MediaMode) -> Unit,
+    onSortTypeClick: () -> Unit,
+    onSortOrderClick: () -> Unit,
     onTopOfList: () -> Unit,
     onBackClick: () -> Unit,
     onMoreClick: () -> Unit,
@@ -316,12 +375,15 @@ private fun ContentList(
             )
         }
 
-        if (listFilter != null) {
+        if (listFilter != null && listSorting != null) {
             item {
                 ContentFilters(
                     hasSubtitle = !subtitle.isNullOrEmpty(),
                     watchlistFilter = listFilter,
+                    watchlistSort = listSorting,
                     onFilterClick = onFilterClick,
+                    onSortTypeClick = onSortTypeClick,
+                    onSortOrderClick = onSortOrderClick,
                 )
             }
         }

@@ -8,8 +8,10 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
+import tv.trakt.trakt.core.lists.sections.personal.model.getPersonalListSorting
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 
@@ -20,6 +22,7 @@ internal class GetPersonalListItemsUseCase(
     suspend fun getLocalItems(
         listId: TraktId,
         filter: MediaMode,
+        sort: Sorting,
     ): ImmutableList<PersonalListItem> {
         return localSource.getItems(listId)
             .filter {
@@ -29,7 +32,7 @@ internal class GetPersonalListItemsUseCase(
                     MediaMode.MOVIES -> it is PersonalListItem.MovieItem
                 }
             }
-            .sortedByDescending { it.listedAt }
+            .sortedWith(getPersonalListSorting(sort))
             .toImmutableList()
     }
 
@@ -37,6 +40,7 @@ internal class GetPersonalListItemsUseCase(
         listId: TraktId,
         limit: Int,
         filter: MediaMode,
+        sort: Sorting,
     ): ImmutableList<PersonalListItem> {
         return remoteSource.getPersonalListItems(
             listId = listId,
@@ -47,16 +51,20 @@ internal class GetPersonalListItemsUseCase(
             when {
                 it.movie != null -> {
                     PersonalListItem.MovieItem(
+                        rank = it.rank,
                         movie = Movie.fromDto(it.movie!!),
                         listedAt = listedAt,
                     )
                 }
+
                 it.show != null -> {
                     PersonalListItem.ShowItem(
+                        rank = it.rank,
                         show = Show.fromDto(it.show!!),
                         listedAt = listedAt,
                     )
                 }
+
                 else -> {
                     throw IllegalStateException("Watchlist item unknown type!")
                 }
@@ -73,7 +81,7 @@ internal class GetPersonalListItemsUseCase(
                 MediaMode.MOVIES -> it is PersonalListItem.MovieItem
             }
         }
-            .sortedByDescending { it.listedAt }
+            .sortedWith(getPersonalListSorting(sort))
             .toImmutableList()
     }
 }

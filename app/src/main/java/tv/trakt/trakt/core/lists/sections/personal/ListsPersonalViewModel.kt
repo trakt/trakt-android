@@ -27,6 +27,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_SECTION_LIMIT
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
@@ -108,6 +109,7 @@ internal class ListsPersonalViewModel(
                     getListItemsUseCase.getLocalItems(
                         listId = listId,
                         filter = filterState.value,
+                        sort = Sorting.Default,
                     )
                 }
             } catch (error: Exception) {
@@ -129,6 +131,7 @@ internal class ListsPersonalViewModel(
                 val localItems = getListItemsUseCase.getLocalItems(
                     listId = listId,
                     filter = filterState.value,
+                    sort = Sorting.Default,
                 )
 
                 if (localItems.isNotEmpty()) {
@@ -143,6 +146,7 @@ internal class ListsPersonalViewModel(
                         listId = listId,
                         limit = LISTS_SECTION_LIMIT,
                         filter = filterState.value,
+                        sort = Sorting.Default,
                     )
                 }
             } catch (error: Exception) {

@@ -284,6 +284,7 @@ private fun ContentList(
                             ),
                     )
                 }
+
                 is EpisodeItem -> {
                     AllActivityEpisodeItem(
                         item = item,
@@ -325,6 +326,7 @@ private fun ContentFilters(
             FilterChip(
                 selected = itemsFilter == filter,
                 text = stringResource(filter.displayRes),
+                height = 32.dp,
                 leadingContent = {
                     Icon(
                         painter = painterResource(filter.offIcon),
@@ -350,6 +352,7 @@ private fun ContentFilters(
         for (user in usersFilter.users) {
             UserFilterChip(
                 user = user,
+                height = 32.dp,
                 selected = usersFilter.selectedUser?.ids?.trakt == user.ids.trakt,
                 onClick = { onUserFilterClick(user) },
             )

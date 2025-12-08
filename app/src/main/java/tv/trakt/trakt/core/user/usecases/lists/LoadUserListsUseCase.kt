@@ -57,17 +57,23 @@ internal class LoadUserListsUseCase(
                         when {
                             it.movie != null -> {
                                 PersonalListItem.MovieItem(
+                                    rank = it.rank,
                                     movie = Movie.fromDto(it.movie!!),
                                     listedAt = listedAt,
                                 )
                             }
+
                             it.show != null -> {
                                 PersonalListItem.ShowItem(
+                                    rank = it.rank,
                                     show = Show.fromDto(it.show!!),
                                     listedAt = listedAt,
                                 )
                             }
-                            else -> throw IllegalStateException("Personal list item unknown type!")
+
+                            else -> {
+                                throw IllegalStateException("Personal list item unknown type!")
+                            }
                         }
                     }.sortedByDescending {
                         it.listedAt

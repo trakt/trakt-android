@@ -125,6 +125,7 @@ internal fun ListsPersonalItemView(
                 modifier = modifier,
             )
         }
+
         is PersonalListItem.MovieItem -> {
             val isReleased = remember(item.movie.released) {
                 item.movie.released?.isTodayOrBefore() ?: false
@@ -208,6 +209,7 @@ private fun PreviewShow() {
     TraktTheme {
         ListsPersonalItemView(
             item = PersonalListItem.ShowItem(
+                rank = 0,
                 show = PreviewData.show1,
                 listedAt = nowUtcInstant().minus(3, DAYS),
             ),
@@ -221,6 +223,7 @@ private fun PreviewMovie() {
     TraktTheme {
         ListsPersonalItemView(
             item = PersonalListItem.MovieItem(
+                rank = 0,
                 movie = PreviewData.movie1,
                 listedAt = nowUtcInstant().minus(3, DAYS),
             ),

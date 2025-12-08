@@ -23,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -35,6 +36,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun UserFilterChip(
     user: User,
     selected: Boolean,
+    height: Dp = 32.dp,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
 ) {
@@ -43,7 +45,7 @@ internal fun UserFilterChip(
         horizontalArrangement = spacedBy(0.dp),
         modifier = modifier
             .onClick { onClick() }
-            .height(28.dp)
+            .height(height)
             .border(
                 width = 1.dp,
                 color = if (selected) {
@@ -62,7 +64,7 @@ internal fun UserFilterChip(
                 },
             )
             .padding(
-                start = 4.dp,
+                start = 6.dp,
                 end = 12.dp,
             ),
     ) {
@@ -90,7 +92,7 @@ internal fun UserFilterChip(
                 painter = painterResource(R.drawable.ic_person_placeholder),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(20.dp)
+                    .size(height - 8.dp)
                     .border(borderWidth, borderColor, CircleShape)
                     .clip(CircleShape),
             )

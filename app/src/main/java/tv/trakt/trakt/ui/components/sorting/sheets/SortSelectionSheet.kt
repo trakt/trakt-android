@@ -41,9 +41,9 @@ internal fun SortSelectionSheet(
                 selected = selected,
                 options = options,
                 onSortClick = { selected ->
+                    onResult(selected)
                     scope.dismissWithAction(
                         sheet = state,
-                        action = { onResult(selected) },
                         onDismiss = onDismiss,
                     )
                 },

@@ -44,9 +44,10 @@ internal class ListsPersonalItemsStorage : ListsPersonalItemsLocalDataSource {
     ) {
         mutex.withLock {
             val currentItems = storage[listId] ?: emptyList()
-            val newItems = shows.map {
+            val newItems = shows.mapIndexed { index, show ->
                 PersonalListItem.ShowItem(
-                    show = it,
+                    show = show,
+                    rank = currentItems.size + (index + 1),
                     listedAt = nowUtcInstant(),
                 )
             }
@@ -91,9 +92,10 @@ internal class ListsPersonalItemsStorage : ListsPersonalItemsLocalDataSource {
     ) {
         mutex.withLock {
             val currentItems = storage[listId] ?: emptyList()
-            val newItems = movies.map {
+            val newItems = movies.mapIndexed { index, movie ->
                 PersonalListItem.MovieItem(
-                    movie = it,
+                    movie = movie,
+                    rank = currentItems.size + (index + 1),
                     listedAt = nowUtcInstant(),
                 )
             }

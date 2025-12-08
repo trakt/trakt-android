@@ -283,6 +283,7 @@ private fun ContentFilters(
 ) {
     MediaModeFilters(
         selected = watchlistFilter,
+        height = 32.dp,
         onClick = onFilterClick,
         paddingVertical = PaddingValues(
             top = 0.dp,

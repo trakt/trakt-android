@@ -29,6 +29,7 @@ internal class AddPersonalListItemUseCase(
         userListsLocalDataSource.addListItem(
             listId = listId,
             item = PersonalListItem.MovieItem(
+                rank = Int.MAX_VALUE,
                 movie = movie,
                 listedAt = nowUtcInstant(),
             ),
@@ -58,6 +59,7 @@ internal class AddPersonalListItemUseCase(
         userListsLocalDataSource.addListItem(
             listId = listId,
             item = PersonalListItem.ShowItem(
+                rank = Int.MAX_VALUE,
                 show = show,
                 listedAt = nowUtcInstant(),
             ),

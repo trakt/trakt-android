@@ -26,6 +26,7 @@ internal class GetListItemsUseCase(
                 extended = "full,cloud9,colors",
             ).asyncMap {
                 PersonalListItem.MovieItem(
+                    rank = it.rank,
                     movie = Movie.fromDto(it.movie),
                     listedAt = it.listedAt.toInstant(),
                 )
@@ -39,6 +40,7 @@ internal class GetListItemsUseCase(
                 extended = "full,cloud9,colors",
             ).asyncMap {
                 PersonalListItem.ShowItem(
+                    rank = it.rank,
                     show = Show.fromDto(it.show),
                     listedAt = it.listedAt.toInstant(),
                 )
@@ -55,16 +57,20 @@ internal class GetListItemsUseCase(
             when {
                 it.movie != null -> {
                     PersonalListItem.MovieItem(
+                        rank = it.rank,
                         movie = Movie.fromDto(it.movie!!),
                         listedAt = listedAt,
                     )
                 }
+
                 it.show != null -> {
                     PersonalListItem.ShowItem(
+                        rank = it.rank,
                         show = Show.fromDto(it.show!!),
                         listedAt = listedAt,
                     )
                 }
+
                 else -> {
                     throw IllegalStateException("Watchlist item unknown type!")
                 }

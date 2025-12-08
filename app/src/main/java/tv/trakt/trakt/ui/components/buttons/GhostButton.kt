@@ -40,6 +40,7 @@ internal fun GhostButton(
     iconSpace: Dp = 10.dp,
     enabled: Boolean = true,
     loading: Boolean = false,
+    uppercase: Boolean = true,
     corner: Dp = 8.dp,
     fillWidth: Boolean = true,
     containerColor: Color = Color.Transparent,
@@ -94,7 +95,10 @@ internal fun GhostButton(
             }
 
             Text(
-                text = text.uppercase(),
+                text = when {
+                    uppercase -> text.uppercase()
+                    else -> text
+                },
                 color = if (enabled) contentColor else disabledContentColor,
                 style = textStyle,
                 maxLines = 1,

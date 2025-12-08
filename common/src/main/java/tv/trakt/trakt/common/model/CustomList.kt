@@ -4,8 +4,6 @@ import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
-import tv.trakt.trakt.common.model.sorting.SortOrder
-import tv.trakt.trakt.common.model.sorting.SortType
 import tv.trakt.trakt.common.networking.ListDto
 import java.time.ZonedDateTime
 
@@ -19,8 +17,8 @@ data class CustomList(
     val type: Type?,
     val displayNumbers: Boolean?,
     val allowComments: Boolean?,
-    val sortType: SortType?,
-    val sortOrder: SortOrder?,
+//    val sortType: SortType?,
+//    val sortOrder: SortOrder?,
     val createdAt: ZonedDateTime,
     val updatedAt: ZonedDateTime,
     val likes: Int?,
@@ -59,8 +57,8 @@ data class CustomList(
                 type = Type.fromString(dto.type.lowercase()),
                 displayNumbers = dto.displayNumbers,
                 allowComments = dto.allowComments,
-                sortType = SortType.fromString(dto.sortBy),
-                sortOrder = SortOrder.fromString(dto.sortHow.value),
+//                sortType = SortType.fromString(dto.sortBy),
+//                sortOrder = SortOrder.fromString(dto.sortHow.value),
                 createdAt = dto.createdAt.toZonedDateTime(),
                 updatedAt = dto.updatedAt.toZonedDateTime(),
                 likes = dto.likes,

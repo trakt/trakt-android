@@ -330,6 +330,7 @@ private fun ContentFilters(
     MediaModeFilters(
         selected = selectedFilter,
         onClick = onFilterClick,
+        height = 32.dp,
         paddingVertical = PaddingValues(
             top = 0.dp,
             bottom = 19.dp,

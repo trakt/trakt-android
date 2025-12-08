@@ -124,7 +124,12 @@ internal class UserListsStorage : UserListsLocalDataSource {
                     )
 
                     val updatedItems = items
-                        .plus(item)
+                        .plus(
+                            when (item) {
+                                is MovieItem -> item.copy(rank = items.size + 1)
+                                is ShowItem -> item.copy(rank = items.size + 1)
+                            },
+                        )
                         .distinctBy {
                             when (it) {
                                 is MovieItem -> it.movie.ids.trakt

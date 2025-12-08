@@ -421,10 +421,6 @@ private fun ContentFilters(
             onClick = onFilterClick,
             height = 32.dp,
             unselectedTextVisible = false,
-            paddingVertical = PaddingValues(
-                top = 0.dp,
-                bottom = 0.dp,
-            ),
         )
 
         SortingSplitButton(

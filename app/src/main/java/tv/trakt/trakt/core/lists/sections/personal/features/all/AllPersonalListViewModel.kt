@@ -32,6 +32,7 @@ import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_ALL_LIMIT
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_SECTION_LIMIT
@@ -64,6 +65,7 @@ internal class AllPersonalListViewModel(
     private val initialMode = modeManager.getMode()
 
     private val filterState = MutableStateFlow(initialMode)
+    private val sortingState = MutableStateFlow(initialState.sorting)
     private val listState = MutableStateFlow(initialState.list)
     private val itemsState = MutableStateFlow(initialState.items)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
@@ -129,6 +131,7 @@ internal class AllPersonalListViewModel(
                 val localItems = getListItemsUseCase.getLocalItems(
                     listId = destination.listId.toTraktId(),
                     filter = filterState.value,
+                    sort = sortingState.value,
                 )
                 if (localItems.isNotEmpty()) {
                     itemsState.update { localItems }
@@ -146,6 +149,7 @@ internal class AllPersonalListViewModel(
                             listId = destination.listId.toTraktId(),
                             limit = LISTS_ALL_LIMIT,
                             filter = filterState.value,
+                            sort = sortingState.value,
                         )
                     }
                 } else if (localItems.isEmpty()) {
@@ -181,6 +185,21 @@ internal class AllPersonalListViewModel(
         }
         viewModelScope.launch {
             filterState.update { newFilter }
+            loadData(localOnly = true)
+        }
+    }
+
+    fun setSorting(newSorting: Sorting) {
+        if (newSorting == sortingState.value) {
+            return
+        }
+        viewModelScope.launch {
+            sortingState.update {
+                it.copy(
+                    type = newSorting.type,
+                    order = newSorting.order,
+                )
+            }
             loadData(localOnly = true)
         }
     }
@@ -229,6 +248,7 @@ internal class AllPersonalListViewModel(
     val state = combine(
         loadingState,
         filterState,
+        sortingState,
         listState,
         itemsState,
         collectionStateProvider.stateFlow,
@@ -239,12 +259,13 @@ internal class AllPersonalListViewModel(
         AllPersonalListState(
             loading = state[0] as LoadingState,
             filter = state[1] as MediaMode?,
-            list = state[2] as? CustomList,
-            items = state[3] as? ImmutableList<PersonalListItem>,
-            collection = state[4] as UserCollectionState,
-            navigateShow = state[5] as? TraktId,
-            navigateMovie = state[6] as? TraktId,
-            error = state[7] as? Exception,
+            sorting = state[2] as Sorting,
+            list = state[3] as? CustomList,
+            items = state[4] as? ImmutableList<PersonalListItem>,
+            collection = state[5] as UserCollectionState,
+            navigateShow = state[6] as? TraktId,
+            navigateMovie = state[7] as? TraktId,
+            error = state[8] as? Exception,
         )
     }.stateIn(
         scope = viewModelScope,

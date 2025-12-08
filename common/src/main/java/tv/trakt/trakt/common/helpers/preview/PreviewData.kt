@@ -17,8 +17,6 @@ import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TmdbId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.common.model.sorting.SortOrder
-import tv.trakt.trakt.common.model.sorting.SortType
 import java.time.ZonedDateTime
 import kotlin.time.Duration.Companion.minutes
 
@@ -163,8 +161,8 @@ object PreviewData {
         privacy = "public",
         displayNumbers = true,
         allowComments = true,
-        sortType = SortType.RANK,
-        sortOrder = SortOrder.ASCENDING,
+//        sortType = SortType.RANK,
+//        sortOrder = SortOrder.ASCENDING,
         createdAt = ZonedDateTime.now(),
         updatedAt = ZonedDateTime.now(),
         shareLink = "",
