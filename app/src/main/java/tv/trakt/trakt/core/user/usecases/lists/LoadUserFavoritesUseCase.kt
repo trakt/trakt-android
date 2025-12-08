@@ -9,7 +9,9 @@ import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.profile.model.FavoriteItem
+import tv.trakt.trakt.core.profile.model.getFavoriteSorting
 import tv.trakt.trakt.core.user.data.local.favorites.UserFavoritesLocalDataSource
 import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 
@@ -20,21 +22,21 @@ internal class LoadUserFavoritesUseCase(
     private val remoteSource: UserRemoteDataSource,
     private val localSource: UserFavoritesLocalDataSource,
 ) {
-    suspend fun loadLocalAll(): ImmutableList<FavoriteItem> {
+    suspend fun loadLocalAll(sort: Sorting? = null): ImmutableList<FavoriteItem> {
         return localSource.getAll()
-            .sortedByDescending { it.listedAt }
+            .sortedWith(getFavoriteSorting(sort))
             .toImmutableList()
     }
 
-    suspend fun loadLocalShows(): ImmutableList<FavoriteItem.ShowItem> {
+    suspend fun loadLocalShows(sort: Sorting? = null): ImmutableList<FavoriteItem.ShowItem> {
         return localSource.getShows()
-            .sortedByDescending { it.listedAt }
+            .sortedWith(getFavoriteSorting(sort))
             .toImmutableList()
     }
 
-    suspend fun loadLocalMovies(): ImmutableList<FavoriteItem.MovieItem> {
+    suspend fun loadLocalMovies(sort: Sorting? = null): ImmutableList<FavoriteItem.MovieItem> {
         return localSource.getMovies()
-            .sortedByDescending { it.listedAt }
+            .sortedWith(getFavoriteSorting(sort))
             .toImmutableList()
     }
 
@@ -46,7 +48,7 @@ internal class LoadUserFavoritesUseCase(
         return localSource.isMoviesLoaded()
     }
 
-    suspend fun loadAll(): ImmutableList<FavoriteItem> {
+    suspend fun loadAll(sort: Sorting? = null): ImmutableList<FavoriteItem> {
         return coroutineScope {
             val showsAsync = async { loadShows() }
             val moviesAsync = async { loadMovies() }
@@ -55,12 +57,12 @@ internal class LoadUserFavoritesUseCase(
             val movies = moviesAsync.await()
 
             (shows + movies)
-                .sortedByDescending { it.listedAt }
+                .sortedWith(getFavoriteSorting(sort))
                 .toImmutableList()
         }
     }
 
-    suspend fun loadShows(): ImmutableList<FavoriteItem> {
+    suspend fun loadShows(sort: Sorting? = null): ImmutableList<FavoriteItem> {
         return remoteSource.getFavoriteShows(
             sort = "added",
             extended = "full,cloud9,colors",
@@ -72,11 +74,12 @@ internal class LoadUserFavoritesUseCase(
                 listedAt = listedAt,
             )
         }
-            .toImmutableList()
             .also { localSource.setShows(it) }
+            .sortedWith(getFavoriteSorting(sort))
+            .toImmutableList()
     }
 
-    suspend fun loadMovies(): ImmutableList<FavoriteItem> {
+    suspend fun loadMovies(sort: Sorting? = null): ImmutableList<FavoriteItem> {
         return remoteSource.getFavoriteMovies(
             sort = "added",
             extended = "full,cloud9,colors",
@@ -88,7 +91,8 @@ internal class LoadUserFavoritesUseCase(
                 listedAt = listedAt,
             )
         }
-            .toImmutableList()
             .also { localSource.setMovies(it) }
+            .sortedWith(getFavoriteSorting(sort))
+            .toImmutableList()
     }
 }

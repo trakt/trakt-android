@@ -186,7 +186,7 @@ internal class UserApiClient(
             id = "me",
             extended = extended,
             page = page,
-            limit = 99999,
+            limit = limit ?: 999,
             sort = sort ?: "rank",
         )
 
@@ -203,7 +203,7 @@ internal class UserApiClient(
             id = "me",
             extended = extended,
             page = page,
-            limit = 99999,
+            limit = limit ?: 999,
             sort = sort ?: "rank",
         )
 

@@ -5,6 +5,7 @@ package tv.trakt.trakt.core.profile.sections.favorites.all
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
@@ -46,6 +48,8 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.sorting.SortTypeList
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.profile.model.FavoriteItem
 import tv.trakt.trakt.core.profile.sections.favorites.all.views.AllFavoritesMovieView
@@ -57,6 +61,8 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.sorting.SortingSplitButton
+import tv.trakt.trakt.ui.components.sorting.sheets.SortSelectionSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -71,6 +77,7 @@ internal fun AllFavoritesScreen(
 
     var contextMovieSheet by remember { mutableStateOf<Movie?>(null) }
     var contextShowSheet by remember { mutableStateOf<Show?>(null) }
+    var sortSheet by remember { mutableStateOf<SortTypeList?>(null) }
 
     LaunchedEffect(state) {
         state.navigateShow?.let {
@@ -99,6 +106,17 @@ internal fun AllFavoritesScreen(
             }
         },
         onFilterClick = { viewModel.setFilter(it) },
+        onSortTypeClick = {
+            sortSheet = state.sorting.type
+        },
+        onSortOrderClick = {
+            val sorting = state.sorting
+            viewModel.setSorting(
+                sorting.copy(
+                    order = sorting.order.toggle(),
+                ),
+            )
+        },
         onBackClick = onNavigateBack,
     )
 
@@ -111,6 +129,21 @@ internal fun AllFavoritesScreen(
         show = contextShowSheet,
         onDismiss = { contextShowSheet = null },
     )
+
+    SortSelectionSheet(
+        active = sortSheet != null,
+        selected = sortSheet,
+        onResult = {
+            viewModel.setSorting(
+                state.sorting.copy(
+                    type = it,
+                ),
+            )
+        },
+        onDismiss = {
+            sortSheet = null
+        },
+    )
 }
 
 @Composable
@@ -120,6 +153,8 @@ internal fun AllFavoritesContent(
     onClick: (FavoriteItem) -> Unit = {},
     onLongClick: (FavoriteItem) -> Unit = {},
     onFilterClick: (MediaMode) -> Unit = {},
+    onSortTypeClick: () -> Unit = {},
+    onSortOrderClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
     val listState = rememberLazyListState(
@@ -154,12 +189,14 @@ internal fun AllFavoritesContent(
         )
 
         ContentList(
-            subtitle = stringResource(R.string.text_sort_recently_added),
             listItems = (state.items ?: emptyList()).toImmutableList(),
             listState = listState,
             listFilter = state.filter ?: MediaMode.MEDIA,
+            listSorting = state.sorting,
             contentPadding = contentPadding,
             onFilterClick = onFilterClick,
+            onSortTypeClick = onSortTypeClick,
+            onSortOrderClick = onSortOrderClick,
             onClick = onClick,
             onLongClick = onLongClick,
             onBackClick = onBackClick,
@@ -168,10 +205,7 @@ internal fun AllFavoritesContent(
 }
 
 @Composable
-private fun TitleBar(
-    subtitle: String,
-    modifier: Modifier = Modifier,
-) {
+private fun TitleBar(modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = spacedBy(12.dp),
@@ -188,7 +222,6 @@ private fun TitleBar(
         )
         TraktHeader(
             title = stringResource(R.string.list_title_favorites),
-            subtitle = subtitle,
         )
     }
 }
@@ -199,11 +232,13 @@ private fun ContentList(
     listState: LazyListState,
     listItems: ImmutableList<FavoriteItem>,
     listFilter: MediaMode,
-    subtitle: String,
+    listSorting: Sorting,
     contentPadding: PaddingValues,
     onClick: (FavoriteItem) -> Unit,
     onLongClick: (FavoriteItem) -> Unit,
     onFilterClick: (MediaMode) -> Unit,
+    onSortTypeClick: () -> Unit,
+    onSortOrderClick: () -> Unit,
     onBackClick: () -> Unit,
 ) {
     LazyColumn(
@@ -215,9 +250,7 @@ private fun ContentList(
     ) {
         item {
             TitleBar(
-                subtitle = subtitle,
                 modifier = Modifier
-                    .padding(top = 3.dp, bottom = 8.dp)
                     .onClick { onBackClick() },
             )
         }
@@ -225,7 +258,10 @@ private fun ContentList(
         item {
             ContentFilters(
                 watchlistFilter = listFilter,
+                watchlistSort = listSorting,
                 onFilterClick = onFilterClick,
+                onSortTypeClick = onSortTypeClick,
+                onSortOrderClick = onSortOrderClick,
             )
         }
 
@@ -279,17 +315,33 @@ private fun ContentList(
 @Composable
 private fun ContentFilters(
     watchlistFilter: MediaMode,
+    watchlistSort: Sorting,
+    onSortTypeClick: () -> Unit,
+    onSortOrderClick: () -> Unit,
     onFilterClick: (MediaMode) -> Unit,
 ) {
-    MediaModeFilters(
-        selected = watchlistFilter,
-        height = 32.dp,
-        onClick = onFilterClick,
-        paddingVertical = PaddingValues(
-            top = 0.dp,
-            bottom = 19.dp,
-        ),
-    )
+    Row(
+        verticalAlignment = CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 19.dp),
+    ) {
+        MediaModeFilters(
+            selected = watchlistFilter,
+            onClick = onFilterClick,
+            height = 32.dp,
+            unselectedTextVisible = false,
+        )
+
+        SortingSplitButton(
+            text = stringResource(watchlistSort.type.displayStringRes),
+            order = watchlistSort.order,
+            height = 32.dp,
+            onLeadingClick = onSortTypeClick,
+            onTrailingClick = onSortOrderClick,
+        )
+    }
 }
 
 @Composable

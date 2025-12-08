@@ -4,11 +4,13 @@ import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Rating
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import java.time.Instant
 import java.time.ZoneOffset.UTC
 import java.time.ZonedDateTime
+import kotlin.time.Duration
 
 @Immutable
 internal sealed class FavoriteItem(
@@ -54,6 +56,18 @@ internal sealed class FavoriteItem(
         get() = when (this) {
             is ShowItem -> show.images
             is MovieItem -> movie.images
+        }
+
+    val rating: Rating
+        get() = when (this) {
+            is ShowItem -> show.rating
+            is MovieItem -> movie.rating
+        }
+
+    val runtime: Duration?
+        get() = when (this) {
+            is ShowItem -> show.runtime
+            is MovieItem -> movie.runtime
         }
 
     val released: ZonedDateTime?

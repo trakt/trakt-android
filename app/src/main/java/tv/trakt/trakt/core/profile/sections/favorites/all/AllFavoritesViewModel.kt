@@ -8,7 +8,6 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -31,6 +30,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.favorites.FavoritesUpdates
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.CONTEXT_SHEET
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.DETAILS
@@ -56,6 +56,7 @@ internal class AllFavoritesViewModel(
 
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialState.filter)
+    private val sortingState = MutableStateFlow(initialState.sorting)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
@@ -101,11 +102,12 @@ internal class AllFavoritesViewModel(
                 }
 
                 val filter = loadFilter()
+                val sorting = sortingState.value
 
                 val localItems = when (filter) {
-                    MEDIA -> loadFavoritesUseCase.loadLocalAll()
-                    SHOWS -> loadFavoritesUseCase.loadLocalShows()
-                    MOVIES -> loadFavoritesUseCase.loadLocalMovies()
+                    MEDIA -> loadFavoritesUseCase.loadLocalAll(sort = sorting)
+                    SHOWS -> loadFavoritesUseCase.loadLocalShows(sort = sorting)
+                    MOVIES -> loadFavoritesUseCase.loadLocalMovies(sort = sorting)
                 }
 
                 if (localItems.isNotEmpty()) {
@@ -120,9 +122,9 @@ internal class AllFavoritesViewModel(
 
                 itemsState.update {
                     when (filter) {
-                        MEDIA -> loadFavoritesUseCase.loadAll()
-                        SHOWS -> loadFavoritesUseCase.loadShows()
-                        MOVIES -> loadFavoritesUseCase.loadMovies()
+                        MEDIA -> loadFavoritesUseCase.loadAll(sort = sorting)
+                        SHOWS -> loadFavoritesUseCase.loadShows(sort = sorting)
+                        MOVIES -> loadFavoritesUseCase.loadMovies(sort = sorting)
                     }.toImmutableList()
                 }
             } catch (error: Exception) {
@@ -167,6 +169,21 @@ internal class AllFavoritesViewModel(
         }
     }
 
+    fun setSorting(newSorting: Sorting) {
+        if (newSorting == sortingState.value) {
+            return
+        }
+        viewModelScope.launch {
+            sortingState.update {
+                it.copy(
+                    type = newSorting.type,
+                    order = newSorting.order,
+                )
+            }
+            loadData(localOnly = true)
+        }
+    }
+
     fun navigateToShow(show: Show) {
         if (navigateShow.value != null || processingJob?.isActive == true) {
             return
@@ -203,10 +220,11 @@ internal class AllFavoritesViewModel(
     }
 
     @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<AllFavoritesState> = combine(
+    val state = combine(
         loadingState,
         itemsState,
         filterState,
+        sortingState,
         navigateShow,
         navigateMovie,
         errorState,
@@ -215,9 +233,10 @@ internal class AllFavoritesViewModel(
             loading = state[0] as LoadingState,
             items = state[1] as? ImmutableList<FavoriteItem>,
             filter = state[2] as? MediaMode,
-            navigateShow = state[3] as? TraktId,
-            navigateMovie = state[4] as? TraktId,
-            error = state[5] as? Exception,
+            sorting = state[3] as Sorting,
+            navigateShow = state[4] as? TraktId,
+            navigateMovie = state[5] as? TraktId,
+            error = state[6] as? Exception,
         )
     }.stateIn(
         scope = viewModelScope,
