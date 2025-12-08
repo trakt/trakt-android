@@ -326,6 +326,7 @@ private fun ContentFilters(
             FilterChip(
                 selected = itemsFilter == filter,
                 text = stringResource(filter.displayRes),
+                unselectedTextVisible = false,
                 height = 32.dp,
                 leadingContent = {
                     Icon(
