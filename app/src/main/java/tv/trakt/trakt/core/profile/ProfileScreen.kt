@@ -27,6 +27,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -402,28 +405,6 @@ private fun TitleBar(
                 horizontalArrangement = Arrangement.spacedBy(20.dp),
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_share),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .padding(end = 5.5.dp)
-                        .size(24.dp)
-                        .onClick(onClick = onShareClick),
-                )
-
-                Icon(
-                    painter = painterResource(R.drawable.ic_logout),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .size(23.dp)
-                        .graphicsLayer {
-                            translationY = 0.5.dp.toPx()
-                        }
-                        .onClick(onClick = onLogoutClick),
-                )
-
-                Icon(
                     painter = painterResource(R.drawable.ic_settings),
                     contentDescription = null,
                     tint = TraktTheme.colors.textPrimary,
@@ -431,6 +412,73 @@ private fun TitleBar(
                         .size(22.dp)
                         .onClick(onClick = onSettingsClick),
                 )
+
+                Box {
+                    var showMenu by remember { mutableStateOf(false) }
+
+                    Icon(
+                        painter = painterResource(R.drawable.ic_more_vertical),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier
+                            .size(18.dp)
+                            .onClick {
+                                showMenu = true
+                            },
+                    )
+
+                    DropdownMenu(
+                        expanded = showMenu,
+                        containerColor = TraktTheme.colors.dialogContainer,
+                        shape = RoundedCornerShape(16.dp),
+                        onDismissRequest = {
+                            showMenu = false
+                        },
+                    ) {
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = stringResource(R.string.button_text_share),
+                                    style = TraktTheme.typography.buttonTertiary,
+                                    color = TraktTheme.colors.textPrimary,
+                                )
+                            },
+                            onClick = {
+                                onShareClick()
+                                showMenu = false
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_share),
+                                    contentDescription = null,
+                                    tint = TraktTheme.colors.textPrimary,
+                                    modifier = Modifier.size(22.dp),
+                                )
+                            },
+                        )
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = stringResource(R.string.button_text_logout),
+                                    style = TraktTheme.typography.buttonTertiary,
+                                    color = TraktTheme.colors.textPrimary,
+                                )
+                            },
+                            onClick = {
+                                onLogoutClick()
+                                showMenu = false
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_logout),
+                                    contentDescription = null,
+                                    tint = TraktTheme.colors.textPrimary,
+                                    modifier = Modifier.size(22.dp),
+                                )
+                            },
+                        )
+                    }
+                }
             }
         }
     }
