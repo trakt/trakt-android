@@ -32,6 +32,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource.Source.ALL
@@ -77,6 +78,7 @@ internal class AllWatchlistViewModel(
 
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialMode)
+    private val sortingState = MutableStateFlow(initialState.sorting)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
@@ -128,10 +130,13 @@ internal class AllWatchlistViewModel(
                     return@launch
                 }
 
-                val localItems = when (filterState.value) {
-                    MEDIA -> getWatchlistUseCase.getLocalWatchlist()
-                    SHOWS -> getShowsWatchlistUseCase.getLocalWatchlist()
-                    MOVIES -> getMoviesWatchlistUseCase.getLocalWatchlist()
+                val filter = filterState.value
+                val sorting = sortingState.value
+
+                val localItems = when (filter) {
+                    MEDIA -> getWatchlistUseCase.getLocalWatchlist(sort = sorting)
+                    SHOWS -> getShowsWatchlistUseCase.getLocalWatchlist(sort = sorting)
+                    MOVIES -> getMoviesWatchlistUseCase.getLocalWatchlist(sort = sorting)
                 }
 
                 if (localItems.isNotEmpty()) {
@@ -145,10 +150,10 @@ internal class AllWatchlistViewModel(
                 }
 
                 itemsState.update {
-                    when (filterState.value) {
-                        MEDIA -> getWatchlistUseCase.getWatchlist()
-                        SHOWS -> getShowsWatchlistUseCase.getWatchlist()
-                        MOVIES -> getMoviesWatchlistUseCase.getWatchlist()
+                    when (filter) {
+                        MEDIA -> getWatchlistUseCase.getWatchlist(sort = sorting)
+                        SHOWS -> getShowsWatchlistUseCase.getWatchlist(sort = sorting)
+                        MOVIES -> getMoviesWatchlistUseCase.getWatchlist(sort = sorting)
                     }
                 }
             } catch (error: Exception) {
@@ -182,6 +187,21 @@ internal class AllWatchlistViewModel(
         }
         viewModelScope.launch {
             filterState.update { newFilter }
+            loadData(localOnly = true)
+        }
+    }
+
+    fun setSorting(newSorting: Sorting) {
+        if (newSorting == sortingState.value) {
+            return
+        }
+        viewModelScope.launch {
+            sortingState.update {
+                it.copy(
+                    type = newSorting.type,
+                    order = newSorting.order,
+                )
+            }
             loadData(localOnly = true)
         }
     }
@@ -303,6 +323,7 @@ internal class AllWatchlistViewModel(
         loadingState,
         itemsState,
         filterState,
+        sortingState,
         collectionStateProvider.stateFlow,
         navigateShow,
         navigateMovie,
@@ -313,11 +334,12 @@ internal class AllWatchlistViewModel(
             loading = state[0] as LoadingState,
             items = state[1] as? ImmutableList<WatchlistItem>,
             filter = state[2] as? MediaMode,
-            collection = state[3] as UserCollectionState,
-            navigateShow = state[4] as? TraktId,
-            navigateMovie = state[5] as? TraktId,
-            info = state[6] as? StringResource,
-            error = state[7] as? Exception,
+            sorting = state[3] as Sorting,
+            collection = state[4] as UserCollectionState,
+            navigateShow = state[5] as? TraktId,
+            navigateMovie = state[6] as? TraktId,
+            info = state[7] as? StringResource,
+            error = state[8] as? Exception,
         )
     }.stateIn(
         scope = viewModelScope,

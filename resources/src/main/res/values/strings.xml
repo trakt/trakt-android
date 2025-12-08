@@ -55,7 +55,8 @@
     <string name="dialog_title_comment">Review</string>
     <string name="episode_footer_season_episode">S%1$d • E%2$d</string>
     <string name="error_text_lists_limit">You have reached the limit of your personal lists. Upgrade to VIP for unlimited amount of lists!</string>
-    <string name="error_text_unexpected_error_short">Uh oh… this wasn\'t planned. If this keeps happening, please contact Trakt support.</string>
+    <string name="error_text_unexpected_error_short">Uh oh… this wasn\'t planned. If this keeps happening, please contact Trakt support.</string>\
+    <string name="error_text_vip_only_feature" translatable="false">This feature can be accessed only by VIP users. Upgrade your account to VIP and unlock the full Trakt experience!</string>
     <string name="header_age">Age</string>
     <string name="header_birthday">Birthday</string>
     <string name="header_community_sentiment">Community Sentiment</string>
@@ -257,5 +258,11 @@
     <string name="input_prompt_display_name">What should your display name be?</string>
     <string name="input_prompt_location">Where are you located?</string>
     <string name="input_prompt_about">Tell us a bit about yourself.</string>
-    <string name="error_text_vip_only_feature">This feature can be accessed only by VIP users. Upgrade your account to VIP and unlock the full Trakt experience!</string>
+
+    <string name="text_sort_default">Default</string>
+    <string name="text_sort_date_added">Date Added</string>
+    <string name="text_sort_runtime">Runtime</string>
+    <string name="text_sort_rating">Rating</string>
+    <string name="text_sort_release_date">Release Date</string>
+
 </resources>

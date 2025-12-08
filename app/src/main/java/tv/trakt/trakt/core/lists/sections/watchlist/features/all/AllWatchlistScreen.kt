@@ -1,9 +1,14 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@file:OptIn(
+    ExperimentalMaterial3Api::class,
+    ExperimentalFoundationApi::class,
+    ExperimentalMaterial3ExpressiveApi::class,
+)
 
 package tv.trakt.trakt.core.lists.sections.watchlist.features.all
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,6 +16,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
@@ -21,6 +27,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,9 +50,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.sorting.SortTypeList
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.views.AllWatchlistMovieView
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.views.AllWatchlistShowView
 import tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies.sheets.WatchlistMovieSheet
@@ -62,6 +70,8 @@ import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
+import tv.trakt.trakt.ui.components.sorting.SortingSplitButton
+import tv.trakt.trakt.ui.components.sorting.sheets.SortSelectionSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -78,6 +88,7 @@ internal fun AllWatchlistScreen(
     var contextMovieSheet by remember { mutableStateOf<MovieItem?>(null) }
     var contextShowSheet by remember { mutableStateOf<ShowItem?>(null) }
     var dateSheet by remember { mutableStateOf<WatchlistItem?>(null) }
+    var sortSheet by remember { mutableStateOf<SortTypeList?>(null) }
 
     LaunchedEffect(state) {
         state.navigateShow?.let {
@@ -123,6 +134,17 @@ internal fun AllWatchlistScreen(
             }
         },
         onFilterClick = { viewModel.setFilter(it) },
+        onSortTypeClick = {
+            sortSheet = state.sorting.type
+        },
+        onSortOrderClick = {
+            val sorting = state.sorting
+            viewModel.setSorting(
+                sorting.copy(
+                    order = sorting.order.toggle(),
+                ),
+            )
+        },
         onBackClick = onNavigateBack,
     )
 
@@ -167,12 +189,30 @@ internal fun AllWatchlistScreen(
                             customDate = date,
                         )
                     }
-                    is ShowItem -> Unit
+
+                    is ShowItem -> {
+                        Unit
+                    }
                 }
             }
         },
         onDismiss = {
             dateSheet = null
+        },
+    )
+
+    SortSelectionSheet(
+        active = sortSheet != null,
+        selected = sortSheet,
+        onResult = {
+            viewModel.setSorting(
+                state.sorting.copy(
+                    type = it,
+                ),
+            )
+        },
+        onDismiss = {
+            sortSheet = null
         },
     )
 }
@@ -187,6 +227,8 @@ internal fun AllWatchlistContent(
     onCheckLongClick: (WatchlistItem) -> Unit = {},
     onLongClick: (WatchlistItem) -> Unit = {},
     onFilterClick: (MediaMode) -> Unit = {},
+    onSortTypeClick: () -> Unit = {},
+    onSortOrderClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
     val listState = rememberLazyListState(
@@ -221,14 +263,16 @@ internal fun AllWatchlistContent(
         )
 
         ContentList(
-            subtitle = stringResource(R.string.text_sort_recently_added),
             listState = listState,
             listItems = (state.items ?: emptyList()).toImmutableList(),
             listFilter = state.filter,
+            listSorting = state.sorting,
             collection = state.collection,
             loading = state.loading.isLoading,
             contentPadding = contentPadding,
             onFilterClick = onFilterClick,
+            onSortTypeClick = onSortTypeClick,
+            onSortOrderClick = onSortOrderClick,
             onClick = onClick,
             onCheckClick = onCheckClick,
             onCheckLongClick = onCheckLongClick,
@@ -240,10 +284,7 @@ internal fun AllWatchlistContent(
 }
 
 @Composable
-private fun TitleBar(
-    subtitle: String,
-    modifier: Modifier = Modifier,
-) {
+private fun TitleBar(modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = spacedBy(12.dp),
@@ -260,7 +301,6 @@ private fun TitleBar(
         )
         TraktHeader(
             title = stringResource(R.string.page_title_watchlist),
-            subtitle = subtitle,
         )
     }
 }
@@ -271,8 +311,8 @@ private fun ContentList(
     listState: LazyListState,
     listItems: ImmutableList<WatchlistItem>,
     listFilter: MediaMode?,
+    listSorting: Sorting?,
     collection: UserCollectionState,
-    subtitle: String,
     loading: Boolean,
     contentPadding: PaddingValues,
     onClick: (WatchlistItem) -> Unit,
@@ -280,6 +320,8 @@ private fun ContentList(
     onCheckLongClick: (WatchlistItem) -> Unit,
     onLongClick: (WatchlistItem) -> Unit,
     onFilterClick: (MediaMode) -> Unit,
+    onSortTypeClick: () -> Unit,
+    onSortOrderClick: () -> Unit,
     onTopOfList: () -> Unit,
     onBackClick: () -> Unit,
 ) {
@@ -305,18 +347,19 @@ private fun ContentList(
     ) {
         item {
             TitleBar(
-                subtitle = subtitle,
                 modifier = Modifier
-                    .padding(bottom = 8.dp)
                     .onClick { onBackClick() },
             )
         }
 
-        if (listFilter != null && !loading) {
+        if (listFilter != null && listSorting != null && !loading) {
             item {
                 ContentFilters(
                     watchlistFilter = listFilter,
+                    watchlistSort = listSorting,
                     onFilterClick = onFilterClick,
+                    onSortTypeClick = onSortTypeClick,
+                    onSortOrderClick = onSortOrderClick,
                 )
             }
         }
@@ -325,9 +368,6 @@ private fun ContentList(
             items = listItems,
             key = { it.key },
         ) { item ->
-            val isReleased = remember {
-                item.released?.isNowOrBefore() ?: false
-            }
             when (item) {
                 is ShowItem -> AllWatchlistShowView(
                     item = item,
@@ -341,10 +381,10 @@ private fun ContentList(
                             fadeOutSpec = null,
                         ),
                 )
+
                 is MovieItem -> AllWatchlistMovieView(
                     item = item,
                     watched = collection.isWatched(item.id),
-                    showCheck = isReleased,
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
                     onCheckClick = { onCheckClick(item) },
@@ -364,16 +404,37 @@ private fun ContentList(
 @Composable
 private fun ContentFilters(
     watchlistFilter: MediaMode,
+    watchlistSort: Sorting,
+    onSortTypeClick: () -> Unit,
+    onSortOrderClick: () -> Unit,
     onFilterClick: (MediaMode) -> Unit,
 ) {
-    MediaModeFilters(
-        selected = watchlistFilter,
-        onClick = onFilterClick,
-        paddingVertical = PaddingValues(
-            top = 0.dp,
-            bottom = 19.dp,
-        ),
-    )
+    Row(
+        verticalAlignment = CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 19.dp),
+    ) {
+        MediaModeFilters(
+            selected = watchlistFilter,
+            onClick = onFilterClick,
+            height = 32.dp,
+            unselectedTextVisible = false,
+            paddingVertical = PaddingValues(
+                top = 0.dp,
+                bottom = 0.dp,
+            ),
+        )
+
+        SortingSplitButton(
+            text = stringResource(watchlistSort.type.displayStringRes),
+            order = watchlistSort.order,
+            height = 32.dp,
+            onLeadingClick = onSortTypeClick,
+            onTrailingClick = onSortOrderClick,
+        )
+    }
 }
 
 @Composable

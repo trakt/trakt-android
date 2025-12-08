@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.resources.R
@@ -43,7 +44,9 @@ internal fun FilterChip(
     selected: Boolean,
     text: String,
     modifier: Modifier = Modifier,
+    height: Dp = 28.dp,
     animated: Boolean = true,
+    unselectedTextVisible: Boolean = true,
     leadingContent: @Composable (() -> Unit)? = null,
     endContent: @Composable (() -> Unit)? = null,
     paddingHorizontal: PaddingValues = PaddingValues(
@@ -57,7 +60,7 @@ internal fun FilterChip(
         horizontalArrangement = spacedBy(0.dp),
         modifier = modifier
             .onClick(onClick = onClick)
-            .height(28.dp)
+            .height(height)
             .border(
                 width = 1.dp,
                 color = if (selected) {
@@ -75,29 +78,52 @@ internal fun FilterChip(
                     Color.Transparent
                 },
             )
-            .padding(paddingHorizontal),
+            .padding(paddingHorizontal)
+            .padding(
+                start = when {
+                    !selected && leadingContent != null && !unselectedTextVisible -> 3.75.dp
+                    else -> 0.dp
+                },
+            ),
     ) {
+        val visible = (selected && leadingContent != null) || !unselectedTextVisible
         if (animated) {
             AnimatedVisibility(
-                visible = selected && leadingContent != null,
+                visible = visible,
                 enter = fadeIn(tween(150)) + expandHorizontally(tween(150)),
                 exit = fadeOut(tween(150)) + shrinkHorizontally(tween(150)),
             ) {
                 leadingContent?.invoke()
             }
-        } else if (selected && leadingContent != null) {
-            leadingContent.invoke()
+        } else if (visible) {
+            leadingContent?.invoke()
         }
 
-        Text(
-            text = text,
-            style = TraktTheme.typography.buttonTertiary,
-            color = TraktTheme.colors.textPrimary,
-            maxLines = 1,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .padding(start = 4.dp),
-        )
+        if (animated) {
+            AnimatedVisibility(
+                visible = selected || unselectedTextVisible,
+                enter = fadeIn(tween(150)) + expandHorizontally(tween(150)),
+                exit = fadeOut(tween(150)) + shrinkHorizontally(tween(150)),
+            ) {
+                Text(
+                    text = text,
+                    style = TraktTheme.typography.buttonTertiary,
+                    color = TraktTheme.colors.textPrimary,
+                    maxLines = 1,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(start = 4.dp),
+                )
+            }
+        } else if (selected || unselectedTextVisible) {
+            Text(
+                text = text,
+                style = TraktTheme.typography.buttonTertiary,
+                color = TraktTheme.colors.textPrimary,
+                maxLines = 1,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(start = 4.dp),
+            )
+        }
 
         if (animated) {
             AnimatedVisibility(
@@ -171,6 +197,26 @@ private fun Preview2() {
             leadingContent = {
                 Icon(
                     painter = painterResource(R.drawable.ic_check),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier.size(FilterChipDefaults.IconSize),
+                )
+            },
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun Preview3() {
+    TraktTheme {
+        FilterChip(
+            selected = false,
+            text = "Selected Chip",
+            unselectedTextVisible = false,
+            leadingContent = {
+                Icon(
+                    painter = painterResource(R.drawable.ic_movies_off),
                     contentDescription = null,
                     tint = TraktTheme.colors.textPrimary,
                     modifier = Modifier.size(FilterChipDefaults.IconSize),

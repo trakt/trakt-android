@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -21,6 +22,8 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun MediaModeFilters(
     modifier: Modifier = Modifier,
     selected: MediaMode? = null,
+    unselectedTextVisible: Boolean = true,
+    height: Dp = 28.dp,
     paddingHorizontal: PaddingValues = PaddingValues.Zero,
     paddingVertical: PaddingValues = PaddingValues.Zero,
     onClick: (MediaMode) -> Unit = { _ -> },
@@ -45,6 +48,8 @@ internal fun MediaModeFilters(
                 selected = selected == filter,
                 animated = initialSelected.value != null,
                 text = stringResource(filter.displayRes),
+                height = height,
+                unselectedTextVisible = unselectedTextVisible,
                 leadingContent = {
                     Icon(
                         painter = painterResource(filter.offIcon),
@@ -66,10 +71,15 @@ internal fun MediaModeFilters(
 private fun Preview() {
     TraktTheme {
         Column(
-            verticalArrangement = spacedBy(8.dp),
+            verticalArrangement = spacedBy(12.dp),
         ) {
             MediaModeFilters(
                 selected = null,
+                unselectedTextVisible = false,
+            )
+            MediaModeFilters(
+                selected = null,
+                unselectedTextVisible = true,
             )
             for (mode in MediaMode.entries) {
                 MediaModeFilters(
