@@ -503,6 +503,7 @@ fun DetailsRating(
 ) {
     Box(
         modifier = modifier
+            .fillMaxWidth()
             .animateContentSize(
                 animationSpec = tween(200, delayMillis = 250),
             ),
