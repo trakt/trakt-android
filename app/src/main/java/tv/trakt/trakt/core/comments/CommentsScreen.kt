@@ -317,7 +317,6 @@ private fun ContentList(
         item {
             TitleBar(
                 modifier = Modifier
-                    .padding(bottom = 2.dp)
                     .onClick {
                         onBackClick?.invoke()
                     },
@@ -402,6 +401,7 @@ private fun ContentFilters(
             FilterChip(
                 selected = selectedFilter == filter,
                 text = stringResource(filter.displayRes),
+                height = 32.dp,
                 leadingContent = {
                     Icon(
                         painter = painterResource(filter.iconRes),
