@@ -13,6 +13,7 @@ internal data class YounifyState(
     val younifyServices: ImmutableList<StreamingService>? = null,
     val syncDataPrompt: String? = null,
     val loading: LoadingState = LoadingState.IDLE,
+    val logs: List<String> = emptyList(),
     val info: StringResource? = null,
     val error: StringResource? = null,
 )

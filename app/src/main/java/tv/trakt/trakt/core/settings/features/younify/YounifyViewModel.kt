@@ -69,6 +69,7 @@ internal class YounifyViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
+    private val logsState = MutableStateFlow(initialState.logs)
 
     private var dataJob: Job? = null
     private var refreshTokenJob: Job? = null
@@ -378,6 +379,7 @@ internal class YounifyViewModel(
             level: LogLevel,
             message: String,
         ) {
+            logsState.update { it.plus(message) }
             Timber.log(level.value, "Younify: $message")
         }
     }
@@ -389,6 +391,7 @@ internal class YounifyViewModel(
         loadingState,
         infoState,
         errorState,
+        logsState,
     ) { state ->
         @Suppress("UNCHECKED_CAST")
         YounifyState(
@@ -398,6 +401,7 @@ internal class YounifyViewModel(
             loading = state[3] as LoadingState,
             info = state[4] as StringResource?,
             error = state[5] as StringResource?,
+            logs = state[6] as List<String>,
         )
     }.stateIn(
         scope = viewModelScope,

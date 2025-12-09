@@ -2,6 +2,7 @@
 
 package tv.trakt.trakt.core.settings.features.younify
 
+import android.content.Intent
 import androidx.activity.compose.LocalActivityResultRegistryOwner
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -22,6 +23,8 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -39,6 +42,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
@@ -47,11 +51,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import timber.log.Timber
 import tv.trakt.trakt.LocalSnackbarState
+import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -75,6 +82,7 @@ internal fun YounifyScreen(
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
+    val uriHandler = LocalUriHandler.current
     val snack = LocalSnackbarState.current
     val registry = LocalActivityResultRegistryOwner.current
 
@@ -100,6 +108,24 @@ internal fun YounifyScreen(
         },
         onServiceUnlinkClick = {
             confirmUnlinkSheet = it
+        },
+        onSendLogsClick = {
+            val intent = Intent(Intent.ACTION_SENDTO).apply {
+                data = "mailto:".toUri()
+                putExtra(Intent.EXTRA_EMAIL, arrayOf(Config.WEB_SUPPORT_MAIL))
+                putExtra(Intent.EXTRA_SUBJECT, "Automatic Tracking - Logs")
+                putExtra(Intent.EXTRA_TEXT, state.logs.joinToString("\n"))
+            }
+
+            try {
+                context.startActivity(intent)
+            } catch (error: Exception) {
+                // No email client installed
+                Timber.w(error, "Unable to start email client")
+            }
+        },
+        onAllSettingsClick = {
+            uriHandler.openUri(Config.WEB_SETTINGS_SCROBBLING_URL)
         },
         onBackClick = onNavigateBack,
     )
@@ -169,6 +195,8 @@ private fun YounifyScreenContent(
     onServiceActionClick: (StreamingService) -> Unit = { },
     onServiceUnlinkClick: (StreamingService) -> Unit = { },
     onServiceEditClick: (StreamingService) -> Unit = { },
+    onSendLogsClick: () -> Unit = { },
+    onAllSettingsClick: () -> Unit = { },
     onBackClick: () -> Unit = { },
 ) {
     val context = LocalContext.current
@@ -207,6 +235,8 @@ private fun YounifyScreenContent(
                 .padding(contentPadding),
         ) {
             TitleBar(
+                onSendLogsClick = onSendLogsClick,
+                onAllSettingsClick = onAllSettingsClick,
                 modifier = Modifier
                     .onClick {
                         onBackClick()
@@ -328,28 +358,33 @@ private fun YounifyServiceView(
                     },
                 )
 
-                service.link?.username?.let {
-                    Text(
-                        text = "${stringResource(R.string.text_younify_user)}: $it",
-                        style = TraktTheme.typography.meta.copy(
-                            fontWeight = W400,
-                        ),
-                        color = TraktTheme.colors.textSecondary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(2.dp),
+                ) {
+                    service.link?.username?.let { username ->
+                        Text(
+                            text = username,
+                            style = TraktTheme.typography.meta.copy(
+                                fontWeight = W400,
+                            ),
+                            color = TraktTheme.colors.textSecondary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
 
-                service.link?.profileName?.let {
-                    Text(
-                        text = "${stringResource(R.string.text_younify_profile)}: $it",
-                        style = TraktTheme.typography.meta.copy(
-                            fontWeight = W400,
-                        ),
-                        color = TraktTheme.colors.textSecondary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
+                    service.link?.profileName?.let { profile ->
+                        Text(
+                            text = "($profile)",
+                            style = TraktTheme.typography.meta.copy(
+                                fontWeight = W400,
+                            ),
+                            color = TraktTheme.colors.textSecondary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
                 }
             }
         }
@@ -397,11 +432,15 @@ private fun YounifyServiceView(
 }
 
 @Composable
-private fun TitleBar(modifier: Modifier = Modifier) {
+private fun TitleBar(
+    modifier: Modifier = Modifier,
+    onAllSettingsClick: () -> Unit = { },
+    onSendLogsClick: () -> Unit = { },
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth(),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -420,6 +459,78 @@ private fun TitleBar(modifier: Modifier = Modifier) {
             TraktHeader(
                 title = stringResource(R.string.header_settings_automatic_tracking),
             )
+        }
+
+        Box {
+            var showMenu by remember { mutableStateOf(false) }
+
+            Icon(
+                painter = painterResource(R.drawable.ic_more_vertical),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .size(18.dp)
+                    .onClick {
+                        showMenu = true
+                    },
+            )
+
+            DropdownMenu(
+                expanded = showMenu,
+                containerColor = TraktTheme.colors.dialogContainer,
+                shape = RoundedCornerShape(16.dp),
+                onDismissRequest = {
+                    showMenu = false
+                },
+            ) {
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = stringResource(R.string.header_settings_all_settings),
+                            style = TraktTheme.typography.buttonTertiary,
+                            color = TraktTheme.colors.textPrimary,
+                            modifier = Modifier.onClick(
+                                onClick = onAllSettingsClick,
+                            ),
+                        )
+                    },
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_external),
+                            contentDescription = null,
+                            tint = TraktTheme.colors.textPrimary,
+                            modifier = Modifier.size(20.dp),
+                        )
+                    },
+                    onClick = {
+                        showMenu = false
+                    },
+                )
+
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = stringResource(R.string.text_younify_send_logs),
+                            style = TraktTheme.typography.buttonTertiary,
+                            color = TraktTheme.colors.textPrimary,
+                            modifier = Modifier.onClick(
+                                onClick = onSendLogsClick,
+                            ),
+                        )
+                    },
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_share),
+                            contentDescription = null,
+                            tint = TraktTheme.colors.textPrimary,
+                            modifier = Modifier.size(22.dp),
+                        )
+                    },
+                    onClick = {
+                        showMenu = false
+                    },
+                )
+            }
         }
     }
 }

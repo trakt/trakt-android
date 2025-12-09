@@ -237,8 +237,7 @@
     <string name="text_younify_link_linked">Linked</string>
     <string name="text_younify_link_unlinked">Not linked</string>
     <string name="text_younify_link_broken">Broken</string>
-    <string name="text_younify_user">Username</string>
-    <string name="text_younify_profile">Profile</string>
+    <string name="text_younify_send_logs">Send Logs</string>
 
     <string name="dialog_title_younify_data_sync">Sync Existing Data</string>
     <string name="dialog_prompt_younify_data_sync">Would you like to import your existing data to your Trakt account, or only sync new data from now on?</string>

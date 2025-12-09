@@ -332,14 +332,6 @@ private fun SettingsAccount(
                 aboutSheet = state.user?.about
             },
         )
-
-        SettingsTextField(
-            text = stringResource(R.string.header_settings_all_settings),
-            enabled = !state.logoutLoading.isLoading,
-            onClick = {
-                uriHandler.openUri(Config.WEB_SETTINGS_URL)
-            },
-        )
     }
 
     // Sheets
@@ -441,6 +433,14 @@ private fun SettingsMisc(
         TraktHeader(
             title = stringResource(R.string.header_settings_general).uppercase(),
             titleStyle = TraktTheme.typography.heading6,
+        )
+
+        SettingsTextField(
+            text = stringResource(R.string.header_settings_all_settings),
+            enabled = !state.logoutLoading.isLoading,
+            onClick = {
+                uriHandler.openUri(Config.WEB_SETTINGS_URL)
+            },
         )
 
         SettingsTextField(

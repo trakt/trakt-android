@@ -12,8 +12,9 @@ object Config {
     const val WEB_ABOUT_US_URL: String = "https://trakt.tv/about?native_app_mode=true"
     const val WEB_TERMS_URL: String = "https://trakt.tv/terms?native_app_mode=true"
     const val WEB_PRIVACY_URL: String = "https://trakt.tv/privacy?native_app_mode=true"
-    const val WEB_SETTINGS_URL: String = "https://trakt.tv/settings?native_app_mode=true"
     const val WEB_FORUMS_URL: String = "https://forums.trakt.tv/"
+    const val WEB_SETTINGS_URL: String = "https://trakt.tv/settings?native_app_mode=true"
+    const val WEB_SETTINGS_SCROBBLING_URL: String = "https://trakt.tv/settings/scrobblers?native_app_mode=true"
 
     const val WEB_SOCIAL_INSTAGRAM_URL: String = "https://www.instagram.com/trakt_app/"
     const val WEB_SOCIAL_X_URL: String = "https://x.com/trakt"
