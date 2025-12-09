@@ -329,7 +329,7 @@ private fun YounifyServiceView(
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(72.dp)
+                    .size(64.dp)
                     .clip(RoundedCornerShape(12.dp)),
             )
 
