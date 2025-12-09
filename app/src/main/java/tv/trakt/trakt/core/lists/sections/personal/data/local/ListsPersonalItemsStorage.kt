@@ -47,15 +47,15 @@ internal class ListsPersonalItemsStorage : ListsPersonalItemsLocalDataSource {
             val newItems = shows.mapIndexed { index, show ->
                 PersonalListItem.ShowItem(
                     show = show,
-                    rank = currentItems.size + (index + 1),
+                    rank = Int.MAX_VALUE,
                     listedAt = nowUtcInstant(),
                 )
             }
 
-            storage[listId] = (newItems + currentItems)
+            storage[listId] = (currentItems + newItems)
                 .distinctBy {
                     if (it is PersonalListItem.ShowItem) {
-                        it.show.ids.trakt
+                        it.key
                     } else {
                         null
                     }
@@ -95,15 +95,15 @@ internal class ListsPersonalItemsStorage : ListsPersonalItemsLocalDataSource {
             val newItems = movies.mapIndexed { index, movie ->
                 PersonalListItem.MovieItem(
                     movie = movie,
-                    rank = currentItems.size + (index + 1),
+                    rank = Int.MAX_VALUE,
                     listedAt = nowUtcInstant(),
                 )
             }
 
-            storage[listId] = (newItems + currentItems)
+            storage[listId] = (currentItems + newItems)
                 .distinctBy {
                     if (it is PersonalListItem.MovieItem) {
-                        it.movie.ids.trakt
+                        it.key
                     } else {
                         null
                     }

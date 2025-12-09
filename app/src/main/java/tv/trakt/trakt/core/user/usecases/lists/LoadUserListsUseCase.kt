@@ -11,6 +11,7 @@ import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.ListItemDto
@@ -44,6 +45,7 @@ internal class LoadUserListsUseCase(
                             listId = list.ids.trakt.toTraktId(),
                             extended = "min",
                             limit = null, // -> all
+                            sorting = Sorting.Default,
                         )
                         list to items
                     }

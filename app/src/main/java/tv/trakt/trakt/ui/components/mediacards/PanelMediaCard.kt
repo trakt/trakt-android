@@ -26,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.draw.drawWithContent
@@ -76,6 +77,7 @@ internal fun PanelMediaCard(
     more: Boolean = true,
     watched: Boolean = false,
     watchlist: Boolean = false,
+    enabled: Boolean = true,
     containerColor: Color = TraktTheme.colors.panelCardContainer,
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
@@ -101,9 +103,11 @@ internal fun PanelMediaCard(
             .graphicsLayer {
                 clip = false
             }
+            .alpha(if (enabled) 1F else 0.33F)
             .background(containerColor, RoundedCornerShape(corner))
             .height(TraktTheme.size.verticalMediumMediaCardSize / VerticalImageAspectRatio)
             .onClickCombined(
+                enabled = enabled,
                 onClick = onClick,
                 onLongClick = onLongClick,
             ),
@@ -127,7 +131,10 @@ internal fun PanelMediaCard(
                         .aspectRatio(VerticalImageAspectRatio)
                         .width(TraktTheme.size.verticalMediumMediaCardSize)
                         .clip(RoundedCornerShape(corner - 3.dp))
-                        .onClick(onClick = onImageClick ?: {}),
+                        .onClick(
+                            enabled = enabled,
+                            onClick = onImageClick ?: {},
+                        ),
                 )
             } else {
                 Box(

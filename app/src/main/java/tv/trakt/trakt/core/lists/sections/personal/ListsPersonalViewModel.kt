@@ -109,7 +109,6 @@ internal class ListsPersonalViewModel(
                     getListItemsUseCase.getLocalItems(
                         listId = listId,
                         filter = filterState.value,
-                        sort = Sorting.Default,
                     )
                 }
             } catch (error: Exception) {
@@ -131,7 +130,6 @@ internal class ListsPersonalViewModel(
                 val localItems = getListItemsUseCase.getLocalItems(
                     listId = listId,
                     filter = filterState.value,
-                    sort = Sorting.Default,
                 )
 
                 if (localItems.isNotEmpty()) {
@@ -146,7 +144,7 @@ internal class ListsPersonalViewModel(
                         listId = listId,
                         limit = LISTS_SECTION_LIMIT,
                         filter = filterState.value,
-                        sort = Sorting.Default,
+                        sorting = Sorting.Default,
                     )
                 }
             } catch (error: Exception) {

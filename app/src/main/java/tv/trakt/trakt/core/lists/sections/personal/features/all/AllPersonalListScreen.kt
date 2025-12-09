@@ -65,6 +65,7 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
 import tv.trakt.trakt.ui.components.sorting.SortingSplitButton
 import tv.trakt.trakt.ui.components.sorting.sheets.SortSelectionSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -98,6 +99,7 @@ internal fun AllPersonalListScreen(
     AllPersonalListContent(
         state = state,
         modifier = modifier,
+        onLoadMoreData = viewModel::loadMoreData,
         onClick = {
             when (it) {
                 is MovieItem -> viewModel.navigateToMovie(it.movie)
@@ -112,7 +114,9 @@ internal fun AllPersonalListScreen(
         },
         onFilterClick = viewModel::setFilter,
         onSortTypeClick = {
-            sortSheet = state.sorting.type
+            if (!state.loading.isLoading && !state.loadingMore.isLoading) {
+                sortSheet = state.sorting.type
+            }
         },
         onSortOrderClick = {
             val sorting = state.sorting
@@ -178,7 +182,7 @@ internal fun AllPersonalListScreen(
 internal fun AllPersonalListContent(
     state: AllPersonalListState,
     modifier: Modifier = Modifier,
-    onTopOfList: () -> Unit = {},
+    onLoadMoreData: () -> Unit = {},
     onClick: (PersonalListItem) -> Unit = {},
     onLongClick: (PersonalListItem) -> Unit = {},
     onFilterClick: (MediaMode) -> Unit = {},
@@ -221,6 +225,8 @@ internal fun AllPersonalListContent(
         ContentList(
             title = state.list?.name ?: "",
             subtitle = state.list?.description,
+            loading = state.loading.isLoading,
+            loadingMore = state.loadingMore.isLoading,
             listState = listState,
             listFilter = state.filter,
             listSorting = state.sorting,
@@ -232,9 +238,9 @@ internal fun AllPersonalListContent(
             onFilterClick = onFilterClick,
             onSortTypeClick = onSortTypeClick,
             onSortOrderClick = onSortOrderClick,
-            onTopOfList = onTopOfList,
             onBackClick = onBackClick,
             onMoreClick = onMoreClick,
+            onEndOfList = onLoadMoreData,
         )
     }
 }
@@ -331,6 +337,8 @@ private fun ContentList(
     modifier: Modifier = Modifier,
     title: String,
     subtitle: String?,
+    loading: Boolean,
+    loadingMore: Boolean,
     listState: LazyListState,
     listItems: ImmutableList<PersonalListItem>,
     listFilter: MediaMode?,
@@ -342,20 +350,19 @@ private fun ContentList(
     onFilterClick: (MediaMode) -> Unit,
     onSortTypeClick: () -> Unit,
     onSortOrderClick: () -> Unit,
-    onTopOfList: () -> Unit,
     onBackClick: () -> Unit,
     onMoreClick: () -> Unit,
+    onEndOfList: () -> Unit = {},
 ) {
-    val isScrolledToTop by remember {
+    val isScrolledToBottom by remember(listItems.size) {
         derivedStateOf {
-            listState.firstVisibleItemIndex == 0 &&
-                listState.firstVisibleItemScrollOffset == 0
+            listState.firstVisibleItemIndex >= (listItems.size - 5)
         }
     }
 
-    LaunchedEffect(isScrolledToTop) {
-        if (isScrolledToTop) {
-            onTopOfList()
+    LaunchedEffect(isScrolledToBottom) {
+        if (isScrolledToBottom) {
+            onEndOfList()
         }
     }
 
@@ -395,6 +402,7 @@ private fun ContentList(
             when (item) {
                 is ShowItem -> AllPersonalListShowView(
                     item = item,
+                    enabled = !loading,
                     showIcon = true,
                     watched = collection.isWatched(item.id),
                     watchlist = collection.isWatchlist(item.id),
@@ -410,6 +418,7 @@ private fun ContentList(
 
                 is MovieItem -> AllPersonalListMovieView(
                     item = item,
+                    enabled = !loading,
                     showIcon = true,
                     watched = collection.isWatched(item.id),
                     watchlist = collection.isWatchlist(item.id),
@@ -425,7 +434,29 @@ private fun ContentList(
             }
         }
 
-        if (listItems.isEmpty()) {
+        if (loading && listItems.isEmpty()) {
+            items(10) {
+                PanelMediaSkeletonCard(
+                    modifier = Modifier
+                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
+                )
+            }
+        } else if (loadingMore && listItems.isNotEmpty()) {
+            items(1) {
+                PanelMediaSkeletonCard(
+                    modifier = Modifier
+                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
+                )
+            }
+        } else if (listItems.isEmpty()) {
             item {
                 ContentEmpty()
             }

@@ -5,5 +5,5 @@ internal object ListsConfig {
     const val FAVORITES_SECTION_LIMIT = 20
 
     const val LISTS_SECTION_LIMIT = 40
-    const val LISTS_ALL_LIMIT = 500
+    const val LISTS_ALL_LIMIT = 100
 }

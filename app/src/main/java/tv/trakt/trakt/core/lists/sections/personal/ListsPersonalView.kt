@@ -199,7 +199,7 @@ internal fun ListsPersonalContent(
                             fontWeight = W400,
                             lineHeight = 1.em,
                         ),
-                        maxLines = 2,
+                        maxLines = 1,
                         overflow = Ellipsis,
                     )
                 }
@@ -233,6 +233,7 @@ internal fun ListsPersonalContent(
                         modifier = Modifier.padding(bottom = 3.75.dp),
                     )
                 }
+
                 DONE -> {
                     when {
                         state.error != null -> {
@@ -245,12 +246,14 @@ internal fun ListsPersonalContent(
                                 modifier = Modifier.padding(contentPadding),
                             )
                         }
+
                         state.items?.isEmpty() == true -> {
                             ContentEmptyList(
                                 contentPadding = contentPadding,
                                 modifier = Modifier.padding(bottom = 3.75.dp),
                             )
                         }
+
                         else -> {
                             ContentList(
                                 listItems = (state.items ?: emptyList()).toImmutableList(),

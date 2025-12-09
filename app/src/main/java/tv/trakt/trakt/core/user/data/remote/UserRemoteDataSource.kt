@@ -2,10 +2,13 @@ package tv.trakt.trakt.core.user.data.remote
 
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.CalendarMovieDto
 import tv.trakt.trakt.common.networking.CalendarShowDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.ListItemDto
+import tv.trakt.trakt.common.networking.ListMovieItemDto
+import tv.trakt.trakt.common.networking.ListShowItemDto
 import tv.trakt.trakt.common.networking.SocialActivityItemDto
 import tv.trakt.trakt.common.networking.SyncFavoriteMovieDto
 import tv.trakt.trakt.common.networking.SyncFavoriteShowDto
@@ -118,7 +121,24 @@ internal interface UserRemoteDataSource {
         limit: Int?,
         page: Int = 1,
         extended: String,
+        sorting: Sorting,
     ): List<ListItemDto>
+
+    suspend fun getPersonalListShowItems(
+        listId: TraktId,
+        limit: Int?,
+        page: Int = 1,
+        extended: String,
+        sorting: Sorting,
+    ): List<ListShowItemDto>
+
+    suspend fun getPersonalListMovieItems(
+        listId: TraktId,
+        limit: Int?,
+        page: Int = 1,
+        extended: String,
+        sorting: Sorting,
+    ): List<ListMovieItemDto>
 
     suspend fun getFollowing(): Map<UserCommentsDto, ZonedDateTime>
 

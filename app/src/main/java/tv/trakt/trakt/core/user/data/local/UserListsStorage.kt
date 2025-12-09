@@ -49,36 +49,6 @@ internal class UserListsStorage : UserListsLocalDataSource {
         }
     }
 
-    override suspend fun addLists(
-        lists: Map<CustomList, List<PersonalListItem>>,
-        notify: Boolean,
-    ) {
-        mutex.withLock {
-            ensureInitialized()
-            storage?.let { storage ->
-                lists.forEach { (list, items) ->
-                    storage[list.ids.trakt] = list to items
-                }
-            }
-
-            if (notify) {
-                updatedAt.tryEmit(nowUtcInstant())
-            }
-        }
-    }
-
-    override suspend fun containsList(listId: TraktId): Boolean {
-        return mutex.withLock {
-            storage?.containsKey(listId) == true
-        }
-    }
-
-    override suspend fun getListItems(listId: TraktId): List<PersonalListItem>? {
-        return mutex.withLock {
-            storage?.get(listId)?.second
-        }
-    }
-
     override suspend fun getLists(): Map<CustomList, List<PersonalListItem>> {
         return mutex.withLock {
             storage?.values?.associate { it.first to it.second } ?: emptyMap()
@@ -88,23 +58,6 @@ internal class UserListsStorage : UserListsLocalDataSource {
     override suspend fun isLoaded(): Boolean {
         return mutex.withLock {
             storage != null
-        }
-    }
-
-    override suspend fun removeLists(
-        listsIds: Set<TraktId>,
-        notify: Boolean,
-    ) {
-        mutex.withLock {
-            storage?.let { storage ->
-                listsIds.forEach { id ->
-                    storage.remove(id)
-                }
-            }
-
-            if (notify) {
-                updatedAt.tryEmit(nowUtcInstant())
-            }
         }
     }
 

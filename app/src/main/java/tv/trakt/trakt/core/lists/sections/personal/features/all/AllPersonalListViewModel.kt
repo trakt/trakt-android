@@ -35,7 +35,6 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_ALL_LIMIT
-import tv.trakt.trakt.core.lists.ListsConfig.LISTS_SECTION_LIMIT
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.ListsPersonalDestination
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
@@ -62,19 +61,22 @@ internal class AllPersonalListViewModel(
     private val destination = savedStateHandle.toRoute<ListsPersonalDestination>()
 
     private val initialState = AllPersonalListState()
-    private val initialMode = modeManager.getMode()
 
-    private val filterState = MutableStateFlow(initialMode)
+    private val filterState = MutableStateFlow(modeManager.getMode())
     private val sortingState = MutableStateFlow(initialState.sorting)
     private val listState = MutableStateFlow(initialState.list)
     private val itemsState = MutableStateFlow(initialState.items)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
+    private val loadingMoreState = MutableStateFlow(initialState.loadingMore)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var dataJob: Job? = null
     private var processingJob: Job? = null
+
+    private var page: Int = 1
+    private var hasMoreData: Boolean = true
 
     init {
         loadDetails()
@@ -98,7 +100,7 @@ internal class AllPersonalListViewModel(
                 .collect {
                     loadData(
                         ignoreErrors = true,
-                        localOnly = true,
+                        ignoreLoading = true,
                     )
                 }
         }
@@ -117,44 +119,37 @@ internal class AllPersonalListViewModel(
         }
     }
 
-    fun loadData(
+    private fun loadData(
         ignoreErrors: Boolean = false,
-        localOnly: Boolean = false,
+        ignoreLoading: Boolean = false,
     ) {
         dataJob?.cancel()
         dataJob = viewModelScope.launch {
             try {
+                page = 1
+
                 if (loadEmptyIfNeeded()) {
+                    loadingState.update { DONE }
                     return@launch
                 }
 
-                val localItems = getListItemsUseCase.getLocalItems(
-                    listId = destination.listId.toTraktId(),
-                    filter = filterState.value,
-                    sort = sortingState.value,
-                )
-                if (localItems.isNotEmpty()) {
-                    itemsState.update { localItems }
-                    loadingState.update { DONE }
-                    if (localOnly) {
-                        return@launch
-                    }
-                } else {
+                if (!ignoreLoading) {
                     loadingState.update { LOADING }
                 }
 
-                if (localItems.size >= LISTS_SECTION_LIMIT) {
-                    itemsState.update {
-                        getListItemsUseCase.getItems(
-                            listId = destination.listId.toTraktId(),
-                            limit = LISTS_ALL_LIMIT,
-                            filter = filterState.value,
-                            sort = sortingState.value,
-                        )
-                    }
-                } else if (localItems.isEmpty()) {
-                    itemsState.update { EmptyImmutableList }
+                itemsState.update {
+                    getListItemsUseCase.getRemoteItems(
+                        listId = destination.listId.toTraktId(),
+                        type = filterState.value,
+                        sorting = sortingState.value,
+                        page = 1,
+                        limit = LISTS_ALL_LIMIT,
+                    )
+                        .distinctBy { it.key }
+                        .toImmutableList()
                 }
+
+                hasMoreData = (itemsState.value?.size ?: 0) >= LISTS_ALL_LIMIT
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     if (!ignoreErrors) {
@@ -172,25 +167,68 @@ internal class AllPersonalListViewModel(
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {
             itemsState.update { EmptyImmutableList }
-            loadingState.update { DONE }
             return true
         }
 
         return false
     }
 
+    fun loadMoreData() {
+        if (loadingState.value.isLoading ||
+            loadingMoreState.value.isLoading ||
+            dataJob?.isActive == true ||
+            !hasMoreData ||
+            itemsState.value.isNullOrEmpty()
+        ) {
+            return
+        }
+
+        dataJob = viewModelScope.launch {
+            try {
+                loadingMoreState.update { LOADING }
+                val newItems = getListItemsUseCase.getRemoteItems(
+                    listId = destination.listId.toTraktId(),
+                    type = filterState.value,
+                    sorting = sortingState.value,
+                    page = page + 1,
+                    limit = LISTS_ALL_LIMIT,
+                )
+
+                itemsState.update {
+                    it?.plus(newItems)?.toImmutableList()
+                }
+
+                page += 1
+                hasMoreData = (newItems.size >= LISTS_ALL_LIMIT)
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                }
+            } finally {
+                loadingMoreState.update { DONE }
+                dataJob = null
+            }
+        }
+    }
+
     fun setFilter(newFilter: MediaMode) {
-        if (newFilter == filterState.value || loadingState.value.isLoading) {
+        if (newFilter == filterState.value ||
+            loadingState.value.isLoading ||
+            loadingMoreState.value.isLoading
+        ) {
             return
         }
         viewModelScope.launch {
             filterState.update { newFilter }
-            loadData(localOnly = true)
+            loadData()
         }
     }
 
     fun setSorting(newSorting: Sorting) {
-        if (newSorting == sortingState.value) {
+        if (newSorting == sortingState.value ||
+            loadingState.value.isLoading ||
+            loadingMoreState.value.isLoading
+        ) {
             return
         }
         viewModelScope.launch {
@@ -200,7 +238,7 @@ internal class AllPersonalListViewModel(
                     order = newSorting.order,
                 )
             }
-            loadData(localOnly = true)
+            loadData()
         }
     }
 
@@ -247,6 +285,7 @@ internal class AllPersonalListViewModel(
     @Suppress("UNCHECKED_CAST")
     val state = combine(
         loadingState,
+        loadingMoreState,
         filterState,
         sortingState,
         listState,
@@ -258,14 +297,15 @@ internal class AllPersonalListViewModel(
     ) { state ->
         AllPersonalListState(
             loading = state[0] as LoadingState,
-            filter = state[1] as MediaMode?,
-            sorting = state[2] as Sorting,
-            list = state[3] as? CustomList,
-            items = state[4] as? ImmutableList<PersonalListItem>,
-            collection = state[5] as UserCollectionState,
-            navigateShow = state[6] as? TraktId,
-            navigateMovie = state[7] as? TraktId,
-            error = state[8] as? Exception,
+            loadingMore = state[1] as LoadingState,
+            filter = state[2] as MediaMode?,
+            sorting = state[3] as Sorting,
+            list = state[4] as? CustomList,
+            items = state[5] as? ImmutableList<PersonalListItem>,
+            collection = state[6] as UserCollectionState,
+            navigateShow = state[7] as? TraktId,
+            navigateMovie = state[8] as? TraktId,
+            error = state[9] as? Exception,
         )
     }.stateIn(
         scope = viewModelScope,

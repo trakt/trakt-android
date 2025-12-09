@@ -16,6 +16,7 @@ internal fun AllPersonalListMovieView(
     showIcon: Boolean = false,
     watched: Boolean = false,
     watchlist: Boolean = false,
+    enabled: Boolean = true,
     onClick: (TraktId) -> Unit,
     onLongClick: () -> Unit,
 ) {
@@ -36,6 +37,7 @@ internal fun AllPersonalListMovieView(
         containerImageUrl = item.images?.getFanartUrl(Size.THUMB),
         watched = watched,
         watchlist = watchlist,
+        enabled = enabled,
         onClick = { onClick(item.movie.ids.trakt) },
         onLongClick = onLongClick,
         footerContent = {

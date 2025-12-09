@@ -47,7 +47,7 @@ internal sealed class PersonalListItem(
         }
 
     val key: String
-        get() = "$id-$type"
+        get() = "${id.value}-${type.value}"
 
     val images: Images?
         get() = when (this) {

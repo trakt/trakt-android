@@ -13,23 +13,9 @@ internal interface UserListsLocalDataSource {
         notify: Boolean = false,
     )
 
-    suspend fun addLists(
-        lists: Map<CustomList, List<PersonalListItem>>,
-        notify: Boolean = false,
-    )
-
-    suspend fun removeLists(
-        listsIds: Set<TraktId>,
-        notify: Boolean = false,
-    )
-
-    suspend fun containsList(listId: TraktId): Boolean
-
     suspend fun isLoaded(): Boolean
 
     suspend fun getLists(): Map<CustomList, List<PersonalListItem>>
-
-    suspend fun getListItems(listId: TraktId): List<PersonalListItem>?
 
     suspend fun addListItem(
         listId: TraktId,
