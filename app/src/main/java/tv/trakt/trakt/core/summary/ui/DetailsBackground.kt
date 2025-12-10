@@ -39,6 +39,7 @@ internal fun DetailsBackground(
     modifier: Modifier = Modifier,
     color: Color? = null,
     translation: Float = 0F,
+    aspectRatio: Float = TraktTheme.size.detailsBackgroundRatio,
 ) {
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
@@ -65,7 +66,7 @@ internal fun DetailsBackground(
     Box(
         modifier = modifier
             .width(screenWidth)
-            .aspectRatio(TraktTheme.size.detailsBackgroundRatio)
+            .aspectRatio(aspectRatio)
             .graphicsLayer {
                 translationY = translation * PARALLAX_RATIO
             },

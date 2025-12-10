@@ -39,6 +39,7 @@ internal fun UserRatingBar(
     modifier: Modifier = Modifier,
     rating: UserRating? = null,
     favorite: Boolean = false,
+    favoriteVisible: Boolean = true,
     favoriteLoading: Boolean = false,
     size: Dp = 23.dp,
     onRatingClick: (Int) -> Unit = {},
@@ -55,8 +56,8 @@ internal fun UserRatingBar(
 
     val animatedAlpha: Float by animateFloatAsState(
         when {
-            !favoriteLoading -> 1f
-            favoriteLoading -> 0.5f
+            favoriteVisible && !favoriteLoading -> 1f
+            favoriteVisible && favoriteLoading -> 0.5f
             else -> 0.0f
         },
         animationSpec = tween(350, delayMillis = 200),
@@ -114,39 +115,41 @@ internal fun UserRatingBar(
             }
         }
 
-        val scale = when {
-            lastClickedIndex.intValue == -1 -> scaleAnimation.value
-            else -> 1f
-        }
-        Icon(
-            painter = painterResource(
-                when {
-                    favorite -> R.drawable.ic_heart_on
-                    else -> R.drawable.ic_heart_off
-                },
-            ),
-            contentDescription = null,
-            tint = Color.White,
-            modifier = Modifier
-                .size(size)
-                .alpha(animatedAlpha)
-                .graphicsLayer {
-                    scaleX = scale
-                    scaleY = scale
-                }
-                .onClick {
-                    if (!favoriteLoading) {
-                        lastClickedIndex.intValue = -1
-
-                        onFavoriteClick()
-
-                        runScaleAnimation(
-                            scope = scope,
-                            animation = scaleAnimation,
-                        )
+        if (favoriteVisible) {
+            val scale = when {
+                lastClickedIndex.intValue == -1 -> scaleAnimation.value
+                else -> 1f
+            }
+            Icon(
+                painter = painterResource(
+                    when {
+                        favorite -> R.drawable.ic_heart_on
+                        else -> R.drawable.ic_heart_off
+                    },
+                ),
+                contentDescription = null,
+                tint = Color.White,
+                modifier = Modifier
+                    .size(size)
+                    .alpha(animatedAlpha)
+                    .graphicsLayer {
+                        scaleX = scale
+                        scaleY = scale
                     }
-                },
-        )
+                    .onClick {
+                        if (!favoriteLoading) {
+                            lastClickedIndex.intValue = -1
+
+                            onFavoriteClick()
+
+                            runScaleAnimation(
+                                scope = scope,
+                                animation = scaleAnimation,
+                            )
+                        }
+                    },
+            )
+        }
     }
 }
 
@@ -195,6 +198,7 @@ private fun Preview2() {
 private fun Preview3() {
     TraktTheme {
         UserRatingBar(
+            favoriteVisible = true,
             favoriteLoading = true,
             rating = UserRating(
                 mediaId = TraktId(1),

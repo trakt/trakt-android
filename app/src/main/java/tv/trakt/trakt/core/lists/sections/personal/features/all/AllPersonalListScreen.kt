@@ -404,8 +404,8 @@ private fun ContentList(
                     item = item,
                     enabled = !loading,
                     showIcon = true,
-                    watched = collection.isWatched(item.id),
-                    watchlist = collection.isWatchlist(item.id),
+                    watched = collection.isWatched(item.id, item.type),
+                    watchlist = collection.isWatchlist(item.id, item.type),
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
                     modifier = Modifier
@@ -420,8 +420,8 @@ private fun ContentList(
                     item = item,
                     enabled = !loading,
                     showIcon = true,
-                    watched = collection.isWatched(item.id),
-                    watchlist = collection.isWatchlist(item.id),
+                    watched = collection.isWatched(item.id, item.type),
+                    watchlist = collection.isWatchlist(item.id, item.type),
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
                     modifier = Modifier

@@ -589,11 +589,11 @@ fun DetailsRating(
             ),
     ) {
         if (visible) {
-            val isFavorite = rating?.favorite == true
             UserRatingBar(
                 rating = rating,
                 favoriteLoading = loading,
-                favorite = isFavorite,
+                favoriteVisible = rating != null,
+                favorite = rating?.favorite == true,
                 onRatingClick = onRatingClick,
                 onFavoriteClick = onFavoriteClick,
                 modifier = Modifier

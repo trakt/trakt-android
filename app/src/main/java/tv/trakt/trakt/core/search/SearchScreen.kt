@@ -239,8 +239,8 @@ private fun ContentList(
                     SearchGridItem(
                         item = item,
                         filter = filter,
-                        watched = collection.isWatched(item.id),
-                        watchlist = collection.isWatchlist(item.id),
+                        watched = collection.isWatched(item.id, item.type),
+                        watchlist = collection.isWatchlist(item.id, item.type),
                         onShowClick = onShowClick,
                         onShowLongClick = onShowLongClick,
                         onMovieClick = onMovieClick,
@@ -279,8 +279,8 @@ private fun ContentList(
                         SearchGridItem(
                             item = item,
                             filter = filter,
-                            watched = collection.isWatched(item.id),
-                            watchlist = collection.isWatchlist(item.id),
+                            watched = collection.isWatched(item.id, item.type),
+                            watchlist = collection.isWatchlist(item.id, item.type),
                             onShowClick = onShowClick,
                             onShowLongClick = onShowLongClick,
                             onMovieClick = onMovieClick,
@@ -295,6 +295,7 @@ private fun ContentList(
                         )
                     }
                 }
+
                 else -> {
                     items(count = 12) {
                         VerticalMediaSkeletonCard(

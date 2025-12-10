@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.summary.ui
 
+import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -275,8 +276,10 @@ internal fun DetailsHeader(
             )
         },
         genres = show.genres,
-        imageUrl = show.images?.getPosterUrl(Size.MEDIUM),
-        accentColor = show.colors?.colors?.first,
+        imageUrl = episode.images?.getScreenshotUrl()
+            ?: show.images?.getFanartUrl(),
+        imageHorizontal = true,
+        accentColor = null,
         traktRatings = when {
             isReleased -> episode.rating.ratingPercent
             else -> null
@@ -338,6 +341,7 @@ private fun DetailsHeader(
     genres: ImmutableList<String>,
     date: @Composable (() -> Unit)?,
     imageUrl: String?,
+    imageHorizontal: Boolean = false,
     status: String?,
     certification: String?,
     accentColor: Color?,
@@ -390,14 +394,20 @@ private fun DetailsHeader(
             Box(
                 modifier = Modifier.weight(1F, false),
             ) {
-                DetailsPoster(
-                    imageUrl = imageUrl,
-                    color = accentColor,
-                    modifier = Modifier.fillMaxWidth(),
-                )
+                if (!imageHorizontal) {
+                    DetailsPoster(
+                        imageUrl = imageUrl,
+                        color = accentColor,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                } else {
+                    Spacer(
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
 
                 this@Column.AnimatedVisibility(
-                    visible = !loading,
+                    visible = !imageHorizontal && !loading,
                     enter = fadeIn(tween(150)),
                     exit = fadeOut(tween(150)),
                     modifier = Modifier
@@ -406,46 +416,12 @@ private fun DetailsHeader(
                             translationY = 8.5.dp.toPx()
                         },
                 ) {
-                    Row(
-                        horizontalArrangement = spacedBy(6.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        if (creditsCount != null && creditsCount > 0) {
-                            PosterChip(
-                                text = "${stringResource(R.string.header_post_credits)} • $creditsCount".uppercase(),
-                            )
-                        }
-
-                        if (playsCount != null && playsCount > 0) {
-                            PosterChip(
-                                text = when {
-                                    playsCount > 1 -> "${stringResource(R.string.tag_text_watched)} • $playsCount"
-                                    else -> stringResource(R.string.tag_text_watched)
-                                },
-                                icon = painterResource(R.drawable.ic_check_double),
-                            )
-                        }
-
-                        if (personImdb != null) {
-                            Image(
-                                painter = painterResource(R.drawable.ic_imdb_color),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .height(22.dp)
-                                    .graphicsLayer {
-                                        translationY = 1.dp.toPx()
-                                    }
-                                    .onClick {
-                                        openExternalAppLink(
-                                            context = context,
-                                            packageId = "com.imdb.mobile",
-                                            packageName = "imdb",
-                                            uri = webImdbPersonUrl(personImdb.value).toUri(),
-                                        )
-                                    },
-                            )
-                        }
-                    }
+                    PosterChipsGroup(
+                        creditsCount = creditsCount,
+                        playsCount = playsCount,
+                        personImdb = personImdb,
+                        context = context,
+                    )
                 }
             }
 
@@ -467,6 +443,40 @@ private fun DetailsHeader(
                         .padding(start = 20.dp)
                         .size(24.dp)
                         .onClick(onClick = onShareClick),
+                )
+            }
+        }
+
+        Box {
+            if (imageHorizontal) {
+                DetailsHorizontalPoster(
+                    imageUrl = imageUrl,
+                    color = accentColor,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            top = 16.dp,
+                            start = TraktTheme.spacing.mainPageHorizontalSpace * 1.25F,
+                            end = TraktTheme.spacing.mainPageHorizontalSpace * 1.25F,
+                        ),
+                )
+            }
+
+            this@Column.AnimatedVisibility(
+                visible = imageHorizontal && !loading,
+                enter = fadeIn(tween(150)),
+                exit = fadeOut(tween(150)),
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .graphicsLayer {
+                        translationY = 8.5.dp.toPx()
+                    },
+            ) {
+                PosterChipsGroup(
+                    creditsCount = creditsCount,
+                    playsCount = playsCount,
+                    personImdb = personImdb,
+                    context = context,
                 )
             }
         }
@@ -588,6 +598,55 @@ private fun DetailsHeader(
 }
 
 @Composable
+private fun PosterChipsGroup(
+    creditsCount: Int?,
+    playsCount: Int?,
+    personImdb: ImdbId?,
+    context: Context,
+) {
+    Row(
+        horizontalArrangement = spacedBy(6.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        if (creditsCount != null && creditsCount > 0) {
+            PosterChip(
+                text = "${stringResource(R.string.header_post_credits)} • $creditsCount".uppercase(),
+            )
+        }
+
+        if (playsCount != null && playsCount > 0) {
+            PosterChip(
+                text = when {
+                    playsCount > 1 -> "${stringResource(R.string.tag_text_watched)} • $playsCount"
+                    else -> stringResource(R.string.tag_text_watched)
+                },
+                icon = painterResource(R.drawable.ic_check_double),
+            )
+        }
+
+        if (personImdb != null) {
+            Image(
+                painter = painterResource(R.drawable.ic_imdb_color),
+                contentDescription = null,
+                modifier = Modifier
+                    .height(22.dp)
+                    .graphicsLayer {
+                        translationY = 1.dp.toPx()
+                    }
+                    .onClick {
+                        openExternalAppLink(
+                            context = context,
+                            packageId = "com.imdb.mobile",
+                            packageName = "imdb",
+                            uri = webImdbPersonUrl(personImdb.value).toUri(),
+                        )
+                    },
+            )
+        }
+    }
+}
+
+@Composable
 private fun PosterChip(
     modifier: Modifier = Modifier,
     text: String,
@@ -644,6 +703,61 @@ private fun Preview() {
             genres = listOf("Action", "Adventure", "Sci-Fi").toImmutableList(),
             date = null,
             imageUrl = null,
+            status = "Released",
+            certification = "PG-13",
+            accentColor = null,
+            traktRatings = 72,
+            playsCount = 0,
+            creditsCount = 0,
+            loading = false,
+            externalRatings = ExternalRating(
+                imdb = ExternalRating.ImdbRating(
+                    rating = 7.5F,
+                    votes = 12345,
+                    link = "https://www.imdb.com/title/tt1234567/",
+                ),
+                meta = ExternalRating.MetaRating(
+                    rating = 75,
+                    link = "https://www.metacritic.com/movie/sample-movie",
+                ),
+                rotten = ExternalRating.RottenRating(
+                    rating = 85F,
+                    state = "fresh",
+                    userRating = 90,
+                    userState = "upright",
+                    link = "https://www.rottentomatoes.com/m/sample_movie",
+                ),
+            ),
+            onShareClick = {},
+            onBackClick = {},
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun Preview2() {
+    TraktTheme {
+        DetailsHeader(
+            title = "Episode Title",
+            titleHeader = {
+                Text(
+                    text = "Some Title Header".uppercase(),
+                    color = TraktTheme.colors.textPrimary,
+                    style = TraktTheme.typography.heading6.copy(fontSize = 13.sp),
+                    maxLines = 1,
+                    overflow = Ellipsis,
+                    autoSize = TextAutoSize.StepBased(
+                        maxFontSize = 13.sp,
+                        minFontSize = 10.sp,
+                        stepSize = 1.sp,
+                    ),
+                )
+            },
+            genres = listOf("Action", "Adventure", "Sci-Fi").toImmutableList(),
+            date = null,
+            imageUrl = null,
+            imageHorizontal = true,
             status = "Released",
             certification = "PG-13",
             accentColor = null,

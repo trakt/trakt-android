@@ -48,6 +48,8 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.MediaType.MOVIE
+import tv.trakt.trakt.common.model.MediaType.SHOW
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -118,7 +120,7 @@ internal fun ListsWatchlistView(
         addLocally = true,
         show = showContextSheet,
         watched = showContextSheet?.ids?.trakt?.let {
-            state.collection.isWatched(it)
+            state.collection.isWatched(it, SHOW)
         } ?: false,
         onDismiss = { showContextSheet = null },
         onRemoveWatchlist = {
@@ -133,7 +135,7 @@ internal fun ListsWatchlistView(
         addLocally = true,
         movie = movieContextSheet,
         watched = movieContextSheet?.ids?.trakt?.let {
-            state.collection.isWatched(it)
+            state.collection.isWatched(it, MOVIE)
         } ?: false,
         onDismiss = { movieContextSheet = null },
         onRemoveWatchlist = {
@@ -317,7 +319,7 @@ private fun ContentList(
             ListsWatchlistItemView(
                 item = item,
                 showMediaIcon = (filter == MEDIA),
-                watched = collection.isWatched(item.id),
+                watched = collection.isWatched(item.id, item.type),
                 onShowClick = {
                     if (item is WatchlistItem.ShowItem && !item.loading) {
                         onShowClick(item.show)

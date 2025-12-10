@@ -179,7 +179,7 @@ private fun ShowCommentsContent(
             )
 
             Row(
-                horizontalArrangement = spacedBy(12.dp),
+                horizontalArrangement = spacedBy(16.dp),
                 verticalAlignment = CenterVertically,
             ) {
                 if (state.user != null) {

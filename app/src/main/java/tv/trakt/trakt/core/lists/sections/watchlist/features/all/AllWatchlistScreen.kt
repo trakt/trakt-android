@@ -51,6 +51,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.MediaType.MOVIE
+import tv.trakt.trakt.common.model.MediaType.SHOW
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.sorting.SortTypeList
 import tv.trakt.trakt.common.model.sorting.Sorting
@@ -152,7 +154,7 @@ internal fun AllWatchlistScreen(
         movie = contextMovieSheet?.movie,
         addLocally = true,
         watched = contextMovieSheet?.movie?.ids?.trakt?.let {
-            state.collection.isWatched(it)
+            state.collection.isWatched(it, MOVIE)
         } ?: false,
         onDismiss = { contextMovieSheet = null },
         onRemoveWatchlist = {
@@ -167,7 +169,7 @@ internal fun AllWatchlistScreen(
         show = contextShowSheet?.show,
         addLocally = true,
         watched = contextShowSheet?.show?.ids?.trakt?.let {
-            state.collection.isWatched(it)
+            state.collection.isWatched(it, SHOW)
         } ?: false,
         onDismiss = { contextShowSheet = null },
         onRemoveWatchlist = {
@@ -371,7 +373,7 @@ private fun ContentList(
             when (item) {
                 is ShowItem -> AllWatchlistShowView(
                     item = item,
-                    watched = collection.isWatched(item.id),
+                    watched = collection.isWatched(item.id, SHOW),
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
                     modifier = Modifier
@@ -384,7 +386,7 @@ private fun ContentList(
 
                 is MovieItem -> AllWatchlistMovieView(
                     item = item,
-                    watched = collection.isWatched(item.id),
+                    watched = collection.isWatched(item.id, MOVIE),
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
                     onCheckClick = { onCheckClick(item) },

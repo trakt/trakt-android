@@ -352,8 +352,8 @@ private fun ContentList(
             ListsPersonalItemView(
                 item = item,
                 showMediaIcon = listFilter == MediaMode.MEDIA,
-                watched = collectionState.isWatched(item.id),
-                watchlist = collectionState.isWatchlist(item.id),
+                watched = collectionState.isWatched(item.id, item.type),
+                watchlist = collectionState.isWatchlist(item.id, item.type),
                 onMovieClick = onMovieClick,
                 onShowClick = onShowClick,
                 onLongClick = {

@@ -297,6 +297,7 @@ internal fun EpisodeDetailsContent(
                 imageUrl = state.show.images?.getFanartUrl(Size.THUMB),
                 color = state.show.colors?.colors?.second,
                 translation = listScrollConnection.resultOffset,
+                aspectRatio = TraktTheme.size.detailsBackgroundRatio * 1.33F,
             )
         }
 
@@ -512,6 +513,7 @@ fun DetailsRating(
             UserRatingBar(
                 rating = rating,
                 onRatingClick = onRatingClick,
+                favoriteVisible = false,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 20.dp)

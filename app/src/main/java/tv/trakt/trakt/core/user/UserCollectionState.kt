@@ -3,6 +3,9 @@ package tv.trakt.trakt.core.user
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableSet
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableSet
+import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.MediaType.MOVIE
+import tv.trakt.trakt.common.model.MediaType.SHOW
 import tv.trakt.trakt.common.model.TraktId
 
 @Immutable
@@ -16,11 +19,25 @@ internal data class UserCollectionState(
         val Default = UserCollectionState()
     }
 
-    fun isWatchlist(traktId: TraktId): Boolean {
-        return watchlistShows.contains(traktId) || watchlistMovies.contains(traktId)
+    fun isWatchlist(
+        traktId: TraktId,
+        type: MediaType?,
+    ): Boolean {
+        return when (type) {
+            SHOW -> watchlistShows.contains(traktId)
+            MOVIE -> watchlistMovies.contains(traktId)
+            else -> false
+        }
     }
 
-    fun isWatched(traktId: TraktId): Boolean {
-        return watchedShows.contains(traktId) || watchedMovies.contains(traktId)
+    fun isWatched(
+        traktId: TraktId,
+        type: MediaType?,
+    ): Boolean {
+        return when (type) {
+            SHOW -> watchedShows.contains(traktId)
+            MOVIE -> watchedMovies.contains(traktId)
+            else -> false
+        }
     }
 }

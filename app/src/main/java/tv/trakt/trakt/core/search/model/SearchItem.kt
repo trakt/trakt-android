@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.search.model
 
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 
 @Immutable
@@ -33,6 +34,13 @@ internal sealed class SearchItem(
             is Movie -> movie.ids.trakt
             is Show -> show.ids.trakt
             is Person -> person.ids.trakt
+        }
+
+    val type: MediaType?
+        get() = when (this) {
+            is Movie -> MediaType.MOVIE
+            is Show -> MediaType.SHOW
+            else -> null
         }
 
     val key: String

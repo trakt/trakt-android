@@ -116,8 +116,8 @@ private fun LazyListScope.listItems(
         when (item) {
             is ShowItem -> ShowListItem(
                 item = item,
-                watched = collectionState.isWatched(item.id),
-                watchlist = collectionState.isWatchlist(item.id),
+                watched = collectionState.isWatched(item.id, item.type),
+                watchlist = collectionState.isWatchlist(item.id, item.type),
                 mediaIcon = mediaIcon,
                 onClick = onClick?.let { { it(item) } },
                 onLongClick = onLongClick?.let { { it(item) } },
@@ -130,8 +130,8 @@ private fun LazyListScope.listItems(
             )
             is MovieItem -> MovieListItem(
                 item = item,
-                watched = collectionState.isWatched(item.id),
-                watchlist = collectionState.isWatchlist(item.id),
+                watched = collectionState.isWatched(item.id, item.type),
+                watchlist = collectionState.isWatchlist(item.id, item.type),
                 mediaIcon = mediaIcon,
                 onClick = onClick?.let { { it(item) } },
                 onLongClick = onLongClick?.let { { it(item) } },

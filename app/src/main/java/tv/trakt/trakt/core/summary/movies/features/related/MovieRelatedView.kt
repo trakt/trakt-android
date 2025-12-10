@@ -46,6 +46,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.user.UserCollectionState
@@ -119,6 +120,7 @@ private fun MovieRelatedContent(
                         modifier = Modifier.padding(bottom = 4.dp),
                     )
                 }
+
                 DONE -> {
                     if (state.items?.isEmpty() == true) {
                         ContentEmpty(
@@ -167,8 +169,8 @@ private fun ContentList(
             VerticalMediaCard(
                 title = item.title,
                 imageUrl = item.images?.getPosterUrl(),
-                watched = collection.isWatched(item.ids.trakt),
-                watchlist = collection.isWatchlist(item.ids.trakt),
+                watched = collection.isWatched(item.ids.trakt, MediaType.MOVIE),
+                watchlist = collection.isWatchlist(item.ids.trakt, MediaType.MOVIE),
                 onClick = { onClick?.invoke(item) },
                 onLongClick = { onLongClick?.invoke(item) },
                 chipSpacing = 10.dp,

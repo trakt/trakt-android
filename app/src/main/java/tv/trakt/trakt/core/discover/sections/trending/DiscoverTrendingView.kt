@@ -168,6 +168,7 @@ internal fun DiscoverTrendingContent(
                         modifier = Modifier.padding(bottom = 3.75.dp),
                     )
                 }
+
                 DONE -> {
                     if (state.error != null) {
                         Text(
@@ -247,8 +248,8 @@ private fun ContentList(
             ContentListItem(
                 item = item,
                 mode = mode,
-                watched = collection.isWatched(item.id),
-                watchlist = collection.isWatchlist(item.id),
+                watched = collection.isWatched(item.id, item.type),
+                watchlist = collection.isWatchlist(item.id, item.type),
                 onClick = { onClick(item) },
                 onLongClick = { onLongClick(item) },
                 modifier = Modifier.animateItem(
