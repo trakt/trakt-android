@@ -6,6 +6,8 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.MediaType.MOVIE
+import tv.trakt.trakt.common.model.MediaType.SHOW
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.features.details.ListDetailsScreen
 
@@ -17,7 +19,13 @@ internal data class ListsDetailsDestination(
     val mediaId: Int,
     val mediaType: String,
     val mediaImage: String?,
-)
+) {
+    init {
+        require(mediaType in arrayOf(SHOW.name, MOVIE.name)) {
+            "Invalid media type: $mediaType"
+        }
+    }
+}
 
 internal fun NavGraphBuilder.listDetailsScreen(
     onNavigateBack: () -> Unit,

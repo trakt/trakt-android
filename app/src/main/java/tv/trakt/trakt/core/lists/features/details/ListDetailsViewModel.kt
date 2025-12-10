@@ -10,7 +10,6 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -28,6 +27,7 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.lists.features.details.ListDetailsState.ListDetailsInfo
 import tv.trakt.trakt.core.lists.features.details.navigation.ListsDetailsDestination
@@ -54,6 +54,7 @@ internal class ListDetailsViewModel(
         ),
     )
     private val itemsState = MutableStateFlow(initialState.items)
+    private val sortingState = MutableStateFlow(initialState.sorting)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
@@ -80,6 +81,7 @@ internal class ListDetailsViewModel(
                     getListItemsUseCase.getItems(
                         listId = destination.listId.toTraktId(),
                         type = MediaType.valueOf(destination.mediaType),
+                        sorting = sortingState.value,
                     )
                 }
             } catch (error: Exception) {
@@ -105,6 +107,23 @@ internal class ListDetailsViewModel(
         }
 
         return false
+    }
+
+    fun setSorting(newSorting: Sorting) {
+        if (newSorting == sortingState.value ||
+            loadingState.value.isLoading
+        ) {
+            return
+        }
+        viewModelScope.launch {
+            sortingState.update {
+                it.copy(
+                    type = newSorting.type,
+                    order = newSorting.order,
+                )
+            }
+            loadData()
+        }
     }
 
     fun navigateToShow(show: Show) {
@@ -139,10 +158,11 @@ internal class ListDetailsViewModel(
     }
 
     @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<ListDetailsState> = combine(
+    val state = combine(
         loadingState,
         listState,
         itemsState,
+        sortingState,
         navigateShow,
         navigateMovie,
         errorState,
@@ -151,9 +171,10 @@ internal class ListDetailsViewModel(
             loading = state[0] as LoadingState,
             list = state[1] as? ListDetailsInfo,
             items = state[2] as? ImmutableList<PersonalListItem>,
-            navigateShow = state[3] as? TraktId,
-            navigateMovie = state[4] as? TraktId,
-            error = state[5] as? Exception,
+            sorting = state[3] as Sorting,
+            navigateShow = state[4] as? TraktId,
+            navigateMovie = state[5] as? TraktId,
+            error = state[6] as? Exception,
         )
     }.stateIn(
         scope = viewModelScope,

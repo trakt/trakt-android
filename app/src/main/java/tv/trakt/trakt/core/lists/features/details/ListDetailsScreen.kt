@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -51,6 +52,8 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.sorting.SortTypeList
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsMovieView
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsShowView
 import tv.trakt.trakt.core.lists.model.PersonalListItem
@@ -63,6 +66,8 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
+import tv.trakt.trakt.ui.components.sorting.SortingSplitButton
+import tv.trakt.trakt.ui.components.sorting.sheets.SortSelectionSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -91,6 +96,7 @@ internal fun ListDetailsScreen(
 
     var showContextSheet by remember { mutableStateOf<ShowItem?>(null) }
     var movieContextSheet by remember { mutableStateOf<MovieItem?>(null) }
+    var sortSheet by remember { mutableStateOf<SortTypeList?>(null) }
 
     ListDetailsContent(
         state = state,
@@ -112,6 +118,19 @@ internal fun ListDetailsScreen(
                 is ShowItem -> showContextSheet = it
             }
         },
+        onSortTypeClick = {
+            if (!state.loading.isLoading) {
+                sortSheet = state.sorting.type
+            }
+        },
+        onSortOrderClick = {
+            val sorting = state.sorting
+            viewModel.setSorting(
+                sorting.copy(
+                    order = sorting.order.toggle(),
+                ),
+            )
+        },
         onBackClick = onNavigateBack,
     )
 
@@ -128,6 +147,21 @@ internal fun ListDetailsScreen(
             movieContextSheet = null
         },
     )
+
+    SortSelectionSheet(
+        active = sortSheet != null,
+        selected = sortSheet,
+        onResult = {
+            viewModel.setSorting(
+                state.sorting.copy(
+                    type = it,
+                ),
+            )
+        },
+        onDismiss = {
+            sortSheet = null
+        },
+    )
 }
 
 @Composable
@@ -136,6 +170,8 @@ internal fun ListDetailsContent(
     modifier: Modifier = Modifier,
     onClick: (PersonalListItem) -> Unit = {},
     onLongClick: (PersonalListItem) -> Unit = {},
+    onSortTypeClick: () -> Unit = {},
+    onSortOrderClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
     val listState = rememberLazyListState(
@@ -171,12 +207,16 @@ internal fun ListDetailsContent(
 
         ContentList(
             title = state.list?.name ?: "",
+            subtitle = state.list?.description,
             listItems = (state.items ?: emptyList()).toImmutableList(),
             listState = listState,
+            listSorting = state.sorting,
             contentPadding = contentPadding,
             loading = state.loading.isLoading,
             onClick = onClick,
             onLongClick = onLongClick,
+            onSortTypeClick = onSortTypeClick,
+            onSortOrderClick = onSortOrderClick,
             onBackClick = onBackClick,
         )
     }
@@ -185,6 +225,7 @@ internal fun ListDetailsContent(
 @Composable
 private fun TitleBar(
     title: String,
+    subtitle: String?,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
 ) {
@@ -214,6 +255,7 @@ private fun TitleBar(
             )
             TraktHeader(
                 title = title,
+                subtitle = subtitle,
             )
         }
     }
@@ -224,11 +266,15 @@ private fun ContentList(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues,
     title: String,
+    subtitle: String?,
     listState: LazyListState,
     listItems: ImmutableList<PersonalListItem>,
+    listSorting: Sorting?,
     loading: Boolean,
     onClick: (PersonalListItem) -> Unit,
     onLongClick: (PersonalListItem) -> Unit,
+    onSortTypeClick: () -> Unit,
+    onSortOrderClick: () -> Unit,
     onBackClick: () -> Unit,
 ) {
     LazyColumn(
@@ -241,8 +287,20 @@ private fun ContentList(
         item {
             TitleBar(
                 title = title,
+                subtitle = subtitle,
                 onBackClick = onBackClick,
             )
+        }
+
+        if (listSorting != null) {
+            item {
+                ContentFilters(
+                    subtitle = !subtitle.isNullOrEmpty(),
+                    sorting = listSorting,
+                    onSortTypeClick = onSortTypeClick,
+                    onSortOrderClick = onSortOrderClick,
+                )
+            }
         }
 
         if (!loading && listItems.isNotEmpty()) {
@@ -263,6 +321,7 @@ private fun ContentList(
                                 fadeOutSpec = null,
                             ),
                     )
+
                     is MovieItem -> ListDetailsMovieView(
                         item = item,
                         shadow = index == 0,
@@ -291,6 +350,33 @@ private fun ContentList(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun ContentFilters(
+    subtitle: Boolean,
+    sorting: Sorting,
+    onSortTypeClick: () -> Unit,
+    onSortOrderClick: () -> Unit,
+) {
+    Row(
+        verticalAlignment = CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                top = if (subtitle) 8.dp else 0.dp,
+                bottom = 19.dp,
+            ),
+    ) {
+        SortingSplitButton(
+            text = stringResource(sorting.type.displayStringRes),
+            order = sorting.order,
+            height = 32.dp,
+            onLeadingClick = onSortTypeClick,
+            onTrailingClick = onSortOrderClick,
+        )
     }
 }
 

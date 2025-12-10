@@ -9,6 +9,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.data.remote.ListsRemoteDataSource
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 
@@ -18,12 +19,14 @@ internal class GetListItemsUseCase(
     suspend fun getItems(
         listId: TraktId,
         type: MediaType?,
+        sorting: Sorting,
     ): ImmutableList<PersonalListItem> {
         if (type == MediaType.MOVIE) {
             return remoteSource.getMovieListItems(
                 listId = listId,
                 limit = "all",
                 extended = "full,cloud9,colors",
+                sorting = sorting,
             ).asyncMap {
                 PersonalListItem.MovieItem(
                     rank = it.rank,
@@ -38,6 +41,7 @@ internal class GetListItemsUseCase(
                 listId = listId,
                 limit = "all",
                 extended = "full,cloud9,colors",
+                sorting = sorting,
             ).asyncMap {
                 PersonalListItem.ShowItem(
                     rank = it.rank,
@@ -47,34 +51,6 @@ internal class GetListItemsUseCase(
             }.toImmutableList()
         }
 
-        return remoteSource.getAllListItems(
-            listId = listId,
-            limit = "all",
-            extended = "full,cloud9,colors",
-        ).asyncMap {
-            val listedAt = it.listedAt.toInstant()
-
-            when {
-                it.movie != null -> {
-                    PersonalListItem.MovieItem(
-                        rank = it.rank,
-                        movie = Movie.fromDto(it.movie!!),
-                        listedAt = listedAt,
-                    )
-                }
-
-                it.show != null -> {
-                    PersonalListItem.ShowItem(
-                        rank = it.rank,
-                        show = Show.fromDto(it.show!!),
-                        listedAt = listedAt,
-                    )
-                }
-
-                else -> {
-                    throw IllegalStateException("Watchlist item unknown type!")
-                }
-            }
-        }.toImmutableList()
+        throw IllegalStateException("Invalid media type: $type")
     }
 }

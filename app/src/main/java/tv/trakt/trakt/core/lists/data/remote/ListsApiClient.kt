@@ -9,6 +9,7 @@ import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerOneOfIds
 import org.openapitools.client.models.PutUsersListsListUpdateRequest
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.ListItemDto
 import tv.trakt.trakt.common.networking.ListMovieItemDto
 import tv.trakt.trakt.common.networking.ListShowItemDto
@@ -193,6 +194,7 @@ internal class ListsApiClient(
         listId: TraktId,
         extended: String?,
         limit: String?,
+        sorting: Sorting,
     ): List<ListShowItemDto> {
         val response = listsApi.getListsItemsShow(
             id = listId.value.toString(),
@@ -206,8 +208,8 @@ internal class ListsApiClient(
             endDate = null,
             page = null,
             limit = limit,
-            sortBy = null,
-            sortHow = null,
+            sortBy = sorting.type.value,
+            sortHow = sorting.order.value,
         )
         return response.body()
     }
@@ -216,6 +218,7 @@ internal class ListsApiClient(
         listId: TraktId,
         extended: String?,
         limit: String?,
+        sorting: Sorting,
     ): List<ListMovieItemDto> {
         val response = listsApi.getListsItemsMovie(
             id = listId.value.toString(),
@@ -229,8 +232,8 @@ internal class ListsApiClient(
             page = null,
             subgenres = null,
             limit = limit,
-            sortBy = null,
-            sortHow = null,
+            sortBy = sorting.type.value,
+            sortHow = sorting.order.value,
         )
         return response.body()
     }
