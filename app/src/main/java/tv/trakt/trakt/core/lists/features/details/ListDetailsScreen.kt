@@ -124,12 +124,14 @@ internal fun ListDetailsScreen(
             }
         },
         onSortOrderClick = {
-            val sorting = state.sorting
-            viewModel.setSorting(
-                sorting.copy(
-                    order = sorting.order.toggle(),
-                ),
-            )
+            if (!state.loading.isLoading) {
+                val sorting = state.sorting
+                viewModel.setSorting(
+                    sorting.copy(
+                        order = sorting.order.toggle(),
+                    ),
+                )
+            }
         },
         onBackClick = onNavigateBack,
     )
@@ -303,7 +305,7 @@ private fun ContentList(
             }
         }
 
-        if (!loading && listItems.isNotEmpty()) {
+        if (listItems.isNotEmpty()) {
             itemsIndexed(
                 items = listItems,
                 key = { _, item -> item.key },
@@ -312,6 +314,7 @@ private fun ContentList(
                     is ShowItem -> ListDetailsShowView(
                         item = item,
                         shadow = index == 0,
+                        enabled = !loading,
                         onClick = { onClick(item) },
                         onLongClick = { onLongClick(item) },
                         modifier = Modifier
@@ -325,6 +328,7 @@ private fun ContentList(
                     is MovieItem -> ListDetailsMovieView(
                         item = item,
                         shadow = index == 0,
+                        enabled = !loading,
                         onClick = { onClick(item) },
                         onLongClick = { onLongClick(item) },
                         modifier = Modifier
@@ -338,7 +342,7 @@ private fun ContentList(
             }
         }
 
-        if (loading) {
+        if (loading && listItems.isEmpty()) {
             items(5) {
                 PanelMediaSkeletonCard(
                     modifier = Modifier

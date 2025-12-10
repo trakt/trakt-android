@@ -195,15 +195,15 @@ internal class AllWatchlistViewModel(
         if (newSorting == sortingState.value) {
             return
         }
-        viewModelScope.launch {
-            sortingState.update {
-                it.copy(
-                    type = newSorting.type,
-                    order = newSorting.order,
-                )
-            }
-            loadData(localOnly = true)
+
+        sortingState.update {
+            it.copy(
+                type = newSorting.type,
+                order = newSorting.order,
+            )
         }
+
+        loadData(localOnly = true)
     }
 
     fun addMovieToHistory(

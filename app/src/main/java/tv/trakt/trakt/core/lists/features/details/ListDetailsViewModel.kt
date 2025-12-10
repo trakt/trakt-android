@@ -115,15 +115,15 @@ internal class ListDetailsViewModel(
         ) {
             return
         }
-        viewModelScope.launch {
-            sortingState.update {
-                it.copy(
-                    type = newSorting.type,
-                    order = newSorting.order,
-                )
-            }
-            loadData()
+
+        sortingState.update {
+            it.copy(
+                type = newSorting.type,
+                order = newSorting.order,
+            )
         }
+
+        loadData()
     }
 
     fun navigateToShow(show: Show) {

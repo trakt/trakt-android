@@ -231,15 +231,15 @@ internal class AllPersonalListViewModel(
         ) {
             return
         }
-        viewModelScope.launch {
-            sortingState.update {
-                it.copy(
-                    type = newSorting.type,
-                    order = newSorting.order,
-                )
-            }
-            loadData()
+
+        sortingState.update {
+            it.copy(
+                type = newSorting.type,
+                order = newSorting.order,
+            )
         }
+
+        loadData()
     }
 
     fun removeItem(item: PersonalListItem?) {

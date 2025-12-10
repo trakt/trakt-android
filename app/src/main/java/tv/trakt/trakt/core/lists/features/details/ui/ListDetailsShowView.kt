@@ -16,6 +16,7 @@ internal fun ListDetailsShowView(
     modifier: Modifier = Modifier,
     showIcon: Boolean = false,
     shadow: Boolean = false,
+    enabled: Boolean = true,
     onClick: (TraktId) -> Unit = { },
     onLongClick: () -> Unit,
 ) {
@@ -33,6 +34,7 @@ internal fun ListDetailsShowView(
         titleOriginal = item.show.titleOriginal,
         subtitle = genresText,
         shadow = if (shadow) 4.dp else 0.dp,
+        enabled = enabled,
         contentImageUrl = item.images?.getPosterUrl(),
         containerImageUrl = item.images?.getFanartUrl(Images.Size.THUMB),
         onClick = { onClick(item.show.ids.trakt) },
