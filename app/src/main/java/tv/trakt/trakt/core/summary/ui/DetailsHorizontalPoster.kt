@@ -84,7 +84,7 @@ internal fun DetailsHorizontalPoster(
                     .dropShadow(
                         shape = cardShape,
                         shadow = Shadow(
-                            radius = 46.dp,
+                            radius = 42.dp,
                             spread = 8.dp,
                             offset = DpOffset(0.dp, 12.dp),
                             color = (color ?: Color.Black).copy(alpha = 0.33F),
