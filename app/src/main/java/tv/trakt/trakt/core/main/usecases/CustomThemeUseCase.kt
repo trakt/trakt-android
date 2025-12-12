@@ -17,6 +17,8 @@ import tv.trakt.trakt.ui.theme.model.CustomTheme
 
 internal val KEY_CUSTOM_THEME_USER_ENABLED = booleanPreferencesKey("key_custom_theme_user_enabled")
 
+internal fun keyCustomThemeUserDismissed(id: String) = booleanPreferencesKey("key_ct_user_dismissed_$id")
+
 internal class CustomThemeUseCase(
     private val mainDataStore: DataStore<Preferences>,
     private val sessionManager: SessionManager,
@@ -32,10 +34,16 @@ internal class CustomThemeUseCase(
         }
     }
 
+    suspend fun setUserDismissedOverlay(id: String) {
+        mainDataStore.edit { prefs ->
+            prefs[keyCustomThemeUserDismissed(id)] = true
+        }
+    }
+
     suspend fun getConfig(): CustomThemeConfig {
+        val isConfigEnabled = remoteConfig.getBoolean(MOBILE_CUSTOM_THEME_ENABLED)
         val isUserLoggedIn = sessionManager.isAuthenticated()
         val isUserEnabled = mainDataStore.data.first()[KEY_CUSTOM_THEME_USER_ENABLED] ?: true
-        val isConfigEnabled = remoteConfig.getBoolean(MOBILE_CUSTOM_THEME_ENABLED)
 
         val configThemeJson = remoteConfig.getString(MOBILE_CUSTOM_THEME_JSON)
         val configTheme: CustomTheme? = try {
@@ -49,8 +57,16 @@ internal class CustomThemeUseCase(
             null
         }
 
+        val isUserOverlayDismissed = if (configTheme != null) {
+            val prefs = mainDataStore.data.first()
+            prefs[keyCustomThemeUserDismissed(configTheme.id)] ?: false
+        } else {
+            false
+        }
+
         return CustomThemeConfig(
             visible = isConfigEnabled && isUserLoggedIn,
+            overlayVisible = !isUserOverlayDismissed && isConfigEnabled && isUserLoggedIn,
             enabled = isUserEnabled && isConfigEnabled && isUserLoggedIn,
             theme = configTheme,
         )
@@ -58,6 +74,7 @@ internal class CustomThemeUseCase(
 
     data class CustomThemeConfig(
         val visible: Boolean,
+        val overlayVisible: Boolean,
         val enabled: Boolean,
         val theme: CustomTheme? = null,
     )

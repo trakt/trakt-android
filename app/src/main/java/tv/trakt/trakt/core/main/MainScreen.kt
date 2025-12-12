@@ -12,23 +12,37 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle.Event.ON_RESUME
 import androidx.lifecycle.compose.LifecycleEventEffect
@@ -43,6 +57,7 @@ import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.common.helpers.LaunchedUpdateEffect
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.discover.navigation.navigateToDiscover
 import tv.trakt.trakt.core.home.navigation.HomeDestination
@@ -96,6 +111,10 @@ internal fun MainScreen(
         currentDestination = currentDestination.value?.destination,
     )
 
+    val customThemeConfig = remember {
+        (localActivity as? MainActivity)?.customThemeConfig
+    }
+
     LifecycleEventEffect(ON_RESUME) {
         viewModel.loadData()
     }
@@ -137,12 +156,9 @@ internal fun MainScreen(
                     onDismiss = viewModel::dismissWelcome,
                 )
             } else {
-                val customThemeEnabled =
-                    (localActivity as? MainActivity)?.customThemeConfig?.enabled == true
-
                 MainNavHost(
                     navController = navController,
-                    customThemeEnabled = customThemeEnabled,
+                    customThemeEnabled = customThemeConfig?.enabled == true,
                     userLoading = state.loadingUser.isLoading,
                     searchInput = searchState.searchInput,
                     onSearchLoading = searchState.onSearchLoading,
@@ -208,6 +224,47 @@ internal fun MainScreen(
 
                 MainSnackbarHost(
                     snackbarHostState = localSnackbar,
+                )
+            }
+        }
+
+        var overlayVisible by remember {
+            mutableStateOf(customThemeConfig?.overlayVisible == true)
+        }
+
+        if (overlayVisible && customThemeConfig?.theme?.type == "christmas") {
+            Box {
+                Image(
+                    painter = painterResource(R.drawable.img_splash_christmas),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clickable(
+                            onClick = {},
+                            indication = null,
+                            interactionSource = null,
+                        ),
+                )
+
+                Icon(
+                    painter = painterResource(R.drawable.ic_close),
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier
+                        .align(BottomCenter)
+                        .padding(
+                            WindowInsets.navigationBars.asPaddingValues()
+                                .calculateBottomPadding()
+                                .plus(64.dp),
+                        )
+                        .background(TraktTheme.colors.accent, shape = RoundedCornerShape(100))
+                        .padding(8.dp)
+                        .size(18.dp)
+                        .onClick {
+                            (localActivity as? MainActivity)?.toggleCustomThemeOverlay()
+                            overlayVisible = false
+                        },
                 )
             }
         }

@@ -194,6 +194,7 @@ private fun Preview3() {
                 ),
                 enabled = false,
                 visible = true,
+                overlayVisible = false,
             ),
         )
     }

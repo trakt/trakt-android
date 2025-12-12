@@ -106,16 +106,11 @@ internal class MainActivity : ComponentActivity() {
     }
 
     private fun updateRemoteConfig() {
-//        val customThemeEnabled = remoteConfig.getBoolean(MOBILE_CUSTOM_THEME_ENABLED)
         remoteConfig
             .fetchAndActivate()
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     Timber.d("Remote Config updated: ${it.result}")
-//                    if (!customThemeEnabled && remoteConfig.getBoolean(MOBILE_CUSTOM_THEME_ENABLED)) {
-//                        // Reload app to apply custom theme change.
-//                        ProcessPhoenix.triggerRebirth(this)
-//                    }
                 } else {
                     Timber.e("Remote Config update failed!")
                 }
@@ -150,6 +145,13 @@ internal class MainActivity : ComponentActivity() {
         runBlocking {
             customThemeUseCase.toggleUserEnabled(enabled)
             ProcessPhoenix.triggerRebirth(this@MainActivity)
+        }
+    }
+
+    internal fun toggleCustomThemeOverlay() {
+        val id = customThemeConfig?.theme?.id ?: return
+        runBlocking {
+            customThemeUseCase.setUserDismissedOverlay(id)
         }
     }
 }
