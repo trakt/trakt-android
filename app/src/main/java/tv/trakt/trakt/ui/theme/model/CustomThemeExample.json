@@ -1,0 +1,104 @@
+{
+  "id": "christmas-2025",
+  "type": "christmas",
+  "backgroundImageUrl": "https://image.tmdb.org/t/p/w1280/g6PWKo4b1hxM6fwmw8gbPHFW5Rd.jpg",
+  "colors": {
+    "accent": "#FF0000",
+    "primaryButtonContainer": "#FF0000",
+    "sentimentsContainer": "#6B0000",
+    "sentimentsAccent": "#FFE5E5",
+    "detailsStatus1": "#FF5454",
+    "detailsStatus2": "#FFB0B0",
+    "vipAccent": "#FF0000",
+    "switchContainerChecked": "#8C0000",
+    "switchContainerUnchecked": "#FFFFFF",
+    "switchThumbChecked": "#FF0000",
+    "switchThumbUnchecked": "#FF0000"
+  },
+  "filters": {
+    "shows": {
+      "trending": {
+        "genres": null,
+        "subgenres": [
+          "christmas",
+          "santa claus",
+          "xmas eve"
+        ]
+      },
+      "recommended": {
+        "genres": null,
+        "subgenres": [
+          "christmas",
+          "santa claus",
+          "xmas eve"
+        ]
+      },
+      "anticipated": {
+        "genres": null,
+        "subgenres": [
+          "christmas",
+          "santa claus",
+          "xmas eve"
+        ],
+        "years": {
+          "from": 2021,
+          "to": 2025
+        }
+      },
+      "popular": {
+        "genres": null,
+        "subgenres": [
+          "christmas",
+          "santa claus",
+          "xmas eve"
+        ],
+        "years": {
+          "from": 1980,
+          "to": 2025
+        }
+      }
+    },
+    "movies": {
+      "trending": {
+        "genres": null,
+        "subgenres": [
+          "christmas",
+          "santa claus",
+          "xmas eve"
+        ]
+      },
+      "recommended": {
+        "genres": null,
+        "subgenres": [
+          "christmas",
+          "santa claus",
+          "xmas eve"
+        ]
+      },
+      "anticipated": {
+        "genres": null,
+        "subgenres": [
+          "christmas",
+          "santa claus",
+          "xmas eve"
+        ],
+        "years": {
+          "from": 2021,
+          "to": 2025
+        }
+      },
+      "popular": {
+        "genres": null,
+        "subgenres": [
+          "christmas",
+          "santa claus",
+          "xmas eve"
+        ],
+        "years": {
+          "from": 1980,
+          "to": 2025
+        }
+      }
+    }
+  }
+}
