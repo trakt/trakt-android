@@ -20,6 +20,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
+import com.jakewharton.processphoenix.ProcessPhoenix
 import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.inject
 import org.koin.androidx.compose.koinViewModel
@@ -148,6 +149,7 @@ internal class MainActivity : ComponentActivity() {
     internal fun toggleCustomTheme(enabled: Boolean) {
         runBlocking {
             customThemeUseCase.toggleUserEnabled(enabled)
+            ProcessPhoenix.triggerRebirth(this@MainActivity)
         }
     }
 }

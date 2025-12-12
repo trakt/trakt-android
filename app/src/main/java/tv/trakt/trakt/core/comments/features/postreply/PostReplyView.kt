@@ -42,8 +42,8 @@ import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.TraktSwitch
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
+import tv.trakt.trakt.ui.components.switch.TraktSwitch
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable

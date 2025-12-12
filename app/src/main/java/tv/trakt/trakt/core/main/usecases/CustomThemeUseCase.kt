@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.serialization.json.Json
 import timber.log.Timber
 import tv.trakt.trakt.analytics.crashlytics.recordError
+import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_CUSTOM_THEME_ENABLED
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_CUSTOM_THEME_JSON
 import tv.trakt.trakt.ui.theme.model.CustomTheme
@@ -18,6 +19,7 @@ internal val KEY_CUSTOM_THEME_USER_ENABLED = booleanPreferencesKey("key_custom_t
 
 internal class CustomThemeUseCase(
     private val mainDataStore: DataStore<Preferences>,
+    private val sessionManager: SessionManager,
 ) {
     private val remoteConfig = Firebase.remoteConfig
     private val json = Json {
@@ -31,6 +33,7 @@ internal class CustomThemeUseCase(
     }
 
     suspend fun getConfig(): CustomThemeConfig {
+        val isUserLoggedIn = sessionManager.isAuthenticated()
         val isUserEnabled = mainDataStore.data.first()[KEY_CUSTOM_THEME_USER_ENABLED] ?: true
         val isConfigEnabled = remoteConfig.getBoolean(MOBILE_CUSTOM_THEME_ENABLED)
 
@@ -47,8 +50,8 @@ internal class CustomThemeUseCase(
         }
 
         return CustomThemeConfig(
-            visible = isConfigEnabled,
-            enabled = isUserEnabled && isConfigEnabled,
+            visible = isConfigEnabled && isUserLoggedIn,
+            enabled = isUserEnabled && isConfigEnabled && isUserLoggedIn,
             theme = configTheme,
         )
     }

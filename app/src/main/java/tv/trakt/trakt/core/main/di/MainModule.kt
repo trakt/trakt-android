@@ -104,6 +104,7 @@ internal val mainModule = module {
     factory {
         CustomThemeUseCase(
             mainDataStore = get(named(MAIN_PREFERENCES)),
+            sessionManager = get(),
         )
     }
 }

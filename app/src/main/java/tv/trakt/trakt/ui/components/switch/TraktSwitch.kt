@@ -1,4 +1,4 @@
-package tv.trakt.trakt.ui.components
+package tv.trakt.trakt.ui.components.switch
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer

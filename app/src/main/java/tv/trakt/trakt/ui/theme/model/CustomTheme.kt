@@ -23,6 +23,10 @@ data class CustomTheme(
         val detailsStatus1: String?,
         val detailsStatus2: String?,
         val vipAccent: String?,
+        val switchContainerChecked: String?,
+        val switchContainerUnchecked: String?,
+        val switchThumbChecked: String?,
+        val switchThumbUnchecked: String?,
     )
 
     @Serializable
@@ -73,5 +77,13 @@ internal fun CustomTheme.Colors.toTraktDarkColors(): TraktColors {
             ?: DarkColors.detailsStatus2,
         vipAccent = vipAccent?.let { Color(it.toColorInt()) }
             ?: DarkColors.vipAccent,
+        switchThumbChecked = switchThumbChecked?.let { Color(it.toColorInt()) }
+            ?: DarkColors.switchThumbChecked,
+        switchThumbUnchecked = switchThumbUnchecked?.let { Color(it.toColorInt()) }
+            ?: DarkColors.switchThumbUnchecked,
+        switchContainerChecked = switchContainerChecked?.let { Color(it.toColorInt()) }
+            ?: DarkColors.switchContainerChecked,
+        switchContainerUnchecked = switchContainerUnchecked?.let { Color(it.toColorInt()) }
+            ?: DarkColors.switchContainerUnchecked,
     )
 }
