@@ -26,6 +26,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.qualifier.named
 import timber.log.Timber
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_CUSTOM_THEME_ENABLED
 import tv.trakt.trakt.core.auth.ConfigAuth.OAUTH_REDIRECT_URI
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
@@ -106,11 +107,16 @@ internal class MainActivity : ComponentActivity() {
     }
 
     private fun updateRemoteConfig() {
+        val customThemeEnabled = remoteConfig.getBoolean(MOBILE_CUSTOM_THEME_ENABLED)
         remoteConfig
             .fetchAndActivate()
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     Timber.d("Remote Config updated: ${it.result}")
+                    if (customThemeEnabled != remoteConfig.getBoolean(MOBILE_CUSTOM_THEME_ENABLED)) {
+                        // Reload app to apply custom theme change.
+                        ProcessPhoenix.triggerRebirth(this)
+                    }
                 } else {
                     Timber.e("Remote Config update failed!")
                 }
