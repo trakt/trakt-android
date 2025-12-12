@@ -81,6 +81,7 @@ internal class MoviesApiClient(
 
     override suspend fun getRecommended(
         limit: Int,
+        years: String?,
         genres: List<String>?,
         subgenres: List<String>?,
     ): List<RecommendedMovieDto> {
@@ -94,7 +95,7 @@ internal class MoviesApiClient(
             watchnow = null,
             subgenres = subgenres?.joinToString(","),
             genres = genres?.joinToString(","),
-            years = null,
+            years = years,
             ratings = null,
             startDate = null,
             endDate = null,

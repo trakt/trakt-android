@@ -7,23 +7,23 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.discover.sections.anticipated.data.local.movies.AnticipatedMoviesLocalDataSource
 import tv.trakt.trakt.core.discover.sections.anticipated.data.local.movies.AnticipatedMoviesStorage
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedMoviesUseCase
+import tv.trakt.trakt.core.discover.sections.anticipated.usecases.movies.CustomGetAnticipatedMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.movies.DefaultGetAnticipatedMoviesUseCase
-import tv.trakt.trakt.core.discover.sections.anticipated.usecases.movies.HalloweenGetAnticipatedMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.popular.data.local.movies.PopularMoviesLocalDataSource
 import tv.trakt.trakt.core.discover.sections.popular.data.local.movies.PopularMoviesStorage
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularMoviesUseCase
+import tv.trakt.trakt.core.discover.sections.popular.usecases.movies.CustomGetPopularMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.popular.usecases.movies.DefaultGetPopularMoviesUseCase
-import tv.trakt.trakt.core.discover.sections.popular.usecases.movies.HalloweenGetPopularMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.recommended.data.local.movies.RecommendedMoviesLocalDataSource
 import tv.trakt.trakt.core.discover.sections.recommended.data.local.movies.RecommendedMoviesStorage
 import tv.trakt.trakt.core.discover.sections.recommended.usecase.GetRecommendedMoviesUseCase
+import tv.trakt.trakt.core.discover.sections.recommended.usecase.movies.CustomGetRecommendedMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.recommended.usecase.movies.DefaultGetRecommendedMoviesUseCase
-import tv.trakt.trakt.core.discover.sections.recommended.usecase.movies.HalloweenGetRecommendedMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.trending.data.local.movies.TrendingMoviesLocalDataSource
 import tv.trakt.trakt.core.discover.sections.trending.data.local.movies.TrendingMoviesStorage
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingMoviesUseCase
+import tv.trakt.trakt.core.discover.sections.trending.usecases.movies.CustomGetTrendingMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.trending.usecases.movies.DefaultGetTrendingMoviesUseCase
-import tv.trakt.trakt.core.discover.sections.trending.usecases.movies.HalloweenGetTrendingMoviesUseCase
 import tv.trakt.trakt.core.movies.data.remote.MoviesApiClient
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
 import tv.trakt.trakt.core.movies.ui.context.MovieContextViewModel
@@ -66,12 +66,13 @@ internal val moviesModule = module {
     }
 
     factory<GetTrendingMoviesUseCase>(
-        qualifier = named("halloweenTrendingMoviesUseCase"),
+        qualifier = named("customTrendingMoviesUseCase"),
     ) {
-        HalloweenGetTrendingMoviesUseCase(
+        CustomGetTrendingMoviesUseCase(
             remoteSource = get(),
             localTrendingSource = get(),
             localMovieSource = get(),
+            customThemeUseCase = get(),
         )
     }
 
@@ -86,12 +87,13 @@ internal val moviesModule = module {
     }
 
     factory<GetPopularMoviesUseCase>(
-        qualifier = named("halloweenPopularMoviesUseCase"),
+        qualifier = named("customPopularMoviesUseCase"),
     ) {
-        HalloweenGetPopularMoviesUseCase(
+        CustomGetPopularMoviesUseCase(
             remoteSource = get(),
             localPopularSource = get(),
             localMovieSource = get(),
+            customThemeUseCase = get(),
         )
     }
 
@@ -106,12 +108,13 @@ internal val moviesModule = module {
     }
 
     factory<GetAnticipatedMoviesUseCase>(
-        qualifier = named("halloweenAnticipatedMoviesUseCase"),
+        qualifier = named("customAnticipatedMoviesUseCase"),
     ) {
-        HalloweenGetAnticipatedMoviesUseCase(
+        CustomGetAnticipatedMoviesUseCase(
             remoteSource = get(),
             localAnticipatedSource = get(),
             localMovieSource = get(),
+            customThemeUseCase = get(),
         )
     }
 
@@ -126,12 +129,13 @@ internal val moviesModule = module {
     }
 
     factory<GetRecommendedMoviesUseCase>(
-        qualifier = named("halloweenRecommendedMoviesUseCase"),
+        qualifier = named("customRecommendedMoviesUseCase"),
     ) {
-        HalloweenGetRecommendedMoviesUseCase(
+        CustomGetRecommendedMoviesUseCase(
             remoteSource = get(),
             localRecommendedSource = get(),
             localMovieSource = get(),
+            customThemeUseCase = get(),
         )
     }
 

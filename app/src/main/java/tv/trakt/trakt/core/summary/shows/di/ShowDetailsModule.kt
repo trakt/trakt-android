@@ -150,7 +150,6 @@ internal val showDetailsModule = module {
             updateShowFavoritesUseCase = get(),
             addListItemUseCase = get(),
             removeListItemUseCase = get(),
-            halloweenUseCase = get(),
             userWatchlistLocalSource = get(),
             userFavoritesLocalSource = get(),
             episodeLocalDataSource = get(),

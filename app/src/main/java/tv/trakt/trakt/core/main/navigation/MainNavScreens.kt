@@ -101,7 +101,10 @@ internal fun NavGraphBuilder.homeScreens(
     }
 }
 
-internal fun NavGraphBuilder.discoverScreens(controller: NavHostController) {
+internal fun NavGraphBuilder.discoverScreens(
+    controller: NavHostController,
+    customThemeEnabled: Boolean,
+) {
     with(controller) {
         discoverScreen(
             onNavigateToShow = { navigateToShow(it) },
@@ -120,6 +123,7 @@ internal fun NavGraphBuilder.discoverScreens(controller: NavHostController) {
             },
         )
         discoverAllScreen(
+            customThemeEnabled = customThemeEnabled,
             onNavigateBack = { popBackStack() },
             onNavigateToShow = { navigateToShow(it) },
             onNavigateToMovie = { navigateToMovie(it) },

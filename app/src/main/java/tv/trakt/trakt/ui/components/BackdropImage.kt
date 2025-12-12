@@ -1,6 +1,7 @@
 package tv.trakt.trakt.ui.components
 
 import android.annotation.SuppressLint
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
@@ -36,6 +37,7 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
+import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -111,6 +113,7 @@ private fun BackdropImage(
     imageAlpha: Float = 0.375F,
 ) {
     val configuration = LocalConfiguration.current
+    val activity = LocalActivity.current
     val inspection = LocalInspectionMode.current
 
     val screenWidth = configuration.screenWidthDp.dp
@@ -118,7 +121,15 @@ private fun BackdropImage(
 
     val imageUrl = remember(imageUrl) {
         if (imageUrl.isNullOrBlank() && !inspection) {
-            Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL).ifBlank { null }
+            val config = (activity as? MainActivity)?.customThemeConfig
+
+            val customThemeEnabled = config?.enabled == true
+            val customThemeBackground = config?.theme?.backgroundImageUrl
+
+            when {
+                customThemeEnabled && !customThemeBackground.isNullOrBlank() -> customThemeBackground
+                else -> Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL).ifBlank { null }
+            }
         } else {
             imageUrl
         }

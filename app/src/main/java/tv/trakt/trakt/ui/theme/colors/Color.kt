@@ -2,11 +2,6 @@ package tv.trakt.trakt.ui.theme.colors
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
-import tv.trakt.trakt.common.ui.theme.colors.Orange100
-import tv.trakt.trakt.common.ui.theme.colors.Orange300
-import tv.trakt.trakt.common.ui.theme.colors.Orange400
-import tv.trakt.trakt.common.ui.theme.colors.Orange500
-import tv.trakt.trakt.common.ui.theme.colors.Orange900
 import tv.trakt.trakt.common.ui.theme.colors.Purple100
 import tv.trakt.trakt.common.ui.theme.colors.Purple300
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
@@ -62,16 +57,6 @@ internal val DarkColors: TraktColors = TraktColors(
     switchContainerUnchecked = White,
     switchThumbChecked = Purple500,
     switchThumbUnchecked = Purple500,
-)
-
-internal val HalloweenColors: TraktColors = DarkColors.copy(
-    accent = Orange500,
-    primaryButtonContainer = Orange500,
-    sentimentsContainer = Orange900,
-    sentimentsAccent = Orange100,
-    detailsStatus1 = Orange300,
-    detailsStatus2 = Orange100,
-    vipAccent = Orange400,
 )
 
 @Immutable

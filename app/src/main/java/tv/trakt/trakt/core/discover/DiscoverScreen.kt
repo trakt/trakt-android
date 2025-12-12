@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.discover
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -24,6 +25,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
+import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.discover.sections.anticipated.DiscoverAnticipatedView
@@ -48,7 +51,7 @@ internal fun DiscoverScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    DiscoverScreenContent(
+    DiscoverScreen(
         state = state,
         onShowClick = onNavigateToShow,
         onMovieClick = onNavigateToMovie,
@@ -60,7 +63,7 @@ internal fun DiscoverScreen(
 }
 
 @Composable
-private fun DiscoverScreenContent(
+private fun DiscoverScreen(
     state: DiscoverState,
     modifier: Modifier = Modifier,
     onShowClick: (TraktId) -> Unit,
@@ -70,6 +73,9 @@ private fun DiscoverScreenContent(
     onMoreAnticipatedClick: () -> Unit = {},
     onMoreRecommendedClick: () -> Unit = {},
 ) {
+    val activity = LocalActivity.current
+    val customThemeEnabled = (activity as? MainActivity)?.customThemeConfig?.enabled == true
+
     val lazyListState = rememberLazyListState()
     val headerState = rememberHeaderState()
 
@@ -119,7 +125,9 @@ private fun DiscoverScreenContent(
         ) {
             item {
                 DiscoverTrendingView(
-                    viewModel = koinViewModel(),
+                    viewModel = koinViewModel {
+                        parametersOf(customThemeEnabled)
+                    },
                     collection = state.collection,
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
@@ -131,7 +139,9 @@ private fun DiscoverScreenContent(
 
             item {
                 DiscoverAnticipatedView(
-                    viewModel = koinViewModel(),
+                    viewModel = koinViewModel {
+                        parametersOf(customThemeEnabled)
+                    },
                     collection = state.collection,
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
@@ -143,7 +153,9 @@ private fun DiscoverScreenContent(
 
             item {
                 DiscoverPopularView(
-                    viewModel = koinViewModel(),
+                    viewModel = koinViewModel {
+                        parametersOf(customThemeEnabled)
+                    },
                     collection = state.collection,
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
@@ -156,7 +168,9 @@ private fun DiscoverScreenContent(
             if (state.user.isAuthenticated) {
                 item {
                     DiscoverRecommendedView(
-                        viewModel = koinViewModel(),
+                        viewModel = koinViewModel {
+                            parametersOf(customThemeEnabled)
+                        },
                         collection = state.collection,
                         headerPadding = sectionPadding,
                         contentPadding = sectionPadding,
@@ -205,7 +219,7 @@ private fun ScreenHeader(
 @Composable
 private fun Preview() {
     TraktTheme {
-        DiscoverScreenContent(
+        DiscoverScreen(
             state = DiscoverState(),
             onShowClick = {},
         )

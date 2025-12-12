@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.discover.model.DiscoverSection
 import tv.trakt.trakt.core.discover.sections.all.AllDiscoverScreen
@@ -15,14 +16,16 @@ internal data class DiscoverDestination(
 )
 
 internal fun NavGraphBuilder.discoverAllScreen(
+    customThemeEnabled: Boolean,
     onNavigateBack: () -> Unit,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
 ) {
-//    val halloween = (context as? MainActivity)?.halloweenConfig?.enabled == true
     composable<DiscoverDestination> {
         AllDiscoverScreen(
-            viewModel = koinViewModel(),
+            viewModel = koinViewModel {
+                parametersOf(customThemeEnabled)
+            },
             onNavigateToShow = onNavigateToShow,
             onNavigateToMovie = onNavigateToMovie,
             onNavigateBack = onNavigateBack,

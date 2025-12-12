@@ -36,7 +36,7 @@ internal class DefaultGetRecommendedMoviesUseCase(
             .asyncMap {
                 DiscoverItem.MovieItem(
                     movie = Movie.fromDto(it),
-                    count = 0, // No ranking for recommended movies
+                    count = 0,
                 )
             }
             .toImmutableList()

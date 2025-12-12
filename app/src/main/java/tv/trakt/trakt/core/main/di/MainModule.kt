@@ -33,8 +33,8 @@ import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
 import tv.trakt.trakt.core.main.MainViewModel
 import tv.trakt.trakt.core.main.helpers.DefaultMediaModeManager
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
+import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
-import tv.trakt.trakt.core.main.usecases.HalloweenUseCase
 
 internal const val MAIN_PREFERENCES = "main_preferences"
 
@@ -102,7 +102,7 @@ internal val mainModule = module {
     }
 
     factory {
-        HalloweenUseCase(
+        CustomThemeUseCase(
             mainDataStore = get(named(MAIN_PREFERENCES)),
         )
     }

@@ -20,22 +20,20 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
-import com.jakewharton.processphoenix.ProcessPhoenix
 import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.inject
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.qualifier.named
 import timber.log.Timber
-import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HALLOWEEN_ENABLED
 import tv.trakt.trakt.core.auth.ConfigAuth.OAUTH_REDIRECT_URI
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
 import tv.trakt.trakt.core.main.MainScreen
-import tv.trakt.trakt.core.main.usecases.HalloweenUseCase
-import tv.trakt.trakt.core.main.usecases.HalloweenUseCase.HalloweenConfig
+import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
+import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase.CustomThemeConfig
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.colors.DarkColors
-import tv.trakt.trakt.ui.theme.colors.HalloweenColors
+import tv.trakt.trakt.ui.theme.model.toTraktDarkColors
 
 internal val LocalBottomBarVisibility = compositionLocalOf { mutableStateOf(true) }
 internal val LocalSnackbarState = compositionLocalOf { SnackbarHostState() }
@@ -49,10 +47,10 @@ internal class MainActivity : ComponentActivity() {
 
         setupOrientation()
         enableEdgeToEdge(
-            navigationBarStyle = SystemBarStyle.Companion.dark(
+            navigationBarStyle = SystemBarStyle.dark(
                 scrim = Color.TRANSPARENT,
             ),
-            statusBarStyle = SystemBarStyle.Companion.dark(
+            statusBarStyle = SystemBarStyle.dark(
                 scrim = Color.TRANSPARENT,
             ),
         )
@@ -60,16 +58,22 @@ internal class MainActivity : ComponentActivity() {
         setContent {
             val bottomBarVisibility = remember { mutableStateOf(true) }
             val snackbarState = remember { SnackbarHostState() }
-            val halloweenState = remember {
-                getHalloweenConfig().also {
-                    halloweenConfig = it
+            val customThemeState = remember {
+                getCustomThemeConfig().also {
+                    customThemeConfig = it
                 }
             }
 
             TraktTheme(
                 colors = when {
-                    halloweenState.enabled -> HalloweenColors
-                    else -> DarkColors
+                    customThemeState.enabled -> {
+                        val customColors = customThemeConfig?.theme?.colors?.toTraktDarkColors()
+                        customColors ?: DarkColors
+                    }
+
+                    else -> {
+                        DarkColors
+                    }
                 },
             ) {
                 CompositionLocalProvider(
@@ -101,15 +105,16 @@ internal class MainActivity : ComponentActivity() {
     }
 
     private fun updateRemoteConfig() {
-        val halloweenTheme = remoteConfig.getBoolean(MOBILE_HALLOWEEN_ENABLED)
+//        val customThemeEnabled = remoteConfig.getBoolean(MOBILE_CUSTOM_THEME_ENABLED)
         remoteConfig
             .fetchAndActivate()
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     Timber.d("Remote Config updated: ${it.result}")
-                    if (!halloweenTheme && remoteConfig.getBoolean(MOBILE_HALLOWEEN_ENABLED)) {
-                        ProcessPhoenix.triggerRebirth(this)
-                    }
+//                    if (!customThemeEnabled && remoteConfig.getBoolean(MOBILE_CUSTOM_THEME_ENABLED)) {
+//                        // Reload app to apply custom theme change.
+//                        ProcessPhoenix.triggerRebirth(this)
+//                    }
                 } else {
                     Timber.e("Remote Config update failed!")
                 }
@@ -129,20 +134,20 @@ internal class MainActivity : ComponentActivity() {
         }
     }
 
-    // Halloween Seasonal Theme
+    // Custom Theme
 
-    internal var halloweenConfig: HalloweenConfig? = null
-    private val halloweenCase: HalloweenUseCase by inject()
+    internal var customThemeConfig: CustomThemeConfig? = null
+    private val customThemeUseCase: CustomThemeUseCase by inject()
 
-    private fun getHalloweenConfig(): HalloweenConfig {
+    private fun getCustomThemeConfig(): CustomThemeConfig {
         return runBlocking {
-            halloweenCase.getConfig()
+            customThemeUseCase.getConfig()
         }
     }
 
-    internal fun toggleHalloween(enabled: Boolean) {
+    internal fun toggleCustomTheme(enabled: Boolean) {
         runBlocking {
-            halloweenCase.toggleUserEnabled(enabled)
+            customThemeUseCase.toggleUserEnabled(enabled)
         }
     }
 }

@@ -33,6 +33,7 @@ internal interface MoviesRemoteDataSource {
 
     suspend fun getRecommended(
         limit: Int,
+        years: String? = null,
         genres: List<String>? = null,
         subgenres: List<String>? = null,
     ): List<RecommendedMovieDto>

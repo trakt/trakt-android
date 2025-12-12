@@ -7,23 +7,23 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.discover.sections.anticipated.data.local.shows.AnticipatedShowsLocalDataSource
 import tv.trakt.trakt.core.discover.sections.anticipated.data.local.shows.AnticipatedShowsStorage
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedShowsUseCase
+import tv.trakt.trakt.core.discover.sections.anticipated.usecases.shows.CustomGetAnticipatedShowsUseCase
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.shows.DefaultGetAnticipatedShowsUseCase
-import tv.trakt.trakt.core.discover.sections.anticipated.usecases.shows.HalloweenGetAnticipatedShowsUseCase
 import tv.trakt.trakt.core.discover.sections.popular.data.local.shows.PopularShowsLocalDataSource
 import tv.trakt.trakt.core.discover.sections.popular.data.local.shows.PopularShowsStorage
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularShowsUseCase
+import tv.trakt.trakt.core.discover.sections.popular.usecases.shows.CustomGetPopularShowsUseCase
 import tv.trakt.trakt.core.discover.sections.popular.usecases.shows.DefaultGetPopularShowsUseCase
-import tv.trakt.trakt.core.discover.sections.popular.usecases.shows.HalloweenGetPopularShowsUseCase
 import tv.trakt.trakt.core.discover.sections.recommended.data.local.shows.RecommendedShowsLocalDataSource
 import tv.trakt.trakt.core.discover.sections.recommended.data.local.shows.RecommendedShowsStorage
 import tv.trakt.trakt.core.discover.sections.recommended.usecase.GetRecommendedShowsUseCase
+import tv.trakt.trakt.core.discover.sections.recommended.usecase.shows.CustomGetRecommendedShowsUseCase
 import tv.trakt.trakt.core.discover.sections.recommended.usecase.shows.DefaultGetRecommendedShowsUseCase
-import tv.trakt.trakt.core.discover.sections.recommended.usecase.shows.HalloweenGetRecommendedShowsUseCase
 import tv.trakt.trakt.core.discover.sections.trending.data.local.shows.TrendingShowsLocalDataSource
 import tv.trakt.trakt.core.discover.sections.trending.data.local.shows.TrendingShowsStorage
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingShowsUseCase
+import tv.trakt.trakt.core.discover.sections.trending.usecases.shows.CustomGetTrendingShowsUseCase
 import tv.trakt.trakt.core.discover.sections.trending.usecases.shows.DefaultGetTrendingShowsUseCase
-import tv.trakt.trakt.core.discover.sections.trending.usecases.shows.HalloweenGetTrendingShowsUseCase
 import tv.trakt.trakt.core.episodes.data.remote.EpisodesApiClient
 import tv.trakt.trakt.core.episodes.data.remote.EpisodesRemoteDataSource
 import tv.trakt.trakt.core.shows.data.remote.ShowsApiClient
@@ -74,12 +74,13 @@ internal val showsModule = module {
     }
 
     factory<GetTrendingShowsUseCase>(
-        qualifier = named("halloweenTrendingShowsUseCase"),
+        qualifier = named("customTrendingShowsUseCase"),
     ) {
-        HalloweenGetTrendingShowsUseCase(
+        CustomGetTrendingShowsUseCase(
             remoteSource = get(),
             localTrendingSource = get(),
             localShowSource = get(),
+            customThemeUseCase = get(),
         )
     }
 
@@ -94,12 +95,13 @@ internal val showsModule = module {
     }
 
     factory<GetPopularShowsUseCase>(
-        qualifier = named("halloweenPopularShowsUseCase"),
+        qualifier = named("customPopularShowsUseCase"),
     ) {
-        HalloweenGetPopularShowsUseCase(
+        CustomGetPopularShowsUseCase(
             remoteSource = get(),
             localPopularSource = get(),
             localShowSource = get(),
+            customThemeUseCase = get(),
         )
     }
 
@@ -114,12 +116,13 @@ internal val showsModule = module {
     }
 
     factory<GetAnticipatedShowsUseCase>(
-        qualifier = named("halloweenAnticipatedShowsUseCase"),
+        qualifier = named("customAnticipatedShowsUseCase"),
     ) {
-        HalloweenGetAnticipatedShowsUseCase(
+        CustomGetAnticipatedShowsUseCase(
             remoteSource = get(),
             localAnticipatedSource = get(),
             localShowSource = get(),
+            customThemeUseCase = get(),
         )
     }
 
@@ -134,12 +137,13 @@ internal val showsModule = module {
     }
 
     factory<GetRecommendedShowsUseCase>(
-        qualifier = named("halloweenRecommendedShowsUseCase"),
+        qualifier = named("customRecommendedShowsUseCase"),
     ) {
-        HalloweenGetRecommendedShowsUseCase(
+        CustomGetRecommendedShowsUseCase(
             remoteSource = get(),
             localRecommendedSource = get(),
             localShowSource = get(),
+            customThemeUseCase = get(),
         )
     }
 

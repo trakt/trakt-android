@@ -11,12 +11,14 @@ import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.sections.trending.data.local.movies.TrendingMoviesLocalDataSource
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingMoviesUseCase
+import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
 
-internal class HalloweenGetTrendingMoviesUseCase(
+internal class CustomGetTrendingMoviesUseCase(
     private val remoteSource: MoviesRemoteDataSource,
     private val localTrendingSource: TrendingMoviesLocalDataSource,
     private val localMovieSource: MovieLocalDataSource,
+    private val customThemeUseCase: CustomThemeUseCase,
 ) : GetTrendingMoviesUseCase {
     override suspend fun getLocalMovies(): ImmutableList<DiscoverItem.MovieItem> {
         return localTrendingSource.getMovies()
@@ -34,10 +36,29 @@ internal class HalloweenGetTrendingMoviesUseCase(
         page: Int,
         skipLocal: Boolean,
     ): ImmutableList<DiscoverItem.MovieItem> {
+        val config = customThemeUseCase.getConfig()
+        val filters = config.theme?.filters
+
+        val customGenres = when {
+            config.enabled -> filters?.movies?.trending?.genres
+            else -> null
+        }
+        val customSubgenres = when {
+            config.enabled -> filters?.movies?.trending?.subgenres
+            else -> null
+        }
+
+        val customYears = when {
+            config.enabled -> filters?.movies?.trending?.years?.toString()
+            else -> null
+        }
+
         return remoteSource.getTrending(
             page = page,
             limit = limit,
-            subgenres = listOf("halloween"),
+            genres = customGenres,
+            subgenres = customSubgenres,
+            years = customYears,
         )
             .asyncMap {
                 DiscoverItem.MovieItem(

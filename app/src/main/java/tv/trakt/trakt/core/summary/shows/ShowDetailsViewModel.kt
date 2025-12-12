@@ -12,7 +12,6 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -47,7 +46,6 @@ import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.DETAILS
 import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.AddPersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
-import tv.trakt.trakt.core.main.usecases.HalloweenUseCase
 import tv.trakt.trakt.core.profile.model.FavoriteItem
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.summary.shows.ShowDetailsState.UserRatingsState
@@ -90,7 +88,6 @@ internal class ShowDetailsViewModel(
     private val updateShowFavoritesUseCase: UpdateShowFavoritesUseCase,
     private val addListItemUseCase: AddPersonalListItemUseCase,
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
-    private val halloweenUseCase: HalloweenUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
     private val userFavoritesLocalSource: UserFavoritesLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
@@ -117,7 +114,6 @@ internal class ShowDetailsViewModel(
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
     private val userState = MutableStateFlow(initialState.user)
-    private val halloweenState = MutableStateFlow(initialState.halloween)
 
     private var ratingJob: kotlinx.coroutines.Job? = null
 
@@ -173,7 +169,6 @@ internal class ShowDetailsViewModel(
 
                 loadRatings(show)
                 loadStudios()
-                loadHalloween(show)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -181,22 +176,6 @@ internal class ShowDetailsViewModel(
                 }
             } finally {
                 loadingState.update { DONE }
-            }
-        }
-    }
-
-    private fun loadHalloween(show: Show?) {
-        viewModelScope.launch {
-            delay(100)
-            try {
-                halloweenState.update {
-                    show?.genres?.contains("horror") == true &&
-                        halloweenUseCase.getConfig().enabled
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
             }
         }
     }
@@ -870,7 +849,7 @@ internal class ShowDetailsViewModel(
     }
 
     @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<ShowDetailsState> = combine(
+    val state = combine(
         showState,
         showRatingsState,
         showUserRatingsState,
@@ -884,7 +863,6 @@ internal class ShowDetailsViewModel(
         infoState,
         errorState,
         userState,
-        halloweenState,
     ) { state ->
         ShowDetailsState(
             show = state[0] as Show?,
@@ -900,7 +878,6 @@ internal class ShowDetailsViewModel(
             info = state[10] as StringResource?,
             error = state[11] as Exception?,
             user = state[12] as User?,
-            halloween = state[13] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

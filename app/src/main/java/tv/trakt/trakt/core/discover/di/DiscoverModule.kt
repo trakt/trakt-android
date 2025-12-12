@@ -14,7 +14,9 @@ import tv.trakt.trakt.core.discover.sections.trending.DiscoverTrendingViewModel
 
 internal val discoverModule = module {
 
-    factory {
+    factory(
+        qualifier = named("defaultAllDiscoverShowsUseCase"),
+    ) {
         GetAllDiscoverShowsUseCase(
             getTrendingShowsUseCase = get(named("defaultTrendingShowsUseCase")),
             getAnticipatedShowsUseCase = get(named("defaultAnticipatedShowsUseCase")),
@@ -23,12 +25,36 @@ internal val discoverModule = module {
         )
     }
 
-    factory {
+    factory(
+        qualifier = named("defaultAllDiscoverMoviesUseCase"),
+    ) {
         GetAllDiscoverMoviesUseCase(
             getTrendingMoviesUseCase = get(named("defaultTrendingMoviesUseCase")),
             getAnticipatedMoviesUseCase = get(named("defaultAnticipatedMoviesUseCase")),
             getPopularMoviesUseCase = get(named("defaultPopularMoviesUseCase")),
             getRecommendedMoviesUseCase = get(named("defaultRecommendedMoviesUseCase")),
+        )
+    }
+
+    factory(
+        qualifier = named("customAllDiscoverShowsUseCase"),
+    ) {
+        GetAllDiscoverShowsUseCase(
+            getTrendingShowsUseCase = get(named("customTrendingShowsUseCase")),
+            getAnticipatedShowsUseCase = get(named("customAnticipatedShowsUseCase")),
+            getPopularShowsUseCase = get(named("customPopularShowsUseCase")),
+            getRecommendedShowsUseCase = get(named("customRecommendedShowsUseCase")),
+        )
+    }
+
+    factory(
+        qualifier = named("customAllDiscoverMoviesUseCase"),
+    ) {
+        GetAllDiscoverMoviesUseCase(
+            getTrendingMoviesUseCase = get(named("customTrendingMoviesUseCase")),
+            getAnticipatedMoviesUseCase = get(named("customAnticipatedMoviesUseCase")),
+            getPopularMoviesUseCase = get(named("customPopularMoviesUseCase")),
+            getRecommendedMoviesUseCase = get(named("customRecommendedMoviesUseCase")),
         )
     }
 
@@ -41,46 +67,76 @@ internal val discoverModule = module {
         )
     }
 
-    viewModel {
+    viewModel { (customTheme: Boolean) ->
         AllDiscoverViewModel(
             savedStateHandle = get(),
             analytics = get(),
             modeManager = get(),
-            getShowsUseCase = get(),
-            getMoviesUseCase = get(),
+            getShowsUseCase = when {
+                customTheme -> get(named("customAllDiscoverShowsUseCase"))
+                else -> get(named("defaultAllDiscoverShowsUseCase"))
+            },
+            getMoviesUseCase = when {
+                customTheme -> get(named("customAllDiscoverMoviesUseCase"))
+                else -> get(named("defaultAllDiscoverMoviesUseCase"))
+            },
             collectionStateProvider = get(),
         )
     }
 
-    viewModel {
+    viewModel { (customTheme: Boolean) ->
         DiscoverTrendingViewModel(
             modeManager = get(),
-            getTrendingShowsUseCase = get(named("defaultTrendingShowsUseCase")),
-            getTrendingMoviesUseCase = get(named("defaultTrendingMoviesUseCase")),
+            getTrendingShowsUseCase = when {
+                customTheme -> get(named("customTrendingShowsUseCase"))
+                else -> get(named("defaultTrendingShowsUseCase"))
+            },
+            getTrendingMoviesUseCase = when {
+                customTheme -> get(named("customTrendingMoviesUseCase"))
+                else -> get(named("defaultTrendingMoviesUseCase"))
+            },
         )
     }
 
-    viewModel {
+    viewModel { (customTheme: Boolean) ->
         DiscoverAnticipatedViewModel(
             modeManager = get(),
-            getAnticipatedShowsUseCase = get(named("defaultAnticipatedShowsUseCase")),
-            getAnticipatedMoviesUseCase = get(named("defaultAnticipatedMoviesUseCase")),
+            getAnticipatedShowsUseCase = when {
+                customTheme -> get(named("customAnticipatedShowsUseCase"))
+                else -> get(named("defaultAnticipatedShowsUseCase"))
+            },
+            getAnticipatedMoviesUseCase = when {
+                customTheme -> get(named("customAnticipatedMoviesUseCase"))
+                else -> get(named("defaultAnticipatedMoviesUseCase"))
+            },
         )
     }
 
-    viewModel {
+    viewModel { (customTheme: Boolean) ->
         DiscoverPopularViewModel(
             modeManager = get(),
-            getPopularShowsUseCase = get(named("defaultPopularShowsUseCase")),
-            getPopularMoviesUseCase = get(named("defaultPopularMoviesUseCase")),
+            getPopularShowsUseCase = when {
+                customTheme -> get(named("customPopularShowsUseCase"))
+                else -> get(named("defaultPopularShowsUseCase"))
+            },
+            getPopularMoviesUseCase = when {
+                customTheme -> get(named("customPopularMoviesUseCase"))
+                else -> get(named("defaultPopularMoviesUseCase"))
+            },
         )
     }
 
-    viewModel {
+    viewModel { (customTheme: Boolean) ->
         DiscoverRecommendedViewModel(
             modeManager = get(),
-            getRecommendedShowsUseCase = get(named("defaultRecommendedShowsUseCase")),
-            getRecommendedMoviesUseCase = get(named("defaultRecommendedMoviesUseCase")),
+            getRecommendedShowsUseCase = when {
+                customTheme -> get(named("customRecommendedShowsUseCase"))
+                else -> get(named("defaultRecommendedShowsUseCase"))
+            },
+            getRecommendedMoviesUseCase = when {
+                customTheme -> get(named("customRecommendedMoviesUseCase"))
+                else -> get(named("defaultRecommendedMoviesUseCase"))
+            },
         )
     }
 }

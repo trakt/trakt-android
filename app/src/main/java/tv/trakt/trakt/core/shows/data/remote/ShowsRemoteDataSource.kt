@@ -19,6 +19,8 @@ internal interface ShowsRemoteDataSource {
     suspend fun getTrending(
         page: Int = 1,
         limit: Int,
+        years: String? = null,
+        genres: List<String>? = null,
         subgenres: List<String>? = null,
     ): List<TrendingShowDto>
 
@@ -28,11 +30,13 @@ internal interface ShowsRemoteDataSource {
         page: Int = 1,
         limit: Int,
         years: String? = null,
+        genres: List<String>? = null,
         subgenres: List<String>? = null,
     ): List<ShowDto>
 
     suspend fun getRecommended(
         limit: Int,
+        years: String? = null,
         genres: List<String>? = null,
         subgenres: List<String>? = null,
     ): List<RecommendedShowDto>

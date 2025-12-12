@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
@@ -39,6 +40,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.LocalSnackbarState
+import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.common.helpers.LaunchedUpdateEffect
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.core.auth.ConfigAuth
@@ -81,6 +83,7 @@ internal fun MainScreen(
 
     val localUriHandler = LocalUriHandler.current
     val localContext = LocalContext.current
+    val localActivity = LocalActivity.current
     val localSnackbar = LocalSnackbarState.current
     val localBottomBarVisibility = LocalBottomBarVisibility.current
 
@@ -134,8 +137,12 @@ internal fun MainScreen(
                     onDismiss = viewModel::dismissWelcome,
                 )
             } else {
+                val customThemeEnabled =
+                    (localActivity as? MainActivity)?.customThemeConfig?.enabled == true
+
                 MainNavHost(
                     navController = navController,
+                    customThemeEnabled = customThemeEnabled,
                     userLoading = state.loadingUser.isLoading,
                     searchInput = searchState.searchInput,
                     onSearchLoading = searchState.onSearchLoading,
@@ -227,6 +234,7 @@ internal fun MainScreen(
 @Composable
 private fun MainNavHost(
     navController: NavHostController,
+    customThemeEnabled: Boolean,
     userLoading: Boolean,
     searchInput: SearchInput,
     onSearchLoading: (Boolean) -> Unit,
@@ -243,7 +251,10 @@ private fun MainNavHost(
             controller = navController,
             userLoading = userLoading,
         )
-        discoverScreens(navController)
+        discoverScreens(
+            controller = navController,
+            customThemeEnabled = customThemeEnabled,
+        )
         showsScreens(navController)
         moviesScreens(navController)
         episodesScreens(navController)

@@ -10,13 +10,15 @@ import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.sections.recommended.data.local.shows.RecommendedShowsLocalDataSource
 import tv.trakt.trakt.core.discover.sections.recommended.usecase.GetRecommendedShowsUseCase
+import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 import java.time.Instant
 
-internal class HalloweenGetRecommendedShowsUseCase(
+internal class CustomGetRecommendedShowsUseCase(
     private val remoteSource: ShowsRemoteDataSource,
     private val localRecommendedSource: RecommendedShowsLocalDataSource,
     private val localShowSource: ShowLocalDataSource,
+    private val customThemeUseCase: CustomThemeUseCase,
 ) : GetRecommendedShowsUseCase {
     override suspend fun getLocalShows(): ImmutableList<DiscoverItem.ShowItem> {
         return localRecommendedSource.getShows()
@@ -31,19 +33,27 @@ internal class HalloweenGetRecommendedShowsUseCase(
         limit: Int,
         skipLocal: Boolean,
     ): ImmutableList<DiscoverItem.ShowItem> {
+        val config = customThemeUseCase.getConfig()
+
+        val customGenres = when {
+            config.enabled -> config.theme?.filters?.shows?.recommended?.genres
+            else -> null
+        }
+        val customSubgenres = when {
+            config.enabled -> config.theme?.filters?.shows?.recommended?.subgenres
+            else -> null
+        }
+
+        val customYears = when {
+            config.enabled -> config.theme?.filters?.shows?.recommended?.years?.toString()
+            else -> null
+        }
+
         return remoteSource.getRecommended(
             limit = limit,
-            genres = listOf("horror"),
-            subgenres = listOf(
-                "halloween",
-                "haunting",
-                "nightmare",
-                "witch",
-                "monster",
-                "demon",
-                "occult",
-                "supernatural",
-            ),
+            years = customYears,
+            genres = customGenres,
+            subgenres = customSubgenres,
         )
             .asyncMap {
                 DiscoverItem.ShowItem(
