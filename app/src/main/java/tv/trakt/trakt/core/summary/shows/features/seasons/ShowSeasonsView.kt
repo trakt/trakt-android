@@ -243,9 +243,7 @@ private fun ShowSeasonsContent(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
         modifier = modifier,
     ) {
-        val headerSeasons =
-            stringResource(R.string.list_title_seasons)
-
+        val headerSeasons = stringResource(R.string.list_title_seasons)
         val headerCurrentSeason = state.items.selectedSeason?.let {
             when {
                 it.isSpecial -> stringResource(R.string.text_season_specials)
@@ -266,7 +264,10 @@ private fun ShowSeasonsContent(
             ) {
                 TraktHeader(
                     title = headerSeasons,
-                    titleColor = TraktTheme.colors.textSecondary,
+                    titleColor = when {
+                        !state.loading.isLoading && state.items.seasons.isEmpty() -> TraktTheme.colors.textPrimary
+                        else -> TraktTheme.colors.textSecondary
+                    },
                 )
                 if (state.items.selectedSeason != null) {
                     TraktHeader(
@@ -351,6 +352,7 @@ private fun ShowSeasonsContent(
                         contentPadding = contentPadding,
                     )
                 }
+
                 DONE -> {
                     if (state.items.seasons.isEmpty()) {
                         ContentEmpty(
