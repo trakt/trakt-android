@@ -24,3 +24,13 @@
 -keep class tv.trakt.trakt.core.discover.model.**
 -keep class tv.trakt.trakt.core.main.model.**
 -keep class tv.trakt.trakt.common.model.**
+
+# Younify SDK
+
+-keep class ch.qos.logback.core.** { *; }
+-keep class ch.qos.logback.classic.** { *; }
+-keep class org.slf4j.** { *; }
+
+-dontwarn javax.mail.**
+-dontwarn javax.mail.internet.**
+-dontwarn javax.management.**
