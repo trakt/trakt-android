@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.profile.model
+package tv.trakt.trakt.core.favorites.model
 
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.model.Images

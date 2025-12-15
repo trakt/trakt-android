@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package tv.trakt.trakt.core.profile.sections.favorites
+package tv.trakt.trakt.core.profile.sections.library
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -25,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,81 +37,80 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.google.firebase.Firebase
-import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
-import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_1
-import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_2
-import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_3
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.favorites.model.FavoriteItem
-import tv.trakt.trakt.core.home.views.HomeEmptyView
-import tv.trakt.trakt.core.main.model.MediaMode
-import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
-import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
-import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
+import tv.trakt.trakt.core.library.model.LibraryFilter
+import tv.trakt.trakt.core.library.model.LibraryItem
 import tv.trakt.trakt.core.profile.sections.favorites.context.movie.FavoriteMovieContextSheet
 import tv.trakt.trakt.core.profile.sections.favorites.context.show.FavoriteShowContextSheet
-import tv.trakt.trakt.core.profile.sections.favorites.views.FavoriteItemView
+import tv.trakt.trakt.core.profile.sections.library.views.LibraryItemView
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.MediaModeFilters
+import tv.trakt.trakt.ui.components.FilterChip
+import tv.trakt.trakt.ui.components.FilterChipGroup
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun ProfileFavoritesView(
+internal fun ProfileLibraryView(
     modifier: Modifier = Modifier,
-    viewModel: ProfileFavoritesViewModel = koinViewModel(),
+    viewModel: ProfileLibraryViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onMoreClick: () -> Unit,
-    onShowsClick: () -> Unit,
-    onMoviesClick: () -> Unit,
 ) {
+    val scope = rememberCoroutineScope()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var showContextSheet by remember { mutableStateOf<Show?>(null) }
     var movieContextSheet by remember { mutableStateOf<Movie?>(null) }
+//
+//    LaunchedEffect(state) {
+//        state.navigateShow?.let {
+//            viewModel.clearNavigation()
+//            onShowClick(it)
+//        }
+//        state.navigateMovie?.let {
+//            viewModel.clearNavigation()
+//            onMovieClick(it)
+//        }
+//    }
 
-    LaunchedEffect(state) {
-        state.navigateShow?.let {
-            viewModel.clearNavigation()
-            onShowClick(it)
-        }
-        state.navigateMovie?.let {
-            viewModel.clearNavigation()
-            onMovieClick(it)
-        }
-    }
-
-    ProfileFavoritesContent(
+    ProfileLibraryView(
         state = state,
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onFilterClick = viewModel::setFilter,
-        onShowClick = { viewModel.navigateToShow(it) },
-        onMovieClick = { viewModel.navigateToMovie(it) },
-        onShowLongClick = { showContextSheet = it },
-        onMovieLongClick = { movieContextSheet = it },
-        onFavoritesClick = {
+        onEpisodeClick = { show, _ ->
+            scope.launch {
+                viewModel.onNavigateToShow(show)
+                onShowClick(show.ids.trakt)
+            }
+        },
+        onMovieClick = {
+            scope.launch {
+                viewModel.onNavigateToMovie(it)
+                onMovieClick(it.ids.trakt)
+            }
+        },
+        onLibraryClick = {
             if (state.loading == DONE && !state.items.isNullOrEmpty()) {
                 onMoreClick()
             }
         },
-        onShowsClick = onShowsClick,
-        onMoviesClick = onMoviesClick,
     )
 
     FavoriteShowContextSheet(
@@ -124,19 +125,15 @@ internal fun ProfileFavoritesView(
 }
 
 @Composable
-internal fun ProfileFavoritesContent(
-    state: ProfileFavoritesState,
+private fun ProfileLibraryView(
+    state: ProfileLibraryState,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onFilterClick: (MediaMode) -> Unit = {},
-    onShowClick: (Show) -> Unit = {},
+    onFilterClick: (LibraryFilter) -> Unit = {},
+    onEpisodeClick: (Show, Episode) -> Unit = { _, _ -> },
     onMovieClick: (Movie) -> Unit = {},
-    onShowLongClick: (Show) -> Unit = {},
-    onMovieLongClick: (Movie) -> Unit = {},
-    onFavoritesClick: () -> Unit = {},
-    onShowsClick: () -> Unit = {},
-    onMoviesClick: () -> Unit = {},
+    onLibraryClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -147,14 +144,13 @@ internal fun ProfileFavoritesContent(
                 .fillMaxWidth()
                 .padding(headerPadding)
                 .onClick(enabled = state.loading == DONE) {
-                    onFavoritesClick()
+                    onLibraryClick()
                 },
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
             TraktHeader(
-                title = stringResource(R.string.list_title_favorites),
-                subtitle = stringResource(R.string.text_sort_recently_added),
+                title = stringResource(R.string.list_title_library),
             )
 
             if (!state.items.isNullOrEmpty() || state.loading != DONE) {
@@ -186,7 +182,6 @@ internal fun ProfileFavoritesContent(
                     ContentLoadingList(
                         visible = loading.isLoading,
                         contentPadding = contentPadding,
-                        modifier = Modifier.padding(bottom = 3.75.dp),
                     )
                 }
 
@@ -204,23 +199,25 @@ internal fun ProfileFavoritesContent(
                         }
 
                         state.items?.isEmpty() == true -> {
-                            ContentEmptyView(
-                                filter = state.filter,
-                                onShowsClick = onShowsClick,
-                                onMoviesClick = onMoviesClick,
+                            Text(
+                                text = stringResource(R.string.list_placeholder_empty),
+                                color = TraktTheme.colors.textSecondary,
+                                style = TraktTheme.typography.heading6,
                                 modifier = Modifier.padding(contentPadding),
                             )
                         }
 
                         else -> {
                             ContentList(
-                                filter = state.filter,
+//                                filter = state.filter,
                                 listItems = (state.items ?: emptyList()).toImmutableList(),
                                 contentPadding = contentPadding,
-                                onShowClick = onShowClick,
-                                onMovieClick = onMovieClick,
-                                onShowLongClick = onShowLongClick,
-                                onMovieLongClick = onMovieLongClick,
+                                onEpisodeClick = {
+                                    onEpisodeClick(it.show, it.episode)
+                                },
+                                onMovieClick = {
+                                    onMovieClick(it.movie)
+                                },
                             )
                         }
                     }
@@ -233,15 +230,23 @@ internal fun ProfileFavoritesContent(
 @Composable
 private fun ContentFilters(
     headerPadding: PaddingValues,
-    state: ProfileFavoritesState,
-    onFilterClick: (MediaMode) -> Unit,
+    state: ProfileLibraryState,
+    modifier: Modifier = Modifier,
+    onFilterClick: (LibraryFilter) -> Unit,
 ) {
-    MediaModeFilters(
-        selected = state.filter,
-        onClick = onFilterClick,
+    FilterChipGroup(
         paddingHorizontal = headerPadding,
         paddingVertical = PaddingValues(top = 13.dp, bottom = 15.dp),
-    )
+        modifier = modifier,
+    ) {
+        for (filter in LibraryFilter.entries) {
+            FilterChip(
+                selected = filter == state.filter,
+                text = stringResource(filter.displayRes),
+                onClick = { onFilterClick(filter) },
+            )
+        }
+    }
 }
 
 @Composable
@@ -250,30 +255,29 @@ private fun ContentLoadingList(
     visible: Boolean = true,
     contentPadding: PaddingValues,
 ) {
-    LazyRow(
+    Row(
         horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
-        contentPadding = contentPadding,
-        userScrollEnabled = false,
         modifier = modifier
-            .fillMaxWidth()
+            .wrapContentWidth(align = Alignment.Start, unbounded = true)
+            .padding(contentPadding)
             .alpha(if (visible) 1F else 0F),
     ) {
-        items(count = 6) {
-            VerticalMediaSkeletonCard(chipRatio = 0.66F)
+        repeat(6) {
+            VerticalMediaSkeletonCard(
+                chipRatio = 0.66F,
+                secondaryChip = true,
+            )
         }
     }
 }
 
 @Composable
 private fun ContentList(
-    listItems: ImmutableList<FavoriteItem>,
+    listItems: ImmutableList<LibraryItem>,
     listState: LazyListState = rememberLazyListState(),
-    filter: MediaMode?,
     contentPadding: PaddingValues,
-    onShowClick: (Show) -> Unit = {},
-    onMovieClick: (Movie) -> Unit = {},
-    onShowLongClick: (Show) -> Unit = {},
-    onMovieLongClick: (Movie) -> Unit = {},
+    onEpisodeClick: (LibraryItem.EpisodeItem) -> Unit = {},
+    onMovieClick: (LibraryItem.MovieItem) -> Unit = {},
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
@@ -295,27 +299,16 @@ private fun ContentList(
             items = listItems,
             key = { it.key },
         ) { item ->
-            FavoriteItemView(
+            LibraryItemView(
                 item = item,
-                showMediaIcon = (filter == MEDIA),
-                onShowClick = {
-                    if (item is FavoriteItem.ShowItem && !item.loading) {
-                        onShowClick(item.show)
+                onEpisodeClick = {
+                    (item as? LibraryItem.EpisodeItem)?.let {
+                        onEpisodeClick(item)
                     }
                 },
                 onMovieClick = {
-                    if (item is FavoriteItem.MovieItem && !item.loading) {
-                        onMovieClick(item.movie)
-                    }
-                },
-                onShowLongClick = {
-                    if (item is FavoriteItem.ShowItem && !item.loading) {
-                        onShowLongClick(item.show)
-                    }
-                },
-                onMovieLongClick = {
-                    if (item is FavoriteItem.MovieItem && !item.loading) {
-                        onMovieLongClick(item.movie)
+                    (item as? LibraryItem.MovieItem)?.let {
+                        onMovieClick(item)
                     }
                 },
                 modifier = Modifier.animateItem(
@@ -323,70 +316,6 @@ private fun ContentList(
                     fadeOutSpec = null,
                 ),
             )
-        }
-    }
-}
-
-@Composable
-private fun ContentEmptyView(
-    filter: MediaMode?,
-    modifier: Modifier = Modifier,
-    onShowsClick: () -> Unit,
-    onMoviesClick: () -> Unit,
-) {
-    val height = 219.dp
-
-    val imageUrls = remember {
-        val remoteConfig = Firebase.remoteConfig
-        buildList {
-            add(remoteConfig.getString(MOBILE_EMPTY_IMAGE_1).ifBlank { null })
-            add(remoteConfig.getString(MOBILE_EMPTY_IMAGE_2).ifBlank { null })
-            add(remoteConfig.getString(MOBILE_EMPTY_IMAGE_3).ifBlank { null })
-        }
-    }
-
-    when (filter) {
-        MEDIA -> {
-            HomeEmptyView(
-                text = stringResource(R.string.text_cta_favorites),
-                icon = R.drawable.ic_empty_watchlist,
-                height = height,
-                buttonText = stringResource(R.string.link_text_discover_shows),
-                backgroundImageUrl = imageUrls.getOrNull(0),
-                backgroundImage = if (imageUrls.getOrNull(0) == null) R.drawable.ic_splash_background else null,
-                onClick = onShowsClick,
-                modifier = modifier,
-            )
-        }
-
-        SHOWS -> {
-            HomeEmptyView(
-                text = stringResource(R.string.text_cta_favorites_shows),
-                icon = R.drawable.ic_empty_watchlist,
-                height = height,
-                buttonText = stringResource(R.string.link_text_discover_shows),
-                backgroundImageUrl = imageUrls.getOrNull(2),
-                backgroundImage = if (imageUrls.getOrNull(2) == null) R.drawable.ic_splash_background_2 else null,
-                onClick = onShowsClick,
-                modifier = modifier,
-            )
-        }
-
-        MOVIES -> {
-            HomeEmptyView(
-                text = stringResource(R.string.text_cta_favorites_movies),
-                icon = R.drawable.ic_empty_watchlist,
-                height = height,
-                buttonText = stringResource(R.string.link_text_discover_movies),
-                backgroundImageUrl = imageUrls.getOrNull(1),
-                backgroundImage = if (imageUrls.getOrNull(1) == null) R.drawable.ic_splash_background_2 else null,
-                onClick = onMoviesClick,
-                modifier = modifier,
-            )
-        }
-
-        else -> {
-            Unit
         }
     }
 }
@@ -401,8 +330,8 @@ private fun ContentEmptyView(
 @Composable
 private fun Preview() {
     TraktTheme {
-        ProfileFavoritesContent(
-            state = ProfileFavoritesState(
+        ProfileLibraryView(
+            state = ProfileLibraryState(
                 loading = IDLE,
             ),
         )
@@ -417,26 +346,9 @@ private fun Preview() {
 @Composable
 private fun Preview2() {
     TraktTheme {
-        ProfileFavoritesContent(
-            state = ProfileFavoritesState(
+        ProfileLibraryView(
+            state = ProfileLibraryState(
                 loading = LOADING,
-            ),
-        )
-    }
-}
-
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
-@Composable
-private fun Preview3() {
-    TraktTheme {
-        ProfileFavoritesContent(
-            state = ProfileFavoritesState(
-                loading = DONE,
-                items = emptyList<FavoriteItem>().toImmutableList(),
             ),
         )
     }

@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.profile.model
+package tv.trakt.trakt.core.favorites.model
 
 import tv.trakt.trakt.common.model.sorting.SortOrder.ASCENDING
 import tv.trakt.trakt.common.model.sorting.SortOrder.DESCENDING

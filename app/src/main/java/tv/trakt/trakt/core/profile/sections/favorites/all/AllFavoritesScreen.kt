@@ -50,8 +50,8 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.sorting.SortTypeList
 import tv.trakt.trakt.common.model.sorting.Sorting
+import tv.trakt.trakt.core.favorites.model.FavoriteItem
 import tv.trakt.trakt.core.main.model.MediaMode
-import tv.trakt.trakt.core.profile.model.FavoriteItem
 import tv.trakt.trakt.core.profile.sections.favorites.all.views.AllFavoritesMovieView
 import tv.trakt.trakt.core.profile.sections.favorites.all.views.AllFavoritesShowView
 import tv.trakt.trakt.core.profile.sections.favorites.context.movie.FavoriteMovieContextSheet

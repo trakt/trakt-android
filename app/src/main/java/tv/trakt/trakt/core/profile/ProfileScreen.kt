@@ -71,6 +71,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.core.profile.sections.favorites.ProfileFavoritesView
 import tv.trakt.trakt.core.profile.sections.history.ProfileHistoryView
+import tv.trakt.trakt.core.profile.sections.library.ProfileLibraryView
 import tv.trakt.trakt.core.profile.sections.social.ProfileSocialView
 import tv.trakt.trakt.core.profile.sections.thismonth.ThisMonthCard
 import tv.trakt.trakt.core.profile.sections.thismonth.ThisMonthVipCard
@@ -89,6 +90,7 @@ internal fun ProfileScreen(
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToHistory: () -> Unit,
     onNavigateToFavorites: () -> Unit,
+    onNavigateToLibrary: () -> Unit,
     onNavigateToDiscover: () -> Unit,
     onNavigateToSettings: () -> Unit,
     onNavigateToHome: () -> Unit,
@@ -106,13 +108,14 @@ internal fun ProfileScreen(
         }
     }
 
-    ProfileScreenContent(
+    ProfileScreen(
         state = state,
         onNavigateToShow = onNavigateToShow,
         onNavigateToMovie = onNavigateToMovie,
         onNavigateToEpisode = onNavigateToEpisode,
         onNavigateToHistory = onNavigateToHistory,
         onNavigateToFavorites = onNavigateToFavorites,
+        onNavigateToLibrary = onNavigateToLibrary,
         onNavigateToShows = onNavigateToDiscover,
         onNavigateToMovies = onNavigateToDiscover,
         onSettingsClick = onNavigateToSettings,
@@ -146,7 +149,7 @@ internal fun ProfileScreen(
 }
 
 @Composable
-private fun ProfileScreenContent(
+private fun ProfileScreen(
     state: ProfileState,
     modifier: Modifier = Modifier,
     onNavigateToShow: (TraktId) -> Unit = {},
@@ -154,6 +157,7 @@ private fun ProfileScreenContent(
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
     onNavigateToHistory: () -> Unit = {},
     onNavigateToFavorites: () -> Unit = {},
+    onNavigateToLibrary: () -> Unit = {},
     onNavigateToShows: () -> Unit = {},
     onNavigateToMovies: () -> Unit = {},
     onVipClick: () -> Unit = {},
@@ -305,6 +309,18 @@ private fun ProfileScreenContent(
                             onMoreClick = onNavigateToFavorites,
                             onShowsClick = onNavigateToShows,
                             onMoviesClick = onNavigateToMovies,
+                            modifier = Modifier
+                                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+                        )
+                    }
+
+                    item {
+                        ProfileLibraryView(
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            onShowClick = onNavigateToShow,
+                            onMovieClick = onNavigateToMovie,
+                            onMoreClick = onNavigateToLibrary,
                             modifier = Modifier
                                 .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
                         )
@@ -513,7 +529,7 @@ private fun shareProfile(
 @Composable
 private fun Preview() {
     TraktTheme {
-        ProfileScreenContent(
+        ProfileScreen(
             state = ProfileState(
                 user = PreviewData.user1,
             ),

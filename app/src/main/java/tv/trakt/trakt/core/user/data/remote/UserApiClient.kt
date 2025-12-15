@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.user.data.remote
 
 import org.openapitools.client.apis.CalendarsApi
 import org.openapitools.client.apis.HistoryApi
+import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
 import org.openapitools.client.models.PutUsersSaveSettingsRequest
 import org.openapitools.client.models.PutUsersSaveSettingsRequestUser
@@ -21,6 +22,8 @@ import tv.trakt.trakt.common.networking.SyncFavoriteMovieDto
 import tv.trakt.trakt.common.networking.SyncFavoriteShowDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
+import tv.trakt.trakt.common.networking.SyncLibraryEpisodeDto
+import tv.trakt.trakt.common.networking.SyncLibraryMovieDto
 import tv.trakt.trakt.common.networking.UserCommentsDto
 import tv.trakt.trakt.common.networking.UserRatingDto
 import tv.trakt.trakt.common.networking.WatchedShowDto
@@ -34,6 +37,7 @@ internal class UserApiClient(
     private val usersApi: UsersApi,
     private val historyApi: HistoryApi,
     private val calendarsApi: CalendarsApi,
+    private val syncApi: SyncApi,
     private val cacheMarkerProvider: CacheMarkerProvider,
 ) : UserRemoteDataSource {
     override suspend fun getProfile(): User {
@@ -149,6 +153,22 @@ internal class UserApiClient(
             endDate = null,
         )
 
+        return response.body()
+    }
+
+    override suspend fun getLibraryMovies(extended: String?): List<SyncLibraryMovieDto> {
+        val response = syncApi.getSyncCollectionMovies(
+            extended = extended ?: "",
+            availableOn = null,
+        )
+        return response.body()
+    }
+
+    override suspend fun getLibraryEpisodes(extended: String?): List<SyncLibraryEpisodeDto> {
+        val response = syncApi.getSyncCollectionEpisodes(
+            extended = extended ?: "",
+            availableOn = null,
+        )
         return response.body()
     }
 

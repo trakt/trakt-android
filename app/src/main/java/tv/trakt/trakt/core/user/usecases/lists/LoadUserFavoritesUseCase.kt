@@ -10,8 +10,8 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.sorting.Sorting
-import tv.trakt.trakt.core.profile.model.FavoriteItem
-import tv.trakt.trakt.core.profile.model.getFavoriteSorting
+import tv.trakt.trakt.core.favorites.model.FavoriteItem
+import tv.trakt.trakt.core.favorites.model.getFavoriteSorting
 import tv.trakt.trakt.core.user.data.local.favorites.UserFavoritesLocalDataSource
 import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 

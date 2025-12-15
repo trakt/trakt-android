@@ -23,7 +23,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.relativeDateString
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.preview.PreviewData
-import tv.trakt.trakt.core.profile.model.FavoriteItem
+import tv.trakt.trakt.core.favorites.model.FavoriteItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -120,6 +120,7 @@ internal fun FavoriteItemView(
                 modifier = modifier,
             )
         }
+
         is FavoriteItem.MovieItem -> {
             val isReleased = remember(item.movie.released) {
                 item.movie.released?.isTodayOrBefore() ?: false

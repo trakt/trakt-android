@@ -29,6 +29,9 @@ internal fun NavGraphBuilder.profileScreen(
             onNavigateToMovie = onNavigateToMovie,
             onNavigateToEpisode = onNavigateToEpisode,
             onNavigateToFavorites = onNavigateToFavorites,
+            onNavigateToLibrary = {
+                TODO()
+            },
             onNavigateToHistory = onNavigateToHistory,
             onNavigateToDiscover = onNavigateToDiscover,
             onNavigateToSettings = onNavigateToSettings,

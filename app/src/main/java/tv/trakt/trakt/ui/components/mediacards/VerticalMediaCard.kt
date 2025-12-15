@@ -4,9 +4,6 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -78,6 +75,7 @@ internal fun VerticalMediaCard(
     watchlist: Boolean = false,
     chipSpacing: Dp = 8.dp,
     chipContent: @Composable (Modifier) -> Unit = {},
+    cardContent: @Composable (() -> Unit)? = null,
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
 ) {
@@ -236,6 +234,16 @@ internal fun VerticalMediaCard(
                     }
                 },
             )
+
+            cardContent?.let {
+                Box(
+                    modifier = Modifier
+                        .padding(6.dp)
+                        .align(Alignment.BottomStart),
+                ) {
+                    cardContent()
+                }
+            }
 
             if (watchlist || watched) {
                 Row(

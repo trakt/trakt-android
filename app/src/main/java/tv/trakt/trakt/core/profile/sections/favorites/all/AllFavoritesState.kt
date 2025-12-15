@@ -5,8 +5,8 @@ import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.sorting.Sorting
+import tv.trakt.trakt.core.favorites.model.FavoriteItem
 import tv.trakt.trakt.core.main.model.MediaMode
-import tv.trakt.trakt.core.profile.model.FavoriteItem
 
 @Immutable
 internal data class AllFavoritesState(

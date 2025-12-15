@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.core.favorites.model.FavoriteItem
 import tv.trakt.trakt.core.movies.ui.MovieMetaFooter
-import tv.trakt.trakt.core.profile.model.FavoriteItem
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 
 @Composable

@@ -25,6 +25,7 @@ import tv.trakt.trakt.core.profile.sections.favorites.context.movie.FavoriteMovi
 import tv.trakt.trakt.core.profile.sections.favorites.context.show.FavoriteShowContextViewModel
 import tv.trakt.trakt.core.profile.sections.favorites.filters.GetFavoritesFilterUseCase
 import tv.trakt.trakt.core.profile.sections.history.ProfileHistoryViewModel
+import tv.trakt.trakt.core.profile.sections.library.ProfileLibraryViewModel
 import tv.trakt.trakt.core.profile.sections.social.ProfileSocialViewModel
 import tv.trakt.trakt.core.profile.sections.social.usecases.GetSocialFilterUseCase
 import tv.trakt.trakt.core.profile.sections.thismonth.usecases.GetThisMonthUseCase
@@ -36,6 +37,8 @@ import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserWatchlistStorage
 import tv.trakt.trakt.core.user.data.local.favorites.UserFavoritesLocalDataSource
 import tv.trakt.trakt.core.user.data.local.favorites.UserFavoritesStorage
+import tv.trakt.trakt.core.user.data.local.library.UserLibraryLocalDataSource
+import tv.trakt.trakt.core.user.data.local.library.UserLibraryStorage
 import tv.trakt.trakt.core.user.data.local.ratings.UserRatingsLocalDataSource
 import tv.trakt.trakt.core.user.data.local.ratings.UserRatingsStorage
 import tv.trakt.trakt.core.user.data.local.reactions.UserReactionsLocalDataSource
@@ -45,6 +48,7 @@ import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 import tv.trakt.trakt.core.user.usecases.GetUserProfileUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserFavoritesUseCase
+import tv.trakt.trakt.core.user.usecases.lists.LoadUserLibraryUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserListsUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
@@ -60,6 +64,7 @@ internal val profileDataModule = module {
             usersApi = get(),
             historyApi = get(),
             calendarsApi = get(),
+            syncApi = get(),
             cacheMarkerProvider = get(),
         )
     }
@@ -84,6 +89,10 @@ internal val profileDataModule = module {
 
     single<UserFavoritesLocalDataSource> {
         UserFavoritesStorage()
+    }
+
+    single<UserLibraryLocalDataSource> {
+        UserLibraryStorage()
     }
 
     single<UserRatingsLocalDataSource> {
@@ -144,6 +153,13 @@ internal val profileModule = module {
     }
 
     factory {
+        LoadUserLibraryUseCase(
+            remoteSource = get(),
+            localSource = get(),
+        )
+    }
+
+    factory {
         LoadUserListsUseCase(
             remoteSource = get(),
             localSource = get(),
@@ -188,6 +204,7 @@ internal val profileModule = module {
             localUserProgress = get(),
             localUserLists = get(),
             localUserFavorites = get(),
+            localUserLibrary = get(),
             localUserReactions = get(),
             localUserRatings = get(),
         )
@@ -224,6 +241,15 @@ internal val profileModule = module {
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
             favoritesUpdates = get(),
+        )
+    }
+
+    viewModel {
+        ProfileLibraryViewModel(
+            sessionManager = get(),
+            loadLibraryUseCase = get(),
+            showLocalDataSource = get(),
+            movieLocalDataSource = get(),
         )
     }
 
