@@ -8,9 +8,9 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
@@ -37,7 +36,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -49,7 +47,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
@@ -68,7 +65,6 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.ratings.UserRating
-import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.summary.movies.features.actors.MovieActorsView
@@ -89,6 +85,7 @@ import tv.trakt.trakt.core.summary.ui.DetailsMetaInfo
 import tv.trakt.trakt.core.summary.ui.POSTER_SPACE_WEIGHT
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.UserRatingBar
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
@@ -420,17 +417,6 @@ internal fun MovieDetailsContent(
                     )
                 }
 
-                item {
-                    DetailsMeta(
-                        movie = movie,
-                        movieStudios = state.movieStudios,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 22.dp)
-                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
-                    )
-                }
-
                 if (!previewMode) {
                     val showStreamings = (state.user != null) && isReleased
 
@@ -545,6 +531,17 @@ internal fun MovieDetailsContent(
                             )
                         }
                     }
+
+                    item {
+                        DetailsMeta(
+                            movie = movie,
+                            movieStudios = state.movieStudios,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 32.dp)
+                                .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
+                        )
+                    }
                 }
             }
         }
@@ -610,48 +607,19 @@ private fun DetailsMeta(
     movie: Movie,
     movieStudios: ImmutableList<String>?,
 ) {
-    var isCollapsed by remember { mutableStateOf(true) }
-    Box(
-        modifier = modifier
-            .animateContentSize(),
+    Column(
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = spacedBy(14.dp),
+        modifier = modifier,
     ) {
-        Text(
-            text = when {
-                isCollapsed -> stringResource(R.string.button_text_view_details)
-                else -> stringResource(R.string.button_text_hide_details)
-            }.uppercase(),
-            textAlign = TextAlign.Center,
-            style = TraktTheme.typography.buttonPrimary
-                .copy(fontSize = 14.sp),
-            color = TraktTheme.colors.textPrimary,
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    color = Color.Transparent,
-                    shape = RoundedCornerShape(100),
-                )
-                .border(
-                    width = (1.5).dp,
-                    color = Shade500,
-                    shape = RoundedCornerShape(100),
-                )
-                .padding(vertical = 9.dp)
-                .onClick {
-                    isCollapsed = !isCollapsed
-                },
+        TraktHeader(
+            title = stringResource(R.string.header_details),
         )
 
-        if (!isCollapsed) {
-            DetailsMetaInfo(
-                movie = movie,
-                movieStudios = movieStudios,
-                modifier = Modifier
-                    .padding(
-                        top = 57.dp,
-                        bottom = 8.dp,
-                    ),
-            )
-        }
+        DetailsMetaInfo(
+            movie = movie,
+            movieStudios = movieStudios,
+        )
     }
 }
 

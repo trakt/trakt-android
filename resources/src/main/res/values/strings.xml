@@ -267,5 +267,6 @@
     <string name="list_title_library">Library</string>
     <string name="text_sort_custom">Custom</string>
     <string name="text_sort_plex" translatable="false">Plex</string>
+    <string name="header_details">More Details</string>
 
 </resources>

@@ -203,8 +203,7 @@ internal fun DetailsMeta(
         Text(
             text = title.uppercase(),
             style = TraktTheme.typography.meta,
-            color = TraktTheme.colors.textSecondary
-                .copy(alpha = 0.7f),
+            color = TraktTheme.colors.textSecondary,
             maxLines = 1,
             overflow = Ellipsis,
         )
