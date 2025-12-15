@@ -426,6 +426,9 @@ private fun TitleBar(
                     tint = TraktTheme.colors.textPrimary,
                     modifier = Modifier
                         .size(22.dp)
+                        .graphicsLayer {
+                            translationY = 0.25.dp.toPx()
+                        }
                         .onClick(onClick = onSettingsClick),
                 )
 
