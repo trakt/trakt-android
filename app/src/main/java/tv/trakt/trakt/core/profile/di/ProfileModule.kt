@@ -26,6 +26,7 @@ import tv.trakt.trakt.core.profile.sections.favorites.context.show.FavoriteShowC
 import tv.trakt.trakt.core.profile.sections.favorites.filters.GetFavoritesFilterUseCase
 import tv.trakt.trakt.core.profile.sections.history.ProfileHistoryViewModel
 import tv.trakt.trakt.core.profile.sections.library.ProfileLibraryViewModel
+import tv.trakt.trakt.core.profile.sections.library.all.AllLibraryViewModel
 import tv.trakt.trakt.core.profile.sections.social.ProfileSocialViewModel
 import tv.trakt.trakt.core.profile.sections.social.usecases.GetSocialFilterUseCase
 import tv.trakt.trakt.core.profile.sections.thismonth.usecases.GetThisMonthUseCase
@@ -269,6 +270,16 @@ internal val profileModule = module {
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
             favoritesUpdates = get(),
+            analytics = get(),
+        )
+    }
+
+    viewModel {
+        AllLibraryViewModel(
+            sessionManager = get(),
+            loadLibraryUseCase = get(),
+            showLocalDataSource = get(),
+            movieLocalDataSource = get(),
             analytics = get(),
         )
     }

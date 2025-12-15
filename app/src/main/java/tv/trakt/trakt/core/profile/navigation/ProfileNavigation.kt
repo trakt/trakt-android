@@ -17,6 +17,7 @@ internal fun NavGraphBuilder.profileScreen(
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToFavorites: () -> Unit,
+    onNavigateToLibrary: () -> Unit,
     onNavigateToHistory: () -> Unit,
     onNavigateToDiscover: () -> Unit,
     onNavigateToSettings: () -> Unit,
@@ -29,9 +30,7 @@ internal fun NavGraphBuilder.profileScreen(
             onNavigateToMovie = onNavigateToMovie,
             onNavigateToEpisode = onNavigateToEpisode,
             onNavigateToFavorites = onNavigateToFavorites,
-            onNavigateToLibrary = {
-                TODO()
-            },
+            onNavigateToLibrary = onNavigateToLibrary,
             onNavigateToHistory = onNavigateToHistory,
             onNavigateToDiscover = onNavigateToDiscover,
             onNavigateToSettings = onNavigateToSettings,

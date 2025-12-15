@@ -11,7 +11,9 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.library.model.LibraryItem
+import tv.trakt.trakt.core.library.model.getLibrarySorting
 import tv.trakt.trakt.core.user.data.local.library.UserLibraryLocalDataSource
 import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 
@@ -22,21 +24,21 @@ internal class LoadUserLibraryUseCase(
     private val remoteSource: UserRemoteDataSource,
     private val localSource: UserLibraryLocalDataSource,
 ) {
-    suspend fun loadLocalAll(): ImmutableList<LibraryItem> {
+    suspend fun loadLocalAll(sort: Sorting? = null): ImmutableList<LibraryItem> {
         return localSource.getAll()
-            .sortedByDescending { it.collectedAt }
+            .sortedWith(getLibrarySorting(sort))
             .toImmutableList()
     }
 
-    suspend fun loadLocalEpisodes(): ImmutableList<LibraryItem.EpisodeItem> {
+    suspend fun loadLocalEpisodes(sort: Sorting? = null): ImmutableList<LibraryItem.EpisodeItem> {
         return localSource.getEpisodes()
-            .sortedByDescending { it.collectedAt }
+            .sortedWith(getLibrarySorting(sort))
             .toImmutableList()
     }
 
-    suspend fun loadLocalMovies(): ImmutableList<LibraryItem.MovieItem> {
+    suspend fun loadLocalMovies(sort: Sorting? = null): ImmutableList<LibraryItem.MovieItem> {
         return localSource.getMovies()
-            .sortedByDescending { it.collectedAt }
+            .sortedWith(getLibrarySorting(sort))
             .toImmutableList()
     }
 
@@ -48,7 +50,7 @@ internal class LoadUserLibraryUseCase(
         return localSource.isMoviesLoaded()
     }
 
-    suspend fun loadAll(): ImmutableList<LibraryItem> {
+    suspend fun loadAll(sort: Sorting? = null): ImmutableList<LibraryItem> {
         return coroutineScope {
             val episodesAsync = async { loadEpisodes() }
             val moviesAsync = async { loadMovies() }
@@ -57,14 +59,14 @@ internal class LoadUserLibraryUseCase(
             val movies = moviesAsync.await()
 
             (episodes + movies)
-                .sortedByDescending { it.collectedAt }
+                .sortedWith(getLibrarySorting(sort))
                 .toImmutableList()
         }
     }
 
     suspend fun loadMovies(): ImmutableList<LibraryItem> {
         return remoteSource.getLibraryMovies(
-            extended = "full,images,available_on",
+            extended = "full,images,colors,available_on",
         ).asyncMap {
             LibraryItem.MovieItem(
                 movie = Movie.fromDto(it.movie),
@@ -83,7 +85,7 @@ internal class LoadUserLibraryUseCase(
 
     suspend fun loadEpisodes(): ImmutableList<LibraryItem> {
         return remoteSource.getLibraryEpisodes(
-            extended = "full,images,available_on",
+            extended = "full,images,colors,available_on",
         ).asyncMap {
             LibraryItem.EpisodeItem(
                 episode = Episode.fromDto(it.episode),

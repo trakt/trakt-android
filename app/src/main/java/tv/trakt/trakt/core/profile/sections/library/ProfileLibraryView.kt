@@ -76,17 +76,6 @@ internal fun ProfileLibraryView(
 
     var showContextSheet by remember { mutableStateOf<Show?>(null) }
     var movieContextSheet by remember { mutableStateOf<Movie?>(null) }
-//
-//    LaunchedEffect(state) {
-//        state.navigateShow?.let {
-//            viewModel.clearNavigation()
-//            onShowClick(it)
-//        }
-//        state.navigateMovie?.let {
-//            viewModel.clearNavigation()
-//            onMovieClick(it)
-//        }
-//    }
 
     ProfileLibraryView(
         state = state,

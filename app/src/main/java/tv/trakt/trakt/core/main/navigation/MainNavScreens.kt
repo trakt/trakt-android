@@ -33,6 +33,8 @@ import tv.trakt.trakt.core.profile.navigation.navigateToProfile
 import tv.trakt.trakt.core.profile.navigation.profileScreen
 import tv.trakt.trakt.core.profile.sections.favorites.all.navigation.allFavoritesScreen
 import tv.trakt.trakt.core.profile.sections.favorites.all.navigation.navigateToFavorites
+import tv.trakt.trakt.core.profile.sections.library.all.navigation.allLibraryScreen
+import tv.trakt.trakt.core.profile.sections.library.all.navigation.navigateToLibrary
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.searchScreen
 import tv.trakt.trakt.core.settings.navigation.navigateToSettings
@@ -294,12 +296,19 @@ internal fun NavGraphBuilder.profileScreens(controller: NavHostController) {
                 navigateToAllActivityPersonal(filtersEnabled = false)
             },
             onNavigateToFavorites = { navigateToFavorites() },
+            onNavigateToLibrary = { navigateToLibrary() },
             onNavigateToDiscover = { navigateToDiscover() },
             onNavigateToSettings = { navigateToSettings() },
             onNavigateToHome = { navigateToHome() },
         )
 
         allFavoritesScreen(
+            onNavigateToShow = { navigateToShow(it) },
+            onNavigateToMovie = { navigateToMovie(it) },
+            onNavigateBack = { popBackStack() },
+        )
+
+        allLibraryScreen(
             onNavigateToShow = { navigateToShow(it) },
             onNavigateToMovie = { navigateToMovie(it) },
             onNavigateBack = { popBackStack() },
