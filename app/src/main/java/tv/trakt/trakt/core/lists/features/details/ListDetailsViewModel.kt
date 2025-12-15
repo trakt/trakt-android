@@ -110,9 +110,7 @@ internal class ListDetailsViewModel(
     }
 
     fun setSorting(newSorting: Sorting) {
-        if (newSorting == sortingState.value ||
-            loadingState.value.isLoading
-        ) {
+        if (newSorting == sortingState.value || loadingState.value.isLoading) {
             return
         }
 
