@@ -9,7 +9,7 @@ targetSdk = "36"
 # Libraries
 
 activityCompose = "1.12.1"
-agp = "8.13.1"
+agp = "8.13.2"
 androidxLifecycle = "2.10.0"
 # Used due to composeBom = "2025.12.00" LazyGrid bug
 androidxFoundation = "1.11.0-alpha01"
@@ -19,7 +19,7 @@ composeBom = "2025.12.00"
 composeNavigation = "2.9.6"
 coreKtx = "1.17.0"
 datastore = "1.2.0"
-firebaseBom = "34.6.0"
+firebaseBom = "34.7.0"
 firebaseCrashlytics = "3.0.6"
 flagkit = "1.0.5"
 googleServices = "4.4.4"
