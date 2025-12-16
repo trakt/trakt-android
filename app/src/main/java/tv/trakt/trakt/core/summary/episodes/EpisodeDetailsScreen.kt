@@ -78,9 +78,9 @@ import tv.trakt.trakt.core.summary.episodes.features.season.EpisodeSeasonView
 import tv.trakt.trakt.core.summary.episodes.features.streaming.EpisodeStreamingsView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
-import tv.trakt.trakt.core.summary.ui.DetailsHeader
 import tv.trakt.trakt.core.summary.ui.DetailsMetaInfo
-import tv.trakt.trakt.core.summary.ui.POSTER_SPACE_WEIGHT
+import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
+import tv.trakt.trakt.core.summary.ui.header.POSTER_SPACE_WEIGHT
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -320,8 +320,10 @@ internal fun EpisodeDetailsContent(
                         episode = state.episode,
                         show = state.show,
                         ratings = state.episodeRatings,
+                        creator = state.episodeCreator,
                         playsCount = state.episodeProgress?.plays ?: 0,
                         loading = state.loading.isLoading || state.loadingProgress.isLoading,
+                        onCreatorClick = onPersonClick ?: {},
                         onShowClick = onShowClick ?: {},
                         onBackClick = onBackClick ?: {},
                         onShareClick = onShareClick ?: {},

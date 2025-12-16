@@ -153,6 +153,8 @@
     <string name="tag_text_watched">Watched</string>
     <string name="text_about">About me</string>
     <string name="text_by">by</string>
+    <string name="text_directed_by">Directed by %s</string>
+    <string name="text_created_by">Created by %s</string>
     <string name="text_cta_activity_list">Start making friends quickly by following the Trakt Team and explore what they are watching.</string>
     <string name="text_cta_favorites">Your faves. Your story. Spotlight the movies and shows that left a mark.</string>
     <string name="text_cta_favorites_movies">Your faves. Your story. Spotlight the movies that left a mark.</string>

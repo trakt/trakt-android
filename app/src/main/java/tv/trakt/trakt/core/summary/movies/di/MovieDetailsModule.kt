@@ -11,6 +11,7 @@ import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdatesStorage
 import tv.trakt.trakt.core.summary.movies.features.actors.MovieActorsViewModel
 import tv.trakt.trakt.core.summary.movies.features.actors.usecases.GetMovieActorsUseCase
+import tv.trakt.trakt.core.summary.movies.features.actors.usecases.GetMovieDirectorUseCase
 import tv.trakt.trakt.core.summary.movies.features.comments.MovieCommentsViewModel
 import tv.trakt.trakt.core.summary.movies.features.comments.usecases.GetMovieCommentsUseCase
 import tv.trakt.trakt.core.summary.movies.features.context.lists.MovieDetailsListsViewModel
@@ -76,6 +77,13 @@ internal val movieDetailsModule = module {
     }
 
     factory {
+        GetMovieDirectorUseCase(
+            remoteSource = get(),
+            peopleLocalSource = get(),
+        )
+    }
+
+    factory {
         GetMovieRelatedUseCase(
             remoteSource = get(),
             localSource = get(),
@@ -130,6 +138,7 @@ internal val movieDetailsModule = module {
             getDetailsUseCase = get(),
             getExternalRatingsUseCase = get(),
             getMovieStudiosUseCase = get(),
+            getMovieDirectorUseCase = get(),
             loadProgressUseCase = get(),
             loadWatchlistUseCase = get(),
             loadListsUseCase = get(),

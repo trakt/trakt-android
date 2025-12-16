@@ -5,6 +5,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.ExternalRating
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
@@ -17,6 +18,7 @@ internal data class EpisodeDetailsState(
     val episodeRatings: ExternalRating? = null,
     val episodeUserRating: UserRatingsState? = null,
     val episodeProgress: ProgressState? = null,
+    val episodeCreator: Person? = null,
     val navigateEpisode: Pair<TraktId, Episode>? = null,
     val loading: LoadingState = LoadingState.IDLE,
     val loadingProgress: LoadingState = LoadingState.IDLE,

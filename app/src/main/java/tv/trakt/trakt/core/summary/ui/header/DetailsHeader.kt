@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.summary.ui
+package tv.trakt.trakt.core.summary.ui.header
 
 import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
@@ -33,7 +33,6 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight.Companion.W700
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,23 +41,16 @@ import androidx.core.net.toUri
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.Config.webImdbPersonUrl
-import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.ifOrElse
-import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
-import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
-import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
-import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.ExternalRating
-import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.ImdbId
-import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.common.model.Person
-import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.theme.colors.Red500
-import tv.trakt.trakt.common.ui.theme.colors.Shade700
+import tv.trakt.trakt.core.summary.ui.DetailsHorizontalPoster
+import tv.trakt.trakt.core.summary.ui.DetailsPoster
+import tv.trakt.trakt.core.summary.ui.DetailsRatings
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -69,292 +61,6 @@ internal const val POSTER_SPACE_WEIGHT = 0.6F
 
 @Composable
 internal fun DetailsHeader(
-    movie: Movie,
-    ratings: ExternalRating?,
-    playsCount: Int?,
-    creditsCount: Int?,
-    loading: Boolean,
-    onShareClick: () -> Unit,
-    onBackClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val isReleased = remember {
-        movie.released?.isTodayOrBefore() ?: false
-    }
-
-    DetailsHeader(
-        title = movie.title,
-        status = movie.status,
-        date = {
-            Text(
-                text = when {
-                    isReleased -> (movie.released?.year ?: movie.year).toString()
-                    else -> movie.released?.format(mediumDateFormat) ?: movie.year.toString()
-                },
-                color = when {
-                    isReleased -> TraktTheme.colors.textSecondary
-                    else -> TraktTheme.colors.textPrimary
-                },
-                style = when {
-                    isReleased -> TraktTheme.typography.paragraphSmaller
-                    else -> TraktTheme.typography.paragraphSmaller.copy(fontWeight = W700)
-                },
-                maxLines = 1,
-                modifier = Modifier.padding(
-                    end = if (!isReleased) 1.dp else 0.dp,
-                ),
-            )
-        },
-        genres = movie.genres,
-        runtime = movie.runtime,
-        imageUrl = movie.images?.getPosterUrl(Size.MEDIUM),
-        imageHorizontal = false,
-        accentColor = movie.colors?.colors?.first,
-        traktRatings = when {
-            isReleased -> movie.rating.ratingPercent
-            else -> null
-        },
-        externalRatingsVisible = true,
-        externalRottenVisible = true,
-        externalRatings = ratings,
-        playsCount = playsCount,
-        creditsCount = creditsCount,
-        episodesCount = null,
-        certification = movie.certification,
-        loading = loading,
-        onBackClick = onBackClick,
-        onShareClick = onShareClick,
-        modifier = modifier,
-    )
-}
-
-@Composable
-internal fun DetailsHeader(
-    show: Show,
-    ratings: ExternalRating?,
-    airedCount: Int,
-    playsCount: Int,
-    loading: Boolean,
-    onShareClick: () -> Unit,
-    onBackClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val isReleased = remember {
-        show.released?.isNowOrBefore() ?: false
-    }
-
-    val playsCount = remember(airedCount, playsCount) {
-        if (airedCount == 0) {
-            return@remember 0
-        }
-        playsCount / airedCount
-    }
-
-    DetailsHeader(
-        title = show.title,
-        status = show.status,
-        date = {
-            Text(
-                text = when {
-                    isReleased -> (show.released?.year ?: show.year).toString()
-                    else -> show.released?.format(mediumDateFormat) ?: show.year.toString()
-                },
-                color = when {
-                    isReleased -> TraktTheme.colors.textSecondary
-                    else -> TraktTheme.colors.textPrimary
-                },
-                style = when {
-                    isReleased -> TraktTheme.typography.paragraphSmaller
-                    else -> TraktTheme.typography.paragraphSmaller.copy(fontWeight = W700)
-                },
-                maxLines = 1,
-                modifier = Modifier.padding(
-                    end = if (!isReleased) 1.dp else 0.dp,
-                ),
-            )
-        },
-        genres = show.genres,
-        runtime = null,
-        imageUrl = show.images?.getPosterUrl(Size.MEDIUM),
-        imageHorizontal = false,
-        accentColor = show.colors?.colors?.first,
-        traktRatings = when {
-            isReleased -> show.rating.ratingPercent
-            else -> null
-        },
-        externalRatingsVisible = true,
-        externalRottenVisible = true,
-        externalRatings = ratings,
-        playsCount = playsCount,
-        episodesCount = show.airedEpisodes,
-        creditsCount = null,
-        certification = show.certification,
-        loading = loading,
-        onBackClick = onBackClick,
-        onShareClick = onShareClick,
-        modifier = modifier,
-    )
-}
-
-@Composable
-internal fun DetailsHeader(
-    episode: Episode,
-    show: Show,
-    ratings: ExternalRating?,
-    playsCount: Int?,
-    loading: Boolean,
-    onShowClick: (Show) -> Unit,
-    onShareClick: () -> Unit,
-    onBackClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val isReleased = remember {
-        episode.firstAired?.isNowOrBefore() ?: false
-    }
-
-    DetailsHeader(
-        title = episode.title,
-        titleHeader = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = spacedBy(4.dp),
-                modifier = Modifier.padding(
-                    top = 4.dp,
-                    bottom = 3.dp,
-                ),
-            ) {
-                val font = TraktTheme.typography.heading6.copy(fontSize = 13.sp)
-                Text(
-                    text = show.title.uppercase(),
-                    color = TraktTheme.colors.textPrimary,
-                    style = font.copy(fontSize = 13.sp),
-                    maxLines = 1,
-                    overflow = Ellipsis,
-                    autoSize = TextAutoSize.StepBased(
-                        maxFontSize = font.fontSize,
-                        minFontSize = 10.sp,
-                        stepSize = 1.sp,
-                    ),
-                    modifier = Modifier
-                        .onClick(onClick = { onShowClick(show) }),
-                )
-
-                Text(
-                    text = "/",
-                    color = TraktTheme.colors.textSecondary,
-                    style = font.copy(fontSize = 13.sp),
-                    maxLines = 1,
-                    overflow = Ellipsis,
-                    autoSize = TextAutoSize.StepBased(
-                        maxFontSize = font.fontSize,
-                        minFontSize = 10.sp,
-                        stepSize = 1.sp,
-                    ),
-                )
-
-                Text(
-                    text = episode.seasonEpisode.toDisplayString(),
-                    color = TraktTheme.colors.textPrimary,
-                    style = font.copy(fontSize = 13.sp),
-                    maxLines = 1,
-                    overflow = Ellipsis,
-                    autoSize = TextAutoSize.StepBased(
-                        maxFontSize = font.fontSize,
-                        minFontSize = 10.sp,
-                        stepSize = 1.sp,
-                    ),
-                )
-            }
-        },
-        status = show.status,
-        certification = show.certification,
-        date = {
-            Text(
-                text = when {
-                    isReleased -> (episode.firstAired?.year ?: show.year).toString()
-                    else -> episode.firstAired?.format(mediumDateFormat) ?: show.year.toString()
-                },
-                color = when {
-                    isReleased -> TraktTheme.colors.textSecondary
-                    else -> TraktTheme.colors.textPrimary
-                },
-                style = when {
-                    isReleased -> TraktTheme.typography.paragraphSmaller
-                    else -> TraktTheme.typography.paragraphSmaller.copy(fontWeight = W700)
-                },
-                maxLines = 1,
-                modifier = Modifier.padding(
-                    end = if (!isReleased) 1.dp else 0.dp,
-                ),
-            )
-        },
-        genres = show.genres,
-        runtime = episode.runtime,
-        imageUrl = episode.images?.getScreenshotUrl()
-            ?: show.images?.getFanartUrl(),
-        imageHorizontal = true,
-        accentColor = null,
-        traktRatings = when {
-            isReleased -> episode.rating.ratingPercent
-            else -> null
-        },
-        externalRatings = ratings,
-        externalRatingsVisible = true,
-        externalRottenVisible = false,
-        episodesCount = null,
-        playsCount = playsCount,
-        creditsCount = 0,
-        loading = loading,
-        onBackClick = onBackClick,
-        onShareClick = onShareClick,
-        modifier = modifier,
-    )
-}
-
-@Composable
-internal fun DetailsHeader(
-    person: Person,
-    loading: Boolean,
-    onShareClick: () -> Unit,
-    onBackClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    DetailsHeader(
-        loading = loading,
-        title = person.name,
-        titleFooter = {
-            Text(
-                text = person.knownForDepartment
-                    ?.replaceFirstChar { it.uppercaseChar() }
-                    ?: "-",
-                color = TraktTheme.colors.textSecondary,
-                style = TraktTheme.typography.paragraphSmaller,
-            )
-        },
-        genres = EmptyImmutableList,
-        imageUrl = person.images?.getHeadshotUrl(),
-        imageHorizontal = false,
-        onShareClick = onShareClick,
-        onBackClick = onBackClick,
-        date = null,
-        status = null,
-        runtime = null,
-        externalRatings = null,
-        externalRatingsVisible = false,
-        externalRottenVisible = false,
-        episodesCount = null,
-        playsCount = null,
-        certification = null,
-        accentColor = Shade700,
-        creditsCount = null,
-        traktRatings = null,
-        personImdb = person.ids.imdb,
-        modifier = modifier,
-    )
-}
-
-@Composable
-private fun DetailsHeader(
     modifier: Modifier = Modifier,
     titleHeader: @Composable (() -> Unit)? = null,
     titleFooter: @Composable (() -> Unit)? = null,
@@ -612,7 +318,7 @@ private fun DetailsHeader(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = spacedBy(4.dp),
                     modifier = Modifier
-                        .padding(top = 2.dp),
+                        .padding(top = 4.dp),
                 ) {
                     Text(
                         text = it.uppercase(),
@@ -744,6 +450,13 @@ private fun Preview() {
                         minFontSize = 10.sp,
                         stepSize = 1.sp,
                     ),
+                )
+            },
+            titleFooter = {
+                Text(
+                    text = "Created by John Doe",
+                    color = TraktTheme.colors.textPrimary,
+                    style = TraktTheme.typography.paragraphSmaller,
                 )
             },
             genres = listOf("Action", "Adventure", "Sci-Fi").toImmutableList(),

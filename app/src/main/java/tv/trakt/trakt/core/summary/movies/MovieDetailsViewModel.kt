@@ -12,7 +12,6 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -32,6 +31,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
@@ -45,6 +45,7 @@ import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.summary.movies.MovieDetailsState.UserRatingsState
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
+import tv.trakt.trakt.core.summary.movies.features.actors.usecases.GetMovieDirectorUseCase
 import tv.trakt.trakt.core.summary.movies.navigation.MovieDetailsDestination
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieRatingsUseCase
@@ -69,6 +70,7 @@ internal class MovieDetailsViewModel(
     private val getDetailsUseCase: GetMovieDetailsUseCase,
     private val getExternalRatingsUseCase: GetMovieRatingsUseCase,
     private val getMovieStudiosUseCase: GetMovieStudiosUseCase,
+    private val getMovieDirectorUseCase: GetMovieDirectorUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
     private val loadListsUseCase: LoadUserListsUseCase,
@@ -95,6 +97,7 @@ internal class MovieDetailsViewModel(
     private val movieRatingsState = MutableStateFlow(initialState.movieRatings)
     private val movieUserRatingsState = MutableStateFlow(initialState.movieUserRating)
     private val movieStudiosState = MutableStateFlow(initialState.movieStudios)
+    private val movieCreatorState = MutableStateFlow(initialState.movieCreator)
     private val movieProgressState = MutableStateFlow(initialState.movieProgress)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingProgress = MutableStateFlow(initialState.loadingProgress)
@@ -146,6 +149,7 @@ internal class MovieDetailsViewModel(
 
                 loadRatings(movie)
                 loadStudios()
+                loadCreator()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -310,6 +314,20 @@ internal class MovieDetailsViewModel(
             try {
                 movieStudiosState.update {
                     getMovieStudiosUseCase.getStudios(movieId)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    private fun loadCreator() {
+        viewModelScope.launch {
+            try {
+                movieCreatorState.update {
+                    getMovieDirectorUseCase.getDirector(movieId)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -793,10 +811,11 @@ internal class MovieDetailsViewModel(
     }
 
     @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<MovieDetailsState> = combine(
+    val state = combine(
         movieState,
         movieRatingsState,
         movieStudiosState,
+        movieCreatorState,
         movieProgressState,
         movieUserRatingsState,
         loadingState,
@@ -811,15 +830,16 @@ internal class MovieDetailsViewModel(
             movie = state[0] as Movie?,
             movieRatings = state[1] as ExternalRating?,
             movieStudios = state[2] as ImmutableList<String>?,
-            movieProgress = state[3] as MovieDetailsState.ProgressState?,
-            movieUserRating = state[4] as UserRatingsState?,
-            loading = state[5] as LoadingState,
-            loadingProgress = state[6] as LoadingState,
-            loadingLists = state[7] as LoadingState,
-            loadingFavorite = state[8] as LoadingState,
-            info = state[9] as StringResource?,
-            error = state[10] as Exception?,
-            user = state[11] as User?,
+            movieCreator = state[3] as Person?,
+            movieProgress = state[4] as MovieDetailsState.ProgressState?,
+            movieUserRating = state[5] as UserRatingsState?,
+            loading = state[6] as LoadingState,
+            loadingProgress = state[7] as LoadingState,
+            loadingLists = state[8] as LoadingState,
+            loadingFavorite = state[9] as LoadingState,
+            info = state[10] as StringResource?,
+            error = state[11] as Exception?,
+            user = state[12] as User?,
         )
     }.stateIn(
         scope = viewModelScope,

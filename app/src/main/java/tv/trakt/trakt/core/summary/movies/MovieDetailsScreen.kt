@@ -80,9 +80,9 @@ import tv.trakt.trakt.core.summary.movies.features.sentiment.MovieSentimentView
 import tv.trakt.trakt.core.summary.movies.features.streaming.MovieStreamingsView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
-import tv.trakt.trakt.core.summary.ui.DetailsHeader
 import tv.trakt.trakt.core.summary.ui.DetailsMetaInfo
-import tv.trakt.trakt.core.summary.ui.POSTER_SPACE_WEIGHT
+import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
+import tv.trakt.trakt.core.summary.ui.header.POSTER_SPACE_WEIGHT
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -346,6 +346,7 @@ internal fun MovieDetailsContent(
                     DetailsHeader(
                         movie = movie,
                         ratings = state.movieRatings,
+                        creator = state.movieCreator,
                         creditsCount = when {
                             isWatched || state.loadingProgress.isLoading -> null
                             else -> movie.credits
@@ -353,6 +354,7 @@ internal fun MovieDetailsContent(
                         playsCount = state.movieProgress?.plays,
                         loading = state.loading.isLoading ||
                             state.loadingProgress.isLoading,
+                        onCreatorClick = onPersonClick ?: {},
                         onBackClick = onBackClick ?: {},
                         onShareClick = onShareClick ?: {},
                         modifier = Modifier.align(Alignment.Center),

@@ -10,7 +10,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -35,6 +34,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.MediaType.EPISODE
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -46,6 +46,7 @@ import tv.trakt.trakt.core.summary.episodes.EpisodeDetailsState.UserRatingsState
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
+import tv.trakt.trakt.core.summary.episodes.features.actors.usecases.GetEpisodeDirectorUseCase
 import tv.trakt.trakt.core.summary.episodes.navigation.EpisodeDetailsDestination
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeDetailsUseCase
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeRatingsUseCase
@@ -65,6 +66,7 @@ internal class EpisodeDetailsViewModel(
     private val appContext: Context,
     private val getShowDetailsUseCase: GetShowDetailsUseCase,
     private val getEpisodeDetailsUseCase: GetEpisodeDetailsUseCase,
+    private val getEpisodeDirectorUseCase: GetEpisodeDirectorUseCase,
     private val getRatingsUseCase: GetEpisodeRatingsUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadRatingUseCase: LoadUserRatingsUseCase,
@@ -90,6 +92,7 @@ internal class EpisodeDetailsViewModel(
     private val episodeRatingsState = MutableStateFlow(initialState.episodeRatings)
     private val episodeUserRatingsState = MutableStateFlow(initialState.episodeUserRating)
     private val episodeProgressState = MutableStateFlow(initialState.episodeProgress)
+    private val episodeCreatorState = MutableStateFlow(initialState.episodeCreator)
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingProgress = MutableStateFlow(initialState.loadingProgress)
@@ -104,6 +107,8 @@ internal class EpisodeDetailsViewModel(
         loadData()
         loadProgressData()
         loadUserRatingData()
+        loadCreator()
+
         observeData()
 
         analytics.logScreenView(
@@ -263,6 +268,23 @@ internal class EpisodeDetailsViewModel(
                     UserRatingsState(
                         rating = userRating,
                         loading = DONE,
+                    )
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    private fun loadCreator() {
+        viewModelScope.launch {
+            try {
+                episodeCreatorState.update {
+                    getEpisodeDirectorUseCase.getDirector(
+                        showId = showId,
+                        seasonEpisode = seasonEpisode,
                     )
                 }
             } catch (error: Exception) {
@@ -468,12 +490,13 @@ internal class EpisodeDetailsViewModel(
     }
 
     @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<EpisodeDetailsState> = combine(
+    val state = combine(
         showState,
         episodeState,
         episodeRatingsState,
         episodeUserRatingsState,
         episodeProgressState,
+        episodeCreatorState,
         loadingState,
         loadingProgress,
         infoState,
@@ -487,12 +510,13 @@ internal class EpisodeDetailsViewModel(
             episodeRatings = state[2] as ExternalRating?,
             episodeUserRating = state[3] as UserRatingsState?,
             episodeProgress = state[4] as EpisodeDetailsState.ProgressState?,
-            loading = state[5] as LoadingState,
-            loadingProgress = state[6] as LoadingState,
-            info = state[7] as StringResource?,
-            error = state[8] as Exception?,
-            user = state[9] as User?,
-            navigateEpisode = state[10] as Pair<TraktId, Episode>?,
+            episodeCreator = state[5] as Person?,
+            loading = state[6] as LoadingState,
+            loadingProgress = state[7] as LoadingState,
+            info = state[8] as StringResource?,
+            error = state[9] as Exception?,
+            user = state[10] as User?,
+            navigateEpisode = state[11] as Pair<TraktId, Episode>?,
         )
     }.stateIn(
         scope = viewModelScope,

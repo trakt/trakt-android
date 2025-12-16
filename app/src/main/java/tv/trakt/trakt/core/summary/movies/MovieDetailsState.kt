@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 
@@ -16,6 +17,7 @@ internal data class MovieDetailsState(
     val movieUserRating: UserRatingsState? = null,
     val movieStudios: ImmutableList<String>? = null,
     val movieProgress: ProgressState? = null,
+    val movieCreator: Person? = null,
     val loading: LoadingState = LoadingState.IDLE,
     val loadingProgress: LoadingState = LoadingState.IDLE,
     val loadingLists: LoadingState = LoadingState.IDLE,
