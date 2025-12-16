@@ -111,7 +111,7 @@ fun ShowMetaFooter(
         } else {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
-                verticalAlignment = Alignment.Companion.CenterVertically,
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_calendar_upcoming),

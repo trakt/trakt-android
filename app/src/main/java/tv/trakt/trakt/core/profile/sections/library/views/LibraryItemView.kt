@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -18,6 +19,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.core.library.model.LibraryItem
+import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -40,6 +42,7 @@ internal fun LibraryItemView(
                 cardContent = {
                     InfoChip(
                         text = item.collectedAt.toLocal().format(mediumDateFormat),
+                        iconPainter = painterResource(R.drawable.ic_library_check),
                         containerColor = TraktTheme.colors.chipContainerOnContent,
                     )
                 },
@@ -79,6 +82,7 @@ internal fun LibraryItemView(
                 cardContent = {
                     InfoChip(
                         text = item.collectedAt.toLocal().format(mediumDateFormat),
+                        iconPainter = painterResource(R.drawable.ic_library_check),
                         containerColor = TraktTheme.colors.chipContainerOnContent,
                     )
                 },
