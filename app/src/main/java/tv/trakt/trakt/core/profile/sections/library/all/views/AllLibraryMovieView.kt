@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.unit.dp
@@ -53,11 +52,7 @@ internal fun AllLibraryMovieView(
                     painter = painterResource(R.drawable.ic_library_check),
                     contentDescription = null,
                     tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .size(14.dp)
-                        .graphicsLayer {
-                            translationY = -0.66.dp.toPx()
-                        },
+                    modifier = Modifier.size(14.dp),
                 )
                 Text(
                     text = item.collectedAt.toLocal().format(mediumDateFormat),
