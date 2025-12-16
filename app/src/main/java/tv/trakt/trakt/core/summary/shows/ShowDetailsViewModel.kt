@@ -36,6 +36,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.MediaType.SHOW
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
@@ -51,6 +52,7 @@ import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.summary.shows.ShowDetailsState.UserRatingsState
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
+import tv.trakt.trakt.core.summary.shows.features.actors.usecases.GetShowCreatorUseCase
 import tv.trakt.trakt.core.summary.shows.navigation.ShowDetailsDestination
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowRatingsUseCase
@@ -77,6 +79,7 @@ internal class ShowDetailsViewModel(
     private val getDetailsUseCase: GetShowDetailsUseCase,
     private val getExternalRatingsUseCase: GetShowRatingsUseCase,
     private val getShowStudiosUseCase: GetShowStudiosUseCase,
+    private val getShowCreatorUseCase: GetShowCreatorUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
     private val loadListsUseCase: LoadUserListsUseCase,
@@ -105,6 +108,7 @@ internal class ShowDetailsViewModel(
     private val showRatingsState = MutableStateFlow(initialState.showRatings)
     private val showUserRatingsState = MutableStateFlow(initialState.showUserRating)
     private val showStudiosState = MutableStateFlow(initialState.showStudios)
+    private val showCreatorState = MutableStateFlow(initialState.showCreator)
     private val showProgressState = MutableStateFlow(initialState.showProgress)
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val loadingState = MutableStateFlow(initialState.loading)
@@ -169,6 +173,7 @@ internal class ShowDetailsViewModel(
 
                 loadRatings(show)
                 loadStudios()
+                loadCreator()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -287,6 +292,20 @@ internal class ShowDetailsViewModel(
             try {
                 showStudiosState.update {
                     getShowStudiosUseCase.getStudios(showId)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    private fun loadCreator() {
+        viewModelScope.launch {
+            try {
+                showCreatorState.update {
+                    getShowCreatorUseCase.getCreator(showId)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -854,6 +873,7 @@ internal class ShowDetailsViewModel(
         showRatingsState,
         showUserRatingsState,
         showStudiosState,
+        showCreatorState,
         showProgressState,
         navigateEpisode,
         loadingState,
@@ -869,15 +889,16 @@ internal class ShowDetailsViewModel(
             showRatings = state[1] as ExternalRating?,
             showUserRating = state[2] as UserRatingsState?,
             showStudios = state[3] as ImmutableList<String>?,
-            showProgress = state[4] as ShowDetailsState.ProgressState?,
-            navigateEpisode = state[5] as Pair<TraktId, Episode>?,
-            loading = state[6] as LoadingState,
-            loadingProgress = state[7] as LoadingState,
-            loadingLists = state[8] as LoadingState,
-            loadingFavorite = state[9] as LoadingState,
-            info = state[10] as StringResource?,
-            error = state[11] as Exception?,
-            user = state[12] as User?,
+            showCreator = state[4] as Person?,
+            showProgress = state[5] as ShowDetailsState.ProgressState?,
+            navigateEpisode = state[6] as Pair<TraktId, Episode>?,
+            loading = state[7] as LoadingState,
+            loadingProgress = state[8] as LoadingState,
+            loadingLists = state[9] as LoadingState,
+            loadingFavorite = state[10] as LoadingState,
+            info = state[11] as StringResource?,
+            error = state[12] as Exception?,
+            user = state[13] as User?,
         )
     }.stateIn(
         scope = viewModelScope,

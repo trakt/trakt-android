@@ -390,10 +390,12 @@ internal fun ShowDetailsContent(
                     DetailsHeader(
                         show = show,
                         ratings = state.showRatings,
+                        creator = state.showCreator,
                         airedCount = state.showProgress?.aired ?: 0,
                         playsCount = state.showProgress?.plays ?: 0,
                         loading = state.loading.isLoading ||
                             state.loadingProgress.isLoading,
+                        onCreatorClick = onPersonClick ?: {},
                         onBackClick = onBackClick ?: {},
                         onShareClick = onShareClick ?: {},
                         modifier = Modifier.align(Alignment.Center),
