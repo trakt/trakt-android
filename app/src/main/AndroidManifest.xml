@@ -124,6 +124,7 @@
 
         <!-- Misc. Apps -->
         <package android:name="com.imdb.mobile" />
+        <package android:name="com.justwatch.justwatch" />
     </queries>
 
 </manifest>

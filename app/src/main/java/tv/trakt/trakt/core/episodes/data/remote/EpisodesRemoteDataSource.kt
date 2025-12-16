@@ -53,6 +53,17 @@ internal interface EpisodesRemoteDataSource {
     ): Map<String, StreamingDto>
 
     /**
+     * Retrieves the JustWatch link for a specific season of a show in a given country.
+     *
+     * @return A [String] representing the JustWatch link, or null if not available.
+     */
+    suspend fun getJustWatchLink(
+        showId: TraktId,
+        season: Int,
+        countryCode: String,
+    ): String?
+
+    /**
      * Retrieves the comments for a specific episode of a show.
      *
      * @param showId The Trakt ID of the show.

@@ -61,6 +61,11 @@ internal interface ShowsRemoteDataSource {
         countryCode: String?,
     ): Map<String, StreamingDto>
 
+    suspend fun getJustWatchLink(
+        showId: TraktId,
+        countryCode: String?,
+    ): String?
+
     suspend fun getCastCrew(showId: TraktId): CastCrewDto
 
     suspend fun getSentiments(showId: TraktId): Sentiments

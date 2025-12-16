@@ -58,6 +58,11 @@ internal interface MoviesRemoteDataSource {
         countryCode: String?,
     ): Map<String, StreamingDto>
 
+    suspend fun getJustWatchLink(
+        movieId: TraktId,
+        countryCode: String?,
+    ): String?
+
     suspend fun getExtras(movieId: TraktId): List<ExtraVideoDto>
 
     suspend fun getCastCrew(movieId: TraktId): CastCrewDto

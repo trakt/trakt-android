@@ -1,13 +1,16 @@
 package tv.trakt.trakt.core.summary.episodes.features.streaming.usecases
 
 import android.icu.util.Currency
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import timber.log.Timber
 import tv.trakt.trakt.common.Config.DEFAULT_COUNTRY_CODE
 import tv.trakt.trakt.common.core.streamings.data.local.StreamingLocalDataSource
 import tv.trakt.trakt.common.core.streamings.data.remote.StreamingRemoteDataSource
 import tv.trakt.trakt.common.core.streamings.helpers.PopularStreamingServices
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
@@ -22,6 +25,7 @@ import tv.trakt.trakt.common.model.streamings.fromDto
 import tv.trakt.trakt.common.networking.StreamingDto
 import tv.trakt.trakt.common.networking.StreamingServiceDto
 import tv.trakt.trakt.core.episodes.data.remote.EpisodesRemoteDataSource
+import tv.trakt.trakt.core.streamings.model.StreamingsResult
 
 internal class GetEpisodeStreamingsUseCase(
     private val remoteEpisodeSource: EpisodesRemoteDataSource,
@@ -32,37 +36,72 @@ internal class GetEpisodeStreamingsUseCase(
         user: User,
         show: Show,
         episode: Episode,
-    ): ImmutableList<Pair<StreamingService, StreamingType>> {
-        if (!localStreamingSource.isValid()) {
-            val sources = remoteStreamingSource
-                .getStreamingSources()
-                .asyncMap { StreamingSource.fromDto(it) }
+    ): StreamingsResult {
+        return coroutineScope {
+            if (!localStreamingSource.isValid()) {
+                val sources = remoteStreamingSource
+                    .getStreamingSources()
+                    .asyncMap { StreamingSource.fromDto(it) }
 
-            localStreamingSource.upsertStreamingSources(sources)
-        }
+                localStreamingSource.upsertStreamingSources(sources)
+            }
 
-        val sources = localStreamingSource
-            .getAllStreamingSources()
+            val countryCode = user.streamings?.country ?: DEFAULT_COUNTRY_CODE
+            val sources = localStreamingSource.getAllStreamingSources()
 
-        val streamings = remoteEpisodeSource.getStreamings(
-            showId = show.ids.trakt,
-            season = episode.season,
-            episode = episode.number,
-            countryCode = user.streamings?.country ?: DEFAULT_COUNTRY_CODE,
-        )
+            val streamingsAsync = async {
+                remoteEpisodeSource.getStreamings(
+                    showId = show.ids.trakt,
+                    season = episode.season,
+                    episode = episode.number,
+                    countryCode = countryCode,
+                )
+            }
 
-        val streamingsGroups = groupStreamings(
-            streamings = streamings,
-            sources = sources,
-        )
-
-        return streamingsGroups
-            .flatMap { entry ->
-                entry.value.map { service ->
-                    service to entry.key
+            val justWatchLinkAsync = async {
+                try {
+                    remoteEpisodeSource.getJustWatchLink(
+                        showId = show.ids.trakt,
+                        season = episode.season,
+                        countryCode = countryCode,
+                    )
+                } catch (error: Exception) {
+                    error.rethrowCancellation {
+                        Timber.e(error)
+                    }
+                    null
                 }
             }
-            .toImmutableList()
+
+            val streamings = streamingsAsync.await()
+            val justWatchLink = justWatchLinkAsync.await()
+
+            val streamingsGroups = groupStreamings(
+                streamings = streamings,
+                sources = sources,
+            )
+
+            val streamingsResult = streamingsGroups
+                .flatMap { entry ->
+                    entry.value.map { service ->
+                        service to entry.key
+                    }
+                }
+                .toImmutableList()
+
+            val ranks = streamings[countryCode]?.streamingRanks
+            val ranksResult = StreamingsResult.Ranks(
+                rank = ranks?.rank,
+                delta = ranks?.delta,
+                link = ranks?.link,
+            )
+
+            StreamingsResult(
+                streamings = streamingsResult,
+                ranks = ranksResult,
+                justWatchLink = justWatchLink,
+            )
+        }
     }
 
     private fun groupStreamings(

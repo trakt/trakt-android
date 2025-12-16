@@ -198,9 +198,22 @@ internal class ShowsApiClient(
             country = countryCode ?: "",
             id = showId.value.toString(),
             links = "direct",
+            extended = "streaming_ranks",
         )
 
         return response.body()
+    }
+
+    override suspend fun getJustWatchLink(
+        showId: TraktId,
+        countryCode: String?,
+    ): String? {
+        val response = showsApi.getShowsJustwatchLink(
+            country = countryCode ?: "",
+            id = showId.value.toString(),
+        )
+        val body = response.body()
+        return body[countryCode]
     }
 
     override suspend fun getCastCrew(showId: TraktId): CastCrewDto {

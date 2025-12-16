@@ -46,6 +46,8 @@ import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
 import tv.trakt.trakt.common.helpers.streamingservices.StreamingServiceApp
 import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.StreamingType
+import tv.trakt.trakt.core.streamings.model.StreamingsResult
+import tv.trakt.trakt.core.streamings.ui.JustWatchRanksStrip
 import tv.trakt.trakt.core.summary.ui.views.DetailsStreamingItem
 import tv.trakt.trakt.core.summary.ui.views.DetailsStreamingSkeleton
 import tv.trakt.trakt.resources.R
@@ -97,9 +99,18 @@ private fun ShowStreamingsContent(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = CenterVertically,
         ) {
-            TraktHeader(
-                title = stringResource(R.string.page_title_where_to_watch),
-            )
+            Column(
+                verticalArrangement = spacedBy(3.dp),
+            ) {
+                TraktHeader(
+                    title = stringResource(R.string.page_title_where_to_watch),
+                )
+
+                JustWatchRanksStrip(
+                    ranks = state.items?.ranks,
+                    justWatchLink = state.items?.justWatchLink,
+                )
+            }
         }
 
         Crossfade(
@@ -115,13 +126,13 @@ private fun ShowStreamingsContent(
                 }
 
                 DONE -> {
-                    if (state.items?.isEmpty() == true) {
+                    if (state.items?.streamings?.isEmpty() == true) {
                         ContentEmpty(
                             contentPadding = headerPadding,
                         )
                     } else {
                         ContentList(
-                            listItems = (state.items ?: emptyList()).toImmutableList(),
+                            listItems = (state.items?.streamings ?: emptyList()).toImmutableList(),
                             contentPadding = contentPadding,
                             onClick = onClick,
                         )
@@ -198,29 +209,6 @@ private fun ContentEmpty(
     backgroundColor = 0xFF131517,
 )
 @Composable
-private fun Preview() {
-    TraktTheme {
-        val previewHandler = AsyncImagePreviewHandler {
-            ColorImage(Color.Blue.toArgb())
-        }
-        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            ShowStreamingsContent(
-                state = ShowStreamingsState(
-                    loading = DONE,
-                    items = EmptyImmutableList,
-                ),
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalCoilApi::class)
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
-@Composable
 private fun Preview2() {
     TraktTheme {
         val previewHandler = AsyncImagePreviewHandler {
@@ -228,7 +216,17 @@ private fun Preview2() {
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             ShowStreamingsContent(
-                state = ShowStreamingsState(),
+                state = ShowStreamingsState(
+                    items = StreamingsResult(
+                        streamings = EmptyImmutableList,
+                        justWatchLink = "https://www.justwatch.com",
+                        ranks = StreamingsResult.Ranks(
+                            rank = 1243,
+                            delta = 23,
+                            link = "https://www.justwatch.com",
+                        ),
+                    ),
+                ),
             )
         }
     }

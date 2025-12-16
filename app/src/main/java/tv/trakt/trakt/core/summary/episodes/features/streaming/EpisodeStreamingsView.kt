@@ -45,6 +45,7 @@ import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
 import tv.trakt.trakt.common.helpers.streamingservices.StreamingServiceApp
 import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.StreamingType
+import tv.trakt.trakt.core.streamings.ui.JustWatchRanksStrip
 import tv.trakt.trakt.core.summary.ui.views.DetailsStreamingItem
 import tv.trakt.trakt.core.summary.ui.views.DetailsStreamingSkeleton
 import tv.trakt.trakt.resources.R
@@ -96,9 +97,18 @@ private fun EpisodeStreamingsContent(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = CenterVertically,
         ) {
-            TraktHeader(
-                title = stringResource(R.string.page_title_where_to_watch),
-            )
+            Column(
+                verticalArrangement = spacedBy(3.dp),
+            ) {
+                TraktHeader(
+                    title = stringResource(R.string.page_title_where_to_watch),
+                )
+
+                JustWatchRanksStrip(
+                    ranks = state.items?.ranks,
+                    justWatchLink = state.items?.justWatchLink,
+                )
+            }
         }
 
         Crossfade(
@@ -114,13 +124,13 @@ private fun EpisodeStreamingsContent(
                 }
 
                 DONE -> {
-                    if (state.items?.isEmpty() == true) {
+                    if (state.items?.streamings?.isEmpty() == true) {
                         ContentEmpty(
                             contentPadding = headerPadding,
                         )
                     } else {
                         ContentList(
-                            listItems = (state.items ?: emptyList()).toImmutableList(),
+                            listItems = (state.items?.streamings ?: emptyList()).toImmutableList(),
                             contentPadding = contentPadding,
                             onClick = onClick,
                         )

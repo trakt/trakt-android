@@ -207,6 +207,7 @@ internal class ShowsApiClient(
             country = countryCode ?: "",
             id = showId.value.toString(),
             links = "direct",
+            extended = null,
         )
 
         return response.body()

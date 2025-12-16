@@ -2,10 +2,8 @@ package tv.trakt.trakt.core.summary.shows.features.streaming
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -18,8 +16,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.common.model.streamings.StreamingService
-import tv.trakt.trakt.common.model.streamings.StreamingType
+import tv.trakt.trakt.core.streamings.model.StreamingsResult
 import tv.trakt.trakt.core.summary.shows.features.streaming.usecases.GetShowStreamingsUseCase
 
 internal class ShowStreamingsViewModel(
@@ -67,13 +64,13 @@ internal class ShowStreamingsViewModel(
     }
 
     @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<ShowStreamingsState> = combine(
+    val state = combine(
         itemsState,
         loadingState,
         errorState,
     ) { state ->
         ShowStreamingsState(
-            items = state[0] as ImmutableList<Pair<StreamingService, StreamingType>>?,
+            items = state[0] as StreamingsResult?,
             loading = state[1] as LoadingState,
             error = state[2] as Exception?,
         )

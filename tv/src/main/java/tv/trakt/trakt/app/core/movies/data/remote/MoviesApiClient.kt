@@ -206,6 +206,7 @@ internal class MoviesApiClient(
             country = countryCode ?: "",
             id = movieId.value.toString(),
             links = "direct",
+            extended = null,
         )
 
         return response.body()

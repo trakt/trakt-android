@@ -54,6 +54,7 @@ internal class EpisodesApiClient(
             season = season,
             episode = episode,
             links = "direct",
+            extended = "streaming_ranks",
         )
         return response.body()
     }

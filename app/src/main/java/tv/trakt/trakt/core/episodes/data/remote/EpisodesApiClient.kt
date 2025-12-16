@@ -65,8 +65,22 @@ internal class EpisodesApiClient(
             season = season,
             episode = episode,
             links = "direct",
+            extended = "streaming_ranks",
         )
         return response.body()
+    }
+
+    override suspend fun getJustWatchLink(
+        showId: TraktId,
+        season: Int,
+        countryCode: String,
+    ): String? {
+        val response = showsApi.getShowsSeasonJustwatchLink(
+            season = season.toString(),
+            country = countryCode,
+            id = showId.value.toString(),
+        )
+        return response.body()[countryCode]
     }
 
     override suspend fun getEpisodeComments(

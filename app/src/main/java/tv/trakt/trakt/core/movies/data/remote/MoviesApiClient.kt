@@ -171,9 +171,22 @@ internal class MoviesApiClient(
             country = countryCode ?: "",
             id = movieId.value.toString(),
             links = "direct",
+            extended = "streaming_ranks",
         )
 
         return response.body()
+    }
+
+    override suspend fun getJustWatchLink(
+        movieId: TraktId,
+        countryCode: String?,
+    ): String? {
+        val response = moviesApi.getMoviesJustwatchLink(
+            country = countryCode ?: "",
+            id = movieId.value.toString(),
+        )
+        val body = response.body()
+        return body[countryCode]
     }
 
     override suspend fun getExtras(movieId: TraktId): List<ExtraVideoDto> {
