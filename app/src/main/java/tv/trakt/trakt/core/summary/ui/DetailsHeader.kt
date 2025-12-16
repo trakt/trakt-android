@@ -43,6 +43,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.Config.webImdbPersonUrl
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
+import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.ifOrElse
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
@@ -61,6 +62,8 @@ import tv.trakt.trakt.common.ui.theme.colors.Shade700
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
 import tv.trakt.trakt.ui.theme.TraktTheme
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.minutes
 
 internal const val POSTER_SPACE_WEIGHT = 0.6F
 
@@ -103,15 +106,20 @@ internal fun DetailsHeader(
             )
         },
         genres = movie.genres,
+        runtime = movie.runtime,
         imageUrl = movie.images?.getPosterUrl(Size.MEDIUM),
+        imageHorizontal = false,
         accentColor = movie.colors?.colors?.first,
         traktRatings = when {
             isReleased -> movie.rating.ratingPercent
             else -> null
         },
+        externalRatingsVisible = true,
+        externalRottenVisible = true,
         externalRatings = ratings,
         playsCount = playsCount,
         creditsCount = creditsCount,
+        episodesCount = null,
         certification = movie.certification,
         loading = loading,
         onBackClick = onBackClick,
@@ -166,14 +174,19 @@ internal fun DetailsHeader(
             )
         },
         genres = show.genres,
+        runtime = null,
         imageUrl = show.images?.getPosterUrl(Size.MEDIUM),
+        imageHorizontal = false,
         accentColor = show.colors?.colors?.first,
         traktRatings = when {
             isReleased -> show.rating.ratingPercent
             else -> null
         },
+        externalRatingsVisible = true,
+        externalRottenVisible = true,
         externalRatings = ratings,
         playsCount = playsCount,
+        episodesCount = show.airedEpisodes,
         creditsCount = null,
         certification = show.certification,
         loading = loading,
@@ -276,6 +289,7 @@ internal fun DetailsHeader(
             )
         },
         genres = show.genres,
+        runtime = episode.runtime,
         imageUrl = episode.images?.getScreenshotUrl()
             ?: show.images?.getFanartUrl(),
         imageHorizontal = true,
@@ -285,6 +299,9 @@ internal fun DetailsHeader(
             else -> null
         },
         externalRatings = ratings,
+        externalRatingsVisible = true,
+        externalRottenVisible = false,
+        episodesCount = null,
         playsCount = playsCount,
         creditsCount = 0,
         loading = loading,
@@ -316,12 +333,16 @@ internal fun DetailsHeader(
         },
         genres = EmptyImmutableList,
         imageUrl = person.images?.getHeadshotUrl(),
+        imageHorizontal = false,
         onShareClick = onShareClick,
         onBackClick = onBackClick,
         date = null,
         status = null,
+        runtime = null,
         externalRatings = null,
         externalRatingsVisible = false,
+        externalRottenVisible = false,
+        episodesCount = null,
         playsCount = null,
         certification = null,
         accentColor = Shade700,
@@ -341,13 +362,16 @@ private fun DetailsHeader(
     genres: ImmutableList<String>,
     date: @Composable (() -> Unit)?,
     imageUrl: String?,
-    imageHorizontal: Boolean = false,
+    imageHorizontal: Boolean,
     status: String?,
     certification: String?,
+    runtime: Duration?,
     accentColor: Color?,
     traktRatings: Int?,
     externalRatings: ExternalRating?,
-    externalRatingsVisible: Boolean = true,
+    externalRatingsVisible: Boolean,
+    externalRottenVisible: Boolean,
+    episodesCount: Int?,
     creditsCount: Int?,
     playsCount: Int?,
     personImdb: ImdbId? = null,
@@ -485,6 +509,7 @@ private fun DetailsHeader(
             DetailsRatings(
                 traktRatings = traktRatings,
                 externalRatings = externalRatings,
+                rottenEnabled = externalRottenVisible,
                 modifier = Modifier
                     .padding(top = 20.dp),
             )
@@ -539,13 +564,27 @@ private fun DetailsHeader(
             ) {
                 date?.let {
                     date()
+                    DotSeparator()
+                }
+
+                if (episodesCount != null && episodesCount > 0) {
                     Text(
-                        text = "  •  ",
+                        text = stringResource(R.string.tag_text_number_of_episodes, episodesCount),
                         color = TraktTheme.colors.textSecondary,
                         style = TraktTheme.typography.paragraphSmaller,
-                        modifier = Modifier
-                            .padding(horizontal = 1.dp),
+                        maxLines = 1,
+                        overflow = Ellipsis,
                     )
+                    DotSeparator()
+                } else if (runtime != null) {
+                    Text(
+                        text = runtime.inWholeMinutes.durationFormat(),
+                        color = TraktTheme.colors.textSecondary,
+                        style = TraktTheme.typography.paragraphSmaller,
+                        maxLines = 1,
+                        overflow = Ellipsis,
+                    )
+                    DotSeparator()
                 }
 
                 if (!certification.isNullOrBlank()) {
@@ -556,13 +595,7 @@ private fun DetailsHeader(
                         maxLines = 1,
                         overflow = Ellipsis,
                     )
-                    Text(
-                        text = "  •  ",
-                        color = TraktTheme.colors.textSecondary,
-                        style = TraktTheme.typography.paragraphSmaller,
-                        modifier = Modifier
-                            .padding(horizontal = 1.dp),
-                    )
+                    DotSeparator()
                 }
 
                 Text(
@@ -680,6 +713,19 @@ private fun PosterChip(
     }
 }
 
+@Composable
+private fun DotSeparator() {
+    Text(
+        text = "  •  ",
+        color = TraktTheme.colors.textSecondary,
+        style = TraktTheme.typography.paragraphSmaller,
+        modifier = Modifier
+            .padding(horizontal = 1.dp),
+    )
+}
+
+// Previews
+
 @Preview
 @Composable
 private fun Preview() {
@@ -703,13 +749,18 @@ private fun Preview() {
             genres = listOf("Action", "Adventure", "Sci-Fi").toImmutableList(),
             date = null,
             imageUrl = null,
+            imageHorizontal = false,
             status = "Released",
             certification = "PG-13",
             accentColor = null,
             traktRatings = 72,
+            episodesCount = 23,
             playsCount = 0,
             creditsCount = 0,
+            runtime = null,
             loading = false,
+            externalRatingsVisible = true,
+            externalRottenVisible = true,
             externalRatings = ExternalRating(
                 imdb = ExternalRating.ImdbRating(
                     rating = 7.5F,
@@ -756,6 +807,7 @@ private fun Preview2() {
             },
             genres = listOf("Action", "Adventure", "Sci-Fi").toImmutableList(),
             date = null,
+            runtime = 45.minutes,
             imageUrl = null,
             imageHorizontal = true,
             status = "Released",
@@ -764,7 +816,10 @@ private fun Preview2() {
             traktRatings = 72,
             playsCount = 0,
             creditsCount = 0,
+            episodesCount = null,
             loading = false,
+            externalRatingsVisible = true,
+            externalRottenVisible = true,
             externalRatings = ExternalRating(
                 imdb = ExternalRating.ImdbRating(
                     rating = 7.5F,

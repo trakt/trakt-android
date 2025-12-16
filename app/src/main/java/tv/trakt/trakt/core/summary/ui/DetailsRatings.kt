@@ -32,6 +32,7 @@ internal fun DetailsRatings(
     externalRatings: ExternalRating?,
     modifier: Modifier = Modifier,
     hidden: Boolean = false,
+    rottenEnabled: Boolean = true,
 ) {
     val grayFilter = remember {
         ColorFilter.colorMatrix(
@@ -128,96 +129,102 @@ internal fun DetailsRatings(
         }
 
         // Rotten Tomatoes Rating
-        val rottenRating = externalRatings?.rotten?.rating?.toInt() ?: 0
-        Crossfade(
-            targetState = (rottenRating > 0 && !hidden),
-            animationSpec = tween(delayMillis = 50),
-        ) { hasRating ->
-            Row(
-                horizontalArrangement = iconSpace,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Image(
-                    painter = when {
-                        hasRating -> painterResource(
-                            externalRatings?.rotten?.ratingIcon ?: R.drawable.ic_rotten_tomato,
-                        )
-                        else -> painterResource(R.drawable.ic_rotten_tomato)
-                    },
-                    contentDescription = null,
-                    modifier = Modifier.size(14.dp),
-                    colorFilter = if (hasRating) null else grayFilter,
-                )
+        if (rottenEnabled) {
+            val rottenRating = externalRatings?.rotten?.rating?.toInt() ?: 0
+            Crossfade(
+                targetState = (rottenRating > 0 && !hidden),
+                animationSpec = tween(delayMillis = 50),
+            ) { hasRating ->
+                Row(
+                    horizontalArrangement = iconSpace,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Image(
+                        painter = when {
+                            hasRating -> painterResource(
+                                externalRatings?.rotten?.ratingIcon ?: R.drawable.ic_rotten_tomato,
+                            )
 
-                Box {
-                    if (hasRating) {
+                            else -> painterResource(R.drawable.ic_rotten_tomato)
+                        },
+                        contentDescription = null,
+                        modifier = Modifier.size(14.dp),
+                        colorFilter = if (hasRating) null else grayFilter,
+                    )
+
+                    Box {
+                        if (hasRating) {
+                            Text(
+                                text = "$rottenRating%",
+                                color = TraktTheme.colors.textPrimary,
+                                style = textStyle,
+                            )
+                        } else {
+                            Text(
+                                text = emptyText,
+                                color = TraktTheme.colors.textSecondary,
+                                style = textStyle,
+                            )
+                        }
+
                         Text(
-                            text = "$rottenRating%",
-                            color = TraktTheme.colors.textPrimary,
-                            style = textStyle,
-                        )
-                    } else {
-                        Text(
-                            text = emptyText,
-                            color = TraktTheme.colors.textSecondary,
+                            text = "00%",
+                            color = Color.Transparent,
                             style = textStyle,
                         )
                     }
-
-                    Text(
-                        text = "00%",
-                        color = Color.Transparent,
-                        style = textStyle,
-                    )
                 }
             }
         }
 
         // Rotten Tomatoes Audience Rating
-        val rottenRatingAud = externalRatings?.rotten?.userRating ?: 0
-        Crossfade(
-            targetState = (rottenRatingAud > 0 && !hidden),
-            animationSpec = tween(delayMillis = 50),
-            modifier = Modifier.graphicsLayer {
-                translationX = (-2).dp.toPx()
-            },
-        ) { hasRating ->
-            Row(
-                horizontalArrangement = iconSpace,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Image(
-                    painter = when {
-                        hasRating -> painterResource(
-                            externalRatings?.rotten?.userRatingIcon ?: R.drawable.ic_rotten_audience_upright,
-                        )
-                        else -> painterResource(R.drawable.ic_rotten_audience_upright)
-                    },
-                    contentDescription = null,
-                    modifier = Modifier.size(14.dp),
-                    colorFilter = if (hasRating) null else grayFilter,
-                )
+        if (rottenEnabled) {
+            val rottenRatingAud = externalRatings?.rotten?.userRating ?: 0
+            Crossfade(
+                targetState = (rottenRatingAud > 0 && !hidden),
+                animationSpec = tween(delayMillis = 50),
+                modifier = Modifier.graphicsLayer {
+                    translationX = (-2).dp.toPx()
+                },
+            ) { hasRating ->
+                Row(
+                    horizontalArrangement = iconSpace,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Image(
+                        painter = when {
+                            hasRating -> painterResource(
+                                externalRatings?.rotten?.userRatingIcon ?: R.drawable.ic_rotten_audience_upright,
+                            )
 
-                Box {
-                    if (hasRating) {
+                            else -> painterResource(R.drawable.ic_rotten_audience_upright)
+                        },
+                        contentDescription = null,
+                        modifier = Modifier.size(14.dp),
+                        colorFilter = if (hasRating) null else grayFilter,
+                    )
+
+                    Box {
+                        if (hasRating) {
+                            Text(
+                                text = "$rottenRatingAud%",
+                                color = TraktTheme.colors.textPrimary,
+                                style = textStyle,
+                            )
+                        } else {
+                            Text(
+                                text = emptyText,
+                                color = TraktTheme.colors.textSecondary,
+                                style = textStyle,
+                            )
+                        }
+
                         Text(
-                            text = "$rottenRatingAud%",
-                            color = TraktTheme.colors.textPrimary,
-                            style = textStyle,
-                        )
-                    } else {
-                        Text(
-                            text = emptyText,
-                            color = TraktTheme.colors.textSecondary,
+                            text = "00%",
+                            color = Color.Transparent,
                             style = textStyle,
                         )
                     }
-
-                    Text(
-                        text = "00%",
-                        color = Color.Transparent,
-                        style = textStyle,
-                    )
                 }
             }
         }
@@ -263,6 +270,13 @@ private fun Preview() {
                 hidden = true,
                 traktRatings = 72,
                 externalRatings = ratings,
+            )
+
+            DetailsRatings(
+                hidden = true,
+                traktRatings = 72,
+                externalRatings = ratings,
+                rottenEnabled = false,
             )
         }
     }
