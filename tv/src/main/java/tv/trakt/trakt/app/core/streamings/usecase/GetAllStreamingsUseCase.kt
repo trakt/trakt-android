@@ -81,16 +81,19 @@ internal class GetAllStreamingsUseCase(
                 showId = mediaId,
                 countryCode = null,
             )
+
             "movie" -> remoteMovieSource.getMovieStreamings(
                 movieId = mediaId,
                 countryCode = null,
             )
+
             "episode" -> remoteEpisodeSource.getEpisodeStreamings(
                 showId = mediaId,
                 season = seasonEpisode?.season ?: 0,
                 episode = seasonEpisode?.episode ?: 0,
                 countryCode = null,
             )
+
             else -> throw IllegalArgumentException("Unsupported media type: $mediaType")
         }
 
@@ -232,7 +235,6 @@ internal class GetAllStreamingsUseCase(
         return StreamingService(
             name = source.name,
             linkDirect = service.linkDirect,
-            linkAndroid = service.linkAndroid,
             source = service.source,
             color = source.color,
             logo = source.images.logo,

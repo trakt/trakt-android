@@ -187,7 +187,6 @@ internal class GetMovieStreamingsUseCase(
         return StreamingService(
             name = source.name,
             linkDirect = service.linkDirect,
-            linkAndroid = service.linkAndroid,
             source = service.source,
             color = source.color,
             logo = source.images.logo,

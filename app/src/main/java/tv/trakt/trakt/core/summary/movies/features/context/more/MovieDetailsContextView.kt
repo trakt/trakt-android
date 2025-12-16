@@ -293,7 +293,6 @@ private fun Preview() {
                 logo = null,
                 channel = "Hello",
                 linkDirect = "Hello",
-                linkAndroid = "Hello",
                 uhd = false,
                 color = null,
                 country = "Hello",

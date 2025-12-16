@@ -46,7 +46,6 @@ internal class GetStreamingsUseCase(
                 StreamingService(
                     name = localSource?.name ?: "",
                     linkDirect = it.linkDirect,
-                    linkAndroid = it.linkAndroid,
                     source = it.source,
                     color = localSource?.color,
                     logo = localSource?.images?.logo,
