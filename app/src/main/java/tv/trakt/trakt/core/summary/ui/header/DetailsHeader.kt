@@ -503,7 +503,7 @@ private fun Preview() {
 private fun Preview2() {
     TraktTheme {
         DetailsHeader(
-            title = "Episode Title",
+            title = "Episode 4",
             titleHeader = {
                 Text(
                     text = "Some Title Header".uppercase(),

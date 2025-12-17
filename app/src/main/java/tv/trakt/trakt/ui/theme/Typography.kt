@@ -29,13 +29,13 @@ internal val Typography: TraktTypography = TraktTypography(
         fontFamily = SplineFamily,
         fontWeight = FontWeight.W600,
         fontSize = 32.sp,
-        letterSpacing = (-0.04).em,
+        letterSpacing = (-0.01).em,
     ),
     heading3 = TextStyle(
         fontFamily = SplineFamily,
         fontWeight = FontWeight.W600,
         fontSize = 24.sp,
-        letterSpacing = (-0.04).em,
+        letterSpacing = (-0.02).em,
     ),
     heading4 = TextStyle(
         fontFamily = SplineFamily,

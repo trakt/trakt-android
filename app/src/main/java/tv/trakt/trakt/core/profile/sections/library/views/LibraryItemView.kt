@@ -43,6 +43,7 @@ internal fun LibraryItemView(
                     InfoChip(
                         text = item.collectedAt.toLocal().format(mediumDateFormat),
                         iconPainter = painterResource(R.drawable.ic_library_check),
+                        iconPadding = 1.dp,
                         containerColor = TraktTheme.colors.chipContainerOnContent,
                     )
                 },
@@ -83,6 +84,7 @@ internal fun LibraryItemView(
                     InfoChip(
                         text = item.collectedAt.toLocal().format(mediumDateFormat),
                         iconPainter = painterResource(R.drawable.ic_library_check),
+                        iconPadding = 1.dp,
                         containerColor = TraktTheme.colors.chipContainerOnContent,
                     )
                 },
