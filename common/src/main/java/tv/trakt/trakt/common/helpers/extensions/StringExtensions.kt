@@ -76,3 +76,9 @@ fun String.highlightMentions(color: Color): AnnotatedString {
         }
     }
 }
+
+fun String.uppercaseWords(): String {
+    return this.split(" ").joinToString(" ") { word ->
+        word.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+    }
+}

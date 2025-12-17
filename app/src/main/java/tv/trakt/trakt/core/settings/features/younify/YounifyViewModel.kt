@@ -200,7 +200,7 @@ internal class YounifyViewModel(
                         notifyYounifyRefresh(
                             serviceId = service.id,
                             syncData = false,
-                            info = DynamicStringResource(R.string.text_info_younify_linked),
+                            info = DynamicStringResource(R.string.text_info_younify_service_linked),
                         )
                     }
                 } else {
@@ -319,7 +319,7 @@ internal class YounifyViewModel(
                 unlinkYounifyServiceUseCase.unlinkService(service.id)
 
                 loadData(
-                    info = DynamicStringResource(R.string.text_info_younify_unlinked),
+                    info = DynamicStringResource(R.string.text_info_younify_service_unlinked),
                 )
             } catch (error: Exception) {
                 error.rethrowCancellation {

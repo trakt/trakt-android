@@ -56,6 +56,7 @@ import tv.trakt.trakt.BuildConfig
 import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Red400
@@ -293,7 +294,7 @@ private fun SettingsAccount(
             modifier = Modifier.fillMaxWidth(),
         ) {
             TraktHeader(
-                title = stringResource(R.string.header_settings_account).uppercase(),
+                title = stringResource(R.string.header_account_details).uppercase(),
                 titleStyle = TraktTheme.typography.heading6,
                 subtitle = "@${state.user?.username}",
                 modifier = Modifier.padding(bottom = 4.dp),
@@ -307,7 +308,7 @@ private fun SettingsAccount(
         }
 
         SettingsValueField(
-            text = stringResource(R.string.header_settings_display_name),
+            text = stringResource(R.string.text_display_name).uppercaseWords(),
             value = state.user?.name,
             enabled = !state.logoutLoading.isLoading && !state.accountLoading.isLoading,
             onClick = {
@@ -316,7 +317,7 @@ private fun SettingsAccount(
         )
 
         SettingsValueField(
-            text = stringResource(R.string.header_settings_location),
+            text = stringResource(R.string.text_location),
             value = state.user?.location,
             enabled = !state.logoutLoading.isLoading && !state.accountLoading.isLoading,
             onClick = {
@@ -325,7 +326,7 @@ private fun SettingsAccount(
         )
 
         SettingsValueField(
-            text = stringResource(R.string.header_settings_about),
+            text = stringResource(R.string.text_about).uppercaseWords(),
             value = state.user?.about,
             enabled = !state.logoutLoading.isLoading && !state.accountLoading.isLoading,
             onClick = {
@@ -338,7 +339,7 @@ private fun SettingsAccount(
 
     SingleInputSheet(
         active = displayNameSheet != null,
-        title = stringResource(R.string.header_settings_display_name),
+        title = stringResource(R.string.text_display_name).uppercaseWords(),
         description = stringResource(R.string.input_prompt_display_name),
         initialInput = displayNameSheet,
         nullable = true,
@@ -354,7 +355,7 @@ private fun SettingsAccount(
 
     SingleInputSheet(
         active = locationSheet != null,
-        title = stringResource(R.string.header_settings_location),
+        title = stringResource(R.string.text_location),
         description = stringResource(R.string.input_prompt_location),
         initialInput = locationSheet,
         nullable = true,
@@ -370,7 +371,7 @@ private fun SettingsAccount(
 
     SingleInputSheet(
         active = aboutSheet != null,
-        title = stringResource(R.string.header_settings_about),
+        title = stringResource(R.string.text_about).uppercaseWords(),
         description = stringResource(R.string.input_prompt_about),
         initialInput = aboutSheet,
         nullable = true,
@@ -402,13 +403,13 @@ private fun SettingsStreaming(
         modifier = modifier,
     ) {
         TraktHeader(
-            title = stringResource(R.string.header_settings_streaming).uppercase(),
+            title = stringResource(R.string.text_streaming_sync).uppercase(),
             titleColor = TraktTheme.colors.textPrimary,
             titleStyle = TraktTheme.typography.heading6,
         )
 
         SettingsTextField(
-            text = stringResource(R.string.header_settings_automatic_tracking),
+            text = stringResource(R.string.text_automatic_tracking),
             enabled = !state.logoutLoading.isLoading && isVip,
             vipLocked = state.user != null && !isVip,
             onClick = onAutomaticTrackingClick,
@@ -431,12 +432,12 @@ private fun SettingsMisc(
         modifier = modifier,
     ) {
         TraktHeader(
-            title = stringResource(R.string.header_settings_general).uppercase(),
+            title = stringResource(R.string.link_text_general_settings).uppercase(),
             titleStyle = TraktTheme.typography.heading6,
         )
 
         SettingsTextField(
-            text = stringResource(R.string.header_settings_all_settings),
+            text = stringResource(R.string.text_all_settings),
             enabled = !state.logoutLoading.isLoading,
             onClick = {
                 uriHandler.openUri(Config.WEB_SETTINGS_URL)
@@ -444,7 +445,7 @@ private fun SettingsMisc(
         )
 
         SettingsTextField(
-            text = stringResource(R.string.header_settings_support_contact),
+            text = stringResource(R.string.link_text_support),
             enabled = !state.logoutLoading.isLoading,
             onClick = {
                 val intent = Intent(Intent.ACTION_SENDTO).apply {
@@ -463,7 +464,7 @@ private fun SettingsMisc(
         )
 
         SettingsTextField(
-            text = stringResource(R.string.header_settings_forums),
+            text = stringResource(R.string.link_text_forums),
             enabled = !state.logoutLoading.isLoading,
             onClick = {
                 uriHandler.openUri(Config.WEB_FORUMS_URL)
@@ -471,7 +472,7 @@ private fun SettingsMisc(
         )
 
         SettingsTextField(
-            text = stringResource(R.string.header_settings_terms),
+            text = stringResource(R.string.link_text_terms),
             enabled = !state.logoutLoading.isLoading,
             onClick = {
                 uriHandler.openUri(Config.WEB_TERMS_URL)
@@ -479,7 +480,7 @@ private fun SettingsMisc(
         )
 
         SettingsTextField(
-            text = stringResource(R.string.header_settings_policy),
+            text = stringResource(R.string.link_text_policy),
             enabled = !state.logoutLoading.isLoading,
             onClick = {
                 uriHandler.openUri(Config.WEB_PRIVACY_URL)

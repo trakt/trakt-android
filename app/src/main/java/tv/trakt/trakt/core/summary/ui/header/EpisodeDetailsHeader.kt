@@ -107,18 +107,34 @@ internal fun DetailsHeader(
                 label = "alpha",
             )
 
-            Text(
-                text = stringResource(R.string.text_directed_by, creator?.name ?: "N/A"),
-                color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.paragraphSmaller,
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .alpha(animatedAlpha)
-                    .onClick {
-                        creator?.let {
-                            onCreatorClick(it)
-                        }
+                    .alpha(animatedAlpha),
+            ) {
+                Text(
+                    text = "${stringResource(R.string.text_directed_by_short)} ",
+                    color = TraktTheme.colors.textPrimary,
+                    style = TraktTheme.typography.paragraphSmaller,
+                )
+
+                Text(
+                    text = (creator?.name ?: "").ifBlank { "-" },
+                    color = when {
+                        creator?.name?.isNotBlank() == true -> TraktTheme.colors.textPrimary
+                        else -> TraktTheme.colors.textSecondary
                     },
-            )
+                    style = TraktTheme.typography.paragraphSmaller,
+                    modifier = Modifier
+                        .onClick(
+                            enabled = (creator != Person.Unknown),
+                        ) {
+                            creator?.let {
+                                onCreatorClick(it)
+                            }
+                        },
+                )
+            }
         },
         status = show.status,
         certification = show.certification,

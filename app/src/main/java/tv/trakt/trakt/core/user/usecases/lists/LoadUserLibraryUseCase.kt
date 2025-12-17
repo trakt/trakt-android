@@ -5,12 +5,6 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
-import tv.trakt.trakt.common.helpers.extensions.asyncMap
-import tv.trakt.trakt.common.helpers.extensions.toInstant
-import tv.trakt.trakt.common.model.Episode
-import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.library.model.LibraryItem
 import tv.trakt.trakt.core.library.model.getLibrarySorting
@@ -65,41 +59,43 @@ internal class LoadUserLibraryUseCase(
     }
 
     suspend fun loadMovies(): ImmutableList<LibraryItem> {
-        return remoteSource.getLibraryMovies(
-            extended = "full,images,colors,available_on",
-        ).asyncMap {
-            LibraryItem.MovieItem(
-                movie = Movie.fromDto(it.movie),
-                collectedAt = it.collectedAt.toInstant(),
-                updatedAt = it.updatedAt.toInstant(),
-                availableOn = it.availableOn
-                    ?.map { source -> source.name }
-                    ?.toImmutableList()
-                    ?: EmptyImmutableList,
-            )
-        }
-            .sortedByDescending { it.collectedAt }
-            .also { localSource.setMovies(it) }
-            .toImmutableList()
+        return EmptyImmutableList
+//        return remoteSource.getLibraryMovies(
+//            extended = "full,images,colors,available_on",
+//        ).asyncMap {
+//            LibraryItem.MovieItem(
+//                movie = Movie.fromDto(it.movie),
+//                collectedAt = it.collectedAt.toInstant(),
+//                updatedAt = it.updatedAt.toInstant(),
+//                availableOn = it.availableOn
+//                    ?.map { source -> source.name }
+//                    ?.toImmutableList()
+//                    ?: EmptyImmutableList,
+//            )
+//        }
+//            .sortedByDescending { it.collectedAt }
+//            .also { localSource.setMovies(it) }
+//            .toImmutableList()
     }
 
     suspend fun loadEpisodes(): ImmutableList<LibraryItem> {
-        return remoteSource.getLibraryEpisodes(
-            extended = "full,images,colors,available_on",
-        ).asyncMap {
-            LibraryItem.EpisodeItem(
-                episode = Episode.fromDto(it.episode),
-                show = Show.fromDto(it.show),
-                collectedAt = it.collectedAt.toInstant(),
-                updatedAt = it.updatedAt.toInstant(),
-                availableOn = it.availableOn
-                    ?.map { source -> source.name }
-                    ?.toImmutableList()
-                    ?: EmptyImmutableList,
-            )
-        }
-            .sortedByDescending { it.collectedAt }
-            .also { localSource.setEpisodes(it) }
-            .toImmutableList()
+        return EmptyImmutableList
+//        return remoteSource.getLibraryEpisodes(
+//            extended = "full,images,colors,available_on",
+//        ).asyncMap {
+//            LibraryItem.EpisodeItem(
+//                episode = Episode.fromDto(it.episode),
+//                show = Show.fromDto(it.show),
+//                collectedAt = it.collectedAt.toInstant(),
+//                updatedAt = it.updatedAt.toInstant(),
+//                availableOn = it.availableOn
+//                    ?.map { source -> source.name }
+//                    ?.toImmutableList()
+//                    ?: EmptyImmutableList,
+//            )
+//        }
+//            .sortedByDescending { it.collectedAt }
+//            .also { localSource.setEpisodes(it) }
+//            .toImmutableList()
     }
 }

@@ -16,7 +16,7 @@ internal val StreamingService.linkStatus: LinkStatus
 internal enum class LinkStatus(
     @param:StringRes val displayTextRes: Int,
 ) {
-    LINKED(R.string.text_younify_link_linked),
-    UNLINKED(R.string.text_younify_link_unlinked),
-    BROKEN(R.string.text_younify_link_broken),
+    LINKED(R.string.text_younify_status_linked),
+    UNLINKED(R.string.text_younify_status_unlinked),
+    BROKEN(R.string.text_younify_status_broken),
 }

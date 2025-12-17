@@ -13,6 +13,8 @@
     <string name="button_text_comment_replies">%d replies</string>
     <string name="button_text_create">Create</string>
     <string name="button_text_create_list">List</string>
+    <string name="button_text_data_sync_ignore">Ignore existing data</string>
+    <string name="button_text_data_sync_yes">Sync existing data</string>
     <string name="button_text_delete_comment">Delete Review</string>
     <string name="button_text_delete_list">Delete</string>
     <string name="button_text_delete_reply">Delete Reply</string>
@@ -42,6 +44,11 @@
     <string name="button_text_share">Share</string>
     <string name="button_text_shows">Shows</string>
     <string name="button_text_social">Social</string>
+    <string name="button_text_sort_added_date">Date Added</string>
+    <string name="button_text_sort_default">Default</string>
+    <string name="button_text_sort_rating">Rating</string>
+    <string name="button_text_sort_release_date">Release Date</string>
+    <string name="button_text_sort_runtime">Runtime</string>
     <string name="button_text_stream_on">Stream on</string>
     <string name="button_text_toggle_search_media">Media</string>
     <string name="button_text_toggle_search_people">People</string>
@@ -52,15 +59,21 @@
     <string name="button_text_watchlist">Watchlist</string>
     <string name="button_text_where_to_watch">Where to watch</string>
     <string name="button_text_yes">Yes</string>
+    <string name="button_text_younify_fix">Fix</string>
+    <string name="button_text_younify_send_logs">Send Logs</string>
+    <string name="button_text_younify_unlink">Unlink</string>
+    <string name="dialog_prompt_younify_data_sync">Would you like to import your existing data to your Trakt account, or only sync new data from now on?</string>
     <string name="dialog_title_comment">Review</string>
+    <string name="dialog_title_younify_data_sync">Sync Existing Data</string>
     <string name="episode_footer_season_episode">S%1$d • E%2$d</string>
     <string name="error_text_lists_limit">You have reached the limit of your personal lists. Upgrade to VIP for unlimited amount of lists!</string>
-    <string name="error_text_unexpected_error_short">Uh oh… this wasn\'t planned. If this keeps happening, please contact Trakt support.</string>\
-    <string name="error_text_vip_only_feature" translatable="false">This feature can be accessed only by VIP users. Upgrade your account to VIP and unlock the full Trakt experience!</string>
+    <string name="error_text_unexpected_error_short">Uh oh… this wasn\'t planned. If this keeps happening, please contact Trakt support.</string>
+    <string name="header_account_details">Account details</string>
     <string name="header_age">Age</string>
     <string name="header_birthday">Birthday</string>
     <string name="header_community_sentiment">Community Sentiment</string>
     <string name="header_country">Country</string>
+    <string name="header_details">Details</string>
     <string name="header_device_auth_code_instruction">and enter the following code:</string>
     <string name="header_device_auth_qr_instruction">Scan the QR code, or sign in at:</string>
     <string name="header_device_auth_try_again">The activation was denied, expired, or something unforeseeable happened. Please try again.</string>
@@ -79,8 +92,16 @@
     <string name="input_placeholder_search_movies">Search movies…</string>
     <string name="input_placeholder_search_people">Search people…</string>
     <string name="input_placeholder_search_shows">Search shows…</string>
+    <string name="input_prompt_about">Tell us a bit about yourself.</string>
+    <string name="input_prompt_display_name">What should your display name be?</string>
+    <string name="input_prompt_location">Where are you located?</string>
     <string name="link_text_discover_movies">Discover movies</string>
     <string name="link_text_discover_shows">Discover shows</string>
+    <string name="link_text_forums">Forums</string>
+    <string name="link_text_general_settings">General</string>
+    <string name="link_text_policy">Privacy Policy</string>
+    <string name="link_text_support">Support</string>
+    <string name="link_text_terms">Terms of Use</string>
     <string name="link_text_view_profile">View profile</string>
     <string name="list_placeholder_comments">No reviews yet.</string>
     <string name="list_placeholder_empty">There is nothing in this list.</string>
@@ -98,6 +119,7 @@
     <string name="list_title_favorite_shows">Favorite Shows</string>
     <string name="list_title_favorites">Favorites</string>
     <string name="list_title_history">History</string>
+    <string name="list_title_library">Library</string>
     <string name="list_title_most_anticipated">Anticipated</string>
     <string name="list_title_most_popular">Popular</string>
     <string name="list_title_most_popular_searches">Top Searches</string>
@@ -143,6 +165,7 @@
     <string name="page_title_profile">Profile</string>
     <string name="page_title_recently_watched">Recently Watched</string>
     <string name="page_title_search">Search</string>
+    <string name="page_title_settings">Settings</string>
     <string name="page_title_shows">Shows</string>
     <string name="page_title_unexpected_error">Something went wrong</string>
     <string name="page_title_watchlist">Watchlist</string>
@@ -152,9 +175,10 @@
     <string name="tag_text_watch_count">Watch count</string>
     <string name="tag_text_watched">Watched</string>
     <string name="text_about">About me</string>
+    <string name="text_all_settings">All Settings</string>
+    <string name="text_automatic_tracking">Automatic Tracking</string>
     <string name="text_by">by</string>
-    <string name="text_directed_by">Directed by %s</string>
-    <string name="text_created_by">Created by %s</string>
+    <string name="text_created_by_short">Created by</string>
     <string name="text_cta_activity_list">Start making friends quickly by following the Trakt Team and explore what they are watching.</string>
     <string name="text_cta_favorites">Your faves. Your story. Spotlight the movies and shows that left a mark.</string>
     <string name="text_cta_favorites_movies">Your faves. Your story. Spotlight the movies that left a mark.</string>
@@ -164,6 +188,8 @@
     <string name="text_cta_upcoming">Your timeline. See what\'s dropping next with a full list of upcoming episodes you care about.</string>
     <string name="text_cta_watchlist_released">See it. Save it. Watch it later. Start curating your personal movie queue.</string>
     <string name="text_cta_watchlist_unreleased">Lights, camera… nothing? Add titles to your watchlist and let the binge begin.</string>
+    <string name="text_directed_by_short">Directed by</string>
+    <string name="text_display_name">Display name</string>
     <string name="text_episodes_watched">%d episodes</string>
     <string name="text_info_favorites_added">Added to favorites.</string>
     <string name="text_info_favorites_removed">Removed from favorites.</string>
@@ -183,6 +209,9 @@
     <string name="text_info_signed_out">You have been signed out.</string>
     <string name="text_info_watchlist_added">Added to watchlist.</string>
     <string name="text_info_watchlist_removed">Removed from watchlist.</string>
+    <string name="text_info_younify_service_linked">Streaming service has been linked.</string>
+    <string name="text_info_younify_service_unlinked">Streaming service has been unlinked.</string>
+    <string name="text_location">Location</string>
     <string name="text_movies_watched">%d movies</string>
     <string name="text_overview_placeholder">Overview is not available.</string>
     <string name="text_reply_by">Reply by</string>
@@ -199,10 +228,15 @@
     <string name="text_sort_recently_added">Recently added</string>
     <string name="text_sort_recently_updated">Recently updated</string>
     <string name="text_spoiler">Spoiler</string>
+    <string name="text_streaming_sync">Streaming Sync</string>
     <string name="text_this_month">This month</string>
+    <string name="text_younify_status_broken">Broken</string>
+    <string name="text_younify_status_linked">Linked</string>
+    <string name="text_younify_status_unlinked">Not linked</string>
     <string name="textarea_placeholder_comment">Add a review…</string>
     <string name="translated_value_error_comment_invalid_content">Reviews must be at least 5 words.</string>
     <string name="translated_value_error_reply_invalid_content">Replies must be at least 5 words.</string>
+    <string name="translated_value_library_custom">Custom</string>
     <string name="translated_value_position_acting">Acting</string>
     <string name="translated_value_type_movie">Movie</string>
     <string name="translated_value_type_show">Show</string>
@@ -218,57 +252,16 @@
     <string name="warning_prompt_remove_from_watched">Are you sure you want to remove \"%s\" from your Watched list? All plays will be removed.</string>
     <string name="warning_prompt_remove_from_watchlist">Are you sure you want to remove \"%s\" from your Watchlist?</string>
     <string name="warning_prompt_remove_single_watched">Are you sure you want to remove this play of \"%s\" from your Watched list?</string>
+    <string name="warning_prompt_younify_unlink">Are you sure you want to unlink %s?</string>
 
-    <!--  TODO Sync strings below  -->
+    <!-- TODO Sync with strings bank -->
 
-    <string name="page_title_settings">Settings</string>
-    <string name="header_settings_streaming">Streaming Sync</string>
-    <string name="header_settings_account">Account Details</string>
-    <string name="header_settings_general">General</string>
+    <string name="text_vip_upsell_default">Enhance your Trakt experience</string>
+    <string name="text_vip_upsell_default_description">Upgrade to VIP and unlock the full Trakt experience, packed with features built for TV Shows and Movies lovers.</string>
 
-    <string name="header_settings_automatic_tracking">Automatic Tracking</string>
-    <string name="header_settings_terms">Terms of Use</string>
-    <string name="header_settings_policy">Privacy Policy</string>
-    <string name="header_settings_forums">Forums</string>
-    <string name="header_settings_support_contact">Support</string>
-    <string name="header_settings_all_settings">All Settings</string>
-    <string name="header_settings_display_name">Display Name</string>
-    <string name="header_settings_location">Location</string>
-    <string name="header_settings_about">About Me</string>
+    <!--  Non Translatable  -->
 
-    <string name="text_younify_link_linked">Linked</string>
-    <string name="text_younify_link_unlinked">Not linked</string>
-    <string name="text_younify_link_broken">Broken</string>
-    <string name="text_younify_send_logs">Send Logs</string>
-
-    <string name="dialog_title_younify_data_sync">Sync Existing Data</string>
-    <string name="dialog_prompt_younify_data_sync">Would you like to import your existing data to your Trakt account, or only sync new data from now on?</string>
-    <string name="warning_prompt_younify_unlink">Are you sure you want to unlink \"%s\"?</string>
-
-    <string name="button_text_younify_fix">Fix</string>
-    <string name="button_text_younify_unlink">Unlink</string>
-    <string name="button_text_data_sync_yes">Sync existing data</string>
-    <string name="button_text_data_sync_ignore">Ignore existing data</string>
-
-    <string name="text_info_younify_linked">Streaming service has been linked.</string>
-    <string name="text_info_younify_unlinked">Streaming service has been unlinked.</string>
-
-    <string name="text_info_mir_vip_title">Enhance your Trakt experience</string>
-    <string name="text_info_mir_vip_description">Upgrade to VIP and unlock the full Trakt experience, packed with features built for TV Shows and Movies lovers.</string>
-
-    <string name="input_prompt_display_name">What should your display name be?</string>
-    <string name="input_prompt_location">Where are you located?</string>
-    <string name="input_prompt_about">Tell us a bit about yourself.</string>
-
-    <string name="text_sort_default">Default</string>
-    <string name="text_sort_date_added">Date Added</string>
-    <string name="text_sort_runtime">Runtime</string>
-    <string name="text_sort_rating">Rating</string>
-    <string name="text_sort_release_date">Release Date</string>
-
-    <string name="list_title_library">Library</string>
-    <string name="text_sort_custom">Custom</string>
-    <string name="text_sort_plex" translatable="false">Plex</string>
-    <string name="header_details">Details</string>
+    <string name="translated_value_library_plex" translatable="false">Plex</string>
+    <string name="error_text_vip_only_feature" translatable="false">This feature can be accessed only by VIP users. Upgrade your account to VIP and unlock the full Trakt experience!</string>
 
 </resources>

@@ -14,7 +14,7 @@ internal class GetEpisodeDirectorUseCase(
     suspend fun getDirector(
         showId: TraktId,
         seasonEpisode: SeasonEpisode,
-    ): Person? {
+    ): Person {
         return remoteSource.getCastCrew(
             showId = showId,
             season = seasonEpisode.season,
@@ -25,6 +25,6 @@ internal class GetEpisodeDirectorUseCase(
             ?.let { Person.fromDto(it.person) }
             ?.also {
                 peopleLocalSource.upsertPeople(listOf(it))
-            }
+            } ?: Person.Unknown
     }
 }

@@ -71,7 +71,7 @@ internal fun ThisMonthVipCard(
             verticalArrangement = spacedBy(16.dp),
         ) {
             Text(
-                text = stringResource(R.string.text_info_mir_vip_title).uppercase(),
+                text = stringResource(R.string.text_vip_upsell_default).uppercase(),
                 style = TraktTheme.typography.heading5,
                 color = TraktTheme.colors.textPrimary,
                 modifier = Modifier
@@ -79,7 +79,7 @@ internal fun ThisMonthVipCard(
             )
 
             Text(
-                text = stringResource(R.string.text_info_mir_vip_description),
+                text = stringResource(R.string.text_vip_upsell_default_description),
                 style = TraktTheme.typography.paragraphSmaller.copy(
                     lineHeight = 1.4.em,
                 ),

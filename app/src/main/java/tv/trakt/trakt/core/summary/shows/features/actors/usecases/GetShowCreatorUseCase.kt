@@ -10,13 +10,13 @@ internal class GetShowCreatorUseCase(
     private val remoteSource: ShowsRemoteDataSource,
     private val peopleLocalSource: PeopleLocalDataSource,
 ) {
-    suspend fun getCreator(showId: TraktId): Person? {
+    suspend fun getCreator(showId: TraktId): Person {
         return remoteSource.getCastCrew(showId).crew
             ?.get("created by")
             ?.firstOrNull()
             ?.let { Person.fromDto(it.person) }
             ?.also {
                 peopleLocalSource.upsertPeople(listOf(it))
-            }
+            } ?: Person.Unknown
     }
 }

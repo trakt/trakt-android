@@ -141,7 +141,7 @@ internal fun YounifyScreen(
                 viewModel.notifyYounifyRefresh(
                     serviceId = serviceId,
                     syncData = true,
-                    info = DynamicStringResource(R.string.text_info_younify_linked),
+                    info = DynamicStringResource(R.string.text_info_younify_service_linked),
                 )
             }
         },
@@ -150,7 +150,7 @@ internal fun YounifyScreen(
                 viewModel.notifyYounifyRefresh(
                     serviceId = serviceId,
                     syncData = false,
-                    info = DynamicStringResource(R.string.text_info_younify_linked),
+                    info = DynamicStringResource(R.string.text_info_younify_service_linked),
                 )
             }
         },
@@ -457,7 +457,7 @@ private fun TitleBar(
                 contentDescription = null,
             )
             TraktHeader(
-                title = stringResource(R.string.header_settings_automatic_tracking),
+                title = stringResource(R.string.text_automatic_tracking),
             )
         }
 
@@ -486,7 +486,7 @@ private fun TitleBar(
                 DropdownMenuItem(
                     text = {
                         Text(
-                            text = stringResource(R.string.header_settings_all_settings),
+                            text = stringResource(R.string.text_all_settings),
                             style = TraktTheme.typography.buttonTertiary,
                             color = TraktTheme.colors.textPrimary,
                             modifier = Modifier.onClick(
@@ -510,7 +510,7 @@ private fun TitleBar(
                 DropdownMenuItem(
                     text = {
                         Text(
-                            text = stringResource(R.string.text_younify_send_logs),
+                            text = stringResource(R.string.button_text_younify_send_logs),
                             style = TraktTheme.typography.buttonTertiary,
                             color = TraktTheme.colors.textPrimary,
                             modifier = Modifier.onClick(

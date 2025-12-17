@@ -21,7 +21,20 @@ data class Person(
     val images: Images?,
     val knownForDepartment: String?,
 ) {
-    companion object
+    companion object {
+        val Unknown = Person(
+            ids = Ids(
+                trakt = 0.toTraktId(),
+                slug = "".toSlugId(),
+            ),
+            name = "",
+            biography = null,
+            birthday = null,
+            birthplace = null,
+            images = null,
+            knownForDepartment = null,
+        )
+    }
 }
 
 fun Companion.fromDto(dto: PersonDto): Person {
