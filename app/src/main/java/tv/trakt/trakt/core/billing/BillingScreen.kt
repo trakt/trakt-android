@@ -2,6 +2,7 @@
 
 package tv.trakt.trakt.core.billing
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,23 +20,40 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight.Companion.W400
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.android.billingclient.api.ProductDetails
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.common.ui.theme.colors.Red500
+import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD
+import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD_TRIAL
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -74,14 +92,13 @@ private fun BillingScreen(
             .calculateTopPadding()
             .plus(4.dp),
         bottom = WindowInsets.navigationBars.asPaddingValues()
-            .calculateBottomPadding()
-            .plus(32.dp),
+            .calculateBottomPadding(),
     )
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(TraktTheme.colors.accent),
+            .background(TraktTheme.colors.backgroundPrimary),
     ) {
         Column(
             modifier = Modifier
@@ -95,6 +112,149 @@ private fun BillingScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .onClick(onClick = onBackClick),
+            )
+        }
+
+        PaymentDialog(
+            product = state.products?.firstOrNull(),
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(
+                    start = TraktTheme.spacing.mainPageHorizontalSpace,
+                    end = TraktTheme.spacing.mainPageHorizontalSpace,
+                    bottom = contentPadding
+                        .calculateBottomPadding()
+                        .plus(16.dp),
+                )
+                .shadow(4.dp, RoundedCornerShape(32.dp))
+                .fillMaxWidth(),
+        )
+    }
+}
+
+@Composable
+private fun PaymentDialog(
+    product: ProductDetails?,
+    modifier: Modifier = Modifier,
+) {
+    val inspection = LocalInspectionMode.current
+    val monthPeriodText = stringResource(R.string.text_billing_period_month)
+
+    Column(
+        modifier = modifier
+            .animateContentSize()
+            .background(
+                TraktTheme.colors.dialogContainer,
+                RoundedCornerShape(32.dp),
+            )
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        if (inspection || product != null) {
+            val freeTrialOffer = remember(product) {
+                product?.subscriptionOfferDetails
+                    ?.firstOrNull { it.offerId == MONTHLY_STANDARD_TRIAL.id }
+            }
+
+            val standardOffer = remember(product) {
+                product?.subscriptionOfferDetails
+                    ?.firstOrNull { it.offerId == MONTHLY_STANDARD.id }
+            }
+
+            if (freeTrialOffer != null) {
+                Text(
+                    text = stringResource(R.string.text_billing_month_for_free),
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.paragraphSmall,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(bottom = 12.dp),
+                )
+            }
+
+            Text(
+                text = when {
+                    freeTrialOffer != null -> {
+                        val pricing = freeTrialOffer.pricingPhases.pricingPhaseList
+                            .lastOrNull { it.priceAmountMicros > 0 }
+                        "${pricing?.formattedPrice} / $monthPeriodText"
+                    }
+
+                    standardOffer != null -> {
+                        val pricing = standardOffer.pricingPhases.pricingPhaseList
+                            .lastOrNull { it.priceAmountMicros > 0 }
+                        "${pricing?.formattedPrice} / $monthPeriodText"
+                    }
+
+                    inspection -> {
+                        "£4.99 / month"
+                    }
+
+                    else -> {
+                        ""
+                    }
+                },
+                style = TraktTheme.typography.heading3.copy(
+                    letterSpacing = (-0.01).em,
+                ),
+                color = TraktTheme.colors.textPrimary,
+            )
+
+            Column(
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .fillMaxWidth()
+                    .background(Red500, RoundedCornerShape(18.dp))
+                    .padding(14.dp),
+                verticalArrangement = spacedBy(2.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    text = when {
+                        freeTrialOffer != null -> stringResource(R.string.text_billing_try_for_free)
+                        else -> stringResource(R.string.text_billing_subscribe_now)
+                    }.uppercase(),
+                    color = TraktTheme.colors.textPrimary,
+                    style = TraktTheme.typography.buttonPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Center,
+                )
+
+                if (freeTrialOffer != null) {
+                    Text(
+                        text = stringResource(R.string.text_billing_no_payment_required),
+                        color = TraktTheme.colors.textPrimary,
+                        style = TraktTheme.typography.meta.copy(
+                            fontSize = 10.sp,
+                            fontWeight = W400,
+                        ),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
+                    )
+                }
+            }
+
+            Text(
+                text = stringResource(R.string.text_billing_disclaimer, monthPeriodText),
+                style = TraktTheme.typography.meta.copy(
+                    fontSize = 10.sp,
+                    fontWeight = W400,
+                    lineHeight = 1.2.em,
+                ),
+                textAlign = TextAlign.Center,
+                color = TraktTheme.colors.textSecondary,
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .fillMaxWidth(),
+            )
+        } else {
+            FilmProgressIndicator(
+                size = 42.dp,
             )
         }
     }

@@ -162,8 +162,6 @@ private fun HeaderBar(
             } else if (showVip) {
                 VipChip(
                     onClick = onVipClick,
-                    modifier = Modifier
-                        .height(contentHeight),
                 )
             }
         }

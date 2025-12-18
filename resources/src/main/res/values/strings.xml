@@ -256,6 +256,13 @@
 
     <!-- TODO Sync with strings bank -->
 
+    <string name="text_billing_month_for_free">Try 1 month for free and then:</string>
+    <string name="text_billing_no_payment_required">No immediate payment required.</string>
+    <string name="text_billing_try_for_free">Try now for free!</string>
+    <string name="text_billing_subscribe_now">Join Trakt VIP now!</string>
+    <string name="text_billing_period_month">month</string>
+    <string name="text_billing_disclaimer">Payment starts at end of trial period. Subscription auto-renews, and is billed each %s until canceled. Cancel any time via Google Play Subscription Center.</string>
+
     <string name="text_vip_upsell_default">Enhance your Trakt experience</string>
     <string name="text_vip_upsell_default_description">Upgrade to VIP and unlock the full Trakt experience, packed with features built for TV Shows and Movies lovers.</string>
 

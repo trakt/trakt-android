@@ -1,9 +1,22 @@
 @file:OptIn(FlowPreview::class)
+@file:Suppress("UNCHECKED_CAST")
 
 package tv.trakt.trakt.core.billing
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.BillingClient.BillingResponseCode
+import com.android.billingclient.api.BillingClientStateListener
+import com.android.billingclient.api.PendingPurchasesParams
+import com.android.billingclient.api.ProductDetails
+import com.android.billingclient.api.PurchasesUpdatedListener
+import com.android.billingclient.api.QueryProductDetailsParams
+import com.android.billingclient.api.queryProductDetails
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -15,23 +28,59 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.billing.model.VipBillingProduct
 
 internal class BillingViewModel(
+    private val appContext: Context,
     private val sessionManager: SessionManager,
     analytics: Analytics,
 ) : ViewModel() {
     private val initialState = BillingState()
 
     private val userState = MutableStateFlow(initialState.user)
+    private val productsState = MutableStateFlow(initialState.products)
     private val loadingState = MutableStateFlow(initialState.loading)
+    private val errorState = MutableStateFlow(initialState.error)
+
+    private lateinit var billingClient: BillingClient
+
+    private val purchasesUpdatedListener = PurchasesUpdatedListener { result, purchases ->
+        // To be implemented in a later section.
+    }
+
+    private val billingStateListener = object : BillingClientStateListener {
+        override fun onBillingSetupFinished(billingResult: com.android.billingclient.api.BillingResult) {
+            loadingState.update { LoadingState.DONE }
+            if (billingResult.responseCode == BillingResponseCode.OK) {
+                Timber.d("Billing Client setup finished successfully")
+                loadPurchases()
+            } else {
+                val error = Exception("Billing failed with response code: ${billingResult.responseCode}")
+                errorState.update { error }
+                Timber.e(error, "Billing setup failed")
+            }
+        }
+
+        override fun onBillingServiceDisconnected() {
+            Timber.w("Billing Client disconnected")
+            // Try to restart the connection on the next request to
+            // Google Play by calling the startConnection() method.
+        }
+    }
 
     init {
         loadUser()
         observeUser()
+
+        initPlayBilling()
+        startPlayBilling()
 
         analytics.logScreenView(
             screenName = "billing",
@@ -56,13 +105,86 @@ internal class BillingViewModel(
             .launchIn(viewModelScope)
     }
 
+    private fun initPlayBilling() {
+        billingClient = BillingClient.newBuilder(appContext)
+            .setListener(purchasesUpdatedListener)
+            .enableAutoServiceReconnection()
+            .enablePendingPurchases(
+                PendingPurchasesParams.newBuilder()
+                    .enableOneTimeProducts()
+                    .build(),
+            )
+            .build()
+    }
+
+    private fun startPlayBilling() {
+        loadingState.update { LoadingState.LOADING }
+        billingClient.startConnection(billingStateListener)
+        Timber.d("Starting Billing Client connection")
+    }
+
+    private fun loadPurchases() {
+        viewModelScope.launch {
+            val productList = VipBillingProduct.entries.map {
+                QueryProductDetailsParams.Product.newBuilder()
+                    .setProductId(it.sku)
+                    .setProductType(BillingClient.ProductType.SUBS)
+                    .build()
+            }
+
+            val params = QueryProductDetailsParams.newBuilder().apply {
+                setProductList(productList)
+            }
+
+            try {
+                val productDetailsResult = withContext(Dispatchers.IO) {
+                    billingClient.queryProductDetails(params.build())
+                }
+
+                if (productDetailsResult.billingResult.responseCode == BillingResponseCode.OK) {
+                    Timber.d("Products details loaded: ${productDetailsResult.productDetailsList?.size} products found")
+                    if (productDetailsResult.productDetailsList.isNullOrEmpty()) {
+                        Timber.e("No products details found")
+                    } else {
+                        productsState.update {
+                            productDetailsResult.productDetailsList?.toImmutableList()
+                        }
+                    }
+                } else {
+                    val error = Exception(
+                        "Products details query failed with response code: " +
+                            "${productDetailsResult.billingResult.responseCode}",
+                    )
+                    errorState.update { error }
+                    Timber.e(error)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.e(error)
+                }
+            }
+        }
+    }
+
+    override fun onCleared() {
+        if (::billingClient.isInitialized) {
+            billingClient.endConnection()
+        }
+        super.onCleared()
+    }
+
     val state = combine(
         userState,
+        productsState,
         loadingState,
+        errorState,
     ) { state ->
         BillingState(
             user = state[0] as User?,
-            loading = state[1] as LoadingState,
+            products = state[1] as ImmutableList<ProductDetails>?,
+            loading = state[2] as LoadingState,
+            error = state[3] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,
