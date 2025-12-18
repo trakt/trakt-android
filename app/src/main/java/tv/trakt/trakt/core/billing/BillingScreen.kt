@@ -126,7 +126,7 @@ private fun BillingScreen(
                         .calculateBottomPadding()
                         .plus(16.dp),
                 )
-                .shadow(4.dp, RoundedCornerShape(32.dp))
+                .shadow(4.dp, RoundedCornerShape(28.dp))
                 .fillMaxWidth(),
         )
     }
@@ -145,7 +145,7 @@ private fun PaymentDialog(
             .animateContentSize()
             .background(
                 TraktTheme.colors.dialogContainer,
-                RoundedCornerShape(32.dp),
+                RoundedCornerShape(28.dp),
             )
             .padding(16.dp),
         verticalArrangement = Arrangement.Center,
@@ -198,16 +198,18 @@ private fun PaymentDialog(
                     }
                 },
                 style = TraktTheme.typography.heading3.copy(
-                    letterSpacing = (-0.01).em,
+                    letterSpacing = 0.em,
                 ),
                 color = TraktTheme.colors.textPrimary,
             )
 
+            val buttonShape = RoundedCornerShape(18.dp)
             Column(
                 modifier = Modifier
                     .padding(top = 16.dp)
                     .fillMaxWidth()
-                    .background(Red500, RoundedCornerShape(18.dp))
+                    .shadow(2.dp, buttonShape)
+                    .background(Red500, buttonShape)
                     .padding(14.dp),
                 verticalArrangement = spacedBy(2.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -255,6 +257,8 @@ private fun PaymentDialog(
         } else {
             FilmProgressIndicator(
                 size = 42.dp,
+                modifier = Modifier
+                    .padding(vertical = 16.dp),
             )
         }
     }
