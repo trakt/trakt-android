@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,6 +32,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
+import androidx.compose.ui.Alignment.Companion.Top
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.graphicsLayer
@@ -52,6 +54,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Red500
+import tv.trakt.trakt.core.billing.model.VipBillingError
 import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD
 import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD_TRIAL
 import tv.trakt.trakt.resources.R
@@ -76,6 +79,7 @@ internal fun BillingScreen(
 
     BillingScreen(
         state = state,
+        onErrorClick = viewModel::clearError,
         onBackClick = onNavigateBack,
     )
 }
@@ -84,7 +88,9 @@ internal fun BillingScreen(
 private fun BillingScreen(
     state: BillingState,
     onBackClick: () -> Unit = {},
+    onErrorClick: () -> Unit = {},
 ) {
+    val inspection = LocalInspectionMode.current
     val contentPadding = PaddingValues(
         start = TraktTheme.spacing.mainPageHorizontalSpace,
         end = TraktTheme.spacing.mainPageHorizontalSpace,
@@ -115,20 +121,66 @@ private fun BillingScreen(
             )
         }
 
-        PaymentDialog(
-            product = state.products?.firstOrNull(),
+        Column(
+            verticalArrangement = spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
+                .fillMaxWidth()
                 .padding(
                     start = TraktTheme.spacing.mainPageHorizontalSpace,
                     end = TraktTheme.spacing.mainPageHorizontalSpace,
                     bottom = contentPadding
                         .calculateBottomPadding()
                         .plus(16.dp),
-                )
-                .shadow(4.dp, RoundedCornerShape(28.dp))
-                .fillMaxWidth(),
-        )
+                ),
+        ) {
+            if (state.error != null || inspection) {
+                Row(
+                    verticalAlignment = Top,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .background(
+                            Red500,
+                            RoundedCornerShape(14.dp),
+                        )
+                        .padding(
+                            horizontal = 12.dp,
+                            vertical = 12.dp,
+                        ),
+                ) {
+                    Text(
+                        text = when {
+                            state.error is VipBillingError -> stringResource(state.error.displayErrorRes)
+                            else -> state.error?.message ?: stringResource(R.string.error_text_unexpected_error_short)
+                        },
+                        style = TraktTheme.typography.paragraphSmaller,
+                        color = TraktTheme.colors.textPrimary,
+                        maxLines = 10,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier
+                            .weight(1f, fill = false),
+                    )
+
+                    Icon(
+                        painter = painterResource(R.drawable.ic_close),
+                        tint = TraktTheme.colors.textPrimary,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(28.dp)
+                            .padding(start = 8.dp)
+                            .onClick(onClick = onErrorClick),
+                    )
+                }
+            }
+
+            PaymentDialog(
+                product = state.products?.firstOrNull(),
+                modifier = Modifier
+                    .shadow(4.dp, RoundedCornerShape(28.dp))
+                    .fillMaxWidth(),
+            )
+        }
     }
 }
 

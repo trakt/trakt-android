@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClient.BillingResponseCode
 import com.android.billingclient.api.BillingClientStateListener
+import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.PendingPurchasesParams
 import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.PurchasesUpdatedListener
@@ -35,6 +36,7 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.billing.model.VipBillingError
 import tv.trakt.trakt.core.billing.model.VipBillingProduct
 
 internal class BillingViewModel(
@@ -56,22 +58,20 @@ internal class BillingViewModel(
     }
 
     private val billingStateListener = object : BillingClientStateListener {
-        override fun onBillingSetupFinished(billingResult: com.android.billingclient.api.BillingResult) {
+        override fun onBillingSetupFinished(billingResult: BillingResult) {
             loadingState.update { LoadingState.DONE }
             if (billingResult.responseCode == BillingResponseCode.OK) {
                 Timber.d("Billing Client setup finished successfully")
                 loadPurchases()
             } else {
-                val error = Exception("Billing failed with response code: ${billingResult.responseCode}")
-                errorState.update { error }
-                Timber.e(error, "Billing setup failed")
+                val billingError = VipBillingError.fromBillingResponseCode(billingResult.responseCode)
+                handleError(billingError)
             }
         }
 
         override fun onBillingServiceDisconnected() {
-            Timber.w("Billing Client disconnected")
-            // Try to restart the connection on the next request to
-            // Google Play by calling the startConnection() method.
+            val billingError = VipBillingError.fromBillingResponseCode(BillingResponseCode.SERVICE_DISCONNECTED)
+            handleError(billingError)
         }
     }
 
@@ -141,7 +141,8 @@ internal class BillingViewModel(
                     billingClient.queryProductDetails(params.build())
                 }
 
-                if (productDetailsResult.billingResult.responseCode == BillingResponseCode.OK) {
+                val responseCode = productDetailsResult.billingResult.responseCode
+                if (responseCode == BillingResponseCode.OK) {
                     Timber.d("Products details loaded: ${productDetailsResult.productDetailsList?.size} products found")
                     if (productDetailsResult.productDetailsList.isNullOrEmpty()) {
                         Timber.e("No products details found")
@@ -151,20 +152,24 @@ internal class BillingViewModel(
                         }
                     }
                 } else {
-                    val error = Exception(
-                        "Products details query failed with response code: " +
-                            "${productDetailsResult.billingResult.responseCode}",
-                    )
-                    errorState.update { error }
-                    Timber.e(error)
+                    val billingError = VipBillingError.fromBillingResponseCode(responseCode)
+                    handleError(billingError)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.update { error }
-                    Timber.e(error)
+                    handleError(error)
                 }
             }
         }
+    }
+
+    private fun handleError(error: Exception) {
+        errorState.update { error }
+        Timber.e(error)
+    }
+
+    fun clearError() {
+        errorState.update { null }
     }
 
     override fun onCleared() {
