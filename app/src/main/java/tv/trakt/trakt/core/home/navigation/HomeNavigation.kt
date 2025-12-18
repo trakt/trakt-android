@@ -23,6 +23,7 @@ internal fun NavGraphBuilder.homeScreen(
     onNavigateToAllWatchlist: () -> Unit,
     onNavigateToAllPersonal: () -> Unit,
     onNavigateToAllSocial: () -> Unit,
+    onNavigateToVip: () -> Unit,
 ) {
     composable<HomeDestination> {
         HomeScreen(
@@ -36,6 +37,7 @@ internal fun NavGraphBuilder.homeScreen(
             onNavigateToAllWatchlist = onNavigateToAllWatchlist,
             onNavigateToAllPersonal = onNavigateToAllPersonal,
             onNavigateToAllSocial = onNavigateToAllSocial,
+            onNavigateToVip = onNavigateToVip,
         )
     }
 }

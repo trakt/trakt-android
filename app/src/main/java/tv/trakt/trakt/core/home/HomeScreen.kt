@@ -51,6 +51,7 @@ internal fun HomeScreen(
     onNavigateToAllWatchlist: () -> Unit,
     onNavigateToAllPersonal: () -> Unit,
     onNavigateToAllSocial: () -> Unit,
+    onNavigateToVip: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -66,6 +67,7 @@ internal fun HomeScreen(
         onMoreWatchlistClick = onNavigateToAllWatchlist,
         onMorePersonalClick = onNavigateToAllPersonal,
         onMoreSocialClick = onNavigateToAllSocial,
+        onVipClick = onNavigateToVip,
     )
 }
 
@@ -84,6 +86,7 @@ private fun HomeScreenContent(
     onMoviesClick: () -> Unit = {},
     onMovieClick: (TraktId) -> Unit = {},
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
+    onVipClick: () -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
     val lazyListState = rememberLazyListState(
@@ -204,6 +207,7 @@ private fun HomeScreenContent(
             headerState = headerState,
             userLoading = userLoading,
             isScrolledToTop = isScrolledToTop,
+            onVipClick = onVipClick,
         )
     }
 }
@@ -214,6 +218,7 @@ private fun HomeScreenHeader(
     headerState: ScreenHeaderState,
     userLoading: Boolean,
     isScrolledToTop: Boolean,
+    onVipClick: () -> Unit,
 ) {
     val userState = remember(state.user) {
         val loadingDone = state.user.loading == DONE
@@ -224,7 +229,9 @@ private fun HomeScreenHeader(
     HeaderBar(
         containerAlpha = if (headerState.scrolled && !isScrolledToTop) 0.98F else 0F,
         showLogin = userState.first && !userState.second,
+        showVip = userState.second && state.user.user?.isVip == true, // TODO Update condition to false
         userLoading = userLoading,
+        onVipClick = onVipClick,
         modifier = Modifier.offset {
             IntOffset(0, headerState.connection.barOffset.fastRoundToInt())
         },

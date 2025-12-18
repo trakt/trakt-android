@@ -5,6 +5,8 @@ import androidx.navigation.NavHostController
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.MediaType.SHOW
+import tv.trakt.trakt.core.billing.navigation.billingScreen
+import tv.trakt.trakt.core.billing.navigation.navigateToBilling
 import tv.trakt.trakt.core.comments.navigation.commentsScreen
 import tv.trakt.trakt.core.comments.navigation.navigateToComments
 import tv.trakt.trakt.core.discover.model.DiscoverSection
@@ -67,6 +69,7 @@ internal fun NavGraphBuilder.homeScreens(
             onNavigateToAllPersonal = { navigateToAllActivityPersonal(filtersEnabled = true) },
             onNavigateToAllSocial = { navigateToAllActivitySocial() },
             onNavigateToAllWatchlist = { navigateToAllHomeWatchlist() },
+            onNavigateToVip = { navigateToBilling() },
         )
 
         homeUpNextScreen(
@@ -343,6 +346,14 @@ internal fun NavGraphBuilder.settingsScreens(controller: NavHostController) {
         )
 
         younifyScreen(
+            onNavigateBack = { popBackStack() },
+        )
+    }
+}
+
+internal fun NavGraphBuilder.billingScreens(controller: NavHostController) {
+    with(controller) {
+        billingScreen(
             onNavigateBack = { popBackStack() },
         )
     }

@@ -103,6 +103,7 @@ dependencies {
     implementation(libs.androidx.navigation)
     implementation(libs.androidx.datastore)
     implementation(libs.androidx.work)
+    implementation(libs.android.billing)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.config)

@@ -37,6 +37,7 @@ import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaModeButtons
+import tv.trakt.trakt.ui.components.VipChip
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.components.switch.TraktThemeSwitch
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -48,7 +49,9 @@ internal fun HeaderBar(
     containerColor: Color = TraktTheme.colors.navigationHeaderContainer,
     containerAlpha: Float = 0.98F,
     showLogin: Boolean = false,
+    showVip: Boolean = false,
     userLoading: Boolean = false,
+    onVipClick: () -> Unit = {},
 ) {
     val scope = rememberCoroutineScope()
     val localActivity = LocalActivity.current
@@ -65,9 +68,11 @@ internal fun HeaderBar(
         containerColor = containerColor,
         containerAlpha = containerAlpha,
         showLogin = showLogin,
+        showVip = showVip,
         userLoading = userLoading,
         mediaMode = currentMediaMode,
         customTheme = customThemeConfig,
+        onVipClick = onVipClick,
         onCustomThemeChange = {
             (localActivity as? MainActivity)?.toggleCustomTheme(it)
         },
@@ -85,11 +90,13 @@ private fun HeaderBar(
     containerColor: Color = TraktTheme.colors.navigationHeaderContainer,
     containerAlpha: Float = 0.98F,
     showLogin: Boolean = false,
+    showVip: Boolean = false,
     userLoading: Boolean = false,
     customTheme: CustomThemeUseCase.CustomThemeConfig? = null,
     mediaMode: MediaMode,
     onMediaModeSelect: (MediaMode) -> Unit = {},
     onCustomThemeChange: (Boolean) -> Unit = {},
+    onVipClick: () -> Unit = {},
 ) {
     val uriHandler = LocalUriHandler.current
 
@@ -152,6 +159,12 @@ private fun HeaderBar(
                     modifier = Modifier
                         .height(contentHeight),
                 )
+            } else if (showVip) {
+                VipChip(
+                    onClick = onVipClick,
+                    modifier = Modifier
+                        .height(contentHeight),
+                )
             }
         }
     }
@@ -163,6 +176,7 @@ private fun Preview() {
     TraktTheme {
         HeaderBar(
             mediaMode = MediaMode.MEDIA,
+            showVip = true,
         )
     }
 }

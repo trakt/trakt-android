@@ -14,6 +14,7 @@ androidxLifecycle = "2.10.0"
 # Used due to composeBom = "2025.12.00" LazyGrid bug
 androidxFoundation = "1.11.0-alpha01"
 appcompat = "1.7.1"
+billing = "8.2.1"
 coil = "3.3.0"
 composeBom = "2025.12.00"
 composeNavigation = "2.9.6"
@@ -51,6 +52,7 @@ espressoCore = "3.7.0"
 
 [libraries]
 android-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+android-billing = { group = "com.android.billingclient", name = "billing-ktx", version.ref = "billing" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "androidxFoundation" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
