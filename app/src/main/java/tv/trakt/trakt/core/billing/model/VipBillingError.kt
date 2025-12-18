@@ -43,11 +43,6 @@ class PendingPaymentError : VipBillingError() {
     override val displayErrorRes = R.string.error_text_payment_pending
 }
 
-class DeferredPaymentError : VipBillingError() {
-    override val code = null
-    override val displayErrorRes = R.string.error_text_payment_deferred
-}
-
 class AlreadyOwnedError(
     override val code: Int?,
 ) : VipBillingError() {
