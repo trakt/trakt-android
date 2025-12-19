@@ -30,7 +30,7 @@ sealed class VipBillingError : Exception() {
     companion object {
         fun fromBillingResponseCode(code: Int): VipBillingError {
             return when (code) {
-                BillingResponseCode.USER_CANCELED -> CanceledError(code)
+                BillingResponseCode.USER_CANCELED -> CancelledError(code)
                 BillingResponseCode.ITEM_ALREADY_OWNED -> AlreadyOwnedError(code)
                 else -> OtherBillingError(code)
             }
@@ -49,7 +49,7 @@ class AlreadyOwnedError(
     override val displayErrorRes = R.string.error_text_payment_already_owned
 }
 
-class CanceledError(
+class CancelledError(
     override val code: Int?,
 ) : VipBillingError() {
     override val displayErrorRes = R.string.error_text_payment_canceled

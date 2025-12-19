@@ -19,6 +19,7 @@ fun Modifier.ifOrElse(
 fun Modifier.onClick(
     enabled: Boolean = true,
     throttle: Boolean = true,
+    indication: Boolean = false,
     onClick: () -> Unit,
 ): Modifier {
     return composed {
@@ -26,8 +27,14 @@ fun Modifier.onClick(
         val delaysMs = remember(throttle) { if (throttle) 350L else 0L }
         clickable(
             enabled = enabled,
-            indication = null,
-            interactionSource = null,
+            indication = when {
+                indication -> ripple()
+                else -> null
+            },
+            interactionSource = when {
+                indication -> remember { MutableInteractionSource() }
+                else -> null
+            },
             onClick = {
                 val currentTime = currentTimeMillis()
                 if (currentTime - lastClickMs.longValue > delaysMs) {

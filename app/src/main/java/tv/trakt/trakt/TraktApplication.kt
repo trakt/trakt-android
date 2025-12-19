@@ -18,6 +18,7 @@ import tv.trakt.trakt.common.helpers.extensions.isTelevision
 import tv.trakt.trakt.common.networking.di.networkingApiModule
 import tv.trakt.trakt.common.networking.di.networkingModule
 import tv.trakt.trakt.core.auth.di.authModule
+import tv.trakt.trakt.core.billing.di.billingDataModule
 import tv.trakt.trakt.core.billing.di.billingModule
 import tv.trakt.trakt.core.comments.di.commentsDataModule
 import tv.trakt.trakt.core.comments.di.commentsModule
@@ -140,6 +141,7 @@ internal class TraktApplication : Application() {
                 settingsModule,
                 settingsDataModule,
                 billingModule,
+                billingDataModule,
             )
         }
     }

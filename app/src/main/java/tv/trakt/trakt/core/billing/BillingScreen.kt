@@ -2,7 +2,9 @@
 
 package tv.trakt.trakt.core.billing
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -32,7 +34,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
-import androidx.compose.ui.Alignment.Companion.Top
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.graphicsLayer
@@ -65,6 +66,7 @@ internal fun BillingScreen(
     viewModel: BillingViewModel,
     onNavigateBack: () -> Unit,
 ) {
+    val localActivity = LocalActivity.current
     val localBottomBarVisibility = LocalBottomBarVisibility.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -79,6 +81,14 @@ internal fun BillingScreen(
 
     BillingScreen(
         state = state,
+        onPurchaseClick = { product ->
+            localActivity?.let {
+                viewModel.launchPurchaseFlow(
+                    activity = it,
+                    product = product,
+                )
+            }
+        },
         onErrorClick = viewModel::clearError,
         onBackClick = onNavigateBack,
     )
@@ -87,6 +97,7 @@ internal fun BillingScreen(
 @Composable
 private fun BillingScreen(
     state: BillingState,
+    onPurchaseClick: (ProductDetails) -> Unit = {},
     onBackClick: () -> Unit = {},
     onErrorClick: () -> Unit = {},
 ) {
@@ -117,12 +128,15 @@ private fun BillingScreen(
             TitleBar(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .onClick(onClick = onBackClick),
+                    .onClick(
+                        enabled = !state.loading.isLoading || state.products == null,
+                        onClick = onBackClick,
+                    ),
             )
         }
 
         Column(
-            verticalArrangement = spacedBy(16.dp),
+            verticalArrangement = spacedBy(16.dp, CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -137,8 +151,8 @@ private fun BillingScreen(
         ) {
             if (state.error != null || inspection) {
                 Row(
-                    verticalAlignment = Top,
                     horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = CenterVertically,
                     modifier = Modifier
                         .background(
                             Red500,
@@ -151,8 +165,14 @@ private fun BillingScreen(
                 ) {
                     Text(
                         text = when {
-                            state.error is VipBillingError -> stringResource(state.error.displayErrorRes)
-                            else -> state.error?.message ?: stringResource(R.string.error_text_unexpected_error_short)
+                            state.error is VipBillingError -> {
+                                val code = state.error.code
+                                "${stringResource(state.error.displayErrorRes)} ${code?.let { "($it)" } ?: ""}"
+                            }
+
+                            else -> {
+                                state.error?.message ?: stringResource(R.string.error_text_unexpected_error_short)
+                            }
                         },
                         style = TraktTheme.typography.paragraphSmaller,
                         color = TraktTheme.colors.textPrimary,
@@ -167,7 +187,7 @@ private fun BillingScreen(
                         tint = TraktTheme.colors.textPrimary,
                         contentDescription = null,
                         modifier = Modifier
-                            .size(28.dp)
+                            .size(24.dp)
                             .padding(start = 8.dp)
                             .onClick(onClick = onErrorClick),
                     )
@@ -176,6 +196,8 @@ private fun BillingScreen(
 
             PaymentDialog(
                 product = state.products?.firstOrNull(),
+                loading = state.loading.isLoading,
+                onPurchaseClick = onPurchaseClick,
                 modifier = Modifier
                     .shadow(4.dp, RoundedCornerShape(28.dp))
                     .fillMaxWidth(),
@@ -185,16 +207,45 @@ private fun BillingScreen(
 }
 
 @Composable
+private fun TitleBar(modifier: Modifier = Modifier) {
+    Row(
+        verticalAlignment = CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = modifier,
+    ) {
+        Row(
+            verticalAlignment = CenterVertically,
+            horizontalArrangement = spacedBy(12.dp),
+            modifier = Modifier
+                .height(TraktTheme.size.titleBarHeight)
+                .graphicsLayer {
+                    translationX = -2.dp.toPx()
+                },
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_back_arrow),
+                tint = TraktTheme.colors.textPrimary,
+                contentDescription = null,
+            )
+        }
+    }
+}
+
+@Composable
 private fun PaymentDialog(
     product: ProductDetails?,
+    loading: Boolean,
     modifier: Modifier = Modifier,
+    onPurchaseClick: (ProductDetails) -> Unit = {},
 ) {
     val inspection = LocalInspectionMode.current
     val monthPeriodText = stringResource(R.string.text_billing_period_month)
 
     Column(
         modifier = modifier
-            .animateContentSize()
+            .animateContentSize(
+                animationSpec = tween(300),
+            )
             .background(
                 TraktTheme.colors.dialogContainer,
                 RoundedCornerShape(28.dp),
@@ -203,27 +254,42 @@ private fun PaymentDialog(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        if (inspection || product != null) {
+        if ((inspection || product != null) && !loading) {
             val freeTrialOffer = remember(product) {
                 product?.subscriptionOfferDetails
-                    ?.firstOrNull { it.offerId == MONTHLY_STANDARD_TRIAL.id }
+                    ?.firstOrNull {
+                        it.offerId == MONTHLY_STANDARD_TRIAL.id ||
+                            it.basePlanId == MONTHLY_STANDARD_TRIAL.id
+                    }
             }
 
             val standardOffer = remember(product) {
                 product?.subscriptionOfferDetails
-                    ?.firstOrNull { it.offerId == MONTHLY_STANDARD.id }
+                    ?.firstOrNull {
+                        it.offerId == MONTHLY_STANDARD.id ||
+                            it.basePlanId == MONTHLY_STANDARD.id
+                    }
             }
 
             if (freeTrialOffer != null) {
                 Text(
                     text = stringResource(R.string.text_billing_month_for_free),
                     color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.paragraphSmall,
+                    style = TraktTheme.typography.paragraphSmaller,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .padding(bottom = 12.dp),
+                    modifier = Modifier.padding(bottom = 8.dp),
+                )
+            } else if (standardOffer != null) {
+                Text(
+                    text = stringResource(R.string.button_text_join_trakt),
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.paragraphSmaller,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(bottom = 8.dp),
                 )
             }
 
@@ -261,8 +327,16 @@ private fun PaymentDialog(
                     .padding(top = 16.dp)
                     .fillMaxWidth()
                     .shadow(2.dp, buttonShape)
-                    .background(Red500, buttonShape)
-                    .padding(14.dp),
+                    .background(
+                        color = Red500,
+                        shape = buttonShape,
+                    )
+                    .padding(14.dp)
+                    .onClick(indication = true) {
+                        product?.let {
+                            onPurchaseClick(it)
+                        }
+                    },
                 verticalArrangement = spacedBy(2.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
@@ -310,32 +384,7 @@ private fun PaymentDialog(
             FilmProgressIndicator(
                 size = 42.dp,
                 modifier = Modifier
-                    .padding(vertical = 16.dp),
-            )
-        }
-    }
-}
-
-@Composable
-private fun TitleBar(modifier: Modifier = Modifier) {
-    Row(
-        verticalAlignment = CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = modifier,
-    ) {
-        Row(
-            verticalAlignment = CenterVertically,
-            horizontalArrangement = spacedBy(12.dp),
-            modifier = Modifier
-                .height(TraktTheme.size.titleBarHeight)
-                .graphicsLayer {
-                    translationX = -2.dp.toPx()
-                },
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_back_arrow),
-                tint = TraktTheme.colors.textPrimary,
-                contentDescription = null,
+                    .padding(vertical = 32.dp),
             )
         }
     }

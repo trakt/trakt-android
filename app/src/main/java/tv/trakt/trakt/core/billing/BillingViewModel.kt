@@ -3,15 +3,19 @@
 
 package tv.trakt.trakt.core.billing
 
+import android.app.Activity
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClient.BillingResponseCode
 import com.android.billingclient.api.BillingClientStateListener
+import com.android.billingclient.api.BillingFlowParams.ProductDetailsParams
+import com.android.billingclient.api.BillingFlowParams.newBuilder
 import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.PendingPurchasesParams
 import com.android.billingclient.api.ProductDetails
+import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.queryProductDetails
@@ -36,13 +40,19 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.billing.model.CancelledError
+import tv.trakt.trakt.core.billing.model.PendingPurchaseProduct
 import tv.trakt.trakt.core.billing.model.VipBillingError
+import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD
+import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD_TRIAL
 import tv.trakt.trakt.core.billing.model.VipBillingProduct
+import tv.trakt.trakt.core.billing.usecases.VerifyPurchaseUseCase
 
 internal class BillingViewModel(
+    analytics: Analytics,
     private val appContext: Context,
     private val sessionManager: SessionManager,
-    analytics: Analytics,
+    private val verifyPurchaseUseCase: VerifyPurchaseUseCase,
 ) : ViewModel() {
     private val initialState = BillingState()
 
@@ -52,9 +62,25 @@ internal class BillingViewModel(
     private val errorState = MutableStateFlow(initialState.error)
 
     private lateinit var billingClient: BillingClient
+    private var pendingPurchaseProduct: PendingPurchaseProduct? = null
 
     private val purchasesUpdatedListener = PurchasesUpdatedListener { result, purchases ->
-        // To be implemented in a later section.
+        if (result.responseCode == BillingResponseCode.OK) {
+            purchases?.forEach { purchase ->
+                handlePurchase(purchase)
+            }
+        } else {
+            pendingPurchaseProduct?.let {
+                pendingPurchaseProduct = null
+                val error = VipBillingError.fromBillingResponseCode(result.responseCode)
+                if (error is CancelledError) {
+                    Timber.d("Purchase cancelled by user: ${it.skuId}")
+                } else {
+                    handleError(error = error)
+                }
+            }
+            loadingState.update { LoadingState.DONE }
+        }
     }
 
     private val billingStateListener = object : BillingClientStateListener {
@@ -155,6 +181,84 @@ internal class BillingViewModel(
                     val billingError = VipBillingError.fromBillingResponseCode(responseCode)
                     handleError(billingError)
                 }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    handleError(error)
+                }
+            }
+        }
+    }
+
+    fun launchPurchaseFlow(
+        activity: Activity,
+        product: ProductDetails,
+    ) {
+        if (pendingPurchaseProduct != null) {
+            Timber.w("Another purchase is pending, cannot start a new one")
+            return
+        }
+
+        val freeTrialOffer = product.subscriptionOfferDetails
+            ?.firstOrNull { it.offerId == MONTHLY_STANDARD_TRIAL.id }
+
+        val standardOffer = product.subscriptionOfferDetails
+            ?.firstOrNull { it.offerId == MONTHLY_STANDARD.id }
+
+        val offer = when {
+            freeTrialOffer != null -> freeTrialOffer
+            standardOffer != null -> standardOffer
+            else -> product.subscriptionOfferDetails?.lastOrNull()
+        }
+
+        val billingFlowParams = newBuilder()
+            .setProductDetailsParamsList(
+                listOf(
+                    ProductDetailsParams.newBuilder()
+                        .setProductDetails(product)
+                        .setOfferToken(offer?.offerToken ?: "")
+                        .build(),
+                ),
+            )
+            .build()
+
+        loadingState.update { LoadingState.LOADING }
+        val billingResult = billingClient.launchBillingFlow(activity, billingFlowParams)
+        val responseCode = billingResult.responseCode
+
+        if (responseCode != BillingResponseCode.OK) {
+            val billingError = VipBillingError.fromBillingResponseCode(responseCode)
+            handleError(billingError)
+            loadingState.update { LoadingState.DONE }
+        } else {
+            val price = offer?.pricingPhases?.pricingPhaseList?.firstOrNull()
+            pendingPurchaseProduct = PendingPurchaseProduct(
+                skuId = product.productId,
+                currencyCode = price?.priceCurrencyCode,
+                price = price?.priceAmountMicros,
+            )
+        }
+    }
+
+    private fun handlePurchase(purchase: Purchase) {
+        if (purchase.purchaseState == Purchase.PurchaseState.UNSPECIFIED_STATE) {
+            // TODO Handle, inform user?
+            Timber.e("Purchase in unspecified state: ${purchase.products}")
+            return
+        }
+
+        if (purchase.purchaseState == Purchase.PurchaseState.PENDING) {
+            // TODO Handle, inform user?
+            Timber.w("Purchase is pending: ${purchase.products}")
+            return
+        }
+
+        viewModelScope.launch {
+            try {
+                verifyPurchaseUseCase.verifyPurchase(
+                    purchase = purchase,
+                    pendingPurchaseProduct = pendingPurchaseProduct,
+                )
+                Timber.d("Purchase verified successfully: ${purchase.products.firstOrNull()}")
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     handleError(error)
