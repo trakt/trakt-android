@@ -109,6 +109,9 @@ internal fun SettingsScreen(
         onLogoutClick = {
             confirmLogout = true
         },
+        onSubscriptionsClick = {
+            uriHandler.openUri(Config.WEB_GOOGLE_SUBSCRIPTIONS)
+        },
         onBackClick = onNavigateBack,
     )
 
@@ -140,6 +143,7 @@ private fun SettingsScreenContent(
     onVipClick: () -> Unit = { },
     onInstagramClick: () -> Unit = { },
     onTwitterClick: () -> Unit = { },
+    onSubscriptionsClick: () -> Unit = { },
     onBackClick: () -> Unit = { },
 ) {
     val contentPadding = PaddingValues(
@@ -207,6 +211,7 @@ private fun SettingsScreenContent(
 
                 SettingsMisc(
                     state = state,
+                    onSubscriptionsClick = onSubscriptionsClick,
                     onLogoutClick = onLogoutClick,
                 )
             }
@@ -422,6 +427,7 @@ private fun SettingsStreaming(
 private fun SettingsMisc(
     state: SettingsState,
     modifier: Modifier = Modifier,
+    onSubscriptionsClick: () -> Unit = { },
     onLogoutClick: () -> Unit = { },
 ) {
     val context = LocalContext.current
@@ -485,6 +491,12 @@ private fun SettingsMisc(
             onClick = {
                 uriHandler.openUri(Config.WEB_PRIVACY_URL)
             },
+        )
+
+        SettingsTextField(
+            text = "Google Play Subscriptions",
+            enabled = !state.logoutLoading.isLoading,
+            onClick = onSubscriptionsClick,
         )
 
         SettingsTextField(

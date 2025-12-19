@@ -20,6 +20,7 @@ object Config {
     const val WEB_SOCIAL_X_URL: String = "https://x.com/trakt"
 
     const val WEB_SUPPORT_MAIL: String = "support@trakt.tv"
+    const val WEB_GOOGLE_SUBSCRIPTIONS: String = "https://play.google.com/store/account/subscriptions"
 
     fun webUserUrl(userId: String): String = "https://trakt.tv/users/$userId?native_app_mode=true"
 
