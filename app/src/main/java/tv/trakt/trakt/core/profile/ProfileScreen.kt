@@ -49,7 +49,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W500
@@ -60,7 +59,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import timber.log.Timber
-import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -94,8 +92,8 @@ internal fun ProfileScreen(
     onNavigateToDiscover: () -> Unit,
     onNavigateToSettings: () -> Unit,
     onNavigateToHome: () -> Unit,
+    onNavigateToVip: () -> Unit,
 ) {
-    val uriHandler = LocalUriHandler.current
     val context = LocalContext.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -119,6 +117,7 @@ internal fun ProfileScreen(
         onNavigateToShows = onNavigateToDiscover,
         onNavigateToMovies = onNavigateToDiscover,
         onSettingsClick = onNavigateToSettings,
+        onVipClick = onNavigateToVip,
         onShareClick = {
             shareProfile(
                 user = state.user,
@@ -127,9 +126,6 @@ internal fun ProfileScreen(
         },
         onLogoutClick = {
             confirmLogout = true
-        },
-        onVipClick = {
-            uriHandler.openUri(Config.WEB_VIP_URL)
         },
     )
 

@@ -77,6 +77,7 @@ internal fun SettingsScreen(
     viewModel: SettingsViewModel,
     onNavigateHome: () -> Unit,
     onNavigateYounify: () -> Unit,
+    onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
@@ -97,9 +98,7 @@ internal fun SettingsScreen(
         onSetLocation = viewModel::updateUserLocation,
         onSetAbout = viewModel::updateUserAbout,
         onYounifyClick = onNavigateYounify,
-        onVipClick = {
-            uriHandler.openUri(Config.WEB_VIP_URL)
-        },
+        onVipClick = onNavigateVip,
         onInstagramClick = {
             uriHandler.openUri(Config.WEB_SOCIAL_INSTAGRAM_URL)
         },

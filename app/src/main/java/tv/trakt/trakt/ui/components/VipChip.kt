@@ -36,17 +36,6 @@ internal fun VipChip(
                 vertical = 5.dp,
             ),
     ) {
-//        Icon(
-//            painter = painterResource(R.drawable.ic_crown),
-//            contentDescription = "VIP",
-//            tint = TraktTheme.colors.chipContent,
-//            modifier = Modifier
-//                .size(17.dp)
-//                .graphicsLayer {
-//                    translationY = -(0.5).dp.toPx()
-//                },
-//        )
-
         Text(
             text = text.uppercase(),
             style = TraktTheme.typography.buttonPrimary,

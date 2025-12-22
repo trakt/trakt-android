@@ -307,6 +307,7 @@ internal fun NavGraphBuilder.profileScreens(controller: NavHostController) {
             onNavigateToDiscover = { navigateToDiscover() },
             onNavigateToSettings = { navigateToSettings() },
             onNavigateToHome = { navigateToHome() },
+            onNavigateToVip = { navigateToBilling() },
         )
 
         allFavoritesScreen(
@@ -346,6 +347,7 @@ internal fun NavGraphBuilder.settingsScreens(controller: NavHostController) {
         settingsScreen(
             onNavigateHome = { navigateToHome() },
             onNavigateYounify = { navigateToYounify() },
+            onNavigateVip = { navigateToBilling() },
             onNavigateBack = { popBackStack() },
         )
 

@@ -22,6 +22,7 @@ internal fun NavGraphBuilder.profileScreen(
     onNavigateToDiscover: () -> Unit,
     onNavigateToSettings: () -> Unit,
     onNavigateToHome: () -> Unit,
+    onNavigateToVip: () -> Unit,
 ) {
     composable<ProfileDestination> {
         ProfileScreen(
@@ -35,6 +36,7 @@ internal fun NavGraphBuilder.profileScreen(
             onNavigateToDiscover = onNavigateToDiscover,
             onNavigateToSettings = onNavigateToSettings,
             onNavigateToHome = onNavigateToHome,
+            onNavigateToVip = onNavigateToVip,
         )
     }
 }
