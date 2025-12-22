@@ -2,8 +2,10 @@ package tv.trakt.trakt.core.lists.sections.personal
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -16,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -301,19 +304,24 @@ private fun ContentEmptyList(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues,
 ) {
-    LazyRow(
-        userScrollEnabled = false,
-        horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
-        contentPadding = contentPadding,
-        modifier = modifier.fillMaxWidth(),
-    ) {
-        items(count = 6) {
-            VerticalMediaSkeletonCard(
-                chipRatio = 0.66F,
-                shimmer = false,
-                containerColor = TraktTheme.colors.skeletonContainer,
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier
+            .padding(contentPadding)
+            .background(
+                color = TraktTheme.colors.skeletonContainer,
+                shape = RoundedCornerShape(16.dp),
             )
-        }
+            .fillMaxWidth()
+            .height(217.dp),
+    ) {
+        Text(
+            text = stringResource(R.string.list_placeholder_empty),
+            color = TraktTheme.colors.textSecondary,
+            style = TraktTheme.typography.heading6,
+            modifier = Modifier
+                .padding(20.dp),
+        )
     }
 }
 
