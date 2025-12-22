@@ -48,6 +48,7 @@ internal fun DiscoverScreen(
     onNavigateToAllPopular: () -> Unit,
     onNavigateToAllAnticipated: () -> Unit,
     onNavigateToAllRecommended: () -> Unit,
+    onNavigateToVip: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -59,6 +60,7 @@ internal fun DiscoverScreen(
         onMorePopularClick = onNavigateToAllPopular,
         onMoreAnticipatedClick = onNavigateToAllAnticipated,
         onMoreRecommendedClick = onNavigateToAllRecommended,
+        onVipClick = onNavigateToVip,
     )
 }
 
@@ -72,6 +74,7 @@ private fun DiscoverScreen(
     onMorePopularClick: () -> Unit = {},
     onMoreAnticipatedClick: () -> Unit = {},
     onMoreRecommendedClick: () -> Unit = {},
+    onVipClick: () -> Unit = {},
 ) {
     val activity = LocalActivity.current
     val customThemeEnabled = (activity as? MainActivity)?.customThemeConfig?.enabled == true
@@ -186,6 +189,7 @@ private fun DiscoverScreen(
             state = state,
             headerState = headerState,
             isScrolledToTop = isScrolledToTop,
+            onVipClick = onVipClick,
         )
     }
 }
@@ -195,6 +199,7 @@ private fun ScreenHeader(
     state: DiscoverState,
     headerState: ScreenHeaderState,
     isScrolledToTop: Boolean,
+    onVipClick: () -> Unit,
 ) {
     val userState = remember(state.user) {
         val loadingDone = state.user.loading == DONE
@@ -205,6 +210,8 @@ private fun ScreenHeader(
     HeaderBar(
         containerAlpha = if (headerState.scrolled && !isScrolledToTop) 0.98F else 0F,
         showLogin = userState.first && !userState.second,
+        showVip = userState.second && state.user.user?.isVip == false,
+        onVipClick = onVipClick,
         modifier = Modifier.offset {
             IntOffset(0, headerState.connection.barOffset.fastRoundToInt())
         },

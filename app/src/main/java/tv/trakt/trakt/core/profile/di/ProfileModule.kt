@@ -46,7 +46,7 @@ import tv.trakt.trakt.core.user.data.local.reactions.UserReactionsLocalDataSourc
 import tv.trakt.trakt.core.user.data.local.reactions.UserReactionsStorage
 import tv.trakt.trakt.core.user.data.remote.UserApiClient
 import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
-import tv.trakt.trakt.core.user.usecases.GetUserProfileUseCase
+import tv.trakt.trakt.core.user.usecases.LoadUserProfileUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserLibraryUseCase
@@ -109,7 +109,7 @@ internal val profileDataModule = module {
 
 internal val profileModule = module {
     factory {
-        GetUserProfileUseCase(
+        LoadUserProfileUseCase(
             sessionManager = get(),
             remoteSource = get(),
         )

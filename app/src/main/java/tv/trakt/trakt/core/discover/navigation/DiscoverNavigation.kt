@@ -19,6 +19,7 @@ internal fun NavGraphBuilder.discoverScreen(
     onNavigateToAllPopular: () -> Unit = {},
     onNavigateToAllAnticipated: () -> Unit = {},
     onNavigateToAllRecommended: () -> Unit = {},
+    onNavigateToVip: () -> Unit = {},
 ) {
     composable<DiscoverDestination> {
         DiscoverScreen(
@@ -29,6 +30,7 @@ internal fun NavGraphBuilder.discoverScreen(
             onNavigateToAllPopular = onNavigateToAllPopular,
             onNavigateToAllAnticipated = onNavigateToAllAnticipated,
             onNavigateToAllRecommended = onNavigateToAllRecommended,
+            onNavigateToVip = onNavigateToVip,
         )
     }
 }

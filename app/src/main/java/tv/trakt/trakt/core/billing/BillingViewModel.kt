@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClient.BillingResponseCode
+import com.android.billingclient.api.BillingClient.ProductType
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingFlowParams.ProductDetailsParams
 import com.android.billingclient.api.BillingFlowParams.newBuilder
@@ -16,13 +17,17 @@ import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.PendingPurchasesParams
 import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.Purchase
+import com.android.billingclient.api.Purchase.PurchaseState
 import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryProductDetailsParams
+import com.android.billingclient.api.QueryPurchasesParams
 import com.android.billingclient.api.queryProductDetails
+import com.android.billingclient.api.queryPurchasesAsync
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -47,12 +52,14 @@ import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD
 import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD_TRIAL
 import tv.trakt.trakt.core.billing.model.VipBillingProduct
 import tv.trakt.trakt.core.billing.usecases.VerifyPurchaseUseCase
+import tv.trakt.trakt.core.user.usecases.LoadUserProfileUseCase
 
 internal class BillingViewModel(
     analytics: Analytics,
     private val appContext: Context,
     private val sessionManager: SessionManager,
     private val verifyPurchaseUseCase: VerifyPurchaseUseCase,
+    private val loadUserUseCase: LoadUserProfileUseCase,
 ) : ViewModel() {
     private val initialState = BillingState()
 
@@ -88,7 +95,8 @@ internal class BillingViewModel(
             loadingState.update { LoadingState.DONE }
             if (billingResult.responseCode == BillingResponseCode.OK) {
                 Timber.d("Billing Client setup finished successfully")
-                loadPurchases()
+                checkPurchases()
+//                loadPurchases()
             } else {
                 val billingError = VipBillingError.fromBillingResponseCode(billingResult.responseCode)
                 handleError(billingError)
@@ -149,12 +157,60 @@ internal class BillingViewModel(
         Timber.d("Starting Billing Client connection")
     }
 
+    private fun checkPurchases() {
+        viewModelScope.launch {
+            try {
+                val purchasesResult = withContext(Dispatchers.IO) {
+                    billingClient.queryPurchasesAsync(
+                        QueryPurchasesParams.newBuilder()
+                            .setProductType(ProductType.SUBS)
+                            .build(),
+                    )
+                }
+
+                val responseCode = purchasesResult.billingResult.responseCode
+                if (responseCode != BillingResponseCode.OK) {
+                    val billingError = VipBillingError.fromBillingResponseCode(responseCode)
+                    handleError(billingError)
+                    return@launch
+                }
+
+                Timber.d("Purchases loaded: ${purchasesResult.purchasesList.size} purchases found")
+
+                if (purchasesResult.purchasesList.isEmpty()) {
+                    Timber.d("No purchases found")
+                    loadPurchases()
+                    return@launch
+                }
+
+                val toAcknowledge = purchasesResult.purchasesList
+                    .filter {
+                        !it.isAcknowledged && it.purchaseState == PurchaseState.PURCHASED
+                    }
+
+                if (toAcknowledge.isEmpty()) {
+                    loadPurchases()
+                } else {
+                    viewModelScope.launch {
+                        toAcknowledge.forEach {
+                            handlePurchaseAsync(it)
+                        }
+                    }
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    handleError(error)
+                }
+            }
+        }
+    }
+
     private fun loadPurchases() {
         viewModelScope.launch {
             val productList = VipBillingProduct.entries.map {
                 QueryProductDetailsParams.Product.newBuilder()
                     .setProductId(it.sku)
-                    .setProductType(BillingClient.ProductType.SUBS)
+                    .setProductType(ProductType.SUBS)
                     .build()
             }
 
@@ -240,29 +296,37 @@ internal class BillingViewModel(
     }
 
     private fun handlePurchase(purchase: Purchase) {
-        if (purchase.purchaseState == Purchase.PurchaseState.UNSPECIFIED_STATE) {
+        viewModelScope.launch {
+            handlePurchaseAsync(purchase)
+        }
+    }
+
+    private suspend fun handlePurchaseAsync(purchase: Purchase) {
+        if (purchase.purchaseState == PurchaseState.UNSPECIFIED_STATE) {
             // TODO Handle, inform user?
             Timber.e("Purchase in unspecified state: ${purchase.products}")
             return
         }
 
-        if (purchase.purchaseState == Purchase.PurchaseState.PENDING) {
+        if (purchase.purchaseState == PurchaseState.PENDING) {
             // TODO Handle, inform user?
             Timber.w("Purchase is pending: ${purchase.products}")
             return
         }
 
-        viewModelScope.launch {
-            try {
-                verifyPurchaseUseCase.verifyPurchase(
-                    purchase = purchase,
-                    pendingPurchaseProduct = pendingPurchaseProduct,
-                )
-                Timber.d("Purchase verified successfully: ${purchase.products.firstOrNull()}")
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    handleError(error)
-                }
+        try {
+            verifyPurchaseUseCase.verifyPurchase(
+                purchase = purchase,
+                pendingPurchaseProduct = pendingPurchaseProduct,
+            )
+            Timber.d("Purchase verified successfully: ${purchase.products.firstOrNull()}")
+
+            delay(500)
+            loadUserUseCase.loadUserProfile()
+            Timber.d("User profile loaded after purchase")
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                handleError(error)
             }
         }
     }

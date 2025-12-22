@@ -1,6 +1,5 @@
 package tv.trakt.trakt.core.main
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import androidx.activity.compose.BackHandler
@@ -52,6 +51,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.jakewharton.processphoenix.ProcessPhoenix
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.MainActivity
@@ -120,7 +120,6 @@ internal fun MainScreen(
         viewModel.loadData()
     }
 
-    @SuppressLint("LocalContextGetResourceValueCall")
     LaunchedUpdateEffect(state.user) {
         if (state.loadingUser == DONE && state.user != null) {
             localSnackbar.showSnackbar(
@@ -132,6 +131,31 @@ internal fun MainScreen(
                 message = localContext.getString(R.string.text_info_signed_out),
                 duration = SnackbarDuration.Short,
             )
+        }
+    }
+
+    LaunchedEffect(state.userVipStatus) {
+        with(state.userVipStatus) {
+            if (this == null) {
+                return@LaunchedEffect
+            }
+
+            if (this.first == null || this.second == null) {
+                return@LaunchedEffect
+            }
+
+            if (this.first == false && this.second == true) {
+                localSnackbar.showSnackbar(
+                    message = "You are now a Trakt VIP! Thank you for your support.",
+                    duration = SnackbarDuration.Short,
+                )
+            }
+
+            if (this.first == true && this.second == false) {
+                localActivity?.let {
+                    ProcessPhoenix.triggerRebirth(it)
+                }
+            }
         }
     }
 

@@ -126,6 +126,9 @@ internal fun NavGraphBuilder.discoverScreens(
             onNavigateToAllRecommended = {
                 navigateToDiscoverAll(DiscoverSection.RECOMMENDED)
             },
+            onNavigateToVip = {
+                navigateToBilling()
+            },
         )
         discoverAllScreen(
             customThemeEnabled = customThemeEnabled,

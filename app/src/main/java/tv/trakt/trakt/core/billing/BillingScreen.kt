@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -53,12 +54,14 @@ import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.billing.model.VipBillingError
 import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD
 import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD_TRIAL
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -195,9 +198,11 @@ private fun BillingScreen(
             }
 
             PaymentDialog(
+                user = state.user,
                 product = state.products?.firstOrNull(),
                 loading = state.loading.isLoading,
                 onPurchaseClick = onPurchaseClick,
+                onBackClick = onBackClick,
                 modifier = Modifier
                     .shadow(4.dp, RoundedCornerShape(28.dp))
                     .fillMaxWidth(),
@@ -233,13 +238,14 @@ private fun TitleBar(modifier: Modifier = Modifier) {
 
 @Composable
 private fun PaymentDialog(
+    user: User?,
     product: ProductDetails?,
     loading: Boolean,
     modifier: Modifier = Modifier,
     onPurchaseClick: (ProductDetails) -> Unit = {},
+    onBackClick: () -> Unit = {},
 ) {
     val inspection = LocalInspectionMode.current
-    val monthPeriodText = stringResource(R.string.text_billing_period_month)
 
     Column(
         modifier = modifier
@@ -254,131 +260,14 @@ private fun PaymentDialog(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        if ((inspection || product != null) && !loading) {
-            val freeTrialOffer = remember(product) {
-                product?.subscriptionOfferDetails
-                    ?.firstOrNull {
-                        it.offerId == MONTHLY_STANDARD_TRIAL.id ||
-                            it.basePlanId == MONTHLY_STANDARD_TRIAL.id
-                    }
-            }
-
-            val standardOffer = remember(product) {
-                product?.subscriptionOfferDetails
-                    ?.firstOrNull {
-                        it.offerId == MONTHLY_STANDARD.id ||
-                            it.basePlanId == MONTHLY_STANDARD.id
-                    }
-            }
-
-            if (freeTrialOffer != null) {
-                Text(
-                    text = stringResource(R.string.text_billing_month_for_free),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.paragraphSmaller,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(bottom = 8.dp),
-                )
-            } else if (standardOffer != null) {
-                Text(
-                    text = stringResource(R.string.button_text_join_trakt),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.paragraphSmaller,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(bottom = 8.dp),
-                )
-            }
-
-            Text(
-                text = when {
-                    freeTrialOffer != null -> {
-                        val pricing = freeTrialOffer.pricingPhases.pricingPhaseList
-                            .lastOrNull { it.priceAmountMicros > 0 }
-                        "${pricing?.formattedPrice} / $monthPeriodText"
-                    }
-
-                    standardOffer != null -> {
-                        val pricing = standardOffer.pricingPhases.pricingPhaseList
-                            .lastOrNull { it.priceAmountMicros > 0 }
-                        "${pricing?.formattedPrice} / $monthPeriodText"
-                    }
-
-                    inspection -> {
-                        "£4.99 / month"
-                    }
-
-                    else -> {
-                        ""
-                    }
-                },
-                style = TraktTheme.typography.heading3.copy(
-                    letterSpacing = 0.em,
-                ),
-                color = TraktTheme.colors.textPrimary,
+        if (user?.isVip == true) {
+            PaymentAlreadyVipContent(
+                onBackClick = onBackClick,
             )
-
-            val buttonShape = RoundedCornerShape(18.dp)
-            Column(
-                modifier = Modifier
-                    .padding(top = 16.dp)
-                    .fillMaxWidth()
-                    .shadow(2.dp, buttonShape)
-                    .background(
-                        color = Red500,
-                        shape = buttonShape,
-                    )
-                    .padding(14.dp)
-                    .onClick(indication = true) {
-                        product?.let {
-                            onPurchaseClick(it)
-                        }
-                    },
-                verticalArrangement = spacedBy(2.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Text(
-                    text = when {
-                        freeTrialOffer != null -> stringResource(R.string.text_billing_try_for_free)
-                        else -> stringResource(R.string.text_billing_subscribe_now)
-                    }.uppercase(),
-                    color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.buttonPrimary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center,
-                )
-
-                if (freeTrialOffer != null) {
-                    Text(
-                        text = stringResource(R.string.text_billing_no_payment_required),
-                        color = TraktTheme.colors.textPrimary,
-                        style = TraktTheme.typography.meta.copy(
-                            fontSize = 10.sp,
-                            fontWeight = W400,
-                        ),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        textAlign = TextAlign.Center,
-                    )
-                }
-            }
-
-            Text(
-                text = stringResource(R.string.text_billing_disclaimer, monthPeriodText),
-                style = TraktTheme.typography.meta.copy(
-                    fontSize = 10.sp,
-                    fontWeight = W400,
-                    lineHeight = 1.2.em,
-                ),
-                textAlign = TextAlign.Center,
-                color = TraktTheme.colors.textSecondary,
-                modifier = Modifier
-                    .padding(top = 16.dp)
-                    .fillMaxWidth(),
+        } else if ((inspection || product != null) && !loading) {
+            PaymentDialogContent(
+                product = product,
+                onPurchaseClick = onPurchaseClick,
             )
         } else {
             FilmProgressIndicator(
@@ -388,6 +277,173 @@ private fun PaymentDialog(
             )
         }
     }
+}
+
+@Composable
+private fun PaymentAlreadyVipContent(onBackClick: () -> Unit) {
+    Column(
+        verticalArrangement = spacedBy(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(top = 8.dp),
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_check_double),
+            tint = TraktTheme.colors.textPrimary,
+            contentDescription = null,
+            modifier = Modifier
+                .size(48.dp),
+        )
+
+        Text(
+            text = stringResource(R.string.text_billing_already_vip),
+            style = TraktTheme.typography.paragraph,
+            color = TraktTheme.colors.textPrimary,
+            textAlign = TextAlign.Center,
+        )
+
+        PrimaryButton(
+            text = "OK",
+            onClick = onBackClick,
+            modifier = Modifier
+                .padding(top = 8.dp)
+                .widthIn(164.dp),
+        )
+    }
+}
+
+@Composable
+private fun PaymentDialogContent(
+    product: ProductDetails?,
+    onPurchaseClick: (ProductDetails) -> Unit,
+) {
+    val inspection = LocalInspectionMode.current
+    val monthPeriodText = stringResource(R.string.text_billing_period_month)
+
+    val freeTrialOffer = remember(product) {
+        product?.subscriptionOfferDetails
+            ?.firstOrNull {
+                it.offerId == MONTHLY_STANDARD_TRIAL.id ||
+                    it.basePlanId == MONTHLY_STANDARD_TRIAL.id
+            }
+    }
+
+    val standardOffer = remember(product) {
+        product?.subscriptionOfferDetails
+            ?.firstOrNull {
+                it.offerId == MONTHLY_STANDARD.id ||
+                    it.basePlanId == MONTHLY_STANDARD.id
+            }
+    }
+
+    if (freeTrialOffer != null) {
+        Text(
+            text = stringResource(R.string.text_billing_month_for_free),
+            color = TraktTheme.colors.textSecondary,
+            style = TraktTheme.typography.paragraphSmaller,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(bottom = 8.dp),
+        )
+    } else if (standardOffer != null) {
+        Text(
+            text = stringResource(R.string.button_text_join_trakt),
+            color = TraktTheme.colors.textSecondary,
+            style = TraktTheme.typography.paragraphSmaller,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(bottom = 8.dp),
+        )
+    }
+
+    Text(
+        text = when {
+            freeTrialOffer != null -> {
+                val pricing = freeTrialOffer.pricingPhases.pricingPhaseList
+                    .lastOrNull { it.priceAmountMicros > 0 }
+                "${pricing?.formattedPrice} / $monthPeriodText"
+            }
+
+            standardOffer != null -> {
+                val pricing = standardOffer.pricingPhases.pricingPhaseList
+                    .lastOrNull { it.priceAmountMicros > 0 }
+                "${pricing?.formattedPrice} / $monthPeriodText"
+            }
+
+            inspection -> {
+                "£4.99 / month"
+            }
+
+            else -> {
+                ""
+            }
+        },
+        style = TraktTheme.typography.heading3.copy(
+            letterSpacing = 0.em,
+        ),
+        color = TraktTheme.colors.textPrimary,
+    )
+
+    val buttonShape = RoundedCornerShape(18.dp)
+    Column(
+        modifier = Modifier
+            .padding(top = 16.dp)
+            .fillMaxWidth()
+            .shadow(2.dp, buttonShape)
+            .background(
+                color = Red500,
+                shape = buttonShape,
+            )
+            .padding(14.dp)
+            .onClick(indication = true) {
+                product?.let {
+                    onPurchaseClick(it)
+                }
+            },
+        verticalArrangement = spacedBy(2.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(
+            text = when {
+                freeTrialOffer != null -> stringResource(R.string.text_billing_try_for_free)
+                else -> stringResource(R.string.text_billing_subscribe_now)
+            }.uppercase(),
+            color = TraktTheme.colors.textPrimary,
+            style = TraktTheme.typography.buttonPrimary,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.Center,
+        )
+
+        if (freeTrialOffer != null) {
+            Text(
+                text = stringResource(R.string.text_billing_no_payment_required),
+                color = TraktTheme.colors.textPrimary,
+                style = TraktTheme.typography.meta.copy(
+                    fontSize = 10.sp,
+                    fontWeight = W400,
+                ),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center,
+            )
+        }
+    }
+
+    Text(
+        text = stringResource(R.string.text_billing_disclaimer, monthPeriodText),
+        style = TraktTheme.typography.meta.copy(
+            fontSize = 10.sp,
+            fontWeight = W400,
+            lineHeight = 1.2.em,
+        ),
+        textAlign = TextAlign.Center,
+        color = TraktTheme.colors.textSecondary,
+        modifier = Modifier
+            .padding(top = 16.dp)
+            .fillMaxWidth(),
+    )
 }
 
 // Previews

@@ -262,6 +262,7 @@
     <string name="text_billing_subscribe_now">Join Trakt VIP now!</string>
     <string name="text_billing_period_month">month</string>
     <string name="text_billing_disclaimer">Payment starts at end of trial period. Subscription auto-renews, and is billed each %s until canceled. Cancel any time via Google Play Subscription Center.</string>
+    <string name="text_billing_already_vip">You are now a Trakt VIP!\nThank you for your support and enjoy.</string>
 
     <string name="error_text_payment_pending">There\'s already a pending payment. Please wait and try again later.</string>
     <string name="error_text_payment_canceled">Payment has been canceled. Please try again.</string>

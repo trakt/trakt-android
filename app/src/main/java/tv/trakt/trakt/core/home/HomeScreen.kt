@@ -229,7 +229,7 @@ private fun HomeScreenHeader(
     HeaderBar(
         containerAlpha = if (headerState.scrolled && !isScrolledToTop) 0.98F else 0F,
         showLogin = userState.first && !userState.second,
-        showVip = userState.second && state.user.user?.isVip == true, // TODO Update condition to false
+        showVip = userState.second && state.user.user?.isVip == true,
         userLoading = userLoading,
         onVipClick = onVipClick,
         modifier = Modifier.offset {

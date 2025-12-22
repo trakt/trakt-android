@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package tv.trakt.trakt.core.main
 
 import androidx.datastore.core.DataStore
@@ -9,9 +11,9 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -32,7 +34,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.auth.usecase.AuthorizeUserUseCase
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
-import tv.trakt.trakt.core.user.usecases.GetUserProfileUseCase
+import tv.trakt.trakt.core.user.usecases.LoadUserProfileUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
@@ -45,7 +47,7 @@ internal class MainViewModel(
     private val sessionManager: SessionManager,
     private val authorizePreferences: DataStore<Preferences>,
     private val authorizeUseCase: AuthorizeUserUseCase,
-    private val getUserUseCase: GetUserProfileUseCase,
+    private val getUserUseCase: LoadUserProfileUseCase,
     private val logoutUserUseCase: LogoutUserUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val loadUserWatchlistUseCase: LoadUserWatchlistUseCase,
@@ -56,6 +58,7 @@ internal class MainViewModel(
     private val initialState = MainState()
 
     private val userState = MutableStateFlow(initialState.user)
+    private val userVipState = MutableStateFlow(initialState.userVipStatus)
     private val loadingUserState = MutableStateFlow(initialState.loadingUser)
     private val welcomeState = MutableStateFlow(initialState.welcome)
 
@@ -63,8 +66,23 @@ internal class MainViewModel(
 
     init {
         loadWelcome()
+        loadUser()
+
         observeUser()
         observeAuthCode()
+    }
+
+    private fun loadUser() {
+        viewModelScope.launch {
+            try {
+                delay(500)
+                getUserUseCase.loadUserProfile()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.e(error)
+                }
+            }
+        }
     }
 
     private fun observeUser() {
@@ -72,7 +90,14 @@ internal class MainViewModel(
             .distinctUntilChanged()
             .debounce(200)
             .onEach { user ->
+                val currentUser = userState.value
+
                 userState.update { user }
+                userVipState.update {
+                    currentUser?.isVip to user?.isVip
+                }
+
+                Timber.d("Observed user change: $user")
             }
             .launchIn(viewModelScope)
     }
@@ -179,15 +204,17 @@ internal class MainViewModel(
         }
     }
 
-    val state: StateFlow<MainState> = combine(
+    val state = combine(
         userState,
+        userVipState,
         loadingUserState,
         welcomeState,
     ) { state ->
         MainState(
             user = state[0] as User?,
-            loadingUser = state[1] as LoadingState,
-            welcome = state[2] as Boolean,
+            userVipStatus = state[1] as Pair<Boolean?, Boolean?>?,
+            loadingUser = state[2] as LoadingState,
+            welcome = state[3] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

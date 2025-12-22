@@ -35,6 +35,7 @@ internal val billingModule = module {
             sessionManager = get(),
             analytics = get(),
             verifyPurchaseUseCase = get(),
+            loadUserUseCase = get(),
         )
     }
 }
