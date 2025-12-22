@@ -1,4 +1,4 @@
-package tv.trakt.trakt.ui.components
+package tv.trakt.trakt.ui.components.vip
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -58,7 +59,7 @@ private fun Preview() {
 private fun Preview2() {
     TraktTheme {
         VipChip(
-            text = stringResource(tv.trakt.trakt.resources.R.string.badge_text_get_vip),
+            text = stringResource(R.string.badge_text_get_vip),
         )
     }
 }

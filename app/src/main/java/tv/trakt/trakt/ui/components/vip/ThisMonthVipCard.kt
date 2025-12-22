@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalFoundationApi::class)
 
-package tv.trakt.trakt.core.profile.sections.thismonth
+package tv.trakt.trakt.ui.components.vip
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.em
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.common.ui.theme.colors.Shade920
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.VipChip
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable

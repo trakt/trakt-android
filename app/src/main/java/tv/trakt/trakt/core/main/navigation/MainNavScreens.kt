@@ -171,6 +171,7 @@ internal fun NavGraphBuilder.showsScreens(controller: NavHostController) {
                     backdropUrl = show.images?.getFanartUrl(Size.THUMB),
                 )
             },
+            onNavigateVip = { navigateToBilling() },
             onNavigateBack = { popBackStack() },
         )
     }
@@ -201,6 +202,7 @@ internal fun NavGraphBuilder.episodesScreens(controller: NavHostController) {
                     backdropUrl = show.images?.getFanartUrl(Size.THUMB),
                 )
             },
+            onNavigateVip = { navigateToBilling() },
             onNavigateBack = { popBackStack() },
         )
     }
@@ -235,6 +237,7 @@ internal fun NavGraphBuilder.moviesScreens(controller: NavHostController) {
                     backdropUrl = movie.images?.getFanartUrl(Size.THUMB),
                 )
             },
+            onNavigateVip = { navigateToBilling() },
             onNavigateBack = { popBackStack() },
         )
     }

@@ -25,6 +25,7 @@ internal fun NavGraphBuilder.episodeDetailsScreen(
     onEpisodeCLick: ((TraktId, Episode) -> Unit),
     onCommentsClick: ((Show, Episode, CommentsFilter) -> Unit),
     onPersonClick: ((Show, Episode, Person) -> Unit),
+    onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     composable<EpisodeDetailsDestination> {
@@ -34,6 +35,7 @@ internal fun NavGraphBuilder.episodeDetailsScreen(
             onEpisodeClick = onEpisodeCLick,
             onCommentsClick = onCommentsClick,
             onPersonClick = onPersonClick,
+            onNavigateVip = onNavigateVip,
             onNavigateBack = onNavigateBack,
         )
     }

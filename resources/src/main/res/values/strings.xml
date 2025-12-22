@@ -272,6 +272,9 @@
     <string name="text_vip_upsell_default">Enhance your Trakt experience</string>
     <string name="text_vip_upsell_default_description">Upgrade to VIP and unlock the full Trakt experience, packed with features built for TV Shows and Movies lovers.</string>
 
+    <string name="text_vip_upsell_default_2">Upgrade to VIP!</string>
+    <string name="text_vip_upsell_default_description_2">No ads, unlimited lists and more.</string>
+
     <!--  Non Translatable  -->
 
     <string name="translated_value_library_plex" translatable="false">Plex</string>

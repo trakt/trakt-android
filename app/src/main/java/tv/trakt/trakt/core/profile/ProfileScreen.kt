@@ -72,12 +72,12 @@ import tv.trakt.trakt.core.profile.sections.history.ProfileHistoryView
 import tv.trakt.trakt.core.profile.sections.library.ProfileLibraryView
 import tv.trakt.trakt.core.profile.sections.social.ProfileSocialView
 import tv.trakt.trakt.core.profile.sections.thismonth.ThisMonthCard
-import tv.trakt.trakt.core.profile.sections.thismonth.ThisMonthVipCard
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
+import tv.trakt.trakt.ui.components.vip.ThisMonthVipCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable

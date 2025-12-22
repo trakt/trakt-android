@@ -22,6 +22,7 @@ internal fun NavGraphBuilder.movieDetailsScreen(
     onNavigateToComments: (Movie, CommentsFilter) -> Unit,
     onNavigateToPerson: (Movie, Person) -> Unit,
     onNavigateToList: (Movie, CustomList) -> Unit,
+    onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     composable<MovieDetailsDestination> {
@@ -33,6 +34,7 @@ internal fun NavGraphBuilder.movieDetailsScreen(
             },
             onListClick = { movie, list -> onNavigateToList(movie, list) },
             onPersonClick = { movie, person -> onNavigateToPerson(movie, person) },
+            onNavigateVip = onNavigateVip,
             onNavigateBack = onNavigateBack,
         )
     }

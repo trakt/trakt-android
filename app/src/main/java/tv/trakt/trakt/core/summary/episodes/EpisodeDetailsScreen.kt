@@ -87,6 +87,7 @@ import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.UserRatingBar
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
+import tv.trakt.trakt.ui.components.vip.VipBanner
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -99,6 +100,7 @@ internal fun EpisodeDetailsScreen(
     onEpisodeClick: ((TraktId, Episode) -> Unit),
     onCommentsClick: ((Show, Episode, CommentsFilter) -> Unit),
     onPersonClick: ((Show, Episode, Person) -> Unit),
+    onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -163,6 +165,7 @@ internal fun EpisodeDetailsScreen(
             viewModel.addRating(it)
             haptic.performHapticFeedback(Confirm)
         },
+        onVipClick = onNavigateVip,
         onBackClick = onNavigateBack,
     )
 
@@ -254,6 +257,7 @@ internal fun EpisodeDetailsContent(
     onHistoryClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
     onPersonClick: ((Person) -> Unit)? = null,
     onRatingClick: ((Int) -> Unit)? = null,
+    onVipClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     val previewMode = LocalInspectionMode.current
@@ -376,6 +380,18 @@ internal fun EpisodeDetailsContent(
                             .padding(top = 18.dp)
                             .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
                     )
+                }
+
+                if (state.user != null && !state.user.isVip) {
+                    item {
+                        VipBanner(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+                                .padding(top = 24.dp)
+                                .onClick { onVipClick?.invoke() },
+                        )
+                    }
                 }
 
                 if (!previewMode) {

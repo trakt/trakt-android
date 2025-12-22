@@ -37,9 +37,9 @@ import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaModeButtons
-import tv.trakt.trakt.ui.components.VipChip
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.components.switch.TraktThemeSwitch
+import tv.trakt.trakt.ui.components.vip.VipChip
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.model.CustomTheme
 

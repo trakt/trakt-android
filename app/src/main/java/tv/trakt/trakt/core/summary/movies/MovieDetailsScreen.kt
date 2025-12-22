@@ -89,6 +89,7 @@ import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.UserRatingBar
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
+import tv.trakt.trakt.ui.components.vip.VipBanner
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -101,6 +102,7 @@ internal fun MovieDetailsScreen(
     onCommentsClick: ((Movie, CommentsFilter) -> Unit),
     onListClick: ((Movie, CustomList) -> Unit),
     onPersonClick: ((Movie, Person) -> Unit),
+    onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -165,6 +167,7 @@ internal fun MovieDetailsScreen(
                 state.movieUserRating?.rating?.favorite != true,
             )
         },
+        onVipClick = onNavigateVip,
         onBackClick = onNavigateBack,
     )
 
@@ -284,6 +287,7 @@ internal fun MovieDetailsContent(
     onListClick: ((CustomList) -> Unit)? = null,
     onRatingClick: ((Int) -> Unit)? = null,
     onFavoriteClick: (() -> Unit)? = null,
+    onVipClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     val previewMode = LocalInspectionMode.current
@@ -417,6 +421,18 @@ internal fun MovieDetailsContent(
                             .padding(top = 18.dp)
                             .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
                     )
+                }
+
+                if (state.user != null && !state.user.isVip) {
+                    item {
+                        VipBanner(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+                                .padding(top = 24.dp)
+                                .onClick { onVipClick?.invoke() },
+                        )
+                    }
                 }
 
                 if (!previewMode) {
