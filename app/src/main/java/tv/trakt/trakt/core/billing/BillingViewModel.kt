@@ -96,7 +96,6 @@ internal class BillingViewModel(
             if (billingResult.responseCode == BillingResponseCode.OK) {
                 Timber.d("Billing Client setup finished successfully")
                 checkPurchases()
-//                loadPurchases()
             } else {
                 val billingError = VipBillingError.fromBillingResponseCode(billingResult.responseCode)
                 handleError(billingError)

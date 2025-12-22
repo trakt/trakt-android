@@ -74,6 +74,7 @@ internal fun ListsScreen(
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToWatchlist: () -> Unit,
     onNavigateToList: (CustomList) -> Unit,
+    onNavigateToVip: () -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -98,6 +99,7 @@ internal fun ListsScreen(
         onCreateListClick = { createListSheet = true },
         onEditListClick = { editListSheet = it },
         onListClick = onNavigateToList,
+        onVipClick = onNavigateToVip,
     )
 
     CreateListSheet(
@@ -127,6 +129,7 @@ private fun ListsScreenContent(
     onEditListClick: (CustomList) -> Unit = {},
     onWatchlistClick: () -> Unit = {},
     onListClick: (CustomList) -> Unit = { _ -> },
+    onVipClick: () -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
     val lazyListState = rememberLazyListState(
@@ -268,6 +271,7 @@ private fun ListsScreenContent(
             state = state,
             headerState = headerState,
             isScrolledToTop = isScrolledToTop,
+            onVipClick = onVipClick,
         )
     }
 }
@@ -277,6 +281,7 @@ private fun ListsScreenHeader(
     state: ListsState,
     headerState: ScreenHeaderState,
     isScrolledToTop: Boolean,
+    onVipClick: () -> Unit,
 ) {
     val userState = remember(state.user) {
         val loadingDone = state.user.loading == DONE
@@ -287,6 +292,8 @@ private fun ListsScreenHeader(
     HeaderBar(
         containerAlpha = if (headerState.scrolled && !isScrolledToTop) 0.98F else 0F,
         showLogin = userState.first && !userState.second,
+        showVip = userState.second && state.user.user?.isVip == false,
+        onVipClick = onVipClick,
         modifier = Modifier.offset {
             IntOffset(0, headerState.connection.barOffset.fastRoundToInt())
         },

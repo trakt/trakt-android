@@ -255,6 +255,7 @@ internal fun NavGraphBuilder.listsScreens(controller: NavHostController) {
                     listDescription = it.description,
                 )
             },
+            onNavigateToVip = { navigateToBilling() },
         )
         allWatchlistScreen(
             onNavigateToShow = { navigateToShow(it) },
