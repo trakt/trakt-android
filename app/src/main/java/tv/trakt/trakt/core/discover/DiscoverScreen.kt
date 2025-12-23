@@ -156,6 +156,15 @@ private fun DiscoverScreen(
                 )
             }
 
+            if (state.user.user != null && !state.user.user.isVip) {
+                item {
+                    VipBanner(
+                        modifier = Modifier.padding(sectionPadding),
+                        onClick = onVipClick,
+                    )
+                }
+            }
+
             item {
                 DiscoverPopularView(
                     viewModel = koinViewModel {
@@ -171,15 +180,6 @@ private fun DiscoverScreen(
             }
 
             if (state.user.isAuthenticated) {
-                if (state.user.user != null && !state.user.user.isVip) {
-                    item {
-                        VipBanner(
-                            modifier = Modifier.padding(sectionPadding),
-                            onClick = onVipClick,
-                        )
-                    }
-                }
-
                 item {
                     DiscoverRecommendedView(
                         viewModel = koinViewModel {
