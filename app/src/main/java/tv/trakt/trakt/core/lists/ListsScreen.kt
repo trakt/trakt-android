@@ -62,6 +62,7 @@ import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
+import tv.trakt.trakt.ui.components.vip.VipBanner
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -196,6 +197,15 @@ private fun ListsScreenContent(
                     onProfileClick = onProfileClick,
                     onWatchlistClick = onWatchlistClick,
                 )
+            }
+
+            if (state.user.user != null && !state.user.user.isVip) {
+                item {
+                    VipBanner(
+                        modifier = Modifier.padding(sectionPadding),
+                        onClick = onVipClick,
+                    )
+                }
             }
 
             item(
