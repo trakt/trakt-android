@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.activity.features.history.HomeHistoryView
@@ -172,10 +171,10 @@ private fun HomeScreenContent(
             if (state.user.user != null && !state.user.user.isVip) {
                 item {
                     VipBanner(
+                        onClick = onVipClick,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(sectionPadding)
-                            .onClick(onClick = onVipClick),
+                            .padding(sectionPadding),
                     )
                 }
             }

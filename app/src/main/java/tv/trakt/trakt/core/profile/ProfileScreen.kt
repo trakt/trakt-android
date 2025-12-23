@@ -236,6 +236,7 @@ private fun ProfileScreen(
                 } else {
                     item {
                         ThisMonthVipCard(
+                            onClick = onVipClick,
                             modifier = Modifier
                                 .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
                                 .padding(
@@ -243,9 +244,6 @@ private fun ProfileScreen(
                                         state.user.about.isNullOrBlank() -> TraktTheme.spacing.mainSectionVerticalSpace
                                         else -> TraktTheme.spacing.mainSectionVerticalSpace / 1.5F
                                     },
-                                )
-                                .onClick(
-                                    onClick = onVipClick,
                                 ),
                         )
                     }

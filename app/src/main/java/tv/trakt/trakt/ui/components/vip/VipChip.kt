@@ -1,7 +1,6 @@
 package tv.trakt.trakt.ui.components.vip
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -14,6 +13,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -28,7 +28,7 @@ internal fun VipChip(
         horizontalArrangement = spacedBy(5.dp, Alignment.CenterHorizontally),
         modifier = modifier
             .clip(RoundedCornerShape(100))
-            .clickable(onClick = onClick)
+            .onClick(onClick = onClick)
             .background(
                 color = TraktTheme.colors.vipAccent,
             )

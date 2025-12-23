@@ -29,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.common.ui.theme.colors.Shade920
 import tv.trakt.trakt.resources.R
@@ -38,6 +39,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun VipBanner(
     modifier: Modifier = Modifier,
     containerColor: Color = Shade920,
+    onClick: () -> Unit = {},
 ) {
     val radialGradient = remember {
         object : ShaderBrush() {
@@ -63,7 +65,8 @@ internal fun VipBanner(
             .shadow(2.dp, shape)
             .clip(shape)
             .background(containerColor)
-            .background(radialGradient),
+            .background(radialGradient)
+            .onClick(onClick = onClick),
     ) {
         Column(
             modifier = Modifier.padding(
@@ -89,6 +92,7 @@ internal fun VipBanner(
 
         VipChip(
             text = stringResource(R.string.badge_text_get_vip),
+            onClick = onClick,
             modifier = Modifier
                 .align(CenterEnd)
                 .padding(end = 16.dp)

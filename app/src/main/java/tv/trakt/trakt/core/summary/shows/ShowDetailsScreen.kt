@@ -467,11 +467,11 @@ internal fun ShowDetailsContent(
                 if (state.user != null && !state.user.isVip) {
                     item {
                         VipBanner(
+                            onClick = onVipClick ?: {},
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
-                                .padding(top = 24.dp)
-                                .onClick { onVipClick?.invoke() },
+                                .padding(top = 24.dp),
                         )
                     }
                 }
