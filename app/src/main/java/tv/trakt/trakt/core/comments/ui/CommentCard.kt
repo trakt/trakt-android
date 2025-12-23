@@ -36,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
@@ -450,7 +451,15 @@ private fun CommentFooter(
                         repliesLoading -> TraktTheme.colors.textSecondary.copy(alpha = 0.5f)
                         else -> Purple400
                     },
-                    modifier = Modifier.size(16.dp),
+                    modifier = Modifier
+                        .size(16.dp)
+                        .scale(
+                            scaleX = when {
+                                replies.isNotEmpty() -> 0.9F
+                                else -> 1F
+                            },
+                            scaleY = 1F,
+                        ),
                 )
                 Text(
                     text = stringResource(R.string.button_text_comment_replies, comment.replies),
