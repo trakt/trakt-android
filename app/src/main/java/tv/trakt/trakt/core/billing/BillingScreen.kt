@@ -138,6 +138,16 @@ private fun BillingScreen(
             )
         }
 
+        Text(
+            text = "TODO\nVIP Features UI",
+            style = TraktTheme.typography.heading4,
+            color = TraktTheme.colors.textSecondary,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(bottom = 128.dp),
+        )
+
         Column(
             verticalArrangement = spacedBy(16.dp, CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally,
