@@ -265,9 +265,11 @@
     <string name="text_billing_already_vip">You are now a Trakt VIP!\nThank you for your support and enjoy.</string>
 
     <string name="error_text_payment_pending">There\'s already a pending payment. Please wait and try again later.</string>
+    <string name="error_text_payment_feature_not_supported">Google Play Billing is not available on this device. Please try again or contact support if needed.</string>
     <string name="error_text_payment_canceled">Payment has been canceled. Please try again.</string>
     <string name="error_text_payment_already_owned">You already own this item or its currently being processed.</string>
-    <string name="error_text_payment_other">There was an error while processing your payment. Please try again or contact our support if needed.</string>
+    <string name="error_text_payment_item_unavailable">Products are currently not available. Please wait and try again later.</string>
+    <string name="error_text_payment_other">There was an error while processing your payment. Please try again or contact support if needed.</string>
 
     <string name="text_vip_upsell_default">Enhance your Trakt experience</string>
     <string name="text_vip_upsell_default_description">Upgrade to VIP and unlock the full Trakt experience, packed with features built for TV Shows and Movies lovers.</string>

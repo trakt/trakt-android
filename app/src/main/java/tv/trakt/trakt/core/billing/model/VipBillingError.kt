@@ -31,7 +31,9 @@ sealed class VipBillingError : Exception() {
         fun fromBillingResponseCode(code: Int): VipBillingError {
             return when (code) {
                 BillingResponseCode.USER_CANCELED -> CancelledError(code)
+                BillingResponseCode.FEATURE_NOT_SUPPORTED -> FeatureNotSupportedError()
                 BillingResponseCode.ITEM_ALREADY_OWNED -> AlreadyOwnedError(code)
+                BillingResponseCode.ITEM_UNAVAILABLE -> ItemUnavailableError(code)
                 else -> OtherBillingError(code)
             }
         }
@@ -43,10 +45,21 @@ class PendingPaymentError : VipBillingError() {
     override val displayErrorRes = R.string.error_text_payment_pending
 }
 
+class FeatureNotSupportedError : VipBillingError() {
+    override val code = null
+    override val displayErrorRes = R.string.error_text_payment_feature_not_supported
+}
+
 class AlreadyOwnedError(
     override val code: Int?,
 ) : VipBillingError() {
     override val displayErrorRes = R.string.error_text_payment_already_owned
+}
+
+class ItemUnavailableError(
+    override val code: Int?,
+) : VipBillingError() {
+    override val displayErrorRes = R.string.error_text_payment_item_unavailable
 }
 
 class CancelledError(

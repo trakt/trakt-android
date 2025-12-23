@@ -226,7 +226,8 @@ internal class BillingViewModel(
                 if (responseCode == BillingResponseCode.OK) {
                     Timber.d("Products details loaded: ${productDetailsResult.productDetailsList?.size} products found")
                     if (productDetailsResult.productDetailsList.isNullOrEmpty()) {
-                        Timber.e("No products details found")
+                        val error = VipBillingError.fromBillingResponseCode(BillingResponseCode.ITEM_UNAVAILABLE)
+                        handleError(error)
                     } else {
                         productsState.update {
                             productDetailsResult.productDetailsList?.toImmutableList()
