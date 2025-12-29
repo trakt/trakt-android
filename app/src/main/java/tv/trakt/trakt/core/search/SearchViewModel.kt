@@ -51,8 +51,6 @@ internal class SearchViewModel(
     private val getPopularSearchesUseCase: GetPopularSearchUseCase,
     private val postUserSearchUseCase: PostUserSearchUseCase,
     private val getSearchResultsUseCase: GetSearchResultsUseCase,
-//    private val addRecentSearchUseCase: AddRecentSearchUseCase,
-//    private val getRecentSearchUseCase: GetRecentSearchUseCase,
     private val getBirthdayPeopleUseCase: GetBirthdayPeopleUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
@@ -67,7 +65,6 @@ internal class SearchViewModel(
     private val screenState = MutableStateFlow(initialState.state)
     private val popularResultState = MutableStateFlow(initialState.popularResults)
 
-    //    private val recentsResultState = MutableStateFlow(initialState.recentsResult)
     private val searchResultState = MutableStateFlow(initialState.searchResult)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
@@ -175,6 +172,7 @@ internal class SearchViewModel(
                             .toImmutableList(),
                     )
                 }
+
                 else -> {
                     SearchResult(
                         items = buildList {
@@ -259,6 +257,7 @@ internal class SearchViewModel(
                             .toImmutableList(),
                     )
                 }
+
                 else -> {
                     SearchResult(
                         items = buildList {
@@ -350,14 +349,17 @@ internal class SearchViewModel(
                                         rank = it.score,
                                         show = Show.fromDto(it.show!!),
                                     )
+
                                     it.movie != null -> SearchItem.Movie(
                                         rank = it.score,
                                         movie = Movie.fromDto(it.movie!!),
                                     )
+
                                     it.person != null -> SearchItem.Person(
                                         rank = it.score,
                                         person = Person.fromDto(it.person!!),
                                     )
+
                                     else -> throw Error("Unexpected null show and movie")
                                 }
                             }.toImmutableList(),
@@ -463,64 +465,6 @@ internal class SearchViewModel(
         searchJob = null
         initialJob = null
     }
-
-//    Disabled until we decide how to do recently searched.
-//    private suspend fun loadRecentlySearched() {
-//        return coroutineScope {
-//            val recentShowsAsync = async { getRecentSearchUseCase.getRecentShows() }
-//            val recentMoviesAsync = async { getRecentSearchUseCase.getRecentMovies() }
-//            val recentPeopleAsync = async { getRecentSearchUseCase.getRecentPeople() }
-//
-//            val recentShows = when (inputState.value.filter) {
-//                in arrayOf(MEDIA, SHOWS) -> recentShowsAsync.await()
-//                else -> emptyList()
-//            }
-//            val recentMovies = when (inputState.value.filter) {
-//                in arrayOf(MEDIA, MOVIES) -> recentMoviesAsync.await()
-//                else -> emptyList()
-//            }
-//            val recentPeople = when (inputState.value.filter) {
-//                in arrayOf(PEOPLE) -> recentPeopleAsync.await()
-//                else -> emptyList()
-//            }
-//
-//            if (searchingState.value || screenState.value == State.SEARCH_RESULTS) {
-//                return@coroutineScope
-//            }
-//
-//            recentsResultState.update {
-//                SearchResult(
-//                    items = buildList {
-//                        val showItems = recentShows.asyncMap {
-//                            SearchItem.Show(
-//                                rank = it.createdAt.toInstant().toEpochMilli(),
-//                                show = it.show,
-//                            )
-//                        }
-//                        val movieItems = recentMovies.asyncMap {
-//                            SearchItem.Movie(
-//                                rank = it.createdAt.toInstant().toEpochMilli(),
-//                                movie = it.movie,
-//                            )
-//                        }
-//                        val peopleItems = recentPeople.asyncMap {
-//                            SearchItem.Person(
-//                                rank = it.createdAt.toInstant().toEpochMilli(),
-//                                person = it.person,
-//                            )
-//                        }
-//
-//                        addAll(showItems)
-//                        addAll(movieItems)
-//                        addAll(peopleItems)
-//                    }
-//                        .sortedByDescending { it.rank }
-//                        .take(3)
-//                        .toImmutableList(),
-//                )
-//            }
-//        }
-//    }
 
     @Suppress("UNCHECKED_CAST")
     val state = combine(

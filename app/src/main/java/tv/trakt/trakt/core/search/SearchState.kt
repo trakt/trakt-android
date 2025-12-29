@@ -39,7 +39,7 @@ internal data class SearchState(
 
     enum class State {
         IDLE,
+        LOADING,
         SEARCH_RESULTS,
-        ERROR,
     }
 }
