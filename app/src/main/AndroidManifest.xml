@@ -116,7 +116,6 @@
         <package android:name="com.acorn.tv" />
         <package android:name="com.philo.philo.google" />
         <package android:name="com.kanopy" />
-        <package android:name="air.com.vudu.air.DownloaderTablet" />
         <package android:name="com.feeln.android" />
         <package android:name="air.com.vudu.air.DownloaderTablet" />
         <package android:name="com.plexapp.android" />

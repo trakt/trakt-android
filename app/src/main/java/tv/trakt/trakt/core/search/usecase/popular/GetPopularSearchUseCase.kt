@@ -45,7 +45,7 @@ internal class GetPopularSearchUseCase(
         ).asyncMap {
             PopularShowEntity.create(
                 show = Show.fromDto(it.show!!),
-                rank = it.count.toInt(),
+                rank = it.count,
                 createdAt = nowUtcInstant(),
             )
         }.also {
@@ -59,7 +59,7 @@ internal class GetPopularSearchUseCase(
         ).asyncMap {
             PopularMovieEntity.create(
                 movie = Movie.fromDto(it.movie!!),
-                rank = it.count.toInt(),
+                rank = it.count,
                 createdAt = nowUtcInstant(),
             )
         }.also {
