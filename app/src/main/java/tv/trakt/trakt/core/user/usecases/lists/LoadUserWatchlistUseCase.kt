@@ -60,6 +60,7 @@ internal class LoadUserWatchlistUseCase(
                         listedAt = listedAt,
                     )
                 }
+
                 it.show != null -> {
                     WatchlistItem.ShowItem(
                         show = Show.fromDto(it.show!!),
@@ -67,7 +68,10 @@ internal class LoadUserWatchlistUseCase(
                         listedAt = listedAt,
                     )
                 }
-                else -> throw IllegalStateException("Watchlist item unknown type!")
+
+                else -> {
+                    throw IllegalStateException("Watchlist item unknown type!")
+                }
             }
         }
 

@@ -78,7 +78,8 @@ internal fun WatchNowButton(
                             .padding(end = 8.dp),
                     )
                 }
-                else ->
+
+                else -> {
                     Image(
                         painter = painterResource(id = R.drawable.ic_play),
                         contentDescription = null,
@@ -87,6 +88,7 @@ internal fun WatchNowButton(
                             .padding(end = 8.dp)
                             .requiredSize(18.dp),
                     )
+                }
             }
 
             if (!logo.isNullOrBlank()) {

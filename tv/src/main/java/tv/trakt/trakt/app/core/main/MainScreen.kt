@@ -164,7 +164,10 @@ internal fun MainScreen(
                                     hostFocusRequester.requestFocus()
                                     true
                                 }
-                                else -> false
+
+                                else -> {
+                                    false
+                                }
                             }
                         },
                     onProfileSelected = {
@@ -219,7 +222,9 @@ internal fun MainScreen(
                 drawerState.setValue(Open)
             }
 
-            else -> navController.popBackStack()
+            else -> {
+                navController.popBackStack()
+            }
         }
     }
 }

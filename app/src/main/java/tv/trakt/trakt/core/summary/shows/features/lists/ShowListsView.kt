@@ -106,6 +106,7 @@ private fun ShowListsContent(
                         contentPadding = contentPadding,
                     )
                 }
+
                 DONE -> {
                     Column(
                         verticalArrangement = spacedBy(0.dp),

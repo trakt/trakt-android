@@ -229,9 +229,13 @@ internal class MovieDetailsViewModel(
                             slug = plexService.plexSlug,
                             loading = false,
                             info = when {
-                                !tutorialsManager.get(WATCH_NOW_MORE) ->
+                                !tutorialsManager.get(WATCH_NOW_MORE) -> {
                                     DynamicStringResource(R.string.button_text_long_press_for_more)
-                                else -> null
+                                }
+
+                                else -> {
+                                    null
+                                }
                             },
                         )
                     }
@@ -250,9 +254,13 @@ internal class MovieDetailsViewModel(
                         service = streamingService.streamingService,
                         noServices = streamingService.noServices,
                         info = when {
-                            !tutorialsManager.get(WATCH_NOW_MORE) ->
+                            !tutorialsManager.get(WATCH_NOW_MORE) -> {
                                 DynamicStringResource(R.string.button_text_long_press_for_more)
-                            else -> null
+                            }
+
+                            else -> {
+                                null
+                            }
                         },
                     )
                 }

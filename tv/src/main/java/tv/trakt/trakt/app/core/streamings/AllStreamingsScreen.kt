@@ -241,9 +241,11 @@ private fun StreamingsListSection(
                         PURCHASE -> remember(item.purchasePrice) {
                             "$currencySymbol$currencySpace${item.purchasePrice}".trim()
                         }
+
                         RENT -> remember(item.rentPrice) {
                             "$currencySymbol$currencySpace${item.rentPrice}".trim()
                         }
+
                         else -> null
                     },
                     contentColor = item.color ?: Color.Black,

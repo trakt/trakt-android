@@ -73,14 +73,20 @@ internal fun ListMovieContextView(
         state.loadingList,
     ) {
         when {
-            state.loadingWatched == LoadingState.DONE -> when {
-                !state.isWatched || state.isWatchlist -> onAddWatched(movie)
-                else -> onRemoveWatched(movie)
+            state.loadingWatched == LoadingState.DONE -> {
+                when {
+                    !state.isWatched || state.isWatchlist -> onAddWatched(movie)
+                    else -> onRemoveWatched(movie)
+                }
             }
-            state.loadingWatchlist == LoadingState.DONE -> when {
-                !state.isWatchlist -> onAddWatchlist(movie)
-                else -> onRemoveWatchlist(movie)
+
+            state.loadingWatchlist == LoadingState.DONE -> {
+                when {
+                    !state.isWatchlist -> onAddWatchlist(movie)
+                    else -> onRemoveWatchlist(movie)
+                }
             }
+
             state.loadingList == LoadingState.DONE -> {
                 onRemoveList(movie)
             }
@@ -99,7 +105,10 @@ internal fun ListMovieContextView(
         modifier = modifier,
         onWatchedClick = {
             when {
-                state.isWatched && !state.isWatchlist -> confirmRemoveWatchedSheet = true
+                state.isWatched && !state.isWatchlist -> {
+                    confirmRemoveWatchedSheet = true
+                }
+
                 else -> {
                     dateSheet = true
                 }

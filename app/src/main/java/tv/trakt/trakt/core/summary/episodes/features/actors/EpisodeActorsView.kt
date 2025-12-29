@@ -103,6 +103,7 @@ private fun EpisodeActorsContent(
                         contentPadding = contentPadding,
                     )
                 }
+
                 DONE -> {
                     if (state.items?.isEmpty() == true) {
                         ContentEmpty(

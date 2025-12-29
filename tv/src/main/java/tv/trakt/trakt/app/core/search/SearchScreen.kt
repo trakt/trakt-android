@@ -164,6 +164,7 @@ private fun SearchScreenContent(
                         focusRequesters = focusRequesters,
                     )
                 }
+
                 state.state == State.RECENTS && state.recentsResult != null -> {
                     with(state.recentsResult) {
                         if (!shows.isNullOrEmpty()) {
@@ -193,6 +194,7 @@ private fun SearchScreenContent(
                         }
                     }
                 }
+
                 state.state == State.TRENDING && state.trendingResult != null -> {
                     with(state.trendingResult) {
                         if (!shows.isNullOrEmpty()) {

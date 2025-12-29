@@ -71,6 +71,7 @@ internal fun ShowContextView(
                 !state.isWatched -> onAddWatched(show)
                 else -> onRemoveWatched(show)
             }
+
             state.loadingWatchlist == LoadingState.DONE -> when {
                 !state.isWatchlist -> onAddWatchlist(show)
                 else -> onRemoveWatchlist(show)

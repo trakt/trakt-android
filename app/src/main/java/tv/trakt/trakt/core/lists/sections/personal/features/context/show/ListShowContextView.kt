@@ -75,14 +75,20 @@ internal fun ListShowContextView(
         state.loadingList,
     ) {
         when {
-            state.loadingWatched == LoadingState.DONE -> when {
-                !state.isWatched || state.isWatchlist -> onAddWatched(show)
-                else -> onRemoveWatched(show)
+            state.loadingWatched == LoadingState.DONE -> {
+                when {
+                    !state.isWatched || state.isWatchlist -> onAddWatched(show)
+                    else -> onRemoveWatched(show)
+                }
             }
-            state.loadingWatchlist == LoadingState.DONE -> when {
-                !state.isWatchlist -> onAddWatchlist(show)
-                else -> onRemoveWatchlist(show)
+
+            state.loadingWatchlist == LoadingState.DONE -> {
+                when {
+                    !state.isWatchlist -> onAddWatchlist(show)
+                    else -> onRemoveWatchlist(show)
+                }
             }
+
             state.loadingList == LoadingState.DONE -> {
                 onRemoveList(show)
             }

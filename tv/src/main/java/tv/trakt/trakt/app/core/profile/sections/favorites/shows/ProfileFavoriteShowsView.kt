@@ -94,6 +94,7 @@ internal fun ProfileFavoriteShowsContent(
                     contentPadding = contentPadding,
                 )
             }
+
             state.items?.isEmpty() == true -> {
                 Text(
                     text = stringResource(R.string.list_placeholder_empty),
@@ -102,6 +103,7 @@ internal fun ProfileFavoriteShowsContent(
                     modifier = Modifier.padding(headerPadding),
                 )
             }
+
             else -> {
                 ContentList(
                     items = { state.items ?: emptyList<Show>().toImmutableList() },

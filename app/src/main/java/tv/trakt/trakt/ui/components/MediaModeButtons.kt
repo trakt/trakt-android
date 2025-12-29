@@ -75,6 +75,7 @@ internal fun MediaModeButtons(
                             width = 0.dp,
                             color = Color.Transparent,
                         )
+
                         else -> BorderStroke(
                             width = 1.dp,
                             color = TraktTheme.colors.chipContainer,

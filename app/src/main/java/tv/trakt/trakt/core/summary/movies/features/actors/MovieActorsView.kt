@@ -103,6 +103,7 @@ private fun MovieActorsContent(
                         contentPadding = contentPadding,
                     )
                 }
+
                 DONE -> {
                     if (state.items?.isEmpty() == true) {
                         ContentEmpty(

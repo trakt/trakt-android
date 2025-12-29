@@ -30,16 +30,19 @@ internal class GetAllDiscoverMoviesUseCase(
                 limit = DEFAULT_ALL_LIMIT,
                 skipLocal = skipLocal,
             )
+
             ANTICIPATED -> getAnticipatedMoviesUseCase.getMovies(
                 page = page,
                 limit = DEFAULT_ALL_LIMIT,
                 skipLocal = skipLocal,
             )
+
             POPULAR -> getPopularMoviesUseCase.getMovies(
                 page = page,
                 limit = DEFAULT_ALL_LIMIT,
                 skipLocal = skipLocal,
             )
+
             RECOMMENDED -> getRecommendedMoviesUseCase.getMovies(
                 limit = DEFAULT_ALL_LIMIT,
                 skipLocal = skipLocal,

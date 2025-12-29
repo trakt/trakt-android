@@ -156,6 +156,7 @@ internal fun EpisodeSeasonList(
                                             },
                                     )
                                 }
+
                                 item.isWatched -> {
                                     Icon(
                                         painter = painterResource(R.drawable.ic_check_double),
@@ -168,6 +169,7 @@ internal fun EpisodeSeasonList(
                                             },
                                     )
                                 }
+
                                 isReleased && item.isCheckable -> {
                                     Icon(
                                         painter = painterResource(R.drawable.ic_check),

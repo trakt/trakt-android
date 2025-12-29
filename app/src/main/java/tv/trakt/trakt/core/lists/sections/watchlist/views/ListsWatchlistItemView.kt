@@ -122,6 +122,7 @@ internal fun ListsWatchlistItemView(
                 modifier = modifier,
             )
         }
+
         is WatchlistItem.MovieItem -> {
             val isReleased = remember(item.movie.released) {
                 item.movie.released?.isTodayOrBefore() ?: false

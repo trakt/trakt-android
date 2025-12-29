@@ -105,7 +105,10 @@ internal class EpisodeSeasonViewModel(
                         loadUserProgressUseCase.isShowsLoaded() -> {
                             loadUserProgressUseCase.loadLocalShows()
                         }
-                        else -> loadUserProgressUseCase.loadShowsProgress()
+
+                        else -> {
+                            loadUserProgressUseCase.loadShowsProgress()
+                        }
                     }.firstOrNull {
                         it.show.ids.trakt == show.ids.trakt
                     }

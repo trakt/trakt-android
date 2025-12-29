@@ -97,6 +97,7 @@ private fun MovieSentimentContent(
                             .padding(contentPadding),
                     )
                 }
+
                 DONE -> {
                     if (state.sentiment != null) {
                         DetailsSentiment(

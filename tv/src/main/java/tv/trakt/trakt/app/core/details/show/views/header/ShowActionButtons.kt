@@ -117,7 +117,10 @@ private fun WatchButton(
             !loading && (plex || directLink != null) && streamingState.info != null -> {
                 streamingState.info.get(context)
             }
-            else -> null
+
+            else -> {
+                null
+            }
         },
         name = when {
             plex -> "Plex"

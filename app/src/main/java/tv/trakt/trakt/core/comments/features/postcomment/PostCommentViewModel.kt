@@ -80,16 +80,19 @@ internal class PostCommentViewModel(
                             comment = comment,
                             spoiler = spoiler,
                         )
+
                         MOVIE -> postCommentUseCase.postMovieComment(
                             movieId = mediaId,
                             comment = comment,
                             spoiler = spoiler,
                         )
+
                         EPISODE -> postCommentUseCase.postEpisodeComment(
                             episodeId = mediaId,
                             comment = comment,
                             spoiler = spoiler,
                         )
+
                         else -> throw IllegalStateException("Invalid media type for new comment.")
                     }
                 }

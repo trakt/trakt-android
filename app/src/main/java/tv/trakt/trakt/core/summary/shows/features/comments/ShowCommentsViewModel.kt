@@ -178,7 +178,10 @@ internal class ShowCommentsViewModel(
                     loadUserReactionsUseCase.isLoaded() -> {
                         loadUserReactionsUseCase.loadLocalReactions()
                     }
-                    else -> loadUserReactionsUseCase.loadReactions()
+
+                    else -> {
+                        loadUserReactionsUseCase.loadReactions()
+                    }
                 }
 
                 userReactionsState.update { userReactions }

@@ -200,7 +200,10 @@ internal class MovieCommentsViewModel(
                     loadUserReactionsUseCase.isLoaded() -> {
                         loadUserReactionsUseCase.loadLocalReactions()
                     }
-                    else -> loadUserReactionsUseCase.loadReactions()
+
+                    else -> {
+                        loadUserReactionsUseCase.loadReactions()
+                    }
                 }
 
                 userReactionsState.update { userReactions }

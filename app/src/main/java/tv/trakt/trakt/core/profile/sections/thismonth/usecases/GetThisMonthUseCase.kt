@@ -34,6 +34,7 @@ internal class GetThisMonthUseCase(
             !loadUserProgressUseCase.isMoviesLoaded() -> {
                 loadUserProgressUseCase.loadMoviesProgress()
             }
+
             else -> {
                 loadUserProgressUseCase.loadLocalMovies()
             }
@@ -51,6 +52,7 @@ internal class GetThisMonthUseCase(
             !loadUserProgressUseCase.isShowsLoaded() -> {
                 loadUserProgressUseCase.loadShowsProgress()
             }
+
             else -> {
                 loadUserProgressUseCase.loadLocalShows()
             }

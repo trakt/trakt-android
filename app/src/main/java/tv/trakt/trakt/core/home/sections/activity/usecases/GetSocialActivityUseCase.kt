@@ -55,17 +55,20 @@ internal class GetSocialActivityUseCase(
         return items
             .asyncMap {
                 when (it.type) {
-                    MOVIE -> HomeActivityItem.MovieItem(
-                        id = it.id,
-                        user = User.fromDto(it.user),
-                        activity = it.action,
-                        activityAt = it.activityAt.toInstant(),
-                        movie = Movie.fromDto(
-                            checkNotNull(it.movie) {
-                                "Movie should not be null if type is MOVIE"
-                            },
-                        ),
-                    )
+                    MOVIE -> {
+                        HomeActivityItem.MovieItem(
+                            id = it.id,
+                            user = User.fromDto(it.user),
+                            activity = it.action,
+                            activityAt = it.activityAt.toInstant(),
+                            movie = Movie.fromDto(
+                                checkNotNull(it.movie) {
+                                    "Movie should not be null if type is MOVIE"
+                                },
+                            ),
+                        )
+                    }
+
                     EPISODE -> {
                         HomeActivityItem.EpisodeItem(
                             id = it.id,

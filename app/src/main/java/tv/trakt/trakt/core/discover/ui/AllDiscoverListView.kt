@@ -128,6 +128,7 @@ private fun LazyListScope.listItems(
                         fadeOutSpec = null,
                     ),
             )
+
             is MovieItem -> MovieListItem(
                 item = item,
                 watched = collectionState.isWatched(item.id, item.type),

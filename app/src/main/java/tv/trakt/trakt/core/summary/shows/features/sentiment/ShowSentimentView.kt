@@ -97,6 +97,7 @@ private fun ShowSentimentContent(
                             .padding(contentPadding),
                     )
                 }
+
                 DONE -> {
                     if (state.sentiment != null) {
                         DetailsSentiment(

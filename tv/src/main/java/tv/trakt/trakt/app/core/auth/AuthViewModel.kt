@@ -100,18 +100,20 @@ internal class AuthViewModel(
                         Timber.i("Device token received successfully")
                     }
 
-                    is Failure -> when (state.code) {
-                        PENDING -> {
-                            delay(delayDuration)
-                            pollDeviceToken(
-                                deviceCode = deviceCode,
-                                delayDuration = delayDuration,
-                            )
-                        }
+                    is Failure -> {
+                        when (state.code) {
+                            PENDING -> {
+                                delay(delayDuration)
+                                pollDeviceToken(
+                                    deviceCode = deviceCode,
+                                    delayDuration = delayDuration,
+                                )
+                            }
 
-                        else -> {
-                            deviceCodeState.update { null }
-                            loadingState.update { REJECTED }
+                            else -> {
+                                deviceCodeState.update { null }
+                                loadingState.update { REJECTED }
+                            }
                         }
                     }
                 }
@@ -135,6 +137,7 @@ internal class AuthViewModel(
                     crashlytics.recordException(error)
                 }
             }
+
             is SerializationException -> {
                 crashlytics.recordException(error)
             }

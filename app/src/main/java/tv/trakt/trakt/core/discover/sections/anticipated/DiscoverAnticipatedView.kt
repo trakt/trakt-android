@@ -168,6 +168,7 @@ internal fun DiscoverAnticipatedContent(
                         modifier = Modifier.padding(bottom = 3.75.dp),
                     )
                 }
+
                 DONE -> {
                     if (state.error != null) {
                         Text(

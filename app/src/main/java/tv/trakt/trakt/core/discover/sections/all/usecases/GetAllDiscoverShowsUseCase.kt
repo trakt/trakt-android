@@ -30,16 +30,19 @@ internal class GetAllDiscoverShowsUseCase(
                 limit = DEFAULT_ALL_LIMIT,
                 skipLocal = skipLocal,
             )
+
             ANTICIPATED -> getAnticipatedShowsUseCase.getShows(
                 page = page,
                 limit = DEFAULT_ALL_LIMIT,
                 skipLocal = skipLocal,
             )
+
             POPULAR -> getPopularShowsUseCase.getShows(
                 page = page,
                 limit = DEFAULT_ALL_LIMIT,
                 skipLocal = skipLocal,
             )
+
             RECOMMENDED -> getRecommendedShowsUseCase.getShows(
                 limit = DEFAULT_ALL_LIMIT,
                 skipLocal = skipLocal,

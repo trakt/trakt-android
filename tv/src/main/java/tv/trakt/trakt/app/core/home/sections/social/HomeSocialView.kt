@@ -128,7 +128,7 @@ private fun ContentList(
             key = { it.id },
         ) {
             when (it) {
-                is SocialActivityItem.MovieItem ->
+                is SocialActivityItem.MovieItem -> {
                     MovieSocialItemView(
                         item = it,
                         onClick = onMovieClick,
@@ -138,7 +138,9 @@ private fun ContentList(
                             fadeOutSpec = null,
                         ),
                     )
-                is SocialActivityItem.EpisodeItem ->
+                }
+
+                is SocialActivityItem.EpisodeItem -> {
                     EpisodeSocialItemView(
                         item = it,
                         onClick = onEpisodeClick,
@@ -148,6 +150,7 @@ private fun ContentList(
                             fadeOutSpec = null,
                         ),
                     )
+                }
             }
         }
 

@@ -169,6 +169,7 @@ internal fun DiscoverRecommendedContent(
                         modifier = Modifier.padding(bottom = 3.75.dp),
                     )
                 }
+
                 DONE -> {
                     if (state.error != null) {
                         Text(
@@ -293,6 +294,7 @@ private fun ContentListItem(
                         }
                     }
                 }
+
                 is ShowItem -> {
                     val airedEpisodes = stringResource(
                         R.string.tag_text_number_of_episodes,

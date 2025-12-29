@@ -171,6 +171,7 @@ internal fun ShowEpisodesList(
                                                     },
                                             )
                                         }
+
                                         item.isWatched -> {
                                             Icon(
                                                 painter = painterResource(R.drawable.ic_check_double),
@@ -183,6 +184,7 @@ internal fun ShowEpisodesList(
                                                     },
                                             )
                                         }
+
                                         isReleased && item.isCheckable -> {
                                             Icon(
                                                 painter = painterResource(R.drawable.ic_check),

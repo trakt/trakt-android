@@ -54,6 +54,7 @@ internal class ActivityItemContextViewModel(
                             source = "activity_context",
                         )
                     }
+
                     is EpisodeItem -> {
                         updateEpisodeHistoryUseCase.removePlayFromHistory(playId = item.id)
                         analytics.progress.logRemoveWatchedMedia(

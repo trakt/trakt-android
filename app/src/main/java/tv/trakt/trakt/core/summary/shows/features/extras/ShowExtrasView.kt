@@ -111,6 +111,7 @@ private fun ShowExtrasContent(
                         contentPadding = contentPadding,
                     )
                 }
+
                 DONE -> {
                     Column(
                         verticalArrangement = spacedBy(0.dp),

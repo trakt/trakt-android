@@ -93,11 +93,15 @@ internal class ShowSeasonsViewModel(
 
                 val watched = when {
                     !authenticated -> null
+
                     else -> when {
                         loadUserProgressUseCase.isShowsLoaded() -> {
                             loadUserProgressUseCase.loadLocalShows()
                         }
-                        else -> loadUserProgressUseCase.loadShowsProgress()
+
+                        else -> {
+                            loadUserProgressUseCase.loadShowsProgress()
+                        }
                     }.firstOrNull {
                         it.show.ids.trakt == show.ids.trakt
                     }
@@ -160,10 +164,14 @@ internal class ShowSeasonsViewModel(
                         loadUserProgressUseCase.isShowsLoaded() -> {
                             loadUserProgressUseCase.loadLocalShows()
                         }
-                        else -> loadUserProgressUseCase.loadShowsProgress()
+
+                        else -> {
+                            loadUserProgressUseCase.loadShowsProgress()
+                        }
                     }.firstOrNull {
                         it.show.ids.trakt == show.ids.trakt
                     }
+
                     else -> null
                 }
 

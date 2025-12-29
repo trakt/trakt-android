@@ -171,6 +171,7 @@ private fun EpisodeSeasonContent(
                         contentPadding = contentPadding,
                     )
                 }
+
                 DONE -> {
                     if (state.episodes.isEmpty()) {
                         ContentEmpty(

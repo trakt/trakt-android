@@ -341,10 +341,12 @@ internal class AllHomeWatchlistViewModel(
                     ids = setOf(item.id),
                     notify = true,
                 )
+
                 is MovieItem -> userWatchlistSource.removeMovies(
                     ids = setOf(item.id),
                     notify = true,
                 )
+
                 else -> Unit
             }
         }

@@ -69,6 +69,7 @@ internal fun MovieContextView(
                 !state.isWatched -> onAddWatched(movie)
                 else -> onRemoveWatched(movie)
             }
+
             state.loadingWatchlist == LoadingState.DONE -> when {
                 !state.isWatchlist -> onAddWatchlist(movie)
                 else -> onRemoveWatchlist(movie)
@@ -88,7 +89,10 @@ internal fun MovieContextView(
         modifier = modifier,
         onWatchedClick = {
             when {
-                state.isWatched -> confirmRemoveWatchedSheet = true
+                state.isWatched -> {
+                    confirmRemoveWatchedSheet = true
+                }
+
                 else -> {
                     dateSheet = true
                 }
