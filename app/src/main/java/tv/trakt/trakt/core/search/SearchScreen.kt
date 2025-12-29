@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
@@ -31,25 +32,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
-import tv.trakt.trakt.core.search.model.SearchFilter
 import tv.trakt.trakt.core.search.model.SearchFilter.MEDIA
 import tv.trakt.trakt.core.search.model.SearchFilter.MOVIES
 import tv.trakt.trakt.core.search.model.SearchFilter.PEOPLE
 import tv.trakt.trakt.core.search.model.SearchFilter.SHOWS
 import tv.trakt.trakt.core.search.model.SearchInput
-import tv.trakt.trakt.core.search.model.SearchItem
 import tv.trakt.trakt.core.search.views.SearchGridItem
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
-import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -156,13 +154,8 @@ private fun SearchScreenContent(
         )
 
         ContentList(
+            state = state,
             listState = contentGridState,
-            searching = state.searching,
-            query = state.input.query,
-            filter = state.input.filter,
-            popularItems = state.popularResults?.items ?: EmptyImmutableList,
-            resultItems = state.searchResult?.items ?: EmptyImmutableList,
-            collection = state.collection,
             onShowClick = onShowClick,
             onShowLongClick = onShowLongClick,
             onMovieClick = onMovieClick,
@@ -175,18 +168,13 @@ private fun SearchScreenContent(
 
 @Composable
 private fun ContentList(
+    state: SearchState,
     listState: LazyGridState,
-    searching: Boolean,
-    query: String,
-    filter: SearchFilter,
-    popularItems: ImmutableList<SearchItem>,
-    resultItems: ImmutableList<SearchItem>,
-    collection: UserCollectionState,
-    onShowClick: (Show) -> Unit = {},
-    onMovieClick: (Movie) -> Unit = {},
-    onShowLongClick: (Show) -> Unit = {},
-    onMovieLongClick: (Movie) -> Unit = {},
-    onPersonClick: (Person) -> Unit = {},
+    onShowClick: (Show) -> Unit,
+    onMovieClick: (Movie) -> Unit,
+    onShowLongClick: (Show) -> Unit,
+    onMovieLongClick: (Movie) -> Unit,
+    onPersonClick: (Person) -> Unit,
     error: Exception? = null,
 ) {
     val topPadding = WindowInsets.statusBars.asPaddingValues()
@@ -202,8 +190,8 @@ private fun ContentList(
             .plus(TraktTheme.spacing.mainPageBottomSpace),
     )
 
-    val isSearching = remember(searching, resultItems) {
-        searching || resultItems.isNotEmpty()
+    val isSearching = remember(state.searching, state.searchResult?.items) {
+        state.searching || state.searchResult?.items?.isNotEmpty() == true
     }
 
     LazyVerticalGrid(
@@ -214,103 +202,29 @@ private fun ContentList(
         contentPadding = contentPadding,
         overscrollEffect = null,
     ) {
-        if (!isSearching && query.isBlank()) {
-            item(span = { GridItemSpan(maxLineSpan) }) {
-                TraktHeader(
-                    title = when (filter) {
-                        MEDIA, SHOWS, MOVIES -> stringResource(R.string.list_title_most_popular_searches)
-                        PEOPLE -> stringResource(R.string.list_title_birthdays_this_month)
-                    },
-                    modifier = Modifier
-                        .padding(top = topPadding)
-                        .animateItem(
-                            fadeInSpec = fadeSpec,
-                            fadeOutSpec = fadeSpec,
-                        ),
-                )
-            }
-
-            if (error == null) {
-                items(
-                    count = popularItems.size,
-                    key = { index -> "${popularItems[index].key}_popular" },
-                ) { index ->
-                    val item = popularItems[index]
-                    SearchGridItem(
-                        item = item,
-                        filter = filter,
-                        watched = collection.isWatched(item.id, item.type),
-                        watchlist = collection.isWatchlist(item.id, item.type),
-                        onShowClick = onShowClick,
-                        onShowLongClick = onShowLongClick,
-                        onMovieClick = onMovieClick,
-                        onMovieLongClick = onMovieLongClick,
-                        onPersonClick = onPersonClick,
-                        modifier = Modifier
-                            .padding(bottom = 6.dp)
-                            .animateItem(
-                                fadeInSpec = fadeSpec,
-                                fadeOutSpec = fadeSpec,
-                            ),
-                    )
-                }
-            }
+        if (!isSearching && state.input.query.isBlank()) {
+            topSearchesContent(
+                state = state,
+                topPadding = topPadding,
+                onShowClick = onShowClick,
+                onShowLongClick = onShowLongClick,
+                onMovieClick = onMovieClick,
+                onMovieLongClick = onMovieLongClick,
+                onPersonClick = onPersonClick,
+                error = error,
+            )
         }
 
         if (isSearching) {
-            item(span = { GridItemSpan(maxLineSpan) }) {
-                TraktHeader(
-                    title = stringResource(filter.displayRes),
-                    modifier = Modifier
-                        .padding(top = topPadding)
-                        .animateItem(
-                            fadeInSpec = fadeSpec,
-                            fadeOutSpec = fadeSpec,
-                        ),
-                )
-            }
-            when {
-                resultItems.isNotEmpty() -> {
-                    items(
-                        count = resultItems.size,
-                        key = { index -> resultItems[index].key },
-                    ) { index ->
-                        val item = resultItems[index]
-                        SearchGridItem(
-                            item = item,
-                            filter = filter,
-                            watched = collection.isWatched(item.id, item.type),
-                            watchlist = collection.isWatchlist(item.id, item.type),
-                            onShowClick = onShowClick,
-                            onShowLongClick = onShowLongClick,
-                            onMovieClick = onMovieClick,
-                            onMovieLongClick = onMovieLongClick,
-                            onPersonClick = onPersonClick,
-                            modifier = Modifier
-                                .padding(bottom = 6.dp)
-                                .animateItem(
-                                    fadeInSpec = fadeSpec,
-                                    fadeOutSpec = fadeSpec,
-                                ),
-                        )
-                    }
-                }
-
-                else -> {
-                    items(count = 12) {
-                        VerticalMediaSkeletonCard(
-                            chipRatio = 0.66F,
-                            chipSpacing = 8.dp,
-                            modifier = Modifier
-                                .padding(bottom = 9.25.dp)
-                                .animateItem(
-                                    fadeInSpec = fadeSpec,
-                                    fadeOutSpec = fadeSpec,
-                                ),
-                        )
-                    }
-                }
-            }
+            searchingContent(
+                state = state,
+                topPadding = topPadding,
+                onShowClick = onShowClick,
+                onShowLongClick = onShowLongClick,
+                onMovieClick = onMovieClick,
+                onMovieLongClick = onMovieLongClick,
+                onPersonClick = onPersonClick,
+            )
         }
 
         if (error != null) {
@@ -323,6 +237,134 @@ private fun ContentList(
                 )
             }
         }
+    }
+}
+
+private fun LazyGridScope.topSearchesContent(
+    state: SearchState,
+    topPadding: Dp,
+    onShowClick: (Show) -> Unit,
+    onShowLongClick: (Show) -> Unit,
+    onMovieClick: (Movie) -> Unit,
+    onMovieLongClick: (Movie) -> Unit,
+    onPersonClick: (Person) -> Unit,
+    error: Exception?,
+) {
+    item(span = { GridItemSpan(maxLineSpan) }) {
+        TraktHeader(
+            title = when (state.input.filter) {
+                MEDIA, SHOWS, MOVIES -> stringResource(R.string.list_title_most_popular_searches)
+                PEOPLE -> stringResource(R.string.list_title_birthdays_this_month)
+            },
+            modifier = Modifier
+                .padding(top = topPadding)
+                .animateItem(
+                    fadeInSpec = fadeSpec,
+                    fadeOutSpec = fadeSpec,
+                ),
+        )
+    }
+
+    if (error == null) {
+        val popularItems = state.popularResults?.items ?: EmptyImmutableList
+        if (popularItems.isEmpty() && state.popularLoading.isLoading) {
+            loadingSkeletonsItems()
+        } else {
+            items(
+                count = popularItems.size,
+                key = { index -> "${popularItems[index].key}_popular" },
+            ) { index ->
+                val item = popularItems[index]
+                SearchGridItem(
+                    item = item,
+                    filter = state.input.filter,
+                    watched = state.collection.isWatched(item.id, item.type),
+                    watchlist = state.collection.isWatchlist(item.id, item.type),
+                    onShowClick = onShowClick,
+                    onShowLongClick = onShowLongClick,
+                    onMovieClick = onMovieClick,
+                    onMovieLongClick = onMovieLongClick,
+                    onPersonClick = onPersonClick,
+                    modifier = Modifier
+                        .padding(bottom = 6.dp)
+                        .animateItem(
+                            fadeInSpec = fadeSpec,
+                            fadeOutSpec = fadeSpec,
+                        ),
+                )
+            }
+        }
+    }
+}
+
+private fun LazyGridScope.searchingContent(
+    state: SearchState,
+    topPadding: Dp,
+    onShowClick: (Show) -> Unit,
+    onShowLongClick: (Show) -> Unit,
+    onMovieClick: (Movie) -> Unit,
+    onMovieLongClick: (Movie) -> Unit,
+    onPersonClick: (Person) -> Unit,
+) {
+    val resultItems = state.searchResult?.items ?: EmptyImmutableList
+
+    item(span = { GridItemSpan(maxLineSpan) }) {
+        TraktHeader(
+            title = stringResource(state.input.filter.displayRes),
+            modifier = Modifier
+                .padding(top = topPadding)
+                .animateItem(
+                    fadeInSpec = fadeSpec,
+                    fadeOutSpec = fadeSpec,
+                ),
+        )
+    }
+
+    when {
+        resultItems.isNotEmpty() -> {
+            items(
+                count = resultItems.size,
+                key = { index -> resultItems[index].key },
+            ) { index ->
+                val item = resultItems[index]
+                SearchGridItem(
+                    item = item,
+                    filter = state.input.filter,
+                    watched = state.collection.isWatched(item.id, item.type),
+                    watchlist = state.collection.isWatchlist(item.id, item.type),
+                    onShowClick = onShowClick,
+                    onShowLongClick = onShowLongClick,
+                    onMovieClick = onMovieClick,
+                    onMovieLongClick = onMovieLongClick,
+                    onPersonClick = onPersonClick,
+                    modifier = Modifier
+                        .padding(bottom = 6.dp)
+                        .animateItem(
+                            fadeInSpec = fadeSpec,
+                            fadeOutSpec = fadeSpec,
+                        ),
+                )
+            }
+        }
+
+        else -> {
+            loadingSkeletonsItems()
+        }
+    }
+}
+
+private fun LazyGridScope.loadingSkeletonsItems() {
+    items(count = 12) {
+        VerticalMediaSkeletonCard(
+            chipRatio = 0.66F,
+            chipSpacing = 8.dp,
+            modifier = Modifier
+                .padding(bottom = 9.25.dp)
+                .animateItem(
+                    fadeInSpec = fadeSpec,
+                    fadeOutSpec = fadeSpec,
+                ),
+        )
     }
 }
 

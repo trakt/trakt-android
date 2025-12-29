@@ -31,7 +31,6 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.people.data.local.PeopleLocalDataSource
 import tv.trakt.trakt.core.search.SearchState.SearchResult
-import tv.trakt.trakt.core.search.SearchState.State
 import tv.trakt.trakt.core.search.SearchState.UserState
 import tv.trakt.trakt.core.search.model.SearchFilter.MEDIA
 import tv.trakt.trakt.core.search.model.SearchFilter.MOVIES
@@ -62,9 +61,8 @@ internal class SearchViewModel(
     private val initialState = SearchState()
 
     private val inputState = MutableStateFlow(initialState.input)
-    private val screenState = MutableStateFlow(initialState.state)
+    private val popularLoadingState = MutableStateFlow(initialState.popularLoading)
     private val popularResultState = MutableStateFlow(initialState.popularResults)
-
     private val searchResultState = MutableStateFlow(initialState.searchResult)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
@@ -116,6 +114,7 @@ internal class SearchViewModel(
                 error.rethrowCancellation {
                     errorState.update { error }
                     searchingState.update { false }
+                    popularLoadingState.update { LoadingState.DONE }
                     Timber.recordError(error)
                 }
             }
@@ -124,7 +123,7 @@ internal class SearchViewModel(
 
     private suspend fun loadLocalPopularSearches() {
         return coroutineScope {
-            if (searchingState.value || screenState.value == State.SEARCH_RESULTS) {
+            if (searchingState.value) {
                 return@coroutineScope
             }
 
@@ -203,9 +202,11 @@ internal class SearchViewModel(
 
     private suspend fun loadPopularSearches() {
         return coroutineScope {
-            if (searchingState.value || screenState.value == State.SEARCH_RESULTS) {
+            if (searchingState.value) {
                 return@coroutineScope
             }
+
+            popularLoadingState.update { LoadingState.LOADING }
 
             val showsAsync = async {
                 if (!getPopularSearchesUseCase.isLocalShowsValid()) {
@@ -283,6 +284,7 @@ internal class SearchViewModel(
             }
 
             popularResultState.update { results }
+            popularLoadingState.update { LoadingState.DONE }
         }
     }
 
@@ -468,9 +470,9 @@ internal class SearchViewModel(
 
     @Suppress("UNCHECKED_CAST")
     val state = combine(
-        screenState,
         inputState,
         searchResultState,
+        popularLoadingState,
         popularResultState,
         collectionStateProvider.stateFlow,
         navigateShow,
@@ -481,9 +483,9 @@ internal class SearchViewModel(
         errorState,
     ) { state ->
         SearchState(
-            state = state[0] as State,
-            input = state[1] as SearchInput,
-            searchResult = state[2] as SearchResult?,
+            input = state[0] as SearchInput,
+            searchResult = state[1] as SearchResult?,
+            popularLoading = state[2] as LoadingState,
             popularResults = state[3] as SearchResult?,
             collection = state[4] as UserCollectionState,
             navigateShow = state[5] as Show?,

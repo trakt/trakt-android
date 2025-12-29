@@ -15,6 +15,7 @@ import tv.trakt.trakt.core.user.UserCollectionState
 internal data class SearchState(
     val input: SearchInput = SearchInput(),
     val state: State = State.IDLE,
+    val popularLoading: LoadingState = LoadingState.IDLE,
     val popularResults: SearchResult? = null,
     val searchResult: SearchResult? = null,
     val navigateShow: Show? = null,
