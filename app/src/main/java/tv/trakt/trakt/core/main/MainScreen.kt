@@ -85,6 +85,7 @@ import tv.trakt.trakt.core.profile.navigation.navigateToProfile
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.navigateToSearch
 import tv.trakt.trakt.core.welcome.WelcomeScreen
+import tv.trakt.trakt.core.welcome.onboarding.OnboardingScreen
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.snackbar.MainSnackbarHost
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -175,81 +176,91 @@ internal fun MainScreen(
         Crossfade(
             targetState = state.welcome,
             animationSpec = tween(500),
-        ) { isWelcome ->
-            if (isWelcome) {
-                WelcomeScreen(
-                    onDismiss = viewModel::dismissWelcome,
-                )
-            } else {
-                MainNavHost(
-                    navController = navController,
-                    customThemeEnabled = customThemeConfig?.enabled == true,
-                    userLoading = state.loadingUser.isLoading,
-                    searchInput = searchState.searchInput,
-                    onSearchLoading = searchState.onSearchLoading,
-                )
-
-                AnimatedVisibility(
-                    visible = localBottomBarVisibility.value,
-                    enter = fadeIn(tween(200)) + slideInVertically(initialOffsetY = { it / 2 }),
-                    exit = fadeOut(tween(200)) + slideOutVertically(targetOffsetY = { it / 2 }),
-                    modifier = Modifier
-                        .align(BottomCenter),
-                ) {
-                    NavigationBar(
-                        containerColor = TraktTheme.colors.navigationContainer,
-                        contentColor = TraktTheme.colors.accent,
-                        modifier = Modifier
-                            .fillMaxWidth(TraktTheme.size.navigationBarRatio)
-                            .dropShadow(
-                                shape = RoundedCornerShape(
-                                    topStart = 24.dp,
-                                    topEnd = 24.dp,
-                                ),
-                                shadow = Shadow(
-                                    radius = 6.dp,
-                                    color = Color.Black,
-                                    spread = 2.dp,
-                                    alpha = 0.25F,
-                                ),
-                            )
-                            .clip(
-                                RoundedCornerShape(
-                                    topStart = 24.dp,
-                                    topEnd = 24.dp,
-                                ),
-                            ),
-                    ) {
-                        TraktMenuBar(
-                            currentDestination = currentDestination.value?.destination,
-                            enabled = localBottomBarVisibility.value,
-                            user = state.user,
-                            searchState = searchState,
-                            onSelected = {
-                                navController.navigateToMainDestination(it.destination)
-                            },
-                            onProfileSelected = {
-                                if (state.user != null) {
-                                    navController.navigateToMainDestination(ProfileDestination)
-                                } else {
-                                    localUriHandler.openUri(ConfigAuth.authCodeUrl)
-                                }
-                            },
-                            onReselected = {
-                                currentDestination.value?.destination?.let {
-                                    if (it.hasRoute(ListsDestination::class) && state.user != null) {
-                                        navController.navigateToWatchlist()
-                                    }
-                                }
-                            },
-                            onSearchInput = searchState.onSearchInput,
-                        )
-                    }
+        ) { targetState ->
+            when {
+                targetState.welcome -> {
+                    WelcomeScreen(
+                        onDismiss = viewModel::dismissWelcome,
+                    )
                 }
 
-                MainSnackbarHost(
-                    snackbarHostState = localSnackbar,
-                )
+                targetState.onboarding -> {
+                    OnboardingScreen(
+                        onDismiss = viewModel::dismissOnboarding,
+                    )
+                }
+
+                else -> {
+                    MainNavHost(
+                        navController = navController,
+                        customThemeEnabled = customThemeConfig?.enabled == true,
+                        userLoading = state.loadingUser.isLoading,
+                        searchInput = searchState.searchInput,
+                        onSearchLoading = searchState.onSearchLoading,
+                    )
+
+                    AnimatedVisibility(
+                        visible = localBottomBarVisibility.value,
+                        enter = fadeIn(tween(200)) + slideInVertically(initialOffsetY = { it / 2 }),
+                        exit = fadeOut(tween(200)) + slideOutVertically(targetOffsetY = { it / 2 }),
+                        modifier = Modifier
+                            .align(BottomCenter),
+                    ) {
+                        NavigationBar(
+                            containerColor = TraktTheme.colors.navigationContainer,
+                            contentColor = TraktTheme.colors.accent,
+                            modifier = Modifier
+                                .fillMaxWidth(TraktTheme.size.navigationBarRatio)
+                                .dropShadow(
+                                    shape = RoundedCornerShape(
+                                        topStart = 24.dp,
+                                        topEnd = 24.dp,
+                                    ),
+                                    shadow = Shadow(
+                                        radius = 6.dp,
+                                        color = Color.Black,
+                                        spread = 2.dp,
+                                        alpha = 0.25F,
+                                    ),
+                                )
+                                .clip(
+                                    RoundedCornerShape(
+                                        topStart = 24.dp,
+                                        topEnd = 24.dp,
+                                    ),
+                                ),
+                        ) {
+                            TraktMenuBar(
+                                currentDestination = currentDestination.value?.destination,
+                                enabled = localBottomBarVisibility.value,
+                                user = state.user,
+                                searchState = searchState,
+                                onSelected = {
+                                    navController.navigateToMainDestination(it.destination)
+                                },
+                                onProfileSelected = {
+                                    if (state.user != null) {
+                                        navController.navigateToMainDestination(ProfileDestination)
+                                    } else {
+                                        localUriHandler.openUri(ConfigAuth.authCodeUrl)
+                                    }
+                                },
+                                onReselected = {
+                                    currentDestination.value?.destination?.let {
+                                        if (it.hasRoute(ListsDestination::class) && state.user != null) {
+                                            navController.navigateToWatchlist()
+                                        }
+                                    }
+                                },
+                                onSearchInput = searchState.onSearchInput,
+                            )
+                        }
+                    }
+
+                    MainSnackbarHost(
+                        snackbarHostState = localSnackbar,
+                    )
+                }
             }
         }
 
@@ -296,7 +307,7 @@ internal fun MainScreen(
     }
 
     BackHandler(
-        enabled = !state.welcome,
+        enabled = !state.welcome.isActive,
     ) {
         with(currentDestination.value?.destination) {
             if (isStartDestination(this)) {

@@ -115,16 +115,22 @@ internal class MainViewModel(
 
     private fun loadWelcome() {
         viewModelScope.launch {
+            val authenticatedAsync = async { sessionManager.isAuthenticated() }
+
+            val welcomeDismissedAsync = async { dismissWelcomeUseCase.isWelcomeDismissed() }
+            val onboardingDismissedAsync = async { dismissWelcomeUseCase.isOnboardingDismissed() }
+
+            val (authenticated, welcomeDismissed, onboardingDissmissed) = awaitAll(
+                authenticatedAsync,
+                welcomeDismissedAsync,
+                onboardingDismissedAsync,
+            )
+
             welcomeState.update {
-                val authenticatedAsync = async { sessionManager.isAuthenticated() }
-                val welcomeDismissedAsync = async { dismissWelcomeUseCase.isWelcomeDismissed() }
-
-                val (authenticated, dismissed) = awaitAll(
-                    authenticatedAsync,
-                    welcomeDismissedAsync,
+                MainState.WelcomeState(
+                    welcome = !authenticated && !welcomeDismissed,
+                    onboarding = !authenticated && !onboardingDissmissed,
                 )
-
-                !authenticated && !dismissed
             }
         }
     }
@@ -199,8 +205,15 @@ internal class MainViewModel(
 
     fun dismissWelcome() {
         viewModelScope.launch {
-            welcomeState.update { false }
+            welcomeState.update { it.copy(welcome = false) }
             dismissWelcomeUseCase.dismissWelcome()
+        }
+    }
+
+    fun dismissOnboarding() {
+        viewModelScope.launch {
+            welcomeState.update { it.copy(onboarding = false) }
+            dismissWelcomeUseCase.dismissOnboarding()
         }
     }
 
@@ -214,7 +227,7 @@ internal class MainViewModel(
             user = state[0] as User?,
             userVipStatus = state[1] as Pair<Boolean?, Boolean?>?,
             loadingUser = state[2] as LoadingState,
-            welcome = state[3] as Boolean,
+            welcome = state[3] as MainState.WelcomeState,
         )
     }.stateIn(
         scope = viewModelScope,

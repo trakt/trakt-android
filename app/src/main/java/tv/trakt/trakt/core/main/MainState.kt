@@ -9,5 +9,14 @@ internal data class MainState(
     val user: User? = null,
     val userVipStatus: Pair<Boolean?, Boolean?>? = null,
     val loadingUser: LoadingState = LoadingState.IDLE,
-    val welcome: Boolean = false,
-)
+    val welcome: WelcomeState = WelcomeState(),
+) {
+    @Immutable
+    data class WelcomeState(
+        val welcome: Boolean = false,
+        val onboarding: Boolean = false,
+    ) {
+        val isActive: Boolean
+            get() = welcome || onboarding
+    }
+}

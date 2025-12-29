@@ -277,6 +277,8 @@
     <string name="text_vip_upsell_default_2">Upgrade to VIP!</string>
     <string name="text_vip_upsell_default_description_2">No ads, unlimited lists and more.</string>
 
+    <string name="button_text_continue">Continue</string>
+
     <!--  Non Translatable  -->
 
     <string name="translated_value_library_plex" translatable="false">Plex</string>
