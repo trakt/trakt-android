@@ -66,6 +66,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Shade900
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
+import tv.trakt.trakt.core.summary.people.ui.HistoryCreditsList
 import tv.trakt.trakt.core.summary.people.ui.MoviesCreditsList
 import tv.trakt.trakt.core.summary.people.ui.ShowsCreditsList
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
@@ -238,6 +239,32 @@ internal fun PersonDetailsContent(
                     }
                 }
 
+                if (state.user != null) {
+                    item {
+                        AnimatedVisibility(
+                            visible = state.loadingCredits != IDLE,
+                            enter = fadeIn(),
+                            exit = fadeOut(),
+                        ) {
+                            HistoryCreditsList(
+                                loading = state.loadingCredits,
+                                personShowCredits = state.personShowCredits,
+                                personMovieCredits = state.personMovieCredits,
+                                userCollection = state.collection,
+                                sectionPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onShowClick = onShowClick,
+                                onMovieClick = onMovieClick,
+                                onShowLongClick = onShowLongClick,
+                                onMovieLongClick = onMovieLongClick,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 24.dp),
+                            )
+                        }
+                    }
+                }
+
                 item {
                     AnimatedVisibility(
                         visible = state.loadingCredits != IDLE,
@@ -247,13 +274,14 @@ internal fun PersonDetailsContent(
                         ShowsCreditsList(
                             loading = state.loadingCredits,
                             listItems = (state.personShowCredits ?: emptyMap()).toImmutableMap(),
+                            userCollection = state.collection,
                             sectionPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             onClick = onShowClick,
                             onLongClick = onShowLongClick,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(top = 24.dp),
+                                .padding(top = 32.dp),
                         )
                     }
                 }
@@ -267,6 +295,7 @@ internal fun PersonDetailsContent(
                         MoviesCreditsList(
                             loading = state.loadingCredits,
                             listItems = (state.personMovieCredits ?: emptyMap()).toImmutableMap(),
+                            userCollection = state.collection,
                             sectionPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             onClick = onMovieClick,
@@ -388,7 +417,13 @@ internal fun ListLoadingView(
             .alpha(if (visible) 1F else 0F),
     ) {
         items(count = 6) {
-            VerticalMediaSkeletonCard()
+            VerticalMediaSkeletonCard(
+                chip = true,
+                secondaryChip = true,
+                chipRatio = 0.66F,
+                secondaryChipRatio = 0.5F,
+                chipSpacing = 8.dp,
+            )
         }
     }
 }

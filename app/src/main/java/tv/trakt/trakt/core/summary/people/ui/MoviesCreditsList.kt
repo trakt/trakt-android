@@ -40,9 +40,12 @@ import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.summary.people.ListEmptyView
 import tv.trakt.trakt.core.summary.people.ListLoadingView
+import tv.trakt.trakt.core.summary.people.model.PersonCreditItem
+import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.FilterChip
 import tv.trakt.trakt.ui.components.FilterChipGroup
@@ -53,7 +56,8 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun MoviesCreditsList(
     loading: LoadingState,
-    listItems: ImmutableMap<String, ImmutableList<Movie>>,
+    listItems: ImmutableMap<String, ImmutableList<PersonCreditItem.MovieItem>>,
+    userCollection: UserCollectionState,
     modifier: Modifier = Modifier,
     sectionPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
@@ -132,31 +136,48 @@ internal fun MoviesCreditsList(
                             ) {
                                 items(
                                     items = listItems[selectedFilter] ?: EmptyImmutableList,
-                                    key = { it.ids.trakt.value },
+                                    key = { it.key },
                                 ) { item ->
                                     VerticalMediaCard(
                                         title = item.title,
                                         imageUrl = item.images?.getPosterUrl(),
-                                        onClick = { onClick?.invoke(item) },
-                                        onLongClick = { onLongClick?.invoke(item) },
+                                        watched = userCollection.isWatched(item.id, MOVIE),
+                                        watchlist = userCollection.isWatchlist(item.id, MOVIE),
+                                        onClick = { onClick?.invoke(item.movie) },
+                                        onLongClick = { onLongClick?.invoke(item.movie) },
+                                        chipSpacing = 10.dp,
                                         chipContent = { modifier ->
                                             val footerText = remember {
                                                 val runtime = item.runtime?.inWholeMinutes
                                                 if (runtime != null) {
-                                                    "${item.released?.year ?: item.year} • ${runtime.durationFormat()}"
+                                                    "${item.released?.year ?: item.movie.year} • ${runtime.durationFormat()}"
                                                 } else {
-                                                    "${item.released?.year ?: item.year}"
+                                                    "${item.released?.year ?: item.movie.year}"
                                                 }
                                             }
-                                            Text(
-                                                text = footerText,
-                                                style = TraktTheme.typography.cardTitle,
-                                                color = TraktTheme.colors.textPrimary,
-                                                textAlign = TextAlign.Center,
-                                                maxLines = 1,
-                                                overflow = TextOverflow.Ellipsis,
+
+                                            Column(
+                                                verticalArrangement = Arrangement.spacedBy(0.dp),
                                                 modifier = modifier,
-                                            )
+                                            ) {
+                                                Text(
+                                                    text = footerText,
+                                                    style = TraktTheme.typography.cardTitle,
+                                                    color = TraktTheme.colors.textPrimary,
+                                                    textAlign = TextAlign.Center,
+                                                    maxLines = 1,
+                                                    overflow = TextOverflow.Ellipsis,
+                                                    modifier = modifier,
+                                                )
+
+                                                Text(
+                                                    text = (item.credit ?: "").ifBlank { "N/A" },
+                                                    style = TraktTheme.typography.cardSubtitle,
+                                                    color = TraktTheme.colors.textSecondary,
+                                                    maxLines = 1,
+                                                    overflow = TextOverflow.Ellipsis,
+                                                )
+                                            }
                                         },
                                         modifier = Modifier.animateItem(
                                             fadeInSpec = null,
