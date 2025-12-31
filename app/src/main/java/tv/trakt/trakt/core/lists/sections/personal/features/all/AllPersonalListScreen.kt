@@ -2,6 +2,8 @@
 
 package tv.trakt.trakt.core.lists.sections.personal.features.all
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,7 +13,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,6 +25,9 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -39,6 +43,7 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
@@ -48,9 +53,12 @@ import androidx.compose.ui.unit.em
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import timber.log.Timber
+import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.sorting.SortTypeList
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.model.PersonalListItem
@@ -83,6 +91,7 @@ internal fun AllPersonalListScreen(
     onMovieClick: (TraktId) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
+    val context = LocalContext.current
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(state.navigateMovie, state.navigateShow) {
@@ -129,6 +138,13 @@ internal fun AllPersonalListScreen(
                 sorting.copy(
                     order = sorting.order.toggle(),
                 ),
+            )
+        },
+        onShareClick = {
+            shareList(
+                context = context,
+                user = state.user,
+                list = state.list?.ids?.slug?.value.orEmpty(),
             )
         },
         onMoreClick = {
@@ -194,6 +210,7 @@ internal fun AllPersonalListContent(
     onSortTypeClick: () -> Unit = {},
     onSortOrderClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
+    onShareClick: () -> Unit = {},
     onMoreClick: () -> Unit = {},
 ) {
     val listState = rememberLazyListState(
@@ -245,6 +262,7 @@ internal fun AllPersonalListContent(
             onSortOrderClick = onSortOrderClick,
             onBackClick = onBackClick,
             onMoreClick = onMoreClick,
+            onShareClick = onShareClick,
             onEndOfList = onLoadMoreData,
         )
     }
@@ -257,6 +275,7 @@ private fun TitleBar(
     subtitleVisible: Boolean,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
+    onShareClick: () -> Unit = {},
     onMoreClick: () -> Unit = {},
 ) {
     Row(
@@ -292,16 +311,75 @@ private fun TitleBar(
             )
         }
 
-        Icon(
-            painter = painterResource(R.drawable.ic_edit),
-            contentDescription = null,
-            tint = TraktTheme.colors.textPrimary,
-            modifier = Modifier
-                .padding(start = 16.dp)
-                .fillMaxHeight()
-                .onClick { onMoreClick() }
-                .size(20.dp),
-        )
+        Box(
+            modifier = Modifier.padding(start = 16.dp),
+        ) {
+            var showMenu by remember { mutableStateOf(false) }
+
+            Icon(
+                painter = painterResource(R.drawable.ic_more_vertical),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .size(18.dp)
+                    .onClick {
+                        showMenu = true
+                    },
+            )
+
+            DropdownMenu(
+                expanded = showMenu,
+                containerColor = TraktTheme.colors.dialogContainer,
+                shape = RoundedCornerShape(16.dp),
+                onDismissRequest = {
+                    showMenu = false
+                },
+            ) {
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = stringResource(R.string.page_title_edit_list),
+                            style = TraktTheme.typography.buttonTertiary,
+                            color = TraktTheme.colors.textPrimary,
+                        )
+                    },
+                    onClick = {
+                        onMoreClick()
+                        showMenu = false
+                    },
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_edit),
+                            contentDescription = null,
+                            tint = TraktTheme.colors.textPrimary,
+                            modifier = Modifier.size(22.dp),
+                        )
+                    },
+                )
+
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = stringResource(R.string.button_text_share),
+                            style = TraktTheme.typography.buttonTertiary,
+                            color = TraktTheme.colors.textPrimary,
+                        )
+                    },
+                    onClick = {
+                        onShareClick()
+                        showMenu = false
+                    },
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_share),
+                            contentDescription = null,
+                            tint = TraktTheme.colors.textPrimary,
+                            modifier = Modifier.size(22.dp),
+                        )
+                    },
+                )
+            }
+        }
     }
 }
 
@@ -360,6 +438,7 @@ private fun ContentList(
     onSortTypeClick: () -> Unit,
     onSortOrderClick: () -> Unit,
     onBackClick: () -> Unit,
+    onShareClick: () -> Unit,
     onMoreClick: () -> Unit,
     onEndOfList: () -> Unit = {},
 ) {
@@ -392,6 +471,7 @@ private fun ContentList(
                 subtitle = subtitle,
                 subtitleVisible = subtitleVisible,
                 onBackClick = onBackClick,
+                onShareClick = onShareClick,
                 onMoreClick = onMoreClick,
             )
         }
@@ -509,4 +589,29 @@ private fun ContentEmpty() {
         color = TraktTheme.colors.textSecondary,
         style = TraktTheme.typography.heading6,
     )
+}
+
+private fun shareList(
+    user: User?,
+    list: String,
+    context: Context,
+) {
+    if (user == null) {
+        Timber.e("Unable to share: user is null")
+        return
+    }
+
+    val intent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(
+            Intent.EXTRA_TEXT,
+            Config.webListUrl(
+                userId = user.ids.slug.value,
+                listId = list,
+            ),
+        )
+        type = "text/plain"
+    }
+
+    context.startActivity(Intent.createChooser(intent, user.displayName))
 }

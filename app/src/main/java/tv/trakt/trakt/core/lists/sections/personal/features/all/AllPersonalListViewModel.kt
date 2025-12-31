@@ -32,6 +32,7 @@ import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_ALL_LIMIT
@@ -49,6 +50,7 @@ import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
 internal class AllPersonalListViewModel(
     savedStateHandle: SavedStateHandle,
     modeManager: MediaModeManager,
+    analytics: Analytics,
     private val getListUseCase: GetPersonalListsUseCase,
     private val getListItemsUseCase: GetPersonalListItemsUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
@@ -56,13 +58,13 @@ internal class AllPersonalListViewModel(
     private val userListLocalDataSource: UserListsLocalDataSource,
     private val collectionStateProvider: CollectionStateProvider,
     private val sessionManager: SessionManager,
-    analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<ListsPersonalDestination>()
 
     private val initialState = AllPersonalListState()
 
     private val filterState = MutableStateFlow(modeManager.getMode())
+    private val userState = MutableStateFlow(initialState.user)
     private val sortingState = MutableStateFlow(initialState.sorting)
     private val listState = MutableStateFlow(initialState.list)
     private val itemsState = MutableStateFlow(initialState.items)
@@ -81,6 +83,7 @@ internal class AllPersonalListViewModel(
     init {
         loadDetails()
         loadData()
+        loadUser()
 
         observeLists()
         observeCollection()
@@ -115,6 +118,14 @@ internal class AllPersonalListViewModel(
         viewModelScope.launch {
             listState.update {
                 getListUseCase.getLocalList(destination.listId.toTraktId())
+            }
+        }
+    }
+
+    private fun loadUser() {
+        viewModelScope.launch {
+            userState.update {
+                sessionManager.getProfile()
             }
         }
     }
@@ -286,6 +297,7 @@ internal class AllPersonalListViewModel(
     val state = combine(
         loadingState,
         loadingMoreState,
+        userState,
         filterState,
         sortingState,
         listState,
@@ -298,14 +310,15 @@ internal class AllPersonalListViewModel(
         AllPersonalListState(
             loading = state[0] as LoadingState,
             loadingMore = state[1] as LoadingState,
-            filter = state[2] as MediaMode?,
-            sorting = state[3] as Sorting,
-            list = state[4] as? CustomList,
-            items = state[5] as? ImmutableList<PersonalListItem>,
-            collection = state[6] as UserCollectionState,
-            navigateShow = state[7] as? TraktId,
-            navigateMovie = state[8] as? TraktId,
-            error = state[9] as? Exception,
+            user = state[2] as User?,
+            filter = state[3] as MediaMode?,
+            sorting = state[4] as Sorting,
+            list = state[5] as? CustomList,
+            items = state[6] as? ImmutableList<PersonalListItem>,
+            collection = state[7] as UserCollectionState,
+            navigateShow = state[8] as? TraktId,
+            navigateMovie = state[9] as? TraktId,
+            error = state[10] as? Exception,
         )
     }.stateIn(
         scope = viewModelScope,
