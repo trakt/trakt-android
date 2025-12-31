@@ -24,6 +24,7 @@ import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -40,8 +41,11 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight.Companion.W400
+import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
@@ -69,6 +73,8 @@ import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
 import tv.trakt.trakt.ui.components.sorting.SortingSplitButton
 import tv.trakt.trakt.ui.components.sorting.sheets.SortSelectionSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
+
+private const val LIST_DESCRIPTION_LIMIT = 40
 
 @Composable
 internal fun ListDetailsScreen(
@@ -228,6 +234,7 @@ internal fun ListDetailsContent(
 private fun TitleBar(
     title: String,
     subtitle: String?,
+    subtitleVisible: Boolean,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
 ) {
@@ -255,9 +262,13 @@ private fun TitleBar(
                 tint = TraktTheme.colors.textPrimary,
                 contentDescription = null,
             )
+
             TraktHeader(
                 title = title,
-                subtitle = subtitle,
+                subtitle = when {
+                    subtitleVisible -> subtitle
+                    else -> null
+                },
             )
         }
     }
@@ -279,6 +290,10 @@ private fun ContentList(
     onSortOrderClick: () -> Unit,
     onBackClick: () -> Unit,
 ) {
+    val subtitleVisible = remember(subtitle) {
+        (subtitle?.length ?: 0) <= LIST_DESCRIPTION_LIMIT
+    }
+
     LazyColumn(
         state = listState,
         verticalArrangement = spacedBy(0.dp),
@@ -290,8 +305,33 @@ private fun ContentList(
             TitleBar(
                 title = title,
                 subtitle = subtitle,
+                subtitleVisible = subtitleVisible,
                 onBackClick = onBackClick,
             )
+        }
+
+        if (!subtitleVisible) {
+            item {
+                var collapsed by remember { mutableStateOf(true) }
+                Text(
+                    text = subtitle ?: "",
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.meta.copy(
+                        fontWeight = W400,
+                        lineHeight = 1.1.em,
+                    ),
+                    maxLines = when {
+                        collapsed -> 3
+                        else -> Int.MAX_VALUE
+                    },
+                    overflow = Ellipsis,
+                    modifier = Modifier
+                        .padding(bottom = 10.dp)
+                        .onClick {
+                            collapsed = !collapsed
+                        },
+                )
+            }
         }
 
         if (listSorting != null) {

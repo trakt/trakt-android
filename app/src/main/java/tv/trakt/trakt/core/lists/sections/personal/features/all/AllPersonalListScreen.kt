@@ -41,7 +41,10 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight.Companion.W400
+import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -69,6 +72,8 @@ import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
 import tv.trakt.trakt.ui.components.sorting.SortingSplitButton
 import tv.trakt.trakt.ui.components.sorting.sheets.SortSelectionSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
+
+private const val LIST_DESCRIPTION_LIMIT = 40
 
 @Composable
 internal fun AllPersonalListScreen(
@@ -249,6 +254,7 @@ internal fun AllPersonalListContent(
 private fun TitleBar(
     title: String,
     subtitle: String?,
+    subtitleVisible: Boolean,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
     onMoreClick: () -> Unit = {},
@@ -279,7 +285,10 @@ private fun TitleBar(
             )
             TraktHeader(
                 title = title,
-                subtitle = subtitle,
+                subtitle = when {
+                    subtitleVisible -> subtitle
+                    else -> null
+                },
             )
         }
 
@@ -354,6 +363,10 @@ private fun ContentList(
     onMoreClick: () -> Unit,
     onEndOfList: () -> Unit = {},
 ) {
+    val subtitleVisible = remember(subtitle) {
+        (subtitle?.length ?: 0) <= LIST_DESCRIPTION_LIMIT
+    }
+
     val isScrolledToBottom by remember(listItems.size) {
         derivedStateOf {
             listState.firstVisibleItemIndex >= (listItems.size - 5)
@@ -377,9 +390,34 @@ private fun ContentList(
             TitleBar(
                 title = title,
                 subtitle = subtitle,
+                subtitleVisible = subtitleVisible,
                 onBackClick = onBackClick,
                 onMoreClick = onMoreClick,
             )
+        }
+
+        if (!subtitleVisible) {
+            item {
+                var collapsed by remember { mutableStateOf(true) }
+                Text(
+                    text = subtitle ?: "",
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.meta.copy(
+                        fontWeight = W400,
+                        lineHeight = 1.1.em,
+                    ),
+                    maxLines = when {
+                        collapsed -> 3
+                        else -> Int.MAX_VALUE
+                    },
+                    overflow = Ellipsis,
+                    modifier = Modifier
+                        .padding(bottom = 10.dp)
+                        .onClick {
+                            collapsed = !collapsed
+                        },
+                )
+            }
         }
 
         if (listFilter != null && listSorting != null) {
