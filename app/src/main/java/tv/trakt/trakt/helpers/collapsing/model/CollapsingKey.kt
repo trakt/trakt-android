@@ -7,16 +7,19 @@ internal enum class CollapsingKey(
     HOME_MEDIA_UP_NEXT("key_home_media_up_next"),
     HOME_MEDIA_START_WATCHING("key_home_media_start_watching"),
     HOME_MEDIA_UPCOMING("key_home_media_personal"),
+    HOME_MEDIA_HISTORY("key_home_media_history"),
     HOME_MEDIA_SOCIAL("key_home_media_social"),
 
     HOME_SHOWS_UP_NEXT("key_home_shows_up_next"),
     HOME_SHOWS_START_WATCHING("key_home_shows_start_watching"),
     HOME_SHOWS_UPCOMING("key_home_shows_personal"),
+    HOME_SHOWS_HISTORY("key_home_shows_history"),
     HOME_SHOWS_SOCIAL("key_home_shows_social"),
 
     HOME_MOVIES_UP_NEXT("key_home_movies_up_next"),
     HOME_MOVIES_START_WATCHING("key_home_movies_start_watching"),
     HOME_MOVIES_UPCOMING("key_home_movies_personal"),
+    HOME_MOVIES_HISTORY("key_home_movies_history"),
     HOME_MOVIES_SOCIAL("key_home_movies_social"),
 
     // Discover Screen

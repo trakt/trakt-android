@@ -3,23 +3,20 @@
 package tv.trakt.trakt.core.home.sections.activity.features.history
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.snap
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,15 +24,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -52,7 +46,7 @@ import tv.trakt.trakt.core.home.sections.activity.sheets.HomeActivityItemSheet
 import tv.trakt.trakt.core.home.sections.activity.views.ActivityEpisodeItemView
 import tv.trakt.trakt.core.home.sections.activity.views.ActivityMovieItemView
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -95,6 +89,7 @@ internal fun HomeHistoryView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
+        onCollapse = viewModel::setCollapsed,
         onShowClick = {
             viewModel.navigateToShow(it.show)
         },
@@ -142,85 +137,81 @@ internal fun HomeHistoryContent(
     onMovieClick: (Movie) -> Unit = { },
     onMovieLongClick: (HomeActivityItem.MovieItem) -> Unit = {},
     onMoreClick: () -> Unit = {},
+    onCollapse: (collapsed: Boolean) -> Unit = {},
 ) {
+    var animateCollapse by rememberSaveable { mutableStateOf(false) }
+
     Column(
-        verticalArrangement = spacedBy(0.dp),
-        modifier = modifier,
+        verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
+        modifier = modifier
+            .animateContentSize(
+                animationSpec = if (animateCollapse) spring() else snap(),
+            ),
     ) {
-        Row(
+        TraktSectionHeader(
+            title = stringResource(R.string.list_title_history),
+            chevron = !state.items.isNullOrEmpty() || state.loading != DONE,
+            collapsed = state.collapsed ?: false,
+            onCollapseClick = {
+                animateCollapse = true
+                val current = (state.collapsed ?: false)
+                onCollapse(!current)
+            },
             modifier = Modifier
-                .fillMaxWidth()
                 .padding(headerPadding)
                 .onClick(enabled = state.loading == DONE) {
                     onMoreClick()
                 },
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            TraktHeader(
-                title = stringResource(R.string.list_title_history),
-            )
+        )
 
-            if (!state.items.isNullOrEmpty() || state.loading != DONE) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_chevron_right),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .size(20.dp)
-                        .graphicsLayer {
-                            translationX = (4.9).dp.toPx()
-                        },
-                )
-            }
-        }
+        if (state.collapsed != true) {
+            Crossfade(
+                targetState = state.loading,
+                animationSpec = tween(200),
+            ) { loading ->
+                when (loading) {
+                    IDLE, LOADING -> {
+                        ContentLoadingList(
+                            visible = loading.isLoading,
+                            contentPadding = contentPadding,
+                        )
+                    }
 
-        Spacer(modifier = Modifier.height(TraktTheme.spacing.mainRowHeaderSpace))
+                    DONE -> {
+                        when {
+                            state.error != null -> {
+                                Text(
+                                    text =
+                                        "${stringResource(
+                                            R.string.error_text_unexpected_error_short,
+                                        )}\n\n${state.error}",
+                                    color = TraktTheme.colors.textSecondary,
+                                    style = TraktTheme.typography.meta,
+                                    maxLines = 10,
+                                    modifier = Modifier.padding(contentPadding),
+                                )
+                            }
 
-        Crossfade(
-            targetState = state.loading,
-            animationSpec = tween(200),
-        ) { loading ->
-            when (loading) {
-                IDLE, LOADING -> {
-                    ContentLoadingList(
-                        visible = loading.isLoading,
-                        contentPadding = contentPadding,
-                    )
-                }
+                            state.items?.isEmpty() == true -> {
+                                Text(
+                                    text = stringResource(R.string.list_placeholder_empty),
+                                    color = TraktTheme.colors.textSecondary,
+                                    style = TraktTheme.typography.heading6,
+                                    modifier = Modifier.padding(contentPadding),
+                                )
+                            }
 
-                DONE -> {
-                    when {
-                        state.error != null -> {
-                            Text(
-                                text =
-                                    "${stringResource(R.string.error_text_unexpected_error_short)}\n\n${state.error}",
-                                color = TraktTheme.colors.textSecondary,
-                                style = TraktTheme.typography.meta,
-                                maxLines = 10,
-                                modifier = Modifier.padding(contentPadding),
-                            )
-                        }
-
-                        state.items?.isEmpty() == true -> {
-                            Text(
-                                text = stringResource(R.string.list_placeholder_empty),
-                                color = TraktTheme.colors.textSecondary,
-                                style = TraktTheme.typography.heading6,
-                                modifier = Modifier.padding(contentPadding),
-                            )
-                        }
-
-                        else -> {
-                            ContentList(
-                                listItems = (state.items ?: emptyList()).toImmutableList(),
-                                contentPadding = contentPadding,
-                                onShowClick = onShowClick,
-                                onEpisodeClick = onEpisodeClick,
-                                onEpisodeLongClick = onEpisodeLongClick,
-                                onMovieClick = onMovieClick,
-                                onMovieLongClick = onMovieLongClick,
-                            )
+                            else -> {
+                                ContentList(
+                                    listItems = (state.items ?: emptyList()).toImmutableList(),
+                                    contentPadding = contentPadding,
+                                    onShowClick = onShowClick,
+                                    onEpisodeClick = onEpisodeClick,
+                                    onEpisodeLongClick = onEpisodeLongClick,
+                                    onMovieClick = onMovieClick,
+                                    onMovieLongClick = onMovieLongClick,
+                                )
+                            }
                         }
                     }
                 }

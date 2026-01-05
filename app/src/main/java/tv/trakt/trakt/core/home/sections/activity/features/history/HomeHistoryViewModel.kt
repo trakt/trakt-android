@@ -10,7 +10,6 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -42,6 +41,7 @@ import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
+import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
@@ -49,6 +49,8 @@ import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
+import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 internal class HomeHistoryViewModel(
     private val getPersonalActivityUseCase: GetPersonalActivityUseCase,
@@ -63,6 +65,7 @@ internal class HomeHistoryViewModel(
     private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
     private val modeManager: MediaModeManager,
+    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = HomeHistoryState()
     private val initialMode = modeManager.getMode()
@@ -70,6 +73,7 @@ internal class HomeHistoryViewModel(
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialMode)
+    private val collapseState = MutableStateFlow(isCollapsed())
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
@@ -78,6 +82,7 @@ internal class HomeHistoryViewModel(
 
     private var dataJob: Job? = null
     private var processingJob: Job? = null
+    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -91,6 +96,7 @@ internal class HomeHistoryViewModel(
             .distinctUntilChanged()
             .onEach { value ->
                 filterState.update { value }
+                collapseState.update { isCollapsed() }
                 loadData()
             }
             .launchIn(viewModelScope)
@@ -227,10 +233,38 @@ internal class HomeHistoryViewModel(
         processingJob = null
     }
 
+    fun setCollapsed(collapsed: Boolean) {
+        collapseState.update { collapsed }
+
+        collapseJob?.cancel()
+        collapseJob = viewModelScope.launch {
+            val key = when (filterState.value) {
+                MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_HISTORY
+                MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_HISTORY
+                MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_HISTORY
+            }
+            when {
+                collapsed -> collapsingManager.collapse(key)
+                else -> collapsingManager.expand(key)
+            }
+        }
+    }
+
+    private fun isCollapsed(): Boolean {
+        return collapsingManager.isCollapsed(
+            key = when (filterState.value) {
+                MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_HISTORY
+                MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_HISTORY
+                MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_HISTORY
+            },
+        )
+    }
+
     @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<HomeHistoryState> = combine(
+    val state = combine(
         loadingState,
         itemsState,
+        collapseState,
         navigateShow,
         navigateEpisode,
         navigateMovie,
@@ -240,11 +274,12 @@ internal class HomeHistoryViewModel(
         HomeHistoryState(
             loading = states[0] as LoadingState,
             items = states[1] as? ImmutableList<HomeActivityItem>,
-            navigateShow = states[2] as? TraktId,
-            navigateEpisode = states[3] as? Pair<TraktId, Episode>,
-            navigateMovie = states[4] as? TraktId,
-            error = states[5] as? Exception,
-            user = states[6] as? User,
+            collapsed = states[2] as Boolean,
+            navigateShow = states[3] as? TraktId,
+            navigateEpisode = states[4] as? Pair<TraktId, Episode>,
+            navigateMovie = states[5] as? TraktId,
+            error = states[6] as? Exception,
+            user = states[7] as? User,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -237,6 +237,7 @@ internal val homeModule = module {
             movieLocalDataSource = get(),
             sessionManager = get(),
             modeManager = get(),
+            collapsingManager = get(),
         )
     }
 

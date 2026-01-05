@@ -143,64 +143,66 @@ internal fun HomeUpcomingContent(
 
         if (state.collapsed != true) {
             Crossfade(
-            targetState = state.loading,
-            animationSpec = tween(200),
-        ) { loading ->
-            when (loading) {
-                IDLE, LOADING -> {
-                    ContentLoadingList(
-                        visible = loading.isLoading,
-                        contentPadding = contentPadding,
-                    )
-                }
+                targetState = state.loading,
+                animationSpec = tween(200),
+            ) { loading ->
+                when (loading) {
+                    IDLE, LOADING -> {
+                        ContentLoadingList(
+                            visible = loading.isLoading,
+                            contentPadding = contentPadding,
+                        )
+                    }
 
-                DONE -> {
-                    when {
-                        state.error != null -> {
-                            Text(
-                                text =
-                                    "${stringResource(R.string.error_text_unexpected_error_short)}\n\n${state.error}",
-                                color = TraktTheme.colors.textSecondary,
-                                style = TraktTheme.typography.meta,
-                                maxLines = 10,
-                                modifier = Modifier.padding(contentPadding),
-                            )
-                        }
-
-                        state.items?.isEmpty() == true -> {
-                            val imageUrl = remember {
-                                Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_3).ifBlank { null }
+                    DONE -> {
+                        when {
+                            state.error != null -> {
+                                Text(
+                                    text =
+                                        "${stringResource(
+                                            R.string.error_text_unexpected_error_short,
+                                        )}\n\n${state.error}",
+                                    color = TraktTheme.colors.textSecondary,
+                                    style = TraktTheme.typography.meta,
+                                    maxLines = 10,
+                                    modifier = Modifier.padding(contentPadding),
+                                )
                             }
-                            HomeEmptyView(
-                                text = stringResource(R.string.text_cta_upcoming),
-                                icon = R.drawable.ic_empty_upcoming,
-                                buttonText = stringResource(
-                                    when (state.filter) {
-                                        MediaMode.MOVIES -> R.string.link_text_discover_movies
-                                        else -> R.string.link_text_discover_shows
-                                    },
-                                ),
-                                backgroundImageUrl = imageUrl,
-                                backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
-                                onClick = onEmptyClick,
-                                modifier = Modifier
-                                    .padding(contentPadding),
-                            )
-                        }
 
-                        else -> {
-                            ContentList(
-                                listItems = (state.items ?: emptyList()).toImmutableList(),
-                                contentPadding = contentPadding,
-                                onClick = onClick,
-                                onShowClick = onShowClick,
-                                onMovieClick = onMovieClick,
-                            )
+                            state.items?.isEmpty() == true -> {
+                                val imageUrl = remember {
+                                    Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_3).ifBlank { null }
+                                }
+                                HomeEmptyView(
+                                    text = stringResource(R.string.text_cta_upcoming),
+                                    icon = R.drawable.ic_empty_upcoming,
+                                    buttonText = stringResource(
+                                        when (state.filter) {
+                                            MediaMode.MOVIES -> R.string.link_text_discover_movies
+                                            else -> R.string.link_text_discover_shows
+                                        },
+                                    ),
+                                    backgroundImageUrl = imageUrl,
+                                    backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
+                                    onClick = onEmptyClick,
+                                    modifier = Modifier
+                                        .padding(contentPadding),
+                                )
+                            }
+
+                            else -> {
+                                ContentList(
+                                    listItems = (state.items ?: emptyList()).toImmutableList(),
+                                    contentPadding = contentPadding,
+                                    onClick = onClick,
+                                    onShowClick = onShowClick,
+                                    onMovieClick = onMovieClick,
+                                )
+                            }
                         }
                     }
                 }
             }
-        }
         }
     }
 }
