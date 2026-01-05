@@ -256,6 +256,9 @@
 
     <!-- TODO Sync with strings bank -->
 
+    <string name="button_text_continue">Continue</string>
+    <string name="list_title_from_my_history">From My History</string>
+
     <string name="text_billing_month_for_free">Try 1 month for free and then:</string>
     <string name="text_billing_no_payment_required">No immediate payment required.</string>
     <string name="text_billing_try_for_free">Try now for free!</string>
@@ -277,8 +280,17 @@
     <string name="text_vip_upsell_default_2">Upgrade to VIP!</string>
     <string name="text_vip_upsell_default_description_2">No ads, unlimited lists and more.</string>
 
-    <string name="button_text_continue">Continue</string>
-    <string name="list_title_from_my_history">From My History</string>
+    <string name="text_onboarding_1_title">Everything you watch.\nIn one place.</string>
+    <string name="text_onboarding_1_description">Track what you\'re watching and what you want to watch next.\n\nPick up right where you left off, save titles for later, and organise everything into smart watchlists or your own personal lists, in one place.</string>
+
+    <string name="text_onboarding_2_title">Find where to watch it.\nJust press play.</string>
+    <string name="text_onboarding_2_description">See where movies and shows are streaming, renting, or available to buy, across all your favorite services.\n\nSpend less time looking. More time watching. Just press play.</string>
+
+    <string name="text_onboarding_3_title">Show how you feel.\nSay what you think.</string>
+    <string name="text_onboarding_3_description">Rate what you watch and join the conversation around movies and tv shows that are worth watching, or skipping.\n\nYour opinion matters, share it. Watching hits different when you\'re not alone, say what you think.</string>
+
+    <string name="text_onboarding_4_title">There\'s more to\ndiscover.</string>
+    <string name="text_onboarding_4_description">You\'ve only scratched the surface.\n\nJoin Trakt for free and discover more features waiting for you.</string>
 
     <!--  Non Translatable  -->
 

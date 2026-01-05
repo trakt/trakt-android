@@ -19,20 +19,20 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun OnboardingPage3(modifier: Modifier = Modifier) {
+internal fun OnboardingPage4(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.Start,
         verticalArrangement = spacedBy(32.dp, alignment = Alignment.Bottom),
     ) {
         Icon(
-            painter = painterResource(R.drawable.ic_heart_off),
+            painter = painterResource(R.drawable.ic_discover_off),
             contentDescription = null,
             tint = Color.White,
             modifier = Modifier.size(42.dp),
         )
         Text(
-            text = stringResource(R.string.text_onboarding_3_title),
+            text = stringResource(R.string.text_onboarding_4_title),
             style = TraktTheme.typography.heading3.copy(
                 lineHeight = 1.4.em,
             ),
@@ -41,7 +41,7 @@ internal fun OnboardingPage3(modifier: Modifier = Modifier) {
         )
 
         Text(
-            text = stringResource(R.string.text_onboarding_3_description),
+            text = stringResource(R.string.text_onboarding_4_description),
             style = TraktTheme.typography.paragraphSmaller.copy(
                 lineHeight = 1.4.em,
             ),
@@ -59,6 +59,6 @@ internal fun OnboardingPage3(modifier: Modifier = Modifier) {
 @Composable
 private fun Preview() {
     TraktTheme {
-        OnboardingPage3()
+        OnboardingPage4()
     }
 }

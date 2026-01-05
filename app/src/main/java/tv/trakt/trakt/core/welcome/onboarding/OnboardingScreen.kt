@@ -1,19 +1,29 @@
 package tv.trakt.trakt.core.welcome.onboarding
 
-import androidx.compose.animation.Crossfade
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -26,8 +36,12 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush.Companion.verticalGradient
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,9 +50,11 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
+import tv.trakt.trakt.common.ui.theme.colors.Shade940
 import tv.trakt.trakt.core.welcome.onboarding.pages.OnboardingPage1
 import tv.trakt.trakt.core.welcome.onboarding.pages.OnboardingPage2
 import tv.trakt.trakt.core.welcome.onboarding.pages.OnboardingPage3
+import tv.trakt.trakt.core.welcome.onboarding.pages.OnboardingPage4
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
@@ -66,35 +82,107 @@ internal fun OnboardingScreen(
 
     val currentPage = remember { mutableIntStateOf(0) }
 
+    val backgroundGradient = remember {
+        verticalGradient(
+            colors = listOf(
+                Shade940.copy(alpha = 0.2F),
+                Shade940.copy(alpha = 0.82F),
+                Shade940.copy(alpha = 1F),
+            ),
+        )
+    }
+
+    val parallaxOffset = animateFloatAsState(
+        targetValue = currentPage.intValue * -30f,
+        animationSpec = tween(durationMillis = 500),
+        label = "parallaxOffset",
+    )
+
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(TraktTheme.colors.backgroundPrimary),
     ) {
-        Crossfade(
-            targetState = currentPage,
+        Image(
+            painter = painterResource(R.drawable.img_onboarding),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(contentVerticalPadding),
+                .padding(bottom = contentVerticalPadding.calculateBottomPadding() * 3)
+                .graphicsLayer {
+                    translationX = parallaxOffset.value
+                    scaleX = 1.2f
+                    scaleY = 1.2f
+                },
+        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(backgroundGradient),
+        )
+
+        AnimatedContent(
+            targetState = currentPage.intValue,
+            transitionSpec = {
+                (
+                    slideInHorizontally(
+                        animationSpec = tween(500),
+                        initialOffsetX = { fullWidth -> fullWidth / 4 },
+                    ) + fadeIn(
+                        animationSpec = tween(350),
+                    )
+                ).togetherWith(
+                    slideOutHorizontally(
+                        animationSpec = tween(500),
+                        targetOffsetX = { fullWidth -> -(fullWidth / 4) },
+                    ) + fadeOut(
+                        animationSpec = tween(350),
+                    ),
+                )
+            },
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(
+                    bottom = contentVerticalPadding
+                        .calculateBottomPadding()
+                        .plus(46.dp) // Button height
+                        .plus(58.dp),
+                ),
+            label = "onboarding_page_transition",
         ) { currentPage ->
-            when (currentPage.intValue) {
+            val paddingHorizontal = when {
+                windowClass.isAtLeastMedium() -> 128.dp
+                else -> 24.dp
+            }
+            when (currentPage) {
                 0 -> OnboardingPage1(
-                    modifier = Modifier.fillMaxSize(),
+                    Modifier
+                        .padding(horizontal = paddingHorizontal)
+                        .fillMaxHeight(),
                 )
-
                 1 -> OnboardingPage2(
-                    modifier = Modifier.fillMaxSize(),
+                    Modifier
+                        .padding(horizontal = paddingHorizontal)
+                        .fillMaxHeight(),
                 )
-
                 2 -> OnboardingPage3(
-                    modifier = Modifier.fillMaxSize(),
+                    Modifier
+                        .padding(horizontal = paddingHorizontal)
+                        .fillMaxHeight(),
+                )
+                3 -> OnboardingPage4(
+                    Modifier
+                        .padding(horizontal = paddingHorizontal)
+                        .fillMaxHeight(),
                 )
             }
         }
 
         Column(
             modifier = Modifier
-                .align(Alignment.BottomCenter)
+                .align(Alignment.BottomStart)
                 .padding(contentVerticalPadding)
                 .padding(
                     horizontal = when {
@@ -103,31 +191,30 @@ internal fun OnboardingScreen(
                     },
                 )
                 .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = spacedBy(24.dp),
         ) {
-            PageIndicator(
-                pageCount = 3,
-                currentPage = currentPage.intValue,
-                modifier = Modifier.padding(bottom = 16.dp),
-            )
-
             PrimaryButton(
                 text = stringResource(R.string.button_text_continue).uppercase(),
                 containerColor = Purple500,
                 contentColor = Color.White,
                 onClick = {
                     currentPage.intValue = when {
-                        currentPage.intValue < 2 -> {
+                        currentPage.intValue < 3 -> {
                             currentPage.intValue + 1
                         }
-
                         else -> {
                             onDismiss()
-                            2
+                            3
                         }
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
+            )
+
+            PageIndicator(
+                pageCount = 4,
+                currentPage = currentPage.intValue,
             )
         }
     }
@@ -140,7 +227,7 @@ internal fun PageIndicator(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier.height(8.dp),
         horizontalArrangement = Arrangement.spacedBy(6.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -149,13 +236,13 @@ internal fun PageIndicator(
             val dotColor = animateColorAsState(
                 targetValue = when {
                     isActive -> Purple500
-                    else -> Color.White.copy(alpha = 0.25f)
+                    else -> Color.White
                 },
                 animationSpec = tween(durationMillis = 250),
                 label = "dotColor",
             )
             val dotSize = animateDpAsState(
-                targetValue = if (isActive) 8.dp else 6.dp,
+                targetValue = if (isActive) 8.dp else 5.dp,
                 animationSpec = tween(durationMillis = 250),
                 label = "dotSize",
             )
