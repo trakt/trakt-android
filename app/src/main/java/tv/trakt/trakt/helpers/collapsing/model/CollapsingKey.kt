@@ -3,18 +3,35 @@ package tv.trakt.trakt.helpers.collapsing.model
 internal enum class CollapsingKey(
     val preferenceKey: String,
 ) {
-    DISCOVER_MEDIA_TRENDING("key_collapsing_discover_media_trending"),
-    DISCOVER_MEDIA_POPULAR("key_collapsing_discover_media_popular"),
-    DISCOVER_MEDIA_ANTICIPATED("key_collapsing_discover_media_anticipated"),
-    DISCOVER_MEDIA_RECOMMENDED("key_collapsing_discover_media_recommended"),
+    // Home Screen
+    HOME_MEDIA_UP_NEXT("key_home_media_up_next"),
+    HOME_MEDIA_START_WATCHING("key_home_media_start_watching"),
+    HOME_MEDIA_UPCOMING("key_home_media_personal"),
+    HOME_MEDIA_SOCIAL("key_home_media_social"),
 
-    DISCOVER_SHOWS_TRENDING("key_collapsing_discover_shows_trending"),
-    DISCOVER_SHOWS_POPULAR("key_collapsing_discover_shows_popular"),
-    DISCOVER_SHOWS_ANTICIPATED("key_collapsing_discover_shows_anticipated"),
-    DISCOVER_SHOWS_RECOMMENDED("key_collapsing_discover_shows_recommended"),
+    HOME_SHOWS_UP_NEXT("key_home_shows_up_next"),
+    HOME_SHOWS_START_WATCHING("key_home_shows_start_watching"),
+    HOME_SHOWS_UPCOMING("key_home_shows_personal"),
+    HOME_SHOWS_SOCIAL("key_home_shows_social"),
 
-    DISCOVER_MOVIES_TRENDING("key_collapsing_discover_movies_trending"),
-    DISCOVER_MOVIES_POPULAR("key_collapsing_discover_movies_popular"),
-    DISCOVER_MOVIES_ANTICIPATED("key_collapsing_discover_movies_anticipated"),
-    DISCOVER_MOVIES_RECOMMENDED("key_collapsing_discover_movies_recommended"),
+    HOME_MOVIES_UP_NEXT("key_home_movies_up_next"),
+    HOME_MOVIES_START_WATCHING("key_home_movies_start_watching"),
+    HOME_MOVIES_UPCOMING("key_home_movies_personal"),
+    HOME_MOVIES_SOCIAL("key_home_movies_social"),
+
+    // Discover Screen
+    DISCOVER_MEDIA_TRENDING("key_discover_media_trending"),
+    DISCOVER_MEDIA_POPULAR("key_discover_media_popular"),
+    DISCOVER_MEDIA_ANTICIPATED("key_discover_media_anticipated"),
+    DISCOVER_MEDIA_RECOMMENDED("key_discover_media_recommended"),
+
+    DISCOVER_SHOWS_TRENDING("key_discover_shows_trending"),
+    DISCOVER_SHOWS_POPULAR("key_discover_shows_popular"),
+    DISCOVER_SHOWS_ANTICIPATED("key_discover_shows_anticipated"),
+    DISCOVER_SHOWS_RECOMMENDED("key_discover_shows_recommended"),
+
+    DISCOVER_MOVIES_TRENDING("key_discover_movies_trending"),
+    DISCOVER_MOVIES_POPULAR("key_discover_movies_popular"),
+    DISCOVER_MOVIES_ANTICIPATED("key_discover_movies_anticipated"),
+    DISCOVER_MOVIES_RECOMMENDED("key_discover_movies_recommended"),
 }

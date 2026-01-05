@@ -145,9 +145,7 @@ internal class DiscoverTrendingViewModel(
                 MediaMode.SHOWS -> CollapsingKey.DISCOVER_SHOWS_TRENDING
                 MediaMode.MOVIES -> CollapsingKey.DISCOVER_MOVIES_TRENDING
             },
-        ).also {
-            Timber.d("Trending isCollapsed for mode ${modeState.value}: $it")
-        }
+        )
     }
 
     val state = combine(

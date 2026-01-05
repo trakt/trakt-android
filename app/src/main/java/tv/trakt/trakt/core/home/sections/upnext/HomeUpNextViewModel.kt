@@ -7,7 +7,6 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -22,10 +21,12 @@ import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.StaticStringResource
+import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
@@ -36,6 +37,8 @@ import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSo
 import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
+import tv.trakt.trakt.core.main.helpers.MediaModeManager
+import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.HOME
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
@@ -45,6 +48,8 @@ import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
+import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 
 @OptIn(FlowPreview::class)
@@ -58,11 +63,15 @@ internal class HomeUpNextViewModel(
     private val upNextUpdates: UpNextUpdates,
     private val showUpdates: ShowDetailsUpdates,
     private val episodeUpdates: EpisodeDetailsUpdates,
+    private val modeManager: MediaModeManager,
     private val sessionManager: SessionManager,
+    private val collapsingManager: CollapsingManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = HomeUpNextState()
 
+    private val modeState = MutableStateFlow(modeManager.getMode())
+    private val collapseState = MutableStateFlow(isCollapsed())
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val infoState = MutableStateFlow(initialState.info)
@@ -72,11 +81,23 @@ internal class HomeUpNextViewModel(
     private var itemsOrder: List<Int>? = null
     private var dataJob: Job? = null
     private var processingJob: Job? = null
+    private var collapseJob: Job? = null
 
     init {
         loadData()
+
         observeUser()
         observeData()
+        observeMode()
+    }
+
+    private fun observeMode() {
+        modeManager.observeMode()
+            .onEach { value ->
+                modeState.update { value }
+                collapseState.update { isCollapsed() }
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun observeUser() {
@@ -277,21 +298,50 @@ internal class HomeUpNextViewModel(
         }
     }
 
+    fun setCollapsed(collapsed: Boolean) {
+        collapseState.update { collapsed }
+
+        collapseJob?.cancel()
+        collapseJob = viewModelScope.launch {
+            val key = when (modeState.value) {
+                MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_UP_NEXT
+                MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_UP_NEXT
+                MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_UP_NEXT
+            }
+            when {
+                collapsed -> collapsingManager.collapse(key)
+                else -> collapsingManager.expand(key)
+            }
+        }
+    }
+
+    private fun isCollapsed(): Boolean {
+        return collapsingManager.isCollapsed(
+            key = when (modeState.value) {
+                MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_UP_NEXT
+                MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_UP_NEXT
+                MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_UP_NEXT
+            },
+        )
+    }
+
     fun clearInfo() {
         infoState.update { null }
     }
 
-    val state: StateFlow<HomeUpNextState> = combine(
+    val state = combine(
         loadingState,
+        collapseState,
         itemsState,
         infoState,
         errorState,
-    ) { s1, s2, s3, s4 ->
+    ) { state ->
         HomeUpNextState(
-            loading = s1,
-            items = s2,
-            info = s3,
-            error = s4,
+            loading = state[0] as LoadingState,
+            collapsed = state[1] as Boolean,
+            items = state[2] as ItemsState,
+            info = state[3] as StringResource?,
+            error = state[4] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -10,6 +10,7 @@ import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 internal data class HomeUpNextState(
     val items: ItemsState = ItemsState(),
     val loading: LoadingState = LoadingState.IDLE,
+    val collapsed: Boolean? = null,
     val info: StringResource? = null,
     val error: Exception? = null,
 ) {

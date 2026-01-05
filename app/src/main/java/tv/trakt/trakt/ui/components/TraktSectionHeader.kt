@@ -23,6 +23,7 @@ internal fun TraktSectionHeader(
     modifier: Modifier = Modifier,
     title: String,
     subtitle: String? = null,
+    chevron: Boolean = true,
     collapsed: Boolean = false,
     onCollapseClick: () -> Unit = {},
 ) {
@@ -40,7 +41,7 @@ internal fun TraktSectionHeader(
                 subtitle = subtitle,
             )
 
-            if (!collapsed) {
+            if (!collapsed && chevron) {
                 Icon(
                     painter = painterResource(R.drawable.ic_chevron_right),
                     contentDescription = null,

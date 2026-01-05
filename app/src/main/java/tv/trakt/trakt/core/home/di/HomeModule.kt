@@ -160,7 +160,9 @@ internal val homeModule = module {
             loadUserProgressUseCase = get(),
             showUpdates = get(),
             episodeUpdates = get(),
+            modeManager = get(),
             sessionManager = get(),
+            collapsingManager = get(),
             analytics = get(),
         )
     }

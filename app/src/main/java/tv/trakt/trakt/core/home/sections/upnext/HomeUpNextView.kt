@@ -3,6 +3,9 @@
 package tv.trakt.trakt.core.home.sections.upnext
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.snap
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -34,7 +37,6 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
@@ -62,7 +64,7 @@ import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
 import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EpisodeProgressBar
-import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
@@ -98,6 +100,7 @@ internal fun HomeUpNextView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
+        onCollapse = viewModel::setCollapsed,
         onShowsClick = onShowsClick,
         onShowClick = { onShowClick(it.show.ids.trakt) },
         onMoreClick = {
@@ -170,88 +173,89 @@ internal fun HomeUpNextContent(
     onLongClick: (ProgressShow) -> Unit = {},
     onCheckClick: (ProgressShow) -> Unit = {},
     onCheckLongClick: (ProgressShow) -> Unit = {},
+    onCollapse: (collapsed: Boolean) -> Unit = {},
 ) {
+    var animateCollapse by rememberSaveable { mutableStateOf(false) }
+
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
-        modifier = modifier,
+        modifier = modifier
+            .animateContentSize(
+                animationSpec = if (animateCollapse) spring() else snap(),
+            ),
     ) {
-        Row(
+        TraktSectionHeader(
+            title = stringResource(R.string.list_title_up_next),
+            chevron = !state.items.items.isNullOrEmpty() || state.loading != DONE,
+            collapsed = state.collapsed ?: false,
+            onCollapseClick = {
+                animateCollapse = true
+                val current = (state.collapsed ?: false)
+                onCollapse(!current)
+            },
             modifier = Modifier
-                .fillMaxWidth()
                 .padding(headerPadding)
                 .onClick(enabled = state.loading == DONE) {
                     onMoreClick()
                 },
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = CenterVertically,
-        ) {
-            TraktHeader(
-                title = stringResource(R.string.list_title_up_next),
-            )
-            if (!state.items.items.isNullOrEmpty() || state.loading != DONE) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_chevron_right),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .size(20.dp)
-                        .graphicsLayer {
-                            translationX = (4.9).dp.toPx()
-                        },
-                )
-            }
-        }
+        )
 
-        Crossfade(
-            targetState = state.loading,
-            animationSpec = tween(200),
-        ) { loading ->
-            when (loading) {
-                IDLE, LOADING -> {
-                    ContentLoadingList(
-                        visible = loading.isLoading,
-                        contentPadding = contentPadding,
-                    )
-                }
+        if (state.collapsed != true) {
+            Crossfade(
+                targetState = state.loading,
+                animationSpec = tween(200),
+            ) { loading ->
+                when (loading) {
+                    IDLE, LOADING -> {
+                        ContentLoadingList(
+                            visible = loading.isLoading,
+                            contentPadding = contentPadding,
+                        )
+                    }
 
-                DONE -> {
-                    when {
-                        state.error != null -> {
-                            Text(
-                                text =
-                                    "${stringResource(R.string.error_text_unexpected_error_short)}\n\n${state.error}",
-                                color = TraktTheme.colors.textSecondary,
-                                style = TraktTheme.typography.meta,
-                                maxLines = 10,
-                                modifier = Modifier.padding(contentPadding),
-                            )
-                        }
-
-                        state.items.items?.isEmpty() == true -> {
-                            val imageUrl = remember {
-                                Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_1).ifBlank { null }
+                    DONE -> {
+                        when {
+                            state.error != null -> {
+                                Text(
+                                    text =
+                                        "${
+                                            stringResource(
+                                                R.string.error_text_unexpected_error_short,
+                                            )
+                                        }\n\n${state.error}",
+                                    color = TraktTheme.colors.textSecondary,
+                                    style = TraktTheme.typography.meta,
+                                    maxLines = 10,
+                                    modifier = Modifier.padding(contentPadding),
+                                )
                             }
-                            HomeEmptyView(
-                                text = stringResource(R.string.text_cta_up_next),
-                                icon = R.drawable.ic_empty_upnext,
-                                buttonText = stringResource(R.string.link_text_discover_shows),
-                                backgroundImageUrl = imageUrl,
-                                backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
-                                modifier = Modifier.padding(contentPadding),
-                                onClick = onShowsClick,
-                            )
-                        }
 
-                        else -> {
-                            ContentList(
-                                listItems = state.items,
-                                contentPadding = contentPadding,
-                                onClick = onClick,
-                                onLongClick = onLongClick,
-                                onCheckClick = onCheckClick,
-                                onCheckLongClick = onCheckLongClick,
-                                onShowClick = onShowClick,
-                            )
+                            state.items.items?.isEmpty() == true -> {
+                                val imageUrl = remember {
+                                    Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_1).ifBlank { null }
+                                }
+                                HomeEmptyView(
+                                    text = stringResource(R.string.text_cta_up_next),
+                                    icon = R.drawable.ic_empty_upnext,
+                                    buttonText = stringResource(R.string.link_text_discover_shows),
+                                    backgroundImageUrl = imageUrl,
+                                    backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
+                                    modifier = Modifier.padding(contentPadding),
+                                    onClick = onShowsClick,
+                                )
+                            }
+
+                            else -> {
+                                ContentList(
+                                    listItems = state.items,
+                                    contentPadding = contentPadding,
+                                    onClick = onClick,
+                                    onLongClick = onLongClick,
+                                    onCheckClick = onCheckClick,
+                                    onCheckLongClick = onCheckLongClick,
+                                    onShowClick = onShowClick,
+                                )
+                            }
                         }
                     }
                 }
