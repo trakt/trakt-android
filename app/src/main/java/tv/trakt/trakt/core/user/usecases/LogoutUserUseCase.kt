@@ -22,10 +22,12 @@ import tv.trakt.trakt.core.user.data.local.favorites.UserFavoritesLocalDataSourc
 import tv.trakt.trakt.core.user.data.local.library.UserLibraryLocalDataSource
 import tv.trakt.trakt.core.user.data.local.ratings.UserRatingsLocalDataSource
 import tv.trakt.trakt.core.user.data.local.reactions.UserReactionsLocalDataSource
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 
 internal class LogoutUserUseCase(
     private val appContext: Context,
     private val sessionManager: SessionManager,
+    private val collapsingManager: CollapsingManager,
     private val apiClients: Array<ApiClient>,
     private val localUpNext: HomeUpNextLocalDataSource,
     private val localWatchlistUpNext: HomeWatchlistLocalDataSource,
@@ -47,6 +49,8 @@ internal class LogoutUserUseCase(
 ) {
     suspend fun logoutUser() {
         sessionManager.clear()
+        collapsingManager.clear()
+
         apiClients.forEach { api ->
             api.client.authProvider<BearerAuthProvider>()?.clearToken()
         }

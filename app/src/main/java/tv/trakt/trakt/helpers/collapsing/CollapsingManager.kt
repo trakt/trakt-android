@@ -20,4 +20,9 @@ internal interface CollapsingManager {
      * Marks the section identified by [key] as expanded.
      */
     suspend fun expand(key: CollapsingKey)
+
+    /**
+     * Clears all collapsing states.
+     */
+    suspend fun clear()
 }

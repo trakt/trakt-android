@@ -11,6 +11,7 @@ import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 @Immutable
 internal data class HomeSocialState(
     val items: ImmutableList<HomeActivityItem>? = null,
+    val collapsed: Boolean? = null,
     val navigateShow: TraktId? = null,
     val navigateEpisode: Pair<TraktId, Episode>? = null,
     val navigateMovie: TraktId? = null,

@@ -39,6 +39,9 @@ import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
+import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
+import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 internal class HomeSocialViewModel(
     private val getSocialActivityUseCase: GetSocialActivityUseCase,
@@ -47,6 +50,7 @@ internal class HomeSocialViewModel(
     private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
     private val modeManager: MediaModeManager,
+    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = HomeSocialState()
     private val initialMode = modeManager.getMode()
@@ -54,6 +58,7 @@ internal class HomeSocialViewModel(
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialMode)
+    private val collapseState = MutableStateFlow(isCollapsed())
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
@@ -62,6 +67,7 @@ internal class HomeSocialViewModel(
 
     private var dataJob: Job? = null
     private var processingJob: Job? = null
+    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -88,6 +94,7 @@ internal class HomeSocialViewModel(
             .distinctUntilChanged()
             .onEach { value ->
                 filterState.update { value }
+                collapseState.update { isCollapsed() }
                 loadData()
             }
             .launchIn(viewModelScope)
@@ -187,10 +194,38 @@ internal class HomeSocialViewModel(
         navigateMovie.update { null }
     }
 
+    fun setCollapsed(collapsed: Boolean) {
+        collapseState.update { collapsed }
+
+        collapseJob?.cancel()
+        collapseJob = viewModelScope.launch {
+            val key = when (filterState.value) {
+                MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_SOCIAL
+                MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_SOCIAL
+                MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_SOCIAL
+            }
+            when {
+                collapsed -> collapsingManager.collapse(key)
+                else -> collapsingManager.expand(key)
+            }
+        }
+    }
+
+    private fun isCollapsed(): Boolean {
+        return collapsingManager.isCollapsed(
+            key = when (filterState.value) {
+                MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_SOCIAL
+                MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_SOCIAL
+                MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_SOCIAL
+            },
+        )
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state: StateFlow<HomeSocialState> = combine(
         loadingState,
         itemsState,
+        collapseState,
         navigateShow,
         navigateEpisode,
         navigateMovie,
@@ -200,11 +235,12 @@ internal class HomeSocialViewModel(
         HomeSocialState(
             loading = states[0] as LoadingState,
             items = states[1] as? ImmutableList<HomeActivityItem>,
-            navigateShow = states[2] as? TraktId,
-            navigateEpisode = states[3] as? Pair<TraktId, Episode>,
-            navigateMovie = states[4] as? TraktId,
-            error = states[5] as? Exception,
-            user = states[6] as? User,
+            collapsed = states[2] as Boolean,
+            navigateShow = states[3] as? TraktId,
+            navigateEpisode = states[4] as? Pair<TraktId, Episode>,
+            navigateMovie = states[5] as? TraktId,
+            error = states[6] as? Exception,
+            user = states[7] as? User,
         )
     }.stateIn(
         scope = viewModelScope,

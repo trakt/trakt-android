@@ -191,6 +191,7 @@ internal val profileModule = module {
         LogoutUserUseCase(
             appContext = androidApplication(),
             sessionManager = get(),
+            collapsingManager = get(),
             apiClients = get(named("apiClients")),
             localUpNext = get(),
             localWatchlistUpNext = get(),
