@@ -53,13 +53,13 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.model.DiscoverItem.MovieItem
 import tv.trakt.trakt.core.discover.model.DiscoverItem.ShowItem
-import tv.trakt.trakt.core.discover.ui.DiscoverSectionHeader
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -141,7 +141,7 @@ internal fun DiscoverTrendingContent(
                 animationSpec = if (animateCollapse) spring() else snap(),
             ),
     ) {
-        DiscoverSectionHeader(
+        TraktSectionHeader(
             title = stringResource(R.string.list_title_trending),
             collapsed = state.collapsed ?: false,
             onCollapseClick = {

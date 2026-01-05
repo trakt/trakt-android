@@ -54,13 +54,13 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.model.DiscoverItem.MovieItem
 import tv.trakt.trakt.core.discover.model.DiscoverItem.ShowItem
-import tv.trakt.trakt.core.discover.ui.DiscoverSectionHeader
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -142,7 +142,7 @@ internal fun DiscoverPopularContent(
                 animationSpec = if (animateCollapse) spring() else snap(),
             ),
     ) {
-        DiscoverSectionHeader(
+        TraktSectionHeader(
             title = stringResource(R.string.list_title_most_popular),
             collapsed = state.collapsed ?: false,
             onCollapseClick = {
@@ -159,40 +159,44 @@ internal fun DiscoverPopularContent(
 
         if (state.collapsed != true) {
             Crossfade(
-            targetState = state.loading,
-            animationSpec = tween(200),
-        ) { loading ->
-            when (loading) {
-                IDLE, LOADING -> {
-                    ContentLoadingList(
-                        visible = loading.isLoading,
-                        contentPadding = contentPadding,
-                        modifier = Modifier.padding(bottom = 3.75.dp),
-                    )
-                }
-
-                DONE -> {
-                    if (state.error != null) {
-                        Text(
-                            text = "${stringResource(R.string.error_text_unexpected_error_short)}\n\n${state.error}",
-                            color = TraktTheme.colors.textSecondary,
-                            style = TraktTheme.typography.meta,
-                            maxLines = 10,
-                            modifier = Modifier.padding(contentPadding),
-                        )
-                    } else {
-                        ContentList(
-                            mode = state.mode,
-                            collection = collectionState,
-                            listItems = (state.items ?: emptyList()).toImmutableList(),
+                targetState = state.loading,
+                animationSpec = tween(200),
+            ) { loading ->
+                when (loading) {
+                    IDLE, LOADING -> {
+                        ContentLoadingList(
+                            visible = loading.isLoading,
                             contentPadding = contentPadding,
-                            onClick = onClick,
-                            onLongClick = onLongClick,
+                            modifier = Modifier.padding(bottom = 3.75.dp),
                         )
+                    }
+
+                    DONE -> {
+                        if (state.error != null) {
+                            Text(
+                                text = "${
+                                    stringResource(
+                                        R.string.error_text_unexpected_error_short,
+                                    )
+                                }\n\n${state.error}",
+                                color = TraktTheme.colors.textSecondary,
+                                style = TraktTheme.typography.meta,
+                                maxLines = 10,
+                                modifier = Modifier.padding(contentPadding),
+                            )
+                        } else {
+                            ContentList(
+                                mode = state.mode,
+                                collection = collectionState,
+                                listItems = (state.items ?: emptyList()).toImmutableList(),
+                                contentPadding = contentPadding,
+                                onClick = onClick,
+                                onLongClick = onLongClick,
+                            )
+                        }
                     }
                 }
             }
-        }
         }
     }
 }

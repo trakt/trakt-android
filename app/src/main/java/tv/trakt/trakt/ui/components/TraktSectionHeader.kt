@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.discover.ui
+package tv.trakt.trakt.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -16,13 +16,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun DiscoverSectionHeader(
-    title: String,
+internal fun TraktSectionHeader(
     modifier: Modifier = Modifier,
+    title: String,
+    subtitle: String? = null,
     collapsed: Boolean = false,
     onCollapseClick: () -> Unit = {},
 ) {
@@ -33,10 +33,11 @@ internal fun DiscoverSectionHeader(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = spacedBy(4.dp),
+            horizontalArrangement = spacedBy(6.dp),
         ) {
             TraktHeader(
                 title = title,
+                subtitle = subtitle,
             )
 
             if (!collapsed) {
@@ -44,8 +45,7 @@ internal fun DiscoverSectionHeader(
                     painter = painterResource(R.drawable.ic_chevron_right),
                     contentDescription = null,
                     tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .size(18.dp),
+                    modifier = Modifier.size(18.dp),
                 )
             }
         }
@@ -71,8 +71,24 @@ internal fun DiscoverSectionHeader(
 @Composable
 private fun Preview() {
     TraktTheme {
-        DiscoverSectionHeader(
+        TraktSectionHeader(
             title = "Trending Movies",
+            collapsed = false,
+        )
+    }
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun Preview2() {
+    TraktTheme {
+        TraktSectionHeader(
+            title = "Trending Movies",
+            subtitle = "Subtitle Lorem Ipsum",
             collapsed = false,
         )
     }
