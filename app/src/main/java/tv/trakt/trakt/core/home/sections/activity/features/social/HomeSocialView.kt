@@ -143,50 +143,54 @@ internal fun HomeSocialContent(
 
         if (state.collapsed != true) {
             Crossfade(
-            targetState = state.loading,
-            animationSpec = tween(200),
-        ) { loading ->
-            when (loading) {
-                IDLE, LOADING -> {
-                    ContentLoadingList(
-                        visible = loading.isLoading,
-                        contentPadding = contentPadding,
-                    )
-                }
+                targetState = state.loading,
+                animationSpec = tween(200),
+            ) { loading ->
+                when (loading) {
+                    IDLE, LOADING -> {
+                        ContentLoadingList(
+                            visible = loading.isLoading,
+                            contentPadding = contentPadding,
+                        )
+                    }
 
-                DONE -> {
-                    when {
-                        state.error != null -> {
-                            Text(
-                                text =
-                                    "${stringResource(R.string.error_text_unexpected_error_short)}\n\n${state.error}",
-                                color = TraktTheme.colors.textSecondary,
-                                style = TraktTheme.typography.meta,
-                                maxLines = 10,
-                                modifier = Modifier.padding(contentPadding),
-                            )
-                        }
+                    DONE -> {
+                        when {
+                            state.error != null -> {
+                                Text(
+                                    text =
+                                        "${
+                                            stringResource(
+                                                R.string.error_text_unexpected_error_short,
+                                            )
+                                        }\n\n${state.error}",
+                                    color = TraktTheme.colors.textSecondary,
+                                    style = TraktTheme.typography.meta,
+                                    maxLines = 10,
+                                    modifier = Modifier.padding(contentPadding),
+                                )
+                            }
 
-                        state.items?.isEmpty() == true -> {
-                            HomeEmptySocialView(
-                                modifier = Modifier
-                                    .padding(contentPadding),
-                            )
-                        }
+                            state.items?.isEmpty() == true -> {
+                                HomeEmptySocialView(
+                                    modifier = Modifier
+                                        .padding(contentPadding),
+                                )
+                            }
 
-                        else -> {
-                            ContentList(
-                                listItems = (state.items ?: emptyList()).toImmutableList(),
-                                contentPadding = contentPadding,
-                                onShowClick = onShowClick,
-                                onEpisodeClick = onEpisodeClick,
-                                onMovieClick = onMovieClick,
-                            )
+                            else -> {
+                                ContentList(
+                                    listItems = (state.items ?: emptyList()).toImmutableList(),
+                                    contentPadding = contentPadding,
+                                    onShowClick = onShowClick,
+                                    onEpisodeClick = onEpisodeClick,
+                                    onMovieClick = onMovieClick,
+                                )
+                            }
                         }
                     }
                 }
             }
-        }
         }
     }
 }
