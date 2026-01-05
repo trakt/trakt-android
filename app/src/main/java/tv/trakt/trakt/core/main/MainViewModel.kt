@@ -173,6 +173,7 @@ internal class MainViewModel(
             try {
                 loadingUserState.update { LOADING }
 
+                dismissOnboarding()
                 authorizeUseCase.authorizeByCode(code)
                 getUserUseCase.loadUserProfile()
 
@@ -210,7 +211,7 @@ internal class MainViewModel(
         }
     }
 
-    fun dismissOnboarding() {
+    private fun dismissOnboarding() {
         viewModelScope.launch {
             welcomeState.update { it.copy(onboarding = false) }
             dismissWelcomeUseCase.dismissOnboarding()

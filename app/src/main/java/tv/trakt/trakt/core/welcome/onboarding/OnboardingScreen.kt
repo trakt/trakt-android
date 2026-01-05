@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.welcome.onboarding
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -29,6 +30,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -49,6 +51,7 @@ import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.common.ui.theme.colors.Shade940
 import tv.trakt.trakt.core.welcome.onboarding.pages.OnboardingPage1
@@ -63,7 +66,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun OnboardingScreen(
     modifier: Modifier = Modifier,
-    onDismiss: () -> Unit,
+    onLogin: () -> Unit,
 ) {
     val windowClass = currentWindowAdaptiveInfo().windowSizeClass
     val contentVerticalPadding = PaddingValues(
@@ -81,6 +84,9 @@ internal fun OnboardingScreen(
     )
 
     val currentPage = remember { mutableIntStateOf(0) }
+    val isLastPage = remember(currentPage.intValue) {
+        currentPage.intValue >= 3
+    }
 
     val backgroundGradient = remember {
         verticalGradient(
@@ -148,7 +154,7 @@ internal fun OnboardingScreen(
                     bottom = contentVerticalPadding
                         .calculateBottomPadding()
                         .plus(46.dp) // Button height
-                        .plus(58.dp),
+                        .plus(68.dp),
                 ),
             label = "onboarding_page_transition",
         ) { currentPage ->
@@ -195,27 +201,57 @@ internal fun OnboardingScreen(
             verticalArrangement = spacedBy(24.dp),
         ) {
             PrimaryButton(
-                text = stringResource(R.string.button_text_continue).uppercase(),
+                text = when {
+                    isLastPage -> stringResource(R.string.button_text_join_trakt)
+                    else -> stringResource(R.string.button_text_continue)
+                },
                 containerColor = Purple500,
                 contentColor = Color.White,
                 onClick = {
                     currentPage.intValue = when {
-                        currentPage.intValue < 3 -> {
-                            currentPage.intValue + 1
+                        isLastPage -> {
+                            onLogin()
+                            3
                         }
                         else -> {
-                            onDismiss()
-                            3
+                            currentPage.intValue + 1
                         }
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
             )
 
-            PageIndicator(
-                pageCount = 4,
-                currentPage = currentPage.intValue,
-            )
+            Row(
+                modifier = Modifier
+                    .height(16.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                PageIndicator(
+                    pageCount = 4,
+                    currentPage = currentPage.intValue,
+                    modifier = Modifier
+                        .padding(top = 1.dp),
+                )
+
+                AnimatedVisibility(
+                    visible = !isLastPage,
+                    enter = fadeIn(animationSpec = tween(250)),
+                    exit = fadeOut(animationSpec = tween(250)),
+                ) {
+                    Text(
+                        text = stringResource(R.string.button_text_login),
+                        style = TraktTheme.typography.buttonTertiary,
+                        color = TraktTheme.colors.textPrimary,
+                        modifier = Modifier
+                            .onClick(
+                                enabled = !isLastPage,
+                                onClick = onLogin,
+                            ),
+                    )
+                }
+            }
         }
     }
 }
@@ -273,7 +309,7 @@ private fun Preview() {
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             OnboardingScreen(
-                onDismiss = {},
+                onLogin = {},
             )
         }
     }

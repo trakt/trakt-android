@@ -354,7 +354,7 @@ private fun WelcomeFooter(
         }
 
         PrimaryButton(
-            text = stringResource(R.string.button_text_continue).uppercase(),
+            text = stringResource(R.string.button_text_continue),
             containerColor = Purple500,
             contentColor = Color.White,
             onClick = onDismiss,

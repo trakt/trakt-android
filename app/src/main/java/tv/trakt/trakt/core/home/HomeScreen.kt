@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastRoundToInt
@@ -30,6 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.home.sections.activity.features.history.HomeHistoryView
 import tv.trakt.trakt.core.home.sections.activity.features.social.HomeSocialView
 import tv.trakt.trakt.core.home.sections.upcoming.HomeUpcomingView
@@ -56,14 +58,28 @@ internal fun HomeScreen(
     onNavigateToAllSocial: () -> Unit,
     onNavigateToVip: () -> Unit,
 ) {
+    val uriHandler = LocalUriHandler.current
+
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     HomeScreenContent(
         state = state,
         userLoading = userLoading,
         onShowClick = onNavigateToShow,
-        onShowsClick = onNavigateToDiscover,
-        onMoviesClick = onNavigateToDiscover,
+        onShowsClick = {
+            when {
+                userLoading -> return@HomeScreenContent
+                state.user.user != null -> onNavigateToDiscover()
+                else -> uriHandler.openUri(ConfigAuth.authCodeUrl)
+            }
+        },
+        onMoviesClick = {
+            when {
+                userLoading -> return@HomeScreenContent
+                state.user.user != null -> onNavigateToDiscover()
+                else -> uriHandler.openUri(ConfigAuth.authCodeUrl)
+            }
+        },
         onMovieClick = onNavigateToMovie,
         onEpisodeClick = onNavigateToEpisode,
         onMoreUpNextClick = onNavigateToAllUpNext,

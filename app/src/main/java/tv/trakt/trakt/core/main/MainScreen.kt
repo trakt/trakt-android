@@ -186,7 +186,9 @@ internal fun MainScreen(
 
                 targetState.onboarding -> {
                     OnboardingScreen(
-                        onDismiss = viewModel::dismissOnboarding,
+                        onLogin = {
+                            localUriHandler.openUri(ConfigAuth.authCodeUrl)
+                        },
                     )
                 }
 
@@ -236,7 +238,11 @@ internal fun MainScreen(
                                 user = state.user,
                                 searchState = searchState,
                                 onSelected = {
-                                    navController.navigateToMainDestination(it.destination)
+                                    if (state.user != null) {
+                                        navController.navigateToMainDestination(it.destination)
+                                    } else {
+                                        localUriHandler.openUri(ConfigAuth.authCodeUrl)
+                                    }
                                 },
                                 onProfileSelected = {
                                     if (state.user != null) {
