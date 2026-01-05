@@ -12,6 +12,7 @@ import tv.trakt.trakt.core.main.model.MediaMode
 internal data class HomeUpcomingState(
     val items: ImmutableList<HomeUpcomingItem>? = null,
     val filter: MediaMode? = null,
+    val collapsed: Boolean? = null,
     val navigateShow: TraktId? = null,
     val navigateEpisode: Pair<TraktId, Episode>? = null,
     val navigateMovie: TraktId? = null,

@@ -192,6 +192,7 @@ internal val homeModule = module {
             movieLocalDataSource = get(),
             modeManager = get(),
             sessionManager = get(),
+            collapsingManager = get(),
             analytics = get(),
         )
     }
@@ -277,6 +278,7 @@ internal val homeModule = module {
             movieLocalDataSource = get(),
             sessionManager = get(),
             modeManager = get(),
+            collapsingManager = get(),
         )
     }
 

@@ -12,6 +12,7 @@ import tv.trakt.trakt.core.main.model.MediaMode
 internal data class HomeWatchlistState(
     val filter: MediaMode? = null,
     val items: ImmutableList<WatchlistItem>? = null,
+    val collapsed: Boolean? = null,
     val navigateShow: TraktId? = null,
     val navigateMovie: TraktId? = null,
     val loading: LoadingState = LoadingState.IDLE,

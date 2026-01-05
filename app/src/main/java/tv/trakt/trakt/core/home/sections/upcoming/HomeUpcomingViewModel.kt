@@ -41,6 +41,8 @@ import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSo
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
+import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 @Suppress("UNCHECKED_CAST")
 @OptIn(FlowPreview::class)
@@ -53,12 +55,14 @@ internal class HomeUpcomingViewModel(
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
+    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = HomeUpcomingState()
     private val initialMode = modeManager.getMode()
 
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialMode)
+    private val collapseState = MutableStateFlow(isCollapsed())
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
@@ -68,6 +72,7 @@ internal class HomeUpcomingViewModel(
     private var user: User? = null
     private var dataJob: Job? = null
     private var processingJob: Job? = null
+    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -81,6 +86,7 @@ internal class HomeUpcomingViewModel(
             .distinctUntilChanged()
             .onEach { value ->
                 filterState.update { value }
+                collapseState.update { isCollapsed() }
                 loadData()
             }
             .launchIn(viewModelScope)
@@ -201,6 +207,33 @@ internal class HomeUpcomingViewModel(
         }
     }
 
+    fun setCollapsed(collapsed: Boolean) {
+        collapseState.update { collapsed }
+
+        collapseJob?.cancel()
+        collapseJob = viewModelScope.launch {
+            val key = when (filterState.value) {
+                MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_UPCOMING
+                MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_UPCOMING
+                MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_UPCOMING
+            }
+            when {
+                collapsed -> collapsingManager.collapse(key)
+                else -> collapsingManager.expand(key)
+            }
+        }
+    }
+
+    private fun isCollapsed(): Boolean {
+        return collapsingManager.isCollapsed(
+            key = when (filterState.value) {
+                MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_UPCOMING
+                MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_UPCOMING
+                MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_UPCOMING
+            },
+        )
+    }
+
     fun clearNavigation() {
         navigateShow.update { null }
         navigateEpisode.update { null }
@@ -211,6 +244,7 @@ internal class HomeUpcomingViewModel(
         loadingState,
         itemsState,
         filterState,
+        collapseState,
         navigateShow,
         navigateEpisode,
         navigateMovie,
@@ -220,9 +254,11 @@ internal class HomeUpcomingViewModel(
             loading = state[0] as LoadingState,
             items = state[1] as ImmutableList<HomeUpcomingItem>?,
             filter = state[2] as MediaMode?,
-            navigateShow = state[3] as TraktId?,
-            navigateEpisode = state[4] as Pair<TraktId, Episode>?,
-            navigateMovie = state[5] as TraktId?,
+            collapsed = state[3] as Boolean,
+            navigateShow = state[4] as TraktId?,
+            navigateEpisode = state[5] as Pair<TraktId, Episode>?,
+            navigateMovie = state[6] as TraktId?,
+            error = state[7] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,
