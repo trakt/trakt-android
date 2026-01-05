@@ -23,20 +23,26 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedShowsUseCase
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
+import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
+import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 internal class DiscoverAnticipatedViewModel(
     private val modeManager: MediaModeManager,
     private val getAnticipatedShowsUseCase: GetAnticipatedShowsUseCase,
     private val getAnticipatedMoviesUseCase: GetAnticipatedMoviesUseCase,
+    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = DiscoverAnticipatedState()
 
     private val modeState = MutableStateFlow(modeManager.getMode())
+    private val collapseState = MutableStateFlow(isCollapsed())
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var dataJob: Job? = null
+    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -47,6 +53,7 @@ internal class DiscoverAnticipatedViewModel(
         modeManager.observeMode()
             .onEach { value ->
                 modeState.update { value }
+                collapseState.update { isCollapsed() }
                 loadData()
             }
             .launchIn(viewModelScope)
@@ -105,17 +112,46 @@ internal class DiscoverAnticipatedViewModel(
         }
     }
 
+    fun setCollapsed(collapsed: Boolean) {
+        collapseState.update { collapsed }
+
+        collapseJob?.cancel()
+        collapseJob = viewModelScope.launch {
+            val key = when (modeState.value) {
+                MediaMode.MEDIA -> CollapsingKey.DISCOVER_MEDIA_ANTICIPATED
+                MediaMode.SHOWS -> CollapsingKey.DISCOVER_SHOWS_ANTICIPATED
+                MediaMode.MOVIES -> CollapsingKey.DISCOVER_MOVIES_ANTICIPATED
+            }
+            when {
+                collapsed -> collapsingManager.collapse(key)
+                else -> collapsingManager.expand(key)
+            }
+        }
+    }
+
+    private fun isCollapsed(): Boolean {
+        return collapsingManager.isCollapsed(
+            key = when (modeState.value) {
+                MediaMode.MEDIA -> CollapsingKey.DISCOVER_MEDIA_ANTICIPATED
+                MediaMode.SHOWS -> CollapsingKey.DISCOVER_SHOWS_ANTICIPATED
+                MediaMode.MOVIES -> CollapsingKey.DISCOVER_MOVIES_ANTICIPATED
+            },
+        )
+    }
+
     val state = combine(
         itemsState,
         modeState,
+        collapseState,
         loadingState,
         errorState,
-    ) { s1, s2, s3, s4 ->
+    ) { s1, s2, s3, s4, s5 ->
         DiscoverAnticipatedState(
             items = s1,
             mode = s2,
-            loading = s3,
-            error = s4,
+            collapsed = s3,
+            loading = s4,
+            error = s5,
         )
     }.stateIn(
         scope = viewModelScope,

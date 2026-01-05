@@ -102,6 +102,7 @@ internal val discoverModule = module {
     viewModel { (customTheme: Boolean) ->
         DiscoverAnticipatedViewModel(
             modeManager = get(),
+            collapsingManager = get(),
             getAnticipatedShowsUseCase = when {
                 customTheme -> get(named("customAnticipatedShowsUseCase"))
                 else -> get(named("defaultAnticipatedShowsUseCase"))
@@ -116,6 +117,7 @@ internal val discoverModule = module {
     viewModel { (customTheme: Boolean) ->
         DiscoverPopularViewModel(
             modeManager = get(),
+            collapsingManager = get(),
             getPopularShowsUseCase = when {
                 customTheme -> get(named("customPopularShowsUseCase"))
                 else -> get(named("defaultPopularShowsUseCase"))
@@ -130,6 +132,7 @@ internal val discoverModule = module {
     viewModel { (customTheme: Boolean) ->
         DiscoverRecommendedViewModel(
             modeManager = get(),
+            collapsingManager = get(),
             getRecommendedShowsUseCase = when {
                 customTheme -> get(named("customRecommendedShowsUseCase"))
                 else -> get(named("defaultRecommendedShowsUseCase"))

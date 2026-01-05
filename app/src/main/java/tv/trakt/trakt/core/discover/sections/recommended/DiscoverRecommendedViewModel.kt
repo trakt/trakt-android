@@ -23,20 +23,26 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.discover.sections.recommended.usecase.GetRecommendedMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.recommended.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
+import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
+import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 internal class DiscoverRecommendedViewModel(
     private val modeManager: MediaModeManager,
     private val getRecommendedShowsUseCase: GetRecommendedShowsUseCase,
     private val getRecommendedMoviesUseCase: GetRecommendedMoviesUseCase,
+    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = DiscoverRecommendedState()
 
     private val modeState = MutableStateFlow(modeManager.getMode())
+    private val collapseState = MutableStateFlow(isCollapsed())
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var dataJob: Job? = null
+    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -47,6 +53,7 @@ internal class DiscoverRecommendedViewModel(
         modeManager.observeMode()
             .onEach { value ->
                 modeState.update { value }
+                collapseState.update { isCollapsed() }
                 loadData()
             }
             .launchIn(viewModelScope)
@@ -103,17 +110,46 @@ internal class DiscoverRecommendedViewModel(
         }
     }
 
+    fun setCollapsed(collapsed: Boolean) {
+        collapseState.update { collapsed }
+
+        collapseJob?.cancel()
+        collapseJob = viewModelScope.launch {
+            val key = when (modeState.value) {
+                MediaMode.MEDIA -> CollapsingKey.DISCOVER_MEDIA_RECOMMENDED
+                MediaMode.SHOWS -> CollapsingKey.DISCOVER_SHOWS_RECOMMENDED
+                MediaMode.MOVIES -> CollapsingKey.DISCOVER_MOVIES_RECOMMENDED
+            }
+            when {
+                collapsed -> collapsingManager.collapse(key)
+                else -> collapsingManager.expand(key)
+            }
+        }
+    }
+
+    private fun isCollapsed(): Boolean {
+        return collapsingManager.isCollapsed(
+            key = when (modeState.value) {
+                MediaMode.MEDIA -> CollapsingKey.DISCOVER_MEDIA_RECOMMENDED
+                MediaMode.SHOWS -> CollapsingKey.DISCOVER_SHOWS_RECOMMENDED
+                MediaMode.MOVIES -> CollapsingKey.DISCOVER_MOVIES_RECOMMENDED
+            },
+        )
+    }
+
     val state = combine(
         itemsState,
         modeState,
+        collapseState,
         loadingState,
         errorState,
-    ) { s1, s2, s3, s4 ->
+    ) { s1, s2, s3, s4, s5 ->
         DiscoverRecommendedState(
             items = s1,
             mode = s2,
-            loading = s3,
-            error = s4,
+            collapsed = s3,
+            loading = s4,
+            error = s5,
         )
     }.stateIn(
         scope = viewModelScope,

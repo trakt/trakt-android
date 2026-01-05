@@ -23,20 +23,26 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularShowsUseCase
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
+import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
+import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 internal class DiscoverPopularViewModel(
     private val modeManager: MediaModeManager,
     private val getPopularShowsUseCase: GetPopularShowsUseCase,
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
+    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = DiscoverPopularState()
 
     private val modeState = MutableStateFlow(modeManager.getMode())
+    private val collapseState = MutableStateFlow(isCollapsed())
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var dataJob: Job? = null
+    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -47,6 +53,7 @@ internal class DiscoverPopularViewModel(
         modeManager.observeMode()
             .onEach { value ->
                 modeState.update { value }
+                collapseState.update { isCollapsed() }
                 loadData()
             }
             .launchIn(viewModelScope)
@@ -105,17 +112,46 @@ internal class DiscoverPopularViewModel(
         }
     }
 
+    fun setCollapsed(collapsed: Boolean) {
+        collapseState.update { collapsed }
+
+        collapseJob?.cancel()
+        collapseJob = viewModelScope.launch {
+            val key = when (modeState.value) {
+                MediaMode.MEDIA -> CollapsingKey.DISCOVER_MEDIA_POPULAR
+                MediaMode.SHOWS -> CollapsingKey.DISCOVER_SHOWS_POPULAR
+                MediaMode.MOVIES -> CollapsingKey.DISCOVER_MOVIES_POPULAR
+            }
+            when {
+                collapsed -> collapsingManager.collapse(key)
+                else -> collapsingManager.expand(key)
+            }
+        }
+    }
+
+    private fun isCollapsed(): Boolean {
+        return collapsingManager.isCollapsed(
+            key = when (modeState.value) {
+                MediaMode.MEDIA -> CollapsingKey.DISCOVER_MEDIA_POPULAR
+                MediaMode.SHOWS -> CollapsingKey.DISCOVER_SHOWS_POPULAR
+                MediaMode.MOVIES -> CollapsingKey.DISCOVER_MOVIES_POPULAR
+            },
+        )
+    }
+
     val state = combine(
         itemsState,
         modeState,
+        collapseState,
         loadingState,
         errorState,
-    ) { s1, s2, s3, s4 ->
+    ) { s1, s2, s3, s4, s5 ->
         DiscoverPopularState(
             items = s1,
             mode = s2,
-            loading = s3,
-            error = s4,
+            collapsed = s3,
+            loading = s4,
+            error = s5,
         )
     }.stateIn(
         scope = viewModelScope,
