@@ -35,13 +35,24 @@ import tv.trakt.trakt.core.main.helpers.DefaultMediaModeManager
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
+import tv.trakt.trakt.helpers.collapsing.DefaultCollapsingManager
 
 internal const val MAIN_PREFERENCES = "main_preferences"
+internal const val COLLAPSING_PREFERENCES = "collapsing_preferences"
 
 internal val mainModule = module {
     single<DataStore<Preferences>>(named(MAIN_PREFERENCES)) {
         createStore(
             context = androidApplication(),
+            file = MAIN_PREFERENCES,
+        )
+    }
+
+    single<DataStore<Preferences>>(named(COLLAPSING_PREFERENCES)) {
+        createStore(
+            context = androidApplication(),
+            file = COLLAPSING_PREFERENCES,
         )
     }
 
@@ -49,6 +60,12 @@ internal val mainModule = module {
         DefaultMediaModeManager(
             dataStore = get(named(MAIN_PREFERENCES)),
             analytics = get(),
+        )
+    }
+
+    single<CollapsingManager> {
+        DefaultCollapsingManager(
+            dataStore = get(named(COLLAPSING_PREFERENCES)),
         )
     }
 
@@ -109,13 +126,16 @@ internal val mainModule = module {
     }
 }
 
-private fun createStore(context: Context): DataStore<Preferences> {
+private fun createStore(
+    context: Context,
+    file: String,
+): DataStore<Preferences> {
     return PreferenceDataStoreFactory.create(
         corruptionHandler = ReplaceFileCorruptionHandler(
             produceNewData = { emptyPreferences() },
         ),
-        migrations = listOf(SharedPreferencesMigration(context, MAIN_PREFERENCES)),
+        migrations = listOf(SharedPreferencesMigration(context, file)),
         scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
-        produceFile = { context.preferencesDataStoreFile(MAIN_PREFERENCES) },
+        produceFile = { context.preferencesDataStoreFile(file) },
     )
 }
