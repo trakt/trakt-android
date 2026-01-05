@@ -48,6 +48,7 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.discover.navigation.DiscoverDestination
 import tv.trakt.trakt.core.home.navigation.HomeDestination
@@ -141,6 +142,13 @@ private fun TraktMenuBarContent(
         verticalArrangement = spacedBy(0.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        val items = remember(user) {
+            when (user) {
+                null -> navigationItems.take(1)
+                else -> navigationItems
+            }
+        }
+
         SearchContent(
             enabled = enabled,
             searchInput = stateHolder.searchInput,
@@ -155,7 +163,7 @@ private fun TraktMenuBarContent(
             modifier = Modifier
                 .padding(horizontal = 12.dp),
         ) {
-            navigationItems.forEachIndexed { index, item ->
+            items.forEachIndexed { _, item ->
                 val isSelected = destination
                     ?.hierarchy
                     ?.any { it.hasRoute(item.destination::class) } == true
@@ -355,6 +363,7 @@ private fun Preview1() {
     TraktTheme {
         TraktMenuBarContent(
             destination = null,
+            user = PreviewData.user1,
             stateHolder = MainSearchStateHolder(),
             modifier = Modifier
                 .background(TraktTheme.colors.navigationContainer),
@@ -377,6 +386,7 @@ private fun Preview2() {
                     searchVisible = true,
                 ),
             ),
+            user = PreviewData.user1,
             modifier = Modifier
                 .background(TraktTheme.colors.navigationContainer),
         )

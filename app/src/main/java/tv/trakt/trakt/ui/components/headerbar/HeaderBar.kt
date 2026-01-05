@@ -134,11 +134,13 @@ private fun HeaderBar(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            MediaModeButtons(
-                mode = mediaMode,
-                height = contentHeight,
-                onModeSelect = onMediaModeSelect,
-            )
+            if (!showLogin) {
+                MediaModeButtons(
+                    mode = mediaMode,
+                    height = contentHeight,
+                    onModeSelect = onMediaModeSelect,
+                )
+            }
 
             if (showLogin) {
                 TertiaryButton(
