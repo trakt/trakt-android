@@ -58,6 +58,7 @@ internal class DiscoverTrendingViewModel(
         modeManager.observeMode()
             .onEach { value ->
                 modeState.update { value }
+                collapseState.update { isCollapsed() }
                 loadData()
             }
             .launchIn(viewModelScope)
@@ -121,6 +122,8 @@ internal class DiscoverTrendingViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
+        collapseState.update { collapsed }
+
         collapseJob?.cancel()
         collapseJob = viewModelScope.launch {
             val key = when (modeState.value) {

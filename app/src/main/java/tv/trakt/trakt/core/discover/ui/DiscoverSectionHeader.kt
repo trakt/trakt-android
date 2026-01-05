@@ -39,13 +39,15 @@ internal fun DiscoverSectionHeader(
                 title = title,
             )
 
-            Icon(
-                painter = painterResource(R.drawable.ic_chevron_right),
-                contentDescription = null,
-                tint = TraktTheme.colors.textPrimary,
-                modifier = Modifier
-                    .size(18.dp),
-            )
+            if (!collapsed) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_chevron_right),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .size(18.dp),
+                )
+            }
         }
 
         Icon(

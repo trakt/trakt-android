@@ -10,7 +10,7 @@ import tv.trakt.trakt.core.main.model.MediaMode
 internal data class DiscoverTrendingState(
     val items: ImmutableList<DiscoverItem>? = null,
     val mode: MediaMode? = null,
-    val collapsed: Boolean = false,
+    val collapsed: Boolean? = null,
     val loading: LoadingState = LoadingState.IDLE,
     val error: Exception? = null,
 )

@@ -132,26 +132,21 @@ internal fun DiscoverTrendingContent(
     onMoreClick: () -> Unit = {},
     onCollapse: (collapsed: Boolean) -> Unit = {},
 ) {
-    var isCollapsed by rememberSaveable(state.collapsed) {
-        mutableStateOf(state.collapsed)
-    }
+    var animateCollapse by rememberSaveable { mutableStateOf(false) }
 
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
         modifier = modifier
             .animateContentSize(
-                animationSpec = when {
-                    state.loading.isLoading -> snap()
-                    else -> spring()
-                },
+                animationSpec = if (animateCollapse) spring() else snap(),
             ),
     ) {
         DiscoverSectionHeader(
             title = stringResource(R.string.list_title_trending),
-            collapsed = isCollapsed,
+            collapsed = state.collapsed ?: false,
             onCollapseClick = {
-                val current = isCollapsed
-                isCollapsed = !current
+                animateCollapse = true
+                val current = (state.collapsed ?: false)
                 onCollapse(!current)
             },
             modifier = Modifier
@@ -161,7 +156,7 @@ internal fun DiscoverTrendingContent(
                 },
         )
 
-        if (!isCollapsed) {
+        if (state.collapsed != true) {
             Crossfade(
                 targetState = state.loading,
                 animationSpec = tween(200),
