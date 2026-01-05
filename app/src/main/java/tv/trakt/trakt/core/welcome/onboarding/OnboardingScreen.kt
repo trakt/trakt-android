@@ -42,7 +42,6 @@ import androidx.compose.ui.graphics.Brush.Companion.verticalGradient
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -99,7 +98,7 @@ internal fun OnboardingScreen(
     }
 
     val parallaxOffset = animateFloatAsState(
-        targetValue = currentPage.intValue * -30f,
+        targetValue = (currentPage.intValue * -30f) + 30f,
         animationSpec = tween(durationMillis = 500),
         label = "parallaxOffset",
     )
@@ -112,10 +111,10 @@ internal fun OnboardingScreen(
         Image(
             painter = painterResource(R.drawable.img_onboarding),
             contentDescription = null,
-            contentScale = ContentScale.Crop,
+            alignment = Alignment.TopCenter,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = contentVerticalPadding.calculateBottomPadding() * 3)
+                .padding(bottom = contentVerticalPadding.calculateBottomPadding() * 2)
                 .graphicsLayer {
                     translationX = parallaxOffset.value
                     scaleX = 1.2f
