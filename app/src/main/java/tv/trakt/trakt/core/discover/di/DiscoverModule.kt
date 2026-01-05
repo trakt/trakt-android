@@ -87,6 +87,7 @@ internal val discoverModule = module {
     viewModel { (customTheme: Boolean) ->
         DiscoverTrendingViewModel(
             modeManager = get(),
+            collapsingManager = get(),
             getTrendingShowsUseCase = when {
                 customTheme -> get(named("customTrendingShowsUseCase"))
                 else -> get(named("defaultTrendingShowsUseCase"))

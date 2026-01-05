@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -55,11 +54,8 @@ internal fun DiscoverSectionHeader(
             tint = TraktTheme.colors.textSecondary,
             modifier = Modifier
                 .padding(start = 4.dp)
-                .rotate(if (collapsed) -180F else 0F)
+                .rotate(if (collapsed) -90F else 0F)
                 .size(16.dp)
-                .graphicsLayer {
-                    translationX = 1.dp.toPx()
-                }
                 .onClick(onClick = onCollapseClick),
         )
     }

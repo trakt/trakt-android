@@ -3,6 +3,9 @@
 package tv.trakt.trakt.core.discover.sections.trending
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.snap
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
@@ -25,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -82,6 +86,7 @@ internal fun DiscoverTrendingView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
+        onCollapse = viewModel::setCollapsed,
         onMoreClick = {
             if (!state.loading.isLoading) {
                 onMoreClick()
@@ -125,13 +130,30 @@ internal fun DiscoverTrendingContent(
     onClick: (DiscoverItem) -> Unit = {},
     onLongClick: (DiscoverItem) -> Unit = {},
     onMoreClick: () -> Unit = {},
+    onCollapse: (collapsed: Boolean) -> Unit = {},
 ) {
+    var isCollapsed by rememberSaveable(state.collapsed) {
+        mutableStateOf(state.collapsed)
+    }
+
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
-        modifier = modifier,
+        modifier = modifier
+            .animateContentSize(
+                animationSpec = when {
+                    state.loading.isLoading -> snap()
+                    else -> spring()
+                },
+            ),
     ) {
         DiscoverSectionHeader(
             title = stringResource(R.string.list_title_trending),
+            collapsed = isCollapsed,
+            onCollapseClick = {
+                val current = isCollapsed
+                isCollapsed = !current
+                onCollapse(!current)
+            },
             modifier = Modifier
                 .padding(headerPadding)
                 .onClick(enabled = state.loading == DONE) {
@@ -139,37 +161,43 @@ internal fun DiscoverTrendingContent(
                 },
         )
 
-        Crossfade(
-            targetState = state.loading,
-            animationSpec = tween(200),
-        ) { loading ->
-            when (loading) {
-                IDLE, LOADING -> {
-                    ContentLoadingList(
-                        visible = loading.isLoading,
-                        contentPadding = contentPadding,
-                        modifier = Modifier.padding(bottom = 3.75.dp),
-                    )
-                }
-
-                DONE -> {
-                    if (state.error != null) {
-                        Text(
-                            text = "${stringResource(R.string.error_text_unexpected_error_short)}\n\n${state.error}",
-                            color = TraktTheme.colors.textSecondary,
-                            style = TraktTheme.typography.meta,
-                            maxLines = 10,
-                            modifier = Modifier.padding(contentPadding),
-                        )
-                    } else {
-                        ContentList(
-                            mode = state.mode,
-                            collection = collectionState,
-                            listItems = (state.items ?: emptyList()).toImmutableList(),
+        if (!isCollapsed) {
+            Crossfade(
+                targetState = state.loading,
+                animationSpec = tween(200),
+            ) { loading ->
+                when (loading) {
+                    IDLE, LOADING -> {
+                        ContentLoadingList(
+                            visible = loading.isLoading,
                             contentPadding = contentPadding,
-                            onClick = onClick,
-                            onLongClick = onLongClick,
+                            modifier = Modifier.padding(bottom = 3.75.dp),
                         )
+                    }
+
+                    DONE -> {
+                        if (state.error != null) {
+                            Text(
+                                text = "${
+                                    stringResource(
+                                        R.string.error_text_unexpected_error_short,
+                                    )
+                                }\n\n${state.error}",
+                                color = TraktTheme.colors.textSecondary,
+                                style = TraktTheme.typography.meta,
+                                maxLines = 10,
+                                modifier = Modifier.padding(contentPadding),
+                            )
+                        } else {
+                            ContentList(
+                                mode = state.mode,
+                                collection = collectionState,
+                                listItems = (state.items ?: emptyList()).toImmutableList(),
+                                contentPadding = contentPadding,
+                                onClick = onClick,
+                                onLongClick = onLongClick,
+                            )
+                        }
                     }
                 }
             }

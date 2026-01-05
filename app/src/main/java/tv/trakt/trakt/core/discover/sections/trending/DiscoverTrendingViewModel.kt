@@ -29,20 +29,25 @@ import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingMovies
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingShowsUseCase
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
+import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 internal class DiscoverTrendingViewModel(
     private val modeManager: MediaModeManager,
     private val getTrendingShowsUseCase: GetTrendingShowsUseCase,
     private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
+    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = DiscoverTrendingState()
 
     private val modeState = MutableStateFlow(modeManager.getMode())
+    private val collapseState = MutableStateFlow(isCollapsed())
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var dataJob: Job? = null
+    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -115,17 +120,46 @@ internal class DiscoverTrendingViewModel(
         }
     }
 
+    fun setCollapsed(collapsed: Boolean) {
+        collapseJob?.cancel()
+        collapseJob = viewModelScope.launch {
+            val key = when (modeState.value) {
+                MediaMode.MEDIA -> CollapsingKey.DISCOVER_MEDIA_TRENDING
+                MediaMode.SHOWS -> CollapsingKey.DISCOVER_SHOWS_TRENDING
+                MediaMode.MOVIES -> CollapsingKey.DISCOVER_MOVIES_TRENDING
+            }
+            when {
+                collapsed -> collapsingManager.collapse(key)
+                else -> collapsingManager.expand(key)
+            }
+        }
+    }
+
+    private fun isCollapsed(): Boolean {
+        return collapsingManager.isCollapsed(
+            key = when (modeState.value) {
+                MediaMode.MEDIA -> CollapsingKey.DISCOVER_MEDIA_TRENDING
+                MediaMode.SHOWS -> CollapsingKey.DISCOVER_SHOWS_TRENDING
+                MediaMode.MOVIES -> CollapsingKey.DISCOVER_MOVIES_TRENDING
+            },
+        ).also {
+            Timber.d("Trending isCollapsed for mode ${modeState.value}: $it")
+        }
+    }
+
     val state = combine(
         itemsState,
         modeState,
+        collapseState,
         loadingState,
         errorState,
     ) { state ->
         DiscoverTrendingState(
             items = state[0] as ImmutableList<DiscoverItem>?,
             mode = state[1] as MediaMode?,
-            loading = state[2] as LoadingState,
-            error = state[3] as Exception?,
+            collapsed = state[2] as Boolean,
+            loading = state[3] as LoadingState,
+            error = state[4] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,
