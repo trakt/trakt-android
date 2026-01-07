@@ -6,6 +6,7 @@ import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -33,25 +34,38 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush.Companion.verticalGradient
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.billingclient.api.ProductDetails
+import com.google.firebase.Firebase
+import com.google.firebase.remoteconfig.remoteConfig
 import tv.trakt.trakt.LocalBottomBarVisibility
+import tv.trakt.trakt.common.Config
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_VIP_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
@@ -60,8 +74,11 @@ import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.billing.model.VipBillingError
 import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD
 import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD_TRIAL
+import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
+import tv.trakt.trakt.ui.components.vip.VipChip
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -94,17 +111,20 @@ internal fun BillingScreen(
         },
         onErrorClick = viewModel::clearError,
         onBackClick = onNavigateBack,
+        modifier = Modifier,
     )
 }
 
 @Composable
 private fun BillingScreen(
     state: BillingState,
+    modifier: Modifier = Modifier,
     onPurchaseClick: (ProductDetails) -> Unit = {},
     onBackClick: () -> Unit = {},
     onErrorClick: () -> Unit = {},
 ) {
     val inspection = LocalInspectionMode.current
+
     val contentPadding = PaddingValues(
         start = TraktTheme.spacing.mainPageHorizontalSpace,
         end = TraktTheme.spacing.mainPageHorizontalSpace,
@@ -115,11 +135,34 @@ private fun BillingScreen(
             .calculateBottomPadding(),
     )
 
+    val backgroundColor1 = TraktTheme.colors.backgroundPrimary
+    val backgroundGradient = remember {
+        verticalGradient(
+            colors = listOf(
+                Color.Transparent,
+                backgroundColor1,
+            ),
+        )
+    }
+
+    val listScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
+        SimpleScrollConnection()
+    }
+
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
-            .background(TraktTheme.colors.backgroundPrimary),
+            .background(backgroundColor1)
+            .nestedScroll(listScrollConnection),
     ) {
+        ScrollableBackdropImage(
+            translation = listScrollConnection.resultOffset,
+            imageUrl = remember {
+                Firebase.remoteConfig.getString(MOBILE_BACKGROUND_VIP_IMAGE_URL)
+                    .ifBlank { null }
+            },
+        )
+
         Column(
             modifier = Modifier
                 .verticalScroll(
@@ -136,21 +179,25 @@ private fun BillingScreen(
                         onClick = onBackClick,
                     ),
             )
+
+            VipOfferView(
+                modifier = Modifier.padding(
+                    bottom = 256.dp,
+                ),
+            )
         }
 
-        Text(
-            text = "TODO\nVIP Features UI",
-            style = TraktTheme.typography.heading4,
-            color = TraktTheme.colors.textSecondary,
-            textAlign = TextAlign.Center,
+        Box(
             modifier = Modifier
-                .align(Alignment.Center)
-                .padding(bottom = 128.dp),
+                .align(Alignment.BottomCenter)
+                .height(192.dp)
+                .fillMaxWidth()
+                .background(backgroundGradient),
         )
 
         Column(
             verticalArrangement = spacedBy(16.dp, CenterVertically),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = CenterHorizontally,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
@@ -162,7 +209,7 @@ private fun BillingScreen(
                         .plus(16.dp),
                 ),
         ) {
-            if (state.error != null || inspection) {
+            if (state.error != null) {
                 Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = CenterVertically,
@@ -182,9 +229,8 @@ private fun BillingScreen(
                                 val code = state.error.code
                                 "${stringResource(state.error.displayErrorRes)} ${code?.let { "($it)" } ?: ""}"
                             }
-
                             else -> {
-                                state.error?.message ?: stringResource(R.string.error_text_unexpected_error_short)
+                                state.error.message ?: stringResource(R.string.error_text_unexpected_error_short)
                             }
                         },
                         style = TraktTheme.typography.paragraphSmaller,
@@ -247,6 +293,251 @@ private fun TitleBar(modifier: Modifier = Modifier) {
 }
 
 @Composable
+private fun VipOfferView(modifier: Modifier = Modifier) {
+    val uriHandler = LocalUriHandler.current
+
+    Column(
+        modifier = modifier,
+    ) {
+        Image(
+            painter = painterResource(R.drawable.ic_trakt_logo),
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp),
+        )
+
+        Row(
+            horizontalArrangement = spacedBy(6.dp, CenterHorizontally),
+            verticalAlignment = CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 12.dp),
+        ) {
+            Text(
+                text = "Unlock full potential with",
+                style = TraktTheme.typography.heading5,
+                color = TraktTheme.colors.textPrimary,
+                textAlign = TextAlign.Center,
+                modifier = Modifier,
+            )
+
+            VipChip(
+                modifier = Modifier
+                    .shadow(2.dp, RoundedCornerShape(100)),
+            )
+        }
+
+        Text(
+            text = "Support independent media tracking!",
+            style = TraktTheme.typography.paragraphSmall.copy(
+                fontSize = 15.sp,
+                lineHeight = 1.3.em,
+            ),
+            color = TraktTheme.colors.textPrimary,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(top = 32.dp)
+                .fillMaxWidth(),
+        )
+
+        Text(
+            text = "Your VIP membership keeps Trakt ad free, funds our servers, and " +
+                "unlocks powerful VIP only features.\n\nWe're directly funded by VIP memberships and never sell your data.",
+            style = TraktTheme.typography.paragraphSmall.copy(
+                lineHeight = 1.3.em,
+            ),
+            color = TraktTheme.colors.textSecondary,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(top = 5.dp)
+                .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+                .fillMaxWidth(),
+        )
+
+        Column(
+            verticalArrangement = spacedBy(2.dp),
+            horizontalAlignment = CenterHorizontally,
+            modifier = Modifier
+                .align(CenterHorizontally)
+                .padding(top = 36.dp),
+        ) {
+            Text(
+                text = "VIP Features",
+                style = TraktTheme.typography.heading3.copy(
+                    letterSpacing = 0.01.em,
+                ),
+                color = TraktTheme.colors.textPrimary,
+            )
+
+            Text(
+                text = "Kind of a big deal.",
+                style = TraktTheme.typography.paragraphSmall.copy(
+                    lineHeight = 1.3.em,
+                ),
+                color = TraktTheme.colors.textSecondary,
+            )
+        }
+
+        Column(
+            verticalArrangement = spacedBy(32.dp),
+            modifier = Modifier
+                .padding(top = 40.dp),
+        ) {
+            VipOfferItem(
+                text = "Unlimited Lists",
+                description = "Increase the limits of your Watchlist and Personal Lists.",
+                icon = painterResource(R.drawable.ic_vip_lists),
+            )
+
+            VipOfferItem(
+                text = "Streaming Sync",
+                description = "Automatically sync your watched history and ratings from your favorite streaming services.",
+                icon = painterResource(R.drawable.ic_vip_stream_sync),
+                iconPadding = 2.dp,
+            )
+
+            VipOfferItem(
+                text = "Month in Review",
+                description = "Statistics for each month, with easy sharing to your socials using custom images.",
+                icon = painterResource(R.drawable.ic_vip_month),
+                iconPadding = 2.dp,
+            )
+
+            VipOfferItem(
+                text = "Year in Review",
+                description = "Lots of stats for every year you've been a member, including ${nowUtc().year}!",
+                icon = painterResource(R.drawable.ic_vip_stats),
+                iconPadding = 2.dp,
+            )
+
+            VipOfferItem(
+                text = "All-Time Stats",
+                description = "All of your statistics over the years, combined and visualized.",
+                icon = painterResource(R.drawable.ic_vip_leaderboard),
+                iconPadding = 4.dp,
+            )
+
+            VipOfferItem(
+                text = "Early Access",
+                description = "Get early access to new versions of Trakt apps and brand new features before anyone else.",
+                icon = painterResource(R.drawable.ic_vip_mobile),
+                iconPadding = 4.dp,
+            )
+
+            VipOfferItem(
+                text = "VIP Badges",
+                description = "Show off your VIP status with special badge throughout the apps and website.",
+                icon = painterResource(R.drawable.ic_vip_crown),
+                iconPadding = 4.dp,
+            )
+        }
+
+        Row(
+            verticalAlignment = CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .padding(top = 32.dp)
+                .fillMaxWidth(),
+        ) {
+            VipOfferItem(
+                text = "And more!",
+                description = "Discover everything Trakt has to offer beyond the app.",
+                modifier = Modifier
+                    .weight(1f, fill = false)
+                    .onClick {
+                        uriHandler.openUri(Config.WEB_VIP_URL)
+                    },
+            )
+
+            Icon(
+                painter = painterResource(R.drawable.ic_chevron_right),
+                tint = TraktTheme.colors.textPrimary,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(22.dp),
+            )
+        }
+
+//        Column(
+//            verticalArrangement = spacedBy(2.dp),
+//            horizontalAlignment = CenterHorizontally,
+//            modifier = Modifier
+//                .align(CenterHorizontally)
+//                .padding(top = 40.dp),
+//        ) {
+//            Text(
+//                text = "And more!",
+//                style = TraktTheme.typography.heading3.copy(
+//                    letterSpacing = 0.01.em,
+//                ),
+//                color = TraktTheme.colors.textPrimary,
+//            )
+//
+//            Text(
+//                text = "Discover everything Trakt has to offer beyond the app.",
+//                style = TraktTheme.typography.paragraphSmall.copy(
+//                    lineHeight = 1.3.em,
+//                ),
+//                color = TraktTheme.colors.textSecondary,
+//                modifier = Modifier
+//                    .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
+//            )
+//
+//            PrimaryButton(
+//                text = "See All",
+//                onClick = {
+//                },
+//                modifier = Modifier
+//                    .padding(top = 12.dp),
+//            )
+//        }
+    }
+}
+
+@Composable
+private fun VipOfferItem(
+    modifier: Modifier = Modifier,
+    text: String,
+    description: String,
+    icon: Painter? = null,
+    iconPadding: Dp = 0.dp,
+) {
+    Row(
+        verticalAlignment = CenterVertically,
+        horizontalArrangement = spacedBy(16.dp),
+        modifier = modifier,
+    ) {
+        icon?.let {
+            Icon(
+                painter = it,
+                tint = TraktTheme.colors.textPrimary,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(36.dp)
+                    .padding(iconPadding),
+            )
+        }
+        Column(
+            verticalArrangement = spacedBy(2.dp),
+            horizontalAlignment = Alignment.Start,
+        ) {
+            Text(
+                text = text,
+                style = TraktTheme.typography.heading5,
+                color = TraktTheme.colors.textPrimary,
+            )
+            Text(
+                text = description,
+                style = TraktTheme.typography.paragraphSmaller,
+                color = TraktTheme.colors.textSecondary,
+                maxLines = 3,
+            )
+        }
+    }
+}
+
+@Composable
 private fun PaymentDialog(
     user: User?,
     product: ProductDetails?,
@@ -268,7 +559,7 @@ private fun PaymentDialog(
             )
             .padding(16.dp),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = CenterHorizontally,
     ) {
         if (user?.isVip == true) {
             PaymentAlreadyVipContent(
@@ -293,7 +584,7 @@ private fun PaymentDialog(
 private fun PaymentAlreadyVipContent(onBackClick: () -> Unit) {
     Column(
         verticalArrangement = spacedBy(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = CenterHorizontally,
         modifier = Modifier.padding(top = 8.dp),
     ) {
         Icon(
@@ -412,7 +703,7 @@ private fun PaymentDialogContent(
                 }
             },
         verticalArrangement = spacedBy(2.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = CenterHorizontally,
     ) {
         Text(
             text = when {

@@ -9,6 +9,11 @@
     </entry>
 
     <entry>
+        <key>mobile_background_vip_image_url</key>
+        <value>https://image.tmdb.org/t/p/w1280/cNsdbWfcyv7vkatH2NVktYBOmR2.jpg</value>
+    </entry>
+
+    <entry>
         <key>mobile_empty_image_1</key>
         <value>https://walter-r2.trakt.tv/images/shows/000/150/469/fanarts/medium/8a02e4c084.jpg.webp</value>
     </entry>
