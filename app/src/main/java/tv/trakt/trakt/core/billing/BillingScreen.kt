@@ -182,6 +182,7 @@ private fun BillingScreen(
 
             VipOfferView(
                 modifier = Modifier.padding(
+                    top = 24.dp,
                     bottom = 256.dp,
                 ),
             )
@@ -343,7 +344,8 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
 
         Text(
             text = "Your VIP membership keeps Trakt ad free, funds our servers, and " +
-                "unlocks powerful VIP only features.\n\nWe're directly funded by VIP memberships and never sell your data.",
+                "unlocks powerful VIP only features.\n\n" +
+                "We're directly funded by VIP memberships and never sell your data.",
             style = TraktTheme.typography.paragraphSmall.copy(
                 lineHeight = 1.3.em,
             ),
@@ -392,7 +394,8 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
 
             VipOfferItem(
                 text = "Streaming Sync",
-                description = "Automatically sync your watched history and ratings from your favorite streaming services.",
+                description = "Automatically sync your watched history and ratings " +
+                    "from your favorite streaming services.",
                 icon = painterResource(R.drawable.ic_vip_stream_sync),
                 iconPadding = 2.dp,
             )
@@ -420,7 +423,8 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
 
             VipOfferItem(
                 text = "Early Access",
-                description = "Get early access to new versions of Trakt apps and brand new features before anyone else.",
+                description = "Get early access to new versions of Trakt apps " +
+                    "and brand new features before anyone else.",
                 icon = painterResource(R.drawable.ic_vip_mobile),
                 iconPadding = 4.dp,
             )
@@ -458,40 +462,6 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
                     .size(22.dp),
             )
         }
-
-//        Column(
-//            verticalArrangement = spacedBy(2.dp),
-//            horizontalAlignment = CenterHorizontally,
-//            modifier = Modifier
-//                .align(CenterHorizontally)
-//                .padding(top = 40.dp),
-//        ) {
-//            Text(
-//                text = "And more!",
-//                style = TraktTheme.typography.heading3.copy(
-//                    letterSpacing = 0.01.em,
-//                ),
-//                color = TraktTheme.colors.textPrimary,
-//            )
-//
-//            Text(
-//                text = "Discover everything Trakt has to offer beyond the app.",
-//                style = TraktTheme.typography.paragraphSmall.copy(
-//                    lineHeight = 1.3.em,
-//                ),
-//                color = TraktTheme.colors.textSecondary,
-//                modifier = Modifier
-//                    .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
-//            )
-//
-//            PrimaryButton(
-//                text = "See All",
-//                onClick = {
-//                },
-//                modifier = Modifier
-//                    .padding(top = 12.dp),
-//            )
-//        }
     }
 }
 
