@@ -262,7 +262,7 @@
     <string name="text_billing_month_for_free">Try 1 month for free and then:</string>
     <string name="text_billing_no_payment_required">No immediate payment required.</string>
     <string name="text_billing_try_for_free">Try now for free!</string>
-    <string name="text_billing_subscribe_now">Join Trakt VIP now!</string>
+    <string name="text_billing_subscribe_now">Upgrade to VIP</string>
     <string name="text_billing_period_month">month</string>
     <string name="text_billing_disclaimer">Payment starts at end of trial period. Subscription auto-renews, and is billed each %s until canceled. Cancel any time via Google Play Subscription Center.</string>
     <string name="text_billing_already_vip">You are now a Trakt VIP!\nThank you for your support and enjoy.</string>
@@ -291,6 +291,26 @@
 
     <string name="text_onboarding_4_title">There\'s more to\ndiscover.</string>
     <string name="text_onboarding_4_description">You\'ve only scratched the surface.\nJoin Trakt for free and discover more features waiting for you.</string>
+
+    <string name="text_vip_offer_unlock">Unlock full potential with</string>
+    <string name="text_vip_offer_support_1">Support independent media tracking!</string>
+    <string name="text_vip_offer_support_2">Your VIP membership keeps Trakt ad free and unlocks powerful VIP only features.\n\nWe\'re directly funded by VIP memberships and never sell your data.</string>
+    <string name="text_vip_offer_unlimited_lists">Unlimited Lists</string>
+    <string name="text_vip_offer_unlimited_lists_description">Increase the limits of your Watchlist and Personal Lists.</string>
+    <string name="text_vip_offer_streaming_sync">Streaming Sync</string>
+    <string name="text_vip_offer_streaming_sync_description">Automatically sync your watched history and ratings from your favorite streaming services.</string>
+    <string name="text_vip_offer_month_review">Month in Review</string>
+    <string name="text_vip_offer_month_review_description">Statistics for each month, with easy sharing to your socials using custom images.</string>
+    <string name="text_vip_offer_year_review">Year in Review</string>
+    <string name="text_vip_offer_year_review_description">Lots of stats for every year you\'ve been a member, including %d!</string>
+    <string name="text_vip_offer_alltime_stats">All-Time Stats</string>
+    <string name="text_vip_offer_alltime_stats_description">All of your statistics over the years, combined and visualized.</string>
+    <string name="text_vip_offer_early_access">Early Access</string>
+    <string name="text_vip_offer_early_access_description">Get early access to new versions of Trakt apps and brand new features before anyone else.</string>
+    <string name="text_vip_offer_badges">VIP Badges</string>
+    <string name="text_vip_offer_badges_description">Show off your VIP status with special badge throughout the apps and website.</string>
+    <string name="text_vip_offer_and_more">And more!</string>
+    <string name="text_vip_offer_and_more_description">Discover everything Trakt has to offer beyond the app.</string>
 
     <!--  Non Translatable  -->
 

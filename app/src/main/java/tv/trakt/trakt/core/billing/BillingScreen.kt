@@ -70,6 +70,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.billing.model.VipBillingError
 import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD
@@ -140,6 +141,7 @@ private fun BillingScreen(
         verticalGradient(
             colors = listOf(
                 Color.Transparent,
+                backgroundColor1.copy(alpha = 0.85f),
                 backgroundColor1,
             ),
         )
@@ -158,8 +160,12 @@ private fun BillingScreen(
         ScrollableBackdropImage(
             translation = listScrollConnection.resultOffset,
             imageUrl = remember {
-                Firebase.remoteConfig.getString(MOBILE_BACKGROUND_VIP_IMAGE_URL)
-                    .ifBlank { null }
+                if (inspection) {
+                    null
+                } else {
+                    Firebase.remoteConfig.getString(MOBILE_BACKGROUND_VIP_IMAGE_URL)
+                        .ifBlank { null }
+                }
             },
         )
 
@@ -182,8 +188,8 @@ private fun BillingScreen(
 
             VipOfferView(
                 modifier = Modifier.padding(
-                    top = 24.dp,
-                    bottom = 256.dp,
+                    top = 8.dp,
+                    bottom = 272.dp,
                 ),
             )
         }
@@ -300,138 +306,110 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
     ) {
-        Image(
-            painter = painterResource(R.drawable.ic_trakt_logo),
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp),
+        Text(
+            text = stringResource(R.string.text_vip_offer_unlock),
+            style = TraktTheme.typography.heading4.copy(
+                letterSpacing = 0.em,
+            ),
+            color = TraktTheme.colors.textPrimary,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth(),
         )
 
         Row(
-            horizontalArrangement = spacedBy(6.dp, CenterHorizontally),
             verticalAlignment = CenterVertically,
+            horizontalArrangement = spacedBy(8.dp, CenterHorizontally),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 12.dp),
+                .padding(top = 8.dp),
         ) {
-            Text(
-                text = "Unlock full potential with",
-                style = TraktTheme.typography.heading5,
-                color = TraktTheme.colors.textPrimary,
-                textAlign = TextAlign.Center,
-                modifier = Modifier,
+            Image(
+                painter = painterResource(R.drawable.ic_trakt_logo),
+                contentDescription = null,
+                modifier = Modifier
+                    .height(24.dp),
             )
 
             VipChip(
                 modifier = Modifier
+                    .padding(top = 1.5.dp)
                     .shadow(2.dp, RoundedCornerShape(100)),
             )
         }
 
-        Text(
-            text = "Support independent media tracking!",
-            style = TraktTheme.typography.paragraphSmall.copy(
-                fontSize = 15.sp,
-                lineHeight = 1.3.em,
-            ),
-            color = TraktTheme.colors.textPrimary,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .padding(top = 32.dp)
-                .fillMaxWidth(),
-        )
-
-        Text(
-            text = "Your VIP membership keeps Trakt ad free, funds our servers, and " +
-                "unlocks powerful VIP only features.\n\n" +
-                "We're directly funded by VIP memberships and never sell your data.",
-            style = TraktTheme.typography.paragraphSmall.copy(
-                lineHeight = 1.3.em,
-            ),
-            color = TraktTheme.colors.textSecondary,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .padding(top = 5.dp)
-                .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
-                .fillMaxWidth(),
-        )
-
-        Column(
-            verticalArrangement = spacedBy(2.dp),
-            horizontalAlignment = CenterHorizontally,
-            modifier = Modifier
-                .align(CenterHorizontally)
-                .padding(top = 36.dp),
-        ) {
-            Text(
-                text = "VIP Features",
-                style = TraktTheme.typography.heading3.copy(
-                    letterSpacing = 0.01.em,
-                ),
-                color = TraktTheme.colors.textPrimary,
-            )
-
-            Text(
-                text = "Kind of a big deal.",
-                style = TraktTheme.typography.paragraphSmall.copy(
-                    lineHeight = 1.3.em,
-                ),
-                color = TraktTheme.colors.textSecondary,
-            )
-        }
+//        Column(
+//            verticalArrangement = spacedBy(2.dp),
+//            horizontalAlignment = CenterHorizontally,
+//            modifier = Modifier
+//                .align(CenterHorizontally)
+//                .padding(top = 36.dp),
+//        ) {
+//            Text(
+//                text = stringResource(R.string.text_vip_offer_features_title),
+//                style = TraktTheme.typography.heading3.copy(
+//                    letterSpacing = 0.01.em,
+//                ),
+//                color = TraktTheme.colors.textPrimary,
+//            )
+//
+//            Text(
+//                text = stringResource(R.string.text_vip_offer_features_subtitle),
+//                style = TraktTheme.typography.paragraphSmall.copy(
+//                    lineHeight = 1.3.em,
+//                ),
+//                color = TraktTheme.colors.textSecondary,
+//            )
+//        }
 
         Column(
             verticalArrangement = spacedBy(32.dp),
             modifier = Modifier
-                .padding(top = 40.dp),
+                .padding(top = 48.dp),
         ) {
             VipOfferItem(
-                text = "Unlimited Lists",
-                description = "Increase the limits of your Watchlist and Personal Lists.",
+                text = stringResource(R.string.text_vip_offer_unlimited_lists),
+                description = stringResource(R.string.text_vip_offer_unlimited_lists_description),
                 icon = painterResource(R.drawable.ic_vip_lists),
             )
 
             VipOfferItem(
-                text = "Streaming Sync",
-                description = "Automatically sync your watched history and ratings " +
-                    "from your favorite streaming services.",
+                text = stringResource(R.string.text_vip_offer_streaming_sync),
+                description = stringResource(R.string.text_vip_offer_streaming_sync_description),
                 icon = painterResource(R.drawable.ic_vip_stream_sync),
                 iconPadding = 2.dp,
             )
 
             VipOfferItem(
-                text = "Month in Review",
-                description = "Statistics for each month, with easy sharing to your socials using custom images.",
+                text = stringResource(R.string.text_vip_offer_month_review),
+                description = stringResource(R.string.text_vip_offer_month_review_description),
                 icon = painterResource(R.drawable.ic_vip_month),
                 iconPadding = 2.dp,
             )
 
             VipOfferItem(
-                text = "Year in Review",
-                description = "Lots of stats for every year you've been a member, including ${nowUtc().year}!",
+                text = stringResource(R.string.text_vip_offer_year_review),
+                description = stringResource(R.string.text_vip_offer_year_review_description, nowUtc().year),
                 icon = painterResource(R.drawable.ic_vip_stats),
                 iconPadding = 2.dp,
             )
 
             VipOfferItem(
-                text = "All-Time Stats",
-                description = "All of your statistics over the years, combined and visualized.",
+                text = stringResource(R.string.text_vip_offer_alltime_stats),
+                description = stringResource(R.string.text_vip_offer_alltime_stats_description),
                 icon = painterResource(R.drawable.ic_vip_leaderboard),
                 iconPadding = 4.dp,
             )
 
             VipOfferItem(
-                text = "Early Access",
-                description = "Get early access to new versions of Trakt apps " +
-                    "and brand new features before anyone else.",
+                text = stringResource(R.string.text_vip_offer_early_access),
+                description = stringResource(R.string.text_vip_offer_early_access_description),
                 icon = painterResource(R.drawable.ic_vip_mobile),
                 iconPadding = 4.dp,
             )
 
             VipOfferItem(
-                text = "VIP Badges",
-                description = "Show off your VIP status with special badge throughout the apps and website.",
+                text = stringResource(R.string.text_vip_offer_badges),
+                description = stringResource(R.string.text_vip_offer_badges_description),
                 icon = painterResource(R.drawable.ic_vip_crown),
                 iconPadding = 4.dp,
             )
@@ -445,8 +423,8 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
                 .fillMaxWidth(),
         ) {
             VipOfferItem(
-                text = "And more!",
-                description = "Discover everything Trakt has to offer beyond the app.",
+                text = stringResource(R.string.text_vip_offer_and_more),
+                description = stringResource(R.string.text_vip_offer_and_more_description),
                 modifier = Modifier
                     .weight(1f, fill = false)
                     .onClick {
@@ -460,6 +438,45 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
                 contentDescription = null,
                 modifier = Modifier
                     .size(22.dp),
+            )
+        }
+
+        Column(
+            verticalArrangement = spacedBy(5.dp),
+            modifier = Modifier
+                .padding(top = 56.dp),
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_heart_on),
+                tint = Red400,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(32.dp)
+                    .align(CenterHorizontally),
+            )
+
+            Text(
+                text = stringResource(R.string.text_vip_offer_support_1),
+                style = TraktTheme.typography.paragraphSmall.copy(
+                    fontSize = 15.sp,
+                    lineHeight = 1.3.em,
+                ),
+                color = TraktTheme.colors.textPrimary,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth(),
+            )
+
+            Text(
+                text = stringResource(R.string.text_vip_offer_support_2),
+                style = TraktTheme.typography.paragraphSmall.copy(
+                    lineHeight = 1.3.em,
+                ),
+                color = TraktTheme.colors.textSecondary,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+                    .fillMaxWidth(),
             )
         }
     }
