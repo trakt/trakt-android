@@ -60,6 +60,8 @@ import tv.trakt.trakt.core.user.usecases.lists.LoadUserListsUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
+import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 import kotlin.time.Duration.Companion.seconds
@@ -87,6 +89,7 @@ internal class MovieDetailsViewModel(
     private val favoritesUpdates: FavoritesUpdates,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
+    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<MovieDetailsDestination>()
     private val movieId = destination.movieId.toTraktId()
@@ -106,8 +109,10 @@ internal class MovieDetailsViewModel(
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
     private val userState = MutableStateFlow(initialState.user)
+    private val metaCollapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.MOVIE_META))
 
     private var ratingJob: Job? = null
+    private var metaCollapseJob: Job? = null
 
     init {
         loadUser()
@@ -810,6 +815,17 @@ internal class MovieDetailsViewModel(
         infoState.update { null }
     }
 
+    fun setMetaCollapsed(collapsed: Boolean) {
+        metaCollapseState.update { collapsed }
+        metaCollapseJob?.cancel()
+        metaCollapseJob = viewModelScope.launch {
+            when {
+                collapsed -> collapsingManager.collapse(CollapsingKey.MOVIE_META)
+                else -> collapsingManager.expand(CollapsingKey.MOVIE_META)
+            }
+        }
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state = combine(
         movieState,
@@ -825,6 +841,7 @@ internal class MovieDetailsViewModel(
         infoState,
         errorState,
         userState,
+        metaCollapseState,
     ) { state ->
         MovieDetailsState(
             movie = state[0] as Movie?,
@@ -840,6 +857,7 @@ internal class MovieDetailsViewModel(
             info = state[10] as StringResource?,
             error = state[11] as Exception?,
             user = state[12] as User?,
+            metaCollapsed = state[13] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

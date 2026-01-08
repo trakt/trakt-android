@@ -55,6 +55,7 @@ internal enum class CollapsingKey(
     MOVIE_RELATED("key_movie_related"),
     MOVIE_LISTS("key_movie_lists"),
     MOVIE_COMMENTS("key_movie_comments"),
+    MOVIE_META("key_movie_meta"),
 
     // Profile Screen
     PROFILE_HISTORY("key_profile_history"),
