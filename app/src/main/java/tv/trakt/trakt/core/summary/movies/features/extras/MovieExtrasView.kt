@@ -101,7 +101,7 @@ private fun MovieExtrasContent(
     ) {
         TraktSectionHeader(
             title = stringResource(R.string.list_title_extras),
-            chevron = !state.items.isNullOrEmpty() || state.loading != DONE,
+            chevron = false,
             collapsed = state.collapsed ?: false,
             onCollapseClick = {
                 animateCollapse = true
@@ -118,39 +118,39 @@ private fun MovieExtrasContent(
                 targetState = state.loading,
                 animationSpec = tween(200),
             ) { loading ->
-            when (loading) {
-                IDLE, LOADING -> {
-                    ContentLoading(
-                        visible = loading.isLoading,
-                        contentPadding = contentPadding,
-                    )
-                }
+                when (loading) {
+                    IDLE, LOADING -> {
+                        ContentLoading(
+                            visible = loading.isLoading,
+                            contentPadding = contentPadding,
+                        )
+                    }
 
-                DONE -> {
-                    Column(
-                        verticalArrangement = spacedBy(0.dp),
-                    ) {
-                        if (state.filters.filters.size > 1) {
-                            ContentFilters(
-                                state = state.filters,
-                                onFilterClick = onFilterClick ?: {},
-                            )
-                        }
+                    DONE -> {
+                        Column(
+                            verticalArrangement = spacedBy(0.dp),
+                        ) {
+                            if (state.filters.filters.size > 1) {
+                                ContentFilters(
+                                    state = state.filters,
+                                    onFilterClick = onFilterClick ?: {},
+                                )
+                            }
 
-                        if (state.items?.isEmpty() == true) {
-                            ContentEmpty(
-                                contentPadding = headerPadding,
-                            )
-                        } else {
-                            ContentList(
-                                listItems = (state.items ?: emptyList()).toImmutableList(),
-                                contentPadding = contentPadding,
-                                onClick = onClick,
-                            )
+                            if (state.items?.isEmpty() == true) {
+                                ContentEmpty(
+                                    contentPadding = headerPadding,
+                                )
+                            } else {
+                                ContentList(
+                                    listItems = (state.items ?: emptyList()).toImmutableList(),
+                                    contentPadding = contentPadding,
+                                    onClick = onClick,
+                                )
+                            }
                         }
                     }
                 }
-            }
             }
         }
     }

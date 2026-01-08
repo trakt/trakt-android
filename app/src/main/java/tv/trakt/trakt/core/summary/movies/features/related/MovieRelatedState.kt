@@ -11,5 +11,6 @@ internal data class MovieRelatedState(
     val items: ImmutableList<Movie>? = null,
     val collection: UserCollectionState = UserCollectionState.Default,
     val loading: LoadingState = LoadingState.IDLE,
+    val collapsed: Boolean? = null,
     val error: Exception? = null,
 )

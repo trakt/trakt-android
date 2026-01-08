@@ -188,6 +188,7 @@ internal val movieDetailsModule = module {
             movie = movie,
             getRelatedMoviesUseCase = get(),
             collectionStateProvider = get(),
+            collapsingManager = get(),
         )
     }
 
@@ -195,6 +196,7 @@ internal val movieDetailsModule = module {
         MovieListsViewModel(
             movie = movie,
             getListsUseCase = get(),
+            collapsingManager = get(),
         )
     }
 

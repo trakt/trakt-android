@@ -93,7 +93,7 @@ private fun MovieActorsContent(
     ) {
         TraktSectionHeader(
             title = stringResource(R.string.list_title_actors),
-            chevron = !state.items.isNullOrEmpty() || state.loading != DONE,
+            chevron = false,
             collapsed = state.collapsed ?: false,
             onCollapseClick = {
                 animateCollapse = true
@@ -110,28 +110,28 @@ private fun MovieActorsContent(
                 targetState = state.loading,
                 animationSpec = tween(200),
             ) { loading ->
-            when (loading) {
-                IDLE, LOADING -> {
-                    ContentLoading(
-                        visible = loading.isLoading,
-                        contentPadding = contentPadding,
-                    )
-                }
-
-                DONE -> {
-                    if (state.items?.isEmpty() == true) {
-                        ContentEmpty(
-                            contentPadding = headerPadding,
-                        )
-                    } else {
-                        ContentList(
-                            listItems = (state.items ?: emptyList()).toImmutableList(),
+                when (loading) {
+                    IDLE, LOADING -> {
+                        ContentLoading(
+                            visible = loading.isLoading,
                             contentPadding = contentPadding,
-                            onPersonClick = onPersonClick,
                         )
                     }
+
+                    DONE -> {
+                        if (state.items?.isEmpty() == true) {
+                            ContentEmpty(
+                                contentPadding = headerPadding,
+                            )
+                        } else {
+                            ContentList(
+                                listItems = (state.items ?: emptyList()).toImmutableList(),
+                                contentPadding = contentPadding,
+                                onPersonClick = onPersonClick,
+                            )
+                        }
+                    }
                 }
-            }
             }
         }
     }
