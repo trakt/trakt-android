@@ -57,6 +57,14 @@ internal enum class CollapsingKey(
     MOVIE_COMMENTS("key_movie_comments"),
     MOVIE_META("key_movie_meta"),
 
+    // Episode Details Screen
+    EPISODE_WHERE_TO_WATCH("key_episode_where_to_watch"),
+    EPISODE_COMMENTS("key_episode_comments"),
+    EPISODE_ACTORS("key_episode_actors"),
+    EPISODE_SEASON("key_episode_season"),
+    EPISODE_RELATED("key_episode_related"),
+    EPISODE_META("key_episode_meta"),
+
     // Profile Screen
     PROFILE_HISTORY("key_profile_history"),
     PROFILE_FAVORITES("key_profile_favorites"),

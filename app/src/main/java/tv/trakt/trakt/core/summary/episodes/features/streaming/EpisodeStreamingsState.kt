@@ -9,4 +9,5 @@ internal data class EpisodeStreamingsState(
     val items: StreamingsResult? = null,
     val loading: LoadingState = LoadingState.IDLE,
     val error: Exception? = null,
+    val collapsed: Boolean? = null,
 )

@@ -124,6 +124,7 @@ internal val episodeDetailsModule = module {
             episodeLocalDataSource = get(),
             sessionManager = get(),
             analytics = get(),
+            collapsingManager = get(),
         )
     }
 
@@ -132,6 +133,7 @@ internal val episodeDetailsModule = module {
             show = show,
             episode = episode,
             getActorsUseCase = get(),
+            collapsingManager = get(),
         )
     }
 
@@ -147,6 +149,7 @@ internal val episodeDetailsModule = module {
             reactionsUpdates = get(),
             sessionManager = get(),
             commentsUpdates = get(),
+            collapsingManager = get(),
         )
     }
 
@@ -170,6 +173,7 @@ internal val episodeDetailsModule = module {
             episodeDetailsUpdates = get(),
             sessionManager = get(),
             analytics = get(),
+            collapsingManager = get(),
         )
     }
 
@@ -178,6 +182,7 @@ internal val episodeDetailsModule = module {
             show = show,
             getRelatedShowsUseCase = get(),
             collectionStateProvider = get(),
+            collapsingManager = get(),
         )
     }
 
@@ -187,6 +192,7 @@ internal val episodeDetailsModule = module {
             episode = episode,
             sessionManager = get(),
             getStreamingsUseCase = get(),
+            collapsingManager = get(),
         )
     }
 

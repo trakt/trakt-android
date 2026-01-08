@@ -41,6 +41,8 @@ import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.core.sync.model.ProgressItem
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
+import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 
@@ -55,6 +57,7 @@ internal class EpisodeSeasonViewModel(
     private val episodeDetailsUpdates: EpisodeDetailsUpdates,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
+    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = EpisodeSeasonState()
 
@@ -65,6 +68,9 @@ internal class EpisodeSeasonViewModel(
     private val loadingEpisodeState = MutableStateFlow(initialState.loadingEpisode)
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
+    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.EPISODE_SEASON))
+
+    private var collapseJob: kotlinx.coroutines.Job? = null
 
     init {
         loadData()
@@ -275,6 +281,17 @@ internal class EpisodeSeasonViewModel(
         infoState.update { null }
     }
 
+    fun setCollapsed(collapsed: Boolean) {
+        collapseState.update { collapsed }
+        collapseJob?.cancel()
+        collapseJob = viewModelScope.launch {
+            when {
+                collapsed -> collapsingManager.collapse(CollapsingKey.EPISODE_SEASON)
+                else -> collapsingManager.expand(CollapsingKey.EPISODE_SEASON)
+            }
+        }
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state: StateFlow<EpisodeSeasonState> = combine(
         episodeState,
@@ -284,6 +301,7 @@ internal class EpisodeSeasonViewModel(
         loadingEpisodeState,
         infoState,
         errorState,
+        collapseState,
     ) { state ->
         EpisodeSeasonState(
             episode = state[0] as Episode,
@@ -293,6 +311,7 @@ internal class EpisodeSeasonViewModel(
             loadingEpisode = state[4] as LoadingState,
             info = state[5] as StringResource?,
             error = state[6] as Exception?,
+            collapsed = state[7] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

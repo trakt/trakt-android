@@ -3,6 +3,9 @@
 package tv.trakt.trakt.core.summary.episodes.features.comments
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.snap
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -31,6 +34,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -70,7 +74,7 @@ import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.FilterChip
 import tv.trakt.trakt.ui.components.FilterChipGroup
-import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -114,6 +118,7 @@ internal fun EpisodeCommentsView(
         onReactionClick = { reaction, comment ->
             viewModel.setReaction(reaction, comment.id)
         },
+        onCollapse = viewModel::setCollapsed,
     )
 
     CommentDetailsSheet(
@@ -157,102 +162,109 @@ private fun EpisodeCommentsContent(
     onAddCommentClick: (() -> Unit)? = null,
     onDeleteCommentClick: ((Comment) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
+    onCollapse: ((Boolean) -> Unit)? = null,
 ) {
+    var animateCollapse by rememberSaveable { mutableStateOf(false) }
+
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
-        modifier = modifier,
+        modifier = modifier
+            .animateContentSize(animationSpec = if (animateCollapse) spring() else snap()),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(headerPadding)
-                .onClick(enabled = state.loading == DONE) {
-                    onMoreClick?.invoke()
-                },
+                .padding(headerPadding),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = CenterVertically,
         ) {
-            TraktHeader(
+            TraktSectionHeader(
                 title = stringResource(R.string.list_title_comments),
+                chevron = !state.items.isNullOrEmpty() || state.loading != DONE,
+                collapsed = state.collapsed ?: false,
+                onCollapseClick = {
+                    animateCollapse = true
+                    val current = (state.collapsed ?: false)
+                    onCollapse?.invoke(!current)
+                },
+                extraIcon = when {
+                    state.user != null -> {
+                        {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_comment_plus),
+                                contentDescription = null,
+                                tint = TraktTheme.colors.textPrimary,
+                                modifier = Modifier
+                                    .padding(
+                                        start = 9.dp,
+                                        end = 4.dp,
+                                    )
+                                    .size(18.dp)
+                                    .onClick(enabled = state.loading == DONE) {
+                                        onAddCommentClick?.invoke()
+                                    }
+                                    .graphicsLayer {
+                                        translationY = 0.75.dp.toPx()
+                                    },
+                            )
+                        }
+                    }
+                    else -> {
+                        null
+                    }
+                },
+                modifier = Modifier
+                    .weight(1f)
+                    .onClick(enabled = state.loading == DONE) {
+                        onMoreClick?.invoke()
+                    },
             )
+        }
 
-            Row(
-                horizontalArrangement = spacedBy(16.dp),
-                verticalAlignment = CenterVertically,
-            ) {
-                if (state.user != null) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_comment_plus),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier
-                            .size(18.dp)
-                            .onClick(enabled = state.loading == DONE) {
-                                onAddCommentClick?.invoke()
-                            }
-                            .graphicsLayer {
-                                translationY = 0.75.dp.toPx()
-                            },
-                    )
-                }
-
-                if (state.loading.isLoading || !state.items.isNullOrEmpty()) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_chevron_right),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier
-                            .size(20.dp)
-                            .graphicsLayer {
-                                translationX = (4.9).dp.toPx()
-                            },
-                    )
-                }
+        if (state.collapsed != true) {
+            if (!state.items.isNullOrEmpty() || state.loading.isLoading || state.user != null) {
+                ContentFilters(
+                    selectedFilter = state.filter,
+                    headerPadding = headerPadding,
+                    onFilterClick = onFilterClick,
+                )
+            } else {
+                Spacer(modifier = Modifier.height(TraktTheme.spacing.mainRowHeaderSpace))
             }
-        }
 
-        if (!state.items.isNullOrEmpty() || state.loading.isLoading || state.user != null) {
-            ContentFilters(
-                selectedFilter = state.filter,
-                headerPadding = headerPadding,
-                onFilterClick = onFilterClick,
-            )
-        } else {
-            Spacer(modifier = Modifier.height(TraktTheme.spacing.mainRowHeaderSpace))
-        }
+            Crossfade(
+                targetState = state.loading,
+                animationSpec = tween(200),
+            ) { loading ->
+                when (loading) {
+                    IDLE, LOADING -> {
+                        ContentLoading(
+                            visible = loading.isLoading,
+                            contentPadding = contentPadding,
+                        )
+                    }
 
-        Crossfade(
-            targetState = state.loading,
-            animationSpec = tween(200),
-        ) { loading ->
-            when (loading) {
-                IDLE, LOADING -> {
-                    ContentLoading(
-                        visible = loading.isLoading,
-                        contentPadding = contentPadding,
-                    )
-                }
-
-                DONE -> {
-                    Column(
-                        verticalArrangement = spacedBy(0.dp),
-                    ) {
-                        if (state.items?.isEmpty() == true) {
-                            ContentEmpty(
-                                contentPadding = headerPadding,
-                            )
-                        } else {
-                            ContentList(
-                                listItems = (state.items ?: emptyList()).toImmutableList(),
-                                listReactions = (state.reactions ?: emptyMap()).toImmutableMap(),
-                                user = state.user,
-                                userReactions = (state.userReactions ?: emptyMap()).toImmutableMap(),
-                                contentPadding = contentPadding,
-                                onCommentClick = onCommentClick,
-                                onDeleteCommentClick = onDeleteCommentClick,
-                                onCommentLoaded = onCommentLoaded,
-                                onReactionClick = onReactionClick,
-                            )
+                    DONE -> {
+                        Column(
+                            verticalArrangement = spacedBy(0.dp),
+                        ) {
+                            if (state.items?.isEmpty() == true) {
+                                ContentEmpty(
+                                    contentPadding = headerPadding,
+                                )
+                            } else {
+                                ContentList(
+                                    listItems = (state.items ?: emptyList()).toImmutableList(),
+                                    listReactions = (state.reactions ?: emptyMap()).toImmutableMap(),
+                                    user = state.user,
+                                    userReactions = (state.userReactions ?: emptyMap()).toImmutableMap(),
+                                    contentPadding = contentPadding,
+                                    onCommentClick = onCommentClick,
+                                    onDeleteCommentClick = onDeleteCommentClick,
+                                    onCommentLoaded = onCommentLoaded,
+                                    onReactionClick = onReactionClick,
+                                )
+                            }
                         }
                     }
                 }

@@ -20,17 +20,23 @@ import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.episodes.features.actors.usecases.GetEpisodeActorsUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
+import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 internal class EpisodeActorsViewModel(
     private val show: Show,
     private val episode: Episode,
     private val getActorsUseCase: GetEpisodeActorsUseCase,
+    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = EpisodeActorsState()
 
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
+    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.EPISODE_ACTORS))
+
+    private var collapseJob: kotlinx.coroutines.Job? = null
 
     init {
         loadData()
@@ -59,16 +65,29 @@ internal class EpisodeActorsViewModel(
         }
     }
 
+    fun setCollapsed(collapsed: Boolean) {
+        collapseState.update { collapsed }
+        collapseJob?.cancel()
+        collapseJob = viewModelScope.launch {
+            when {
+                collapsed -> collapsingManager.collapse(CollapsingKey.EPISODE_ACTORS)
+                else -> collapsingManager.expand(CollapsingKey.EPISODE_ACTORS)
+            }
+        }
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state: StateFlow<EpisodeActorsState> = combine(
         itemsState,
         loadingState,
         errorState,
+        collapseState,
     ) { state ->
         EpisodeActorsState(
             items = state[0] as ImmutableList<CastPerson>?,
             loading = state[1] as LoadingState,
             error = state[2] as Exception?,
+            collapsed = state[3] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

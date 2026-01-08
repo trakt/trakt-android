@@ -25,6 +25,7 @@ internal data class EpisodeDetailsState(
     val info: StringResource? = null,
     val error: Exception? = null,
     val user: User? = null,
+    val metaCollapsed: Boolean? = null,
 ) {
     data class ProgressState(
         val plays: Int?,

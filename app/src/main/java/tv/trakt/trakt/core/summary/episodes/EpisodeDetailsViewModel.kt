@@ -56,6 +56,8 @@ import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
+import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 import kotlin.time.Duration.Companion.seconds
@@ -76,6 +78,7 @@ internal class EpisodeDetailsViewModel(
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
+    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = EpisodeDetailsState()
     private val destination = savedStateHandle.toRoute<EpisodeDetailsDestination>()
@@ -99,8 +102,10 @@ internal class EpisodeDetailsViewModel(
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
     private val userState = MutableStateFlow(initialState.user)
+    private val metaCollapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.EPISODE_META))
 
     private var ratingJob: kotlinx.coroutines.Job? = null
+    private var metaCollapseJob: kotlinx.coroutines.Job? = null
 
     init {
         loadUser()
@@ -483,6 +488,17 @@ internal class EpisodeDetailsViewModel(
         }
     }
 
+    fun setMetaCollapsed(collapsed: Boolean) {
+        metaCollapseState.update { collapsed }
+        metaCollapseJob?.cancel()
+        metaCollapseJob = viewModelScope.launch {
+            when {
+                collapsed -> collapsingManager.collapse(CollapsingKey.EPISODE_META)
+                else -> collapsingManager.expand(CollapsingKey.EPISODE_META)
+            }
+        }
+    }
+
     private fun isLoading(): Boolean {
         return showState.value == null ||
             loadingState.value.isLoading ||
@@ -503,6 +519,7 @@ internal class EpisodeDetailsViewModel(
         errorState,
         userState,
         navigateEpisode,
+        metaCollapseState,
     ) { state ->
         EpisodeDetailsState(
             show = state[0] as Show?,
@@ -517,6 +534,7 @@ internal class EpisodeDetailsViewModel(
             error = state[9] as Exception?,
             user = state[10] as User?,
             navigateEpisode = state[11] as Pair<TraktId, Episode>?,
+            metaCollapsed = state[12] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,
