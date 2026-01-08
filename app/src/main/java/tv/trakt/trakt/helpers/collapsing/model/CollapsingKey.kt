@@ -38,6 +38,11 @@ internal enum class CollapsingKey(
     DISCOVER_MOVIES_ANTICIPATED("key_discover_movies_anticipated"),
     DISCOVER_MOVIES_RECOMMENDED("key_discover_movies_recommended"),
 
+    // Lists Screen
+    LISTS_MEDIA_WATCHLIST("key_lists_media_watchlist"),
+    LISTS_SHOWS_WATCHLIST("key_lists_shows_watchlist"),
+    LISTS_MOVIES_WATCHLIST("key_lists_movies_watchlist"),
+
     // Profile Screen
     PROFILE_HISTORY("key_profile_history"),
     PROFILE_FAVORITES("key_profile_favorites"),

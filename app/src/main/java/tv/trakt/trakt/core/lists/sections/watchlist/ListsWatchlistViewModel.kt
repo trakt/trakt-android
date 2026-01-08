@@ -46,6 +46,8 @@ import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
 import tv.trakt.trakt.core.user.CollectionStateProvider
 import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
+import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 internal class ListsWatchlistViewModel(
     private val modeManager: MediaModeManager,
@@ -58,12 +60,14 @@ internal class ListsWatchlistViewModel(
     private val movieLocalDataSource: MovieLocalDataSource,
     private val collectionStateProvider: CollectionStateProvider,
     private val sessionManager: SessionManager,
+    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = ListsWatchlistState()
 
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(modeManager.getMode())
+    private val collapseState = MutableStateFlow(isCollapsed())
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
@@ -71,6 +75,7 @@ internal class ListsWatchlistViewModel(
 
     private var dataJob: Job? = null
     private var processingJob: Job? = null
+    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -85,6 +90,7 @@ internal class ListsWatchlistViewModel(
         modeManager.observeMode()
             .onEach { value ->
                 filterState.update { value }
+                collapseState.update { isCollapsed() }
                 loadData()
             }
             .launchIn(viewModelScope)
@@ -202,11 +208,39 @@ internal class ListsWatchlistViewModel(
         navigateMovie.update { null }
     }
 
+    fun setCollapsed(collapsed: Boolean) {
+        collapseState.update { collapsed }
+
+        collapseJob?.cancel()
+        collapseJob = viewModelScope.launch {
+            val key = when (filterState.value) {
+                MediaMode.MEDIA -> CollapsingKey.LISTS_MEDIA_WATCHLIST
+                MediaMode.SHOWS -> CollapsingKey.LISTS_SHOWS_WATCHLIST
+                MediaMode.MOVIES -> CollapsingKey.LISTS_MOVIES_WATCHLIST
+            }
+            when {
+                collapsed -> collapsingManager.collapse(key)
+                else -> collapsingManager.expand(key)
+            }
+        }
+    }
+
+    private fun isCollapsed(): Boolean {
+        return collapsingManager.isCollapsed(
+            key = when (filterState.value) {
+                MediaMode.MEDIA -> CollapsingKey.LISTS_MEDIA_WATCHLIST
+                MediaMode.SHOWS -> CollapsingKey.LISTS_SHOWS_WATCHLIST
+                MediaMode.MOVIES -> CollapsingKey.LISTS_MOVIES_WATCHLIST
+            },
+        )
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state = combine(
         loadingState,
         itemsState,
         filterState,
+        collapseState,
         collectionStateProvider.stateFlow,
         navigateShow,
         navigateMovie,
@@ -217,11 +251,12 @@ internal class ListsWatchlistViewModel(
             loading = states[0] as LoadingState,
             items = states[1] as ImmutableList<WatchlistItem>?,
             filter = states[2] as MediaMode,
-            collection = states[3] as UserCollectionState,
-            navigateShow = states[4] as TraktId?,
-            navigateMovie = states[5] as TraktId?,
-            error = states[6] as Exception?,
-            user = states[7] as User?,
+            collapsed = states[3] as Boolean,
+            collection = states[4] as UserCollectionState,
+            navigateShow = states[5] as TraktId?,
+            navigateMovie = states[6] as TraktId?,
+            error = states[7] as Exception?,
+            user = states[8] as User?,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -25,6 +25,7 @@ internal fun TraktHeader(
     title: String,
     modifier: Modifier = Modifier,
     subtitle: String? = null,
+    maxSubtitleLength: Int = Int.MAX_VALUE,
     icon: Painter? = null,
     titleStyle: TextStyle = TraktTheme.typography.heading5,
     titleColor: Color = TraktTheme.colors.textPrimary,
@@ -60,7 +61,10 @@ internal fun TraktHeader(
             }
             if (!subtitle.isNullOrBlank()) {
                 Text(
-                    text = subtitle,
+                    text = when {
+                        subtitle.length > maxSubtitleLength -> subtitle.take(maxSubtitleLength).trimEnd() + "…"
+                        else -> subtitle
+                    },
                     color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.meta.copy(fontWeight = W400),
                     maxLines = 1,

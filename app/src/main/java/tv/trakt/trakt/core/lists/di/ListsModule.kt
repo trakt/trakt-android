@@ -178,6 +178,7 @@ internal val listsModule = module {
             collectionStateProvider = get(),
             modeManager = get(),
             sessionManager = get(),
+            collapsingManager = get(),
         )
     }
 

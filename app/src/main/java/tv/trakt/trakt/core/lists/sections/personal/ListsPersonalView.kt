@@ -13,14 +13,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,14 +30,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight.Companion.W400
-import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -47,6 +40,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -60,7 +54,7 @@ import tv.trakt.trakt.core.lists.sections.personal.views.ListsPersonalItemView
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -169,57 +163,17 @@ internal fun ListsPersonalContent(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Column(
-                verticalArrangement = spacedBy(1.dp),
-                modifier = Modifier
-                    .weight(1F, fill = false)
-                    .fillMaxWidth(0.75F),
-            ) {
-                Row(
-                    horizontalArrangement = spacedBy(10.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    TraktHeader(
-                        title = list?.name ?: "",
-                        modifier = Modifier.weight(1F, fill = false),
-                    )
-
-                    Icon(
-                        painter = painterResource(R.drawable.ic_more_vertical),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier
-                            .onClick { onMoreClick() }
-                            .size(14.dp),
-                    )
-                }
-
-                if (!list?.description.isNullOrBlank()) {
-                    Text(
-                        text = list.description ?: "",
-                        color = TraktTheme.colors.textSecondary,
-                        style = TraktTheme.typography.meta.copy(
-                            fontWeight = W400,
-                            lineHeight = 1.em,
-                        ),
-                        maxLines = 1,
-                        overflow = Ellipsis,
-                    )
-                }
-            }
-
-            if (!state.items.isNullOrEmpty()) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_chevron_right),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .size(20.dp)
-                        .graphicsLayer {
-                            translationX = (4.9).dp.toPx()
-                        },
-                )
-            }
+            TraktSectionHeader(
+                title = list?.name ?: "",
+                subtitle = when {
+                    !list?.description.isNullOrBlank() -> list.description
+                    else -> null
+                },
+                more = true,
+                maxSubtitleLength = 30,
+                onMoreClick = onMoreClick,
+                modifier = Modifier.weight(1F, fill = false),
+            )
         }
 
         Spacer(modifier = Modifier.height(TraktTheme.spacing.mainRowHeaderSpace))
@@ -392,6 +346,21 @@ private fun PreviewLoadingState() {
         ContentLoadingList(
             visible = true,
             contentPadding = PaddingValues(16.dp),
+        )
+    }
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun PreviewListState() {
+    TraktTheme {
+        ListsPersonalContent(
+            state = ListsPersonalState(),
+            list = PreviewData.customList1,
         )
     }
 }

@@ -23,9 +23,12 @@ internal fun TraktSectionHeader(
     modifier: Modifier = Modifier,
     title: String,
     subtitle: String? = null,
+    maxSubtitleLength: Int = Int.MAX_VALUE,
     chevron: Boolean = true,
+    more: Boolean = false,
     collapsed: Boolean = false,
     onCollapseClick: () -> Unit = {},
+    onMoreClick: () -> Unit = {},
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -42,7 +45,20 @@ internal fun TraktSectionHeader(
                     !collapsed && subtitle != null -> subtitle
                     else -> null
                 },
+                maxSubtitleLength = maxSubtitleLength,
             )
+
+            if (more && !collapsed) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_more_vertical),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .padding(start = 6.dp, end = 2.dp)
+                        .onClick { onMoreClick() }
+                        .size(14.dp),
+                )
+            }
 
             if (!collapsed && chevron) {
                 Icon(
@@ -94,6 +110,23 @@ private fun Preview2() {
             title = "Trending Movies",
             subtitle = "Subtitle Lorem Ipsum",
             collapsed = false,
+        )
+    }
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun Preview3() {
+    TraktTheme {
+        TraktSectionHeader(
+            title = "Trending Movies",
+            subtitle = "Subtitle Lorem Ipsum",
+            collapsed = false,
+            more = true,
         )
     }
 }
