@@ -250,10 +250,11 @@ internal val profileModule = module {
 
     viewModel {
         ProfileLibraryViewModel(
-            sessionManager = get(),
             loadLibraryUseCase = get(),
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
+            sessionManager = get(),
+            collapsingManager = get(),
         )
     }
 

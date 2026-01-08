@@ -140,7 +140,6 @@ internal fun ProfileFavoritesContent(
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
 
     Column(
-        verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
         modifier = modifier
             .animateContentSize(
                 animationSpec = if (animateCollapse) spring() else snap(),
@@ -188,9 +187,11 @@ internal fun ProfileFavoritesContent(
                             state.error != null -> {
                                 Text(
                                     text =
-                                        "${stringResource(
-                                            R.string.error_text_unexpected_error_short,
-                                        )}\n\n${state.error}",
+                                        "${
+                                            stringResource(
+                                                R.string.error_text_unexpected_error_short,
+                                            )
+                                        }\n\n${state.error}",
                                     color = TraktTheme.colors.textSecondary,
                                     style = TraktTheme.typography.meta,
                                     maxLines = 10,

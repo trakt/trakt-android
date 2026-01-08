@@ -32,6 +32,8 @@ import tv.trakt.trakt.core.library.model.LibraryFilter
 import tv.trakt.trakt.core.library.model.LibraryItem
 import tv.trakt.trakt.core.lists.ListsConfig.LIBRARY_SECTION_LIMIT
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserLibraryUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
+import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 @OptIn(FlowPreview::class)
 internal class ProfileLibraryViewModel(
@@ -39,6 +41,7 @@ internal class ProfileLibraryViewModel(
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
+    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = ProfileLibraryState()
 
@@ -47,10 +50,12 @@ internal class ProfileLibraryViewModel(
 
     private val filterState = MutableStateFlow(initialState.filter)
     private val loadingState = MutableStateFlow(initialState.loading)
+    private val collapseState = MutableStateFlow(isCollapsed())
     private val errorState = MutableStateFlow(initialState.error)
 
     private var loadDataJob: Job? = null
     private var processingJob: Job? = null
+    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -165,10 +170,27 @@ internal class ProfileLibraryViewModel(
         movieLocalDataSource.upsertMovies(listOf(movie))
     }
 
+    fun setCollapsed(collapsed: Boolean) {
+        collapseState.update { collapsed }
+
+        collapseJob?.cancel()
+        collapseJob = viewModelScope.launch {
+            when {
+                collapsed -> collapsingManager.collapse(CollapsingKey.PROFILE_LIBRARY)
+                else -> collapsingManager.expand(CollapsingKey.PROFILE_LIBRARY)
+            }
+        }
+    }
+
+    private fun isCollapsed(): Boolean {
+        return collapsingManager.isCollapsed(CollapsingKey.PROFILE_LIBRARY)
+    }
+
     val state = combine(
         loadingState,
         itemsState,
         filterState,
+        collapseState,
         errorState,
         userState,
     ) { states ->
@@ -176,8 +198,9 @@ internal class ProfileLibraryViewModel(
             loading = states[0] as LoadingState,
             items = states[1] as ImmutableList<LibraryItem>?,
             filter = states[2] as LibraryFilter?,
-            error = states[3] as Exception?,
-            user = states[4] as User?,
+            collapsed = states[3] as Boolean,
+            error = states[4] as Exception?,
+            user = states[5] as User?,
         )
     }.stateIn(
         scope = viewModelScope,
