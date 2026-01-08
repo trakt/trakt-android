@@ -37,4 +37,7 @@ internal enum class CollapsingKey(
     DISCOVER_MOVIES_POPULAR("key_discover_movies_popular"),
     DISCOVER_MOVIES_ANTICIPATED("key_discover_movies_anticipated"),
     DISCOVER_MOVIES_RECOMMENDED("key_discover_movies_recommended"),
+
+    // Profile Screen
+    PROFILE_HISTORY("key_profile_history"),
 }

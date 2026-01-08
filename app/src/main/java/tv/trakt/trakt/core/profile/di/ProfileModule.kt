@@ -231,6 +231,7 @@ internal val profileModule = module {
             episodeLocalDataSource = get(),
             movieUpdates = get(),
             movieLocalDataSource = get(),
+            collapsingManager = get(),
             sessionManager = get(),
         )
     }
