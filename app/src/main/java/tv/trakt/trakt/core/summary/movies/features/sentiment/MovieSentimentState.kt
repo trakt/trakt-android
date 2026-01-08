@@ -8,5 +8,6 @@ import tv.trakt.trakt.common.model.Sentiments
 internal data class MovieSentimentState(
     val sentiment: Sentiments? = null,
     val loading: LoadingState = LoadingState.IDLE,
+    val collapsed: Boolean? = null,
     val error: Exception? = null,
 )

@@ -163,6 +163,7 @@ internal val movieDetailsModule = module {
             movie = movie,
             sessionManager = get(),
             getStreamingsUseCase = get(),
+            collapsingManager = get(),
         )
     }
 
@@ -207,6 +208,7 @@ internal val movieDetailsModule = module {
         MovieSentimentViewModel(
             movie = movie,
             getSentimentUseCase = get(),
+            collapsingManager = get(),
         )
     }
 
