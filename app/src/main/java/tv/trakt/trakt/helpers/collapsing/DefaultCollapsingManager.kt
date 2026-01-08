@@ -13,7 +13,7 @@ import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 internal class DefaultCollapsingManager(
     private val dataStore: DataStore<Preferences>,
 ) : CollapsingManager {
-    private val cache = mutableMapOf<CollapsingKey, Boolean>()
+    private val cache = mutableMapOf<String, Boolean>()
     private val mutex = Mutex()
 
     init {
@@ -21,18 +21,18 @@ internal class DefaultCollapsingManager(
             val prefs = dataStore.data.first()
             CollapsingKey.entries.forEach { key ->
                 val preferenceKey = booleanPreferencesKey(key.preferenceKey)
-                cache[key] = prefs[preferenceKey] ?: false
+                cache[key.preferenceKey] = prefs[preferenceKey] ?: false
             }
         }
     }
 
     override fun isCollapsed(key: CollapsingKey): Boolean {
-        return cache[key] ?: false
+        return cache[key.preferenceKey] ?: false
     }
 
     override suspend fun collapse(key: CollapsingKey) {
         mutex.withLock {
-            cache[key] = true
+            cache[key.preferenceKey] = true
             dataStore.edit { prefs ->
                 val preferenceKey = booleanPreferencesKey(key.preferenceKey)
                 prefs[preferenceKey] = true
@@ -42,9 +42,33 @@ internal class DefaultCollapsingManager(
 
     override suspend fun expand(key: CollapsingKey) {
         mutex.withLock {
-            cache[key] = false
+            cache[key.preferenceKey] = false
             dataStore.edit { prefs ->
                 val preferenceKey = booleanPreferencesKey(key.preferenceKey)
+                prefs[preferenceKey] = false
+            }
+        }
+    }
+
+    override fun isCollapsed(keyId: String): Boolean {
+        return cache[keyId] ?: false
+    }
+
+    override suspend fun collapse(keyId: String) {
+        mutex.withLock {
+            cache[keyId] = true
+            dataStore.edit { prefs ->
+                val preferenceKey = booleanPreferencesKey(keyId)
+                prefs[preferenceKey] = true
+            }
+        }
+    }
+
+    override suspend fun expand(keyId: String) {
+        mutex.withLock {
+            cache[keyId] = false
+            dataStore.edit { prefs ->
+                val preferenceKey = booleanPreferencesKey(keyId)
                 prefs[preferenceKey] = false
             }
         }

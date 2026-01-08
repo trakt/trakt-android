@@ -213,6 +213,7 @@ internal val listsModule = module {
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
             collectionStateProvider = get(),
+            collapsingManager = get(),
         )
     }
 

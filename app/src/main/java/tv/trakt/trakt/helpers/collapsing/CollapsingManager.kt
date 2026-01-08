@@ -12,14 +12,29 @@ internal interface CollapsingManager {
     fun isCollapsed(key: CollapsingKey): Boolean
 
     /**
+     * Returns true if the section identified by [keyId] is collapsed, false otherwise.
+     */
+    fun isCollapsed(keyId: String): Boolean
+
+    /**
      * Marks the section identified by [key] as collapsed.
      */
     suspend fun collapse(key: CollapsingKey)
 
     /**
+     * Marks the section identified by [keyId] as collapsed.
+     */
+    suspend fun collapse(keyId: String)
+
+    /**
      * Marks the section identified by [key] as expanded.
      */
     suspend fun expand(key: CollapsingKey)
+
+    /**
+     * Marks the section identified by [keyId] as expanded.
+     */
+    suspend fun expand(keyId: String)
 
     /**
      * Clears all collapsing states.

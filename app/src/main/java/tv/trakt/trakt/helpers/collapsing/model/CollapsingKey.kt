@@ -43,6 +43,10 @@ internal enum class CollapsingKey(
     LISTS_SHOWS_WATCHLIST("key_lists_shows_watchlist"),
     LISTS_MOVIES_WATCHLIST("key_lists_movies_watchlist"),
 
+    LISTS_MEDIA_PERSONAL("key_lists_media_personal"),
+    LISTS_SHOWS_PERSONAL("key_lists_shows_personal"),
+    LISTS_MOVIES_PERSONAL("key_lists_movies_personal"),
+
     // Profile Screen
     PROFILE_HISTORY("key_profile_history"),
     PROFILE_FAVORITES("key_profile_favorites"),
