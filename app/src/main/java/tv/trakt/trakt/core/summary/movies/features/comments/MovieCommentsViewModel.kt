@@ -49,6 +49,8 @@ import tv.trakt.trakt.core.reactions.data.work.DeleteReactionWorker
 import tv.trakt.trakt.core.reactions.data.work.PostReactionWorker
 import tv.trakt.trakt.core.summary.movies.features.comments.usecases.GetMovieCommentsUseCase
 import tv.trakt.trakt.core.user.usecases.reactions.LoadUserReactionsUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
+import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(FlowPreview::class)
@@ -62,6 +64,7 @@ internal class MovieCommentsViewModel(
     private val loadUserReactionsUseCase: LoadUserReactionsUseCase,
     private val reactionsUpdates: ReactionsUpdates,
     private val commentsUpdates: CommentsUpdates,
+    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = MovieCommentsState()
 
@@ -73,8 +76,10 @@ internal class MovieCommentsViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val userState = MutableStateFlow(initialState.user)
     private val errorState = MutableStateFlow(initialState.error)
+    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.MOVIE_COMMENTS))
 
     private var reactionJob: Job? = null
+    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -341,6 +346,17 @@ internal class MovieCommentsViewModel(
         }
     }
 
+    fun setCollapsed(collapsed: Boolean) {
+        collapseState.update { collapsed }
+        collapseJob?.cancel()
+        collapseJob = viewModelScope.launch {
+            when {
+                collapsed -> collapsingManager.collapse(CollapsingKey.MOVIE_COMMENTS)
+                else -> collapsingManager.expand(CollapsingKey.MOVIE_COMMENTS)
+            }
+        }
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state: StateFlow<MovieCommentsState> = combine(
         movieState,
@@ -351,6 +367,7 @@ internal class MovieCommentsViewModel(
         loadingState,
         userState,
         errorState,
+        collapseState,
     ) { state ->
         MovieCommentsState(
             movie = state[0] as Movie?,
@@ -361,6 +378,7 @@ internal class MovieCommentsViewModel(
             loading = state[5] as LoadingState,
             user = state[6] as User?,
             error = state[7] as Exception?,
+            collapsed = state[8] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

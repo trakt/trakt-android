@@ -227,6 +227,7 @@ internal val movieDetailsModule = module {
             reactionsUpdates = get(),
             sessionManager = get(),
             commentsUpdates = get(),
+            collapsingManager = get(),
         )
     }
 

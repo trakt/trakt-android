@@ -25,10 +25,9 @@ internal fun TraktSectionHeader(
     subtitle: String? = null,
     maxSubtitleLength: Int = Int.MAX_VALUE,
     chevron: Boolean = true,
-    more: Boolean = false,
     collapsed: Boolean = false,
+    extraIcon: @Composable (() -> Unit)? = null,
     onCollapseClick: () -> Unit = {},
-    onMoreClick: () -> Unit = {},
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -48,17 +47,20 @@ internal fun TraktSectionHeader(
                 maxSubtitleLength = maxSubtitleLength,
             )
 
-            if (more && !collapsed) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_more_vertical),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .padding(start = 6.dp, end = 2.dp)
-                        .onClick { onMoreClick() }
-                        .size(14.dp),
-                )
+            if (extraIcon != null && !collapsed) {
+                extraIcon()
             }
+//            if (more && !collapsed) {
+//                Icon(
+//                    painter = painterResource(R.drawable.ic_more_vertical),
+//                    contentDescription = null,
+//                    tint = TraktTheme.colors.textPrimary,
+//                    modifier = Modifier
+//                        .padding(start = 6.dp, end = 2.dp)
+//                        .onClick { onExtraClick() }
+//                        .size(14.dp),
+//                )
+//            }
 
             if (!collapsed && chevron) {
                 Icon(
@@ -126,7 +128,16 @@ private fun Preview3() {
             title = "Trending Movies",
             subtitle = "Subtitle Lorem Ipsum",
             collapsed = false,
-            more = true,
+            extraIcon = {
+                Icon(
+                    painter = painterResource(R.drawable.ic_more_vertical),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .padding(start = 6.dp, end = 2.dp)
+                        .size(14.dp),
+                )
+            }
         )
     }
 }

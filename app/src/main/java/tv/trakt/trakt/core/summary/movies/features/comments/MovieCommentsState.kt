@@ -21,4 +21,5 @@ internal data class MovieCommentsState(
     val loading: LoadingState = LoadingState.IDLE,
     val user: User? = null,
     val error: Exception? = null,
+    val collapsed: Boolean? = null,
 )
