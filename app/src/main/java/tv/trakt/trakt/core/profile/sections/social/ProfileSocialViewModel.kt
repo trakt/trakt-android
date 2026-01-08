@@ -23,11 +23,14 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.profile.sections.social.model.SocialFilter
 import tv.trakt.trakt.core.profile.sections.social.usecases.GetSocialFilterUseCase
 import tv.trakt.trakt.core.user.usecases.social.LoadUserSocialUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
+import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 internal class ProfileSocialViewModel(
     private val loadSocialUseCase: LoadUserSocialUseCase,
     private val getFilterUseCase: GetSocialFilterUseCase,
     private val sessionManager: SessionManager,
+    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = ProfileSocialState()
 
@@ -35,8 +38,10 @@ internal class ProfileSocialViewModel(
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialState.filter)
     private val loadingState = MutableStateFlow(initialState.loading)
+    private val collapseState = MutableStateFlow(isCollapsed())
     private val errorState = MutableStateFlow(initialState.error)
     private var loadDataJob: Job? = null
+    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -101,11 +106,28 @@ internal class ProfileSocialViewModel(
         }
     }
 
+    fun setCollapsed(collapsed: Boolean) {
+        collapseState.update { collapsed }
+
+        collapseJob?.cancel()
+        collapseJob = viewModelScope.launch {
+            when {
+                collapsed -> collapsingManager.collapse(CollapsingKey.PROFILE_SOCIAL)
+                else -> collapsingManager.expand(CollapsingKey.PROFILE_SOCIAL)
+            }
+        }
+    }
+
+    private fun isCollapsed(): Boolean {
+        return collapsingManager.isCollapsed(CollapsingKey.PROFILE_SOCIAL)
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state: StateFlow<ProfileSocialState> = combine(
         loadingState,
         itemsState,
         filterState,
+        collapseState,
         errorState,
         userState,
     ) { states ->
@@ -113,8 +135,9 @@ internal class ProfileSocialViewModel(
             loading = states[0] as LoadingState,
             items = states[1] as ImmutableList<User>?,
             filter = states[2] as SocialFilter,
-            error = states[3] as Exception?,
-            user = states[4] as User?,
+            collapsed = states[3] as Boolean,
+            error = states[4] as Exception?,
+            user = states[5] as User?,
         )
     }.stateIn(
         scope = viewModelScope,

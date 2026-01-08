@@ -260,9 +260,10 @@ internal val profileModule = module {
 
     viewModel {
         ProfileSocialViewModel(
-            sessionManager = get(),
             loadSocialUseCase = get(),
             getFilterUseCase = get(),
+            sessionManager = get(),
+            collapsingManager = get(),
         )
     }
 
