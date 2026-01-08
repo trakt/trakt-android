@@ -20,10 +20,13 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.summary.movies.features.extras.usecases.GetMovieExtrasUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
+import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 internal class MovieExtrasViewModel(
     private val movie: Movie,
     private val getExtrasUseCase: GetMovieExtrasUseCase,
+    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = MovieExtrasState()
 
@@ -31,7 +34,10 @@ internal class MovieExtrasViewModel(
     private val filterItemsState = MutableStateFlow(initialState.items)
     private val filtersState = MutableStateFlow(initialState.filters)
     private val loadingState = MutableStateFlow(initialState.loading)
+    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.MOVIE_EXTRAS))
     private val errorState = MutableStateFlow(initialState.error)
+
+    private var collapseJob: kotlinx.coroutines.Job? = null
 
     init {
         loadData()
@@ -98,18 +104,32 @@ internal class MovieExtrasViewModel(
         }
     }
 
+    fun setCollapsed(collapsed: Boolean) {
+        collapseState.update { collapsed }
+
+        collapseJob?.cancel()
+        collapseJob = viewModelScope.launch {
+            when {
+                collapsed -> collapsingManager.collapse(CollapsingKey.MOVIE_EXTRAS)
+                else -> collapsingManager.expand(CollapsingKey.MOVIE_EXTRAS)
+            }
+        }
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state: StateFlow<MovieExtrasState> = combine(
         filterItemsState,
         filtersState,
         loadingState,
+        collapseState,
         errorState,
     ) { state ->
         MovieExtrasState(
             items = state[0] as ImmutableList<ExtraVideo>?,
             filters = state[1] as MovieExtrasState.FiltersState,
             loading = state[2] as LoadingState,
-            error = state[3] as Exception?,
+            collapsed = state[3] as Boolean,
+            error = state[4] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

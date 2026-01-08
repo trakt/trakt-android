@@ -11,6 +11,7 @@ internal data class MovieExtrasState(
     val items: ImmutableList<ExtraVideo>? = null,
     val filters: FiltersState = FiltersState(),
     val loading: LoadingState = LoadingState.IDLE,
+    val collapsed: Boolean? = null,
     val error: Exception? = null,
 ) {
     data class FiltersState(

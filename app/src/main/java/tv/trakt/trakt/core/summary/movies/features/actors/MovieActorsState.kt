@@ -9,5 +9,6 @@ import tv.trakt.trakt.common.model.CastPerson
 internal data class MovieActorsState(
     val items: ImmutableList<CastPerson>? = null,
     val loading: LoadingState = LoadingState.IDLE,
+    val collapsed: Boolean? = null,
     val error: Exception? = null,
 )

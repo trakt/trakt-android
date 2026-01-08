@@ -3,13 +3,15 @@
 package tv.trakt.trakt.core.summary.movies.features.actors
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.snap
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
@@ -21,7 +23,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment.Companion.CenterVertically
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
@@ -43,7 +47,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -64,6 +68,7 @@ internal fun MovieActorsView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
+        onCollapse = viewModel::setCollapsed,
         onPersonClick = onPersonClick,
     )
 }
@@ -74,28 +79,37 @@ private fun MovieActorsContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
+    onCollapse: (collapsed: Boolean) -> Unit = {},
     onPersonClick: ((Person) -> Unit)? = null,
 ) {
+    var animateCollapse by rememberSaveable { mutableStateOf(false) }
+
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
-        modifier = modifier,
+        modifier = modifier
+            .animateContentSize(
+                animationSpec = if (animateCollapse) spring() else snap(),
+            ),
     ) {
-        Row(
+        TraktSectionHeader(
+            title = stringResource(R.string.list_title_actors),
+            chevron = !state.items.isNullOrEmpty() || state.loading != DONE,
+            collapsed = state.collapsed ?: false,
+            onCollapseClick = {
+                animateCollapse = true
+                val current = (state.collapsed ?: false)
+                onCollapse(!current)
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(headerPadding),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = CenterVertically,
-        ) {
-            TraktHeader(
-                title = stringResource(R.string.list_title_actors),
-            )
-        }
+        )
 
-        Crossfade(
-            targetState = state.loading,
-            animationSpec = tween(200),
-        ) { loading ->
+        if (state.collapsed != true) {
+            Crossfade(
+                targetState = state.loading,
+                animationSpec = tween(200),
+            ) { loading ->
             when (loading) {
                 IDLE, LOADING -> {
                     ContentLoading(
@@ -117,6 +131,7 @@ private fun MovieActorsContent(
                         )
                     }
                 }
+            }
             }
         }
     }

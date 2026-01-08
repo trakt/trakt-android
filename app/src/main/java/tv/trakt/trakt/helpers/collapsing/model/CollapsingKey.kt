@@ -50,6 +50,8 @@ internal enum class CollapsingKey(
     // Movie Details Screen
     MOVIE_WHERE_TO_WATCH("key_movie_where_to_watch"),
     MOVIE_SENTIMENT("key_movie_sentiment"),
+    MOVIE_ACTORS("key_movie_actors"),
+    MOVIE_EXTRAS("key_movie_extras"),
 
     // Profile Screen
     PROFILE_HISTORY("key_profile_history"),

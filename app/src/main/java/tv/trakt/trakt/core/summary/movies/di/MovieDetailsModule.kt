@@ -171,6 +171,7 @@ internal val movieDetailsModule = module {
         MovieExtrasViewModel(
             movie = movie,
             getExtrasUseCase = get(),
+            collapsingManager = get(),
         )
     }
 
@@ -178,6 +179,7 @@ internal val movieDetailsModule = module {
         MovieActorsViewModel(
             movie = movie,
             getActorsUseCase = get(),
+            collapsingManager = get(),
         )
     }
 
