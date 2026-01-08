@@ -238,12 +238,13 @@ internal val profileModule = module {
 
     viewModel {
         ProfileFavoritesViewModel(
-            sessionManager = get(),
             loadFavoritesUseCase = get(),
             getFilterUseCase = get(),
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
             favoritesUpdates = get(),
+            sessionManager = get(),
+            collapsingManager = get(),
         )
     }
 

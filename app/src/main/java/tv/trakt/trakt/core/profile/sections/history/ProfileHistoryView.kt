@@ -336,20 +336,3 @@ private fun Preview2() {
         )
     }
 }
-
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
-@Composable
-private fun Preview3() {
-    TraktTheme {
-        ProfileHistoryContent(
-            state = ProfileHistoryState(
-                loading = DONE,
-                items = emptyList<HomeActivityItem>().toImmutableList(),
-            ),
-        )
-    }
-}

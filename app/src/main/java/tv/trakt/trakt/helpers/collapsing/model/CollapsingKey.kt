@@ -40,4 +40,5 @@ internal enum class CollapsingKey(
 
     // Profile Screen
     PROFILE_HISTORY("key_profile_history"),
+    PROFILE_FAVORITES("key_profile_favorites"),
 }

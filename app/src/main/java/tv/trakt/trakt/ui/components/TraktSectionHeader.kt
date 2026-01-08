@@ -38,7 +38,10 @@ internal fun TraktSectionHeader(
         ) {
             TraktHeader(
                 title = title,
-                subtitle = subtitle,
+                subtitle = when {
+                    !collapsed && subtitle != null -> subtitle
+                    else -> null
+                },
             )
 
             if (!collapsed && chevron) {
