@@ -30,6 +30,8 @@ import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SE
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.summary.shows.features.history.usecases.GetShowHistoryUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
+import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 @OptIn(FlowPreview::class)
 internal class ShowHistoryViewModel(
@@ -37,12 +39,16 @@ internal class ShowHistoryViewModel(
     private val getHistoryUseCase: GetShowHistoryUseCase,
     private val showDetailsUpdates: ShowDetailsUpdates,
     private val episodeDetailsUpdates: EpisodeDetailsUpdates,
+    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = ShowHistoryState()
 
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
+    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.SHOW_HISTORY))
+
+    private var collapseJob: kotlinx.coroutines.Job? = null
 
     init {
         loadData()
@@ -87,16 +93,29 @@ internal class ShowHistoryViewModel(
         }
     }
 
+    fun setCollapsed(collapsed: Boolean) {
+        collapseState.update { collapsed }
+        collapseJob?.cancel()
+        collapseJob = viewModelScope.launch {
+            when {
+                collapsed -> collapsingManager.collapse(CollapsingKey.SHOW_HISTORY)
+                else -> collapsingManager.expand(CollapsingKey.SHOW_HISTORY)
+            }
+        }
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state: StateFlow<ShowHistoryState> = combine(
         itemsState,
         loadingState,
         errorState,
+        collapseState,
     ) { state ->
         ShowHistoryState(
             items = state[0] as ImmutableList<HomeActivityItem.EpisodeItem>?,
             loading = state[1] as LoadingState,
             error = state[2] as Exception?,
+            collapsed = state[3] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

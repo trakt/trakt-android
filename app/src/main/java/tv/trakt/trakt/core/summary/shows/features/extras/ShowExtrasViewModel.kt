@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -20,10 +21,13 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.shows.features.extras.usecases.GetShowExtrasUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
+import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 internal class ShowExtrasViewModel(
     private val show: Show,
     private val getExtrasUseCase: GetShowExtrasUseCase,
+    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = ShowExtrasState()
 
@@ -32,6 +36,9 @@ internal class ShowExtrasViewModel(
     private val filtersState = MutableStateFlow(initialState.filters)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
+    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.SHOW_EXTRAS))
+
+    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -98,18 +105,31 @@ internal class ShowExtrasViewModel(
         }
     }
 
+    fun setCollapsed(collapsed: Boolean) {
+        collapseState.update { collapsed }
+        collapseJob?.cancel()
+        collapseJob = viewModelScope.launch {
+            when {
+                collapsed -> collapsingManager.collapse(CollapsingKey.SHOW_EXTRAS)
+                else -> collapsingManager.expand(CollapsingKey.SHOW_EXTRAS)
+            }
+        }
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state: StateFlow<ShowExtrasState> = combine(
         filterItemsState,
         filtersState,
         loadingState,
         errorState,
+        collapseState,
     ) { state ->
         ShowExtrasState(
             items = state[0] as ImmutableList<ExtraVideo>?,
             filters = state[1] as ShowExtrasState.FiltersState,
             loading = state[2] as LoadingState,
             error = state[3] as Exception?,
+            collapsed = state[4] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -3,13 +3,14 @@
 package tv.trakt.trakt.core.summary.shows.features.streaming
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.snap
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
@@ -21,6 +22,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -51,7 +55,7 @@ import tv.trakt.trakt.core.streamings.ui.JustWatchRanksStrip
 import tv.trakt.trakt.core.summary.ui.views.DetailsStreamingItem
 import tv.trakt.trakt.core.summary.ui.views.DetailsStreamingSkeleton
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -69,6 +73,7 @@ internal fun ShowStreamingsView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
+        onCollapse = viewModel::setCollapsed,
         onClick = { service ->
             openExternalAppLink(
                 packageId = StreamingServiceApp.findFromSource(service.source)?.packageId,
@@ -86,56 +91,66 @@ private fun ShowStreamingsContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
+    onCollapse: (collapsed: Boolean) -> Unit = {},
     onClick: ((StreamingService) -> Unit)? = null,
 ) {
+    var animateCollapse by rememberSaveable { mutableStateOf(false) }
+
     Column(
         verticalArrangement = spacedBy(12.dp),
-        modifier = modifier,
+        modifier = modifier
+            .animateContentSize(
+                animationSpec = if (animateCollapse) spring() else snap(),
+            ),
     ) {
-        Row(
+        Column(
+            verticalArrangement = spacedBy(3.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(headerPadding),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = CenterVertically,
         ) {
-            Column(
-                verticalArrangement = spacedBy(3.dp),
-            ) {
-                TraktHeader(
-                    title = stringResource(R.string.page_title_where_to_watch),
-                )
+            TraktSectionHeader(
+                title = stringResource(R.string.page_title_where_to_watch),
+                chevron = false,
+                collapsed = state.collapsed ?: false,
+                onCollapseClick = {
+                    animateCollapse = true
+                    val current = (state.collapsed ?: false)
+                    onCollapse(!current)
+                },
+            )
 
-                JustWatchRanksStrip(
-                    ranks = state.items?.ranks,
-                    justWatchLink = state.items?.justWatchLink,
-                )
-            }
+            JustWatchRanksStrip(
+                ranks = state.items?.ranks,
+                justWatchLink = state.items?.justWatchLink,
+            )
         }
 
-        Crossfade(
-            targetState = state.loading,
-            animationSpec = tween(200),
-        ) { loading ->
-            when (loading) {
-                IDLE, LOADING -> {
-                    ContentLoading(
-                        visible = loading.isLoading,
-                        contentPadding = contentPadding,
-                    )
-                }
-
-                DONE -> {
-                    if (state.items?.streamings?.isEmpty() == true) {
-                        ContentEmpty(
-                            contentPadding = headerPadding,
-                        )
-                    } else {
-                        ContentList(
-                            listItems = (state.items?.streamings ?: emptyList()).toImmutableList(),
+        if (state.collapsed != true) {
+            Crossfade(
+                targetState = state.loading,
+                animationSpec = tween(200),
+            ) { loading ->
+                when (loading) {
+                    IDLE, LOADING -> {
+                        ContentLoading(
+                            visible = loading.isLoading,
                             contentPadding = contentPadding,
-                            onClick = onClick,
                         )
+                    }
+
+                    DONE -> {
+                        if (state.items?.streamings?.isEmpty() == true) {
+                            ContentEmpty(
+                                contentPadding = headerPadding,
+                            )
+                        } else {
+                            ContentList(
+                                listItems = (state.items?.streamings ?: emptyList()).toImmutableList(),
+                                contentPadding = contentPadding,
+                                onClick = onClick,
+                            )
+                        }
                     }
                 }
             }

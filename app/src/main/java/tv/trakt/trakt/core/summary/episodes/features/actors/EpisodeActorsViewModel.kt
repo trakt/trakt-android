@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.summary.episodes.features.actors
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -36,7 +37,7 @@ internal class EpisodeActorsViewModel(
     private val errorState = MutableStateFlow(initialState.error)
     private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.EPISODE_ACTORS))
 
-    private var collapseJob: kotlinx.coroutines.Job? = null
+    private var collapseJob: Job? = null
 
     init {
         loadData()

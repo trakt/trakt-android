@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.summary.shows.features.related
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -19,17 +20,23 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.shows.features.related.usecases.GetShowRelatedUseCase
 import tv.trakt.trakt.core.user.CollectionStateProvider
 import tv.trakt.trakt.core.user.UserCollectionState
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
+import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 internal class ShowRelatedViewModel(
     private val show: Show,
     private val getRelatedShowsUseCase: GetShowRelatedUseCase,
     private val collectionStateProvider: CollectionStateProvider,
+    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = ShowRelatedState()
 
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
+    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.SHOW_RELATED))
+
+    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -59,18 +66,31 @@ internal class ShowRelatedViewModel(
         }
     }
 
+    fun setCollapsed(collapsed: Boolean) {
+        collapseState.update { collapsed }
+        collapseJob?.cancel()
+        collapseJob = viewModelScope.launch {
+            when {
+                collapsed -> collapsingManager.collapse(CollapsingKey.SHOW_RELATED)
+                else -> collapsingManager.expand(CollapsingKey.SHOW_RELATED)
+            }
+        }
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state = combine(
         itemsState,
         collectionStateProvider.stateFlow,
         loadingState,
         errorState,
+        collapseState,
     ) { state ->
         ShowRelatedState(
             items = state[0] as ImmutableList<Show>?,
             collection = state[1] as UserCollectionState,
             loading = state[2] as LoadingState,
             error = state[3] as Exception?,
+            collapsed = state[4] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

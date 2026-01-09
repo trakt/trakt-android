@@ -10,4 +10,5 @@ internal data class ShowListsState(
     val items: ImmutableList<CustomList>? = null,
     val loading: LoadingState = LoadingState.IDLE,
     val error: Exception? = null,
+    val collapsed: Boolean? = null,
 )

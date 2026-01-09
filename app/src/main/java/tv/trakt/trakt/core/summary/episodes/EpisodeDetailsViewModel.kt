@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -104,8 +105,8 @@ internal class EpisodeDetailsViewModel(
     private val userState = MutableStateFlow(initialState.user)
     private val metaCollapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.EPISODE_META))
 
-    private var ratingJob: kotlinx.coroutines.Job? = null
-    private var metaCollapseJob: kotlinx.coroutines.Job? = null
+    private var ratingJob: Job? = null
+    private var metaCollapseJob: Job? = null
 
     init {
         loadUser()

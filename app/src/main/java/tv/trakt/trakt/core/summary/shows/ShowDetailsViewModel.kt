@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
@@ -68,6 +69,8 @@ import tv.trakt.trakt.core.user.usecases.lists.LoadUserListsUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
+import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 import kotlin.time.Duration.Companion.seconds
@@ -98,6 +101,7 @@ internal class ShowDetailsViewModel(
     private val favoritesUpdates: FavoritesUpdates,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
+    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<ShowDetailsDestination>()
     private val showId = destination.showId.toTraktId()
@@ -118,8 +122,10 @@ internal class ShowDetailsViewModel(
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
     private val userState = MutableStateFlow(initialState.user)
+    private val metaCollapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.SHOW_META))
 
-    private var ratingJob: kotlinx.coroutines.Job? = null
+    private var ratingJob: Job? = null
+    private var metaCollapseJob: Job? = null
 
     init {
         loadUser()
@@ -867,6 +873,17 @@ internal class ShowDetailsViewModel(
         }
     }
 
+    fun setMetaCollapsed(collapsed: Boolean) {
+        metaCollapseState.update { collapsed }
+        metaCollapseJob?.cancel()
+        metaCollapseJob = viewModelScope.launch {
+            when {
+                collapsed -> collapsingManager.collapse(CollapsingKey.SHOW_META)
+                else -> collapsingManager.expand(CollapsingKey.SHOW_META)
+            }
+        }
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state = combine(
         showState,
@@ -883,6 +900,7 @@ internal class ShowDetailsViewModel(
         infoState,
         errorState,
         userState,
+        metaCollapseState,
     ) { state ->
         ShowDetailsState(
             show = state[0] as Show?,
@@ -899,6 +917,7 @@ internal class ShowDetailsViewModel(
             info = state[11] as StringResource?,
             error = state[12] as Exception?,
             user = state[13] as User?,
+            metaCollapsed = state[14] as Boolean?,
         )
     }.stateIn(
         scope = viewModelScope,

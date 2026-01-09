@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -42,6 +43,8 @@ import tv.trakt.trakt.core.summary.shows.features.seasons.usecases.GetShowSeason
 import tv.trakt.trakt.core.sync.model.ProgressItem
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
+import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 
@@ -55,6 +58,7 @@ internal class ShowSeasonsViewModel(
     private val episodeDetailsUpdates: EpisodeDetailsUpdates,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
+    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = ShowSeasonsState()
 
@@ -65,6 +69,9 @@ internal class ShowSeasonsViewModel(
     private val loadingSeasonState = MutableStateFlow(initialState.loadingSeason)
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
+    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.SHOW_SEASONS))
+
+    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -465,6 +472,17 @@ internal class ShowSeasonsViewModel(
         infoState.update { null }
     }
 
+    fun setCollapsed(collapsed: Boolean) {
+        collapseState.update { collapsed }
+        collapseJob?.cancel()
+        collapseJob = viewModelScope.launch {
+            when {
+                collapsed -> collapsingManager.collapse(CollapsingKey.SHOW_SEASONS)
+                else -> collapsingManager.expand(CollapsingKey.SHOW_SEASONS)
+            }
+        }
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state: StateFlow<ShowSeasonsState> = combine(
         showState,
@@ -474,6 +492,7 @@ internal class ShowSeasonsViewModel(
         loadingSeasonState,
         infoState,
         errorState,
+        collapseState,
     ) { state ->
         ShowSeasonsState(
             show = state[0] as Show,
@@ -483,6 +502,7 @@ internal class ShowSeasonsViewModel(
             loadingSeason = state[4] as LoadingState,
             info = state[5] as StringResource?,
             error = state[6] as Exception?,
+            collapsed = state[7] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

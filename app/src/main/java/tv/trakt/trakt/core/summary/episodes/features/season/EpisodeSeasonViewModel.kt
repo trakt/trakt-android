@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -70,7 +71,7 @@ internal class EpisodeSeasonViewModel(
     private val errorState = MutableStateFlow(initialState.error)
     private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.EPISODE_SEASON))
 
-    private var collapseJob: kotlinx.coroutines.Job? = null
+    private var collapseJob: Job? = null
 
     init {
         loadData()

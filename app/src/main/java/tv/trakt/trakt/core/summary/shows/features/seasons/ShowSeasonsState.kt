@@ -15,4 +15,5 @@ internal data class ShowSeasonsState(
     val loadingSeason: LoadingState = LoadingState.IDLE,
     val info: StringResource? = null,
     val error: Exception? = null,
+    val collapsed: Boolean? = null,
 )

@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.summary.shows.features.streaming
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -18,17 +19,23 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.streamings.model.StreamingsResult
 import tv.trakt.trakt.core.summary.shows.features.streaming.usecases.GetShowStreamingsUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
+import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 internal class ShowStreamingsViewModel(
     private val show: Show,
     private val sessionManager: SessionManager,
     private val getStreamingsUseCase: GetShowStreamingsUseCase,
+    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = ShowStreamingsState()
 
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
+    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.SHOW_WHERE_TO_WATCH))
+
+    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -63,16 +70,29 @@ internal class ShowStreamingsViewModel(
         }
     }
 
+    fun setCollapsed(collapsed: Boolean) {
+        collapseState.update { collapsed }
+        collapseJob?.cancel()
+        collapseJob = viewModelScope.launch {
+            when {
+                collapsed -> collapsingManager.collapse(CollapsingKey.SHOW_WHERE_TO_WATCH)
+                else -> collapsingManager.expand(CollapsingKey.SHOW_WHERE_TO_WATCH)
+            }
+        }
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state = combine(
         itemsState,
         loadingState,
         errorState,
+        collapseState,
     ) { state ->
         ShowStreamingsState(
             items = state[0] as StreamingsResult?,
             loading = state[1] as LoadingState,
             error = state[2] as Exception?,
+            collapsed = state[3] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

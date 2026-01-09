@@ -5,6 +5,8 @@ package tv.trakt.trakt.core.summary.shows
 import android.content.Context
 import android.content.Intent
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.snap
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -89,7 +91,7 @@ import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
 import tv.trakt.trakt.core.summary.ui.header.POSTER_SPACE_WEIGHT
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.UserRatingBar
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
@@ -191,6 +193,7 @@ internal fun ShowDetailsScreen(
         },
         onVipClick = onNavigateVip,
         onBackClick = onNavigateBack,
+        onMetaCollapse = viewModel::setMetaCollapsed,
     )
 
     ShowDetailsListsSheet(
@@ -333,6 +336,7 @@ internal fun ShowDetailsContent(
     onFavoriteClick: (() -> Unit)? = null,
     onVipClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
+    onMetaCollapse: ((Boolean) -> Unit)? = null,
 ) {
     val previewMode = LocalInspectionMode.current
     val windowClass = currentWindowAdaptiveInfo().windowSizeClass
@@ -610,6 +614,8 @@ internal fun ShowDetailsContent(
                         DetailsMeta(
                             show = show,
                             showStudios = state.showStudios,
+                            collapsed = state.metaCollapsed ?: false,
+                            onCollapse = { onMetaCollapse?.invoke(it) },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(top = 32.dp)
@@ -680,20 +686,35 @@ private fun DetailsMeta(
     modifier: Modifier = Modifier,
     show: Show,
     showStudios: ImmutableList<String>?,
+    collapsed: Boolean = false,
+    onCollapse: ((Boolean) -> Unit)? = null,
 ) {
+    var animateCollapse by rememberSaveable { mutableStateOf(false) }
+
     Column(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = spacedBy(14.dp),
-        modifier = modifier,
+        modifier = modifier
+            .animateContentSize(
+                animationSpec = if (animateCollapse) spring() else snap(),
+            ),
     ) {
-        TraktHeader(
+        TraktSectionHeader(
             title = stringResource(R.string.header_details),
+            chevron = false,
+            collapsed = collapsed,
+            onCollapseClick = {
+                animateCollapse = true
+                onCollapse?.invoke(!collapsed)
+            },
         )
 
-        DetailsMetaInfo(
-            show = show,
-            showStudios = showStudios,
-        )
+        if (!collapsed) {
+            DetailsMetaInfo(
+                show = show,
+                showStudios = showStudios,
+            )
+        }
     }
 }
 

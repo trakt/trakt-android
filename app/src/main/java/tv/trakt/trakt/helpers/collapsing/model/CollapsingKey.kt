@@ -55,6 +55,7 @@ internal enum class CollapsingKey(
     MOVIE_RELATED("key_movie_related"),
     MOVIE_LISTS("key_movie_lists"),
     MOVIE_COMMENTS("key_movie_comments"),
+    MOVIE_HISTORY("key_movie_history"),
     MOVIE_META("key_movie_meta"),
 
     // Episode Details Screen
@@ -64,6 +65,18 @@ internal enum class CollapsingKey(
     EPISODE_SEASON("key_episode_season"),
     EPISODE_RELATED("key_episode_related"),
     EPISODE_META("key_episode_meta"),
+
+    // Show Details Screen
+    SHOW_WHERE_TO_WATCH("key_show_where_to_watch"),
+    SHOW_SENTIMENT("key_show_sentiment"),
+    SHOW_COMMENTS("key_show_comments"),
+    SHOW_ACTORS("key_show_actors"),
+    SHOW_SEASONS("key_show_seasons"),
+    SHOW_EXTRAS("key_show_extras"),
+    SHOW_RELATED("key_show_related"),
+    SHOW_LISTS("key_show_lists"),
+    SHOW_HISTORY("key_show_history"),
+    SHOW_META("key_show_meta"),
 
     // Profile Screen
     PROFILE_HISTORY("key_profile_history"),

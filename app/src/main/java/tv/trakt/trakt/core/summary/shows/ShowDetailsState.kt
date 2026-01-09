@@ -28,6 +28,7 @@ internal data class ShowDetailsState(
     val info: StringResource? = null,
     val error: Exception? = null,
     val user: User? = null,
+    val metaCollapsed: Boolean? = null,
 ) {
     data class ProgressState(
         val aired: Int,

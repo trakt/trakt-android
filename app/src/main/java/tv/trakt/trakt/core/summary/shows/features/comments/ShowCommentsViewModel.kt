@@ -49,6 +49,8 @@ import tv.trakt.trakt.core.reactions.data.work.DeleteReactionWorker
 import tv.trakt.trakt.core.reactions.data.work.PostReactionWorker
 import tv.trakt.trakt.core.summary.shows.features.comments.usecases.GetShowCommentsUseCase
 import tv.trakt.trakt.core.user.usecases.reactions.LoadUserReactionsUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
+import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(FlowPreview::class)
@@ -62,6 +64,7 @@ internal class ShowCommentsViewModel(
     private val loadUserReactionsUseCase: LoadUserReactionsUseCase,
     private val reactionsUpdates: ReactionsUpdates,
     private val commentsUpdates: CommentsUpdates,
+    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = ShowCommentsState()
 
@@ -73,8 +76,10 @@ internal class ShowCommentsViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val userState = MutableStateFlow(initialState.user)
     private val errorState = MutableStateFlow(initialState.error)
+    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.SHOW_COMMENTS))
 
     private var reactionJob: Job? = null
+    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -340,6 +345,17 @@ internal class ShowCommentsViewModel(
         }
     }
 
+    fun setCollapsed(collapsed: Boolean) {
+        collapseState.update { collapsed }
+        collapseJob?.cancel()
+        collapseJob = viewModelScope.launch {
+            when {
+                collapsed -> collapsingManager.collapse(CollapsingKey.SHOW_COMMENTS)
+                else -> collapsingManager.expand(CollapsingKey.SHOW_COMMENTS)
+            }
+        }
+    }
+
     override fun onCleared() {
         reactionJob?.cancel()
         reactionJob = null
@@ -356,6 +372,7 @@ internal class ShowCommentsViewModel(
         loadingState,
         userState,
         errorState,
+        collapseState,
     ) { state ->
         ShowCommentsState(
             show = state[0] as Show?,
@@ -366,6 +383,7 @@ internal class ShowCommentsViewModel(
             loading = state[5] as LoadingState,
             user = state[6] as User?,
             error = state[7] as Exception?,
+            collapsed = state[8] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -34,6 +34,7 @@ import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowRatingsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowStreamingUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowStudiosUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 
 internal val showDetailsDataModule = module {
     single<ShowLocalDataSource> {
@@ -166,6 +167,7 @@ internal val showDetailsModule = module {
             favoritesUpdates = get(),
             sessionManager = get(),
             analytics = get(),
+            collapsingManager = get<CollapsingManager>(),
         )
     }
 
@@ -174,6 +176,7 @@ internal val showDetailsModule = module {
             show = show,
             sessionManager = get(),
             getStreamingsUseCase = get(),
+            collapsingManager = get(),
         )
     }
 
@@ -181,6 +184,7 @@ internal val showDetailsModule = module {
         ShowExtrasViewModel(
             show = show,
             getExtrasUseCase = get(),
+            collapsingManager = get(),
         )
     }
 
@@ -194,6 +198,7 @@ internal val showDetailsModule = module {
             episodeDetailsUpdates = get(),
             sessionManager = get(),
             analytics = get(),
+            collapsingManager = get(),
         )
     }
 
@@ -201,6 +206,7 @@ internal val showDetailsModule = module {
         ShowActorsViewModel(
             show = show,
             getActorsUseCase = get(),
+            collapsingManager = get(),
         )
     }
 
@@ -209,6 +215,7 @@ internal val showDetailsModule = module {
             show = show,
             getRelatedShowsUseCase = get(),
             collectionStateProvider = get(),
+            collapsingManager = get(),
         )
     }
 
@@ -216,6 +223,7 @@ internal val showDetailsModule = module {
         ShowListsViewModel(
             show = show,
             getListsUseCase = get(),
+            collapsingManager = get(),
         )
     }
 
@@ -223,6 +231,7 @@ internal val showDetailsModule = module {
         ShowSentimentViewModel(
             show = show,
             getSentimentUseCase = get(),
+            collapsingManager = get(),
         )
     }
 
@@ -237,6 +246,7 @@ internal val showDetailsModule = module {
             reactionsUpdates = get(),
             sessionManager = get(),
             commentsUpdates = get(),
+            collapsingManager = get(),
         )
     }
 
@@ -262,6 +272,7 @@ internal val showDetailsModule = module {
             getHistoryUseCase = get(),
             showDetailsUpdates = get(),
             episodeDetailsUpdates = get(),
+            collapsingManager = get<CollapsingManager>(),
         )
     }
 }

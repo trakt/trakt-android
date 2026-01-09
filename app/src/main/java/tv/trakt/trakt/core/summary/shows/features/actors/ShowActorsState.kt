@@ -10,4 +10,5 @@ internal data class ShowActorsState(
     val items: ImmutableList<CastPerson>? = null,
     val loading: LoadingState = LoadingState.IDLE,
     val error: Exception? = null,
+    val collapsed: Boolean? = null,
 )
