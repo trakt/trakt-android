@@ -40,6 +40,11 @@ sealed class VipBillingError : Exception() {
     }
 }
 
+class InternalVersionError : VipBillingError() {
+    override val code = null
+    override val displayErrorRes = R.string.error_text_unexpected_error_short
+}
+
 class PendingPaymentError : VipBillingError() {
     override val code = null
     override val displayErrorRes = R.string.error_text_payment_pending

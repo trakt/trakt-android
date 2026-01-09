@@ -46,6 +46,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.billing.model.CancelledError
+import tv.trakt.trakt.core.billing.model.InternalVersionError
 import tv.trakt.trakt.core.billing.model.PendingPurchaseProduct
 import tv.trakt.trakt.core.billing.model.VipBillingError
 import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD
@@ -139,6 +140,11 @@ internal class BillingViewModel(
     }
 
     private fun initPlayBilling() {
+        if (appContext.packageName != "tv.trakt.trakt") {
+            handleError(InternalVersionError())
+            return
+        }
+
         billingClient = BillingClient.newBuilder(appContext)
             .setListener(purchasesUpdatedListener)
             .enableAutoServiceReconnection()
@@ -151,6 +157,11 @@ internal class BillingViewModel(
     }
 
     private fun startPlayBilling() {
+        if (appContext.packageName != "tv.trakt.trakt") {
+            handleError(InternalVersionError())
+            return
+        }
+
         loadingState.update { LoadingState.LOADING }
         billingClient.startConnection(billingStateListener)
         Timber.d("Starting Billing Client connection")

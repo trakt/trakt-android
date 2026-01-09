@@ -72,6 +72,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.common.ui.theme.colors.Red500
+import tv.trakt.trakt.core.billing.model.InternalVersionError
 import tv.trakt.trakt.core.billing.model.VipBillingError
 import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD
 import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD_TRIAL
@@ -233,8 +234,12 @@ private fun BillingScreen(
                     Text(
                         text = when {
                             state.error is VipBillingError -> {
-                                val code = state.error.code
-                                "${stringResource(state.error.displayErrorRes)} ${code?.let { "($it)" } ?: ""}"
+                                if (state.error is InternalVersionError) {
+                                    "Google Play Billing is not available for internal test versions of the app."
+                                } else {
+                                    val code = state.error.code
+                                    "${stringResource(state.error.displayErrorRes)} ${code?.let { "($it)" } ?: ""}"
+                                }
                             }
                             else -> {
                                 state.error.message ?: stringResource(R.string.error_text_unexpected_error_short)
