@@ -293,81 +293,83 @@ private fun ShowSeasonsContent(
                     )
                 }
 
-                Icon(
-                    painter = painterResource(R.drawable.ic_arrow_dropdown),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textSecondary,
-                    modifier = Modifier
-                        .padding(start = 4.dp)
-                        .rotate(if (state.collapsed == true) -90F else 0F)
-                        .size(16.dp)
-                        .onClick {
-                            animateCollapse = true
-                            val current = (state.collapsed ?: false)
-                            onCollapse(!current)
-                        },
-                )
-            }
-
-            if (user != null && state.items.isSelectedSeasonReleased) {
-                val checkSize = 20.dp
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.size(checkSize),
-                ) {
-                    if (state.loadingSeason.isLoading) {
-                        FilmProgressIndicator(size = checkSize - 3.dp)
-                    } else {
-                        val isLoading =
-                            state.items.isSeasonLoading ||
-                                state.loadingSeason.isLoading
-
-                        if (state.items.isSelectedSeasonWatched) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_check_double),
-                                contentDescription = null,
-                                tint = TraktTheme.colors.textPrimary,
-                                modifier = Modifier
-                                    .size(checkSize)
-                                    .onClickCombined(
-                                        enabled = !isLoading,
-                                        onClick = {
-                                            state.items.selectedSeason?.let {
-                                                onRemoveSeasonClick?.invoke()
-                                            }
-                                        },
-                                        onLongClick = {
-                                            state.items.selectedSeason?.let {
-                                                onRemoveSeasonClick?.invoke()
-                                            }
-                                        },
-                                    ),
-                            )
+                if (user != null && state.collapsed != true && state.items.isSelectedSeasonReleased) {
+                    val checkSize = 18.dp
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .padding(start = 8.dp)
+                            .size(checkSize),
+                    ) {
+                        if (state.loadingSeason.isLoading) {
+                            FilmProgressIndicator(size = checkSize - 3.dp)
                         } else {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_check),
-                                contentDescription = null,
-                                tint = TraktTheme.colors.accent,
-                                modifier = Modifier
-                                    .size(checkSize)
-                                    .onClickCombined(
-                                        enabled = !isLoading,
-                                        onClick = {
-                                            state.items.selectedSeason?.let {
-                                                onCheckSeasonClick?.invoke()
-                                            }
-                                        },
-                                        onLongClick = {
-                                            state.items.selectedSeason?.let {
-                                                onCheckSeasonClick?.invoke()
-                                            }
-                                        },
-                                    ),
-                            )
+                            val isLoading =
+                                state.items.isSeasonLoading ||
+                                    state.loadingSeason.isLoading
+
+                            if (state.items.isSelectedSeasonWatched) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_check_double),
+                                    contentDescription = null,
+                                    tint = TraktTheme.colors.textPrimary,
+                                    modifier = Modifier
+                                        .size(checkSize)
+                                        .onClickCombined(
+                                            enabled = !isLoading,
+                                            onClick = {
+                                                state.items.selectedSeason?.let {
+                                                    onRemoveSeasonClick?.invoke()
+                                                }
+                                            },
+                                            onLongClick = {
+                                                state.items.selectedSeason?.let {
+                                                    onRemoveSeasonClick?.invoke()
+                                                }
+                                            },
+                                        ),
+                                )
+                            } else {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_check),
+                                    contentDescription = null,
+                                    tint = TraktTheme.colors.accent,
+                                    modifier = Modifier
+                                        .size(checkSize)
+                                        .onClickCombined(
+                                            enabled = !isLoading,
+                                            onClick = {
+                                                state.items.selectedSeason?.let {
+                                                    onCheckSeasonClick?.invoke()
+                                                }
+                                            },
+                                            onLongClick = {
+                                                state.items.selectedSeason?.let {
+                                                    onCheckSeasonClick?.invoke()
+                                                }
+                                            },
+                                        ),
+                                )
+                            }
                         }
                     }
                 }
             }
+
+            Icon(
+                painter = painterResource(R.drawable.ic_arrow_dropdown),
+                contentDescription = null,
+                tint = TraktTheme.colors.textSecondary,
+                modifier = Modifier
+                    .padding(start = 4.dp)
+                    .rotate(if (state.collapsed == true) -90F else 0F)
+                    .size(16.dp)
+                    .onClick {
+                        animateCollapse = true
+                        val current = (state.collapsed ?: false)
+                        onCollapse(!current)
+                    },
+            )
         }
 
         if (state.collapsed != true) {
