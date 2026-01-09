@@ -120,7 +120,7 @@ internal class MainViewModel(
             val welcomeDismissedAsync = async { dismissWelcomeUseCase.isWelcomeDismissed() }
             val onboardingDismissedAsync = async { dismissWelcomeUseCase.isOnboardingDismissed() }
 
-            val (authenticated, welcomeDismissed, onboardingDissmissed) = awaitAll(
+            val (authenticated, welcomeDismissed, onboardingDismissed) = awaitAll(
                 authenticatedAsync,
                 welcomeDismissedAsync,
                 onboardingDismissedAsync,
@@ -129,7 +129,7 @@ internal class MainViewModel(
             welcomeState.update {
                 MainState.WelcomeState(
                     welcome = !authenticated && !welcomeDismissed,
-                    onboarding = !authenticated && !onboardingDissmissed,
+                    onboarding = !authenticated && !onboardingDismissed,
                 )
             }
         }

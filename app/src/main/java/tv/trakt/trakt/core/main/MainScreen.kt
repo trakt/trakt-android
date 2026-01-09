@@ -128,6 +128,7 @@ internal fun MainScreen(
                 duration = SnackbarDuration.Short,
             )
         } else if (state.user == null) {
+            navController.navigateToMainDestination(HomeDestination)
             localSnackbar.showSnackbar(
                 message = localContext.getString(R.string.text_info_signed_out),
                 duration = SnackbarDuration.Short,
@@ -227,7 +228,7 @@ internal fun MainScreen(
                                 user = state.user,
                                 searchState = searchState,
                                 onSelected = {
-                                    if (state.user != null) {
+                                    if (state.user != null || it.destination == HomeDestination) {
                                         navController.navigateToMainDestination(it.destination)
                                     } else {
                                         localUriHandler.openUri(ConfigAuth.authCodeUrl)
