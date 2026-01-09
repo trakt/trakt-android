@@ -367,7 +367,7 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
 //        }
 
         Column(
-            verticalArrangement = spacedBy(32.dp),
+            verticalArrangement = spacedBy(36.dp),
             modifier = Modifier
                 .padding(top = 48.dp),
         ) {
@@ -424,17 +424,17 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
             verticalAlignment = CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
-                .padding(top = 32.dp)
-                .fillMaxWidth(),
+                .padding(start = 7.dp, top = 36.dp)
+                .fillMaxWidth()
+                .onClick {
+                    uriHandler.openUri(Config.WEB_VIP_URL)
+                },
         ) {
             VipOfferItem(
                 text = stringResource(R.string.text_vip_offer_and_more),
                 description = stringResource(R.string.text_vip_offer_and_more_description),
                 modifier = Modifier
-                    .weight(1f, fill = false)
-                    .onClick {
-                        uriHandler.openUri(Config.WEB_VIP_URL)
-                    },
+                    .weight(1f, fill = false),
             )
 
             Icon(
@@ -448,8 +448,7 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
 
         Column(
             verticalArrangement = spacedBy(5.dp),
-            modifier = Modifier
-                .padding(top = 56.dp),
+            modifier = Modifier.padding(top = 56.dp),
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_heart_on),

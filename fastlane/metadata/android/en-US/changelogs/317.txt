@@ -1,6 +1,0 @@
-New Trakt Android App (Beta) 🚀
-
-- Added new settings screen in the user's profile.
-- Added automatic tracking management screen (Settings -> Automatic Tracking).
-- Added new sorting options for user's lists.
-- Episode summary screen now shows screenshot instead of poster.
