@@ -137,19 +137,8 @@ internal fun MainScreen(
 
     LaunchedEffect(state.userVipStatus) {
         with(state.userVipStatus) {
-            if (this == null) {
+            if (this == null || this.first == null || this.second == null) {
                 return@LaunchedEffect
-            }
-
-            if (this.first == null || this.second == null) {
-                return@LaunchedEffect
-            }
-
-            if (this.first == false && this.second == true) {
-                localSnackbar.showSnackbar(
-                    message = "You are now a Trakt VIP! Thank you for your support.",
-                    duration = SnackbarDuration.Short,
-                )
             }
 
             if (this.first == true && this.second == false) {
