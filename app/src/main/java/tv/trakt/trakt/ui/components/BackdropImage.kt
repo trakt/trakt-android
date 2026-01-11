@@ -6,6 +6,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.grid.LazyGridState
@@ -14,6 +16,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
@@ -48,11 +51,12 @@ private const val PARALLAX_RATIO = 0.75F
 internal fun ScrollableBackdropImage(
     modifier: Modifier = Modifier,
     imageUrl: String? = null,
+    imageAlpha: Float = 0.375F,
     translation: Float,
 ) {
     BackdropImage(
         imageUrl = imageUrl,
-        imageAlpha = 0.375F,
+        imageAlpha = imageAlpha,
         modifier = modifier.graphicsLayer {
             translationY = translation * PARALLAX_RATIO
         },
@@ -174,6 +178,16 @@ private fun BackdropImage(
             modifier = Modifier
                 .fillMaxSize()
                 .background(linearGradient),
+        )
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .height(3.dp)
+                .fillMaxWidth()
+                .background(background)
+                .graphicsLayer {
+                    translationY = 1.dp.toPx()
+                },
         )
     }
 }

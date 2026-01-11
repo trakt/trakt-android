@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -45,6 +46,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
@@ -81,6 +83,7 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.vip.VipChip
+import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -126,7 +129,9 @@ private fun BillingScreen(
     onErrorClick: () -> Unit = {},
 ) {
     val inspection = LocalInspectionMode.current
+    val configuration = LocalConfiguration.current
 
+    val screenWidth = configuration.screenWidthDp.dp
     val contentPadding = PaddingValues(
         start = TraktTheme.spacing.mainPageHorizontalSpace,
         end = TraktTheme.spacing.mainPageHorizontalSpace,
@@ -160,6 +165,7 @@ private fun BillingScreen(
     ) {
         ScrollableBackdropImage(
             translation = listScrollConnection.resultOffset,
+            imageAlpha = 0.85F,
             imageUrl = remember {
                 if (inspection) {
                     null
@@ -187,11 +193,21 @@ private fun BillingScreen(
                     ),
             )
 
+            val spacerHeight = remember(screenWidth) {
+                screenWidth / HorizontalImageAspectRatio
+            }
+                .minus(TraktTheme.size.titleBarHeight)
+                .minus(112.dp)
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(spacerHeight),
+            )
+
             VipOfferView(
-                modifier = Modifier.padding(
-                    top = 8.dp,
-                    bottom = 272.dp,
-                ),
+                modifier = Modifier
+                    .padding(bottom = 272.dp),
             )
         }
 
@@ -341,30 +357,6 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
                     .shadow(2.dp, RoundedCornerShape(100)),
             )
         }
-
-//        Column(
-//            verticalArrangement = spacedBy(2.dp),
-//            horizontalAlignment = CenterHorizontally,
-//            modifier = Modifier
-//                .align(CenterHorizontally)
-//                .padding(top = 36.dp),
-//        ) {
-//            Text(
-//                text = stringResource(R.string.text_vip_offer_features_title),
-//                style = TraktTheme.typography.heading3.copy(
-//                    letterSpacing = 0.01.em,
-//                ),
-//                color = TraktTheme.colors.textPrimary,
-//            )
-//
-//            Text(
-//                text = stringResource(R.string.text_vip_offer_features_subtitle),
-//                style = TraktTheme.typography.paragraphSmall.copy(
-//                    lineHeight = 1.3.em,
-//                ),
-//                color = TraktTheme.colors.textSecondary,
-//            )
-//        }
 
         Column(
             verticalArrangement = spacedBy(36.dp),
