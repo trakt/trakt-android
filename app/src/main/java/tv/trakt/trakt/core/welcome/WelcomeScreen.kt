@@ -149,20 +149,20 @@ internal fun WelcomeScreen(
                     ),
             ) {
                 WelcomeItem(
-                    title = stringResource(R.string.text_welcome_discover),
-                    subtitle = stringResource(R.string.text_welcome_discover_subtext),
+                    title = stringResource(R.string.header_landing_discover),
+                    subtitle = stringResource(R.string.text_landing_discover),
                     iconPainter = painterResource(R.drawable.ic_discover_on),
                 )
 
                 WelcomeItem(
-                    title = stringResource(R.string.text_welcome_track),
-                    subtitle = stringResource(R.string.text_welcome_track_subtext),
+                    title = stringResource(R.string.header_landing_track),
+                    subtitle = stringResource(R.string.text_landing_track),
                     iconPainter = painterResource(R.drawable.ic_check_double),
                 )
 
                 WelcomeItem(
-                    title = stringResource(R.string.text_welcome_share),
-                    subtitle = stringResource(R.string.text_welcome_share_subtext),
+                    title = stringResource(R.string.header_landing_share),
+                    subtitle = stringResource(R.string.text_landing_share),
                     iconPainter = painterResource(R.drawable.ic_share),
                 )
             }
@@ -195,7 +195,7 @@ private fun WelcomeItem(
         modifier = modifier,
     ) {
         Text(
-            text = "  $title  ",
+            text = "  ${title.lowercase()}  ",
             style = TraktTheme.typography.heading1.copy(
                 fontSize = 64.sp,
                 letterSpacing = 6.sp,
@@ -249,6 +249,7 @@ private fun WelcomeItem(
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 maxLines = 3,
+                modifier = Modifier.padding(horizontal = 48.dp),
             )
         }
     }
@@ -303,19 +304,19 @@ private fun WelcomeFooter(
             Column {
                 val font = TraktTheme.typography.paragraphSmaller.copy(fontSize = 12.sp)
                 Text(
-                    text = stringResource(R.string.text_welcome_promo_numbers_1),
+                    text = stringResource(R.string.text_landing_numbers_1),
                     style = font,
                     color = Color.White,
                     maxLines = 1,
                 )
                 Text(
-                    text = stringResource(R.string.text_welcome_promo_numbers_2),
+                    text = stringResource(R.string.text_landing_numbers_2),
                     style = font,
                     color = Color.White,
                     maxLines = 1,
                 )
                 Text(
-                    text = stringResource(R.string.text_welcome_promo_numbers_3),
+                    text = stringResource(R.string.text_landing_numbers_3),
                     style = font,
                     color = Color.White,
                     maxLines = 1,
