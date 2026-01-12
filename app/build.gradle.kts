@@ -147,3 +147,51 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
+
+// Custom Tasks
+
+tasks.register("renameChangelogFile") {
+    doLast {
+        val versionCode = libs.versions.versionCode.get()
+        val changelogDir = file("${rootProject.projectDir}/fastlane/metadata/android/en-US/changelogs")
+        val expectedFileName = "$versionCode.txt"
+        val expectedFile = File(changelogDir, expectedFileName)
+
+        // Create directory if it doesn't exist
+        if (!changelogDir.exists()) {
+            changelogDir.mkdirs()
+            println("Created changelog directory: $changelogDir")
+        }
+
+        // Find any existing changelog files (excluding default.txt)
+        val existingFiles = changelogDir.listFiles { file -> 
+            file.extension == "txt" && file.name != "default.txt"
+        }
+        
+        if (existingFiles != null && existingFiles.isNotEmpty()) {
+            // Rename the first existing file if it doesn't match
+            val existingFile = existingFiles.first()
+            if (existingFile.name != expectedFileName) {
+                println("Renaming changelog file: ${existingFile.name} -> $expectedFileName")
+                existingFile.renameTo(expectedFile)
+            } else {
+                println("Changelog file already matches version code: $expectedFileName")
+            }
+            
+            // Delete any additional changelog files
+            existingFiles.drop(1).forEach { file ->
+                println("Deleting extra changelog file: ${file.name}")
+                file.delete()
+            }
+        } else {
+            // No existing file, create a new one
+            println("Creating new changelog file: $expectedFileName")
+            expectedFile.writeText("This update includes general improvements that make Trakt faster, smoother, and more reliable. Enjoy!\n")
+        }
+    }
+}
+
+tasks.named("preBuild").configure {
+    dependsOn("renameChangelogFile")
+}
+
