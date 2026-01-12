@@ -150,48 +150,33 @@ dependencies {
 
 // Custom Tasks
 
-tasks.register("renameChangelogFile") {
-    doLast {
-        val versionCode = libs.versions.versionCode.get()
-        val changelogDir = file("${rootProject.projectDir}/fastlane/metadata/android/en-US/changelogs")
-        val expectedFileName = "$versionCode.txt"
-        val expectedFile = File(changelogDir, expectedFileName)
+// Execute the task immediately during Gradle sync
+afterEvaluate {
+    val versionCode = libs.versions.versionCode.get()
+    val changelogDir = file("${rootProject.projectDir}/fastlane/metadata/android/en-US/changelogs")
+    val expectedFileName = "$versionCode.txt"
+    val expectedFile = File(changelogDir, expectedFileName)
 
-        // Create directory if it doesn't exist
-        if (!changelogDir.exists()) {
-            changelogDir.mkdirs()
-            println("Created changelog directory: $changelogDir")
-        }
-
-        // Find any existing changelog files (excluding default.txt)
-        val existingFiles = changelogDir.listFiles { file -> 
-            file.extension == "txt" && file.name != "default.txt"
-        }
-        
-        if (existingFiles != null && existingFiles.isNotEmpty()) {
-            // Rename the first existing file if it doesn't match
-            val existingFile = existingFiles.first()
-            if (existingFile.name != expectedFileName) {
-                println("Renaming changelog file: ${existingFile.name} -> $expectedFileName")
-                existingFile.renameTo(expectedFile)
-            } else {
-                println("Changelog file already matches version code: $expectedFileName")
-            }
-            
-            // Delete any additional changelog files
-            existingFiles.drop(1).forEach { file ->
-                println("Deleting extra changelog file: ${file.name}")
-                file.delete()
-            }
-        } else {
-            // No existing file, create a new one
-            println("Creating new changelog file: $expectedFileName")
-            expectedFile.writeText("This update includes general improvements that make Trakt faster, smoother, and more reliable. Enjoy!\n")
-        }
+    if (!changelogDir.exists()) {
+        changelogDir.mkdirs()
     }
-}
 
-tasks.named("preBuild").configure {
-    dependsOn("renameChangelogFile")
+    val existingFiles = changelogDir.listFiles { file ->
+        file.extension == "txt" && file.name != "default.txt"
+    }
+
+    if (existingFiles != null && existingFiles.isNotEmpty()) {
+        val existingFile = existingFiles.first()
+        if (existingFile.name != expectedFileName) {
+            existingFile.renameTo(expectedFile)
+            // Add renamed file to git
+
+        }
+        existingFiles.drop(1).forEach { it.delete() }
+    } else if (!expectedFile.exists()) {
+        expectedFile.writeText("This update includes general improvements that make Trakt faster, smoother, and more reliable. Enjoy!\n")
+    }
+
+    Runtime.getRuntime().exec(arrayOf("git", "add", expectedFile.absolutePath), null, rootProject.projectDir)
 }
 
