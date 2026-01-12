@@ -691,7 +691,7 @@ private fun PaymentDialogContent(
         Text(
             text = when {
                 freeTrialOffer != null -> stringResource(R.string.text_billing_try_for_free)
-                else -> stringResource(R.string.text_billing_subscribe_now)
+                else -> stringResource(R.string.button_text_upgrade_to_vip)
             }.uppercase(),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.buttonPrimary,

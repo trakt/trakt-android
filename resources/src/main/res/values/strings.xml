@@ -254,31 +254,37 @@
     <string name="warning_prompt_remove_single_watched">Are you sure you want to remove this play of \"%s\" from your Watched list?</string>
     <string name="warning_prompt_younify_unlink">Are you sure you want to unlink %s?</string>
 
-    <!-- TODO Sync with strings bank -->
-
     <string name="button_text_continue">Continue</string>
+    <string name="button_text_upgrade_to_vip">Upgrade to VIP</string>
     <string name="list_title_from_my_history">From My History</string>
 
     <string name="text_billing_month_for_free">Try 1 month for free and then:</string>
     <string name="text_billing_no_payment_required">No immediate payment required.</string>
     <string name="text_billing_try_for_free">Try now for free!</string>
-    <string name="text_billing_subscribe_now">Upgrade to VIP</string>
     <string name="text_billing_period_month">month</string>
     <string name="text_billing_disclaimer">Payment starts at end of trial period. Subscription auto-renews, and is billed each %s until canceled. Cancel any time via Google Play Subscription Center.</string>
     <string name="text_billing_already_vip">You are now a Trakt VIP!\nThank you for your support and enjoy.</string>
-
-    <string name="error_text_payment_pending">There\'s already a pending payment. Please wait and try again later.</string>
-    <string name="error_text_payment_feature_not_supported">Google Play Billing is not available on this device. Please try again or contact support if needed.</string>
-    <string name="error_text_payment_canceled">Payment has been canceled. Please try again.</string>
-    <string name="error_text_payment_already_owned">You already own this item or its currently being processed.</string>
-    <string name="error_text_payment_item_unavailable">Products are currently not available. Please wait and try again later.</string>
-    <string name="error_text_payment_other">There was an error while processing your payment. Please try again or contact support if needed.</string>
 
     <string name="text_vip_upsell_default">Enhance your Trakt experience</string>
     <string name="text_vip_upsell_default_description">Upgrade to VIP and unlock the full Trakt experience, packed with features built for TV Shows and Movies lovers.</string>
 
     <string name="text_vip_upsell_default_2">Upgrade to VIP!</string>
     <string name="text_vip_upsell_default_description_2">Unlimited tracking and more.</string>
+
+    <!-- TODO Sync with strings bank -->
+
+    <string name="text_welcome_discover">discover</string>
+    <string name="text_welcome_discover_subtext">shows and movies you\'ll love and where\nyou can watch them right now.</string>
+
+    <string name="text_welcome_track">track</string>
+    <string name="text_welcome_track_subtext">every movie, episode and season\nyou\'ve seen, all in one place.</string>
+
+    <string name="text_welcome_share">share</string>
+    <string name="text_welcome_share_subtext">opinions, ratings and lists that others\nwill love to follow.</string>
+
+    <string name="text_welcome_promo_numbers_1">years of watching together</string>
+    <string name="text_welcome_promo_numbers_2">mil. shows &amp; movies lovers</string>
+    <string name="text_welcome_promo_numbers_3">mil. titles tracked weekly</string>
 
     <string name="text_onboarding_1_title">Everything you watch.\nIn one place.</string>
     <string name="text_onboarding_1_description">Track what you\'re watching and what you want to watch next.\n\nPick up right where you left off, save titles for later, and organise everything into smart watchlists or your own personal lists, in one place.</string>
@@ -316,5 +322,13 @@
 
     <string name="translated_value_library_plex" translatable="false">Plex</string>
     <string name="error_text_vip_only_feature" translatable="false">This feature can be accessed only by VIP users. Upgrade your account to VIP and unlock the full Trakt experience!</string>
+
+
+    <string name="error_text_payment_pending" translatable="false">There\'s already a pending payment. Please wait and try again later.</string>
+    <string name="error_text_payment_feature_not_supported" translatable="false">Google Play Billing is not available on this device. Please try again or contact support if needed.</string>
+    <string name="error_text_payment_canceled" translatable="false">Payment has been canceled. Please try again.</string>
+    <string name="error_text_payment_already_owned" translatable="false">You already own this item or its currently being processed.</string>
+    <string name="error_text_payment_item_unavailable" translatable="false">Products are currently not available. Please wait and try again later.</string>
+    <string name="error_text_payment_other" translatable="false">There was an error while processing your payment. Please try again or contact support if needed.</string>
 
 </resources>

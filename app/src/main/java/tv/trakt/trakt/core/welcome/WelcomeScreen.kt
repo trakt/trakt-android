@@ -149,20 +149,20 @@ internal fun WelcomeScreen(
                     ),
             ) {
                 WelcomeItem(
-                    title = "discover",
-                    subtitle = "shows and movies you\'ll love and where\nyou can watch them right now.",
+                    title = stringResource(R.string.text_welcome_discover),
+                    subtitle = stringResource(R.string.text_welcome_discover_subtext),
                     iconPainter = painterResource(R.drawable.ic_discover_on),
                 )
 
                 WelcomeItem(
-                    title = "track",
-                    subtitle = "every movie, episode and season you\'ve seen,\nall in one place.",
+                    title = stringResource(R.string.text_welcome_track),
+                    subtitle = stringResource(R.string.text_welcome_track_subtext),
                     iconPainter = painterResource(R.drawable.ic_check_double),
                 )
 
                 WelcomeItem(
-                    title = "share",
-                    subtitle = "opinions, ratings and lists that others\nwill love to follow.",
+                    title = stringResource(R.string.text_welcome_share),
+                    subtitle = stringResource(R.string.text_welcome_share_subtext),
                     iconPainter = painterResource(R.drawable.ic_share),
                 )
             }
@@ -303,19 +303,19 @@ private fun WelcomeFooter(
             Column {
                 val font = TraktTheme.typography.paragraphSmaller.copy(fontSize = 12.sp)
                 Text(
-                    text = "years of watching together",
+                    text = stringResource(R.string.text_welcome_promo_numbers_1),
                     style = font,
                     color = Color.White,
                     maxLines = 1,
                 )
                 Text(
-                    text = "mil. shows & movies lovers",
+                    text = stringResource(R.string.text_welcome_promo_numbers_2),
                     style = font,
                     color = Color.White,
                     maxLines = 1,
                 )
                 Text(
-                    text = "mil. titles tracked weekly",
+                    text = stringResource(R.string.text_welcome_promo_numbers_3),
                     style = font,
                     color = Color.White,
                     maxLines = 1,
