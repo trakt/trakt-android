@@ -1,5 +1,7 @@
 package tv.trakt.trakt.ui.components
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Row
@@ -8,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -29,6 +32,12 @@ internal fun TraktSectionHeader(
     extraIcon: @Composable (() -> Unit)? = null,
     onCollapseClick: () -> Unit = {},
 ) {
+    val animateRotation by animateFloatAsState(
+        targetValue = if (collapsed) -180F else 0F,
+        animationSpec = tween(200),
+        label = "rotation",
+    )
+
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -67,7 +76,7 @@ internal fun TraktSectionHeader(
             tint = TraktTheme.colors.textSecondary,
             modifier = Modifier
                 .padding(start = 4.dp)
-                .rotate(if (collapsed) -90F else 0F)
+                .rotate(animateRotation)
                 .size(16.dp)
                 .onClick(onClick = onCollapseClick),
         )

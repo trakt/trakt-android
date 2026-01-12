@@ -362,7 +362,7 @@ private fun ShowSeasonsContent(
                 tint = TraktTheme.colors.textSecondary,
                 modifier = Modifier
                     .padding(start = 4.dp)
-                    .rotate(if (state.collapsed == true) -90F else 0F)
+                    .rotate(if (state.collapsed == true) -180F else 0F)
                     .size(16.dp)
                     .onClick {
                         animateCollapse = true
