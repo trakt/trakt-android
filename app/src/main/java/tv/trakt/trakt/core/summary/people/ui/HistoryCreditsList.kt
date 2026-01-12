@@ -174,42 +174,54 @@ private fun ShowItemCard(
         imageUrl = item.show.images?.getPosterUrl(),
         chipSpacing = 10.dp,
         chipContent = { modifier ->
-            Row(
-                verticalAlignment = CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
+            Column(
+                verticalArrangement = Arrangement.spacedBy(1.dp),
                 modifier = modifier,
             ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_shows_off),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.chipContent,
-                    modifier = Modifier
-                        .size(13.dp),
-                )
+                Row(
+                    verticalAlignment = CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_shows_off),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.chipContent,
+                        modifier = Modifier
+                            .size(13.dp),
+                    )
 
-                val airedEpisodes = stringResource(
-                    R.string.tag_text_number_of_episodes,
-                    item.show.airedEpisodes,
-                )
+                    val airedEpisodes = stringResource(
+                        R.string.tag_text_number_of_episodes,
+                        item.show.airedEpisodes,
+                    )
 
-                val footerText = remember {
-                    buildString {
-                        item.show.released?.let {
-                            append(it.year.toString())
-                        } ?: append("TBA")
+                    val footerText = remember {
+                        buildString {
+                            item.show.released?.let {
+                                append(it.year.toString())
+                            } ?: append("TBA")
 
-                        if (item.show.airedEpisodes > 0) {
-                            append(" • ")
-                            append(airedEpisodes)
+                            if (item.show.airedEpisodes > 0) {
+                                append(" • ")
+                                append(airedEpisodes)
+                            }
                         }
                     }
+
+                    Text(
+                        text = footerText,
+                        style = TraktTheme.typography.cardTitle,
+                        color = TraktTheme.colors.textPrimary,
+                        textAlign = TextAlign.Center,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                 }
 
                 Text(
-                    text = footerText,
-                    style = TraktTheme.typography.cardTitle,
-                    color = TraktTheme.colors.textPrimary,
-                    textAlign = TextAlign.Center,
+                    text = (item.credit ?: "").ifBlank { "N/A" },
+                    style = TraktTheme.typography.cardSubtitle,
+                    color = TraktTheme.colors.textSecondary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
