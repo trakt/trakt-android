@@ -30,11 +30,7 @@ fun SettingsSwitchField(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
             .fillMaxWidth()
-            .heightIn(SECTION_ITEM_HEIGHT_DP.dp)
-            .onClick(
-                onClick = onClick,
-                enabled = enabled,
-            ),
+            .heightIn(SECTION_ITEM_HEIGHT_DP.dp),
     ) {
         Text(
             text = text,

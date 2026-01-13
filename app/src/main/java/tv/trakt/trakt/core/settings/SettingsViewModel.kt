@@ -21,6 +21,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.settings.usecases.EnableNotificationsUseCase
 import tv.trakt.trakt.core.settings.usecases.UpdateUserSettingsUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 
@@ -28,16 +29,19 @@ internal class SettingsViewModel(
     private val sessionManager: SessionManager,
     private val logoutUseCase: LogoutUserUseCase,
     private val updateSettingsUseCase: UpdateUserSettingsUseCase,
+    private val enableNotificationsUseCase: EnableNotificationsUseCase,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = SettingsState()
 
     private val userState = MutableStateFlow(initialState.user)
+    private val notificationsState = MutableStateFlow(initialState.notifications)
     private val accountLoadingState = MutableStateFlow(initialState.accountLoading)
     private val logoutLoadingState = MutableStateFlow(initialState.logoutLoading)
 
     init {
         loadUser()
+        loadSettings()
 
         analytics.logScreenView(
             screenName = "settings",
@@ -59,6 +63,14 @@ internal class SettingsViewModel(
                 userState.update { user }
             }
             .launchIn(viewModelScope)
+    }
+
+    private fun loadSettings() {
+        viewModelScope.launch {
+            notificationsState.update {
+                enableNotificationsUseCase.isNotificationsEnabled()
+            }
+        }
     }
 
     fun updateUserLocation(location: String?) {
@@ -106,6 +118,21 @@ internal class SettingsViewModel(
         }
     }
 
+    fun enableNotifications(enable: Boolean) {
+        viewModelScope.launch {
+            try {
+                enableNotificationsUseCase.enableNotifications(enable)
+                notificationsState.update {
+                    enableNotificationsUseCase.isNotificationsEnabled()
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
     fun logout() {
         viewModelScope.launch {
             try {
@@ -126,13 +153,15 @@ internal class SettingsViewModel(
 
     val state = combine(
         userState,
+        notificationsState,
         accountLoadingState,
         logoutLoadingState,
     ) { state ->
         SettingsState(
             user = state[0] as User?,
-            accountLoading = state[1] as LoadingState,
-            logoutLoading = state[2] as LoadingState,
+            notifications = state[1] as Boolean,
+            accountLoading = state[2] as LoadingState,
+            logoutLoading = state[3] as LoadingState,
         )
     }.stateIn(
         scope = viewModelScope,

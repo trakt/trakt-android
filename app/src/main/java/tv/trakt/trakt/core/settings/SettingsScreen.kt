@@ -2,8 +2,12 @@
 
 package tv.trakt.trakt.core.settings
 
+import android.Manifest.permission.POST_NOTIFICATIONS
 import android.content.Intent
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -43,6 +47,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import timber.log.Timber
@@ -93,6 +98,7 @@ internal fun SettingsScreen(
         onSetDisplayName = viewModel::updateUserDisplayName,
         onSetLocation = viewModel::updateUserLocation,
         onSetAbout = viewModel::updateUserAbout,
+        onEnableNotifications = viewModel::enableNotifications,
         onYounifyClick = onNavigateYounify,
         onVipClick = onNavigateVip,
         onInstagramClick = {
@@ -134,6 +140,7 @@ private fun SettingsScreenContent(
     onSetLocation: (String?) -> Unit = { },
     onSetAbout: (String?) -> Unit = { },
     onYounifyClick: () -> Unit = { },
+    onEnableNotifications: (Boolean) -> Unit = { },
     onLogoutClick: () -> Unit = { },
     onVipClick: () -> Unit = { },
     onInstagramClick: () -> Unit = { },
@@ -206,7 +213,7 @@ private fun SettingsScreenContent(
 
                 SettingsNotifications(
                     state = state,
-                    onEnableNotificationsClick = { },
+                    onEnableNotifications = onEnableNotifications,
                 )
 
                 SettingsMisc(
@@ -427,8 +434,33 @@ private fun SettingsStreaming(
 private fun SettingsNotifications(
     state: SettingsState,
     modifier: Modifier = Modifier,
-    onEnableNotificationsClick: () -> Unit = {},
+    onEnableNotifications: (Boolean) -> Unit,
 ) {
+    val context = LocalContext.current
+
+    val hasPermission = remember(context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ContextCompat.checkSelfPermission(context, POST_NOTIFICATIONS) == PERMISSION_GRANTED
+        } else {
+            // On Android 12 and below, notification permission is granted by default
+            true
+        }
+    }
+
+    // Permission launcher for Android 13+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            onEnableNotifications(isGranted)
+        },
+    )
+
+    LaunchedEffect(hasPermission) {
+        if (!hasPermission) {
+            onEnableNotifications(false)
+        }
+    }
+
     Column(
         verticalArrangement = spacedBy(SECTION_SPACING_DP.dp),
         modifier = modifier,
@@ -441,7 +473,18 @@ private fun SettingsNotifications(
 
         SettingsSwitchField(
             text = stringResource(R.string.text_settings_enable_notifications),
-            onClick = onEnableNotificationsClick,
+            checked = state.notifications,
+            onClick = {
+                if (state.notifications) {
+                    onEnableNotifications(false)
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    if (!hasPermission) {
+                        permissionLauncher.launch(POST_NOTIFICATIONS)
+                    } else {
+                        onEnableNotifications(true)
+                    }
+                }
+            },
         )
 
         SettingsTextField(

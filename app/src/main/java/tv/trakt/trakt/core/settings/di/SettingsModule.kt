@@ -12,6 +12,7 @@ import io.ktor.client.HttpClientConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -24,12 +25,19 @@ import tv.trakt.trakt.core.settings.features.younify.usecases.GetYounifyDetailsU
 import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyDataUseCase
 import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyTokensUseCase
 import tv.trakt.trakt.core.settings.features.younify.usecases.UnlinkYounifyServiceUseCase
+import tv.trakt.trakt.core.settings.usecases.EnableNotificationsUseCase
 import tv.trakt.trakt.core.settings.usecases.UpdateUserSettingsUseCase
 import tv.younify.sdk.connect.Connect
 
 internal const val SETTINGS_PREFERENCES = "settings_preferences_mobile"
 
 internal val settingsDataModule = module {
+    single<DataStore<Preferences>>(named(SETTINGS_PREFERENCES)) {
+        createStore(
+            context = androidApplication(),
+        )
+    }
+
     single<YounifyRemoteDataSource> {
         YounifyApiClient(
             baseUrl = API_BASE_URL,
@@ -45,6 +53,12 @@ internal val settingsModule = module {
         UpdateUserSettingsUseCase(
             remoteSource = get(),
             sessionManager = get(),
+        )
+    }
+
+    factory {
+        EnableNotificationsUseCase(
+            dataStore = get(named(SETTINGS_PREFERENCES)),
         )
     }
 
@@ -77,6 +91,7 @@ internal val settingsModule = module {
             sessionManager = get(),
             analytics = get(),
             updateSettingsUseCase = get(),
+            enableNotificationsUseCase = get(),
             logoutUseCase = get(),
         )
     }

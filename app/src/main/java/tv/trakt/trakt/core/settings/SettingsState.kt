@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.model.User
 @Immutable
 internal data class SettingsState(
     val user: User? = null,
+    val notifications: Boolean = false,
     val accountLoading: LoadingState = LoadingState.IDLE,
     val logoutLoading: LoadingState = LoadingState.IDLE,
 )
