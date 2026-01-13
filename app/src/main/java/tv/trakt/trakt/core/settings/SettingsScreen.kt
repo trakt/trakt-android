@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -27,7 +26,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -43,12 +41,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import timber.log.Timber
@@ -60,17 +54,19 @@ import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Red400
+import tv.trakt.trakt.core.settings.ui.SettingsSwitchField
+import tv.trakt.trakt.core.settings.ui.SettingsTextField
+import tv.trakt.trakt.core.settings.ui.SettingsValueField
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.components.input.SingleInputSheet
-import tv.trakt.trakt.ui.components.vip.VipChip
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private const val SECTION_SPACING_DP = 12
-private const val SECTION_ITEM_HEIGHT_DP = 32
+internal const val SECTION_ITEM_HEIGHT_DP = 32
 
 @Composable
 internal fun SettingsScreen(
@@ -206,6 +202,11 @@ private fun SettingsScreenContent(
                     state = state,
                     onAutomaticTrackingClick = onYounifyClick,
                     onVipClick = onVipClick,
+                )
+
+                SettingsNotifications(
+                    state = state,
+                    onEnableNotificationsClick = { },
                 )
 
                 SettingsMisc(
@@ -423,6 +424,34 @@ private fun SettingsStreaming(
 }
 
 @Composable
+private fun SettingsNotifications(
+    state: SettingsState,
+    modifier: Modifier = Modifier,
+    onEnableNotificationsClick: () -> Unit = {},
+) {
+    Column(
+        verticalArrangement = spacedBy(SECTION_SPACING_DP.dp),
+        modifier = modifier,
+    ) {
+        TraktHeader(
+            title = stringResource(R.string.text_settings_notifications).uppercase(),
+            titleColor = TraktTheme.colors.textPrimary,
+            titleStyle = TraktTheme.typography.heading6,
+        )
+
+        SettingsSwitchField(
+            text = stringResource(R.string.text_settings_enable_notifications),
+            onClick = onEnableNotificationsClick,
+        )
+
+        SettingsTextField(
+            text = stringResource(R.string.text_settings_adjust_delivery),
+            onClick = { },
+        )
+    }
+}
+
+@Composable
 private fun SettingsMisc(
     state: SettingsState,
     modifier: Modifier = Modifier,
@@ -508,106 +537,6 @@ private fun SettingsMisc(
     }
 }
 
-@Composable
-fun SettingsTextField(
-    text: String,
-    modifier: Modifier = Modifier,
-    icon: Int? = R.drawable.ic_chevron_right,
-    iconSize: Dp = 20.dp,
-    enabled: Boolean = true,
-    vipLocked: Boolean = false,
-    onClick: () -> Unit = { },
-    onVipClick: () -> Unit = { },
-) {
-    Row(
-        verticalAlignment = CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(SECTION_ITEM_HEIGHT_DP.dp)
-            .onClick(
-                onClick = onClick,
-                enabled = enabled,
-            ),
-    ) {
-        Text(
-            text = text,
-            color = TraktTheme.colors.textSecondary,
-            style = TraktTheme.typography.paragraph.copy(
-                fontSize = 14.sp,
-            ),
-        )
-
-        if (!vipLocked && icon != null) {
-            Icon(
-                painter = painterResource(icon),
-                contentDescription = null,
-                tint = TraktTheme.colors.textPrimary,
-                modifier = Modifier
-                    .size(iconSize),
-            )
-        } else if (vipLocked) {
-            VipChip(
-                onClick = onVipClick,
-            )
-        }
-    }
-}
-
-@Composable
-fun SettingsValueField(
-    text: String,
-    value: String?,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-    onClick: () -> Unit = { },
-) {
-    Row(
-        verticalAlignment = CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(SECTION_ITEM_HEIGHT_DP.dp)
-            .onClick(
-                onClick = onClick,
-                enabled = enabled,
-            ),
-    ) {
-        Text(
-            text = text,
-            color = TraktTheme.colors.textSecondary,
-            style = TraktTheme.typography.paragraph.copy(
-                fontSize = 14.sp,
-            ),
-        )
-
-        if (value.isNullOrBlank()) {
-            Icon(
-                painter = painterResource(R.drawable.ic_chevron_right),
-                contentDescription = null,
-                tint = TraktTheme.colors.textPrimary,
-                modifier = Modifier
-                    .size(20.dp),
-            )
-        } else {
-            Text(
-                text = value,
-                color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.paragraph.copy(
-                    fontSize = 14.sp,
-                ),
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                textAlign = TextAlign.End,
-                modifier = Modifier
-                    .padding(
-                        start = 32.dp,
-                        end = 4.dp,
-                    ),
-            )
-        }
-    }
-}
 // Previews
 
 @Preview(

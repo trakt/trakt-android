@@ -311,6 +311,10 @@
     <string name="text_vip_offer_and_more">And more!</string>
     <string name="text_vip_offer_and_more_description">Discover everything Trakt has to offer beyond the app.</string>
 
+    <string name="text_settings_notifications">Notifications</string>
+    <string name="text_settings_enable_notifications">Enable/Disable Notifications</string>
+    <string name="text_settings_adjust_delivery">Adjust Delivery Time</string>
+
     <!--  Non Translatable  -->
 
     <string name="translated_value_library_plex" translatable="false">Plex</string>
