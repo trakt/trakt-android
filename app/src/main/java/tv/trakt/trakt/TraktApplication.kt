@@ -33,6 +33,7 @@ import tv.trakt.trakt.core.main.di.mainModule
 import tv.trakt.trakt.core.movies.di.moviesDataModule
 import tv.trakt.trakt.core.movies.di.moviesModule
 import tv.trakt.trakt.core.notifications.TraktNotificationChannel
+import tv.trakt.trakt.core.notifications.TraktNotificationChannelGroup
 import tv.trakt.trakt.core.people.di.peopleDataModule
 import tv.trakt.trakt.core.people.di.peopleModule
 import tv.trakt.trakt.core.profile.di.profileDataModule
@@ -157,9 +158,19 @@ internal class TraktApplication : Application() {
 
     fun setupNotificationChannels() {
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
+        TraktNotificationChannelGroup.entries.forEach {
+            notificationManager
+                .createNotificationChannelGroup(it.createChannelGroup())
+        }
+
         TraktNotificationChannel.entries.forEach {
             notificationManager
-                .createNotificationChannel(it.createChannel())
+                .createNotificationChannel(
+                    it.createChannel().apply {
+                        group = TraktNotificationChannelGroup.MEDIA.id
+                    },
+                )
         }
     }
 }
