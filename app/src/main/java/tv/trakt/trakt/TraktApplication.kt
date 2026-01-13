@@ -1,6 +1,7 @@
 package tv.trakt.trakt
 
 import android.app.Application
+import android.app.NotificationManager
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
 import com.google.firebase.crashlytics.crashlytics
@@ -31,6 +32,7 @@ import tv.trakt.trakt.core.lists.di.listsModule
 import tv.trakt.trakt.core.main.di.mainModule
 import tv.trakt.trakt.core.movies.di.moviesDataModule
 import tv.trakt.trakt.core.movies.di.moviesModule
+import tv.trakt.trakt.core.notifications.TraktNotificationChannel
 import tv.trakt.trakt.core.people.di.peopleDataModule
 import tv.trakt.trakt.core.people.di.peopleModule
 import tv.trakt.trakt.core.profile.di.profileDataModule
@@ -65,6 +67,7 @@ internal class TraktApplication : Application() {
         super.onCreate()
         setupKoin()
         setupTimber()
+        setupNotificationChannels()
 
         FirebaseApp.initializeApp(this)
         setupFirebaseConfig()
@@ -149,6 +152,14 @@ internal class TraktApplication : Application() {
     fun setupTimber() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
+        }
+    }
+
+    fun setupNotificationChannels() {
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        TraktNotificationChannel.entries.forEach {
+            notificationManager
+                .createNotificationChannel(it.createChannel())
         }
     }
 }
