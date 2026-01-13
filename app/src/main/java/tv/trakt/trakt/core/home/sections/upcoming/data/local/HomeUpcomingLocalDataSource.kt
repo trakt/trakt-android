@@ -6,7 +6,7 @@ import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import java.time.Instant
 
 internal interface HomeUpcomingLocalDataSource {
-    suspend fun addItems(items: List<HomeUpcomingItem>)
+    suspend fun setItems(items: List<HomeUpcomingItem>)
 
     suspend fun getItems(): List<HomeUpcomingItem>
 

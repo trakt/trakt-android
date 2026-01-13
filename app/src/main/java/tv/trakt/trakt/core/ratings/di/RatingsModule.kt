@@ -34,16 +34,4 @@ internal val ratingsModule = module {
             analytics = get(),
         )
     }
-//
-//    worker {
-//        DeleteReactionWorker(
-//            appContext = androidApplication(),
-//            workerParams = get(),
-//            deleteReactionsUseCase = get(),
-//            loadUserReactionsUseCase = get(),
-//            reactionsUpdates = get(),
-//            sessionManager = get(),
-//            analytics = get(),
-//        )
-//    }
 }

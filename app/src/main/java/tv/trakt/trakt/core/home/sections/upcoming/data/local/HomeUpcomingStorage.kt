@@ -20,7 +20,7 @@ internal class HomeUpcomingStorage : HomeUpcomingLocalDataSource {
         onBufferOverflow = BufferOverflow.DROP_OLDEST,
     )
 
-    override suspend fun addItems(items: List<HomeUpcomingItem>) {
+    override suspend fun setItems(items: List<HomeUpcomingItem>) {
         mutex.withLock {
             with(storage) {
                 clear()

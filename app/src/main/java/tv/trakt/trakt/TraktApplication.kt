@@ -34,6 +34,7 @@ import tv.trakt.trakt.core.movies.di.moviesDataModule
 import tv.trakt.trakt.core.movies.di.moviesModule
 import tv.trakt.trakt.core.notifications.TraktNotificationChannel
 import tv.trakt.trakt.core.notifications.TraktNotificationChannelGroup
+import tv.trakt.trakt.core.notifications.di.notificationsModule
 import tv.trakt.trakt.core.people.di.peopleDataModule
 import tv.trakt.trakt.core.people.di.peopleModule
 import tv.trakt.trakt.core.profile.di.profileDataModule
@@ -142,6 +143,7 @@ internal class TraktApplication : Application() {
                 ratingsModule,
                 favoritesDataModule,
                 syncModule,
+                notificationsModule,
                 settingsModule,
                 settingsDataModule,
                 billingModule,

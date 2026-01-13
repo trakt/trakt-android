@@ -56,7 +56,7 @@ internal class GetUpcomingUseCase(
             )
                 .sortedBy { it.releasedAt }
                 .also {
-                    localDataSource.addItems(
+                    localDataSource.setItems(
                         items = it,
                     )
                 }
