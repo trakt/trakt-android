@@ -228,7 +228,7 @@
     <string name="text_landing_numbers_1">years of watching together</string>
     <string name="text_landing_numbers_2">mil. shows &amp; movies lovers</string>
     <string name="text_landing_numbers_3">mil. titles tracked weekly</string>
-    <string name="text_landing_share">opinions, ratings and lists that others will love to follow.</string>
+    <string name="text_landing_share">opinions, ratings, and lists that others will love to follow.</string>
     <string name="text_landing_track">every movie, episode, and season you\'ve seen, all in one place.</string>
     <string name="text_location">Location</string>
     <string name="text_movies_watched">%d movies</string>
@@ -250,9 +250,9 @@
     <string name="text_streaming_sync">Streaming Sync</string>
     <string name="text_this_month">This month</string>
     <string name="text_vip_upsell_default">Enhance your Trakt experience</string>
-    <string name="text_vip_upsell_default_2">Enhance your Trakt experience</string>
-    <string name="text_vip_upsell_default_description">Enhance your Trakt experience</string>
-    <string name="text_vip_upsell_default_description_2">Upgrade to VIP!</string>
+    <string name="text_vip_upsell_default_2">Upgrade to VIP!</string>
+    <string name="text_vip_upsell_default_description">Upgrade to VIP and unlock the full Trakt experience, packed with features built for TV Shows and Movies lovers.</string>
+    <string name="text_vip_upsell_default_description_2">Unlimited tracking and more.</string>
     <string name="text_younify_status_broken">Broken</string>
     <string name="text_younify_status_linked">Linked</string>
     <string name="text_younify_status_unlinked">Not linked</string>
@@ -314,9 +314,8 @@
     <!--  Non Translatable  -->
 
     <string name="translated_value_library_plex" translatable="false">Plex</string>
+
     <string name="error_text_vip_only_feature" translatable="false">This feature can be accessed only by VIP users. Upgrade your account to VIP and unlock the full Trakt experience!</string>
-
-
     <string name="error_text_payment_pending" translatable="false">There\'s already a pending payment. Please wait and try again later.</string>
     <string name="error_text_payment_feature_not_supported" translatable="false">Google Play Billing is not available on this device. Please try again or contact support if needed.</string>
     <string name="error_text_payment_canceled" translatable="false">Payment has been canceled. Please try again.</string>
