@@ -272,6 +272,7 @@ internal val homeModule = module {
 
     viewModel {
         HomeUpcomingViewModel(
+            appContext = androidApplication(),
             getUpcomingUseCase = get(),
             homeUpNextSource = get(),
             homeWatchlistSource = get(),

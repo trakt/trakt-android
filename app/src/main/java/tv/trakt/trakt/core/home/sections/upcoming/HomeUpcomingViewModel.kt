@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.home.sections.upcoming
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
@@ -40,6 +41,7 @@ import tv.trakt.trakt.core.home.sections.upcoming.usecases.GetUpcomingUseCase
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
@@ -47,6 +49,7 @@ import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 @Suppress("UNCHECKED_CAST")
 @OptIn(FlowPreview::class)
 internal class HomeUpcomingViewModel(
+    private val appContext: Context,
     private val modeManager: MediaModeManager,
     private val getUpcomingUseCase: GetUpcomingUseCase,
     private val homeUpNextSource: HomeUpNextLocalDataSource,
@@ -144,6 +147,8 @@ internal class HomeUpcomingViewModel(
                         filter = filterState.value,
                     )
                 }
+
+                ScheduleNotificationsWorker.schedule(appContext)
             } catch (error: Exception) {
                 if (!ignoreErrors) {
                     errorState.update { error }
