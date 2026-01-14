@@ -1,11 +1,14 @@
 package tv.trakt.trakt.core.notifications.data.work
 
+import android.Manifest.permission.POST_NOTIFICATIONS
 import android.app.Notification
 import android.content.Context
+import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.os.Build
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.work.CoroutineWorker
-import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
@@ -13,12 +16,10 @@ import androidx.work.WorkerParameters
 import timber.log.Timber
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.toLocal
-import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
-import tv.trakt.trakt.core.notifications.TraktNotificationChannel
+import tv.trakt.trakt.core.notifications.model.PostNotificationData
 import tv.trakt.trakt.resources.R
 import java.time.Duration
-import java.time.Instant
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
 private const val WORK_ID = "post_notif_work"
@@ -31,48 +32,47 @@ internal class PostNotificationWorker(
     companion object {
         fun schedule(
             appContext: Context,
-            channel: TraktNotificationChannel,
-            mediaId: Int,
-            mediaType: MediaType,
-            title: String,
-            content: String,
-            targetDate: Instant,
+            data: PostNotificationData,
         ) {
             val nowUtc = nowUtcInstant()
-            val delay = Duration.between(nowUtc, targetDate)
+            val delay = Duration.between(nowUtc, data.targetDate)
 
             val workRequest = OneTimeWorkRequestBuilder<PostNotificationWorker>()
                 .addTag(WORK_NOTIFICATION_TAG)
-                .setInputData(
-                    Data.Builder()
-                        .putString("channel", channel.id)
-                        .putString("title", title)
-                        .putString("content", content)
-                        .putInt("mediaId", mediaId)
-                        .putString("mediaType", mediaType.value)
-                        .build(),
-                )
+                .setInputData(data.toInputData())
                 .setInitialDelay(delay.toMillis(), MILLISECONDS)
                 .build()
 
             with(WorkManager.getInstance(appContext)) {
                 enqueueUniqueWork(
-                    "${WORK_ID}-${mediaType.value}-$mediaId",
+                    "${WORK_ID}-${data.mediaType.value}-${data.mediaId}",
                     ExistingWorkPolicy.REPLACE,
                     workRequest,
                 )
             }
 
-            Timber.d("Notification scheduled: $mediaType - $mediaId at ${targetDate.toLocal()}.")
+            Timber.d("Notification scheduled: ${data.mediaType} - ${data.mediaId} at ${data.targetDate.toLocal()}.")
         }
     }
 
     override suspend fun doWork(): Result {
-        val channel = inputData.getString("channel")
-        val title = inputData.getString("title")
-        val content = inputData.getString("content")
-        val mediaId = inputData.getInt("mediaId", -1)
-        val mediaType = inputData.getString("mediaType")
+        val channel = inputData.getString(PostNotificationData.CHANNEL)
+        val title = inputData.getString(PostNotificationData.TITLE)
+        val content = inputData.getString(PostNotificationData.CONTENT)
+        val mediaId = inputData.getInt(PostNotificationData.MEDIA_ID, -1)
+        val mediaType = inputData.getString(PostNotificationData.MEDIA_TYPE)
+
+        val hasPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ContextCompat.checkSelfPermission(applicationContext, POST_NOTIFICATIONS) == PERMISSION_GRANTED
+        } else {
+            // On Android 12 and below, notification permission is granted by default
+            true
+        }
+
+        if (!hasPermission) {
+            Timber.e("Missing POST_NOTIFICATIONS permission for notification")
+            return Result.failure()
+        }
 
         if (mediaId == -1) {
             Timber.e("Invalid media ID for notification")
