@@ -124,15 +124,14 @@ internal class SettingsViewModel(
     fun enableNotifications(enable: Boolean) {
         viewModelScope.launch {
             try {
-                enableNotificationsUseCase.enableNotifications(enable)
                 notificationsState.update {
-                    enableNotificationsUseCase.isNotificationsEnabled()
+                    enableNotificationsUseCase.enableNotifications(enable)
                 }
 
-                if (!enable) {
-                    ScheduleNotificationsWorker.clear(appContext)
-                } else {
+                if (enable) {
                     ScheduleNotificationsWorker.schedule(appContext)
+                } else {
+                    ScheduleNotificationsWorker.clear(appContext)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {

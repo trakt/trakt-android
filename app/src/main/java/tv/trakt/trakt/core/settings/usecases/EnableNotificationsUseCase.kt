@@ -11,12 +11,14 @@ private val KEY_NOTIFICATION_ENABLED = booleanPreferencesKey("key_notifications_
 internal class EnableNotificationsUseCase(
     private val dataStore: DataStore<Preferences>,
 ) {
-    suspend fun enableNotifications(enabled: Boolean) {
+    suspend fun enableNotifications(enabled: Boolean): Boolean {
         dataStore.updateData {
             it.toMutablePreferences().apply {
                 this[KEY_NOTIFICATION_ENABLED] = enabled
             }
         }
+
+        return enabled
     }
 
     suspend fun isNotificationsEnabled(): Boolean {

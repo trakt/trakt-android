@@ -11,6 +11,7 @@ import timber.log.Timber
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem.EpisodeItem
@@ -90,6 +91,15 @@ internal class ScheduleNotificationsWorker(
     }
 
     private fun postNotification(item: HomeUpcomingItem) {
+        var targetDate = item.releasedAt.truncatedTo(ChronoUnit.MINUTES).toLocal()
+
+        // Adjust notifications scheduled between 00:00 and 06:00 to 10:00 local time.
+        if (targetDate.hour in 0..6) {
+            val adjustedDate = targetDate.withHour(10).withMinute(0)
+            Timber.d("Date adjusted: ${item.id.value} from $targetDate to $adjustedDate")
+            targetDate = adjustedDate
+        }
+
         PostNotificationWorker.schedule(
             appContext = applicationContext,
             data = PostNotificationData(
@@ -119,8 +129,7 @@ internal class ScheduleNotificationsWorker(
                         applicationContext.getString(R.string.text_notification_movie_release)
                     }
                 },
-                targetDate = item.releasedAt.truncatedTo(ChronoUnit.MINUTES),
-//                targetDate = nowUtcInstant().plusSeconds(5),
+                targetDate = targetDate.toInstant(),
             ),
         )
     }
