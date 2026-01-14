@@ -17,6 +17,8 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.common.Config.API_BASE_URL
+import tv.trakt.trakt.core.notifications.usecases.EnableNotificationsUseCase
+import tv.trakt.trakt.core.notifications.usecases.UpdateNotificationsDeliveryUseCase
 import tv.trakt.trakt.core.settings.SettingsViewModel
 import tv.trakt.trakt.core.settings.features.younify.YounifyViewModel
 import tv.trakt.trakt.core.settings.features.younify.data.remote.YounifyApiClient
@@ -25,7 +27,6 @@ import tv.trakt.trakt.core.settings.features.younify.usecases.GetYounifyDetailsU
 import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyDataUseCase
 import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyTokensUseCase
 import tv.trakt.trakt.core.settings.features.younify.usecases.UnlinkYounifyServiceUseCase
-import tv.trakt.trakt.core.notifications.usecases.EnableNotificationsUseCase
 import tv.trakt.trakt.core.settings.usecases.UpdateUserSettingsUseCase
 import tv.younify.sdk.connect.Connect
 
@@ -63,6 +64,12 @@ internal val settingsModule = module {
     }
 
     factory {
+        UpdateNotificationsDeliveryUseCase(
+            dataStore = get(named(SETTINGS_PREFERENCES)),
+        )
+    }
+
+    factory {
         GetYounifyDetailsUseCase(
             remoteSource = get(),
         )
@@ -93,6 +100,7 @@ internal val settingsModule = module {
             analytics = get(),
             updateSettingsUseCase = get(),
             enableNotificationsUseCase = get(),
+            updateNotificationsDeliveryUseCase = get(),
             logoutUseCase = get(),
         )
     }

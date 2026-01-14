@@ -79,6 +79,7 @@ private fun AdjustNotificationTimeContent(
 
         PrimaryButton(
             text = stringResource(R.string.button_text_apply),
+            enabled = selected != current.name,
             onClick = {
                 onApply(DeliveryAdjustment.valueOf(selected))
             },

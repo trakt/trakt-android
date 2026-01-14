@@ -16,6 +16,7 @@ internal fun AdjustNotificationTimeSheet(
         skipPartiallyExpanded = true,
     ),
     active: Boolean,
+    initial: DeliveryAdjustment,
     onApply: (DeliveryAdjustment) -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -27,7 +28,7 @@ internal fun AdjustNotificationTimeSheet(
             onDismiss = onDismiss,
         ) {
             AdjustNotificationTimeView(
-                current = DeliveryAdjustment.OFF,
+                current = initial,
                 onApply = { time ->
                     sheetScope
                         .launch { state.hide() }

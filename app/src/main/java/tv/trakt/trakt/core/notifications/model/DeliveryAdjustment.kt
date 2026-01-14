@@ -10,7 +10,7 @@ enum class DeliveryAdjustment(
     val duration: Duration,
     @param:StringRes val displayString: Int,
 ) {
-    OFF(Duration.ZERO, R.string.text_settings_notification_time_now),
+    DISABLED(Duration.ZERO, R.string.text_settings_notification_time_now),
     MINUTES_30(30.minutes, R.string.text_settings_notification_time_30_min),
     MINUTES_60(1.hours, R.string.text_settings_notification_time_60_min),
     MINUTES_180(3.hours, R.string.text_settings_notification_time_180_min),

@@ -19,10 +19,13 @@ import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem.MovieIt
 import tv.trakt.trakt.core.home.sections.upcoming.usecases.GetUpcomingUseCase
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.notifications.TraktNotificationChannel
+import tv.trakt.trakt.core.notifications.model.DeliveryAdjustment
 import tv.trakt.trakt.core.notifications.model.PostNotificationData
 import tv.trakt.trakt.core.notifications.usecases.EnableNotificationsUseCase
+import tv.trakt.trakt.core.notifications.usecases.UpdateNotificationsDeliveryUseCase
 import tv.trakt.trakt.resources.R
 import java.time.temporal.ChronoUnit
+import kotlin.time.toJavaDuration
 
 private const val WORK_ID = "schedule_notifications_work"
 
@@ -32,6 +35,7 @@ internal class ScheduleNotificationsWorker(
     val sessionManager: SessionManager,
     val getUpcomingUseCase: GetUpcomingUseCase,
     val enableNotificationsUseCase: EnableNotificationsUseCase,
+    val notificationsDeliveryUseCase: UpdateNotificationsDeliveryUseCase,
 ) : CoroutineWorker(appContext, workerParams) {
     companion object {
         fun schedule(appContext: Context) {
@@ -57,8 +61,6 @@ internal class ScheduleNotificationsWorker(
 
     override suspend fun doWork(): Result {
         try {
-            val nowUtc = nowUtcInstant()
-
             if (!sessionManager.isAuthenticated()) {
                 Timber.d("Not authenticated, skipping.")
                 return Result.failure()
@@ -78,10 +80,21 @@ internal class ScheduleNotificationsWorker(
                 }
             }
 
+            if (upcomingItems.isEmpty()) {
+                Timber.d("No upcoming items found, skipping.")
+                return Result.success()
+            }
+
+            val nowUtc = nowUtcInstant()
+            val deliveryAdjustment = notificationsDeliveryUseCase.getDeliveryTime()
+
             upcomingItems
                 .filter { it.releasedAt.isAfter(nowUtc) }
                 .forEach {
-                    postNotification(it)
+                    postNotification(
+                        item = it,
+                        deliveryAdjustment = deliveryAdjustment,
+                    )
                 }
         } catch (error: Exception) {
             if (error is CancellationException) {
@@ -95,8 +108,15 @@ internal class ScheduleNotificationsWorker(
         return Result.success()
     }
 
-    private fun postNotification(item: HomeUpcomingItem) {
+    private fun postNotification(
+        item: HomeUpcomingItem,
+        deliveryAdjustment: DeliveryAdjustment,
+    ) {
         var targetDate = item.releasedAt.truncatedTo(ChronoUnit.MINUTES).toLocal()
+        if (deliveryAdjustment != DeliveryAdjustment.DISABLED) {
+            Timber.d("Applying delivery adjustment: ${deliveryAdjustment.duration}")
+            targetDate = targetDate.minus(deliveryAdjustment.duration.toJavaDuration())
+        }
 
         // Adjust notifications scheduled between 00:00 and 06:00 to 10:00 local time.
         if (targetDate.hour in 0..6) {

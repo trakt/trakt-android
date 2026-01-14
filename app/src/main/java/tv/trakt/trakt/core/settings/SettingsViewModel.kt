@@ -23,7 +23,9 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
+import tv.trakt.trakt.core.notifications.model.DeliveryAdjustment
 import tv.trakt.trakt.core.notifications.usecases.EnableNotificationsUseCase
+import tv.trakt.trakt.core.notifications.usecases.UpdateNotificationsDeliveryUseCase
 import tv.trakt.trakt.core.settings.usecases.UpdateUserSettingsUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 
@@ -33,12 +35,14 @@ internal class SettingsViewModel(
     private val logoutUseCase: LogoutUserUseCase,
     private val updateSettingsUseCase: UpdateUserSettingsUseCase,
     private val enableNotificationsUseCase: EnableNotificationsUseCase,
+    private val updateNotificationsDeliveryUseCase: UpdateNotificationsDeliveryUseCase,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = SettingsState()
 
     private val userState = MutableStateFlow(initialState.user)
     private val notificationsState = MutableStateFlow(initialState.notifications)
+    private val notificationsDeliveryState = MutableStateFlow(initialState.notificationsDelivery)
     private val accountLoadingState = MutableStateFlow(initialState.accountLoading)
     private val logoutLoadingState = MutableStateFlow(initialState.logoutLoading)
 
@@ -72,6 +76,9 @@ internal class SettingsViewModel(
         viewModelScope.launch {
             notificationsState.update {
                 enableNotificationsUseCase.isNotificationsEnabled()
+            }
+            notificationsDeliveryState.update {
+                updateNotificationsDeliveryUseCase.getDeliveryTime()
             }
         }
     }
@@ -141,6 +148,24 @@ internal class SettingsViewModel(
         }
     }
 
+    fun setNotificationDeliveryTime(value: DeliveryAdjustment) {
+        viewModelScope.launch {
+            try {
+                notificationsDeliveryState.update {
+                    updateNotificationsDeliveryUseCase.setDeliveryTime(value)
+                }
+
+                if (notificationsState.value) {
+                    ScheduleNotificationsWorker.schedule(appContext)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
     fun logout() {
         viewModelScope.launch {
             try {
@@ -162,14 +187,16 @@ internal class SettingsViewModel(
     val state = combine(
         userState,
         notificationsState,
+        notificationsDeliveryState,
         accountLoadingState,
         logoutLoadingState,
     ) { state ->
         SettingsState(
             user = state[0] as User?,
             notifications = state[1] as Boolean,
-            accountLoading = state[2] as LoadingState,
-            logoutLoading = state[3] as LoadingState,
+            notificationsDelivery = state[2] as DeliveryAdjustment?,
+            accountLoading = state[3] as LoadingState,
+            logoutLoading = state[4] as LoadingState,
         )
     }.stateIn(
         scope = viewModelScope,

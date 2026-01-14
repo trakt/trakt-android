@@ -312,12 +312,12 @@
     <string name="text_vip_offer_and_more_description">Discover everything Trakt has to offer beyond the app.</string>
 
     <string name="text_settings_notifications">Notifications</string>
-    <string name="text_settings_enable_notifications">Enable/Disable Notifications</string>
+    <string name="text_settings_enable_notifications">Enable Notifications</string>
     <string name="text_settings_adjust_delivery">Delivery Time</string>
     <string name="text_settings_adjust_delivery_description">Adjust delivery time of media related notifications.</string>
 
-    <string name="text_settings_notification_time_now">When available</string>
-    <string name="text_settings_notification_time_30_min">30 min before</string>
+    <string name="text_settings_notification_time_now">Immediately</string>
+    <string name="text_settings_notification_time_30_min">30 minutes before</string>
     <string name="text_settings_notification_time_60_min">1 hour before</string>
     <string name="text_settings_notification_time_180_min">3 hours before</string>
 

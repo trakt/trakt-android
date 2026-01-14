@@ -14,6 +14,7 @@ internal val notificationsModule = module {
             sessionManager = get(),
             getUpcomingUseCase = get(),
             enableNotificationsUseCase = get(),
+            notificationsDeliveryUseCase = get(),
         )
     }
 

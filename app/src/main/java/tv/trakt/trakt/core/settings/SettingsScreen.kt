@@ -59,6 +59,7 @@ import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Red400
+import tv.trakt.trakt.core.notifications.model.DeliveryAdjustment
 import tv.trakt.trakt.core.settings.features.notifications.AdjustNotificationTimeSheet
 import tv.trakt.trakt.core.settings.ui.SettingsSwitchField
 import tv.trakt.trakt.core.settings.ui.SettingsTextField
@@ -100,6 +101,7 @@ internal fun SettingsScreen(
         onSetLocation = viewModel::updateUserLocation,
         onSetAbout = viewModel::updateUserAbout,
         onEnableNotifications = viewModel::enableNotifications,
+        onSetDeliveryTime = viewModel::setNotificationDeliveryTime,
         onYounifyClick = onNavigateYounify,
         onVipClick = onNavigateVip,
         onInstagramClick = {
@@ -142,6 +144,7 @@ private fun SettingsScreenContent(
     onSetAbout: (String?) -> Unit = { },
     onYounifyClick: () -> Unit = { },
     onEnableNotifications: (Boolean) -> Unit = { },
+    onSetDeliveryTime: (DeliveryAdjustment) -> Unit = { },
     onLogoutClick: () -> Unit = { },
     onVipClick: () -> Unit = { },
     onInstagramClick: () -> Unit = { },
@@ -215,6 +218,7 @@ private fun SettingsScreenContent(
                 SettingsNotifications(
                     state = state,
                     onEnableNotifications = onEnableNotifications,
+                    onSetDeliveryTime = onSetDeliveryTime,
                 )
 
                 SettingsMisc(
@@ -291,8 +295,6 @@ private fun SettingsAccount(
     onSetLocation: (String?) -> Unit = { },
     onSetAbout: (String?) -> Unit = { },
 ) {
-    val uriHandler = LocalUriHandler.current
-
     var displayNameSheet by remember { mutableStateOf<String?>(null) }
     var locationSheet by remember { mutableStateOf<String?>(null) }
     var aboutSheet by remember { mutableStateOf<String?>(null) }
@@ -436,6 +438,7 @@ private fun SettingsNotifications(
     state: SettingsState,
     modifier: Modifier = Modifier,
     onEnableNotifications: (Boolean) -> Unit,
+    onSetDeliveryTime: (DeliveryAdjustment) -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -498,9 +501,12 @@ private fun SettingsNotifications(
         )
     }
 
+    // Sheets
+
     AdjustNotificationTimeSheet(
         active = adjustTimeSheet,
-        onApply = {},
+        initial = state.notificationsDelivery ?: DeliveryAdjustment.DISABLED,
+        onApply = onSetDeliveryTime,
         onDismiss = {
             adjustTimeSheet = false
         },
