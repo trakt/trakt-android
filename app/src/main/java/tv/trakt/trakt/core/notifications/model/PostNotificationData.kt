@@ -9,6 +9,7 @@ internal data class PostNotificationData(
     val channel: TraktNotificationChannel,
     val mediaId: Int,
     val mediaType: MediaType,
+    val mediaImage: String?,
     val title: String,
     val content: String,
     val targetDate: Instant,
@@ -19,6 +20,7 @@ internal data class PostNotificationData(
         const val CONTENT = "content"
         const val MEDIA_ID = "mediaId"
         const val MEDIA_TYPE = "mediaType"
+        const val MEDIA_IMAGE = "mediaImage"
     }
 
     fun toInputData(): Data {
@@ -28,6 +30,7 @@ internal data class PostNotificationData(
             .putString(CONTENT, content)
             .putInt(MEDIA_ID, mediaId)
             .putString(MEDIA_TYPE, mediaType.value)
+            .putString(MEDIA_IMAGE, mediaImage)
             .build()
     }
 }

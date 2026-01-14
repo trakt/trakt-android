@@ -88,6 +88,7 @@ internal val settingsModule = module {
 
     viewModel {
         SettingsViewModel(
+            appContext = androidApplication(),
             sessionManager = get(),
             analytics = get(),
             updateSettingsUseCase = get(),

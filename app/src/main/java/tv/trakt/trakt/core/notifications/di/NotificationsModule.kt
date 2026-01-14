@@ -13,6 +13,7 @@ internal val notificationsModule = module {
             workerParams = get(),
             sessionManager = get(),
             getUpcomingUseCase = get(),
+            enableNotificationsUseCase = get(),
         )
     }
 
@@ -20,6 +21,7 @@ internal val notificationsModule = module {
         PostNotificationWorker(
             appContext = androidApplication(),
             workerParams = get(),
+            enableNotificationsUseCase = get(),
         )
     }
 }

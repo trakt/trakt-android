@@ -4,6 +4,7 @@ import android.Manifest.permission.POST_NOTIFICATIONS
 import android.app.Notification
 import android.content.Context
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationManagerCompat
@@ -13,11 +14,16 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import coil3.ImageLoader
+import coil3.request.ImageRequest
+import coil3.request.allowHardware
+import coil3.toBitmap
 import timber.log.Timber
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.core.notifications.model.PostNotificationData
+import tv.trakt.trakt.core.settings.usecases.EnableNotificationsUseCase
 import tv.trakt.trakt.resources.R
 import java.time.Duration
 import java.util.concurrent.TimeUnit.MILLISECONDS
@@ -28,6 +34,7 @@ internal const val WORK_NOTIFICATION_TAG = "post_notif_work_tag"
 internal class PostNotificationWorker(
     appContext: Context,
     workerParams: WorkerParameters,
+    val enableNotificationsUseCase: EnableNotificationsUseCase,
 ) : CoroutineWorker(appContext, workerParams) {
     companion object {
         fun schedule(
@@ -61,6 +68,7 @@ internal class PostNotificationWorker(
         val content = inputData.getString(PostNotificationData.CONTENT)
         val mediaId = inputData.getInt(PostNotificationData.MEDIA_ID, -1)
         val mediaType = inputData.getString(PostNotificationData.MEDIA_TYPE)
+        val mediaImage = inputData.getString(PostNotificationData.MEDIA_IMAGE)
 
         val hasPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ContextCompat.checkSelfPermission(applicationContext, POST_NOTIFICATIONS) == PERMISSION_GRANTED
@@ -71,6 +79,11 @@ internal class PostNotificationWorker(
 
         if (!hasPermission) {
             Timber.e("Missing POST_NOTIFICATIONS permission for notification")
+            return Result.failure()
+        }
+
+        if (!enableNotificationsUseCase.isNotificationsEnabled()) {
+            Timber.d("Notifications are disabled, skipping notification.")
             return Result.failure()
         }
 
@@ -87,6 +100,26 @@ internal class PostNotificationWorker(
             .setContentText(content)
             .setAutoCancel(true)
             .setColor(Purple500.toArgb())
+
+        if (!mediaImage.isNullOrBlank()) {
+            try {
+                val imageLoader = ImageLoader(applicationContext)
+                val request = ImageRequest.Builder(applicationContext)
+                    .data(mediaImage)
+                    .allowHardware(false) // Disable hardware bitmaps for notifications
+                    .build()
+
+                val result = imageLoader.execute(request)
+                val bitmap = (result.image as? BitmapDrawable)?.bitmap
+                    ?: result.image?.toBitmap()
+
+                if (bitmap != null) {
+                    notification.setLargeIcon(bitmap)
+                }
+            } catch (error: Exception) {
+                Timber.e(error, "Failed to load notification image")
+            }
+        }
 
         NotificationManagerCompat
             .from(applicationContext)

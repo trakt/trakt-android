@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.settings
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.FlowPreview
@@ -21,11 +22,13 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
 import tv.trakt.trakt.core.settings.usecases.EnableNotificationsUseCase
 import tv.trakt.trakt.core.settings.usecases.UpdateUserSettingsUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 
 internal class SettingsViewModel(
+    private val appContext: Context,
     private val sessionManager: SessionManager,
     private val logoutUseCase: LogoutUserUseCase,
     private val updateSettingsUseCase: UpdateUserSettingsUseCase,
@@ -124,6 +127,12 @@ internal class SettingsViewModel(
                 enableNotificationsUseCase.enableNotifications(enable)
                 notificationsState.update {
                     enableNotificationsUseCase.isNotificationsEnabled()
+                }
+
+                if (!enable) {
+                    ScheduleNotificationsWorker.clear(appContext)
+                } else {
+                    ScheduleNotificationsWorker.schedule(appContext)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {

@@ -18,6 +18,8 @@ import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem.MovieIt
 import tv.trakt.trakt.core.home.sections.upcoming.usecases.GetUpcomingUseCase
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.notifications.TraktNotificationChannel
+import tv.trakt.trakt.core.notifications.model.PostNotificationData
+import tv.trakt.trakt.core.settings.usecases.EnableNotificationsUseCase
 import tv.trakt.trakt.resources.R
 import java.time.temporal.ChronoUnit
 
@@ -28,6 +30,7 @@ internal class ScheduleNotificationsWorker(
     workerParams: WorkerParameters,
     val sessionManager: SessionManager,
     val getUpcomingUseCase: GetUpcomingUseCase,
+    val enableNotificationsUseCase: EnableNotificationsUseCase,
 ) : CoroutineWorker(appContext, workerParams) {
     companion object {
         fun schedule(appContext: Context) {
@@ -43,12 +46,23 @@ internal class ScheduleNotificationsWorker(
                 )
             }
         }
+
+        fun clear(appContext: Context) {
+            with(WorkManager.getInstance(appContext)) {
+                cancelAllWorkByTag(WORK_NOTIFICATION_TAG)
+            }
+        }
     }
 
     override suspend fun doWork(): Result {
         try {
             if (!sessionManager.isAuthenticated()) {
                 Timber.d("Not authenticated, skipping.")
+                return Result.failure()
+            }
+
+            if (!enableNotificationsUseCase.isNotificationsEnabled()) {
+                Timber.d("Notifications are disabled, skipping.")
                 return Result.failure()
             }
 
@@ -78,32 +92,36 @@ internal class ScheduleNotificationsWorker(
     private fun postNotification(item: HomeUpcomingItem) {
         PostNotificationWorker.schedule(
             appContext = applicationContext,
-            mediaId = item.id.value,
-            mediaType = when (item) {
-                is EpisodeItem -> MediaType.EPISODE
-                is MovieItem -> MediaType.MOVIE
-            },
-            title = when (item) {
-                is EpisodeItem -> item.show.title
-                is MovieItem -> item.movie.title
-            },
-            content = when (item) {
-                is EpisodeItem -> {
-                    applicationContext.getString(
-                        R.string.text_notification_episode_release,
-                        item.episode.season,
-                        item.episode.number,
-                    )
-                }
-                is MovieItem -> {
-                    applicationContext.getString(R.string.text_notification_movie_release)
-                }
-            },
-            channel = when (item) {
-                is EpisodeItem -> TraktNotificationChannel.SHOWS
-                is MovieItem -> TraktNotificationChannel.MOVIES
-            },
-            targetDate = item.releasedAt.truncatedTo(ChronoUnit.MINUTES),
+            data = PostNotificationData(
+                channel = when (item) {
+                    is EpisodeItem -> TraktNotificationChannel.SHOWS
+                    is MovieItem -> TraktNotificationChannel.MOVIES
+                },
+                mediaId = item.id.value,
+                mediaType = when (item) {
+                    is EpisodeItem -> MediaType.EPISODE
+                    is MovieItem -> MediaType.MOVIE
+                },
+                mediaImage = item.images?.getPosterUrl(),
+                title = when (item) {
+                    is EpisodeItem -> item.show.title
+                    is MovieItem -> item.movie.title
+                },
+                content = when (item) {
+                    is EpisodeItem -> {
+                        applicationContext.getString(
+                            R.string.text_notification_episode_release,
+                            item.episode.season,
+                            item.episode.number,
+                        )
+                    }
+                    is MovieItem -> {
+                        applicationContext.getString(R.string.text_notification_movie_release)
+                    }
+                },
+                targetDate = item.releasedAt.truncatedTo(ChronoUnit.MINUTES),
+//                targetDate = nowUtcInstant().plusSeconds(5),
+            ),
         )
     }
 }
