@@ -23,7 +23,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.core.notifications.model.PostNotificationData
-import tv.trakt.trakt.core.settings.usecases.EnableNotificationsUseCase
+import tv.trakt.trakt.core.notifications.usecases.EnableNotificationsUseCase
 import tv.trakt.trakt.resources.R
 import java.time.Duration
 import java.util.concurrent.TimeUnit.MILLISECONDS

@@ -23,7 +23,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
-import tv.trakt.trakt.core.settings.usecases.EnableNotificationsUseCase
+import tv.trakt.trakt.core.notifications.usecases.EnableNotificationsUseCase
 import tv.trakt.trakt.core.settings.usecases.UpdateUserSettingsUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 

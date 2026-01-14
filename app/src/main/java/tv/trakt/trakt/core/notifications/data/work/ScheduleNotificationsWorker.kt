@@ -20,7 +20,7 @@ import tv.trakt.trakt.core.home.sections.upcoming.usecases.GetUpcomingUseCase
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.notifications.TraktNotificationChannel
 import tv.trakt.trakt.core.notifications.model.PostNotificationData
-import tv.trakt.trakt.core.settings.usecases.EnableNotificationsUseCase
+import tv.trakt.trakt.core.notifications.usecases.EnableNotificationsUseCase
 import tv.trakt.trakt.resources.R
 import java.time.temporal.ChronoUnit
 
@@ -57,6 +57,8 @@ internal class ScheduleNotificationsWorker(
 
     override suspend fun doWork(): Result {
         try {
+            val nowUtc = nowUtcInstant()
+
             if (!sessionManager.isAuthenticated()) {
                 Timber.d("Not authenticated, skipping.")
                 return Result.failure()
@@ -69,10 +71,13 @@ internal class ScheduleNotificationsWorker(
 
             var upcomingItems = getUpcomingUseCase.getLocalUpcoming(MediaMode.MEDIA)
             if (upcomingItems.isEmpty()) {
-                upcomingItems = getUpcomingUseCase.getUpcoming(MediaMode.MEDIA)
+                try {
+                    upcomingItems = getUpcomingUseCase.getUpcoming(MediaMode.MEDIA)
+                } catch (error: Exception) {
+                    Timber.e(error)
+                }
             }
 
-            val nowUtc = nowUtcInstant()
             upcomingItems
                 .filter { it.releasedAt.isAfter(nowUtc) }
                 .forEach {

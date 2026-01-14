@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.settings.usecases
+package tv.trakt.trakt.core.notifications.usecases
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences

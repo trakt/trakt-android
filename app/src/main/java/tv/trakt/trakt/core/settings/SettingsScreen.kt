@@ -59,6 +59,7 @@ import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Red400
+import tv.trakt.trakt.core.settings.features.notifications.AdjustNotificationTimeSheet
 import tv.trakt.trakt.core.settings.ui.SettingsSwitchField
 import tv.trakt.trakt.core.settings.ui.SettingsTextField
 import tv.trakt.trakt.core.settings.ui.SettingsValueField
@@ -461,6 +462,8 @@ private fun SettingsNotifications(
         }
     }
 
+    var adjustTimeSheet by remember { mutableStateOf(false) }
+
     Column(
         verticalArrangement = spacedBy(SECTION_SPACING_DP.dp),
         modifier = modifier,
@@ -489,9 +492,19 @@ private fun SettingsNotifications(
 
         SettingsTextField(
             text = stringResource(R.string.text_settings_adjust_delivery),
-            onClick = { },
+            onClick = {
+                adjustTimeSheet = true
+            },
         )
     }
+
+    AdjustNotificationTimeSheet(
+        active = adjustTimeSheet,
+        onApply = {},
+        onDismiss = {
+            adjustTimeSheet = false
+        },
+    )
 }
 
 @Composable

@@ -25,7 +25,7 @@ import tv.trakt.trakt.core.settings.features.younify.usecases.GetYounifyDetailsU
 import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyDataUseCase
 import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyTokensUseCase
 import tv.trakt.trakt.core.settings.features.younify.usecases.UnlinkYounifyServiceUseCase
-import tv.trakt.trakt.core.settings.usecases.EnableNotificationsUseCase
+import tv.trakt.trakt.core.notifications.usecases.EnableNotificationsUseCase
 import tv.trakt.trakt.core.settings.usecases.UpdateUserSettingsUseCase
 import tv.younify.sdk.connect.Connect
 
