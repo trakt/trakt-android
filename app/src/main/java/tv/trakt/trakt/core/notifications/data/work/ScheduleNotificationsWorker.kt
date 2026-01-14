@@ -76,6 +76,7 @@ internal class ScheduleNotificationsWorker(
                 try {
                     upcomingItems = getUpcomingUseCase.getUpcoming(MediaMode.MEDIA)
                 } catch (error: Exception) {
+                    // Ignore errors at this point.
                     Timber.e(error)
                 }
             }
@@ -128,6 +129,7 @@ internal class ScheduleNotificationsWorker(
         PostNotificationWorker.schedule(
             appContext = applicationContext,
             data = PostNotificationData(
+                targetDate = targetDate.toInstant(),
                 channel = when (item) {
                     is EpisodeItem -> TraktNotificationChannel.SHOWS
                     is MovieItem -> TraktNotificationChannel.MOVIES
@@ -154,7 +156,18 @@ internal class ScheduleNotificationsWorker(
                         applicationContext.getString(R.string.text_notification_movie_release)
                     }
                 },
-                targetDate = targetDate.toInstant(),
+                extraId = when (item) {
+                    is EpisodeItem -> item.show.ids.trakt.value
+                    is MovieItem -> null
+                },
+                extraValue1 = when (item) {
+                    is EpisodeItem -> item.episode.season
+                    is MovieItem -> null
+                },
+                extraValue2 = when (item) {
+                    is EpisodeItem -> item.episode.number
+                    is MovieItem -> null
+                },
             ),
         )
     }

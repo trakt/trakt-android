@@ -41,8 +41,8 @@ internal val LocalBottomBarVisibility = compositionLocalOf { mutableStateOf(true
 internal val LocalSnackbarState = compositionLocalOf { SnackbarHostState() }
 
 internal class MainActivity : ComponentActivity() {
-    private val remoteConfig = Firebase.remoteConfig
     private val authPreferences: DataStore<Preferences> by inject(named(AUTH_PREFERENCES))
+    private val newIntent = mutableStateOf<Intent?>(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,6 +85,7 @@ internal class MainActivity : ComponentActivity() {
                     MainScreen(
                         viewModel = koinViewModel(),
                         intent = intent,
+                        newIntent = newIntent,
                     )
                 }
             }
@@ -98,6 +99,7 @@ internal class MainActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+        newIntent.value = intent
         handleTraktAuthorization(intent.data)
     }
 
@@ -107,20 +109,22 @@ internal class MainActivity : ComponentActivity() {
     }
 
     private fun updateRemoteConfig() {
-        val customThemeEnabled = remoteConfig.getBoolean(MOBILE_CUSTOM_THEME_ENABLED)
-        remoteConfig
-            .fetchAndActivate()
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    Timber.d("Remote Config updated: ${it.result}")
-                    if (customThemeEnabled != remoteConfig.getBoolean(MOBILE_CUSTOM_THEME_ENABLED)) {
-                        // Reload app to apply custom theme change.
-                        ProcessPhoenix.triggerRebirth(this)
+        with(Firebase.remoteConfig) {
+            val customThemeEnabled = getBoolean(MOBILE_CUSTOM_THEME_ENABLED)
+            this
+                .fetchAndActivate()
+                .addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        Timber.d("Remote Config updated: ${it.result}")
+                        if (customThemeEnabled != getBoolean(MOBILE_CUSTOM_THEME_ENABLED)) {
+                            // Reload app to apply custom theme change.
+                            ProcessPhoenix.triggerRebirth(this@MainActivity)
+                        }
+                    } else {
+                        Timber.e("Remote Config update failed!")
                     }
-                } else {
-                    Timber.e("Remote Config update failed!")
                 }
-            }
+        }
     }
 
     private fun handleTraktAuthorization(authData: Uri?) {

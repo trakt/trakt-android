@@ -45,12 +45,26 @@ internal fun NavController.navigateToEpisode(
     showId: TraktId,
     episode: Episode,
 ) {
+    navigateToEpisode(
+        showId = showId,
+        episodeId = episode.ids.trakt,
+        episodeSeason = episode.season,
+        episodeNumber = episode.number,
+    )
+}
+
+internal fun NavController.navigateToEpisode(
+    showId: TraktId,
+    episodeId: TraktId,
+    episodeSeason: Int,
+    episodeNumber: Int,
+) {
     navigate(
         route = EpisodeDetailsDestination(
             showId = showId.value,
-            episodeId = episode.ids.trakt.value,
-            season = episode.season,
-            episode = episode.number,
+            episodeId = episodeId.value,
+            season = episodeSeason,
+            episode = episodeNumber,
         ),
     )
 }

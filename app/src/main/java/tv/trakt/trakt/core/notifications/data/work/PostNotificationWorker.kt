@@ -2,7 +2,11 @@ package tv.trakt.trakt.core.notifications.data.work
 
 import android.Manifest.permission.POST_NOTIFICATIONS
 import android.app.Notification
+import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
+import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
@@ -18,18 +22,24 @@ import coil3.ImageLoader
 import coil3.request.ImageRequest
 import coil3.request.allowHardware
 import coil3.toBitmap
+import kotlinx.serialization.json.Json
 import timber.log.Timber
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.toLocal
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
+import tv.trakt.trakt.core.notifications.model.NotificationIntentExtras
 import tv.trakt.trakt.core.notifications.model.PostNotificationData
 import tv.trakt.trakt.core.notifications.usecases.EnableNotificationsUseCase
 import tv.trakt.trakt.resources.R
 import java.time.Duration
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
+private const val MAIN_ACTIVITY_PATH = "tv.trakt.trakt.MainActivity"
 private const val WORK_ID = "post_notif_work"
 internal const val WORK_NOTIFICATION_TAG = "post_notif_work_tag"
+
+internal const val INTENT_NOTIFICATION_EXTRAS = "NOTIFICATION_INTENT_EXTRAS"
 
 internal class PostNotificationWorker(
     appContext: Context,
@@ -95,6 +105,7 @@ internal class PostNotificationWorker(
         val notificationId = "${WORK_ID}-$mediaType-$mediaId".hashCode()
         val notification = Notification
             .Builder(applicationContext, channel)
+            .setContentIntent(createNotificationIntent())
             .setSmallIcon(R.drawable.ic_trakt_icon)
             .setContentTitle(title)
             .setContentText(content)
@@ -129,5 +140,39 @@ internal class PostNotificationWorker(
             )
 
         return Result.success()
+    }
+
+    private fun createNotificationIntent(): PendingIntent {
+        val targetClass = Class.forName(MAIN_ACTIVITY_PATH)
+
+        val mediaId = inputData.getInt(PostNotificationData.MEDIA_ID, -1)
+        val mediaType = inputData.getString(PostNotificationData.MEDIA_TYPE)
+
+        val extraId = inputData.getInt(PostNotificationData.EXTRA_ID, -1)
+        val extraVal1 = inputData.getInt(PostNotificationData.EXTRA_VAL_1, -1)
+        val extraVal2 = inputData.getInt(PostNotificationData.EXTRA_VAL_2, -1)
+
+        val notifyIntent = Intent(applicationContext, targetClass).apply {
+            putExtra(
+                INTENT_NOTIFICATION_EXTRAS,
+                Json.encodeToString(
+                    NotificationIntentExtras(
+                        mediaId = mediaId,
+                        mediaType = MediaType.valueOf(mediaType!!),
+                        extraId = if (extraId != -1) extraId else null,
+                        extraValue1 = if (extraVal1 != -1) extraVal1 else null,
+                        extraValue2 = if (extraVal2 != -1) extraVal2 else null,
+                    ),
+                ),
+            )
+
+            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
+        return PendingIntent.getActivity(
+            applicationContext,
+            "$mediaType-$mediaId".hashCode(),
+            notifyIntent,
+            FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT,
+        )
     }
 }

@@ -28,6 +28,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,12 +53,17 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.jakewharton.processphoenix.ProcessPhoenix
+import kotlinx.serialization.json.Json
+import timber.log.Timber
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.common.helpers.LaunchedUpdateEffect
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.MediaType.EPISODE
+import tv.trakt.trakt.common.model.MediaType.MOVIE
+import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.discover.navigation.navigateToDiscover
 import tv.trakt.trakt.core.home.navigation.HomeDestination
@@ -80,10 +86,14 @@ import tv.trakt.trakt.core.main.navigation.searchScreens
 import tv.trakt.trakt.core.main.navigation.settingsScreens
 import tv.trakt.trakt.core.main.navigation.showsScreens
 import tv.trakt.trakt.core.main.ui.menubar.TraktMenuBar
+import tv.trakt.trakt.core.notifications.data.work.INTENT_NOTIFICATION_EXTRAS
+import tv.trakt.trakt.core.notifications.model.NotificationIntentExtras
 import tv.trakt.trakt.core.profile.navigation.ProfileDestination
 import tv.trakt.trakt.core.profile.navigation.navigateToProfile
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.navigateToSearch
+import tv.trakt.trakt.core.summary.episodes.navigation.navigateToEpisode
+import tv.trakt.trakt.core.summary.movies.navigation.navigateToMovie
 import tv.trakt.trakt.core.welcome.WelcomeScreen
 import tv.trakt.trakt.core.welcome.onboarding.OnboardingScreen
 import tv.trakt.trakt.resources.R
@@ -95,6 +105,7 @@ internal fun MainScreen(
     viewModel: MainViewModel,
     modifier: Modifier = Modifier,
     intent: Intent? = null,
+    newIntent: MutableState<Intent?>? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -150,14 +161,17 @@ internal fun MainScreen(
         }
     }
 
-    LaunchedEffect(intent) {
-        if (intent != null) {
-            handleShortcutIntent(
-                intent = intent,
-                navController = navController,
-                onRequestFocus = searchState.onRequestFocus,
-            )
-        }
+    LaunchedEffect(intent, newIntent?.value) {
+        handleShortcutIntent(
+            intent = intent,
+            navController = navController,
+            onRequestFocus = searchState.onRequestFocus,
+        )
+
+        handleNotificationIntent(
+            intent = newIntent?.value ?: intent,
+            navController = navController,
+        )
     }
 
     Box(
@@ -362,10 +376,17 @@ private fun MainNavHost(
 }
 
 private fun handleShortcutIntent(
-    intent: Intent,
+    intent: Intent?,
     navController: NavController,
     onRequestFocus: () -> Unit = {},
 ) {
+    Timber.d("Handling shortcut intent with extras: ${intent?.extras}")
+
+    if (intent == null) {
+        Timber.d("Intent is null, returning...")
+        return
+    }
+
     with(intent.extras ?: return) {
         when {
             containsKey("shortcutSearchExtra") -> {
@@ -387,6 +408,51 @@ private fun handleShortcutIntent(
             containsKey("shortcutProfileExtra") -> {
                 intent.removeExtra("shortcutProfileExtra")
                 navController.navigateToProfile()
+            }
+        }
+    }
+}
+
+@Suppress("IntroduceWhenSubject")
+private fun handleNotificationIntent(
+    intent: Intent?,
+    navController: NavController,
+) {
+    val extras = intent?.extras
+    Timber.d("Handling notification intent with extras: ${intent?.extras}")
+
+    if (intent == null) {
+        Timber.d("Intent is null, returning...")
+        return
+    }
+
+    if (extras?.containsKey(INTENT_NOTIFICATION_EXTRAS) == true) {
+        val extrasJson = extras.getString(INTENT_NOTIFICATION_EXTRAS)
+        if (extrasJson.isNullOrBlank()) {
+            return
+        }
+
+        val extras = Json.decodeFromString<NotificationIntentExtras>(extrasJson)
+        if (extras.mediaId == -1) {
+            return
+        }
+
+        when {
+            extras.mediaType == EPISODE -> {
+                if (extras.extraId == null || extras.extraValue1 == null || extras.extraValue2 == null) {
+                    return
+                }
+                navController.navigateToEpisode(
+                    showId = extras.extraId.toTraktId(),
+                    episodeId = extras.mediaId.toTraktId(),
+                    episodeSeason = extras.extraValue1,
+                    episodeNumber = extras.extraValue2,
+                )
+            }
+            extras.mediaType == MOVIE -> {
+                navController.navigateToMovie(
+                    movieId = extras.mediaId.toTraktId(),
+                )
             }
         }
     }
