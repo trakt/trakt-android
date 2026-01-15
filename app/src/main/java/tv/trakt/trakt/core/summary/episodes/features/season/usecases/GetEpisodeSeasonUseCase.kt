@@ -19,7 +19,7 @@ internal class GetEpisodeSeasonUseCase(
         return remoteEpisodesSource.getSeason(showId, seasonNumber)
             .asyncMap {
                 EpisodeItem(
-                    episode = Episode.Companion.fromDto(it),
+                    episode = Episode.fromDto(it),
                 )
             }
             .toImmutableList()

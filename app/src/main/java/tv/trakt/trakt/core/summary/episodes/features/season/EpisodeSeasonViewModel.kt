@@ -28,6 +28,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.StringResource
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
@@ -99,25 +100,39 @@ internal class EpisodeSeasonViewModel(
                 val authenticated = sessionManager.isAuthenticated()
 
                 val episodesAsync = async {
-                    getSeasonDetailsUseCase.getSeasonEpisodes(
-                        showId = show.ids.trakt,
-                        seasonNumber = episode.season,
-                    )
+                    try {
+                        return@async getSeasonDetailsUseCase.getSeasonEpisodes(
+                            showId = show.ids.trakt,
+                            seasonNumber = episode.season,
+                        )
+                    } catch (error: Exception) {
+                        error.rethrowCancellation {
+                            Timber.recordError(error)
+                        }
+                        EmptyImmutableList
+                    }
                 }
+
                 val watchedAsync = async {
                     if (!authenticated) {
                         return@async null
                     }
-                    when {
-                        loadUserProgressUseCase.isShowsLoaded() -> {
-                            loadUserProgressUseCase.loadLocalShows()
+                    return@async try {
+                        when {
+                            loadUserProgressUseCase.isShowsLoaded() -> {
+                                loadUserProgressUseCase.loadLocalShows()
+                            }
+                            else -> {
+                                loadUserProgressUseCase.loadShowsProgress()
+                            }
+                        }.firstOrNull {
+                            it.show.ids.trakt == show.ids.trakt
                         }
-
-                        else -> {
-                            loadUserProgressUseCase.loadShowsProgress()
+                    } catch (error: Exception) {
+                        error.rethrowCancellation {
+                            Timber.recordError(error)
                         }
-                    }.firstOrNull {
-                        it.show.ids.trakt == show.ids.trakt
+                        null
                     }
                 }
 
