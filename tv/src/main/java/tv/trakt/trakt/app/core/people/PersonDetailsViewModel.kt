@@ -47,12 +47,11 @@ internal class PersonDetailsViewModel(
 
     private fun loadData(personId: TraktId) {
         viewModelScope.launch {
-            val person = getPersonUseCase.getPerson(personId)
-            person?.let {
-                personDetailsState.value = it
-                loadPersonDetails(personId)
-                loadPersonCredits(personId)
+            personDetailsState.update {
+                getPersonUseCase.getPerson(personId)
             }
+            loadPersonDetails(personId)
+            loadPersonCredits(personId)
         }
     }
 
@@ -63,8 +62,9 @@ internal class PersonDetailsViewModel(
         }
         viewModelScope.launch {
             try {
-                val personDetails = getPersonUseCase.getPersonDetails(personId)
-                personDetailsState.value = personDetails
+                personDetailsState.update {
+                    getPersonUseCase.getPersonDetails(personId)
+                }
             } catch (e: Exception) {
                 e.rethrowCancellation()
             }

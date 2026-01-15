@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
+import timber.log.Timber
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.summary.people.PersonDetailsScreen
 
@@ -35,6 +36,11 @@ internal fun NavController.navigateToPerson(
     sourceMediaId: TraktId?,
     backdropUrl: String?,
 ) {
+    if (personId.value <= 0) {
+        Timber.d("Invalid personId: ${personId.value}")
+        return
+    }
+
     navigate(
         route = PersonDestination(
             personId = personId.value,

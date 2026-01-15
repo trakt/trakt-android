@@ -98,7 +98,7 @@ internal class PersonDetailsViewModel(
                 personId = destination.personId.toTraktId(),
             )
 
-            person?.let { person ->
+            person.let { person ->
                 personDetailsState.update { person }
 
                 loadPersonDetails(person.ids.trakt)

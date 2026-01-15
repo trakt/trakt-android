@@ -10,7 +10,7 @@ internal class GetPersonUseCase(
     private val peopleLocalSource: PeopleLocalDataSource,
     private val peopleRemoteSource: PeopleRemoteDataSource,
 ) {
-    suspend fun getPerson(personId: TraktId): Person? {
+    suspend fun getPerson(personId: TraktId): Person {
         val person = peopleLocalSource.getPerson(personId)
         if (person == null) {
             val remotePerson = peopleRemoteSource.getPersonDetails(personId)
