@@ -53,7 +53,7 @@ fun Episode.Companion.fromDto(dto: EpisodeDto): Episode {
         ids = Ids.fromDto(dto.ids),
         number = dto.number,
         season = dto.season,
-        title = dto.title,
+        title = dto.title ?: "N/A",
         numberAbs = dto.numberAbs,
         overview = dto.overview,
         rating = Rating(
@@ -77,7 +77,7 @@ fun Episode.Companion.fromDto(dto: LastEpisodeDto): Episode {
         ids = Ids.fromDto(dto.ids),
         number = dto.number,
         season = dto.season,
-        title = dto.title,
+        title = dto.title ?: "N/A",
         numberAbs = dto.numberAbs,
         overview = dto.overview,
         rating = Rating(
@@ -101,7 +101,7 @@ fun Episode.Companion.fromDto(dto: EpisodeLikesDto): Episode {
         ids = Ids.fromDto(dto.ids),
         number = dto.number,
         season = dto.season,
-        title = dto.title,
+        title = dto.title ?: "N/A",
         numberAbs = dto.numberAbs,
         overview = dto.overview,
         rating = Rating(
