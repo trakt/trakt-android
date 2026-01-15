@@ -21,7 +21,7 @@ import tv.trakt.trakt.app.core.search.usecase.recents.AddRecentSearchUseCase
 import tv.trakt.trakt.app.core.search.usecase.recents.GetRecentSearchUseCase
 import tv.trakt.trakt.common.Config.API_BASE_URL
 
-private const val SEARCH_PREFERENCES = "search_preferences"
+private const val SEARCH_PREFERENCES = "search_preferences_tv"
 
 internal val searchDataModule = module {
     single<SearchRemoteDataSource> {
