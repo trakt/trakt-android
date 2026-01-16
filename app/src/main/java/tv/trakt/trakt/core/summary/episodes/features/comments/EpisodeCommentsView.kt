@@ -196,8 +196,8 @@ private fun EpisodeCommentsContent(
                                 tint = TraktTheme.colors.textPrimary,
                                 modifier = Modifier
                                     .padding(
-                                        start = 9.dp,
-                                        end = 4.dp,
+                                        start = 12.dp,
+                                        end = 6.dp,
                                     )
                                     .size(18.dp)
                                     .onClick(enabled = state.loading == DONE) {

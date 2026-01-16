@@ -132,7 +132,7 @@ private fun Preview3() {
                     contentDescription = null,
                     tint = TraktTheme.colors.textPrimary,
                     modifier = Modifier
-                        .padding(start = 6.dp, end = 2.dp)
+                        .padding(start = 10.dp, end = 6.dp)
                         .size(14.dp),
                 )
             },
