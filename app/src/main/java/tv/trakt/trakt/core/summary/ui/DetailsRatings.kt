@@ -53,6 +53,7 @@ internal fun DetailsRatings(
         val textStyle = TraktTheme.typography.meta.copy(fontSize = 12.sp)
         val iconSpace = spacedBy(4.dp, Alignment.Start)
         val emptyText = "— %"
+        val emptyImdbText = "— "
 
         // Trakt Rating
         val traktRating = traktRatings ?: 0
@@ -118,7 +119,7 @@ internal fun DetailsRatings(
                         )
                     } else {
                         Text(
-                            text = emptyText,
+                            text = emptyImdbText,
                             color = TraktTheme.colors.textSecondary,
                             style = textStyle,
                         )
@@ -261,7 +262,7 @@ private fun Preview() {
         ) {
             val ratings = ExternalRating(
                 imdb = ExternalRating.ImdbRating(
-                    rating = 8F,
+                    rating = 9.5F,
                     votes = 123456,
                     link = "https://www.imdb.com/title/tt1234567/",
                 ),
