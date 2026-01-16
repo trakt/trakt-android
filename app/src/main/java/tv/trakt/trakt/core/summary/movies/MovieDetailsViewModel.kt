@@ -279,6 +279,11 @@ internal class MovieDetailsViewModel(
 
                 val userRating = userRatings[movieId]?.copy(
                     favorite = userFavorites[movieId] != null,
+                ) ?: UserRating(
+                    mediaId = movieId,
+                    mediaType = MOVIE,
+                    rating = 0,
+                    favorite = userFavorites[movieId] != null,
                 )
 
                 movieUserRatingsState.update {
@@ -725,6 +730,13 @@ internal class MovieDetailsViewModel(
                         rating = it.rating?.copy(
                             favorite = true,
                         ),
+                    ) ?: UserRatingsState(
+                        rating = UserRating(
+                            mediaId = movieId,
+                            mediaType = MOVIE,
+                            rating = 0,
+                            favorite = true,
+                        ),
                     )
                 }
 
@@ -762,6 +774,13 @@ internal class MovieDetailsViewModel(
                 movieUserRatingsState.update {
                     it?.copy(
                         rating = it.rating?.copy(
+                            favorite = false,
+                        ),
+                    ) ?: UserRatingsState(
+                        rating = UserRating(
+                            mediaId = movieId,
+                            mediaType = MOVIE,
+                            rating = 0,
                             favorite = false,
                         ),
                     )

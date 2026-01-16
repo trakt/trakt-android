@@ -356,6 +356,11 @@ internal class ShowDetailsViewModel(
 
                 val userRating = userRatings[showId]?.copy(
                     favorite = userFavorites[showId] != null,
+                ) ?: UserRating(
+                    mediaId = showId,
+                    mediaType = SHOW,
+                    rating = 0,
+                    favorite = userFavorites[showId] != null,
                 )
 
                 showUserRatingsState.update {
@@ -790,6 +795,13 @@ internal class ShowDetailsViewModel(
                 showUserRatingsState.update {
                     it?.copy(
                         rating = it.rating?.copy(favorite = true),
+                    ) ?: UserRatingsState(
+                        rating = UserRating(
+                            mediaId = showId,
+                            mediaType = SHOW,
+                            rating = 0,
+                            favorite = true,
+                        ),
                     )
                 }
 
@@ -823,7 +835,12 @@ internal class ShowDetailsViewModel(
 
                 showUserRatingsState.update {
                     it?.copy(
-                        rating = it.rating?.copy(
+                        rating = it.rating?.copy(favorite = false),
+                    ) ?: UserRatingsState(
+                        rating = UserRating(
+                            mediaId = showId,
+                            mediaType = SHOW,
+                            rating = 0,
                             favorite = false,
                         ),
                     )
