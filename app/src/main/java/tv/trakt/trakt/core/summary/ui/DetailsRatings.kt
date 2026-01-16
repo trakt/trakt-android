@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -52,20 +53,24 @@ internal fun DetailsRatings(
     ) {
         val textStyle = TraktTheme.typography.meta.copy(fontSize = 12.sp)
         val iconSpace = spacedBy(4.dp, Alignment.Start)
+        val iconTraktSpace = spacedBy(2.dp, Alignment.Start)
         val emptyText = "—"
         val emptyImdbText = "— "
 
         // Trakt Rating
         val traktRating = (traktRatings ?: 0) / 2F
         Row(
-            horizontalArrangement = iconSpace,
+            horizontalArrangement = iconTraktSpace,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Image(
+            Icon(
                 painter = painterResource(R.drawable.ic_star_trakt_on),
                 contentDescription = null,
                 modifier = Modifier.height(16.dp),
-                colorFilter = if (traktRating > 0 && !hidden) null else grayFilter,
+                tint = when {
+                    traktRating > 0 && !hidden -> TraktTheme.colors.textPrimary
+                    else -> TraktTheme.colors.textSecondary
+                },
             )
 
             Box {
