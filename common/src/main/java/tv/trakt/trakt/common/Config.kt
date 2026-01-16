@@ -45,4 +45,8 @@ object Config {
     fun webImdbPersonUrl(imdbId: String): String {
         return "https://www.imdb.com/name/$imdbId/"
     }
+
+    fun webImdbMediaUrl(imdbId: String): String {
+        return "https://www.imdb.com/title/$imdbId/"
+    }
 }

@@ -82,6 +82,8 @@ internal fun DetailsHeader(
     playsCount: Int?,
     personImdb: ImdbId? = null,
     loading: Boolean,
+    onImdbClick: () -> Unit,
+    onRottenClick: (link: String) -> Unit,
     onShareClick: () -> Unit,
     onBackClick: () -> Unit,
 ) {
@@ -216,6 +218,8 @@ internal fun DetailsHeader(
                 traktRatings = traktRatings,
                 externalRatings = externalRatings,
                 rottenEnabled = externalRottenVisible,
+                onImdbClick = onImdbClick,
+                onRottenClick = onRottenClick,
                 modifier = Modifier
                     .padding(top = 20.dp),
             )
@@ -494,6 +498,8 @@ private fun Preview() {
             ),
             onShareClick = {},
             onBackClick = {},
+            onImdbClick = {},
+            onRottenClick = {},
         )
     }
 }
@@ -553,6 +559,8 @@ private fun Preview2() {
             ),
             onShareClick = {},
             onBackClick = {},
+            onImdbClick = {},
+            onRottenClick = {},
         )
     }
 }

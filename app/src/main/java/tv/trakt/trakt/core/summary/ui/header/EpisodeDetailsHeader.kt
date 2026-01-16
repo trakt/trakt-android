@@ -13,14 +13,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
+import tv.trakt.trakt.common.Config.webImdbMediaUrl
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Person
@@ -42,6 +46,8 @@ internal fun DetailsHeader(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
+
     val isReleased = remember {
         episode.firstAired?.isNowOrBefore() ?: false
     }
@@ -177,6 +183,20 @@ internal fun DetailsHeader(
         loading = loading,
         onBackClick = onBackClick,
         onShareClick = onShareClick,
+        onImdbClick = {
+            val uri = when {
+                episode.ids.imdb != null -> webImdbMediaUrl(episode.ids.imdb!!.value)
+                show.ids.imdb != null -> webImdbMediaUrl(show.ids.imdb!!.value)
+                else -> return@DetailsHeader
+            }
+            openExternalAppLink(
+                context = context,
+                packageId = "com.imdb.mobile",
+                packageName = "imdb",
+                uri = uri.toUri(),
+            )
+        },
+        onRottenClick = {},
         modifier = modifier,
     )
 }

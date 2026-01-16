@@ -46,6 +46,8 @@ internal fun DetailsHeader(
         creditsCount = null,
         traktRatings = null,
         personImdb = person.ids.imdb,
+        onImdbClick = {},
+        onRottenClick = {},
         modifier = modifier,
     )
 }

@@ -12,12 +12,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
+import tv.trakt.trakt.common.Config.webImdbMediaUrl
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Person
@@ -38,6 +42,8 @@ internal fun DetailsHeader(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
+
     val isReleased = remember {
         show.released?.isNowOrBefore() ?: false
     }
@@ -126,6 +132,26 @@ internal fun DetailsHeader(
         loading = loading,
         onBackClick = onBackClick,
         onShareClick = onShareClick,
+        onImdbClick = {
+            show.ids.imdb?.let {
+                openExternalAppLink(
+                    context = context,
+                    packageId = "com.imdb.mobile",
+                    packageName = "imdb",
+                    uri = webImdbMediaUrl(it.value).toUri(),
+                )
+            }
+        },
+        onRottenClick = { link ->
+            if (link.isNotBlank()) {
+                openExternalAppLink(
+                    context = context,
+                    packageId = "com.rottentomatoes.android",
+                    packageName = "rottentomatoes",
+                    uri = link.toUri(),
+                )
+            }
+        },
         modifier = modifier,
     )
 }

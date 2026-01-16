@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -33,6 +34,8 @@ internal fun DetailsRatings(
     modifier: Modifier = Modifier,
     hidden: Boolean = false,
     rottenEnabled: Boolean = true,
+    onImdbClick: () -> Unit = {},
+    onRottenClick: (link: String) -> Unit = {},
 ) {
     val grayFilter = remember {
         ColorFilter.colorMatrix(
@@ -93,9 +96,11 @@ internal fun DetailsRatings(
             Row(
                 horizontalArrangement = iconSpace,
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.graphicsLayer {
-                    translationX = (1.8).dp.toPx()
-                },
+                modifier = Modifier
+                    .onClick(onClick = onImdbClick)
+                    .graphicsLayer {
+                        translationX = (1.8).dp.toPx()
+                    },
             ) {
                 Image(
                     painter = painterResource(R.drawable.ic_imdb_color),
@@ -138,6 +143,12 @@ internal fun DetailsRatings(
                 Row(
                     horizontalArrangement = iconSpace,
                     verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .onClick {
+                            externalRatings?.rotten?.link?.let {
+                                onRottenClick(it)
+                            }
+                        },
                 ) {
                     Image(
                         painter = when {
@@ -190,6 +201,12 @@ internal fun DetailsRatings(
                 Row(
                     horizontalArrangement = iconSpace,
                     verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .onClick {
+                            externalRatings?.rotten?.link?.let {
+                                onRottenClick(it)
+                            }
+                        },
                 ) {
                     Image(
                         painter = when {
