@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.networking.SearchItemDto
 import tv.trakt.trakt.core.search.data.remote.SearchRemoteDataSource
 
 private const val DEFAULT_SEARCH_LIMIT = 50
+private const val DEFAULT_EXACT_SEARCH_LIMIT = 20
 
 internal class GetSearchResultsUseCase(
     private val remoteSource: SearchRemoteDataSource,
@@ -17,7 +18,7 @@ internal class GetSearchResultsUseCase(
 
         return coroutineScope {
             val exactResultsAsync = async {
-                remoteSource.getShowsMovies(query, DEFAULT_SEARCH_LIMIT, exact = true)
+                remoteSource.getShowsMovies(query, DEFAULT_EXACT_SEARCH_LIMIT, exact = true)
             }
             val normalResultsAsync = async {
                 remoteSource.getShowsMovies(query, DEFAULT_SEARCH_LIMIT, exact = false)
@@ -40,7 +41,7 @@ internal class GetSearchResultsUseCase(
 
         return coroutineScope {
             val exactResultsAsync = async {
-                remoteSource.getShows(query, DEFAULT_SEARCH_LIMIT, exact = true)
+                remoteSource.getShows(query, DEFAULT_EXACT_SEARCH_LIMIT, exact = true)
             }
             val normalResultsAsync = async {
                 remoteSource.getShows(query, DEFAULT_SEARCH_LIMIT, exact = false)
@@ -63,7 +64,7 @@ internal class GetSearchResultsUseCase(
 
         return coroutineScope {
             val exactResultsAsync = async {
-                remoteSource.getMovies(query, DEFAULT_SEARCH_LIMIT, exact = true)
+                remoteSource.getMovies(query, DEFAULT_EXACT_SEARCH_LIMIT, exact = true)
             }
             val normalResultsAsync = async {
                 remoteSource.getMovies(query, DEFAULT_SEARCH_LIMIT, exact = false)
