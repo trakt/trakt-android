@@ -34,61 +34,92 @@ internal class SearchApiClient(
     override suspend fun getShows(
         query: String,
         limit: Int,
+        exact: Boolean,
         extended: String,
     ): List<SearchItemDto> {
         if (query.trim().isBlank()) {
             return emptyList()
         }
-        val response = api.getSearchQuery(
-            type = "show",
-            query = query,
-            page = 1,
-            limit = limit,
-            extended = extended,
-            engine = "typesense",
-        )
-
+        val response = when {
+            exact -> api.getSearchExact(
+                type = "show",
+                query = query,
+                page = 1,
+                limit = limit,
+                extended = extended,
+                engine = "typesense",
+            )
+            else -> api.getSearchQuery(
+                type = "show",
+                query = query,
+                page = 1,
+                limit = limit,
+                extended = extended,
+                engine = "typesense",
+            )
+        }
         return response.body()
     }
 
     override suspend fun getMovies(
         query: String,
         limit: Int,
+        exact: Boolean,
         extended: String,
     ): List<SearchItemDto> {
         if (query.trim().isBlank()) {
             return emptyList()
         }
 
-        val response = api.getSearchQuery(
-            type = "movie",
-            query = query,
-            page = 1,
-            limit = limit,
-            extended = extended,
-            engine = "typesense",
-        )
-
+        val response = when {
+            exact -> api.getSearchExact(
+                type = "movie",
+                query = query,
+                page = 1,
+                limit = limit,
+                extended = extended,
+                engine = "typesense",
+            )
+            else -> api.getSearchQuery(
+                type = "movie",
+                query = query,
+                page = 1,
+                limit = limit,
+                extended = extended,
+                engine = "typesense",
+            )
+        }
         return response.body()
     }
 
     override suspend fun getShowsMovies(
         query: String,
         limit: Int,
+        exact: Boolean,
         extended: String,
     ): List<SearchItemDto> {
         if (query.trim().isBlank()) {
             return emptyList()
         }
 
-        val response = api.getSearchQuery(
-            type = "show,movie",
-            query = query,
-            page = 1,
-            limit = limit,
-            extended = extended,
-            engine = "typesense",
-        )
+        val response = when {
+            exact -> api.getSearchExact(
+                type = "show,movie",
+                query = query,
+                page = 1,
+                limit = limit,
+                extended = extended,
+                engine = "typesense",
+            )
+            else -> api.getSearchQuery(
+                type = "show,movie",
+                query = query,
+                page = 1,
+                limit = limit,
+                extended = extended,
+                engine = "typesense",
+            )
+        }
 
         return response.body()
     }

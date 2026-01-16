@@ -14,18 +14,21 @@ internal interface SearchRemoteDataSource {
     suspend fun getShows(
         query: String,
         limit: Int,
+        exact: Boolean = false,
         extended: String = "full,cloud9,colors,streaming_ids",
     ): List<SearchItemDto>
 
     suspend fun getMovies(
         query: String,
         limit: Int,
+        exact: Boolean = false,
         extended: String = "full,cloud9,colors,streaming_ids",
     ): List<SearchItemDto>
 
     suspend fun getShowsMovies(
         query: String,
         limit: Int,
+        exact: Boolean = false,
         extended: String = "full,cloud9,colors,streaming_ids",
     ): List<SearchItemDto>
 
