@@ -52,17 +52,17 @@ internal fun DetailsRatings(
     ) {
         val textStyle = TraktTheme.typography.meta.copy(fontSize = 12.sp)
         val iconSpace = spacedBy(4.dp, Alignment.Start)
-        val emptyText = "— %"
+        val emptyText = "—"
         val emptyImdbText = "— "
 
         // Trakt Rating
-        val traktRating = traktRatings ?: 0
+        val traktRating = (traktRatings ?: 0) / 2F
         Row(
             horizontalArrangement = iconSpace,
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
-                painter = painterResource(R.drawable.ic_trakt_icon_color),
+                painter = painterResource(R.drawable.ic_star_trakt_on),
                 contentDescription = null,
                 modifier = Modifier.height(16.dp),
                 colorFilter = if (traktRating > 0 && !hidden) null else grayFilter,
@@ -71,7 +71,7 @@ internal fun DetailsRatings(
             Box {
                 Text(
                     text = when {
-                        traktRating > 0 && !hidden -> "$traktRating%"
+                        traktRating > 0 && !hidden -> String.format("%.1f", traktRating / 10f)
                         else -> emptyText
                     },
                     color = when {
@@ -81,7 +81,7 @@ internal fun DetailsRatings(
                     style = textStyle,
                 )
                 Text(
-                    text = "99%",
+                    text = "00",
                     color = Color.Transparent,
                     style = textStyle,
                 )
@@ -280,7 +280,7 @@ private fun Preview() {
             )
 
             DetailsRatings(
-                traktRatings = 72,
+                traktRatings = 64,
                 externalRatings = ratings,
             )
 
