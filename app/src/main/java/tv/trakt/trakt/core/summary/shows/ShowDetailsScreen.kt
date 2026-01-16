@@ -649,7 +649,7 @@ fun DetailsRating(
             UserRatingBar(
                 rating = rating,
                 favoriteLoading = loading,
-                favoriteVisible = rating != null,
+                favoriteVisible = true,
                 favorite = rating?.favorite == true,
                 onRatingClick = onRatingClick,
                 onFavoriteClick = onFavoriteClick,
