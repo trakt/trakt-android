@@ -163,11 +163,11 @@ internal class ScheduleNotificationsWorker(
         }
 
         // Adjust notifications scheduled between 00:00 and 06:00 to 10:00 local time.
-        if (targetDate.hour in 0..6) {
-            val adjustedDate = targetDate.withHour(10).withMinute(0)
-            Timber.d("Date adjusted: ${item.id.value} from $targetDate to $adjustedDate")
-            targetDate = adjustedDate
-        }
+//        if (targetDate.hour in 0..6) {
+//            val adjustedDate = targetDate.withHour(10).withMinute(0)
+//            Timber.d("Date adjusted: ${item.id.value} from $targetDate to $adjustedDate")
+//            targetDate = adjustedDate
+//        }
 
         PostNotificationWorker.schedule(
             appContext = applicationContext,
@@ -229,11 +229,11 @@ internal class ScheduleNotificationsWorker(
         }
 
         // Adjust notifications scheduled between 00:00 and 06:00 to 10:00 local time.
-        if (targetDate.hour in 0..6) {
-            val adjustedDate = targetDate.withHour(10).withMinute(0)
-            Timber.d("Date adjusted: grouped episodes from $targetDate to $adjustedDate")
-            targetDate = adjustedDate
-        }
+//        if (targetDate.hour in 0..6) {
+//            val adjustedDate = targetDate.withHour(10).withMinute(0)
+//            Timber.d("Date adjusted: grouped episodes from $targetDate to $adjustedDate")
+//            targetDate = adjustedDate
+//        }
 
         PostNotificationWorker.schedule(
             appContext = applicationContext,
