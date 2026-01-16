@@ -79,7 +79,7 @@ private fun ReactionsToolTipContent(
     onReactionClick: (Reaction) -> Unit = {},
     onDismiss: () -> Unit = {},
 ) {
-    val summaryVisible = (userReaction != null)
+    val summaryVisible = true
 
     val animatedAlpha: Float by animateFloatAsState(
         targetValue = if (summaryVisible) 1f else 0f,
@@ -120,7 +120,7 @@ private fun ReactionsToolTipContent(
                 .fillMaxWidth()
                 .padding(
                     top = 6.dp,
-                    bottom = 2.dp,
+                    bottom = 4.dp,
                     start = 6.dp,
                     end = 6.dp,
                 )
