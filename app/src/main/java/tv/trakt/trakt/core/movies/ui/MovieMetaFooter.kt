@@ -1,6 +1,5 @@
 package tv.trakt.trakt.core.movies.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.SpaceBetween
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -13,8 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -129,24 +126,19 @@ fun MovieMetaFooter(
         if (rating && !secondary && isReleased && !check) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = spacedBy(4.dp),
+                horizontalArrangement = spacedBy(2.dp),
             ) {
-                val grayFilter = remember {
-                    ColorFilter.colorMatrix(
-                        ColorMatrix().apply {
-                            setToSaturation(0F)
-                        },
-                    )
-                }
-
-                Image(
-                    painter = painterResource(R.drawable.ic_trakt_icon_color),
+                Icon(
+                    painter = painterResource(R.drawable.ic_star_trakt_on),
                     contentDescription = null,
                     modifier = Modifier.size(13.dp),
-                    colorFilter = if (movie.rating.rating > 0) null else grayFilter,
+                    tint = when {
+                        movie.rating.rating > 0 -> TraktTheme.colors.textPrimary
+                        else -> TraktTheme.colors.textSecondary
+                    },
                 )
                 Text(
-                    text = if (movie.rating.rating > 0) "${movie.rating.ratingPercent}%" else "-",
+                    text = if (movie.rating.rating > 0) movie.rating.rating5Scale else "-",
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
                 )
