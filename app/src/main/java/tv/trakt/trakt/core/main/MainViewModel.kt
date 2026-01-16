@@ -2,6 +2,7 @@
 
 package tv.trakt.trakt.core.main
 
+import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -34,6 +35,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.auth.usecase.AuthorizeUserUseCase
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
+import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
 import tv.trakt.trakt.core.user.usecases.LoadUserProfileUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
@@ -166,6 +168,13 @@ internal class MainViewModel(
                 }
             }
         }
+    }
+
+    fun loadNotifications(context: Context) {
+        ScheduleNotificationsWorker.schedule(
+            appContext = context.applicationContext,
+            forceRemote = true,
+        )
     }
 
     private fun authorizeUser(code: String) {

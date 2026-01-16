@@ -2,11 +2,13 @@ package tv.trakt.trakt.core.notifications.data.work
 
 import android.content.Context
 import androidx.work.CoroutineWorker
+import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.delay
 import timber.log.Timber
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
@@ -25,6 +27,7 @@ import tv.trakt.trakt.core.notifications.usecases.EnableNotificationsUseCase
 import tv.trakt.trakt.core.notifications.usecases.UpdateNotificationsDeliveryUseCase
 import tv.trakt.trakt.resources.R
 import java.time.temporal.ChronoUnit
+import kotlin.time.Duration.Companion.seconds
 import kotlin.time.toJavaDuration
 
 private const val WORK_ID = "schedule_notifications_work"
@@ -38,8 +41,16 @@ internal class ScheduleNotificationsWorker(
     val notificationsDeliveryUseCase: UpdateNotificationsDeliveryUseCase,
 ) : CoroutineWorker(appContext, workerParams) {
     companion object {
-        fun schedule(appContext: Context) {
+        fun schedule(
+            appContext: Context,
+            forceRemote: Boolean = false,
+        ) {
             val workRequest = OneTimeWorkRequestBuilder<ScheduleNotificationsWorker>()
+                .setInputData(
+                    Data.Builder()
+                        .putBoolean("forceRemote", forceRemote)
+                        .build(),
+                )
                 .build()
 
             with(WorkManager.getInstance(appContext)) {
@@ -60,6 +71,9 @@ internal class ScheduleNotificationsWorker(
     }
 
     override suspend fun doWork(): Result {
+        val forceRemote = inputData.getBoolean("forceRemote", false)
+        Timber.d("Scheduling notifications (forceRemote=$forceRemote)...")
+
         try {
             if (!sessionManager.isAuthenticated()) {
                 Timber.d("Not authenticated, skipping.")
@@ -71,13 +85,13 @@ internal class ScheduleNotificationsWorker(
                 return Result.failure()
             }
 
+            delay(3.seconds)
             var upcomingItems = getUpcomingUseCase.getLocalUpcoming(MediaMode.MEDIA)
-            if (upcomingItems.isEmpty()) {
+            if (upcomingItems.isEmpty() || forceRemote) {
                 try {
                     upcomingItems = getUpcomingUseCase.getUpcoming(MediaMode.MEDIA)
                 } catch (error: Exception) {
-                    // Ignore errors at this point.
-                    Timber.e(error)
+                    Timber.recordError(error)
                 }
             }
 

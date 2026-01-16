@@ -130,6 +130,7 @@ internal fun MainScreen(
 
     LifecycleEventEffect(ON_RESUME) {
         viewModel.loadData()
+        viewModel.loadNotifications(localContext)
     }
 
     LaunchedUpdateEffect(state.user) {
