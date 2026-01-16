@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,10 +44,15 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 internal fun HomeEmptySocialView(modifier: Modifier = Modifier) {
+    val inspection = LocalInspectionMode.current
     val uriHandler = LocalUriHandler.current
 
     val imageUrl = remember {
-        Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_4).ifBlank { null }
+        if (inspection) {
+            null
+        } else {
+            Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_4).ifBlank { null }
+        }
     }
 
     BoxWithConstraints(
@@ -79,7 +85,7 @@ internal fun HomeEmptySocialView(modifier: Modifier = Modifier) {
         }
 
         Column(
-            verticalArrangement = spacedBy(24.dp),
+            verticalArrangement = spacedBy(32.dp),
             modifier = Modifier
                 .background(
                     brush = Brush.linearGradient(
