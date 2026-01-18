@@ -79,7 +79,7 @@ private fun ReactionsToolTipContent(
     onReactionClick: (Reaction) -> Unit = {},
     onDismiss: () -> Unit = {},
 ) {
-    val summaryVisible = true
+    val summaryVisible = (reactions?.reactionsCount ?: 0) > 0
 
     val animatedAlpha: Float by animateFloatAsState(
         targetValue = if (summaryVisible) 1f else 0f,
