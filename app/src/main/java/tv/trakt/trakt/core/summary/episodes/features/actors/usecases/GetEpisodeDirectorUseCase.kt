@@ -21,7 +21,7 @@ internal class GetEpisodeDirectorUseCase(
             episode = seasonEpisode.episode,
         ).crew
             ?.get("directing")
-            ?.first { it.job.equals("director", ignoreCase = true) }
+            ?.firstOrNull { it.job.equals("director", ignoreCase = true) }
             ?.let { Person.fromDto(it.person) }
             ?.also {
                 peopleLocalSource.upsertPeople(listOf(it))

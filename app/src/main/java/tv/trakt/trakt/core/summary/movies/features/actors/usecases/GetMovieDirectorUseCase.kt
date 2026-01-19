@@ -13,7 +13,7 @@ internal class GetMovieDirectorUseCase(
     suspend fun getDirector(movieId: TraktId): Person {
         return remoteSource.getCastCrew(movieId).crew
             ?.get("directing")
-            ?.first { it.job.equals("director", ignoreCase = true) }
+            ?.firstOrNull { it.job.equals("director", ignoreCase = true) }
             ?.let { Person.fromDto(it.person) }
             ?.also {
                 peopleLocalSource.upsertPeople(listOf(it))
