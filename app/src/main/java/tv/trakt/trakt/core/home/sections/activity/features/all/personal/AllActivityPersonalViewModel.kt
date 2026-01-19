@@ -7,9 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -37,6 +41,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.features.all.AllActivityState
 import tv.trakt.trakt.core.home.sections.activity.features.all.navigation.AllPersonalActivityDestination
@@ -44,10 +49,13 @@ import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.core.ratings.data.RatingsUpdates
+import tv.trakt.trakt.core.ratings.data.RatingsUpdates.Source.POST_RATING
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
+import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 
 @OptIn(FlowPreview::class)
 internal class AllActivityPersonalViewModel(
@@ -58,9 +66,11 @@ internal class AllActivityPersonalViewModel(
     private val showLocalDataSource: ShowLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
+    private val userRatingsUseCase: LoadUserRatingsUseCase,
     private val showUpdatesSource: ShowDetailsUpdates,
     private val episodeUpdatesSource: EpisodeDetailsUpdates,
     private val movieDetailsUpdates: MovieDetailsUpdates,
+    private val ratingsUpdates: RatingsUpdates,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<AllPersonalActivityDestination>()
@@ -74,6 +84,7 @@ internal class AllActivityPersonalViewModel(
     )
 
     private val itemsState = MutableStateFlow(initialState.items)
+    private val itemsRatingsState = MutableStateFlow(initialState.itemsRatings)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
@@ -89,7 +100,10 @@ internal class AllActivityPersonalViewModel(
 
     init {
         loadData()
+        loadUserRatingData()
+
         observeData()
+        observeRatings()
 
         analytics.logScreenView(
             screenName = "all_activity_personal",
@@ -108,6 +122,17 @@ internal class AllActivityPersonalViewModel(
             .debounce(200)
             .onEach {
                 loadData(ignoreErrors = true)
+            }.launchIn(viewModelScope)
+    }
+
+    private fun observeRatings() {
+        merge(
+            ratingsUpdates.observeUpdates(POST_RATING),
+        )
+            .distinctUntilChanged()
+            .debounce(200)
+            .onEach {
+                loadUserRatingData(ignoreErrors = true)
             }.launchIn(viewModelScope)
     }
 
@@ -187,6 +212,49 @@ internal class AllActivityPersonalViewModel(
                 }
             } finally {
                 loadingMoreState.update { DONE }
+            }
+        }
+    }
+
+    private fun loadUserRatingData(ignoreErrors: Boolean = false) {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+
+            try {
+                coroutineScope {
+                    val moviesAsync = async {
+                        if (!userRatingsUseCase.isMoviesLoaded()) {
+                            userRatingsUseCase.loadMovies()
+                        }
+                    }
+
+                    val episodesAsync = async {
+                        if (!userRatingsUseCase.isEpisodesLoaded()) {
+                            userRatingsUseCase.loadEpisodes()
+                        }
+                    }
+
+                    episodesAsync.await()
+                    moviesAsync.await()
+                }
+
+                val userMovieRatings = userRatingsUseCase.loadLocalMovies()
+                val userEpisodesRatings = userRatingsUseCase.loadLocalEpisodes()
+
+                itemsRatingsState.update {
+                    (userMovieRatings + userEpisodesRatings)
+                        .mapKeys { it.value.key }
+                        .toImmutableMap()
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    if (!ignoreErrors) {
+                        errorState.update { error }
+                    }
+                    Timber.recordError(error)
+                }
             }
         }
     }
@@ -279,6 +347,7 @@ internal class AllActivityPersonalViewModel(
 
     val state = combine(
         itemsState,
+        itemsRatingsState,
         filterState,
         navigateShow,
         navigateEpisode,
@@ -289,13 +358,14 @@ internal class AllActivityPersonalViewModel(
     ) { state ->
         AllActivityState(
             items = state[0] as ImmutableList<HomeActivityItem>?,
-            itemsFilter = state[1] as MediaMode?,
-            navigateShow = state[2] as TraktId?,
-            navigateEpisode = state[3] as Pair<TraktId, Episode>?,
-            navigateMovie = state[4] as TraktId?,
-            loading = state[5] as LoadingState,
-            loadingMore = state[6] as LoadingState,
-            error = state[7] as Exception?,
+            itemsRatings = state[1] as? ImmutableMap<String, UserRating>,
+            itemsFilter = state[2] as MediaMode?,
+            navigateShow = state[3] as TraktId?,
+            navigateEpisode = state[4] as Pair<TraktId, Episode>?,
+            navigateMovie = state[5] as TraktId?,
+            loading = state[6] as LoadingState,
+            loadingMore = state[7] as LoadingState,
+            error = state[8] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

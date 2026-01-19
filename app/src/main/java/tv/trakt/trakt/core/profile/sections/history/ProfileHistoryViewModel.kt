@@ -105,7 +105,6 @@ internal class ProfileHistoryViewModel(
             .debounce(200)
             .onEach {
                 loadData(ignoreErrors = true)
-                loadUserRatingData(ignoreErrors = true)
             }.launchIn(viewModelScope)
     }
 

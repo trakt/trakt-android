@@ -42,7 +42,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableMap
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
@@ -50,6 +52,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.home.sections.activity.features.all.AllActivityState
 import tv.trakt.trakt.core.home.sections.activity.features.all.views.AllActivityEpisodeItem
@@ -204,6 +207,7 @@ internal fun AllActivityPersonalContent(
             listState = listState,
             listFilter = state.itemsFilter,
             listItems = (state.items ?: emptyList()).toImmutableList(),
+            listRatings = (state.itemsRatings ?: emptyMap()).toImmutableMap(),
             contentPadding = contentPadding,
             loadingMore = state.loadingMore.isLoading,
             onEndOfList = onLoadMore,
@@ -221,6 +225,7 @@ internal fun AllActivityPersonalContent(
 private fun ContentList(
     modifier: Modifier = Modifier,
     listItems: ImmutableList<HomeActivityItem>,
+    listRatings: ImmutableMap<String, UserRating>,
     listState: LazyListState,
     listFilter: MediaMode?,
     contentPadding: PaddingValues,
@@ -279,6 +284,7 @@ private fun ContentList(
                 is MovieItem -> {
                     AllActivityMovieItem(
                         item = item,
+                        itemRating = listRatings[item.key],
                         onClick = {
                             onMovieClick(item.movie)
                         },
@@ -296,6 +302,7 @@ private fun ContentList(
                 is EpisodeItem -> {
                     AllActivityEpisodeItem(
                         item = item,
+                        itemRating = listRatings[item.key],
                         onClick = { onEpisodeClick(item) },
                         onShowClick = { onShowClick(item) },
                         onLongClick = { onLongClick(item) },

@@ -32,7 +32,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableMap
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
@@ -41,6 +43,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.sheets.HomeActivityItemSheet
 import tv.trakt.trakt.core.home.sections.activity.views.ActivityEpisodeItemView
@@ -182,9 +185,11 @@ internal fun HomeHistoryContent(
                             state.error != null -> {
                                 Text(
                                     text =
-                                        "${stringResource(
-                                            R.string.error_text_unexpected_error_short,
-                                        )}\n\n${state.error}",
+                                        "${
+                                            stringResource(
+                                                R.string.error_text_unexpected_error_short,
+                                            )
+                                        }\n\n${state.error}",
                                     color = TraktTheme.colors.textSecondary,
                                     style = TraktTheme.typography.meta,
                                     maxLines = 10,
@@ -204,6 +209,7 @@ internal fun HomeHistoryContent(
                             else -> {
                                 ContentList(
                                     listItems = (state.items ?: emptyList()).toImmutableList(),
+                                    listRatings = (state.itemsRatings ?: emptyMap()).toImmutableMap(),
                                     contentPadding = contentPadding,
                                     onShowClick = onShowClick,
                                     onEpisodeClick = onEpisodeClick,
@@ -241,6 +247,7 @@ private fun ContentLoadingList(
 @Composable
 private fun ContentList(
     listItems: ImmutableList<HomeActivityItem>,
+    listRatings: ImmutableMap<String, UserRating>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
     onShowClick: (HomeActivityItem.EpisodeItem) -> Unit,
@@ -273,6 +280,7 @@ private fun ContentList(
                 is HomeActivityItem.MovieItem -> {
                     ActivityMovieItemView(
                         item = item,
+                        itemRating = listRatings[item.key],
                         onClick = { onMovieClick(item.movie) },
                         onLongClick = { onMovieLongClick(item) },
                         moreButton = true,
@@ -287,6 +295,7 @@ private fun ContentList(
                 is HomeActivityItem.EpisodeItem -> {
                     ActivityEpisodeItemView(
                         item = item,
+                        itemRating = listRatings[item.key],
                         onClick = { onEpisodeClick(item) },
                         onShowClick = { onShowClick(item) },
                         onLongClick = { onEpisodeLongClick(item) },

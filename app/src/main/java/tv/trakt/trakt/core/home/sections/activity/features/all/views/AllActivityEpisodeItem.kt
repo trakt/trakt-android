@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.home.sections.activity.features.all.views
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,9 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Images.Size.THUMB
+import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
@@ -26,6 +29,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun AllActivityEpisodeItem(
     item: HomeActivityItem.EpisodeItem,
     modifier: Modifier = Modifier,
+    itemRating: UserRating? = null,
     moreButton: Boolean = false,
     onClick: (() -> Unit)? = null,
     onShowClick: (() -> Unit)? = null,
@@ -72,6 +76,26 @@ internal fun AllActivityEpisodeItem(
                         user = user,
                         modifier = Modifier.padding(start = 12.dp),
                     )
+                }
+
+                itemRating?.let {
+                    Row(
+                        verticalAlignment = CenterVertically,
+                        horizontalArrangement = spacedBy(2.dp),
+                        modifier = Modifier.padding(start = 12.dp),
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_star_trakt_on),
+                            contentDescription = null,
+                            modifier = Modifier.size(13.dp),
+                            tint = TraktTheme.colors.textPrimary,
+                        )
+                        Text(
+                            text = it.rating5Scale,
+                            color = TraktTheme.colors.textPrimary,
+                            style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
+                        )
+                    }
                 }
             }
         },
