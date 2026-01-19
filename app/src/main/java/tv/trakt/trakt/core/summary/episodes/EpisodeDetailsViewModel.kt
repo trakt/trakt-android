@@ -8,7 +8,6 @@ import androidx.navigation.toRoute
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -61,7 +60,6 @@ import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
-import kotlin.time.Duration.Companion.seconds
 
 @OptIn(FlowPreview::class)
 internal class EpisodeDetailsViewModel(
@@ -478,8 +476,6 @@ internal class EpisodeDetailsViewModel(
                 )
             }
 
-            // Debounce to avoid multiple rapid calls.
-            delay(2.seconds)
             PostRatingWorker.scheduleOneTime(
                 appContext = appContext,
                 mediaId = episodeId,

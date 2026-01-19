@@ -10,6 +10,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
@@ -21,6 +22,7 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.ratings.PostRatingUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import java.util.concurrent.TimeUnit.SECONDS
+import kotlin.time.Duration.Companion.seconds
 
 private const val MAX_RETRY_ATTEMPTS = 2
 
@@ -71,6 +73,8 @@ internal class PostRatingWorker(
                 Timber.d("Max retry attempts reached, failing work")
                 return Result.failure()
             }
+
+            delay(1.seconds)
 
             val mediaId = inputData.getInt("mediaId", -1)
             val mediaType = inputData.getString("mediaType")?.let {

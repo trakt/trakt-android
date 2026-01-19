@@ -64,7 +64,6 @@ import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
-import kotlin.time.Duration.Companion.seconds
 
 internal class MovieDetailsViewModel(
     savedStateHandle: SavedStateHandle,
@@ -819,8 +818,6 @@ internal class MovieDetailsViewModel(
                 )
             }
 
-            // Debounce to avoid multiple rapid calls.
-            delay(2.seconds)
             PostRatingWorker.scheduleOneTime(
                 appContext = appContext,
                 mediaId = movieId,

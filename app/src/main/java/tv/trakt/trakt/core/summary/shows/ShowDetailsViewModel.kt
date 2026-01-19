@@ -73,7 +73,6 @@ import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
-import kotlin.time.Duration.Companion.seconds
 
 @OptIn(FlowPreview::class)
 internal class ShowDetailsViewModel(
@@ -879,8 +878,6 @@ internal class ShowDetailsViewModel(
                 )
             }
 
-            // Debounce to avoid multiple rapid calls.
-            delay(2.seconds)
             PostRatingWorker.scheduleOneTime(
                 appContext = appContext,
                 mediaId = showId,
