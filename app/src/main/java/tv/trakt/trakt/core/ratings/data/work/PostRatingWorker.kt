@@ -10,6 +10,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
@@ -111,6 +112,7 @@ internal class PostRatingWorker(
                     mediaType = mediaType.value,
                 )
 
+                delay(500)
                 when (mediaType) {
                     MediaType.SHOW -> loadUserRatingUseCase.loadShows()
                     MediaType.MOVIE -> loadUserRatingUseCase.loadMovies()
