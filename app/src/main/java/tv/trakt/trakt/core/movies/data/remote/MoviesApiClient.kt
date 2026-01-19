@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.movies.data.remote
 
+import io.ktor.http.HttpStatusCode
 import kotlinx.collections.immutable.toImmutableList
 import org.openapitools.client.apis.MoviesApi
 import org.openapitools.client.apis.RecommendationsApi
@@ -217,13 +218,18 @@ internal class MoviesApiClient(
     override suspend fun getSentiments(movieId: TraktId): Sentiments {
         val response = moviesApi.getMoviesSentiments(
             id = movieId.value.toString(),
-        ).body()
+        )
 
+        if (response.status == HttpStatusCode.NoContent.value) {
+            return Sentiments()
+        }
+
+        val responseBody = response.body()
         return Sentiments(
-            good = response.good
+            good = responseBody.good
                 .map { Sentiments.Sentiment(it.sentiment) }
                 .toImmutableList(),
-            bad = response.bad
+            bad = responseBody.bad
                 .map { Sentiments.Sentiment(it.sentiment) }
                 .toImmutableList(),
         )

@@ -110,7 +110,7 @@ private fun MovieSentimentContent(
                     }
 
                     DONE -> {
-                        if (state.sentiment != null) {
+                        if (state.sentiment != null && !state.sentiment.isEmpty) {
                             DetailsSentiment(
                                 sentiments = state.sentiment,
                                 modifier = Modifier

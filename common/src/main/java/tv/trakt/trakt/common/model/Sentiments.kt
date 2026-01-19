@@ -9,6 +9,9 @@ data class Sentiments(
     val good: ImmutableList<Sentiment> = emptyList<Sentiment>().toImmutableList(),
     val bad: ImmutableList<Sentiment> = emptyList<Sentiment>().toImmutableList(),
 ) {
+    val isEmpty: Boolean
+        get() = good.isEmpty() && bad.isEmpty()
+
     data class Sentiment(
         val sentiment: String,
     )

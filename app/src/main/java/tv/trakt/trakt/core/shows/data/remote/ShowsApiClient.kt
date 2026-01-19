@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.shows.data.remote
 
+import io.ktor.http.HttpStatusCode
 import kotlinx.collections.immutable.toImmutableList
 import org.openapitools.client.apis.RecommendationsApi
 import org.openapitools.client.apis.ShowsApi
@@ -227,13 +228,18 @@ internal class ShowsApiClient(
     override suspend fun getSentiments(showId: TraktId): Sentiments {
         val response = showsApi.getShowsSentiments(
             id = showId.value.toString(),
-        ).body()
+        )
 
+        if (response.status == HttpStatusCode.NoContent.value) {
+            return Sentiments()
+        }
+
+        val responseBody = response.body()
         return Sentiments(
-            good = response.good
+            good = responseBody.good
                 .map { Sentiments.Sentiment(it.sentiment) }
                 .toImmutableList(),
-            bad = response.bad
+            bad = responseBody.bad
                 .map { Sentiments.Sentiment(it.sentiment) }
                 .toImmutableList(),
         )
