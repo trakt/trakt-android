@@ -3,11 +3,16 @@ package tv.trakt.trakt.core.home.sections.activity.views
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -21,12 +26,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InfoChip
@@ -37,6 +44,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun ActivityMovieItemView(
     item: HomeActivityItem.MovieItem,
     modifier: Modifier = Modifier,
+    itemRating: UserRating? = null,
     moreButton: Boolean = false,
     onClick: (TraktId) -> Unit = { },
     onLongClick: (() -> Unit)? = null,
@@ -44,6 +52,7 @@ internal fun ActivityMovieItemView(
     val uriHandler = LocalUriHandler.current
 
     HorizontalMediaCard(
+        modifier = modifier,
         title = "",
         more = moreButton,
         onClick = { onClick(item.movie.ids.trakt) },
@@ -103,28 +112,55 @@ internal fun ActivityMovieItemView(
             }
         },
         footerContent = {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(1.dp),
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
+                    .fillMaxWidth()
                     .onClick {
                         onClick(item.movie.ids.trakt)
                     },
             ) {
-                Text(
-                    text = item.movie.title,
-                    style = TraktTheme.typography.cardTitle,
-                    color = TraktTheme.colors.textPrimary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(1.dp),
+                    modifier = Modifier
+                        .weight(1F, fill = false),
+                ) {
+                    Text(
+                        text = item.movie.title,
+                        style = TraktTheme.typography.cardTitle,
+                        color = TraktTheme.colors.textPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
 
-                Text(
-                    text = stringResource(R.string.translated_value_type_movie),
-                    style = TraktTheme.typography.cardSubtitle,
-                    color = TraktTheme.colors.textSecondary,
-                )
+                    Text(
+                        text = stringResource(R.string.translated_value_type_movie),
+                        style = TraktTheme.typography.cardSubtitle,
+                        color = TraktTheme.colors.textSecondary,
+                    )
+                }
+
+                itemRating?.let {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = spacedBy(2.dp),
+                        modifier = Modifier.padding(start = 12.dp),
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_star_trakt_on),
+                            contentDescription = null,
+                            modifier = Modifier.size(13.dp),
+                            tint = TraktTheme.colors.textPrimary,
+                        )
+                        Text(
+                            text = it.rating5Scale,
+                            color = TraktTheme.colors.textPrimary,
+                            style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
+                        )
+                    }
+                }
             }
         },
-        modifier = modifier,
     )
 }

@@ -10,7 +10,6 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
@@ -20,9 +19,12 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.ratings.PostRatingUseCase
+import tv.trakt.trakt.core.ratings.data.RatingsUpdates
+import tv.trakt.trakt.core.ratings.data.RatingsUpdates.Source.POST_RATING
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import java.util.concurrent.TimeUnit.SECONDS
 import kotlin.time.Duration.Companion.seconds
+import kotlin.time.toJavaDuration
 
 private const val MAX_RETRY_ATTEMPTS = 2
 
@@ -32,6 +34,7 @@ internal class PostRatingWorker(
     val sessionManager: SessionManager,
     val postRatingUseCase: PostRatingUseCase,
     val loadUserRatingUseCase: LoadUserRatingsUseCase,
+    val ratingsUpdates: RatingsUpdates,
     val analytics: Analytics,
 ) : CoroutineWorker(appContext, workerParams) {
     companion object {
@@ -49,13 +52,14 @@ internal class PostRatingWorker(
                         .putInt("rating", rating)
                         .build(),
                 )
+                .setInitialDelay(1.seconds.toJavaDuration())
                 .setBackoffCriteria(BackoffPolicy.LINEAR, 3, SECONDS)
                 .build()
 
             WorkManager
                 .getInstance(appContext)
                 .enqueueUniqueWork(
-                    "post_rating_${mediaId}_${mediaType.value}",
+                    "post_rating_${mediaId.value}_${mediaType.value}",
                     ExistingWorkPolicy.REPLACE,
                     workRequest,
                 )
@@ -73,8 +77,6 @@ internal class PostRatingWorker(
                 Timber.d("Max retry attempts reached, failing work")
                 return Result.failure()
             }
-
-            delay(1.seconds)
 
             val mediaId = inputData.getInt("mediaId", -1)
             val mediaType = inputData.getString("mediaType")?.let {
@@ -115,6 +117,8 @@ internal class PostRatingWorker(
                     MediaType.EPISODE -> loadUserRatingUseCase.loadEpisodes()
                     else -> throw IllegalStateException("Rating is not supported")
                 }
+
+                ratingsUpdates.notifyUpdate(POST_RATING)
             }
         } catch (error: Exception) {
             if (error is CancellationException) {

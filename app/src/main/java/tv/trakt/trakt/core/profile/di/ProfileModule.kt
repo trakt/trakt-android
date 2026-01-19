@@ -224,13 +224,15 @@ internal val profileModule = module {
     viewModel {
         ProfileHistoryViewModel(
             getPersonalActivityUseCase = get(),
+            userRatingsUseCase = get(),
             allActivitySource = get(),
             showLocalDataSource = get(),
-            showUpdatesSource = get(),
-            episodeUpdatesSource = get(),
-            episodeLocalDataSource = get(),
-            movieUpdates = get(),
             movieLocalDataSource = get(),
+            episodeLocalDataSource = get(),
+            showUpdates = get(),
+            movieUpdates = get(),
+            episodeUpdates = get(),
+            ratingsUpdates = get(),
             collapsingManager = get(),
             sessionManager = get(),
         )

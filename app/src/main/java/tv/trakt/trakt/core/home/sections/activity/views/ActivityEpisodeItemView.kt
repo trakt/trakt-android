@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.home.sections.activity.views
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -32,6 +34,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.resources.R
@@ -44,6 +47,7 @@ import java.time.Instant
 internal fun ActivityEpisodeItemView(
     item: HomeActivityItem.EpisodeItem,
     modifier: Modifier = Modifier,
+    itemRating: UserRating? = null,
     removeButton: Boolean = false,
     moreButton: Boolean = false,
     onClick: () -> Unit = {},
@@ -155,6 +159,26 @@ internal fun ActivityEpisodeItemView(
                                 onClick = onRemoveClick,
                             ),
                     )
+                }
+
+                itemRating?.let {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = spacedBy(2.dp),
+                        modifier = Modifier.padding(start = 12.dp),
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_star_trakt_on),
+                            contentDescription = null,
+                            modifier = Modifier.size(13.dp),
+                            tint = TraktTheme.colors.textPrimary,
+                        )
+                        Text(
+                            text = it.rating5Scale,
+                            color = TraktTheme.colors.textPrimary,
+                            style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
+                        )
+                    }
                 }
             }
         },

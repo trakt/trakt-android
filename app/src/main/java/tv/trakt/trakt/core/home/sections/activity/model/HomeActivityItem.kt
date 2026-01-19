@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.home.sections.activity.model
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
@@ -34,6 +35,12 @@ internal sealed class HomeActivityItem(
         val episode: Episode,
         val show: Show,
     ) : HomeActivityItem(id, user, activity, activityAt)
+
+    val key: String
+        get() = when (this) {
+            is MovieItem -> "${MediaType.MOVIE.value}-${movie.ids.trakt.value}"
+            is EpisodeItem -> "${MediaType.EPISODE.value}-${episode.ids.trakt.value}"
+        }
 
     val title: String
         get() = when (this) {

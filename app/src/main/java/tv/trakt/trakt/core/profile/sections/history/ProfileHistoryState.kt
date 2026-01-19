@@ -2,14 +2,17 @@ package tv.trakt.trakt.core.profile.sections.history
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableMap
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 
 @Immutable
 internal data class ProfileHistoryState(
     val items: ImmutableList<HomeActivityItem>? = null,
+    val itemsRatings: ImmutableMap<String, UserRating>? = null,
     val navigateShow: TraktId? = null,
     val navigateEpisode: Pair<TraktId, Episode>? = null,
     val navigateMovie: TraktId? = null,
