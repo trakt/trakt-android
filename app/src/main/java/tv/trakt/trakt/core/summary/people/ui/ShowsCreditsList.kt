@@ -38,7 +38,9 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
+import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.common.model.MediaType.SHOW
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.people.ListEmptyView
 import tv.trakt.trakt.core.summary.people.ListLoadingView
@@ -56,6 +58,7 @@ internal fun ShowsCreditsList(
     loading: LoadingState,
     listItems: ImmutableMap<String, ImmutableList<PersonCreditItem.ShowItem>>,
     userCollection: UserCollectionState,
+    person: Person,
     modifier: Modifier = Modifier,
     sectionPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
@@ -110,7 +113,7 @@ internal fun ShowsCreditsList(
                     } else {
                         Column {
                             var selectedFilter by remember {
-                                mutableStateOf(listItems.keys.first())
+                                mutableStateOf(person.knownForDepartment ?: listItems.keys.first())
                             }
 
                             if (listItems.keys.size > 1) {
@@ -178,7 +181,9 @@ internal fun ShowsCreditsList(
                                                 )
 
                                                 Text(
-                                                    text = (item.credit ?: "").ifBlank { "N/A" },
+                                                    text = (item.credit ?: "")
+                                                        .ifBlank { "N/A" }
+                                                        .uppercaseWords(),
                                                     style = TraktTheme.typography.cardSubtitle,
                                                     color = TraktTheme.colors.textSecondary,
                                                     maxLines = 1,

@@ -38,6 +38,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.people.ListEmptyView
@@ -219,7 +220,9 @@ private fun ShowItemCard(
                 }
 
                 Text(
-                    text = (item.credit ?: "").ifBlank { "N/A" },
+                    text = (item.credit ?: "")
+                        .ifBlank { "N/A" }
+                        .uppercaseWords(),
                     style = TraktTheme.typography.cardSubtitle,
                     color = TraktTheme.colors.textSecondary,
                     maxLines = 1,
@@ -282,7 +285,9 @@ private fun MovieItemCard(
                 }
 
                 Text(
-                    text = (item.credit ?: "").ifBlank { "N/A" },
+                    text = (item.credit ?: "")
+                        .ifBlank { "N/A" }
+                        .uppercaseWords(),
                     style = TraktTheme.typography.cardSubtitle,
                     color = TraktTheme.colors.textSecondary,
                     maxLines = 1,

@@ -69,7 +69,7 @@ internal class GetPersonCreditsUseCase(
                     .map {
                         PersonCreditItem.ShowItem(
                             show = Show.fromDto(it.show),
-                            credit = entry.key,
+                            credit = entry.value.firstOrNull()?.job ?: entry.key,
                         )
                     }
                     .sortedByDescending { it.released }
@@ -131,7 +131,7 @@ internal class GetPersonCreditsUseCase(
                     .map {
                         PersonCreditItem.MovieItem(
                             movie = Movie.fromDto(it.movie),
-                            credit = entry.key,
+                            credit = entry.value.firstOrNull()?.job ?: entry.key,
                         )
                     }
                     .sortedByDescending { it.released }

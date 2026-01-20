@@ -40,8 +40,10 @@ import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.core.summary.people.ListEmptyView
 import tv.trakt.trakt.core.summary.people.ListLoadingView
 import tv.trakt.trakt.core.summary.people.model.PersonCreditItem
@@ -58,6 +60,7 @@ internal fun MoviesCreditsList(
     loading: LoadingState,
     listItems: ImmutableMap<String, ImmutableList<PersonCreditItem.MovieItem>>,
     userCollection: UserCollectionState,
+    person: Person,
     modifier: Modifier = Modifier,
     sectionPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
@@ -111,7 +114,7 @@ internal fun MoviesCreditsList(
                         )
                     } else {
                         var selectedFilter by rememberSaveable {
-                            mutableStateOf(listItems.keys.first())
+                            mutableStateOf(person.knownForDepartment ?: listItems.keys.first())
                         }
 
                         Column {
@@ -171,7 +174,9 @@ internal fun MoviesCreditsList(
                                                 )
 
                                                 Text(
-                                                    text = (item.credit ?: "").ifBlank { "N/A" },
+                                                    text = (item.credit ?: "")
+                                                        .ifBlank { "N/A" }
+                                                        .uppercaseWords(),
                                                     style = TraktTheme.typography.cardSubtitle,
                                                     color = TraktTheme.colors.textSecondary,
                                                     maxLines = 1,
