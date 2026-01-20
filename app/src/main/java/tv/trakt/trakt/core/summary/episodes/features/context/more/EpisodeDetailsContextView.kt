@@ -262,7 +262,7 @@ private fun ActionButtons(
         GhostButton(
             text = stringResource(R.string.button_text_share),
             icon = painterResource(R.drawable.ic_share),
-            iconSize = 22.dp,
+            iconSize = 24.dp,
             iconSpace = 16.dp,
             modifier = Modifier
                 .graphicsLayer {
