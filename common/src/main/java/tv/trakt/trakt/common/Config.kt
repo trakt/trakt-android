@@ -49,4 +49,20 @@ object Config {
     fun webImdbMediaUrl(imdbId: String): String {
         return "https://www.imdb.com/title/$imdbId/"
     }
+
+    fun webInstagramPersonUrl(id: String): String {
+        return "https://www.instagram.com/$id/"
+    }
+
+    fun webFacebookPersonUrl(id: String): String {
+        return "https://www.facebook.com/$id/"
+    }
+
+    fun webTwitterPersonUrl(id: String): String {
+        return "https://x.com/$id"
+    }
+
+    fun webWikipediaMediaUrl(title: String): String {
+        return "https://en.wikipedia.org/wiki/$title"
+    }
 }

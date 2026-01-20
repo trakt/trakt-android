@@ -82,6 +82,7 @@ internal fun DetailsHeader(
     playsCount: Int?,
     personImdb: ImdbId? = null,
     loading: Boolean,
+    extraRightColumn: @Composable (() -> Unit)? = null,
     onImdbClick: () -> Unit,
     onRottenClick: (link: String) -> Unit,
     onShareClick: () -> Unit,
@@ -176,6 +177,8 @@ internal fun DetailsHeader(
                         .size(24.dp)
                         .onClick(onClick = onShareClick),
                 )
+
+                extraRightColumn?.invoke()
             }
         }
 
@@ -462,6 +465,29 @@ private fun Preview() {
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.paragraphSmaller,
                 )
+            },
+            extraRightColumn = {
+                Column(
+                    horizontalAlignment = CenterHorizontally,
+                    verticalArrangement = spacedBy(16.dp),
+                    modifier = Modifier
+                        .padding(top = 16.dp)
+                        .fillMaxWidth(),
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_instagram),
+                        tint = TraktTheme.colors.textPrimary,
+                        contentDescription = null,
+                        modifier = Modifier.size(26.dp),
+                    )
+
+                    Icon(
+                        painter = painterResource(R.drawable.ic_x_twitter),
+                        tint = TraktTheme.colors.textPrimary,
+                        contentDescription = null,
+                        modifier = Modifier.size(26.dp),
+                    )
+                }
             },
             genres = listOf("Action", "Adventure", "Sci-Fi").toImmutableList(),
             date = null,

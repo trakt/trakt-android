@@ -20,6 +20,7 @@ data class Person(
     val birthplace: String?,
     val images: Images?,
     val knownForDepartment: String?,
+    val socialIds: SocialIds?,
 ) {
     companion object {
         val Unknown = Person(
@@ -33,8 +34,18 @@ data class Person(
             birthplace = null,
             images = null,
             knownForDepartment = null,
+            socialIds = null,
         )
     }
+
+    @Immutable
+    @Serializable
+    data class SocialIds(
+        val twitter: String?,
+        val facebook: String?,
+        val instagram: String?,
+        val wikipedia: String?,
+    )
 }
 
 fun Companion.fromDto(dto: PersonDto): Person {
@@ -53,6 +64,14 @@ fun Companion.fromDto(dto: PersonDto): Person {
         images = dto.images?.let {
             Images(
                 headshot = it.headshot.toImmutableList(),
+            )
+        },
+        socialIds = dto.socialIds?.let {
+            Person.SocialIds(
+                twitter = it.twitter,
+                facebook = it.facebook,
+                instagram = it.instagram,
+                wikipedia = it.wikipedia,
             )
         },
     )
@@ -74,6 +93,14 @@ fun Companion.fromDto(dto: PersonSearchDto): Person {
         images = dto.images?.let {
             Images(
                 headshot = it.headshot.toImmutableList(),
+            )
+        },
+        socialIds = dto.socialIds?.let {
+            Person.SocialIds(
+                twitter = it.twitter,
+                facebook = it.facebook,
+                instagram = it.instagram,
+                wikipedia = it.wikipedia,
             )
         },
     )

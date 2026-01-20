@@ -204,6 +204,7 @@ object PreviewData {
             headshot = listOf("walter-r2.trakt.tv/images/people/000/414/068/headshots/thumb/85af40e2cb.jpg.webp")
                 .toImmutableList(),
         ),
+        socialIds = null,
     )
 
     val person2 = person1.copy(

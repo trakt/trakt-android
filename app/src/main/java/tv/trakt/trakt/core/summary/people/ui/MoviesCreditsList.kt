@@ -152,10 +152,14 @@ internal fun MoviesCreditsList(
                                         chipContent = { modifier ->
                                             val footerText = remember {
                                                 val runtime = item.runtime?.inWholeMinutes
+                                                val year = item.released?.year
+                                                    ?: item.movie.year
+                                                    ?: "TBA"
+
                                                 if (runtime != null) {
-                                                    "${item.released?.year ?: item.movie.year} • ${runtime.durationFormat()}"
+                                                    "$year • ${runtime.durationFormat()}"
                                                 } else {
-                                                    "${item.released?.year ?: item.movie.year}"
+                                                    "$year"
                                                 }
                                             }
 

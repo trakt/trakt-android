@@ -18,7 +18,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.search.data.local.model.PersonEntity
 import java.time.Instant
 
-private val KEY_BIRTHDAY_SEARCH_PEOPLE = byteArrayPreferencesKey("key_birthday_search_people")
+private val KEY_BIRTHDAY_SEARCH_PEOPLE = byteArrayPreferencesKey("key_birthday_search_people_2")
 
 @OptIn(ExperimentalSerializationApi::class)
 internal class SearchPeopleStorage(
