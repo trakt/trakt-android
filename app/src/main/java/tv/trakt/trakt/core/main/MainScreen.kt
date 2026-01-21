@@ -71,6 +71,7 @@ import tv.trakt.trakt.core.lists.navigation.ListsDestination
 import tv.trakt.trakt.core.lists.navigation.navigateToLists
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.navigateToWatchlist
 import tv.trakt.trakt.core.main.navigation.billingScreens
+import tv.trakt.trakt.core.main.navigation.calendarScreens
 import tv.trakt.trakt.core.main.navigation.commentsScreens
 import tv.trakt.trakt.core.main.navigation.discoverScreens
 import tv.trakt.trakt.core.main.navigation.episodesScreens
@@ -355,6 +356,7 @@ private fun MainNavHost(
             controller = navController,
             userLoading = userLoading,
         )
+        calendarScreens(navController)
         discoverScreens(
             controller = navController,
             customThemeEnabled = customThemeEnabled,

@@ -7,6 +7,8 @@ import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.MediaType.SHOW
 import tv.trakt.trakt.core.billing.navigation.billingScreen
 import tv.trakt.trakt.core.billing.navigation.navigateToBilling
+import tv.trakt.trakt.core.calendar.navigation.calendarScreen
+import tv.trakt.trakt.core.calendar.navigation.navigateToCalendar
 import tv.trakt.trakt.core.comments.navigation.commentsScreen
 import tv.trakt.trakt.core.comments.navigation.navigateToComments
 import tv.trakt.trakt.core.discover.model.DiscoverSection
@@ -61,6 +63,7 @@ internal fun NavGraphBuilder.homeScreens(
             userLoading = userLoading,
             onNavigateToShow = { navigateToShow(it) },
             onNavigateToDiscover = { navigateToDiscover() },
+            onNavigateToCalendar = { navigateToCalendar() },
             onNavigateToMovie = { navigateToMovie(it) },
             onNavigateToEpisode = { showId, episode ->
                 navigateToEpisode(showId, episode)
@@ -355,6 +358,14 @@ internal fun NavGraphBuilder.settingsScreens(controller: NavHostController) {
         )
 
         younifyScreen(
+            onNavigateBack = { popBackStack() },
+        )
+    }
+}
+
+internal fun NavGraphBuilder.calendarScreens(controller: NavHostController) {
+    with(controller) {
+        calendarScreen(
             onNavigateBack = { popBackStack() },
         )
     }

@@ -27,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
@@ -37,6 +38,7 @@ import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAG
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
@@ -61,6 +63,7 @@ internal fun HomeUpcomingView(
     onShowsClick: () -> Unit,
     onMoviesClick: () -> Unit,
     onMovieClick: (TraktId) -> Unit,
+    onCalendarClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -89,6 +92,7 @@ internal fun HomeUpcomingView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onCollapse = viewModel::setCollapsed,
+        onCalendarClick = onCalendarClick,
         onEmptyClick = {
             when (state.filter) {
                 MediaMode.MOVIES -> onMoviesClick()
@@ -117,6 +121,7 @@ internal fun HomeUpcomingContent(
     onShowClick: (HomeUpcomingItem.EpisodeItem) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
     onEmptyClick: () -> Unit = {},
+    onCalendarClick: () -> Unit = {},
     onCollapse: (collapsed: Boolean) -> Unit = {},
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
@@ -130,7 +135,7 @@ internal fun HomeUpcomingContent(
     ) {
         TraktSectionHeader(
             title = stringResource(R.string.list_title_upcoming_schedule),
-            chevron = false,
+            chevron = !state.items.isNullOrEmpty() || state.loading != DONE,
             collapsed = state.collapsed ?: false,
             onCollapseClick = {
                 animateCollapse = true
@@ -138,7 +143,10 @@ internal fun HomeUpcomingContent(
                 onCollapse(!current)
             },
             modifier = Modifier
-                .padding(headerPadding),
+                .padding(headerPadding)
+                .onClick(enabled = state.loading == DONE) {
+                    onCalendarClick()
+                },
         )
 
         if (state.collapsed != true) {
@@ -159,9 +167,11 @@ internal fun HomeUpcomingContent(
                             state.error != null -> {
                                 Text(
                                     text =
-                                        "${stringResource(
-                                            R.string.error_text_unexpected_error_short,
-                                        )}\n\n${state.error}",
+                                        "${
+                                            stringResource(
+                                                R.string.error_text_unexpected_error_short,
+                                            )
+                                        }\n\n${state.error}",
                                     color = TraktTheme.colors.textSecondary,
                                     style = TraktTheme.typography.meta,
                                     maxLines = 10,
@@ -279,5 +289,37 @@ private fun ContentList(
                 }
             }
         }
+    }
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun Preview() {
+    TraktTheme {
+        HomeUpcomingContent(
+            state = HomeUpcomingState(
+                loading = IDLE,
+            ),
+        )
+    }
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun Preview2() {
+    TraktTheme {
+        HomeUpcomingContent(
+            state = HomeUpcomingState(
+                loading = LOADING,
+            ),
+        )
     }
 }

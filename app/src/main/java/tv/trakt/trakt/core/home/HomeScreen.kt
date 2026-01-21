@@ -57,6 +57,7 @@ internal fun HomeScreen(
     onNavigateToAllPersonal: () -> Unit,
     onNavigateToAllSocial: () -> Unit,
     onNavigateToVip: () -> Unit,
+    onNavigateToCalendar: () -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
 
@@ -86,6 +87,7 @@ internal fun HomeScreen(
         onMoreWatchlistClick = onNavigateToAllWatchlist,
         onMorePersonalClick = onNavigateToAllPersonal,
         onMoreSocialClick = onNavigateToAllSocial,
+        onCalendarClick = onNavigateToCalendar,
         onVipClick = onNavigateToVip,
     )
 }
@@ -106,6 +108,7 @@ private fun HomeScreenContent(
     onMovieClick: (TraktId) -> Unit = {},
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
     onVipClick: () -> Unit = {},
+    onCalendarClick: () -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
     val lazyListState = rememberLazyListState(
@@ -204,6 +207,7 @@ private fun HomeScreenContent(
                     onMoviesClick = onMoviesClick,
                     onEpisodeClick = onEpisodeClick,
                     onMovieClick = onMovieClick,
+                    onCalendarClick = onCalendarClick,
                 )
             }
 
