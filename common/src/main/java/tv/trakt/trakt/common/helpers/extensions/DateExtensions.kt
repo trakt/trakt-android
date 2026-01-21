@@ -22,6 +22,14 @@ val longDateFormat: DateTimeFormatter = DateTimeFormatter
     .ofLocalizedDate(FormatStyle.LONG)
     .withLocale(Locale.US)
 
+val fullDateFormat: DateTimeFormatter = DateTimeFormatter
+    .ofLocalizedDate(FormatStyle.FULL)
+    .withLocale(Locale.US)
+
+val fullDayFormat: DateTimeFormatter = DateTimeFormatter
+    .ofPattern("EEEE,  d MMMM")
+    .withLocale(Locale.US)
+
 val longDateTimeFormat: DateTimeFormatter = DateTimeFormatter
     .ofLocalizedDateTime(FormatStyle.LONG, FormatStyle.SHORT)
     .withLocale(Locale.US)

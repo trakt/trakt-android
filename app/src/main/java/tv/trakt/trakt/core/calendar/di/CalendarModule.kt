@@ -8,6 +8,9 @@ internal val calendarModule = module {
     viewModel {
         CalendarViewModel(
             sessionManager = get(),
+            remoteUserSource = get(),
+            showLocalDataSource = get(),
+            episodeLocalDataSource = get(),
         )
     }
 }
