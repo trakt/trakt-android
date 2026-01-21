@@ -489,6 +489,8 @@ private fun SettingsNotifications(
                     } else {
                         onEnableNotifications(true)
                     }
+                } else {
+                    onEnableNotifications(true)
                 }
             },
         )
