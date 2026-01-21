@@ -1,0 +1,31 @@
+name: 🐛 Report a Bug
+description: Found a bug you'd like us to squash? Let us know here.
+labels:
+  - content
+body:
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: This project has a Code of Conduct that all participants are expected to understand and follow.
+      options:
+        - label: I have read and agree to the project's [Code of Conduct](https://github.com/trakt/trakt-web/blob/main/.github/CODE_OF_CONDUCT.md)
+          required: true
+
+  - type: textarea
+    attributes:
+      label: Please describe the bug below
+      description: |
+        - Give as much detail as you can to help us reproduce the bug (videos/screenshots are super helpful).
+        - Give a clear list of step to follow that result in the bug (if possible).
+        - Also indicate in which android version / device the bug occurred.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Additional information
+      description: |
+        - Add any other context or screenshots about the bug here.
+    validations:
+      required: false
