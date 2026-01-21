@@ -161,6 +161,7 @@ private fun MovieDetailsContextViewContent(
         ActionButtons(
             watched = watched,
             released = isReleased,
+            watchOnlyOnce = state.user?.settings?.watchOnlyOnce,
             onCheckClick = onCheckClick ?: {},
             onRemoveClick = onRemoveClick ?: {},
             onShareClick = onShareClick ?: {},
@@ -213,6 +214,7 @@ private fun WatchButton(
 private fun ActionButtons(
     watched: Boolean,
     released: Boolean,
+    watchOnlyOnce: Boolean?,
     modifier: Modifier = Modifier,
     onCheckClick: () -> Unit,
     onShareClick: () -> Unit,
@@ -225,28 +227,31 @@ private fun ActionButtons(
                 translationX = -4.dp.toPx()
             },
     ) {
-        GhostButton(
-            text = stringResource(
-                when {
-                    watched -> R.string.button_text_watch_again
-                    else -> R.string.button_text_mark_as_watched
-                },
-            ),
-            icon = painterResource(
-                when {
-                    watched -> R.drawable.ic_check_double
-                    else -> R.drawable.ic_check
-                },
-            ),
-            enabled = released,
-            iconSize = 22.dp,
-            iconSpace = 16.dp,
-            modifier = Modifier
-                .graphicsLayer {
+        if (!watched) {
+            GhostButton(
+                text = stringResource(R.string.button_text_mark_as_watched),
+                icon = painterResource(R.drawable.ic_check),
+                enabled = released,
+                iconSize = 22.dp,
+                iconSpace = 16.dp,
+                onClick = onCheckClick,
+                modifier = Modifier.graphicsLayer {
                     translationX = -4.dp.toPx()
                 },
-            onClick = onCheckClick,
-        )
+            )
+        } else if (watchOnlyOnce != true) {
+            GhostButton(
+                text = stringResource(R.string.button_text_watch_again),
+                icon = painterResource(R.drawable.ic_check_double),
+                enabled = released,
+                iconSize = 22.dp,
+                iconSpace = 16.dp,
+                modifier = Modifier.graphicsLayer {
+                    translationX = -4.dp.toPx()
+                },
+                onClick = onCheckClick,
+            )
+        }
 
         if (watched) {
             GhostButton(
@@ -285,6 +290,11 @@ private fun ActionButtons(
 @Composable
 private fun Preview() {
     val state = MovieDetailsContextState(
+        user = PreviewData.user1.copy(
+            settings = PreviewData.user1.settings?.copy(
+                watchOnlyOnce = false,
+            ),
+        ),
         streamings = StreamingsState(
             loading = false,
             service = StreamingService(

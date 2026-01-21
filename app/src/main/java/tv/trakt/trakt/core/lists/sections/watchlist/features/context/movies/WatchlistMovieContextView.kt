@@ -170,6 +170,7 @@ private fun WatchlistMovieContextViewContent(
             MovieActionButtons(
                 movie = movie,
                 watched = watched,
+                watchOnlyOnce = state.user.settings?.watchOnlyOnce,
                 onWatchedClick = onAddWatched,
                 onWatchlistClick = onRemoveWatchlist,
                 state = state,
@@ -185,6 +186,7 @@ private fun MovieActionButtons(
     modifier: Modifier = Modifier,
     movie: Movie,
     watched: Boolean,
+    watchOnlyOnce: Boolean?,
     onWatchedClick: () -> Unit,
     onWatchlistClick: () -> Unit,
     state: WatchlistMovieContextState,
@@ -202,29 +204,33 @@ private fun MovieActionButtons(
         }
 
         if (isReleased) {
-            GhostButton(
-                enabled = !isLoading,
-                loading = state.loadingWatched.isLoading,
-                text = stringResource(
-                    when {
-                        watched -> R.string.button_text_watch_again
-                        else -> R.string.button_text_mark_as_watched
-                    },
-                ),
-                iconSize = 20.dp,
-                iconSpace = 16.dp,
-                onClick = onWatchedClick,
-                icon = painterResource(
-                    when {
-                        watched -> R.drawable.ic_check_double
-                        else -> R.drawable.ic_check
-                    },
-                ),
-                modifier = Modifier
-                    .graphicsLayer {
+            if (!watched) {
+                GhostButton(
+                    text = stringResource(R.string.button_text_mark_as_watched),
+                    icon = painterResource(R.drawable.ic_check),
+                    enabled = !isLoading,
+                    loading = state.loadingWatched.isLoading,
+                    iconSize = 20.dp,
+                    iconSpace = 16.dp,
+                    onClick = onWatchedClick,
+                    modifier = Modifier.graphicsLayer {
                         translationX = -6.dp.toPx()
                     },
-            )
+                )
+            } else if (watchOnlyOnce != true) {
+                GhostButton(
+                    text = stringResource(R.string.button_text_watch_again),
+                    icon = painterResource(R.drawable.ic_check_double),
+                    enabled = !isLoading,
+                    loading = state.loadingWatched.isLoading,
+                    iconSize = 20.dp,
+                    iconSpace = 16.dp,
+                    modifier = Modifier.graphicsLayer {
+                        translationX = -6.dp.toPx()
+                    },
+                    onClick = onWatchedClick,
+                )
+            }
         }
 
         GhostButton(

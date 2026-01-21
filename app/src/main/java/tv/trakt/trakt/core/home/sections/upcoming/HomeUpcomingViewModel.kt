@@ -31,6 +31,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -150,10 +151,12 @@ internal class HomeUpcomingViewModel(
 
                 ScheduleNotificationsWorker.schedule(appContext)
             } catch (error: Exception) {
-                if (!ignoreErrors) {
-                    errorState.update { error }
+                error.rethrowCancellation {
+                    if (!ignoreErrors) {
+                        errorState.update { error }
+                    }
+                    Timber.recordError(error)
                 }
-                Timber.recordError(error)
             } finally {
                 loadingState.update { DONE }
                 dataJob = null

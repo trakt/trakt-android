@@ -22,7 +22,14 @@ data class User(
     val isVipOg: Boolean,
     val images: Images?,
     val streamings: Streamings?,
+    val settings: Settings?,
 ) {
+    @Immutable
+    @Serializable
+    data class Settings(
+        val watchOnlyOnce: Boolean,
+    )
+
     val isAnyVip: Boolean
         get() = isVip || isVipEp || isVipOg
 
@@ -75,6 +82,7 @@ fun Companion.fromDto(dto: UserDto): User {
             },
         ),
         streamings = null,
+        settings = null,
     )
 }
 
@@ -104,6 +112,9 @@ fun Companion.fromDto(dto: UserSettingsDto): User {
                 isFavoritesOnly = it.onlyFavorites,
             )
         },
+        settings = User.Settings(
+            watchOnlyOnce = dto.browsing?.watchOnlyOnce ?: false,
+        ),
     )
 }
 
@@ -127,5 +138,6 @@ fun Companion.fromDto(dto: UserCommentsDto): User {
             },
         ),
         streamings = null,
+        settings = null,
     )
 }
