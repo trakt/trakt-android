@@ -359,10 +359,11 @@ internal class MovieDetailsViewModel(
             if (!sessionManager.isAuthenticated()) {
                 return@launch
             }
+
             try {
                 loadingProgress.update { LOADING }
 
-                updateMovieHistoryUseCase.addToWatched(
+                val response = updateMovieHistoryUseCase.addToWatched(
                     movieId = movieId,
                     customDate = customDate,
                 )
@@ -373,16 +374,18 @@ internal class MovieDetailsViewModel(
                 )
                 movieDetailsUpdates.notifyUpdate()
 
-                movieProgressState.update {
-                    it?.copy(
-                        plays = it.plays + 1,
-                        inWatchlist = false,
-                    )
+                if (response.added.movies != 0) {
+                    movieProgressState.update {
+                        it?.copy(
+                            plays = it.plays + 1,
+                            inWatchlist = false,
+                        )
+                    }
+                    infoState.update {
+                        DynamicStringResource(R.string.text_info_history_added)
+                    }
                 }
 
-                infoState.update {
-                    DynamicStringResource(R.string.text_info_history_added)
-                }
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
                     source = "movie_details",

@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.sync.usecases
 
+import org.openapitools.client.models.PostSyncHistoryAdd200Response
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.sync.data.remote.episodes.EpisodesSyncRemoteDataSource
@@ -11,11 +12,11 @@ internal class UpdateEpisodeHistoryUseCase(
     suspend fun addToHistory(
         episodeId: TraktId,
         customDate: DateSelectionResult? = null,
-    ) {
+    ): PostSyncHistoryAdd200Response {
         val watchedAt = customDate?.dateString
             ?: nowUtcInstant().toString()
 
-        remoteSource.addToHistory(
+        return remoteSource.addToHistory(
             episodeId = episodeId,
             watchedAt = watchedAt,
         )

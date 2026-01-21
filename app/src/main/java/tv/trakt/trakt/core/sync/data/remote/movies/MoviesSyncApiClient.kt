@@ -4,6 +4,7 @@ import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.models.PostCheckinMovieRequestMovieIds
 import org.openapitools.client.models.PostSyncFavoritesAddRequest
 import org.openapitools.client.models.PostSyncFavoritesAddRequestMoviesInner
+import org.openapitools.client.models.PostSyncHistoryAdd200Response
 import org.openapitools.client.models.PostSyncHistoryRemoveRequest
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInner
@@ -17,7 +18,7 @@ internal class MoviesSyncApiClient(
     override suspend fun addToWatched(
         movieId: TraktId,
         watchedAt: String,
-    ) {
+    ): PostSyncHistoryAdd200Response {
         val request = PostUsersListsListAddRequest(
             movies = listOf(
                 PostUsersListsListAddRequestMoviesInner(
@@ -33,8 +34,10 @@ internal class MoviesSyncApiClient(
                 ),
             ),
         )
-        syncApi.postSyncHistoryAdd(request)
+        val response = syncApi.postSyncHistoryAdd(request)
         cacheMarker.invalidate()
+
+        return response.body()
     }
 
     override suspend fun removeSingleFromHistory(playId: Long) {

@@ -1,12 +1,13 @@
 package tv.trakt.trakt.core.sync.data.remote.movies
 
+import org.openapitools.client.models.PostSyncHistoryAdd200Response
 import tv.trakt.trakt.common.model.TraktId
 
 internal interface MoviesSyncRemoteDataSource {
     suspend fun addToWatched(
         movieId: TraktId,
         watchedAt: String,
-    )
+    ): PostSyncHistoryAdd200Response
 
     suspend fun removeAllFromHistory(movieId: TraktId)
 

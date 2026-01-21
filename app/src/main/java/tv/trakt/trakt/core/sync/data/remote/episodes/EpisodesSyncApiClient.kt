@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.sync.data.remote.episodes
 
 import org.openapitools.client.apis.SyncApi
+import org.openapitools.client.models.PostSyncHistoryAdd200Response
 import org.openapitools.client.models.PostSyncHistoryRemoveRequest
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestEpisodesInner
@@ -17,7 +18,7 @@ internal class EpisodesSyncApiClient(
     override suspend fun addToHistory(
         episodeId: TraktId,
         watchedAt: String,
-    ) {
+    ): PostSyncHistoryAdd200Response {
         val request = PostUsersListsListAddRequest(
             episodes = listOf(
                 PostUsersListsListAddRequestEpisodesInner(
@@ -29,8 +30,11 @@ internal class EpisodesSyncApiClient(
                 ),
             ),
         )
-        syncApi.postSyncHistoryAdd(request)
+
+        val response = syncApi.postSyncHistoryAdd(request)
         cacheMarker.invalidate()
+
+        return response.body()
     }
 
     override suspend fun addToHistory(

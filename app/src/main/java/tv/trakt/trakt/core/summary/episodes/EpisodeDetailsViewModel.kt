@@ -310,10 +310,11 @@ internal class EpisodeDetailsViewModel(
             try {
                 loadingProgress.update { LOADING }
 
-                updateHistoryUseCase.addToHistory(
+                val response = updateHistoryUseCase.addToHistory(
                     episodeId = episodeId,
                     customDate = customDate,
                 )
+
                 val progress = loadProgressUseCase.loadShowsProgress()
                     .firstOrNull {
                         it.show.ids.trakt == showId
@@ -329,7 +330,10 @@ internal class EpisodeDetailsViewModel(
 
                 episodeUpdatesSource.notifyUpdate(PROGRESS)
 
-                infoState.update { DynamicStringResource(R.string.text_info_history_added) }
+                if (response.added.episodes != 0) {
+                    infoState.update { DynamicStringResource(R.string.text_info_history_added) }
+                }
+
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "episode",
                     source = "episode_details",
