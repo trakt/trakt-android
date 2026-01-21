@@ -226,9 +226,12 @@ private fun ShowActionButtons(
                         translationX = -6.dp.toPx()
                     },
                 )
-            } else if (watchOnlyOnce != true) {
+            } else {
                 GhostButton(
-                    text = stringResource(R.string.button_text_watch_again),
+                    text = when {
+                        watchOnlyOnce == true -> stringResource(R.string.button_text_mark_as_watched)
+                        else -> stringResource(R.string.button_text_watch_again)
+                    },
                     icon = painterResource(R.drawable.ic_check_double),
                     enabled = !isLoadingOrDone,
                     loading = state.loadingWatched.isLoading || state.loadingWatched.isDone,
