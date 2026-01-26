@@ -38,12 +38,11 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.fullDayFormat
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
@@ -52,6 +51,7 @@ import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
+import tv.trakt.trakt.core.calendar.ui.CalendarControlsView
 import tv.trakt.trakt.core.calendar.ui.CalendarEpisodeItemView
 import tv.trakt.trakt.core.calendar.ui.CalendarMovieItemView
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
@@ -61,7 +61,9 @@ import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
+import java.time.DayOfWeek.MONDAY
 import java.time.Instant
+import java.time.LocalDate
 
 @Composable
 internal fun CalendarScreen(
@@ -69,15 +71,21 @@ internal fun CalendarScreen(
     onNavigateBack: () -> Unit,
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
     onShowClick: (TraktId) -> Unit,
+    onMovieClick: (TraktId) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(
         state.navigateShow,
+        state.navigateMovie,
         state.navigateEpisode,
     ) {
         state.navigateShow?.let {
             onShowClick(it)
+            viewModel.clearNavigation()
+        }
+        state.navigateMovie?.let {
+            onMovieClick(it)
             viewModel.clearNavigation()
         }
         state.navigateEpisode?.let {
@@ -88,13 +96,19 @@ internal fun CalendarScreen(
 
     CalendarScreen(
         state = state,
-        onBackClick = onNavigateBack,
-        onEpisodeClick = { item ->
-            viewModel.navigateToEpisode(item.show, item.episode)
-        },
+        onTodayClick = viewModel::loadTodayData,
+        onNextWeekClick = viewModel::loadNextWeekData,
+        onPreviousWeekClick = viewModel::loadPreviousWeekData,
         onShowClick = { item ->
             viewModel.navigateToShow(item.show)
         },
+        onMovieClick = { item ->
+            viewModel.navigateToMovie(item.movie)
+        },
+        onEpisodeClick = { item ->
+            viewModel.navigateToEpisode(item.show, item.episode)
+        },
+        onBackClick = onNavigateBack,
     )
 }
 
@@ -102,9 +116,13 @@ internal fun CalendarScreen(
 private fun CalendarScreen(
     state: CalendarState,
     modifier: Modifier = Modifier,
-    onBackClick: () -> Unit = {},
-    onEpisodeClick: (HomeUpcomingItem.EpisodeItem) -> Unit = {},
+    onTodayClick: () -> Unit = {},
+    onNextWeekClick: () -> Unit = {},
+    onPreviousWeekClick: () -> Unit = {},
     onShowClick: (HomeUpcomingItem.EpisodeItem) -> Unit = {},
+    onMovieClick: (HomeUpcomingItem.MovieItem) -> Unit = {},
+    onEpisodeClick: (HomeUpcomingItem.EpisodeItem) -> Unit = {},
+    onBackClick: () -> Unit = {},
 ) {
     val contentPadding = PaddingValues(
         start = TraktTheme.spacing.mainPageHorizontalSpace,
@@ -112,7 +130,7 @@ private fun CalendarScreen(
         top = WindowInsets.statusBars.asPaddingValues()
             .calculateTopPadding()
             .plus(TraktTheme.size.titleBarHeight)
-            .plus(24.dp),
+            .plus(176.dp),
         bottom = WindowInsets.navigationBars.asPaddingValues()
             .calculateBottomPadding()
             .plus(TraktTheme.size.navigationBarHeight)
@@ -140,6 +158,7 @@ private fun CalendarScreen(
             contentPadding = contentPadding,
             onEpisodeClick = onEpisodeClick,
             onShowClick = onShowClick,
+            onMovieClick = onMovieClick,
         )
 
         TitleBar(
@@ -152,6 +171,28 @@ private fun CalendarScreen(
                     top = WindowInsets.statusBars.asPaddingValues()
                         .calculateTopPadding()
                         .plus(4.dp),
+                )
+                .graphicsLayer {
+                    translationY = listScrollConnection.resultOffset
+                },
+        )
+
+        CalendarControlsView(
+            enabled = !state.loading.isLoading,
+            startDate = state.selectedStartDay,
+            focusedDate = LocalDate.now(),
+            onTodayClick = onTodayClick,
+            onNextWeekClick = onNextWeekClick,
+            onPreviousWeekClick = onPreviousWeekClick,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    top = WindowInsets.statusBars.asPaddingValues()
+                        .calculateTopPadding()
+                        .plus(TraktTheme.size.titleBarHeight)
+                        .plus(8.dp),
+                    start = TraktTheme.spacing.mainPageHorizontalSpace,
+                    end = TraktTheme.spacing.mainPageHorizontalSpace,
                 )
                 .graphicsLayer {
                     translationY = listScrollConnection.resultOffset
@@ -199,32 +240,61 @@ private fun CalendarContent(
     contentPadding: PaddingValues,
     onEpisodeClick: (HomeUpcomingItem.EpisodeItem) -> Unit,
     onShowClick: (HomeUpcomingItem.EpisodeItem) -> Unit,
+    onMovieClick: (HomeUpcomingItem.MovieItem) -> Unit,
 ) {
-    when (state.loading) {
-        IDLE, LOADING -> {
-            ContentLoadingGrid(
-                visible = state.loading.isLoading,
-                contentPadding = contentPadding,
-            )
-        }
-
-        DONE -> {
-            when {
-                state.error != null -> {
-                    // TODO
-                }
-                else -> {
-                    ContentItemsGrid(
-                        items = state.items ?: emptyMap(),
-                        gridState = gridState,
-                        contentPadding = contentPadding,
-                        onEpisodeClick = onEpisodeClick,
-                        onShowClick = onShowClick,
-                    )
-                }
-            }
-        }
+    if (state.items.isNullOrEmpty() && state.loading.isLoading) {
+        ContentLoadingGrid(
+            visible = state.loading.isLoading,
+            contentPadding = contentPadding,
+        )
+    } else if (!state.items.isNullOrEmpty()) {
+        ContentItemsGrid(
+            items = state.items,
+            gridState = gridState,
+            contentPadding = contentPadding,
+            onEpisodeClick = onEpisodeClick,
+            onShowClick = onShowClick,
+            onMovieClick = onMovieClick,
+        )
     }
+//    when (state.loading) {
+//        IDLE, LOADING -> {
+//            if (state.items.isNullOrEmpty()) {
+//                ContentLoadingGrid(
+//                    visible = state.loading.isLoading,
+//                    contentPadding = contentPadding,
+//                )
+//            }
+//        }
+//
+//        DONE -> {
+//            when {
+//                state.error != null -> {
+//                    Text(
+//                        text = "${
+//                            stringResource(
+//                                R.string.error_text_unexpected_error_short,
+//                            )
+//                        }\n\n${state.error}",
+//                        color = TraktTheme.colors.textSecondary,
+//                        style = TraktTheme.typography.meta,
+//                        maxLines = 20,
+//                        modifier = Modifier.padding(contentPadding),
+//                    )
+//                }
+//                else -> {
+//                    ContentItemsGrid(
+//                        items = state.items ?: emptyMap(),
+//                        gridState = gridState,
+//                        contentPadding = contentPadding,
+//                        onEpisodeClick = onEpisodeClick,
+//                        onShowClick = onShowClick,
+//                        onMovieClick = onMovieClick,
+//                    )
+//                }
+//            }
+//        }
+//    }
 }
 
 @Composable
@@ -234,11 +304,8 @@ private fun ContentItemsGrid(
     contentPadding: PaddingValues,
     onEpisodeClick: (HomeUpcomingItem.EpisodeItem) -> Unit,
     onShowClick: (HomeUpcomingItem.EpisodeItem) -> Unit,
+    onMovieClick: (HomeUpcomingItem.MovieItem) -> Unit,
 ) {
-    val sortedDates = remember(items) {
-        items.keys.sorted()
-    }
-
     LazyVerticalGrid(
         state = gridState,
         columns = GridCells.Fixed(2),
@@ -247,18 +314,20 @@ private fun ContentItemsGrid(
         contentPadding = contentPadding,
         overscrollEffect = null,
     ) {
-        sortedDates.forEachIndexed { index, date ->
+        items.keys.forEachIndexed { index, date ->
             val gridItems = items[date] ?: EmptyImmutableList
             if (gridItems.isNotEmpty()) {
-                item(span = { GridItemSpan(maxLineSpan) }) {
+                item(
+                    span = { GridItemSpan(maxLineSpan) },
+                    key = "header_$date",
+                ) {
                     Row(
                         horizontalArrangement = spacedBy(6.dp),
                         verticalAlignment = CenterVertically,
-                        modifier = Modifier.padding(
-                            top = if (index == 0) 0.dp else 24.dp,
-                        ),
+                        modifier = Modifier
+                            .padding(top = if (index == 0) 0.dp else 24.dp),
                     ) {
-                        val isToday = remember {
+                        val isToday = remember(date) {
                             date.toLocal().toLocalDate() == nowLocalDay()
                         }
 
@@ -290,21 +359,13 @@ private fun ContentItemsGrid(
                             item = item,
                             onClick = { onEpisodeClick(item) },
                             onShowClick = { onShowClick(item) },
-                            modifier = Modifier.animateItem(
-                                fadeInSpec = null,
-                                fadeOutSpec = null,
-                            ),
                         )
                     }
 
                     if (item is HomeUpcomingItem.MovieItem) {
                         CalendarMovieItemView(
                             item = item,
-                            onClick = { /* TODO */ },
-                            modifier = Modifier.animateItem(
-                                fadeInSpec = null,
-                                fadeOutSpec = null,
-                            ),
+                            onClick = { onMovieClick(item) },
                         )
                     }
                 }
@@ -332,5 +393,22 @@ private fun ContentLoadingGrid(
         items(count = 12) {
             EpisodeSkeletonCard()
         }
+    }
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun Preview() {
+    TraktTheme {
+        CalendarScreen(
+            state = CalendarState(
+                selectedStartDay = LocalDate.now().with(MONDAY),
+                loading = DONE,
+            ),
+        )
     }
 }

@@ -370,6 +370,7 @@ internal fun NavGraphBuilder.calendarScreens(controller: NavHostController) {
                 navigateToEpisode(showId, episode)
             },
             onShowClick = { navigateToShow(it) },
+            onMovieClick = { navigateToMovie(it) },
             onNavigateBack = { popBackStack() },
         )
     }

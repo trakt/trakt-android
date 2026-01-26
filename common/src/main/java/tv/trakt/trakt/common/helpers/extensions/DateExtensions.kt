@@ -27,7 +27,7 @@ val fullDateFormat: DateTimeFormatter = DateTimeFormatter
     .withLocale(Locale.US)
 
 val fullDayFormat: DateTimeFormatter = DateTimeFormatter
-    .ofPattern("EEEE,  d MMMM")
+    .ofPattern("EEEE,  d MMM")
     .withLocale(Locale.US)
 
 val longDateTimeFormat: DateTimeFormatter = DateTimeFormatter

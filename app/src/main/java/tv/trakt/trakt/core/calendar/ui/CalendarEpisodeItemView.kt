@@ -53,7 +53,7 @@ internal fun CalendarEpisodeItemView(
                         contentDescription = null,
                         tint = TraktTheme.colors.chipContent,
                         modifier = Modifier
-                            .size(13.dp)
+                            .size(12.dp)
                             .graphicsLayer {
                                 translationY = -(0.5).dp.toPx()
                             },

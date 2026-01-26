@@ -16,12 +16,14 @@ internal fun NavGraphBuilder.calendarScreen(
     onNavigateBack: () -> Unit,
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
     onShowClick: (TraktId) -> Unit,
+    onMovieClick: (TraktId) -> Unit,
 ) {
     composable<CalendarDestination> {
         CalendarScreen(
             viewModel = koinViewModel(),
             onEpisodeClick = onEpisodeClick,
             onShowClick = onShowClick,
+            onMovieClick = onMovieClick,
             onNavigateBack = onNavigateBack,
         )
     }

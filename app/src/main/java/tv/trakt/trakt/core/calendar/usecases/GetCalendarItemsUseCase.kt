@@ -7,7 +7,6 @@ import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
-import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Episode
@@ -30,9 +29,9 @@ private const val DAYS_RANGE = 8
 internal class GetCalendarItemsUseCase(
     private val remoteUserSource: UserRemoteDataSource,
 ) {
-    suspend fun getCalendarItems(): ImmutableMap<Instant, ImmutableList<HomeUpcomingItem>> {
+    suspend fun getCalendarItems(day: LocalDate): ImmutableMap<Instant, ImmutableList<HomeUpcomingItem>> {
         return coroutineScope {
-            val (weekStart, weekEnd) = with(nowLocalDay()) {
+            val (weekStart, weekEnd) = with(day) {
                 with(MONDAY) to with(SUNDAY)
             }
 

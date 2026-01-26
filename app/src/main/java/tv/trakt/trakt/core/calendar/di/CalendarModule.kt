@@ -17,6 +17,7 @@ internal val calendarModule = module {
             sessionManager = get(),
             getCalendarItemsUseCase = get(),
             showLocalDataSource = get(),
+            movieLocalDataSource = get(),
             episodeLocalDataSource = get(),
         )
     }
