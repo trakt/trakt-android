@@ -158,7 +158,7 @@ internal fun HomeUpcomingContent(
             },
             modifier = Modifier
                 .padding(headerPadding)
-                .onClick(enabled = state.loading == DONE) {
+                .onClick {
                     onCalendarClick()
                 },
         )

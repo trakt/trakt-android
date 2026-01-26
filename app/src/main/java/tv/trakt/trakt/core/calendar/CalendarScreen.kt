@@ -4,7 +4,6 @@ package tv.trakt.trakt.core.calendar
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -25,38 +23,38 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableSet
+import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.fullDayFormat
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
-import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
-import tv.trakt.trakt.core.calendar.ui.CalendarControlsView
 import tv.trakt.trakt.core.calendar.ui.CalendarEpisodeItemView
 import tv.trakt.trakt.core.calendar.ui.CalendarMovieItemView
+import tv.trakt.trakt.core.calendar.ui.controls.CalendarControlsView
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.helpers.SimpleScrollConnection
-import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
@@ -100,12 +98,15 @@ internal fun CalendarScreen(
         onNextWeekClick = viewModel::loadNextWeekData,
         onPreviousWeekClick = viewModel::loadPreviousWeekData,
         onShowClick = { item ->
+            if (state.loading.isLoading) return@CalendarScreen
             viewModel.navigateToShow(item.show)
         },
         onMovieClick = { item ->
+            if (state.loading.isLoading) return@CalendarScreen
             viewModel.navigateToMovie(item.movie)
         },
         onEpisodeClick = { item ->
+            if (state.loading.isLoading) return@CalendarScreen
             viewModel.navigateToEpisode(item.show, item.episode)
         },
         onBackClick = onNavigateBack,
@@ -124,12 +125,13 @@ private fun CalendarScreen(
     onEpisodeClick: (HomeUpcomingItem.EpisodeItem) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
+    val scope = rememberCoroutineScope()
+
     val contentPadding = PaddingValues(
         start = TraktTheme.spacing.mainPageHorizontalSpace,
         end = TraktTheme.spacing.mainPageHorizontalSpace,
         top = WindowInsets.statusBars.asPaddingValues()
             .calculateTopPadding()
-            .plus(TraktTheme.size.titleBarHeight)
             .plus(176.dp),
         bottom = WindowInsets.navigationBars.asPaddingValues()
             .calculateBottomPadding()
@@ -138,18 +140,50 @@ private fun CalendarScreen(
     )
 
     val gridState = rememberLazyGridState()
-    val listScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
+    val scrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
         SimpleScrollConnection()
+    }
+
+    val focusedDate by remember(state.items) {
+        val keys = state.items?.keys?.toList() ?: EmptyImmutableList
+
+        derivedStateOf {
+            val firstVisibleIndex = gridState.firstVisibleItemIndex
+            if (firstVisibleIndex < 0 || state.items.isNullOrEmpty()) {
+                return@derivedStateOf null
+            }
+
+            var accumulatedCount = 0
+            for (date in keys) {
+                val itemsForDate = state.items[date] ?: EmptyImmutableList
+                val itemCountForDate = when {
+                    itemsForDate.isNotEmpty() -> itemsForDate.size + 1
+                    else -> 0
+                }
+
+                if (firstVisibleIndex < accumulatedCount + itemCountForDate) {
+                    return@derivedStateOf date.toLocal().toLocalDate()
+                }
+
+                accumulatedCount += itemCountForDate
+            }
+
+            null
+        }
+    }
+
+    LaunchedEffect(state.items) {
+        gridState.scrollToItem(0)
     }
 
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(TraktTheme.colors.backgroundPrimary)
-            .nestedScroll(listScrollConnection),
+            .nestedScroll(scrollConnection),
     ) {
         ScrollableBackdropImage(
-            translation = listScrollConnection.resultOffset,
+            translation = scrollConnection.resultOffset,
         )
 
         CalendarContent(
@@ -161,75 +195,52 @@ private fun CalendarScreen(
             onMovieClick = onMovieClick,
         )
 
-        TitleBar(
-            onBackClick = onBackClick,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = TraktTheme.spacing.mainPageHorizontalSpace,
-                    end = TraktTheme.spacing.mainPageHorizontalSpace,
-                    top = WindowInsets.statusBars.asPaddingValues()
-                        .calculateTopPadding()
-                        .plus(4.dp),
-                )
-                .graphicsLayer {
-                    translationY = listScrollConnection.resultOffset
-                },
-        )
+        val scrollOffset = with(LocalDensity.current) { 44.dp.toPx().toInt() }
+        val availableDates = remember(state.items) {
+            state.items?.keys?.map { it.toLocal().toLocalDate() }?.toImmutableSet()
+        }
 
         CalendarControlsView(
             enabled = !state.loading.isLoading,
             startDate = state.selectedStartDay,
-            focusedDate = LocalDate.now(),
+            focusedDate = focusedDate,
+            availableDates = availableDates,
+            onDayClick = { date ->
+                val items = state.items ?: return@CalendarControlsView
+                var accumulatedCount = 0
+
+                for (itemDate in items.keys) {
+                    if (itemDate.toLocal().toLocalDate() == date) {
+                        scope.launch {
+                            val offset = when {
+                                accumulatedCount == 0 -> 0
+                                else -> scrollOffset
+                            }
+                            gridState.scrollToItem(accumulatedCount, offset)
+                        }
+                        return@CalendarControlsView
+                    }
+
+                    val itemsForDate = items[itemDate] ?: EmptyImmutableList
+                    accumulatedCount += when {
+                        itemsForDate.isNotEmpty() -> itemsForDate.size + 1
+                        else -> 0
+                    }
+                }
+            },
             onTodayClick = onTodayClick,
             onNextWeekClick = onNextWeekClick,
             onPreviousWeekClick = onPreviousWeekClick,
+            onBackClick = onBackClick,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
                     top = WindowInsets.statusBars.asPaddingValues()
-                        .calculateTopPadding()
-                        .plus(TraktTheme.size.titleBarHeight)
-                        .plus(8.dp),
+                        .calculateTopPadding(),
                     start = TraktTheme.spacing.mainPageHorizontalSpace,
                     end = TraktTheme.spacing.mainPageHorizontalSpace,
-                )
-                .graphicsLayer {
-                    translationY = listScrollConnection.resultOffset
-                },
+                ),
         )
-    }
-}
-
-@Composable
-private fun TitleBar(
-    modifier: Modifier = Modifier,
-    onBackClick: () -> Unit,
-) {
-    Row(
-        verticalAlignment = CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = modifier,
-    ) {
-        Row(
-            verticalAlignment = CenterVertically,
-            horizontalArrangement = spacedBy(12.dp),
-            modifier = Modifier
-                .height(TraktTheme.size.titleBarHeight)
-                .onClick(onClick = onBackClick)
-                .graphicsLayer {
-                    translationX = -2.dp.toPx()
-                },
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_back_arrow),
-                tint = TraktTheme.colors.textPrimary,
-                contentDescription = null,
-            )
-            TraktHeader(
-                title = stringResource(R.string.page_title_calendar),
-            )
-        }
     }
 }
 
@@ -252,9 +263,10 @@ private fun CalendarContent(
             items = state.items,
             gridState = gridState,
             contentPadding = contentPadding,
-            onEpisodeClick = onEpisodeClick,
+            loading = state.loading.isLoading,
             onShowClick = onShowClick,
             onMovieClick = onMovieClick,
+            onEpisodeClick = onEpisodeClick,
         )
     }
 //    when (state.loading) {
@@ -302,9 +314,10 @@ private fun ContentItemsGrid(
     items: Map<Instant, ImmutableList<HomeUpcomingItem>?>,
     gridState: LazyGridState,
     contentPadding: PaddingValues,
-    onEpisodeClick: (HomeUpcomingItem.EpisodeItem) -> Unit,
+    loading: Boolean,
     onShowClick: (HomeUpcomingItem.EpisodeItem) -> Unit,
     onMovieClick: (HomeUpcomingItem.MovieItem) -> Unit,
+    onEpisodeClick: (HomeUpcomingItem.EpisodeItem) -> Unit,
 ) {
     LazyVerticalGrid(
         state = gridState,
@@ -313,6 +326,8 @@ private fun ContentItemsGrid(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainGridVerticalSpace),
         contentPadding = contentPadding,
         overscrollEffect = null,
+        modifier = Modifier
+            .alpha(if (loading) 0.25F else 1F),
     ) {
         items.keys.forEachIndexed { index, date ->
             val gridItems = items[date] ?: EmptyImmutableList
@@ -334,11 +349,11 @@ private fun ContentItemsGrid(
                         if (isToday) {
                             Box(
                                 modifier = Modifier
-                                    .background(color = Purple400, shape = CircleShape)
-                                    .size(6.dp)
                                     .graphicsLayer {
-                                        translationY = 2.dp.toPx()
-                                    },
+                                        translationY = 0.5.dp.toPx()
+                                    }
+                                    .background(color = Purple400, shape = CircleShape)
+                                    .size(6.dp),
                             )
                         }
                         TraktHeader(
