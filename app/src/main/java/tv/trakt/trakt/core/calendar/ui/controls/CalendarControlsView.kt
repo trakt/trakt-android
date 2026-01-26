@@ -59,7 +59,7 @@ internal fun CalendarControlsView(
     val shape = RoundedCornerShape(24.dp)
     Column(
         modifier = modifier
-            .shadow(4.dp, shape = shape)
+            .shadow(6.dp, shape = shape)
             .background(
                 color = TraktTheme.colors.dialogContainer,
                 shape = shape,
@@ -94,7 +94,7 @@ internal fun CalendarControlsView(
             }
 
             Row(
-                horizontalArrangement = spacedBy(12.dp),
+                horizontalArrangement = spacedBy(8.dp),
                 verticalAlignment = CenterVertically,
             ) {
                 Icon(
@@ -170,7 +170,7 @@ private fun DaysRow(
 
             Column(
                 horizontalAlignment = CenterHorizontally,
-                verticalArrangement = spacedBy(6.dp),
+                verticalArrangement = spacedBy(4.dp),
                 modifier = Modifier
                     .weight(1F)
                     .background(

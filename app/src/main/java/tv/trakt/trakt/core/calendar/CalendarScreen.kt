@@ -55,7 +55,6 @@ import tv.trakt.trakt.core.calendar.ui.CalendarMovieItemView
 import tv.trakt.trakt.core.calendar.ui.controls.CalendarControlsView
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.helpers.SimpleScrollConnection
-import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -182,10 +181,6 @@ private fun CalendarScreen(
             .background(TraktTheme.colors.backgroundPrimary)
             .nestedScroll(scrollConnection),
     ) {
-        ScrollableBackdropImage(
-            translation = scrollConnection.resultOffset,
-        )
-
         CalendarContent(
             state = state,
             gridState = gridState,
@@ -228,7 +223,17 @@ private fun CalendarScreen(
                     }
                 }
             },
-            onTodayClick = onTodayClick,
+            onTodayClick = {
+                val selectedStartDay = state.selectedStartDay
+                val selectedWeek = selectedStartDay..selectedStartDay.plusDays(6)
+                if (nowLocalDay() in selectedWeek) {
+                    scope.launch {
+                        gridState.scrollToItem(0)
+                    }
+                } else {
+                    onTodayClick()
+                }
+            },
             onNextWeekClick = onNextWeekClick,
             onPreviousWeekClick = onPreviousWeekClick,
             onBackClick = onBackClick,
@@ -269,44 +274,6 @@ private fun CalendarContent(
             onEpisodeClick = onEpisodeClick,
         )
     }
-//    when (state.loading) {
-//        IDLE, LOADING -> {
-//            if (state.items.isNullOrEmpty()) {
-//                ContentLoadingGrid(
-//                    visible = state.loading.isLoading,
-//                    contentPadding = contentPadding,
-//                )
-//            }
-//        }
-//
-//        DONE -> {
-//            when {
-//                state.error != null -> {
-//                    Text(
-//                        text = "${
-//                            stringResource(
-//                                R.string.error_text_unexpected_error_short,
-//                            )
-//                        }\n\n${state.error}",
-//                        color = TraktTheme.colors.textSecondary,
-//                        style = TraktTheme.typography.meta,
-//                        maxLines = 20,
-//                        modifier = Modifier.padding(contentPadding),
-//                    )
-//                }
-//                else -> {
-//                    ContentItemsGrid(
-//                        items = state.items ?: emptyMap(),
-//                        gridState = gridState,
-//                        contentPadding = contentPadding,
-//                        onEpisodeClick = onEpisodeClick,
-//                        onShowClick = onShowClick,
-//                        onMovieClick = onMovieClick,
-//                    )
-//                }
-//            }
-//        }
-//    }
 }
 
 @Composable
