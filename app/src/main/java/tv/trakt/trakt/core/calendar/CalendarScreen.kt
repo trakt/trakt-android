@@ -23,6 +23,7 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -52,6 +53,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.core.calendar.ui.CalendarEpisodeItemView
+import tv.trakt.trakt.core.calendar.ui.CalendarMovieItemView
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
@@ -246,8 +248,8 @@ private fun ContentItemsGrid(
         overscrollEffect = null,
     ) {
         sortedDates.forEachIndexed { index, date ->
-            val episodes = items[date] ?: EmptyImmutableList
-            if (episodes.isNotEmpty()) {
+            val gridItems = items[date] ?: EmptyImmutableList
+            if (gridItems.isNotEmpty()) {
                 item(span = { GridItemSpan(maxLineSpan) }) {
                     Row(
                         horizontalArrangement = spacedBy(6.dp),
@@ -261,11 +263,13 @@ private fun ContentItemsGrid(
                         }
 
                         if (isToday) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_calendar),
-                                tint = Purple400,
-                                contentDescription = null,
-                                modifier = Modifier.size(16.dp),
+                            Box(
+                                modifier = Modifier
+                                    .background(color = Purple400, shape = CircleShape)
+                                    .size(6.dp)
+                                    .graphicsLayer {
+                                        translationY = 2.dp.toPx()
+                                    },
                             )
                         }
                         TraktHeader(
@@ -277,15 +281,26 @@ private fun ContentItemsGrid(
                 }
 
                 items(
-                    count = episodes.size,
-                    key = { index -> episodes[index].id.value },
+                    count = gridItems.size,
+                    key = { index -> gridItems[index].id.value },
                 ) { index ->
-                    val episode = episodes[index]
-                    if (episode is HomeUpcomingItem.EpisodeItem) {
+                    val item = gridItems[index]
+                    if (item is HomeUpcomingItem.EpisodeItem) {
                         CalendarEpisodeItemView(
-                            item = episode,
-                            onClick = { onEpisodeClick(episode) },
-                            onShowClick = { onShowClick(episode) },
+                            item = item,
+                            onClick = { onEpisodeClick(item) },
+                            onShowClick = { onShowClick(item) },
+                            modifier = Modifier.animateItem(
+                                fadeInSpec = null,
+                                fadeOutSpec = null,
+                            ),
+                        )
+                    }
+
+                    if (item is HomeUpcomingItem.MovieItem) {
+                        CalendarMovieItemView(
+                            item = item,
+                            onClick = { /* TODO */ },
                             modifier = Modifier.animateItem(
                                 fadeInSpec = null,
                                 fadeOutSpec = null,
@@ -309,11 +324,12 @@ private fun ContentLoadingGrid(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainGridVerticalSpace),
         contentPadding = contentPadding,
         overscrollEffect = null,
+        userScrollEnabled = false,
         modifier = Modifier
             .fillMaxSize()
             .alpha(if (visible) 1F else 0F),
     ) {
-        items(count = 6) {
+        items(count = 12) {
             EpisodeSkeletonCard()
         }
     }

@@ -4,8 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
-import kotlinx.collections.immutable.toImmutableList
-import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,29 +24,21 @@ import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
-import tv.trakt.trakt.common.helpers.extensions.asyncMap
-import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.common.helpers.extensions.toInstant
-import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.common.model.fromDto
-import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.calendar.usecases.GetCalendarItemsUseCase
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.core.main.model.MediaMode
-import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
-import java.time.DayOfWeek.MONDAY
 import java.time.Instant
-import java.time.temporal.ChronoUnit
 
 @OptIn(FlowPreview::class)
 @Suppress("UNCHECKED_CAST")
 internal class CalendarViewModel(
     private val sessionManager: SessionManager,
-    private val remoteUserSource: UserRemoteDataSource,
+    private val getCalendarItemsUseCase: GetCalendarItemsUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
 ) : ViewModel() {
@@ -96,31 +86,7 @@ internal class CalendarViewModel(
 
             try {
                 loadingState.update { LOADING }
-
-                val calendarData = remoteUserSource.getShowsCalendar(
-                    startDate = nowLocalDay().with(MONDAY),
-                    days = 6,
-                )
-
-                val episodes = calendarData
-                    .asyncMap {
-                        HomeUpcomingItem.EpisodeItem(
-                            id = it.episode.ids.trakt.toTraktId(),
-                            releasedAt = it.firstAired.toInstant(),
-                            episode = Episode.fromDto(it.episode),
-                            show = Show.fromDto(it.show),
-                        )
-                    }
-
-                // Group by date
-                val groupedItems = episodes
-                    .groupBy {
-                        it.releasedAt.toLocal().truncatedTo(ChronoUnit.DAYS).toInstant()
-                    }
-                    .mapValues { it.value.toImmutableList() }
-                    .toImmutableMap()
-
-                itemsState.update { groupedItems }
+                itemsState.update { getCalendarItemsUseCase.getCalendarItems() }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
