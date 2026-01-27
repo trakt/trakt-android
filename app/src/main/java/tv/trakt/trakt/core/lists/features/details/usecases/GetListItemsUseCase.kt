@@ -9,7 +9,6 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
-import tv.trakt.trakt.common.model.sorting.SortTypeList.DEFAULT
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.data.remote.ListsRemoteDataSource
 import tv.trakt.trakt.core.lists.model.PersonalListItem
@@ -27,10 +26,7 @@ internal class GetListItemsUseCase(
                 listId = listId,
                 limit = "all",
                 extended = "full,cloud9,colors",
-                sorting = when {
-                    sorting.type == DEFAULT -> sorting
-                    else -> sorting.copy(order = sorting.order.toggle())
-                },
+                sorting = sorting,
             ).asyncMap {
                 PersonalListItem.MovieItem(
                     rank = it.rank,
@@ -45,10 +41,7 @@ internal class GetListItemsUseCase(
                 listId = listId,
                 limit = "all",
                 extended = "full,cloud9,colors",
-                sorting = when {
-                    sorting.type == DEFAULT -> sorting
-                    else -> sorting.copy(order = sorting.order.toggle())
-                },
+                sorting = sorting,
             ).asyncMap {
                 PersonalListItem.ShowItem(
                     rank = it.rank,
