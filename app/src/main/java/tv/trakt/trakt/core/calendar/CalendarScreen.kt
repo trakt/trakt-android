@@ -56,8 +56,6 @@ import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.fullDayFormat
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.helpers.extensions.toLocal
-import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
@@ -71,7 +69,6 @@ import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.DayOfWeek.MONDAY
-import java.time.Instant
 import java.time.LocalDate
 
 @Composable
@@ -173,7 +170,7 @@ private fun CalendarScreen(
                 }
 
                 if (firstVisibleIndex < accumulatedCount + itemCountForDate) {
-                    return@derivedStateOf date.toLocal().toLocalDate()
+                    return@derivedStateOf date
                 }
 
                 accumulatedCount += itemCountForDate
@@ -205,7 +202,6 @@ private fun CalendarScreen(
         val availableDates = remember(state.items) {
             state.items?.keys
                 ?.filter { state.items[it]?.isNotEmpty() == true }
-                ?.map { it.toLocal().toLocalDate() }
                 ?.toImmutableSet()
         }
 
@@ -222,6 +218,7 @@ private fun CalendarScreen(
             enabled = !state.loading.isLoading,
             startDate = state.selectedStartDay,
             focusedDate = focusedDate,
+            availableItems = state.items,
             availableDates = availableDates,
             onDayClick = { date ->
                 scrollToDay(
@@ -313,7 +310,7 @@ private fun CalendarContent(
 
 @Composable
 private fun ContentItemsGrid(
-    items: Map<Instant, ImmutableList<HomeUpcomingItem>?>,
+    items: Map<LocalDate, ImmutableList<HomeUpcomingItem>?>,
     gridState: LazyGridState,
     contentPadding: PaddingValues,
     loading: Boolean,
@@ -345,7 +342,7 @@ private fun ContentItemsGrid(
                         .padding(top = if (index == 0) 0.dp else 38.dp),
                 ) {
                     val isToday = remember(date) {
-                        date.toLocal().toLocalDate() == nowLocalDay()
+                        date == nowLocalDay()
                     }
 
                     if (isToday) {
@@ -359,9 +356,7 @@ private fun ContentItemsGrid(
                         )
                     }
                     TraktHeader(
-                        title = remember {
-                            date.toLocal().format(fullDayFormat)
-                        },
+                        title = remember { date.format(fullDayFormat) },
                         titleColor = when {
                             gridItems.isNotEmpty() -> TraktTheme.colors.textPrimary
                             else -> TraktTheme.colors.textSecondary
@@ -468,7 +463,7 @@ private fun scrollToDay(
     var accumulatedCount = 0
 
     for (itemDate in items.keys) {
-        if (itemDate.toLocalDay() == date) {
+        if (itemDate == date) {
             scope.launch {
                 val offset = when {
                     accumulatedCount == 0 -> 0

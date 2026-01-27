@@ -40,7 +40,7 @@ internal fun CalendarMovieItemView(
                 verticalArrangement = spacedBy(1.dp),
             ) {
                 Row(
-                    horizontalArrangement = spacedBy(4.dp),
+                    horizontalArrangement = spacedBy(3.dp),
                     verticalAlignment = CenterVertically,
                 ) {
                     Icon(

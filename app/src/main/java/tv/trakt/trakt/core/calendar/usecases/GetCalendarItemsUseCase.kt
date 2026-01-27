@@ -19,10 +19,8 @@ import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 import java.time.DayOfWeek.MONDAY
 import java.time.DayOfWeek.SUNDAY
-import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
-import java.time.temporal.ChronoUnit
 
 private const val DAYS_OFFSET = 1L
 private const val DAYS_RANGE = 8
@@ -33,7 +31,7 @@ private val finaleValues = listOf("season_finale", "series_finale")
 internal class GetCalendarItemsUseCase(
     private val remoteUserSource: UserRemoteDataSource,
 ) {
-    suspend fun getCalendarItems(day: LocalDate): ImmutableMap<Instant, ImmutableList<HomeUpcomingItem>> {
+    suspend fun getCalendarItems(day: LocalDate): ImmutableMap<LocalDate, ImmutableList<HomeUpcomingItem>> {
         return coroutineScope {
             val (weekStart, weekEnd) = with(day) {
                 with(MONDAY) to with(SUNDAY)
@@ -110,22 +108,13 @@ internal class GetCalendarItemsUseCase(
             // Group by day
             val groupedItems = (episodes + movies)
                 .sortedBy { it.releasedAt }
-                .groupBy {
-                    it.releasedAt
-                        .toLocalDay()
-                        .atStartOfDay(ZoneId.of("UTC"))
-                        .truncatedTo(ChronoUnit.DAYS)
-                        .toInstant()
-                }
+                .groupBy { it.releasedAt.toLocalDay() }
                 .mapValues { it.value.toImmutableList() }
                 .toMutableMap()
 
             // Iterate over selected week and fill grouped items with empty lists if no items for that day
             for (i in 0..6) {
                 val currentDay = weekStart.plusDays(i.toLong())
-                    .atStartOfDay(ZoneId.of("UTC"))
-                    .truncatedTo(ChronoUnit.DAYS)
-                    .toInstant()
 
                 if (groupedItems[currentDay] == null) {
                     groupedItems[currentDay] = emptyList<HomeUpcomingItem>().toImmutableList()

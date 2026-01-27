@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -32,11 +33,14 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W800
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
+import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.GhostButton
@@ -51,6 +55,7 @@ internal fun CalendarControlsView(
     modifier: Modifier = Modifier,
     focusedDate: LocalDate? = null,
     availableDates: ImmutableSet<LocalDate>? = null,
+    availableItems: ImmutableMap<LocalDate, ImmutableList<HomeUpcomingItem>>? = null,
     enabled: Boolean = false,
     onDayClick: (LocalDate) -> Unit = {},
     onTodayClick: () -> Unit = {},
@@ -66,11 +71,8 @@ internal fun CalendarControlsView(
                 color = TraktTheme.colors.dialogContainer,
                 shape = shape,
             )
-            .padding(top = 4.dp)
-            .padding(
-                horizontal = 12.dp,
-                vertical = 12.dp,
-            ),
+            .padding(top = 16.dp, bottom = 12.dp)
+            .padding(horizontal = 12.dp),
     ) {
         Row(
             verticalAlignment = CenterVertically,
@@ -104,6 +106,7 @@ internal fun CalendarControlsView(
                     tint = TraktTheme.colors.textPrimary,
                     contentDescription = null,
                     modifier = Modifier
+                        .size(24.dp)
                         .rotate(180F)
                         .onClick(throttle = false) {
                             onPreviousWeekClick()
@@ -122,6 +125,7 @@ internal fun CalendarControlsView(
                     tint = TraktTheme.colors.textPrimary,
                     contentDescription = null,
                     modifier = Modifier
+                        .size(24.dp)
                         .onClick(throttle = false) {
                             onNextWeekClick()
                         },
@@ -137,15 +141,31 @@ internal fun CalendarControlsView(
                 .padding(top = 16.dp),
         ) {
             for (day in 0..6) {
+                val date = remember(startDate) {
+                    startDate.plusDays(day.toLong())
+                }
+
+                val episodes = remember(availableItems, date) {
+                    availableItems?.get(date)
+                        ?.filterIsInstance<HomeUpcomingItem.EpisodeItem>()
+                        ?.size
+                }
+
+                val movies = remember(availableItems, date) {
+                    availableItems?.get(date)
+                        ?.filterIsInstance<HomeUpcomingItem.MovieItem>()
+                        ?.size
+                }
+
                 DayRowItem(
                     enabled = enabled,
-                    day = day,
-                    startDate = startDate,
+                    itemDate = date,
                     focusedDate = focusedDate,
                     availableDates = availableDates,
+                    episodesCount = episodes ?: 0,
+                    moviesCount = movies ?: 0,
                     onDayClick = onDayClick,
-                    modifier = Modifier
-                        .weight(1F),
+                    modifier = Modifier.weight(1F),
                 )
             }
         }
@@ -155,27 +175,24 @@ internal fun CalendarControlsView(
 @Composable
 private fun DayRowItem(
     enabled: Boolean,
-    day: Int,
-    startDate: LocalDate,
+    itemDate: LocalDate,
     focusedDate: LocalDate?,
     availableDates: ImmutableSet<LocalDate>?,
+    episodesCount: Int,
+    moviesCount: Int,
     onDayClick: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val date = remember(startDate) {
-        startDate.plusDays(day.toLong())
+    val isToday = remember(itemDate) {
+        itemDate == LocalDate.now()
     }
 
-    val isToday = remember(date) {
-        date == LocalDate.now()
-    }
-
-    val isAvailable = remember(date, availableDates) {
-        availableDates?.contains(date) ?: false
+    val isAvailable = remember(itemDate, availableDates) {
+        availableDates?.contains(itemDate) ?: false
     }
 
     val dayAvailable = enabled && isAvailable
-    val dayFocused = enabled && (focusedDate == date)
+    val dayFocused = enabled && (focusedDate == itemDate)
 
     val animatedColor by animateColorAsState(
         targetValue = when {
@@ -194,12 +211,11 @@ private fun DayRowItem(
                 shape = RoundedCornerShape(10.dp),
             )
             .padding(
-                vertical = 8.dp,
+                vertical = 6.dp,
                 horizontal = 2.dp,
             )
-            .alpha(if (dayAvailable) 1F else 0.25F)
             .onClick(enabled = dayAvailable) {
-                onDayClick(date)
+                onDayClick(itemDate)
             },
     ) {
         Row(
@@ -218,35 +234,82 @@ private fun DayRowItem(
             }
 
             Text(
-                text = date.dayOfWeek
+                text = itemDate.dayOfWeek
                     .getDisplayName(TextStyle.SHORT, Locale.US),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.meta.copy(
                     fontSize = 12.sp,
                 ),
                 maxLines = 1,
+                modifier = Modifier
+                    .alpha(if (dayAvailable) 1F else 0.25F),
             )
         }
 
         Text(
-            text = date.dayOfMonth.toString(),
+            text = itemDate.dayOfMonth.toString(),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.meta.copy(
                 fontSize = 14.sp,
                 fontWeight = W800,
             ),
             maxLines = 1,
+            modifier = Modifier
+                .alpha(if (dayAvailable) 1F else 0.25F),
         )
 
         Text(
-            text = date.month
+            text = itemDate.month
                 .getDisplayName(TextStyle.SHORT, Locale.US),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.meta.copy(
                 fontSize = 12.sp,
             ),
             maxLines = 1,
+            modifier = Modifier
+                .alpha(if (dayAvailable) 1F else 0.25F),
         )
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(2.dp),
+            verticalAlignment = CenterVertically,
+            modifier = Modifier
+                .heightIn(min = 12.dp),
+        ) {
+            if (episodesCount > 0) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_shows_off),
+                    tint = Purple400,
+                    contentDescription = null,
+                    modifier = Modifier.size(9.dp),
+                )
+            }
+            if (moviesCount > 0) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_movies_off),
+                    tint = Purple400,
+                    contentDescription = null,
+                    modifier = Modifier.size(9.dp),
+                )
+            }
+            val restCount = (episodesCount + moviesCount) - when {
+                episodesCount > 0 && moviesCount > 0 -> 2
+                episodesCount > 0 || moviesCount > 0 -> 1
+                else -> 0
+            }
+
+            if (restCount > 0) {
+                Text(
+                    text = "+$restCount",
+                    color = Purple400,
+                    style = TraktTheme.typography.meta.copy(
+                        fontSize = 10.sp,
+                    ),
+                    maxLines = 1,
+                    modifier = Modifier.padding(start = 0.25.dp),
+                )
+            }
+        }
     }
 }
 
