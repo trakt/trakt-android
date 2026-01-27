@@ -326,6 +326,7 @@
     <string name="text_notification_episodes_release">S%1$d • E%2$d-%3$d are now available.</string>
 
     <string name="page_title_calendar">Calendar</string>
+    <string name="text_today">Today</string>
 
     <!--  Non Translatable  -->
 

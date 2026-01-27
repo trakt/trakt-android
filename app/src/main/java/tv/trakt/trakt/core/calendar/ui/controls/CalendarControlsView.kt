@@ -1,5 +1,7 @@
 package tv.trakt.trakt.core.calendar.ui.controls
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -15,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -22,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -108,7 +110,7 @@ internal fun CalendarControlsView(
                         },
                 )
                 GhostButton(
-                    text = "Today", // TODO string resource
+                    text = stringResource(R.string.text_today),
                     onClick = { onTodayClick() },
                     fillWidth = false,
                     uppercase = false,
@@ -127,115 +129,124 @@ internal fun CalendarControlsView(
             }
         }
 
-        DaysRow(
-            enabled = enabled,
-            startDate = startDate,
-            focusedDate = focusedDate,
-            availableDates = availableDates,
-            onDayClick = onDayClick,
-        )
+        Row(
+            verticalAlignment = CenterVertically,
+            horizontalArrangement = spacedBy(4.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
+        ) {
+            for (day in 0..6) {
+                DayRowItem(
+                    enabled = enabled,
+                    day = day,
+                    startDate = startDate,
+                    focusedDate = focusedDate,
+                    availableDates = availableDates,
+                    onDayClick = onDayClick,
+                    modifier = Modifier
+                        .weight(1F),
+                )
+            }
+        }
     }
 }
 
 @Composable
-private fun DaysRow(
+private fun DayRowItem(
     enabled: Boolean,
+    day: Int,
     startDate: LocalDate,
     focusedDate: LocalDate?,
     availableDates: ImmutableSet<LocalDate>?,
     onDayClick: (LocalDate) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    Row(
-        verticalAlignment = CenterVertically,
-        horizontalArrangement = spacedBy(4.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 16.dp),
+    val date = remember(startDate) {
+        startDate.plusDays(day.toLong())
+    }
+
+    val isToday = remember(date) {
+        date == LocalDate.now()
+    }
+
+    val isAvailable = remember(date, availableDates) {
+        availableDates?.contains(date) ?: false
+    }
+
+    val dayAvailable = enabled && isAvailable
+    val dayFocused = enabled && (focusedDate == date)
+
+    val animatedColor by animateColorAsState(
+        targetValue = when {
+            dayFocused && dayAvailable -> TraktTheme.colors.dialogContent
+            else -> TraktTheme.colors.dialogContainer
+        },
+        animationSpec = tween(200),
+    )
+
+    Column(
+        horizontalAlignment = CenterHorizontally,
+        verticalArrangement = spacedBy(4.dp),
+        modifier = modifier
+            .background(
+                color = animatedColor,
+                shape = RoundedCornerShape(10.dp),
+            )
+            .padding(
+                vertical = 8.dp,
+                horizontal = 2.dp,
+            )
+            .alpha(if (dayAvailable) 1F else 0.25F)
+            .onClick(enabled = dayAvailable) {
+                onDayClick(date)
+            },
     ) {
-        for (day in 0..6) {
-            val date = remember(startDate) {
-                startDate.plusDays(day.toLong())
-            }
-
-            val isToday = remember(date) {
-                date == LocalDate.now()
-            }
-
-            val isAvailable = remember(date, availableDates) {
-                availableDates?.contains(date) ?: false
-            }
-
-            val dayAvailable = enabled && isAvailable
-            val dayFocused = enabled && (focusedDate == date)
-
-            Column(
-                horizontalAlignment = CenterHorizontally,
-                verticalArrangement = spacedBy(4.dp),
-                modifier = Modifier
-                    .weight(1F)
-                    .background(
-                        color = when {
-                            dayFocused && dayAvailable -> TraktTheme.colors.dialogContent
-                            else -> Color.Transparent
-                        },
-                        shape = RoundedCornerShape(10.dp),
-                    )
-                    .padding(
-                        vertical = 8.dp,
-                        horizontal = 2.dp,
-                    )
-                    .alpha(if (dayAvailable) 1F else 0.25F)
-                    .onClick(enabled = dayAvailable) {
-                        onDayClick(date)
-                    },
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(3.dp),
-                    verticalAlignment = CenterVertically,
-                ) {
-                    if (isToday) {
-                        Box(
-                            modifier = Modifier
-                                .graphicsLayer {
-                                    translationY = 0.5.dp.toPx()
-                                }
-                                .background(color = Purple400, shape = CircleShape)
-                                .size(5.dp),
-                        )
-                    }
-
-                    Text(
-                        text = date.dayOfWeek
-                            .getDisplayName(TextStyle.SHORT, Locale.US),
-                        color = TraktTheme.colors.textPrimary,
-                        style = TraktTheme.typography.meta.copy(
-                            fontSize = 12.sp,
-                        ),
-                        maxLines = 1,
-                    )
-                }
-
-                Text(
-                    text = date.dayOfMonth.toString(),
-                    color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.meta.copy(
-                        fontSize = 14.sp,
-                        fontWeight = W800,
-                    ),
-                    maxLines = 1,
-                )
-
-                Text(
-                    text = date.month
-                        .getDisplayName(TextStyle.SHORT, Locale.US),
-                    color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.meta.copy(
-                        fontSize = 12.sp,
-                    ),
-                    maxLines = 1,
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(3.dp),
+            verticalAlignment = CenterVertically,
+        ) {
+            if (isToday) {
+                Box(
+                    modifier = Modifier
+                        .graphicsLayer {
+                            translationY = 0.5.dp.toPx()
+                        }
+                        .background(color = Purple400, shape = CircleShape)
+                        .size(5.dp),
                 )
             }
+
+            Text(
+                text = date.dayOfWeek
+                    .getDisplayName(TextStyle.SHORT, Locale.US),
+                color = TraktTheme.colors.textPrimary,
+                style = TraktTheme.typography.meta.copy(
+                    fontSize = 12.sp,
+                ),
+                maxLines = 1,
+            )
         }
+
+        Text(
+            text = date.dayOfMonth.toString(),
+            color = TraktTheme.colors.textPrimary,
+            style = TraktTheme.typography.meta.copy(
+                fontSize = 14.sp,
+                fontWeight = W800,
+            ),
+            maxLines = 1,
+        )
+
+        Text(
+            text = date.month
+                .getDisplayName(TextStyle.SHORT, Locale.US),
+            color = TraktTheme.colors.textPrimary,
+            style = TraktTheme.typography.meta.copy(
+                fontSize = 12.sp,
+            ),
+            maxLines = 1,
+        )
     }
 }
 

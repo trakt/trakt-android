@@ -72,17 +72,6 @@ internal fun TraktHeader(
                 )
             }
         }
-
-//        Icon(
-//            painter = painterResource(R.drawable.ic_cheveron_down),
-//            contentDescription = null,
-//            tint = TraktTheme.colors.textSecondary,
-//            modifier = Modifier
-//                .size(14.dp)
-//                .graphicsLayer {
-//                    translationY = 1.dp.toPx()
-//                },
-//        )
     }
 }
 

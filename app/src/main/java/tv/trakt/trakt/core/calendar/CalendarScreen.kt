@@ -2,6 +2,11 @@
 
 package tv.trakt.trakt.core.calendar
 
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -12,6 +17,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -42,7 +48,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.launch
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.fullDayFormat
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
@@ -361,6 +367,18 @@ private fun ContentLoadingGrid(
     visible: Boolean = true,
     contentPadding: PaddingValues,
 ) {
+    val infiniteTransition = rememberInfiniteTransition(label = "infiniteTransition")
+    val shimmerTransition by infiniteTransition
+        .animateColor(
+            initialValue = TraktTheme.colors.skeletonContainer,
+            targetValue = TraktTheme.colors.skeletonShimmer,
+            animationSpec = infiniteRepeatable(
+                animation = tween(durationMillis = 1000),
+                repeatMode = RepeatMode.Reverse,
+            ),
+            label = "shimmerTransition",
+        )
+
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         horizontalArrangement = spacedBy(TraktTheme.spacing.mainGridHorizontalSpace),
@@ -372,6 +390,19 @@ private fun ContentLoadingGrid(
             .fillMaxSize()
             .alpha(if (visible) 1F else 0F),
     ) {
+        item(
+            span = { GridItemSpan(maxLineSpan) },
+        ) {
+            Box {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.5F)
+                        .height(20.dp)
+                        .background(shimmerTransition, CircleShape)
+                        .padding(bottom = TraktTheme.spacing.mainGridVerticalSpace),
+                )
+            }
+        }
         items(count = 12) {
             EpisodeSkeletonCard()
         }
@@ -389,7 +420,7 @@ private fun Preview() {
         CalendarScreen(
             state = CalendarState(
                 selectedStartDay = LocalDate.now().with(MONDAY),
-                loading = DONE,
+                loading = LoadingState.LOADING,
             ),
         )
     }
