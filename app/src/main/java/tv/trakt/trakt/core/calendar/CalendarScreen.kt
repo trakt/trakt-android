@@ -34,6 +34,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -180,10 +181,6 @@ private fun CalendarScreen(
         }
     }
 
-    LaunchedEffect(state.items) {
-        gridState.scrollToItem(0)
-    }
-
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -271,6 +268,16 @@ private fun CalendarContent(
     onShowClick: (HomeUpcomingItem.EpisodeItem) -> Unit,
     onMovieClick: (HomeUpcomingItem.MovieItem) -> Unit,
 ) {
+    val currentList = remember { mutableIntStateOf(state.items.hashCode()) }
+
+    LaunchedEffect(state.items) {
+        val hashCode = state.items.hashCode()
+        if (currentList.intValue != hashCode) {
+            currentList.intValue = hashCode
+            gridState.scrollToItem(0)
+        }
+    }
+
     if (state.error != null) {
         Text(
             text = "${
