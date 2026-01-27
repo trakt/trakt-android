@@ -53,6 +53,7 @@ internal fun InputField(
     containerColor: Color = TraktTheme.colors.inputContainer.copy(alpha = 0.8F),
     borderColor: Color = TraktTheme.colors.accent,
     lineLimits: TextFieldLineLimits = SingleLine,
+    imeAction: ImeAction = ImeAction.Done,
     endSlot: @Composable (() -> Unit)? = null,
 ) {
     var isFocused by remember { mutableStateOf(false) }
@@ -76,7 +77,7 @@ internal fun InputField(
             keyboardType = Text,
             capitalization = None,
             autoCorrectEnabled = false,
-            imeAction = ImeAction.Done,
+            imeAction = imeAction,
         ),
         decorator = { innerField ->
             Row(
