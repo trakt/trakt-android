@@ -26,6 +26,9 @@ import java.time.temporal.ChronoUnit
 private const val DAYS_OFFSET = 1L
 private const val DAYS_RANGE = 8
 
+private val premiereValues = listOf("season_premiere", "series_premiere")
+private val finaleValues = listOf("season_finale", "series_finale")
+
 internal class GetCalendarItemsUseCase(
     private val remoteUserSource: UserRemoteDataSource,
 ) {
@@ -51,19 +54,40 @@ internal class GetCalendarItemsUseCase(
             val showsData = showsDataAsync.await()
             val moviesData = moviesDataAsync.await()
 
+            val fullSeasonItems = showsData
+                .groupBy { it.show.ids.trakt }
+                .filter { (_, episodes) ->
+                    val isSeasonPremiere = episodes.any {
+                        it.episode.episodeType?.value in premiereValues
+                    }
+
+                    val isSeasonFinale = episodes.any {
+                        it.episode.episodeType?.value in finaleValues
+                    }
+
+                    return@filter episodes.size > 1 && isSeasonPremiere && isSeasonFinale
+                }
+
             val episodes = showsData
                 .filter {
                     val localDate = it.firstAired.toInstant().toLocal().toLocalDate()
                     localDate in weekStart..weekEnd
                 }
                 .asyncMap {
+                    val isFullSeason = fullSeasonItems[it.show.ids.trakt] != null
+                    if (isFullSeason && it.episode.number > 1) {
+                        return@asyncMap null
+                    }
+
                     HomeUpcomingItem.EpisodeItem(
                         id = it.episode.ids.trakt.toTraktId(),
                         releasedAt = it.firstAired.toInstant(),
                         episode = Episode.fromDto(it.episode),
                         show = Show.fromDto(it.show),
+                        isFullSeason = isFullSeason,
                     )
                 }
+                .filterNotNull()
 
             val movies = moviesData
                 .filter {

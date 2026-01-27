@@ -148,7 +148,7 @@ internal fun HomeUpcomingContent(
                     tint = TraktTheme.colors.textPrimary,
                     modifier = Modifier
                         .padding(start = 5.dp)
-                        .size(15.dp),
+                        .size(16.dp),
                 )
             },
             onCollapseClick = {
