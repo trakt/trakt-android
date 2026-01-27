@@ -84,7 +84,12 @@ internal class GetCalendarItemsUseCase(
             val moviesProgress = moviesProgressAsync.await()
                 .associateBy { it.movie.ids.trakt }
 
-            val fullSeasonItems = showsData
+            val weekShowsData = showsData.filter {
+                val localDate = it.firstAired.toInstant().toLocal().toLocalDate()
+                localDate in weekStart..weekEnd
+            }
+
+            val fullSeasonItems = weekShowsData
                 .groupBy { it.show.ids.trakt }
                 .filter { (_, episodes) ->
                     val isSeasonPremiere = episodes.any {
@@ -98,11 +103,7 @@ internal class GetCalendarItemsUseCase(
                     return@filter episodes.size > 1 && isSeasonPremiere && isSeasonFinale
                 }
 
-            val episodes = showsData
-                .filter {
-                    val localDate = it.firstAired.toInstant().toLocal().toLocalDate()
-                    localDate in weekStart..weekEnd
-                }
+            val episodes = weekShowsData
                 .asyncMap {
                     val isFullSeason = fullSeasonItems[it.show.ids.trakt] != null
                     if (isFullSeason && it.episode.number > 1) {
@@ -142,25 +143,21 @@ internal class GetCalendarItemsUseCase(
                 }
 
             // Group by day
-            val groupedItems = (episodes + movies)
+            val itemsByDay = (episodes + movies)
                 .filter { it.releasedAt != null }
-                .sortedBy { it.releasedAt }
                 .groupBy { it.releasedAt!!.toLocalDay() }
-                .mapValues { it.value.toImmutableList() }
-                .toMutableMap()
 
-            // Iterate over selected week and fill grouped items with empty lists if no items for that day
-            for (i in 0..6) {
-                val currentDay = weekStart.plusDays(i.toLong())
-
-                if (groupedItems[currentDay] == null) {
-                    groupedItems[currentDay] = emptyList<CalendarItem>().toImmutableList()
+            // Create sorted map with all days in the week, including empty days
+            val result = buildMap<LocalDate, ImmutableList<CalendarItem>> {
+                for (i in 0..6) {
+                    val currentDay = weekStart.plusDays(i.toLong())
+                    val items = (itemsByDay[currentDay] ?: emptyList())
+                        .sortedBy { it.releasedAt }.toImmutableList()
+                    put(currentDay, items)
                 }
             }
 
-            groupedItems
-                .toSortedMap()
-                .toImmutableMap()
+            result.toImmutableMap()
         }
     }
 }
