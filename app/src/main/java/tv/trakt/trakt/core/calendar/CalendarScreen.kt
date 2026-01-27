@@ -201,6 +201,14 @@ private fun CalendarScreen(
             state.items?.keys?.map { it.toLocal().toLocalDate() }?.toImmutableSet()
         }
 
+        // Mask for the top content under the calendar controls.
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp)
+                .background(TraktTheme.colors.backgroundPrimary),
+        )
+
         CalendarControlsView(
             enabled = !state.loading.isLoading,
             startDate = state.selectedStartDay,
