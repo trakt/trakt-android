@@ -59,23 +59,19 @@ internal class GetCalendarItemsUseCase(
             }
 
             val showsProgressAsync = async {
-                when {
-                    loadUserProgressUseCase.isShowsLoaded() -> {
-                        loadUserProgressUseCase.loadLocalShows()
-                    }
-                    else -> {
-                        loadUserProgressUseCase.loadShowsProgress()
+                with(loadUserProgressUseCase) {
+                    when {
+                        isShowsLoaded() -> loadLocalShows()
+                        else -> loadShowsProgress()
                     }
                 }
             }
 
             val moviesProgressAsync = async {
-                when {
-                    loadUserProgressUseCase.isMoviesLoaded() -> {
-                        loadUserProgressUseCase.loadLocalMovies()
-                    }
-                    else -> {
-                        loadUserProgressUseCase.loadMoviesProgress()
+                with(loadUserProgressUseCase) {
+                    when {
+                        isMoviesLoaded() -> loadLocalMovies()
+                        else -> loadMoviesProgress()
                     }
                 }
             }
