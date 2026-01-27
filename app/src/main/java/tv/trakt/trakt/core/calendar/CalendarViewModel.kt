@@ -186,7 +186,7 @@ internal class CalendarViewModel(
         CalendarState(
             selectedStartDay = states[0] as LocalDate,
             user = states[1] as User?,
-            items = states[2] as ImmutableMap<Instant, ImmutableList<HomeUpcomingItem>?>?,
+            items = states[2] as ImmutableMap<Instant, ImmutableList<HomeUpcomingItem>>?,
             navigateShow = states[3] as TraktId?,
             navigateMovie = states[4] as TraktId?,
             navigateEpisode = states[5] as Pair<TraktId, Episode>?,

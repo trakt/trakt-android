@@ -9,6 +9,7 @@ import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.helpers.extensions.toLocal
+import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -111,14 +112,29 @@ internal class GetCalendarItemsUseCase(
                 .sortedBy { it.releasedAt }
                 .groupBy {
                     it.releasedAt
-                        .toLocal()
+                        .toLocalDay()
+                        .atStartOfDay(ZoneId.of("UTC"))
                         .truncatedTo(ChronoUnit.DAYS)
                         .toInstant()
                 }
                 .mapValues { it.value.toImmutableList() }
-                .toImmutableMap()
+                .toMutableMap()
+
+            // Iterate over selected week and fill grouped items with empty lists if no items for that day
+            for (i in 0..6) {
+                val currentDay = weekStart.plusDays(i.toLong())
+                    .atStartOfDay(ZoneId.of("UTC"))
+                    .truncatedTo(ChronoUnit.DAYS)
+                    .toInstant()
+
+                if (groupedItems[currentDay] == null) {
+                    groupedItems[currentDay] = emptyList<HomeUpcomingItem>().toImmutableList()
+                }
+            }
 
             groupedItems
+                .toSortedMap()
+                .toImmutableMap()
         }
     }
 }

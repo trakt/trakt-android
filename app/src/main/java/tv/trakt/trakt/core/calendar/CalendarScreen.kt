@@ -29,6 +29,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -42,17 +43,21 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableSet
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.fullDayFormat
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toLocal
+import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
@@ -61,6 +66,7 @@ import tv.trakt.trakt.core.calendar.ui.CalendarMovieItemView
 import tv.trakt.trakt.core.calendar.ui.controls.CalendarControlsView
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.helpers.SimpleScrollConnection
+import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -141,7 +147,7 @@ private fun CalendarScreen(
         bottom = WindowInsets.navigationBars.asPaddingValues()
             .calculateBottomPadding()
             .plus(TraktTheme.size.navigationBarHeight)
-            .plus(32.dp),
+            .plus(64.dp),
     )
 
     val gridState = rememberLazyGridState()
@@ -196,9 +202,11 @@ private fun CalendarScreen(
             onMovieClick = onMovieClick,
         )
 
-        val scrollOffset = with(LocalDensity.current) { 44.dp.toPx().toInt() }
         val availableDates = remember(state.items) {
-            state.items?.keys?.map { it.toLocal().toLocalDate() }?.toImmutableSet()
+            state.items?.keys
+                ?.filter { state.items[it]?.isNotEmpty() == true }
+                ?.map { it.toLocal().toLocalDate() }
+                ?.toImmutableSet()
         }
 
         // Mask for the top content under the calendar controls.
@@ -209,41 +217,34 @@ private fun CalendarScreen(
                 .background(TraktTheme.colors.backgroundPrimary),
         )
 
+        val scrollOffset = with(LocalDensity.current) { 56.dp.toPx().toInt() }
         CalendarControlsView(
             enabled = !state.loading.isLoading,
             startDate = state.selectedStartDay,
             focusedDate = focusedDate,
             availableDates = availableDates,
             onDayClick = { date ->
-                val items = state.items ?: return@CalendarControlsView
-                var accumulatedCount = 0
-
-                for (itemDate in items.keys) {
-                    if (itemDate.toLocal().toLocalDate() == date) {
-                        scope.launch {
-                            val offset = when {
-                                accumulatedCount == 0 -> 0
-                                else -> scrollOffset
-                            }
-                            gridState.scrollToItem(accumulatedCount, offset)
-                        }
-                        return@CalendarControlsView
-                    }
-
-                    val itemsForDate = items[itemDate] ?: EmptyImmutableList
-                    accumulatedCount += when {
-                        itemsForDate.isNotEmpty() -> itemsForDate.size + 1
-                        else -> 0
-                    }
-                }
+                scrollToDay(
+                    scope = scope,
+                    state = state,
+                    date = date,
+                    scrollOffset = scrollOffset,
+                    gridState = gridState,
+                )
             },
             onTodayClick = {
+                val today = nowLocalDay()
                 val selectedStartDay = state.selectedStartDay
                 val selectedWeek = selectedStartDay..selectedStartDay.plusDays(6)
-                if (nowLocalDay() in selectedWeek) {
-                    scope.launch {
-                        gridState.scrollToItem(0)
-                    }
+
+                if (today in selectedWeek) {
+                    scrollToDay(
+                        scope = scope,
+                        state = state,
+                        date = today,
+                        scrollOffset = scrollOffset,
+                        gridState = gridState,
+                    )
                 } else {
                     onTodayClick()
                 }
@@ -258,7 +259,8 @@ private fun CalendarScreen(
                         .calculateTopPadding(),
                     start = TraktTheme.spacing.mainPageHorizontalSpace,
                     end = TraktTheme.spacing.mainPageHorizontalSpace,
-                ),
+                )
+                .onClick(onClick = {}),
         )
     }
 }
@@ -272,7 +274,19 @@ private fun CalendarContent(
     onShowClick: (HomeUpcomingItem.EpisodeItem) -> Unit,
     onMovieClick: (HomeUpcomingItem.MovieItem) -> Unit,
 ) {
-    if (state.items.isNullOrEmpty() && state.loading.isLoading) {
+    if (state.error != null) {
+        Text(
+            text = "${
+                stringResource(
+                    R.string.error_text_unexpected_error_short,
+                )
+            }\n\n${state.error}",
+            color = TraktTheme.colors.textSecondary,
+            style = TraktTheme.typography.meta,
+            maxLines = 10,
+            modifier = Modifier.padding(contentPadding),
+        )
+    } else if (state.items.isNullOrEmpty() && state.loading.isLoading) {
         ContentLoadingGrid(
             visible = state.loading.isLoading,
             contentPadding = contentPadding,
@@ -286,6 +300,13 @@ private fun CalendarContent(
             onShowClick = onShowClick,
             onMovieClick = onMovieClick,
             onEpisodeClick = onEpisodeClick,
+        )
+    } else if (state.items.isNullOrEmpty()) {
+        Text(
+            text = stringResource(R.string.list_placeholder_empty),
+            color = TraktTheme.colors.textSecondary,
+            style = TraktTheme.typography.heading6,
+            modifier = Modifier.padding(contentPadding),
         )
     }
 }
@@ -304,7 +325,7 @@ private fun ContentItemsGrid(
         state = gridState,
         columns = GridCells.Fixed(2),
         horizontalArrangement = spacedBy(TraktTheme.spacing.mainGridHorizontalSpace),
-        verticalArrangement = spacedBy(TraktTheme.spacing.mainGridVerticalSpace),
+        verticalArrangement = spacedBy(0.dp),
         contentPadding = contentPadding,
         overscrollEffect = null,
         modifier = Modifier
@@ -312,39 +333,44 @@ private fun ContentItemsGrid(
     ) {
         items.keys.forEachIndexed { index, date ->
             val gridItems = items[date] ?: EmptyImmutableList
-            if (gridItems.isNotEmpty()) {
-                item(
-                    span = { GridItemSpan(maxLineSpan) },
-                    key = "header_$date",
-                ) {
-                    Row(
-                        horizontalArrangement = spacedBy(6.dp),
-                        verticalAlignment = CenterVertically,
-                        modifier = Modifier
-                            .padding(top = if (index == 0) 0.dp else 24.dp),
-                    ) {
-                        val isToday = remember(date) {
-                            date.toLocal().toLocalDate() == nowLocalDay()
-                        }
 
-                        if (isToday) {
-                            Box(
-                                modifier = Modifier
-                                    .graphicsLayer {
-                                        translationY = 0.5.dp.toPx()
-                                    }
-                                    .background(color = Purple400, shape = CircleShape)
-                                    .size(6.dp),
-                            )
-                        }
-                        TraktHeader(
-                            title = remember {
-                                date.toLocal().format(fullDayFormat)
-                            },
+            item(
+                span = { GridItemSpan(maxLineSpan) },
+                key = "header_$date",
+            ) {
+                Row(
+                    horizontalArrangement = spacedBy(6.dp),
+                    verticalAlignment = CenterVertically,
+                    modifier = Modifier
+                        .padding(top = if (index == 0) 0.dp else 38.dp),
+                ) {
+                    val isToday = remember(date) {
+                        date.toLocal().toLocalDate() == nowLocalDay()
+                    }
+
+                    if (isToday) {
+                        Box(
+                            modifier = Modifier
+                                .graphicsLayer {
+                                    translationY = 0.5.dp.toPx()
+                                }
+                                .background(color = Purple400, shape = CircleShape)
+                                .size(6.dp),
                         )
                     }
+                    TraktHeader(
+                        title = remember {
+                            date.toLocal().format(fullDayFormat)
+                        },
+                        titleColor = when {
+                            gridItems.isNotEmpty() -> TraktTheme.colors.textPrimary
+                            else -> TraktTheme.colors.textSecondary
+                        },
+                    )
                 }
+            }
 
+            if (gridItems.isNotEmpty()) {
                 items(
                     count = gridItems.size,
                     key = { index -> gridItems[index].id.value },
@@ -355,6 +381,7 @@ private fun ContentItemsGrid(
                             item = item,
                             onClick = { onEpisodeClick(item) },
                             onShowClick = { onShowClick(item) },
+                            modifier = Modifier.padding(top = 14.dp),
                         )
                     }
 
@@ -362,8 +389,21 @@ private fun ContentItemsGrid(
                         CalendarMovieItemView(
                             item = item,
                             onClick = { onMovieClick(item) },
+                            modifier = Modifier.padding(top = 14.dp),
                         )
                     }
+                }
+            } else {
+                item(
+                    span = { GridItemSpan(maxLineSpan) },
+                    key = "empty_$date",
+                ) {
+                    Text(
+                        text = "No items found for this day.", // TODO string resource
+                        color = TraktTheme.colors.textSecondary,
+                        style = TraktTheme.typography.meta,
+                        modifier = Modifier.padding(top = 4.dp),
+                    )
                 }
             }
         }
@@ -413,6 +453,36 @@ private fun ContentLoadingGrid(
         }
         items(count = 12) {
             EpisodeSkeletonCard()
+        }
+    }
+}
+
+private fun scrollToDay(
+    state: CalendarState,
+    date: LocalDate,
+    scope: CoroutineScope,
+    scrollOffset: Int,
+    gridState: LazyGridState,
+) {
+    val items = state.items ?: return
+    var accumulatedCount = 0
+
+    for (itemDate in items.keys) {
+        if (itemDate.toLocalDay() == date) {
+            scope.launch {
+                val offset = when {
+                    accumulatedCount == 0 -> 0
+                    else -> scrollOffset
+                }
+                gridState.scrollToItem(accumulatedCount, offset)
+            }
+            return
+        }
+
+        val itemsForDate = items[itemDate] ?: EmptyImmutableList
+        accumulatedCount += when {
+            itemsForDate.isNotEmpty() -> itemsForDate.size + 1
+            else -> 2 // Include header and empty state item
         }
     }
 }
