@@ -210,7 +210,7 @@ private fun CalendarScreen(
                 .background(TraktTheme.colors.backgroundPrimary),
         )
 
-        val scrollOffset = with(LocalDensity.current) { 56.dp.toPx().toInt() }
+        val scrollOffset = with(LocalDensity.current) { 48.dp.toPx().toInt() }
         CalendarControlsView(
             enabled = !state.loading.isLoading,
             startDate = state.selectedStartDay,
