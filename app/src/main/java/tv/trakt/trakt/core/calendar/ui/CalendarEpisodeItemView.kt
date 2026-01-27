@@ -1,12 +1,18 @@
 package tv.trakt.trakt.core.calendar.ui
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -15,23 +21,32 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import tv.trakt.trakt.common.helpers.extensions.nowUtc
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
-import java.time.Instant
 
 @Composable
 internal fun CalendarEpisodeItemView(
-    item: HomeUpcomingItem.EpisodeItem,
+    item: CalendarItem.EpisodeItem,
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     onShowClick: () -> Unit,
 ) {
+    val isReleased = remember(item.releasedAt) {
+        val releasedAt = item.releasedAt
+        releasedAt != null && releasedAt.isBefore(nowUtcInstant())
+    }
+
     HorizontalMediaCard(
+        modifier = modifier,
         title = "",
         more = false,
         onClick = onClick,
@@ -39,54 +54,105 @@ internal fun CalendarEpisodeItemView(
             item.episode.images?.getScreenshotUrl()
                 ?: item.show.images?.getFanartUrl(),
         footerContent = {
-            Column(
-                verticalArrangement = spacedBy(1.dp),
-                modifier = Modifier
-                    .onClick(onClick = onShowClick),
+            Row(
+                verticalAlignment = CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth(),
             ) {
-                Row(
-                    horizontalArrangement = spacedBy(4.dp),
-                    verticalAlignment = CenterVertically,
+                Column(
+                    verticalArrangement = spacedBy(1.dp),
+                    modifier = Modifier
+                        .weight(1F, false)
+                        .onClick(onClick = onShowClick),
                 ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_shows_off),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.chipContent,
-                        modifier = Modifier
-                            .size(12.dp)
-                            .graphicsLayer {
-                                translationY = -(0.5).dp.toPx()
-                            },
-                    )
+                    Row(
+                        horizontalArrangement = spacedBy(4.dp),
+                        verticalAlignment = CenterVertically,
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_shows_off),
+                            contentDescription = null,
+                            tint = TraktTheme.colors.chipContent,
+                            modifier = Modifier
+                                .size(12.dp)
+                                .graphicsLayer {
+                                    translationY = -(0.5).dp.toPx()
+                                },
+                        )
+
+                        Text(
+                            text = item.show.title,
+                            style = TraktTheme.typography.cardTitle,
+                            color = TraktTheme.colors.textPrimary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
+
+                    val subtitle = when {
+                        item.isFullSeason -> stringResource(
+                            R.string.text_season_number,
+                            item.episode.season,
+                        )
+
+                        else -> item.episode.seasonEpisodeString()
+                    }
 
                     Text(
-                        text = item.show.title,
-                        style = TraktTheme.typography.cardTitle,
-                        color = TraktTheme.colors.textPrimary,
+                        text = subtitle,
+                        style = TraktTheme.typography.cardSubtitle,
+                        color = TraktTheme.colors.textSecondary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )
                 }
 
-                val subtitle = when {
-                    item.isFullSeason -> stringResource(
-                        R.string.text_season_number,
-                        item.episode.season,
-                    )
-
-                    else -> item.episode.seasonEpisodeString()
+                if (isReleased && !item.isFullSeason) {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .padding(start = 12.dp, end = 4.dp)
+                            .size(23.dp),
+                    ) {
+                        when {
+                            item.loading -> {
+                                FilmProgressIndicator(
+                                    size = 19.dp,
+                                    modifier = Modifier
+                                        .graphicsLayer {
+                                            translationX = 2.dp.toPx()
+                                        },
+                                )
+                            }
+                            item.watched -> {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_check_double),
+                                    contentDescription = null,
+                                    tint = TraktTheme.colors.textPrimary,
+                                    modifier = Modifier
+                                        .size(19.dp)
+                                        .onClick {
+                                        },
+                                )
+                            }
+                            !item.watched -> {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_check),
+                                    contentDescription = null,
+                                    tint = TraktTheme.colors.accent,
+                                    modifier = Modifier
+                                        .size(19.dp)
+                                        .onClickCombined(
+                                            onClick = { },
+                                            onLongClick = { },
+                                        ),
+                                )
+                            }
+                        }
+                    }
                 }
-
-                Text(
-                    text = subtitle,
-                    style = TraktTheme.typography.cardSubtitle,
-                    color = TraktTheme.colors.textSecondary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
             }
         },
-        modifier = modifier,
     )
 }
 
@@ -94,15 +160,46 @@ internal fun CalendarEpisodeItemView(
 @Composable
 private fun Preview() {
     TraktTheme {
-        CalendarEpisodeItemView(
-            item = HomeUpcomingItem.EpisodeItem(
-                id = 1.toTraktId(),
-                releasedAt = Instant.now(),
-                show = PreviewData.show1,
-                episode = PreviewData.episode1,
-            ),
-            onClick = {},
-            onShowClick = {},
-        )
+        Column(
+            verticalArrangement = spacedBy(16.dp),
+        ) {
+            CalendarEpisodeItemView(
+                item = CalendarItem.EpisodeItem(
+                    id = 1.toTraktId(),
+                    loading = false,
+                    watched = false,
+                    show = PreviewData.show1,
+                    episode = PreviewData.episode1.copy(
+                        firstAired = nowUtc().minusDays(3),
+                    ),
+                ),
+                onClick = {},
+                onShowClick = {},
+            )
+
+            CalendarEpisodeItemView(
+                item = CalendarItem.EpisodeItem(
+                    id = 1.toTraktId(),
+                    loading = false,
+                    watched = true,
+                    show = PreviewData.show1,
+                    episode = PreviewData.episode1,
+                ),
+                onClick = {},
+                onShowClick = {},
+            )
+
+            CalendarEpisodeItemView(
+                item = CalendarItem.EpisodeItem(
+                    id = 1.toTraktId(),
+                    loading = false,
+                    watched = false,
+                    show = PreviewData.show1,
+                    episode = PreviewData.episode1,
+                ),
+                onClick = {},
+                onShowClick = {},
+            )
+        }
     }
 }

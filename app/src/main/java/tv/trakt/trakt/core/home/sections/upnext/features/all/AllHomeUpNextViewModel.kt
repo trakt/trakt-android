@@ -50,10 +50,10 @@ internal class AllHomeUpNextViewModel(
     private val getUpNextUseCase: GetUpNextUseCase,
     private val updateHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
-    private val allUpNextSource: UpNextUpdates,
-    private val showUpdatesSource: ShowDetailsUpdates,
-    private val episodeUpdatesSource: EpisodeDetailsUpdates,
-    private val movieDetailsUpdates: MovieDetailsUpdates,
+    private val upNextUpdates: UpNextUpdates,
+    private val showUpdates: ShowDetailsUpdates,
+    private val episodeUpdates: EpisodeDetailsUpdates,
+    private val movieUpdates: MovieDetailsUpdates,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
 ) : ViewModel() {
@@ -82,11 +82,11 @@ internal class AllHomeUpNextViewModel(
 
     private fun observeData() {
         merge(
-            showUpdatesSource.observeUpdates(Source.PROGRESS),
-            showUpdatesSource.observeUpdates(Source.SEASONS),
-            episodeUpdatesSource.observeUpdates(PROGRESS),
-            episodeUpdatesSource.observeUpdates(SEASON),
-            movieDetailsUpdates.observeUpdates(),
+            showUpdates.observeUpdates(Source.PROGRESS),
+            showUpdates.observeUpdates(Source.SEASONS),
+            episodeUpdates.observeUpdates(PROGRESS),
+            episodeUpdates.observeUpdates(SEASON),
+            movieUpdates.observeUpdates(),
         )
             .distinctUntilChanged()
             .debounce(200)
@@ -232,7 +232,7 @@ internal class AllHomeUpNextViewModel(
                     } ?: items
                 }
 
-                allUpNextSource.notifyUpdate()
+                upNextUpdates.notifyUpdate()
                 loadUserProgress()
 
                 infoState.update { DynamicStringResource(R.string.text_info_history_added) }

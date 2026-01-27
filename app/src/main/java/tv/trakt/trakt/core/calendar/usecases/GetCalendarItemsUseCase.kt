@@ -2,10 +2,12 @@ package tv.trakt.trakt.core.calendar.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.helpers.extensions.toLocal
@@ -15,12 +17,12 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
+import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
+import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import java.time.DayOfWeek.MONDAY
 import java.time.DayOfWeek.SUNDAY
 import java.time.LocalDate
-import java.time.ZoneId
 
 private const val DAYS_OFFSET = 1L
 private const val DAYS_RANGE = 8
@@ -29,10 +31,16 @@ private val premiereValues = listOf("season_premiere", "series_premiere")
 private val finaleValues = listOf("season_finale", "series_finale")
 
 internal class GetCalendarItemsUseCase(
+    private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val remoteUserSource: UserRemoteDataSource,
+    private val sessionManager: SessionManager,
 ) {
-    suspend fun getCalendarItems(day: LocalDate): ImmutableMap<LocalDate, ImmutableList<HomeUpcomingItem>> {
+    suspend fun getCalendarItems(day: LocalDate): ImmutableMap<LocalDate, ImmutableList<CalendarItem>> {
         return coroutineScope {
+            if (!sessionManager.isAuthenticated()) {
+                return@coroutineScope persistentMapOf()
+            }
+
             val (weekStart, weekEnd) = with(day) {
                 with(MONDAY) to with(SUNDAY)
             }
@@ -50,8 +58,35 @@ internal class GetCalendarItemsUseCase(
                 )
             }
 
+            val showsProgressAsync = async {
+                when {
+                    loadUserProgressUseCase.isShowsLoaded() -> {
+                        loadUserProgressUseCase.loadLocalShows()
+                    }
+                    else -> {
+                        loadUserProgressUseCase.loadShowsProgress()
+                    }
+                }
+            }
+
+            val moviesProgressAsync = async {
+                when {
+                    loadUserProgressUseCase.isMoviesLoaded() -> {
+                        loadUserProgressUseCase.loadLocalMovies()
+                    }
+                    else -> {
+                        loadUserProgressUseCase.loadMoviesProgress()
+                    }
+                }
+            }
+
             val showsData = showsDataAsync.await()
             val moviesData = moviesDataAsync.await()
+
+            val showsProgress = showsProgressAsync.await()
+                .associateBy { it.show.ids.trakt }
+            val moviesProgress = moviesProgressAsync.await()
+                .associateBy { it.movie.ids.trakt }
 
             val fullSeasonItems = showsData
                 .groupBy { it.show.ids.trakt }
@@ -78,9 +113,16 @@ internal class GetCalendarItemsUseCase(
                         return@asyncMap null
                     }
 
-                    HomeUpcomingItem.EpisodeItem(
-                        id = it.episode.ids.trakt.toTraktId(),
-                        releasedAt = it.firstAired.toInstant(),
+                    val showId = it.show.ids.trakt.toTraktId()
+                    val episodeId = it.episode.ids.trakt.toTraktId()
+
+                    CalendarItem.EpisodeItem(
+                        id = episodeId,
+                        watched = showsProgress[showId]?.isEpisodeWatched(
+                            season = it.episode.season,
+                            episode = it.episode.number,
+                        ) == true,
+                        loading = false,
                         episode = Episode.fromDto(it.episode),
                         show = Show.fromDto(it.show),
                         isFullSeason = isFullSeason,
@@ -94,21 +136,20 @@ internal class GetCalendarItemsUseCase(
                     localDate in weekStart..weekEnd
                 }
                 .asyncMap {
-                    val releaseAt = LocalDate.parse(it.released)
-                        .atStartOfDay(ZoneId.of("UTC"))
-                        .toInstant()
-
-                    HomeUpcomingItem.MovieItem(
-                        id = it.movie.ids.trakt.toTraktId(),
-                        releasedAt = releaseAt,
+                    val id = it.movie.ids.trakt.toTraktId()
+                    CalendarItem.MovieItem(
+                        id = id,
+                        watched = moviesProgress.containsKey(id),
+                        loading = false,
                         movie = Movie.fromDto(it.movie),
                     )
                 }
 
             // Group by day
             val groupedItems = (episodes + movies)
+                .filter { it.releasedAt != null }
                 .sortedBy { it.releasedAt }
-                .groupBy { it.releasedAt.toLocalDay() }
+                .groupBy { it.releasedAt!!.toLocalDay() }
                 .mapValues { it.value.toImmutableList() }
                 .toMutableMap()
 
@@ -117,7 +158,7 @@ internal class GetCalendarItemsUseCase(
                 val currentDay = weekStart.plusDays(i.toLong())
 
                 if (groupedItems[currentDay] == null) {
-                    groupedItems[currentDay] = emptyList<HomeUpcomingItem>().toImmutableList()
+                    groupedItems[currentDay] = emptyList<CalendarItem>().toImmutableList()
                 }
             }
 

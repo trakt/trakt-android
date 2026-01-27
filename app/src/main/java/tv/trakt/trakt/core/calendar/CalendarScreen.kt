@@ -60,10 +60,10 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
+import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.core.calendar.ui.CalendarEpisodeItemView
 import tv.trakt.trakt.core.calendar.ui.CalendarMovieItemView
 import tv.trakt.trakt.core.calendar.ui.controls.CalendarControlsView
-import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -129,9 +129,9 @@ private fun CalendarScreen(
     onTodayClick: () -> Unit = {},
     onNextWeekClick: () -> Unit = {},
     onPreviousWeekClick: () -> Unit = {},
-    onShowClick: (HomeUpcomingItem.EpisodeItem) -> Unit = {},
-    onMovieClick: (HomeUpcomingItem.MovieItem) -> Unit = {},
-    onEpisodeClick: (HomeUpcomingItem.EpisodeItem) -> Unit = {},
+    onShowClick: (CalendarItem.EpisodeItem) -> Unit = {},
+    onMovieClick: (CalendarItem.MovieItem) -> Unit = {},
+    onEpisodeClick: (CalendarItem.EpisodeItem) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
     val scope = rememberCoroutineScope()
@@ -264,9 +264,9 @@ private fun CalendarContent(
     state: CalendarState,
     gridState: LazyGridState,
     contentPadding: PaddingValues,
-    onEpisodeClick: (HomeUpcomingItem.EpisodeItem) -> Unit,
-    onShowClick: (HomeUpcomingItem.EpisodeItem) -> Unit,
-    onMovieClick: (HomeUpcomingItem.MovieItem) -> Unit,
+    onEpisodeClick: (CalendarItem.EpisodeItem) -> Unit,
+    onShowClick: (CalendarItem.EpisodeItem) -> Unit,
+    onMovieClick: (CalendarItem.MovieItem) -> Unit,
 ) {
     val currentList = remember { mutableIntStateOf(state.items.hashCode()) }
 
@@ -317,13 +317,13 @@ private fun CalendarContent(
 
 @Composable
 private fun ContentItemsGrid(
-    items: Map<LocalDate, ImmutableList<HomeUpcomingItem>?>,
+    items: Map<LocalDate, ImmutableList<CalendarItem>?>,
     gridState: LazyGridState,
     contentPadding: PaddingValues,
     loading: Boolean,
-    onShowClick: (HomeUpcomingItem.EpisodeItem) -> Unit,
-    onMovieClick: (HomeUpcomingItem.MovieItem) -> Unit,
-    onEpisodeClick: (HomeUpcomingItem.EpisodeItem) -> Unit,
+    onShowClick: (CalendarItem.EpisodeItem) -> Unit,
+    onMovieClick: (CalendarItem.MovieItem) -> Unit,
+    onEpisodeClick: (CalendarItem.EpisodeItem) -> Unit,
 ) {
     LazyVerticalGrid(
         state = gridState,
@@ -378,7 +378,7 @@ private fun ContentItemsGrid(
                     key = { index -> gridItems[index].id.value },
                 ) { index ->
                     val item = gridItems[index]
-                    if (item is HomeUpcomingItem.EpisodeItem) {
+                    if (item is CalendarItem.EpisodeItem) {
                         CalendarEpisodeItemView(
                             item = item,
                             onClick = { onEpisodeClick(item) },
@@ -387,7 +387,7 @@ private fun ContentItemsGrid(
                         )
                     }
 
-                    if (item is HomeUpcomingItem.MovieItem) {
+                    if (item is CalendarItem.MovieItem) {
                         CalendarMovieItemView(
                             item = item,
                             onClick = { onMovieClick(item) },

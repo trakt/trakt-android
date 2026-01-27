@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -31,10 +32,15 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.core.calendar.usecases.GetCalendarItemsUseCase
-import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
+import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import java.time.DayOfWeek.MONDAY
-import java.time.Instant
 import java.time.LocalDate
 
 @OptIn(FlowPreview::class)
@@ -45,6 +51,9 @@ internal class CalendarViewModel(
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
+    private val showUpdates: ShowDetailsUpdates,
+    private val episodeUpdates: EpisodeDetailsUpdates,
+    private val movieUpdates: MovieDetailsUpdates,
 ) : ViewModel() {
     private val initialState = CalendarState(
         selectedStartDay = LocalDate.now().with(MONDAY),
@@ -66,6 +75,34 @@ internal class CalendarViewModel(
     init {
         loadUser()
         loadData()
+
+        observeUser()
+        observeData()
+    }
+
+    private fun observeUser() {
+        sessionManager.observeProfile()
+            .distinctUntilChanged()
+            .debounce(200)
+            .onEach { user ->
+                userState.update { user }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeData() {
+        merge(
+            showUpdates.observeUpdates(Source.PROGRESS),
+            showUpdates.observeUpdates(Source.SEASONS),
+            episodeUpdates.observeUpdates(PROGRESS),
+            episodeUpdates.observeUpdates(SEASON),
+            movieUpdates.observeUpdates(),
+        )
+            .distinctUntilChanged()
+            .debounce(200)
+            .onEach {
+                loadData()
+            }.launchIn(viewModelScope)
     }
 
     private fun loadUser() {
@@ -74,14 +111,6 @@ internal class CalendarViewModel(
                 sessionManager.getProfile()
             }
         }
-
-        sessionManager.observeProfile()
-            .distinctUntilChanged()
-            .debounce(200)
-            .onEach { user ->
-                userState.update { user }
-            }
-            .launchIn(viewModelScope)
     }
 
     private fun loadData() {
@@ -186,7 +215,7 @@ internal class CalendarViewModel(
         CalendarState(
             selectedStartDay = states[0] as LocalDate,
             user = states[1] as User?,
-            items = states[2] as ImmutableMap<LocalDate, ImmutableList<HomeUpcomingItem>>?,
+            items = states[2] as ImmutableMap<LocalDate, ImmutableList<CalendarItem>>?,
             navigateShow = states[3] as TraktId?,
             navigateMovie = states[4] as TraktId?,
             navigateEpisode = states[5] as Pair<TraktId, Episode>?,

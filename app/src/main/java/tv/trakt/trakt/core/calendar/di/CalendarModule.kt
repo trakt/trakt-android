@@ -8,7 +8,9 @@ import tv.trakt.trakt.core.calendar.usecases.GetCalendarItemsUseCase
 internal val calendarModule = module {
     factory {
         GetCalendarItemsUseCase(
+            loadUserProgressUseCase = get(),
             remoteUserSource = get(),
+            sessionManager = get(),
         )
     }
 
@@ -19,6 +21,9 @@ internal val calendarModule = module {
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
             episodeLocalDataSource = get(),
+            showUpdates = get(),
+            episodeUpdates = get(),
+            movieUpdates = get(),
         )
     }
 }

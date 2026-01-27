@@ -40,7 +40,7 @@ import kotlinx.collections.immutable.persistentSetOf
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
-import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
+import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.GhostButton
@@ -55,7 +55,7 @@ internal fun CalendarControlsView(
     modifier: Modifier = Modifier,
     focusedDate: LocalDate? = null,
     availableDates: ImmutableSet<LocalDate>? = null,
-    availableItems: ImmutableMap<LocalDate, ImmutableList<HomeUpcomingItem>>? = null,
+    availableItems: ImmutableMap<LocalDate, ImmutableList<CalendarItem>>? = null,
     enabled: Boolean = false,
     onDayClick: (LocalDate) -> Unit = {},
     onTodayClick: () -> Unit = {},
@@ -147,13 +147,13 @@ internal fun CalendarControlsView(
 
                 val episodes = remember(availableItems, date) {
                     availableItems?.get(date)
-                        ?.filterIsInstance<HomeUpcomingItem.EpisodeItem>()
+                        ?.filterIsInstance<CalendarItem.EpisodeItem>()
                         ?.size
                 }
 
                 val movies = remember(availableItems, date) {
                     availableItems?.get(date)
-                        ?.filterIsInstance<HomeUpcomingItem.MovieItem>()
+                        ?.filterIsInstance<CalendarItem.MovieItem>()
                         ?.size
                 }
 

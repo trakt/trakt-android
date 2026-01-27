@@ -50,6 +50,18 @@ internal sealed class ProgressItem(
             val resetAt: Instant?,
         )
 
+        fun isEpisodeWatched(
+            season: Int,
+            episode: Int,
+        ): Boolean {
+            return seasons
+                .firstOrNull { it.number == season }
+                ?.episodes
+                ?.firstOrNull { it.number == episode }
+                ?.let { it.plays > 0 }
+                ?: false
+        }
+
         val isCompleted: Boolean
             get() = progress.plays >= progress.aired
     }

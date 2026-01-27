@@ -7,13 +7,14 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import java.time.LocalDate
 
 @Immutable
 internal data class CalendarState(
     val selectedStartDay: LocalDate,
-    val items: ImmutableMap<LocalDate, ImmutableList<HomeUpcomingItem>>? = null,
+    val items: ImmutableMap<LocalDate, ImmutableList<CalendarItem>>? = null,
     val user: User? = null,
     val navigateShow: TraktId? = null,
     val navigateMovie: TraktId? = null,
