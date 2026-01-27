@@ -64,6 +64,7 @@ internal class HomeUpcomingViewModel(
     private val initialState = HomeUpcomingState()
     private val initialMode = modeManager.getMode()
 
+    private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialMode)
     private val collapseState = MutableStateFlow(isCollapsed())
@@ -73,7 +74,6 @@ internal class HomeUpcomingViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
-    private var user: User? = null
     private var dataJob: Job? = null
     private var processingJob: Job? = null
     private var collapseJob: Job? = null
@@ -98,13 +98,13 @@ internal class HomeUpcomingViewModel(
 
     private fun observeUser() {
         viewModelScope.launch {
-            user = sessionManager.getProfile()
+            userState.update { sessionManager.getProfile() }
             sessionManager.observeProfile()
                 .drop(1)
                 .distinctUntilChanged()
                 .debounce(200)
-                .collect {
-                    user = it
+                .collect { user ->
+                    userState.update { user }
                     loadData()
                 }
         }
@@ -250,6 +250,7 @@ internal class HomeUpcomingViewModel(
 
     val state: StateFlow<HomeUpcomingState> = combine(
         loadingState,
+        userState,
         itemsState,
         filterState,
         collapseState,
@@ -260,13 +261,14 @@ internal class HomeUpcomingViewModel(
     ) { state ->
         HomeUpcomingState(
             loading = state[0] as LoadingState,
-            items = state[1] as ImmutableList<HomeUpcomingItem>?,
-            filter = state[2] as MediaMode?,
-            collapsed = state[3] as Boolean,
-            navigateShow = state[4] as TraktId?,
-            navigateEpisode = state[5] as Pair<TraktId, Episode>?,
-            navigateMovie = state[6] as TraktId?,
-            error = state[7] as Exception?,
+            user = state[1] as User?,
+            items = state[2] as ImmutableList<HomeUpcomingItem>?,
+            filter = state[3] as MediaMode?,
+            collapsed = state[4] as Boolean,
+            navigateShow = state[5] as TraktId?,
+            navigateEpisode = state[6] as Pair<TraktId, Episode>?,
+            navigateMovie = state[7] as TraktId?,
+            error = state[8] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

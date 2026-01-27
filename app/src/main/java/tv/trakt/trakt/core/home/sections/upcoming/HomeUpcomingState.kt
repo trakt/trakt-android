@@ -5,11 +5,13 @@ import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.core.main.model.MediaMode
 
 @Immutable
 internal data class HomeUpcomingState(
+    val user: User? = null,
     val items: ImmutableList<HomeUpcomingItem>? = null,
     val filter: MediaMode? = null,
     val collapsed: Boolean? = null,

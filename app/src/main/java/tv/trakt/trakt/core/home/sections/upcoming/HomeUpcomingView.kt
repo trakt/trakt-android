@@ -139,17 +139,24 @@ internal fun HomeUpcomingContent(
     ) {
         TraktSectionHeader(
             title = stringResource(R.string.list_title_upcoming_schedule),
-            chevron = !state.items.isNullOrEmpty() || state.loading != DONE,
+            chevron = state.user != null,
             collapsed = state.collapsed ?: false,
-            extraIcon = {
-                Icon(
-                    painter = painterResource(R.drawable.ic_calendar),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .padding(start = 5.dp)
-                        .size(16.dp),
-                )
+            extraIcon = if (state.user != null) {
+                {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_calendar),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier
+                            .padding(start = 5.dp)
+                            .size(16.dp)
+                            .onClick {
+                                onCalendarClick()
+                            },
+                    )
+                }
+            } else {
+                null
             },
             onCollapseClick = {
                 animateCollapse = true
@@ -158,7 +165,7 @@ internal fun HomeUpcomingContent(
             },
             modifier = Modifier
                 .padding(headerPadding)
-                .onClick {
+                .onClick(enabled = state.user != null) {
                     onCalendarClick()
                 },
         )
