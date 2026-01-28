@@ -185,6 +185,7 @@ private fun CalendarScreen(
     onBackClick: () -> Unit = {},
 ) {
     val scope = rememberCoroutineScope()
+    val scrollOffset = with(LocalDensity.current) { 48.dp.toPx().toInt() }
 
     val contentPadding = PaddingValues(
         start = TraktTheme.spacing.mainPageHorizontalSpace,
@@ -231,6 +232,22 @@ private fun CalendarScreen(
         }
     }
 
+    LaunchedEffect(state.selectedStartDay, state.items) {
+        val today = nowLocalDay()
+        val selectedStartDay = state.selectedStartDay
+        val selectedWeek = selectedStartDay..selectedStartDay.plusDays(6)
+
+        if (today in selectedWeek) {
+            scrollToDay(
+                scope = scope,
+                state = state,
+                date = today,
+                scrollOffset = scrollOffset,
+                gridState = gridState,
+            )
+        }
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -261,7 +278,6 @@ private fun CalendarScreen(
                 .background(TraktTheme.colors.backgroundPrimary),
         )
 
-        val scrollOffset = with(LocalDensity.current) { 48.dp.toPx().toInt() }
         CalendarControlsView(
             enabled = !state.loading.isLoading,
             startDate = state.selectedStartDay,
