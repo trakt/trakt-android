@@ -9,8 +9,13 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.awaitHorizontalTouchSlopOrCancellation
+import androidx.compose.foundation.gestures.horizontalDrag
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -19,6 +24,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
@@ -29,29 +35,38 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableFloatState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
@@ -83,6 +98,10 @@ import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.DayOfWeek.MONDAY
 import java.time.LocalDate
+import kotlin.math.absoluteValue
+import kotlin.math.roundToInt
+
+private const val MIN_ALPHA = 0.25F
 
 @Composable
 internal fun CalendarScreen(
@@ -305,6 +324,15 @@ private fun CalendarScreen(
             .background(TraktTheme.colors.backgroundPrimary)
             .nestedScroll(scrollConnection),
     ) {
+        val dragLimit = with(LocalDensity.current) { 64.dp.toPx() }
+        val dragActionRatio = 0.9f
+        val dragOffset = remember { mutableFloatStateOf(0f) }
+
+        CalendarDragChevrons(
+            dragOffset = dragOffset,
+            dragLimit = dragLimit,
+        )
+
         CalendarContent(
             state = state,
             gridState = gridState,
@@ -315,13 +343,48 @@ private fun CalendarScreen(
             onCheckClick = onCheckClick,
             onCheckLongClick = onCheckLongClick,
             onRemoveClick = onRemoveClick,
-        )
+            modifier = Modifier
+                .offset {
+                    IntOffset(
+                        x = dragOffset.floatValue.roundToInt(),
+                        y = 0,
+                    )
+                }
+                .alpha(
+                    (1F - (dragOffset.floatValue.absoluteValue / dragLimit))
+                        .coerceIn(MIN_ALPHA, 1F),
+                )
+                .pointerInput(Unit) {
+                    awaitEachGesture {
+                        val down = awaitFirstDown()
+                        val change = awaitHorizontalTouchSlopOrCancellation(down.id) { change, over ->
+                            val originalOffset = dragOffset.floatValue
+                            val newValue = (originalOffset + over).coerceIn(-dragLimit, dragLimit)
+                            change.consume()
+                            dragOffset.floatValue = newValue
+                        }
 
-        val availableDates = remember(state.items) {
-            state.items?.keys
-                ?.filter { state.items[it]?.isNotEmpty() == true }
-                ?.toImmutableSet()
-        }
+                        if (change != null) {
+                            horizontalDrag(change.id) {
+                                val originalOffset = dragOffset.floatValue
+                                val newValue = (originalOffset + it.positionChange().x)
+                                    .coerceIn(-dragLimit, dragLimit)
+                                it.consume()
+                                dragOffset.floatValue = newValue
+                            }
+                        }
+
+                        // Trigger actions if limits are met
+                        when {
+                            dragOffset.floatValue <= -(dragLimit * dragActionRatio) -> onNextWeekClick()
+                            dragOffset.floatValue >= (dragLimit * dragActionRatio) -> onPreviousWeekClick()
+                        }
+
+                        // Always reset offset on gesture end
+                        dragOffset.floatValue = 0F
+                    }
+                },
+        )
 
         // Mask for the top content under the calendar controls.
         Box(
@@ -336,7 +399,11 @@ private fun CalendarScreen(
             startDate = state.selectedStartDay,
             focusedDate = focusedDate,
             availableItems = state.items,
-            availableDates = availableDates,
+            availableDates = remember(state.items) {
+                state.items?.keys
+                    ?.filter { state.items[it]?.isNotEmpty() == true }
+                    ?.toImmutableSet()
+            },
             onDayClick = { date ->
                 scrollToDay(
                     scope = scope,
@@ -381,6 +448,7 @@ private fun CalendarScreen(
 
 @Composable
 private fun CalendarContent(
+    modifier: Modifier = Modifier,
     state: CalendarState,
     gridState: LazyGridState,
     contentPadding: PaddingValues,
@@ -424,13 +492,14 @@ private fun CalendarContent(
             itemsLoading = state.itemsLoading,
             gridState = gridState,
             contentPadding = contentPadding,
-            loading = state.loading.isLoading,
             onShowClick = onShowClick,
             onMovieClick = onMovieClick,
             onEpisodeClick = onEpisodeClick,
             onCheckClick = onCheckClick,
             onCheckLongClick = onCheckLongClick,
             onRemoveClick = onRemoveClick,
+            modifier = modifier
+                .alpha(if (state.loading.isLoading) MIN_ALPHA else 1F),
         )
     } else if (state.items.isNullOrEmpty()) {
         Text(
@@ -444,11 +513,11 @@ private fun CalendarContent(
 
 @Composable
 private fun ContentItemsGrid(
+    modifier: Modifier = Modifier,
     items: Map<LocalDate, ImmutableList<CalendarItem>?>,
     itemsLoading: ImmutableSet<TraktId>?,
     gridState: LazyGridState,
     contentPadding: PaddingValues,
-    loading: Boolean,
     onShowClick: (EpisodeItem) -> Unit,
     onMovieClick: (MovieItem) -> Unit,
     onEpisodeClick: (EpisodeItem) -> Unit,
@@ -463,8 +532,7 @@ private fun ContentItemsGrid(
         verticalArrangement = spacedBy(0.dp),
         contentPadding = contentPadding,
         overscrollEffect = null,
-        modifier = Modifier
-            .alpha(if (loading) 0.25F else 1F),
+        modifier = modifier,
     ) {
         items.keys.forEachIndexed { index, date ->
             val gridItems = items[date] ?: EmptyImmutableList
@@ -594,6 +662,58 @@ private fun ContentLoadingGrid(
             EpisodeSkeletonCard()
         }
     }
+}
+
+@Composable
+private fun BoxScope.CalendarDragChevrons(
+    dragOffset: MutableFloatState,
+    dragLimit: Float,
+) {
+    val chevronOffsetLimit = with(LocalDensity.current) { 8.dp.toPx().toInt() }
+
+    Icon(
+        painter = painterResource(R.drawable.ic_chevron_right),
+        tint = TraktTheme.colors.textPrimary,
+        contentDescription = null,
+        modifier = Modifier
+            .align(Alignment.CenterStart)
+            .rotate(180F)
+            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+            .size(30.dp)
+            .offset {
+                IntOffset(
+                    x = chevronOffsetLimit - chevronOffsetLimit
+                        .times((dragOffset.floatValue / dragLimit).coerceIn(0F, 1F))
+                        .roundToInt(),
+                    y = 0,
+                )
+            }
+            .alpha(
+                (dragOffset.floatValue / dragLimit).coerceIn(0F, 1F),
+            ),
+    )
+
+    Icon(
+        painter = painterResource(R.drawable.ic_chevron_right),
+        tint = TraktTheme.colors.textPrimary,
+        contentDescription = null,
+        modifier = Modifier
+            .align(Alignment.CenterEnd)
+            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+            .size(30.dp)
+            .offset {
+                IntOffset(
+                    x = -chevronOffsetLimit
+                        .times((-dragOffset.floatValue / dragLimit).coerceIn(0F, 1F))
+                        .roundToInt(),
+                    y = 0,
+                )
+            }
+            .alpha(
+                (-dragOffset.floatValue / dragLimit)
+                    .coerceIn(0F, 1F),
+            ),
+    )
 }
 
 private fun scrollToDay(
