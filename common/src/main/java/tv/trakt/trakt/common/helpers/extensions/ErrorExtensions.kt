@@ -2,7 +2,6 @@ package tv.trakt.trakt.common.helpers.extensions
 
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ResponseException
-import kotlinx.coroutines.delay
 import kotlin.coroutines.cancellation.CancellationException
 
 const val HTTP_ERROR_TRAKT_VIP_ONLY = 426
@@ -22,9 +21,4 @@ fun Exception.getHttpErrorCode(): Int? {
         is ResponseException -> response.status.value
         else -> null
     }
-}
-
-suspend fun delayError(delayMillis: Long = 2_000) {
-    delay(delayMillis)
-    throw Exception("Delayed test error!")
 }

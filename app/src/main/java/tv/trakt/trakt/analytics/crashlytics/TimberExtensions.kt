@@ -2,6 +2,7 @@ package tv.trakt.trakt.analytics.crashlytics
 
 import com.google.firebase.Firebase
 import com.google.firebase.crashlytics.crashlytics
+import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.HttpRequestTimeoutException
 import timber.log.Timber
 import tv.trakt.trakt.BuildConfig
@@ -38,6 +39,14 @@ fun Timber.Forest.recordError(error: Exception) {
     if (ignoredExceptions.any { it.isInstance(error) }) {
         Timber.d("Ignored error type: ${error::class.java.simpleName}")
         return
+    }
+
+    if (error is ClientRequestException) {
+        val httpCode = error.response.status.value
+        if (httpCode in 400..401) {
+            Timber.d("Ignored HTTP error with status code: $httpCode")
+            return
+        }
     }
 
     Firebase.crashlytics.recordException(error)
