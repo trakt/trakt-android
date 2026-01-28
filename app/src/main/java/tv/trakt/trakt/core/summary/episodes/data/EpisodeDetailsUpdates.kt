@@ -12,5 +12,6 @@ internal interface EpisodeDetailsUpdates {
         HOME,
         PROGRESS,
         SEASON,
+        CALENDAR,
     }
 }

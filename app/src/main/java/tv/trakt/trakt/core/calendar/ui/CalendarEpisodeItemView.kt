@@ -26,7 +26,6 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.preview.PreviewData
-import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.resources.R
@@ -37,8 +36,12 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun CalendarEpisodeItemView(
     item: CalendarItem.EpisodeItem,
     modifier: Modifier = Modifier,
+    itemLoading: Boolean = false,
     onClick: () -> Unit,
     onShowClick: () -> Unit,
+    onCheckClick: () -> Unit = {},
+    onCheckLongClick: () -> Unit = {},
+    onRemoveClick: () -> Unit = {},
 ) {
     val isReleased = remember(item.releasedAt) {
         val releasedAt = item.releasedAt
@@ -115,9 +118,9 @@ internal fun CalendarEpisodeItemView(
                             .size(23.dp),
                     ) {
                         when {
-                            item.loading -> {
+                            itemLoading -> {
                                 FilmProgressIndicator(
-                                    size = 19.dp,
+                                    size = 18.dp,
                                     modifier = Modifier
                                         .graphicsLayer {
                                             translationX = 2.dp.toPx()
@@ -131,8 +134,7 @@ internal fun CalendarEpisodeItemView(
                                     tint = TraktTheme.colors.textPrimary,
                                     modifier = Modifier
                                         .size(19.dp)
-                                        .onClick {
-                                        },
+                                        .onClick(onClick = onRemoveClick),
                                 )
                             }
                             !item.watched -> {
@@ -143,8 +145,8 @@ internal fun CalendarEpisodeItemView(
                                     modifier = Modifier
                                         .size(19.dp)
                                         .onClickCombined(
-                                            onClick = { },
-                                            onLongClick = { },
+                                            onClick = onCheckClick,
+                                            onLongClick = onCheckLongClick,
                                         ),
                                 )
                             }
@@ -165,8 +167,6 @@ private fun Preview() {
         ) {
             CalendarEpisodeItemView(
                 item = CalendarItem.EpisodeItem(
-                    id = 1.toTraktId(),
-                    loading = false,
                     watched = false,
                     show = PreviewData.show1,
                     episode = PreviewData.episode1.copy(
@@ -179,8 +179,6 @@ private fun Preview() {
 
             CalendarEpisodeItemView(
                 item = CalendarItem.EpisodeItem(
-                    id = 1.toTraktId(),
-                    loading = false,
                     watched = true,
                     show = PreviewData.show1,
                     episode = PreviewData.episode1,
@@ -191,8 +189,6 @@ private fun Preview() {
 
             CalendarEpisodeItemView(
                 item = CalendarItem.EpisodeItem(
-                    id = 1.toTraktId(),
-                    loading = false,
                     watched = false,
                     show = PreviewData.show1,
                     episode = PreviewData.episode1,

@@ -279,7 +279,7 @@ private fun DayRowItem(
             if (episodesCount > 0) {
                 Icon(
                     painter = painterResource(R.drawable.ic_shows_off),
-                    tint = Purple400,
+                    tint = TraktTheme.colors.textSecondary,
                     contentDescription = null,
                     modifier = Modifier.size(9.dp),
                 )
@@ -287,7 +287,7 @@ private fun DayRowItem(
             if (moviesCount > 0) {
                 Icon(
                     painter = painterResource(R.drawable.ic_movies_off),
-                    tint = Purple400,
+                    tint = TraktTheme.colors.textSecondary,
                     contentDescription = null,
                     modifier = Modifier.size(9.dp),
                 )
@@ -301,12 +301,11 @@ private fun DayRowItem(
             if (restCount > 0) {
                 Text(
                     text = "+$restCount",
-                    color = Purple400,
+                    color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.meta.copy(
                         fontSize = 10.sp,
                     ),
                     maxLines = 1,
-                    modifier = Modifier.padding(start = 0.25.dp),
                 )
             }
         }

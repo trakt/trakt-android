@@ -50,6 +50,7 @@ import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates.Source.POST_RATING
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.CALENDAR
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
@@ -100,7 +101,7 @@ internal class HomeHistoryViewModel(
         loadUserRatingData()
 
         observeUser()
-        observeHome()
+        observeUpdates()
         observeRatings()
         observeMode()
     }
@@ -130,7 +131,7 @@ internal class HomeHistoryViewModel(
         }
     }
 
-    private fun observeHome() {
+    private fun observeUpdates() {
         merge(
             homeUpNextSource.observeUpdates(),
             userWatchlistSource.observeUpdates(),
@@ -139,6 +140,7 @@ internal class HomeHistoryViewModel(
             showUpdates.observeUpdates(Source.SEASONS),
             episodeUpdates.observeUpdates(PROGRESS),
             episodeUpdates.observeUpdates(SEASON),
+            episodeUpdates.observeUpdates(CALENDAR),
             movieUpdates.observeUpdates(),
         )
             .distinctUntilChanged()

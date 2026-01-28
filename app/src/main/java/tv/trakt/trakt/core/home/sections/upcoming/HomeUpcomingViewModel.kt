@@ -43,6 +43,8 @@ import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSo
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.CALENDAR
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
@@ -58,6 +60,7 @@ internal class HomeUpcomingViewModel(
     private val showLocalDataSource: ShowLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
+    private val episodeUpdates: EpisodeDetailsUpdates,
     private val sessionManager: SessionManager,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
@@ -81,7 +84,7 @@ internal class HomeUpcomingViewModel(
     init {
         loadData()
         observeUser()
-        observeHome()
+        observeUpdates()
         observeMode()
     }
 
@@ -111,10 +114,11 @@ internal class HomeUpcomingViewModel(
     }
 
     @OptIn(FlowPreview::class)
-    private fun observeHome() {
+    private fun observeUpdates() {
         merge(
             homeUpNextSource.observeUpdates(),
             homeWatchlistSource.observeUpdates(),
+            episodeUpdates.observeUpdates(CALENDAR),
         )
             .distinctUntilChanged()
             .debounce(200)

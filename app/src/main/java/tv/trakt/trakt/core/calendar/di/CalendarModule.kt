@@ -16,14 +16,18 @@ internal val calendarModule = module {
 
     viewModel {
         CalendarViewModel(
-            sessionManager = get(),
             getCalendarItemsUseCase = get(),
+            updateEpisodeHistoryUseCase = get(),
+            updateMovieHistoryUseCase = get(),
+            loadUserProgressUseCase = get(),
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
             episodeLocalDataSource = get(),
             showUpdates = get(),
             episodeUpdates = get(),
             movieUpdates = get(),
+            sessionManager = get(),
+            analytics = get(),
         )
     }
 }

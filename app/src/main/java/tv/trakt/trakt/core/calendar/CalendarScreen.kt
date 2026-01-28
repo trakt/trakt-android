@@ -29,29 +29,37 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.fullDayFormat
@@ -67,6 +75,7 @@ import tv.trakt.trakt.core.calendar.ui.controls.CalendarControlsView
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.DayOfWeek.MONDAY
@@ -80,7 +89,12 @@ internal fun CalendarScreen(
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
 ) {
+    val context = LocalContext.current
+    val haptic = LocalHapticFeedback.current
+    val snackbar = LocalSnackbarState.current
+
     val state by viewModel.state.collectAsStateWithLifecycle()
+    var confirmRemoveSheet by remember { mutableStateOf<CalendarItem?>(null) }
 
     LaunchedEffect(
         state.navigateShow,
@@ -101,6 +115,17 @@ internal fun CalendarScreen(
         }
     }
 
+    LaunchedEffect(state.info) {
+        state.info?.get(context)?.let {
+            haptic.performHapticFeedback(Confirm)
+            snackbar.showSnackbar(
+                message = it,
+                duration = SnackbarDuration.Short,
+            )
+            viewModel.clearInfo()
+        }
+    }
+
     CalendarScreen(
         state = state,
         onTodayClick = viewModel::loadTodayData,
@@ -118,7 +143,31 @@ internal fun CalendarScreen(
             if (state.loading.isLoading) return@CalendarScreen
             viewModel.navigateToEpisode(item.show, item.episode)
         },
+        onRemoveClick = { item ->
+            if (state.loading.isLoading) return@CalendarScreen
+            confirmRemoveSheet = item
+        },
         onBackClick = onNavigateBack,
+    )
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    RemoveConfirmationSheet(
+        active = confirmRemoveSheet != null,
+        onYes = {
+            (confirmRemoveSheet as? CalendarItem.EpisodeItem)?.let {
+                viewModel.removeFromWatched(it.episode)
+            }
+            (confirmRemoveSheet as? CalendarItem.MovieItem)?.let {
+                viewModel.removeFromWatched(it.movie)
+            }
+            confirmRemoveSheet = null
+        },
+        onNo = { confirmRemoveSheet = null },
+        title = stringResource(R.string.button_text_remove_from_history),
+        message = stringResource(
+            R.string.warning_prompt_remove_from_watched,
+            confirmRemoveSheet?.title.orEmpty(),
+        ),
     )
 }
 
@@ -132,6 +181,7 @@ private fun CalendarScreen(
     onShowClick: (CalendarItem.EpisodeItem) -> Unit = {},
     onMovieClick: (CalendarItem.MovieItem) -> Unit = {},
     onEpisodeClick: (CalendarItem.EpisodeItem) -> Unit = {},
+    onRemoveClick: (CalendarItem) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
     val scope = rememberCoroutineScope()
@@ -194,6 +244,7 @@ private fun CalendarScreen(
             onEpisodeClick = onEpisodeClick,
             onShowClick = onShowClick,
             onMovieClick = onMovieClick,
+            onRemoveClick = onRemoveClick,
         )
 
         val availableDates = remember(state.items) {
@@ -267,6 +318,7 @@ private fun CalendarContent(
     onEpisodeClick: (CalendarItem.EpisodeItem) -> Unit,
     onShowClick: (CalendarItem.EpisodeItem) -> Unit,
     onMovieClick: (CalendarItem.MovieItem) -> Unit,
+    onRemoveClick: (CalendarItem) -> Unit,
 ) {
     val currentList = remember { mutableIntStateOf(state.items.hashCode()) }
 
@@ -298,12 +350,14 @@ private fun CalendarContent(
     } else if (!state.items.isNullOrEmpty()) {
         ContentItemsGrid(
             items = state.items,
+            itemsLoading = state.itemsLoading,
             gridState = gridState,
             contentPadding = contentPadding,
             loading = state.loading.isLoading,
             onShowClick = onShowClick,
             onMovieClick = onMovieClick,
             onEpisodeClick = onEpisodeClick,
+            onRemoveClick = onRemoveClick,
         )
     } else if (state.items.isNullOrEmpty()) {
         Text(
@@ -318,12 +372,14 @@ private fun CalendarContent(
 @Composable
 private fun ContentItemsGrid(
     items: Map<LocalDate, ImmutableList<CalendarItem>?>,
+    itemsLoading: ImmutableSet<TraktId>?,
     gridState: LazyGridState,
     contentPadding: PaddingValues,
     loading: Boolean,
     onShowClick: (CalendarItem.EpisodeItem) -> Unit,
     onMovieClick: (CalendarItem.MovieItem) -> Unit,
     onEpisodeClick: (CalendarItem.EpisodeItem) -> Unit,
+    onRemoveClick: (CalendarItem) -> Unit,
 ) {
     LazyVerticalGrid(
         state = gridState,
@@ -381,8 +437,10 @@ private fun ContentItemsGrid(
                     if (item is CalendarItem.EpisodeItem) {
                         CalendarEpisodeItemView(
                             item = item,
+                            itemLoading = itemsLoading?.contains(item.id) == true,
                             onClick = { onEpisodeClick(item) },
                             onShowClick = { onShowClick(item) },
+                            onRemoveClick = { onRemoveClick(item) },
                             modifier = Modifier.padding(top = 14.dp),
                         )
                     }
@@ -390,7 +448,9 @@ private fun ContentItemsGrid(
                     if (item is CalendarItem.MovieItem) {
                         CalendarMovieItemView(
                             item = item,
+                            itemLoading = itemsLoading?.contains(item.id) == true,
                             onClick = { onMovieClick(item) },
+                            onRemoveClick = { onRemoveClick(item) },
                             modifier = Modifier.padding(top = 14.dp),
                         )
                     }

@@ -111,15 +111,11 @@ internal class GetCalendarItemsUseCase(
                     }
 
                     val showId = it.show.ids.trakt.toTraktId()
-                    val episodeId = it.episode.ids.trakt.toTraktId()
-
                     CalendarItem.EpisodeItem(
-                        id = episodeId,
                         watched = showsProgress[showId]?.isEpisodeWatched(
                             season = it.episode.season,
                             episode = it.episode.number,
                         ) == true,
-                        loading = false,
                         episode = Episode.fromDto(it.episode),
                         show = Show.fromDto(it.show),
                         isFullSeason = isFullSeason,
@@ -135,9 +131,7 @@ internal class GetCalendarItemsUseCase(
                 .asyncMap {
                     val id = it.movie.ids.trakt.toTraktId()
                     CalendarItem.MovieItem(
-                        id = id,
                         watched = moviesProgress.containsKey(id),
-                        loading = false,
                         movie = Movie.fromDto(it.movie),
                     )
                 }

@@ -283,6 +283,7 @@ internal val homeModule = module {
             showLocalDataSource = get(),
             episodeLocalDataSource = get(),
             movieLocalDataSource = get(),
+            episodeUpdates = get(),
             sessionManager = get(),
             modeManager = get(),
             collapsingManager = get(),

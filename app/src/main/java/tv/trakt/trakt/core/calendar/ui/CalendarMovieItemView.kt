@@ -26,7 +26,6 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.resources.R
@@ -37,7 +36,11 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun CalendarMovieItemView(
     item: CalendarItem.MovieItem,
     modifier: Modifier = Modifier,
-    onClick: (TraktId) -> Unit = { },
+    itemLoading: Boolean = false,
+    onClick: (TraktId) -> Unit = {},
+    onCheckClick: () -> Unit = {},
+    onCheckLongClick: () -> Unit = {},
+    onRemoveClick: () -> Unit = {},
 ) {
     val isReleased = remember(item.releasedAt) {
         val releasedAt = item.releasedAt
@@ -48,7 +51,7 @@ internal fun CalendarMovieItemView(
         title = "",
         more = false,
         containerImageUrl = item.movie.images?.getFanartUrl(),
-        onClick = { onClick(item.movie.ids.trakt) },
+        onClick = { onClick(item.id) },
         footerContent = {
             Row(
                 verticalAlignment = CenterVertically,
@@ -104,9 +107,9 @@ internal fun CalendarMovieItemView(
                             .size(23.dp),
                     ) {
                         when {
-                            item.loading -> {
+                            itemLoading -> {
                                 FilmProgressIndicator(
-                                    size = 19.dp,
+                                    size = 18.dp,
                                     modifier = Modifier
                                         .graphicsLayer {
                                             translationX = 2.dp.toPx()
@@ -120,8 +123,7 @@ internal fun CalendarMovieItemView(
                                     tint = TraktTheme.colors.textPrimary,
                                     modifier = Modifier
                                         .size(19.dp)
-                                        .onClick {
-                                        },
+                                        .onClick(onClick = onRemoveClick),
                                 )
                             }
                             !item.watched -> {
@@ -132,8 +134,8 @@ internal fun CalendarMovieItemView(
                                     modifier = Modifier
                                         .size(19.dp)
                                         .onClickCombined(
-                                            onClick = { },
-                                            onLongClick = { },
+                                            onClick = onCheckClick,
+                                            onLongClick = onCheckLongClick,
                                         ),
                                 )
                             }
@@ -152,8 +154,6 @@ private fun Preview() {
     TraktTheme {
         CalendarMovieItemView(
             item = CalendarItem.MovieItem(
-                id = 1.toTraktId(),
-                loading = false,
                 watched = true,
                 movie = PreviewData.movie1,
             ),

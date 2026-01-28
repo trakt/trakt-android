@@ -11,27 +11,33 @@ import java.time.ZoneOffset
 
 @Immutable
 internal sealed class CalendarItem(
-    open val id: TraktId,
     open val watched: Boolean,
-    open val loading: Boolean,
 ) {
     @Immutable
     internal data class MovieItem(
-        override val id: TraktId,
         override val watched: Boolean,
-        override val loading: Boolean,
         val movie: Movie,
-    ) : CalendarItem(id, watched, loading)
+    ) : CalendarItem(watched)
 
     @Immutable
     internal data class EpisodeItem(
-        override val id: TraktId,
         override val watched: Boolean,
-        override val loading: Boolean,
         val episode: Episode,
         val show: Show,
         val isFullSeason: Boolean = false,
-    ) : CalendarItem(id, watched, loading)
+    ) : CalendarItem(watched)
+
+    val id: TraktId
+        get() = when (this) {
+            is MovieItem -> movie.ids.trakt
+            is EpisodeItem -> episode.ids.trakt
+        }
+
+    val title: String
+        get() = when (this) {
+            is MovieItem -> movie.title
+            is EpisodeItem -> episode.title
+        }
 
     val releasedAt: Instant?
         get() = when (this) {
