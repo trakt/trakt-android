@@ -52,6 +52,7 @@ import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 import java.time.DayOfWeek.MONDAY
 import java.time.LocalDate
 
@@ -177,6 +178,126 @@ internal class CalendarViewModel(
         loadData()
     }
 
+    // Mutations
+
+    fun addToHistory(
+        episode: Episode,
+        customDate: DateSelectionResult? = null,
+    ) {
+        if (processingJob?.isActive == true) {
+            return
+        }
+        processingJob = viewModelScope.launch {
+            try {
+                val authenticated = sessionManager.isAuthenticated()
+                if (!authenticated) {
+                    return@launch
+                }
+
+                itemsLoadingState.update {
+                    persistentSetOf(episode.ids.trakt)
+                }
+
+                updateEpisodeHistoryUseCase.addToHistory(
+                    episodeId = episode.ids.trakt,
+                    customDate = customDate,
+                )
+                loadUserProgressUseCase.loadShowsProgress()
+                episodeUpdates.notifyUpdate(CALENDAR)
+
+                itemsState.update {
+                    val currentItems = it ?: return@update it
+                    currentItems.mapValues { entry ->
+                        entry.value.map { item ->
+                            if (item is CalendarItem.EpisodeItem && item.id == episode.ids.trakt) {
+                                item.copy(watched = true)
+                            } else {
+                                item
+                            }
+                        }.toImmutableList()
+                    }.toImmutableMap()
+                }
+
+                infoState.update {
+                    DynamicStringResource(R.string.text_info_history_added)
+                }
+
+                analytics.progress.logAddWatchedMedia(
+                    mediaType = "episode",
+                    source = "calendar",
+                    date = customDate?.analyticsStrings,
+                )
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            } finally {
+                itemsLoadingState.update { EmptyImmutableSet }
+                processingJob = null
+            }
+        }
+    }
+
+    fun addToHistory(
+        movie: Movie,
+        customDate: DateSelectionResult? = null,
+    ) {
+        if (processingJob?.isActive == true) {
+            return
+        }
+        processingJob = viewModelScope.launch {
+            try {
+                val authenticated = sessionManager.isAuthenticated()
+                if (!authenticated) {
+                    return@launch
+                }
+
+                itemsLoadingState.update {
+                    persistentSetOf(movie.ids.trakt)
+                }
+
+                updateMovieHistoryUseCase.addToWatched(
+                    movieId = movie.ids.trakt,
+                    customDate = customDate,
+                )
+                loadUserProgressUseCase.loadMoviesProgress()
+                episodeUpdates.notifyUpdate(CALENDAR)
+
+                itemsState.update {
+                    val currentItems = it ?: return@update it
+                    currentItems.mapValues { entry ->
+                        entry.value.map { item ->
+                            if (item is CalendarItem.MovieItem && item.id == movie.ids.trakt) {
+                                item.copy(watched = true)
+                            } else {
+                                item
+                            }
+                        }.toImmutableList()
+                    }.toImmutableMap()
+                }
+
+                infoState.update {
+                    DynamicStringResource(R.string.text_info_history_added)
+                }
+
+                analytics.progress.logAddWatchedMedia(
+                    mediaType = "movie",
+                    source = "calendar",
+                    date = customDate?.analyticsStrings,
+                )
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            } finally {
+                itemsLoadingState.update { EmptyImmutableSet }
+                processingJob = null
+            }
+        }
+    }
+
     fun removeFromWatched(episode: Episode) {
         if (processingJob?.isActive == true) {
             return
@@ -199,11 +320,11 @@ internal class CalendarViewModel(
                 itemsState.update {
                     val currentItems = it ?: return@update it
                     currentItems.mapValues { entry ->
-                        entry.value.filter { item ->
-                            if (item is CalendarItem.EpisodeItem) {
-                                item.id != episode.ids.trakt
+                        entry.value.map { item ->
+                            if (item is CalendarItem.EpisodeItem && item.id == episode.ids.trakt) {
+                                item.copy(watched = false)
                             } else {
-                                true
+                                item
                             }
                         }.toImmutableList()
                     }.toImmutableMap()
@@ -224,6 +345,7 @@ internal class CalendarViewModel(
                 }
             } finally {
                 itemsLoadingState.update { EmptyImmutableSet }
+                processingJob = null
             }
         }
     }
@@ -275,9 +397,12 @@ internal class CalendarViewModel(
                 }
             } finally {
                 itemsLoadingState.update { EmptyImmutableSet }
+                processingJob = null
             }
         }
     }
+
+    // Navigation
 
     fun navigateToShow(show: Show) {
         if (navigateShow.value != null || processingJob?.isActive == true) {
@@ -320,6 +445,7 @@ internal class CalendarViewModel(
         navigateShow.update { null }
         navigateMovie.update { null }
         navigateEpisode.update { null }
+        processingJob = null
     }
 
     fun clearInfo() {
@@ -328,6 +454,7 @@ internal class CalendarViewModel(
 
     override fun onCleared() {
         processingJob?.cancel()
+        processingJob = null
         super.onCleared()
     }
 
