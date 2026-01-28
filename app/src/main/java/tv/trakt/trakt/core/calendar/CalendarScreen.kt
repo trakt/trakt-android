@@ -69,6 +69,8 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.core.calendar.model.CalendarItem
+import tv.trakt.trakt.core.calendar.model.CalendarItem.EpisodeItem
+import tv.trakt.trakt.core.calendar.model.CalendarItem.MovieItem
 import tv.trakt.trakt.core.calendar.ui.CalendarEpisodeItemView
 import tv.trakt.trakt.core.calendar.ui.CalendarMovieItemView
 import tv.trakt.trakt.core.calendar.ui.controls.CalendarControlsView
@@ -76,6 +78,7 @@ import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.DayOfWeek.MONDAY
@@ -94,6 +97,7 @@ internal fun CalendarScreen(
     val snackbar = LocalSnackbarState.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
+    var dateSelectionSheet by remember { mutableStateOf<CalendarItem?>(null) }
     var confirmRemoveSheet by remember { mutableStateOf<CalendarItem?>(null) }
 
     LaunchedEffect(
@@ -146,9 +150,13 @@ internal fun CalendarScreen(
         onCheckClick = {
             if (state.loading.isLoading) return@CalendarScreen
             when (it) {
-                is CalendarItem.EpisodeItem -> viewModel.addToHistory(it.episode)
-                is CalendarItem.MovieItem -> viewModel.addToHistory(it.movie)
+                is EpisodeItem -> viewModel.addToHistory(it.episode)
+                is MovieItem -> viewModel.addToHistory(it.movie)
             }
+        },
+        onCheckLongClick = {
+            if (state.loading.isLoading) return@CalendarScreen
+            dateSelectionSheet = it
         },
         onRemoveClick = { item ->
             if (state.loading.isLoading) return@CalendarScreen
@@ -157,14 +165,41 @@ internal fun CalendarScreen(
         onBackClick = onNavigateBack,
     )
 
+    DateSelectionSheet(
+        active = dateSelectionSheet != null,
+        title = dateSelectionSheet?.title.orEmpty(),
+        subtitle = when (dateSelectionSheet) {
+            is EpisodeItem -> (dateSelectionSheet as? EpisodeItem)?.episode?.seasonEpisodeString()
+            else -> null
+        },
+        onResult = { date ->
+            if (dateSelectionSheet == null) return@DateSelectionSheet
+            (dateSelectionSheet as? EpisodeItem)?.let {
+                viewModel.addToHistory(
+                    episode = it.episode,
+                    customDate = date,
+                )
+            }
+            (dateSelectionSheet as? MovieItem)?.let {
+                viewModel.addToHistory(
+                    movie = it.movie,
+                    customDate = date,
+                )
+            }
+        },
+        onDismiss = {
+            dateSelectionSheet = null
+        },
+    )
+
     @OptIn(ExperimentalMaterial3Api::class)
     RemoveConfirmationSheet(
         active = confirmRemoveSheet != null,
         onYes = {
-            (confirmRemoveSheet as? CalendarItem.EpisodeItem)?.let {
+            (confirmRemoveSheet as? EpisodeItem)?.let {
                 viewModel.removeFromWatched(it.episode)
             }
-            (confirmRemoveSheet as? CalendarItem.MovieItem)?.let {
+            (confirmRemoveSheet as? MovieItem)?.let {
                 viewModel.removeFromWatched(it.movie)
             }
             confirmRemoveSheet = null
@@ -185,10 +220,11 @@ private fun CalendarScreen(
     onTodayClick: () -> Unit = {},
     onNextWeekClick: () -> Unit = {},
     onPreviousWeekClick: () -> Unit = {},
-    onShowClick: (CalendarItem.EpisodeItem) -> Unit = {},
-    onMovieClick: (CalendarItem.MovieItem) -> Unit = {},
-    onEpisodeClick: (CalendarItem.EpisodeItem) -> Unit = {},
+    onShowClick: (EpisodeItem) -> Unit = {},
+    onMovieClick: (MovieItem) -> Unit = {},
+    onEpisodeClick: (EpisodeItem) -> Unit = {},
     onCheckClick: (CalendarItem) -> Unit = {},
+    onCheckLongClick: (CalendarItem) -> Unit = {},
     onRemoveClick: (CalendarItem) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
@@ -270,6 +306,7 @@ private fun CalendarScreen(
             onShowClick = onShowClick,
             onMovieClick = onMovieClick,
             onCheckClick = onCheckClick,
+            onCheckLongClick = onCheckLongClick,
             onRemoveClick = onRemoveClick,
         )
 
@@ -340,10 +377,11 @@ private fun CalendarContent(
     state: CalendarState,
     gridState: LazyGridState,
     contentPadding: PaddingValues,
-    onEpisodeClick: (CalendarItem.EpisodeItem) -> Unit,
-    onShowClick: (CalendarItem.EpisodeItem) -> Unit,
-    onMovieClick: (CalendarItem.MovieItem) -> Unit,
+    onEpisodeClick: (EpisodeItem) -> Unit,
+    onShowClick: (EpisodeItem) -> Unit,
+    onMovieClick: (MovieItem) -> Unit,
     onCheckClick: (CalendarItem) -> Unit,
+    onCheckLongClick: (CalendarItem) -> Unit,
     onRemoveClick: (CalendarItem) -> Unit,
 ) {
     val currentList = remember { mutableIntStateOf(state.items.hashCode()) }
@@ -384,6 +422,7 @@ private fun CalendarContent(
             onMovieClick = onMovieClick,
             onEpisodeClick = onEpisodeClick,
             onCheckClick = onCheckClick,
+            onCheckLongClick = onCheckLongClick,
             onRemoveClick = onRemoveClick,
         )
     } else if (state.items.isNullOrEmpty()) {
@@ -403,10 +442,11 @@ private fun ContentItemsGrid(
     gridState: LazyGridState,
     contentPadding: PaddingValues,
     loading: Boolean,
-    onShowClick: (CalendarItem.EpisodeItem) -> Unit,
-    onMovieClick: (CalendarItem.MovieItem) -> Unit,
-    onEpisodeClick: (CalendarItem.EpisodeItem) -> Unit,
+    onShowClick: (EpisodeItem) -> Unit,
+    onMovieClick: (MovieItem) -> Unit,
+    onEpisodeClick: (EpisodeItem) -> Unit,
     onCheckClick: (CalendarItem) -> Unit,
+    onCheckLongClick: (CalendarItem) -> Unit,
     onRemoveClick: (CalendarItem) -> Unit,
 ) {
     LazyVerticalGrid(
@@ -462,19 +502,20 @@ private fun ContentItemsGrid(
                     key = { index -> gridItems[index].id.value },
                 ) { index ->
                     val item = gridItems[index]
-                    if (item is CalendarItem.EpisodeItem) {
+                    if (item is EpisodeItem) {
                         CalendarEpisodeItemView(
                             item = item,
                             itemLoading = itemsLoading?.contains(item.id) == true,
                             onClick = { onEpisodeClick(item) },
                             onShowClick = { onShowClick(item) },
                             onCheckClick = { onCheckClick(item) },
+                            onCheckLongClick = { onCheckLongClick(item) },
                             onRemoveClick = { onRemoveClick(item) },
                             modifier = Modifier.padding(top = 14.dp),
                         )
                     }
 
-                    if (item is CalendarItem.MovieItem) {
+                    if (item is MovieItem) {
                         CalendarMovieItemView(
                             item = item,
                             itemLoading = itemsLoading?.contains(item.id) == true,
