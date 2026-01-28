@@ -34,6 +34,7 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarDuration
@@ -55,7 +56,6 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
@@ -547,18 +547,12 @@ private fun ContentItemsGrid(
                     modifier = Modifier
                         .padding(top = if (index == 0) 0.dp else 38.dp),
                 ) {
-                    val isToday = remember(date) {
-                        date == nowLocalDay()
-                    }
-
+                    val isToday = remember(date) { date == nowLocalDay() }
                     if (isToday) {
                         Box(
                             modifier = Modifier
-                                .graphicsLayer {
-                                    translationY = 0.5.dp.toPx()
-                                }
-                                .background(color = Purple400, shape = CircleShape)
-                                .size(6.dp),
+                                .background(color = Purple400, shape = RoundedCornerShape(100))
+                                .size(3.dp, 16.dp),
                         )
                     }
                     TraktHeader(

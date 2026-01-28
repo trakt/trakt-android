@@ -3,9 +3,9 @@ package tv.trakt.trakt.core.calendar.ui.controls
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -26,7 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W800
@@ -210,6 +209,14 @@ private fun DayRowItem(
                 color = animatedColor,
                 shape = RoundedCornerShape(10.dp),
             )
+            .border(
+                width = if (isToday) 1.dp else 0.dp,
+                color = when {
+                    isToday -> Purple400
+                    else -> Color.Transparent
+                },
+                shape = RoundedCornerShape(10.dp),
+            )
             .padding(
                 vertical = 6.dp,
                 horizontal = 2.dp,
@@ -222,17 +229,6 @@ private fun DayRowItem(
             horizontalArrangement = Arrangement.spacedBy(3.dp),
             verticalAlignment = CenterVertically,
         ) {
-            if (isToday) {
-                Box(
-                    modifier = Modifier
-                        .graphicsLayer {
-                            translationY = 0.5.dp.toPx()
-                        }
-                        .background(color = Purple400, shape = CircleShape)
-                        .size(5.dp),
-                )
-            }
-
             Text(
                 text = itemDate.dayOfWeek
                     .getDisplayName(TextStyle.SHORT, Locale.US),
