@@ -51,7 +51,13 @@ internal class LoadUserProgressUseCase(
                             slug = "".toSlugId(),
                         ),
                     ),
-                    lastWatchedAt = plays.maxOf { it.toInstant() },
+                    lastWatchedAt = plays
+                        .filter {
+                            // Filter out invalid dates like "0000-00-00T00:00:00Z"
+                            // (leftovers from older bugged Trakt users)
+                            !it.startsWith("0000")
+                        }
+                        .maxOf { it.toInstant() },
                 )
             }
 
