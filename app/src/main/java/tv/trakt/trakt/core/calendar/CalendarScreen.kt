@@ -141,12 +141,12 @@ internal fun CalendarScreen(
 
     LaunchedEffect(state.info) {
         state.info?.get(context)?.let {
+            viewModel.clearInfo()
             haptic.performHapticFeedback(Confirm)
             snackbar.showSnackbar(
                 message = it,
                 duration = SnackbarDuration.Short,
             )
-            viewModel.clearInfo()
         }
     }
 
@@ -314,6 +314,8 @@ private fun CalendarScreen(
                     scrollOffset = scrollOffset,
                     gridState = gridState,
                 )
+            } else {
+                gridState.scrollToItem(0)
             }
         }
     }
@@ -459,16 +461,6 @@ private fun CalendarContent(
     onCheckLongClick: (CalendarItem) -> Unit,
     onRemoveClick: (CalendarItem) -> Unit,
 ) {
-    val currentList = remember { mutableIntStateOf(state.items.hashCode()) }
-
-    LaunchedEffect(state.items) {
-        val hashCode = state.items.hashCode()
-        if (currentList.intValue != hashCode) {
-            currentList.intValue = hashCode
-            gridState.scrollToItem(0)
-        }
-    }
-
     if (state.error != null) {
         Text(
             text = "${
