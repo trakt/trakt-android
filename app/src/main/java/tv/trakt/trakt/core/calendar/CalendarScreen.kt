@@ -37,7 +37,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -73,6 +72,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -95,6 +95,7 @@ import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
+import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.DayOfWeek.MONDAY
 import java.time.LocalDate
@@ -111,6 +112,8 @@ internal fun CalendarScreen(
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
 ) {
+    val scope = rememberCoroutineScope()
+
     val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
     val snackbar = LocalSnackbarState.current
@@ -140,17 +143,22 @@ internal fun CalendarScreen(
     }
 
     LaunchedEffect(state.info) {
-        state.info?.get(context)?.let {
-            viewModel.clearInfo()
-            haptic.performHapticFeedback(Confirm)
-            snackbar.showSnackbar(
-                message = it,
-                duration = SnackbarDuration.Short,
-            )
+        if (state.info == null) return@LaunchedEffect
+        haptic.performHapticFeedback(Confirm)
+        with(scope) {
+            val job = launch {
+                state.info?.get(context)?.let {
+                    snackbar.showSnackbar(it)
+                }
+            }
+            delay(SNACK_DURATION_SHORT)
+            job.cancel()
         }
+        viewModel.clearInfo()
     }
 
     CalendarScreen(
+        scope = scope,
         state = state,
         onTodayClick = viewModel::loadTodayData,
         onNextWeekClick = viewModel::loadNextWeekData,
@@ -185,11 +193,13 @@ internal fun CalendarScreen(
         onBackClick = onNavigateBack,
     )
 
+    // Sheets
+
     DateSelectionSheet(
         active = dateSelectionSheet != null,
         title = dateSelectionSheet?.title.orEmpty(),
         subtitle = when (dateSelectionSheet) {
-            is EpisodeItem -> (dateSelectionSheet as? EpisodeItem)?.episode?.seasonEpisodeString()
+            is EpisodeItem -> (dateSelectionSheet as EpisodeItem).episode.seasonEpisodeString()
             else -> null
         },
         onResult = { date ->
@@ -212,7 +222,6 @@ internal fun CalendarScreen(
         },
     )
 
-    @OptIn(ExperimentalMaterial3Api::class)
     RemoveConfirmationSheet(
         active = confirmRemoveSheet != null,
         onYes = {
@@ -235,6 +244,7 @@ internal fun CalendarScreen(
 
 @Composable
 private fun CalendarScreen(
+    scope: CoroutineScope,
     state: CalendarState,
     modifier: Modifier = Modifier,
     onTodayClick: () -> Unit = {},
@@ -248,7 +258,6 @@ private fun CalendarScreen(
     onRemoveClick: (CalendarItem) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
-    val scope = rememberCoroutineScope()
     val scrollOffset = with(LocalDensity.current) { 48.dp.toPx().toInt() }
 
     val contentPadding = PaddingValues(
@@ -268,9 +277,13 @@ private fun CalendarScreen(
         SimpleScrollConnection()
     }
 
-    val focusedDate by remember(state.items) {
-        val keys = state.items?.keys?.toList() ?: EmptyImmutableList
+    val itemsKeys by remember(state.items) {
+        derivedStateOf {
+            state.items?.keys?.toList() ?: EmptyImmutableList
+        }
+    }
 
+    val focusedDate by remember(itemsKeys) {
         derivedStateOf {
             val firstVisibleIndex = gridState.firstVisibleItemIndex
             if (firstVisibleIndex < 0 || state.items.isNullOrEmpty()) {
@@ -278,11 +291,11 @@ private fun CalendarScreen(
             }
 
             var accumulatedCount = 0
-            for (date in keys) {
+            for (date in itemsKeys) {
                 val itemsForDate = state.items[date] ?: EmptyImmutableList
                 val itemCountForDate = when {
                     itemsForDate.isNotEmpty() -> itemsForDate.size + 1
-                    else -> 0
+                    else -> 2
                 }
 
                 if (firstVisibleIndex < accumulatedCount + itemCountForDate) {
@@ -296,11 +309,11 @@ private fun CalendarScreen(
         }
     }
 
-    val currentKeys = remember { mutableIntStateOf(state.items?.keys.hashCode()) }
+    val itemsKeysHash = remember { mutableIntStateOf(state.items?.keys.hashCode()) }
     LaunchedEffect(state.items?.keys.hashCode()) {
         val hash = state.items?.keys.hashCode()
-        if (currentKeys.intValue != hash) {
-            currentKeys.intValue = hash
+        if (itemsKeysHash.intValue != hash) {
+            itemsKeysHash.intValue = hash
 
             val today = nowLocalDay()
             val selectedStartDay = state.selectedStartDay
@@ -741,6 +754,7 @@ private fun scrollToDay(
 private fun Preview() {
     TraktTheme {
         CalendarScreen(
+            scope = rememberCoroutineScope(),
             state = CalendarState(
                 selectedStartDay = LocalDate.now().with(MONDAY),
                 loading = LoadingState.LOADING,
