@@ -97,6 +97,7 @@ internal fun CalendarScreen(
     val snackbar = LocalSnackbarState.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
+
     var dateSelectionSheet by remember { mutableStateOf<CalendarItem?>(null) }
     var confirmRemoveSheet by remember { mutableStateOf<CalendarItem?>(null) }
 
@@ -276,19 +277,25 @@ private fun CalendarScreen(
         }
     }
 
-    LaunchedEffect(state.selectedStartDay, state.items?.keys) {
-        val today = nowLocalDay()
-        val selectedStartDay = state.selectedStartDay
-        val selectedWeek = selectedStartDay..selectedStartDay.plusDays(6)
+    val currentKeys = remember { mutableIntStateOf(state.items?.keys.hashCode()) }
+    LaunchedEffect(state.items?.keys.hashCode()) {
+        val hash = state.items?.keys.hashCode()
+        if (currentKeys.intValue != hash) {
+            currentKeys.intValue = hash
 
-        if (today in selectedWeek) {
-            scrollToDay(
-                scope = scope,
-                state = state,
-                date = today,
-                scrollOffset = scrollOffset,
-                gridState = gridState,
-            )
+            val today = nowLocalDay()
+            val selectedStartDay = state.selectedStartDay
+            val selectedWeek = selectedStartDay..selectedStartDay.plusDays(6)
+
+            if (today in selectedWeek) {
+                scrollToDay(
+                    scope = scope,
+                    state = state,
+                    date = today,
+                    scrollOffset = scrollOffset,
+                    gridState = gridState,
+                )
+            }
         }
     }
 
