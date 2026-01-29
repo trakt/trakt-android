@@ -268,9 +268,11 @@ internal fun HomeWatchlistContent(
                             state.error != null -> {
                                 Text(
                                     text =
-                                        "${stringResource(
-                                            R.string.error_text_unexpected_error_short,
-                                        )}\n\n${state.error}",
+                                        "${
+                                            stringResource(
+                                                R.string.error_text_unexpected_error_short,
+                                            )
+                                        }\n\n${state.error}",
                                     color = TraktTheme.colors.textSecondary,
                                     style = TraktTheme.typography.meta,
                                     maxLines = 10,
@@ -335,7 +337,7 @@ private fun ContentLoadingList(
             .fillMaxWidth()
             .alpha(if (visible) 1F else 0F),
     ) {
-        items(count = 6) {
+        items(count = 12) {
             VerticalMediaSkeletonCard(
                 chip = true,
                 secondaryChip = true,

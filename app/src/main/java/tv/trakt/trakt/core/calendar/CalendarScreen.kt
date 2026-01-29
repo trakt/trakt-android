@@ -534,7 +534,7 @@ private fun ContentItemsGrid(
 ) {
     LazyVerticalGrid(
         state = gridState,
-        columns = GridCells.Fixed(2),
+        columns = GridCells.Fixed(TraktTheme.size.calendarGridColumns),
         horizontalArrangement = spacedBy(TraktTheme.spacing.mainGridHorizontalSpace),
         verticalArrangement = spacedBy(0.dp),
         contentPadding = contentPadding,
@@ -637,7 +637,7 @@ private fun ContentLoadingGrid(
         )
 
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
+        columns = GridCells.Fixed(TraktTheme.size.calendarGridColumns),
         horizontalArrangement = spacedBy(TraktTheme.spacing.mainGridHorizontalSpace),
         verticalArrangement = spacedBy(TraktTheme.spacing.mainGridVerticalSpace),
         contentPadding = PaddingValues(

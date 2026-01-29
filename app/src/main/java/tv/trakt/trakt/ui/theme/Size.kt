@@ -20,6 +20,7 @@ internal val Size: TraktSize = TraktSize(
     horizontalMediaCardSize = 200.dp,
     horizontalSmallMediaCardSize = 128.dp,
     mainGridColumns = 3,
+    calendarGridColumns = 2,
     commentCardSize = 192.dp,
     customListCardSize = 192.dp,
     detailsBackgroundRatio = VerticalImageAspectRatio,
@@ -30,6 +31,7 @@ internal val MediumSize: TraktSize = Size.copy(
     navigationHeaderHeight = 80.dp,
     detailsBackgroundRatio = VerticalImageAspectRatio * 1.6F,
     mainGridColumns = 4,
+    calendarGridColumns = 4,
 )
 
 internal val LargeSize: TraktSize = Size.copy(
@@ -37,6 +39,7 @@ internal val LargeSize: TraktSize = Size.copy(
     navigationHeaderHeight = 80.dp,
     detailsBackgroundRatio = VerticalImageAspectRatio * 1.5F,
     mainGridColumns = 8,
+    calendarGridColumns = 6,
 )
 
 @Immutable
@@ -51,6 +54,7 @@ internal data class TraktSize(
     val verticalMediumMediaCardSize: Dp = Dp.Unspecified,
     val verticalSmallMediaCardSize: Dp = Dp.Unspecified,
     val mainGridColumns: Int = 3,
+    val calendarGridColumns: Int = 2,
     val commentCardSize: Dp = Dp.Unspecified,
     val customListCardSize: Dp = Dp.Unspecified,
     val detailsBackgroundRatio: Float = 1F,

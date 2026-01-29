@@ -209,7 +209,7 @@ private fun ContentLoadingList(
             .fillMaxWidth()
             .alpha(if (visible) 1F else 0F),
     ) {
-        items(count = 6) {
+        items(count = 8) {
             EpisodeSkeletonCard()
         }
     }
