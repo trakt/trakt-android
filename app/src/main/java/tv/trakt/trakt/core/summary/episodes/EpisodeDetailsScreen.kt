@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -82,7 +83,6 @@ import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.DetailsMetaInfo
 import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
-import tv.trakt.trakt.core.summary.ui.header.POSTER_SPACE_WEIGHT
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
@@ -304,7 +304,6 @@ internal fun EpisodeDetailsContent(
                 imageUrl = state.show.images?.getFanartUrl(Size.THUMB),
                 color = state.show.colors?.colors?.second,
                 translation = listScrollConnection.resultOffset,
-                aspectRatio = TraktTheme.size.detailsBackgroundRatio * 1.33F,
             )
         }
 
@@ -357,8 +356,7 @@ internal fun EpisodeDetailsContent(
                             .padding(top = 16.dp)
                             .ifOrElse(
                                 windowClass.isAtLeastMedium(),
-                                isTrue = Modifier
-                                    .fillMaxWidth(POSTER_SPACE_WEIGHT),
+                                isTrue = Modifier.width(TraktTheme.size.detailsActionButtonsSize),
                                 isFalse = Modifier
                                     .fillMaxWidth()
                                     .padding(

@@ -33,6 +33,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -78,6 +79,7 @@ import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.components.vip.ThisMonthVipCard
+import tv.trakt.trakt.ui.extensions.isAtLeastLarge
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -162,6 +164,7 @@ private fun ProfileScreen(
     onLogoutClick: () -> Unit = {},
 ) {
     val inspection = LocalInspectionMode.current
+    val windowClass = currentWindowAdaptiveInfo().windowSizeClass
 
     val listPadding = PaddingValues(
         top = WindowInsets.statusBars.asPaddingValues()
@@ -224,6 +227,12 @@ private fun ProfileScreen(
                             stats = state.monthStats,
                             containerImage = state.monthBackgroundUrl,
                             modifier = Modifier
+                                .fillMaxWidth(
+                                    when {
+                                        windowClass.isAtLeastLarge() -> 0.5F
+                                        else -> 1F
+                                    },
+                                )
                                 .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
                                 .padding(
                                     bottom = when {

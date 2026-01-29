@@ -86,7 +86,6 @@ internal fun ThisMonthCard(
 
     Box(
         modifier = modifier
-            .fillMaxWidth()
             .height(IntrinsicSize.Min)
             .shadow(4.dp, shape)
             .clip(shape)

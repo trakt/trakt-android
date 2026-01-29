@@ -1,14 +1,8 @@
 package tv.trakt.trakt.core.summary.ui.header
 
-import android.content.Context
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,12 +10,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -42,22 +34,18 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.Config.webImdbPersonUrl
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
-import tv.trakt.trakt.common.helpers.extensions.ifOrElse
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.ImdbId
 import tv.trakt.trakt.common.ui.theme.colors.Red500
-import tv.trakt.trakt.core.summary.ui.DetailsHorizontalPoster
-import tv.trakt.trakt.core.summary.ui.DetailsPoster
 import tv.trakt.trakt.core.summary.ui.DetailsRatings
+import tv.trakt.trakt.core.summary.ui.header.poster.DetailsHeaderPoster
+import tv.trakt.trakt.core.summary.ui.header.poster.DetailsHeaderPosterHorizontal
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.extensions.isAtLeastMedium
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
-
-internal const val POSTER_SPACE_WEIGHT = 0.6F
 
 @Composable
 internal fun DetailsHeader(
@@ -88,134 +76,35 @@ internal fun DetailsHeader(
     onShareClick: () -> Unit,
     onBackClick: () -> Unit,
 ) {
-    val context = LocalContext.current
-    val windowClass = currentWindowAdaptiveInfo().windowSizeClass
-
     Column(
         horizontalAlignment = CenterHorizontally,
         verticalArrangement = spacedBy(0.dp),
         modifier = modifier.fillMaxWidth(),
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = spacedBy(0.dp, CenterHorizontally),
-            verticalAlignment = Alignment.Top,
-        ) {
-            val posterSpace = TraktTheme.spacing.detailsHeaderHorizontalSpace
-
-            Column(
+        if (!imageHorizontal) {
+            DetailsHeaderPoster(
+                imageUrl = imageUrl,
+                accentColor = accentColor,
+                loading = loading,
+                creditsCount = creditsCount,
+                playsCount = playsCount,
+                personImdb = personImdb,
+                onShareClick = onShareClick,
+                onBackClick = onBackClick,
+                extraRightColumn = extraRightColumn ?: {},
+            )
+        } else {
+            DetailsHeaderPosterHorizontal(
+                imageUrl = imageUrl,
+                accentColor = accentColor,
+                loading = loading,
+                creditsCount = creditsCount,
+                playsCount = playsCount,
+                onShareClick = onShareClick,
+                onBackClick = onBackClick,
                 modifier = Modifier
-                    .ifOrElse(
-                        condition = windowClass.isAtLeastMedium(),
-                        isTrue = Modifier.weight(POSTER_SPACE_WEIGHT, false),
-                        isFalse = Modifier.width(posterSpace),
-                    )
-                    .padding(top = 8.dp),
-                horizontalAlignment = Alignment.End,
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_back_arrow),
-                    tint = TraktTheme.colors.textPrimary,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(end = 20.dp)
-                        .size(24.dp)
-                        .onClick(onClick = onBackClick),
-                )
-            }
-
-            Box(
-                modifier = Modifier.weight(1F, false),
-            ) {
-                if (!imageHorizontal) {
-                    DetailsPoster(
-                        imageUrl = imageUrl,
-                        color = accentColor,
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                } else {
-                    Spacer(
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                }
-
-                this@Column.AnimatedVisibility(
-                    visible = !imageHorizontal && !loading,
-                    enter = fadeIn(tween(150)),
-                    exit = fadeOut(tween(150)),
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .graphicsLayer {
-                            translationY = 8.5.dp.toPx()
-                        },
-                ) {
-                    PosterChipsGroup(
-                        creditsCount = creditsCount,
-                        playsCount = playsCount,
-                        personImdb = personImdb,
-                        context = context,
-                    )
-                }
-            }
-
-            Column(
-                modifier = Modifier
-                    .ifOrElse(
-                        condition = windowClass.isAtLeastMedium(),
-                        isTrue = Modifier.weight(POSTER_SPACE_WEIGHT, false),
-                        isFalse = Modifier.width(posterSpace),
-                    )
-                    .padding(top = 8.dp),
-                horizontalAlignment = Alignment.Start,
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_share),
-                    tint = TraktTheme.colors.textPrimary,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(start = 20.dp)
-                        .size(24.dp)
-                        .onClick(onClick = onShareClick),
-                )
-
-                extraRightColumn?.invoke()
-            }
-        }
-
-        Box {
-            if (imageHorizontal) {
-                val horizontalPadding =
-                    TraktTheme.spacing.mainPageHorizontalSpace * 1.25F
-                DetailsHorizontalPoster(
-                    imageUrl = imageUrl,
-                    color = accentColor,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            top = 16.dp,
-                            start = horizontalPadding,
-                            end = horizontalPadding,
-                        ),
-                )
-            }
-
-            this@Column.AnimatedVisibility(
-                visible = imageHorizontal && !loading,
-                enter = fadeIn(tween(150)),
-                exit = fadeOut(tween(150)),
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .graphicsLayer {
-                        translationY = 8.5.dp.toPx()
-                    },
-            ) {
-                PosterChipsGroup(
-                    creditsCount = creditsCount,
-                    playsCount = playsCount,
-                    personImdb = personImdb,
-                    context = context,
-                )
-            }
+                    .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
+            )
         }
 
         if (externalRatingsVisible) {
@@ -346,11 +235,10 @@ internal fun DetailsHeader(
 }
 
 @Composable
-private fun PosterChipsGroup(
+internal fun PosterChipsGroup(
     creditsCount: Int?,
     playsCount: Int?,
     personImdb: ImdbId?,
-    context: Context,
 ) {
     Row(
         horizontalArrangement = spacedBy(6.dp),
@@ -373,6 +261,7 @@ private fun PosterChipsGroup(
         }
 
         if (personImdb != null) {
+            val context = LocalContext.current
             Image(
                 painter = painterResource(R.drawable.ic_imdb_color),
                 contentDescription = null,

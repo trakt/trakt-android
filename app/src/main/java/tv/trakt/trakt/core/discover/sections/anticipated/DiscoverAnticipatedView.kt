@@ -213,7 +213,7 @@ private fun ContentLoadingList(
             .fillMaxWidth()
             .alpha(if (visible) 1F else 0F),
     ) {
-        items(count = 6) {
+        items(count = 12) {
             VerticalMediaSkeletonCard(
                 chipRatio = 0.5F,
                 chipSpacing = 8.dp,

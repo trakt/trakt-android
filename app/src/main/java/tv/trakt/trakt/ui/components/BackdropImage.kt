@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.derivedStateOf
@@ -42,6 +43,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
+import tv.trakt.trakt.ui.extensions.isAtLeastLarge
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -119,6 +121,7 @@ private fun BackdropImage(
     val configuration = LocalConfiguration.current
     val activity = LocalActivity.current
     val inspection = LocalInspectionMode.current
+    val windowClass = currentWindowAdaptiveInfo().windowSizeClass
 
     val screenWidth = configuration.screenWidthDp.dp
     val background = TraktTheme.colors.backgroundPrimary
@@ -160,7 +163,12 @@ private fun BackdropImage(
     Box(
         modifier = modifier
             .width(screenWidth)
-            .aspectRatio(HorizontalImageAspectRatio),
+            .aspectRatio(
+                when {
+                    windowClass.isAtLeastLarge() -> HorizontalImageAspectRatio * 2.5F
+                    else -> HorizontalImageAspectRatio
+                },
+            ),
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
