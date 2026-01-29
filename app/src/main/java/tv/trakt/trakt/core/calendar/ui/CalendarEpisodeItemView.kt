@@ -54,8 +54,8 @@ internal fun CalendarEpisodeItemView(
         more = false,
         onClick = onClick,
         containerImageUrl =
-            item.episode.images?.getScreenshotUrl()
-                ?: item.show.images?.getFanartUrl(),
+            item.show.images?.getFanartUrl()
+                ?: item.episode.images?.getScreenshotUrl(),
         footerContent = {
             Row(
                 verticalAlignment = CenterVertically,

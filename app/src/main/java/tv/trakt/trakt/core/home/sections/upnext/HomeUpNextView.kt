@@ -347,8 +347,8 @@ private fun ContentListItem(
         onClick = onClick,
         onLongClick = onLongClick,
         containerImageUrl =
-            item.progress.nextEpisode.images?.getScreenshotUrl()
-                ?: item.show.images?.getFanartUrl(),
+            item.show.images?.getFanartUrl()
+                ?: item.progress.nextEpisode.images?.getScreenshotUrl(),
         cardContent = {
             Row {
                 val runtime = item.progress.nextEpisode.runtime?.inWholeMinutes

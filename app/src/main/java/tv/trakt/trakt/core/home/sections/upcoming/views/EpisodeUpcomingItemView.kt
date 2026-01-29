@@ -35,8 +35,8 @@ internal fun EpisodeUpcomingItemView(
         more = false,
         onClick = onClick,
         containerImageUrl =
-            item.episode.images?.getScreenshotUrl()
-                ?: item.show.images?.getFanartUrl(),
+            item.show.images?.getFanartUrl()
+                ?: item.episode.images?.getScreenshotUrl(),
         cardContent = {
             val dateString = remember(item.releasedAt) {
                 item.releasedAt.toLocal().relativeDateTimeString()
