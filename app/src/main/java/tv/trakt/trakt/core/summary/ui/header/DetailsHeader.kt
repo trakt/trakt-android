@@ -107,8 +107,8 @@ internal fun DetailsHeader(
                 modifier = Modifier
                     .ifOrElse(
                         condition = windowClass.isAtLeastMedium(),
-                        trueModifier = Modifier.weight(POSTER_SPACE_WEIGHT, false),
-                        falseModifier = Modifier.width(posterSpace),
+                        isTrue = Modifier.weight(POSTER_SPACE_WEIGHT, false),
+                        isFalse = Modifier.width(posterSpace),
                     )
                     .padding(top = 8.dp),
                 horizontalAlignment = Alignment.End,
@@ -162,8 +162,8 @@ internal fun DetailsHeader(
                 modifier = Modifier
                     .ifOrElse(
                         condition = windowClass.isAtLeastMedium(),
-                        trueModifier = Modifier.weight(POSTER_SPACE_WEIGHT, false),
-                        falseModifier = Modifier.width(posterSpace),
+                        isTrue = Modifier.weight(POSTER_SPACE_WEIGHT, false),
+                        isFalse = Modifier.width(posterSpace),
                     )
                     .padding(top = 8.dp),
                 horizontalAlignment = Alignment.Start,
@@ -184,6 +184,8 @@ internal fun DetailsHeader(
 
         Box {
             if (imageHorizontal) {
+                val horizontalPadding =
+                    TraktTheme.spacing.mainPageHorizontalSpace * 1.25F
                 DetailsHorizontalPoster(
                     imageUrl = imageUrl,
                     color = accentColor,
@@ -191,8 +193,8 @@ internal fun DetailsHeader(
                         .fillMaxWidth()
                         .padding(
                             top = 16.dp,
-                            start = TraktTheme.spacing.mainPageHorizontalSpace * 1.25F,
-                            end = TraktTheme.spacing.mainPageHorizontalSpace * 1.25F,
+                            start = horizontalPadding,
+                            end = horizontalPadding,
                         ),
                 )
             }
@@ -439,7 +441,11 @@ private fun DotSeparator() {
 
 // Previews
 
-@Preview
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
 @Composable
 private fun Preview() {
     TraktTheme {
@@ -530,7 +536,11 @@ private fun Preview() {
     }
 }
 
-@Preview
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
 @Composable
 private fun Preview2() {
     TraktTheme {

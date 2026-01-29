@@ -436,9 +436,9 @@ internal fun ShowDetailsContent(
                             .padding(top = 16.dp)
                             .ifOrElse(
                                 windowClass.isAtLeastMedium(),
-                                trueModifier = Modifier
+                                isTrue = Modifier
                                     .fillMaxWidth(POSTER_SPACE_WEIGHT),
-                                falseModifier = Modifier
+                                isFalse = Modifier
                                     .fillMaxWidth()
                                     .padding(
                                         horizontal = TraktTheme.spacing.detailsActionsHorizontalSpace,

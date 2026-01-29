@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -39,6 +40,7 @@ import tv.trakt.trakt.core.summary.ui.views.DetailsSentiment
 import tv.trakt.trakt.core.summary.ui.views.DetailsSentimentSkeleton
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
+import tv.trakt.trakt.ui.extensions.isAtLeastLarge
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -72,6 +74,7 @@ private fun MovieSentimentContent(
     onCollapse: (collapsed: Boolean) -> Unit = {},
     onNotAvailable: (() -> Unit)? = null,
 ) {
+    val windowClass = currentWindowAdaptiveInfo().windowSizeClass
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
 
     Column(
@@ -100,11 +103,12 @@ private fun MovieSentimentContent(
                 targetState = state.loading,
                 animationSpec = tween(200),
             ) { loading ->
+                val maxWidth = if (windowClass.isAtLeastLarge()) 0.45f else 1f
                 when (loading) {
                     IDLE, LOADING -> {
                         DetailsSentimentSkeleton(
                             modifier = Modifier
-                                .fillMaxWidth()
+                                .fillMaxWidth(maxWidth)
                                 .padding(contentPadding),
                         )
                     }
@@ -114,7 +118,7 @@ private fun MovieSentimentContent(
                             DetailsSentiment(
                                 sentiments = state.sentiment,
                                 modifier = Modifier
-                                    .fillMaxWidth()
+                                    .fillMaxWidth(maxWidth)
                                     .padding(contentPadding),
                             )
                         } else {

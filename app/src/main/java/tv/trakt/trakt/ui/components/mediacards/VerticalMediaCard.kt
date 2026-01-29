@@ -129,7 +129,7 @@ internal fun VerticalMediaCard(
                             .fillMaxSize()
                             .ifOrElse(
                                 condition = enabled,
-                                trueModifier = Modifier
+                                isTrue = Modifier
                                     .onClickCombined(
                                         onClick = onClick,
                                         onLongClick = onLongClick,
