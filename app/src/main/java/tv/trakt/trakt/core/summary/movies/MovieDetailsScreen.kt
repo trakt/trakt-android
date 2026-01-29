@@ -92,6 +92,7 @@ import tv.trakt.trakt.ui.components.UserRatingBar
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.vip.VipBanner
+import tv.trakt.trakt.ui.extensions.isAtLeastLarge
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -633,6 +634,7 @@ private fun DetailsMeta(
     collapsed: Boolean = false,
     onCollapseClick: (Boolean) -> Unit = {},
 ) {
+    val windowClass = currentWindowAdaptiveInfo().windowSizeClass
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
 
     Column(
@@ -655,6 +657,14 @@ private fun DetailsMeta(
             DetailsMetaInfo(
                 movie = movie,
                 movieStudios = movieStudios,
+                modifier = Modifier
+                    .fillMaxWidth(
+                        when {
+                            windowClass.isAtLeastLarge() -> 0.4F
+                            windowClass.isAtLeastMedium() -> 0.66F
+                            else -> 1F
+                        },
+                    ),
             )
         }
     }

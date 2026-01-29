@@ -3,7 +3,6 @@ package tv.trakt.trakt.core.summary.ui
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -197,8 +196,7 @@ internal fun DetailsMeta(
     Column(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = spacedBy(2.dp),
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier = modifier,
     ) {
         Text(
             text = title.uppercase(),
