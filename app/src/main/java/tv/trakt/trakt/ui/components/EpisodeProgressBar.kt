@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,8 +17,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.ui.theme.colors.Shade930
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -34,7 +37,7 @@ internal fun EpisodeProgressBar(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy((2.5).dp),
+        horizontalArrangement = spacedBy(2.5.dp),
         modifier = modifier
             .background(
                 shape = RoundedCornerShape(100),
@@ -82,6 +85,12 @@ internal fun EpisodeProgressBar(
                 style = textStyle,
                 color = textColor,
                 maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                autoSize = TextAutoSize.StepBased(
+                    maxFontSize = textStyle.fontSize,
+                    minFontSize = 8.sp,
+                    stepSize = 1.sp,
+                ),
             )
         }
     }
@@ -98,13 +107,13 @@ private fun Preview1() {
     }
 }
 
-@Preview(widthDp = 120)
+@Preview(widthDp = 200)
 @Composable
 private fun Preview2() {
     TraktTheme {
         EpisodeProgressBar(
-            startText = "12 remaining",
-            endText = "1h 23m",
+            startText = "44m",
+            endText = "12 remaining • 4h 34min",
             progress = 0.75F,
         )
     }
