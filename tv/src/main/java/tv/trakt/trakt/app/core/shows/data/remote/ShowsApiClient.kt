@@ -38,6 +38,7 @@ internal class ShowsApiClient(
             ignoreWatchlisted = null,
             startDate = null,
             endDate = null,
+            runtimes = null,
         )
 
         return response.body()
@@ -68,6 +69,7 @@ internal class ShowsApiClient(
             ignoreWatchlisted = null,
             startDate = null,
             endDate = null,
+            runtimes = null,
         )
 
         return response.body()
@@ -92,6 +94,7 @@ internal class ShowsApiClient(
             ignoreWatchlisted = null,
             startDate = null,
             endDate = endDate.toString(),
+            runtimes = null,
         )
 
         return response.body()
@@ -121,6 +124,7 @@ internal class ShowsApiClient(
             ratings = null,
             startDate = null,
             endDate = null,
+            runtimes = null,
         )
 
         return response.body()

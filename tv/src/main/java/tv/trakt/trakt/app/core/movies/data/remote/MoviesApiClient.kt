@@ -37,6 +37,7 @@ internal class MoviesApiClient(
             ignoreWatched = false,
             ignoreCollected = false,
             ignoreWatchlisted = false,
+            runtimes = null,
         )
 
         return response.body()
@@ -67,6 +68,7 @@ internal class MoviesApiClient(
             ignoreWatchlisted = false,
             startDate = null,
             endDate = null,
+            runtimes = null,
         )
 
         return response.body()
@@ -91,6 +93,7 @@ internal class MoviesApiClient(
             ignoreWatchlisted = false,
             startDate = null,
             endDate = endDate.toString(),
+            runtimes = null,
         )
 
         return response.body()
@@ -120,6 +123,7 @@ internal class MoviesApiClient(
             ratings = null,
             startDate = null,
             endDate = null,
+            runtimes = null,
         )
 
         return response.body()

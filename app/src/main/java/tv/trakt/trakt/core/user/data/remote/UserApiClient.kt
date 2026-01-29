@@ -125,6 +125,9 @@ internal class UserApiClient(
             startDate = null,
             endDate = null,
             hide = null,
+            sortBy = null,
+            sortHow = null,
+            runtimes = null,
         )
 
         return response.body()
@@ -151,6 +154,9 @@ internal class UserApiClient(
             ratings = null,
             startDate = null,
             endDate = null,
+            sortHow = null,
+            sortBy = null,
+            runtimes = null,
         )
 
         return response.body()
@@ -352,6 +358,7 @@ internal class UserApiClient(
             ratings = null,
             startDate2 = null,
             endDate = null,
+            runtimes = null,
         )
         return response.body()
     }
@@ -372,6 +379,7 @@ internal class UserApiClient(
             ratings = null,
             startDate2 = null,
             endDate = null,
+            runtimes = null,
         )
         return response.body()
     }
@@ -406,6 +414,7 @@ internal class UserApiClient(
             ratings = null,
             startDate = null,
             endDate = null,
+            runtimes = null,
             page = page,
             limit = when {
                 limit == null -> "all"
@@ -436,6 +445,7 @@ internal class UserApiClient(
             ratings = null,
             startDate = null,
             endDate = null,
+            runtimes = null,
             page = page,
             limit = when {
                 limit == null -> "all"
@@ -466,6 +476,7 @@ internal class UserApiClient(
             ratings = null,
             startDate = null,
             endDate = null,
+            runtimes = null,
             page = page,
             limit = when {
                 limit == null -> "all"

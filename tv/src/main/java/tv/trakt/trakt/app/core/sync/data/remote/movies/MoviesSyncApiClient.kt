@@ -109,6 +109,9 @@ internal class MoviesSyncApiClient(
             endDate = null,
             subgenres = null,
             hide = null,
+            runtimes = null,
+            sortBy = null,
+            sortHow = null,
         )
 
         return response.body()
@@ -121,7 +124,6 @@ internal class MoviesSyncApiClient(
      */
     override suspend fun getPlexCollection(): Map<TraktId, String> {
         val response = collectionApi.getSyncCollectionMinimalMovies(
-            extended = "min",
             availableOn = "plex",
         )
         return response.body()

@@ -28,6 +28,7 @@ internal class ListsApiClient(
             subgenres = null,
             sortBy = null,
             sortHow = null,
+            runtimes = null,
         )
 
         return response.body()
@@ -53,6 +54,7 @@ internal class ListsApiClient(
             subgenres = null,
             sortBy = null,
             sortHow = null,
+            runtimes = null,
         )
 
         return response.body()

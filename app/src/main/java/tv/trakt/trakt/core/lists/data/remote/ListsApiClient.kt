@@ -185,6 +185,7 @@ internal class ListsApiClient(
             subgenres = null,
             sortBy = null,
             sortHow = null,
+            runtimes = null,
         )
 
         return response.body()
@@ -210,6 +211,7 @@ internal class ListsApiClient(
             limit = limit,
             sortBy = sorting.type.value,
             sortHow = sorting.order.value,
+            runtimes = null,
         )
         return response.body()
     }
@@ -234,6 +236,7 @@ internal class ListsApiClient(
             limit = limit,
             sortBy = sorting.type.value,
             sortHow = sorting.order.value,
+            runtimes = null,
         )
         return response.body()
     }

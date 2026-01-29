@@ -80,6 +80,9 @@ internal class ShowsSyncApiClient(
             endDate = null,
             subgenres = null,
             hide = null,
+            sortBy = null,
+            sortHow = null,
+            runtimes = null,
         )
 
         return response.body()
@@ -150,7 +153,6 @@ internal class ShowsSyncApiClient(
      */
     override suspend fun getShowsPlexCollection(): Map<TraktId, Map<TraktId, TraktId>> {
         val response = collectionApi.getSyncCollectionMinimalShows(
-            extended = "min",
             availableOn = "plex",
         )
         return response.body()
@@ -173,7 +175,6 @@ internal class ShowsSyncApiClient(
      */
     override suspend fun getEpisodesPlexCollection(): Map<TraktId, String> {
         val response = collectionApi.getSyncCollectionMinimalEpisodes(
-            extended = "min",
             availableOn = "plex",
         )
         return response.body()
