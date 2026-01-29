@@ -487,8 +487,10 @@ private fun CalendarContent(
             modifier = Modifier.padding(contentPadding),
         )
     } else if (state.items.isNullOrEmpty() && state.loading.isLoading) {
+        val today = remember { nowLocalDay() }
         ContentLoadingGrid(
             visible = state.loading.isLoading,
+            isFirstWeekDay = state.selectedStartDay == today,
             contentPadding = contentPadding,
         )
     } else if (!state.items.isNullOrEmpty()) {
@@ -619,6 +621,7 @@ private fun ContentItemsGrid(
 @Composable
 private fun ContentLoadingGrid(
     visible: Boolean = true,
+    isFirstWeekDay: Boolean = false,
     contentPadding: PaddingValues,
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "infiniteTransition")
@@ -637,7 +640,15 @@ private fun ContentLoadingGrid(
         columns = GridCells.Fixed(2),
         horizontalArrangement = spacedBy(TraktTheme.spacing.mainGridHorizontalSpace),
         verticalArrangement = spacedBy(TraktTheme.spacing.mainGridVerticalSpace),
-        contentPadding = contentPadding,
+        contentPadding = PaddingValues(
+            top = when {
+                isFirstWeekDay -> contentPadding.calculateTopPadding()
+                else -> contentPadding.calculateTopPadding() - 8.dp
+            },
+            bottom = contentPadding.calculateBottomPadding(),
+            start = TraktTheme.spacing.mainPageHorizontalSpace,
+            end = TraktTheme.spacing.mainPageHorizontalSpace,
+        ),
         overscrollEffect = null,
         userScrollEnabled = false,
         modifier = Modifier
