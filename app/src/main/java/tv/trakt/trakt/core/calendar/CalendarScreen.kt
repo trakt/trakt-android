@@ -359,12 +359,6 @@ private fun CalendarScreen(
             onCheckLongClick = onCheckLongClick,
             onRemoveClick = onRemoveClick,
             modifier = Modifier
-                .offset {
-                    IntOffset(
-                        x = dragOffset.floatValue.roundToInt(),
-                        y = 0,
-                    )
-                }
                 .alpha(
                     (1F - (dragOffset.floatValue.absoluteValue / dragLimit))
                         .coerceIn(MIN_ALPHA, 1F),
