@@ -4,6 +4,7 @@ package tv.trakt.trakt.core.calendar
 
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
@@ -468,6 +469,8 @@ private fun CalendarContent(
     onCheckLongClick: (CalendarItem) -> Unit,
     onRemoveClick: (CalendarItem) -> Unit,
 ) {
+    var animateIn by rememberSaveable { mutableStateOf(false) }
+
     if (state.error != null) {
         Text(
             text = "${
@@ -488,6 +491,17 @@ private fun CalendarContent(
             contentPadding = contentPadding,
         )
     } else if (!state.items.isNullOrEmpty()) {
+        LaunchedEffect(Unit) {
+            delay(50)
+            animateIn = true
+        }
+
+        val animateInAlpha by animateFloatAsState(
+            targetValue = 1F,
+            animationSpec = tween(durationMillis = 250),
+            label = "initialAlpha",
+        )
+
         ContentItemsGrid(
             items = state.items,
             itemsLoading = state.itemsLoading,
@@ -500,7 +514,12 @@ private fun CalendarContent(
             onCheckLongClick = onCheckLongClick,
             onRemoveClick = onRemoveClick,
             modifier = modifier
-                .alpha(if (state.loading.isLoading) MIN_ALPHA else 1F),
+                .alpha(
+                    when {
+                        state.loading.isLoading -> MIN_ALPHA
+                        else -> if (animateIn) animateInAlpha else 0F
+                    },
+                ),
         )
     } else if (state.items.isNullOrEmpty()) {
         Text(
