@@ -53,7 +53,7 @@ fun SettingsSwitchField(
                     text = it,
                     color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.paragraph.copy(
-                        fontSize = 12.sp,
+                        fontSize = 11.sp,
                     ),
                     maxLines = 3,
                     overflow = Ellipsis,
