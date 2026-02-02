@@ -5,6 +5,7 @@ import org.openapitools.client.apis.HistoryApi
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
 import org.openapitools.client.models.PutUsersSaveSettingsRequest
+import org.openapitools.client.models.PutUsersSaveSettingsRequestBrowsing
 import org.openapitools.client.models.PutUsersSaveSettingsRequestUser
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.TraktId
@@ -77,6 +78,18 @@ internal class UserApiClient(
             putUsersSaveSettingsRequest = PutUsersSaveSettingsRequest(
                 user = PutUsersSaveSettingsRequestUser(
                     about = about,
+                ),
+            ),
+        )
+
+        cacheMarkerProvider.invalidate()
+    }
+
+    override suspend fun updateMultiplePlays(enabled: Boolean) {
+        usersApi.putUsersSaveSettings(
+            putUsersSaveSettingsRequest = PutUsersSaveSettingsRequest(
+                browsing = PutUsersSaveSettingsRequestBrowsing(
+                    watchOnlyOnce = !enabled,
                 ),
             ),
         )

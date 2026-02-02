@@ -57,6 +57,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.core.notifications.model.DeliveryAdjustment
@@ -100,6 +101,7 @@ internal fun SettingsScreen(
         onSetDisplayName = viewModel::updateUserDisplayName,
         onSetLocation = viewModel::updateUserLocation,
         onSetAbout = viewModel::updateUserAbout,
+        onEnableMultiplePlays = viewModel::enableMultiplePlays,
         onEnableNotifications = viewModel::enableNotifications,
         onSetDeliveryTime = viewModel::setNotificationDeliveryTime,
         onYounifyClick = onNavigateYounify,
@@ -143,6 +145,7 @@ private fun SettingsScreenContent(
     onSetLocation: (String?) -> Unit = { },
     onSetAbout: (String?) -> Unit = { },
     onYounifyClick: () -> Unit = { },
+    onEnableMultiplePlays: (Boolean) -> Unit = { },
     onEnableNotifications: (Boolean) -> Unit = { },
     onSetDeliveryTime: (DeliveryAdjustment) -> Unit = { },
     onLogoutClick: () -> Unit = { },
@@ -207,6 +210,11 @@ private fun SettingsScreenContent(
                     onSetDisplayName = onSetDisplayName,
                     onSetLocation = onSetLocation,
                     onSetAbout = onSetAbout,
+                )
+
+                SettingsTracking(
+                    state = state,
+                    onEnableMultiplePlays = onEnableMultiplePlays,
                 )
 
                 SettingsStreaming(
@@ -311,7 +319,9 @@ private fun SettingsAccount(
             TraktHeader(
                 title = stringResource(R.string.header_account_details).uppercase(),
                 titleStyle = TraktTheme.typography.heading6,
+                titleColor = TraktTheme.colors.textSecondary,
                 subtitle = "@${state.user?.username}",
+                subtitleColor = TraktTheme.colors.textPrimary,
                 modifier = Modifier.padding(bottom = 4.dp),
             )
 
@@ -403,6 +413,40 @@ private fun SettingsAccount(
 }
 
 @Composable
+private fun SettingsTracking(
+    state: SettingsState,
+    modifier: Modifier = Modifier,
+    onEnableMultiplePlays: (Boolean) -> Unit,
+) {
+    Column(
+        verticalArrangement = spacedBy(SECTION_SPACING_DP.dp),
+        modifier = modifier,
+    ) {
+        TraktHeader(
+            title = stringResource(R.string.text_settings_tracking).uppercase(),
+            titleColor = TraktTheme.colors.textSecondary,
+            titleStyle = TraktTheme.typography.heading6,
+        )
+
+        val enabled = remember(state.user?.settings) {
+            when (state.user?.settings?.watchOnlyOnce) {
+                null -> false
+                else -> state.user.settings?.watchOnlyOnce == false
+            }
+        }
+        SettingsSwitchField(
+            text = stringResource(R.string.text_settings_enable_multiple_plays),
+            description = stringResource(R.string.text_settings_enable_multiple_plays_description),
+            checked = enabled,
+            enabled = !state.accountLoading.isLoading,
+            onClick = {
+                onEnableMultiplePlays(!enabled)
+            },
+        )
+    }
+}
+
+@Composable
 private fun SettingsStreaming(
     state: SettingsState,
     modifier: Modifier = Modifier,
@@ -419,7 +463,7 @@ private fun SettingsStreaming(
     ) {
         TraktHeader(
             title = stringResource(R.string.text_streaming_sync).uppercase(),
-            titleColor = TraktTheme.colors.textPrimary,
+            titleColor = TraktTheme.colors.textSecondary,
             titleStyle = TraktTheme.typography.heading6,
         )
 
@@ -471,11 +515,13 @@ private fun SettingsNotifications(
         verticalArrangement = spacedBy(SECTION_SPACING_DP.dp),
         modifier = modifier,
     ) {
-        TraktHeader(
-            title = stringResource(R.string.text_settings_notifications).uppercase(),
-            titleColor = TraktTheme.colors.textPrimary,
-            titleStyle = TraktTheme.typography.heading6,
-        )
+        Column {
+            TraktHeader(
+                title = stringResource(R.string.text_settings_notifications).uppercase(),
+                titleColor = TraktTheme.colors.textSecondary,
+                titleStyle = TraktTheme.typography.heading6,
+            )
+        }
 
         SettingsSwitchField(
             text = stringResource(R.string.text_settings_enable_notifications),
@@ -531,6 +577,7 @@ private fun SettingsMisc(
     ) {
         TraktHeader(
             title = stringResource(R.string.link_text_general_settings).uppercase(),
+            titleColor = TraktTheme.colors.textSecondary,
             titleStyle = TraktTheme.typography.heading6,
         )
 
@@ -613,7 +660,11 @@ private fun Preview() {
     TraktTheme {
         SettingsScreenContent(
             state = SettingsState(
-                user = PreviewData.user1,
+                user = PreviewData.user1.copy(
+                    settings = User.Settings(
+                        watchOnlyOnce = true,
+                    ),
+                ),
             ),
         )
     }

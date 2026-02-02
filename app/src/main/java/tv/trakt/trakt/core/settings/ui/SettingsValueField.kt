@@ -43,7 +43,7 @@ fun SettingsValueField(
     ) {
         Text(
             text = text,
-            color = TraktTheme.colors.textSecondary,
+            color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.paragraph.copy(
                 fontSize = 14.sp,
             ),
@@ -60,7 +60,7 @@ fun SettingsValueField(
         } else {
             Text(
                 text = value,
-                color = TraktTheme.colors.textPrimary,
+                color = TraktTheme.colors.textSecondary,
                 style = TraktTheme.typography.paragraph.copy(
                     fontSize = 14.sp,
                 ),

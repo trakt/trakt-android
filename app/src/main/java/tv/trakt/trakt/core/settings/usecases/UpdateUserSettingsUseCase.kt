@@ -27,4 +27,11 @@ internal class UpdateUserSettingsUseCase(
             sessionManager.saveProfile(it)
         }
     }
+
+    suspend fun updateMultiplePlays(enabled: Boolean) {
+        remoteSource.updateMultiplePlays(enabled)
+        remoteSource.getProfile().let {
+            sessionManager.saveProfile(it)
+        }
+    }
 }

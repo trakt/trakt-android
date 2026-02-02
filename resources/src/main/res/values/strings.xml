@@ -311,10 +311,13 @@
     <string name="text_vip_offer_and_more">And more!</string>
     <string name="text_vip_offer_and_more_description">Discover everything Trakt has to offer beyond the app.</string>
 
+    <string name="text_settings_tracking">Tracking</string>
     <string name="text_settings_notifications">Notifications</string>
     <string name="text_settings_enable_notifications">Enable Notifications</string>
     <string name="text_settings_adjust_delivery">Notification Time</string>
     <string name="text_settings_adjust_delivery_description">Choose when to be notified.</string>
+    <string name="text_settings_enable_multiple_plays">Enable Multiple Plays</string>
+    <string name="text_settings_enable_multiple_plays_description">Allow more than 1 play for movies and episodes.</string>
 
     <string name="text_settings_notification_time_now">On release</string>
     <string name="text_settings_notification_time_30_min">30 minutes before</string>

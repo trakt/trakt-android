@@ -128,6 +128,21 @@ internal class SettingsViewModel(
         }
     }
 
+    fun enableMultiplePlays(enable: Boolean) {
+        viewModelScope.launch {
+            try {
+                accountLoadingState.update { LOADING }
+                updateSettingsUseCase.updateMultiplePlays(enable)
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            } finally {
+                accountLoadingState.update { LoadingState.DONE }
+            }
+        }
+    }
+
     fun enableNotifications(enable: Boolean) {
         viewModelScope.launch {
             try {

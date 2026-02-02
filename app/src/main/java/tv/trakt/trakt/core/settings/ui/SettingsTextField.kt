@@ -44,7 +44,7 @@ internal fun SettingsTextField(
     ) {
         Text(
             text = text,
-            color = TraktTheme.colors.textSecondary,
+            color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.paragraph.copy(
                 fontSize = 14.sp,
             ),

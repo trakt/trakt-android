@@ -4309,6 +4309,10 @@
                           "auto"
                         ],
                         "nullable": true
+                      },
+                      "watch_only_once": {
+                        "type": "boolean",
+                        "nullable": true
                       }
                     },
                     "nullable": true
