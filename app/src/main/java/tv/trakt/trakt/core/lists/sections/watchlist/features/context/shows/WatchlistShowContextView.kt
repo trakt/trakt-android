@@ -213,34 +213,24 @@ private fun ShowActionButtons(
         modifier = Modifier.padding(top = 14.dp),
     ) {
         if (isReleased) {
-            if (!watched) {
-                GhostButton(
-                    text = stringResource(R.string.button_text_mark_as_watched),
-                    icon = painterResource(R.drawable.ic_check),
-                    enabled = !isLoadingOrDone,
-                    loading = state.loadingWatched.isLoading || state.loadingWatched.isDone,
-                    iconSize = 20.dp,
-                    iconSpace = 16.dp,
-                    onClick = onWatchedClick,
-                    modifier = Modifier.graphicsLayer {
-                        translationX = -6.dp.toPx()
-                    },
-                )
-            } else {
+            if (!watched || watchOnlyOnce != true) {
                 GhostButton(
                     text = when {
-                        watchOnlyOnce == true -> stringResource(R.string.button_text_mark_as_watched)
+                        !watched -> stringResource(R.string.button_text_mark_as_watched)
                         else -> stringResource(R.string.button_text_watch_again)
                     },
-                    icon = painterResource(R.drawable.ic_check_double),
+                    icon = when {
+                        !watched -> painterResource(R.drawable.ic_check)
+                        else -> painterResource(R.drawable.ic_check_double)
+                    },
                     enabled = !isLoadingOrDone,
                     loading = state.loadingWatched.isLoading || state.loadingWatched.isDone,
                     iconSize = 20.dp,
                     iconSpace = 16.dp,
+                    onClick = onWatchedClick,
                     modifier = Modifier.graphicsLayer {
                         translationX = -6.dp.toPx()
                     },
-                    onClick = onWatchedClick,
                 )
             }
         }
