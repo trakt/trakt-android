@@ -80,8 +80,8 @@ platform :android do
     lane :playstore_promote_trakt_beta_to_production do
         supply(
             track: "Trakt Beta",
-            track_promote_to: "Production",
-            rollout: "0.2",
+            track_promote_to: "production",
+            rollout: "1",
             skip_upload_apk: true,
             skip_upload_aab: true,
             skip_upload_metadata: true,
