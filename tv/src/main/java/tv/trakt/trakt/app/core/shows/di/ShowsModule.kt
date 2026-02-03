@@ -77,6 +77,7 @@ internal val showsModule = module {
             getAnticipatedShowsUseCase = get(),
             getRecommendedShowsUseCase = get(),
             sessionManager = get(),
+            appLifecycleProvider = get(),
         )
     }
 

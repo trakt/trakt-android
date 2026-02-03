@@ -77,6 +77,7 @@ internal val moviesModule = module {
             getAnticipatedMoviesUseCase = get(),
             getRecommendedMoviesUseCase = get(),
             sessionManager = get(),
+            appLifecycleProvider = get(),
         )
     }
 
