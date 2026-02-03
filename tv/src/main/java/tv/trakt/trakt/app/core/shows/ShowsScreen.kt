@@ -155,6 +155,23 @@ private fun ShowsScreenContent(
                 }
 
                 item {
+                    RecommendedShowsList(
+                        header = stringResource(R.string.list_title_recommended),
+                        shows = state.recommendedShows,
+                        isLoading = state.isLoading,
+                        onViewAllClick = onViewAllRecommendedClick,
+                        onShowClick = onShowClick,
+                        onShowFocus = {
+                            focusedShow = it
+                            focusedSection = "recommended"
+                        },
+                        modifier = Modifier
+                            .focusGroup()
+                            .focusRequester(focusRequesters.getValue("recommended")),
+                    )
+                }
+
+                item {
                     AnticipatedShowsList(
                         header = stringResource(R.string.list_title_most_anticipated),
                         shows = state.anticipatedShows,
@@ -186,25 +203,6 @@ private fun ShowsScreenContent(
                             .focusGroup()
                             .focusRequester(focusRequesters.getValue("popular")),
                     )
-                }
-
-                if (state.recommendedShows != null) {
-                    item {
-                        RecommendedShowsList(
-                            header = stringResource(R.string.list_title_recommended),
-                            shows = state.recommendedShows,
-                            isLoading = state.isLoading,
-                            onViewAllClick = onViewAllRecommendedClick,
-                            onShowClick = onShowClick,
-                            onShowFocus = {
-                                focusedShow = it
-                                focusedSection = "recommended"
-                            },
-                            modifier = Modifier
-                                .focusGroup()
-                                .focusRequester(focusRequesters.getValue("recommended")),
-                        )
-                    }
                 }
             }
         }
