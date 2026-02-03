@@ -19,6 +19,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.ui.theme.colors.Shade930
 
 @Composable
 internal fun EpisodeProgressBar(
@@ -29,7 +30,7 @@ internal fun EpisodeProgressBar(
     textStyle: TextStyle = TraktTheme.typography.meta,
     containerColor: Color = TraktTheme.colors.chipContainer,
     progress: Float = 0f,
-    trackColor: Color = TraktTheme.colors.accent,
+    trackColor: Color = Shade930,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
