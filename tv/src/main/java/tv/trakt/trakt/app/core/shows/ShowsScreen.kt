@@ -154,21 +154,23 @@ private fun ShowsScreenContent(
                     )
                 }
 
-                item {
-                    RecommendedShowsList(
-                        header = stringResource(R.string.list_title_recommended),
-                        shows = state.recommendedShows,
-                        isLoading = state.isLoading,
-                        onViewAllClick = onViewAllRecommendedClick,
-                        onShowClick = onShowClick,
-                        onShowFocus = {
-                            focusedShow = it
-                            focusedSection = "recommended"
-                        },
-                        modifier = Modifier
-                            .focusGroup()
-                            .focusRequester(focusRequesters.getValue("recommended")),
-                    )
+                if (state.user != null) {
+                    item {
+                        RecommendedShowsList(
+                            header = stringResource(R.string.list_title_recommended),
+                            shows = state.recommendedShows,
+                            isLoading = state.isLoading,
+                            onViewAllClick = onViewAllRecommendedClick,
+                            onShowClick = onShowClick,
+                            onShowFocus = {
+                                focusedShow = it
+                                focusedSection = "recommended"
+                            },
+                            modifier = Modifier
+                                .focusGroup()
+                                .focusRequester(focusRequesters.getValue("recommended")),
+                        )
+                    }
                 }
 
                 item {

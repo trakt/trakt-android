@@ -7,7 +7,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -22,7 +21,9 @@ import tv.trakt.trakt.app.core.movies.usecase.GetTrendingMoviesUseCase
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.User
 
+@Suppress("UNCHECKED_CAST")
 internal class MoviesViewModel(
     private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
@@ -37,6 +38,7 @@ internal class MoviesViewModel(
     private val popularMoviesState = MutableStateFlow(initialState.popularMovies)
     private val anticipatedMoviesState = MutableStateFlow(initialState.anticipatedMovies)
     private val recommendedMoviesState = MutableStateFlow(initialState.recommendedMovies)
+    private val userState = MutableStateFlow(initialState.user)
     private val errorState = MutableStateFlow(initialState.error)
 
     init {
@@ -47,6 +49,8 @@ internal class MoviesViewModel(
         viewModelScope.launch {
             try {
                 loadingState.update { true }
+                userState.update { sessionManager.getProfile() }
+
                 coroutineScope {
                     val trendingMoviesAsync = async { getTrendingMoviesUseCase.getTrendingMovies(10) }
                     val popularMoviesAsync = async { getPopularMoviesUseCase.getPopularMovies() }
@@ -81,22 +85,23 @@ internal class MoviesViewModel(
         }
     }
 
-    val state: StateFlow<MoviesState> = combine(
+    val state = combine(
         loadingState,
         trendingMoviesState,
         popularMoviesState,
         anticipatedMoviesState,
         recommendedMoviesState,
+        userState,
         errorState,
     ) { s ->
-        @Suppress("UNCHECKED_CAST")
         MoviesState(
             isLoading = s[0] as Boolean,
             trendingMovies = s[1] as ImmutableList<TrendingMovie>?,
             popularMovies = s[2] as ImmutableList<Movie>?,
             anticipatedMovies = s[3] as ImmutableList<AnticipatedMovie>?,
             recommendedMovies = s[4] as ImmutableList<Movie>?,
-            error = s[5] as Exception?,
+            user = s[5] as User?,
+            error = s[6] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

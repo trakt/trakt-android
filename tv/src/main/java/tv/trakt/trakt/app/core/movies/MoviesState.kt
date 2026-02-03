@@ -5,6 +5,7 @@ import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.app.core.movies.model.AnticipatedMovie
 import tv.trakt.trakt.app.core.movies.model.TrendingMovie
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.User
 
 @Immutable
 internal data class MoviesState(
@@ -13,5 +14,6 @@ internal data class MoviesState(
     val popularMovies: ImmutableList<Movie>? = null,
     val anticipatedMovies: ImmutableList<AnticipatedMovie>? = null,
     val recommendedMovies: ImmutableList<Movie>? = null,
+    val user: User? = null,
     val error: Exception? = null,
 )

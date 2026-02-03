@@ -7,7 +7,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -22,6 +21,7 @@ import tv.trakt.trakt.app.core.shows.usecase.GetTrendingShowsUseCase
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.User
 
 internal class ShowsViewModel(
     private val getTrendingShowsUseCase: GetTrendingShowsUseCase,
@@ -32,6 +32,7 @@ internal class ShowsViewModel(
 ) : ViewModel() {
     private val initialState = ShowsState()
 
+    private val userState = MutableStateFlow(initialState.user)
     private val loadingState = MutableStateFlow(initialState.isLoading)
     private val trendingShowsState = MutableStateFlow(initialState.trendingShows)
     private val popularShowsState = MutableStateFlow(initialState.popularShows)
@@ -47,6 +48,11 @@ internal class ShowsViewModel(
         viewModelScope.launch {
             try {
                 loadingState.update { true }
+
+                userState.update {
+                    sessionManager.getProfile()
+                }
+
                 coroutineScope {
                     val trendingShowsAsync = async { getTrendingShowsUseCase.getTrendingShows() }
                     val popularShowsAsync = async { getPopularShowsUseCase.getPopularShows() }
@@ -82,21 +88,23 @@ internal class ShowsViewModel(
     }
 
     @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<ShowsState> = combine(
+    val state = combine(
         loadingState,
         trendingShowsState,
         popularShowsState,
         anticipatedShowsState,
         recommendedShowsState,
+        userState,
         errorState,
-    ) { s ->
+    ) { state ->
         ShowsState(
-            isLoading = s[0] as Boolean,
-            trendingShows = s[1] as ImmutableList<TrendingShow>?,
-            popularShows = s[2] as ImmutableList<Show>?,
-            anticipatedShows = s[3] as ImmutableList<AnticipatedShow>?,
-            recommendedShows = s[4] as ImmutableList<Show>?,
-            error = s[5] as Exception?,
+            isLoading = state[0] as Boolean,
+            trendingShows = state[1] as ImmutableList<TrendingShow>?,
+            popularShows = state[2] as ImmutableList<Show>?,
+            anticipatedShows = state[3] as ImmutableList<AnticipatedShow>?,
+            recommendedShows = state[4] as ImmutableList<Show>?,
+            user = state[5] as User?,
+            error = state[6] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

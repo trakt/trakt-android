@@ -155,21 +155,23 @@ private fun MoviesScreenContent(
                     )
                 }
 
-                item {
-                    StandardMoviesList(
-                        header = stringResource(R.string.list_title_recommended),
-                        movies = state.recommendedMovies,
-                        isLoading = state.isLoading,
-                        onViewAllClick = onViewAllRecommendedClick,
-                        onMovieFocus = {
-                            focusedMovie = it
-                            focusedSection = "recommended"
-                        },
-                        onMovieClick = onMovieClick,
-                        modifier = Modifier
-                            .focusGroup()
-                            .focusRequester(focusRequesters.getValue("recommended")),
-                    )
+                if (state.user != null) {
+                    item {
+                        StandardMoviesList(
+                            header = stringResource(R.string.list_title_recommended),
+                            movies = state.recommendedMovies,
+                            isLoading = state.isLoading,
+                            onViewAllClick = onViewAllRecommendedClick,
+                            onMovieFocus = {
+                                focusedMovie = it
+                                focusedSection = "recommended"
+                            },
+                            onMovieClick = onMovieClick,
+                            modifier = Modifier
+                                .focusGroup()
+                                .focusRequester(focusRequesters.getValue("recommended")),
+                        )
+                    }
                 }
 
                 item {
