@@ -65,6 +65,7 @@ internal val homeModule = module {
         HomeAvailableNowViewModel(
             getAvailableNowUseCase = get(),
             localSyncSource = get(),
+            appLifecycleProvider = get(),
         )
     }
 
@@ -72,6 +73,7 @@ internal val homeModule = module {
         HomeComingSoonViewModel(
             getComingSoonUseCase = get(),
             localSyncSource = get(),
+            appLifecycleProvider = get(),
         )
     }
 

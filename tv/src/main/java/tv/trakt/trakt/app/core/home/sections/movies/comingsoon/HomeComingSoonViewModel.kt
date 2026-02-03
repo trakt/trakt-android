@@ -6,19 +6,26 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.app.Config.REFRESH_DATA_THRESHOLD_MINUTES
 import tv.trakt.trakt.app.core.home.sections.movies.comingsoon.usecases.GetComingSoonMoviesUseCase
 import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
+import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider.State.FOREGROUND
 import java.time.ZonedDateTime
 
 internal class HomeComingSoonViewModel(
     private val getComingSoonUseCase: GetComingSoonMoviesUseCase,
     private val localSyncSource: MoviesSyncLocalDataSource,
+    private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
     private val initialState = HomeComingSoonState()
 
@@ -30,6 +37,19 @@ internal class HomeComingSoonViewModel(
 
     init {
         loadData()
+        observeApp()
+    }
+
+    private fun observeApp() {
+        appLifecycleProvider.observeState(FOREGROUND)
+            .filter {
+                loadedAt != null &&
+                    nowUtc().minusMinutes(REFRESH_DATA_THRESHOLD_MINUTES).isAfter(loadedAt)
+            }
+            .onEach {
+                loadData(showLoading = false)
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun loadData(showLoading: Boolean = true) {
