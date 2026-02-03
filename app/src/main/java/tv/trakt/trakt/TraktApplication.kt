@@ -2,12 +2,16 @@ package tv.trakt.trakt
 
 import android.app.Application
 import android.app.NotificationManager
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ProcessLifecycleOwner
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
 import com.google.firebase.crashlytics.crashlytics
 import com.google.firebase.remoteconfig.remoteConfig
 import com.google.firebase.remoteconfig.remoteConfigSettings
 import com.jakewharton.processphoenix.ProcessPhoenix
+import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.workmanager.koin.workManagerFactory
@@ -16,6 +20,9 @@ import timber.log.Timber
 import tv.trakt.trakt.app.TvActivity
 import tv.trakt.trakt.common.auth.di.commonAuthModule
 import tv.trakt.trakt.common.helpers.extensions.isTelevision
+import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
+import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider.State.BACKGROUND
+import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider.State.FOREGROUND
 import tv.trakt.trakt.common.networking.di.networkingApiModule
 import tv.trakt.trakt.common.networking.di.networkingModule
 import tv.trakt.trakt.core.auth.di.authModule
@@ -62,6 +69,10 @@ import tv.trakt.trakt.core.sync.di.syncModule
 import java.util.concurrent.TimeUnit.MINUTES
 
 internal class TraktApplication : Application() {
+    private val appLifecycleProvider by lazy {
+        inject<AppLifecycleProvider>()
+    }
+
     override fun onCreate() {
         if (ProcessPhoenix.isPhoenixProcess(this)) {
             return
@@ -71,6 +82,7 @@ internal class TraktApplication : Application() {
         setupKoin()
         setupTimber()
         setupNotificationChannels()
+        setupProcessLifecycle()
 
         FirebaseApp.initializeApp(this)
         setupFirebaseConfig()
@@ -154,6 +166,11 @@ internal class TraktApplication : Application() {
         }
     }
 
+    private fun setupProcessLifecycle() {
+        val observer = AppLifecycleObserver(appLifecycleProvider.value)
+        ProcessLifecycleOwner.get().lifecycle.addObserver(observer)
+    }
+
     fun setupTimber() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
@@ -176,5 +193,19 @@ internal class TraktApplication : Application() {
                     },
                 )
         }
+    }
+}
+
+private class AppLifecycleObserver(
+    private val appLifecycleProvider: AppLifecycleProvider,
+) : DefaultLifecycleObserver {
+    override fun onStart(owner: LifecycleOwner) {
+        Timber.d("App in foreground")
+        appLifecycleProvider.notify(FOREGROUND)
+    }
+
+    override fun onStop(owner: LifecycleOwner) {
+        appLifecycleProvider.notify(BACKGROUND)
+        Timber.d("App in background")
     }
 }

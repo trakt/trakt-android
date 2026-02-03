@@ -18,6 +18,8 @@ import org.koin.dsl.module
 import tv.trakt.trakt.app.core.main.MainViewModel
 import tv.trakt.trakt.app.core.tutorials.DefaultTutorialsManager
 import tv.trakt.trakt.app.core.tutorials.TutorialsManager
+import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
+import tv.trakt.trakt.common.helpers.lifecycle.DefaultAppLifecycleProvider
 
 internal const val MAIN_PREFERENCES = "main_preferences"
 internal const val TUTORIAL_PREFERENCES = "tutorial_preferences"
@@ -41,6 +43,10 @@ internal val mainModule = module {
         DefaultTutorialsManager(
             dataStore = get(named(TUTORIAL_PREFERENCES)),
         )
+    }
+
+    single<AppLifecycleProvider> {
+        DefaultAppLifecycleProvider()
     }
 
     viewModel {

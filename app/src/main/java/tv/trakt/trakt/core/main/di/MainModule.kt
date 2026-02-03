@@ -29,6 +29,8 @@ import tv.trakt.trakt.analytics.implementation.FirebaseAnalyticsComments
 import tv.trakt.trakt.analytics.implementation.FirebaseAnalyticsProgress
 import tv.trakt.trakt.analytics.implementation.FirebaseAnalyticsRatings
 import tv.trakt.trakt.analytics.implementation.FirebaseAnalyticsReactions
+import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
+import tv.trakt.trakt.common.helpers.lifecycle.DefaultAppLifecycleProvider
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
 import tv.trakt.trakt.core.main.MainViewModel
 import tv.trakt.trakt.core.main.helpers.DefaultMediaModeManager
@@ -95,6 +97,10 @@ internal val mainModule = module {
                 ),
             )
         }
+    }
+
+    single<AppLifecycleProvider> {
+        DefaultAppLifecycleProvider()
     }
 
     viewModel {

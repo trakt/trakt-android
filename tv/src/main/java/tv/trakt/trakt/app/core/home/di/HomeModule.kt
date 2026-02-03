@@ -80,6 +80,7 @@ internal val homeModule = module {
             getUpcomingUseCase = get(),
             localShowsSyncSource = get(),
             localEpisodesSyncSource = get(),
+            appLifecycleProvider = get(),
         )
     }
 
@@ -88,6 +89,7 @@ internal val homeModule = module {
             getUpNextUseCase = get(),
             localShowsSyncSource = get(),
             localEpisodesSyncSource = get(),
+            appLifecycleProvider = get(),
         )
     }
 

@@ -104,6 +104,7 @@ dependencies {
     implementation(libs.androidx.datastore)
     implementation(libs.androidx.work)
     implementation(libs.android.billing)
+    implementation(libs.androidx.lifecycle.process)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.config)

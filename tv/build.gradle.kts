@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.androidx.tv.material)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.lifecycle.runtime)
+    implementation(libs.androidx.lifecycle.process)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.navigation)
     implementation(libs.androidx.datastore)
