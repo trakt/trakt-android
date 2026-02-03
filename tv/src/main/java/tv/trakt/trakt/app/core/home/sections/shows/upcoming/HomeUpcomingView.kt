@@ -167,8 +167,8 @@ private fun ContentListItem(
     HorizontalMediaCard(
         title = "",
         containerImageUrl =
-            item.episode.images?.getScreenshotUrl()
-                ?: item.show.images?.getFanartUrl(),
+            item.show.images?.getFanartUrl()
+                ?: item.episode.images?.getScreenshotUrl(),
         onClick = {
             onClick(item.show, item.episode)
         },

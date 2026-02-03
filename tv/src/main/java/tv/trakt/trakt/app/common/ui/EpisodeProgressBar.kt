@@ -90,18 +90,22 @@ internal fun EpisodeProgressBar(
 @Preview(widthDp = 200)
 @Composable
 private fun Preview1() {
-    EpisodeProgressBar(
-        startText = "12 remaining",
-        endText = "1h 23m",
-    )
+    TraktTheme {
+        EpisodeProgressBar(
+            startText = "12 remaining",
+            endText = "1h 23m",
+        )
+    }
 }
 
 @Preview(widthDp = 120)
 @Composable
 private fun Preview2() {
-    EpisodeProgressBar(
-        startText = "12 remaining",
-        endText = "1h 23m",
-        progress = 0.75F,
-    )
+    TraktTheme {
+        EpisodeProgressBar(
+            startText = "12 remaining",
+            endText = "1h 23m",
+            progress = 0.75F,
+        )
+    }
 }
