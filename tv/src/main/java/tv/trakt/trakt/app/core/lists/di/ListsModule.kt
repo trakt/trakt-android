@@ -47,6 +47,7 @@ internal val listsModule = module {
             getPersonalUseCase = get(),
             showsLocalSyncSource = get(),
             moviesLocalSyncSource = get(),
+            appLifecycleProvider = get(),
         )
     }
 

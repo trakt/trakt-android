@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.lists
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
@@ -10,10 +9,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.app.Config.REFRESH_DATA_THRESHOLD_MINUTES
 import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_SECTION_LIMIT
 import tv.trakt.trakt.app.core.lists.usecases.GetListsMoviesWatchlistUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsPersonalUseCase
@@ -22,6 +25,8 @@ import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalDataSource
 import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
+import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider.State.FOREGROUND
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -33,6 +38,7 @@ internal class ListsViewModel(
     private val getPersonalUseCase: GetListsPersonalUseCase,
     private val showsLocalSyncSource: ShowsSyncLocalDataSource,
     private val moviesLocalSyncSource: MoviesSyncLocalDataSource,
+    private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
     private val initialState = ListsState()
 
@@ -49,6 +55,23 @@ internal class ListsViewModel(
     init {
         loadWatchlistData()
         loadPersonalListsData()
+        observeApp()
+    }
+
+    private fun observeApp() {
+        appLifecycleProvider.observeState(FOREGROUND)
+            .filter {
+                val threshold = nowUtc().minusMinutes(REFRESH_DATA_THRESHOLD_MINUTES)
+
+                val showsNeedLoad = showsLoadedAt != null && threshold.isAfter(showsLoadedAt)
+                val moviesNeedLoad = moviesLoadedAt != null && threshold.isAfter(moviesLoadedAt)
+
+                showsNeedLoad || moviesNeedLoad
+            }
+            .onEach {
+                loadWatchlistData(showLoading = false)
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun loadWatchlistData(showLoading: Boolean = true) {
@@ -88,7 +111,7 @@ internal class ListsViewModel(
     }
 
     private fun loadPersonalListsData() {
-        Log.d("ListsViewModel", "Loading personal lists data")
+        Timber.d("Loading personal lists data")
         viewModelScope.launch {
             try {
                 loadingPersonalState.update { true }
@@ -97,7 +120,7 @@ internal class ListsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.value = error
-                    Log.e("ListsViewModel", "Error loading personal lists: ${error.message}")
+                    Timber.e("Error loading personal lists: ${error.message}")
                 }
             } finally {
                 loadingPersonalState.update { false }
