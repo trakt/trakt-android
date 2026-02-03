@@ -26,7 +26,9 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.qualifier.named
 import timber.log.Timber
+import tv.trakt.trakt.app.TvActivity
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_CUSTOM_THEME_ENABLED
+import tv.trakt.trakt.common.helpers.extensions.isTelevision
 import tv.trakt.trakt.core.auth.ConfigAuth.OAUTH_REDIRECT_URI
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
@@ -41,11 +43,23 @@ internal val LocalBottomBarVisibility = compositionLocalOf { mutableStateOf(true
 internal val LocalSnackbarState = compositionLocalOf { SnackbarHostState() }
 
 internal class MainActivity : ComponentActivity() {
-    private val authPreferences: DataStore<Preferences> by inject(named(AUTH_PREFERENCES))
+    private val authPreferences: DataStore<Preferences> by lazy {
+        inject<DataStore<Preferences>>(named(AUTH_PREFERENCES)).value
+    }
     private val newIntent = mutableStateOf<Intent?>(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Redirect to TV Activity if on a television device.
+        if (isTelevision()) {
+            with(Intent(this, TvActivity::class.java)) {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                startActivity(this)
+            }
+            finish()
+            return
+        }
 
         setupOrientation()
         enableEdgeToEdge(
@@ -141,9 +155,10 @@ internal class MainActivity : ComponentActivity() {
     }
 
     // Custom Theme
-
     internal var customThemeConfig: CustomThemeConfig? = null
-    private val customThemeUseCase: CustomThemeUseCase by inject()
+    private val customThemeUseCase: CustomThemeUseCase by lazy {
+        inject<CustomThemeUseCase>().value
+    }
 
     private fun getCustomThemeConfig(): CustomThemeConfig {
         return runBlocking {
