@@ -34,8 +34,6 @@ import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
-import tv.trakt.trakt.app.core.shows.ShowsConfig.SHOWS_NEXT_PAGE_OFFSET
-import tv.trakt.trakt.app.core.shows.ShowsConfig.SHOWS_PAGE_LIMIT
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -54,7 +52,6 @@ internal fun ShowsRecommendedScreen(
     ShowsRecommendedContent(
         state = state,
         onShowClick = onNavigateToShow,
-        onLoadNextPage = { viewModel.loadNextDataPage() },
     )
 }
 
@@ -63,7 +60,6 @@ private fun ShowsRecommendedContent(
     state: ShowsRecommendedViewAllState,
     modifier: Modifier = Modifier,
     onShowClick: (TraktId) -> Unit,
-    onLoadNextPage: () -> Unit,
 ) {
     var focusedShow by remember { mutableStateOf<Show?>(null) }
     var focusedShowId by rememberSaveable { mutableStateOf<Int?>(null) }
@@ -135,11 +131,7 @@ private fun ShowsRecommendedContent(
                     VerticalMediaCard(
                         title = show.title,
                         imageUrl = show.images?.getPosterUrl(),
-                        onClick = {
-                            if (!state.isLoadingPage) {
-                                onShowClick(show.ids.trakt)
-                            }
-                        },
+                        onClick = { onShowClick(show.ids.trakt) },
                         chipContent = {
                             InfoChip(
                                 text = stringResource(
@@ -154,22 +146,8 @@ private fun ShowsRecommendedContent(
                                 if (it.isFocused) {
                                     focusedShow = show
                                     focusedShowId = show.ids.trakt.value
-
-                                    loadNextPageIfNeeded(
-                                        size = state.shows.size,
-                                        index = index,
-                                        onLoadNextPage = onLoadNextPage,
-                                    )
                                 }
                             },
-                    )
-                }
-            }
-
-            if (state.isLoadingPage) {
-                item(span = { GridItemSpan(maxLineSpan) }) {
-                    FilmProgressIndicator(
-                        modifier = Modifier.focusable(),
                     )
                 }
             }
@@ -189,16 +167,6 @@ private fun ShowsRecommendedContent(
     }
 }
 
-private fun loadNextPageIfNeeded(
-    size: Int,
-    index: Int,
-    onLoadNextPage: () -> Unit,
-) {
-    if (size >= SHOWS_PAGE_LIMIT && index >= size - SHOWS_NEXT_PAGE_OFFSET) {
-        onLoadNextPage()
-    }
-}
-
 @Preview
 @Composable
 private fun ShowsRecommendedContentPreview() {
@@ -210,7 +178,6 @@ private fun ShowsRecommendedContentPreview() {
                 ).toImmutableList(),
             ),
             onShowClick = {},
-            onLoadNextPage = {},
         )
     }
 }

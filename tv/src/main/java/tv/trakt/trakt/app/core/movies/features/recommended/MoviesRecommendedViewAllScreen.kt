@@ -34,8 +34,6 @@ import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
-import tv.trakt.trakt.app.core.movies.MoviesConfig.MOVIES_NEXT_PAGE_OFFSET
-import tv.trakt.trakt.app.core.movies.MoviesConfig.MOVIES_PAGE_LIMIT
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -54,7 +52,6 @@ internal fun MoviesRecommendedScreen(
     MoviesRecommendedContent(
         state = state,
         onMovieClick = onNavigateToMovie,
-        onLoadNextPage = { viewModel.loadNextDataPage() },
     )
 }
 
@@ -63,7 +60,6 @@ private fun MoviesRecommendedContent(
     state: MoviesRecommendedViewAllState,
     modifier: Modifier = Modifier,
     onMovieClick: (TraktId) -> Unit,
-    onLoadNextPage: () -> Unit,
 ) {
     var focusedMovie by remember { mutableStateOf<Movie?>(null) }
     var focusedMovieId by rememberSaveable { mutableStateOf<Int?>(null) }
@@ -135,11 +131,7 @@ private fun MoviesRecommendedContent(
                     VerticalMediaCard(
                         title = movie.title,
                         imageUrl = movie.images?.getPosterUrl(),
-                        onClick = {
-                            if (!state.isLoadingPage) {
-                                onMovieClick(movie.ids.trakt)
-                            }
-                        },
+                        onClick = { onMovieClick(movie.ids.trakt) },
                         chipContent = {
                             movie.runtime?.let { runtime ->
                                 InfoChip(
@@ -154,22 +146,8 @@ private fun MoviesRecommendedContent(
                                 if (it.isFocused) {
                                     focusedMovie = movie
                                     focusedMovieId = movie.ids.trakt.value
-
-                                    loadNextPageIfNeeded(
-                                        size = state.movies.size,
-                                        index = index,
-                                        onLoadNextPage = onLoadNextPage,
-                                    )
                                 }
                             },
-                    )
-                }
-            }
-
-            if (state.isLoadingPage) {
-                item(span = { GridItemSpan(maxLineSpan) }) {
-                    FilmProgressIndicator(
-                        modifier = Modifier.focusable(),
                     )
                 }
             }
@@ -189,16 +167,6 @@ private fun MoviesRecommendedContent(
     }
 }
 
-private fun loadNextPageIfNeeded(
-    size: Int,
-    index: Int,
-    onLoadNextPage: () -> Unit,
-) {
-    if (size >= MOVIES_PAGE_LIMIT && index >= size - MOVIES_NEXT_PAGE_OFFSET) {
-        onLoadNextPage()
-    }
-}
-
 @Preview
 @Composable
 private fun MoviesRecommendedContentPreview() {
@@ -210,7 +178,6 @@ private fun MoviesRecommendedContentPreview() {
                 ).toImmutableList(),
             ),
             onMovieClick = {},
-            onLoadNextPage = {},
         )
     }
 }

@@ -7,7 +7,6 @@ import tv.trakt.trakt.common.model.Movie
 @Immutable
 internal data class MoviesRecommendedViewAllState(
     val isLoading: Boolean = false,
-    val isLoadingPage: Boolean = false,
     val movies: ImmutableList<Movie>? = null,
     val error: Exception? = null,
 )
