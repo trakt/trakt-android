@@ -6,20 +6,27 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.app.Config.REFRESH_DATA_THRESHOLD_MINUTES
 import tv.trakt.trakt.app.core.profile.ProfileConfig.PROFILE_SECTION_LIMIT
 import tv.trakt.trakt.app.core.profile.sections.history.usecases.GetProfileHistoryUseCase
 import tv.trakt.trakt.app.core.profile.sections.history.usecases.SyncProfileHistoryUseCase
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
+import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider.State.FOREGROUND
 import java.time.ZonedDateTime
 
 internal class ProfileHistoryViewModel(
     private val getHistoryCase: GetProfileHistoryUseCase,
     private val syncHistoryCase: SyncProfileHistoryUseCase,
+    private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
     private val initialState = ProfileHistoryState()
 
@@ -31,6 +38,19 @@ internal class ProfileHistoryViewModel(
 
     init {
         loadData()
+        observeApp()
+    }
+
+    private fun observeApp() {
+        appLifecycleProvider.observeState(FOREGROUND)
+            .filter {
+                loadedAt != null &&
+                    nowUtc().minusMinutes(REFRESH_DATA_THRESHOLD_MINUTES).isAfter(loadedAt)
+            }
+            .onEach {
+                loadData(showLoading = false)
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun loadData(showLoading: Boolean = true) {

@@ -103,6 +103,7 @@ internal val profileModule = module {
         ProfileHistoryViewModel(
             getHistoryCase = get(),
             syncHistoryCase = get(),
+            appLifecycleProvider = get(),
         )
     }
 
@@ -116,6 +117,7 @@ internal val profileModule = module {
     viewModel {
         ProfileFavoriteShowsViewModel(
             getFavoriteShowsCase = get(),
+            appLifecycleProvider = get(),
         )
     }
 
@@ -128,6 +130,7 @@ internal val profileModule = module {
     viewModel {
         ProfileFavoriteMoviesViewModel(
             getFavoriteMoviesCase = get(),
+            appLifecycleProvider = get(),
         )
     }
 
