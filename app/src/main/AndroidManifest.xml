@@ -63,6 +63,7 @@
         <activity
             android:name=".app.TvActivity"
             android:exported="true"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.TraktTv"
             >
             <intent-filter>

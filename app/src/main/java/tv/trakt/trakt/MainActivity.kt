@@ -53,10 +53,9 @@ internal class MainActivity : ComponentActivity() {
 
         // Redirect to TV Activity if on a television device.
         if (isTelevision()) {
-            with(Intent(this, TvActivity::class.java)) {
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                startActivity(this)
-            }
+            startActivity(
+                Intent(this, TvActivity::class.java),
+            )
             finish()
             return
         }
