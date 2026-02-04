@@ -29,6 +29,7 @@ import tv.trakt.trakt.core.auth.di.authModule
 import tv.trakt.trakt.core.billing.di.billingDataModule
 import tv.trakt.trakt.core.billing.di.billingModule
 import tv.trakt.trakt.core.calendar.di.calendarModule
+import tv.trakt.trakt.core.checkin.di.checkInModule
 import tv.trakt.trakt.core.comments.di.commentsDataModule
 import tv.trakt.trakt.core.comments.di.commentsModule
 import tv.trakt.trakt.core.discover.di.discoverModule
@@ -162,6 +163,7 @@ internal class TraktApplication : Application() {
                 settingsDataModule,
                 billingModule,
                 billingDataModule,
+                checkInModule,
             )
         }
     }

@@ -6,6 +6,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.openapitools.client.apis.CalendarsApi
+import org.openapitools.client.apis.CheckinApi
 import org.openapitools.client.apis.EpisodeApi
 import org.openapitools.client.apis.EpisodesApi
 import org.openapitools.client.apis.HistoryApi
@@ -59,6 +60,7 @@ val networkingApiModule = module {
     single(named("apiClients")) {
         arrayOf(
             get<CalendarsApi>(),
+            get<CheckinApi>(),
             get<EpisodeApi>(),
             get<EpisodesApi>(),
             get<HistoryApi>(),
@@ -199,6 +201,14 @@ val networkingApiModule = module {
 
     single<HistoryApi> {
         HistoryApi(
+            baseUrl = API_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
+        )
+    }
+
+    single<CheckinApi> {
+        CheckinApi(
             baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),

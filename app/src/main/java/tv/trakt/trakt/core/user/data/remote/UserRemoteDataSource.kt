@@ -18,6 +18,7 @@ import tv.trakt.trakt.common.networking.SyncLibraryEpisodeDto
 import tv.trakt.trakt.common.networking.SyncLibraryMovieDto
 import tv.trakt.trakt.common.networking.UserCommentsDto
 import tv.trakt.trakt.common.networking.UserRatingDto
+import tv.trakt.trakt.common.networking.UserWatchingDto
 import tv.trakt.trakt.common.networking.WatchedShowDto
 import tv.trakt.trakt.common.networking.WatchlistItemDto
 import tv.trakt.trakt.common.networking.WatchlistMovieDto
@@ -26,6 +27,8 @@ import java.time.ZonedDateTime
 
 internal interface UserRemoteDataSource {
     suspend fun getProfile(): User
+
+    suspend fun getWatchingNow(): UserWatchingDto?
 
     suspend fun getWatchedMovies(): Map<String, List<String>>
 

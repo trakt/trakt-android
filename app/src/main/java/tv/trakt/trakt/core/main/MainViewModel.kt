@@ -34,6 +34,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.auth.usecase.AuthorizeUserUseCase
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
+import tv.trakt.trakt.core.checkin.CheckInManager
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
 import tv.trakt.trakt.core.user.usecases.LoadUserProfileUseCase
@@ -47,6 +48,7 @@ import java.time.temporal.ChronoUnit.MINUTES
 @OptIn(FlowPreview::class)
 internal class MainViewModel(
     private val sessionManager: SessionManager,
+    private val checkInManager: CheckInManager,
     private val authorizePreferences: DataStore<Preferences>,
     private val authorizeUseCase: AuthorizeUserUseCase,
     private val getUserUseCase: LoadUserProfileUseCase,
@@ -72,6 +74,7 @@ internal class MainViewModel(
 
         observeUser()
         observeAuthCode()
+        observeCheckIn()
     }
 
     private fun loadUser() {
@@ -113,6 +116,16 @@ internal class MainViewModel(
                 }
             }
         }
+    }
+
+    private fun observeCheckIn() {
+        checkInManager.observe()
+            .distinctUntilChanged()
+            .debounce(200)
+            .onEach { state ->
+                Timber.d("Observed check-in change: $state")
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun loadWelcome() {
@@ -175,6 +188,21 @@ internal class MainViewModel(
             appContext = context.applicationContext,
             forceRemote = true,
         )
+    }
+
+    fun loadCheckIn() {
+        viewModelScope.launch {
+            try {
+                if (!sessionManager.isAuthenticated()) {
+                    return@launch
+                }
+                checkInManager.checkActive()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
     }
 
     private fun authorizeUser(code: String) {

@@ -27,6 +27,7 @@ import tv.trakt.trakt.common.networking.SyncLibraryEpisodeDto
 import tv.trakt.trakt.common.networking.SyncLibraryMovieDto
 import tv.trakt.trakt.common.networking.UserCommentsDto
 import tv.trakt.trakt.common.networking.UserRatingDto
+import tv.trakt.trakt.common.networking.UserWatchingDto
 import tv.trakt.trakt.common.networking.WatchedShowDto
 import tv.trakt.trakt.common.networking.WatchlistItemDto
 import tv.trakt.trakt.common.networking.WatchlistMovieDto
@@ -47,6 +48,17 @@ internal class UserApiClient(
         ).body()
 
         return User.fromDto(response)
+    }
+
+    override suspend fun getWatchingNow(): UserWatchingDto? {
+        val response = usersApi.getUsersWatching(
+            id = "me",
+            extended = "full,cloud9,colors",
+        )
+        return when {
+            response.status == 204 -> null
+            else -> response.body()
+        }
     }
 
     override suspend fun updateProfileLocation(location: String?) {

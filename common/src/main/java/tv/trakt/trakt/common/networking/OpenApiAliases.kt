@@ -44,10 +44,12 @@ import org.openapitools.client.models.GetUsersReactionsComments200ResponseInnerC
 import org.openapitools.client.models.GetUsersSettings200Response
 import org.openapitools.client.models.GetUsersSettings200ResponseUser
 import org.openapitools.client.models.GetUsersWatchedShows200ResponseInner
+import org.openapitools.client.models.GetUsersWatching200Response
 import org.openapitools.client.models.GetUsersWatchlistAll200ResponseInner
 import org.openapitools.client.models.GetUsersWatchlistMovies200ResponseInner
 import org.openapitools.client.models.GetUsersWatchlistShows200ResponseInner
 import org.openapitools.client.models.GetWatchnowSourcesAll200ResponseInnerValueInner
+import org.openapitools.client.models.PostCheckinMovie200Response
 import org.openapitools.client.models.PostCheckinMovie200ResponseMovie
 import org.openapitools.client.models.PostSyncHistoryAdd200Response
 
@@ -109,3 +111,5 @@ typealias RecommendedShowDto = GetRecommendationsShowsRecommend200ResponseInner
 typealias SearchItemDto = GetSearchQuery200ResponseInner
 typealias SocialActivityItemDto = GetUsersActivities200ResponseInner
 typealias UserRatingDto = GetUsersRatingsMovies200ResponseInner
+typealias CheckInMovieResponseDto = PostCheckinMovie200Response
+typealias UserWatchingDto = GetUsersWatching200Response

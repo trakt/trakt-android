@@ -131,6 +131,7 @@ internal fun MainScreen(
 
     LifecycleEventEffect(ON_RESUME) {
         viewModel.loadData()
+        viewModel.loadCheckIn()
         viewModel.loadNotifications(localContext)
     }
 

@@ -106,6 +106,7 @@ internal val mainModule = module {
     viewModel {
         MainViewModel(
             sessionManager = get(),
+            checkInManager = get(),
             loadUserProgressUseCase = get(),
             loadUserWatchlistUseCase = get(),
             loadUserRatingsUseCase = get(),
