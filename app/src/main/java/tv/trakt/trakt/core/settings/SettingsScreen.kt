@@ -589,24 +589,26 @@ private fun SettingsMisc(
             },
         )
 
-        SettingsTextField(
-            text = stringResource(R.string.link_text_support),
-            enabled = !state.logoutLoading.isLoading,
-            onClick = {
-                val intent = Intent(Intent.ACTION_SENDTO).apply {
-                    data = "mailto:".toUri()
-                    putExtra(Intent.EXTRA_EMAIL, arrayOf(Config.WEB_SUPPORT_MAIL))
-                    putExtra(Intent.EXTRA_SUBJECT, "Trakt Support (Android ${Build.VERSION.RELEASE})")
-                }
+        if (state.user?.isAnyVip == true) {
+            SettingsTextField(
+                text = stringResource(R.string.link_text_support),
+                enabled = !state.logoutLoading.isLoading,
+                onClick = {
+                    val intent = Intent(Intent.ACTION_SENDTO).apply {
+                        data = "mailto:".toUri()
+                        putExtra(Intent.EXTRA_EMAIL, arrayOf(Config.WEB_SUPPORT_MAIL))
+                        putExtra(Intent.EXTRA_SUBJECT, "Trakt Support (Android ${Build.VERSION.RELEASE})")
+                    }
 
-                try {
-                    context.startActivity(intent)
-                } catch (error: Exception) {
-                    // No email client installed
-                    Timber.w(error, "Unable to start email client")
-                }
-            },
-        )
+                    try {
+                        context.startActivity(intent)
+                    } catch (error: Exception) {
+                        // No email client installed
+                        Timber.w(error, "Unable to start email client")
+                    }
+                },
+            )
+        }
 
         SettingsTextField(
             text = stringResource(R.string.link_text_forums),
