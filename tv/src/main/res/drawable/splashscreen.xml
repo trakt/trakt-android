@@ -9,7 +9,7 @@
     </item>
 
     <item
-        android:drawable="@drawable/ic_trakt_logo"
+        android:drawable="@drawable/ic_trakt_banner_bw"
         android:gravity="center"
         />
 
