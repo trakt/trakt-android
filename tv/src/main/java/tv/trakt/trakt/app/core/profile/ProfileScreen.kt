@@ -47,6 +47,7 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
+import tv.trakt.trakt.app.BuildConfig
 import tv.trakt.trakt.app.common.ui.buttons.PrimaryButton
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.profile.sections.favorites.movies.ProfileFavoriteMoviesView
@@ -168,11 +169,21 @@ private fun ProfileScreenContent(
 
                     Spacer(modifier = Modifier.weight(1f))
 
-                    PrimaryButton(
-                        text = stringResource(R.string.button_text_logout),
-                        onClick = onLogoutClick,
-                        modifier = Modifier.widthIn(max = 172.dp),
-                    )
+                    Column(
+                        verticalArrangement = spacedBy(4.dp),
+                        horizontalAlignment = Alignment.End,
+                    ) {
+                        PrimaryButton(
+                            text = stringResource(R.string.button_text_logout),
+                            onClick = onLogoutClick,
+                            modifier = Modifier.widthIn(max = 164.dp),
+                        )
+                        Text(
+                            text = "v${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
+                            color = TraktTheme.colors.textSecondary,
+                            style = TraktTheme.typography.heading6,
+                        )
+                    }
                 }
             }
 
