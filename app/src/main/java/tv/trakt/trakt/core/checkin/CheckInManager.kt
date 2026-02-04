@@ -12,4 +12,6 @@ interface CheckInManager {
     fun observe(): Flow<CheckInState>
 
     suspend fun stop()
+
+    fun clear()
 }

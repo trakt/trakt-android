@@ -29,7 +29,6 @@ internal class DefaultCheckInManager(
     private val cacheMarkerProvider: CacheMarkerProvider,
 ) : CheckInManager {
     private val state = MutableStateFlow<CheckInState>(CheckInState.Idle)
-
     private var lastCheckAt: Instant? = null
 
     override fun observe(): Flow<CheckInState> {
@@ -133,5 +132,10 @@ internal class DefaultCheckInManager(
                 Timber.recordError(error)
             }
         }
+    }
+
+    override fun clear() {
+        state.update { CheckInState.Idle }
+        Timber.d("Cleared check-in state.")
     }
 }

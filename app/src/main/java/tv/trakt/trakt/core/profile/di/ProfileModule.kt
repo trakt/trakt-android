@@ -192,6 +192,7 @@ internal val profileModule = module {
             appContext = androidApplication(),
             sessionManager = get(),
             collapsingManager = get(),
+            checkInManager = get(),
             apiClients = get(named("apiClients")),
             localUpNext = get(),
             localWatchlistUpNext = get(),
