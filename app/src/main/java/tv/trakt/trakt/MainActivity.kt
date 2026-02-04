@@ -26,7 +26,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.qualifier.named
 import timber.log.Timber
-import tv.trakt.trakt.app.TvActivity
+import tv.trakt.trakt.app.TvSplashActivity
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_CUSTOM_THEME_ENABLED
 import tv.trakt.trakt.common.helpers.extensions.isTelevision
 import tv.trakt.trakt.core.auth.ConfigAuth.OAUTH_REDIRECT_URI
@@ -54,7 +54,7 @@ internal class MainActivity : ComponentActivity() {
         // Redirect to TV Activity if on a television device.
         if (isTelevision()) {
             startActivity(
-                Intent(this, TvActivity::class.java),
+                Intent(this, TvSplashActivity::class.java),
             )
             finish()
             return
