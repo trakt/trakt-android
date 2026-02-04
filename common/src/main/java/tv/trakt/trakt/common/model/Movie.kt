@@ -6,6 +6,7 @@ import androidx.core.graphics.toColorInt
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.Serializable
+import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.serializers.ImmutableListSerializer
 import tv.trakt.trakt.common.helpers.serializers.LocalDateSerializer
 import tv.trakt.trakt.common.model.Movie.Companion
@@ -41,6 +42,15 @@ data class Movie(
     val languages: ImmutableList<String>,
 ) {
     companion object
+
+    // Considered released if status is "released" or released date is today or before
+    val isReleased: Boolean
+        get() {
+            if (status.equals("released", ignoreCase = true)) {
+                return true
+            }
+            return released?.isTodayOrBefore() == true
+        }
 }
 
 fun Companion.fromDto(dto: MovieDto): Movie {

@@ -35,7 +35,6 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
@@ -240,10 +239,7 @@ private fun ActionButtons(
     onWatchlistClick: () -> Unit,
     onRemoveListClick: () -> Unit,
 ) {
-    val isReleased = remember {
-        movie.released?.isTodayOrBefore() ?: false
-    }
-
+    val isReleased = remember { movie.isReleased }
     val isLoadingOrDone =
         state.loadingWatched.isLoading ||
             state.loadingWatchlist.isLoading ||

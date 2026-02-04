@@ -20,7 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
-import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativeDateString
@@ -63,9 +62,7 @@ fun MovieMetaFooter(
         }
     }
 
-    val isReleased = remember {
-        movie.released?.isTodayOrBefore() ?: false
-    }
+    val isReleased = remember { movie.isReleased }
 
     Row(
         horizontalArrangement = SpaceBetween,
@@ -107,7 +104,7 @@ fun MovieMetaFooter(
         } else {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
-                verticalAlignment = Alignment.Companion.CenterVertically,
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_calendar_upcoming),

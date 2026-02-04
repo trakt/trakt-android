@@ -60,7 +60,6 @@ import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.ifOrElse
-import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomList
@@ -330,10 +329,7 @@ internal fun MovieDetailsContent(
             .nestedScroll(listScrollConnection),
     ) {
         state.movie?.let { movie ->
-            val isReleased = remember {
-                movie.released?.isTodayOrBefore() ?: false
-            }
-
+            val isReleased = remember { movie.isReleased }
             val isWatched = remember(state.movieProgress?.plays) {
                 (state.movieProgress?.plays ?: 0) > 0
             }

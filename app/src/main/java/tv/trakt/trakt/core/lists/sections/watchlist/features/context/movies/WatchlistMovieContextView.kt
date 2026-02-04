@@ -35,7 +35,6 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
@@ -199,10 +198,7 @@ private fun MovieActionButtons(
             state.loadingWatched.isLoading ||
                 state.loadingWatchlist.isLoading
 
-        val isReleased = remember {
-            movie.released?.isTodayOrBefore() ?: false
-        }
-
+        val isReleased = remember { movie.isReleased }
         if (isReleased) {
             if (!watched || watchOnlyOnce != true) {
                 GhostButton(

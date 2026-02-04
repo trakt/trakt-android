@@ -35,7 +35,6 @@ import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
-import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.helpers.streamingservices.StreamingServiceApp
@@ -83,10 +82,7 @@ private fun MovieDetailsContextViewContent(
 ) {
     val context = LocalContext.current
 
-    val isReleased = remember {
-        movie.released?.isTodayOrBefore() ?: false
-    }
-
+    val isReleased = remember { movie.isReleased }
     val genresText = remember(movie.genres) {
         movie.genres.take(2).joinToString(" / ") { genre ->
             genre.replaceFirstChar {

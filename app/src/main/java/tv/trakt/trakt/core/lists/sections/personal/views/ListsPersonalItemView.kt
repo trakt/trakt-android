@@ -17,7 +17,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
-import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.relativeDateString
@@ -128,7 +127,7 @@ internal fun ListsPersonalItemView(
 
         is PersonalListItem.MovieItem -> {
             val isReleased = remember(item.movie.released) {
-                item.movie.released?.isTodayOrBefore() ?: false
+                item.movie.isReleased
             }
             VerticalMediaCard(
                 title = item.movie.title,

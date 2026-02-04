@@ -18,7 +18,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import tv.trakt.trakt.common.Config.webImdbMediaUrl
-import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
@@ -43,10 +42,7 @@ internal fun DetailsHeader(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-
-    val isReleased = remember {
-        movie.released?.isTodayOrBefore() ?: false
-    }
+    val isReleased = remember { movie.isReleased }
 
     DetailsHeader(
         title = movie.title,

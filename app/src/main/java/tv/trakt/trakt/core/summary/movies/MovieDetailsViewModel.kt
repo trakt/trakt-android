@@ -25,7 +25,6 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.StringResource
-import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.ExternalRating
@@ -300,7 +299,7 @@ internal class MovieDetailsViewModel(
     }
 
     private fun loadRatings(movie: Movie?) {
-        if (movie?.released?.isTodayOrBefore() != true) {
+        if (movie?.isReleased != true) {
             // Don't load ratings for unreleased movies
             return
         }
