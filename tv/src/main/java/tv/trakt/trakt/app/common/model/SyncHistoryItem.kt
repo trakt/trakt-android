@@ -27,6 +27,9 @@ internal data class SyncHistoryItem(
         }
     }
 
+    val key: String
+        get() = "$type-$id"
+
     val mediaCardImageUrl: String?
         get() = when (type) {
             "show" -> show?.images?.getFanartUrl()

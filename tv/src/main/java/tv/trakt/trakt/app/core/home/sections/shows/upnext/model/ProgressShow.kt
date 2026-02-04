@@ -14,6 +14,9 @@ internal data class ProgressShow(
 ) {
     val id: TraktId
         get() = progress.nextEpisode.ids.trakt
+
+    val key: String
+        get() = "${show.ids.trakt.value}-${progress.nextEpisode.ids.trakt}"
 }
 
 @Immutable

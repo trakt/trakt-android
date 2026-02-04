@@ -145,7 +145,7 @@ private fun UpNextViewAllContent(
             } else if (!state.items.isNullOrEmpty()) {
                 items(
                     count = state.items.size,
-                    key = { index -> state.items[index].id.value },
+                    key = { index -> state.items[index].key },
                 ) { index ->
                     val item = state.items[index]
                     val focusRequester = focusRequesters.getOrPut(item.id.value) {
