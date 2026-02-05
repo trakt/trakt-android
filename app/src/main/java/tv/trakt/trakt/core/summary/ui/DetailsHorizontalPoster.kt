@@ -28,6 +28,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import coil3.ColorImage
@@ -48,6 +49,8 @@ internal fun DetailsHorizontalPoster(
     imageUrl: String?,
     modifier: Modifier = Modifier,
     color: Color? = null,
+    shadowRadius: Dp = 46.dp,
+    shadowSpread: Dp = 8.dp,
 ) {
     var isError by remember(imageUrl) { mutableStateOf(false) }
 
@@ -68,8 +71,8 @@ internal fun DetailsHorizontalPoster(
                     .dropShadow(
                         shape = cardShape,
                         shadow = Shadow(
-                            radius = 46.dp,
-                            spread = 8.dp,
+                            radius = shadowRadius,
+                            spread = shadowSpread,
                             offset = DpOffset(0.dp, 12.dp),
                             color = color?.copy(alpha = 0.27F)
                                 ?: Color.Black.copy(alpha = 0.4F),

@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.checkin
+package tv.trakt.trakt.core.checkin.data
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

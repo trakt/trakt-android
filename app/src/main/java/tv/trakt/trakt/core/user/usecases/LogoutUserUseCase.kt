@@ -6,7 +6,7 @@ import io.ktor.client.plugins.auth.authProvider
 import io.ktor.client.plugins.auth.providers.BearerAuthProvider
 import org.openapitools.client.infrastructure.ApiClient
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.core.checkin.CheckInManager
+import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.discover.sections.recommended.data.local.movies.RecommendedMoviesLocalDataSource
 import tv.trakt.trakt.core.discover.sections.recommended.data.local.shows.RecommendedShowsLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource

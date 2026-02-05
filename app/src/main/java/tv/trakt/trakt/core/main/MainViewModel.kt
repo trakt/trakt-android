@@ -34,7 +34,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.auth.usecase.AuthorizeUserUseCase
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
-import tv.trakt.trakt.core.checkin.CheckInManager
+import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
 import tv.trakt.trakt.core.user.usecases.LoadUserProfileUseCase

@@ -4,8 +4,8 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.openapitools.client.apis.CheckinApi
 import tv.trakt.trakt.common.Config.API_BASE_URL
-import tv.trakt.trakt.core.checkin.CheckInManager
-import tv.trakt.trakt.core.checkin.DefaultCheckInManager
+import tv.trakt.trakt.core.checkin.data.CheckInManager
+import tv.trakt.trakt.core.checkin.data.DefaultCheckInManager
 import tv.trakt.trakt.core.checkin.data.remote.CheckInApiClient
 import tv.trakt.trakt.core.checkin.data.remote.CheckInRemoteDataSource
 

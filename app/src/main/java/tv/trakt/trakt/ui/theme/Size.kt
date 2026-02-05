@@ -8,6 +8,7 @@ import androidx.compose.ui.unit.dp
 
 internal const val VerticalImageAspectRatio = 2f / 3
 internal const val HorizontalImageAspectRatio = 16f / 9
+internal const val HorizontalCheckInImageAspectRatio = 4f / 3
 
 internal val Size: TraktSize = TraktSize(
     titleBarHeight = 56.dp,
