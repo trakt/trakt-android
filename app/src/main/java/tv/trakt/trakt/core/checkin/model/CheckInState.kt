@@ -3,7 +3,6 @@ package tv.trakt.trakt.core.checkin.model
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveEpisode
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveMovie
 import java.time.Instant
@@ -24,7 +23,6 @@ sealed interface CheckInState {
     ) : CheckInState
 
     data class ActiveEpisode(
-        val show: Show,
         val episode: Episode,
         val startedAt: Instant,
         val expiresAt: Instant,
@@ -42,7 +40,7 @@ val CheckInState.title: String?
     get() {
         return when (this) {
             is ActiveMovie -> movie.title
-            is ActiveEpisode -> show.title
+            is ActiveEpisode -> episode.title
             else -> null
         }
     }
@@ -51,8 +49,7 @@ val CheckInState.image: String?
     get() {
         return when (this) {
             is ActiveMovie -> movie.images?.getFanartUrl(Size.THUMB)
-            is ActiveEpisode -> show.images?.getFanartUrl(Size.THUMB)
-                ?: episode.images?.getScreenshotUrl(Size.THUMB)
+            is ActiveEpisode -> episode.images?.getScreenshotUrl(Size.THUMB)
             else -> null
         }
     }

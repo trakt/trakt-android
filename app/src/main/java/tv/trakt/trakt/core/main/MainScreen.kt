@@ -74,7 +74,6 @@ import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveMovie
 import tv.trakt.trakt.core.checkin.model.expiresAt
 import tv.trakt.trakt.core.checkin.model.image
 import tv.trakt.trakt.core.checkin.model.startedAt
-import tv.trakt.trakt.core.checkin.model.title
 import tv.trakt.trakt.core.checkin.ui.CheckInView
 import tv.trakt.trakt.core.discover.navigation.navigateToDiscover
 import tv.trakt.trakt.core.home.navigation.HomeDestination
@@ -369,16 +368,19 @@ private fun ColumnScope.CheckInView(
         exit = fadeOut(tween(200)) + slideOutVertically(targetOffsetY = { it / 10 }),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
+            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace - 8.dp),
     ) {
         CheckInView(
-            title = state.checkIn?.title,
-            subtitle = when (state.checkIn) {
-                is ActiveMovie -> stringResource(R.string.translated_value_type_movie)
-                is ActiveEpisode -> state.checkIn.episode.seasonEpisodeString()
+            title = when (state.checkIn) {
+                is ActiveMovie -> state.checkIn.movie.title
+                is ActiveEpisode -> state.checkIn.episode.seasonEpisode.toDisplayString()
                 else -> null
             },
-            detail = null,
+            subtitle = when (state.checkIn) {
+                is ActiveMovie -> stringResource(R.string.translated_value_type_movie)
+                is ActiveEpisode -> state.checkIn.episode.title
+                else -> null
+            },
             image = state.checkIn?.image,
             startedAt = state.checkIn?.startedAt,
             expiresAt = state.checkIn?.expiresAt,

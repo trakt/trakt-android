@@ -17,9 +17,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,6 +56,9 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import kotlinx.coroutines.delay
+import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.resources.R
@@ -61,15 +66,18 @@ import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.theme.HorizontalCheckInImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Instant
+import kotlin.time.Duration.Companion.minutes
 
-private val viewShape = RoundedCornerShape(16.dp)
-private val imageShape = RoundedCornerShape(12.dp)
+private val viewShape = RoundedCornerShape(20.dp)
+private val viewPadding = 7.dp
+private val imageShape = RoundedCornerShape(14.dp)
 private val imageHeight = 76.dp
 private val imageShadow = 3.dp
 
-private val collapsedViewShape = RoundedCornerShape(12.dp)
-private val collapsedImageShape = RoundedCornerShape(9.dp)
-private val collapsedImageHeight = 36.dp
+private val collapsedViewShape = RoundedCornerShape(16.dp)
+private val collapsedViewPadding = 6.dp
+private val collapsedImageShape = RoundedCornerShape(11.dp)
+private val collapsedImageHeight = 38.dp
 private val collapsedImageShadow = 2.dp
 
 @Composable
@@ -78,13 +86,40 @@ internal fun CheckInView(
     image: String? = null,
     title: String? = null,
     subtitle: String? = null,
-    detail: String? = null,
     startedAt: Instant?,
     expiresAt: Instant?,
     onCloseClick: () -> Unit = {},
 ) {
     var expanded by rememberSaveable { mutableStateOf(true) }
     var confirmClose by remember { mutableStateOf(false) }
+
+    var timestamp by remember { mutableStateOf(nowUtcInstant()) }
+
+    val secondsLeft = remember(timestamp) {
+        expiresAt?.let {
+            val duration = it.epochSecond - timestamp.epochSecond
+            duration.coerceAtLeast(0L)
+        } ?: 0L
+    }
+    val minutesLeft = remember(secondsLeft) {
+        secondsLeft / 60L
+    }
+
+    val totalSeconds = remember(startedAt, expiresAt) {
+        if (startedAt != null && expiresAt != null) {
+            val duration = expiresAt.epochSecond - startedAt.epochSecond
+            duration.coerceAtLeast(0L)
+        } else {
+            0L
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(1000L)
+            timestamp = nowUtcInstant()
+        }
+    }
 
     Box(
         modifier = modifier
@@ -104,6 +139,7 @@ internal fun CheckInView(
                     else -> collapsedViewShape
                 },
             )
+            .onClick(onClick = {})
             .animateContentSize(),
     ) {
         if (expanded) {
@@ -111,20 +147,23 @@ internal fun CheckInView(
                 image = image,
                 title = title,
                 subtitle = subtitle,
-                detail = detail,
+                totalDurationSeconds = { totalSeconds },
+                durationSeconds = { secondsLeft },
+                durationMinutes = { minutesLeft },
                 onCollapseClick = { expanded = false },
                 onCloseClick = { confirmClose = true },
-                modifier = Modifier.padding(6.dp),
+                modifier = Modifier.padding(viewPadding),
             )
         } else {
             CollapsedView(
                 image = image,
                 title = title,
                 subtitle = subtitle,
-                detail = detail,
+                totalDurationSeconds = { totalSeconds },
+                durationSeconds = { secondsLeft },
                 onExpandClick = { expanded = true },
                 onCloseClick = { confirmClose = true },
-                modifier = Modifier.padding(4.dp),
+                modifier = Modifier.padding(collapsedViewPadding),
             )
         }
     }
@@ -152,7 +191,9 @@ private fun ExpandedView(
     image: String?,
     title: String?,
     subtitle: String?,
-    detail: String?,
+    totalDurationSeconds: () -> Long,
+    durationSeconds: () -> Long,
+    durationMinutes: () -> Long,
     modifier: Modifier = Modifier,
     onCollapseClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
@@ -186,45 +227,52 @@ private fun ExpandedView(
                     ),
                 )
 
-                Row(
-                    verticalAlignment = Alignment.Bottom,
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                Column(
+                    verticalArrangement = spacedBy(6.dp),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(end = 6.dp),
+                        .padding(end = 8.dp),
                 ) {
-                    Column(
-                        verticalArrangement = spacedBy(1.dp, Alignment.Bottom),
-                        modifier = Modifier
-                            .weight(1F, fill = false),
+                    Row(
+                        verticalAlignment = Alignment.Bottom,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
-                        title?.let {
-                            Text(
-                                text = title,
-                                color = TraktTheme.colors.textPrimary,
-                                style = TraktTheme.typography.cardTitle.copy(
-                                    fontWeight = W500,
-                                ),
-                                maxLines = 1,
-                                overflow = Ellipsis,
-                            )
+                        Column(
+                            verticalArrangement = spacedBy(2.dp, Alignment.Bottom),
+                            modifier = Modifier.weight(1F, fill = false),
+                        ) {
+                            title?.let {
+                                Text(
+                                    text = title,
+                                    color = TraktTheme.colors.textPrimary,
+                                    style = TraktTheme.typography.cardTitle.copy(
+                                        fontWeight = W500,
+                                    ),
+                                    maxLines = 1,
+                                    overflow = Ellipsis,
+                                )
+                            }
+                            subtitle?.let {
+                                Text(
+                                    text = subtitle,
+                                    color = TraktTheme.colors.textSecondary,
+                                    style = TraktTheme.typography.cardSubtitle.copy(
+                                        fontSize = 11.sp,
+                                    ),
+                                    maxLines = 1,
+                                    overflow = Ellipsis,
+                                )
+                            }
                         }
-                        subtitle?.let {
-                            Text(
-                                text = subtitle,
-                                color = TraktTheme.colors.textSecondary,
-                                style = TraktTheme.typography.cardSubtitle.copy(
-                                    fontSize = 10.sp,
-                                ),
-                                maxLines = 1,
-                                overflow = Ellipsis,
-                            )
-                        }
-                    }
 
-                    detail?.let {
+                        val minutes = durationMinutes()
+                        val durationText = when {
+                            minutes >= 1L -> minutes.durationFormat()
+                            else -> "<${1L.durationFormat()}"
+                        }
                         Text(
-                            text = detail,
+                            text = stringResource(R.string.text_time_remaining, durationText),
                             textAlign = TextAlign.End,
                             color = TraktTheme.colors.textSecondary,
                             style = TraktTheme.typography.cardSubtitle.copy(
@@ -233,19 +281,35 @@ private fun ExpandedView(
                             maxLines = 2,
                             overflow = Ellipsis,
                             modifier = Modifier
-                                .padding(start = 16.dp),
+                                .padding(start = 16.dp, end = 0.5.dp),
                         )
                     }
+
+                    LinearProgressIndicator(
+                        progress = {
+                            val total = totalDurationSeconds().toFloat()
+                            val current = durationSeconds().toFloat()
+                            when {
+                                total > 0F -> (total - current) / total
+                                else -> 0F
+                            }
+                        },
+                        color = Color.White,
+                        trackColor = Color.White.copy(alpha = 0.2F),
+                        gapSize = 3.dp,
+                        drawStopIndicator = { },
+                        modifier = Modifier.fillMaxWidth(),
+                    )
                 }
             }
         }
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .padding(top = 2.dp, end = 2.dp),
+                .padding(top = 2.dp, end = 4.dp),
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_cheveron_down),
@@ -273,7 +337,8 @@ private fun CollapsedView(
     image: String?,
     title: String?,
     subtitle: String?,
-    detail: String?,
+    totalDurationSeconds: () -> Long,
+    durationSeconds: () -> Long,
     modifier: Modifier = Modifier,
     onExpandClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
@@ -282,7 +347,7 @@ private fun CollapsedView(
         modifier = modifier,
     ) {
         Row(
-            horizontalArrangement = spacedBy(6.dp),
+            horizontalArrangement = spacedBy(7.dp),
         ) {
             ImageView(
                 image = image,
@@ -292,11 +357,10 @@ private fun CollapsedView(
             )
 
             Column(
-                verticalArrangement = Arrangement.Center,
+                verticalArrangement = spacedBy(5.dp, Alignment.CenterVertically),
                 modifier = Modifier
                     .weight(1F)
-                    .height(collapsedImageHeight)
-                    .padding(vertical = 2.dp),
+                    .height(collapsedImageHeight),
             ) {
                 Row(
                     verticalAlignment = Alignment.Bottom,
@@ -306,7 +370,7 @@ private fun CollapsedView(
                         .padding(end = 4.dp),
                 ) {
                     Column(
-                        verticalArrangement = spacedBy(1.dp, Alignment.Bottom),
+                        verticalArrangement = spacedBy(0.dp, Alignment.Bottom),
                         modifier = Modifier
                             .weight(1F, fill = false),
                     ) {
@@ -326,38 +390,43 @@ private fun CollapsedView(
                                 text = subtitle,
                                 color = TraktTheme.colors.textSecondary,
                                 style = TraktTheme.typography.cardSubtitle.copy(
-                                    fontSize = 10.sp,
+                                    fontSize = 11.sp,
                                 ),
                                 maxLines = 1,
                                 overflow = Ellipsis,
                             )
                         }
                     }
-
-//                    detail?.let {
-//                        Text(
-//                            text = detail,
-//                            textAlign = TextAlign.End,
-//                            color = TraktTheme.colors.textSecondary,
-//                            style = TraktTheme.typography.cardSubtitle.copy(
-//                                fontSize = 10.sp,
-//                            ),
-//                            maxLines = 2,
-//                            overflow = Ellipsis,
-//                            modifier = Modifier
-//                                .padding(start = 16.dp),
-//                        )
-//                    }
                 }
+
+                LinearProgressIndicator(
+                    progress = {
+                        val total = totalDurationSeconds().toFloat()
+                        val current = durationSeconds().toFloat()
+                        when {
+                            total > 0F -> (total - current) / total
+                            else -> 0F
+                        }
+                    },
+                    color = Color.White,
+                    trackColor = Color.White.copy(alpha = 0.2F),
+                    gapSize = 3.dp,
+                    drawStopIndicator = { },
+                    modifier = Modifier
+                        .height(2.dp)
+                        .fillMaxWidth()
+                        .padding(end = 8.dp),
+                )
             }
         }
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
             modifier = Modifier
                 .align(Alignment.CenterEnd)
-                .padding(end = 4.dp),
+                .padding(bottom = 10.dp)
+                .padding(end = 5.dp),
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_cheveron_down),
@@ -403,7 +472,8 @@ private fun ImageView(
                 .height(height)
                 .aspectRatio(HorizontalCheckInImageAspectRatio)
                 .shadow(shadow, shape)
-                .clip(shape),
+                .clip(shape)
+                .background(color = TraktTheme.colors.placeholderContainer),
         )
     } else {
         ImageViewPlaceholder(
@@ -452,20 +522,28 @@ private fun Preview() {
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             Box(
-                modifier = Modifier
-                    .shadow(4.dp, viewShape)
-                    .background(
-                        color = TraktTheme.colors.navigationContainer,
-                        shape = viewShape,
-                    ),
+                modifier = Modifier.padding(16.dp),
             ) {
-                ExpandedView(
-                    image = "",
-                    title = "Stranger Things",
-                    subtitle = "Season 2 - Episode 5",
-                    detail = "1h 22m",
-                    modifier = Modifier.padding(6.dp),
-                )
+                Box(
+                    modifier = Modifier
+                        .shadow(4.dp, viewShape)
+                        .background(
+                            color = TraktTheme.colors.navigationContainer,
+                            shape = viewShape,
+                        ),
+                ) {
+                    val minutesTotal = 90
+                    val minutesLeft = minutesTotal * 0.25
+                    ExpandedView(
+                        image = "",
+                        title = "Stranger Things",
+                        subtitle = "Season 2 - Episode 5",
+                        totalDurationSeconds = { minutesTotal.minutes.inWholeSeconds },
+                        durationSeconds = { minutesLeft.minutes.inWholeSeconds },
+                        durationMinutes = { minutesLeft.minutes.inWholeMinutes },
+                        modifier = Modifier.padding(viewPadding),
+                    )
+                }
             }
         }
     }
@@ -484,20 +562,27 @@ private fun Preview2() {
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             Box(
-                modifier = Modifier
-                    .shadow(4.dp, collapsedViewShape)
-                    .background(
-                        color = TraktTheme.colors.navigationContainer,
-                        shape = collapsedViewShape,
-                    ),
+                modifier = Modifier.padding(16.dp),
             ) {
-                CollapsedView(
-                    image = "",
-                    title = "Rental Family",
-                    subtitle = "Movie",
-                    detail = "1h 22m",
-                    modifier = Modifier.padding(4.dp),
-                )
+                Box(
+                    modifier = Modifier
+                        .shadow(4.dp, collapsedViewShape)
+                        .background(
+                            color = TraktTheme.colors.navigationContainer,
+                            shape = collapsedViewShape,
+                        ),
+                ) {
+                    val minutesTotal = 90
+                    val minutesLeft = minutesTotal * 0.25
+                    CollapsedView(
+                        image = "",
+                        title = "Rental Family",
+                        subtitle = "Movie",
+                        totalDurationSeconds = { minutesTotal.minutes.inWholeSeconds },
+                        durationSeconds = { minutesLeft.minutes.inWholeSeconds },
+                        modifier = Modifier.padding(collapsedViewPadding),
+                    )
+                }
             }
         }
     }

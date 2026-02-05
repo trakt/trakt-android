@@ -9,6 +9,7 @@ import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.extensions.toInstant
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
@@ -105,6 +106,17 @@ internal class DefaultCheckInManager(
                     )
                 }
                 Timber.d("Active movie check-in found: ${dto.title} (${dto.year})")
+            }
+
+            response.episode?.let { dto ->
+                state.update {
+                    CheckInState.ActiveEpisode(
+                        episode = Episode.fromDto(dto),
+                        startedAt = response.startedAt.toInstant(),
+                        expiresAt = response.expiresAt.toInstant(),
+                    )
+                }
+                Timber.d("Active episode check-in found: ${dto.title} S${dto.season}E${dto.number}")
             }
         } catch (error: Exception) {
             error.rethrowCancellation {
