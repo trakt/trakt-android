@@ -10,7 +10,6 @@ import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerOneO
 import org.openapitools.client.models.PutUsersListsListUpdateRequest
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.sorting.Sorting
-import tv.trakt.trakt.common.networking.ListItemDto
 import tv.trakt.trakt.common.networking.ListMovieItemDto
 import tv.trakt.trakt.common.networking.ListShowItemDto
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
@@ -164,31 +163,6 @@ internal class ListsApiClient(
             ),
         )
         cacheMarker.invalidate()
-    }
-
-    override suspend fun getAllListItems(
-        listId: TraktId,
-        extended: String?,
-        limit: String?,
-    ): List<ListItemDto> {
-        val response = listsApi.getListsItemsAll(
-            id = listId.value.toString(),
-            extended = extended,
-            watchnow = null,
-            genres = null,
-            years = null,
-            ratings = null,
-            startDate = null,
-            endDate = null,
-            page = null,
-            limit = limit,
-            subgenres = null,
-            sortBy = null,
-            sortHow = null,
-            runtimes = null,
-        )
-
-        return response.body()
     }
 
     override suspend fun getShowListItems(

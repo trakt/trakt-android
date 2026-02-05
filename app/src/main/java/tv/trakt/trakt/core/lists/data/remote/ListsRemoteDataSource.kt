@@ -40,12 +40,6 @@ internal interface ListsRemoteDataSource {
         movieId: TraktId,
     )
 
-    suspend fun getAllListItems(
-        listId: TraktId,
-        extended: String?,
-        limit: String?,
-    ): List<ListItemDto>
-
     suspend fun getShowListItems(
         listId: TraktId,
         extended: String?,
