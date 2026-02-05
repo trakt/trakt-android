@@ -15,6 +15,7 @@ import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.ListItemDto
+import tv.trakt.trakt.core.lists.ListsConfig.LISTS_MAX_PAGE_LIMIT
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
 import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
@@ -44,7 +45,7 @@ internal class LoadUserListsUseCase(
                         val items = remoteSource.getPersonalListItems(
                             listId = list.ids.trakt.toTraktId(),
                             extended = "min",
-                            limit = null, // -> all
+                            limit = LISTS_MAX_PAGE_LIMIT, // TODO Better handling of listed check
                             sorting = Sorting.Default,
                         )
                         list to items

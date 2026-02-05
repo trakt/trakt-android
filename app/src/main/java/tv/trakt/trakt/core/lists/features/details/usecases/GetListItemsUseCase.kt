@@ -10,6 +10,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.sorting.Sorting
+import tv.trakt.trakt.core.lists.ListsConfig.LISTS_MAX_PAGE_LIMIT
 import tv.trakt.trakt.core.lists.data.remote.ListsRemoteDataSource
 import tv.trakt.trakt.core.lists.model.PersonalListItem
 
@@ -24,7 +25,7 @@ internal class GetListItemsUseCase(
         if (type == MediaType.MOVIE) {
             return remoteSource.getMovieListItems(
                 listId = listId,
-                limit = "all",
+                limit = LISTS_MAX_PAGE_LIMIT.toString(),
                 extended = "full,cloud9,colors",
                 sorting = sorting,
             ).asyncMap {
@@ -39,7 +40,7 @@ internal class GetListItemsUseCase(
         if (type == MediaType.SHOW) {
             return remoteSource.getShowListItems(
                 listId = listId,
-                limit = "all",
+                limit = LISTS_MAX_PAGE_LIMIT.toString(),
                 extended = "full,cloud9,colors",
                 sorting = sorting,
             ).asyncMap {

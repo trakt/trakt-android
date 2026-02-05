@@ -409,7 +409,7 @@ internal class UserApiClient(
 
     override suspend fun getPersonalListItems(
         listId: TraktId,
-        limit: Int?,
+        limit: Int,
         page: Int,
         extended: String,
         sorting: Sorting,
@@ -429,10 +429,7 @@ internal class UserApiClient(
             endDate = null,
             runtimes = null,
             page = page,
-            limit = when {
-                limit == null -> "all"
-                else -> limit.toString()
-            },
+            limit = limit.toString(),
         )
 
         return response.body()
