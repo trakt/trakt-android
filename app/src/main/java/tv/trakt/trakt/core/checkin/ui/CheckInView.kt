@@ -28,9 +28,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -52,7 +55,9 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.theme.HorizontalCheckInImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Instant
@@ -62,9 +67,9 @@ private val imageShape = RoundedCornerShape(12.dp)
 private val imageHeight = 76.dp
 private val imageShadow = 3.dp
 
-private val collapsedViewShape = RoundedCornerShape(10.dp)
-private val collapsedImageShape = RoundedCornerShape(8.dp)
-private val collapsedImageHeight = 42.dp
+private val collapsedViewShape = RoundedCornerShape(12.dp)
+private val collapsedImageShape = RoundedCornerShape(9.dp)
+private val collapsedImageHeight = 36.dp
 private val collapsedImageShadow = 2.dp
 
 @Composable
@@ -74,23 +79,23 @@ internal fun CheckInView(
     title: String? = null,
     subtitle: String? = null,
     detail: String? = null,
-    startedAt: Instant,
-    expiresAt: Instant,
+    startedAt: Instant?,
+    expiresAt: Instant?,
     onCloseClick: () -> Unit = {},
 ) {
     var expanded by rememberSaveable { mutableStateOf(true) }
+    var confirmClose by remember { mutableStateOf(false) }
 
     Box(
         modifier = modifier
-            .shadow(
-                elevation = when {
-                    expanded -> 4.dp
-                    else -> 2.dp
-                },
-                shape = when {
-                    expanded -> viewShape
-                    else -> collapsedViewShape
-                },
+            .dropShadow(
+                shape = viewShape,
+                shadow = Shadow(
+                    radius = 4.dp,
+                    color = Color.Black,
+                    spread = 2.dp,
+                    alpha = 0.15F,
+                ),
             )
             .background(
                 color = TraktTheme.colors.navigationContainer,
@@ -107,7 +112,8 @@ internal fun CheckInView(
                 title = title,
                 subtitle = subtitle,
                 detail = detail,
-                onCloseClick = onCloseClick,
+                onCollapseClick = { expanded = false },
+                onCloseClick = { confirmClose = true },
                 modifier = Modifier.padding(6.dp),
             )
         } else {
@@ -116,11 +122,29 @@ internal fun CheckInView(
                 title = title,
                 subtitle = subtitle,
                 detail = detail,
-                onCloseClick = onCloseClick,
+                onExpandClick = { expanded = true },
+                onCloseClick = { confirmClose = true },
                 modifier = Modifier.padding(4.dp),
             )
         }
     }
+
+    ConfirmationSheet(
+        active = confirmClose,
+        onYes = {
+            confirmClose = false
+            onCloseClick()
+        },
+        onNo = {
+            confirmClose = false
+        },
+        title = stringResource(R.string.text_now_watching),
+        message = stringResource(
+            R.string.warning_prompt_stop_watching,
+            title ?: "",
+        ),
+        yesColor = Red400,
+    )
 }
 
 @Composable
@@ -130,6 +154,7 @@ private fun ExpandedView(
     subtitle: String?,
     detail: String?,
     modifier: Modifier = Modifier,
+    onCollapseClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
 ) {
     Box(
@@ -157,7 +182,7 @@ private fun ExpandedView(
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.cardTitle.copy(
                         fontWeight = W400,
-                        fontSize = 12.sp,
+                        fontSize = 11.sp,
                     ),
                 )
 
@@ -215,16 +240,31 @@ private fun ExpandedView(
             }
         }
 
-        Icon(
-            painter = painterResource(R.drawable.ic_close),
-            contentDescription = null,
-            tint = TraktTheme.colors.textPrimary,
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .padding(top = 2.dp, end = 2.dp)
-                .size(14.dp)
-                .onClick(onClick = onCloseClick),
-        )
+                .padding(top = 2.dp, end = 2.dp),
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_cheveron_down),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .size(18.dp)
+                    .onClick(onClick = onCollapseClick),
+            )
+
+            Icon(
+                painter = painterResource(R.drawable.ic_close_2),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .size(18.dp)
+                    .onClick(onClick = onCloseClick),
+            )
+        }
     }
 }
 
@@ -235,13 +275,14 @@ private fun CollapsedView(
     subtitle: String?,
     detail: String?,
     modifier: Modifier = Modifier,
+    onExpandClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
 ) {
     Box(
         modifier = modifier,
     ) {
         Row(
-            horizontalArrangement = spacedBy(8.dp),
+            horizontalArrangement = spacedBy(6.dp),
         ) {
             ImageView(
                 image = image,
@@ -311,16 +352,32 @@ private fun CollapsedView(
             }
         }
 
-        Icon(
-            painter = painterResource(R.drawable.ic_close),
-            contentDescription = null,
-            tint = TraktTheme.colors.textPrimary,
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier
                 .align(Alignment.CenterEnd)
-                .padding(end = 2.dp)
-                .size(18.dp)
-                .onClick(onClick = onCloseClick),
-        )
+                .padding(end = 4.dp),
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_cheveron_down),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .size(18.dp)
+                    .rotate(180F)
+                    .onClick(onClick = onExpandClick),
+            )
+
+            Icon(
+                painter = painterResource(R.drawable.ic_close_2),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .size(18.dp)
+                    .onClick(onClick = onCloseClick),
+            )
+        }
     }
 }
 

@@ -17,10 +17,10 @@ import tv.trakt.trakt.core.checkin.data.remote.CheckInRemoteDataSource
 import tv.trakt.trakt.core.checkin.model.CheckInState
 import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 import kotlin.time.Clock
-import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
 
-private val ACTIVE_CHECK_COOLDOWN = 1.minutes
+private val ACTIVE_CHECK_COOLDOWN = 15.seconds
 
 internal class DefaultCheckInManager(
     private val sessionManager: SessionManager,

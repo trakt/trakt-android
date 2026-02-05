@@ -35,6 +35,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.auth.usecase.AuthorizeUserUseCase
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
 import tv.trakt.trakt.core.checkin.data.CheckInManager
+import tv.trakt.trakt.core.checkin.model.CheckInState
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
 import tv.trakt.trakt.core.user.usecases.LoadUserProfileUseCase
@@ -63,6 +64,7 @@ internal class MainViewModel(
 
     private val userState = MutableStateFlow(initialState.user)
     private val userVipState = MutableStateFlow(initialState.userVipStatus)
+    private val checkInState = MutableStateFlow(initialState.checkIn)
     private val loadingUserState = MutableStateFlow(initialState.loadingUser)
     private val welcomeState = MutableStateFlow(initialState.welcome)
 
@@ -123,6 +125,7 @@ internal class MainViewModel(
             .distinctUntilChanged()
             .debounce(200)
             .onEach { state ->
+                checkInState.update { state }
                 Timber.d("Observed check-in change: $state")
             }
             .launchIn(viewModelScope)
@@ -258,14 +261,16 @@ internal class MainViewModel(
     val state = combine(
         userState,
         userVipState,
+        checkInState,
         loadingUserState,
         welcomeState,
     ) { state ->
         MainState(
             user = state[0] as User?,
             userVipStatus = state[1] as Pair<Boolean?, Boolean?>?,
-            loadingUser = state[2] as LoadingState,
-            welcome = state[3] as MainState.WelcomeState,
+            checkIn = state[2] as CheckInState?,
+            loadingUser = state[3] as LoadingState,
+            welcome = state[4] as MainState.WelcomeState,
         )
     }.stateIn(
         scope = viewModelScope,

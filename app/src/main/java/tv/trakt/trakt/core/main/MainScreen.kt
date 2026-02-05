@@ -14,7 +14,10 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -43,6 +46,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle.Event.ON_RESUME
 import androidx.lifecycle.compose.LifecycleEventEffect
@@ -65,6 +69,13 @@ import tv.trakt.trakt.common.model.MediaType.EPISODE
 import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.auth.ConfigAuth
+import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveEpisode
+import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveMovie
+import tv.trakt.trakt.core.checkin.model.expiresAt
+import tv.trakt.trakt.core.checkin.model.image
+import tv.trakt.trakt.core.checkin.model.startedAt
+import tv.trakt.trakt.core.checkin.model.title
+import tv.trakt.trakt.core.checkin.ui.CheckInView
 import tv.trakt.trakt.core.discover.navigation.navigateToDiscover
 import tv.trakt.trakt.core.home.navigation.HomeDestination
 import tv.trakt.trakt.core.lists.navigation.ListsDestination
@@ -215,58 +226,68 @@ internal fun MainScreen(
                         modifier = Modifier
                             .align(BottomCenter),
                     ) {
-                        NavigationBar(
-                            containerColor = TraktTheme.colors.navigationContainer,
-                            contentColor = TraktTheme.colors.accent,
+                        Column(
+                            verticalArrangement = spacedBy(8.dp),
                             modifier = Modifier
-                                .fillMaxWidth(TraktTheme.size.navigationBarRatio)
-                                .dropShadow(
-                                    shape = RoundedCornerShape(
-                                        topStart = 24.dp,
-                                        topEnd = 24.dp,
-                                    ),
-                                    shadow = Shadow(
-                                        radius = 6.dp,
-                                        color = Color.Black,
-                                        spread = 2.dp,
-                                        alpha = 0.25F,
-                                    ),
-                                )
-                                .clip(
-                                    RoundedCornerShape(
-                                        topStart = 24.dp,
-                                        topEnd = 24.dp,
-                                    ),
-                                ),
+                                .fillMaxWidth(TraktTheme.size.navigationBarRatio),
                         ) {
-                            TraktMenuBar(
-                                currentDestination = currentDestination.value?.destination,
-                                enabled = localBottomBarVisibility.value,
-                                user = state.user,
-                                searchState = searchState,
-                                onSelected = {
-                                    if (state.user != null || it.destination == HomeDestination) {
-                                        navController.navigateToMainDestination(it.destination)
-                                    } else {
-                                        localUriHandler.openUri(ConfigAuth.authCodeUrl)
-                                    }
-                                },
-                                onProfileSelected = {
-                                    if (state.user != null) {
-                                        navController.navigateToMainDestination(ProfileDestination)
-                                    } else {
-                                        localUriHandler.openUri(ConfigAuth.authCodeUrl)
-                                    }
-                                },
-                                onReselected = {
-                                    currentDestination.value?.destination?.let {
-                                        if (it.hasRoute(ListsDestination::class) && state.user != null) {
-                                            navController.navigateToWatchlist()
-                                        }
-                                    }
-                                },
-                                onSearchInput = searchState.onSearchInput,
+                            CheckInView(
+                                state = state,
                             )
+
+                            NavigationBar(
+                                containerColor = TraktTheme.colors.navigationContainer,
+                                contentColor = TraktTheme.colors.accent,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .dropShadow(
+                                        shape = RoundedCornerShape(
+                                            topStart = 24.dp,
+                                            topEnd = 24.dp,
+                                        ),
+                                        shadow = Shadow(
+                                            radius = 6.dp,
+                                            color = Color.Black,
+                                            spread = 2.dp,
+                                            alpha = 0.25F,
+                                        ),
+                                    )
+                                    .clip(
+                                        RoundedCornerShape(
+                                            topStart = 24.dp,
+                                            topEnd = 24.dp,
+                                        ),
+                                    ),
+                            ) {
+                                TraktMenuBar(
+                                    currentDestination = currentDestination.value?.destination,
+                                    enabled = localBottomBarVisibility.value,
+                                    user = state.user,
+                                    searchState = searchState,
+                                    onSelected = {
+                                        if (state.user != null || it.destination == HomeDestination) {
+                                            navController.navigateToMainDestination(it.destination)
+                                        } else {
+                                            localUriHandler.openUri(ConfigAuth.authCodeUrl)
+                                        }
+                                    },
+                                    onProfileSelected = {
+                                        if (state.user != null) {
+                                            navController.navigateToMainDestination(ProfileDestination)
+                                        } else {
+                                            localUriHandler.openUri(ConfigAuth.authCodeUrl)
+                                        }
+                                    },
+                                    onReselected = {
+                                        currentDestination.value?.destination?.let {
+                                            if (it.hasRoute(ListsDestination::class) && state.user != null) {
+                                                navController.navigateToWatchlist()
+                                            }
+                                        }
+                                    },
+                                    onSearchInput = searchState.onSearchInput,
+                                )
+                            }
                         }
                     }
 
@@ -334,6 +355,36 @@ internal fun MainScreen(
         }
 
         navController.popBackStack()
+    }
+}
+
+@Composable
+private fun ColumnScope.CheckInView(
+    state: MainState,
+    onCloseClick: () -> Unit = {},
+) {
+    AnimatedVisibility(
+        visible = state.checkIn?.isActive() == true,
+        enter = fadeIn(tween(200)) + slideInVertically(initialOffsetY = { it / 10 }),
+        exit = fadeOut(tween(200)) + slideOutVertically(targetOffsetY = { it / 10 }),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
+    ) {
+        CheckInView(
+            title = state.checkIn?.title,
+            subtitle = when (state.checkIn) {
+                is ActiveMovie -> stringResource(R.string.translated_value_type_movie)
+                is ActiveEpisode -> state.checkIn.episode.seasonEpisodeString()
+                else -> null
+            },
+            detail = null,
+            image = state.checkIn?.image,
+            startedAt = state.checkIn?.startedAt,
+            expiresAt = state.checkIn?.expiresAt,
+            onCloseClick = {
+            },
+        )
     }
 }
 
