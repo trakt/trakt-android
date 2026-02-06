@@ -11,6 +11,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
@@ -111,6 +112,7 @@ internal class DefaultCheckInManager(
             response.episode?.let { dto ->
                 state.update {
                     CheckInState.ActiveEpisode(
+                        show = Show.fromDto(response.show!!),
                         episode = Episode.fromDto(dto),
                         startedAt = response.startedAt.toInstant(),
                         expiresAt = response.expiresAt.toInstant(),

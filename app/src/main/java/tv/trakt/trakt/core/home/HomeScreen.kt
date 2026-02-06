@@ -125,7 +125,12 @@ private fun HomeScreenContent(
         bottom = WindowInsets.navigationBars.asPaddingValues()
             .calculateBottomPadding()
             .plus(TraktTheme.size.navigationBarHeight)
-            .plus(TraktTheme.spacing.mainPageBottomSpace),
+            .plus(
+                when {
+                    state.checkIn -> TraktTheme.spacing.mainPageBottomCheckInSpace
+                    else -> TraktTheme.spacing.mainPageBottomSpace
+                },
+            ),
     )
 
     val sectionPadding = PaddingValues(

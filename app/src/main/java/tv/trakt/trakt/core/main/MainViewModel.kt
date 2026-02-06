@@ -251,6 +251,19 @@ internal class MainViewModel(
         }
     }
 
+    fun dismissCheckIn() {
+        viewModelScope.launch {
+            checkInManager.clear()
+            try {
+                checkInManager.stop()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
     private fun dismissOnboarding() {
         viewModelScope.launch {
             welcomeState.update { it.copy(onboarding = false) }

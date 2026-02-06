@@ -88,22 +88,13 @@ internal fun CheckInView(
     subtitle: String? = null,
     startedAt: Instant?,
     expiresAt: Instant?,
-    onCloseClick: () -> Unit = {},
+    onExpire: () -> Unit = {},
+    onDismiss: () -> Unit = {},
 ) {
     var expanded by rememberSaveable { mutableStateOf(true) }
     var confirmClose by remember { mutableStateOf(false) }
 
     var timestamp by remember { mutableStateOf(nowUtcInstant()) }
-
-    val secondsLeft = remember(timestamp) {
-        expiresAt?.let {
-            val duration = it.epochSecond - timestamp.epochSecond
-            duration.coerceAtLeast(0L)
-        } ?: 0L
-    }
-    val minutesLeft = remember(secondsLeft) {
-        secondsLeft / 60L
-    }
 
     val totalSeconds = remember(startedAt, expiresAt) {
         if (startedAt != null && expiresAt != null) {
@@ -114,10 +105,27 @@ internal fun CheckInView(
         }
     }
 
+    val secondsLeft = remember(timestamp) {
+        expiresAt?.let {
+            val duration = it.epochSecond - timestamp.epochSecond
+            duration.coerceAtLeast(0L)
+        } ?: 0L
+    }
+
+    val minutesLeft = remember(secondsLeft) {
+        secondsLeft / 60L
+    }
+
     LaunchedEffect(Unit) {
         while (true) {
             delay(1000L)
             timestamp = nowUtcInstant()
+        }
+    }
+
+    LaunchedEffect(secondsLeft) {
+        if (secondsLeft <= 0L && startedAt != null && expiresAt != null) {
+            onExpire()
         }
     }
 
@@ -172,7 +180,7 @@ internal fun CheckInView(
         active = confirmClose,
         onYes = {
             confirmClose = false
-            onCloseClick()
+            onDismiss()
         },
         onNo = {
             confirmClose = false
@@ -276,7 +284,7 @@ private fun ExpandedView(
                             textAlign = TextAlign.End,
                             color = TraktTheme.colors.textSecondary,
                             style = TraktTheme.typography.cardSubtitle.copy(
-                                fontSize = 10.sp,
+                                fontSize = 11.sp,
                             ),
                             maxLines = 2,
                             overflow = Ellipsis,
@@ -306,7 +314,7 @@ private fun ExpandedView(
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(top = 2.dp, end = 4.dp),
@@ -316,7 +324,7 @@ private fun ExpandedView(
                 contentDescription = null,
                 tint = TraktTheme.colors.textPrimary,
                 modifier = Modifier
-                    .size(18.dp)
+                    .size(20.dp)
                     .onClick(onClick = onCollapseClick),
             )
 
@@ -325,7 +333,7 @@ private fun ExpandedView(
                 contentDescription = null,
                 tint = TraktTheme.colors.textPrimary,
                 modifier = Modifier
-                    .size(18.dp)
+                    .size(20.dp)
                     .onClick(onClick = onCloseClick),
             )
         }
@@ -422,7 +430,7 @@ private fun CollapsedView(
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier
                 .align(Alignment.CenterEnd)
                 .padding(bottom = 10.dp)
@@ -433,7 +441,7 @@ private fun CollapsedView(
                 contentDescription = null,
                 tint = TraktTheme.colors.textPrimary,
                 modifier = Modifier
-                    .size(18.dp)
+                    .size(20.dp)
                     .rotate(180F)
                     .onClick(onClick = onExpandClick),
             )
@@ -443,7 +451,7 @@ private fun CollapsedView(
                 contentDescription = null,
                 tint = TraktTheme.colors.textPrimary,
                 modifier = Modifier
-                    .size(18.dp)
+                    .size(20.dp)
                     .onClick(onClick = onCloseClick),
             )
         }

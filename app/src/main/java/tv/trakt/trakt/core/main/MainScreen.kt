@@ -44,6 +44,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -74,6 +75,7 @@ import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveMovie
 import tv.trakt.trakt.core.checkin.model.expiresAt
 import tv.trakt.trakt.core.checkin.model.image
 import tv.trakt.trakt.core.checkin.model.startedAt
+import tv.trakt.trakt.core.checkin.model.title
 import tv.trakt.trakt.core.checkin.ui.CheckInView
 import tv.trakt.trakt.core.discover.navigation.navigateToDiscover
 import tv.trakt.trakt.core.home.navigation.HomeDestination
@@ -122,6 +124,7 @@ internal fun MainScreen(
 
     val localUriHandler = LocalUriHandler.current
     val localContext = LocalContext.current
+    val localRes = LocalResources.current
     val localActivity = LocalActivity.current
     val localSnackbar = LocalSnackbarState.current
     val localBottomBarVisibility = LocalBottomBarVisibility.current
@@ -148,13 +151,13 @@ internal fun MainScreen(
     LaunchedUpdateEffect(state.user) {
         if (state.loadingUser == DONE && state.user != null) {
             localSnackbar.showSnackbar(
-                message = localContext.getString(R.string.text_info_signed_in),
+                message = localRes.getString(R.string.text_info_signed_in),
                 duration = SnackbarDuration.Short,
             )
         } else if (state.user == null) {
             navController.navigateToMainDestination(HomeDestination)
             localSnackbar.showSnackbar(
-                message = localContext.getString(R.string.text_info_signed_out),
+                message = localRes.getString(R.string.text_info_signed_out),
                 duration = SnackbarDuration.Short,
             )
         }
@@ -232,6 +235,7 @@ internal fun MainScreen(
                         ) {
                             CheckInView(
                                 state = state,
+                                onDismiss = viewModel::dismissCheckIn,
                             )
 
                             NavigationBar(
@@ -360,32 +364,36 @@ internal fun MainScreen(
 @Composable
 private fun ColumnScope.CheckInView(
     state: MainState,
-    onCloseClick: () -> Unit = {},
+    onDismiss: () -> Unit = {},
 ) {
+    var isExpired by remember(state.checkIn) {
+        mutableStateOf(false)
+    }
+    val isVisible = remember(state.checkIn, isExpired) {
+        state.checkIn?.isActive() == true && !isExpired
+    }
     AnimatedVisibility(
-        visible = state.checkIn?.isActive() == true,
-        enter = fadeIn(tween(200)) + slideInVertically(initialOffsetY = { it / 10 }),
-        exit = fadeOut(tween(200)) + slideOutVertically(targetOffsetY = { it / 10 }),
+        visible = isVisible,
+        enter = fadeIn(tween(250)) + slideInVertically(initialOffsetY = { it / 8 }),
+        exit = fadeOut(tween(100)) + slideOutVertically(targetOffsetY = { it / 8 }),
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace - 8.dp),
     ) {
         CheckInView(
-            title = when (state.checkIn) {
-                is ActiveMovie -> state.checkIn.movie.title
-                is ActiveEpisode -> state.checkIn.episode.seasonEpisode.toDisplayString()
-                else -> null
-            },
+            title = state.checkIn?.title,
             subtitle = when (state.checkIn) {
                 is ActiveMovie -> stringResource(R.string.translated_value_type_movie)
-                is ActiveEpisode -> state.checkIn.episode.title
+                is ActiveEpisode -> state.checkIn.episode.seasonEpisodeString()
                 else -> null
             },
             image = state.checkIn?.image,
             startedAt = state.checkIn?.startedAt,
             expiresAt = state.checkIn?.expiresAt,
-            onCloseClick = {
+            onExpire = {
+                isExpired = true
             },
+            onDismiss = onDismiss,
         )
     }
 }

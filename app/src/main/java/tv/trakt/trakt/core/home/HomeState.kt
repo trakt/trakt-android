@@ -9,6 +9,7 @@ import tv.trakt.trakt.core.main.model.MediaMode
 internal data class HomeState(
     val mode: MediaMode? = null,
     val user: UserState = UserState(),
+    val checkIn: Boolean = false,
 ) {
     data class UserState(
         val user: User? = null,

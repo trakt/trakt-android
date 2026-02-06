@@ -6,6 +6,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.update
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.home.HomeState.UserState
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
 
@@ -21,6 +23,7 @@ import tv.trakt.trakt.core.main.helpers.MediaModeManager
 internal class HomeViewModel(
     private val modeManager: MediaModeManager,
     private val sessionManager: SessionManager,
+    private val checkInManager: CheckInManager,
     analytics: Analytics,
 ) : ViewModel() {
     private val initialState = HomeState()
@@ -28,10 +31,12 @@ internal class HomeViewModel(
 
     private val modeState = MutableStateFlow(initialMode)
     private val userState = MutableStateFlow(initialState.user)
+    private val checkInState = MutableStateFlow(initialState.checkIn)
 
     init {
         observeUser()
         observeMode()
+        observeCheckIn()
 
         analytics.logScreenView(screenName = "home")
         analytics.logMediaMode(mode = initialMode)
@@ -59,13 +64,26 @@ internal class HomeViewModel(
             .launchIn(viewModelScope)
     }
 
+    private fun observeCheckIn() {
+        checkInManager.observe()
+            .debounce(200)
+            .onEach { checkIn ->
+                checkInState.update {
+                    checkIn.isActive()
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
     val state = combine(
         modeState,
         userState,
-    ) { s1, s2 ->
+        checkInState,
+    ) { s1, s2, s3 ->
         HomeState(
             mode = s1,
             user = s2,
+            checkIn = s3,
         )
     }.stateIn(
         scope = viewModelScope,
