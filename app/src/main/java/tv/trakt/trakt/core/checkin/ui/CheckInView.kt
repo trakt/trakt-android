@@ -60,7 +60,9 @@ import kotlinx.coroutines.delay
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.onEmptyClick
 import tv.trakt.trakt.common.ui.theme.colors.Red400
+import tv.trakt.trakt.common.ui.theme.colors.Shade300
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.theme.HorizontalCheckInImageAspectRatio
@@ -79,6 +81,8 @@ private val collapsedViewPadding = 6.dp
 private val collapsedImageShape = RoundedCornerShape(11.dp)
 private val collapsedImageHeight = 38.dp
 private val collapsedImageShadow = 2.dp
+
+private val progressTrackColor = Shade300.copy(alpha = 0.25F)
 
 @Composable
 internal fun CheckInView(
@@ -129,16 +133,20 @@ internal fun CheckInView(
         }
     }
 
+    val viewShadow = remember {
+        Shadow(
+            radius = 4.dp,
+            color = Color.Black,
+            spread = 2.dp,
+            alpha = 0.15F,
+        )
+    }
+
     Box(
         modifier = modifier
             .dropShadow(
                 shape = viewShape,
-                shadow = Shadow(
-                    radius = 4.dp,
-                    color = Color.Black,
-                    spread = 2.dp,
-                    alpha = 0.15F,
-                ),
+                shadow = viewShadow,
             )
             .background(
                 color = TraktTheme.colors.navigationContainer,
@@ -147,7 +155,7 @@ internal fun CheckInView(
                     else -> collapsedViewShape
                 },
             )
-            .onClick(onClick = {})
+            .onEmptyClick()
             .animateContentSize(),
     ) {
         if (expanded) {
@@ -303,10 +311,12 @@ private fun ExpandedView(
                             }
                         },
                         color = Color.White,
-                        trackColor = Color.White.copy(alpha = 0.2F),
+                        trackColor = progressTrackColor,
                         gapSize = 3.dp,
                         drawStopIndicator = { },
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 0.5.dp),
                     )
                 }
             }
@@ -417,13 +427,13 @@ private fun CollapsedView(
                         }
                     },
                     color = Color.White,
-                    trackColor = Color.White.copy(alpha = 0.2F),
+                    trackColor = progressTrackColor,
                     gapSize = 3.dp,
                     drawStopIndicator = { },
                     modifier = Modifier
                         .height(2.dp)
                         .fillMaxWidth()
-                        .padding(end = 8.dp),
+                        .padding(start = 1.dp, end = 8.dp),
                 )
             }
         }
@@ -465,14 +475,18 @@ private fun ImageView(
     shape: Shape,
     shadow: Dp,
 ) {
+    val context = LocalContext.current
     var isError by rememberSaveable(image) { mutableStateOf(false) }
 
     if (!image.isNullOrBlank() && !isError) {
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
+        val imageRequest = remember(image) {
+            ImageRequest.Builder(context)
                 .data(image)
                 .crossfade(true)
-                .build(),
+                .build()
+        }
+        AsyncImage(
+            model = imageRequest,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             onError = { isError = true },

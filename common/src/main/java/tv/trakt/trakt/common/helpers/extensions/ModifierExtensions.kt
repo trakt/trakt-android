@@ -10,12 +10,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import java.lang.System.currentTimeMillis
 
+private val emptyClick = {}
+
+/**
+ * Applies one of the two modifiers based on the given condition.
+ */
 fun Modifier.ifOrElse(
     condition: Boolean,
     isTrue: Modifier,
     isFalse: Modifier = Modifier,
 ): Modifier = then(if (condition) isTrue else isFalse)
 
+/**
+ * A modifier that handles clicks with optional throttling and indication.
+ */
 fun Modifier.onClick(
     enabled: Boolean = true,
     throttle: Boolean = true,
@@ -46,6 +54,9 @@ fun Modifier.onClick(
     }
 }
 
+/**
+ * A modifier that handles both click and long click with optional throttling.
+ */
 fun Modifier.onClickCombined(
     enabled: Boolean = true,
     throttle: Boolean = true,
@@ -79,4 +90,16 @@ fun Modifier.onClickCombined(
             indication = ripple(),
         )
     }
+}
+
+/**
+ * A modifier that handles clicks but does nothing.
+ */
+fun Modifier.onEmptyClick(): Modifier {
+    return clickable(
+        enabled = true,
+        onClick = emptyClick,
+        indication = null,
+        interactionSource = null,
+    )
 }
