@@ -101,8 +101,8 @@ internal class DefaultCheckInManager(
         try {
             val response = userRemoteDataSource.getWatchingNow()
             if (response == null) {
-                state.update { CheckInState.Idle }
-                Timber.d("No active check-ins found.")
+                clear(context)
+                Timber.d("No active check-ins / scrobbles found.")
                 return
             }
 
@@ -113,10 +113,12 @@ internal class DefaultCheckInManager(
                     expiresAt = response.expiresAt.toInstant(),
                 )
 
-                state.update { newState }
-                startForegroundService(context, newState)
-
-                Timber.d("Active movie check-in found: ${dto.title} (${dto.year})")
+                // Only update state if it's a different movie than currently stored
+                if (state.value !is CheckInState.ActiveMovie || state.value.id != newState.id) {
+                    state.update { newState }
+                    startForegroundService(context, newState)
+                    Timber.d("New active movie check-in found: ${dto.title} (${dto.year})")
+                }
             }
 
             response.episode?.let { dto ->
@@ -127,10 +129,12 @@ internal class DefaultCheckInManager(
                     expiresAt = response.expiresAt.toInstant(),
                 )
 
-                state.update { newState }
-                startForegroundService(context, newState)
-
-                Timber.d("Active episode check-in found: ${dto.title} S${dto.season}E${dto.number}")
+                // Only update state if it's a different episode than currently stored
+                if (state.value !is CheckInState.ActiveEpisode || state.value.id != newState.id) {
+                    state.update { newState }
+                    startForegroundService(context, newState)
+                    Timber.d("New active episode check-in found: ${dto.title} S${dto.season}E${dto.number}")
+                }
             }
         } catch (error: Exception) {
             error.rethrowCancellation {

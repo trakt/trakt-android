@@ -27,14 +27,19 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
+import org.koin.android.ext.android.inject
 import timber.log.Timber
+import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
+import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
+import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.notifications.TraktNotificationChannel
 import tv.trakt.trakt.core.notifications.data.work.INTENT_NOTIFICATION_EXTRAS
 import tv.trakt.trakt.core.notifications.model.NotificationIntentExtras
 import tv.trakt.trakt.resources.R
+import java.time.Instant
 import kotlin.math.roundToLong
 import kotlin.time.Duration.Companion.seconds
 
@@ -43,7 +48,12 @@ private const val EXTRA_DATA = "data"
 private const val MAIN_ACTIVITY_PATH = "tv.trakt.trakt.MainActivity"
 
 internal class CheckInService : Service() {
+    private val checkInManager: CheckInManager by inject()
+
     private val scope = CoroutineScope(Dispatchers.IO + Job())
+
+    private var progressTimestamp: Instant = nowUtcInstant()
+    private var progressJob: Job? = null
 
     override fun onStartCommand(
         intent: Intent?,
@@ -68,12 +78,36 @@ internal class CheckInService : Service() {
         scope.launch {
             while (isActive) {
                 delay(5.seconds)
+
+                // Update the notification progress
                 updateProgress(serviceData)
+
+                // Periodically check if the check-in is still active
+                checkActive()
             }
         }
 
         Timber.d("Check-in service started.")
         return START_NOT_STICKY
+    }
+
+    private suspend fun checkActive() {
+        val now = nowUtcInstant()
+
+        val needsCheck = now.minusSeconds(60) >= progressTimestamp
+        if (!needsCheck) {
+            return
+        }
+
+        try {
+            checkInManager.checkActive(applicationContext)
+            progressTimestamp = now
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                progressTimestamp = now
+                Timber.recordError(error)
+            }
+        }
     }
 
     private fun setNotification(data: CheckInServiceData): Notification {
@@ -119,10 +153,21 @@ internal class CheckInService : Service() {
             return
         }
 
+        // Check if the check-in has expired
         if (serviceData.expiresAt <= nowUtcInstant()) {
-            // Check-in expired, stop the service
             Timber.d("Check-in expired, stopping service")
-            stopSelf()
+            scope.launch {
+                try {
+                    checkInManager.clear(applicationContext)
+                    checkInManager.stop(applicationContext)
+                } catch (error: Exception) {
+                    error.rethrowCancellation {
+                        Timber.recordError(error)
+                    }
+                } finally {
+                    stopSelf()
+                }
+            }
             return
         }
 
@@ -172,6 +217,8 @@ internal class CheckInService : Service() {
     }
 
     override fun onDestroy() {
+        progressJob?.cancel()
+        progressJob = null
         scope.cancel()
         super.onDestroy()
     }
