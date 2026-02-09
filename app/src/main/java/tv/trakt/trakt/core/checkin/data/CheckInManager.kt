@@ -14,5 +14,5 @@ interface CheckInManager {
 
     suspend fun stop(context: Context)
 
-    fun clear(context: Context)
+    suspend fun clear(context: Context)
 }

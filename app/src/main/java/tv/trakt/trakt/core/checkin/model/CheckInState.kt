@@ -37,6 +37,13 @@ sealed interface CheckInState {
             is ActiveMovie, is ActiveEpisode -> true
         }
     }
+
+    fun isIdleOrActive(): Boolean {
+        return when (this) {
+            is Idle, is ActiveMovie, is ActiveEpisode -> true
+            is Loading, is Error -> false
+        }
+    }
 }
 
 val CheckInState.id: Int?

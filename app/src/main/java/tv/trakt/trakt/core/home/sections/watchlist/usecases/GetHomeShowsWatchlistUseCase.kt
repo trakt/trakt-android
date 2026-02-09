@@ -23,7 +23,7 @@ internal class GetHomeShowsWatchlistUseCase(
     private val homeWatchlistLocalSource: HomeWatchlistLocalDataSource,
 ) {
     suspend fun getLocalWatchlist(limit: Int? = null): ImmutableList<WatchlistItem> {
-        return homeWatchlistLocalSource.getItems()
+        return homeWatchlistLocalSource.getShowItems()
             .sortedWith(SortComparator)
             .take(limit ?: Int.MAX_VALUE)
             .toImmutableList()
@@ -37,7 +37,7 @@ internal class GetHomeShowsWatchlistUseCase(
         ).asyncMap {
             mapShowItem(it)
         }.also {
-            homeWatchlistLocalSource.setItems(items = it)
+            homeWatchlistLocalSource.setShowItems(items = it)
         }
             .sortedWith(SortComparator)
             .take(limit ?: Int.MAX_VALUE)

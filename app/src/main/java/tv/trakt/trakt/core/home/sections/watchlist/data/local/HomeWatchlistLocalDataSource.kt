@@ -3,9 +3,9 @@ package tv.trakt.trakt.core.home.sections.watchlist.data.local
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 
 internal interface HomeWatchlistLocalDataSource {
-    suspend fun setItems(items: List<WatchlistItem>)
+    suspend fun setShowItems(items: List<WatchlistItem.ShowItem>)
 
-    suspend fun getItems(): List<WatchlistItem>
+    suspend fun setMovieItems(items: List<WatchlistItem.MovieItem>)
 
     suspend fun getShowItems(): List<WatchlistItem.ShowItem>
 

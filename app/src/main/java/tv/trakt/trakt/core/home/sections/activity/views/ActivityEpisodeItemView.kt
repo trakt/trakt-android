@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import tv.trakt.trakt.common.Config
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
@@ -66,11 +67,16 @@ internal fun ActivityEpisodeItemView(
             item.episode.images?.getScreenshotUrl()
                 ?: item.show.images?.getFanartUrl(),
         cardContent = {
-            InfoChip(
-                text = item.activityAt.toLocal().relativePastDateString(),
-                iconPainter = painterResource(R.drawable.ic_calendar_check),
-                containerColor = TraktTheme.colors.chipContainerOnContent,
-            )
+            val isPast = remember(item.activityAt) {
+                !item.activityAt.isAfter(nowUtcInstant())
+            }
+            if (isPast) {
+                InfoChip(
+                    text = item.activityAt.toLocal().relativePastDateString(),
+                    iconPainter = painterResource(R.drawable.ic_calendar_check),
+                    containerColor = TraktTheme.colors.chipContainerOnContent,
+                )
+            }
         },
         cardTopContent = {
             item.user?.let { user ->

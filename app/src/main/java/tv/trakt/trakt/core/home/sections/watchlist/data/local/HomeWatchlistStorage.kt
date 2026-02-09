@@ -2,44 +2,53 @@ package tv.trakt.trakt.core.home.sections.watchlist.data.local
 
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
+import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.MovieItem
+import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.ShowItem
 
 internal class HomeWatchlistStorage : HomeWatchlistLocalDataSource {
     private val mutex = Mutex()
-    private val storage = mutableMapOf<String, WatchlistItem>()
 
-    override suspend fun setItems(items: List<WatchlistItem>) {
+    private val storageShows = mutableMapOf<String, WatchlistItem>()
+    private val storageMovies = mutableMapOf<String, WatchlistItem>()
+
+    override suspend fun setShowItems(items: List<ShowItem>) {
         mutex.withLock {
-            with(storage) {
+            with(storageShows) {
+                clear()
                 putAll(items.associateBy { it.key })
             }
         }
     }
 
-    override suspend fun getItems(): List<WatchlistItem> {
-        return mutex.withLock {
-            storage.values.toList()
+    override suspend fun setMovieItems(items: List<MovieItem>) {
+        mutex.withLock {
+            with(storageMovies) {
+                clear()
+                putAll(items.associateBy { it.key })
+            }
         }
     }
 
-    override suspend fun getMovieItems(): List<WatchlistItem.MovieItem> {
+    override suspend fun getMovieItems(): List<MovieItem> {
         return mutex.withLock {
-            storage.values.filterIsInstance<WatchlistItem.MovieItem>()
+            storageMovies.values.filterIsInstance<MovieItem>()
         }
     }
 
-    override suspend fun getShowItems(): List<WatchlistItem.ShowItem> {
+    override suspend fun getShowItems(): List<ShowItem> {
         return mutex.withLock {
-            storage.values.filterIsInstance<WatchlistItem.ShowItem>()
+            storageShows.values.filterIsInstance<ShowItem>()
         }
     }
 
     suspend fun removeShows(showsIds: Set<TraktId>) {
         mutex.withLock {
-            with(storage) {
+            with(storageShows) {
                 showsIds.forEach {
-                    remove("${it.value}-show")
+                    remove("${it.value}-${MediaType.SHOW.value}")
                 }
             }
         }
@@ -47,15 +56,16 @@ internal class HomeWatchlistStorage : HomeWatchlistLocalDataSource {
 
     suspend fun removeMovies(moviesIds: Set<TraktId>) {
         mutex.withLock {
-            with(storage) {
+            with(storageMovies) {
                 moviesIds.forEach {
-                    remove("${it.value}-movie")
+                    remove("${it.value}-${MediaType.MOVIE.value}")
                 }
             }
         }
     }
 
     override fun clear() {
-        storage.clear()
+        storageShows.clear()
+        storageMovies.clear()
     }
 }

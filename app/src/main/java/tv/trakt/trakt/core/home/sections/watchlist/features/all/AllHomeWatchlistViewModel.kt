@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -40,6 +41,8 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.checkin.data.CheckInManager
+import tv.trakt.trakt.core.checkin.model.CheckInState
 import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_WATCHLIST_LIMIT
 import tv.trakt.trakt.core.home.HomeConfig.HOME_WATCHLIST_LIMIT
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
@@ -66,6 +69,7 @@ internal class AllHomeWatchlistViewModel(
     private val movieLocalDataSource: MovieLocalDataSource,
     private val modeManager: MediaModeManager,
     private val sessionManager: SessionManager,
+    private val checkInManager: CheckInManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = AllHomeWatchlistState()
@@ -117,10 +121,16 @@ internal class AllHomeWatchlistViewModel(
     }
 
     private fun observeData() {
-        userWatchlistSource.observeUpdates()
+        merge(
+            userWatchlistSource.observeUpdates(),
+            checkInManager.observe(),
+        )
             .distinctUntilChanged()
             .debounce(200)
             .onEach {
+                if (it is CheckInState && !it.isIdleOrActive()) {
+                    return@onEach
+                }
                 loadData(
                     localOnly = true,
                     ignoreErrors = true,

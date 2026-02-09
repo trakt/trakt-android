@@ -48,7 +48,7 @@ internal class GetHomeMoviesWatchlistUseCase(
             }
             .sortedWith(SortComparator)
             .also {
-                homeWatchlistLocalSource.setItems(items = it)
+                homeWatchlistLocalSource.setMovieItems(items = it)
             }
             .toImmutableList()
     }

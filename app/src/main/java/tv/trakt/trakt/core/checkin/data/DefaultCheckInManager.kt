@@ -30,7 +30,7 @@ import kotlin.time.Clock
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
 
-private val ACTIVE_CHECK_COOLDOWN = 15.seconds
+private val ACTIVE_CHECK_COOLDOWN = 10.seconds
 
 internal class DefaultCheckInManager(
     private val sessionManager: SessionManager,
@@ -101,6 +101,7 @@ internal class DefaultCheckInManager(
         try {
             val response = userRemoteDataSource.getWatchingNow()
             if (response == null) {
+                cacheMarkerProvider.invalidate()
                 clear(context)
                 Timber.d("No active check-ins / scrobbles found.")
                 return
@@ -115,6 +116,7 @@ internal class DefaultCheckInManager(
 
                 // Only update state if it's a different movie than currently stored
                 if (state.value !is CheckInState.ActiveMovie || state.value.id != newState.id) {
+                    cacheMarkerProvider.invalidate()
                     state.update { newState }
                     startForegroundService(context, newState)
                     Timber.d("New active movie check-in found: ${dto.title} (${dto.year})")
@@ -131,6 +133,7 @@ internal class DefaultCheckInManager(
 
                 // Only update state if it's a different episode than currently stored
                 if (state.value !is CheckInState.ActiveEpisode || state.value.id != newState.id) {
+                    cacheMarkerProvider.invalidate()
                     state.update { newState }
                     startForegroundService(context, newState)
                     Timber.d("New active episode check-in found: ${dto.title} S${dto.season}E${dto.number}")
@@ -166,7 +169,8 @@ internal class DefaultCheckInManager(
         }
     }
 
-    override fun clear(context: Context) {
+    override suspend fun clear(context: Context) {
+        cacheMarkerProvider.invalidate()
         state.update { CheckInState.Idle }
         CheckInService.stop(context.applicationContext)
 
