@@ -159,6 +159,7 @@ internal val listsModule = module {
     viewModel {
         ListsViewModel(
             sessionManager = get(),
+            checkInManager = get(),
             getPersonalListsUseCase = get(),
             localListsSource = get(),
             localListsItemsSource = get(),

@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -25,14 +26,17 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.profile.sections.thismonth.model.ThisMonthStats
 import tv.trakt.trakt.core.profile.sections.thismonth.usecases.GetThisMonthUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 
+@OptIn(FlowPreview::class)
 internal class ProfileViewModel(
     private val sessionManager: SessionManager,
     private val getThisMonthUseCase: GetThisMonthUseCase,
     private val logoutUseCase: LogoutUserUseCase,
+    private val checkInManager: CheckInManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ProfileState()
@@ -43,18 +47,19 @@ internal class ProfileViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMonthStatsState = MutableStateFlow(initialState.loadingMonthStats)
     private val logoutLoadingState = MutableStateFlow(initialState.logoutLoading)
+    private val checkInState = MutableStateFlow(initialState.checkIn)
 
     init {
         loadMonthBackground()
         loadData()
         observeUser()
+        observeCheckIn()
 
         analytics.logScreenView(
             screenName = "profile",
         )
     }
 
-    @OptIn(FlowPreview::class)
     private fun observeUser() {
         viewModelScope.launch {
             userState.update {
@@ -66,6 +71,17 @@ internal class ProfileViewModel(
             .debounce(200)
             .onEach { user ->
                 userState.update { user }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeCheckIn() {
+        checkInManager.observe()
+            .debounce(200)
+            .map { it.isActive() }
+            .distinctUntilChanged()
+            .onEach { isActive ->
+                checkInState.update { isActive }
             }
             .launchIn(viewModelScope)
     }
@@ -117,6 +133,7 @@ internal class ProfileViewModel(
         loadingMonthStatsState,
         logoutLoadingState,
         userState,
+        checkInState,
     ) { state ->
         ProfileState(
             monthStats = state[0] as ThisMonthStats?,
@@ -125,6 +142,7 @@ internal class ProfileViewModel(
             loadingMonthStats = state[3] as LoadingState,
             logoutLoading = state[4] as LoadingState,
             user = state[5] as User?,
+            checkIn = state[6] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -216,6 +216,7 @@ internal val profileModule = module {
     viewModel {
         ProfileViewModel(
             sessionManager = get(),
+            checkInManager = get(),
             getThisMonthUseCase = get(),
             logoutUseCase = get(),
             analytics = get(),
