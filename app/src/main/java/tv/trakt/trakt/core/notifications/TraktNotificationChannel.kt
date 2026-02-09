@@ -21,6 +21,12 @@ enum class TraktNotificationChannel(
         description = "New movies releases",
         importance = NotificationManager.IMPORTANCE_DEFAULT,
     ),
+    CHECK_IN(
+        id = "id_channel_checkin",
+        title = "Check In (Now Watching)",
+        description = "Notifications related to your current watching activity",
+        importance = NotificationManager.IMPORTANCE_DEFAULT,
+    ),
     ;
 
     fun createChannel(): NotificationChannel {

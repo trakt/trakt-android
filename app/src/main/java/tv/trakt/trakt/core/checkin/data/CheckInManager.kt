@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.checkin.data
 
+import android.content.Context
 import kotlinx.coroutines.flow.Flow
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.checkin.model.CheckInState
@@ -7,11 +8,11 @@ import tv.trakt.trakt.core.checkin.model.CheckInState
 interface CheckInManager {
     suspend fun startMovie(movieId: TraktId)
 
-    suspend fun checkActive()
+    suspend fun checkActive(context: Context)
 
     fun observe(): Flow<CheckInState>
 
     suspend fun stop()
 
-    fun clear()
+    fun clear(context: Context)
 }

@@ -48,6 +48,7 @@ import java.time.temporal.ChronoUnit.MINUTES
 
 @OptIn(FlowPreview::class)
 internal class MainViewModel(
+    private val appContext: Context,
     private val sessionManager: SessionManager,
     private val checkInManager: CheckInManager,
     private val authorizePreferences: DataStore<Preferences>,
@@ -199,7 +200,7 @@ internal class MainViewModel(
                 if (!sessionManager.isAuthenticated()) {
                     return@launch
                 }
-                checkInManager.checkActive()
+                checkInManager.checkActive(appContext)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
@@ -253,7 +254,7 @@ internal class MainViewModel(
 
     fun dismissCheckIn() {
         viewModelScope.launch {
-            checkInManager.clear()
+            checkInManager.clear(appContext)
             try {
                 checkInManager.stop()
             } catch (error: Exception) {

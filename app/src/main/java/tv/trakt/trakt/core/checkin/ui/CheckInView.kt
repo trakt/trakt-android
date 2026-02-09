@@ -68,6 +68,7 @@ import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.theme.HorizontalCheckInImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Instant
+import kotlin.math.roundToLong
 import kotlin.time.Duration.Companion.minutes
 
 private val viewShape = RoundedCornerShape(20.dp)
@@ -118,7 +119,7 @@ internal fun CheckInView(
     }
 
     val minutesLeft = remember(secondsLeft) {
-        secondsLeft / 60L
+        (secondsLeft / 60F).roundToLong()
     }
 
     LaunchedEffect(Unit) {

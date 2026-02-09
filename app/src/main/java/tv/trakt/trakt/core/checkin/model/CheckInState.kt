@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.checkin.model
 
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images.Size
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveEpisode
@@ -37,6 +38,24 @@ sealed interface CheckInState {
         }
     }
 }
+
+val CheckInState.id: Int?
+    get() {
+        return when (this) {
+            is ActiveMovie -> movie.ids.trakt.value
+            is ActiveEpisode -> episode.ids.trakt.value
+            else -> null
+        }
+    }
+
+val CheckInState.type: MediaType?
+    get() {
+        return when (this) {
+            is ActiveMovie -> MediaType.MOVIE
+            is ActiveEpisode -> MediaType.EPISODE
+            else -> null
+        }
+    }
 
 val CheckInState.title: String?
     get() {

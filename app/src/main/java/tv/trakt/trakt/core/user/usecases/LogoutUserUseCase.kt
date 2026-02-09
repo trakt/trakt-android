@@ -52,7 +52,7 @@ internal class LogoutUserUseCase(
     suspend fun logoutUser() {
         sessionManager.clear()
         collapsingManager.clear()
-        checkInManager.clear()
+        checkInManager.clear(appContext)
 
         apiClients.forEach { api ->
             api.client.authProvider<BearerAuthProvider>()?.clearToken()

@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.checkin.data
 
+import android.content.Context
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,7 +17,15 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import tv.trakt.trakt.core.checkin.data.remote.CheckInRemoteDataSource
+import tv.trakt.trakt.core.checkin.data.service.CheckInService
+import tv.trakt.trakt.core.checkin.data.service.CheckInServiceData
 import tv.trakt.trakt.core.checkin.model.CheckInState
+import tv.trakt.trakt.core.checkin.model.expiresAt
+import tv.trakt.trakt.core.checkin.model.id
+import tv.trakt.trakt.core.checkin.model.image
+import tv.trakt.trakt.core.checkin.model.startedAt
+import tv.trakt.trakt.core.checkin.model.title
+import tv.trakt.trakt.core.checkin.model.type
 import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.seconds
@@ -76,7 +85,7 @@ internal class DefaultCheckInManager(
         }
     }
 
-    override suspend fun checkActive() {
+    override suspend fun checkActive(context: Context) {
         if (!sessionManager.isAuthenticated()) {
             Timber.d("Not authenticated, skipping check-in stop.")
             return
@@ -99,25 +108,29 @@ internal class DefaultCheckInManager(
             }
 
             response.movie?.let { dto ->
-                state.update {
-                    CheckInState.ActiveMovie(
-                        movie = Movie.fromDto(dto),
-                        startedAt = response.startedAt.toInstant(),
-                        expiresAt = response.expiresAt.toInstant(),
-                    )
-                }
+                val newState = CheckInState.ActiveMovie(
+                    movie = Movie.fromDto(dto),
+                    startedAt = response.startedAt.toInstant(),
+                    expiresAt = response.expiresAt.toInstant(),
+                )
+
+                state.update { newState }
+                startForegroundService(context, newState)
+
                 Timber.d("Active movie check-in found: ${dto.title} (${dto.year})")
             }
 
             response.episode?.let { dto ->
-                state.update {
-                    CheckInState.ActiveEpisode(
-                        show = Show.fromDto(response.show!!),
-                        episode = Episode.fromDto(dto),
-                        startedAt = response.startedAt.toInstant(),
-                        expiresAt = response.expiresAt.toInstant(),
-                    )
-                }
+                val newState = CheckInState.ActiveEpisode(
+                    show = Show.fromDto(response.show!!),
+                    episode = Episode.fromDto(dto),
+                    startedAt = response.startedAt.toInstant(),
+                    expiresAt = response.expiresAt.toInstant(),
+                )
+
+                state.update { newState }
+                startForegroundService(context, newState)
+
                 Timber.d("Active episode check-in found: ${dto.title} S${dto.season}E${dto.number}")
             }
         } catch (error: Exception) {
@@ -148,8 +161,37 @@ internal class DefaultCheckInManager(
         }
     }
 
-    override fun clear() {
+    override fun clear(context: Context) {
         state.update { CheckInState.Idle }
+        CheckInService.stop(context.applicationContext)
         Timber.d("Cleared check-in state.")
+    }
+
+    private fun startForegroundService(
+        context: Context,
+        state: CheckInState,
+    ) {
+        val type = state.type
+        val startedAt = state.startedAt
+        val expiresAt = state.expiresAt
+
+        if (type == null || startedAt == null || expiresAt == null) {
+            Timber.d("Invalid check-in state for starting service, missing required data.")
+            return
+        }
+
+        val data = CheckInServiceData(
+            mediaId = state.id ?: -1,
+            mediaType = type,
+            mediaImage = state.image,
+            title = state.title ?: "",
+            startedAt = startedAt,
+            expiresAt = expiresAt,
+        )
+
+        CheckInService.start(
+            context = context,
+            data = data,
+        )
     }
 }
