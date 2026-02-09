@@ -330,7 +330,7 @@
     <string name="page_title_calendar">Calendar</string>
     <string name="text_today">Today</string>
     <string name="text_now_watching">Now Watching</string>
-    <string name="text_time_remaining">%s left</string>
+    <string name="text_time_remaining">%s remaining</string>
     <string name="warning_prompt_stop_watching">Are you sure you want to stop watching \"%s\"?</string>
     <string name="button_text_mark_as_watched">Track</string>
 
