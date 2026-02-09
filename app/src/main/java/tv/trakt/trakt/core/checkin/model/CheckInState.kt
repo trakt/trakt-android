@@ -51,7 +51,8 @@ val CheckInState.image: String?
     get() {
         return when (this) {
             is ActiveMovie -> movie.images?.getFanartUrl(Size.THUMB)
-            is ActiveEpisode -> episode.images?.getScreenshotUrl(Size.THUMB)
+            is ActiveEpisode -> show.images?.getFanartUrl(Size.THUMB)
+                ?: episode.images?.getScreenshotUrl(Size.THUMB)
             else -> null
         }
     }

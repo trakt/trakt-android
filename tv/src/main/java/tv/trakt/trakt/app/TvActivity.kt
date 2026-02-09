@@ -79,13 +79,14 @@ class TvActivity : ComponentActivity() {
     }
 
     private fun updateRemoteConfig() {
-        Firebase.remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Timber.d("Remote Config params updated: ${task.result}")
-            } else {
-                Timber.e("Remote Config fetch failed!")
+        Firebase.remoteConfig.fetchAndActivate()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Timber.d("Remote Config params updated: ${task.result}")
+                } else {
+                    Timber.e("Remote Config fetch failed!")
+                }
             }
-        }
     }
 
     companion object {

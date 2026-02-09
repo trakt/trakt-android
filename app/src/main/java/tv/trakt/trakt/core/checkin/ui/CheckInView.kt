@@ -92,6 +92,7 @@ internal fun CheckInView(
     subtitle: String? = null,
     startedAt: Instant?,
     expiresAt: Instant?,
+    onMediaClick: () -> Unit = {},
     onExpire: () -> Unit = {},
     onDismiss: () -> Unit = {},
 ) {
@@ -166,6 +167,7 @@ internal fun CheckInView(
                 totalDurationSeconds = { totalSeconds },
                 durationSeconds = { secondsLeft },
                 durationMinutes = { minutesLeft },
+                onMediaClick = onMediaClick,
                 onCollapseClick = { expanded = false },
                 onCloseClick = { confirmClose = true },
                 modifier = Modifier.padding(viewPadding),
@@ -177,6 +179,7 @@ internal fun CheckInView(
                 subtitle = subtitle,
                 totalDurationSeconds = { totalSeconds },
                 durationSeconds = { secondsLeft },
+                onMediaClick = onMediaClick,
                 onExpandClick = { expanded = true },
                 onCloseClick = { confirmClose = true },
                 modifier = Modifier.padding(collapsedViewPadding),
@@ -211,6 +214,7 @@ private fun ExpandedView(
     durationSeconds: () -> Long,
     durationMinutes: () -> Long,
     modifier: Modifier = Modifier,
+    onMediaClick: () -> Unit = {},
     onCollapseClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
 ) {
@@ -225,6 +229,7 @@ private fun ExpandedView(
                 height = imageHeight,
                 shape = imageShape,
                 shadow = imageShadow,
+                modifier = Modifier.onClick(onClick = onMediaClick),
             )
 
             Column(
@@ -312,7 +317,6 @@ private fun ExpandedView(
                         },
                         color = Color.White,
                         trackColor = progressTrackColor,
-                        gapSize = 3.dp,
                         drawStopIndicator = { },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -358,6 +362,7 @@ private fun CollapsedView(
     totalDurationSeconds: () -> Long,
     durationSeconds: () -> Long,
     modifier: Modifier = Modifier,
+    onMediaClick: () -> Unit = {},
     onExpandClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
 ) {
@@ -372,6 +377,7 @@ private fun CollapsedView(
                 height = collapsedImageHeight,
                 shape = collapsedImageShape,
                 shadow = collapsedImageShadow,
+                modifier = Modifier.onClick(onClick = onMediaClick),
             )
 
             Column(
@@ -428,7 +434,7 @@ private fun CollapsedView(
                     },
                     color = Color.White,
                     trackColor = progressTrackColor,
-                    gapSize = 3.dp,
+                    gapSize = 2.dp,
                     drawStopIndicator = { },
                     modifier = Modifier
                         .height(2.dp)
@@ -474,6 +480,7 @@ private fun ImageView(
     height: Dp,
     shape: Shape,
     shadow: Dp,
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     var isError by rememberSaveable(image) { mutableStateOf(false) }
@@ -490,7 +497,7 @@ private fun ImageView(
             contentDescription = null,
             contentScale = ContentScale.Crop,
             onError = { isError = true },
-            modifier = Modifier
+            modifier = modifier
                 .height(height)
                 .aspectRatio(HorizontalCheckInImageAspectRatio)
                 .shadow(shadow, shape)
@@ -502,6 +509,7 @@ private fun ImageView(
             height = height,
             shape = shape,
             shadow = shadow,
+            modifier = modifier,
         )
     }
 }
@@ -511,9 +519,10 @@ private fun ImageViewPlaceholder(
     height: Dp,
     shape: Shape,
     shadow: Dp,
+    modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .height(height)
             .aspectRatio(HorizontalCheckInImageAspectRatio)
             .shadow(shadow, shape)

@@ -235,6 +235,22 @@ internal fun MainScreen(
                         ) {
                             CheckInView(
                                 state = state,
+                                onMediaClick = {
+                                    when (state.checkIn) {
+                                        is ActiveMovie -> {
+                                            val state = state.checkIn as ActiveMovie
+                                            navController.navigateToMovie(state.movie.ids.trakt)
+                                        }
+                                        is ActiveEpisode -> {
+                                            val state = state.checkIn as ActiveEpisode
+                                            navController.navigateToEpisode(
+                                                showId = state.show.ids.trakt,
+                                                episode = state.episode,
+                                            )
+                                        }
+                                        else -> {}
+                                    }
+                                },
                                 onDismiss = viewModel::dismissCheckIn,
                             )
 
@@ -364,6 +380,7 @@ internal fun MainScreen(
 @Composable
 private fun ColumnScope.CheckInView(
     state: MainState,
+    onMediaClick: () -> Unit = {},
     onDismiss: () -> Unit = {},
 ) {
     var isExpired by remember(state.checkIn) {
@@ -390,6 +407,7 @@ private fun ColumnScope.CheckInView(
             image = state.checkIn?.image,
             startedAt = state.checkIn?.startedAt,
             expiresAt = state.checkIn?.expiresAt,
+            onMediaClick = onMediaClick,
             onExpire = {
                 isExpired = true
             },
