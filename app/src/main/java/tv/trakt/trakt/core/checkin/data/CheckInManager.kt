@@ -12,7 +12,7 @@ interface CheckInManager {
 
     fun observe(): Flow<CheckInState>
 
-    suspend fun stop()
+    suspend fun stop(context: Context)
 
     fun clear(context: Context)
 }

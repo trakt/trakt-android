@@ -40,7 +40,9 @@ import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.graphics.Brush.Companion.verticalGradient
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -61,6 +63,7 @@ import com.jakewharton.processphoenix.ProcessPhoenix
 import kotlinx.serialization.json.Json
 import timber.log.Timber
 import tv.trakt.trakt.LocalBottomBarVisibility
+import tv.trakt.trakt.LocalCheckInVisibility
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.common.helpers.LaunchedUpdateEffect
@@ -128,6 +131,7 @@ internal fun MainScreen(
     val localActivity = LocalActivity.current
     val localSnackbar = LocalSnackbarState.current
     val localBottomBarVisibility = LocalBottomBarVisibility.current
+    val localCheckInVisibility = LocalCheckInVisibility.current
 
     val navController = rememberNavController()
     val currentDestination = navController
@@ -225,13 +229,28 @@ internal fun MainScreen(
                         visible = localBottomBarVisibility.value,
                         enter = fadeIn(tween(200)) + slideInVertically(initialOffsetY = { it / 2 }),
                         exit = fadeOut(tween(200)) + slideOutVertically(targetOffsetY = { it / 2 }),
-                        modifier = Modifier
-                            .align(BottomCenter),
+                        modifier = Modifier.align(BottomCenter),
                     ) {
+                        val bottomColor = TraktTheme.colors.backgroundPrimary
+                        val bottomGradient = remember(localCheckInVisibility.value) {
+                            when {
+                                localCheckInVisibility.value -> verticalGradient(
+                                    colors = listOf(
+                                        Color.Transparent,
+                                        bottomColor.copy(alpha = 0.95F),
+                                        bottomColor,
+                                        bottomColor,
+                                    ),
+                                )
+                                else -> SolidColor(Color.Transparent)
+                            }
+                        }
+
                         Column(
                             verticalArrangement = spacedBy(6.dp),
                             modifier = Modifier
-                                .fillMaxWidth(TraktTheme.size.navigationBarRatio),
+                                .fillMaxWidth(TraktTheme.size.navigationBarRatio)
+                                .background(bottomGradient),
                         ) {
                             CheckInView(
                                 state = state,
@@ -379,14 +398,18 @@ private fun ColumnScope.CheckInView(
     onMediaClick: () -> Unit = {},
     onDismiss: () -> Unit = {},
 ) {
+    val localCheckInVisibility = LocalCheckInVisibility.current
+
     var isExpired by remember(state.checkIn) {
         mutableStateOf(false)
     }
+
     val isVisible = remember(state.checkIn, isExpired) {
         state.checkIn?.isActive() == true && !isExpired
     }
+
     AnimatedVisibility(
-        visible = isVisible,
+        visible = isVisible && localCheckInVisibility.value,
         enter = fadeIn(tween(250)) + slideInVertically(initialOffsetY = { it / 8 }),
         exit = fadeOut(tween(100)) + slideOutVertically(targetOffsetY = { it / 8 }),
         modifier = Modifier

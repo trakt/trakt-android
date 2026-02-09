@@ -256,7 +256,7 @@ internal class MainViewModel(
         viewModelScope.launch {
             checkInManager.clear(appContext)
             try {
-                checkInManager.stop()
+                checkInManager.stop(appContext)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)

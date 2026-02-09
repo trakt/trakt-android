@@ -142,7 +142,7 @@ internal class DefaultCheckInManager(
         }
     }
 
-    override suspend fun stop() {
+    override suspend fun stop(context: Context) {
         if (!sessionManager.isAuthenticated()) {
             Timber.d("Not authenticated, skipping check-in stop.")
             return
@@ -153,6 +153,8 @@ internal class DefaultCheckInManager(
             cacheMarkerProvider.invalidate()
 
             state.update { CheckInState.Idle }
+            CheckInService.stop(context.applicationContext)
+
             Timber.d("Stopped check-in.")
         } catch (error: Exception) {
             error.rethrowCancellation {
@@ -164,6 +166,7 @@ internal class DefaultCheckInManager(
     override fun clear(context: Context) {
         state.update { CheckInState.Idle }
         CheckInService.stop(context.applicationContext)
+
         Timber.d("Cleared check-in state.")
     }
 

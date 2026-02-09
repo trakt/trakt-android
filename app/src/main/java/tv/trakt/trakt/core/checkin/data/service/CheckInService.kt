@@ -172,6 +172,7 @@ internal class CheckInService : Service() {
             val intent = Intent(context, CheckInService::class.java).apply {
                 putExtra(EXTRA_DATA, data.toBundle())
             }
+            context.stopService(intent)
             context.startForegroundService(intent)
         }
 
