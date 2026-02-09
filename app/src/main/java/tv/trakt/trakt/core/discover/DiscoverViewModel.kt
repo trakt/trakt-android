@@ -6,6 +6,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.update
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.discover.DiscoverState.UserState
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.user.CollectionStateProvider
@@ -23,17 +25,20 @@ internal class DiscoverViewModel(
     private val modeManager: MediaModeManager,
     private val sessionManager: SessionManager,
     private val collectionStateProvider: CollectionStateProvider,
+    private val checkInManager: CheckInManager,
     analytics: Analytics,
 ) : ViewModel() {
     private val initialState = DiscoverState()
 
     private val modeState = MutableStateFlow(modeManager.getMode())
     private val userState = MutableStateFlow(initialState.user)
+    private val checkInState = MutableStateFlow(initialState.checkIn)
 
     init {
         observeUser()
         observeMode()
         observeData()
+        observeCheckIn()
 
         analytics.logScreenView(
             screenName = "discover",
@@ -67,13 +72,26 @@ internal class DiscoverViewModel(
             .launchIn(viewModelScope)
     }
 
+    private fun observeCheckIn() {
+        checkInManager.observe()
+            .debounce(200)
+            .onEach { checkIn ->
+                checkInState.update {
+                    checkIn.isActive()
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
     val state = combine(
         userState,
         collectionStateProvider.stateFlow,
-    ) { s1, s2 ->
+        checkInState,
+    ) { s1, s2, s3 ->
         DiscoverState(
             user = s1,
             collection = s2,
+            checkIn = s3,
         )
     }.stateIn(
         scope = viewModelScope,

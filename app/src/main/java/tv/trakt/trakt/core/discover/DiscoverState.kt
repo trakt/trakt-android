@@ -9,6 +9,7 @@ import tv.trakt.trakt.core.user.UserCollectionState
 internal data class DiscoverState(
     val collection: UserCollectionState = UserCollectionState.Default,
     val user: UserState = UserState(),
+    val checkIn: Boolean = false,
 ) {
     data class UserState(
         val user: User? = null,

@@ -61,6 +61,7 @@ internal val discoverModule = module {
     viewModel {
         DiscoverViewModel(
             sessionManager = get(),
+            checkInManager = get(),
             modeManager = get(),
             analytics = get(),
             collectionStateProvider = get(),
