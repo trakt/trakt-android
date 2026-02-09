@@ -26,11 +26,14 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 import timber.log.Timber
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.core.notifications.TraktNotificationChannel
+import tv.trakt.trakt.core.notifications.data.work.INTENT_NOTIFICATION_EXTRAS
+import tv.trakt.trakt.core.notifications.model.NotificationIntentExtras
 import tv.trakt.trakt.resources.R
 import kotlin.math.roundToLong
 import kotlin.time.Duration.Companion.seconds
@@ -103,7 +106,7 @@ internal class CheckInService : Service() {
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setColor(Purple500.toArgb())
             .setColorized(true)
-            .setContentIntent(createNotificationIntent())
+            .setContentIntent(createNotificationIntent(data))
 
         return notification.build()
     }
@@ -141,18 +144,29 @@ internal class CheckInService : Service() {
         return permission == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun createNotificationIntent(): PendingIntent {
-        val intent = Intent(
-            applicationContext,
-            Class.forName(MAIN_ACTIVITY_PATH),
-        ).apply {
+    private fun createNotificationIntent(data: CheckInServiceData): PendingIntent {
+        val targetClass = Class.forName(MAIN_ACTIVITY_PATH)
+
+        val notifyIntent = Intent(applicationContext, targetClass).apply {
+            putExtra(
+                INTENT_NOTIFICATION_EXTRAS,
+                Json.encodeToString(
+                    NotificationIntentExtras(
+                        mediaId = data.mediaId,
+                        mediaType = data.mediaType,
+                        extraId = data.extraId,
+                        extraValue1 = data.extraValue1,
+                        extraValue2 = data.extraValue2,
+                    ),
+                ),
+            )
+
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
-
         return PendingIntent.getActivity(
             applicationContext,
-            SERVICE_ID,
-            intent,
+            "${data.mediaType}-${data.mediaId}".hashCode(),
+            notifyIntent,
             FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT,
         )
     }

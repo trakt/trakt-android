@@ -22,7 +22,6 @@ import tv.trakt.trakt.core.checkin.data.service.CheckInServiceData
 import tv.trakt.trakt.core.checkin.model.CheckInState
 import tv.trakt.trakt.core.checkin.model.expiresAt
 import tv.trakt.trakt.core.checkin.model.id
-import tv.trakt.trakt.core.checkin.model.image
 import tv.trakt.trakt.core.checkin.model.startedAt
 import tv.trakt.trakt.core.checkin.model.title
 import tv.trakt.trakt.core.checkin.model.type
@@ -183,13 +182,16 @@ internal class DefaultCheckInManager(
             return
         }
 
+        val episodeState = state as? CheckInState.ActiveEpisode
         val data = CheckInServiceData(
             mediaId = state.id ?: -1,
             mediaType = type,
-            mediaImage = state.image,
             title = state.title ?: "",
             startedAt = startedAt,
             expiresAt = expiresAt,
+            extraId = episodeState?.show?.ids?.trakt?.value,
+            extraValue1 = episodeState?.episode?.season,
+            extraValue2 = episodeState?.episode?.number,
         )
 
         CheckInService.start(
