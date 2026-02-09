@@ -229,26 +229,22 @@ internal fun MainScreen(
                             .align(BottomCenter),
                     ) {
                         Column(
-                            verticalArrangement = spacedBy(8.dp),
+                            verticalArrangement = spacedBy(6.dp),
                             modifier = Modifier
                                 .fillMaxWidth(TraktTheme.size.navigationBarRatio),
                         ) {
                             CheckInView(
                                 state = state,
                                 onMediaClick = {
-                                    when (state.checkIn) {
-                                        is ActiveMovie -> {
-                                            val state = state.checkIn as ActiveMovie
-                                            navController.navigateToMovie(state.movie.ids.trakt)
-                                        }
-                                        is ActiveEpisode -> {
-                                            val state = state.checkIn as ActiveEpisode
-                                            navController.navigateToEpisode(
-                                                showId = state.show.ids.trakt,
-                                                episode = state.episode,
-                                            )
-                                        }
-                                        else -> {}
+                                    when (val it = state.checkIn) {
+                                        is ActiveMovie -> navController.navigateToMovie(
+                                            movieId = it.movie.ids.trakt,
+                                        )
+                                        is ActiveEpisode -> navController.navigateToEpisode(
+                                            showId = it.show.ids.trakt,
+                                            episode = it.episode,
+                                        )
+                                        else -> Unit
                                     }
                                 },
                                 onDismiss = viewModel::dismissCheckIn,
