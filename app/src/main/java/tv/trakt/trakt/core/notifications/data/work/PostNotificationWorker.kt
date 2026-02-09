@@ -106,7 +106,7 @@ internal class PostNotificationWorker(
         val notification = Notification
             .Builder(applicationContext, channel)
             .setContentIntent(createNotificationIntent())
-            .setSmallIcon(R.drawable.ic_trakt_icon)
+            .setSmallIcon(R.drawable.ic_trakt_icon_notification)
             .setContentTitle(title)
             .setContentText(content)
             .setAutoCancel(true)

@@ -95,7 +95,7 @@ internal class CheckInService : Service() {
         val notification = NotificationCompat
             .Builder(applicationContext, TraktNotificationChannel.CHECK_IN.id)
             .setForegroundServiceBehavior(FOREGROUND_SERVICE_IMMEDIATE)
-            .setSmallIcon(R.drawable.ic_trakt_icon)
+            .setSmallIcon(R.drawable.ic_trakt_icon_notification)
             .setSubText(getString(R.string.text_now_watching))
             .setContentTitle(data.title)
             .setContentText(contentText)
