@@ -94,6 +94,14 @@ internal fun ListMovieContextSheet(
                         message = localContext.getString(R.string.text_info_list_removed),
                     )
                 },
+                onCheckIn = {
+                    sheetScope.launch { state.hide() }
+                        .invokeOnCompletion {
+                            if (!state.isVisible) {
+                                onDismiss()
+                            }
+                        }
+                },
                 onError = {
                     sheetScope.dismissWithMessage(
                         state = state,

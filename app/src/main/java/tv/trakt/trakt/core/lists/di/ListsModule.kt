@@ -275,6 +275,7 @@ internal val listsModule = module {
 
     viewModel { (movie: Movie, list: CustomList) ->
         ListMovieContextViewModel(
+            appContext = androidApplication(),
             movie = movie,
             list = list,
             updateMovieWatchlistUseCase = get(),
@@ -285,6 +286,7 @@ internal val listsModule = module {
             loadProgressUseCase = get(),
             loadWatchlistUseCase = get(),
             sessionManager = get(),
+            checkInManager = get(),
             analytics = get(),
         )
     }

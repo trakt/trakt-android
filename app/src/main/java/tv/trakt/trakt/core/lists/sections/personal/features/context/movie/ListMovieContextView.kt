@@ -57,6 +57,7 @@ internal fun ListMovieContextView(
     onRemoveWatched: (Movie) -> Unit,
     onRemoveWatchlist: (Movie) -> Unit,
     onRemoveList: (Movie) -> Unit,
+    onCheckIn: () -> Unit,
     onError: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -69,6 +70,7 @@ internal fun ListMovieContextView(
     LaunchedEffect(
         state.loadingWatched,
         state.loadingWatchlist,
+        state.loadingCheckIn,
         state.loadingList,
     ) {
         when {
@@ -78,14 +80,15 @@ internal fun ListMovieContextView(
                     else -> onRemoveWatched(movie)
                 }
             }
-
             state.loadingWatchlist == LoadingState.DONE -> {
                 when {
                     !state.isWatchlist -> onAddWatchlist(movie)
                     else -> onRemoveWatchlist(movie)
                 }
             }
-
+            state.loadingCheckIn == LoadingState.DONE -> {
+                onCheckIn()
+            }
             state.loadingList == LoadingState.DONE -> {
                 onRemoveList(movie)
             }
@@ -170,7 +173,9 @@ internal fun ListMovieContextView(
     DateSelectionSheet(
         active = dateSheet,
         title = movie.title,
+        nowWatchingVisible = true,
         onResult = viewModel::addToWatched,
+        onCheckIn = viewModel::addToCheckIn,
         onDismiss = {
             dateSheet = false
         },
@@ -240,13 +245,7 @@ private fun ActionButtons(
     onRemoveListClick: () -> Unit,
 ) {
     val isReleased = remember { movie.isReleased }
-    val isLoadingOrDone =
-        state.loadingWatched.isLoading ||
-            state.loadingWatchlist.isLoading ||
-            state.loadingWatchlist.isDone ||
-            state.loadingWatched.isDone ||
-            state.loadingList.isLoading ||
-            state.loadingList.isDone
+    val isLoadingOrDone = state.isLoadingOrDone
 
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
@@ -256,7 +255,9 @@ private fun ActionButtons(
             if (state.isWatched && !state.isWatchlist) {
                 GhostButton(
                     enabled = !isLoadingOrDone,
-                    loading = state.loadingWatched.isLoading || state.loadingWatched.isDone,
+                    loading = state.loadingWatched.isLoading ||
+                        state.loadingWatched.isDone ||
+                        state.loadingCheckIn.isLoading,
                     text = stringResource(R.string.button_text_remove_from_history),
                     onClick = onWatchedClick,
                     icon = painterResource(R.drawable.ic_trash),
@@ -270,7 +271,9 @@ private fun ActionButtons(
             } else {
                 GhostButton(
                     enabled = !isLoadingOrDone,
-                    loading = state.loadingWatched.isLoading || state.loadingWatched.isDone,
+                    loading = state.loadingWatched.isLoading ||
+                        state.loadingWatched.isDone ||
+                        state.loadingCheckIn.isLoading,
                     text = stringResource(R.string.button_text_mark_as_watched),
                     iconSize = 22.dp,
                     iconSpace = 16.dp,

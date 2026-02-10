@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.lists.sections.personal.features.context.movie
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.async
@@ -23,6 +24,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
@@ -34,6 +36,7 @@ import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 
 internal class ListMovieContextViewModel(
+    private val appContext: Context,
     private val movie: Movie,
     private val list: CustomList,
     private val updateMovieWatchlistUseCase: UpdateMovieWatchlistUseCase,
@@ -44,6 +47,7 @@ internal class ListMovieContextViewModel(
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
     private val sessionManager: SessionManager,
+    private val checkInManager: CheckInManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ListMovieContextState()
@@ -53,6 +57,7 @@ internal class ListMovieContextViewModel(
 
     private val loadingWatchedState = MutableStateFlow(initialState.loadingWatched)
     private val loadingWatchlistState = MutableStateFlow(initialState.loadingWatchlist)
+    private val loadingCheckInState = MutableStateFlow(initialState.loadingCheckIn)
     private val loadingListState = MutableStateFlow(initialState.loadingList)
 
     private val errorState = MutableStateFlow(initialState.error)
@@ -242,6 +247,38 @@ internal class ListMovieContextViewModel(
         }
     }
 
+    fun addToCheckIn() {
+        if (isLoading()) {
+            return
+        }
+
+        viewModelScope.launch {
+            clear()
+            try {
+                loadingCheckInState.update { LOADING }
+
+                checkInManager.startMovie(movie.ids.trakt, appContext)
+                userWatchlistLocalSource.removeMovies(
+                    ids = setOf(movie.ids.trakt),
+                    notify = true,
+                )
+
+                analytics.progress.logAddWatchedMedia(
+                    mediaType = "movie",
+                    source = "list_movie_context",
+                    date = "checkin",
+                )
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            } finally {
+                loadingCheckInState.update { DONE }
+            }
+        }
+    }
+
     fun removeFromList() {
         if (isLoading()) {
             return
@@ -270,6 +307,7 @@ internal class ListMovieContextViewModel(
     fun clear() {
         loadingWatchedState.update { IDLE }
         loadingWatchlistState.update { IDLE }
+        loadingCheckInState.update { IDLE }
         loadingListState.update { IDLE }
 
         errorState.update { null }
@@ -278,6 +316,7 @@ internal class ListMovieContextViewModel(
     private fun isLoading(): Boolean {
         return loadingWatchedState.value.isLoading ||
             loadingWatchlistState.value.isLoading ||
+            loadingCheckInState.value.isLoading ||
             loadingListState.value.isLoading
     }
 
@@ -286,6 +325,7 @@ internal class ListMovieContextViewModel(
         isWatchedState,
         loadingWatchedState,
         loadingWatchlistState,
+        loadingCheckInState,
         loadingListState,
         errorState,
     ) { state ->
@@ -294,8 +334,9 @@ internal class ListMovieContextViewModel(
             isWatched = state[1] as Boolean,
             loadingWatched = state[2] as LoadingState,
             loadingWatchlist = state[3] as LoadingState,
-            loadingList = state[4] as LoadingState,
-            error = state[5] as Exception?,
+            loadingCheckIn = state[4] as LoadingState,
+            loadingList = state[5] as LoadingState,
+            error = state[6] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,
