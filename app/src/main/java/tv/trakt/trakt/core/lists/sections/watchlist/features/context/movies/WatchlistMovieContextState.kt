@@ -9,6 +9,7 @@ import tv.trakt.trakt.common.model.User
 internal data class WatchlistMovieContextState(
     val loadingWatched: LoadingState = IDLE,
     val loadingWatchlist: LoadingState = IDLE,
+    val loadingCheckIn: LoadingState = IDLE,
     val user: User? = null,
     val error: Exception? = null,
 )

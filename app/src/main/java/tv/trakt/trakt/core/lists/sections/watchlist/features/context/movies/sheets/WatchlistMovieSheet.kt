@@ -92,6 +92,14 @@ internal fun WatchlistMovieSheet(
                         }
                     }
                 },
+                onCheckIn = {
+                    sheetScope.launch { state.hide() }
+                        .invokeOnCompletion {
+                            if (!state.isVisible) {
+                                onDismiss()
+                            }
+                        }
+                },
                 onError = {
                     sheetScope.run {
                         launch { state.hide() }

@@ -188,16 +188,17 @@ internal class HomeWatchlistViewModel(
                     val showsAsync = async { getShowsUseCase.getWatchlist(HOME_WATCHLIST_LIMIT) }
                     val moviesAsync = async { getMoviesUseCase.getWatchlist(HOME_WATCHLIST_LIMIT) }
 
+                    val items = showsAsync.await() + moviesAsync.await()
+
                     itemsState.update {
-                        (showsAsync.await() + moviesAsync.await())
+                        items
                             .filter {
                                 when (filterState.value) {
                                     MediaMode.SHOWS -> it is ShowItem
                                     MediaMode.MOVIES -> it is MovieItem
                                     else -> true
                                 }
-                            }
-                            .sortedWith(
+                            }.sortedWith(
                                 compareByDescending<WatchlistItem> { it.released }
                                     .thenByDescending { it.listedAt },
                             )

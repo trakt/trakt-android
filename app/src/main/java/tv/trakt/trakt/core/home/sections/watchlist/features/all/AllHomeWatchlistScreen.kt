@@ -383,6 +383,7 @@ private fun AllHomeDateSelectionSheet(
             is MovieItem -> null
             else -> null
         },
+        nowWatchingVisible = item is MovieItem,
         onResult = {
             if (item == null) return@DateSelectionSheet
             onDateSelected(it)

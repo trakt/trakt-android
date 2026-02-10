@@ -55,6 +55,7 @@ internal fun WatchlistMovieContextView(
     modifier: Modifier = Modifier,
     onAddWatched: (Movie) -> Unit,
     onRemoveWatchlist: () -> Unit,
+    onCheckIn: () -> Unit,
     onError: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -62,10 +63,11 @@ internal fun WatchlistMovieContextView(
     var confirmRemoveSheet by remember { mutableStateOf(false) }
     var dateSheet by remember { mutableStateOf<Movie?>(null) }
 
-    LaunchedEffect(state.loadingWatched, state.loadingWatchlist) {
+    LaunchedEffect(state.loadingWatched, state.loadingWatchlist, state.loadingCheckIn) {
         when {
             state.loadingWatched == DONE -> onAddWatched(item)
             state.loadingWatchlist == DONE -> onRemoveWatchlist()
+            state.loadingCheckIn == DONE -> onCheckIn()
         }
     }
 
@@ -114,6 +116,9 @@ internal fun WatchlistMovieContextView(
                 movieId = item.ids.trakt,
                 customDate = selectedDate,
             )
+        },
+        onCheckIn = {
+            viewModel.addToCheckIn(item.ids.trakt)
         },
         onDismiss = {
             dateSheet = null
@@ -196,7 +201,8 @@ private fun MovieActionButtons(
     ) {
         val isLoading =
             state.loadingWatched.isLoading ||
-                state.loadingWatchlist.isLoading
+                state.loadingWatchlist.isLoading ||
+                state.loadingCheckIn.isLoading
 
         val isReleased = remember { movie.isReleased }
         if (isReleased) {
@@ -211,7 +217,7 @@ private fun MovieActionButtons(
                         else -> painterResource(R.drawable.ic_check_double)
                     },
                     enabled = !isLoading,
-                    loading = state.loadingWatched.isLoading,
+                    loading = state.loadingWatched.isLoading || state.loadingCheckIn.isLoading,
                     iconSize = 20.dp,
                     iconSpace = 16.dp,
                     onClick = onWatchedClick,
@@ -242,16 +248,19 @@ private fun MovieActionButtons(
 private fun DateSelectionSheet(
     movie: Movie?,
     onDateSelected: (DateSelectionResult?) -> Unit,
+    onCheckIn: () -> Unit,
     onDismiss: () -> Unit,
 ) {
     DateSelectionSheet(
         active = movie != null,
         title = movie?.title.orEmpty(),
         subtitle = null,
+        nowWatchingVisible = true,
         onResult = {
             if (movie == null) return@DateSelectionSheet
             onDateSelected(it)
         },
+        onCheckIn = onCheckIn,
         onDismiss = onDismiss,
     )
 }

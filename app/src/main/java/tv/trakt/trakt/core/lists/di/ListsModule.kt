@@ -249,11 +249,13 @@ internal val listsModule = module {
 
     viewModel {
         WatchlistMovieContextViewModel(
+            appContext = androidApplication(),
             updateMovieWatchlistUseCase = get(),
             userWatchlistLocalSource = get(),
             updateMovieHistoryUseCase = get(),
             loadProgressUseCase = get(),
             sessionManager = get(),
+            checkInManager = get(),
             analytics = get(),
         )
     }
