@@ -33,6 +33,8 @@ import tv.trakt.trakt.core.lists.features.details.ListDetailsState.ListDetailsIn
 import tv.trakt.trakt.core.lists.features.details.navigation.ListsDetailsDestination
 import tv.trakt.trakt.core.lists.features.details.usecases.GetListItemsUseCase
 import tv.trakt.trakt.core.lists.model.PersonalListItem
+import tv.trakt.trakt.core.user.CollectionStateProvider
+import tv.trakt.trakt.core.user.UserCollectionState
 
 @OptIn(FlowPreview::class)
 internal class ListDetailsViewModel(
@@ -40,6 +42,7 @@ internal class ListDetailsViewModel(
     private val getListItemsUseCase: GetListItemsUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
+    private val collectionStateProvider: CollectionStateProvider,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<ListsDetailsDestination>()
@@ -65,6 +68,7 @@ internal class ListDetailsViewModel(
 
     init {
         loadData()
+        observeCollection()
     }
 
     fun loadData(ignoreErrors: Boolean = false) {
@@ -95,6 +99,11 @@ internal class ListDetailsViewModel(
                 loadingState.update { DONE }
             }
         }
+    }
+
+    private fun observeCollection() {
+        collectionStateProvider
+            .launchIn(viewModelScope)
     }
 
     private suspend fun loadEmptyIfNeeded(): Boolean {
@@ -161,6 +170,7 @@ internal class ListDetailsViewModel(
         listState,
         itemsState,
         sortingState,
+        collectionStateProvider.stateFlow,
         navigateShow,
         navigateMovie,
         errorState,
@@ -170,9 +180,10 @@ internal class ListDetailsViewModel(
             list = state[1] as? ListDetailsInfo,
             items = state[2] as? ImmutableList<PersonalListItem>,
             sorting = state[3] as Sorting,
-            navigateShow = state[4] as? TraktId,
-            navigateMovie = state[5] as? TraktId,
-            error = state[6] as? Exception,
+            collection = state[4] as UserCollectionState,
+            navigateShow = state[5] as? TraktId,
+            navigateMovie = state[6] as? TraktId,
+            error = state[7] as? Exception,
         )
     }.stateIn(
         scope = viewModelScope,

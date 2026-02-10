@@ -65,6 +65,7 @@ import tv.trakt.trakt.core.lists.model.PersonalListItem.MovieItem
 import tv.trakt.trakt.core.lists.model.PersonalListItem.ShowItem
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
+import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
@@ -219,6 +220,7 @@ internal fun ListDetailsContent(
             listItems = (state.items ?: emptyList()).toImmutableList(),
             listState = listState,
             listSorting = state.sorting,
+            collectionState = state.collection,
             contentPadding = contentPadding,
             loading = state.loading.isLoading,
             onClick = onClick,
@@ -283,6 +285,7 @@ private fun ContentList(
     listState: LazyListState,
     listItems: ImmutableList<PersonalListItem>,
     listSorting: Sorting?,
+    collectionState: UserCollectionState,
     loading: Boolean,
     onClick: (PersonalListItem) -> Unit,
     onLongClick: (PersonalListItem) -> Unit,
@@ -355,6 +358,8 @@ private fun ContentList(
                         item = item,
                         shadow = index == 0,
                         enabled = !loading,
+                        watched = collectionState.isWatched(item.id, item.type),
+                        watchlist = collectionState.isWatchlist(item.id, item.type),
                         onClick = { onClick(item) },
                         onLongClick = { onLongClick(item) },
                         modifier = Modifier
@@ -369,6 +374,8 @@ private fun ContentList(
                         item = item,
                         shadow = index == 0,
                         enabled = !loading,
+                        watched = collectionState.isWatched(item.id, item.type),
+                        watchlist = collectionState.isWatchlist(item.id, item.type),
                         onClick = { onClick(item) },
                         onLongClick = { onLongClick(item) },
                         modifier = Modifier
