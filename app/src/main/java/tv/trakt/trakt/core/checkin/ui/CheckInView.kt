@@ -262,7 +262,9 @@ private fun ExpandedView(
                     ) {
                         Column(
                             verticalArrangement = spacedBy(2.dp, Alignment.Bottom),
-                            modifier = Modifier.weight(1F, fill = false),
+                            modifier = Modifier
+                                .weight(1F, fill = false)
+                                .onClick(onClick = onMediaClick),
                         ) {
                             title?.let {
                                 Text(
@@ -397,7 +399,8 @@ private fun CollapsedView(
                     Column(
                         verticalArrangement = spacedBy(0.dp, Alignment.Bottom),
                         modifier = Modifier
-                            .weight(1F, fill = false),
+                            .weight(1F, fill = false)
+                            .onClick(onClick = onMediaClick),
                     ) {
                         title?.let {
                             Text(
