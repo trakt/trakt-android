@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.movies.ui.context
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.async
@@ -23,6 +24,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
@@ -33,6 +35,7 @@ import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 
 internal class MovieContextViewModel(
+    private val appContext: Context,
     private val movie: Movie,
     private val updateMovieWatchlistUseCase: UpdateMovieWatchlistUseCase,
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
@@ -41,6 +44,7 @@ internal class MovieContextViewModel(
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
     private val sessionManager: SessionManager,
+    private val checkInManager: CheckInManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = MovieContextState()
@@ -50,6 +54,7 @@ internal class MovieContextViewModel(
 
     private val loadingWatchedState = MutableStateFlow(initialState.loadingWatched)
     private val loadingWatchlistState = MutableStateFlow(initialState.loadingWatchlist)
+    private val loadingCheckInState = MutableStateFlow(initialState.loadingCheckIn)
 
     private val userState = MutableStateFlow(initialState.user)
     private val errorState = MutableStateFlow(initialState.error)
@@ -214,6 +219,38 @@ internal class MovieContextViewModel(
         }
     }
 
+    fun addToCheckIn() {
+        if (isLoading()) {
+            return
+        }
+
+        viewModelScope.launch {
+            clear()
+            try {
+                loadingCheckInState.update { LOADING }
+
+                checkInManager.startMovie(movie.ids.trakt, appContext)
+                userWatchlistLocalSource.removeMovies(
+                    ids = setOf(movie.ids.trakt),
+                    notify = true,
+                )
+
+                analytics.progress.logAddWatchedMedia(
+                    mediaType = "movie",
+                    source = "movie_context",
+                    date = "checkin",
+                )
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            } finally {
+                loadingCheckInState.update { DONE }
+            }
+        }
+    }
+
     fun removeFromWatched() {
         if (isLoading()) {
             return
@@ -253,7 +290,9 @@ internal class MovieContextViewModel(
     }
 
     private fun isLoading(): Boolean {
-        return loadingWatchedState.value.isLoading || loadingWatchlistState.value.isLoading
+        return loadingWatchedState.value.isLoading ||
+            loadingWatchlistState.value.isLoading ||
+            loadingCheckInState.value.isLoading
     }
 
     val state: StateFlow<MovieContextState> = combine(
@@ -261,6 +300,7 @@ internal class MovieContextViewModel(
         isWatchedState,
         loadingWatchedState,
         loadingWatchlistState,
+        loadingCheckInState,
         userState,
         errorState,
     ) { state ->
@@ -269,8 +309,9 @@ internal class MovieContextViewModel(
             isWatched = state[1] as Boolean,
             loadingWatched = state[2] as LoadingState,
             loadingWatchlist = state[3] as LoadingState,
-            user = state[4] as User?,
-            error = state[5] as Exception?,
+            loadingCheckIn = state[4] as LoadingState,
+            user = state[5] as User?,
+            error = state[6] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

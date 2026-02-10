@@ -34,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 import timber.log.Timber
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
@@ -41,6 +42,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
+import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -67,10 +69,13 @@ internal fun DateSelectionSheet(
     active: Boolean = false,
     title: String,
     subtitle: String? = null,
+    nowWatchingVisible: Boolean = false,
+    onCheckIn: () -> Unit = {},
     onResult: (result: DateSelectionResult) -> Unit,
     onDismiss: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
+    val checkInManager = koinInject<CheckInManager>()
 
     var datePicker by remember { mutableStateOf(false) }
     var timePicker by remember { mutableStateOf<Instant?>(null) }
@@ -83,6 +88,15 @@ internal fun DateSelectionSheet(
             DateSelectionView(
                 title = title,
                 subtitle = subtitle,
+                nowWatchingVisible = nowWatchingVisible,
+                nowWatchingEnabled = !checkInManager.isActive(),
+                onNowWatchingClick = {
+                    scope.dismissWithAction(
+                        sheet = state,
+                        action = { onCheckIn() },
+                        onDismiss = onDismiss,
+                    )
+                },
                 onNowClick = {
                     scope.dismissWithAction(
                         sheet = state,
@@ -337,6 +351,7 @@ private fun Preview() {
             ),
             title = "The Matrix",
             onResult = { },
+            onCheckIn = { },
             onDismiss = { },
         )
     }

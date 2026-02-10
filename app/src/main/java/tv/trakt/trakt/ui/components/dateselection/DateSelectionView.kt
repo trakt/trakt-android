@@ -30,6 +30,9 @@ internal fun DateSelectionView(
     modifier: Modifier = Modifier,
     title: String,
     subtitle: String? = null,
+    nowWatchingEnabled: Boolean = true,
+    nowWatchingVisible: Boolean = false,
+    onNowWatchingClick: () -> Unit = {},
     onNowClick: () -> Unit = {},
     onReleaseClick: () -> Unit = {},
     onOtherClick: () -> Unit = {},
@@ -83,6 +86,9 @@ internal fun DateSelectionView(
         )
 
         ActionButtons(
+            nowWatchingEnabled = nowWatchingEnabled,
+            nowWatchingVisible = nowWatchingVisible,
+            onNowWatchingClick = onNowWatchingClick,
             onNowClick = onNowClick,
             onReleaseClick = onReleaseClick,
             onOtherClick = onOtherClick,
@@ -96,6 +102,9 @@ internal fun DateSelectionView(
 @Composable
 private fun ActionButtons(
     modifier: Modifier = Modifier,
+    nowWatchingEnabled: Boolean = true,
+    nowWatchingVisible: Boolean = false,
+    onNowWatchingClick: () -> Unit = {},
     onNowClick: () -> Unit = {},
     onReleaseClick: () -> Unit = {},
     onOtherClick: () -> Unit = {},
@@ -108,6 +117,16 @@ private fun ActionButtons(
                 translationX = -6.dp.toPx()
             },
     ) {
+        if (nowWatchingVisible) {
+            GhostButton(
+                text = stringResource(R.string.text_now_watching),
+                icon = painterResource(R.drawable.ic_eye),
+                iconSize = 22.dp,
+                iconSpace = 16.dp,
+                onClick = onNowWatchingClick,
+                enabled = nowWatchingEnabled,
+            )
+        }
         GhostButton(
             text = stringResource(R.string.button_text_mark_as_watched_now),
             icon = painterResource(R.drawable.ic_check),

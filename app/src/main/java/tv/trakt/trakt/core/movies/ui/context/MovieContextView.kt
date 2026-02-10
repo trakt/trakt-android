@@ -54,6 +54,7 @@ internal fun MovieContextView(
     onAddWatchlist: (Movie) -> Unit,
     onRemoveWatched: (Movie) -> Unit,
     onRemoveWatchlist: (Movie) -> Unit,
+    onCheckIn: () -> Unit,
     onError: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -62,16 +63,28 @@ internal fun MovieContextView(
     var confirmRemoveWatchedSheet by remember { mutableStateOf(false) }
     var dateSheet by remember { mutableStateOf(false) }
 
-    LaunchedEffect(state.loadingWatched, state.loadingWatchlist) {
+    LaunchedEffect(
+        state.loadingWatched,
+        state.loadingWatchlist,
+        state.loadingCheckIn,
+    ) {
         when {
-            state.loadingWatched == LoadingState.DONE -> when {
-                !state.isWatched -> onAddWatched(movie)
-                else -> onRemoveWatched(movie)
+            state.loadingWatched == LoadingState.DONE -> {
+                when {
+                    !state.isWatched -> onAddWatched(movie)
+                    else -> onRemoveWatched(movie)
+                }
             }
 
-            state.loadingWatchlist == LoadingState.DONE -> when {
-                !state.isWatchlist -> onAddWatchlist(movie)
-                else -> onRemoveWatchlist(movie)
+            state.loadingWatchlist == LoadingState.DONE -> {
+                when {
+                    !state.isWatchlist -> onAddWatchlist(movie)
+                    else -> onRemoveWatchlist(movie)
+                }
+            }
+
+            state.loadingCheckIn == LoadingState.DONE -> {
+                onCheckIn()
             }
         }
     }
@@ -88,13 +101,8 @@ internal fun MovieContextView(
         modifier = modifier,
         onWatchedClick = {
             when {
-                state.isWatched -> {
-                    confirmRemoveWatchedSheet = true
-                }
-
-                else -> {
-                    dateSheet = true
-                }
+                state.isWatched -> confirmRemoveWatchedSheet = true
+                else -> dateSheet = true
             }
         },
         onWatchlistClick = {
@@ -136,7 +144,9 @@ internal fun MovieContextView(
     DateSelectionSheet(
         active = dateSheet,
         title = movie.title,
+        nowWatchingVisible = true,
         onResult = viewModel::addToWatched,
+        onCheckIn = viewModel::addToCheckIn,
         onDismiss = {
             dateSheet = false
         },
@@ -211,8 +221,10 @@ private fun MovieActionButtons(
     val isLoadingOrDone =
         state.loadingWatched.isLoading ||
             state.loadingWatchlist.isLoading ||
+            state.loadingCheckIn.isLoading ||
             state.loadingWatchlist.isDone ||
-            state.loadingWatched.isDone
+            state.loadingWatched.isDone ||
+            state.loadingCheckIn.isDone
 
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
@@ -222,7 +234,10 @@ private fun MovieActionButtons(
             if (state.isWatched) {
                 GhostButton(
                     enabled = !isLoadingOrDone,
-                    loading = state.loadingWatched.isLoading || state.loadingWatched.isDone,
+                    loading =
+                        state.loadingWatched.isLoading ||
+                            state.loadingWatched.isDone ||
+                            state.loadingCheckIn.isLoading,
                     text = stringResource(R.string.button_text_remove_from_history),
                     onClick = onWatchedClick,
                     icon = painterResource(R.drawable.ic_trash),
@@ -236,7 +251,9 @@ private fun MovieActionButtons(
             } else {
                 GhostButton(
                     enabled = !isLoadingOrDone,
-                    loading = state.loadingWatched.isLoading || state.loadingWatched.isDone,
+                    loading = state.loadingWatched.isLoading ||
+                        state.loadingWatched.isDone ||
+                        state.loadingCheckIn.isLoading,
                     text = stringResource(R.string.button_text_mark_as_watched),
                     iconSize = 22.dp,
                     iconSpace = 16.dp,

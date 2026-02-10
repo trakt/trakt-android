@@ -81,6 +81,14 @@ internal fun MovieContextSheet(
                         message = localContext.getString(R.string.text_info_watchlist_removed),
                     )
                 },
+                onCheckIn = {
+                    sheetScope.launch { state.hide() }
+                        .invokeOnCompletion {
+                            if (!state.isVisible) {
+                                onDismiss()
+                            }
+                        }
+                },
                 onError = {
                     sheetScope.dismissWithMessage(
                         state = state,

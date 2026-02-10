@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.movies.di
 
+import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -141,6 +142,7 @@ internal val moviesModule = module {
 
     viewModel { (movie: Movie) ->
         MovieContextViewModel(
+            appContext = androidApplication(),
             movie = movie,
             updateMovieHistoryUseCase = get(),
             updateMovieWatchlistUseCase = get(),
@@ -149,6 +151,7 @@ internal val moviesModule = module {
             loadProgressUseCase = get(),
             loadWatchlistUseCase = get(),
             sessionManager = get(),
+            checkInManager = get(),
             analytics = get(),
         )
     }

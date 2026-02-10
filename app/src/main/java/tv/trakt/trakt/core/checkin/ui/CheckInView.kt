@@ -3,6 +3,8 @@
 package tv.trakt.trakt.core.checkin.ui
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.VisibilityThreshold
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -47,6 +49,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.ColorImage
@@ -147,7 +150,10 @@ internal fun CheckInView(
     Box(
         modifier = modifier
             .dropShadow(
-                shape = viewShape,
+                shape = when {
+                    expanded -> viewShape
+                    else -> collapsedViewShape
+                },
                 shadow = viewShadow,
             )
             .background(
@@ -158,7 +164,12 @@ internal fun CheckInView(
                 },
             )
             .onEmptyClick()
-            .animateContentSize(),
+            .animateContentSize(
+                animationSpec = spring(
+                    stiffness = 1200F,
+                    visibilityThreshold = IntSize.VisibilityThreshold,
+                ),
+            ),
     ) {
         if (expanded) {
             ExpandedView(

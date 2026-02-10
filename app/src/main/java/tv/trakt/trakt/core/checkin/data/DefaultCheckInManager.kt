@@ -1,6 +1,9 @@
 package tv.trakt.trakt.core.checkin.data
 
 import android.content.Context
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,6 +24,8 @@ import tv.trakt.trakt.core.checkin.data.service.CheckInService
 import tv.trakt.trakt.core.checkin.data.service.CheckInServiceData
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.checkin.model.CheckInState
+import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveEpisode
+import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveMovie
 import tv.trakt.trakt.core.checkin.model.expiresAt
 import tv.trakt.trakt.core.checkin.model.id
 import tv.trakt.trakt.core.checkin.model.startedAt
@@ -51,7 +56,17 @@ internal class DefaultCheckInManager(
         return state.asStateFlow()
     }
 
-    override suspend fun startMovie(movieId: TraktId) {
+    override suspend fun startEpisode(episodeId: TraktId) {
+        if (!sessionManager.isAuthenticated()) {
+            Timber.d("Not authenticated, skipping check-in.")
+            return
+        }
+    }
+
+    override suspend fun startMovie(
+        movieId: TraktId,
+        context: Context,
+    ) {
         if (!sessionManager.isAuthenticated()) {
             Timber.d("Not authenticated, skipping check-in.")
             return
@@ -72,12 +87,20 @@ internal class DefaultCheckInManager(
             }
 
             watching.movie?.let { dto ->
-                state.update {
-                    CheckInState.ActiveMovie(
-                        movie = Movie.fromDto(dto),
-                        startedAt = watching.startedAt.toInstant(),
-                        expiresAt = watching.expiresAt.toInstant(),
-                    )
+                val activeState = ActiveMovie(
+                    movie = Movie.fromDto(dto),
+                    startedAt = watching.startedAt.toInstant(),
+                    expiresAt = watching.expiresAt.toInstant(),
+                )
+
+                state.update { activeState }
+                checkInUpdates.notifyUpdate()
+                startForegroundService(context, activeState)
+
+                coroutineScope {
+                    val progressAsync = async { loadProgressIfNeeded(activeState) }
+                    val watchlistAsync = async { loadWatchlistIfNeeded(activeState) }
+                    awaitAll(progressAsync, watchlistAsync)
                 }
 
                 Timber.d("Successfully checked in movie: ${dto.title} (${dto.year})")
@@ -87,6 +110,13 @@ internal class DefaultCheckInManager(
                 state.update { CheckInState.Error(error) }
                 Timber.recordError(error)
             }
+        }
+    }
+
+    override fun isActive(): Boolean {
+        return when (state.value) {
+            is ActiveMovie, is ActiveEpisode -> true
+            else -> false
         }
     }
 
@@ -119,28 +149,31 @@ internal class DefaultCheckInManager(
             }
 
             response.movie?.let { dto ->
-                val newState = CheckInState.ActiveMovie(
+                val newState = ActiveMovie(
                     movie = Movie.fromDto(dto),
                     startedAt = response.startedAt.toInstant(),
                     expiresAt = response.expiresAt.toInstant(),
                 )
 
                 // Only update state if it's a different movie than currently stored
-                if (state.value !is CheckInState.ActiveMovie || state.value.id != newState.id) {
+                if (state.value !is ActiveMovie || state.value.id != newState.id) {
                     cacheMarkerProvider.invalidate()
                     state.update { newState }
                     checkInUpdates.notifyUpdate()
                     startForegroundService(context, newState)
 
-                    loadProgressIfNeeded(newState)
-                    loadWatchlistIfNeeded(newState)
+                    coroutineScope {
+                        val progressAsync = async { loadProgressIfNeeded(newState) }
+                        val watchlistAsync = async { loadWatchlistIfNeeded(newState) }
+                        awaitAll(progressAsync, watchlistAsync)
+                    }
 
                     Timber.d("New active movie check-in found: ${dto.title} (${dto.year})")
                 }
             }
 
             response.episode?.let { dto ->
-                val newState = CheckInState.ActiveEpisode(
+                val newState = ActiveEpisode(
                     show = Show.fromDto(response.show!!),
                     episode = Episode.fromDto(dto),
                     startedAt = response.startedAt.toInstant(),
@@ -148,14 +181,17 @@ internal class DefaultCheckInManager(
                 )
 
                 // Only update state if it's a different episode than currently stored
-                if (state.value !is CheckInState.ActiveEpisode || state.value.id != newState.id) {
+                if (state.value !is ActiveEpisode || state.value.id != newState.id) {
                     cacheMarkerProvider.invalidate()
                     state.update { newState }
                     checkInUpdates.notifyUpdate()
                     startForegroundService(context, newState)
 
-                    loadProgressIfNeeded(newState)
-                    loadWatchlistIfNeeded(newState)
+                    coroutineScope {
+                        val progressAsync = async { loadProgressIfNeeded(newState) }
+                        val watchlistAsync = async { loadWatchlistIfNeeded(newState) }
+                        awaitAll(progressAsync, watchlistAsync)
+                    }
 
                     Timber.d("New active episode check-in found: ${dto.title} S${dto.season}E${dto.number}")
                 }
@@ -197,8 +233,8 @@ internal class DefaultCheckInManager(
     private suspend fun loadProgressIfNeeded(state: CheckInState) {
         try {
             when (state) {
-                is CheckInState.ActiveMovie -> loadUserProgressUseCase.loadMoviesProgress()
-                is CheckInState.ActiveEpisode -> loadUserProgressUseCase.loadShowsProgress()
+                is ActiveMovie -> loadUserProgressUseCase.loadMoviesProgress()
+                is ActiveEpisode -> loadUserProgressUseCase.loadShowsProgress()
                 else -> Unit
             }
         } catch (error: Exception) {
@@ -212,8 +248,7 @@ internal class DefaultCheckInManager(
     private suspend fun loadWatchlistIfNeeded(state: CheckInState) {
         try {
             when (state) {
-                is CheckInState.ActiveMovie -> loadUserWatchlistUseCase.loadWatchlist()
-                is CheckInState.ActiveEpisode -> loadUserWatchlistUseCase.loadWatchlist()
+                is ActiveMovie, is ActiveEpisode -> loadUserWatchlistUseCase.loadWatchlist()
                 else -> Unit
             }
         } catch (error: Exception) {
@@ -237,7 +272,7 @@ internal class DefaultCheckInManager(
             return
         }
 
-        val episodeState = state as? CheckInState.ActiveEpisode
+        val episodeState = state as? ActiveEpisode
         val data = CheckInServiceData(
             mediaId = state.id ?: -1,
             mediaType = type,
