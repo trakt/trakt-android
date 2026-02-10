@@ -180,7 +180,7 @@ internal fun FavoriteItemView(
                                 modifier = Modifier.size(13.dp),
                             )
                             Text(
-                                text = item.movie.released?.relativeDateString() ?: "",
+                                text = item.movie.released?.relativeDateString() ?: "TBA",
                                 style = TraktTheme.typography.cardTitle,
                                 color = TraktTheme.colors.textPrimary,
                                 textAlign = TextAlign.Center,

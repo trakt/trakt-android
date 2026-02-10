@@ -50,8 +50,8 @@ internal fun DetailsHeader(
         date = {
             Text(
                 text = when {
-                    isReleased -> (movie.released?.year ?: movie.year).toString()
-                    else -> movie.released?.format(mediumDateFormat) ?: movie.year.toString()
+                    isReleased -> movie.yearString
+                    else -> movie.released?.format(mediumDateFormat) ?: movie.yearString
                 },
                 color = when {
                     isReleased -> TraktTheme.colors.textSecondary

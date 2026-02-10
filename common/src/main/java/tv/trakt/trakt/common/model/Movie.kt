@@ -51,6 +51,9 @@ data class Movie(
             }
             return released?.isTodayOrBefore() == true
         }
+
+    val yearString: String =
+        (released?.year ?: year)?.toString() ?: "TBA"
 }
 
 fun Companion.fromDto(dto: MovieDto): Movie {
