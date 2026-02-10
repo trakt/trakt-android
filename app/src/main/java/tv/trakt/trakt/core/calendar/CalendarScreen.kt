@@ -609,6 +609,8 @@ private fun ContentItemsGrid(
                             item = item,
                             itemLoading = itemsLoading?.contains(item.id) == true,
                             onClick = { onMovieClick(item) },
+                            onCheckClick = { onCheckClick(item) },
+                            onCheckLongClick = { onCheckLongClick(item) },
                             onRemoveClick = { onRemoveClick(item) },
                             modifier = Modifier.padding(top = 14.dp),
                         )
