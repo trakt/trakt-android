@@ -301,11 +301,11 @@ private fun ExpandedView(
                             }
                         }
 
-                        val minutes = durationMinutes()
                         val durationText = when {
-                            minutes >= 1L -> minutes.durationFormat()
+                            durationSeconds() > 60 -> durationMinutes().durationFormat()
                             else -> "<${1L.durationFormat()}"
                         }
+
                         Text(
                             text = stringResource(R.string.text_time_remaining, durationText),
                             textAlign = TextAlign.End,
