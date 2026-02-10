@@ -353,14 +353,6 @@ internal class AllHomeWatchlistViewModel(
                 checkInManager.startMovie(movieId, appContext)
                 removeItem(currentItems[itemIndex])
 
-                itemsState.update {
-                    val currentItems = itemsState.value?.toMutableList() ?: return@update null
-                    currentItems.removeAll {
-                        it is MovieItem && it.movie.ids.trakt == movieId
-                    }
-                    currentItems.toImmutableList()
-                }
-
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
                     source = "all_home_watchlist",

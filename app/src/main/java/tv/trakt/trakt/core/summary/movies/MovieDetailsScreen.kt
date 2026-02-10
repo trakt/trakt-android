@@ -249,7 +249,9 @@ internal fun MovieDetailsScreen(
     DateSelectionSheet(
         active = dateSheet,
         title = state.movie?.title ?: "",
+        onCheckIn = viewModel::addToCheckIn,
         onResult = viewModel::addToWatched,
+        nowWatchingVisible = true,
         onDismiss = {
             dateSheet = false
         },
@@ -303,7 +305,12 @@ internal fun MovieDetailsContent(
             .plus(16.dp),
         bottom = WindowInsets.navigationBars.asPaddingValues()
             .calculateBottomPadding()
-            .plus(TraktTheme.size.navigationBarHeight * 2),
+            .plus(
+                when {
+                    state.checkIn -> TraktTheme.size.navigationBarHeight * 3
+                    else -> TraktTheme.size.navigationBarHeight * 2
+                },
+            ),
     )
 
     val sectionPadding = PaddingValues(
@@ -330,7 +337,7 @@ internal fun MovieDetailsContent(
     ) {
         state.movie?.let { movie ->
             val isReleased = remember { movie.isReleased }
-            val isWatched = remember(state.movieProgress?.plays) {
+            val isWatched = remember(state.movieProgress) {
                 (state.movieProgress?.plays ?: 0) > 0
             }
 

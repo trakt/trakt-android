@@ -1,3 +1,5 @@
+@file:OptIn(FlowPreview::class)
+
 package tv.trakt.trakt.core.summary.movies
 
 import android.content.Context
@@ -6,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -13,6 +16,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -35,6 +42,8 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.checkin.data.CheckInManager
+import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.favorites.FavoritesUpdates
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.DETAILS
 import tv.trakt.trakt.core.favorites.model.FavoriteItem
@@ -85,7 +94,9 @@ internal class MovieDetailsViewModel(
     private val userFavoritesLocalSource: UserFavoritesLocalDataSource,
     private val movieDetailsUpdates: MovieDetailsUpdates,
     private val favoritesUpdates: FavoritesUpdates,
+    private val checkInUpdates: CheckInUpdates,
     private val sessionManager: SessionManager,
+    private val checkInManager: CheckInManager,
     private val analytics: Analytics,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
@@ -107,6 +118,7 @@ internal class MovieDetailsViewModel(
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
     private val userState = MutableStateFlow(initialState.user)
+    private val checkInState = MutableStateFlow(initialState.checkIn)
     private val metaCollapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.MOVIE_META))
 
     private var ratingJob: Job? = null
@@ -119,9 +131,29 @@ internal class MovieDetailsViewModel(
         loadUserProgressData()
         loadUserRatingData()
 
+        observeCheckIn()
+
         analytics.logScreenView(
             screenName = "movie_details",
         )
+    }
+
+    private fun observeCheckIn() {
+        checkInUpdates.observeUpdates()
+            .distinctUntilChanged()
+            .debounce(200)
+            .onEach {
+                loadUserProgressData(force = true)
+            }
+            .launchIn(viewModelScope)
+
+        checkInManager.observe()
+            .distinctUntilChanged()
+            .debounce(200)
+            .onEach { state ->
+                checkInState.update { state.isActive() }
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun loadUser() {
@@ -164,7 +196,7 @@ internal class MovieDetailsViewModel(
         }
     }
 
-    private fun loadUserProgressData() {
+    private fun loadUserProgressData(force: Boolean = false) {
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) {
                 return@launch
@@ -175,12 +207,12 @@ internal class MovieDetailsViewModel(
 
                 coroutineScope {
                     val progressAsync = async {
-                        if (!loadProgressUseCase.isMoviesLoaded()) {
+                        if (force || !loadProgressUseCase.isMoviesLoaded()) {
                             loadProgressUseCase.loadMoviesProgress()
                         }
                     }
                     val watchlistAsync = async {
-                        if (!loadWatchlistUseCase.isMoviesLoaded()) {
+                        if (force || !loadWatchlistUseCase.isMoviesLoaded()) {
                             loadWatchlistUseCase.loadWatchlist()
                         }
                     }
@@ -341,6 +373,52 @@ internal class MovieDetailsViewModel(
                 error.rethrowCancellation {
                     Timber.recordError(error)
                 }
+            }
+        }
+    }
+
+    fun addToCheckIn() {
+        if (movieState.value == null ||
+            loadingState.value.isLoading ||
+            loadingProgress.value.isLoading ||
+            loadingLists.value.isLoading
+        ) {
+            return
+        }
+
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+
+            try {
+                loadingProgress.update { LOADING }
+
+                checkInManager.startMovie(
+                    movieId = movieId,
+                    context = appContext,
+                )
+
+                loadProgressUseCase.loadMoviesProgress()
+                userWatchlistLocalSource.removeMovies(
+                    ids = setOf(movieId),
+                    notify = true,
+                )
+
+                loadUserProgressData()
+
+                analytics.progress.logAddWatchedMedia(
+                    mediaType = "movie",
+                    source = "movie_details",
+                    date = "checkin",
+                )
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            } finally {
+                loadingProgress.update { DONE }
             }
         }
     }
@@ -859,6 +937,7 @@ internal class MovieDetailsViewModel(
         infoState,
         errorState,
         userState,
+        checkInState,
         metaCollapseState,
     ) { state ->
         MovieDetailsState(
@@ -875,7 +954,8 @@ internal class MovieDetailsViewModel(
             info = state[10] as StringResource?,
             error = state[11] as Exception?,
             user = state[12] as User?,
-            metaCollapsed = state[13] as Boolean,
+            checkIn = state[13] as Boolean,
+            metaCollapsed = state[14] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -41,5 +41,10 @@ internal fun NavGraphBuilder.movieDetailsScreen(
 }
 
 internal fun NavController.navigateToMovie(movieId: TraktId) {
+    val currentMovieId = currentBackStackEntry?.arguments?.getInt("movieId")
+    if (currentMovieId == movieId.value) {
+        // Already on the movie details screen.
+        return
+    }
     navigate(route = MovieDetailsDestination(movieId.value))
 }

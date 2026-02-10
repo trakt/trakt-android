@@ -59,6 +59,13 @@ internal fun NavController.navigateToEpisode(
     episodeSeason: Int,
     episodeNumber: Int,
 ) {
+    val currentShowId = currentBackStackEntry?.arguments?.getInt("showId")
+    val currentEpisodeId = currentBackStackEntry?.arguments?.getInt("episodeId")
+    if (currentShowId == showId.value && currentEpisodeId == episodeId.value) {
+        // Already on the episode details screen.
+        return
+    }
+
     navigate(
         route = EpisodeDetailsDestination(
             showId = showId.value,

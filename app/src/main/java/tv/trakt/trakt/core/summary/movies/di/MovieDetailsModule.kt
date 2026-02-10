@@ -153,7 +153,9 @@ internal val movieDetailsModule = module {
             userFavoritesLocalSource = get(),
             movieDetailsUpdates = get(),
             favoritesUpdates = get(),
+            checkInUpdates = get(),
             sessionManager = get(),
+            checkInManager = get(),
             analytics = get(),
             collapsingManager = get(),
         )
