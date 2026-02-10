@@ -254,7 +254,6 @@ internal class MainViewModel(
 
     fun dismissCheckIn() {
         viewModelScope.launch {
-            checkInManager.clear(appContext)
             try {
                 checkInManager.stop(appContext)
             } catch (error: Exception) {

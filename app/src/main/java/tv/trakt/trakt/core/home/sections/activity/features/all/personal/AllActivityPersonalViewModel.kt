@@ -42,8 +42,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.ratings.UserRating
-import tv.trakt.trakt.core.checkin.data.CheckInManager
-import tv.trakt.trakt.core.checkin.model.CheckInState
+import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.features.all.AllActivityState
 import tv.trakt.trakt.core.home.sections.activity.features.all.navigation.AllPersonalActivityDestination
@@ -73,8 +72,8 @@ internal class AllActivityPersonalViewModel(
     private val episodeUpdatesSource: EpisodeDetailsUpdates,
     private val movieDetailsUpdates: MovieDetailsUpdates,
     private val ratingsUpdates: RatingsUpdates,
+    private val checkInUpdates: CheckInUpdates,
     private val sessionManager: SessionManager,
-    private val checkInManager: CheckInManager,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<AllPersonalActivityDestination>()
     private val initialState = AllActivityState()
@@ -120,16 +119,12 @@ internal class AllActivityPersonalViewModel(
             episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.PROGRESS),
             episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.SEASON),
             movieDetailsUpdates.observeUpdates(),
-            checkInManager.observe(),
+            checkInUpdates.observeUpdates(),
         )
             .distinctUntilChanged()
             .debounce(200)
-            .onEach {
-                if (it is CheckInState && !it.isIdleOrActive()) {
-                    return@onEach
-                }
-                loadData(ignoreErrors = true)
-            }.launchIn(viewModelScope)
+            .onEach { loadData(ignoreErrors = true) }
+            .launchIn(viewModelScope)
     }
 
     private fun observeRatings() {

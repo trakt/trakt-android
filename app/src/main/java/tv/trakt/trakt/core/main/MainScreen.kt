@@ -410,8 +410,8 @@ private fun ColumnScope.CheckInView(
 
     AnimatedVisibility(
         visible = isVisible && localCheckInVisibility.value,
-        enter = fadeIn(tween(250)) + slideInVertically(initialOffsetY = { it / 8 }),
-        exit = fadeOut(tween(100)) + slideOutVertically(targetOffsetY = { it / 8 }),
+        enter = fadeIn(tween(250)) + slideInVertically(initialOffsetY = { it / 10 }),
+        exit = fadeOut(tween(100)),
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace - 8.dp),

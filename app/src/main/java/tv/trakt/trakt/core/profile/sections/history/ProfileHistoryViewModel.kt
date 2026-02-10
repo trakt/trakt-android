@@ -38,6 +38,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.ratings.UserRating
+import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.features.all.data.local.AllActivityLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
@@ -66,6 +67,7 @@ internal class ProfileHistoryViewModel(
     private val movieUpdates: MovieDetailsUpdates,
     private val episodeUpdates: EpisodeDetailsUpdates,
     private val ratingsUpdates: RatingsUpdates,
+    private val checkInUpdate: CheckInUpdates,
     private val sessionManager: SessionManager,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
@@ -100,6 +102,7 @@ internal class ProfileHistoryViewModel(
             showUpdates.observeUpdates(Source.SEASONS),
             episodeUpdates.observeUpdates(PROGRESS),
             episodeUpdates.observeUpdates(SEASON),
+            checkInUpdate.observeUpdates(),
         )
             .distinctUntilChanged()
             .debounce(200)

@@ -40,8 +40,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
-import tv.trakt.trakt.core.checkin.data.CheckInManager
-import tv.trakt.trakt.core.checkin.model.CheckInState
+import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.features.all.data.local.AllActivityLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
@@ -76,10 +75,10 @@ internal class HomeHistoryViewModel(
     private val movieUpdates: MovieDetailsUpdates,
     private val episodeUpdates: EpisodeDetailsUpdates,
     private val ratingsUpdates: RatingsUpdates,
+    private val checkInUpdates: CheckInUpdates,
     private val sessionManager: SessionManager,
     private val modeManager: MediaModeManager,
     private val collapsingManager: CollapsingManager,
-    private val checkInManager: CheckInManager,
 ) : ViewModel() {
     private val initialState = HomeHistoryState()
     private val initialMode = modeManager.getMode()
@@ -145,16 +144,12 @@ internal class HomeHistoryViewModel(
             episodeUpdates.observeUpdates(SEASON),
             episodeUpdates.observeUpdates(CALENDAR),
             movieUpdates.observeUpdates(),
-            checkInManager.observe(),
+            checkInUpdates.observeUpdates(),
         )
             .distinctUntilChanged()
             .debounce(200)
-            .onEach {
-                if (it is CheckInState && !it.isIdleOrActive()) {
-                    return@onEach
-                }
-                loadData(ignoreErrors = true)
-            }.launchIn(viewModelScope)
+            .onEach { loadData(ignoreErrors = true) }
+            .launchIn(viewModelScope)
     }
 
     private fun observeRatings() {

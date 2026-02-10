@@ -30,8 +30,7 @@ import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.core.checkin.data.CheckInManager
-import tv.trakt.trakt.core.checkin.model.CheckInState
+import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
@@ -66,10 +65,10 @@ internal class HomeUpNextViewModel(
     private val upNextUpdates: UpNextUpdates,
     private val showUpdates: ShowDetailsUpdates,
     private val episodeUpdates: EpisodeDetailsUpdates,
+    private val checkInUpdates: CheckInUpdates,
     private val modeManager: MediaModeManager,
     private val sessionManager: SessionManager,
     private val collapsingManager: CollapsingManager,
-    private val checkInManager: CheckInManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = HomeUpNextState()
@@ -129,16 +128,12 @@ internal class HomeUpNextViewModel(
             episodeUpdates.observeUpdates(SEASON),
             episodeUpdates.observeUpdates(HOME),
             episodeUpdates.observeUpdates(CALENDAR),
-            checkInManager.observe(),
+            checkInUpdates.observeUpdates(),
         )
             .distinctUntilChanged()
             .debounce(200)
-            .onEach {
-                if (it is CheckInState && !it.isIdleOrActive()) {
-                    return@onEach
-                }
-                loadData(ignoreErrors = true)
-            }.launchIn(viewModelScope)
+            .onEach { loadData(ignoreErrors = true) }
+            .launchIn(viewModelScope)
 
         upNextUpdates.observeUpdates()
             .distinctUntilChanged()

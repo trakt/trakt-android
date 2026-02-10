@@ -30,8 +30,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.checkin.data.CheckInManager
-import tv.trakt.trakt.core.checkin.model.CheckInState
+import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_LIMIT
 import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
@@ -56,8 +55,8 @@ internal class AllHomeUpNextViewModel(
     private val showUpdates: ShowDetailsUpdates,
     private val episodeUpdates: EpisodeDetailsUpdates,
     private val movieUpdates: MovieDetailsUpdates,
+    private val checkInUpdates: CheckInUpdates,
     private val sessionManager: SessionManager,
-    private val checkInManager: CheckInManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = AllHomeUpNextState()
@@ -90,16 +89,12 @@ internal class AllHomeUpNextViewModel(
             episodeUpdates.observeUpdates(PROGRESS),
             episodeUpdates.observeUpdates(SEASON),
             movieUpdates.observeUpdates(),
-            checkInManager.observe(),
+            checkInUpdates.observeUpdates(),
         )
             .distinctUntilChanged()
             .debounce(200)
-            .onEach {
-                if (it is CheckInState && !it.isIdleOrActive()) {
-                    return@onEach
-                }
-                loadData(ignoreErrors = true)
-            }.launchIn(viewModelScope)
+            .onEach { loadData(ignoreErrors = true) }
+            .launchIn(viewModelScope)
     }
 
     private fun loadData(ignoreErrors: Boolean = false) {

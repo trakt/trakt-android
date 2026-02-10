@@ -19,6 +19,7 @@ import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import tv.trakt.trakt.core.checkin.data.remote.CheckInRemoteDataSource
 import tv.trakt.trakt.core.checkin.data.service.CheckInService
 import tv.trakt.trakt.core.checkin.data.service.CheckInServiceData
+import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.checkin.model.CheckInState
 import tv.trakt.trakt.core.checkin.model.expiresAt
 import tv.trakt.trakt.core.checkin.model.id
@@ -26,7 +27,9 @@ import tv.trakt.trakt.core.checkin.model.startedAt
 import tv.trakt.trakt.core.checkin.model.title
 import tv.trakt.trakt.core.checkin.model.type
 import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
-import kotlin.time.Clock
+import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
+import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
+import kotlin.time.Clock.System.now
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
 
@@ -34,9 +37,12 @@ private val ACTIVE_CHECK_COOLDOWN = 10.seconds
 
 internal class DefaultCheckInManager(
     private val sessionManager: SessionManager,
+    private val checkInUpdates: CheckInUpdates,
     private val checkInRemoteDataSource: CheckInRemoteDataSource,
     private val userRemoteDataSource: UserRemoteDataSource,
     private val cacheMarkerProvider: CacheMarkerProvider,
+    private val loadUserProgressUseCase: LoadUserProgressUseCase,
+    private val loadUserWatchlistUseCase: LoadUserWatchlistUseCase,
 ) : CheckInManager {
     private val state = MutableStateFlow<CheckInState>(CheckInState.Idle)
     private var lastCheckAt: Instant? = null
@@ -91,8 +97,7 @@ internal class DefaultCheckInManager(
         }
 
         lastCheckAt?.let { lastCheck ->
-            val now = Clock.System.now()
-            if (now.minus(ACTIVE_CHECK_COOLDOWN) < lastCheck) {
+            if (now().minus(ACTIVE_CHECK_COOLDOWN) < lastCheck) {
                 Timber.d("Last check-in check was too recent, skipping redundant check.")
                 return
             }
@@ -102,7 +107,13 @@ internal class DefaultCheckInManager(
             val response = userRemoteDataSource.getWatchingNow()
             if (response == null) {
                 cacheMarkerProvider.invalidate()
-                clear(context)
+
+                if (state.value.isActive()) {
+                    loadProgressIfNeeded(state.value)
+                    checkInUpdates.notifyUpdate()
+                }
+
+                stop(context)
                 Timber.d("No active check-ins / scrobbles found.")
                 return
             }
@@ -118,7 +129,12 @@ internal class DefaultCheckInManager(
                 if (state.value !is CheckInState.ActiveMovie || state.value.id != newState.id) {
                     cacheMarkerProvider.invalidate()
                     state.update { newState }
+                    checkInUpdates.notifyUpdate()
                     startForegroundService(context, newState)
+
+                    loadProgressIfNeeded(newState)
+                    loadWatchlistIfNeeded(newState)
+
                     Timber.d("New active movie check-in found: ${dto.title} (${dto.year})")
                 }
             }
@@ -135,7 +151,12 @@ internal class DefaultCheckInManager(
                 if (state.value !is CheckInState.ActiveEpisode || state.value.id != newState.id) {
                     cacheMarkerProvider.invalidate()
                     state.update { newState }
+                    checkInUpdates.notifyUpdate()
                     startForegroundService(context, newState)
+
+                    loadProgressIfNeeded(newState)
+                    loadWatchlistIfNeeded(newState)
+
                     Timber.d("New active episode check-in found: ${dto.title} S${dto.season}E${dto.number}")
                 }
             }
@@ -144,7 +165,7 @@ internal class DefaultCheckInManager(
                 Timber.recordError(error)
             }
         } finally {
-            lastCheckAt = Clock.System.now()
+            lastCheckAt = now()
         }
     }
 
@@ -154,12 +175,16 @@ internal class DefaultCheckInManager(
             return
         }
 
+        val currentState = state.value
+        state.update { CheckInState.Idle }
+
         try {
             checkInRemoteDataSource.deleteAll()
             cacheMarkerProvider.invalidate()
-
-            state.update { CheckInState.Idle }
+            checkInUpdates.notifyUpdate()
             CheckInService.stop(context.applicationContext)
+
+            loadProgressIfNeeded(currentState)
 
             Timber.d("Stopped check-in.")
         } catch (error: Exception) {
@@ -169,12 +194,34 @@ internal class DefaultCheckInManager(
         }
     }
 
-    override suspend fun clear(context: Context) {
-        cacheMarkerProvider.invalidate()
-        state.update { CheckInState.Idle }
-        CheckInService.stop(context.applicationContext)
+    private suspend fun loadProgressIfNeeded(state: CheckInState) {
+        try {
+            when (state) {
+                is CheckInState.ActiveMovie -> loadUserProgressUseCase.loadMoviesProgress()
+                is CheckInState.ActiveEpisode -> loadUserProgressUseCase.loadShowsProgress()
+                else -> Unit
+            }
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                // Log but ignore errors here
+                Timber.recordError(error)
+            }
+        }
+    }
 
-        Timber.d("Cleared check-in state.")
+    private suspend fun loadWatchlistIfNeeded(state: CheckInState) {
+        try {
+            when (state) {
+                is CheckInState.ActiveMovie -> loadUserWatchlistUseCase.loadWatchlist()
+                is CheckInState.ActiveEpisode -> loadUserWatchlistUseCase.loadWatchlist()
+                else -> Unit
+            }
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                // Log but ignore errors here
+                Timber.recordError(error)
+            }
+        }
     }
 
     private fun startForegroundService(

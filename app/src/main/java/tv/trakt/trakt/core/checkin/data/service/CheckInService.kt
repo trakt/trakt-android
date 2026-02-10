@@ -158,7 +158,6 @@ internal class CheckInService : Service() {
             Timber.d("Check-in expired, stopping service")
             scope.launch {
                 try {
-                    checkInManager.clear(applicationContext)
                     checkInManager.stop(applicationContext)
                 } catch (error: Exception) {
                     error.rethrowCancellation {

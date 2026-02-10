@@ -161,10 +161,10 @@ internal val homeModule = module {
             loadUserProgressUseCase = get(),
             showUpdates = get(),
             episodeUpdates = get(),
+            checkInUpdates = get(),
             modeManager = get(),
             sessionManager = get(),
             collapsingManager = get(),
-            checkInManager = get(),
             analytics = get(),
         )
     }
@@ -179,7 +179,7 @@ internal val homeModule = module {
             episodeUpdates = get(),
             movieUpdates = get(),
             sessionManager = get(),
-            checkInManager = get(),
+            checkInUpdates = get(),
             analytics = get(),
         )
     }
@@ -196,7 +196,7 @@ internal val homeModule = module {
             modeManager = get(),
             sessionManager = get(),
             collapsingManager = get(),
-            checkInManager = get(),
+            checkInUpdates = get(),
             analytics = get(),
         )
     }
@@ -212,7 +212,7 @@ internal val homeModule = module {
             movieLocalDataSource = get(),
             modeManager = get(),
             sessionManager = get(),
-            checkInManager = get(),
+            checkInUpdates = get(),
             analytics = get(),
         )
     }
@@ -246,7 +246,7 @@ internal val homeModule = module {
             sessionManager = get(),
             modeManager = get(),
             collapsingManager = get(),
-            checkInManager = get(),
+            checkInUpdates = get(),
         )
     }
 
@@ -262,9 +262,9 @@ internal val homeModule = module {
             episodeUpdatesSource = get(),
             movieDetailsUpdates = get(),
             ratingsUpdates = get(),
+            checkInUpdates = get(),
             sessionManager = get(),
             modeManager = get(),
-            checkInManager = get(),
             analytics = get(),
         )
     }

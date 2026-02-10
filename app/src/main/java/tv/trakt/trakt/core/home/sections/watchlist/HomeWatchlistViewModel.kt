@@ -42,8 +42,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.core.checkin.data.CheckInManager
-import tv.trakt.trakt.core.checkin.model.CheckInState
+import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.home.HomeConfig.HOME_WATCHLIST_LIMIT
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeMoviesWatchlistUseCase
@@ -70,9 +69,9 @@ internal class HomeWatchlistViewModel(
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val modeManager: MediaModeManager,
+    private val checkInUpdates: CheckInUpdates,
     private val sessionManager: SessionManager,
     private val collapsingManager: CollapsingManager,
-    private val checkInManager: CheckInManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = HomeWatchlistState()
@@ -128,14 +127,11 @@ internal class HomeWatchlistViewModel(
     private fun observeData() {
         merge(
             userWatchlistSource.observeUpdates(),
-            checkInManager.observe(),
+            checkInUpdates.observeUpdates(),
         )
             .distinctUntilChanged()
             .debounce(200)
             .onEach {
-                if (it is CheckInState && !it.isIdleOrActive()) {
-                    return@onEach
-                }
                 loadData(
                     localOnly = false,
                     ignoreErrors = true,
