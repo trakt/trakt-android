@@ -205,6 +205,11 @@ internal fun HomeWatchlistView(
                 }
             }
         },
+        onCheckIn = {
+            (dateSheet as? MovieItem)?.let {
+                viewModel.addMovieCheckIn(it.id)
+            }
+        },
         onDismiss = {
             dateSheet = null
         },
@@ -561,6 +566,7 @@ private fun ContentItemCheck(
 private fun HomeDateSelectionSheet(
     item: WatchlistItem?,
     onDateSelected: (DateSelectionResult?) -> Unit,
+    onCheckIn: () -> Unit,
     onDismiss: () -> Unit,
 ) {
     DateSelectionSheet(
@@ -576,6 +582,7 @@ private fun HomeDateSelectionSheet(
             if (item == null) return@DateSelectionSheet
             onDateSelected(it)
         },
+        onCheckIn = onCheckIn,
         onDismiss = onDismiss,
     )
 }

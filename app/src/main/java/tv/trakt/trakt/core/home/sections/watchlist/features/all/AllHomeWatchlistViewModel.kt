@@ -2,6 +2,7 @@
 
 package tv.trakt.trakt.core.home.sections.watchlist.features.all
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
@@ -35,12 +36,12 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.StaticStringResource
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
-import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_WATCHLIST_LIMIT
 import tv.trakt.trakt.core.home.HomeConfig.HOME_WATCHLIST_LIMIT
@@ -55,10 +56,10 @@ import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
-import java.time.Instant
 
 @OptIn(FlowPreview::class)
 internal class AllHomeWatchlistViewModel(
+    private val appContext: Context,
     private val getMoviesUseCase: GetHomeMoviesWatchlistUseCase,
     private val getShowsUseCase: GetHomeShowsWatchlistUseCase,
     private val addHistoryUseCase: AddHomeHistoryUseCase,
@@ -68,6 +69,7 @@ internal class AllHomeWatchlistViewModel(
     private val movieLocalDataSource: MovieLocalDataSource,
     private val modeManager: MediaModeManager,
     private val checkInUpdates: CheckInUpdates,
+    private val checkInManager: CheckInManager,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
 ) : ViewModel() {
@@ -83,7 +85,6 @@ internal class AllHomeWatchlistViewModel(
     private val errorState = MutableStateFlow(initialState.error)
 
     private var user: User? = null
-    private var loadedAt: Instant? = null
     private var dataJob: Job? = null
     private var processingJob: Job? = null
 
@@ -195,7 +196,6 @@ internal class AllHomeWatchlistViewModel(
                         .distinctBy { it.key }
                         .toImmutableList()
                 }
-                loadedAt = nowUtcInstant()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     if (!ignoreErrors) {
@@ -264,8 +264,6 @@ internal class AllHomeWatchlistViewModel(
 
                 removeItem(currentItems[itemIndex])
                 loadShowsProgress()
-
-                loadedAt = nowUtcInstant()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -319,8 +317,55 @@ internal class AllHomeWatchlistViewModel(
 
                 removeItem(currentItems[itemIndex])
                 loadMoviesProgress()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            } finally {
+                processingJob = null
+            }
+        }
+    }
 
-                loadedAt = nowUtcInstant()
+    fun addMovieCheckIn(movieId: TraktId) {
+        if (processingJob?.isActive == true) {
+            return
+        }
+
+        processingJob = viewModelScope.launch {
+            try {
+                val currentItems = itemsState.value?.toMutableList() ?: return@launch
+
+                val itemIndex = currentItems
+                    .indexOfFirst {
+                        it is MovieItem &&
+                            it.movie.ids.trakt == movieId
+                    }
+                val itemLoading = (currentItems[itemIndex] as MovieItem)
+                    .copy(loading = true)
+                currentItems[itemIndex] = itemLoading
+
+                itemsState.update {
+                    currentItems.toImmutableList()
+                }
+
+                checkInManager.startMovie(movieId, appContext)
+                removeItem(currentItems[itemIndex])
+
+                itemsState.update {
+                    val currentItems = itemsState.value?.toMutableList() ?: return@update null
+                    currentItems.removeAll {
+                        it is MovieItem && it.movie.ids.trakt == movieId
+                    }
+                    currentItems.toImmutableList()
+                }
+
+                analytics.progress.logAddWatchedMedia(
+                    mediaType = "movie",
+                    source = "all_home_watchlist",
+                    date = "checkin",
+                )
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

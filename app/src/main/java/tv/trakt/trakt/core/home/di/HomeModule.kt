@@ -186,6 +186,7 @@ internal val homeModule = module {
 
     viewModel {
         HomeWatchlistViewModel(
+            appContext = androidApplication(),
             getShowsUseCase = get(),
             getMoviesUseCase = get(),
             addHistoryUseCase = get(),
@@ -196,6 +197,7 @@ internal val homeModule = module {
             modeManager = get(),
             sessionManager = get(),
             collapsingManager = get(),
+            checkInManager = get(),
             checkInUpdates = get(),
             analytics = get(),
         )
@@ -203,6 +205,7 @@ internal val homeModule = module {
 
     viewModel {
         AllHomeWatchlistViewModel(
+            appContext = androidApplication(),
             getMoviesUseCase = get(),
             getShowsUseCase = get(),
             addHistoryUseCase = get(),
@@ -212,6 +215,7 @@ internal val homeModule = module {
             movieLocalDataSource = get(),
             modeManager = get(),
             sessionManager = get(),
+            checkInManager = get(),
             checkInUpdates = get(),
             analytics = get(),
         )

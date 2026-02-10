@@ -127,7 +127,6 @@ internal fun AllHomeWatchlistScreen(
                         episodeId = it.progress?.nextEpisode?.ids?.trakt,
                     )
                 }
-
                 is MovieItem -> {
                     viewModel.addMovieToHistory(it.id)
                 }
@@ -189,6 +188,11 @@ internal fun AllHomeWatchlistScreen(
                         )
                     }
                 }
+            }
+        },
+        onCheckIn = {
+            (dateSheet as? MovieItem)?.let {
+                viewModel.addMovieCheckIn(it.id)
             }
         },
         onDismiss = {
@@ -373,6 +377,7 @@ private fun ContentFilters(
 private fun AllHomeDateSelectionSheet(
     item: WatchlistItem?,
     onDateSelected: (DateSelectionResult?) -> Unit,
+    onCheckIn: () -> Unit,
     onDismiss: () -> Unit,
 ) {
     DateSelectionSheet(
@@ -384,6 +389,7 @@ private fun AllHomeDateSelectionSheet(
             else -> null
         },
         nowWatchingVisible = item is MovieItem,
+        onCheckIn = onCheckIn,
         onResult = {
             if (item == null) return@DateSelectionSheet
             onDateSelected(it)
