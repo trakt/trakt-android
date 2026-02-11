@@ -270,7 +270,7 @@ private fun CalendarScreen(
         bottom = WindowInsets.navigationBars.asPaddingValues()
             .calculateBottomPadding()
             .plus(TraktTheme.size.navigationBarHeight)
-            .plus(64.dp),
+            .plus(TraktTheme.spacing.mainPageBottomSpace),
     )
 
     val gridState = rememberLazyGridState()
