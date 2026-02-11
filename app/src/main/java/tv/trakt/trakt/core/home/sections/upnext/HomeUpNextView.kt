@@ -154,6 +154,15 @@ internal fun HomeUpNextView(
                 customDate = date,
             )
         },
+        onCheckIn = {
+            val item = dateSheet ?: return@HomeDateSelectionSheet
+            val episode = item.progress.nextEpisode
+            viewModel.addEpisodeCheckIn(
+                showId = item.show.ids.trakt,
+                episodeId = episode.ids.trakt,
+                seasonEpisode = episode.seasonEpisode,
+            )
+        },
         onDismiss = {
             dateSheet = null
         },
@@ -433,16 +442,19 @@ private fun ContentListItem(
 private fun HomeDateSelectionSheet(
     item: ProgressShow?,
     onDateSelected: (DateSelectionResult?) -> Unit,
+    onCheckIn: () -> Unit,
     onDismiss: () -> Unit,
 ) {
     DateSelectionSheet(
         active = item != null,
         title = item?.show?.title.orEmpty(),
         subtitle = item?.progress?.nextEpisode?.seasonEpisodeString(),
+        nowWatchingVisible = true,
         onResult = {
             if (item == null) return@DateSelectionSheet
             onDateSelected(it)
         },
+        onCheckIn = onCheckIn,
         onDismiss = onDismiss,
     )
 }

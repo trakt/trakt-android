@@ -152,6 +152,7 @@ internal val homeModule = module {
 
     viewModel {
         HomeUpNextViewModel(
+            appContext = androidApplication(),
             getUpNextUseCase = get(),
             updateHistoryUseCase = get(),
             homeUpNextSource = get(),
@@ -165,6 +166,7 @@ internal val homeModule = module {
             modeManager = get(),
             sessionManager = get(),
             collapsingManager = get(),
+            checkInManager = get(),
             analytics = get(),
         )
     }

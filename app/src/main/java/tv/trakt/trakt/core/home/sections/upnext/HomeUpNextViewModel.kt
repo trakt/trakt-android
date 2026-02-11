@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.home.sections.upnext
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.toImmutableList
@@ -28,8 +29,10 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.StaticStringResource
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
@@ -56,6 +59,7 @@ import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 
 @OptIn(FlowPreview::class)
 internal class HomeUpNextViewModel(
+    private val appContext: Context,
     private val getUpNextUseCase: GetUpNextUseCase,
     private val updateHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
@@ -66,6 +70,7 @@ internal class HomeUpNextViewModel(
     private val showUpdates: ShowDetailsUpdates,
     private val episodeUpdates: EpisodeDetailsUpdates,
     private val checkInUpdates: CheckInUpdates,
+    private val checkInManager: CheckInManager,
     private val modeManager: MediaModeManager,
     private val sessionManager: SessionManager,
     private val collapsingManager: CollapsingManager,
@@ -281,6 +286,74 @@ internal class HomeUpNextViewModel(
                 error.rethrowCancellation {
                     errorState.update { error }
                     Timber.d(error, "Failed to add movie to history")
+                }
+            } finally {
+                processingJob = null
+            }
+        }
+    }
+
+    fun addEpisodeCheckIn(
+        showId: TraktId,
+        episodeId: TraktId,
+        seasonEpisode: SeasonEpisode,
+    ) {
+        if (processingJob?.isActive == true) {
+            return
+        }
+
+        processingJob = viewModelScope.launch {
+            try {
+                val currentItems = itemsState.value.items?.toMutableList() ?: return@launch
+
+                val itemIndex = currentItems.indexOfFirst { it.id == episodeId }
+                val itemLoading = currentItems[itemIndex].copy(loading = true)
+                currentItems[itemIndex] = itemLoading
+
+                itemsState.update {
+                    ItemsState(
+                        items = currentItems.toImmutableList(),
+                        resetScroll = false,
+                    )
+                }
+
+                checkInManager.startEpisode(
+                    context = appContext,
+                    showId = showId,
+                    seasonEpisode = seasonEpisode,
+                )
+
+                analytics.progress.logAddWatchedMedia(
+                    mediaType = "episode",
+                    source = "home_up_next",
+                    date = "checkin",
+                )
+
+                itemsState.update {
+                    val items = getUpNextUseCase.getUpNext(
+                        page = 1,
+                        limit = HOME_SECTION_LIMIT,
+                    )
+                    ItemsState(
+                        items = itemsOrder?.let { order ->
+                            items
+                                .sortedBy {
+                                    order.indexOf(it.show.ids.trakt.value).run {
+                                        // Items not in the list are placed at the end.
+                                        if (this < 0) Int.MAX_VALUE else this
+                                    }
+                                }
+                                .toImmutableList()
+                        } ?: items,
+                        resetScroll = false,
+                    )
+                }
+
+                itemsOrder = itemsState.value.items?.map { it.show.ids.trakt.value }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
                 }
             } finally {
                 processingJob = null
