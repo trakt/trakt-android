@@ -12,7 +12,7 @@ enum class TraktNotificationChannelGroup(
     ),
     CHECK_IN(
         id = "id_channel_group_checkin",
-        title = "Check In",
+        title = "Now Watching (Check In)",
     ),
     ;
 

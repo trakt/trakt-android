@@ -164,7 +164,7 @@ private fun SettingsScreenContent(
         bottom = WindowInsets.navigationBars.asPaddingValues()
             .calculateBottomPadding()
             .plus(TraktTheme.size.navigationBarHeight)
-            .plus(32.dp),
+            .plus(TraktTheme.spacing.mainPageBottomSpace),
     )
 
     val scrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {

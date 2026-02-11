@@ -23,7 +23,7 @@ enum class TraktNotificationChannel(
     ),
     CHECK_IN(
         id = "id_channel_checkin",
-        title = "Check In (Now Watching)",
+        title = "Now Watching (Check In)",
         description = "Notifications related to your current watching activity",
         importance = NotificationManager.IMPORTANCE_DEFAULT,
     ),
