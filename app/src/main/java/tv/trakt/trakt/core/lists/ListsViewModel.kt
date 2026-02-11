@@ -25,7 +25,6 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
-import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.lists.ListsState.UserState
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
@@ -37,7 +36,6 @@ internal class ListsViewModel(
     private val getPersonalListsUseCase: GetPersonalListsUseCase,
     private val localListsSource: ListsPersonalLocalDataSource,
     private val localListsItemsSource: ListsPersonalItemsLocalDataSource,
-    private val checkInManager: CheckInManager,
     analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ListsState()

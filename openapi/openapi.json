@@ -3096,159 +3096,808 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "movie": {
+                "oneOf": [
+                  {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "episode": {
+                            "type": "object",
+                            "properties": {
+                              "ids": {
+                                "oneOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "trakt": {
+                                        "type": "integer"
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Slug"
+                                      },
+                                      "imdb": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "IMDb ID"
+                                      },
+                                      "tmdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TMDb ID"
+                                      },
+                                      "tvdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TVDb ID"
+                                      }
+                                    },
+                                    "required": [
+                                      "trakt"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "trakt": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "Trakt ID"
+                                      },
+                                      "slug": {
+                                        "type": "string"
+                                      },
+                                      "imdb": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "IMDb ID"
+                                      },
+                                      "tmdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TMDb ID"
+                                      },
+                                      "tvdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TVDb ID"
+                                      }
+                                    },
+                                    "required": [
+                                      "slug"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "trakt": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "Trakt ID"
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Slug"
+                                      },
+                                      "imdb": {
+                                        "type": "string"
+                                      },
+                                      "tmdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TMDb ID"
+                                      },
+                                      "tvdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TVDb ID"
+                                      }
+                                    },
+                                    "required": [
+                                      "imdb"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "trakt": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "Trakt ID"
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Slug"
+                                      },
+                                      "imdb": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "IMDb ID"
+                                      },
+                                      "tmdb": {
+                                        "type": "integer"
+                                      },
+                                      "tvdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TVDb ID"
+                                      }
+                                    },
+                                    "required": [
+                                      "tmdb"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "trakt": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "Trakt ID"
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Slug"
+                                      },
+                                      "imdb": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "IMDb ID"
+                                      },
+                                      "tmdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TMDb ID"
+                                      },
+                                      "tvdb": {
+                                        "type": "integer"
+                                      }
+                                    },
+                                    "required": [
+                                      "tvdb"
+                                    ]
+                                  }
+                                ]
+                              }
+                            },
+                            "required": [
+                              "ids"
+                            ]
+                          },
+                          "sharing": {
+                            "type": "object",
+                            "properties": {
+                              "twitter": {
+                                "type": "boolean",
+                                "nullable": true
+                              },
+                              "mastodon": {
+                                "type": "boolean",
+                                "nullable": true
+                              },
+                              "tumblr": {
+                                "type": "boolean",
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true,
+                            "description": "The sharing object is optional and will apply the user's settings if not sent. \n    If sharing is sent, each key will override the user's setting for that social network. \n    Send true to post or false to not post on the indicated social network.\n    You can see which social networks a user has connected with the /users/settings method."
+                          },
+                          "message": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "episode"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "show": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "year": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "ids": {
+                                "oneOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "trakt": {
+                                        "type": "integer"
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Slug"
+                                      },
+                                      "imdb": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "IMDb ID"
+                                      },
+                                      "tmdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TMDb ID"
+                                      },
+                                      "tvdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TVDb ID"
+                                      }
+                                    },
+                                    "required": [
+                                      "trakt"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "trakt": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "Trakt ID"
+                                      },
+                                      "slug": {
+                                        "type": "string"
+                                      },
+                                      "imdb": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "IMDb ID"
+                                      },
+                                      "tmdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TMDb ID"
+                                      },
+                                      "tvdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TVDb ID"
+                                      }
+                                    },
+                                    "required": [
+                                      "slug"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "trakt": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "Trakt ID"
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Slug"
+                                      },
+                                      "imdb": {
+                                        "type": "string"
+                                      },
+                                      "tmdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TMDb ID"
+                                      },
+                                      "tvdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TVDb ID"
+                                      }
+                                    },
+                                    "required": [
+                                      "imdb"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "trakt": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "Trakt ID"
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Slug"
+                                      },
+                                      "imdb": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "IMDb ID"
+                                      },
+                                      "tmdb": {
+                                        "type": "integer"
+                                      },
+                                      "tvdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TVDb ID"
+                                      }
+                                    },
+                                    "required": [
+                                      "tmdb"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "trakt": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "Trakt ID"
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Slug"
+                                      },
+                                      "imdb": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "IMDb ID"
+                                      },
+                                      "tmdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TMDb ID"
+                                      },
+                                      "tvdb": {
+                                        "type": "integer"
+                                      }
+                                    },
+                                    "required": [
+                                      "tvdb"
+                                    ]
+                                  }
+                                ]
+                              }
+                            },
+                            "required": [
+                              "ids"
+                            ]
+                          },
+                          "episode": {
+                            "type": "object",
+                            "properties": {
+                              "number_abs": {
+                                "type": "integer"
+                              }
+                            },
+                            "required": [
+                              "number_abs"
+                            ]
+                          },
+                          "sharing": {
+                            "type": "object",
+                            "properties": {
+                              "twitter": {
+                                "type": "boolean",
+                                "nullable": true
+                              },
+                              "mastodon": {
+                                "type": "boolean",
+                                "nullable": true
+                              },
+                              "tumblr": {
+                                "type": "boolean",
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true,
+                            "description": "The sharing object is optional and will apply the user's settings if not sent. \n    If sharing is sent, each key will override the user's setting for that social network. \n    Send true to post or false to not post on the indicated social network.\n    You can see which social networks a user has connected with the /users/settings method."
+                          },
+                          "message": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "show",
+                          "episode"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "show": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "year": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "ids": {
+                                "oneOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "trakt": {
+                                        "type": "integer"
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Slug"
+                                      },
+                                      "imdb": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "IMDb ID"
+                                      },
+                                      "tmdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TMDb ID"
+                                      },
+                                      "tvdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TVDb ID"
+                                      }
+                                    },
+                                    "required": [
+                                      "trakt"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "trakt": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "Trakt ID"
+                                      },
+                                      "slug": {
+                                        "type": "string"
+                                      },
+                                      "imdb": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "IMDb ID"
+                                      },
+                                      "tmdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TMDb ID"
+                                      },
+                                      "tvdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TVDb ID"
+                                      }
+                                    },
+                                    "required": [
+                                      "slug"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "trakt": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "Trakt ID"
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Slug"
+                                      },
+                                      "imdb": {
+                                        "type": "string"
+                                      },
+                                      "tmdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TMDb ID"
+                                      },
+                                      "tvdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TVDb ID"
+                                      }
+                                    },
+                                    "required": [
+                                      "imdb"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "trakt": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "Trakt ID"
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Slug"
+                                      },
+                                      "imdb": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "IMDb ID"
+                                      },
+                                      "tmdb": {
+                                        "type": "integer"
+                                      },
+                                      "tvdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TVDb ID"
+                                      }
+                                    },
+                                    "required": [
+                                      "tmdb"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "trakt": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "Trakt ID"
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Slug"
+                                      },
+                                      "imdb": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "IMDb ID"
+                                      },
+                                      "tmdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TMDb ID"
+                                      },
+                                      "tvdb": {
+                                        "type": "integer"
+                                      }
+                                    },
+                                    "required": [
+                                      "tvdb"
+                                    ]
+                                  }
+                                ]
+                              }
+                            },
+                            "required": [
+                              "ids"
+                            ]
+                          },
+                          "episode": {
+                            "type": "object",
+                            "properties": {
+                              "season": {
+                                "type": "integer"
+                              },
+                              "number": {
+                                "type": "integer"
+                              }
+                            },
+                            "required": [
+                              "season",
+                              "number"
+                            ]
+                          },
+                          "sharing": {
+                            "type": "object",
+                            "properties": {
+                              "twitter": {
+                                "type": "boolean",
+                                "nullable": true
+                              },
+                              "mastodon": {
+                                "type": "boolean",
+                                "nullable": true
+                              },
+                              "tumblr": {
+                                "type": "boolean",
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true,
+                            "description": "The sharing object is optional and will apply the user's settings if not sent. \n    If sharing is sent, each key will override the user's setting for that social network. \n    Send true to post or false to not post on the indicated social network.\n    You can see which social networks a user has connected with the /users/settings method."
+                          },
+                          "message": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "show",
+                          "episode"
+                        ]
+                      }
+                    ],
+                    "nullable": true
+                  },
+                  {
                     "type": "object",
                     "properties": {
-                      "title": {
-                        "type": "string",
-                        "nullable": true
-                      },
-                      "year": {
-                        "type": "integer",
-                        "nullable": true
-                      },
-                      "ids": {
-                        "oneOf": [
-                          {
-                            "type": "object",
-                            "properties": {
-                              "trakt": {
-                                "type": "integer"
-                              },
-                              "slug": {
-                                "type": "string",
-                                "nullable": true,
-                                "description": "Slug"
-                              },
-                              "imdb": {
-                                "type": "string",
-                                "nullable": true,
-                                "description": "IMDb ID"
-                              },
-                              "tmdb": {
-                                "type": "integer",
-                                "nullable": true,
-                                "description": "TMDb ID"
-                              }
-                            },
-                            "required": [
-                              "trakt"
-                            ]
+                      "movie": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string",
+                            "nullable": true
                           },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "trakt": {
-                                "type": "integer",
-                                "nullable": true,
-                                "description": "Trakt ID"
-                              },
-                              "slug": {
-                                "type": "string"
-                              },
-                              "imdb": {
-                                "type": "string",
-                                "nullable": true,
-                                "description": "IMDb ID"
-                              },
-                              "tmdb": {
-                                "type": "integer",
-                                "nullable": true,
-                                "description": "TMDb ID"
-                              }
-                            },
-                            "required": [
-                              "slug"
-                            ]
+                          "year": {
+                            "type": "integer",
+                            "nullable": true
                           },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "trakt": {
-                                "type": "integer",
-                                "nullable": true,
-                                "description": "Trakt ID"
+                          "ids": {
+                            "oneOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "trakt": {
+                                    "type": "integer"
+                                  },
+                                  "slug": {
+                                    "type": "string",
+                                    "nullable": true,
+                                    "description": "Slug"
+                                  },
+                                  "imdb": {
+                                    "type": "string",
+                                    "nullable": true,
+                                    "description": "IMDb ID"
+                                  },
+                                  "tmdb": {
+                                    "type": "integer",
+                                    "nullable": true,
+                                    "description": "TMDb ID"
+                                  }
+                                },
+                                "required": [
+                                  "trakt"
+                                ]
                               },
-                              "slug": {
-                                "type": "string",
-                                "nullable": true,
-                                "description": "Slug"
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "trakt": {
+                                    "type": "integer",
+                                    "nullable": true,
+                                    "description": "Trakt ID"
+                                  },
+                                  "slug": {
+                                    "type": "string"
+                                  },
+                                  "imdb": {
+                                    "type": "string",
+                                    "nullable": true,
+                                    "description": "IMDb ID"
+                                  },
+                                  "tmdb": {
+                                    "type": "integer",
+                                    "nullable": true,
+                                    "description": "TMDb ID"
+                                  }
+                                },
+                                "required": [
+                                  "slug"
+                                ]
                               },
-                              "imdb": {
-                                "type": "string"
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "trakt": {
+                                    "type": "integer",
+                                    "nullable": true,
+                                    "description": "Trakt ID"
+                                  },
+                                  "slug": {
+                                    "type": "string",
+                                    "nullable": true,
+                                    "description": "Slug"
+                                  },
+                                  "imdb": {
+                                    "type": "string"
+                                  },
+                                  "tmdb": {
+                                    "type": "integer",
+                                    "nullable": true,
+                                    "description": "TMDb ID"
+                                  }
+                                },
+                                "required": [
+                                  "imdb"
+                                ]
                               },
-                              "tmdb": {
-                                "type": "integer",
-                                "nullable": true,
-                                "description": "TMDb ID"
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "trakt": {
+                                    "type": "integer",
+                                    "nullable": true,
+                                    "description": "Trakt ID"
+                                  },
+                                  "slug": {
+                                    "type": "string",
+                                    "nullable": true,
+                                    "description": "Slug"
+                                  },
+                                  "imdb": {
+                                    "type": "string",
+                                    "nullable": true,
+                                    "description": "IMDb ID"
+                                  },
+                                  "tmdb": {
+                                    "type": "integer"
+                                  }
+                                },
+                                "required": [
+                                  "tmdb"
+                                ]
                               }
-                            },
-                            "required": [
-                              "imdb"
-                            ]
-                          },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "trakt": {
-                                "type": "integer",
-                                "nullable": true,
-                                "description": "Trakt ID"
-                              },
-                              "slug": {
-                                "type": "string",
-                                "nullable": true,
-                                "description": "Slug"
-                              },
-                              "imdb": {
-                                "type": "string",
-                                "nullable": true,
-                                "description": "IMDb ID"
-                              },
-                              "tmdb": {
-                                "type": "integer"
-                              }
-                            },
-                            "required": [
-                              "tmdb"
                             ]
                           }
+                        },
+                        "required": [
+                          "ids"
                         ]
+                      },
+                      "sharing": {
+                        "type": "object",
+                        "properties": {
+                          "twitter": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "mastodon": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "tumblr": {
+                            "type": "boolean",
+                            "nullable": true
+                          }
+                        },
+                        "nullable": true,
+                        "description": "The sharing object is optional and will apply the user's settings if not sent. \n    If sharing is sent, each key will override the user's setting for that social network. \n    Send true to post or false to not post on the indicated social network.\n    You can see which social networks a user has connected with the /users/settings method."
+                      },
+                      "message": {
+                        "type": "string",
+                        "nullable": true
                       }
                     },
                     "required": [
-                      "ids"
-                    ]
-                  },
-                  "sharing": {
-                    "type": "object",
-                    "properties": {
-                      "twitter": {
-                        "type": "boolean",
-                        "nullable": true
-                      },
-                      "mastodon": {
-                        "type": "boolean",
-                        "nullable": true
-                      },
-                      "tumblr": {
-                        "type": "boolean",
-                        "nullable": true
-                      }
-                    },
-                    "nullable": true,
-                    "description": "The sharing object is optional and will apply the user's settings if not sent. \n    If sharing is sent, each key will override the user's setting for that social network. \n    Send true to post or false to not post on the indicated social network.\n    You can see which social networks a user has connected with the /users/settings method."
-                  },
-                  "message": {
-                    "type": "string",
+                      "movie"
+                    ],
                     "nullable": true
                   }
-                },
-                "required": [
-                  "movie"
-                ]
+                ],
+                "nullable": true
               }
             }
           }
@@ -3259,93 +3908,249 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "number",
-                      "format": "int64"
-                    },
-                    "watched_at": {
-                      "type": "string"
-                    },
-                    "sharing": {
+                  "oneOf": [
+                    {
                       "type": "object",
                       "properties": {
-                        "twitter": {
-                          "type": "boolean"
+                        "id": {
+                          "type": "number",
+                          "format": "int64"
                         },
-                        "mastodon": {
-                          "type": "boolean"
-                        },
-                        "tumblr": {
-                          "type": "boolean"
-                        }
-                      },
-                      "required": [
-                        "twitter",
-                        "mastodon",
-                        "tumblr"
-                      ]
-                    },
-                    "movie": {
-                      "type": "object",
-                      "properties": {
-                        "title": {
+                        "watched_at": {
                           "type": "string"
                         },
-                        "year": {
-                          "type": "integer"
-                        },
-                        "ids": {
+                        "sharing": {
                           "type": "object",
                           "properties": {
-                            "trakt": {
-                              "type": "integer"
+                            "twitter": {
+                              "type": "boolean"
                             },
-                            "slug": {
-                              "type": "string"
+                            "mastodon": {
+                              "type": "boolean"
                             },
-                            "imdb": {
-                              "type": "string",
-                              "nullable": true
-                            },
-                            "tmdb": {
-                              "type": "integer",
-                              "nullable": true
-                            },
-                            "plex": {
-                              "type": "object",
-                              "properties": {
-                                "guid": {
-                                  "type": "string",
-                                  "nullable": true
-                                },
-                                "slug": {
-                                  "type": "string",
-                                  "nullable": true
-                                }
-                              },
-                              "nullable": true
+                            "tumblr": {
+                              "type": "boolean"
                             }
                           },
                           "required": [
-                            "trakt",
-                            "slug"
+                            "twitter",
+                            "mastodon",
+                            "tumblr"
+                          ]
+                        },
+                        "episode": {
+                          "type": "object",
+                          "properties": {
+                            "season": {
+                              "type": "integer"
+                            },
+                            "number": {
+                              "type": "integer"
+                            },
+                            "title": {
+                              "type": "string"
+                            },
+                            "ids": {
+                              "type": "object",
+                              "properties": {
+                                "trakt": {
+                                  "type": "integer"
+                                },
+                                "tvdb": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "imdb": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "tmdb": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "plex": {
+                                  "type": "object",
+                                  "properties": {
+                                    "guid": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "slug": {
+                                      "type": "string",
+                                      "nullable": true
+                                    }
+                                  },
+                                  "nullable": true
+                                }
+                              },
+                              "required": [
+                                "trakt"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "season",
+                            "number",
+                            "title",
+                            "ids"
+                          ]
+                        },
+                        "show": {
+                          "type": "object",
+                          "properties": {
+                            "title": {
+                              "type": "string"
+                            },
+                            "year": {
+                              "type": "integer"
+                            },
+                            "ids": {
+                              "type": "object",
+                              "properties": {
+                                "trakt": {
+                                  "type": "integer"
+                                },
+                                "tvdb": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "imdb": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "tmdb": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "plex": {
+                                  "type": "object",
+                                  "properties": {
+                                    "guid": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "slug": {
+                                      "type": "string",
+                                      "nullable": true
+                                    }
+                                  },
+                                  "nullable": true
+                                },
+                                "slug": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "trakt",
+                                "slug"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "title",
+                            "year",
+                            "ids"
                           ]
                         }
                       },
                       "required": [
-                        "title",
-                        "year",
-                        "ids"
+                        "id",
+                        "watched_at",
+                        "sharing",
+                        "episode",
+                        "show"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "format": "int64"
+                        },
+                        "watched_at": {
+                          "type": "string"
+                        },
+                        "sharing": {
+                          "type": "object",
+                          "properties": {
+                            "twitter": {
+                              "type": "boolean"
+                            },
+                            "mastodon": {
+                              "type": "boolean"
+                            },
+                            "tumblr": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "twitter",
+                            "mastodon",
+                            "tumblr"
+                          ]
+                        },
+                        "movie": {
+                          "type": "object",
+                          "properties": {
+                            "title": {
+                              "type": "string"
+                            },
+                            "year": {
+                              "type": "integer"
+                            },
+                            "ids": {
+                              "type": "object",
+                              "properties": {
+                                "trakt": {
+                                  "type": "integer"
+                                },
+                                "slug": {
+                                  "type": "string"
+                                },
+                                "imdb": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "tmdb": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "plex": {
+                                  "type": "object",
+                                  "properties": {
+                                    "guid": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "slug": {
+                                      "type": "string",
+                                      "nullable": true
+                                    }
+                                  },
+                                  "nullable": true
+                                }
+                              },
+                              "required": [
+                                "trakt",
+                                "slug"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "title",
+                            "year",
+                            "ids"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "watched_at",
+                        "sharing",
+                        "movie"
                       ]
                     }
-                  },
-                  "required": [
-                    "id",
-                    "watched_at",
-                    "sharing",
-                    "movie"
                   ]
                 }
               }
@@ -3371,7 +4176,7 @@
             }
           }
         },
-        "operationId": "postCheckinMovie"
+        "operationId": "postCheckinStart"
       },
       "delete": {
         "tags": [
@@ -9020,9 +9825,6 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "discriminator": {
-                    "propertyName": "type"
-                  },
                   "oneOf": [
                     {
                       "type": "object",
@@ -9253,15 +10055,15 @@
                           "required": [
                             "title",
                             "ids"
-                          ]
+                          ],
+                          "nullable": true
                         }
                       },
                       "required": [
                         "expires_at",
                         "started_at",
                         "action",
-                        "type",
-                        "movie"
+                        "type"
                       ]
                     },
                     {
@@ -9417,7 +10219,8 @@
                             "season",
                             "number",
                             "ids"
-                          ]
+                          ],
+                          "nullable": true
                         },
                         "show": {
                           "type": "object",
@@ -9652,16 +10455,15 @@
                           "required": [
                             "title",
                             "ids"
-                          ]
+                          ],
+                          "nullable": true
                         }
                       },
                       "required": [
                         "expires_at",
                         "started_at",
                         "action",
-                        "type",
-                        "episode",
-                        "show"
+                        "type"
                       ]
                     }
                   ]
@@ -19413,7 +20215,8 @@
                                 "type": "integer"
                               },
                               "title": {
-                                "type": "string"
+                                "type": "string",
+                                "nullable": true
                               },
                               "ids": {
                                 "type": "object",
@@ -19456,7 +20259,6 @@
                             "required": [
                               "season",
                               "number",
-                              "title",
                               "ids"
                             ],
                             "nullable": true
@@ -20099,7 +20901,8 @@
                                 "type": "integer"
                               },
                               "title": {
-                                "type": "string"
+                                "type": "string",
+                                "nullable": true
                               },
                               "ids": {
                                 "type": "object",
@@ -20142,7 +20945,6 @@
                             "required": [
                               "season",
                               "number",
-                              "title",
                               "ids"
                             ],
                             "nullable": true
@@ -20785,7 +21587,8 @@
                                 "type": "integer"
                               },
                               "title": {
-                                "type": "string"
+                                "type": "string",
+                                "nullable": true
                               },
                               "ids": {
                                 "type": "object",
@@ -20828,7 +21631,6 @@
                             "required": [
                               "season",
                               "number",
-                              "title",
                               "ids"
                             ],
                             "nullable": true
@@ -47844,6 +48646,24 @@
               "type": "string",
               "nullable": true
             }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page number to retrieve",
+            "schema": {
+              "type": "integer",
+              "nullable": true
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of items per page",
+            "schema": {
+              "type": "integer",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -48480,6 +49300,24 @@
               "type": "string",
               "nullable": true
             }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page number to retrieve",
+            "schema": {
+              "type": "integer",
+              "nullable": true
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of items per page",
+            "schema": {
+              "type": "integer",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -48906,6 +49744,1036 @@
           }
         },
         "operationId": "getSyncCollectionEpisodes"
+      }
+    },
+    "/sync/collection/media": {
+      "get": {
+        "tags": [
+          "sync",
+          "collection"
+        ],
+        "parameters": [
+          {
+            "name": "extended",
+            "in": "query",
+            "description": "Extended information to include in the response.",
+            "schema": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "available_on",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page number to retrieve",
+            "schema": {
+              "type": "integer",
+              "nullable": true
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of items per page",
+            "schema": {
+              "type": "integer",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "movie"
+                            ]
+                          },
+                          "movie": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string"
+                              },
+                              "year": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "ids": {
+                                "type": "object",
+                                "properties": {
+                                  "trakt": {
+                                    "type": "integer"
+                                  },
+                                  "slug": {
+                                    "type": "string"
+                                  },
+                                  "imdb": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "tmdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
+                                  "plex": {
+                                    "type": "object",
+                                    "properties": {
+                                      "guid": {
+                                        "type": "string",
+                                        "nullable": true
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true
+                                      }
+                                    },
+                                    "nullable": true
+                                  }
+                                },
+                                "required": [
+                                  "trakt",
+                                  "slug"
+                                ]
+                              },
+                              "images": {
+                                "type": "object",
+                                "properties": {
+                                  "fanart": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "poster": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "logo": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "clearart": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "banner": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "thumb": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "fanart",
+                                  "poster",
+                                  "logo",
+                                  "clearart",
+                                  "banner",
+                                  "thumb"
+                                ],
+                                "nullable": true
+                              },
+                              "tagline": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "overview": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "released": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "country": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "rating": {
+                                "type": "number",
+                                "format": "float",
+                                "nullable": true
+                              },
+                              "votes": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "comment_count": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "trailer": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "homepage": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "language": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "languages": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "available_translations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "genres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "subgenres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "certification": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "original_title": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "after_credits": {
+                                "type": "boolean",
+                                "nullable": true
+                              },
+                              "during_credits": {
+                                "type": "boolean",
+                                "nullable": true
+                              },
+                              "colors": {
+                                "type": "object",
+                                "properties": {
+                                  "poster": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "ids"
+                            ]
+                          },
+                          "collected_at": {
+                            "type": "string"
+                          },
+                          "updated_at": {
+                            "type": "string"
+                          },
+                          "available_on": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "name"
+                              ]
+                            },
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "movie",
+                          "collected_at",
+                          "updated_at"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "last_collected_at": {
+                            "type": "string"
+                          },
+                          "last_updated_at": {
+                            "type": "string"
+                          },
+                          "seasons": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "number": {
+                                  "type": "integer"
+                                },
+                                "episodes": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "number": {
+                                        "type": "integer"
+                                      },
+                                      "collected_at": {
+                                        "type": "string"
+                                      },
+                                      "available_on": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "object",
+                                          "properties": {
+                                            "name": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": [
+                                            "name"
+                                          ]
+                                        },
+                                        "nullable": true
+                                      }
+                                    },
+                                    "required": [
+                                      "number",
+                                      "collected_at"
+                                    ]
+                                  }
+                                }
+                              },
+                              "required": [
+                                "number",
+                                "episodes"
+                              ]
+                            }
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "show"
+                            ]
+                          },
+                          "show": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string"
+                              },
+                              "year": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "ids": {
+                                "type": "object",
+                                "properties": {
+                                  "trakt": {
+                                    "type": "integer"
+                                  },
+                                  "tvdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
+                                  "imdb": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "tmdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
+                                  "plex": {
+                                    "type": "object",
+                                    "properties": {
+                                      "guid": {
+                                        "type": "string",
+                                        "nullable": true
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true
+                                      }
+                                    },
+                                    "nullable": true
+                                  },
+                                  "slug": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "trakt",
+                                  "slug"
+                                ]
+                              },
+                              "images": {
+                                "type": "object",
+                                "properties": {
+                                  "fanart": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "poster": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "logo": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "clearart": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "banner": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "thumb": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "fanart",
+                                  "poster",
+                                  "logo",
+                                  "clearart",
+                                  "banner",
+                                  "thumb"
+                                ],
+                                "nullable": true
+                              },
+                              "aired_episodes": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "tagline": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "overview": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "first_aired": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "airs": {
+                                "type": "object",
+                                "properties": {
+                                  "day": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "time": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "timezone": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              },
+                              "runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "certification": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "network": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "country": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "rating": {
+                                "type": "number",
+                                "format": "float",
+                                "nullable": true
+                              },
+                              "votes": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "comment_count": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "trailer": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "homepage": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "language": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "languages": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "available_translations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "genres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "subgenres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "original_title": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "colors": {
+                                "type": "object",
+                                "properties": {
+                                  "poster": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "ids"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "last_collected_at",
+                          "last_updated_at",
+                          "seasons",
+                          "type",
+                          "show"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "episode"
+                            ]
+                          },
+                          "episode": {
+                            "type": "object",
+                            "properties": {
+                              "season": {
+                                "type": "integer"
+                              },
+                              "number": {
+                                "type": "integer"
+                              },
+                              "title": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "first_aired": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "number_abs": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "rating": {
+                                "type": "number",
+                                "format": "float",
+                                "nullable": true
+                              },
+                              "votes": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "comment_count": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "available_translations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "overview": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "episode_type": {
+                                "type": "string",
+                                "enum": [
+                                  "standard",
+                                  "series_premiere",
+                                  "season_premiere",
+                                  "mid_season_finale",
+                                  "mid_season_premiere",
+                                  "season_finale",
+                                  "series_finale"
+                                ],
+                                "nullable": true
+                              },
+                              "ids": {
+                                "type": "object",
+                                "properties": {
+                                  "trakt": {
+                                    "type": "integer"
+                                  },
+                                  "tvdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
+                                  "imdb": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "tmdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
+                                  "plex": {
+                                    "type": "object",
+                                    "properties": {
+                                      "guid": {
+                                        "type": "string",
+                                        "nullable": true
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true
+                                      }
+                                    },
+                                    "nullable": true
+                                  }
+                                },
+                                "required": [
+                                  "trakt"
+                                ]
+                              },
+                              "original_title": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "after_credits": {
+                                "type": "boolean",
+                                "nullable": true
+                              },
+                              "during_credits": {
+                                "type": "boolean",
+                                "nullable": true
+                              },
+                              "images": {
+                                "type": "object",
+                                "properties": {
+                                  "screenshot": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "screenshot"
+                                ],
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "season",
+                              "number",
+                              "ids"
+                            ]
+                          },
+                          "show": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string"
+                              },
+                              "year": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "ids": {
+                                "type": "object",
+                                "properties": {
+                                  "trakt": {
+                                    "type": "integer"
+                                  },
+                                  "tvdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
+                                  "imdb": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "tmdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
+                                  "plex": {
+                                    "type": "object",
+                                    "properties": {
+                                      "guid": {
+                                        "type": "string",
+                                        "nullable": true
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true
+                                      }
+                                    },
+                                    "nullable": true
+                                  },
+                                  "slug": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "trakt",
+                                  "slug"
+                                ]
+                              },
+                              "images": {
+                                "type": "object",
+                                "properties": {
+                                  "fanart": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "poster": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "logo": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "clearart": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "banner": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "thumb": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "fanart",
+                                  "poster",
+                                  "logo",
+                                  "clearart",
+                                  "banner",
+                                  "thumb"
+                                ],
+                                "nullable": true
+                              },
+                              "aired_episodes": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "tagline": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "overview": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "first_aired": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "airs": {
+                                "type": "object",
+                                "properties": {
+                                  "day": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "time": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "timezone": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              },
+                              "runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "certification": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "network": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "country": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "rating": {
+                                "type": "number",
+                                "format": "float",
+                                "nullable": true
+                              },
+                              "votes": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "comment_count": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "trailer": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "homepage": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "language": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "languages": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "available_translations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "genres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "subgenres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "original_title": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "colors": {
+                                "type": "object",
+                                "properties": {
+                                  "poster": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "ids"
+                            ]
+                          },
+                          "collected_at": {
+                            "type": "string"
+                          },
+                          "updated_at": {
+                            "type": "string"
+                          },
+                          "available_on": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "name"
+                              ]
+                            },
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "episode",
+                          "show",
+                          "collected_at",
+                          "updated_at"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getSyncCollectionMedia"
       }
     },
     "/sync/collection/minimal/movies": {

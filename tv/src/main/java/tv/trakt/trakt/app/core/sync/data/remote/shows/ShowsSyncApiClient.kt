@@ -4,9 +4,9 @@ import org.openapitools.client.apis.CollectionApi
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
 import org.openapitools.client.apis.WatchedApi
+import org.openapitools.client.models.PostCheckinStartRequestOneOfOneOfEpisodeIds
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
-import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerOneOfIds
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.ProgressShowDto
@@ -26,7 +26,7 @@ internal class ShowsSyncApiClient(
         val request = PostUsersListsListAddRequest(
             shows = listOf(
                 PostUsersListsListAddRequestShowsInner(
-                    ids = PostUsersListsListAddRequestShowsInnerOneOfIds(
+                    ids = PostCheckinStartRequestOneOfOneOfEpisodeIds(
                         trakt = showId.value,
                         slug = null,
                         imdb = null,
@@ -45,7 +45,7 @@ internal class ShowsSyncApiClient(
         val request = PostUsersListsListAddRequest(
             shows = listOf(
                 PostUsersListsListAddRequestShowsInner(
-                    ids = PostUsersListsListAddRequestShowsInnerOneOfIds(
+                    ids = PostCheckinStartRequestOneOfOneOfEpisodeIds(
                         trakt = showId.value,
                         slug = null,
                         imdb = null,
@@ -107,7 +107,7 @@ internal class ShowsSyncApiClient(
         val request = PostUsersListsListAddRequest(
             shows = listOf(
                 PostUsersListsListAddRequestShowsInner(
-                    ids = PostUsersListsListAddRequestShowsInnerOneOfIds(
+                    ids = PostCheckinStartRequestOneOfOneOfEpisodeIds(
                         trakt = showId.value,
                         slug = null,
                         imdb = null,

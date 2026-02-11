@@ -23,6 +23,7 @@ import org.openapitools.client.models.GetSearchQuery200ResponseInner
 import org.openapitools.client.models.GetSearchQuery200ResponseInnerOneOf2Person
 import org.openapitools.client.models.GetSearchTrending200ResponseInner
 import org.openapitools.client.models.GetSyncCollectionEpisodes200ResponseInner
+import org.openapitools.client.models.GetSyncCollectionMedia200ResponseInner
 import org.openapitools.client.models.GetSyncCollectionMovies200ResponseInner
 import org.openapitools.client.models.GetSyncProgressUpNextStandard200ResponseInner
 import org.openapitools.client.models.GetSyncProgressUpNextStandard200ResponseInnerProgressLastEpisode
@@ -49,8 +50,6 @@ import org.openapitools.client.models.GetUsersWatchlistAll200ResponseInner
 import org.openapitools.client.models.GetUsersWatchlistMovies200ResponseInner
 import org.openapitools.client.models.GetUsersWatchlistShows200ResponseInner
 import org.openapitools.client.models.GetWatchnowSourcesAll200ResponseInnerValueInner
-import org.openapitools.client.models.PostCheckinMovie200Response
-import org.openapitools.client.models.PostCheckinMovie200ResponseMovie
 import org.openapitools.client.models.PostSyncHistoryAdd200Response
 
 /**
@@ -63,7 +62,6 @@ typealias ShowLikesDto = GetUsersLikesComments200ResponseInnerAllOfOneOf1Show
 typealias MovieDto = GetCalendarsMovies200ResponseInnerMovie
 typealias MovieIdsDto = GetCalendarsMovies200ResponseInnerMovieIds
 typealias MovieLikesDto = GetUsersLikesComments200ResponseInnerAllOfOneOfMovie
-typealias MovieProgressDto = PostCheckinMovie200ResponseMovie
 
 typealias EpisodeDto = GetCalendarsShows200ResponseInnerEpisode
 typealias LastEpisodeDto = GetSyncProgressUpNextStandard200ResponseInnerProgressLastEpisode
@@ -104,12 +102,12 @@ typealias SyncHistoryMovieItemDto = GetUsersHistoryAll200ResponseInnerOneOf
 typealias SyncHistoryEpisodeItemDto = GetUsersHistoryAll200ResponseInnerOneOf1
 typealias SyncFavoriteShowDto = GetUsersFavoritesShows200ResponseInner
 typealias SyncFavoriteMovieDto = GetUsersFavoritesMovies200ResponseInner
-typealias SyncLibraryEpisodeDto = GetSyncCollectionEpisodes200ResponseInner
-typealias SyncLibraryMovieDto = GetSyncCollectionMovies200ResponseInner
+typealias SyncLibraryMediaDto = GetSyncCollectionMedia200ResponseInner
 typealias RecommendedMovieDto = GetRecommendationsMoviesRecommend200ResponseInner
 typealias RecommendedShowDto = GetRecommendationsShowsRecommend200ResponseInner
 typealias SearchItemDto = GetSearchQuery200ResponseInner
 typealias SocialActivityItemDto = GetUsersActivities200ResponseInner
 typealias UserRatingDto = GetUsersRatingsMovies200ResponseInner
-typealias CheckInMovieResponseDto = PostCheckinMovie200Response
+
+// typealias CheckInMovieResponseDto = PostCheckinMovie200Response
 typealias UserWatchingDto = GetUsersWatching200Response

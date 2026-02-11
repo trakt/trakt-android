@@ -26,7 +26,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -55,6 +57,7 @@ import tv.trakt.trakt.ui.components.FilterChip
 import tv.trakt.trakt.ui.components.FilterChipGroup
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -82,6 +85,7 @@ internal fun AllLibraryScreen(
     AllLibraryContent(
         state = state,
         modifier = modifier,
+        onLoadMore = { viewModel.loadMoreData() },
         onClick = {
             scope.launch {
                 when (it) {
@@ -106,6 +110,7 @@ internal fun AllLibraryScreen(
 internal fun AllLibraryContent(
     state: AllLibraryState,
     modifier: Modifier = Modifier,
+    onLoadMore: () -> Unit = {},
     onClick: (LibraryItem) -> Unit = {},
     onFilterClick: (LibraryFilter) -> Unit = {},
     onBackClick: () -> Unit = {},
@@ -146,6 +151,8 @@ internal fun AllLibraryContent(
             listState = listState,
             listFilter = state.filter,
             contentPadding = contentPadding,
+            loadingMore = state.loadingMore.isLoading,
+            onEndOfList = onLoadMore,
             onFilterClick = onFilterClick,
             onClick = onClick,
             onBackClick = onBackClick,
@@ -182,10 +189,24 @@ private fun ContentList(
     listItems: ImmutableList<LibraryItem>,
     listFilter: LibraryFilter?,
     contentPadding: PaddingValues,
+    loadingMore: Boolean,
+    onEndOfList: () -> Unit,
     onClick: (LibraryItem) -> Unit,
     onFilterClick: (LibraryFilter) -> Unit,
     onBackClick: () -> Unit,
 ) {
+    val isScrolledToBottom by remember(listItems.size) {
+        derivedStateOf {
+            listState.firstVisibleItemIndex >= (listItems.size - 5)
+        }
+    }
+
+    LaunchedEffect(isScrolledToBottom) {
+        if (isScrolledToBottom) {
+            onEndOfList()
+        }
+    }
+
     LazyColumn(
         state = listState,
         verticalArrangement = spacedBy(0.dp),
@@ -244,6 +265,19 @@ private fun ContentList(
                         .animateItem(
                             fadeInSpec = tween(200),
                             fadeOutSpec = tween(200),
+                        ),
+                )
+            }
+        }
+
+        if (loadingMore) {
+            items(1) {
+                PanelMediaSkeletonCard(
+                    modifier = Modifier
+                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
                         ),
                 )
             }

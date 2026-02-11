@@ -1,13 +1,13 @@
 package tv.trakt.trakt.core.ratings.data.remote
 
 import org.openapitools.client.apis.RatingsApi
-import org.openapitools.client.models.PostCheckinMovieRequestMovieIds
+import org.openapitools.client.models.PostCheckinStartRequestOneOf1MovieIds
+import org.openapitools.client.models.PostCheckinStartRequestOneOfOneOfEpisodeIds
 import org.openapitools.client.models.PostSyncRatingsAddRequest
 import org.openapitools.client.models.PostSyncRatingsAddRequestEpisodesInner
 import org.openapitools.client.models.PostSyncRatingsAddRequestMoviesInner
 import org.openapitools.client.models.PostSyncRatingsAddRequestShowsInner
 import org.openapitools.client.models.PostUsersListsListAddRequestEpisodesInnerIds
-import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerOneOfIds
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
@@ -23,7 +23,7 @@ internal class RatingsApiClient(
             movies = listOf(
                 PostSyncRatingsAddRequestMoviesInner(
                     rating = rating,
-                    ids = PostCheckinMovieRequestMovieIds(
+                    ids = PostCheckinStartRequestOneOf1MovieIds(
                         trakt = id.value,
                         slug = null,
                         imdb = null,
@@ -44,7 +44,7 @@ internal class RatingsApiClient(
             shows = listOf(
                 PostSyncRatingsAddRequestShowsInner(
                     rating = rating,
-                    ids = PostUsersListsListAddRequestShowsInnerOneOfIds(
+                    ids = PostCheckinStartRequestOneOfOneOfEpisodeIds(
                         trakt = id.value,
                         slug = null,
                         imdb = null,

@@ -4,12 +4,12 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
+import org.openapitools.client.models.PostCheckinStartRequestOneOfOneOfEpisode
+import org.openapitools.client.models.PostCheckinStartRequestOneOfOneOfEpisodeIds
 import org.openapitools.client.models.PostSyncFavoritesAddRequest
 import org.openapitools.client.models.PostSyncHistoryRemoveRequest
-import org.openapitools.client.models.PostSyncRatingsRemoveRequestShowsInner
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
-import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerOneOfIds
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.ProgressShowDto
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
@@ -39,7 +39,7 @@ internal class ShowsSyncApiClient(
         val request = PostUsersListsListAddRequest(
             shows = listOf(
                 PostUsersListsListAddRequestShowsInner(
-                    ids = PostUsersListsListAddRequestShowsInnerOneOfIds(
+                    ids = PostCheckinStartRequestOneOfOneOfEpisodeIds(
                         trakt = showId.value,
                         slug = null,
                         imdb = null,
@@ -60,7 +60,7 @@ internal class ShowsSyncApiClient(
         val request = PostSyncHistoryRemoveRequest(
             shows = listOf(
                 PostUsersListsListAddRequestShowsInner(
-                    ids = PostUsersListsListAddRequestShowsInnerOneOfIds(
+                    ids = PostCheckinStartRequestOneOfOneOfEpisodeIds(
                         trakt = showId.value,
                         slug = null,
                         imdb = null,
@@ -80,7 +80,7 @@ internal class ShowsSyncApiClient(
         val request = PostUsersListsListAddRequest(
             shows = listOf(
                 PostUsersListsListAddRequestShowsInner(
-                    ids = PostUsersListsListAddRequestShowsInnerOneOfIds(
+                    ids = PostCheckinStartRequestOneOfOneOfEpisodeIds(
                         trakt = showId.value,
                         slug = null,
                         imdb = null,
@@ -100,7 +100,7 @@ internal class ShowsSyncApiClient(
         val request = PostUsersListsListAddRequest(
             shows = listOf(
                 PostUsersListsListAddRequestShowsInner(
-                    ids = PostUsersListsListAddRequestShowsInnerOneOfIds(
+                    ids = PostCheckinStartRequestOneOfOneOfEpisodeIds(
                         trakt = showId.value,
                         slug = null,
                         imdb = null,
@@ -120,7 +120,7 @@ internal class ShowsSyncApiClient(
         val request = PostUsersListsListAddRequest(
             shows = listOf(
                 PostUsersListsListAddRequestShowsInner(
-                    ids = PostUsersListsListAddRequestShowsInnerOneOfIds(
+                    ids = PostCheckinStartRequestOneOfOneOfEpisodeIds(
                         trakt = showId.value,
                         slug = null,
                         imdb = null,
@@ -156,8 +156,8 @@ internal class ShowsSyncApiClient(
     override suspend fun addToFavorites(showId: TraktId) {
         val request = PostSyncFavoritesAddRequest(
             shows = listOf(
-                PostSyncRatingsRemoveRequestShowsInner(
-                    ids = PostUsersListsListAddRequestShowsInnerOneOfIds(
+                PostCheckinStartRequestOneOfOneOfEpisode(
+                    ids = PostCheckinStartRequestOneOfOneOfEpisodeIds(
                         trakt = showId.value,
                         slug = null,
                         imdb = null,
@@ -174,8 +174,8 @@ internal class ShowsSyncApiClient(
     override suspend fun removeFromFavorites(showId: TraktId) {
         val request = PostSyncFavoritesAddRequest(
             shows = listOf(
-                PostSyncRatingsRemoveRequestShowsInner(
-                    ids = PostUsersListsListAddRequestShowsInnerOneOfIds(
+                PostCheckinStartRequestOneOfOneOfEpisode(
+                    ids = PostCheckinStartRequestOneOfOneOfEpisodeIds(
                         trakt = showId.value,
                         slug = null,
                         imdb = null,

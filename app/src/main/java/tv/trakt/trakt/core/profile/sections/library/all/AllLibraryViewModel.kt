@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package tv.trakt.trakt.core.profile.sections.library.all
 
 import androidx.lifecycle.ViewModel
@@ -8,7 +10,6 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -28,6 +29,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.library.model.LibraryFilter
 import tv.trakt.trakt.core.library.model.LibraryItem
+import tv.trakt.trakt.core.lists.ListsConfig.LIBRARY_PAGE_LIMIT
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserLibraryUseCase
 
 @OptIn(FlowPreview::class)
@@ -45,9 +47,13 @@ internal class AllLibraryViewModel(
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
+    private val loadingMoreState = MutableStateFlow(initialState.loadingMore)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var dataJob: Job? = null
+
+    private var pages: Int = 1
+    private var hasMoreData: Boolean = false
 
     init {
         loadData()
@@ -57,10 +63,7 @@ internal class AllLibraryViewModel(
         )
     }
 
-    fun loadData(
-        ignoreErrors: Boolean = false,
-        localOnly: Boolean = false,
-    ) {
+    fun loadData(ignoreErrors: Boolean = false) {
         dataJob?.cancel()
         dataJob = viewModelScope.launch {
             try {
@@ -68,11 +71,11 @@ internal class AllLibraryViewModel(
                     return@launch
                 }
 
-                val localItems = loadLibraryUseCase.loadLocalAll()
-                if (localItems.isNotEmpty()) {
+                val localItems = loadLibraryUseCase.loadLocalMedia(LIBRARY_PAGE_LIMIT)
+                if (localItems.items.isNotEmpty()) {
                     val filter = filterState.value
                     itemsState.update {
-                        localItems
+                        localItems.items
                             .filter {
                                 when (filterState.value) {
                                     null -> true
@@ -82,12 +85,8 @@ internal class AllLibraryViewModel(
                             }
                             .toImmutableList()
                     }
-                    loadingState.update { DONE }
-                    if (localOnly) {
-                        return@launch
-                    }
-                } else {
-                    loadingState.update { LOADING }
+
+                    hasMoreData = localItems.hasMoreData
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -96,8 +95,44 @@ internal class AllLibraryViewModel(
                     }
                     Timber.recordError(error)
                 }
+            }
+        }
+    }
+
+    fun loadMoreData() {
+        if (itemsState.value.isNullOrEmpty() || !hasMoreData) {
+            return
+        }
+
+        if (loadingMoreState.value.isLoading || loadingState.value.isLoading) {
+            return
+        }
+
+        viewModelScope.launch {
+            try {
+                loadingMoreState.update { LOADING }
+
+                val nextData = loadLibraryUseCase.loadMedia(
+                    page = pages + 1,
+                    limit = LIBRARY_PAGE_LIMIT,
+                )
+
+                itemsState.update { items ->
+                    items
+                        ?.plus(nextData.items)
+                        ?.distinctBy { it.key }
+                        ?.toImmutableList()
+                }
+
+                pages += 1
+                hasMoreData = nextData.hasMoreData
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
             } finally {
-                loadingState.update { DONE }
+                loadingMoreState.update { DONE }
             }
         }
     }
@@ -123,7 +158,7 @@ internal class AllLibraryViewModel(
                 newFilter -> filterState.update { null }
                 else -> filterState.update { newFilter }
             }
-            loadData(localOnly = true)
+            loadData()
         }
     }
 
@@ -146,9 +181,9 @@ internal class AllLibraryViewModel(
         super.onCleared()
     }
 
-    @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<AllLibraryState> = combine(
+    val state = combine(
         loadingState,
+        loadingMoreState,
         itemsState,
         filterState,
         navigateShow,
@@ -157,11 +192,12 @@ internal class AllLibraryViewModel(
     ) { state ->
         AllLibraryState(
             loading = state[0] as LoadingState,
-            items = state[1] as? ImmutableList<LibraryItem>,
-            filter = state[2] as? LibraryFilter,
-            navigateShow = state[3] as? TraktId,
-            navigateMovie = state[4] as? TraktId,
-            error = state[5] as? Exception,
+            loadingMore = state[1] as LoadingState,
+            items = state[2] as? ImmutableList<LibraryItem>,
+            filter = state[3] as? LibraryFilter,
+            navigateShow = state[4] as? TraktId,
+            navigateMovie = state[5] as? TraktId,
+            error = state[6] as? Exception,
         )
     }.stateIn(
         scope = viewModelScope,

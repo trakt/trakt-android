@@ -1,7 +1,7 @@
 package tv.trakt.trakt.core.sync.data.remote.movies
 
 import org.openapitools.client.apis.SyncApi
-import org.openapitools.client.models.PostCheckinMovieRequestMovieIds
+import org.openapitools.client.models.PostCheckinStartRequestOneOf1MovieIds
 import org.openapitools.client.models.PostSyncFavoritesAddRequest
 import org.openapitools.client.models.PostSyncHistoryAdd200Response
 import org.openapitools.client.models.PostSyncHistoryRemoveRequest
@@ -22,7 +22,7 @@ internal class MoviesSyncApiClient(
         val request = PostUsersListsListAddRequest(
             movies = listOf(
                 PostUsersListsListAddRequestMoviesInner(
-                    ids = PostCheckinMovieRequestMovieIds(
+                    ids = PostCheckinStartRequestOneOf1MovieIds(
                         trakt = movieId.value,
                         slug = null,
                         imdb = null,
@@ -52,7 +52,7 @@ internal class MoviesSyncApiClient(
         val request = PostSyncHistoryRemoveRequest(
             movies = listOf(
                 PostUsersListsListAddRequestMoviesInner(
-                    ids = PostCheckinMovieRequestMovieIds(
+                    ids = PostCheckinStartRequestOneOf1MovieIds(
                         trakt = movieId.value,
                         slug = null,
                         imdb = null,
@@ -71,7 +71,7 @@ internal class MoviesSyncApiClient(
         val request = PostUsersListsListAddRequest(
             movies = listOf(
                 PostUsersListsListAddRequestMoviesInner(
-                    ids = PostCheckinMovieRequestMovieIds(
+                    ids = PostCheckinStartRequestOneOf1MovieIds(
                         trakt = movieId.value,
                         slug = null,
                         imdb = null,
@@ -90,7 +90,7 @@ internal class MoviesSyncApiClient(
         val request = PostUsersListsListAddRequest(
             movies = listOf(
                 PostUsersListsListAddRequestMoviesInner(
-                    ids = PostCheckinMovieRequestMovieIds(
+                    ids = PostCheckinStartRequestOneOf1MovieIds(
                         trakt = movieId.value,
                         slug = null,
                         imdb = null,
@@ -109,7 +109,7 @@ internal class MoviesSyncApiClient(
         val request = PostSyncFavoritesAddRequest(
             movies = listOf(
                 PostSyncRatingsRemoveRequestMoviesInner(
-                    ids = PostCheckinMovieRequestMovieIds(
+                    ids = PostCheckinStartRequestOneOf1MovieIds(
                         trakt = movieId.value,
                         slug = null,
                         imdb = null,
@@ -126,7 +126,7 @@ internal class MoviesSyncApiClient(
         val request = PostSyncFavoritesAddRequest(
             movies = listOf(
                 PostSyncRatingsRemoveRequestMoviesInner(
-                    ids = PostCheckinMovieRequestMovieIds(
+                    ids = PostCheckinStartRequestOneOf1MovieIds(
                         trakt = movieId.value,
                         slug = null,
                         imdb = null,

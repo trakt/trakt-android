@@ -2,8 +2,6 @@ package tv.trakt.trakt.core.user.usecases.lists
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
@@ -11,9 +9,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
-import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.library.model.LibraryItem
-import tv.trakt.trakt.core.library.model.getLibrarySorting
 import tv.trakt.trakt.core.user.data.local.library.UserLibraryLocalDataSource
 import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 
@@ -24,82 +20,68 @@ internal class LoadUserLibraryUseCase(
     private val remoteSource: UserRemoteDataSource,
     private val localSource: UserLibraryLocalDataSource,
 ) {
-    suspend fun loadLocalAll(sort: Sorting? = null): ImmutableList<LibraryItem> {
-        return localSource.getAll()
-            .sortedWith(getLibrarySorting(sort))
-            .toImmutableList()
+    suspend fun isLoaded(): Boolean {
+        return localSource.isLoaded()
     }
 
-    suspend fun loadLocalEpisodes(sort: Sorting? = null): ImmutableList<LibraryItem.EpisodeItem> {
-        return localSource.getEpisodes()
-            .sortedWith(getLibrarySorting(sort))
-            .toImmutableList()
+    suspend fun loadLocalMedia(limit: Int): Result {
+        val items = localSource.getAll().toImmutableList()
+        return Result(
+            items = items,
+            hasMoreData = items.size >= limit,
+        )
     }
 
-    suspend fun loadLocalMovies(sort: Sorting? = null): ImmutableList<LibraryItem.MovieItem> {
-        return localSource.getMovies()
-            .sortedWith(getLibrarySorting(sort))
-            .toImmutableList()
-    }
-
-    suspend fun isEpisodesLoaded(): Boolean {
-        return localSource.isEpisodesLoaded()
-    }
-
-    suspend fun isMoviesLoaded(): Boolean {
-        return localSource.isMoviesLoaded()
-    }
-
-    suspend fun loadAll(sort: Sorting? = null): ImmutableList<LibraryItem> {
-        return coroutineScope {
-            val episodesAsync = async { loadEpisodes() }
-            val moviesAsync = async { loadMovies() }
-
-            val episodes = episodesAsync.await()
-            val movies = moviesAsync.await()
-
-            (episodes + movies)
-                .sortedWith(getLibrarySorting(sort))
-                .toImmutableList()
-        }
-    }
-
-    suspend fun loadMovies(): ImmutableList<LibraryItem> {
-        return remoteSource.getLibraryMovies(
+    suspend fun loadMedia(
+        page: Int,
+        limit: Int,
+    ): Result {
+        val items = remoteSource.getLibrary(
             extended = "full,images,colors,available_on",
-        ).asyncMap {
-            LibraryItem.MovieItem(
-                movie = Movie.fromDto(it.movie),
-                collectedAt = it.collectedAt.toInstant(),
-                updatedAt = it.updatedAt.toInstant(),
-                availableOn = it.availableOn
-                    ?.map { source -> source.name }
-                    ?.toImmutableList()
-                    ?: EmptyImmutableList,
-            )
-        }
-            .sortedByDescending { it.collectedAt }
-            .also { localSource.setMovies(it) }
+            page = page,
+            limit = limit,
+        )
+            .filter { it.movie != null || (it.episode != null && it.show != null) }
+            .asyncMap { item ->
+                item.movie?.let {
+                    LibraryItem.MovieItem(
+                        movie = Movie.fromDto(it),
+                        collectedAt = item.collectedAt.toInstant(),
+                        updatedAt = item.updatedAt.toInstant(),
+                        availableOn = item.availableOn
+                            ?.map { source -> source.name }
+                            ?.toImmutableList()
+                            ?: EmptyImmutableList,
+                    )
+                } ?: item.episode?.let {
+                    LibraryItem.EpisodeItem(
+                        episode = Episode.fromDto(it),
+                        show = Show.fromDto(item.show!!),
+                        collectedAt = item.collectedAt.toInstant(),
+                        updatedAt = item.updatedAt.toInstant(),
+                        availableOn = item.availableOn
+                            ?.map { source -> source.name }
+                            ?.toImmutableList()
+                            ?: EmptyImmutableList,
+                    )
+                } ?: throw Error("Unknown library item type")
+            }
+            .also {
+                when {
+                    page == 1 -> localSource.setItems(it)
+                    else -> localSource.addItems(it)
+                }
+            }
             .toImmutableList()
+
+        return Result(
+            items = items,
+            hasMoreData = items.size >= limit,
+        )
     }
 
-    suspend fun loadEpisodes(): ImmutableList<LibraryItem> {
-        return remoteSource.getLibraryEpisodes(
-            extended = "full,images,colors,available_on",
-        ).asyncMap {
-            LibraryItem.EpisodeItem(
-                episode = Episode.fromDto(it.episode),
-                show = Show.fromDto(it.show),
-                collectedAt = it.collectedAt.toInstant(),
-                updatedAt = it.updatedAt.toInstant(),
-                availableOn = it.availableOn
-                    ?.map { source -> source.name }
-                    ?.toImmutableList()
-                    ?: EmptyImmutableList,
-            )
-        }
-            .sortedByDescending { it.collectedAt }
-            .also { localSource.setEpisodes(it) }
-            .toImmutableList()
-    }
+    data class Result(
+        val items: ImmutableList<LibraryItem>,
+        val hasMoreData: Boolean,
+    )
 }

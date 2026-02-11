@@ -1,12 +1,12 @@
 package tv.trakt.trakt.core.lists.data.remote
 
 import org.openapitools.client.apis.ListsApi
-import org.openapitools.client.models.PostCheckinMovieRequestMovieIds
+import org.openapitools.client.models.PostCheckinStartRequestOneOf1MovieIds
+import org.openapitools.client.models.PostCheckinStartRequestOneOfOneOfEpisodeIds
 import org.openapitools.client.models.PostUsersListsCreateRequest
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInner
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
-import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerOneOfIds
 import org.openapitools.client.models.PutUsersListsListUpdateRequest
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.sorting.Sorting
@@ -73,7 +73,7 @@ internal class ListsApiClient(
             postUsersListsListAddRequest = PostUsersListsListAddRequest(
                 shows = listOf(
                     PostUsersListsListAddRequestShowsInner(
-                        ids = PostUsersListsListAddRequestShowsInnerOneOfIds(
+                        ids = PostCheckinStartRequestOneOfOneOfEpisodeIds(
                             trakt = showId.value,
                             slug = null,
                             imdb = null,
@@ -99,7 +99,7 @@ internal class ListsApiClient(
             postUsersListsListAddRequest = PostUsersListsListAddRequest(
                 shows = listOf(
                     PostUsersListsListAddRequestShowsInner(
-                        ids = PostUsersListsListAddRequestShowsInnerOneOfIds(
+                        ids = PostCheckinStartRequestOneOfOneOfEpisodeIds(
                             trakt = showId.value,
                             slug = null,
                             imdb = null,
@@ -125,7 +125,7 @@ internal class ListsApiClient(
             postUsersListsListAddRequest = PostUsersListsListAddRequest(
                 movies = listOf(
                     PostUsersListsListAddRequestMoviesInner(
-                        ids = PostCheckinMovieRequestMovieIds(
+                        ids = PostCheckinStartRequestOneOf1MovieIds(
                             trakt = movieId.value,
                             slug = null,
                             imdb = null,
@@ -150,7 +150,7 @@ internal class ListsApiClient(
             postUsersListsListAddRequest = PostUsersListsListAddRequest(
                 movies = listOf(
                     PostUsersListsListAddRequestMoviesInner(
-                        ids = PostCheckinMovieRequestMovieIds(
+                        ids = PostCheckinStartRequestOneOf1MovieIds(
                             trakt = movieId.value,
                             slug = null,
                             imdb = null,

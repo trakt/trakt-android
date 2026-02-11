@@ -8,7 +8,6 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -30,6 +29,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.library.model.LibraryFilter
 import tv.trakt.trakt.core.library.model.LibraryItem
+import tv.trakt.trakt.core.lists.ListsConfig.LIBRARY_PAGE_LIMIT
 import tv.trakt.trakt.core.lists.ListsConfig.LIBRARY_SECTION_LIMIT
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserLibraryUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
@@ -54,29 +54,11 @@ internal class ProfileLibraryViewModel(
     private val errorState = MutableStateFlow(initialState.error)
 
     private var loadDataJob: Job? = null
-    private var processingJob: Job? = null
     private var collapseJob: Job? = null
 
     init {
         loadData()
-//        observeData()
     }
-
-//    private fun observeData() {
-//        merge(
-//            favoritesUpdates.observeUpdates(DETAILS),
-//            favoritesUpdates.observeUpdates(CONTEXT_SHEET),
-//        )
-//            .distinctUntilChanged()
-//            .debounce(200)
-//            .onEach {
-//                loadData(
-//                    ignoreErrors = true,
-//                    localOnly = true,
-//                )
-//            }
-//            .launchIn(viewModelScope)
-//    }
 
     fun loadData() {
         loadDataJob?.cancel()
@@ -87,13 +69,10 @@ internal class ProfileLibraryViewModel(
                 }
 
                 val filter = filterState.value
-
-                val episodesLoadedAsync = async { loadLibraryUseCase.isEpisodesLoaded() }
-                val moviesLoadedAsync = async { loadLibraryUseCase.isMoviesLoaded() }
-                val isLoaded = episodesLoadedAsync.await() && moviesLoadedAsync.await()
+                val isLoaded = loadLibraryUseCase.isLoaded()
 
                 val localItems = when {
-                    isLoaded -> loadLibraryUseCase.loadLocalAll()
+                    isLoaded -> loadLibraryUseCase.loadLocalMedia(LIBRARY_PAGE_LIMIT).items
                     else -> EmptyImmutableList
                 }
 
@@ -116,7 +95,11 @@ internal class ProfileLibraryViewModel(
                 }
 
                 itemsState.update {
-                    loadLibraryUseCase.loadAll()
+                    loadLibraryUseCase.loadMedia(
+                        page = 1,
+                        limit = LIBRARY_PAGE_LIMIT,
+                    )
+                        .items
                         .filter {
                             when (filter) {
                                 null -> true

@@ -4,7 +4,7 @@ import org.openapitools.client.apis.CollectionApi
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
 import org.openapitools.client.apis.WatchedApi
-import org.openapitools.client.models.PostCheckinMovieRequestMovieIds
+import org.openapitools.client.models.PostCheckinStartRequestOneOf1MovieIds
 import org.openapitools.client.models.PostSyncHistoryRemoveRequest
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInner
@@ -24,7 +24,7 @@ internal class MoviesSyncApiClient(
         val request = PostUsersListsListAddRequest(
             movies = listOf(
                 PostUsersListsListAddRequestMoviesInner(
-                    ids = PostCheckinMovieRequestMovieIds(movieId.value, null, null, 0),
+                    ids = PostCheckinStartRequestOneOf1MovieIds(movieId.value, null, null, 0),
                     title = "",
                     year = 0,
                 ),
@@ -37,7 +37,7 @@ internal class MoviesSyncApiClient(
         val request = PostUsersListsListAddRequest(
             movies = listOf(
                 PostUsersListsListAddRequestMoviesInner(
-                    ids = PostCheckinMovieRequestMovieIds(movieId.value, null, null, 0),
+                    ids = PostCheckinStartRequestOneOf1MovieIds(movieId.value, null, null, 0),
                     title = "",
                     year = 0,
                 ),
@@ -53,7 +53,7 @@ internal class MoviesSyncApiClient(
         val request = PostUsersListsListAddRequest(
             movies = listOf(
                 PostUsersListsListAddRequestMoviesInner(
-                    ids = PostCheckinMovieRequestMovieIds(
+                    ids = PostCheckinStartRequestOneOf1MovieIds(
                         trakt = movieId.value,
                         slug = null,
                         imdb = null,
@@ -72,7 +72,7 @@ internal class MoviesSyncApiClient(
         val request = PostSyncHistoryRemoveRequest(
             movies = listOf(
                 PostUsersListsListAddRequestMoviesInner(
-                    ids = PostCheckinMovieRequestMovieIds(movieId.value, null, null, 0),
+                    ids = PostCheckinStartRequestOneOf1MovieIds(movieId.value, null, null, 0),
                     title = "",
                     year = 0,
                 ),

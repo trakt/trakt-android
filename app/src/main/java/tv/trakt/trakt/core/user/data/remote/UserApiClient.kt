@@ -23,8 +23,7 @@ import tv.trakt.trakt.common.networking.SyncFavoriteMovieDto
 import tv.trakt.trakt.common.networking.SyncFavoriteShowDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
-import tv.trakt.trakt.common.networking.SyncLibraryEpisodeDto
-import tv.trakt.trakt.common.networking.SyncLibraryMovieDto
+import tv.trakt.trakt.common.networking.SyncLibraryMediaDto
 import tv.trakt.trakt.common.networking.UserCommentsDto
 import tv.trakt.trakt.common.networking.UserRatingDto
 import tv.trakt.trakt.common.networking.UserWatchingDto
@@ -187,18 +186,16 @@ internal class UserApiClient(
         return response.body()
     }
 
-    override suspend fun getLibraryMovies(extended: String?): List<SyncLibraryMovieDto> {
-        val response = syncApi.getSyncCollectionMovies(
+    override suspend fun getLibrary(
+        extended: String?,
+        page: Int,
+        limit: Int,
+    ): List<SyncLibraryMediaDto> {
+        val response = syncApi.getSyncCollectionMedia(
             extended = extended ?: "",
             availableOn = null,
-        )
-        return response.body()
-    }
-
-    override suspend fun getLibraryEpisodes(extended: String?): List<SyncLibraryEpisodeDto> {
-        val response = syncApi.getSyncCollectionEpisodes(
-            extended = extended ?: "",
-            availableOn = null,
+            page = page,
+            limit = limit,
         )
         return response.body()
     }
