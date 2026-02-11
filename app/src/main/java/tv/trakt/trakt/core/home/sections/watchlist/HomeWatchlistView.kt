@@ -206,8 +206,18 @@ internal fun HomeWatchlistView(
             }
         },
         onCheckIn = {
-            (dateSheet as? MovieItem)?.let {
-                viewModel.addMovieCheckIn(it.id)
+            val item = dateSheet ?: return@HomeDateSelectionSheet
+            when (item) {
+                is MovieItem -> {
+                    viewModel.addMovieCheckIn(item.id)
+                }
+                is ShowItem -> {
+                    val episode = item.progress?.nextEpisode ?: return@HomeDateSelectionSheet
+                    viewModel.addEpisodeCheckIn(
+                        showId = item.id,
+                        seasonEpisode = episode.seasonEpisode,
+                    )
+                }
             }
         },
         onDismiss = {
@@ -577,7 +587,7 @@ private fun HomeDateSelectionSheet(
             is MovieItem -> null
             else -> null
         },
-        nowWatchingVisible = item is MovieItem,
+        nowWatchingVisible = true,
         onResult = {
             if (item == null) return@DateSelectionSheet
             onDateSelected(it)

@@ -15,6 +15,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
@@ -56,10 +57,63 @@ internal class DefaultCheckInManager(
         return state.asStateFlow()
     }
 
-    override suspend fun startEpisode(episodeId: TraktId) {
+    override suspend fun startEpisode(
+        showId: TraktId,
+        seasonEpisode: SeasonEpisode,
+        context: Context,
+    ) {
+        if (state.value.isActive()) {
+            Timber.d("Another check-in is already active, skipping new episode check-in.")
+            return
+        }
+
         if (!sessionManager.isAuthenticated()) {
             Timber.d("Not authenticated, skipping check-in.")
             return
+        }
+
+        state.update { CheckInState.Loading }
+        Timber.d("Checking in episode $seasonEpisode of show: ${showId.value}")
+
+        try {
+            checkInRemoteDataSource.postEpisodeCheckIn(
+                showId = showId,
+                season = seasonEpisode.season,
+                episode = seasonEpisode.episode,
+            )
+            cacheMarkerProvider.invalidate()
+
+            val watching = userRemoteDataSource.getWatchingNow()
+            if (watching == null) {
+                Timber.d("No active watching found after check-in.")
+                throw Exception("No active watching now found after check-in.")
+            }
+
+            watching.episode?.let { dto ->
+                val activeState = ActiveEpisode(
+                    show = Show.fromDto(watching.show!!),
+                    episode = Episode.fromDto(dto),
+                    startedAt = watching.startedAt.toInstant(),
+                    expiresAt = watching.expiresAt.toInstant(),
+                )
+
+                state.update { activeState }
+                checkInUpdates.notifyUpdate()
+                startForegroundService(context, activeState)
+
+                coroutineScope {
+                    val progressAsync = async { loadProgressIfNeeded(activeState) }
+                    val watchlistAsync = async { loadWatchlistIfNeeded(activeState) }
+                    awaitAll(progressAsync, watchlistAsync)
+                }
+
+                Timber.d("Successfully checked in episode: ${dto.title} S${dto.season}E${dto.number}")
+            }
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                state.update { CheckInState.Error(error) }
+                Timber.recordError(error)
+            }
         }
     }
 
@@ -67,6 +121,11 @@ internal class DefaultCheckInManager(
         movieId: TraktId,
         context: Context,
     ) {
+        if (state.value.isActive()) {
+            Timber.d("Another check-in is already active, skipping new movie check-in.")
+            return
+        }
+
         if (!sessionManager.isAuthenticated()) {
             Timber.d("Not authenticated, skipping check-in.")
             return
@@ -81,9 +140,8 @@ internal class DefaultCheckInManager(
 
             val watching = userRemoteDataSource.getWatchingNow()
             if (watching == null) {
-                state.update { CheckInState.Idle }
                 Timber.d("No active watching found after check-in.")
-                return
+                throw Exception("No active watching now found after check-in.")
             }
 
             watching.movie?.let { dto ->

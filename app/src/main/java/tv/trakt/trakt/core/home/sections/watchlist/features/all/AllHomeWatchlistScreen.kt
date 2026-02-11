@@ -35,8 +35,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -74,7 +74,7 @@ internal fun AllHomeWatchlistScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    val context = LocalContext.current
+    val resources = LocalResources.current
     val haptic = LocalHapticFeedback.current
     val snackbar = LocalSnackbarState.current
 
@@ -97,7 +97,7 @@ internal fun AllHomeWatchlistScreen(
         if (state.info != null) {
             haptic.performHapticFeedback(Confirm)
             snackbar.showSnackbar(
-                message = context.getString(R.string.text_info_history_added),
+                message = resources.getString(R.string.text_info_history_added),
                 duration = SnackbarDuration.Short,
             )
             viewModel.clearInfo()
@@ -191,8 +191,18 @@ internal fun AllHomeWatchlistScreen(
             }
         },
         onCheckIn = {
-            (dateSheet as? MovieItem)?.let {
-                viewModel.addMovieCheckIn(it.id)
+            val item = dateSheet ?: return@AllHomeDateSelectionSheet
+            when (item) {
+                is MovieItem -> {
+                    viewModel.addMovieCheckIn(item.id)
+                }
+                is ShowItem -> {
+                    val episode = item.progress?.nextEpisode ?: return@AllHomeDateSelectionSheet
+                    viewModel.addEpisodeCheckIn(
+                        showId = item.id,
+                        seasonEpisode = episode.seasonEpisode,
+                    )
+                }
             }
         },
         onDismiss = {
@@ -388,7 +398,7 @@ private fun AllHomeDateSelectionSheet(
             is MovieItem -> null
             else -> null
         },
-        nowWatchingVisible = item is MovieItem,
+        nowWatchingVisible = true,
         onCheckIn = onCheckIn,
         onResult = {
             if (item == null) return@DateSelectionSheet

@@ -38,6 +38,7 @@ import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
@@ -317,6 +318,54 @@ internal class AllHomeWatchlistViewModel(
 
                 removeItem(currentItems[itemIndex], notify = true)
                 loadMoviesProgress()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            } finally {
+                processingJob = null
+            }
+        }
+    }
+
+    fun addEpisodeCheckIn(
+        showId: TraktId,
+        seasonEpisode: SeasonEpisode,
+    ) {
+        if (processingJob?.isActive == true) {
+            return
+        }
+
+        processingJob = viewModelScope.launch {
+            try {
+                val currentItems = itemsState.value?.toMutableList() ?: return@launch
+
+                val itemIndex = currentItems
+                    .indexOfFirst {
+                        it is ShowItem &&
+                            it.show.ids.trakt == showId
+                    }
+                val itemLoading = (currentItems[itemIndex] as ShowItem)
+                    .copy(loading = true)
+                currentItems[itemIndex] = itemLoading
+
+                itemsState.update {
+                    currentItems.toImmutableList()
+                }
+
+                removeItem(currentItems[itemIndex], notify = false)
+                checkInManager.startEpisode(
+                    showId = showId,
+                    seasonEpisode = seasonEpisode,
+                    context = appContext,
+                )
+
+                analytics.progress.logAddWatchedMedia(
+                    mediaType = "episode",
+                    source = "all_home_watchlist",
+                    date = "checkin",
+                )
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
