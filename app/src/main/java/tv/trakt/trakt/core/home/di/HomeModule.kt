@@ -173,6 +173,7 @@ internal val homeModule = module {
 
     viewModel {
         AllHomeUpNextViewModel(
+            appContext = androidApplication(),
             getUpNextUseCase = get(),
             updateHistoryUseCase = get(),
             loadUserProgressUseCase = get(),
@@ -180,8 +181,9 @@ internal val homeModule = module {
             showUpdates = get(),
             episodeUpdates = get(),
             movieUpdates = get(),
-            sessionManager = get(),
             checkInUpdates = get(),
+            checkInManager = get(),
+            sessionManager = get(),
             analytics = get(),
         )
     }

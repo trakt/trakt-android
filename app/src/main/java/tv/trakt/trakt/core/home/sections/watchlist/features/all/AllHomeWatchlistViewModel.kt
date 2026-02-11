@@ -29,11 +29,11 @@ import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
+import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
-import tv.trakt.trakt.common.helpers.StaticStringResource
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
@@ -56,6 +56,7 @@ import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 
 @OptIn(FlowPreview::class)
@@ -260,7 +261,7 @@ internal class AllHomeWatchlistViewModel(
                 )
 
                 infoState.update {
-                    StaticStringResource("Added to history")
+                    DynamicStringResource(R.string.text_info_history_added)
                 }
 
                 removeItem(currentItems[itemIndex], notify = true)
@@ -313,7 +314,7 @@ internal class AllHomeWatchlistViewModel(
                 )
 
                 infoState.update {
-                    StaticStringResource("Added to history")
+                    DynamicStringResource(R.string.text_info_history_added)
                 }
 
                 removeItem(currentItems[itemIndex], notify = true)

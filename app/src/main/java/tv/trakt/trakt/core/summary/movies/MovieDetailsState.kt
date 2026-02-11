@@ -25,7 +25,6 @@ internal data class MovieDetailsState(
     val info: StringResource? = null,
     val error: Exception? = null,
     val user: User? = null,
-    val checkIn: Boolean = false,
     val metaCollapsed: Boolean? = null,
 ) {
     data class ProgressState(

@@ -274,7 +274,8 @@ internal fun EpisodeDetailsContent(
             .plus(16.dp),
         bottom = WindowInsets.navigationBars.asPaddingValues()
             .calculateBottomPadding()
-            .plus(TraktTheme.size.navigationBarHeight * 2),
+            .plus(TraktTheme.size.navigationBarHeight)
+            .plus(TraktTheme.spacing.mainPageBottomSpace),
     )
 
     val sectionPadding = PaddingValues(

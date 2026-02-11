@@ -118,7 +118,6 @@ internal class MovieDetailsViewModel(
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
     private val userState = MutableStateFlow(initialState.user)
-    private val checkInState = MutableStateFlow(initialState.checkIn)
     private val metaCollapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.MOVIE_META))
 
     private var ratingJob: Job? = null
@@ -144,14 +143,6 @@ internal class MovieDetailsViewModel(
             .debounce(200)
             .onEach {
                 loadUserProgressData(force = true)
-            }
-            .launchIn(viewModelScope)
-
-        checkInManager.observe()
-            .distinctUntilChanged()
-            .debounce(200)
-            .onEach { state ->
-                checkInState.update { state.isActive() }
             }
             .launchIn(viewModelScope)
     }
@@ -937,7 +928,6 @@ internal class MovieDetailsViewModel(
         infoState,
         errorState,
         userState,
-        checkInState,
         metaCollapseState,
     ) { state ->
         MovieDetailsState(
@@ -954,8 +944,7 @@ internal class MovieDetailsViewModel(
             info = state[10] as StringResource?,
             error = state[11] as Exception?,
             user = state[12] as User?,
-            checkIn = state[13] as Boolean,
-            metaCollapsed = state[14] as Boolean,
+            metaCollapsed = state[13] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -305,12 +305,8 @@ internal fun MovieDetailsContent(
             .plus(16.dp),
         bottom = WindowInsets.navigationBars.asPaddingValues()
             .calculateBottomPadding()
-            .plus(
-                when {
-                    state.checkIn -> TraktTheme.size.navigationBarHeight * 3
-                    else -> TraktTheme.size.navigationBarHeight * 2
-                },
-            ),
+            .plus(TraktTheme.size.navigationBarHeight)
+            .plus(TraktTheme.spacing.mainPageBottomSpace),
     )
 
     val sectionPadding = PaddingValues(
