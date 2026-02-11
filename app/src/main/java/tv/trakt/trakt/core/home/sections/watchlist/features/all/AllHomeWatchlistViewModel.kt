@@ -262,7 +262,7 @@ internal class AllHomeWatchlistViewModel(
                     StaticStringResource("Added to history")
                 }
 
-                removeItem(currentItems[itemIndex])
+                removeItem(currentItems[itemIndex], notify = true)
                 loadShowsProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -315,7 +315,7 @@ internal class AllHomeWatchlistViewModel(
                     StaticStringResource("Added to history")
                 }
 
-                removeItem(currentItems[itemIndex])
+                removeItem(currentItems[itemIndex], notify = true)
                 loadMoviesProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -350,8 +350,8 @@ internal class AllHomeWatchlistViewModel(
                     currentItems.toImmutableList()
                 }
 
+                removeItem(currentItems[itemIndex], notify = false)
                 checkInManager.startMovie(movieId, appContext)
-                removeItem(currentItems[itemIndex])
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
@@ -369,7 +369,10 @@ internal class AllHomeWatchlistViewModel(
         }
     }
 
-    fun removeItem(item: WatchlistItem?) {
+    fun removeItem(
+        item: WatchlistItem?,
+        notify: Boolean = false,
+    ) {
         val currentItems = itemsState.value ?: return
 
         itemsState.update {
@@ -382,12 +385,12 @@ internal class AllHomeWatchlistViewModel(
             when (item) {
                 is ShowItem -> userWatchlistSource.removeShows(
                     ids = setOf(item.id),
-                    notify = true,
+                    notify = notify,
                 )
 
                 is MovieItem -> userWatchlistSource.removeMovies(
                     ids = setOf(item.id),
-                    notify = true,
+                    notify = notify,
                 )
 
                 else -> Unit

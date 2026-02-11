@@ -338,30 +338,20 @@ internal class HomeWatchlistViewModel(
 
                 val itemIndex = currentItems
                     .indexOfFirst {
-                        it is MovieItem &&
-                            it.movie.ids.trakt == movieId
+                        it is MovieItem && it.movie.ids.trakt == movieId
                     }
-                val itemLoading = (currentItems[itemIndex] as MovieItem)
-                    .copy(loading = true)
+                val itemLoading = (currentItems[itemIndex] as MovieItem).copy(loading = true)
                 currentItems[itemIndex] = itemLoading
 
                 itemsState.update {
                     currentItems.toImmutableList()
                 }
 
-                checkInManager.startMovie(movieId, appContext)
-                userWatchlistSource.removeMovies(
-                    ids = setOf(movieId),
+                removeItem(
+                    item = currentItems[itemIndex],
                     notify = false,
                 )
-
-                itemsState.update {
-                    val currentItems = itemsState.value?.toMutableList() ?: return@update null
-                    currentItems.removeAll {
-                        it is MovieItem && it.movie.ids.trakt == movieId
-                    }
-                    currentItems.toImmutableList()
-                }
+                checkInManager.startMovie(movieId, appContext)
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
@@ -469,6 +459,35 @@ internal class HomeWatchlistViewModel(
         }
 
         return false
+    }
+
+    fun removeItem(
+        item: WatchlistItem?,
+        notify: Boolean = false,
+    ) {
+        val currentItems = itemsState.value ?: return
+
+        itemsState.update {
+            currentItems
+                .filterNot { it.key == item?.key }
+                .toImmutableList()
+        }
+
+        viewModelScope.launch {
+            when (item) {
+                is ShowItem -> userWatchlistSource.removeShows(
+                    ids = setOf(item.id),
+                    notify = notify,
+                )
+
+                is MovieItem -> userWatchlistSource.removeMovies(
+                    ids = setOf(item.id),
+                    notify = notify,
+                )
+
+                else -> Unit
+            }
+        }
     }
 
     override fun onCleared() {

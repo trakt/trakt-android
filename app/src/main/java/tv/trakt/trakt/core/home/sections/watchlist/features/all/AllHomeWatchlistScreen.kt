@@ -148,7 +148,7 @@ internal fun AllHomeWatchlistScreen(
             dateSheet = contextShowSheet
         },
         onRemoveWatchlist = {
-            viewModel.removeItem(contextShowSheet)
+            viewModel.removeItem(contextShowSheet, notify = true)
         },
     )
 
@@ -161,7 +161,7 @@ internal fun AllHomeWatchlistScreen(
             dateSheet = contextMovieSheet
         },
         onRemoveWatchlist = {
-            viewModel.removeItem(contextMovieSheet)
+            viewModel.removeItem(contextMovieSheet, notify = true)
         },
     )
 

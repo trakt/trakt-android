@@ -29,11 +29,11 @@ import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveMovie
 import tv.trakt.trakt.core.checkin.model.expiresAt
 import tv.trakt.trakt.core.checkin.model.id
 import tv.trakt.trakt.core.checkin.model.startedAt
-import tv.trakt.trakt.core.checkin.model.title
 import tv.trakt.trakt.core.checkin.model.type
 import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.resources.R
 import kotlin.time.Clock.System.now
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
@@ -276,7 +276,23 @@ internal class DefaultCheckInManager(
         val data = CheckInServiceData(
             mediaId = state.id ?: -1,
             mediaType = type,
-            title = state.title ?: "",
+            title = when (state) {
+                is ActiveMovie -> {
+                    state.movie.title
+                }
+                is ActiveEpisode -> {
+                    val seasonEpisode =
+                        context.getString(
+                            R.string.episode_footer_season_episode,
+                            state.episode.season,
+                            state.episode.number,
+                        )
+                    "${state.show.title} - $seasonEpisode"
+                }
+                else -> {
+                    ""
+                }
+            },
             startedAt = startedAt,
             expiresAt = expiresAt,
             extraId = episodeState?.show?.ids?.trakt?.value,
