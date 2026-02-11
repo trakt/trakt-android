@@ -123,6 +123,8 @@ internal val episodeDetailsModule = module {
             episodeUpdatesSource = get(),
             episodeLocalDataSource = get(),
             sessionManager = get(),
+            checkInManager = get(),
+            checkInUpdates = get(),
             analytics = get(),
             collapsingManager = get(),
         )

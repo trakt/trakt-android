@@ -249,9 +249,9 @@ internal fun MovieDetailsScreen(
     DateSelectionSheet(
         active = dateSheet,
         title = state.movie?.title ?: "",
+        nowWatchingVisible = true,
         onCheckIn = viewModel::addToCheckIn,
         onResult = viewModel::addToWatched,
-        nowWatchingVisible = true,
         onDismiss = {
             dateSheet = false
         },

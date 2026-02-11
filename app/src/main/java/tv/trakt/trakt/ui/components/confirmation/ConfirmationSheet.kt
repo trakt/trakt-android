@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.coroutines.launch
-import tv.trakt.trakt.common.ui.theme.colors.Red500
+import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -32,7 +32,7 @@ internal fun RemoveConfirmationSheet(
         active = active,
         title = title,
         message = message,
-        yesColor = Red500,
+        yesColor = Red400,
         onYes = onYes,
         onNo = onNo,
     )

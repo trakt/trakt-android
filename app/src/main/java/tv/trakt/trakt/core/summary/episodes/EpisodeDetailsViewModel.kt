@@ -41,6 +41,8 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.checkin.data.CheckInManager
+import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.summary.episodes.EpisodeDetailsState.UserRatingsState
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
@@ -76,6 +78,8 @@ internal class EpisodeDetailsViewModel(
     private val episodeUpdatesSource: EpisodeDetailsUpdates,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val sessionManager: SessionManager,
+    private val checkInManager: CheckInManager,
+    private val checkInUpdates: CheckInUpdates,
     private val analytics: Analytics,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
@@ -114,6 +118,7 @@ internal class EpisodeDetailsViewModel(
         loadCreator()
 
         observeData()
+        observeCheckIn()
 
         analytics.logScreenView(
             screenName = "episode_details",
@@ -131,6 +136,19 @@ internal class EpisodeDetailsViewModel(
             .onEach {
                 loadProgressData(
                     ignoreErrors = true,
+                )
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeCheckIn() {
+        checkInUpdates.observeUpdates()
+            .distinctUntilChanged()
+            .debounce(200)
+            .onEach {
+                loadProgressData(
+                    ignoreErrors = true,
+                    force = true,
                 )
             }
             .launchIn(viewModelScope)
@@ -190,7 +208,10 @@ internal class EpisodeDetailsViewModel(
         }
     }
 
-    private fun loadProgressData(ignoreErrors: Boolean = false) {
+    private fun loadProgressData(
+        ignoreErrors: Boolean = false,
+        force: Boolean = false,
+    ) {
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) {
                 return@launch
@@ -198,7 +219,7 @@ internal class EpisodeDetailsViewModel(
             try {
                 loadingProgress.update { LOADING }
 
-                if (!loadProgressUseCase.isShowsLoaded()) {
+                if (force || !loadProgressUseCase.isShowsLoaded()) {
                     loadProgressUseCase.loadShowsProgress()
                 }
 
@@ -295,6 +316,54 @@ internal class EpisodeDetailsViewModel(
                 error.rethrowCancellation {
                     Timber.recordError(error)
                 }
+            }
+        }
+    }
+
+    fun addToCheckIn() {
+        if (isLoading()) {
+            return
+        }
+
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+
+            try {
+                loadingProgress.update { LOADING }
+
+                checkInManager.startEpisode(
+                    showId = showId,
+                    seasonEpisode = seasonEpisode,
+                    context = appContext,
+                )
+
+                val progress = loadProgressUseCase.loadShowsProgress()
+                    .firstOrNull {
+                        it.show.ids.trakt == showId
+                    }?.seasons?.firstOrNull {
+                        it.number == seasonEpisode.season
+                    }?.episodes?.firstOrNull {
+                        it.number == seasonEpisode.episode
+                    }
+
+                episodeProgressState.update { state ->
+                    state?.copy(plays = progress?.plays)
+                }
+
+                analytics.progress.logAddWatchedMedia(
+                    mediaType = "episode",
+                    source = "episode_details",
+                    date = "checkin",
+                )
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            } finally {
+                loadingProgress.update { DONE }
             }
         }
     }

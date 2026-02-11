@@ -224,6 +224,8 @@ internal fun EpisodeDetailsScreen(
         active = dateSheet,
         title = state.show?.title ?: "",
         subtitle = state.episode?.title ?: "",
+        nowWatchingVisible = true,
+        onCheckIn = viewModel::addToCheckIn,
         onResult = viewModel::addToWatched,
         onDismiss = {
             dateSheet = false
