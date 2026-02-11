@@ -22,10 +22,10 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
-import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.lists.ListsState.UserState
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
@@ -46,14 +46,12 @@ internal class ListsViewModel(
     private val listsState = MutableStateFlow(initialState.lists)
     private val listsLoadingState = MutableStateFlow(initialState.listsLoading)
     private val errorState = MutableStateFlow(initialState.error)
-    private val checkInState = MutableStateFlow(initialState.checkIn)
 
     private var listsOrder: List<Int>? = null
 
     init {
         observeUser()
         observeLists()
-        observeCheckIn()
 
         analytics.logScreenView(
             screenName = "lists",
@@ -161,30 +159,17 @@ internal class ListsViewModel(
         return false
     }
 
-    private fun observeCheckIn() {
-        checkInManager.observe()
-            .debounce(200)
-            .onEach { checkIn ->
-                checkInState.update {
-                    checkIn.isActive()
-                }
-            }
-            .launchIn(viewModelScope)
-    }
-
     val state: StateFlow<ListsState> = combine(
         userState,
         listsState,
         listsLoadingState,
         errorState,
-        checkInState,
-    ) { s1, s2, s3, s4, s5 ->
+    ) { s1, s2, s3, s4 ->
         ListsState(
             user = s1,
             lists = s2,
             listsLoading = s3,
             error = s4,
-            checkIn = s5,
         )
     }.stateIn(
         scope = viewModelScope,

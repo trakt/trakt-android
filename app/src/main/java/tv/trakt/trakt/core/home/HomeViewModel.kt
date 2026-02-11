@@ -6,7 +6,6 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -31,12 +30,10 @@ internal class HomeViewModel(
 
     private val modeState = MutableStateFlow(initialMode)
     private val userState = MutableStateFlow(initialState.user)
-    private val checkInState = MutableStateFlow(initialState.checkIn)
 
     init {
         observeUser()
         observeMode()
-        observeCheckIn()
 
         analytics.logScreenView(screenName = "home")
         analytics.logMediaMode(mode = initialMode)
@@ -64,26 +61,13 @@ internal class HomeViewModel(
             .launchIn(viewModelScope)
     }
 
-    private fun observeCheckIn() {
-        checkInManager.observe()
-            .debounce(200)
-            .onEach { checkIn ->
-                checkInState.update {
-                    checkIn.isActive()
-                }
-            }
-            .launchIn(viewModelScope)
-    }
-
     val state = combine(
         modeState,
         userState,
-        checkInState,
-    ) { s1, s2, s3 ->
+    ) { s1, s2 ->
         HomeState(
             mode = s1,
             user = s2,
-            checkIn = s3,
         )
     }.stateIn(
         scope = viewModelScope,

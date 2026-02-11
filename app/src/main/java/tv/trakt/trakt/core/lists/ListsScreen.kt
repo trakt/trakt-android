@@ -170,12 +170,7 @@ private fun ListsScreenContent(
             bottom = WindowInsets.navigationBars.asPaddingValues()
                 .calculateBottomPadding()
                 .plus(TraktTheme.size.navigationBarHeight)
-                .plus(
-                    when {
-                        state.checkIn -> TraktTheme.spacing.mainPageBottomCheckInSpace
-                        else -> TraktTheme.spacing.mainPageBottomSpace
-                    },
-                ),
+                .plus(TraktTheme.spacing.mainPageBottomSpace),
         )
 
         val sectionPadding = PaddingValues(

@@ -13,7 +13,6 @@ internal data class ListsState(
     val lists: ImmutableList<CustomList>? = null,
     val listsLoading: LoadingState = IDLE,
     val error: Exception? = null,
-    val checkIn: Boolean = false,
 ) {
     data class UserState(
         val user: User? = null,
