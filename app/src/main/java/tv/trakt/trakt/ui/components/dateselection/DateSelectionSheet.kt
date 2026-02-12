@@ -79,6 +79,9 @@ internal fun DateSelectionSheet(
 
     var datePicker by remember { mutableStateOf(false) }
     var timePicker by remember { mutableStateOf<Instant?>(null) }
+    val hasActiveCheckIn = remember(checkInManager.isActive()) {
+        checkInManager.isActive()
+    }
 
     if (active) {
         TraktBottomSheet(
@@ -89,7 +92,7 @@ internal fun DateSelectionSheet(
                 title = title,
                 subtitle = subtitle,
                 nowWatchingVisible = nowWatchingVisible,
-                nowWatchingEnabled = !checkInManager.isActive(),
+                nowWatchingEnabled = !hasActiveCheckIn,
                 onNowWatchingClick = {
                     scope.dismissWithAction(
                         sheet = state,
