@@ -33,6 +33,7 @@ internal fun PrimaryButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     text: String,
+    textAllCaps: Boolean = true,
     icon: Painter? = null,
     enabled: Boolean = true,
     loading: Boolean = false,
@@ -88,7 +89,10 @@ internal fun PrimaryButton(
             verticalAlignment = CenterVertically,
         ) {
             Text(
-                text = text.uppercase(),
+                text = when {
+                    textAllCaps -> text.uppercase()
+                    else -> text
+                },
                 color = if (enabled) contentColor else disabledContentColor,
                 style = TraktTheme.typography.buttonPrimary,
                 maxLines = 1,

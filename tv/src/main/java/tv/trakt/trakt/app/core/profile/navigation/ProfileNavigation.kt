@@ -20,6 +20,7 @@ internal fun NavGraphBuilder.profileScreen(
     onNavigateToHistoryViewAll: () -> Unit,
     onNavigateToFavShowsViewAll: () -> Unit,
     onNavigateToFavMoviesViewAll: () -> Unit,
+    onNavigateToLibraryViewAll: () -> Unit,
 ) {
     composable<ProfileDestination> {
         ProfileScreen(
@@ -30,6 +31,7 @@ internal fun NavGraphBuilder.profileScreen(
             onNavigateToHistoryViewAll = onNavigateToHistoryViewAll,
             onNavigateToFavShowsViewAll = onNavigateToFavShowsViewAll,
             onNavigateToFavMoviesViewAll = onNavigateToFavMoviesViewAll,
+            onNavigateToLibraryViewAll = onNavigateToLibraryViewAll,
         )
     }
 }

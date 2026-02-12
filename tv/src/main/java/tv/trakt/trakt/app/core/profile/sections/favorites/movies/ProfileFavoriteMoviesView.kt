@@ -10,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
@@ -192,12 +193,20 @@ private fun ContentListItem(
 }
 
 @Composable
-private fun ContentLoadingList(contentPadding: PaddingValues) {
+private fun ContentLoadingList(
+    contentPadding: PaddingValues,
+    modifier: Modifier = Modifier,
+) {
     PositionFocusLazyRow(
         contentPadding = contentPadding,
+        modifier = modifier,
     ) {
         items(count = 10) {
-            HorizontalMediaSkeletonCard()
+            HorizontalMediaSkeletonCard(
+                modifier = Modifier.focusProperties {
+                    canFocus = false
+                },
+            )
         }
     }
 }

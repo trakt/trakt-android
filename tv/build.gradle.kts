@@ -1,4 +1,8 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import org.codehaus.groovy.runtime.ArrayTypeUtils.dimension
+import org.gradle.kotlin.dsl.android
+import org.gradle.kotlin.dsl.kotlin
+import org.gradle.kotlin.dsl.libs
 
 plugins {
     alias(libs.plugins.android.library)
@@ -66,6 +70,7 @@ dependencies {
     implementation(libs.androidx.navigation)
     implementation(libs.androidx.datastore)
     implementation(libs.androidx.app.review)
+    implementation(libs.bundles.androidx.media3)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.config)

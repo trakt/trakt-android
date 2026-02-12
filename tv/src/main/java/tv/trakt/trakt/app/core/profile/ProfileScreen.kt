@@ -53,6 +53,8 @@ import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.profile.sections.favorites.movies.ProfileFavoriteMoviesView
 import tv.trakt.trakt.app.core.profile.sections.favorites.shows.ProfileFavoriteShowsView
 import tv.trakt.trakt.app.core.profile.sections.history.ProfileHistoryView
+import tv.trakt.trakt.app.core.profile.sections.library.ProfileLibraryView
+import tv.trakt.trakt.app.core.profile.sections.library.model.LibraryItem
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
@@ -66,6 +68,7 @@ private val sections = listOf(
     "history",
     "favoriteShows",
     "favoriteMovies",
+    "library",
 )
 
 @Composable
@@ -77,6 +80,7 @@ internal fun ProfileScreen(
     onNavigateToHistoryViewAll: () -> Unit,
     onNavigateToFavShowsViewAll: () -> Unit,
     onNavigateToFavMoviesViewAll: () -> Unit,
+    onNavigateToLibraryViewAll: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -88,6 +92,7 @@ internal fun ProfileScreen(
         onHistoryViewAllClick = onNavigateToHistoryViewAll,
         onFavShowsViewAll = onNavigateToFavShowsViewAll,
         onFavMoviesViewAll = onNavigateToFavMoviesViewAll,
+        onLibraryViewAll = onNavigateToLibraryViewAll,
         onLogoutClick = {
             viewModel.logout()
         },
@@ -104,6 +109,7 @@ private fun ProfileScreenContent(
     onHistoryViewAllClick: () -> Unit,
     onFavShowsViewAll: () -> Unit,
     onFavMoviesViewAll: () -> Unit,
+    onLibraryViewAll: () -> Unit,
     onLogoutClick: () -> Unit,
 ) {
     var focusedSection by rememberSaveable { mutableStateOf<String?>(null) }
@@ -205,6 +211,26 @@ private fun ProfileScreenContent(
                     },
                     modifier = Modifier
                         .focusRequester(focusRequesters.getValue("history")),
+                )
+            }
+
+            item {
+                ProfileLibraryView(
+                    headerPadding = sectionPadding,
+                    contentPadding = sectionPadding,
+                    onFocused = { item ->
+                        focusedSection = "library"
+                        focusedImageUrl = when (item) {
+                            is LibraryItem.MovieItem -> item.movie.images?.getFanartUrl(FULL)
+                            is LibraryItem.EpisodeItem -> item.show.images?.getFanartUrl(FULL)
+                            null -> null
+                        }
+                    },
+                    onMovieClick = onMovieClick,
+                    onEpisodeClick = onEpisodeClick,
+                    onViewAllClick = onLibraryViewAll,
+                    modifier = Modifier
+                        .focusRequester(focusRequesters.getValue("library")),
                 )
             }
 
@@ -334,6 +360,7 @@ private fun Preview() {
                 onHistoryViewAllClick = {},
                 onFavShowsViewAll = {},
                 onFavMoviesViewAll = {},
+                onLibraryViewAll = {},
                 onLogoutClick = {},
             )
         }

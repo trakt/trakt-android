@@ -24,6 +24,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,12 +35,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
 import tv.trakt.trakt.app.common.model.SyncHistoryItem
 import tv.trakt.trakt.app.common.ui.GenericErrorView
+import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.profile.ProfileConfig.HISTORY_ALL_PAGE_LIMIT
 import tv.trakt.trakt.app.core.profile.ProfileConfig.HISTORY_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
+import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
@@ -161,17 +164,22 @@ private fun ProfileHistoryViewAllContent(
                             item.mediaCardImageUrl
                         },
                         onClick = { onItemClick(item) },
+                        cardContent = {
+                            InfoChip(
+                                text = item.watchedAt.toLocal().relativePastDateString(),
+                                iconPainter = painterResource(R.drawable.ic_calendar_check),
+                                containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
+                            )
+                        },
                         footerContent = {
                             Column(
                                 verticalArrangement = spacedBy(1.dp),
                             ) {
-                                val seString = item.episode?.seasonEpisodeString() ?: ""
                                 Text(
                                     text = remember(item.type) {
                                         when (item.type) {
-                                            "show" -> item.show!!.title
+                                            "show", "episode" -> item.show!!.title
                                             "movie" -> item.movie!!.title
-                                            "episode" -> seString
                                             else -> "TBA"
                                         }
                                     },
@@ -181,8 +189,17 @@ private fun ProfileHistoryViewAllContent(
                                     overflow = TextOverflow.Ellipsis,
                                 )
 
+                                val seString = item.episode?.seasonEpisodeString() ?: ""
+                                val subtext = remember(item.type) {
+                                    when (item.type) {
+                                        "episode" -> seString
+                                        "movie" -> item.movie?.runtime?.inWholeMinutes?.durationFormat() ?: ""
+                                        else -> ""
+                                    }
+                                }
+
                                 Text(
-                                    text = item.watchedAt.toLocal().format(longDateTimeFormat),
+                                    text = subtext,
                                     style = TraktTheme.typography.cardSubtitle,
                                     color = TraktTheme.colors.textSecondary,
                                     maxLines = 1,
@@ -211,6 +228,7 @@ private fun ProfileHistoryViewAllContent(
             if (state.isLoadingPage) {
                 item(span = { GridItemSpan(maxLineSpan) }) {
                     FilmProgressIndicator(
+                        size = 42.dp,
                         modifier = Modifier.focusable(),
                     )
                 }

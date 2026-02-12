@@ -351,11 +351,25 @@
   <string name="header_network">Network</string>
   <string name="header_total_runtime">Total Runtime</string>
 
+  <string name="text_replies">Replies</string>
   <string name="text_info_cover_set">Cover image has been set.</string>
   <string name="text_info_cover_removed">Cover image has been cleared.</string>
   <string name="button_text_cover_image">Set as cover image</string>
   <string name="page_description_cover_image">Use \"%s\" as your profile background image?</string>
   <string name="text_vip_upsell_default_description_2">No hype, just features.</string>
+  <string name="button_text_play_now">Play Now</string>
+
+  <string name="header_subtitles">Subtitles</string>
+  <string name="header_subtitles_size">Size</string>
+  <string name="header_subtitles_language">Language</string>
+  <string name="header_audio_tracks">Audio</string>
+  <string name="button_text_subtitles_off">Off</string>
+  <string name="button_text_subtitles_unavailable">Unavailable</string>
+  <string name="button_text_audio_default">Default</string>
+  <string name="button_text_audio_unavailable">Unavailable</string>
+
+  <string name="list_title_plex_library">Plex Library</string>
+  <string name="list_subtitle_plex_library">Enable Trakt Plex Sync to access your Plex server media library.</string>
 
   <!-- Non Translatable -->
 

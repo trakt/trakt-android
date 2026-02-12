@@ -223,16 +223,19 @@ internal class MovieDetailsViewModel(
 
                 val plexService = getPlexUseCase.getPlexStatus(movieIds.trakt)
                 if (plexService.isPlex) {
+                    val plexStreamUrl = plexService.plexSlug
+                        ?.let { getPlexUseCase.getPlexStreamUrl(movieIds.trakt) }
+
                     movieStreamingsState.update {
                         it.copy(
                             plex = true,
+                            plexStreamUrl = plexStreamUrl,
                             slug = plexService.plexSlug,
                             loading = false,
                             info = when {
                                 !tutorialsManager.get(TutorialKey.WATCH_NOW_MORE) -> {
                                     DynamicStringResource(R.string.button_text_long_press_for_more)
                                 }
-
                                 else -> {
                                     null
                                 }

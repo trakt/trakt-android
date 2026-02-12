@@ -11,7 +11,6 @@ import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.cache.HttpCache
-import io.ktor.client.plugins.cache.storage.FileStorage
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
@@ -37,7 +36,6 @@ import tv.trakt.trakt.common.auth.model.TraktAccessToken
 import tv.trakt.trakt.common.auth.model.TraktRefreshToken
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
-import java.nio.file.Files
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.time.Duration.Companion.seconds
 
@@ -64,10 +62,7 @@ internal fun HttpClientConfig<*>.applyConfig(
         agent = Config.apiUserAgent()
     }
 
-    install(HttpCache) {
-        val cacheFile = Files.createDirectories(context.cacheDir.resolve("ktor").toPath()).toFile()
-        publicStorage(FileStorage(cacheFile))
-    }
+    install(HttpCache)
 
     install(HttpTimeout) {
         val timeoutMillis = TIMEOUT_DURATION.inWholeMilliseconds

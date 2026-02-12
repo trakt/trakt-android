@@ -340,9 +340,7 @@ private fun MainContent(
                 }
 
                 EpisodeActionButtons(
-                    streamingState = state.episodeStreamings,
-                    historyState = state.episodeHistory,
-                    episode = state.episodeDetails?.seasonEpisode,
+                    detailsState = state,
                     onHistoryClick = onAddHistoryClick,
                     onStreamingLongClick = onStreamingsClick,
                     modifier = Modifier

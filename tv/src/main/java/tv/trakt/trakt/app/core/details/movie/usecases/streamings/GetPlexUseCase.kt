@@ -1,8 +1,15 @@
 package tv.trakt.trakt.app.core.details.movie.usecases.streamings
 
+import com.google.firebase.Firebase
+import com.google.firebase.remoteconfig.remoteConfig
+import timber.log.Timber
 import tv.trakt.trakt.app.core.movies.data.remote.MoviesRemoteDataSource
+import tv.trakt.trakt.app.core.plex.data.PlexRemoteDataSource
 import tv.trakt.trakt.app.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.PLEX_PLAY_ENABLED
+import tv.trakt.trakt.common.helpers.extensions.getHttpErrorCode
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
@@ -11,6 +18,7 @@ import tv.trakt.trakt.common.model.fromDto
 internal class GetPlexUseCase(
     private val remoteSyncSource: MoviesSyncRemoteDataSource,
     private val remoteMovieSource: MoviesRemoteDataSource,
+    private val remotePlexSource: PlexRemoteDataSource,
     private val localMovieSource: MovieLocalDataSource,
 ) {
     suspend fun getPlexStatus(movieId: TraktId): Result {
@@ -28,6 +36,29 @@ internal class GetPlexUseCase(
             isPlex = result.containsKey(movieId) && movie.ids.plex != null,
             plexSlug = movie.ids.plex,
         )
+    }
+
+    suspend fun getPlexStreamUrl(traktId: TraktId): String? {
+        val isEnabled = Firebase.remoteConfig.getBoolean(PLEX_PLAY_ENABLED)
+        if (!isEnabled) {
+            Timber.d("Plex play is disabled via remote config.")
+            return null
+        }
+
+        return try {
+            val result = remotePlexSource.getPlexStream(
+                id = traktId.value.toString(),
+                type = MediaType.MOVIE,
+            )
+            result.streamUrl
+        } catch (error: Exception) {
+            if (error.getHttpErrorCode() == 404) {
+                Timber.w("Plex stream not found for slug: ${traktId.value}")
+                return null
+            }
+            Timber.e(error, "Error fetching Plex stream for slug: ${traktId.value}")
+            throw error
+        }
     }
 
     data class Result(

@@ -120,7 +120,7 @@ private fun CommentDetailsContent(
             ),
     ) {
         Text(
-            text = "Replies",
+            text = stringResource(R.string.text_replies),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.heading4,
         )

@@ -5,6 +5,9 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.openapitools.client.apis.WatchnowApi
+import tv.trakt.trakt.app.core.plex.PlexStreamApi
+import tv.trakt.trakt.app.core.plex.data.PlexApiClient
+import tv.trakt.trakt.app.core.plex.data.PlexRemoteDataSource
 import tv.trakt.trakt.app.core.streamings.AllStreamingsViewModel
 import tv.trakt.trakt.app.core.streamings.usecase.GetAllStreamingsUseCase
 import tv.trakt.trakt.common.Config.API_BASE_URL
@@ -21,6 +24,16 @@ internal val streamingsDataModule = module {
                 baseUrl = API_BASE_URL,
                 httpClientEngine = get(),
                 httpClientConfig = get(named("clientConfig")),
+            ),
+        )
+    }
+
+    single<PlexRemoteDataSource> {
+        PlexApiClient(
+            api = PlexStreamApi(
+                baseUrl = API_BASE_URL,
+                httpClientEngine = get(),
+                httpClientConfig = get(named("authorizedClientConfig")),
             ),
         )
     }

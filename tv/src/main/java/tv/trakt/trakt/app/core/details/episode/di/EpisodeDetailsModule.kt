@@ -41,6 +41,7 @@ internal val episodeDetailsModule = module {
         GetPlexUseCase(
             remoteSyncSource = get(),
             remoteShowSource = get(),
+            remotePlexSource = get(),
             localShowSource = get(),
         )
     }

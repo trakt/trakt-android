@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,12 +30,14 @@ import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.app.common.model.SyncHistoryItem
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
+import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.EpisodeSkeletonCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalViewAllCard
 import tv.trakt.trakt.app.core.profile.ProfileConfig.PROFILE_SECTION_LIMIT
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Episode
@@ -206,17 +209,22 @@ private fun ContentListItem(
             item.mediaCardImageUrl
         },
         onClick = onClick,
+        cardContent = {
+            InfoChip(
+                text = item.watchedAt.toLocal().relativePastDateString(),
+                iconPainter = painterResource(R.drawable.ic_calendar_check),
+                containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
+            )
+        },
         footerContent = {
             Column(
                 verticalArrangement = spacedBy(1.dp),
             ) {
-                val seString = item.episode?.seasonEpisodeString() ?: ""
                 Text(
                     text = remember(item.type) {
                         when (item.type) {
-                            "show" -> item.show!!.title
+                            "show", "episode" -> item.show!!.title
                             "movie" -> item.movie!!.title
-                            "episode" -> seString
                             else -> "TBA"
                         }
                     },
@@ -226,8 +234,17 @@ private fun ContentListItem(
                     overflow = TextOverflow.Ellipsis,
                 )
 
+                val seString = item.episode?.seasonEpisodeString() ?: ""
+                val subtext = remember(item.type) {
+                    when (item.type) {
+                        "episode" -> seString
+                        "movie" -> item.movie?.runtime?.inWholeMinutes?.durationFormat() ?: ""
+                        else -> ""
+                    }
+                }
+
                 Text(
-                    text = item.watchedAt.toLocal().relativePastDateString(),
+                    text = subtext,
                     style = TraktTheme.typography.cardSubtitle,
                     color = TraktTheme.colors.textSecondary,
                     maxLines = 1,

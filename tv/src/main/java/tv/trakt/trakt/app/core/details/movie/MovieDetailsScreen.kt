@@ -320,8 +320,7 @@ private fun MainContent(
                 }
 
                 MovieActionButtons(
-                    streamingState = state.movieStreamings,
-                    collectionState = state.movieCollection,
+                    movieState = state,
                     onHistoryClick = onHistoryClick,
                     onWatchlistClick = onWatchlistClick,
                     onStreamingLongClick = onStreamingsClick,

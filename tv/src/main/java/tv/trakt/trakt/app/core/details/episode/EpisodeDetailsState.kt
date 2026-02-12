@@ -35,6 +35,7 @@ internal data class EpisodeDetailsState(
         val service: StreamingService? = null,
         val noServices: Boolean = false,
         val plex: Boolean = false,
+        val plexStreamUrl: String? = null,
         val loading: Boolean = false,
         val info: StringResource? = null,
     )

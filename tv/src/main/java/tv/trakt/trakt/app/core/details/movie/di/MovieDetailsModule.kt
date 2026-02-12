@@ -75,6 +75,7 @@ internal val movieDetailsModule = module {
         GetPlexUseCase(
             remoteSyncSource = get(),
             remoteMovieSource = get(),
+            remotePlexSource = get(),
             localMovieSource = get(),
         )
     }

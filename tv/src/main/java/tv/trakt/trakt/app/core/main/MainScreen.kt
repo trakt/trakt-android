@@ -85,6 +85,8 @@ import tv.trakt.trakt.app.core.profile.sections.favorites.shows.viewall.navigati
 import tv.trakt.trakt.app.core.profile.sections.favorites.shows.viewall.navigation.profileFavoriteShowsViewAllScreen
 import tv.trakt.trakt.app.core.profile.sections.history.viewall.navigation.navigateToProfileHistoryViewAll
 import tv.trakt.trakt.app.core.profile.sections.history.viewall.navigation.profileHistoryViewAllScreen
+import tv.trakt.trakt.app.core.profile.sections.library.viewall.navigation.navigateToProfileLibraryViewAll
+import tv.trakt.trakt.app.core.profile.sections.library.viewall.navigation.profileLibraryViewAllScreen
 import tv.trakt.trakt.app.core.search.navigation.searchScreen
 import tv.trakt.trakt.app.core.shows.features.anticipated.navigation.navigateToShowsAnticipated
 import tv.trakt.trakt.app.core.shows.features.anticipated.navigation.showsAnticipatedScreen
@@ -285,6 +287,7 @@ private fun MainNavHost(
                 onNavigateToHistoryViewAll = { navigateToProfileHistoryViewAll() },
                 onNavigateToFavShowsViewAll = { navigateToProfileFavoriteShowsViewAll() },
                 onNavigateToFavMoviesViewAll = { navigateToProfileFavoriteMoviesViewAll() },
+                onNavigateToLibraryViewAll = { navigateToProfileLibraryViewAll() },
             )
             profileHistoryViewAllScreen(
                 onNavigateToMovie = { navigateToMovie(it) },
@@ -297,6 +300,12 @@ private fun MainNavHost(
             )
             profileFavoriteMoviesViewAllScreen(
                 onNavigateToMovie = { navigateToMovie(it) },
+            )
+            profileLibraryViewAllScreen(
+                onNavigateToMovie = { navigateToMovie(it) },
+                onNavigateToEpisode = { showId, episode ->
+                    navigateToEpisode(showId, episode)
+                },
             )
             showsScreen(
                 onNavigateToShow = { navigateToShow(it) },
