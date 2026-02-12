@@ -254,7 +254,7 @@ private fun MovieActionButtons(
                     loading = state.loadingWatched.isLoading ||
                         state.loadingWatched.isDone ||
                         state.loadingCheckIn.isLoading,
-                    text = stringResource(R.string.button_text_mark_as_watched),
+                    text = stringResource(R.string.button_text_track),
                     iconSize = 22.dp,
                     iconSpace = 16.dp,
                     onClick = onWatchedClick,

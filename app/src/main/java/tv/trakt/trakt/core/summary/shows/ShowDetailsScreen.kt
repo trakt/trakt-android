@@ -248,7 +248,7 @@ internal fun ShowDetailsScreen(
             dateSheet = true
         },
         onNo = { confirmAddWatchedSheet = false },
-        title = stringResource(R.string.button_text_mark_as_watched),
+        title = stringResource(R.string.button_text_track),
         message = stringResource(
             R.string.warning_prompt_mark_as_watched_show,
             state.show?.title ?: "",

@@ -52,7 +52,7 @@ internal fun DateSelectionView(
             ) {
                 Text(
                     text = title.ifBlank {
-                        stringResource(R.string.button_text_mark_as_watched)
+                        stringResource(R.string.button_text_track)
                     },
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.heading3,
@@ -67,7 +67,7 @@ internal fun DateSelectionView(
 
                 Text(
                     text = (subtitle ?: "").ifBlank {
-                        stringResource(R.string.button_text_mark_as_watched)
+                        stringResource(R.string.button_text_track)
                     },
                     color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.paragraphSmaller,

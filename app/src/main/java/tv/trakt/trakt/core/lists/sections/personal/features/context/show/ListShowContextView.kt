@@ -129,7 +129,7 @@ internal fun ListShowContextView(
             dateSheet = true
         },
         onNo = { confirmAddWatchedSheet = false },
-        title = stringResource(R.string.button_text_mark_as_watched),
+        title = stringResource(R.string.button_text_track),
         message = stringResource(
             R.string.warning_prompt_mark_as_watched_show,
             show.title,
@@ -286,7 +286,7 @@ private fun ActionButtons(
                 GhostButton(
                     enabled = !isLoadingOrDone,
                     loading = state.loadingWatched.isLoading || state.loadingWatched.isDone,
-                    text = stringResource(R.string.button_text_mark_as_watched),
+                    text = stringResource(R.string.button_text_track),
                     iconSize = 22.dp,
                     iconSpace = 16.dp,
                     onClick = onWatchedClick,

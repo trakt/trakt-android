@@ -116,7 +116,7 @@ internal fun WatchlistShowContextView(
             dateSheet = show
         },
         onNo = { confirmAddWatchedSheet = false },
-        title = stringResource(R.string.button_text_mark_as_watched),
+        title = stringResource(R.string.button_text_track),
         message = stringResource(
             R.string.warning_prompt_mark_as_watched_show,
             show.title,
@@ -216,7 +216,7 @@ private fun ShowActionButtons(
             if (!watched || watchOnlyOnce != true) {
                 GhostButton(
                     text = when {
-                        !watched -> stringResource(R.string.button_text_mark_as_watched)
+                        !watched -> stringResource(R.string.button_text_track)
                         else -> stringResource(R.string.button_text_watch_again)
                     },
                     icon = when {

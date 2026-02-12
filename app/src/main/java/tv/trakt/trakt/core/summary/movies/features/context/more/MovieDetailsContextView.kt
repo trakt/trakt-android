@@ -226,7 +226,7 @@ private fun ActionButtons(
         if (!watched || watchOnlyOnce != true) {
             GhostButton(
                 text = when {
-                    !watched -> stringResource(R.string.button_text_mark_as_watched)
+                    !watched -> stringResource(R.string.button_text_track)
                     else -> stringResource(R.string.button_text_watch_again)
                 },
                 icon = when {

@@ -152,7 +152,7 @@ private fun UpNextItemContextViewContent(
             GhostButton(
                 enabled = !isLoading,
                 loading = state.loadingWatched.isLoading,
-                text = stringResource(R.string.button_text_mark_as_watched),
+                text = stringResource(R.string.button_text_track),
                 iconSize = 20.dp,
                 iconSpace = 16.dp,
                 onClick = onAddWatched,

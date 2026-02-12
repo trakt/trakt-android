@@ -28,6 +28,7 @@
     <string name="button_text_login">Login</string>
     <string name="button_text_logout">Log out</string>
     <string name="button_text_long_press_for_more">Long press for more</string>
+    <string name="button_text_mark_as_watched">Mark as Watched</string>
     <string name="button_text_mark_as_watched_now">Just now</string>
     <string name="button_text_mark_as_watched_other_date">Other date</string>
     <string name="button_text_mark_as_watched_release_date">Release date</string>
@@ -332,7 +333,7 @@
     <string name="text_now_watching">Now Watching</string>
     <string name="text_time_remaining">%s remaining</string>
     <string name="warning_prompt_stop_watching">Are you sure you want to stop watching \"%s\"?</string>
-    <string name="button_text_mark_as_watched">Track</string>
+    <string name="button_text_track">Track</string>
 
     <!--  Non Translatable  -->
 
