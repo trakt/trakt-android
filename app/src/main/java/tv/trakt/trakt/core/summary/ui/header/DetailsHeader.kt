@@ -334,6 +334,7 @@ private fun DotSeparator() {
     device = "id:pixel_5",
     showBackground = true,
     backgroundColor = 0xFF131517,
+    locale = "us",
 )
 @Composable
 private fun Preview() {
@@ -429,6 +430,7 @@ private fun Preview() {
     device = "id:pixel_5",
     showBackground = true,
     backgroundColor = 0xFF131517,
+    locale = "us",
 )
 @Composable
 private fun Preview2() {
