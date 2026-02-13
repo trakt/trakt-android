@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.ExternalRating
+import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -58,7 +59,7 @@ internal fun DetailsRatings(
         val emptyImdbText = "— "
 
         // Trakt Rating
-        val traktRating = (traktRatings ?: 0) / 2F
+        val traktRating = traktRatings ?: 0
         Row(
             horizontalArrangement = iconTraktSpace,
             verticalAlignment = Alignment.CenterVertically,
@@ -68,7 +69,7 @@ internal fun DetailsRatings(
                 contentDescription = null,
                 modifier = Modifier.height(16.dp),
                 tint = when {
-                    traktRating > 0 && !hidden -> TraktTheme.colors.textPrimary
+                    traktRating > 0 && !hidden -> Purple400
                     else -> TraktTheme.colors.textSecondary
                 },
             )
@@ -76,7 +77,7 @@ internal fun DetailsRatings(
             Box {
                 Text(
                     text = when {
-                        traktRating > 0 && !hidden -> String.format("%.1f", traktRating / 10f)
+                        traktRating > 0 && !hidden -> "$traktRating%"
                         else -> emptyText
                     },
                     color = when {

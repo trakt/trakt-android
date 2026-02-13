@@ -27,6 +27,7 @@ import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -134,12 +135,12 @@ fun ShowMetaFooter(
                     contentDescription = null,
                     modifier = Modifier.size(13.dp),
                     tint = when {
-                        show.rating.rating > 0 -> TraktTheme.colors.textPrimary
+                        show.rating.rating > 0 -> Purple400
                         else -> TraktTheme.colors.textSecondary
                     },
                 )
                 Text(
-                    text = if (show.rating.rating > 0) show.rating.rating5Scale else "-",
+                    text = if (show.rating.rating > 0) "${show.rating.ratingPercent}%" else "-",
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
                 )

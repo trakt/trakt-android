@@ -26,6 +26,7 @@ import tv.trakt.trakt.common.helpers.extensions.relativeDateString
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -130,12 +131,12 @@ fun MovieMetaFooter(
                     contentDescription = null,
                     modifier = Modifier.size(13.dp),
                     tint = when {
-                        movie.rating.rating > 0 -> TraktTheme.colors.textPrimary
+                        movie.rating.rating > 0 -> Purple400
                         else -> TraktTheme.colors.textSecondary
                     },
                 )
                 Text(
-                    text = if (movie.rating.rating > 0) movie.rating.rating5Scale else "-",
+                    text = if (movie.rating.rating > 0) "${movie.rating.ratingPercent}%" else "-",
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
                 )
@@ -164,7 +165,7 @@ fun MovieMetaFooter(
     }
 }
 
-@Preview(widthDp = 300)
+@Preview(widthDp = 300, locale = "us")
 @Composable
 private fun Preview() {
     TraktTheme {
@@ -174,7 +175,7 @@ private fun Preview() {
     }
 }
 
-@Preview(widthDp = 300)
+@Preview(widthDp = 300, locale = "us")
 @Composable
 private fun Preview2() {
     TraktTheme {
@@ -187,7 +188,7 @@ private fun Preview2() {
     }
 }
 
-@Preview(widthDp = 300)
+@Preview(widthDp = 300, locale = "us")
 @Composable
 private fun Preview3() {
     TraktTheme {
@@ -201,7 +202,7 @@ private fun Preview3() {
     }
 }
 
-@Preview(widthDp = 300)
+@Preview(widthDp = 300, locale = "us")
 @Composable
 private fun Preview4() {
     TraktTheme {
@@ -217,7 +218,7 @@ private fun Preview4() {
     }
 }
 
-@Preview(widthDp = 300)
+@Preview(widthDp = 300, locale = "us")
 @Composable
 private fun Preview5() {
     TraktTheme {
