@@ -35,6 +35,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.core.checkin.data.CheckInManager
+import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source
 import tv.trakt.trakt.core.notifications.TraktNotificationChannel
 import tv.trakt.trakt.core.notifications.data.work.INTENT_NOTIFICATION_EXTRAS
 import tv.trakt.trakt.core.notifications.model.NotificationIntentExtras
@@ -158,7 +159,10 @@ internal class CheckInService : Service() {
             Timber.d("Check-in expired, stopping service")
             scope.launch {
                 try {
-                    checkInManager.stop(applicationContext)
+                    checkInManager.stop(
+                        source = Source.Default,
+                        context = applicationContext,
+                    )
                 } catch (error: Exception) {
                     error.rethrowCancellation {
                         Timber.recordError(error)

@@ -7,6 +7,7 @@ import io.ktor.client.plugins.auth.providers.BearerAuthProvider
 import org.openapitools.client.infrastructure.ApiClient
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.core.checkin.data.CheckInManager
+import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.discover.sections.recommended.data.local.movies.RecommendedMoviesLocalDataSource
 import tv.trakt.trakt.core.discover.sections.recommended.data.local.shows.RecommendedShowsLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
@@ -52,7 +53,10 @@ internal class LogoutUserUseCase(
     suspend fun logoutUser() {
         sessionManager.clear()
         collapsingManager.clear()
-        checkInManager.stop(appContext)
+        checkInManager.stop(
+            source = CheckInUpdates.Source.Default,
+            context = appContext,
+        )
 
         apiClients.forEach { api ->
             api.client.authProvider<BearerAuthProvider>()?.clearToken()

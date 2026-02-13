@@ -25,6 +25,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.checkin.data.CheckInManager
+import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source.MovieContext
 import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
@@ -257,7 +258,11 @@ internal class ListMovieContextViewModel(
             try {
                 loadingCheckInState.update { LOADING }
 
-                checkInManager.startMovie(movie.ids.trakt, appContext)
+                checkInManager.startMovie(
+                    movieId = movie.ids.trakt,
+                    source = MovieContext,
+                    context = appContext,
+                )
                 userWatchlistLocalSource.removeMovies(
                     ids = setOf(movie.ids.trakt),
                     notify = true,

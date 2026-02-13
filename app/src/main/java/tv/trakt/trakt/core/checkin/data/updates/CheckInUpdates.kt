@@ -4,7 +4,19 @@ import kotlinx.coroutines.flow.Flow
 import java.time.Instant
 
 internal interface CheckInUpdates {
-    fun notifyUpdate()
+    fun notifyUpdate(source: Source)
 
-    fun observeUpdates(): Flow<Instant?>
+    fun observeUpdates(): Flow<Pair<Source, Instant?>>
+
+    enum class Source {
+        Default,
+        HomeUpNext,
+        AllHomeUpNext,
+        HomeWatchlist,
+        AllHomeWatchlist,
+        Watchlist,
+        MovieContext,
+        MovieDetails,
+        EpisodeDetails,
+    }
 }

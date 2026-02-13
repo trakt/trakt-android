@@ -24,6 +24,7 @@ import tv.trakt.trakt.core.checkin.data.remote.CheckInRemoteDataSource
 import tv.trakt.trakt.core.checkin.data.service.CheckInService
 import tv.trakt.trakt.core.checkin.data.service.CheckInServiceData
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
+import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source
 import tv.trakt.trakt.core.checkin.model.CheckInState
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveEpisode
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveMovie
@@ -60,6 +61,7 @@ internal class DefaultCheckInManager(
     override suspend fun startEpisode(
         showId: TraktId,
         seasonEpisode: SeasonEpisode,
+        source: Source,
         context: Context,
     ) {
         if (state.value.isActive()) {
@@ -98,7 +100,7 @@ internal class DefaultCheckInManager(
                 )
 
                 state.update { activeState }
-                checkInUpdates.notifyUpdate()
+                checkInUpdates.notifyUpdate(source)
                 startForegroundService(context, activeState)
 
                 coroutineScope {
@@ -119,6 +121,7 @@ internal class DefaultCheckInManager(
 
     override suspend fun startMovie(
         movieId: TraktId,
+        source: Source,
         context: Context,
     ) {
         if (state.value.isActive()) {
@@ -152,7 +155,7 @@ internal class DefaultCheckInManager(
                 )
 
                 state.update { activeState }
-                checkInUpdates.notifyUpdate()
+                checkInUpdates.notifyUpdate(source)
                 startForegroundService(context, activeState)
 
                 coroutineScope {
@@ -198,10 +201,10 @@ internal class DefaultCheckInManager(
 
                 if (state.value.isActive()) {
                     loadProgressIfNeeded(state.value)
-                    checkInUpdates.notifyUpdate()
+                    checkInUpdates.notifyUpdate(Source.Default)
                 }
 
-                stop(context)
+                stop(Source.Default, context)
                 Timber.d("No active check-ins / scrobbles found.")
                 return
             }
@@ -217,7 +220,7 @@ internal class DefaultCheckInManager(
                 if (state.value !is ActiveMovie || state.value.id != newState.id) {
                     cacheMarkerProvider.invalidate()
                     state.update { newState }
-                    checkInUpdates.notifyUpdate()
+                    checkInUpdates.notifyUpdate(Source.Default)
                     startForegroundService(context, newState)
 
                     coroutineScope {
@@ -242,7 +245,7 @@ internal class DefaultCheckInManager(
                 if (state.value !is ActiveEpisode || state.value.id != newState.id) {
                     cacheMarkerProvider.invalidate()
                     state.update { newState }
-                    checkInUpdates.notifyUpdate()
+                    checkInUpdates.notifyUpdate(Source.Default)
                     startForegroundService(context, newState)
 
                     coroutineScope {
@@ -263,7 +266,10 @@ internal class DefaultCheckInManager(
         }
     }
 
-    override suspend fun stop(context: Context) {
+    override suspend fun stop(
+        source: Source,
+        context: Context,
+    ) {
         if (!sessionManager.isAuthenticated()) {
             Timber.d("Not authenticated, skipping check-in stop.")
             return
@@ -275,7 +281,7 @@ internal class DefaultCheckInManager(
         try {
             checkInRemoteDataSource.deleteAll()
             cacheMarkerProvider.invalidate()
-            checkInUpdates.notifyUpdate()
+            checkInUpdates.notifyUpdate(source)
             CheckInService.stop(context.applicationContext)
 
             loadProgressIfNeeded(currentState)

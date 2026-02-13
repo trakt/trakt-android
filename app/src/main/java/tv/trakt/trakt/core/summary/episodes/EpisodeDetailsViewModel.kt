@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
@@ -43,6 +44,7 @@ import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
+import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source.EpisodeDetails
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.summary.episodes.EpisodeDetailsState.UserRatingsState
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
@@ -145,6 +147,7 @@ internal class EpisodeDetailsViewModel(
         checkInUpdates.observeUpdates()
             .distinctUntilChanged()
             .debounce(200)
+            .filterNot { it.first == EpisodeDetails }
             .onEach {
                 loadProgressData(
                     ignoreErrors = true,
@@ -336,6 +339,7 @@ internal class EpisodeDetailsViewModel(
                 checkInManager.startEpisode(
                     showId = showId,
                     seasonEpisode = seasonEpisode,
+                    source = EpisodeDetails,
                     context = appContext,
                 )
 

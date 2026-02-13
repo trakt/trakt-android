@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
@@ -34,6 +35,7 @@ import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
+import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source.AllHomeUpNext
 import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_LIMIT
 import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
 import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
@@ -94,7 +96,7 @@ internal class AllHomeUpNextViewModel(
             episodeUpdates.observeUpdates(PROGRESS),
             episodeUpdates.observeUpdates(SEASON),
             movieUpdates.observeUpdates(),
-            checkInUpdates.observeUpdates(),
+            checkInUpdates.observeUpdates().filterNot { it.first == AllHomeUpNext },
         )
             .distinctUntilChanged()
             .debounce(200)
@@ -277,6 +279,7 @@ internal class AllHomeUpNextViewModel(
                     context = appContext,
                     showId = showId,
                     seasonEpisode = seasonEpisode,
+                    source = AllHomeUpNext,
                 )
 
                 analytics.progress.logAddWatchedMedia(

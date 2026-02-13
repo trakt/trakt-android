@@ -4,17 +4,20 @@ import android.content.Context
 import kotlinx.coroutines.flow.Flow
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.checkin.model.CheckInState
 
-interface CheckInManager {
+internal interface CheckInManager {
     suspend fun startMovie(
         movieId: TraktId,
+        source: CheckInUpdates.Source,
         context: Context,
     )
 
     suspend fun startEpisode(
         showId: TraktId,
         seasonEpisode: SeasonEpisode,
+        source: CheckInUpdates.Source,
         context: Context,
     )
 
@@ -24,5 +27,8 @@ interface CheckInManager {
 
     fun observe(): Flow<CheckInState>
 
-    suspend fun stop(context: Context)
+    suspend fun stop(
+        source: CheckInUpdates.Source,
+        context: Context,
+    )
 }

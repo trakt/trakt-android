@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
@@ -44,6 +45,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
+import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source
 import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_WATCHLIST_LIMIT
 import tv.trakt.trakt.core.home.HomeConfig.HOME_WATCHLIST_LIMIT
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
@@ -125,7 +127,7 @@ internal class AllHomeWatchlistViewModel(
     private fun observeData() {
         merge(
             userWatchlistSource.observeUpdates(),
-            checkInUpdates.observeUpdates(),
+            checkInUpdates.observeUpdates().filterNot { it.first == Source.AllHomeWatchlist },
         )
             .distinctUntilChanged()
             .debounce(200)
@@ -355,12 +357,13 @@ internal class AllHomeWatchlistViewModel(
                     currentItems.toImmutableList()
                 }
 
-                removeItem(currentItems[itemIndex], notify = false)
                 checkInManager.startEpisode(
                     showId = showId,
                     seasonEpisode = seasonEpisode,
+                    source = Source.AllHomeWatchlist,
                     context = appContext,
                 )
+                removeItem(currentItems[itemIndex], notify = false)
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "episode",
@@ -400,8 +403,12 @@ internal class AllHomeWatchlistViewModel(
                     currentItems.toImmutableList()
                 }
 
+                checkInManager.startMovie(
+                    movieId = movieId,
+                    source = Source.AllHomeWatchlist,
+                    context = appContext,
+                )
                 removeItem(currentItems[itemIndex], notify = false)
-                checkInManager.startMovie(movieId, appContext)
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",

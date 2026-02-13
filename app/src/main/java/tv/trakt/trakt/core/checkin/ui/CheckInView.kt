@@ -327,7 +327,7 @@ private fun ExpandedView(
                             when {
                                 total > 0F -> (total - current) / total
                                 else -> 0F
-                            }
+                            }.coerceAtLeast(0.01F)
                         },
                         color = Color.White,
                         trackColor = progressTrackColor,
@@ -445,7 +445,7 @@ private fun CollapsedView(
                         when {
                             total > 0F -> (total - current) / total
                             else -> 0F
-                        }
+                        }.coerceAtLeast(0.01F)
                     },
                     color = Color.White,
                     trackColor = progressTrackColor,
@@ -559,6 +559,7 @@ private fun ImageViewPlaceholder(
     name = "Expanded",
     device = "id:pixel_5",
     showBackground = false,
+    locale = "en",
 )
 @Composable
 private fun Preview() {
@@ -599,6 +600,7 @@ private fun Preview() {
     name = "Collapsed",
     device = "id:pixel_5",
     showBackground = false,
+    locale = "en",
 )
 @Composable
 private fun Preview2() {
