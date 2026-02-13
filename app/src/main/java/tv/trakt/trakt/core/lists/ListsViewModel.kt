@@ -138,6 +138,7 @@ internal class ListsViewModel(
             }
 
         return lists
+            .distinctBy { it.ids.trakt.value }
             .sortedBy {
                 orderMap[it.ids.trakt.value] ?: Int.MIN_VALUE
             }

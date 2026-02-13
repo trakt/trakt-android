@@ -205,8 +205,11 @@ internal class AllPersonalListViewModel(
                     limit = LISTS_ALL_LIMIT,
                 )
 
-                itemsState.update {
-                    it?.plus(newItems)?.toImmutableList()
+                itemsState.update { items ->
+                    items
+                        ?.plus(newItems)
+                        ?.distinctBy { it.key }
+                        ?.toImmutableList()
                 }
 
                 page += 1

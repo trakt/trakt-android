@@ -170,7 +170,7 @@ private fun ContentList(
     ) {
         items(
             items = listItems,
-            key = { "${it.second}_${it.first.source}" },
+            key = { "${it.second.type}_${it.first.source}_${it.first.channel}" },
         ) { (service, type) ->
             DetailsStreamingItem(
                 service = service,
