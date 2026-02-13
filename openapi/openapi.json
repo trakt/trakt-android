@@ -3993,7 +3993,8 @@
                             "number",
                             "title",
                             "ids"
-                          ]
+                          ],
+                          "nullable": true
                         },
                         "show": {
                           "type": "object",
@@ -4050,15 +4051,14 @@
                             "title",
                             "year",
                             "ids"
-                          ]
+                          ],
+                          "nullable": true
                         }
                       },
                       "required": [
                         "id",
                         "watched_at",
-                        "sharing",
-                        "episode",
-                        "show"
+                        "sharing"
                       ]
                     },
                     {
@@ -4141,14 +4141,14 @@
                             "title",
                             "year",
                             "ids"
-                          ]
+                          ],
+                          "nullable": true
                         }
                       },
                       "required": [
                         "id",
                         "watched_at",
-                        "sharing",
-                        "movie"
+                        "sharing"
                       ]
                     }
                   ]
@@ -37172,6 +37172,166 @@
         "operationId": "getUsersFiltersSaved"
       }
     },
+    "/users/saved_filters": {
+      "post": {
+        "tags": [
+          "users",
+          "filters"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "url"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "added": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "rank": {
+                            "type": "integer"
+                          },
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "path": {
+                            "type": "string"
+                          },
+                          "query": {
+                            "type": "string"
+                          },
+                          "updated_at": {
+                            "type": "string"
+                          },
+                          "section": {
+                            "type": "string",
+                            "enum": [
+                              "movies",
+                              "shows",
+                              "calendars",
+                              "search"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "rank",
+                          "id",
+                          "name",
+                          "path",
+                          "query",
+                          "updated_at",
+                          "section"
+                        ]
+                      }
+                    },
+                    "skipped": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "url"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "added",
+                    "skipped"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "operationId": "postUsersFiltersAdd"
+      }
+    },
+    "/users/saved_filters/{id}": {
+      "delete": {
+        "tags": [
+          "users",
+          "filters"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "ID of the saved filter"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "204",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "operationId": "deleteUsersFiltersDelete"
+      }
+    },
     "/sync/history": {
       "post": {
         "tags": [
@@ -48893,7 +49053,8 @@
                         "required": [
                           "title",
                           "ids"
-                        ]
+                        ],
+                        "nullable": true
                       },
                       "collected_at": {
                         "type": "string"
@@ -48919,7 +49080,6 @@
                     },
                     "required": [
                       "type",
-                      "movie",
                       "collected_at",
                       "updated_at"
                     ]
@@ -49259,15 +49419,15 @@
                         "required": [
                           "title",
                           "ids"
-                        ]
+                        ],
+                        "nullable": true
                       }
                     },
                     "required": [
                       "last_collected_at",
                       "last_updated_at",
                       "seasons",
-                      "type",
-                      "show"
+                      "type"
                     ]
                   }
                 }
@@ -49471,7 +49631,8 @@
                           "season",
                           "number",
                           "ids"
-                        ]
+                        ],
+                        "nullable": true
                       },
                       "show": {
                         "type": "object",
@@ -49706,7 +49867,8 @@
                         "required": [
                           "title",
                           "ids"
-                        ]
+                        ],
+                        "nullable": true
                       },
                       "collected_at": {
                         "type": "string"
@@ -49732,8 +49894,6 @@
                     },
                     "required": [
                       "type",
-                      "episode",
-                      "show",
                       "collected_at",
                       "updated_at"
                     ]
@@ -50017,7 +50177,8 @@
                             "required": [
                               "title",
                               "ids"
-                            ]
+                            ],
+                            "nullable": true
                           },
                           "collected_at": {
                             "type": "string"
@@ -50043,7 +50204,6 @@
                         },
                         "required": [
                           "type",
-                          "movie",
                           "collected_at",
                           "updated_at"
                         ]
@@ -50344,15 +50504,15 @@
                             "required": [
                               "title",
                               "ids"
-                            ]
+                            ],
+                            "nullable": true
                           }
                         },
                         "required": [
                           "last_collected_at",
                           "last_updated_at",
                           "seasons",
-                          "type",
-                          "show"
+                          "type"
                         ]
                       },
                       {
@@ -50499,7 +50659,8 @@
                               "season",
                               "number",
                               "ids"
-                            ]
+                            ],
+                            "nullable": true
                           },
                           "show": {
                             "type": "object",
@@ -50734,7 +50895,8 @@
                             "required": [
                               "title",
                               "ids"
-                            ]
+                            ],
+                            "nullable": true
                           },
                           "collected_at": {
                             "type": "string"
@@ -50760,8 +50922,6 @@
                         },
                         "required": [
                           "type",
-                          "episode",
-                          "show",
                           "collected_at",
                           "updated_at"
                         ]

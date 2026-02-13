@@ -35,9 +35,11 @@ internal class LoadUserLibraryUseCase(
     suspend fun loadMedia(
         page: Int,
         limit: Int,
+        availableOn: String?,
     ): Result {
         val items = remoteSource.getLibrary(
             extended = "full,images,colors,available_on",
+            availableOn = availableOn,
             page = page,
             limit = limit,
         )

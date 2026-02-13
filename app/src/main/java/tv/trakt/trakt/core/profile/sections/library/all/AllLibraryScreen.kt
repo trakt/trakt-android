@@ -31,6 +31,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -151,12 +152,29 @@ internal fun AllLibraryContent(
             listState = listState,
             listFilter = state.filter,
             contentPadding = contentPadding,
+            loading = state.loading.isLoading,
             loadingMore = state.loadingMore.isLoading,
             onEndOfList = onLoadMore,
             onFilterClick = onFilterClick,
             onClick = onClick,
             onBackClick = onBackClick,
         )
+
+        if (state.error != null) {
+            Text(
+                text = "${
+                    stringResource(
+                        R.string.error_text_unexpected_error_short,
+                    )
+                }\n\n${state.error}",
+                color = TraktTheme.colors.textSecondary,
+                style = TraktTheme.typography.meta,
+                maxLines = 10,
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .padding(contentPadding),
+            )
+        }
     }
 }
 
@@ -189,6 +207,7 @@ private fun ContentList(
     listItems: ImmutableList<LibraryItem>,
     listFilter: LibraryFilter?,
     contentPadding: PaddingValues,
+    loading: Boolean,
     loadingMore: Boolean,
     onEndOfList: () -> Unit,
     onClick: (LibraryItem) -> Unit,
@@ -236,6 +255,7 @@ private fun ContentList(
             when (item) {
                 is EpisodeItem -> AllLibraryEpisodeView(
                     item = item,
+                    enabled = !loading,
                     onClick = { onClick(item) },
                     modifier = Modifier
                         .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
@@ -247,6 +267,7 @@ private fun ContentList(
 
                 is MovieItem -> AllLibraryMovieView(
                     item = item,
+                    enabled = !loading,
                     onClick = { onClick(item) },
                     modifier = Modifier
                         .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
@@ -258,19 +279,18 @@ private fun ContentList(
             }
         }
 
-        if (listItems.isEmpty()) {
-            item {
-                ContentEmptyView(
+        if (loading && listItems.isEmpty()) {
+            items(10) {
+                PanelMediaSkeletonCard(
                     modifier = Modifier
+                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
                         .animateItem(
-                            fadeInSpec = tween(200),
-                            fadeOutSpec = tween(200),
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
                         ),
                 )
             }
-        }
-
-        if (loadingMore) {
+        } else if (loadingMore && listItems.isNotEmpty()) {
             items(1) {
                 PanelMediaSkeletonCard(
                     modifier = Modifier
@@ -278,6 +298,16 @@ private fun ContentList(
                         .animateItem(
                             fadeInSpec = null,
                             fadeOutSpec = null,
+                        ),
+                )
+            }
+        } else if (listItems.isEmpty()) {
+            item {
+                ContentEmptyView(
+                    modifier = Modifier
+                        .animateItem(
+                            fadeInSpec = tween(200),
+                            fadeOutSpec = tween(200),
                         ),
                 )
             }
@@ -321,6 +351,7 @@ private fun ContentEmptyView(modifier: Modifier = Modifier) {
     device = "id:pixel_5",
     showBackground = true,
     backgroundColor = 0xFF131517,
+    locale = "en",
 )
 @Composable
 private fun Preview() {

@@ -22,11 +22,13 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun AllLibraryEpisodeView(
     item: LibraryItem.EpisodeItem,
+    enabled: Boolean,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
 ) {
     PanelMediaCard(
         modifier = modifier,
+        enabled = enabled,
         title = item.show.title,
         titleOriginal = item.show.titleOriginal,
         subtitle = item.episode.seasonEpisodeString(),

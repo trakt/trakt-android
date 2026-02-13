@@ -23,6 +23,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun AllLibraryMovieView(
     item: LibraryItem.MovieItem,
+    enabled: Boolean,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
 ) {
@@ -36,6 +37,7 @@ internal fun AllLibraryMovieView(
 
     PanelMediaCard(
         modifier = modifier,
+        enabled = enabled,
         title = item.movie.title,
         titleOriginal = item.movie.titleOriginal,
         subtitle = genresText,

@@ -70,6 +70,7 @@ internal interface UserRemoteDataSource {
 
     suspend fun getLibrary(
         extended: String? = null,
+        availableOn: String? = null,
         page: Int,
         limit: Int,
     ): List<SyncLibraryMediaDto>

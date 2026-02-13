@@ -98,6 +98,7 @@ internal class ProfileLibraryViewModel(
                     loadLibraryUseCase.loadMedia(
                         page = 1,
                         limit = LIBRARY_PAGE_LIMIT,
+                        availableOn = null,
                     )
                         .items
                         .filter {

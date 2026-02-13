@@ -52,7 +52,7 @@ internal class AllLibraryViewModel(
 
     private var dataJob: Job? = null
 
-    private var pages: Int = 1
+    private var page: Int = 1
     private var hasMoreData: Boolean = false
 
     init {
@@ -67,27 +67,23 @@ internal class AllLibraryViewModel(
         dataJob?.cancel()
         dataJob = viewModelScope.launch {
             try {
+                page = 1
+                loadingState.update { LOADING }
+
                 if (loadEmptyIfNeeded()) {
                     return@launch
                 }
 
-                val localItems = loadLibraryUseCase.loadLocalMedia(LIBRARY_PAGE_LIMIT)
-                if (localItems.items.isNotEmpty()) {
-                    val filter = filterState.value
-                    itemsState.update {
-                        localItems.items
-                            .filter {
-                                when (filterState.value) {
-                                    null -> true
-                                    LibraryFilter.CUSTOM -> it.availableOn.isEmpty()
-                                    LibraryFilter.PLEX -> it.availableOn.contains(filter?.value)
-                                }
-                            }
-                            .toImmutableList()
-                    }
-
-                    hasMoreData = localItems.hasMoreData
+                val remoteItems = loadLibraryUseCase.loadMedia(
+                    page = page,
+                    limit = LIBRARY_PAGE_LIMIT,
+                    availableOn = filterState.value?.value,
+                )
+                itemsState.update {
+                    remoteItems.items.toImmutableList()
                 }
+
+                hasMoreData = remoteItems.hasMoreData
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     if (!ignoreErrors) {
@@ -95,6 +91,8 @@ internal class AllLibraryViewModel(
                     }
                     Timber.recordError(error)
                 }
+            } finally {
+                loadingState.update { DONE }
             }
         }
     }
@@ -113,8 +111,9 @@ internal class AllLibraryViewModel(
                 loadingMoreState.update { LOADING }
 
                 val nextData = loadLibraryUseCase.loadMedia(
-                    page = pages + 1,
+                    page = page + 1,
                     limit = LIBRARY_PAGE_LIMIT,
+                    availableOn = filterState.value?.value,
                 )
 
                 itemsState.update { items ->
@@ -124,7 +123,7 @@ internal class AllLibraryViewModel(
                         ?.toImmutableList()
                 }
 
-                pages += 1
+                page += 1
                 hasMoreData = nextData.hasMoreData
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -150,13 +149,17 @@ internal class AllLibraryViewModel(
     }
 
     fun setFilter(newFilter: LibraryFilter) {
-        if (loadingState.value.isLoading) {
+        if (loadingState.value.isLoading ||
+            loadingMoreState.value.isLoading
+        ) {
             return
         }
         viewModelScope.launch {
-            when (filterState.value) {
-                newFilter -> filterState.update { null }
-                else -> filterState.update { newFilter }
+            filterState.update {
+                when (it) {
+                    newFilter -> null
+                    else -> newFilter
+                }
             }
             loadData()
         }

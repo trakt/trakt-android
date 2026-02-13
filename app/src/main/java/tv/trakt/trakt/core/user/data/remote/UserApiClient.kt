@@ -188,12 +188,13 @@ internal class UserApiClient(
 
     override suspend fun getLibrary(
         extended: String?,
+        availableOn: String?,
         page: Int,
         limit: Int,
     ): List<SyncLibraryMediaDto> {
         val response = syncApi.getSyncCollectionMedia(
             extended = extended ?: "",
-            availableOn = null,
+            availableOn = availableOn,
             page = page,
             limit = limit,
         )
