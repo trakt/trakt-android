@@ -229,6 +229,7 @@ internal fun ListsPersonalContent(
 
                             state.items?.isEmpty() == true -> {
                                 ContentEmptyList(
+                                    filter = state.filter,
                                     contentPadding = contentPadding,
                                     modifier = Modifier.padding(bottom = 3.75.dp),
                                 )
@@ -281,6 +282,7 @@ private fun ContentLoadingList(
 private fun ContentEmptyList(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues,
+    filter: MediaMode?,
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -294,7 +296,13 @@ private fun ContentEmptyList(
             .height(217.dp),
     ) {
         Text(
-            text = stringResource(R.string.list_placeholder_empty),
+            text = stringResource(
+                when (filter) {
+                    MediaMode.MOVIES -> R.string.list_placeholder_personal_list_empty_movies
+                    MediaMode.SHOWS -> R.string.list_placeholder_personal_list_empty_shows
+                    else -> R.string.list_placeholder_empty
+                },
+            ),
             color = TraktTheme.colors.textSecondary,
             style = TraktTheme.typography.heading6,
             modifier = Modifier
@@ -399,6 +407,7 @@ private fun PreviewEmptyState() {
     TraktTheme {
         ContentEmptyList(
             contentPadding = PaddingValues(16.dp),
+            filter = MediaMode.MEDIA,
         )
     }
 }

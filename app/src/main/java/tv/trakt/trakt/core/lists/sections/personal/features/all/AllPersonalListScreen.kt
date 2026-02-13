@@ -576,16 +576,22 @@ private fun ContentList(
             }
         } else if (listItems.isEmpty()) {
             item {
-                ContentEmpty()
+                ContentEmpty(filter = listFilter)
             }
         }
     }
 }
 
 @Composable
-private fun ContentEmpty() {
+private fun ContentEmpty(filter: MediaMode?) {
     Text(
-        text = stringResource(R.string.list_placeholder_empty),
+        text = stringResource(
+            when (filter) {
+                MediaMode.MOVIES -> R.string.list_placeholder_personal_list_empty_movies
+                MediaMode.SHOWS -> R.string.list_placeholder_personal_list_empty_shows
+                else -> R.string.list_placeholder_empty
+            },
+        ),
         color = TraktTheme.colors.textSecondary,
         style = TraktTheme.typography.heading6,
     )

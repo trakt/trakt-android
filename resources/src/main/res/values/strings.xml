@@ -334,6 +334,8 @@
     <string name="text_time_remaining">%s remaining</string>
     <string name="warning_prompt_stop_watching">Are you sure you want to stop watching \"%s\"?</string>
     <string name="button_text_track">Track</string>
+    <string name="list_placeholder_personal_list_empty_shows">There are no shows in this list yet.</string>
+    <string name="list_placeholder_personal_list_empty_movies">There are no movies in this list yet.</string>
 
     <!--  Non Translatable  -->
 
