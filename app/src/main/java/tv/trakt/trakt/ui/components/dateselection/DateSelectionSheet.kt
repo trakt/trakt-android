@@ -43,6 +43,8 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.core.checkin.data.CheckInManager
+import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
+import tv.trakt.trakt.core.notifications.usecases.EnableNotificationsUseCase
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -74,8 +76,11 @@ internal fun DateSelectionSheet(
     onResult: (result: DateSelectionResult) -> Unit,
     onDismiss: () -> Unit,
 ) {
+    val context = LocalContext.current
     val scope = rememberCoroutineScope()
+
     val checkInManager = koinInject<CheckInManager>()
+    val notificationsUseCase = koinInject<EnableNotificationsUseCase>()
 
     var datePicker by remember { mutableStateOf(false) }
     var timePicker by remember { mutableStateOf<Instant?>(null) }
@@ -124,6 +129,17 @@ internal fun DateSelectionSheet(
                         action = { onResult(UnknownDate) },
                         onDismiss = onDismiss,
                     )
+                },
+                onPermissionGranted = {
+                    scope.launch {
+                        state.hide()
+                        notificationsUseCase.enableNotifications(true)
+                        ScheduleNotificationsWorker.schedule(context.applicationContext)
+                    }.invokeOnCompletion {
+                        if (!state.isVisible) {
+                            onCheckIn()
+                        }
+                    }
                 },
                 modifier = Modifier
                     .padding(bottom = 24.dp)

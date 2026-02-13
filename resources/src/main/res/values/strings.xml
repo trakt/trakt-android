@@ -337,6 +337,9 @@
     <string name="list_placeholder_personal_list_empty_shows">There are no shows in this list yet.</string>
     <string name="list_placeholder_personal_list_empty_movies">There are no movies in this list yet.</string>
 
+    <string name="header_get_notified">Get Notified!</string>
+    <string name="header_notifications_rationale">Enable notifications to stay on top of your media releases and currently watching activity.</string>
+
     <!--  Non Translatable  -->
 
     <string name="translated_value_library_plex" translatable="false">Plex</string>

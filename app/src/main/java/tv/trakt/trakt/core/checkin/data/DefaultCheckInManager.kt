@@ -4,6 +4,7 @@ import android.content.Context
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -85,6 +86,7 @@ internal class DefaultCheckInManager(
             )
             cacheMarkerProvider.invalidate()
 
+            delay(300)
             val watching = userRemoteDataSource.getWatchingNow()
             if (watching == null) {
                 Timber.d("No active watching found after check-in.")
@@ -141,6 +143,7 @@ internal class DefaultCheckInManager(
             checkInRemoteDataSource.postMovieCheckIn(movieId)
             cacheMarkerProvider.invalidate()
 
+            delay(300)
             val watching = userRemoteDataSource.getWatchingNow()
             if (watching == null) {
                 Timber.d("No active watching found after check-in.")
