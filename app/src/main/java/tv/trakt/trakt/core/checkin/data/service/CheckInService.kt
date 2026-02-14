@@ -233,6 +233,23 @@ internal class CheckInService : Service() {
             context: Context,
             data: CheckInServiceData,
         ) {
+            val permission = when {
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
+                    ActivityCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.POST_NOTIFICATIONS,
+                    )
+                }
+                else -> {
+                    true
+                }
+            }
+
+            if (permission != PackageManager.PERMISSION_GRANTED) {
+                Timber.w("Missing POST_NOTIFICATIONS permission, cannot start check-in service")
+                return
+            }
+
             val intent = Intent(context, CheckInService::class.java).apply {
                 putExtra(EXTRA_DATA, data.toBundle())
             }
