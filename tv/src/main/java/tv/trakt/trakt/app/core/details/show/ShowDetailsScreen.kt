@@ -41,6 +41,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -79,6 +81,7 @@ import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.resources.R
 import java.time.ZonedDateTime
 import kotlin.math.roundToInt
@@ -529,14 +532,18 @@ private fun HistoryConfirmationOverlay(
             .fillMaxSize()
             .background(Color.Black.copy(alpha = 0.66F)),
     )
+
     Dialog(onDismissRequest = onDismiss) {
         ConfirmationDialog(
             title = stringResource(R.string.button_text_mark_as_watched),
-            message = stringResource(
-                R.string.warning_prompt_mark_as_watched_show,
-                showTitle,
-                showEpisodes,
+            annotatedMessage = AnnotatedString.fromHtml(
+                stringResource(
+                    R.string.warning_prompt_mark_as_watched_show,
+                    showTitle,
+                    showEpisodes,
+                ),
             ),
+            confirmColor = Red400,
             onConfirm = {
                 onConfirm()
                 onDismiss()

@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.ui.theme.colors.Red400
@@ -45,7 +46,8 @@ internal fun ConfirmationSheet(
     ),
     active: Boolean = false,
     title: String,
-    message: String,
+    message: String? = null,
+    annotatedMessage: AnnotatedString? = null,
     yesText: String = stringResource(R.string.button_text_yes),
     noText: String = stringResource(R.string.button_text_cancel),
     yesColor: Color = TraktTheme.colors.primaryButtonContainer,
@@ -62,6 +64,7 @@ internal fun ConfirmationSheet(
             ConfirmationView(
                 title = title,
                 message = message,
+                annotatedMessage = annotatedMessage,
                 yesColor = yesColor,
                 yesText = yesText,
                 noText = noText,

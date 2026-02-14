@@ -8,7 +8,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -19,7 +22,8 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun ConfirmationView(
     title: String,
-    message: String,
+    message: String? = null,
+    annotatedMessage: AnnotatedString? = null,
     yesColor: Color = TraktTheme.colors.primaryButtonContainer,
     yesText: String = stringResource(R.string.button_text_yes),
     noText: String = stringResource(R.string.button_text_cancel),
@@ -41,8 +45,16 @@ internal fun ConfirmationView(
                 .padding(bottom = 30.dp),
         )
 
-        Text(
-            text = message,
+        annotatedMessage?.let {
+            Text(
+                text = it,
+                style = TraktTheme.typography.paragraph,
+                color = TraktTheme.colors.textPrimary,
+                maxLines = 5,
+                overflow = Ellipsis,
+            )
+        } ?: Text(
+            text = message ?: "",
             style = TraktTheme.typography.paragraph,
             color = TraktTheme.colors.textPrimary,
             maxLines = 5,
@@ -81,9 +93,17 @@ internal fun ConfirmationView(
 @Composable
 private fun Preview() {
     TraktTheme {
+        val res = LocalResources.current
+        val string = res.getString(
+            R.string.warning_prompt_mark_as_watched_show,
+            "Title",
+            12,
+        )
+
         ConfirmationView(
             title = "Delete list",
             message = "This action cannot be undone.",
+            annotatedMessage = AnnotatedString.fromHtml(string),
         )
     }
 }

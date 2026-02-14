@@ -18,6 +18,7 @@ import androidx.compose.ui.focus.FocusRequester.Companion.FocusRequesterFactory.
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,8 +32,10 @@ internal fun ConfirmationDialog(
     modifier: Modifier = Modifier,
     title: String? = null,
     message: String? = null,
+    annotatedMessage: AnnotatedString? = null,
     cancelText: String = stringResource(R.string.button_text_cancel),
     confirmText: String = stringResource(R.string.button_text_yes),
+    confirmColor: Color = TraktTheme.colors.accent,
     onCancel: () -> Unit = {},
     onConfirm: () -> Unit = {},
 ) {
@@ -63,7 +66,15 @@ internal fun ConfirmationDialog(
                 )
             }
 
-            message?.let {
+            annotatedMessage?.let {
+                Text(
+                    text = annotatedMessage,
+                    style = TraktTheme.typography.paragraph,
+                    color = TraktTheme.colors.textPrimary,
+                    maxLines = 5,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            } ?: message?.let {
                 Text(
                     text = message,
                     style = TraktTheme.typography.paragraph,
@@ -94,6 +105,7 @@ internal fun ConfirmationDialog(
 
             PrimaryButton(
                 text = confirmText,
+                containerColor = confirmColor,
                 onClick = onConfirm,
                 modifier = Modifier
                     .weight(2F)

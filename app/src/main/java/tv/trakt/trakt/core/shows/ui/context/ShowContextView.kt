@@ -114,13 +114,13 @@ internal fun ShowContextView(
         },
         onNo = { confirmAddWatchedSheet = false },
         title = stringResource(R.string.button_text_track),
-        message = AnnotatedString.fromHtml(
+        annotatedMessage = AnnotatedString.fromHtml(
             stringResource(
                 R.string.warning_prompt_mark_as_watched_show,
                 show.title,
                 show.airedEpisodes,
             ),
-        ).toString(),
+        ),
         yesColor = Red400,
     )
 

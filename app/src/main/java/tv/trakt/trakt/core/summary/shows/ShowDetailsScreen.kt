@@ -47,6 +47,8 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
@@ -250,10 +252,12 @@ internal fun ShowDetailsScreen(
         },
         onNo = { confirmAddWatchedSheet = false },
         title = stringResource(R.string.button_text_track),
-        message = stringResource(
-            R.string.warning_prompt_mark_as_watched_show,
-            state.show?.title ?: "",
-            state.show?.airedEpisodes ?: 0,
+        annotatedMessage = AnnotatedString.fromHtml(
+            stringResource(
+                R.string.warning_prompt_mark_as_watched_show,
+                state.show?.title ?: "",
+                state.show?.airedEpisodes ?: 0,
+            ),
         ),
         yesColor = Red400,
     )
