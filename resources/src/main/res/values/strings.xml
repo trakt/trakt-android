@@ -269,7 +269,6 @@
     <string name="warning_prompt_drop_show">Are you sure you want to drop \"%s\" show? This will remove it from your Continue Watching list.</string>
     <string name="warning_prompt_log_out">Are you sure you want to log out?</string>
     <string name="warning_prompt_mark_as_watched_multiple_episodes">Are you sure you want to mark %d episodes as watched?</string>
-    <string name="warning_prompt_mark_as_watched_show">Are you sure you want to mark \"%s\" as watched? This will mark all episodes as watched.</string>
     <string name="warning_prompt_remove_from_favorites">Are you sure you want to remove \"%s\" from your Favorites?</string>
     <string name="warning_prompt_remove_from_personal_list">Are you sure you want to remove \"%1$s\" from %2$s?</string>
     <string name="warning_prompt_remove_from_watched">Are you sure you want to remove \"%s\" from your Watched list? All plays will be removed.</string>
@@ -339,6 +338,8 @@
 
     <string name="header_get_notified">Get Notified!</string>
     <string name="header_notifications_rationale">Enable notifications to stay on top of your media releases and currently watching activity.</string>
+
+    <string name="warning_prompt_mark_as_watched_show">Are you sure you want to mark \"%1$s\" as watched?\n\nThis will mark all %2$d episodes as watched.</string>
 
     <!--  Non Translatable  -->
 

@@ -132,6 +132,7 @@ internal fun ShowDetailsScreen(
     if (historyConfirmationDialog) {
         HistoryConfirmationOverlay(
             showTitle = state.showDetails?.title ?: "",
+            showEpisodes = state.showDetails?.airedEpisodes ?: 0,
             onConfirm = { viewModel.toggleHistory() },
             onDismiss = { historyConfirmationDialog = false },
         )
@@ -519,6 +520,7 @@ private fun CommentDetailsOverlay(
 @Composable
 private fun HistoryConfirmationOverlay(
     showTitle: String,
+    showEpisodes: Int,
     onConfirm: () -> Unit = {},
     onDismiss: () -> Unit = {},
 ) {
@@ -530,7 +532,11 @@ private fun HistoryConfirmationOverlay(
     Dialog(onDismissRequest = onDismiss) {
         ConfirmationDialog(
             title = stringResource(R.string.button_text_mark_as_watched),
-            message = stringResource(R.string.warning_prompt_mark_as_watched_show, showTitle),
+            message = stringResource(
+                R.string.warning_prompt_mark_as_watched_show,
+                showTitle,
+                showEpisodes,
+            ),
             onConfirm = {
                 onConfirm()
                 onDismiss()
