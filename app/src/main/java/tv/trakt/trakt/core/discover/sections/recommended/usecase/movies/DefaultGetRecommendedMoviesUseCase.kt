@@ -11,7 +11,6 @@ import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.sections.recommended.data.local.movies.RecommendedMoviesLocalDataSource
 import tv.trakt.trakt.core.discover.sections.recommended.usecase.GetRecommendedMoviesUseCase
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
-import java.time.Instant
 
 internal class DefaultGetRecommendedMoviesUseCase(
     private val remoteSource: MoviesRemoteDataSource,
@@ -42,9 +41,8 @@ internal class DefaultGetRecommendedMoviesUseCase(
             .toImmutableList()
             .also { movies ->
                 if (!skipLocal) {
-                    localRecommendedSource.addMovies(
+                    localRecommendedSource.setMovies(
                         movies = movies.take(DEFAULT_SECTION_LIMIT),
-                        addedAt = Instant.now(),
                     )
                 }
 

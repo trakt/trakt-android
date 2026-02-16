@@ -12,7 +12,6 @@ import tv.trakt.trakt.core.discover.sections.anticipated.data.local.shows.Antici
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedShowsUseCase
 import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
-import java.time.Instant
 
 internal class CustomGetAnticipatedShowsUseCase(
     private val remoteSource: ShowsRemoteDataSource,
@@ -69,9 +68,8 @@ internal class CustomGetAnticipatedShowsUseCase(
             .toImmutableList()
             .also { shows ->
                 if (!skipLocal) {
-                    localAnticipatedSource.addShows(
+                    localAnticipatedSource.setShows(
                         shows = shows.take(DEFAULT_SECTION_LIMIT),
-                        addedAt = Instant.now(),
                     )
                 }
 

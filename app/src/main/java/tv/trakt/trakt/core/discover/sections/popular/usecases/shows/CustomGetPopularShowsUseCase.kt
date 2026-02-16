@@ -12,7 +12,6 @@ import tv.trakt.trakt.core.discover.sections.popular.data.local.shows.PopularSho
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularShowsUseCase
 import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
-import java.time.Instant
 
 internal class CustomGetPopularShowsUseCase(
     private val remoteSource: ShowsRemoteDataSource,
@@ -67,9 +66,8 @@ internal class CustomGetPopularShowsUseCase(
             .toImmutableList()
             .also { shows ->
                 if (!skipLocal) {
-                    localPopularSource.addShows(
+                    localPopularSource.setShows(
                         shows = shows.take(DEFAULT_SECTION_LIMIT),
-                        addedAt = Instant.now(),
                     )
                 }
 

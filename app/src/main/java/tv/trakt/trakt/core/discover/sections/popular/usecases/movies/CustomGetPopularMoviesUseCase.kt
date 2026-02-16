@@ -12,7 +12,6 @@ import tv.trakt.trakt.core.discover.sections.popular.data.local.movies.PopularMo
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularMoviesUseCase
 import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
-import java.time.Instant
 
 internal class CustomGetPopularMoviesUseCase(
     private val remoteSource: MoviesRemoteDataSource,
@@ -68,9 +67,8 @@ internal class CustomGetPopularMoviesUseCase(
             .toImmutableList()
             .also { movies ->
                 if (!skipLocal) {
-                    localPopularSource.addMovies(
+                    localPopularSource.setMovies(
                         movies = movies.take(DEFAULT_SECTION_LIMIT),
-                        addedAt = Instant.now(),
                     )
 
                     localMovieSource.upsertMovies(

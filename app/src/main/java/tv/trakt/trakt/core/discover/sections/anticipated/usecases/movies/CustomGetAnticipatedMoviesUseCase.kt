@@ -4,7 +4,6 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
-import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
@@ -69,9 +68,8 @@ internal class CustomGetAnticipatedMoviesUseCase(
             .toImmutableList()
             .also { movies ->
                 if (!skipLocal) {
-                    localAnticipatedSource.addMovies(
+                    localAnticipatedSource.setMovies(
                         movies = movies.take(DEFAULT_SECTION_LIMIT),
-                        addedAt = nowUtcInstant(),
                     )
                 }
 

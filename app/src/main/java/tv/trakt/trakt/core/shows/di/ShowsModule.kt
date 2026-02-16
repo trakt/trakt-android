@@ -1,5 +1,17 @@
 package tv.trakt.trakt.core.shows.di
 
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
+import androidx.datastore.preferences.SharedPreferencesMigration
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.preferencesDataStoreFile
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -30,6 +42,8 @@ import tv.trakt.trakt.core.shows.data.remote.ShowsApiClient
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.core.shows.ui.context.ShowContextViewModel
 
+private const val SHOWS_PREFERENCES = "shows_preferences"
+
 internal val showsDataModule = module {
     single<ShowsRemoteDataSource> {
         ShowsApiClient(
@@ -46,19 +60,33 @@ internal val showsDataModule = module {
     }
 
     single<TrendingShowsLocalDataSource> {
-        TrendingShowsStorage()
+        TrendingShowsStorage(
+            dataStore = get(named(SHOWS_PREFERENCES)),
+        )
     }
 
     single<RecommendedShowsLocalDataSource> {
-        RecommendedShowsStorage()
+        RecommendedShowsStorage(
+            dataStore = get(named(SHOWS_PREFERENCES)),
+        )
     }
 
     single<PopularShowsLocalDataSource> {
-        PopularShowsStorage()
+        PopularShowsStorage(
+            dataStore = get(named(SHOWS_PREFERENCES)),
+        )
     }
 
     single<AnticipatedShowsLocalDataSource> {
-        AnticipatedShowsStorage()
+        AnticipatedShowsStorage(
+            dataStore = get(named(SHOWS_PREFERENCES)),
+        )
+    }
+
+    single<DataStore<Preferences>>(named(SHOWS_PREFERENCES)) {
+        createStore(
+            context = androidApplication(),
+        )
     }
 }
 
@@ -160,4 +188,15 @@ internal val showsModule = module {
             analytics = get(),
         )
     }
+}
+
+private fun createStore(context: Context): DataStore<Preferences> {
+    return PreferenceDataStoreFactory.create(
+        corruptionHandler = ReplaceFileCorruptionHandler(
+            produceNewData = { emptyPreferences() },
+        ),
+        migrations = listOf(SharedPreferencesMigration(context, SHOWS_PREFERENCES)),
+        scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
+        produceFile = { context.preferencesDataStoreFile(SHOWS_PREFERENCES) },
+    )
 }

@@ -5,7 +5,6 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
-import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.discover.DiscoverConfig
@@ -49,9 +48,8 @@ internal class DefaultGetPopularMoviesUseCase(
             .toImmutableList()
             .also { movies ->
                 if (!skipLocal) {
-                    localPopularSource.addMovies(
+                    localPopularSource.setMovies(
                         movies = movies.take(DiscoverConfig.DEFAULT_SECTION_LIMIT),
-                        addedAt = nowUtcInstant(),
                     )
                 }
 

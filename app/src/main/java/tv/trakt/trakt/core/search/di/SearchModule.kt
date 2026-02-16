@@ -44,12 +44,6 @@ internal val searchDataModule = module {
         )
     }
 
-//    single<RecentSearchLocalDataSource> {
-//        RecentSearchStorage(
-//            dataStore = get(named(SEARCH_PREFERENCES)),
-//        )
-//    }
-
     single<PopularSearchLocalDataSource> {
         PopularSearchStorage(
             dataStore = get(named(SEARCH_PREFERENCES)),

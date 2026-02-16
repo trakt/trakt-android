@@ -12,7 +12,6 @@ import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.sections.anticipated.data.local.shows.AnticipatedShowsLocalDataSource
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedShowsUseCase
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
-import java.time.Instant
 import java.time.temporal.ChronoUnit.DAYS
 
 internal class DefaultGetAnticipatedShowsUseCase(
@@ -50,9 +49,8 @@ internal class DefaultGetAnticipatedShowsUseCase(
             .toImmutableList()
             .also { shows ->
                 if (!skipLocal) {
-                    localAnticipatedSource.addShows(
+                    localAnticipatedSource.setShows(
                         shows = shows.take(DEFAULT_SECTION_LIMIT),
-                        addedAt = Instant.now(),
                     )
                 }
 

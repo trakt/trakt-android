@@ -1,5 +1,16 @@
 package tv.trakt.trakt.core.movies.di
 
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
+import androidx.datastore.preferences.SharedPreferencesMigration
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.preferencesDataStoreFile
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -29,6 +40,8 @@ import tv.trakt.trakt.core.movies.data.remote.MoviesApiClient
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
 import tv.trakt.trakt.core.movies.ui.context.MovieContextViewModel
 
+private const val MOVIES_PREFERENCES = "movies_preferences"
+
 internal val moviesDataModule = module {
 
     single<MoviesRemoteDataSource> {
@@ -39,19 +52,33 @@ internal val moviesDataModule = module {
     }
 
     single<PopularMoviesLocalDataSource> {
-        PopularMoviesStorage()
+        PopularMoviesStorage(
+            dataStore = get(named(MOVIES_PREFERENCES)),
+        )
     }
 
     single<RecommendedMoviesLocalDataSource> {
-        RecommendedMoviesStorage()
+        RecommendedMoviesStorage(
+            dataStore = get(named(MOVIES_PREFERENCES)),
+        )
     }
 
     single<AnticipatedMoviesLocalDataSource> {
-        AnticipatedMoviesStorage()
+        AnticipatedMoviesStorage(
+            dataStore = get(named(MOVIES_PREFERENCES)),
+        )
     }
 
     single<TrendingMoviesLocalDataSource> {
-        TrendingMoviesStorage()
+        TrendingMoviesStorage(
+            dataStore = get(named(MOVIES_PREFERENCES)),
+        )
+    }
+
+    single<DataStore<Preferences>>(named(MOVIES_PREFERENCES)) {
+        createStore(
+            context = androidApplication(),
+        )
     }
 }
 
@@ -155,4 +182,15 @@ internal val moviesModule = module {
             analytics = get(),
         )
     }
+}
+
+private fun createStore(context: Context): DataStore<Preferences> {
+    return PreferenceDataStoreFactory.create(
+        corruptionHandler = ReplaceFileCorruptionHandler(
+            produceNewData = { emptyPreferences() },
+        ),
+        migrations = listOf(SharedPreferencesMigration(context, MOVIES_PREFERENCES)),
+        scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
+        produceFile = { context.preferencesDataStoreFile(MOVIES_PREFERENCES) },
+    )
 }

@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.discover.model
 
 import androidx.compose.runtime.Immutable
+import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
@@ -9,20 +10,23 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.resources.R
 
 @Immutable
-internal sealed class DiscoverItem(
-    open val count: Int,
-) {
+@Serializable
+internal sealed class DiscoverItem {
+    abstract val count: Int
+
     @Immutable
+    @Serializable
     internal data class MovieItem(
         val movie: Movie,
         override val count: Int = 0,
-    ) : DiscoverItem(count)
+    ) : DiscoverItem()
 
     @Immutable
+    @Serializable
     internal data class ShowItem(
         val show: Show,
         override val count: Int = 0,
-    ) : DiscoverItem(count)
+    ) : DiscoverItem()
 
     val type: MediaType
         get() = when (this) {

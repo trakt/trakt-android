@@ -12,7 +12,6 @@ import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.sections.popular.data.local.shows.PopularShowsLocalDataSource
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularShowsUseCase
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
-import java.time.Instant
 import java.time.Year
 
 internal class DefaultGetPopularShowsUseCase(
@@ -49,9 +48,8 @@ internal class DefaultGetPopularShowsUseCase(
             .toImmutableList()
             .also { shows ->
                 if (!skipLocal) {
-                    localPopularSource.addShows(
+                    localPopularSource.setShows(
                         shows = shows.take(DiscoverConfig.DEFAULT_SECTION_LIMIT),
-                        addedAt = Instant.now(),
                     )
                 }
 
