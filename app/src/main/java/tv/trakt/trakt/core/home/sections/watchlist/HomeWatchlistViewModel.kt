@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -99,6 +100,7 @@ internal class HomeWatchlistViewModel(
 
     init {
         loadData()
+
         observeMode()
         observeUser()
         observeData()
@@ -132,7 +134,9 @@ internal class HomeWatchlistViewModel(
     private fun observeData() {
         merge(
             userWatchlistSource.observeUpdates(),
-            checkInUpdates.observeUpdates().filterNot { it.first == Source.HomeWatchlist },
+            checkInUpdates.observeUpdates()
+                .filterNot { it.first == Source.HomeWatchlist }
+                .takeWhile { dataJob == null },
         )
             .distinctUntilChanged()
             .debounce(200)
@@ -193,10 +197,9 @@ internal class HomeWatchlistViewModel(
                     val showsAsync = async { getShowsUseCase.getWatchlist(HOME_WATCHLIST_LIMIT) }
                     val moviesAsync = async { getMoviesUseCase.getWatchlist(HOME_WATCHLIST_LIMIT) }
 
-                    val items = showsAsync.await() + moviesAsync.await()
-
                     itemsState.update {
-                        items
+                        awaitAll(showsAsync, moviesAsync)
+                            .flatten()
                             .filter {
                                 when (filterState.value) {
                                     MediaMode.SHOWS -> it is ShowItem
