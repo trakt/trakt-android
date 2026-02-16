@@ -32,12 +32,14 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.WhatsNew
 import tv.trakt.trakt.core.auth.usecase.AuthorizeUserUseCase
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source
 import tv.trakt.trakt.core.checkin.model.CheckInState
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
+import tv.trakt.trakt.core.main.usecases.LoadWhatsNewUseCase
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
 import tv.trakt.trakt.core.user.usecases.LoadUserProfileUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
@@ -54,6 +56,7 @@ internal class MainViewModel(
     private val checkInManager: CheckInManager,
     private val authorizePreferences: DataStore<Preferences>,
     private val authorizeUseCase: AuthorizeUserUseCase,
+    private val loadWhatsNewUseCase: LoadWhatsNewUseCase,
     private val getUserUseCase: LoadUserProfileUseCase,
     private val logoutUserUseCase: LogoutUserUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
@@ -69,11 +72,13 @@ internal class MainViewModel(
     private val checkInState = MutableStateFlow(initialState.checkIn)
     private val loadingUserState = MutableStateFlow(initialState.loadingUser)
     private val welcomeState = MutableStateFlow(initialState.welcome)
+    private val whatsNewState = MutableStateFlow(initialState.whatsNew)
 
     private var lastLoadTime: Instant? = null
 
     init {
         loadWelcome()
+        loadWhatsNew()
         loadUser()
 
         observeUser()
@@ -128,7 +133,6 @@ internal class MainViewModel(
             .debounce(200)
             .onEach { state ->
                 checkInState.update { state }
-                Timber.d("Observed check-in change: $state")
             }
             .launchIn(viewModelScope)
     }
@@ -151,6 +155,20 @@ internal class MainViewModel(
                     welcome = !authenticated && !welcomeDismissed,
                     onboarding = !authenticated && !onboardingDismissed,
                 )
+            }
+        }
+    }
+
+    private fun loadWhatsNew() {
+        viewModelScope.launch {
+            try {
+                whatsNewState.update {
+                    loadWhatsNewUseCase.getWhatsNew()
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
             }
         }
     }
@@ -268,6 +286,19 @@ internal class MainViewModel(
         }
     }
 
+    fun dismissWhatsNew(id: Int) {
+        viewModelScope.launch {
+            try {
+                loadWhatsNewUseCase.dismissWhatsNew(id)
+                whatsNewState.update { null }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
     private fun dismissOnboarding() {
         viewModelScope.launch {
             welcomeState.update { it.copy(onboarding = false) }
@@ -281,6 +312,7 @@ internal class MainViewModel(
         checkInState,
         loadingUserState,
         welcomeState,
+        whatsNewState,
     ) { state ->
         MainState(
             user = state[0] as User?,
@@ -288,6 +320,7 @@ internal class MainViewModel(
             checkIn = state[2] as CheckInState?,
             loadingUser = state[3] as LoadingState,
             welcome = state[4] as MainState.WelcomeState,
+            whatsNew = state[5] as WhatsNew?,
         )
     }.stateIn(
         scope = viewModelScope,

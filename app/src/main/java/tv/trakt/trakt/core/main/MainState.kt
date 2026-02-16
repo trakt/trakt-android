@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.main
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.WhatsNew
 import tv.trakt.trakt.core.checkin.model.CheckInState
 
 @Immutable
@@ -12,6 +13,7 @@ internal data class MainState(
     val checkIn: CheckInState? = null,
     val loadingUser: LoadingState = LoadingState.IDLE,
     val welcome: WelcomeState = WelcomeState(),
+    val whatsNew: WhatsNew? = null,
 ) {
     @Immutable
     data class WelcomeState(

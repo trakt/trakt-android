@@ -37,10 +37,12 @@ import tv.trakt.trakt.core.main.helpers.DefaultMediaModeManager
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
+import tv.trakt.trakt.core.main.usecases.LoadWhatsNewUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.DefaultCollapsingManager
 
 internal const val MAIN_PREFERENCES = "main_preferences"
+internal const val WHATS_NEW_PREFERENCES = "whats_new_preferences"
 internal const val COLLAPSING_PREFERENCES = "collapsing_preferences"
 
 internal val mainModule = module {
@@ -55,6 +57,13 @@ internal val mainModule = module {
         createStore(
             context = androidApplication(),
             file = COLLAPSING_PREFERENCES,
+        )
+    }
+
+    single<DataStore<Preferences>>(named(WHATS_NEW_PREFERENCES)) {
+        createStore(
+            context = androidApplication(),
+            file = WHATS_NEW_PREFERENCES,
         )
     }
 
@@ -116,6 +125,7 @@ internal val mainModule = module {
             getUserUseCase = get(),
             logoutUserUseCase = get(),
             dismissWelcomeUseCase = get(),
+            loadWhatsNewUseCase = get(),
             analytics = get(),
         )
     }
@@ -123,6 +133,12 @@ internal val mainModule = module {
     factory {
         DismissWelcomeUseCase(
             mainDataStore = get(named(MAIN_PREFERENCES)),
+        )
+    }
+
+    factory {
+        LoadWhatsNewUseCase(
+            dataStore = get(named(WHATS_NEW_PREFERENCES)),
         )
     }
 

@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package tv.trakt.trakt.core.main
 
 import android.app.Activity
@@ -17,7 +19,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,6 +27,7 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.SnackbarDuration
@@ -49,15 +51,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle.Event.ON_RESUME
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.jakewharton.processphoenix.ProcessPhoenix
 import kotlinx.serialization.json.Json
@@ -71,48 +70,33 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.MediaType.EPISODE
 import tv.trakt.trakt.common.model.MediaType.MOVIE
+import tv.trakt.trakt.common.model.WhatsNew
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveEpisode
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveMovie
-import tv.trakt.trakt.core.checkin.model.expiresAt
-import tv.trakt.trakt.core.checkin.model.image
-import tv.trakt.trakt.core.checkin.model.startedAt
-import tv.trakt.trakt.core.checkin.model.title
-import tv.trakt.trakt.core.checkin.ui.CheckInView
 import tv.trakt.trakt.core.discover.navigation.navigateToDiscover
 import tv.trakt.trakt.core.home.navigation.HomeDestination
 import tv.trakt.trakt.core.lists.navigation.ListsDestination
 import tv.trakt.trakt.core.lists.navigation.navigateToLists
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.navigateToWatchlist
-import tv.trakt.trakt.core.main.navigation.billingScreens
-import tv.trakt.trakt.core.main.navigation.calendarScreens
-import tv.trakt.trakt.core.main.navigation.commentsScreens
-import tv.trakt.trakt.core.main.navigation.discoverScreens
-import tv.trakt.trakt.core.main.navigation.episodesScreens
-import tv.trakt.trakt.core.main.navigation.homeScreens
+import tv.trakt.trakt.core.main.navigation.MainNavHost
 import tv.trakt.trakt.core.main.navigation.isMainDestination
 import tv.trakt.trakt.core.main.navigation.isStartDestination
-import tv.trakt.trakt.core.main.navigation.listsScreens
-import tv.trakt.trakt.core.main.navigation.moviesScreens
 import tv.trakt.trakt.core.main.navigation.navigateToMainDestination
-import tv.trakt.trakt.core.main.navigation.peopleScreens
-import tv.trakt.trakt.core.main.navigation.profileScreens
-import tv.trakt.trakt.core.main.navigation.searchScreens
-import tv.trakt.trakt.core.main.navigation.settingsScreens
-import tv.trakt.trakt.core.main.navigation.showsScreens
+import tv.trakt.trakt.core.main.ui.checkin.MainCheckInView
 import tv.trakt.trakt.core.main.ui.menubar.TraktMenuBar
 import tv.trakt.trakt.core.notifications.data.work.INTENT_NOTIFICATION_EXTRAS
 import tv.trakt.trakt.core.notifications.model.NotificationIntentExtras
 import tv.trakt.trakt.core.profile.navigation.ProfileDestination
 import tv.trakt.trakt.core.profile.navigation.navigateToProfile
-import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.navigateToSearch
 import tv.trakt.trakt.core.summary.episodes.navigation.navigateToEpisode
 import tv.trakt.trakt.core.summary.movies.navigation.navigateToMovie
 import tv.trakt.trakt.core.welcome.WelcomeScreen
 import tv.trakt.trakt.core.welcome.onboarding.OnboardingScreen
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.whatsnew.WhatsNewSheet
 import tv.trakt.trakt.ui.snackbar.MainSnackbarHost
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -138,9 +122,8 @@ internal fun MainScreen(
         .currentBackStackEntryFlow
         .collectAsStateWithLifecycle(initialValue = null)
 
-    val searchState = rememberSearchState(
-        currentDestination = currentDestination.value?.destination,
-    )
+    val searchState = rememberSearchState(currentDestination.value?.destination)
+    var whatsNewState by remember { mutableStateOf<WhatsNew?>(null) }
 
     val customThemeConfig = remember {
         (localActivity as? MainActivity)?.customThemeConfig
@@ -181,6 +164,10 @@ internal fun MainScreen(
         }
     }
 
+    LaunchedEffect(state.whatsNew) {
+        whatsNewState = state.whatsNew
+    }
+
     LaunchedEffect(intent, newIntent?.value) {
         handleShortcutIntent(
             intent = intent,
@@ -193,6 +180,16 @@ internal fun MainScreen(
             navController = navController,
         )
     }
+
+    WhatsNewSheet(
+        data = whatsNewState,
+        onDismiss = {
+            whatsNewState?.id?.let { id ->
+                viewModel.dismissWhatsNew(id)
+                whatsNewState = null
+            }
+        },
+    )
 
     Box(
         modifier = modifier.fillMaxSize(),
@@ -252,7 +249,7 @@ internal fun MainScreen(
                                 .fillMaxWidth(TraktTheme.size.navigationBarRatio)
                                 .background(bottomGradient),
                         ) {
-                            CheckInView(
+                            MainCheckInView(
                                 state = state,
                                 onMediaClick = {
                                     when (val it = state.checkIn) {
@@ -389,91 +386,6 @@ internal fun MainScreen(
         }
 
         navController.popBackStack()
-    }
-}
-
-@Composable
-private fun ColumnScope.CheckInView(
-    state: MainState,
-    onMediaClick: () -> Unit = {},
-    onDismiss: () -> Unit = {},
-) {
-    val localCheckInVisibility = LocalCheckInVisibility.current
-
-    var isExpired by remember(state.checkIn) {
-        mutableStateOf(false)
-    }
-
-    val isVisible = remember(state.checkIn, isExpired) {
-        state.checkIn?.isActive() == true && !isExpired
-    }
-
-    AnimatedVisibility(
-        visible = isVisible && localCheckInVisibility.value,
-        enter = fadeIn(tween(250)) + slideInVertically(initialOffsetY = { it / 10 }),
-        exit = fadeOut(tween(100)),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace - 8.dp),
-    ) {
-        CheckInView(
-            title = state.checkIn?.title,
-            subtitle = when (state.checkIn) {
-                is ActiveMovie -> stringResource(R.string.translated_value_type_movie)
-                is ActiveEpisode -> state.checkIn.episode.seasonEpisodeString()
-                else -> null
-            },
-            image = state.checkIn?.image,
-            startedAt = state.checkIn?.startedAt,
-            expiresAt = state.checkIn?.expiresAt,
-            onMediaClick = onMediaClick,
-            onExpire = {
-                isExpired = true
-            },
-            onDismiss = onDismiss,
-        )
-    }
-}
-
-@Composable
-private fun MainNavHost(
-    navController: NavHostController,
-    customThemeEnabled: Boolean,
-    userLoading: Boolean,
-    searchInput: SearchInput,
-    onSearchLoading: (Boolean) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    NavHost(
-        startDestination = HomeDestination,
-        navController = navController,
-        modifier = modifier,
-        enterTransition = { fadeIn(animationSpec = tween(250)) },
-        exitTransition = { fadeOut(animationSpec = tween(250)) },
-    ) {
-        homeScreens(
-            controller = navController,
-            userLoading = userLoading,
-        )
-        calendarScreens(navController)
-        discoverScreens(
-            controller = navController,
-            customThemeEnabled = customThemeEnabled,
-        )
-        showsScreens(navController)
-        moviesScreens(navController)
-        episodesScreens(navController)
-        listsScreens(navController)
-        profileScreens(navController)
-        commentsScreens(navController)
-        peopleScreens(navController)
-        searchScreens(
-            controller = navController,
-            searchInput = searchInput,
-            onSearchLoading = onSearchLoading,
-        )
-        settingsScreens(navController)
-        billingScreens(navController)
     }
 }
 
