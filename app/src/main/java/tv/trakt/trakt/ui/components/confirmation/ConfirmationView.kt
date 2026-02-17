@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
+import tv.trakt.trakt.ui.components.buttons.PrimaryHoldButton
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -24,6 +25,7 @@ internal fun ConfirmationView(
     title: String,
     message: String? = null,
     annotatedMessage: AnnotatedString? = null,
+    holdToYes: Boolean = false,
     yesColor: Color = TraktTheme.colors.primaryButtonContainer,
     yesText: String = stringResource(R.string.button_text_yes),
     noText: String = stringResource(R.string.button_text_cancel),
@@ -67,12 +69,21 @@ internal fun ConfirmationView(
                 .fillMaxWidth()
                 .padding(top = 34.dp),
         ) {
-            PrimaryButton(
-                text = yesText,
-                onClick = onYes,
-                containerColor = yesColor,
-                modifier = Modifier.fillMaxWidth(),
-            )
+            if (holdToYes) {
+                PrimaryHoldButton(
+                    text = yesText,
+                    onClick = onYes,
+                    containerColor = yesColor,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            } else {
+                PrimaryButton(
+                    text = yesText,
+                    onClick = onYes,
+                    containerColor = yesColor,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
 
             PrimaryButton(
                 text = noText,
@@ -104,6 +115,7 @@ private fun Preview() {
             title = "Delete list",
             message = "This action cannot be undone.",
             annotatedMessage = AnnotatedString.fromHtml(string),
+            holdToYes = true,
         )
     }
 }

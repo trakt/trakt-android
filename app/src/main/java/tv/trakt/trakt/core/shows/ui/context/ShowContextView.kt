@@ -40,7 +40,6 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.core.shows.ui.ShowMetaFooter
 import tv.trakt.trakt.resources.R
@@ -113,7 +112,7 @@ internal fun ShowContextView(
             dateSheet = true
         },
         onNo = { confirmAddWatchedSheet = false },
-        title = stringResource(R.string.button_text_track),
+        title = stringResource(R.string.button_text_mark_as_watched),
         annotatedMessage = AnnotatedString.fromHtml(
             stringResource(
                 R.string.warning_prompt_mark_as_watched_show,
@@ -121,7 +120,8 @@ internal fun ShowContextView(
                 show.airedEpisodes,
             ),
         ),
-        yesColor = Red400,
+        holdToYes = true,
+        yesText = stringResource(R.string.button_text_hold_to_confirm),
     )
 
     RemoveConfirmationSheet(
@@ -296,6 +296,7 @@ private fun ShowActionButtons(
     device = "id:pixel_5",
     showBackground = true,
     backgroundColor = 0xFF212427,
+    locale = "en",
 )
 @Composable
 private fun Preview() {

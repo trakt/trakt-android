@@ -40,7 +40,6 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.core.shows.ui.ShowMetaFooter
 import tv.trakt.trakt.resources.R
@@ -127,7 +126,8 @@ internal fun WatchlistShowContextView(
                 show.airedEpisodes,
             ),
         ),
-        yesColor = Red400,
+        holdToYes = true,
+        yesText = stringResource(R.string.button_text_hold_to_confirm),
     )
 
     DateSelectionSheet(

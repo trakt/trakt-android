@@ -73,7 +73,6 @@ import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.ratings.UserRating
-import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.summary.shows.features.actors.ShowActorsView
@@ -259,7 +258,8 @@ internal fun ShowDetailsScreen(
                 state.show?.airedEpisodes ?: 0,
             ),
         ),
-        yesColor = Red400,
+        holdToYes = true,
+        yesText = stringResource(R.string.button_text_hold_to_confirm),
     )
 
     RemoveConfirmationSheet(
