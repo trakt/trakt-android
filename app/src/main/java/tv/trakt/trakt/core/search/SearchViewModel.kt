@@ -32,6 +32,7 @@ import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.people.data.local.PeopleLocalDataSource
 import tv.trakt.trakt.core.search.SearchState.SearchResult
 import tv.trakt.trakt.core.search.SearchState.UserState
+import tv.trakt.trakt.core.search.model.SearchFilter.LISTS
 import tv.trakt.trakt.core.search.model.SearchFilter.MEDIA
 import tv.trakt.trakt.core.search.model.SearchFilter.MOVIES
 import tv.trakt.trakt.core.search.model.SearchFilter.PEOPLE
@@ -340,6 +341,7 @@ internal class SearchViewModel(
                     SHOWS -> getSearchResultsUseCase.getShowsSearchResults(query)
                     MOVIES -> getSearchResultsUseCase.getMoviesSearchResults(query)
                     PEOPLE -> getSearchResultsUseCase.getPeopleSearchResults(query)
+                    LISTS -> TODO()
                 }
 
                 searchResultState.update {

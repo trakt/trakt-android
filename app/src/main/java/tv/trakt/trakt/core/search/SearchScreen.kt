@@ -43,6 +43,7 @@ import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
+import tv.trakt.trakt.core.search.model.SearchFilter.LISTS
 import tv.trakt.trakt.core.search.model.SearchFilter.MEDIA
 import tv.trakt.trakt.core.search.model.SearchFilter.MOVIES
 import tv.trakt.trakt.core.search.model.SearchFilter.PEOPLE
@@ -266,6 +267,7 @@ private fun LazyGridScope.topSearchesContent(
             title = when (state.input.filter) {
                 MEDIA, SHOWS, MOVIES -> stringResource(R.string.list_title_most_popular_searches)
                 PEOPLE -> stringResource(R.string.list_title_birthdays_this_month)
+                LISTS -> stringResource(R.string.list_title_popular_lists)
             },
             modifier = Modifier
                 .padding(top = topPadding)

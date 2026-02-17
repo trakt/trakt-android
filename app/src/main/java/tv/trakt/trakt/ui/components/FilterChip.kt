@@ -32,9 +32,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -168,7 +168,7 @@ internal fun FilterChipSkeleton(modifier: Modifier = Modifier) {
     )
 }
 
-@Preview
+@DevicePreview
 @Composable
 private fun Preview() {
     TraktTheme {
@@ -187,7 +187,7 @@ private fun Preview() {
     }
 }
 
-@Preview
+@DevicePreview
 @Composable
 private fun Preview2() {
     TraktTheme {
@@ -206,7 +206,7 @@ private fun Preview2() {
     }
 }
 
-@Preview
+@DevicePreview
 @Composable
 private fun Preview3() {
     TraktTheme {
@@ -226,7 +226,7 @@ private fun Preview3() {
     }
 }
 
-@Preview
+@DevicePreview
 @Composable
 private fun SkeletonPreview() {
     TraktTheme {

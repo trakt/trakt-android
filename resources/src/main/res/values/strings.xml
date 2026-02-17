@@ -340,6 +340,8 @@
     <string name="header_notifications_rationale">Enable notifications to stay on top of your media releases and current watching activity.</string>
 
     <string name="warning_prompt_mark_as_watched_show"><![CDATA[Are you sure you want to mark \"%1$s\" as watched?<br\><br\>This will mark <b>all %2$d episodes</b> as watched.]]></string>
+    <string name="button_text_toggle_search_lists">Lists</string>
+    <string name="input_placeholder_search_lists">Search lists…</string>
 
     <!--  Non Translatable  -->
 
