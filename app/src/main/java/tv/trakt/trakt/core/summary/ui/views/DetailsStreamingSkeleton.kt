@@ -41,7 +41,7 @@ internal fun DetailsStreamingSkeleton() {
 
     Box(
         modifier = Modifier
-            .height(73.dp)
+            .height(86.dp)
             .width(110.dp)
             .clip(RoundedCornerShape(16.dp))
             .background(shimmerTransition),

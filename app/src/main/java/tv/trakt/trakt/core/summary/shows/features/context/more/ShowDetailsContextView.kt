@@ -280,6 +280,7 @@ private fun ActionButtons(
     device = "id:pixel_5",
     showBackground = true,
     backgroundColor = 0xFF212427,
+    locale = "en",
 )
 @Composable
 private fun Preview() {
