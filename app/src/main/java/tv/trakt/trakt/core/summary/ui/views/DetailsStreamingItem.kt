@@ -18,8 +18,10 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -30,6 +32,7 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
+import coil3.request.ImageRequest
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.StreamingType
@@ -43,10 +46,14 @@ internal fun DetailsStreamingItem(
     type: StreamingType,
     onClick: ((StreamingService) -> Unit)?,
 ) {
+    val itemHeight = 86.dp
+    val contentHeight = 52.dp
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = spacedBy(4.dp, CenterVertically),
         modifier = Modifier
+            .height(itemHeight)
             .background(TraktTheme.colors.commentContainer, RoundedCornerShape(16.dp))
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .onClick(
@@ -62,26 +69,64 @@ internal fun DetailsStreamingItem(
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .height(40.dp)
+                    .height(contentHeight)
                     .wrapContentHeight(align = CenterVertically),
             )
         } else {
-            AsyncImage(
-                model = "https://${service.logo}",
-                contentDescription = null,
-                contentScale = ContentScale.FillHeight,
-                colorFilter = remember(service.color) {
-                    ColorFilter.tint(
-                        when {
-                            service.color == Color.Black -> Color.White
-                            service.color != null -> service.color!!
-                            else -> Color.White
-                        },
-                    )
-                },
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = spacedBy(0.dp, CenterVertically),
                 modifier = Modifier
-                    .height(40.dp),
-            )
+                    .height(contentHeight),
+            ) {
+                val withChannel = remember(service, type) {
+                    !service.channel.isNullOrBlank() && type != StreamingType.FREE
+                }
+                val logoUrl = "https://${service.logo}"
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(logoUrl)
+                        .memoryCacheKey(logoUrl)
+                        .placeholderMemoryCacheKey(logoUrl)
+                        .build(),
+                    contentDescription = null,
+                    contentScale = ContentScale.FillHeight,
+                    colorFilter = remember(service.color) {
+                        ColorFilter.tint(
+                            when {
+                                service.color == Color.Black -> Color.White
+                                service.color != null -> service.color!!
+                                else -> Color.White
+                            },
+                        )
+                    },
+                    modifier = Modifier.height(
+                        when {
+                            withChannel -> 34.dp
+                            else -> 40.dp
+                        },
+                    ),
+                )
+
+                if (withChannel) {
+                    val logoUrl = "https://${service.channel}"
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(logoUrl)
+                            .memoryCacheKey(logoUrl)
+                            .placeholderMemoryCacheKey(logoUrl)
+                            .build(),
+                        contentDescription = null,
+                        contentScale = ContentScale.FillHeight,
+                        colorFilter = ColorFilter.tint(Color.White),
+                        modifier = Modifier
+                            .height(20.dp)
+                            .graphicsLayer {
+                                translationY = -3.dp.toPx()
+                            },
+                    )
+                }
+            }
         }
 
         Row(
@@ -124,6 +169,8 @@ internal fun DetailsStreamingItem(
     device = "id:pixel_5",
     showBackground = true,
     backgroundColor = 0xFF131517,
+    locale = "en",
+    widthDp = 200,
 )
 @Composable
 private fun Preview() {
@@ -136,7 +183,7 @@ private fun Preview() {
                 service = StreamingService(
                     source = "Hello",
                     name = "Hello",
-                    logo = null,
+                    logo = "test",
                     channel = "Hello",
                     linkDirect = "Hello",
                     uhd = false,

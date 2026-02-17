@@ -52,7 +52,7 @@ import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.StreamingType
 import tv.trakt.trakt.core.streamings.model.StreamingsResult
 import tv.trakt.trakt.core.streamings.ui.JustWatchRanksStrip
-import tv.trakt.trakt.core.summary.ui.views.DetailsStreamingItem2
+import tv.trakt.trakt.core.summary.ui.views.DetailsStreamingItem
 import tv.trakt.trakt.core.summary.ui.views.DetailsStreamingSkeleton
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
@@ -176,7 +176,7 @@ private fun ContentList(
             items = listItems,
             key = { "${it.second.type}_${it.first.source}_${it.first.channel}" },
         ) { (service, type) ->
-            DetailsStreamingItem2(
+            DetailsStreamingItem(
                 service = service,
                 type = type,
                 onClick = onClick,
