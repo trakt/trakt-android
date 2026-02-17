@@ -148,6 +148,10 @@ internal class SearchApiClient(
         return response.body()
     }
 
+    override suspend fun getPopularLists(limit: Int): List<TrendingSearchDto> {
+        return emptyList()
+    }
+
     override suspend fun postShowUserSearch(
         showId: TraktId,
         query: String,

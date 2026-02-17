@@ -24,7 +24,7 @@ internal fun SearchFiltersList(
     onFilterClick: (SearchFilter) -> Unit = {},
 ) {
     FilterChipGroup(
-        horizontalArrangement = spacedBy(7.dp, CenterHorizontally),
+        horizontalArrangement = spacedBy(6.dp, CenterHorizontally),
         paddingHorizontal = PaddingValues.Zero,
         paddingVertical = PaddingValues.Zero,
         modifier = modifier,
@@ -42,7 +42,9 @@ internal fun SearchFiltersList(
                         contentDescription = null,
                         tint = TraktTheme.colors.textPrimary,
                         modifier = Modifier
-                            .padding(horizontal = 3.dp)
+                            .padding(
+                                horizontal = if (isSelected) 0.dp else 4.dp,
+                            )
                             .size(16.dp),
                     )
                 },

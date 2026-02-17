@@ -210,24 +210,31 @@ internal class SearchViewModel(
             popularLoadingState.update { LoadingState.LOADING }
 
             val showsAsync = async {
-                if (!getPopularSearchesUseCase.isLocalShowsValid()) {
-                    getPopularSearchesUseCase.getShows()
-                } else {
+                if (getPopularSearchesUseCase.isLocalShowsValid()) {
                     getPopularSearchesUseCase.getLocalShows()
+                } else {
+                    getPopularSearchesUseCase.getShows()
                 }
             }
             val moviesAsync = async {
-                if (!getPopularSearchesUseCase.isLocalMoviesValid()) {
-                    getPopularSearchesUseCase.getMovies()
-                } else {
+                if (getPopularSearchesUseCase.isLocalMoviesValid()) {
                     getPopularSearchesUseCase.getLocalMovies()
+                } else {
+                    getPopularSearchesUseCase.getMovies()
                 }
             }
             val peopleAsync = async {
-                if (!getBirthdayPeopleUseCase.isLocalPeopleValid()) {
-                    getBirthdayPeopleUseCase.getPeople()
-                } else {
+                if (getBirthdayPeopleUseCase.isLocalPeopleValid()) {
                     getBirthdayPeopleUseCase.getLocalPeople()
+                } else {
+                    getBirthdayPeopleUseCase.getPeople()
+                }
+            }
+            val listsAsync = async {
+                if (getPopularSearchesUseCase.isLocalListsValid()) {
+                    getPopularSearchesUseCase.getLocalLists()
+                } else {
+                    getPopularSearchesUseCase.getLists()
                 }
             }
 
@@ -244,8 +251,24 @@ internal class SearchViewModel(
                 in arrayOf(PEOPLE) -> peopleAsync.await()
                 else -> emptyList()
             }
+            val lists = when (filter) {
+                in arrayOf(LISTS) -> listsAsync.await()
+                else -> emptyList()
+            }
 
             val results = when (filter) {
+                LISTS -> {
+                    SearchResult(
+                        items = lists
+                            .asyncMap {
+                                SearchItem.List(
+                                    rank = 0L,
+                                    list = it.list,
+                                )
+                            }
+                            .toImmutableList(),
+                    )
+                }
                 PEOPLE -> {
                     SearchResult(
                         items = people
@@ -259,7 +282,6 @@ internal class SearchViewModel(
                             .toImmutableList(),
                     )
                 }
-
                 else -> {
                     SearchResult(
                         items = buildList {

@@ -4,10 +4,12 @@ import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
+import tv.trakt.trakt.common.helpers.serializers.ZonedDateTimeSerializer
 import tv.trakt.trakt.common.networking.ListDto
 import java.time.ZonedDateTime
 
 @Immutable
+@Serializable
 data class CustomList(
     val ids: Ids,
     val name: String,
@@ -19,7 +21,9 @@ data class CustomList(
     val allowComments: Boolean?,
 //    val sortType: SortType?,
 //    val sortOrder: SortOrder?,
+    @Serializable(ZonedDateTimeSerializer::class)
     val createdAt: ZonedDateTime,
+    @Serializable(ZonedDateTimeSerializer::class)
     val updatedAt: ZonedDateTime,
     val likes: Int?,
     val images: Images?,

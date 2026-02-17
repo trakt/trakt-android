@@ -36,6 +36,8 @@ internal interface SearchRemoteDataSource {
 
     suspend fun getPopularMovies(limit: Int): List<TrendingSearchDto>
 
+    suspend fun getPopularLists(limit: Int): List<TrendingSearchDto>
+
     suspend fun postShowUserSearch(
         showId: TraktId,
         query: String,

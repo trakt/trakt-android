@@ -3,9 +3,11 @@ package tv.trakt.trakt.core.search.usecase.popular
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.toInstant
+import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.core.search.data.local.model.PopularListEntity
 import tv.trakt.trakt.core.search.data.local.model.PopularMovieEntity
 import tv.trakt.trakt.core.search.data.local.model.PopularShowEntity
 import tv.trakt.trakt.core.search.data.local.model.create
@@ -31,12 +33,21 @@ internal class GetPopularSearchUseCase(
         return timestamp?.plus(12, HOURS)?.isAfter(nowUtcInstant()) == true
     }
 
+    suspend fun isLocalListsValid(): Boolean {
+        // TODO
+        return false
+    }
+
     suspend fun getLocalShows(): List<PopularShowEntity> {
         return localSource.getShows()
     }
 
     suspend fun getLocalMovies(): List<PopularMovieEntity> {
         return localSource.getMovies()
+    }
+
+    suspend fun getLocalLists(): List<PopularListEntity> {
+        return emptyList()
     }
 
     suspend fun getShows(): List<PopularShowEntity> {
@@ -64,6 +75,20 @@ internal class GetPopularSearchUseCase(
             )
         }.also {
             localSource.setMovies(it)
+        }
+    }
+
+    suspend fun getLists(): List<PopularListEntity> {
+        return remoteSource.getPopularLists(
+            limit = TRENDING_SEARCH_LIMIT,
+        ).asyncMap {
+            PopularListEntity.create(
+                list = PreviewData.customList1,
+                rank = it.count,
+                createdAt = nowUtcInstant(),
+            )
+        }.also {
+//            localSource.setLists(it)
         }
     }
 }
