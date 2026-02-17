@@ -356,16 +356,16 @@ internal class YounifyViewModel(
         override fun renewTokens(
             expiredAccessToken: String?,
             refreshToken: String?,
-            complete: RenewTokensCallback,
+            callback: RenewTokensCallback,
         ) {
             refreshTokenJob?.cancel()
             refreshTokenJob = viewModelScope.launch {
                 try {
                     refreshYounifyTokensUseCase.refreshTokens()
                         .apply {
-                            complete(
-                                tokens.accessToken,
-                                tokens.refreshToken,
+                            callback.complete(
+                                newAccessToken = tokens.accessToken,
+                                newRefreshToken = tokens.refreshToken,
                             )
                         }
                 } catch (error: Exception) {

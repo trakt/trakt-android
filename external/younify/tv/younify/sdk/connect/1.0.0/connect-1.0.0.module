@@ -3,7 +3,7 @@
   "component": {
     "group": "tv.younify.sdk",
     "module": "connect",
-    "version": "0.9.39",
+    "version": "1.0.0",
     "attributes": {
       "org.gradle.status": "release"
     }
@@ -27,7 +27,7 @@
           "group": "io.opentelemetry.android",
           "module": "opentelemetry-android-bom",
           "version": {
-            "requires": "0.13.0-alpha"
+            "requires": "0.14.0-alpha"
           },
           "excludes": [
             {
@@ -44,7 +44,7 @@
           "group": "org.jetbrains.kotlin",
           "module": "kotlin-stdlib",
           "version": {
-            "requires": "2.2.10"
+            "requires": "2.2.20"
           },
           "excludes": [
             {
@@ -56,13 +56,13 @@
       ],
       "files": [
         {
-          "name": "connect-0.9.39.aar",
-          "url": "connect-0.9.39.aar",
-          "size": 1180598,
-          "sha512": "d7bd49d664978873f40ee977343d9344254c0c792d5925c4cdf37e43a584a59e47e28eb384140092bcaab3bc4a81b0630f7ce5749d84dc545e37c338390c81aa",
-          "sha256": "f16001a0e39014294b3ca51a97c6e6fe643ec6b9e489e52b8413eccde0a7aa41",
-          "sha1": "47a77431bed24fa3379049065da4e98e61f894ac",
-          "md5": "f8ff02e6c90b24e152b98e871d35dee1"
+          "name": "connect-1.0.0.aar",
+          "url": "connect-1.0.0.aar",
+          "size": 1342260,
+          "sha512": "a3a2ee5d7082459d3a3d0e1d01c7039c1fae90ab043d81a212e4edfa96211bf1d833f2f47405ff7260cbed7b630b5ce7ef90b726e65b6a9567f1e18c3fd0b6ab",
+          "sha256": "880bd2deb66d2a2ef346ccb44914c25544ad15471433511ae98108292a797aaf",
+          "sha1": "dc72a9814a878c2d27ef5adacf0821fe246b5f2b",
+          "md5": "a38a33643309839c8def2ae670546dd3"
         }
       ]
     },
@@ -79,7 +79,7 @@
           "group": "org.jetbrains.kotlin",
           "module": "kotlin-parcelize-runtime",
           "version": {
-            "requires": "2.2.10"
+            "requires": "2.2.20"
           },
           "excludes": [
             {
@@ -131,7 +131,7 @@
           "group": "androidx.navigation",
           "module": "navigation-fragment-ktx",
           "version": {
-            "requires": "2.9.3"
+            "requires": "2.9.5"
           },
           "excludes": [
             {
@@ -144,7 +144,7 @@
           "group": "androidx.navigation",
           "module": "navigation-ui-ktx",
           "version": {
-            "requires": "2.9.3"
+            "requires": "2.9.5"
           },
           "excludes": [
             {
@@ -157,7 +157,7 @@
           "group": "com.google.android.material",
           "module": "material",
           "version": {
-            "requires": "1.12.0"
+            "requires": "1.13.0"
           },
           "excludes": [
             {
@@ -196,7 +196,7 @@
           "group": "io.ktor",
           "module": "ktor-client-core",
           "version": {
-            "requires": "3.2.3"
+            "requires": "3.3.0"
           },
           "excludes": [
             {
@@ -209,7 +209,7 @@
           "group": "io.ktor",
           "module": "ktor-client-cio",
           "version": {
-            "requires": "3.2.3"
+            "requires": "3.3.0"
           },
           "excludes": [
             {
@@ -222,7 +222,7 @@
           "group": "io.ktor",
           "module": "ktor-client-content-negotiation",
           "version": {
-            "requires": "3.2.3"
+            "requires": "3.3.0"
           },
           "excludes": [
             {
@@ -235,7 +235,7 @@
           "group": "io.ktor",
           "module": "ktor-serialization-gson",
           "version": {
-            "requires": "3.2.3"
+            "requires": "3.3.0"
           },
           "excludes": [
             {
@@ -248,7 +248,7 @@
           "group": "io.ktor",
           "module": "ktor-client-okhttp",
           "version": {
-            "requires": "3.2.3"
+            "requires": "3.3.0"
           },
           "excludes": [
             {
@@ -287,7 +287,7 @@
           "group": "com.google.code.gson",
           "module": "gson",
           "version": {
-            "requires": "2.13.1"
+            "requires": "2.13.2"
           },
           "excludes": [
             {
@@ -339,7 +339,7 @@
           "group": "org.bouncycastle",
           "module": "bcpkix-jdk15to18",
           "version": {
-            "requires": "1.81"
+            "requires": "1.82"
           },
           "excludes": [
             {
@@ -352,7 +352,7 @@
           "group": "org.bouncycastle",
           "module": "bcprov-jdk15to18",
           "version": {
-            "requires": "1.81"
+            "requires": "1.82"
           },
           "excludes": [
             {
@@ -378,7 +378,7 @@
           "group": "com.github.bumptech.glide",
           "module": "glide",
           "version": {
-            "requires": "4.16.0"
+            "requires": "5.0.5"
           },
           "excludes": [
             {
@@ -391,7 +391,7 @@
           "group": "io.opentelemetry.android",
           "module": "android-agent",
           "version": {
-            "requires": "0.13.0-alpha"
+            "requires": "0.14.0-alpha"
           },
           "excludes": [
             {
@@ -404,7 +404,7 @@
           "group": "io.opentelemetry.android",
           "module": "services",
           "version": {
-            "requires": "0.13.0-alpha"
+            "requires": "0.14.0-alpha"
           },
           "excludes": [
             {
@@ -417,7 +417,7 @@
           "group": "io.opentelemetry",
           "module": "opentelemetry-sdk",
           "version": {
-            "requires": "1.53.0"
+            "requires": "1.54.1"
           },
           "excludes": [
             {
@@ -430,7 +430,7 @@
           "group": "io.opentelemetry",
           "module": "opentelemetry-extension-kotlin",
           "version": {
-            "requires": "1.53.0"
+            "requires": "1.54.1"
           },
           "excludes": [
             {
@@ -443,7 +443,20 @@
           "group": "io.opentelemetry",
           "module": "opentelemetry-exporter-otlp",
           "version": {
-            "requires": "1.53.0"
+            "requires": "1.54.1"
+          },
+          "excludes": [
+            {
+              "group": "com.squareup.okhttp3",
+              "module": "okhttp-jvm"
+            }
+          ]
+        },
+        {
+          "group": "io.opentelemetry.semconv",
+          "module": "opentelemetry-semconv",
+          "version": {
+            "requires": "1.37.0"
           },
           "excludes": [
             {
@@ -469,7 +482,7 @@
           "group": "io.opentelemetry.android",
           "module": "opentelemetry-android-bom",
           "version": {
-            "requires": "0.13.0-alpha"
+            "requires": "0.14.0-alpha"
           },
           "excludes": [
             {
@@ -486,7 +499,7 @@
           "group": "org.jetbrains.kotlin",
           "module": "kotlin-stdlib",
           "version": {
-            "requires": "2.2.10"
+            "requires": "2.2.20"
           },
           "excludes": [
             {
@@ -498,13 +511,13 @@
       ],
       "files": [
         {
-          "name": "connect-0.9.39.aar",
-          "url": "connect-0.9.39.aar",
-          "size": 1180598,
-          "sha512": "d7bd49d664978873f40ee977343d9344254c0c792d5925c4cdf37e43a584a59e47e28eb384140092bcaab3bc4a81b0630f7ce5749d84dc545e37c338390c81aa",
-          "sha256": "f16001a0e39014294b3ca51a97c6e6fe643ec6b9e489e52b8413eccde0a7aa41",
-          "sha1": "47a77431bed24fa3379049065da4e98e61f894ac",
-          "md5": "f8ff02e6c90b24e152b98e871d35dee1"
+          "name": "connect-1.0.0.aar",
+          "url": "connect-1.0.0.aar",
+          "size": 1342260,
+          "sha512": "a3a2ee5d7082459d3a3d0e1d01c7039c1fae90ab043d81a212e4edfa96211bf1d833f2f47405ff7260cbed7b630b5ce7ef90b726e65b6a9567f1e18c3fd0b6ab",
+          "sha256": "880bd2deb66d2a2ef346ccb44914c25544ad15471433511ae98108292a797aaf",
+          "sha1": "dc72a9814a878c2d27ef5adacf0821fe246b5f2b",
+          "md5": "a38a33643309839c8def2ae670546dd3"
         }
       ]
     }
