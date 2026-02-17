@@ -43,7 +43,6 @@ internal class GetPersonalListItemsUseCase(
                         listedAt = listedAt,
                     )
                 }
-
                 it.show != null -> {
                     PersonalListItem.ShowItem(
                         rank = it.rank,
@@ -51,11 +50,12 @@ internal class GetPersonalListItemsUseCase(
                         listedAt = listedAt,
                     )
                 }
-
                 else -> {
                     throw IllegalStateException("Watchlist item unknown type!")
                 }
             }
+        }.distinctBy {
+            it.key
         }.also {
             localSource.setItems(
                 listId = listId,
@@ -81,7 +81,9 @@ internal class GetPersonalListItemsUseCase(
                     SHOWS -> it is PersonalListItem.ShowItem
                     MOVIES -> it is PersonalListItem.MovieItem
                 }
-            }.toImmutableList()
+            }
+            .distinctBy { it.key }
+            .toImmutableList()
     }
 
     suspend fun getRemoteItems(
