@@ -63,11 +63,13 @@ import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsShowView
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.MovieItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.ShowItem
+import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
@@ -125,6 +127,7 @@ internal fun ListDetailsScreen(
                 is ShowItem -> showContextSheet = it
             }
         },
+        onFilterClick = viewModel::setFilter,
         onSortTypeClick = {
             if (!state.loading.isLoading) {
                 sortSheet = state.sorting.type
@@ -179,6 +182,7 @@ internal fun ListDetailsContent(
     modifier: Modifier = Modifier,
     onClick: (CustomListItem) -> Unit = {},
     onLongClick: (CustomListItem) -> Unit = {},
+    onFilterClick: (MediaMode) -> Unit = {},
     onSortTypeClick: () -> Unit = {},
     onSortOrderClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
@@ -219,12 +223,14 @@ internal fun ListDetailsContent(
             subtitle = state.list?.description,
             listItems = (state.items ?: emptyList()).toImmutableList(),
             listState = listState,
+            listFilter = state.filter,
             listSorting = state.sorting,
             collectionState = state.collection,
             contentPadding = contentPadding,
             loading = state.loading.isLoading,
             onClick = onClick,
             onLongClick = onLongClick,
+            onFilterClick = onFilterClick,
             onSortTypeClick = onSortTypeClick,
             onSortOrderClick = onSortOrderClick,
             onBackClick = onBackClick,
@@ -284,11 +290,13 @@ private fun ContentList(
     subtitle: String?,
     listState: LazyListState,
     listItems: ImmutableList<CustomListItem>,
+    listFilter: MediaMode?,
     listSorting: Sorting?,
     collectionState: UserCollectionState,
     loading: Boolean,
     onClick: (CustomListItem) -> Unit,
     onLongClick: (CustomListItem) -> Unit,
+    onFilterClick: (MediaMode) -> Unit,
     onSortTypeClick: () -> Unit,
     onSortOrderClick: () -> Unit,
     onBackClick: () -> Unit,
@@ -341,7 +349,9 @@ private fun ContentList(
             item {
                 ContentFilters(
                     subtitle = !subtitle.isNullOrEmpty(),
+                    filter = listFilter,
                     sorting = listSorting,
+                    onFilterClick = onFilterClick,
                     onSortTypeClick = onSortTypeClick,
                     onSortOrderClick = onSortOrderClick,
                 )
@@ -402,6 +412,10 @@ private fun ContentList(
                         ),
                 )
             }
+        } else if (listItems.isEmpty()) {
+            item {
+                ContentEmpty(filter = listFilter)
+            }
         }
     }
 }
@@ -409,7 +423,9 @@ private fun ContentList(
 @Composable
 private fun ContentFilters(
     subtitle: Boolean,
+    filter: MediaMode?,
     sorting: Sorting,
+    onFilterClick: (MediaMode) -> Unit,
     onSortTypeClick: () -> Unit,
     onSortOrderClick: () -> Unit,
 ) {
@@ -423,6 +439,15 @@ private fun ContentFilters(
                 bottom = 19.dp,
             ),
     ) {
+        if (filter != null) {
+            MediaModeFilters(
+                selected = filter,
+                onClick = onFilterClick,
+                height = 32.dp,
+                unselectedTextVisible = false,
+            )
+        }
+
         SortingSplitButton(
             text = stringResource(sorting.type.displayStringRes),
             order = sorting.order,
@@ -431,6 +456,21 @@ private fun ContentFilters(
             onTrailingClick = onSortOrderClick,
         )
     }
+}
+
+@Composable
+private fun ContentEmpty(filter: MediaMode?) {
+    Text(
+        text = stringResource(
+            when (filter) {
+                MediaMode.MOVIES -> R.string.list_placeholder_personal_list_empty_movies
+                MediaMode.SHOWS -> R.string.list_placeholder_personal_list_empty_shows
+                else -> R.string.list_placeholder_empty
+            },
+        ),
+        color = TraktTheme.colors.textSecondary,
+        style = TraktTheme.typography.heading6,
+    )
 }
 
 @OptIn(ExperimentalCoilApi::class)

@@ -33,6 +33,7 @@ import tv.trakt.trakt.core.lists.features.details.ListDetailsState.ListDetailsIn
 import tv.trakt.trakt.core.lists.features.details.navigation.ListsDetailsDestination
 import tv.trakt.trakt.core.lists.features.details.usecases.GetListItemsUseCase
 import tv.trakt.trakt.core.lists.model.CustomListItem
+import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.user.CollectionStateProvider
 import tv.trakt.trakt.core.user.UserCollectionState
 
@@ -46,6 +47,7 @@ internal class ListDetailsViewModel(
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<ListsDetailsDestination>()
+    private val showFilters = destination.mediaType.size > 1
 
     private val initialState = ListDetailsState()
 
@@ -57,6 +59,7 @@ internal class ListDetailsViewModel(
         ),
     )
     private val itemsState = MutableStateFlow(initialState.items)
+    private val filterState = MutableStateFlow(if (showFilters) MediaMode.MEDIA else null)
     private val sortingState = MutableStateFlow(initialState.sorting)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
@@ -84,9 +87,7 @@ internal class ListDetailsViewModel(
                 itemsState.update {
                     getListItemsUseCase.getItems(
                         listId = destination.listId.toTraktId(),
-                        type = destination.mediaType.map {
-                            MediaType.valueOf(it)
-                        },
+                        type = filterState.value.toMediaTypes(),
                         sorting = sortingState.value,
                     )
                 }
@@ -135,6 +136,23 @@ internal class ListDetailsViewModel(
         loadData()
     }
 
+    fun setFilter(newFilter: MediaMode) {
+        if (newFilter == filterState.value || loadingState.value.isLoading) {
+            return
+        }
+
+        filterState.update { newFilter }
+        loadData()
+    }
+
+    private fun MediaMode?.toMediaTypes(): List<MediaType> {
+        return when (this) {
+            MediaMode.SHOWS -> listOf(MediaType.SHOW)
+            MediaMode.MOVIES -> listOf(MediaType.MOVIE)
+            else -> destination.mediaType.map { MediaType.valueOf(it) }
+        }
+    }
+
     fun navigateToShow(show: Show) {
         if (navigateShow.value != null || processingJob?.isActive == true) {
             return
@@ -171,6 +189,7 @@ internal class ListDetailsViewModel(
         loadingState,
         listState,
         itemsState,
+        filterState,
         sortingState,
         collectionStateProvider.stateFlow,
         navigateShow,
@@ -181,11 +200,12 @@ internal class ListDetailsViewModel(
             loading = state[0] as LoadingState,
             list = state[1] as? ListDetailsInfo,
             items = state[2] as? ImmutableList<CustomListItem>,
-            sorting = state[3] as Sorting,
-            collection = state[4] as UserCollectionState,
-            navigateShow = state[5] as? TraktId,
-            navigateMovie = state[6] as? TraktId,
-            error = state[7] as? Exception,
+            filter = state[3] as? MediaMode,
+            sorting = state[4] as Sorting,
+            collection = state[5] as UserCollectionState,
+            navigateShow = state[6] as? TraktId,
+            navigateMovie = state[7] as? TraktId,
+            error = state[8] as? Exception,
         )
     }.stateIn(
         scope = viewModelScope,
