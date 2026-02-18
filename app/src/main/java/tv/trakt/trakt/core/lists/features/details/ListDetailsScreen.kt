@@ -60,9 +60,9 @@ import tv.trakt.trakt.common.model.sorting.SortTypeList
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsMovieView
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsShowView
-import tv.trakt.trakt.core.lists.model.PersonalListItem
-import tv.trakt.trakt.core.lists.model.PersonalListItem.MovieItem
-import tv.trakt.trakt.core.lists.model.PersonalListItem.ShowItem
+import tv.trakt.trakt.core.lists.model.CustomListItem
+import tv.trakt.trakt.core.lists.model.CustomListItem.MovieItem
+import tv.trakt.trakt.core.lists.model.CustomListItem.ShowItem
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.core.user.UserCollectionState
@@ -177,8 +177,8 @@ internal fun ListDetailsScreen(
 internal fun ListDetailsContent(
     state: ListDetailsState,
     modifier: Modifier = Modifier,
-    onClick: (PersonalListItem) -> Unit = {},
-    onLongClick: (PersonalListItem) -> Unit = {},
+    onClick: (CustomListItem) -> Unit = {},
+    onLongClick: (CustomListItem) -> Unit = {},
     onSortTypeClick: () -> Unit = {},
     onSortOrderClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
@@ -283,12 +283,12 @@ private fun ContentList(
     title: String,
     subtitle: String?,
     listState: LazyListState,
-    listItems: ImmutableList<PersonalListItem>,
+    listItems: ImmutableList<CustomListItem>,
     listSorting: Sorting?,
     collectionState: UserCollectionState,
     loading: Boolean,
-    onClick: (PersonalListItem) -> Unit,
-    onLongClick: (PersonalListItem) -> Unit,
+    onClick: (CustomListItem) -> Unit,
+    onLongClick: (CustomListItem) -> Unit,
     onSortTypeClick: () -> Unit,
     onSortOrderClick: () -> Unit,
     onBackClick: () -> Unit,
@@ -360,6 +360,7 @@ private fun ContentList(
                         enabled = !loading,
                         watched = collectionState.isWatched(item.id, item.type),
                         watchlist = collectionState.isWatchlist(item.id, item.type),
+                        showIcon = true,
                         onClick = { onClick(item) },
                         onLongClick = { onLongClick(item) },
                         modifier = Modifier
@@ -376,6 +377,7 @@ private fun ContentList(
                         enabled = !loading,
                         watched = collectionState.isWatched(item.id, item.type),
                         watchlist = collectionState.isWatchlist(item.id, item.type),
+                        showIcon = true,
                         onClick = { onClick(item) },
                         onLongClick = { onLongClick(item) },
                         modifier = Modifier

@@ -3,7 +3,6 @@ package tv.trakt.trakt.core.main.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import tv.trakt.trakt.common.model.Images.Size
-import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.MediaType.SHOW
 import tv.trakt.trakt.common.model.toTraktId
@@ -162,7 +161,7 @@ internal fun NavGraphBuilder.showsScreens(controller: NavHostController) {
                     listTitle = list.name,
                     listDescription = list.description,
                     mediaId = show.ids.trakt,
-                    mediaType = SHOW,
+                    mediaType = listOf(SHOW),
                     mediaImage = show.images?.getFanartUrl(),
                 )
             },
@@ -231,7 +230,7 @@ internal fun NavGraphBuilder.moviesScreens(controller: NavHostController) {
                     listTitle = list.name,
                     listDescription = list.description,
                     mediaId = movie.ids.trakt,
-                    mediaType = MOVIE,
+                    mediaType = listOf(MOVIE),
                     mediaImage = movie.images?.getFanartUrl(),
                 )
             },
@@ -300,8 +299,8 @@ internal fun NavGraphBuilder.searchScreens(
                     listId = it.ids.trakt.value,
                     listTitle = it.name,
                     listDescription = it.description,
-                    mediaId = 1.toTraktId(),
-                    mediaType = MediaType.SHOW,
+                    mediaId = (-1).toTraktId(),
+                    mediaType = listOf(SHOW, MOVIE),
                     mediaImage = null,
                 )
             },

@@ -24,7 +24,7 @@ import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.core.lists.model.PersonalListItem
+import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -32,7 +32,7 @@ import java.time.temporal.ChronoUnit.DAYS
 
 @Composable
 internal fun ListsPersonalItemView(
-    item: PersonalListItem,
+    item: CustomListItem,
     modifier: Modifier = Modifier,
     showMediaIcon: Boolean = false,
     watched: Boolean = false,
@@ -42,7 +42,7 @@ internal fun ListsPersonalItemView(
     onLongClick: () -> Unit = { },
 ) {
     when (item) {
-        is PersonalListItem.ShowItem -> {
+        is CustomListItem.ShowItem -> {
             val isReleased = remember(item.show.released) {
                 item.show.released?.isBefore(nowUtc()) ?: false
             }
@@ -125,7 +125,7 @@ internal fun ListsPersonalItemView(
             )
         }
 
-        is PersonalListItem.MovieItem -> {
+        is CustomListItem.MovieItem -> {
             val isReleased = remember(item.movie.released) {
                 item.movie.isReleased
             }
@@ -207,7 +207,7 @@ internal fun ListsPersonalItemView(
 private fun PreviewShow() {
     TraktTheme {
         ListsPersonalItemView(
-            item = PersonalListItem.ShowItem(
+            item = CustomListItem.ShowItem(
                 rank = 0,
                 show = PreviewData.show1,
                 listedAt = nowUtcInstant().minus(3, DAYS),
@@ -221,7 +221,7 @@ private fun PreviewShow() {
 private fun PreviewMovie() {
     TraktTheme {
         ListsPersonalItemView(
-            item = PersonalListItem.MovieItem(
+            item = CustomListItem.MovieItem(
                 rank = 0,
                 movie = PreviewData.movie1,
                 listedAt = nowUtcInstant().minus(3, DAYS),

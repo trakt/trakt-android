@@ -29,7 +29,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_SECTION_LIMIT
-import tv.trakt.trakt.core.lists.model.PersonalListItem
+import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
@@ -234,7 +234,7 @@ internal class ListsPersonalViewModel(
         ListsPersonalState(
             list = states[0] as CustomList?,
             user = states[1] as User?,
-            items = states[2] as ImmutableList<PersonalListItem>?,
+            items = states[2] as ImmutableList<CustomListItem>?,
             filter = states[3] as MediaMode?,
             collapsed = states[4] as Boolean,
             collection = states[5] as UserCollectionState,

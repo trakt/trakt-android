@@ -129,7 +129,7 @@ fun MovieMetaFooter(
                 Icon(
                     painter = painterResource(R.drawable.ic_star_trakt_on),
                     contentDescription = null,
-                    modifier = Modifier.size(13.dp),
+                    modifier = Modifier.size(14.dp),
                     tint = when {
                         movie.rating.rating > 0 -> Purple400
                         else -> TraktTheme.colors.textSecondary

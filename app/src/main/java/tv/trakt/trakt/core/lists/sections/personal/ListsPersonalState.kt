@@ -7,7 +7,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.core.lists.model.PersonalListItem
+import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.user.UserCollectionState
 
@@ -15,7 +15,7 @@ import tv.trakt.trakt.core.user.UserCollectionState
 internal data class ListsPersonalState(
     val user: User? = null,
     val list: CustomList? = null,
-    val items: ImmutableList<PersonalListItem>? = null,
+    val items: ImmutableList<CustomListItem>? = null,
     val filter: MediaMode? = null,
     val collection: UserCollectionState = UserCollectionState.Default,
     val navigateShow: TraktId? = null,

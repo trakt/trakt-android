@@ -17,12 +17,16 @@ internal data class ListsDetailsDestination(
     val listTitle: String,
     val listDescription: String?,
     val mediaId: Int,
-    val mediaType: String,
+    val mediaType: List<String>,
     val mediaImage: String?,
 ) {
     init {
-        require(mediaType in arrayOf(SHOW.name, MOVIE.name)) {
-            "Invalid media type: $mediaType"
+        require(mediaType.size in 1..2) {
+            "mediaType must contain either 1 or 2 types"
+        }
+
+        require(mediaType.all { it == SHOW.name || it == MOVIE.name }) {
+            "mediaType must be either SHOW or MOVIE"
         }
     }
 }
@@ -47,7 +51,7 @@ internal fun NavController.navigateToListDetails(
     listTitle: String,
     listDescription: String?,
     mediaId: TraktId,
-    mediaType: MediaType,
+    mediaType: List<MediaType>,
     mediaImage: String?,
 ) {
     navigate(
@@ -56,7 +60,7 @@ internal fun NavController.navigateToListDetails(
             listTitle = listTitle,
             listDescription = listDescription,
             mediaId = mediaId.value,
-            mediaType = mediaType.name,
+            mediaType = mediaType.map { it.name },
             mediaImage = mediaImage,
         ),
     )

@@ -16,7 +16,7 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.ListItemDto
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_MAX_PAGE_LIMIT
-import tv.trakt.trakt.core.lists.model.PersonalListItem
+import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
 import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 
@@ -31,12 +31,12 @@ internal class LoadUserListsUseCase(
         return localSource.isLoaded()
     }
 
-    suspend fun loadLocalLists(): ImmutableMap<CustomList, List<PersonalListItem>> {
+    suspend fun loadLocalLists(): ImmutableMap<CustomList, List<CustomListItem>> {
         return localSource.getLists()
             .toImmutableMap()
     }
 
-    suspend fun loadLists(): ImmutableMap<CustomList, List<PersonalListItem>> =
+    suspend fun loadLists(): ImmutableMap<CustomList, List<CustomListItem>> =
         coroutineScope {
             val listsResponse = remoteSource.getPersonalLists()
             val listsItemsResponse: List<Pair<ListDto, List<ListItemDto>>> = listsResponse
@@ -59,7 +59,7 @@ internal class LoadUserListsUseCase(
                         val listedAt = it.listedAt.toInstant()
                         when {
                             it.movie != null -> {
-                                PersonalListItem.MovieItem(
+                                CustomListItem.MovieItem(
                                     rank = it.rank,
                                     movie = Movie.fromDto(it.movie!!),
                                     listedAt = listedAt,
@@ -67,7 +67,7 @@ internal class LoadUserListsUseCase(
                             }
 
                             it.show != null -> {
-                                PersonalListItem.ShowItem(
+                                CustomListItem.ShowItem(
                                     rank = it.rank,
                                     show = Show.fromDto(it.show!!),
                                     listedAt = listedAt,

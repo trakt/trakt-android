@@ -61,9 +61,9 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.sorting.SortTypeList
 import tv.trakt.trakt.common.model.sorting.Sorting
-import tv.trakt.trakt.core.lists.model.PersonalListItem
-import tv.trakt.trakt.core.lists.model.PersonalListItem.MovieItem
-import tv.trakt.trakt.core.lists.model.PersonalListItem.ShowItem
+import tv.trakt.trakt.core.lists.model.CustomListItem
+import tv.trakt.trakt.core.lists.model.CustomListItem.MovieItem
+import tv.trakt.trakt.core.lists.model.CustomListItem.ShowItem
 import tv.trakt.trakt.core.lists.sections.personal.features.all.views.AllPersonalListMovieView
 import tv.trakt.trakt.core.lists.sections.personal.features.all.views.AllPersonalListShowView
 import tv.trakt.trakt.core.lists.sections.personal.features.context.movie.sheet.ListMovieContextSheet
@@ -204,8 +204,8 @@ internal fun AllPersonalListContent(
     state: AllPersonalListState,
     modifier: Modifier = Modifier,
     onLoadMoreData: () -> Unit = {},
-    onClick: (PersonalListItem) -> Unit = {},
-    onLongClick: (PersonalListItem) -> Unit = {},
+    onClick: (CustomListItem) -> Unit = {},
+    onLongClick: (CustomListItem) -> Unit = {},
     onFilterClick: (MediaMode) -> Unit = {},
     onSortTypeClick: () -> Unit = {},
     onSortOrderClick: () -> Unit = {},
@@ -427,13 +427,13 @@ private fun ContentList(
     loading: Boolean,
     loadingMore: Boolean,
     listState: LazyListState,
-    listItems: ImmutableList<PersonalListItem>,
+    listItems: ImmutableList<CustomListItem>,
     listFilter: MediaMode?,
     listSorting: Sorting?,
     collection: UserCollectionState,
     contentPadding: PaddingValues,
-    onClick: (PersonalListItem) -> Unit,
-    onLongClick: (PersonalListItem) -> Unit,
+    onClick: (CustomListItem) -> Unit,
+    onLongClick: (CustomListItem) -> Unit,
     onFilterClick: (MediaMode) -> Unit,
     onSortTypeClick: () -> Unit,
     onSortOrderClick: () -> Unit,

@@ -6,7 +6,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.data.remote.ListsRemoteDataSource
-import tv.trakt.trakt.core.lists.model.PersonalListItem
+import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
@@ -28,7 +28,7 @@ internal class AddPersonalListItemUseCase(
 
         userListsLocalDataSource.addListItem(
             listId = listId,
-            item = PersonalListItem.MovieItem(
+            item = CustomListItem.MovieItem(
                 rank = Int.MAX_VALUE,
                 movie = movie,
                 listedAt = nowUtcInstant(),
@@ -58,7 +58,7 @@ internal class AddPersonalListItemUseCase(
 
         userListsLocalDataSource.addListItem(
             listId = listId,
-            item = PersonalListItem.ShowItem(
+            item = CustomListItem.ShowItem(
                 rank = Int.MAX_VALUE,
                 show = show,
                 listedAt = nowUtcInstant(),

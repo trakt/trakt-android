@@ -32,7 +32,7 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.lists.features.details.ListDetailsState.ListDetailsInfo
 import tv.trakt.trakt.core.lists.features.details.navigation.ListsDetailsDestination
 import tv.trakt.trakt.core.lists.features.details.usecases.GetListItemsUseCase
-import tv.trakt.trakt.core.lists.model.PersonalListItem
+import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.user.CollectionStateProvider
 import tv.trakt.trakt.core.user.UserCollectionState
 
@@ -84,7 +84,9 @@ internal class ListDetailsViewModel(
                 itemsState.update {
                     getListItemsUseCase.getItems(
                         listId = destination.listId.toTraktId(),
-                        type = MediaType.valueOf(destination.mediaType),
+                        type = destination.mediaType.map {
+                            MediaType.valueOf(it)
+                        },
                         sorting = sortingState.value,
                     )
                 }
@@ -109,7 +111,7 @@ internal class ListDetailsViewModel(
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {
             itemsState.update {
-                emptyList<PersonalListItem>().toImmutableList()
+                emptyList<CustomListItem>().toImmutableList()
             }
             loadingState.update { DONE }
             return true
@@ -178,7 +180,7 @@ internal class ListDetailsViewModel(
         ListDetailsState(
             loading = state[0] as LoadingState,
             list = state[1] as? ListDetailsInfo,
-            items = state[2] as? ImmutableList<PersonalListItem>,
+            items = state[2] as? ImmutableList<CustomListItem>,
             sorting = state[3] as Sorting,
             collection = state[4] as UserCollectionState,
             navigateShow = state[5] as? TraktId,

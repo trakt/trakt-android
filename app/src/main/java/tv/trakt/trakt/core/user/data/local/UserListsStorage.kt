@@ -10,15 +10,15 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.lists.model.PersonalListItem
-import tv.trakt.trakt.core.lists.model.PersonalListItem.MovieItem
-import tv.trakt.trakt.core.lists.model.PersonalListItem.ShowItem
+import tv.trakt.trakt.core.lists.model.CustomListItem
+import tv.trakt.trakt.core.lists.model.CustomListItem.MovieItem
+import tv.trakt.trakt.core.lists.model.CustomListItem.ShowItem
 import java.time.Instant
 
 internal class UserListsStorage : UserListsLocalDataSource {
     private val mutex = Mutex()
 
-    private var storage: MutableMap<TraktId, Pair<CustomList, List<PersonalListItem>>>? = null
+    private var storage: MutableMap<TraktId, Pair<CustomList, List<CustomListItem>>>? = null
     private val updatedAt = MutableSharedFlow<Instant?>(
         extraBufferCapacity = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST,
@@ -31,7 +31,7 @@ internal class UserListsStorage : UserListsLocalDataSource {
     }
 
     override suspend fun setLists(
-        lists: Map<CustomList, List<PersonalListItem>>,
+        lists: Map<CustomList, List<CustomListItem>>,
         notify: Boolean,
     ) {
         mutex.withLock {
@@ -49,7 +49,7 @@ internal class UserListsStorage : UserListsLocalDataSource {
         }
     }
 
-    override suspend fun getLists(): Map<CustomList, List<PersonalListItem>> {
+    override suspend fun getLists(): Map<CustomList, List<CustomListItem>> {
         return mutex.withLock {
             storage?.values?.associate { it.first to it.second } ?: emptyMap()
         }
@@ -63,7 +63,7 @@ internal class UserListsStorage : UserListsLocalDataSource {
 
     override suspend fun addListItem(
         listId: TraktId,
-        item: PersonalListItem,
+        item: CustomListItem,
         notify: Boolean,
     ) {
         mutex.withLock {

@@ -49,9 +49,9 @@ import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.lists.model.PersonalListItem
-import tv.trakt.trakt.core.lists.model.PersonalListItem.MovieItem
-import tv.trakt.trakt.core.lists.model.PersonalListItem.ShowItem
+import tv.trakt.trakt.core.lists.model.CustomListItem
+import tv.trakt.trakt.core.lists.model.CustomListItem.MovieItem
+import tv.trakt.trakt.core.lists.model.CustomListItem.ShowItem
 import tv.trakt.trakt.core.lists.sections.personal.features.context.movie.sheet.ListMovieContextSheet
 import tv.trakt.trakt.core.lists.sections.personal.features.context.show.sheet.ListShowContextSheet
 import tv.trakt.trakt.core.lists.sections.personal.views.ListsPersonalItemView
@@ -313,7 +313,7 @@ private fun ContentEmptyList(
 
 @Composable
 private fun ContentList(
-    listItems: ImmutableList<PersonalListItem>,
+    listItems: ImmutableList<CustomListItem>,
     listState: LazyListState = rememberLazyListState(),
     listFilter: MediaMode?,
     collectionState: UserCollectionState,

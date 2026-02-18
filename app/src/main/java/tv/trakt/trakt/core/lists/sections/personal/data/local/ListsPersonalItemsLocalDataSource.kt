@@ -4,16 +4,16 @@ import kotlinx.coroutines.flow.Flow
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.lists.model.PersonalListItem
+import tv.trakt.trakt.core.lists.model.CustomListItem
 import java.time.Instant
 
 internal interface ListsPersonalItemsLocalDataSource {
     suspend fun setItems(
         listId: TraktId,
-        items: List<PersonalListItem>,
+        items: List<CustomListItem>,
     )
 
-    suspend fun getItems(listId: TraktId): List<PersonalListItem>
+    suspend fun getItems(listId: TraktId): List<CustomListItem>
 
     suspend fun addShows(
         listId: TraktId,

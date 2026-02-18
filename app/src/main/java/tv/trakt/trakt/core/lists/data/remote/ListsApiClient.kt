@@ -10,6 +10,7 @@ import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
 import org.openapitools.client.models.PutUsersListsListUpdateRequest
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.sorting.Sorting
+import tv.trakt.trakt.common.networking.ListMediaItemDto
 import tv.trakt.trakt.common.networking.ListMovieItemDto
 import tv.trakt.trakt.common.networking.ListShowItemDto
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
@@ -163,6 +164,31 @@ internal class ListsApiClient(
             ),
         )
         cacheMarker.invalidate()
+    }
+
+    override suspend fun getMediaListItems(
+        listId: TraktId,
+        extended: String?,
+        limit: String?,
+        sorting: Sorting,
+    ): List<ListMediaItemDto> {
+        val response = listsApi.getListsItemsMedia(
+            id = listId.value.toString(),
+            extended = extended,
+            watchnow = null,
+            genres = null,
+            subgenres = null,
+            years = null,
+            ratings = null,
+            startDate = null,
+            endDate = null,
+            page = null,
+            limit = limit,
+            sortBy = sorting.type.value,
+            sortHow = sorting.order.value,
+            runtimes = null,
+        )
+        return response.body()
     }
 
     override suspend fun getShowListItems(

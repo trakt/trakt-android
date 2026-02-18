@@ -36,7 +36,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_ALL_LIMIT
-import tv.trakt.trakt.core.lists.model.PersonalListItem
+import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.ListsPersonalDestination
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
@@ -256,7 +256,7 @@ internal class AllPersonalListViewModel(
         loadData()
     }
 
-    fun removeItem(item: PersonalListItem?) {
+    fun removeItem(item: CustomListItem?) {
         val currentItems = itemsState.value ?: return
         itemsState.update {
             currentItems
@@ -317,7 +317,7 @@ internal class AllPersonalListViewModel(
             filter = state[3] as MediaMode?,
             sorting = state[4] as Sorting,
             list = state[5] as? CustomList,
-            items = state[6] as? ImmutableList<PersonalListItem>,
+            items = state[6] as? ImmutableList<CustomListItem>,
             collection = state[7] as UserCollectionState,
             navigateShow = state[8] as? TraktId,
             navigateMovie = state[9] as? TraktId,

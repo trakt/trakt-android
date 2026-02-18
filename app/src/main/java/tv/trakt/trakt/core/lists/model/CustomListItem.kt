@@ -13,7 +13,7 @@ import java.time.ZonedDateTime
 import kotlin.time.Duration
 
 @Immutable
-internal sealed class PersonalListItem(
+internal sealed class CustomListItem(
     open val rank: Int,
     open val listedAt: Instant,
     open val loading: Boolean,
@@ -24,7 +24,7 @@ internal sealed class PersonalListItem(
         override val rank: Int,
         override val listedAt: Instant,
         override val loading: Boolean = false,
-    ) : PersonalListItem(rank, listedAt, loading)
+    ) : CustomListItem(rank, listedAt, loading)
 
     @Immutable
     internal data class ShowItem(
@@ -32,7 +32,7 @@ internal sealed class PersonalListItem(
         override val rank: Int,
         override val listedAt: Instant,
         override val loading: Boolean = false,
-    ) : PersonalListItem(rank, listedAt, loading)
+    ) : CustomListItem(rank, listedAt, loading)
 
     val id: TraktId
         get() = when (this) {

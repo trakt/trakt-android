@@ -6,13 +6,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.lists.model.PersonalListItem
+import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.movies.ui.MovieMetaFooter
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 
 @Composable
 internal fun ListDetailsMovieView(
-    item: PersonalListItem.MovieItem,
+    item: CustomListItem.MovieItem,
     modifier: Modifier = Modifier,
     showIcon: Boolean = false,
     shadow: Boolean = false,

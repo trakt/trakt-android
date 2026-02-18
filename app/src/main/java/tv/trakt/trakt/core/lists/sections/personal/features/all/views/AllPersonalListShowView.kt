@@ -5,13 +5,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.lists.model.PersonalListItem
+import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.shows.ui.ShowMetaFooter
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 
 @Composable
 internal fun AllPersonalListShowView(
-    item: PersonalListItem.ShowItem,
+    item: CustomListItem.ShowItem,
     modifier: Modifier = Modifier,
     showIcon: Boolean = false,
     watched: Boolean = false,

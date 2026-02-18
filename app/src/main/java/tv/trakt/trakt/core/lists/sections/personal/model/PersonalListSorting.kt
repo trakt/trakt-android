@@ -8,9 +8,9 @@ import tv.trakt.trakt.common.model.sorting.SortTypeList.RATING
 import tv.trakt.trakt.common.model.sorting.SortTypeList.RELEASED
 import tv.trakt.trakt.common.model.sorting.SortTypeList.RUNTIME
 import tv.trakt.trakt.common.model.sorting.Sorting
-import tv.trakt.trakt.core.lists.model.PersonalListItem
+import tv.trakt.trakt.core.lists.model.CustomListItem
 
-internal fun getPersonalListSorting(sort: Sorting?): Comparator<PersonalListItem> {
+internal fun getPersonalListSorting(sort: Sorting?): Comparator<CustomListItem> {
     if (sort == null) {
         // Defaults to recently added.
         return compareByDescending { it.listedAt }

@@ -10,13 +10,13 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.lists.model.PersonalListItem
+import tv.trakt.trakt.core.lists.model.CustomListItem
 import java.time.Instant
 
 internal class ListsPersonalItemsStorage : ListsPersonalItemsLocalDataSource {
     private val mutex = Mutex()
 
-    private val storage = mutableMapOf<TraktId, List<PersonalListItem>>()
+    private val storage = mutableMapOf<TraktId, List<CustomListItem>>()
     private val updatedAt = MutableSharedFlow<Instant?>(
         extraBufferCapacity = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST,
@@ -24,14 +24,14 @@ internal class ListsPersonalItemsStorage : ListsPersonalItemsLocalDataSource {
 
     override suspend fun setItems(
         listId: TraktId,
-        items: List<PersonalListItem>,
+        items: List<CustomListItem>,
     ) {
         mutex.withLock {
             storage[listId] = items
         }
     }
 
-    override suspend fun getItems(listId: TraktId): List<PersonalListItem> {
+    override suspend fun getItems(listId: TraktId): List<CustomListItem> {
         return mutex.withLock {
             storage[listId] ?: emptyList()
         }
@@ -45,7 +45,7 @@ internal class ListsPersonalItemsStorage : ListsPersonalItemsLocalDataSource {
         mutex.withLock {
             val currentItems = storage[listId] ?: emptyList()
             val newItems = shows.mapIndexed { index, show ->
-                PersonalListItem.ShowItem(
+                CustomListItem.ShowItem(
                     show = show,
                     rank = Int.MAX_VALUE,
                     listedAt = nowUtcInstant(),
@@ -54,7 +54,7 @@ internal class ListsPersonalItemsStorage : ListsPersonalItemsLocalDataSource {
 
             storage[listId] = (currentItems + newItems)
                 .distinctBy {
-                    if (it is PersonalListItem.ShowItem) {
+                    if (it is CustomListItem.ShowItem) {
                         it.key
                     } else {
                         null
@@ -76,7 +76,7 @@ internal class ListsPersonalItemsStorage : ListsPersonalItemsLocalDataSource {
             val currentItems = storage[listId] ?: return
             storage[listId] = currentItems
                 .filterNot {
-                    it is PersonalListItem.ShowItem &&
+                    it is CustomListItem.ShowItem &&
                         it.show.ids.trakt in showsIds
                 }
         }
@@ -93,7 +93,7 @@ internal class ListsPersonalItemsStorage : ListsPersonalItemsLocalDataSource {
         mutex.withLock {
             val currentItems = storage[listId] ?: emptyList()
             val newItems = movies.mapIndexed { index, movie ->
-                PersonalListItem.MovieItem(
+                CustomListItem.MovieItem(
                     movie = movie,
                     rank = Int.MAX_VALUE,
                     listedAt = nowUtcInstant(),
@@ -102,7 +102,7 @@ internal class ListsPersonalItemsStorage : ListsPersonalItemsLocalDataSource {
 
             storage[listId] = (currentItems + newItems)
                 .distinctBy {
-                    if (it is PersonalListItem.MovieItem) {
+                    if (it is CustomListItem.MovieItem) {
                         it.key
                     } else {
                         null
@@ -124,7 +124,7 @@ internal class ListsPersonalItemsStorage : ListsPersonalItemsLocalDataSource {
             val currentItems = storage[listId] ?: return
             storage[listId] = currentItems
                 .filterNot {
-                    it is PersonalListItem.MovieItem &&
+                    it is CustomListItem.MovieItem &&
                         it.movie.ids.trakt in moviesIds
                 }
         }

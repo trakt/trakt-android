@@ -9,7 +9,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.sorting.Sorting
-import tv.trakt.trakt.core.lists.model.PersonalListItem
+import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
@@ -26,7 +26,7 @@ internal class GetPersonalListItemsUseCase(
         limit: Int,
         filter: MediaMode,
         sorting: Sorting,
-    ): ImmutableList<PersonalListItem> {
+    ): ImmutableList<CustomListItem> {
         return remoteSource.getPersonalListItems(
             listId = listId,
             limit = limit,
@@ -37,14 +37,14 @@ internal class GetPersonalListItemsUseCase(
             val listedAt = it.listedAt.toInstant()
             when {
                 it.movie != null -> {
-                    PersonalListItem.MovieItem(
+                    CustomListItem.MovieItem(
                         rank = it.rank,
                         movie = Movie.fromDto(it.movie!!),
                         listedAt = listedAt,
                     )
                 }
                 it.show != null -> {
-                    PersonalListItem.ShowItem(
+                    CustomListItem.ShowItem(
                         rank = it.rank,
                         show = Show.fromDto(it.show!!),
                         listedAt = listedAt,
@@ -64,8 +64,8 @@ internal class GetPersonalListItemsUseCase(
         }.filter {
             when (filter) {
                 MEDIA -> true
-                SHOWS -> it is PersonalListItem.ShowItem
-                MOVIES -> it is PersonalListItem.MovieItem
+                SHOWS -> it is CustomListItem.ShowItem
+                MOVIES -> it is CustomListItem.MovieItem
             }
         }.toImmutableList()
     }
@@ -73,13 +73,13 @@ internal class GetPersonalListItemsUseCase(
     suspend fun getLocalItems(
         listId: TraktId,
         filter: MediaMode,
-    ): ImmutableList<PersonalListItem> {
+    ): ImmutableList<CustomListItem> {
         return localSource.getItems(listId)
             .filter {
                 when (filter) {
                     MEDIA -> true
-                    SHOWS -> it is PersonalListItem.ShowItem
-                    MOVIES -> it is PersonalListItem.MovieItem
+                    SHOWS -> it is CustomListItem.ShowItem
+                    MOVIES -> it is CustomListItem.MovieItem
                 }
             }
             .distinctBy { it.key }
@@ -92,7 +92,7 @@ internal class GetPersonalListItemsUseCase(
         limit: Int,
         type: MediaMode,
         sorting: Sorting,
-    ): ImmutableList<PersonalListItem> {
+    ): ImmutableList<CustomListItem> {
         return when (type) {
             MEDIA -> getRemoteAllItems(
                 listId = listId,
@@ -122,7 +122,7 @@ internal class GetPersonalListItemsUseCase(
         page: Int,
         limit: Int,
         sorting: Sorting,
-    ): ImmutableList<PersonalListItem> {
+    ): ImmutableList<CustomListItem> {
         return remoteSource.getPersonalListMovieItems(
             listId = listId,
             limit = limit,
@@ -131,7 +131,7 @@ internal class GetPersonalListItemsUseCase(
             sorting = sorting,
         ).asyncMap {
             val listedAt = it.listedAt.toInstant()
-            PersonalListItem.MovieItem(
+            CustomListItem.MovieItem(
                 rank = it.rank,
                 movie = Movie.fromDto(it.movie),
                 listedAt = listedAt,
@@ -144,7 +144,7 @@ internal class GetPersonalListItemsUseCase(
         page: Int,
         limit: Int,
         sorting: Sorting,
-    ): ImmutableList<PersonalListItem> {
+    ): ImmutableList<CustomListItem> {
         return remoteSource.getPersonalListShowItems(
             listId = listId,
             limit = limit,
@@ -153,7 +153,7 @@ internal class GetPersonalListItemsUseCase(
             sorting = sorting,
         ).asyncMap {
             val listedAt = it.listedAt.toInstant()
-            PersonalListItem.ShowItem(
+            CustomListItem.ShowItem(
                 rank = it.rank,
                 show = Show.fromDto(it.show),
                 listedAt = listedAt,
@@ -166,7 +166,7 @@ internal class GetPersonalListItemsUseCase(
         page: Int,
         limit: Int,
         sorting: Sorting,
-    ): ImmutableList<PersonalListItem> {
+    ): ImmutableList<CustomListItem> {
         return remoteSource.getPersonalListItems(
             listId = listId,
             limit = limit,
@@ -177,7 +177,7 @@ internal class GetPersonalListItemsUseCase(
             val listedAt = it.listedAt.toInstant()
             when {
                 it.movie != null -> {
-                    PersonalListItem.MovieItem(
+                    CustomListItem.MovieItem(
                         rank = it.rank,
                         movie = Movie.fromDto(it.movie!!),
                         listedAt = listedAt,
@@ -185,7 +185,7 @@ internal class GetPersonalListItemsUseCase(
                 }
 
                 it.show != null -> {
-                    PersonalListItem.ShowItem(
+                    CustomListItem.ShowItem(
                         rank = it.rank,
                         show = Show.fromDto(it.show!!),
                         listedAt = listedAt,
