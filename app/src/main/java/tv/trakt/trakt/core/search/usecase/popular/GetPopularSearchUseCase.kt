@@ -16,6 +16,7 @@ import tv.trakt.trakt.core.search.data.remote.SearchRemoteDataSource
 import java.time.temporal.ChronoUnit.HOURS
 
 private const val POPULAR_SEARCH_LIMIT = 36
+private const val POPULAR_LISTS_SEARCH_LIMIT = 50
 private const val POPULAR_VALID_PERIOD_HOURS = 12L
 
 internal class GetPopularSearchUseCase(
@@ -82,7 +83,7 @@ internal class GetPopularSearchUseCase(
 
     suspend fun getLists(): List<PopularListEntity> {
         return remoteSource.getPopularLists(
-            limit = POPULAR_SEARCH_LIMIT,
+            limit = POPULAR_LISTS_SEARCH_LIMIT,
         ).asyncMap {
             PopularListEntity.create(
                 list = CustomList.fromDto(it.list!!),
