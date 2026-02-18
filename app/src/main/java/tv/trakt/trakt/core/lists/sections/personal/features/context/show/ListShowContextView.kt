@@ -131,7 +131,7 @@ internal fun ListShowContextView(
             dateSheet = true
         },
         onNo = { confirmAddWatchedSheet = false },
-        title = stringResource(R.string.button_text_track),
+        title = stringResource(R.string.button_text_mark_as_watched),
         annotatedMessage = AnnotatedString.fromHtml(
             stringResource(
                 R.string.warning_prompt_mark_as_watched_show,
