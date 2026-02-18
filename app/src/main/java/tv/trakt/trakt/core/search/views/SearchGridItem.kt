@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.search.views
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
@@ -24,6 +25,7 @@ internal fun SearchGridItem(
     onShowLongClick: (Show) -> Unit = {},
     onMovieLongClick: (Movie) -> Unit = {},
     onPersonClick: (Person) -> Unit = {},
+    onListClick: (CustomList) -> Unit = {},
 ) {
     when (item) {
         is SearchItem.Show -> SearchShowGridItem(
@@ -54,7 +56,7 @@ internal fun SearchGridItem(
 
         is SearchItem.List -> SearchListGridItem(
             item = item,
-            onListClick = { }, // TODO
+            onListClick = onListClick,
             modifier = modifier,
         )
     }

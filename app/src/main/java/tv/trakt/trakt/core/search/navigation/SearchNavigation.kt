@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.extensions.popUpToTop
+import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.search.SearchScreen
 import tv.trakt.trakt.core.search.model.SearchInput
@@ -19,6 +20,7 @@ internal fun NavGraphBuilder.searchScreen(
     onNavigateToShow: (showId: TraktId) -> Unit,
     onNavigateToMovie: (movieId: TraktId) -> Unit,
     onNavigateToPerson: (personId: TraktId) -> Unit,
+    onNavigateToList: (list: CustomList) -> Unit,
 ) {
     composable<SearchDestination> {
         SearchScreen(
@@ -28,6 +30,7 @@ internal fun NavGraphBuilder.searchScreen(
             onShowClick = onNavigateToShow,
             onMovieClick = onNavigateToMovie,
             onPersonClick = onNavigateToPerson,
+            onListClick = onNavigateToList,
         )
     }
 }

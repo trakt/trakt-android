@@ -36,7 +36,7 @@ internal interface SearchRemoteDataSource {
 
     suspend fun getPopularMovies(limit: Int): List<TrendingSearchDto>
 
-    suspend fun getPopularLists(limit: Int): List<TrendingSearchDto>
+    suspend fun getPopularLists(limit: Int): List<SearchItemDto>
 
     suspend fun postShowUserSearch(
         showId: TraktId,
@@ -45,6 +45,16 @@ internal interface SearchRemoteDataSource {
 
     suspend fun postMovieUserSearch(
         movieId: TraktId,
+        query: String,
+    )
+
+    suspend fun postPersonUserSearch(
+        personId: TraktId,
+        query: String,
+    )
+
+    suspend fun postListUserSearch(
+        listId: TraktId,
         query: String,
     )
 }

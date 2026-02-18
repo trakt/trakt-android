@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.LocalCheckInVisibility
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
+import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
@@ -68,6 +69,7 @@ internal fun SearchScreen(
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onPersonClick: ((TraktId) -> Unit),
+    onListClick: ((CustomList) -> Unit),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val localCheckInVisibility = LocalCheckInVisibility.current
@@ -103,11 +105,14 @@ internal fun SearchScreen(
             viewModel.clearNavigation()
             onPersonClick(it.ids.trakt)
         }
+        state.navigateList?.let {
+            viewModel.clearNavigation()
+            onListClick(it)
+        }
     }
 
     LaunchedEffect(searchInput) {
         viewModel.updateSearch(searchInput)
-
         contentGridState.scrollToItem(0)
     }
 
@@ -118,19 +123,20 @@ internal fun SearchScreen(
     SearchScreenContent(
         state = state,
         contentGridState = contentGridState,
-        onShowClick = { viewModel.navigateToShow(it) },
+        onShowClick = viewModel::navigateToShow,
         onShowLongClick = {
             if (!state.searching) {
                 showContextSheet = it
             }
         },
-        onMovieClick = { viewModel.navigateToMovie(it) },
+        onMovieClick = viewModel::navigateToMovie,
         onMovieLongClick = {
             if (!state.searching) {
                 movieContextSheet = it
             }
         },
-        onPersonClick = { viewModel.navigateToPerson(it) },
+        onPersonClick = viewModel::navigateToPerson,
+        onListClick = viewModel::navigateToList,
     )
 
     ShowContextSheet(
@@ -155,6 +161,7 @@ private fun SearchScreenContent(
     onMovieClick: (Movie) -> Unit = {},
     onMovieLongClick: (Movie) -> Unit = {},
     onPersonClick: (Person) -> Unit = {},
+    onListClick: (CustomList) -> Unit = {},
 ) {
     Box(
         modifier = modifier
@@ -173,6 +180,7 @@ private fun SearchScreenContent(
             onMovieClick = onMovieClick,
             onMovieLongClick = onMovieLongClick,
             onPersonClick = onPersonClick,
+            onListClick = onListClick,
             error = state.error,
         )
     }
@@ -187,6 +195,7 @@ private fun ContentList(
     onShowLongClick: (Show) -> Unit,
     onMovieLongClick: (Movie) -> Unit,
     onPersonClick: (Person) -> Unit,
+    onListClick: (CustomList) -> Unit,
     error: Exception? = null,
 ) {
     val topPadding = WindowInsets.statusBars.asPaddingValues()
@@ -215,7 +224,7 @@ private fun ContentList(
         overscrollEffect = null,
     ) {
         if (!isSearching && state.input.query.isBlank()) {
-            topSearchesContent(
+            popularSearchesContent(
                 state = state,
                 topPadding = topPadding,
                 onShowClick = onShowClick,
@@ -223,6 +232,7 @@ private fun ContentList(
                 onMovieClick = onMovieClick,
                 onMovieLongClick = onMovieLongClick,
                 onPersonClick = onPersonClick,
+                onListClick = onListClick,
                 error = error,
             )
         }
@@ -236,6 +246,7 @@ private fun ContentList(
                 onMovieClick = onMovieClick,
                 onMovieLongClick = onMovieLongClick,
                 onPersonClick = onPersonClick,
+                onListClick = onListClick,
             )
         }
 
@@ -252,7 +263,7 @@ private fun ContentList(
     }
 }
 
-private fun LazyGridScope.topSearchesContent(
+private fun LazyGridScope.popularSearchesContent(
     state: SearchState,
     topPadding: Dp,
     onShowClick: (Show) -> Unit,
@@ -260,6 +271,7 @@ private fun LazyGridScope.topSearchesContent(
     onMovieClick: (Movie) -> Unit,
     onMovieLongClick: (Movie) -> Unit,
     onPersonClick: (Person) -> Unit,
+    onListClick: (CustomList) -> Unit,
     error: Exception?,
 ) {
     item(span = { GridItemSpan(maxLineSpan) }) {
@@ -279,12 +291,22 @@ private fun LazyGridScope.topSearchesContent(
     }
 
     if (error == null) {
+        val isLists = state.input.filter == LISTS
         val popularItems = state.popularResults?.items ?: EmptyImmutableList
+
         if (popularItems.isEmpty() && state.popularLoading.isLoading) {
-            loadingSkeletonsItems()
+            loadingSkeletonsItems(isLists)
         } else {
             items(
                 count = popularItems.size,
+                span = when {
+                    isLists -> {
+                        { GridItemSpan(maxLineSpan) }
+                    }
+                    else -> {
+                        null
+                    }
+                },
                 key = { index -> "${popularItems[index].key}_popular" },
             ) { index ->
                 val item = popularItems[index]
@@ -298,8 +320,9 @@ private fun LazyGridScope.topSearchesContent(
                     onMovieClick = onMovieClick,
                     onMovieLongClick = onMovieLongClick,
                     onPersonClick = onPersonClick,
+                    onListClick = onListClick,
                     modifier = Modifier
-                        .padding(bottom = 6.dp)
+                        .padding(bottom = if (isLists) 3.dp else 6.dp)
                         .animateItem(
                             fadeInSpec = fadeSpec,
                             fadeOutSpec = fadeSpec,
@@ -318,6 +341,7 @@ private fun LazyGridScope.searchingContent(
     onMovieClick: (Movie) -> Unit,
     onMovieLongClick: (Movie) -> Unit,
     onPersonClick: (Person) -> Unit,
+    onListClick: (CustomList) -> Unit,
 ) {
     val resultItems = state.searchResult?.items ?: EmptyImmutableList
 
@@ -350,6 +374,7 @@ private fun LazyGridScope.searchingContent(
                     onMovieClick = onMovieClick,
                     onMovieLongClick = onMovieLongClick,
                     onPersonClick = onPersonClick,
+                    onListClick = onListClick,
                     modifier = Modifier
                         .padding(bottom = 6.dp)
                         .animateItem(
@@ -366,8 +391,18 @@ private fun LazyGridScope.searchingContent(
     }
 }
 
-private fun LazyGridScope.loadingSkeletonsItems() {
-    items(count = 12) {
+private fun LazyGridScope.loadingSkeletonsItems(isLists: Boolean = false) {
+    items(
+        count = 12,
+        span = when {
+            isLists -> {
+                { GridItemSpan(maxLineSpan) }
+            }
+            else -> {
+                null
+            }
+        },
+    ) {
         VerticalMediaSkeletonCard(
             chipRatio = 0.66F,
             chipSpacing = 8.dp,

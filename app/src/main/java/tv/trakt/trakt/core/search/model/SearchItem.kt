@@ -34,9 +34,8 @@ internal sealed class SearchItem(
 
     @Immutable
     internal data class List(
-        override val rank: Long,
         val list: CustomList,
-    ) : SearchItem(rank)
+    ) : SearchItem(rank = 0L)
 
     val id: TraktId
         get() = when (this) {

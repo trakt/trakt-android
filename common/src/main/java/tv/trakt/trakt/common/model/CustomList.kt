@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.helpers.serializers.ZonedDateTimeSerializer
 import tv.trakt.trakt.common.networking.ListDto
+import tv.trakt.trakt.common.networking.SearchListDto
 import java.time.ZonedDateTime
 
 @Immutable
@@ -19,8 +20,6 @@ data class CustomList(
     val type: Type?,
     val displayNumbers: Boolean?,
     val allowComments: Boolean?,
-//    val sortType: SortType?,
-//    val sortOrder: SortOrder?,
     @Serializable(ZonedDateTimeSerializer::class)
     val createdAt: ZonedDateTime,
     @Serializable(ZonedDateTimeSerializer::class)
@@ -61,8 +60,6 @@ data class CustomList(
                 type = Type.fromString(dto.type.lowercase()),
                 displayNumbers = dto.displayNumbers,
                 allowComments = dto.allowComments,
-//                sortType = SortType.fromString(dto.sortBy),
-//                sortOrder = SortOrder.fromString(dto.sortHow.value),
                 createdAt = dto.createdAt.toZonedDateTime(),
                 updatedAt = dto.updatedAt.toZonedDateTime(),
                 likes = dto.likes,
@@ -74,5 +71,29 @@ data class CustomList(
                 user = User.fromDto(dto.user),
             )
         }
+
+        fun fromDto(dto: SearchListDto) =
+            CustomList(
+                ids = Ids(
+                    trakt = TraktId(dto.ids.trakt),
+                    slug = SlugId(dto.ids.slug),
+                ),
+                name = dto.name,
+                description = dto.description,
+                privacy = dto.privacy,
+                shareLink = dto.shareLink,
+                type = Type.fromString(dto.type.lowercase()),
+                displayNumbers = dto.displayNumbers,
+                allowComments = dto.allowComments,
+                createdAt = dto.createdAt.toZonedDateTime(),
+                updatedAt = dto.updatedAt.toZonedDateTime(),
+                likes = dto.likes,
+                images = dto.images?.let {
+                    Images(
+                        posters = it.posters.toImmutableList(),
+                    )
+                },
+                user = User.fromDto(dto.user),
+            )
     }
 }

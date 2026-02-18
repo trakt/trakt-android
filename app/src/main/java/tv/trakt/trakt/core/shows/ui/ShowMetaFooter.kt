@@ -169,7 +169,7 @@ fun ShowMetaFooter(
     }
 }
 
-@Preview(widthDp = 300)
+@Preview(widthDp = 300, locale = "us")
 @Composable
 private fun Preview() {
     TraktTheme {
@@ -179,7 +179,7 @@ private fun Preview() {
     }
 }
 
-@Preview(widthDp = 300)
+@Preview(widthDp = 300, locale = "us")
 @Composable
 private fun Preview2() {
     TraktTheme {
@@ -192,7 +192,7 @@ private fun Preview2() {
     }
 }
 
-@Preview(widthDp = 300)
+@Preview(widthDp = 300, locale = "us")
 @Composable
 private fun Preview3() {
     TraktTheme {
@@ -206,7 +206,7 @@ private fun Preview3() {
     }
 }
 
-@Preview(widthDp = 300)
+@Preview(widthDp = 300, locale = "us")
 @Composable
 private fun Preview4() {
     TraktTheme {
@@ -222,7 +222,7 @@ private fun Preview4() {
     }
 }
 
-@Preview(widthDp = 300)
+@Preview(widthDp = 300, locale = "us")
 @Composable
 private fun Preview5() {
     TraktTheme {

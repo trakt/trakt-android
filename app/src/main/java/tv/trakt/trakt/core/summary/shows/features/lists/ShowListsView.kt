@@ -219,6 +219,7 @@ private fun ContentEmpty(contentPadding: PaddingValues) {
     device = "id:pixel_5",
     showBackground = true,
     backgroundColor = 0xFF131517,
+    locale = "us",
 )
 @Composable
 private fun Preview() {
@@ -239,6 +240,7 @@ private fun Preview() {
     device = "id:pixel_5",
     showBackground = true,
     backgroundColor = 0xFF131517,
+    locale = "us",
 )
 @Composable
 private fun Preview2() {
@@ -262,6 +264,7 @@ private fun Preview2() {
     device = "id:pixel_5",
     showBackground = true,
     backgroundColor = 0xFF131517,
+    locale = "us",
 )
 @Composable
 private fun Preview3() {

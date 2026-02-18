@@ -7,7 +7,6 @@ import java.time.Instant
 @Serializable
 internal data class PopularListEntity(
     val list: CustomList,
-    val rank: Int,
     val createdAt: String,
 ) {
     companion object
@@ -15,12 +14,10 @@ internal data class PopularListEntity(
 
 internal fun PopularListEntity.Companion.create(
     list: CustomList,
-    rank: Int,
     createdAt: Instant,
 ): PopularListEntity {
     return PopularListEntity(
         list = list,
-        rank = rank,
         createdAt = createdAt.toString(),
     )
 }

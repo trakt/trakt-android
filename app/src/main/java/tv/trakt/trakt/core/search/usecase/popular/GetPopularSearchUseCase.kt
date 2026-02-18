@@ -3,7 +3,7 @@ package tv.trakt.trakt.core.search.usecase.popular
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.toInstant
-import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
@@ -15,7 +15,8 @@ import tv.trakt.trakt.core.search.data.local.popular.PopularSearchLocalDataSourc
 import tv.trakt.trakt.core.search.data.remote.SearchRemoteDataSource
 import java.time.temporal.ChronoUnit.HOURS
 
-private const val TRENDING_SEARCH_LIMIT = 36
+private const val POPULAR_SEARCH_LIMIT = 36
+private const val POPULAR_VALID_PERIOD_HOURS = 12L
 
 internal class GetPopularSearchUseCase(
     private val remoteSource: SearchRemoteDataSource,
@@ -24,18 +25,19 @@ internal class GetPopularSearchUseCase(
     suspend fun isLocalShowsValid(): Boolean {
         val local = localSource.getShows()
         val timestamp = local.firstOrNull()?.createdAt?.toInstant()
-        return timestamp?.plus(12, HOURS)?.isAfter(nowUtcInstant()) == true
+        return timestamp?.plus(POPULAR_VALID_PERIOD_HOURS, HOURS)?.isAfter(nowUtcInstant()) == true
     }
 
     suspend fun isLocalMoviesValid(): Boolean {
         val local = localSource.getMovies()
         val timestamp = local.firstOrNull()?.createdAt?.toInstant()
-        return timestamp?.plus(12, HOURS)?.isAfter(nowUtcInstant()) == true
+        return timestamp?.plus(POPULAR_VALID_PERIOD_HOURS, HOURS)?.isAfter(nowUtcInstant()) == true
     }
 
     suspend fun isLocalListsValid(): Boolean {
-        // TODO
-        return false
+        val local = localSource.getLists()
+        val timestamp = local.firstOrNull()?.createdAt?.toInstant()
+        return timestamp?.plus(POPULAR_VALID_PERIOD_HOURS, HOURS)?.isAfter(nowUtcInstant()) == true
     }
 
     suspend fun getLocalShows(): List<PopularShowEntity> {
@@ -47,12 +49,12 @@ internal class GetPopularSearchUseCase(
     }
 
     suspend fun getLocalLists(): List<PopularListEntity> {
-        return emptyList()
+        return localSource.getLists()
     }
 
     suspend fun getShows(): List<PopularShowEntity> {
         return remoteSource.getPopularShows(
-            limit = TRENDING_SEARCH_LIMIT,
+            limit = POPULAR_SEARCH_LIMIT,
         ).asyncMap {
             PopularShowEntity.create(
                 show = Show.fromDto(it.show!!),
@@ -66,7 +68,7 @@ internal class GetPopularSearchUseCase(
 
     suspend fun getMovies(): List<PopularMovieEntity> {
         return remoteSource.getPopularMovies(
-            limit = TRENDING_SEARCH_LIMIT,
+            limit = POPULAR_SEARCH_LIMIT,
         ).asyncMap {
             PopularMovieEntity.create(
                 movie = Movie.fromDto(it.movie!!),
@@ -80,15 +82,14 @@ internal class GetPopularSearchUseCase(
 
     suspend fun getLists(): List<PopularListEntity> {
         return remoteSource.getPopularLists(
-            limit = TRENDING_SEARCH_LIMIT,
+            limit = POPULAR_SEARCH_LIMIT,
         ).asyncMap {
             PopularListEntity.create(
-                list = PreviewData.customList1,
-                rank = it.count,
+                list = CustomList.fromDto(it.list!!),
                 createdAt = nowUtcInstant(),
             )
         }.also {
-//            localSource.setLists(it)
+            localSource.setLists(it)
         }
     }
 }

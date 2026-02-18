@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.search
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
@@ -21,6 +22,7 @@ internal data class SearchState(
     val navigateShow: Show? = null,
     val navigateMovie: Movie? = null,
     val navigatePerson: Person? = null,
+    val navigateList: CustomList? = null,
     val collection: UserCollectionState = UserCollectionState.Default,
     val user: UserState = UserState(),
     val searching: Boolean = false,
@@ -41,6 +43,5 @@ internal data class SearchState(
     enum class State {
         IDLE,
         LOADING,
-        SEARCH_RESULTS,
     }
 }

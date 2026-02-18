@@ -3,8 +3,10 @@ package tv.trakt.trakt.core.main.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import tv.trakt.trakt.common.model.Images.Size
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.MediaType.SHOW
+import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.billing.navigation.billingScreen
 import tv.trakt.trakt.core.billing.navigation.navigateToBilling
 import tv.trakt.trakt.core.calendar.navigation.calendarScreen
@@ -293,6 +295,16 @@ internal fun NavGraphBuilder.searchScreens(
             onNavigateToShow = { navigateToShow(it) },
             onNavigateToMovie = { navigateToMovie(it) },
             onNavigateToPerson = { navigateToPerson(it, null, null) },
+            onNavigateToList = {
+                navigateToListDetails(
+                    listId = it.ids.trakt.value,
+                    listTitle = it.name,
+                    listDescription = it.description,
+                    mediaId = 1.toTraktId(),
+                    mediaType = MediaType.SHOW,
+                    mediaImage = null,
+                )
+            },
         )
     }
 }

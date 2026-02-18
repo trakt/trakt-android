@@ -75,6 +75,7 @@ internal val searchModule = module {
     factory {
         PostUserSearchUseCase(
             remoteSource = get(),
+            sessionManager = get(),
         )
     }
 

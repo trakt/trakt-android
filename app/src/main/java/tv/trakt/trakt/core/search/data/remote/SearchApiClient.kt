@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.search.data.remote
 
+import io.ktor.client.call.body
 import org.openapitools.client.apis.SearchApi
 import org.openapitools.client.models.PostSearchRecentAddRequest
 import org.openapitools.client.models.PostSearchRecentAddRequest.Type
@@ -148,8 +149,15 @@ internal class SearchApiClient(
         return response.body()
     }
 
-    override suspend fun getPopularLists(limit: Int): List<TrendingSearchDto> {
-        return emptyList()
+    override suspend fun getPopularLists(limit: Int): List<SearchItemDto> {
+        return api.getSearchQuery(
+            type = "list",
+            query = null,
+            page = 1,
+            limit = limit,
+            extended = "full,cloud9,colors",
+            engine = "typesense",
+        ).response.body()
     }
 
     override suspend fun postShowUserSearch(
@@ -174,6 +182,32 @@ internal class SearchApiClient(
                 query = query,
                 id = movieId.value,
                 type = Type.MOVIES,
+            ),
+        )
+    }
+
+    override suspend fun postPersonUserSearch(
+        personId: TraktId,
+        query: String,
+    ) {
+        authorizedApi.postSearchRecentAdd(
+            postSearchRecentAddRequest = PostSearchRecentAddRequest(
+                query = query,
+                id = personId.value,
+                type = Type.PEOPLE,
+            ),
+        )
+    }
+
+    override suspend fun postListUserSearch(
+        listId: TraktId,
+        query: String,
+    ) {
+        authorizedApi.postSearchRecentAdd(
+            postSearchRecentAddRequest = PostSearchRecentAddRequest(
+                query = query,
+                id = listId.value,
+                type = Type.LISTS,
             ),
         )
     }

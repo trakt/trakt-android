@@ -13,11 +13,13 @@ import kotlinx.serialization.decodeFromByteArray
 import kotlinx.serialization.encodeToByteArray
 import kotlinx.serialization.protobuf.ProtoBuf
 import timber.log.Timber
+import tv.trakt.trakt.core.search.data.local.model.PopularListEntity
 import tv.trakt.trakt.core.search.data.local.model.PopularMovieEntity
 import tv.trakt.trakt.core.search.data.local.model.PopularShowEntity
 
 private val KEY_POPULAR_SEARCH_SHOWS = byteArrayPreferencesKey("key_popular_search_shows")
 private val KEY_POPULAR_SEARCH_MOVIES = byteArrayPreferencesKey("key_popular_search_movies")
+private val KEY_POPULAR_SEARCH_LISTS = byteArrayPreferencesKey("key_popular_search_lists")
 
 @OptIn(ExperimentalSerializationApi::class)
 internal class PopularSearchStorage(
@@ -28,6 +30,7 @@ internal class PopularSearchStorage(
 
     private val showsCache = mutableMapOf<Int, PopularShowEntity>()
     private val moviesCache = mutableMapOf<Int, PopularMovieEntity>()
+    private val listsCache = mutableMapOf<Int, PopularListEntity>()
 
     override suspend fun setShows(shows: List<PopularShowEntity>) {
         ensureInitialized()
@@ -71,10 +74,32 @@ internal class PopularSearchStorage(
         }
     }
 
+    override suspend fun setLists(lists: List<PopularListEntity>) {
+        ensureInitialized()
+        mutex.withLock {
+            listsCache.clear()
+            lists.associateByTo(listsCache) {
+                it.list.ids.trakt.value
+            }
+
+            dataStore.edit {
+                it[KEY_POPULAR_SEARCH_LISTS] = ProtoBuf.encodeToByteArray(listsCache)
+            }
+        }
+    }
+
+    override suspend fun getLists(): List<PopularListEntity> {
+        ensureInitialized()
+        return mutex.withLock {
+            listsCache.values.toList()
+        }
+    }
+
     override suspend fun clear() {
         mutex.withLock {
             showsCache.clear()
             moviesCache.clear()
+            listsCache.clear()
             dataStore.edit { it.clear() }
         }
     }
@@ -90,6 +115,9 @@ internal class PopularSearchStorage(
                             }
                             get(KEY_POPULAR_SEARCH_MOVIES)?.let {
                                 moviesCache.putAll(ProtoBuf.decodeFromByteArray(it))
+                            }
+                            get(KEY_POPULAR_SEARCH_LISTS)?.let {
+                                listsCache.putAll(ProtoBuf.decodeFromByteArray(it))
                             }
                         }
                     } catch (exception: SerializationException) {

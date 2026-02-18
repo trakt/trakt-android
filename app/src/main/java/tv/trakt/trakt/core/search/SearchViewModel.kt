@@ -25,6 +25,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
@@ -68,6 +69,7 @@ internal class SearchViewModel(
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val navigatePerson = MutableStateFlow(initialState.navigatePerson)
+    private val navigateList = MutableStateFlow(initialState.navigateList)
     private val searchingState = MutableStateFlow(initialState.searching)
     private val userState = MutableStateFlow(initialState.user)
     private val errorState = MutableStateFlow(initialState.error)
@@ -143,6 +145,9 @@ internal class SearchViewModel(
                 }
                 localPeople
             }
+            val listsAsync = async {
+                getPopularSearchesUseCase.getLocalLists()
+            }
 
             val filter = inputState.value.filter
             val shows = when (filter) {
@@ -157,8 +162,22 @@ internal class SearchViewModel(
                 in arrayOf(PEOPLE) -> peopleAsync.await()
                 else -> emptyList()
             }
+            val lists = when (filter) {
+                in arrayOf(LISTS) -> listsAsync.await()
+                else -> emptyList()
+            }
 
             val results = when (filter) {
+                LISTS -> {
+                    SearchResult(
+                        items = lists
+                            .asyncMap {
+                                SearchItem.List(it.list)
+                            }
+                            .toImmutableList(),
+                    )
+                }
+
                 PEOPLE -> {
                     SearchResult(
                         items = people
@@ -261,10 +280,7 @@ internal class SearchViewModel(
                     SearchResult(
                         items = lists
                             .asyncMap {
-                                SearchItem.List(
-                                    rank = 0L,
-                                    list = it.list,
-                                )
+                                SearchItem.List(it.list)
                             }
                             .toImmutableList(),
                     )
@@ -324,6 +340,7 @@ internal class SearchViewModel(
             } else {
                 initialJob = viewModelScope.launch {
                     try {
+                        popularResultState.update { null }
                         loadLocalPopularSearches()
                     } catch (error: Exception) {
                         error.rethrowCancellation {
@@ -405,7 +422,8 @@ internal class SearchViewModel(
     fun navigateToShow(show: Show) {
         if (navigateShow.value != null ||
             navigateMovie.value != null ||
-            navigatePerson.value != null
+            navigatePerson.value != null ||
+            navigateList.value != null
         ) {
             return
         }
@@ -420,7 +438,8 @@ internal class SearchViewModel(
     fun navigateToMovie(movie: Movie) {
         if (navigateShow.value != null ||
             navigateMovie.value != null ||
-            navigatePerson.value != null
+            navigatePerson.value != null ||
+            navigateList.value != null
         ) {
             return
         }
@@ -435,7 +454,8 @@ internal class SearchViewModel(
     fun navigateToPerson(person: Person) {
         if (navigateShow.value != null ||
             navigateMovie.value != null ||
-            navigatePerson.value != null
+            navigatePerson.value != null ||
+            navigateList.value != null
         ) {
             return
         }
@@ -443,13 +463,30 @@ internal class SearchViewModel(
         viewModelScope.launch {
             peopleLocalDataSource.upsertPeople(listOf(person))
             navigatePerson.update { person }
+            postUserSearch(person)
+        }
+    }
+
+    fun navigateToList(list: CustomList) {
+        if (navigateShow.value != null ||
+            navigateMovie.value != null ||
+            navigatePerson.value != null ||
+            navigateList.value != null
+        ) {
+            return
+        }
+
+        viewModelScope.launch {
+//            peopleLocalDataSource.upsertPeople(listOf(person))
+            navigateList.update { list }
+            postUserSearch(list)
         }
     }
 
     private fun postUserSearch(show: Show) {
         viewModelScope.launch {
             try {
-                if (inputState.value.query.isBlank() || !sessionManager.isAuthenticated()) {
+                if (inputState.value.query.isBlank()) {
                     return@launch
                 }
                 postUserSearchUseCase.postShowUserSearch(
@@ -465,7 +502,7 @@ internal class SearchViewModel(
     private fun postUserSearch(movie: Movie) {
         viewModelScope.launch {
             try {
-                if (inputState.value.query.isBlank() || !sessionManager.isAuthenticated()) {
+                if (inputState.value.query.isBlank()) {
                     return@launch
                 }
                 postUserSearchUseCase.postMovieUserSearch(
@@ -478,10 +515,43 @@ internal class SearchViewModel(
         }
     }
 
+    private fun postUserSearch(person: Person) {
+        viewModelScope.launch {
+            try {
+                if (inputState.value.query.isBlank()) {
+                    return@launch
+                }
+                postUserSearchUseCase.postPersonUserSearch(
+                    personId = person.ids.trakt,
+                    query = inputState.value.query,
+                )
+            } catch (error: Exception) {
+                Timber.recordError(error)
+            }
+        }
+    }
+
+    private fun postUserSearch(list: CustomList) {
+        viewModelScope.launch {
+            try {
+                if (inputState.value.query.isBlank()) {
+                    return@launch
+                }
+                postUserSearchUseCase.postListUserSearch(
+                    listId = list.ids.trakt,
+                    query = inputState.value.query,
+                )
+            } catch (error: Exception) {
+                Timber.recordError(error)
+            }
+        }
+    }
+
     fun clearNavigation() {
         navigateShow.update { null }
         navigateMovie.update { null }
         navigatePerson.update { null }
+        navigateList.update { null }
     }
 
     private fun clearJobs() {
@@ -502,6 +572,7 @@ internal class SearchViewModel(
         navigateShow,
         navigateMovie,
         navigatePerson,
+        navigateList,
         searchingState,
         userState,
         errorState,
@@ -515,9 +586,10 @@ internal class SearchViewModel(
             navigateShow = state[5] as Show?,
             navigateMovie = state[6] as Movie?,
             navigatePerson = state[7] as Person?,
-            searching = state[8] as Boolean,
-            user = state[9] as UserState,
-            error = state[10] as Exception?,
+            navigateList = state[8] as CustomList?,
+            searching = state[9] as Boolean,
+            user = state[10] as UserState,
+            error = state[11] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

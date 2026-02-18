@@ -436,6 +436,7 @@ private fun ContentFilters(
     device = "id:pixel_5",
     showBackground = true,
     backgroundColor = 0xFF131517,
+    locale = "en",
 )
 @Composable
 private fun Preview() {
