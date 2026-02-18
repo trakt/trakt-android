@@ -1,14 +1,22 @@
 package tv.trakt.trakt.common.helpers.extensions
 
+import android.graphics.Typeface
 import android.icu.text.MeasureFormat
 import android.icu.text.MeasureFormat.FormatWidth
 import android.icu.util.Measure
 import android.icu.util.MeasureUnit
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
+import android.text.style.UnderlineSpan
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.W500
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import java.util.Locale
 import java.util.Locale.ROOT
@@ -77,8 +85,40 @@ fun String.highlightMentions(color: Color): AnnotatedString {
     }
 }
 
+/**
+ * Converts the first letter of each word in the string to uppercase.
+ * For example, "hello world" becomes "Hello World".
+ */
 fun String.uppercaseWords(): String {
     return this.split(" ").joinToString(" ") { word ->
         word.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+    }
+}
+
+/**
+ * Converts an Android Spanned string to a Compose AnnotatedString,
+ * preserving styles such as bold, italic, underline, and foreground color.
+ */
+fun Spanned.toAnnotatedString(): AnnotatedString {
+    return buildAnnotatedString {
+        val spanned = this@toAnnotatedString
+        append(spanned.toString())
+        getSpans(0, spanned.length, Any::class.java).forEach { span ->
+            val start = getSpanStart(span)
+            val end = getSpanEnd(span)
+            when (span) {
+                is StyleSpan -> when (span.style) {
+                    Typeface.BOLD -> addStyle(SpanStyle(fontWeight = FontWeight.Bold), start, end)
+                    Typeface.ITALIC -> addStyle(SpanStyle(fontStyle = FontStyle.Italic), start, end)
+                    Typeface.BOLD_ITALIC -> addStyle(
+                        SpanStyle(fontWeight = FontWeight.Bold, fontStyle = FontStyle.Italic),
+                        start,
+                        end,
+                    )
+                }
+                is UnderlineSpan -> addStyle(SpanStyle(textDecoration = TextDecoration.Underline), start, end)
+                is ForegroundColorSpan -> addStyle(SpanStyle(color = Color(span.foregroundColor)), start, end)
+            }
+        }
     }
 }

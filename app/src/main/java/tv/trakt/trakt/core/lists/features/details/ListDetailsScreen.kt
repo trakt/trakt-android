@@ -46,6 +46,7 @@ import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import androidx.core.text.HtmlCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
@@ -55,6 +56,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.toAnnotatedString
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.sorting.SortTypeList
 import tv.trakt.trakt.common.model.sorting.Sorting
@@ -305,6 +307,14 @@ private fun ContentList(
         (subtitle?.length ?: 0) <= LIST_DESCRIPTION_LIMIT
     }
 
+    var subtitleCollapsed by remember { mutableStateOf(true) }
+
+    val subtitleHtmlText = remember(subtitle) {
+        HtmlCompat
+            .fromHtml(subtitle ?: "", HtmlCompat.FROM_HTML_MODE_LEGACY)
+            .toAnnotatedString()
+    }
+
     LazyColumn(
         state = listState,
         verticalArrangement = spacedBy(0.dp),
@@ -323,23 +333,22 @@ private fun ContentList(
 
         if (!subtitleVisible) {
             item {
-                var collapsed by remember { mutableStateOf(true) }
                 Text(
-                    text = subtitle ?: "",
+                    text = subtitleHtmlText,
                     color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.meta.copy(
                         fontWeight = W400,
                         lineHeight = 1.1.em,
                     ),
                     maxLines = when {
-                        collapsed -> 3
+                        subtitleCollapsed -> 3
                         else -> Int.MAX_VALUE
                     },
                     overflow = Ellipsis,
                     modifier = Modifier
                         .padding(bottom = 10.dp)
                         .onClick {
-                            collapsed = !collapsed
+                            subtitleCollapsed = !subtitleCollapsed
                         },
                 )
             }
