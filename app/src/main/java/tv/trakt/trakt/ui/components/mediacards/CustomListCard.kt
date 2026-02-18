@@ -130,10 +130,11 @@ private fun CustomListContent(
                 val availableWidth = maxWidth
                 val cardWidth = availableHeight * VerticalImageAspectRatio
                 val imageCount = images.size
-                val offset = if (imageCount > 1) {
-                    (availableWidth - cardWidth) / (imageCount - 1)
-                } else {
-                    0.dp
+
+                val offset = when {
+                    imageCount <= 1 -> 0.dp
+                    imageCount <= 4 -> cardWidth * 0.66f
+                    else -> (availableWidth - cardWidth) / (imageCount - 1)
                 }
 
                 images.forEachIndexed { index, url ->
@@ -291,6 +292,8 @@ private fun Preview() {
                         type = Type.ALL,
                         images = Images(
                             posters = listOf(
+                                "https://trakt.tv/images/posters/000/000/001/thumb/1.jpg",
+                                "https://trakt.tv/images/posters/000/000/001/thumb/1.jpg",
                                 "https://trakt.tv/images/posters/000/000/001/thumb/1.jpg",
                             ).toImmutableList(),
                         ),
