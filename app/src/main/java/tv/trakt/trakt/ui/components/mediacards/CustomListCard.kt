@@ -173,9 +173,7 @@ private fun CustomListHeader(
             modifier = Modifier.weight(1F, false),
         ) {
             Box(
-                modifier =
-                    Modifier
-                        .size(36.dp),
+                modifier = Modifier.size(36.dp),
             ) {
                 val avatarBorder = if (list.user.isAnyVip) TraktTheme.colors.vipAccent else Color.Transparent
                 val avatar = list.user.images?.avatar?.full

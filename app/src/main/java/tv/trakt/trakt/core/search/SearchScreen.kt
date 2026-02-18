@@ -413,8 +413,8 @@ private fun LazyGridScope.loadingSkeletonsItems(isLists: Boolean = false) {
         ) {
             CustomListSkeletonCard(
                 modifier = Modifier
-                    .aspectRatio(HorizontalImageAspectRatio)
                     .padding(bottom = 3.dp)
+                    .aspectRatio(HorizontalImageAspectRatio)
                     .animateItem(
                         fadeInSpec = fadeSpec,
                         fadeOutSpec = fadeSpec,
