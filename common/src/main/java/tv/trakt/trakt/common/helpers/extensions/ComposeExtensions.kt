@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:filename")
+
 package tv.trakt.trakt.common.helpers.extensions
 
 import androidx.compose.ui.tooling.preview.Preview
