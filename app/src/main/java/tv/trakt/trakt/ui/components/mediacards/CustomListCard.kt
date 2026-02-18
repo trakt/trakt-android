@@ -5,13 +5,13 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -39,15 +39,18 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
+import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.CustomList.Type
+import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
+import tv.trakt.trakt.ui.theme.VerticalImageAspectRatio
 
 @Composable
 internal fun CustomListCard(
@@ -94,6 +97,10 @@ private fun CustomListContent(
     likesVisible: Boolean,
     onClick: () -> Unit,
 ) {
+    val images = remember(list.images?.posters) {
+        list.images?.getPostersUrl()?.take(8)
+    }
+
     Column(
         verticalArrangement = spacedBy(0.dp, Alignment.CenterVertically),
         modifier = Modifier
@@ -106,37 +113,44 @@ private fun CustomListContent(
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
-        val images =
-            remember(list.images?.posters?.size) {
-                list.images?.getPostersUrl()?.take(8)
-            }
-
-        images?.let {
-            Box(
+        if (images != null) {
+            BoxWithConstraints(
                 modifier = Modifier
+                    .weight(1f)
                     .onClick(onClick = onClick)
+                    .fillMaxWidth()
                     .padding(
                         top = 16.dp,
                         start = 16.dp,
                         end = 16.dp,
                     ),
             ) {
-                it.forEachIndexed { index, url ->
+                val availableHeight = maxHeight
+                val availableWidth = maxWidth
+                val cardWidth = availableHeight * VerticalImageAspectRatio
+                val imageCount = images.size
+                val offset = if (imageCount > 1) {
+                    (availableWidth - cardWidth) / (imageCount - 1)
+                } else {
+                    0.dp
+                }
+
+                images.forEachIndexed { index, url ->
                     VerticalMediaCard(
                         title = "",
                         imageUrl = url,
-                        width = 70.dp,
-                        corner = 8.dp,
+                        width = cardWidth,
+                        corner = 12.dp,
                         enabled = false,
                         more = false,
                         modifier = Modifier
-                            .padding(start = (32 * index).dp),
+                            .padding(start = offset * index),
                     )
                 }
             }
+        } else {
+            Spacer(modifier = Modifier.weight(1F))
         }
-
-        Spacer(modifier = Modifier.weight(1F))
     }
 }
 
@@ -267,15 +281,20 @@ private fun Preview() {
                     ),
                     likesVisible = true,
                     modifier = Modifier
-                        .height(TraktTheme.size.customListCardSize)
                         .aspectRatio(HorizontalImageAspectRatio),
                     onClick = {},
                 )
 
                 CustomListCardContent(
-                    list = PreviewData.customList1.copy(type = Type.ALL),
+                    list = PreviewData.customList1.copy(
+                        type = Type.ALL,
+                        images = Images(
+                            posters = listOf(
+                                "https://trakt.tv/images/posters/000/000/001/thumb/1.jpg",
+                            ).toImmutableList(),
+                        ),
+                    ),
                     modifier = Modifier
-                        .height(TraktTheme.size.customListCardSize)
                         .aspectRatio(HorizontalImageAspectRatio),
                     onClick = {},
                 )
