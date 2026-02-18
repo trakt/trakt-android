@@ -32,6 +32,26 @@ internal class SearchApiClient(
         return response.body()
     }
 
+    override suspend fun getLists(
+        query: String,
+        limit: Int,
+        extended: String,
+    ): List<SearchItemDto> {
+        if (query.trim().isBlank()) {
+            return emptyList()
+        }
+        val response = api.getSearchQuery(
+            type = "list",
+            query = query,
+            page = 1,
+            limit = limit,
+            extended = extended,
+            engine = "typesense",
+        )
+
+        return response.body()
+    }
+
     override suspend fun getShows(
         query: String,
         limit: Int,

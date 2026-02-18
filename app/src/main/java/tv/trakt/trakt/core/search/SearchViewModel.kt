@@ -380,7 +380,7 @@ internal class SearchViewModel(
                     SHOWS -> getSearchResultsUseCase.getShowsSearchResults(query)
                     MOVIES -> getSearchResultsUseCase.getMoviesSearchResults(query)
                     PEOPLE -> getSearchResultsUseCase.getPeopleSearchResults(query)
-                    LISTS -> TODO()
+                    LISTS -> getSearchResultsUseCase.getListsSearchResults(query)
                 }
 
                 searchResultState.update {
@@ -401,6 +401,10 @@ internal class SearchViewModel(
                                     it.person != null -> SearchItem.Person(
                                         rank = it.score,
                                         person = Person.fromDto(it.person!!),
+                                    )
+
+                                    it.list != null -> SearchItem.List(
+                                        list = CustomList.fromDto(it.list!!),
                                     )
 
                                     else -> throw Error("Unexpected null show and movie")

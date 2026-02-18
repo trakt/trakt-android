@@ -32,6 +32,12 @@ internal interface SearchRemoteDataSource {
         extended: String = "full,cloud9,colors,streaming_ids",
     ): List<SearchItemDto>
 
+    suspend fun getLists(
+        query: String,
+        limit: Int,
+        extended: String = "full,cloud9",
+    ): List<SearchItemDto>
+
     suspend fun getPopularShows(limit: Int): List<TrendingSearchDto>
 
     suspend fun getPopularMovies(limit: Int): List<TrendingSearchDto>

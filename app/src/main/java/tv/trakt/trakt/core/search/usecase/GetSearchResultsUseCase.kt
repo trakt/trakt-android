@@ -87,6 +87,13 @@ internal class GetSearchResultsUseCase(
         return remoteSource.getPeople(query, DEFAULT_SEARCH_LIMIT)
     }
 
+    suspend fun getListsSearchResults(query: String): List<SearchItemDto> {
+        if (query.trim().isBlank()) {
+            return emptyList()
+        }
+        return remoteSource.getLists(query, DEFAULT_SEARCH_LIMIT)
+    }
+
     private fun getDistinctKey(dto: SearchItemDto): String {
         val showId = dto.show?.ids?.trakt
         val movieId = dto.movie?.ids?.trakt

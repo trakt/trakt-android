@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
@@ -55,7 +56,9 @@ import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.mediacards.skeletons.CustomListSkeletonCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
+import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val fadeSpec = tween<Float>(200)
@@ -359,9 +362,18 @@ private fun LazyGridScope.searchingContent(
 
     when {
         resultItems.isNotEmpty() -> {
+            val isLists = state.input.filter == LISTS
             items(
                 count = resultItems.size,
                 key = { index -> resultItems[index].key },
+                span = when {
+                    isLists -> {
+                        { GridItemSpan(maxLineSpan) }
+                    }
+                    else -> {
+                        null
+                    }
+                },
             ) { index ->
                 val item = resultItems[index]
                 SearchGridItem(
@@ -376,7 +388,7 @@ private fun LazyGridScope.searchingContent(
                     onPersonClick = onPersonClick,
                     onListClick = onListClick,
                     modifier = Modifier
-                        .padding(bottom = 6.dp)
+                        .padding(bottom = if (isLists) 3.dp else 6.dp)
                         .animateItem(
                             fadeInSpec = fadeSpec,
                             fadeOutSpec = fadeSpec,
@@ -386,33 +398,42 @@ private fun LazyGridScope.searchingContent(
         }
 
         else -> {
-            loadingSkeletonsItems()
+            loadingSkeletonsItems(
+                isLists = (state.input.filter == LISTS),
+            )
         }
     }
 }
 
 private fun LazyGridScope.loadingSkeletonsItems(isLists: Boolean = false) {
-    items(
-        count = 12,
-        span = when {
-            isLists -> {
-                { GridItemSpan(maxLineSpan) }
-            }
-            else -> {
-                null
-            }
-        },
-    ) {
-        VerticalMediaSkeletonCard(
-            chipRatio = 0.66F,
-            chipSpacing = 8.dp,
-            modifier = Modifier
-                .padding(bottom = 9.25.dp)
-                .animateItem(
-                    fadeInSpec = fadeSpec,
-                    fadeOutSpec = fadeSpec,
-                ),
-        )
+    if (isLists) {
+        items(
+            count = 12,
+            span = { GridItemSpan(maxLineSpan) },
+        ) {
+            CustomListSkeletonCard(
+                modifier = Modifier
+                    .aspectRatio(HorizontalImageAspectRatio)
+                    .padding(bottom = 3.dp)
+                    .animateItem(
+                        fadeInSpec = fadeSpec,
+                        fadeOutSpec = fadeSpec,
+                    ),
+            )
+        }
+    } else {
+        items(count = 12) {
+            VerticalMediaSkeletonCard(
+                chipRatio = 0.66F,
+                chipSpacing = 8.dp,
+                modifier = Modifier
+                    .padding(bottom = 9.25.dp)
+                    .animateItem(
+                        fadeInSpec = fadeSpec,
+                        fadeOutSpec = fadeSpec,
+                    ),
+            )
+        }
     }
 }
 

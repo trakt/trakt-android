@@ -45,7 +45,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -56,6 +55,7 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.ui.theme.colors.Shade940
@@ -358,7 +358,7 @@ internal fun PanelMediaCard(
 }
 
 @OptIn(ExperimentalCoilApi::class)
-@Preview
+@DevicePreview
 @Composable
 private fun PosterPreview() {
     TraktTheme {
@@ -378,7 +378,7 @@ private fun PosterPreview() {
     }
 }
 
-@Preview
+@DevicePreview
 @Composable
 private fun PosterPreviewPlaceholder() {
     TraktTheme {
@@ -394,7 +394,7 @@ private fun PosterPreviewPlaceholder() {
     }
 }
 
-@Preview
+@DevicePreview
 @Composable
 private fun PosterPreviewChipPlaceholder() {
     TraktTheme {

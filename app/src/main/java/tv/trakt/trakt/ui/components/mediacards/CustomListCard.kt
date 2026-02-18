@@ -31,9 +31,10 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight.Companion.W700
+import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
@@ -201,29 +202,29 @@ private fun CustomListHeader(
             }
 
             Column(
-                verticalArrangement = spacedBy(2.dp),
+                verticalArrangement = spacedBy(1.dp),
             ) {
                 Text(
                     text = list.name,
-                    style = TraktTheme.typography.paragraph,
+                    style = TraktTheme.typography.cardTitle.copy(fontSize = 16.sp, letterSpacing = 0.1.sp),
                     color = TraktTheme.colors.textPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
                 Row(
-                    horizontalArrangement = spacedBy(4.dp),
+                    horizontalArrangement = spacedBy(3.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         text = stringResource(R.string.text_by),
-                        style = TraktTheme.typography.paragraphSmall,
+                        style = TraktTheme.typography.cardSubtitle.copy(fontSize = 12.sp),
                         color = TraktTheme.colors.textSecondary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )
                     Text(
                         text = list.user.displayName,
-                        style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
+                        style = TraktTheme.typography.cardSubtitle.copy(fontSize = 12.sp, fontWeight = W500),
                         color = TraktTheme.colors.textPrimary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
