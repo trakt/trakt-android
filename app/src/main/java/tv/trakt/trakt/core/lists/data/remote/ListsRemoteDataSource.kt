@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.lists.data.remote
 
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.ListMediaItemDto
 import tv.trakt.trakt.common.networking.ListMovieItemDto
@@ -43,21 +44,21 @@ internal interface ListsRemoteDataSource {
     suspend fun getMediaListItems(
         listId: TraktId,
         extended: String?,
-        limit: String?,
         sorting: Sorting,
+        pagination: Pagination,
     ): List<ListMediaItemDto>
 
     suspend fun getShowListItems(
         listId: TraktId,
         extended: String?,
-        limit: String?,
         sorting: Sorting,
+        pagination: Pagination,
     ): List<ListShowItemDto>
 
     suspend fun getMovieListItems(
         listId: TraktId,
         extended: String?,
-        limit: String?,
         sorting: Sorting,
+        pagination: Pagination,
     ): List<ListMovieItemDto>
 }

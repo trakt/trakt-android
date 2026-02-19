@@ -440,7 +440,7 @@ private fun ContentList(
     onBackClick: () -> Unit,
     onShareClick: () -> Unit,
     onMoreClick: () -> Unit,
-    onEndOfList: () -> Unit = {},
+    onEndOfList: () -> Unit,
 ) {
     val subtitleVisible = remember(subtitle) {
         (subtitle?.length ?: 0) <= LIST_DESCRIPTION_LIMIT

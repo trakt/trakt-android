@@ -9,6 +9,7 @@ import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInner
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
 import org.openapitools.client.models.PutUsersListsListUpdateRequest
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.ListMediaItemDto
 import tv.trakt.trakt.common.networking.ListMovieItemDto
@@ -169,8 +170,8 @@ internal class ListsApiClient(
     override suspend fun getMediaListItems(
         listId: TraktId,
         extended: String?,
-        limit: String?,
         sorting: Sorting,
+        pagination: Pagination,
     ): List<ListMediaItemDto> {
         val response = listsApi.getListsItemsMedia(
             id = listId.value.toString(),
@@ -182,8 +183,8 @@ internal class ListsApiClient(
             ratings = null,
             startDate = null,
             endDate = null,
-            page = null,
-            limit = limit,
+            page = pagination.page,
+            limit = pagination.limit.toString(),
             sortBy = sorting.type.value,
             sortHow = sorting.order.value,
             runtimes = null,
@@ -194,8 +195,8 @@ internal class ListsApiClient(
     override suspend fun getShowListItems(
         listId: TraktId,
         extended: String?,
-        limit: String?,
         sorting: Sorting,
+        pagination: Pagination,
     ): List<ListShowItemDto> {
         val response = listsApi.getListsItemsShow(
             id = listId.value.toString(),
@@ -207,8 +208,8 @@ internal class ListsApiClient(
             ratings = null,
             startDate = null,
             endDate = null,
-            page = null,
-            limit = limit,
+            page = pagination.page,
+            limit = pagination.limit.toString(),
             sortBy = sorting.type.value,
             sortHow = sorting.order.value,
             runtimes = null,
@@ -219,8 +220,8 @@ internal class ListsApiClient(
     override suspend fun getMovieListItems(
         listId: TraktId,
         extended: String?,
-        limit: String?,
         sorting: Sorting,
+        pagination: Pagination,
     ): List<ListMovieItemDto> {
         val response = listsApi.getListsItemsMovie(
             id = listId.value.toString(),
@@ -231,9 +232,9 @@ internal class ListsApiClient(
             ratings = null,
             startDate = null,
             endDate = null,
-            page = null,
             subgenres = null,
-            limit = limit,
+            page = pagination.page,
+            limit = pagination.limit.toString(),
             sortBy = sorting.type.value,
             sortHow = sorting.order.value,
             runtimes = null,

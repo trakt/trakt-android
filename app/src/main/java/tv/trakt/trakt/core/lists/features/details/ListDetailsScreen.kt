@@ -28,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -112,6 +113,7 @@ internal fun ListDetailsScreen(
     ListDetailsContent(
         state = state,
         modifier = modifier,
+        onLoadMoreData = viewModel::loadMoreData,
         onClick = {
             if (it.id == state.list?.mediaId) {
                 onNavigateBack()
@@ -188,6 +190,7 @@ internal fun ListDetailsContent(
     onSortTypeClick: () -> Unit = {},
     onSortOrderClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
+    onLoadMoreData: () -> Unit = {},
 ) {
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
@@ -230,6 +233,8 @@ internal fun ListDetailsContent(
             collectionState = state.collection,
             contentPadding = contentPadding,
             loading = state.loading.isLoading,
+            loadingMore = state.loadingMore.isLoading,
+            onEndOfList = onLoadMoreData,
             onClick = onClick,
             onLongClick = onLongClick,
             onFilterClick = onFilterClick,
@@ -296,12 +301,14 @@ private fun ContentList(
     listSorting: Sorting?,
     collectionState: UserCollectionState,
     loading: Boolean,
+    loadingMore: Boolean,
     onClick: (CustomListItem) -> Unit,
     onLongClick: (CustomListItem) -> Unit,
     onFilterClick: (MediaMode) -> Unit,
     onSortTypeClick: () -> Unit,
     onSortOrderClick: () -> Unit,
     onBackClick: () -> Unit,
+    onEndOfList: () -> Unit,
 ) {
     val subtitleVisible = remember(subtitle) {
         (subtitle?.length ?: 0) <= LIST_DESCRIPTION_LIMIT
@@ -313,6 +320,18 @@ private fun ContentList(
         HtmlCompat
             .fromHtml(subtitle ?: "", HtmlCompat.FROM_HTML_MODE_LEGACY)
             .toAnnotatedString()
+    }
+
+    val isScrolledToBottom by remember(listItems.size) {
+        derivedStateOf {
+            listState.firstVisibleItemIndex >= (listItems.size - 5)
+        }
+    }
+
+    LaunchedEffect(isScrolledToBottom) {
+        if (isScrolledToBottom) {
+            onEndOfList()
+        }
     }
 
     LazyColumn(
@@ -412,6 +431,17 @@ private fun ContentList(
 
         if (loading && listItems.isEmpty()) {
             items(5) {
+                PanelMediaSkeletonCard(
+                    modifier = Modifier
+                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
+                )
+            }
+        } else if (loadingMore && listItems.isNotEmpty()) {
+            items(1) {
                 PanelMediaSkeletonCard(
                     modifier = Modifier
                         .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)

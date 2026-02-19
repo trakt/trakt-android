@@ -27,8 +27,10 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.lists.ListsConfig.LISTS_ALL_LIMIT
 import tv.trakt.trakt.core.lists.features.details.ListDetailsState.ListDetailsInfo
 import tv.trakt.trakt.core.lists.features.details.navigation.ListsDetailsDestination
 import tv.trakt.trakt.core.lists.features.details.usecases.GetListItemsUseCase
@@ -36,6 +38,8 @@ import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.user.CollectionStateProvider
 import tv.trakt.trakt.core.user.UserCollectionState
+
+private const val PAGE_LIMIT = LISTS_ALL_LIMIT
 
 @OptIn(FlowPreview::class)
 internal class ListDetailsViewModel(
@@ -64,33 +68,50 @@ internal class ListDetailsViewModel(
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
+    private val loadingMoreState = MutableStateFlow(initialState.loadingMore)
     private val errorState = MutableStateFlow(initialState.error)
 
-    private var loadDataJob: Job? = null
+    private var dataJob: Job? = null
     private var processingJob: Job? = null
+
+    private var page: Int = 1
+    private var hasMoreData: Boolean = true
 
     init {
         loadData()
         observeCollection()
     }
 
-    fun loadData(ignoreErrors: Boolean = false) {
-        loadDataJob?.cancel()
-        loadDataJob = viewModelScope.launch {
+    fun loadData(
+        ignoreErrors: Boolean = false,
+        ignoreLoading: Boolean = false,
+    ) {
+        dataJob?.cancel()
+        dataJob = viewModelScope.launch {
             try {
+                page = 1
+                hasMoreData = true
+
                 if (loadEmptyIfNeeded()) {
                     return@launch
                 }
 
-                loadingState.update { LOADING }
+                if (!ignoreLoading) {
+                    loadingState.update { LOADING }
+                }
 
                 itemsState.update {
                     getListItemsUseCase.getItems(
                         listId = destination.listId.toTraktId(),
                         type = filterState.value.toMediaTypes(),
                         sorting = sortingState.value,
+                        pagination = Pagination(1, PAGE_LIMIT),
                     )
+                        .distinctBy { it.key }
+                        .toImmutableList()
                 }
+
+                hasMoreData = (itemsState.value?.size ?: 0) >= PAGE_LIMIT
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     if (!ignoreErrors) {
@@ -100,6 +121,7 @@ internal class ListDetailsViewModel(
                 }
             } finally {
                 loadingState.update { DONE }
+                dataJob = null
             }
         }
     }
@@ -119,6 +141,49 @@ internal class ListDetailsViewModel(
         }
 
         return false
+    }
+
+    fun loadMoreData() {
+        if (loadingState.value.isLoading ||
+            loadingMoreState.value.isLoading ||
+            dataJob?.isActive == true ||
+            !hasMoreData ||
+            (itemsState.value?.size ?: 0) < PAGE_LIMIT
+        ) {
+            return
+        }
+
+        dataJob = viewModelScope.launch {
+            try {
+                loadingMoreState.update { LOADING }
+                val newItems = getListItemsUseCase.getItems(
+                    listId = destination.listId.toTraktId(),
+                    type = filterState.value.toMediaTypes(),
+                    sorting = sortingState.value,
+                    pagination = Pagination(
+                        page + 1,
+                        PAGE_LIMIT,
+                    ),
+                )
+
+                itemsState.update { items ->
+                    items
+                        ?.plus(newItems)
+                        ?.distinctBy { it.key }
+                        ?.toImmutableList()
+                }
+
+                page += 1
+                hasMoreData = (newItems.size >= PAGE_LIMIT)
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                }
+            } finally {
+                loadingMoreState.update { DONE }
+                dataJob = null
+            }
+        }
     }
 
     fun setSorting(newSorting: Sorting) {
@@ -179,7 +244,7 @@ internal class ListDetailsViewModel(
     }
 
     override fun onCleared() {
-        loadDataJob?.cancel()
+        dataJob?.cancel()
         processingJob?.cancel()
         super.onCleared()
     }
@@ -187,6 +252,7 @@ internal class ListDetailsViewModel(
     @Suppress("UNCHECKED_CAST")
     val state = combine(
         loadingState,
+        loadingMoreState,
         listState,
         itemsState,
         filterState,
@@ -198,14 +264,15 @@ internal class ListDetailsViewModel(
     ) { state ->
         ListDetailsState(
             loading = state[0] as LoadingState,
-            list = state[1] as? ListDetailsInfo,
-            items = state[2] as? ImmutableList<CustomListItem>,
-            filter = state[3] as? MediaMode,
-            sorting = state[4] as Sorting,
-            collection = state[5] as UserCollectionState,
-            navigateShow = state[6] as? TraktId,
-            navigateMovie = state[7] as? TraktId,
-            error = state[8] as? Exception,
+            loadingMore = state[1] as LoadingState,
+            list = state[2] as ListDetailsInfo,
+            items = state[3] as ImmutableList<CustomListItem>?,
+            filter = state[4] as MediaMode?,
+            sorting = state[5] as Sorting,
+            collection = state[6] as UserCollectionState,
+            navigateShow = state[7] as TraktId?,
+            navigateMovie = state[8] as TraktId?,
+            error = state[9] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,
