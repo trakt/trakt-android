@@ -94,13 +94,14 @@ internal fun CheckInView(
     image: String? = null,
     title: String? = null,
     subtitle: String? = null,
+    expanded: Boolean = true,
     startedAt: Instant?,
     expiresAt: Instant?,
     onMediaClick: () -> Unit = {},
+    onCollapseClick: () -> Unit = {},
     onExpire: () -> Unit = {},
     onDismiss: () -> Unit = {},
 ) {
-    var expanded by rememberSaveable { mutableStateOf(true) }
     var confirmClose by remember { mutableStateOf(false) }
 
     var timestamp by remember { mutableStateOf(nowUtcInstant()) }
@@ -180,7 +181,7 @@ internal fun CheckInView(
                 durationSeconds = { secondsLeft },
                 durationMinutes = { minutesLeft },
                 onMediaClick = onMediaClick,
-                onCollapseClick = { expanded = false },
+                onCollapseClick = onCollapseClick,
                 onCloseClick = { confirmClose = true },
                 modifier = Modifier.padding(viewPadding),
             )
@@ -192,7 +193,7 @@ internal fun CheckInView(
                 totalDurationSeconds = { totalSeconds },
                 durationSeconds = { secondsLeft },
                 onMediaClick = onMediaClick,
-                onExpandClick = { expanded = true },
+                onExpandClick = onCollapseClick,
                 onCloseClick = { confirmClose = true },
                 modifier = Modifier.padding(collapsedViewPadding),
             )

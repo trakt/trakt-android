@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -39,6 +40,9 @@ internal fun ColumnScope.MainCheckInView(
         mutableStateOf(false)
     }
 
+    var isExpanded by rememberSaveable {
+        mutableStateOf(true)
+    }
     val isVisible = remember(state.checkIn, isExpired) {
         state.checkIn?.isActive() == true && !isExpired
     }
@@ -61,7 +65,11 @@ internal fun ColumnScope.MainCheckInView(
             image = state.checkIn?.image,
             startedAt = state.checkIn?.startedAt,
             expiresAt = state.checkIn?.expiresAt,
+            expanded = isExpanded,
             onMediaClick = onMediaClick,
+            onCollapseClick = {
+                isExpanded = !isExpanded
+            },
             onExpire = {
                 isExpired = true
             },
