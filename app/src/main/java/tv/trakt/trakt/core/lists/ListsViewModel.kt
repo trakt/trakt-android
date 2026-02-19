@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +18,9 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
+import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
@@ -26,14 +29,19 @@ import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.core.lists.ListsState.UserState
+import tv.trakt.trakt.core.lists.sections.liked.usecases.GetLikedListsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
+import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
+import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Liked
+import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Personal
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
 
 @OptIn(FlowPreview::class)
 internal class ListsViewModel(
     private val sessionManager: SessionManager,
     private val getPersonalListsUseCase: GetPersonalListsUseCase,
+    private val getLikedListsUseCase: GetLikedListsUseCase,
     private val localListsSource: ListsPersonalLocalDataSource,
     private val localListsItemsSource: ListsPersonalItemsLocalDataSource,
     analytics: Analytics,
@@ -41,10 +49,12 @@ internal class ListsViewModel(
     private val initialState = ListsState()
 
     private val userState = MutableStateFlow(initialState.user)
+    private val filterState = MutableStateFlow(initialState.filter)
     private val listsState = MutableStateFlow(initialState.lists)
     private val listsLoadingState = MutableStateFlow(initialState.listsLoading)
     private val errorState = MutableStateFlow(initialState.error)
 
+    private var dataJob: Job? = null
     private var listsOrder: List<Int>? = null
 
     init {
@@ -88,7 +98,10 @@ internal class ListsViewModel(
     private fun loadLocalData() {
         viewModelScope.launch {
             try {
-                val localLists = getPersonalListsUseCase.getLocalLists()
+                val localLists = when (filterState.value) {
+                    Personal -> getPersonalListsUseCase.getLocalLists()
+                    Liked -> getLikedListsUseCase.getLocalLists()
+                }
                 listsState.update { sortLists(localLists) }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -99,13 +112,18 @@ internal class ListsViewModel(
     }
 
     fun loadData() {
-        viewModelScope.launch {
+        dataJob?.cancel()
+        dataJob = viewModelScope.launch {
             if (loadEmptyIfNeeded()) {
                 return@launch
             }
 
             try {
-                val localLists = getPersonalListsUseCase.getLocalLists()
+                val localLists = when (filterState.value) {
+                    Personal -> getPersonalListsUseCase.getLocalLists()
+                    Liked -> getLikedListsUseCase.getLocalLists()
+                }
+
                 if (localLists.isNotEmpty()) {
                     listsState.update { sortLists(localLists) }
                     listsLoadingState.update { DONE }
@@ -113,18 +131,34 @@ internal class ListsViewModel(
                     listsLoadingState.update { LOADING }
                 }
 
-                val lists = getPersonalListsUseCase.getLists()
+                val lists = when (filterState.value) {
+                    Personal -> getPersonalListsUseCase.getLists()
+                    Liked -> getLikedListsUseCase.getLists()
+                }
                 listsState.update { sortLists(lists) }
 
                 listsOrder = listsState.value?.map { it.ids.trakt.value }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.value = error
+                    errorState.update { error }
+                    Timber.recordError(error)
                 }
             } finally {
                 listsLoadingState.update { DONE }
+                dataJob = null
             }
         }
+    }
+
+    fun setFilter(filter: PersonalListType) {
+        if (filterState.value == filter) {
+            return
+        }
+
+        filterState.update { filter }
+        listsState.update { null }
+
+        loadData()
     }
 
     private fun sortLists(lists: ImmutableList<CustomList>): ImmutableList<CustomList> {
@@ -158,17 +192,24 @@ internal class ListsViewModel(
         return false
     }
 
+    override fun onCleared() {
+        dataJob?.cancel()
+        super.onCleared()
+    }
+
     val state: StateFlow<ListsState> = combine(
         userState,
+        filterState,
         listsState,
         listsLoadingState,
         errorState,
-    ) { s1, s2, s3, s4 ->
+    ) { s1, s2, s3, s4, s5 ->
         ListsState(
             user = s1,
-            lists = s2,
-            listsLoading = s3,
-            error = s4,
+            filter = s2,
+            lists = s3,
+            listsLoading = s4,
+            error = s5,
         )
     }.stateIn(
         scope = viewModelScope,

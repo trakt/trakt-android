@@ -6,11 +6,10 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,12 +17,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -31,7 +32,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalUriHandler
@@ -39,6 +39,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.firebase.Firebase
@@ -47,11 +48,17 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_3
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.home.views.HomeEmptyView
+import tv.trakt.trakt.core.lists.sections.liked.ListsLikedView
 import tv.trakt.trakt.core.lists.sections.personal.ListsPersonalView
+import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
+import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Liked
+import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Personal
+import tv.trakt.trakt.core.lists.sections.personal.ui.PersonalListsFilters
 import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistView
 import tv.trakt.trakt.core.lists.sheets.CreateListSheet
 import tv.trakt.trakt.core.lists.sheets.EditListSheet
@@ -59,8 +66,7 @@ import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
-import tv.trakt.trakt.ui.components.TraktHeader
-import tv.trakt.trakt.ui.components.buttons.TertiaryButton
+import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
 import tv.trakt.trakt.ui.components.vip.VipBanner
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -74,7 +80,8 @@ internal fun ListsScreen(
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToWatchlist: () -> Unit,
-    onNavigateToList: (CustomList) -> Unit,
+    onNavigateToPersonalList: (CustomList) -> Unit,
+    onNavigateToCustomList: (CustomList) -> Unit,
     onNavigateToVip: () -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
@@ -85,6 +92,7 @@ internal fun ListsScreen(
 
     ListsScreenContent(
         state = state,
+        onFilterClick = viewModel::setFilter,
         onProfileClick = {
             if (state.user.user == null) {
                 uriHandler.openUri(ConfigAuth.authCodeUrl)
@@ -99,7 +107,8 @@ internal fun ListsScreen(
         onMovieClick = onNavigateToMovie,
         onCreateListClick = { createListSheet = true },
         onEditListClick = { editListSheet = it },
-        onListClick = onNavigateToList,
+        onPersonalListClick = onNavigateToPersonalList,
+        onCustomListClick = onNavigateToCustomList,
         onVipClick = onNavigateToVip,
     )
 
@@ -121,6 +130,7 @@ internal fun ListsScreen(
 private fun ListsScreenContent(
     state: ListsState,
     modifier: Modifier = Modifier,
+    onFilterClick: (PersonalListType) -> Unit = {},
     onProfileClick: () -> Unit = {},
     onShowClick: (TraktId) -> Unit = {},
     onShowsClick: () -> Unit = {},
@@ -129,7 +139,8 @@ private fun ListsScreenContent(
     onCreateListClick: () -> Unit = {},
     onEditListClick: (CustomList) -> Unit = {},
     onWatchlistClick: () -> Unit = {},
-    onListClick: (CustomList) -> Unit = { _ -> },
+    onPersonalListClick: (CustomList) -> Unit = { _ -> },
+    onCustomListClick: (CustomList) -> Unit = { _ -> },
     onVipClick: () -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
@@ -211,58 +222,60 @@ private fun ListsScreenContent(
             item(
                 key = "personal_header",
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(sectionPadding),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    TraktHeader(
-                        title = stringResource(R.string.list_title_personal_lists),
-                        subtitle = stringResource(R.string.text_sort_recently_updated),
-                    )
-
-                    if (state.user.isAuthenticated && !state.lists.isNullOrEmpty()) {
-                        TertiaryButton(
-                            text = stringResource(R.string.button_text_create_list),
-                            icon = painterResource(R.drawable.ic_plus),
-                            enabled = state.listsLoading == DONE,
-                            onClick = onCreateListClick,
-                        )
-                    }
-                }
+                MyListsHeader(
+                    sectionPadding = sectionPadding,
+                    state = state,
+                    onFilterClick = onFilterClick,
+                    onCreateListClick = onCreateListClick,
+                )
             }
 
             items(
                 items = state.lists ?: emptyList(),
                 key = { list -> list.ids.trakt.value },
             ) { list ->
-                AnimatedVisibility(
-                    visible = !state.lists.isNullOrEmpty() && state.listsLoading == DONE,
-                    enter = fadeIn(tween(200)),
-                    exit = fadeOut(tween(200)),
-                ) {
-                    ListsPersonalView(
-                        viewModel = koinViewModel(
-                            key = list.ids.trakt.value.toString(),
-                            parameters = { parametersOf(list.ids.trakt) },
-                        ),
-                        headerPadding = sectionPadding,
-                        contentPadding = sectionPadding,
-                        onShowClick = onShowClick,
-                        onMovieClick = onMovieClick,
-                        onMoreClick = { onEditListClick(list) },
-                        onAllClick = { onListClick(list) },
-                    )
+                val isVisible =
+                    !state.lists.isNullOrEmpty() && state.listsLoading == DONE
+
+                when (state.filter) {
+                    Personal if isVisible -> {
+                        ListsPersonalView(
+                            viewModel = koinViewModel(
+                                key = list.ids.trakt.value.toString(),
+                                parameters = { parametersOf(list.ids.trakt) },
+                            ),
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            onShowClick = onShowClick,
+                            onMovieClick = onMovieClick,
+                            onMoreClick = { onEditListClick(list) },
+                            onAllClick = { onPersonalListClick(list) },
+                        )
+                    }
+                    Liked if isVisible -> {
+                        ListsLikedView(
+                            viewModel = koinViewModel(
+                                key = list.ids.trakt.value.toString(),
+                                parameters = { parametersOf(list.ids.trakt) },
+                            ),
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            onShowClick = onShowClick,
+                            onMovieClick = onMovieClick,
+                            onAllClick = { onCustomListClick(list) },
+                        )
+                    }
+                    else -> {
+                        Unit
+                    }
                 }
             }
 
             item(key = "empty") {
                 AnimatedVisibility(
                     visible = state.lists.isNullOrEmpty() && state.listsLoading == DONE,
-                    enter = fadeIn(tween(200)),
-                    exit = fadeOut(tween(200)),
+                    enter = fadeIn(tween(150)),
+                    exit = fadeOut(tween(150)),
                 ) {
                     ContentEmptyView(
                         authenticated = state.user.user != null,
@@ -311,6 +324,56 @@ private fun ListsScreenHeader(
 }
 
 @Composable
+private fun MyListsHeader(
+    sectionPadding: PaddingValues,
+    state: ListsState,
+    onFilterClick: (PersonalListType) -> Unit,
+    onCreateListClick: () -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(sectionPadding),
+    ) {
+        TraktSectionHeader(
+            title = stringResource(R.string.list_title_personal_lists),
+            subtitle = stringResource(R.string.text_sort_recently_updated),
+            collapsable = false,
+            chevron = false,
+            extraIcon = {
+                AnimatedVisibility(
+                    visible = state.filter == Personal,
+                    enter = fadeIn(tween(150)),
+                    exit = fadeOut(tween(150)),
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .size(19.dp)
+                        .onClick(
+                            enabled = state.user.isAuthenticated &&
+                                !state.listsLoading.isLoading,
+                            onClick = onCreateListClick,
+                        ),
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_plus),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier
+                            .size(19.dp),
+                    )
+                }
+            },
+        )
+
+        PersonalListsFilters(
+            selected = state.filter,
+            onClick = onFilterClick,
+            paddingVertical = PaddingValues(top = 13.dp, bottom = 0.dp),
+        )
+    }
+}
+
+@Composable
 private fun ContentEmptyView(
     authenticated: Boolean,
     modifier: Modifier = Modifier,
@@ -350,6 +413,7 @@ private fun ContentEmptyView(
     device = "id:pixel_9",
     showBackground = true,
     backgroundColor = 0xFF131517,
+    locale = "en",
 )
 @Composable
 private fun Preview() {

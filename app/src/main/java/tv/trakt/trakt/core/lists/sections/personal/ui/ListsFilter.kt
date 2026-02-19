@@ -1,0 +1,87 @@
+package tv.trakt.trakt.core.lists.sections.personal.ui
+
+import androidx.compose.foundation.layout.Arrangement.spacedBy
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import tv.trakt.trakt.common.helpers.extensions.DevicePreview
+import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
+import tv.trakt.trakt.ui.components.FilterChip
+import tv.trakt.trakt.ui.components.FilterChipGroup
+import tv.trakt.trakt.ui.theme.TraktTheme
+
+@Composable
+internal fun PersonalListsFilters(
+    modifier: Modifier = Modifier,
+    selected: PersonalListType? = null,
+    height: Dp = 28.dp,
+    paddingHorizontal: PaddingValues = PaddingValues.Zero,
+    paddingVertical: PaddingValues = PaddingValues.Zero,
+    onClick: (PersonalListType) -> Unit = { _ -> },
+) {
+    val initialSelected = remember {
+        mutableStateOf(selected)
+    }
+
+    LaunchedEffect(selected) {
+        if (selected != null) {
+            initialSelected.value = selected
+        }
+    }
+
+    FilterChipGroup(
+        paddingHorizontal = paddingHorizontal,
+        paddingVertical = paddingVertical,
+        modifier = modifier,
+    ) {
+        for (filter in PersonalListType.entries) {
+            FilterChip(
+                selected = selected == filter,
+                animated = initialSelected.value != null,
+                text = stringResource(filter.displayRes),
+                height = height,
+                unselectedTextVisible = true,
+                leadingContent = {
+                    Icon(
+                        painter = painterResource(filter.displayIcon),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier.size(16.dp),
+                    )
+                },
+                onClick = {
+                    onClick(filter)
+                },
+            )
+        }
+    }
+}
+
+@DevicePreview
+@Composable
+private fun Preview() {
+    TraktTheme {
+        Column(
+            verticalArrangement = spacedBy(12.dp),
+        ) {
+            PersonalListsFilters(
+                selected = null,
+            )
+            for (type in PersonalListType.entries) {
+                PersonalListsFilters(
+                    selected = type,
+                )
+            }
+        }
+    }
+}

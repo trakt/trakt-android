@@ -29,6 +29,7 @@ internal fun TraktSectionHeader(
     maxSubtitleLength: Int = Int.MAX_VALUE,
     chevron: Boolean = true,
     collapsed: Boolean = false,
+    collapsable: Boolean = true,
     extraIcon: @Composable (() -> Unit)? = null,
     onCollapseClick: () -> Unit = {},
 ) {
@@ -70,16 +71,18 @@ internal fun TraktSectionHeader(
             }
         }
 
-        Icon(
-            painter = painterResource(R.drawable.ic_arrow_dropdown),
-            contentDescription = null,
-            tint = TraktTheme.colors.textSecondary,
-            modifier = Modifier
-                .padding(start = 4.dp)
-                .rotate(animateRotation)
-                .size(16.dp)
-                .onClick(onClick = onCollapseClick),
-        )
+        if (collapsable) {
+            Icon(
+                painter = painterResource(R.drawable.ic_arrow_dropdown),
+                contentDescription = null,
+                tint = TraktTheme.colors.textSecondary,
+                modifier = Modifier
+                    .padding(start = 4.dp)
+                    .rotate(animateRotation)
+                    .size(16.dp)
+                    .onClick(onClick = onCollapseClick),
+            )
+        }
     }
 }
 

@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.lists.sections.personal.views
+package tv.trakt.trakt.core.lists.sections.personal.ui
 
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Row
@@ -14,8 +14,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
@@ -31,10 +31,11 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.temporal.ChronoUnit.DAYS
 
 @Composable
-internal fun ListsPersonalItemView(
+internal fun ListsCustomItemView(
     item: CustomListItem,
     modifier: Modifier = Modifier,
     showMediaIcon: Boolean = false,
+    showMoreIcon: Boolean = false,
     watched: Boolean = false,
     watchlist: Boolean = false,
     onMovieClick: (Movie) -> Unit = { },
@@ -50,6 +51,7 @@ internal fun ListsPersonalItemView(
                 title = item.show.title,
                 watched = watched,
                 watchlist = watchlist,
+                more = showMoreIcon,
                 imageUrl = item.images?.getPosterUrl(),
                 onClick = { onShowClick(item.show) },
                 onLongClick = onLongClick,
@@ -202,11 +204,11 @@ internal fun ListsPersonalItemView(
     }
 }
 
-@Preview
+@DevicePreview
 @Composable
 private fun PreviewShow() {
     TraktTheme {
-        ListsPersonalItemView(
+        ListsCustomItemView(
             item = CustomListItem.ShowItem(
                 rank = 0,
                 show = PreviewData.show1,
@@ -216,11 +218,11 @@ private fun PreviewShow() {
     }
 }
 
-@Preview
+@DevicePreview
 @Composable
 private fun PreviewMovie() {
     TraktTheme {
-        ListsPersonalItemView(
+        ListsCustomItemView(
             item = CustomListItem.MovieItem(
                 rank = 0,
                 movie = PreviewData.movie1,

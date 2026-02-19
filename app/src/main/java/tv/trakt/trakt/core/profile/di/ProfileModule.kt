@@ -201,6 +201,7 @@ internal val profileModule = module {
             localPersonal = get(),
             localListsPersonal = get(),
             localListsItemsPersonal = get(),
+            localListsLiked = get(),
             localRecommendedShows = get(),
             localRecommendedMovies = get(),
             localUserWatchlist = get(),

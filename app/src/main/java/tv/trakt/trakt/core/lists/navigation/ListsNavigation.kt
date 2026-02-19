@@ -19,7 +19,8 @@ internal fun NavGraphBuilder.listsScreen(
     onNavigateToDiscover: () -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToWatchlist: () -> Unit,
-    onNavigateToList: (CustomList) -> Unit,
+    onNavigateToPersonalList: (CustomList) -> Unit,
+    onNavigateToCustomList: (CustomList) -> Unit,
     onNavigateToVip: () -> Unit,
 ) {
     composable<ListsDestination> {
@@ -30,7 +31,8 @@ internal fun NavGraphBuilder.listsScreen(
             onNavigateToDiscover = onNavigateToDiscover,
             onNavigateToMovie = onNavigateToMovie,
             onNavigateToWatchlist = onNavigateToWatchlist,
-            onNavigateToList = onNavigateToList,
+            onNavigateToPersonalList = onNavigateToPersonalList,
+            onNavigateToCustomList = onNavigateToCustomList,
             onNavigateToVip = onNavigateToVip,
         )
     }

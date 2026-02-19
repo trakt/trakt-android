@@ -344,6 +344,10 @@
     <string name="button_text_toggle_search_lists">Lists</string>
     <string name="input_placeholder_search_lists">Search lists…</string>
 
+    <string name="button_text_toggle_lists_personal">Personal</string>
+    <string name="button_text_toggle_lists_liked">Liked</string>
+    <string name="button_text_toggle_lists_collaborations">Collaborations</string>
+
     <!--  Non Translatable  -->
 
     <string name="translated_value_library_plex" translatable="false">Plex</string>

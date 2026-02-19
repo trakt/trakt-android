@@ -14,6 +14,7 @@ import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.CalendarMovieDto
 import tv.trakt.trakt.common.networking.CalendarShowDto
+import tv.trakt.trakt.common.networking.LikedListDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.ListItemDto
 import tv.trakt.trakt.common.networking.ListMovieItemDto
@@ -412,8 +413,45 @@ internal class UserApiClient(
             id = "me",
             extended = "cloud9",
             page = null,
-            limit = null,
+            limit = 1000,
         )
+        return response.body()
+    }
+
+    override suspend fun getLikedLists(): List<LikedListDto> {
+        val response = usersApi.getUsersLikesLists(
+            extended = "cloud9",
+            page = null,
+            limit = 1000.toString(),
+        )
+        return response.body()
+    }
+
+    override suspend fun getLikedListItems(
+        listId: TraktId,
+        limit: Int,
+        page: Int,
+        extended: String,
+        sorting: Sorting,
+    ): List<ListItemDto> {
+        val response = usersApi.getUsersListsListItemsAll(
+            id = "me",
+            listId = listId.value.toString(),
+            extended = extended,
+            sortBy = sorting.type.value,
+            sortHow = sorting.order.value,
+            watchnow = null,
+            genres = null,
+            years = null,
+            subgenres = null,
+            ratings = null,
+            startDate = null,
+            endDate = null,
+            runtimes = null,
+            page = page,
+            limit = limit.toString(),
+        )
+
         return response.body()
     }
 

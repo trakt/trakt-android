@@ -5,6 +5,7 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.helpers.serializers.ZonedDateTimeSerializer
+import tv.trakt.trakt.common.networking.LikedListDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.SearchListDto
 import java.time.ZonedDateTime
@@ -33,6 +34,7 @@ data class CustomList(
         val value: String,
     ) {
         ALL("all"),
+        LIST("list"),
         PERSONAL("personal"),
         OFFICIAL("official"),
         WATCHLIST("watchlist"),
@@ -40,7 +42,7 @@ data class CustomList(
         ;
 
         companion object {
-            fun fromString(value: String): Type? {
+            fun fromString(value: String?): Type? {
                 return entries.find { it.value == value }
             }
         }
@@ -95,5 +97,31 @@ data class CustomList(
                 },
                 user = User.fromDto(dto.user),
             )
+
+        fun fromDto(dto: LikedListDto): CustomList {
+            val list = dto.list
+            return CustomList(
+                ids = Ids(
+                    trakt = list.ids?.trakt?.toTraktId()!!,
+                    slug = list.ids.slug.toSlugId(),
+                ),
+                name = list.name ?: "",
+                description = list.description,
+                privacy = list.privacy,
+                shareLink = list.shareLink,
+                type = Type.fromString(list.type?.lowercase()),
+                displayNumbers = list.displayNumbers,
+                allowComments = list.allowComments,
+                createdAt = list.createdAt?.toZonedDateTime()!!,
+                updatedAt = list.updatedAt?.toZonedDateTime()!!,
+                likes = list.likes,
+                images = list.images?.let {
+                    Images(
+                        posters = it.posters.toImmutableList(),
+                    )
+                },
+                user = User.fromDto(list.user!!),
+            )
+        }
     }
 }

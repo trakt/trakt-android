@@ -5,6 +5,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.CalendarMovieDto
 import tv.trakt.trakt.common.networking.CalendarShowDto
+import tv.trakt.trakt.common.networking.LikedListDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.ListItemDto
 import tv.trakt.trakt.common.networking.ListMovieItemDto
@@ -120,6 +121,16 @@ internal interface UserRemoteDataSource {
     ): List<CalendarMovieDto>
 
     suspend fun getPersonalLists(): List<ListDto>
+
+    suspend fun getLikedLists(): List<LikedListDto>
+
+    suspend fun getLikedListItems(
+        listId: TraktId,
+        limit: Int,
+        page: Int = 1,
+        extended: String,
+        sorting: Sorting,
+    ): List<ListItemDto>
 
     suspend fun getPersonalListItems(
         listId: TraktId,

@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.lists.sections.personal
+package tv.trakt.trakt.core.lists.sections.liked
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
@@ -64,11 +64,10 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ListsPersonalView(
-    viewModel: ListsPersonalViewModel,
+internal fun ListsLikedView(
+    viewModel: ListsLikedViewModel,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
-    onMoreClick: () -> Unit,
     onAllClick: (CustomList) -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onShowClick: (TraktId) -> Unit,
@@ -124,7 +123,6 @@ internal fun ListsPersonalView(
                 }
             }
         },
-        onMoreClick = onMoreClick,
     )
 
     ListShowContextSheet(
@@ -142,7 +140,7 @@ internal fun ListsPersonalView(
 
 @Composable
 internal fun ListsPersonalContent(
-    state: ListsPersonalState,
+    state: ListsLikedState,
     list: CustomList?,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
@@ -152,7 +150,6 @@ internal fun ListsPersonalContent(
     onMovieLongClick: (Movie) -> Unit = {},
     onShowClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
-    onMoreClick: () -> Unit = {},
     onAllClick: () -> Unit = {},
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
@@ -180,13 +177,12 @@ internal fun ListsPersonalContent(
             maxSubtitleLength = 30,
             extraIcon = {
                 Icon(
-                    painter = painterResource(R.drawable.ic_more_vertical),
+                    painter = painterResource(R.drawable.ic_thumb_up2_fill),
                     contentDescription = null,
                     tint = TraktTheme.colors.textPrimary,
                     modifier = Modifier
-                        .padding(start = 10.dp, end = 6.dp)
-                        .size(14.dp)
-                        .onClick { onMoreClick() },
+                        .padding(start = 11.dp, end = 6.dp)
+                        .size(17.dp),
                 )
             },
             modifier = Modifier
@@ -346,7 +342,7 @@ private fun ContentList(
             ListsCustomItemView(
                 item = item,
                 showMediaIcon = listFilter == MediaMode.MEDIA,
-                showMoreIcon = true,
+                showMoreIcon = false,
                 watched = collectionState.isWatched(item.id, item.type),
                 watchlist = collectionState.isWatchlist(item.id, item.type),
                 onMovieClick = onMovieClick,
@@ -394,7 +390,7 @@ private fun PreviewLoadingState() {
 private fun PreviewListState() {
     TraktTheme {
         ListsPersonalContent(
-            state = ListsPersonalState(),
+            state = ListsLikedState(),
             list = PreviewData.customList1,
         )
     }

@@ -255,11 +255,21 @@ internal fun NavGraphBuilder.listsScreens(controller: NavHostController) {
             onNavigateToDiscover = { navigateToDiscover() },
             onNavigateToMovie = { navigateToMovie(it) },
             onNavigateToWatchlist = { navigateToWatchlist() },
-            onNavigateToList = {
+            onNavigateToPersonalList = {
                 navigateToPersonalList(
                     listId = it.ids.trakt.value,
                     listTitle = it.name,
                     listDescription = it.description,
+                )
+            },
+            onNavigateToCustomList = {
+                navigateToListDetails(
+                    listId = it.ids.trakt.value,
+                    listTitle = it.name,
+                    listDescription = it.description,
+                    mediaId = (-1).toTraktId(),
+                    mediaType = listOf(SHOW, MOVIE),
+                    mediaImage = null,
                 )
             },
             onNavigateToVip = { navigateToBilling() },

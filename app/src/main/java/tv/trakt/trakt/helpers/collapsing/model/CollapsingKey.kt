@@ -47,6 +47,10 @@ internal enum class CollapsingKey(
     LISTS_SHOWS_PERSONAL("key_lists_shows_personal"),
     LISTS_MOVIES_PERSONAL("key_lists_movies_personal"),
 
+    LISTS_MEDIA_LIKED("key_lists_media_liked"),
+    LISTS_SHOWS_LIKED("key_lists_shows_liked"),
+    LISTS_MOVIES_LIKED("key_lists_movies_liked"),
+
     // Movie Details Screen
     MOVIE_WHERE_TO_WATCH("key_movie_where_to_watch"),
     MOVIE_SENTIMENT("key_movie_sentiment"),

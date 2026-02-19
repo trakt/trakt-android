@@ -133,6 +133,7 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material3.adaptive)
     implementation(libs.androidx.compose.tooling.preview)
+    implementation(libs.places)
     debugImplementation(libs.androidx.compose.tooling)
 
     implementation(libs.kotlinx.serialization.proto)

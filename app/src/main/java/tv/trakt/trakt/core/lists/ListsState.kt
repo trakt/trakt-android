@@ -6,10 +6,12 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 
 @Immutable
 internal data class ListsState(
     val user: UserState = UserState(),
+    val filter: PersonalListType = PersonalListType.Personal,
     val lists: ImmutableList<CustomList>? = null,
     val listsLoading: LoadingState = IDLE,
     val error: Exception? = null,
