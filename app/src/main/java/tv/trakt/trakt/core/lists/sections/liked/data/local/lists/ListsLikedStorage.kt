@@ -35,13 +35,13 @@ internal class ListsLikedStorage : ListsLikedLocalDataSource {
         }
     }
 
-    override suspend fun onUpdatedAt(
-        id: TraktId,
+    override suspend fun notifyUpdate(
+        listId: TraktId,
         updatedAt: ZonedDateTime,
     ) {
         mutex.withLock {
-            val existing = storage[id] ?: return
-            storage[id] = existing.copy(
+            val existing = storage[listId] ?: return
+            storage[listId] = existing.copy(
                 updatedAt = updatedAt,
             )
         }

@@ -11,8 +11,8 @@ internal interface ListsLikedLocalDataSource {
 
     suspend fun getItems(): List<CustomList>
 
-    suspend fun onUpdatedAt(
-        id: TraktId,
+    suspend fun notifyUpdate(
+        listId: TraktId,
         updatedAt: ZonedDateTime,
     )
 

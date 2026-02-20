@@ -250,7 +250,7 @@ private fun ListsScreenContent(
                 )
             }
 
-            val topVerticalPadding = 20.dp
+            val topVerticalPadding = 22.dp
             itemsIndexed(
                 items = state.lists ?: emptyList(),
                 key = { _, list -> list.ids.trakt.value },

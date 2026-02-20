@@ -1,6 +1,7 @@
 package tv.trakt.trakt.ui.components.mediacards
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -8,7 +9,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -107,7 +107,7 @@ private fun CustomListContent(
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
-        if (images != null) {
+        if (!images.isNullOrEmpty()) {
             BoxWithConstraints(
                 modifier = Modifier
                     .weight(1f)
@@ -144,7 +144,27 @@ private fun CustomListContent(
                 }
             }
         } else {
-            Spacer(modifier = Modifier.weight(1F))
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .padding(
+                        top = 16.dp,
+                        start = 16.dp,
+                        end = 16.dp,
+                    )
+                    .background(
+                        color = TraktTheme.colors.skeletonShimmer,
+                        shape = RoundedCornerShape(16.dp),
+                    )
+                    .fillMaxSize(),
+            ) {
+                Text(
+                    text = stringResource(R.string.list_placeholder_empty),
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.heading6,
+                    modifier = Modifier.padding(24.dp),
+                )
+            }
         }
     }
 }
