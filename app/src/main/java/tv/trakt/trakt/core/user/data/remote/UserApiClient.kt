@@ -418,11 +418,14 @@ internal class UserApiClient(
         return response.body()
     }
 
-    override suspend fun getLikedLists(): List<LikedListDto> {
+    override suspend fun getLikedLists(minimal: Boolean): List<LikedListDto> {
         val response = usersApi.getUsersLikesLists(
-            extended = "cloud9,images",
+            extended = when {
+                minimal -> "min"
+                else -> "cloud9,images"
+            },
             page = null,
-            limit = 1000.toString(),
+            limit = "all",
         )
         return response.body()
     }

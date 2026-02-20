@@ -57,6 +57,7 @@ import tv.trakt.trakt.ui.theme.VerticalImageAspectRatio
 internal fun CustomListCard(
     list: CustomList,
     modifier: Modifier = Modifier,
+    liked: Boolean = false,
     likesVisible: Boolean = false,
     userVisible: Boolean = true,
     descriptionVisible: Boolean = false,
@@ -72,6 +73,7 @@ internal fun CustomListCard(
         content = {
             CustomListContent(
                 list = list,
+                liked = liked,
                 likesVisible = likesVisible,
                 userVisible = userVisible,
                 descriptionVisible = descriptionVisible,
@@ -84,6 +86,7 @@ internal fun CustomListCard(
 @Composable
 private fun CustomListContent(
     list: CustomList,
+    liked: Boolean,
     likesVisible: Boolean,
     userVisible: Boolean,
     descriptionVisible: Boolean,
@@ -101,6 +104,7 @@ private fun CustomListContent(
     ) {
         CustomListHeader(
             list = list,
+            liked = liked,
             likesVisible = likesVisible,
             userVisible = userVisible,
             descriptionVisible = descriptionVisible,
@@ -172,6 +176,7 @@ private fun CustomListContent(
 @Composable
 private fun CustomListHeader(
     list: CustomList,
+    liked: Boolean,
     likesVisible: Boolean,
     userVisible: Boolean,
     descriptionVisible: Boolean,
@@ -271,7 +276,12 @@ private fun CustomListHeader(
                     .onClick(onClick = { }),
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_thumb_up2),
+                    painter = painterResource(
+                        when {
+                            liked -> R.drawable.ic_thumb_up2_fill
+                            else -> R.drawable.ic_thumb_up2
+                        },
+                    ),
                     contentDescription = null,
                     tint = TraktTheme.colors.textSecondary,
                     modifier = Modifier
@@ -309,6 +319,7 @@ private fun Preview() {
                         name = "A very long list name that should be truncated",
                         likes = 12341,
                     ),
+                    liked = true,
                     likesVisible = true,
                     modifier = Modifier
                         .aspectRatio(HorizontalImageAspectRatio),

@@ -2,6 +2,10 @@
 
 package tv.trakt.trakt.core.lists.features.details
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -230,6 +235,7 @@ internal fun ListDetailsContent(
             listState = listState,
             listFilter = state.filter,
             listSorting = state.sorting,
+            listLiked = state.liked,
             collectionState = state.collection,
             contentPadding = contentPadding,
             loading = state.loading.isLoading,
@@ -250,6 +256,7 @@ private fun TitleBar(
     title: String,
     subtitle: String?,
     subtitleVisible: Boolean,
+    liked: Boolean?,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
 ) {
@@ -278,13 +285,43 @@ private fun TitleBar(
                 contentDescription = null,
             )
 
-            TraktHeader(
-                title = title,
-                subtitle = when {
-                    subtitleVisible -> subtitle
-                    else -> null
-                },
-            )
+            Row(
+                verticalAlignment = CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                TraktHeader(
+                    title = title,
+                    subtitle = when {
+                        subtitleVisible -> subtitle
+                        else -> null
+                    },
+                    modifier = Modifier
+                        .weight(1F, fill = false),
+                )
+
+                AnimatedVisibility(
+                    visible = liked != null,
+                    enter = fadeIn(tween(150)),
+                    exit = fadeOut(tween(150)),
+                    modifier = Modifier
+                        .padding(start = 32.dp)
+                        .size(22.dp),
+                ) {
+                    Icon(
+                        painter = painterResource(
+                            when {
+                                liked ?: false -> R.drawable.ic_thumb_up2_fill
+                                else -> R.drawable.ic_thumb_up2
+                            },
+                        ),
+                        tint = TraktTheme.colors.textPrimary,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(22.dp),
+                    )
+                }
+            }
         }
     }
 }
@@ -299,6 +336,7 @@ private fun ContentList(
     listItems: ImmutableList<CustomListItem>,
     listFilter: MediaMode?,
     listSorting: Sorting?,
+    listLiked: Boolean?,
     collectionState: UserCollectionState,
     loading: Boolean,
     loadingMore: Boolean,
@@ -346,6 +384,7 @@ private fun ContentList(
                 title = title,
                 subtitle = subtitle,
                 subtitleVisible = subtitleVisible,
+                liked = listLiked,
                 onBackClick = onBackClick,
             )
         }

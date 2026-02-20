@@ -24,6 +24,7 @@ import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.data.local.favorites.UserFavoritesLocalDataSource
 import tv.trakt.trakt.core.user.data.local.library.UserLibraryLocalDataSource
+import tv.trakt.trakt.core.user.data.local.liked.UserLikedListsLocalDataSource
 import tv.trakt.trakt.core.user.data.local.ratings.UserRatingsLocalDataSource
 import tv.trakt.trakt.core.user.data.local.reactions.UserReactionsLocalDataSource
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
@@ -50,6 +51,7 @@ internal class LogoutUserUseCase(
     private val localUserLibrary: UserLibraryLocalDataSource,
     private val localUserRatings: UserRatingsLocalDataSource,
     private val localUserLists: UserListsLocalDataSource,
+    private val localUserLikedLists: UserLikedListsLocalDataSource,
     private val localUserReactions: UserReactionsLocalDataSource,
 ) {
     suspend fun logoutUser() {
@@ -75,6 +77,7 @@ internal class LogoutUserUseCase(
         localUserProgress.clear()
         localUserWatchlist.clear()
         localUserLists.clear()
+        localUserLikedLists.clear()
         localUserFavorites.clear()
         localUserLibrary.clear()
         localUserReactions.clear()

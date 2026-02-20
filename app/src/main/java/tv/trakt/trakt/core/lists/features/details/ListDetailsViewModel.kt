@@ -38,6 +38,7 @@ import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.user.CollectionStateProvider
 import tv.trakt.trakt.core.user.UserCollectionState
+import tv.trakt.trakt.core.user.usecases.lists.LoadUserLikedListsUseCase
 
 private const val PAGE_LIMIT = LISTS_ALL_LIMIT
 
@@ -45,6 +46,7 @@ private const val PAGE_LIMIT = LISTS_ALL_LIMIT
 internal class ListDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val getListItemsUseCase: GetListItemsUseCase,
+    private val getListLikedUseCase: LoadUserLikedListsUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val collectionStateProvider: CollectionStateProvider,
@@ -63,6 +65,7 @@ internal class ListDetailsViewModel(
         ),
     )
     private val itemsState = MutableStateFlow(initialState.items)
+    private val likedState = MutableStateFlow(initialState.liked)
     private val filterState = MutableStateFlow(if (showFilters) MediaMode.MEDIA else null)
     private val sortingState = MutableStateFlow(initialState.sorting)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
@@ -79,7 +82,27 @@ internal class ListDetailsViewModel(
 
     init {
         loadData()
+        loadLikedData()
+
         observeCollection()
+    }
+
+    private fun loadLikedData() {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) return@launch
+            try {
+                val likedLists = when {
+                    getListLikedUseCase.isLoaded() -> getListLikedUseCase.loadLocalLists()
+                    else -> getListLikedUseCase.loadLists()
+                }
+
+                likedState.update {
+                    likedLists.containsKey(destination.listId.toTraktId())
+                }
+            } catch (error: Exception) {
+                Timber.recordError(error)
+            }
+        }
     }
 
     fun loadData(
@@ -257,6 +280,7 @@ internal class ListDetailsViewModel(
         itemsState,
         filterState,
         sortingState,
+        likedState,
         collectionStateProvider.stateFlow,
         navigateShow,
         navigateMovie,
@@ -269,10 +293,11 @@ internal class ListDetailsViewModel(
             items = state[3] as ImmutableList<CustomListItem>?,
             filter = state[4] as MediaMode?,
             sorting = state[5] as Sorting,
-            collection = state[6] as UserCollectionState,
-            navigateShow = state[7] as TraktId?,
-            navigateMovie = state[8] as TraktId?,
-            error = state[9] as Exception?,
+            liked = state[6] as Boolean?,
+            collection = state[7] as UserCollectionState,
+            navigateShow = state[8] as TraktId?,
+            navigateMovie = state[9] as TraktId?,
+            error = state[10] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

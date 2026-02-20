@@ -13,6 +13,7 @@ import tv.trakt.trakt.core.user.UserCollectionState
 internal data class ListDetailsState(
     val list: ListDetailsInfo? = null,
     val items: ImmutableList<CustomListItem>? = null,
+    val liked: Boolean? = null,
     val filter: MediaMode? = null,
     val sorting: Sorting = Sorting.Default,
     val collection: UserCollectionState = UserCollectionState.Default,

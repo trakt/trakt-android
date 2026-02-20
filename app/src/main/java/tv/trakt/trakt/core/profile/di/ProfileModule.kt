@@ -40,6 +40,8 @@ import tv.trakt.trakt.core.user.data.local.favorites.UserFavoritesLocalDataSourc
 import tv.trakt.trakt.core.user.data.local.favorites.UserFavoritesStorage
 import tv.trakt.trakt.core.user.data.local.library.UserLibraryLocalDataSource
 import tv.trakt.trakt.core.user.data.local.library.UserLibraryStorage
+import tv.trakt.trakt.core.user.data.local.liked.UserLikedListsLocalDataSource
+import tv.trakt.trakt.core.user.data.local.liked.UserLikedListsStorage
 import tv.trakt.trakt.core.user.data.local.ratings.UserRatingsLocalDataSource
 import tv.trakt.trakt.core.user.data.local.ratings.UserRatingsStorage
 import tv.trakt.trakt.core.user.data.local.reactions.UserReactionsLocalDataSource
@@ -50,6 +52,7 @@ import tv.trakt.trakt.core.user.usecases.LoadUserProfileUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserLibraryUseCase
+import tv.trakt.trakt.core.user.usecases.lists.LoadUserLikedListsUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserListsUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
@@ -82,6 +85,10 @@ internal val profileDataModule = module {
 
     single<UserListsLocalDataSource> {
         UserListsStorage()
+    }
+
+    single<UserLikedListsLocalDataSource> {
+        UserLikedListsStorage()
     }
 
     single<UserReactionsLocalDataSource> {
@@ -168,6 +175,13 @@ internal val profileModule = module {
     }
 
     factory {
+        LoadUserLikedListsUseCase(
+            remoteSource = get(),
+            localSource = get(),
+        )
+    }
+
+    factory {
         LoadUserProgressUseCase(
             remoteSource = get(),
             localSource = get(),
@@ -207,6 +221,7 @@ internal val profileModule = module {
             localUserWatchlist = get(),
             localUserProgress = get(),
             localUserLists = get(),
+            localUserLikedLists = get(),
             localUserFavorites = get(),
             localUserLibrary = get(),
             localUserReactions = get(),

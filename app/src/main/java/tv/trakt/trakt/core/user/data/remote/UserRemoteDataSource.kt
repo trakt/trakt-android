@@ -122,7 +122,7 @@ internal interface UserRemoteDataSource {
 
     suspend fun getPersonalLists(): List<ListDto>
 
-    suspend fun getLikedLists(): List<LikedListDto>
+    suspend fun getLikedLists(minimal: Boolean = false): List<LikedListDto>
 
     suspend fun getLikedListItems(
         listId: TraktId,

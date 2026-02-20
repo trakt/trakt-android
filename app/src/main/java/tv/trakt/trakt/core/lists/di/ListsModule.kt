@@ -348,6 +348,7 @@ internal val listsModule = module {
         ListDetailsViewModel(
             savedStateHandle = get(),
             getListItemsUseCase = get(),
+            getListLikedUseCase = get(),
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
             collectionStateProvider = get(),

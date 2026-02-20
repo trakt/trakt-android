@@ -283,7 +283,6 @@ private fun ListsScreenContent(
                         } else {
                             CustomListCard(
                                 list = list,
-                                userVisible = true,
                                 descriptionVisible = true,
                                 onClick = { onPersonalListClick(list) },
                                 modifier = Modifier
@@ -315,8 +314,8 @@ private fun ListsScreenContent(
                         } else {
                             CustomListCard(
                                 list = list,
+                                liked = true,
                                 likesVisible = true,
-                                descriptionVisible = false,
                                 onClick = { onCustomListClick(list) },
                                 modifier = Modifier
                                     .padding(
@@ -329,7 +328,7 @@ private fun ListsScreenContent(
                         }
                     }
                     else -> {
-                        Unit
+                        // Noop
                     }
                 }
             }
