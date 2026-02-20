@@ -199,6 +199,7 @@ internal val movieDetailsModule = module {
         MovieListsViewModel(
             movie = movie,
             getListsUseCase = get(),
+            loadUserLikedListsUseCase = get(),
             collapsingManager = get(),
         )
     }

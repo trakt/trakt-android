@@ -3,13 +3,13 @@ package tv.trakt.trakt.core.summary.shows.features.lists
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -22,18 +22,22 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.summary.shows.features.lists.usecases.GetShowListsUseCase
+import tv.trakt.trakt.core.user.usecases.lists.LoadUserLikedListsUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 internal class ShowListsViewModel(
     private val show: Show,
     private val getListsUseCase: GetShowListsUseCase,
+    private val loadUserLikedListsUseCase: LoadUserLikedListsUseCase,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = ShowListsState()
 
     private val itemsState = MutableStateFlow(initialState.items)
+    private val likedItemsState = MutableStateFlow(initialState.likedItems)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
     private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.SHOW_LISTS))
@@ -42,6 +46,7 @@ internal class ShowListsViewModel(
 
     init {
         loadData()
+        loadUserLikedLists()
     }
 
     private fun loadData() {
@@ -71,6 +76,20 @@ internal class ShowListsViewModel(
         }
     }
 
+    private fun loadUserLikedLists() {
+        viewModelScope.launch {
+            try {
+                likedItemsState.update {
+                    loadUserLikedListsUseCase.loadIfNeeded().keys
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
     fun setCollapsed(collapsed: Boolean) {
         collapseState.update { collapsed }
         collapseJob?.cancel()
@@ -83,17 +102,19 @@ internal class ShowListsViewModel(
     }
 
     @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<ShowListsState> = combine(
+    val state = combine(
         itemsState,
+        likedItemsState,
         loadingState,
         errorState,
         collapseState,
     ) { state ->
         ShowListsState(
             items = state[0] as ImmutableList<CustomList>?,
-            loading = state[1] as LoadingState,
-            error = state[2] as Exception?,
-            collapsed = state[3] as Boolean,
+            likedItems = state[1] as ImmutableSet<TraktId>?,
+            loading = state[2] as LoadingState,
+            error = state[3] as Exception?,
+            collapsed = state[4] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

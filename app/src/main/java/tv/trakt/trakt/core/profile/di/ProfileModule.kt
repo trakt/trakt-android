@@ -176,6 +176,7 @@ internal val profileModule = module {
 
     factory {
         LoadUserLikedListsUseCase(
+            sessionManager = get(),
             remoteSource = get(),
             localSource = get(),
         )

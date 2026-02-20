@@ -223,6 +223,7 @@ internal val showDetailsModule = module {
         ShowListsViewModel(
             show = show,
             getListsUseCase = get(),
+            loadUserLikedListsUseCase = get(),
             collapsingManager = get(),
         )
     }

@@ -43,11 +43,14 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableSet
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.mediacards.CustomListCard
@@ -131,6 +134,7 @@ private fun ShowListsContent(
                             } else {
                                 ContentList(
                                     listItems = (state.items ?: emptyList()).toImmutableList(),
+                                    listLikedItems = state.likedItems ?: EmptyImmutableSet,
                                     contentPadding = contentPadding,
                                     onClick = onClick,
                                 )
@@ -146,6 +150,7 @@ private fun ShowListsContent(
 @Composable
 private fun ContentList(
     listItems: ImmutableList<CustomList>,
+    listLikedItems: ImmutableSet<TraktId>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
     onClick: ((CustomList) -> Unit)? = null,
@@ -172,6 +177,9 @@ private fun ContentList(
         ) { item ->
             CustomListCard(
                 list = item,
+                liked = remember(item.ids.trakt) {
+                    listLikedItems.contains(item.ids.trakt)
+                },
                 likesVisible = true,
                 onClick = { onClick?.invoke(item) },
                 modifier = Modifier
