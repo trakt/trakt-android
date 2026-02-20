@@ -192,7 +192,7 @@ internal val listsModule = module {
     factory {
         RemoveLikedListUseCase(
             remoteSource = get(),
-            localSource = get(),
+            localUserLikedListsSource = get(),
             listsLocalSource = get(),
         )
     }
@@ -204,6 +204,7 @@ internal val listsModule = module {
             getLikedListsUseCase = get(),
             localListsSource = get(),
             localListsItemsSource = get(),
+            localLikedListsSource = get(),
             analytics = get(),
         )
     }
@@ -263,9 +264,8 @@ internal val listsModule = module {
         ListsLikedViewModel(
             listId = listId,
             modeManager = get(),
-            getListUseCase = get(),
-            getListItemsUseCase = get(),
-            localListsSource = get(),
+            getLikedListUseCase = get(),
+            getLikedListItemsUseCase = get(),
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
             collectionStateProvider = get(),

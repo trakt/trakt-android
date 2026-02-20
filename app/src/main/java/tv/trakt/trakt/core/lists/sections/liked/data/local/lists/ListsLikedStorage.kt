@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.TraktId
 import java.time.Instant
@@ -19,7 +20,7 @@ internal class ListsLikedStorage : ListsLikedLocalDataSource {
         onBufferOverflow = BufferOverflow.DROP_OLDEST,
     )
 
-    override suspend fun setItems(items: List<CustomList>) {
+    override suspend fun setLists(items: List<CustomList>) {
         mutex.withLock {
             with(storage) {
                 clear()
@@ -28,15 +29,27 @@ internal class ListsLikedStorage : ListsLikedLocalDataSource {
         }
     }
 
-    override suspend fun getItems(): List<CustomList> {
+    override suspend fun getLists(): List<CustomList> {
         return mutex.withLock {
             storage.values.toList()
         }
     }
 
+    override suspend fun addList(list: CustomList) {
+        mutex.withLock {
+            storage[list.ids.trakt] = list
+        }
+    }
+
+    override suspend fun removeList(listId: TraktId) {
+        mutex.withLock {
+            storage.remove(listId)
+        }
+    }
+
     override suspend fun notifyUpdate() {
         mutex.withLock {
-            updatedAt.tryEmit(Instant.now())
+            updatedAt.tryEmit(nowUtcInstant())
         }
     }
 

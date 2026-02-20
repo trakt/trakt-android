@@ -16,10 +16,6 @@ internal class LoadUserLikedListsUseCase(
     private val remoteSource: UserRemoteDataSource,
     private val localSource: UserLikedListsLocalDataSource,
 ) {
-    suspend fun isLoaded(): Boolean {
-        return localSource.isLoaded()
-    }
-
     suspend fun loadLocalLists(): ImmutableMap<TraktId, Instant> {
         return localSource.getLists()
             .toImmutableMap()
@@ -38,5 +34,16 @@ internal class LoadUserLikedListsUseCase(
             .also {
                 localSource.setLists(lists = listsResponse)
             }
+    }
+
+    suspend fun isLoaded(): Boolean {
+        return localSource.isLoaded()
+    }
+
+    suspend fun loadIfNeeded(): ImmutableMap<TraktId, Instant> {
+        return when {
+            isLoaded() -> loadLocalLists()
+            else -> loadLists()
+        }
     }
 }

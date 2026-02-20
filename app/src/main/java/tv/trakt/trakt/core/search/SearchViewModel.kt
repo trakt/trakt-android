@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -11,7 +12,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -29,7 +33,10 @@ import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.lists.sections.liked.data.local.lists.ListsLikedLocalDataSource
 import tv.trakt.trakt.core.people.data.local.PeopleLocalDataSource
 import tv.trakt.trakt.core.search.SearchState.SearchResult
 import tv.trakt.trakt.core.search.SearchState.UserState
@@ -46,6 +53,7 @@ import tv.trakt.trakt.core.search.usecase.popular.GetPopularSearchUseCase
 import tv.trakt.trakt.core.search.usecase.popular.PostUserSearchUseCase
 import tv.trakt.trakt.core.user.CollectionStateProvider
 import tv.trakt.trakt.core.user.UserCollectionState
+import tv.trakt.trakt.core.user.usecases.lists.LoadUserLikedListsUseCase
 
 @OptIn(FlowPreview::class)
 internal class SearchViewModel(
@@ -53,9 +61,11 @@ internal class SearchViewModel(
     private val postUserSearchUseCase: PostUserSearchUseCase,
     private val getSearchResultsUseCase: GetSearchResultsUseCase,
     private val getBirthdayPeopleUseCase: GetBirthdayPeopleUseCase,
+    private val loadUserLikedListsUseCase: LoadUserLikedListsUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val peopleLocalDataSource: PeopleLocalDataSource,
+    private val likedListsLocalDataSource: ListsLikedLocalDataSource,
     private val collectionStateProvider: CollectionStateProvider,
     private val sessionManager: SessionManager,
     analytics: Analytics,
@@ -72,6 +82,7 @@ internal class SearchViewModel(
     private val navigateList = MutableStateFlow(initialState.navigateList)
     private val searchingState = MutableStateFlow(initialState.searching)
     private val userState = MutableStateFlow(initialState.user)
+    private val userLikedListsState = MutableStateFlow(emptySet<TraktId>().toImmutableSet())
     private val errorState = MutableStateFlow(initialState.error)
 
     private var initialJob: Job? = null
@@ -79,9 +90,11 @@ internal class SearchViewModel(
 
     init {
         loadInitialData()
+        loadLikedLists()
 
         observeUser()
         observeCollection()
+        observeLists()
 
         analytics.logScreenView(
             screenName = "search",
@@ -105,6 +118,14 @@ internal class SearchViewModel(
 
     private fun observeCollection() {
         collectionStateProvider
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeLists() {
+        likedListsLocalDataSource.observeUpdates()
+            .distinctUntilChanged()
+            .debounce(200)
+            .onEach { loadLikedLists() }
             .launchIn(viewModelScope)
     }
 
@@ -172,7 +193,10 @@ internal class SearchViewModel(
                     SearchResult(
                         items = lists
                             .asyncMap {
-                                SearchItem.List(it.list)
+                                SearchItem.List(
+                                    list = it.list,
+                                    liked = userLikedListsState.value.contains(it.list.ids.trakt),
+                                )
                             }
                             .toImmutableList(),
                     )
@@ -280,7 +304,10 @@ internal class SearchViewModel(
                     SearchResult(
                         items = lists
                             .asyncMap {
-                                SearchItem.List(it.list)
+                                SearchItem.List(
+                                    list = it.list,
+                                    liked = userLikedListsState.value.contains(it.list.ids.trakt),
+                                )
                             }
                             .toImmutableList(),
                     )
@@ -324,6 +351,33 @@ internal class SearchViewModel(
 
             popularResultState.update { results }
             popularLoadingState.update { LoadingState.DONE }
+        }
+    }
+
+    private fun loadLikedLists() {
+        fun mapLikeResults(results: SearchResult?): SearchResult? {
+            return results?.copy(
+                items = results.items?.map { item ->
+                    if (item is SearchItem.List) {
+                        val isLiked = userLikedListsState.value.contains(item.list.ids.trakt)
+                        item.copy(liked = isLiked)
+                    } else {
+                        item
+                    }
+                }?.toImmutableList(),
+            )
+        }
+
+        viewModelScope.launch {
+            try {
+                userLikedListsState.update {
+                    loadUserLikedListsUseCase.loadIfNeeded().keys
+                }
+                searchResultState.update(::mapLikeResults)
+                popularResultState.update(::mapLikeResults)
+            } catch (error: Exception) {
+                Timber.recordError(error)
+            }
         }
     }
 
@@ -388,26 +442,35 @@ internal class SearchViewModel(
                         items = results
                             .map {
                                 when {
-                                    it.show != null -> SearchItem.Show(
-                                        rank = it.score,
-                                        show = Show.fromDto(it.show!!),
-                                    )
-
-                                    it.movie != null -> SearchItem.Movie(
-                                        rank = it.score,
-                                        movie = Movie.fromDto(it.movie!!),
-                                    )
-
-                                    it.person != null -> SearchItem.Person(
-                                        rank = it.score,
-                                        person = Person.fromDto(it.person!!),
-                                    )
-
-                                    it.list != null -> SearchItem.List(
-                                        list = CustomList.fromDto(it.list!!),
-                                    )
-
-                                    else -> throw Error("Unexpected null show and movie")
+                                    it.show != null -> {
+                                        SearchItem.Show(
+                                            rank = it.score,
+                                            show = Show.fromDto(it.show!!),
+                                        )
+                                    }
+                                    it.movie != null -> {
+                                        SearchItem.Movie(
+                                            rank = it.score,
+                                            movie = Movie.fromDto(it.movie!!),
+                                        )
+                                    }
+                                    it.person != null -> {
+                                        SearchItem.Person(
+                                            rank = it.score,
+                                            person = Person.fromDto(it.person!!),
+                                        )
+                                    }
+                                    it.list != null -> {
+                                        val list = requireNotNull(it.list)
+                                        SearchItem.List(
+                                            list = CustomList.fromDto(list),
+                                            liked = userLikedListsState.value
+                                                .contains(list.ids.trakt.toTraktId()),
+                                        )
+                                    }
+                                    else -> {
+                                        throw Error("Unexpected null show and movie")
+                                    }
                                 }
                             }.toImmutableList(),
                     )

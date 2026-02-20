@@ -19,6 +19,7 @@ internal fun SearchListGridItem(
 ) {
     CustomListCard(
         list = item.list,
+        liked = item.liked,
         likesVisible = true,
         onClick = {
             onListClick(item.list)
@@ -35,6 +36,7 @@ private fun SearchListGridItemPreview() {
         SearchListGridItem(
             item = SearchItem.List(
                 list = PreviewData.customList1,
+                liked = true,
             ),
             onListClick = {},
         )

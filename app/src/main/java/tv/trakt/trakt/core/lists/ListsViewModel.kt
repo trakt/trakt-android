@@ -28,6 +28,7 @@ import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.core.lists.ListsState.UserState
+import tv.trakt.trakt.core.lists.sections.liked.data.local.lists.ListsLikedLocalDataSource
 import tv.trakt.trakt.core.lists.sections.liked.usecases.GetLikedListsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
@@ -43,6 +44,7 @@ internal class ListsViewModel(
     private val getLikedListsUseCase: GetLikedListsUseCase,
     private val localListsSource: ListsPersonalLocalDataSource,
     private val localListsItemsSource: ListsPersonalItemsLocalDataSource,
+    private val localLikedListsSource: ListsLikedLocalDataSource,
     analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ListsState()
@@ -90,6 +92,14 @@ internal class ListsViewModel(
             .debounce(200)
             .onEach {
                 loadLocalData()
+            }
+            .launchIn(viewModelScope)
+
+        localLikedListsSource.observeUpdates()
+            .distinctUntilChanged()
+            .debounce(200)
+            .onEach {
+                loadData()
             }
             .launchIn(viewModelScope)
     }

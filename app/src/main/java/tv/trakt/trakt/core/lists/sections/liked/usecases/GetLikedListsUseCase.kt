@@ -14,12 +14,12 @@ internal class GetLikedListsUseCase(
 ) {
     suspend fun getLocalList(listId: TraktId): CustomList? {
         return localSource
-            .getItems()
+            .getLists()
             .firstOrNull { it.ids.trakt == listId }
     }
 
     suspend fun getLocalLists(): ImmutableList<CustomList> {
-        return localSource.getItems()
+        return localSource.getLists()
             .sortedByDescending { it.updatedAt }
             .toImmutableList()
     }
@@ -32,7 +32,7 @@ internal class GetLikedListsUseCase(
             .sortedByDescending { it.updatedAt }
             .toImmutableList()
             .also {
-                localSource.setItems(it)
+                localSource.setLists(it)
             }
     }
 }

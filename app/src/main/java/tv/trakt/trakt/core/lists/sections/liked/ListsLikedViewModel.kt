@@ -8,10 +8,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -30,7 +27,6 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_SECTION_LIMIT
 import tv.trakt.trakt.core.lists.model.CustomListItem
-import tv.trakt.trakt.core.lists.sections.liked.data.local.lists.ListsLikedLocalDataSource
 import tv.trakt.trakt.core.lists.sections.liked.usecases.GetLikedListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.liked.usecases.GetLikedListsUseCase
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
@@ -43,9 +39,8 @@ import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 @OptIn(FlowPreview::class)
 internal class ListsLikedViewModel(
     private val listId: TraktId,
-    private val getListUseCase: GetLikedListsUseCase,
-    private val getListItemsUseCase: GetLikedListItemsUseCase,
-    private val localListsSource: ListsLikedLocalDataSource,
+    private val getLikedListUseCase: GetLikedListsUseCase,
+    private val getLikedListItemsUseCase: GetLikedListItemsUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val collectionStateProvider: CollectionStateProvider,
@@ -72,7 +67,6 @@ internal class ListsLikedViewModel(
     init {
         loadData()
 
-        observeLists()
         observeMode()
         observeCollection()
     }
@@ -87,39 +81,9 @@ internal class ListsLikedViewModel(
             .launchIn(viewModelScope)
     }
 
-    private fun observeLists() {
-        merge(
-            localListsSource.observeUpdates(),
-        )
-            .distinctUntilChanged()
-            .debounce(200)
-            .onEach { loadLocalData() }
-            .launchIn(viewModelScope)
-    }
-
     private fun observeCollection() {
         collectionStateProvider
             .launchIn(viewModelScope)
-    }
-
-    private fun loadLocalData() {
-        viewModelScope.launch {
-            try {
-                listState.update {
-                    getListUseCase.getLocalList(listId)
-                }
-                itemsState.update {
-                    getListItemsUseCase.getLocalItems(
-                        listId = listId,
-                        filter = filterState.value,
-                    )
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    errorState.update { error }
-                }
-            }
-        }
     }
 
     private fun loadData(ignoreErrors: Boolean = false) {
@@ -127,10 +91,10 @@ internal class ListsLikedViewModel(
         dataJob = viewModelScope.launch {
             try {
                 listState.update {
-                    getListUseCase.getLocalList(listId)
+                    getLikedListUseCase.getLocalList(listId)
                 }
 
-                val localItems = getListItemsUseCase.getLocalItems(
+                val localItems = getLikedListItemsUseCase.getLocalItems(
                     listId = listId,
                     filter = filterState.value,
                 )
@@ -143,7 +107,7 @@ internal class ListsLikedViewModel(
                 }
 
                 itemsState.update {
-                    getListItemsUseCase.getItems(
+                    getLikedListItemsUseCase.getItems(
                         listId = listId,
                         limit = LISTS_SECTION_LIMIT,
                         filter = filterState.value,

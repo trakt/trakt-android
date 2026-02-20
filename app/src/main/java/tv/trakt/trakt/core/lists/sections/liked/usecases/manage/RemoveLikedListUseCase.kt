@@ -7,7 +7,7 @@ import tv.trakt.trakt.core.user.data.local.liked.UserLikedListsLocalDataSource
 
 internal class RemoveLikedListUseCase(
     private val remoteSource: ListsRemoteDataSource,
-    private val localSource: UserLikedListsLocalDataSource,
+    private val localUserLikedListsSource: UserLikedListsLocalDataSource,
     private val listsLocalSource: ListsLikedLocalDataSource,
 ) {
     suspend fun removeFromLiked(listId: TraktId) {
@@ -15,10 +15,13 @@ internal class RemoveLikedListUseCase(
             listId = listId,
         )
 
-        localSource.removeList(
+        localUserLikedListsSource.removeList(
             listId = listId,
         )
 
-        listsLocalSource.notifyUpdate()
+        with(listsLocalSource) {
+            removeList(listId)
+            notifyUpdate()
+        }
     }
 }

@@ -441,6 +441,7 @@ private fun LazyGridScope.loadingSkeletonsItems(isLists: Boolean = false) {
     device = "id:pixel_9",
     showBackground = true,
     backgroundColor = 0xFF131517,
+    locale = "en",
 )
 @Composable
 private fun Preview() {

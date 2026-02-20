@@ -35,6 +35,7 @@ internal sealed class SearchItem(
     @Immutable
     internal data class List(
         val list: CustomList,
+        val liked: Boolean,
     ) : SearchItem(rank = 0L)
 
     val id: TraktId

@@ -103,11 +103,7 @@ internal class ListDetailsViewModel(
             }
 
             try {
-                val likedLists = when {
-                    getListLikedUseCase.isLoaded() -> getListLikedUseCase.loadLocalLists()
-                    else -> getListLikedUseCase.loadLists()
-                }
-
+                val likedLists = getListLikedUseCase.loadIfNeeded()
                 likedState.update {
                     LikedInfo(
                         liked = likedLists.containsKey(destination.listId.toTraktId()),
