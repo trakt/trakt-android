@@ -58,21 +58,8 @@ internal fun CustomListCard(
     list: CustomList,
     modifier: Modifier = Modifier,
     likesVisible: Boolean = false,
-    onClick: () -> Unit,
-) {
-    CustomListCardContent(
-        list = list,
-        likesVisible = likesVisible,
-        onClick = onClick,
-        modifier = modifier,
-    )
-}
-
-@Composable
-private fun CustomListCardContent(
-    list: CustomList,
-    modifier: Modifier = Modifier,
-    likesVisible: Boolean = false,
+    userVisible: Boolean = true,
+    descriptionVisible: Boolean = false,
     onClick: () -> Unit,
 ) {
     Card(
@@ -86,6 +73,8 @@ private fun CustomListCardContent(
             CustomListContent(
                 list = list,
                 likesVisible = likesVisible,
+                userVisible = userVisible,
+                descriptionVisible = descriptionVisible,
                 onClick = onClick,
             )
         },
@@ -96,6 +85,8 @@ private fun CustomListCardContent(
 private fun CustomListContent(
     list: CustomList,
     likesVisible: Boolean,
+    userVisible: Boolean,
+    descriptionVisible: Boolean,
     onClick: () -> Unit,
 ) {
     val images = remember(list.images?.posters) {
@@ -111,6 +102,8 @@ private fun CustomListContent(
         CustomListHeader(
             list = list,
             likesVisible = likesVisible,
+            userVisible = userVisible,
+            descriptionVisible = descriptionVisible,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
@@ -160,6 +153,8 @@ private fun CustomListContent(
 private fun CustomListHeader(
     list: CustomList,
     likesVisible: Boolean,
+    userVisible: Boolean,
+    descriptionVisible: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -172,31 +167,33 @@ private fun CustomListHeader(
             horizontalArrangement = spacedBy(8.dp),
             modifier = Modifier.weight(1F, false),
         ) {
-            Box(
-                modifier = Modifier.size(36.dp),
-            ) {
-                val avatarBorder = if (list.user.isAnyVip) TraktTheme.colors.vipAccent else Color.Transparent
-                val avatar = list.user.images?.avatar?.full
-                if (avatar != null) {
-                    AsyncImage(
-                        model = avatar,
-                        contentDescription = "User avatar",
-                        contentScale = ContentScale.Crop,
-                        error = painterResource(R.drawable.ic_person_placeholder),
-                        modifier =
-                            Modifier
-                                .border(2.dp, avatarBorder, CircleShape)
-                                .clip(CircleShape),
-                    )
-                } else {
-                    Image(
-                        painter = painterResource(R.drawable.ic_person_placeholder),
-                        contentDescription = null,
-                        modifier =
-                            Modifier
-                                .border(2.dp, avatarBorder, CircleShape)
-                                .clip(CircleShape),
-                    )
+            if (userVisible) {
+                Box(
+                    modifier = Modifier.size(36.dp),
+                ) {
+                    val avatarBorder = if (list.user.isAnyVip) TraktTheme.colors.vipAccent else Color.Transparent
+                    val avatar = list.user.images?.avatar?.full
+                    if (avatar != null) {
+                        AsyncImage(
+                            model = avatar,
+                            contentDescription = "User avatar",
+                            contentScale = ContentScale.Crop,
+                            error = painterResource(R.drawable.ic_person_placeholder),
+                            modifier =
+                                Modifier
+                                    .border(2.dp, avatarBorder, CircleShape)
+                                    .clip(CircleShape),
+                        )
+                    } else {
+                        Image(
+                            painter = painterResource(R.drawable.ic_person_placeholder),
+                            contentDescription = null,
+                            modifier =
+                                Modifier
+                                    .border(2.dp, avatarBorder, CircleShape)
+                                    .clip(CircleShape),
+                        )
+                    }
                 }
             }
 
@@ -210,24 +207,37 @@ private fun CustomListHeader(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
-                Row(
-                    horizontalArrangement = spacedBy(3.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = stringResource(R.string.text_by),
-                        style = TraktTheme.typography.cardSubtitle.copy(fontSize = 12.sp),
-                        color = TraktTheme.colors.textSecondary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                    Text(
-                        text = list.user.displayName,
-                        style = TraktTheme.typography.cardSubtitle.copy(fontSize = 12.sp, fontWeight = W500),
-                        color = TraktTheme.colors.textPrimary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
+
+                if (descriptionVisible) {
+                    if (!list.description.isNullOrBlank()) {
+                        Text(
+                            text = list.description ?: "",
+                            style = TraktTheme.typography.cardSubtitle.copy(fontSize = 12.sp),
+                            color = TraktTheme.colors.textSecondary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
+                } else {
+                    Row(
+                        horizontalArrangement = spacedBy(3.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = stringResource(R.string.text_by),
+                            style = TraktTheme.typography.cardSubtitle.copy(fontSize = 12.sp),
+                            color = TraktTheme.colors.textSecondary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                        Text(
+                            text = list.user.displayName,
+                            style = TraktTheme.typography.cardSubtitle.copy(fontSize = 12.sp, fontWeight = W500),
+                            color = TraktTheme.colors.textPrimary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
                 }
             }
         }
@@ -274,7 +284,7 @@ private fun Preview() {
             Column(
                 verticalArrangement = spacedBy(16.dp),
             ) {
-                CustomListCardContent(
+                CustomListCard(
                     list = PreviewData.customList1.copy(
                         name = "A very long list name that should be truncated",
                         likes = 12341,
@@ -285,7 +295,7 @@ private fun Preview() {
                     onClick = {},
                 )
 
-                CustomListCardContent(
+                CustomListCard(
                     list = PreviewData.customList1.copy(
                         type = Type.ALL,
                         images = Images(
@@ -296,6 +306,7 @@ private fun Preview() {
                             ).toImmutableList(),
                         ),
                     ),
+                    descriptionVisible = true,
                     modifier = Modifier
                         .aspectRatio(HorizontalImageAspectRatio),
                     onClick = {},

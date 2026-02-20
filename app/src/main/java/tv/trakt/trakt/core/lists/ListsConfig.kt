@@ -10,4 +10,6 @@ internal object ListsConfig {
     const val LISTS_MAX_PAGE_LIMIT = 1000
     const val LISTS_SECTION_LIMIT = 40
     const val LISTS_ALL_LIMIT = 100
+
+    const val LISTS_FULL_VIEW_LIMIT = 5
 }

@@ -411,7 +411,7 @@ internal class UserApiClient(
     override suspend fun getPersonalLists(): List<ListDto> {
         val response = usersApi.getUsersListsPersonal(
             id = "me",
-            extended = "cloud9",
+            extended = "cloud9,images",
             page = null,
             limit = 1000,
         )
@@ -420,7 +420,7 @@ internal class UserApiClient(
 
     override suspend fun getLikedLists(): List<LikedListDto> {
         val response = usersApi.getUsersLikesLists(
-            extended = "cloud9",
+            extended = "cloud9,images",
             page = null,
             limit = 1000.toString(),
         )
