@@ -59,9 +59,11 @@ internal fun CustomListCard(
     modifier: Modifier = Modifier,
     liked: Boolean = false,
     likesVisible: Boolean = false,
+    moreVisible: Boolean = false,
     userVisible: Boolean = true,
     descriptionVisible: Boolean = false,
     onClick: () -> Unit,
+    onMoreClick: () -> Unit = {},
 ) {
     Card(
         onClick = onClick,
@@ -76,8 +78,10 @@ internal fun CustomListCard(
                 liked = liked,
                 likesVisible = likesVisible,
                 userVisible = userVisible,
+                moreVisible = moreVisible,
                 descriptionVisible = descriptionVisible,
                 onClick = onClick,
+                onMoreClick = onMoreClick,
             )
         },
     )
@@ -88,9 +92,11 @@ private fun CustomListContent(
     list: CustomList,
     liked: Boolean,
     likesVisible: Boolean,
+    moreVisible: Boolean,
     userVisible: Boolean,
     descriptionVisible: Boolean,
     onClick: () -> Unit,
+    onMoreClick: () -> Unit,
 ) {
     val images = remember(list.images?.posters) {
         list.images?.getPostersUrl()?.take(8)
@@ -107,7 +113,9 @@ private fun CustomListContent(
             liked = liked,
             likesVisible = likesVisible,
             userVisible = userVisible,
+            moreVisible = moreVisible,
             descriptionVisible = descriptionVisible,
+            onMoreClick = onMoreClick,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
@@ -179,7 +187,9 @@ private fun CustomListHeader(
     liked: Boolean,
     likesVisible: Boolean,
     userVisible: Boolean,
+    moreVisible: Boolean,
     descriptionVisible: Boolean,
+    onMoreClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -298,6 +308,18 @@ private fun CustomListHeader(
                 }
             }
         }
+
+        if (moreVisible) {
+            Icon(
+                painter = painterResource(R.drawable.ic_more_vertical),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .padding(start = 12.dp)
+                    .size(16.dp)
+                    .onClick(onClick = onMoreClick),
+            )
+        }
     }
 }
 
@@ -321,6 +343,7 @@ private fun Preview() {
                     ),
                     liked = true,
                     likesVisible = true,
+                    moreVisible = true,
                     modifier = Modifier
                         .aspectRatio(HorizontalImageAspectRatio),
                     onClick = {},

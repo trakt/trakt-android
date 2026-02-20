@@ -284,7 +284,9 @@ private fun ListsScreenContent(
                             CustomListCard(
                                 list = list,
                                 descriptionVisible = true,
+                                moreVisible = true,
                                 onClick = { onPersonalListClick(list) },
+                                onMoreClick = { onEditListClick(list) },
                                 modifier = Modifier
                                     .padding(
                                         top = verticalPadding,
