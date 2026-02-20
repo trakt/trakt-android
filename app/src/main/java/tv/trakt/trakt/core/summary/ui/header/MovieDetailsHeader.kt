@@ -105,6 +105,7 @@ internal fun DetailsHeader(
         genres = movie.genres,
         runtime = movie.runtime,
         imageUrl = movie.images?.getPosterUrl(Images.Size.MEDIUM),
+        imagePlaceholderUrl = movie.images?.getPosterUrl(Images.Size.THUMB),
         imageHorizontal = false,
         accentColor = movie.colors?.colors?.first,
         traktRatings = when {

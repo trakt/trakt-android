@@ -168,6 +168,7 @@ internal fun DetailsHeader(
         runtime = episode.runtime,
         imageUrl = episode.images?.getScreenshotUrl()
             ?: show.images?.getFanartUrl(),
+        imagePlaceholderUrl = null,
         imageHorizontal = true,
         accentColor = null,
         traktRatings = when {

@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.ui.theme.colors.Shade700
 import tv.trakt.trakt.resources.R
@@ -97,6 +98,7 @@ internal fun DetailsHeader(
         },
         genres = EmptyImmutableList,
         imageUrl = person.images?.getHeadshotUrl(),
+        imagePlaceholderUrl = person.images?.getPosterUrl(Size.THUMB),
         imageHorizontal = false,
         onShareClick = onShareClick,
         onBackClick = onBackClick,

@@ -23,7 +23,7 @@ import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
 import tv.trakt.trakt.common.model.ExternalRating
-import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.resources.R
@@ -115,7 +115,8 @@ internal fun DetailsHeader(
         },
         genres = show.genres,
         runtime = null,
-        imageUrl = show.images?.getPosterUrl(Images.Size.MEDIUM),
+        imageUrl = show.images?.getPosterUrl(Size.MEDIUM),
+        imagePlaceholderUrl = show.images?.getPosterUrl(Size.THUMB),
         imageHorizontal = false,
         accentColor = show.colors?.colors?.first,
         traktRatings = when {

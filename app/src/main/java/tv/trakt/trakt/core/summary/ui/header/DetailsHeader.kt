@@ -56,6 +56,7 @@ internal fun DetailsHeader(
     genres: ImmutableList<String>,
     date: @Composable (() -> Unit)?,
     imageUrl: String?,
+    imagePlaceholderUrl: String?,
     imageHorizontal: Boolean,
     status: String?,
     certification: String?,
@@ -84,6 +85,7 @@ internal fun DetailsHeader(
         if (!imageHorizontal) {
             DetailsHeaderPoster(
                 imageUrl = imageUrl,
+                imagePlaceholderUrl = imagePlaceholderUrl,
                 accentColor = accentColor,
                 loading = loading,
                 creditsCount = creditsCount,
@@ -388,6 +390,7 @@ private fun Preview() {
             genres = listOf("Action", "Adventure", "Sci-Fi").toImmutableList(),
             date = null,
             imageUrl = null,
+            imagePlaceholderUrl = null,
             imageHorizontal = false,
             status = "Released",
             certification = "PG-13",
@@ -455,6 +458,7 @@ private fun Preview2() {
             date = null,
             runtime = 45.minutes,
             imageUrl = null,
+            imagePlaceholderUrl = null,
             imageHorizontal = true,
             status = "Released",
             certification = "PG-13",

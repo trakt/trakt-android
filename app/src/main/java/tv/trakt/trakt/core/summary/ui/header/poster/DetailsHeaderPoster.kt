@@ -35,7 +35,9 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 fun DetailsHeaderPoster(
+    modifier: Modifier = Modifier,
     imageUrl: String?,
+    imagePlaceholderUrl: String?,
     accentColor: Color?,
     loading: Boolean,
     creditsCount: Int?,
@@ -43,7 +45,6 @@ fun DetailsHeaderPoster(
     personImdb: ImdbId?,
     onBackClick: () -> Unit,
     onShareClick: () -> Unit,
-    modifier: Modifier = Modifier,
     extraRightColumn: @Composable () -> Unit = {},
 ) {
     val windowClass = currentWindowAdaptiveInfo().windowSizeClass
@@ -92,6 +93,7 @@ fun DetailsHeaderPoster(
 
                 DetailsPoster(
                     imageUrl = imageUrl,
+                    imagePlaceholderUrl = imagePlaceholderUrl,
                     color = accentColor,
                     modifier = posterModifier,
                 )
@@ -140,12 +142,14 @@ fun DetailsHeaderPoster(
     device = "id:pixel_5",
     showBackground = true,
     backgroundColor = 0xFF131517,
+    locale = "us",
 )
 @Composable
 private fun Preview() {
     TraktTheme {
         DetailsHeaderPoster(
             imageUrl = null,
+            imagePlaceholderUrl = null,
             accentColor = TraktTheme.colors.accent,
             loading = false,
             creditsCount = 3,
@@ -163,12 +167,14 @@ private fun Preview() {
     device = "id:pixel_tablet",
     showBackground = true,
     backgroundColor = 0xFF131517,
+    locale = "us",
 )
 @Composable
 private fun Preview2() {
     TraktTheme {
         DetailsHeaderPoster(
             imageUrl = null,
+            imagePlaceholderUrl = null,
             accentColor = TraktTheme.colors.accent,
             loading = false,
             creditsCount = 3,

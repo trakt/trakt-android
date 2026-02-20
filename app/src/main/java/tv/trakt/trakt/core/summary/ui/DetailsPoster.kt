@@ -46,8 +46,9 @@ private val cardShape = RoundedCornerShape(24.dp)
 
 @Composable
 internal fun DetailsPoster(
-    imageUrl: String?,
     modifier: Modifier = Modifier,
+    imageUrl: String?,
+    imagePlaceholderUrl: String?,
     color: Color? = null,
 ) {
     var isError by remember(imageUrl) { mutableStateOf(false) }
@@ -60,6 +61,7 @@ internal fun DetailsPoster(
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(imageUrl)
+                    .placeholderMemoryCacheKey(imagePlaceholderUrl)
                     .crossfade(true)
                     .build(),
                 contentDescription = null,
@@ -132,6 +134,7 @@ internal fun DetailsPoster(
     device = "id:pixel_5",
     showBackground = true,
     backgroundColor = 0xFF131517,
+    locale = "us",
 )
 @Composable
 private fun Preview() {
@@ -145,6 +148,7 @@ private fun Preview() {
             ) {
                 DetailsPoster(
                     imageUrl = "https://trakt.tv/assets/placeholders/thumb/fanart-96d5731216f272365311029c1d1a9388.png",
+                    imagePlaceholderUrl = null,
                     color = Color.White,
                 )
             }
@@ -157,6 +161,7 @@ private fun Preview() {
     device = "id:pixel_5",
     showBackground = true,
     backgroundColor = 0xFFFFFFFF,
+    locale = "us",
 )
 @Composable
 private fun Preview2() {
@@ -170,6 +175,7 @@ private fun Preview2() {
             ) {
                 DetailsPoster(
                     imageUrl = null,
+                    imagePlaceholderUrl = null,
                 )
             }
         }
