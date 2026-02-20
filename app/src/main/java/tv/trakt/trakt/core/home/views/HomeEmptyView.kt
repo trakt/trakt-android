@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -41,6 +42,7 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import tv.trakt.trakt.common.helpers.extensions.ifOrElse
 import tv.trakt.trakt.common.ui.theme.colors.Shade900
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
@@ -51,6 +53,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun HomeEmptyView(
     modifier: Modifier = Modifier,
     height: Dp? = null,
+    aspect: Float? = null,
     text: String,
     icon: Int,
     backgroundImage: Int? = null,
@@ -61,8 +64,13 @@ internal fun HomeEmptyView(
 ) {
     BoxWithConstraints(
         modifier = modifier
+            .ifOrElse(
+                condition = aspect != null,
+                isTrue = aspect?.let { Modifier.aspectRatio(it) } ?: Modifier,
+                isFalse = Modifier,
+            )
             .clip(
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(24.dp),
             ),
     ) {
         backgroundImage?.let {
@@ -93,6 +101,11 @@ internal fun HomeEmptyView(
         Column(
             verticalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
+                .ifOrElse(
+                    condition = aspect != null,
+                    isTrue = aspect?.let { Modifier.aspectRatio(it) } ?: Modifier,
+                    isFalse = Modifier,
+                )
                 .heightIn(min = height ?: Dp.Unspecified)
                 .background(
                     brush = Brush.linearGradient(
@@ -133,7 +146,7 @@ internal fun HomeEmptyView(
                 modifier = Modifier
                     .fillMaxWidth()
                     .dropShadow(
-                        shape = RoundedCornerShape(12.dp),
+                        shape = RoundedCornerShape(24.dp),
                         shadow = Shadow(
                             radius = 4.dp,
                             color = Color.Black,
@@ -146,7 +159,7 @@ internal fun HomeEmptyView(
     }
 }
 
-@Preview(widthDp = 350)
+@Preview(widthDp = 350, locale = "us")
 @Composable
 private fun Preview() {
     TraktTheme {
@@ -161,7 +174,7 @@ private fun Preview() {
 }
 
 @OptIn(ExperimentalCoilApi::class)
-@Preview(widthDp = 350)
+@Preview(widthDp = 350, locale = "us")
 @Composable
 private fun Preview2() {
     val previewHandler = AsyncImagePreviewHandler {

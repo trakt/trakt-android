@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
@@ -34,6 +35,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -47,7 +49,9 @@ import com.google.firebase.remoteconfig.remoteConfig
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_3
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_4
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.TraktId
@@ -68,7 +72,9 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
+import tv.trakt.trakt.ui.components.mediacards.skeletons.CustomListSkeletonCard
 import tv.trakt.trakt.ui.components.vip.VipBanner
+import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -77,6 +83,7 @@ internal fun ListsScreen(
     viewModel: ListsViewModel,
     onNavigateToProfile: () -> Unit,
     onNavigateToDiscover: () -> Unit,
+    onNavigateToSearch: () -> Unit,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToWatchlist: () -> Unit,
@@ -105,6 +112,7 @@ internal fun ListsScreen(
         onShowClick = onNavigateToShow,
         onMoviesClick = onNavigateToDiscover,
         onMovieClick = onNavigateToMovie,
+        onSearchListClick = onNavigateToSearch,
         onCreateListClick = { createListSheet = true },
         onEditListClick = { editListSheet = it },
         onPersonalListClick = onNavigateToPersonalList,
@@ -137,6 +145,7 @@ private fun ListsScreenContent(
     onMoviesClick: () -> Unit = {},
     onMovieClick: (TraktId) -> Unit = {},
     onCreateListClick: () -> Unit = {},
+    onSearchListClick: () -> Unit = {},
     onEditListClick: (CustomList) -> Unit = {},
     onWatchlistClick: () -> Unit = {},
     onPersonalListClick: (CustomList) -> Unit = { _ -> },
@@ -271,20 +280,27 @@ private fun ListsScreenContent(
                 }
             }
 
-            item(key = "empty") {
-                AnimatedVisibility(
-                    visible = state.lists.isNullOrEmpty() && state.listsLoading == DONE,
-                    enter = fadeIn(tween(150)),
-                    exit = fadeOut(tween(150)),
-                ) {
+            if (state.lists.isNullOrEmpty() && state.listsLoading == DONE) {
+                item(key = "empty") {
                     ContentEmptyView(
                         authenticated = state.user.user != null,
+                        filter = state.filter,
                         modifier = Modifier.padding(sectionPadding),
-                        onActionClick = if (state.user.user == null) {
-                            onProfileClick
-                        } else {
-                            onCreateListClick
+                        onActionClick = when (state.user.user) {
+                            null -> onProfileClick
+                            else -> when (state.filter) {
+                                Personal -> onCreateListClick
+                                Liked -> onSearchListClick
+                            }
                         },
+                    )
+                }
+            } else if (state.lists.isNullOrEmpty() && state.listsLoading == LOADING) {
+                item(key = "list_loading") {
+                    CustomListSkeletonCard(
+                        modifier = Modifier
+                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+                            .aspectRatio(HorizontalImageAspectRatio),
                     )
                 }
             }
@@ -376,30 +392,49 @@ private fun MyListsHeader(
 @Composable
 private fun ContentEmptyView(
     authenticated: Boolean,
+    filter: PersonalListType?,
     modifier: Modifier = Modifier,
-    onActionClick: () -> Unit = {},
+    onActionClick: () -> Unit,
 ) {
-    val imageUrl = remember {
-        Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_3).ifBlank { null }
-    }
+    val inspection = LocalInspectionMode.current
 
-    val buttonText = remember(authenticated) {
-        if (!authenticated) {
-            return@remember R.string.button_text_join_trakt
-        }
-        R.string.page_title_create_list
-    }
-
-    val buttonIcon = remember(authenticated) {
+    val imageUrl = remember(inspection, filter) {
         when {
-            authenticated -> R.drawable.ic_plus
+            inspection -> null
+            filter == Personal -> Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_3).ifBlank { null }
+            filter == Liked -> Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_4).ifBlank { null }
+            else -> null
+        }
+    }
+
+    val buttonText = remember(authenticated, filter) {
+        when {
+            !authenticated -> return@remember R.string.button_text_join_trakt
+            filter == Personal -> return@remember R.string.button_text_create_list
+            filter == Liked -> return@remember R.string.button_text_toggle_search_lists
+            else -> R.drawable.ic_trakt_icon
+        }
+    }
+
+    val buttonIcon = remember(authenticated, filter) {
+        when {
+            !authenticated -> R.drawable.ic_trakt_icon
+            filter == Personal -> R.drawable.ic_plus
+            filter == Liked -> R.drawable.ic_search_off
             else -> R.drawable.ic_trakt_icon
         }
     }
 
     HomeEmptyView(
-        text = stringResource(R.string.text_cta_personal_lists),
-        icon = R.drawable.ic_empty_upnext,
+        aspect = HorizontalImageAspectRatio,
+        text = stringResource(
+            when (filter) {
+                Personal -> R.string.text_cta_personal_lists
+                Liked -> R.string.text_cta_liked_lists
+                else -> R.string.text_cta_personal_lists
+            },
+        ),
+        icon = R.drawable.ic_empty_watchlist,
         buttonText = stringResource(buttonText),
         buttonIcon = buttonIcon,
         backgroundImageUrl = imageUrl,

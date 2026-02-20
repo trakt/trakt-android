@@ -50,8 +50,6 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.model.CustomListItem
-import tv.trakt.trakt.core.lists.model.CustomListItem.MovieItem
-import tv.trakt.trakt.core.lists.model.CustomListItem.ShowItem
 import tv.trakt.trakt.core.lists.sections.personal.features.context.movie.sheet.ListMovieContextSheet
 import tv.trakt.trakt.core.lists.sections.personal.features.context.show.sheet.ListShowContextSheet
 import tv.trakt.trakt.core.lists.sections.personal.ui.ListsCustomItemView
@@ -347,12 +345,12 @@ private fun ContentList(
                 watchlist = collectionState.isWatchlist(item.id, item.type),
                 onMovieClick = onMovieClick,
                 onShowClick = onShowClick,
-                onLongClick = {
-                    when (item) {
-                        is ShowItem -> onShowLongClick(item.show)
-                        is MovieItem -> onMovieLongClick(item.movie)
-                    }
-                },
+//                onLongClick = {
+//                    when (item) {
+//                        is ShowItem -> onShowLongClick(item.show)
+//                        is MovieItem -> onMovieLongClick(item.movie)
+//                    }
+//                },
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
                     fadeOutSpec = null,
@@ -391,7 +389,9 @@ private fun PreviewListState() {
     TraktTheme {
         ListsPersonalContent(
             state = ListsLikedState(),
-            list = PreviewData.customList1,
+            list = PreviewData.customList1.copy(
+                name = "Lorem ipsum dolor sit amet consectetur adipiscing elit",
+            ),
         )
     }
 }

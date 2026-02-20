@@ -8,7 +8,6 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -157,6 +156,7 @@ internal class ListsViewModel(
 
         filterState.update { filter }
         listsState.update { null }
+        listsLoadingState.update { IDLE }
 
         loadData()
     }
@@ -197,7 +197,7 @@ internal class ListsViewModel(
         super.onCleared()
     }
 
-    val state: StateFlow<ListsState> = combine(
+    val state = combine(
         userState,
         filterState,
         listsState,

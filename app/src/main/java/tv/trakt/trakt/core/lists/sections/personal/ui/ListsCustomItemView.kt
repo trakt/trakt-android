@@ -136,6 +136,7 @@ internal fun ListsCustomItemView(
                 imageUrl = item.images?.getPosterUrl(),
                 watched = watched,
                 watchlist = watchlist,
+                more = showMoreIcon,
                 onClick = { onMovieClick(item.movie) },
                 onLongClick = onLongClick,
                 chipSpacing = 10.dp,

@@ -47,6 +47,7 @@ internal fun TraktSectionHeader(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = spacedBy(6.dp),
+            modifier = Modifier.weight(1F, false),
         ) {
             TraktHeader(
                 title = title,
@@ -55,6 +56,7 @@ internal fun TraktSectionHeader(
                     else -> null
                 },
                 maxSubtitleLength = maxSubtitleLength,
+                modifier = Modifier.weight(1F, false),
             )
 
             if (extraIcon != null && !collapsed) {
@@ -77,7 +79,7 @@ internal fun TraktSectionHeader(
                 contentDescription = null,
                 tint = TraktTheme.colors.textSecondary,
                 modifier = Modifier
-                    .padding(start = 4.dp)
+                    .padding(start = 24.dp)
                     .rotate(animateRotation)
                     .size(16.dp)
                     .onClick(onClick = onCollapseClick),
@@ -90,6 +92,7 @@ internal fun TraktSectionHeader(
     device = "id:pixel_5",
     showBackground = true,
     backgroundColor = 0xFF131517,
+    locale = "us",
 )
 @Composable
 private fun Preview() {
@@ -105,6 +108,7 @@ private fun Preview() {
     device = "id:pixel_5",
     showBackground = true,
     backgroundColor = 0xFF131517,
+    locale = "us",
 )
 @Composable
 private fun Preview2() {
@@ -121,12 +125,13 @@ private fun Preview2() {
     device = "id:pixel_5",
     showBackground = true,
     backgroundColor = 0xFF131517,
+    locale = "us",
 )
 @Composable
 private fun Preview3() {
     TraktTheme {
         TraktSectionHeader(
-            title = "Trending Movies",
+            title = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec suscipit auctor dui.",
             subtitle = "Subtitle Lorem Ipsum",
             collapsed = false,
             extraIcon = {

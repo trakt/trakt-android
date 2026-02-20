@@ -348,6 +348,8 @@
     <string name="button_text_toggle_lists_liked">Liked</string>
     <string name="button_text_toggle_lists_collaborations">Collaborations</string>
 
+    <string name="text_cta_liked_lists">Discover what others love. Explore and save lists from the community.</string>
+
     <!--  Non Translatable  -->
 
     <string name="translated_value_library_plex" translatable="false">Plex</string>

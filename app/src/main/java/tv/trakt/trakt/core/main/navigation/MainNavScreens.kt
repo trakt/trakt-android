@@ -41,6 +41,7 @@ import tv.trakt.trakt.core.profile.sections.favorites.all.navigation.navigateToF
 import tv.trakt.trakt.core.profile.sections.library.all.navigation.allLibraryScreen
 import tv.trakt.trakt.core.profile.sections.library.all.navigation.navigateToLibrary
 import tv.trakt.trakt.core.search.model.SearchInput
+import tv.trakt.trakt.core.search.navigation.navigateToSearch
 import tv.trakt.trakt.core.search.navigation.searchScreen
 import tv.trakt.trakt.core.settings.navigation.navigateToSettings
 import tv.trakt.trakt.core.settings.navigation.settingsScreen
@@ -253,6 +254,7 @@ internal fun NavGraphBuilder.listsScreens(controller: NavHostController) {
             onNavigateToProfile = { navigateToProfile() },
             onNavigateToShow = { navigateToShow(it) },
             onNavigateToDiscover = { navigateToDiscover() },
+            onNavigateToSearch = { navigateToSearch() },
             onNavigateToMovie = { navigateToMovie(it) },
             onNavigateToWatchlist = { navigateToWatchlist() },
             onNavigateToPersonalList = {
