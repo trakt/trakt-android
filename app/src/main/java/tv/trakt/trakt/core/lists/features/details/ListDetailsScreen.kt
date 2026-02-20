@@ -29,6 +29,7 @@ import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -44,7 +45,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
@@ -60,12 +64,15 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toAnnotatedString
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.sorting.SortTypeList
 import tv.trakt.trakt.common.model.sorting.Sorting
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.core.lists.features.details.ListDetailsState.LikedInfo
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsMovieView
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsShowView
 import tv.trakt.trakt.core.lists.model.CustomListItem
@@ -96,6 +103,29 @@ internal fun ListDetailsScreen(
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    val context = LocalContext.current
+    val snack = LocalSnackbarState.current
+    val haptic = LocalHapticFeedback.current
+
+    LaunchedEffect(state.info, state.error) {
+        if (state.info != null) {
+            haptic.performHapticFeedback(Confirm)
+            snack.showSnackbar(
+                message = state.info?.get(context) ?: "",
+                duration = SnackbarDuration.Short,
+            )
+            viewModel.clearInfoError()
+        }
+
+        if (state.error != null) {
+            snack.showSnackbar(
+                message = state.error?.localizedMessage ?: "",
+                duration = SnackbarDuration.Long,
+            )
+            viewModel.clearInfoError()
+        }
+    }
 
     LaunchedEffect(
         state.navigateMovie,
@@ -152,6 +182,13 @@ internal fun ListDetailsScreen(
                 )
             }
         },
+        onLikeClick = {
+            state.liked?.let {
+                if (!it.loading) {
+                    viewModel.setLiked(!it.liked)
+                }
+            }
+        },
         onBackClick = onNavigateBack,
     )
 
@@ -194,6 +231,7 @@ internal fun ListDetailsContent(
     onFilterClick: (MediaMode) -> Unit = {},
     onSortTypeClick: () -> Unit = {},
     onSortOrderClick: () -> Unit = {},
+    onLikeClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
     onLoadMoreData: () -> Unit = {},
 ) {
@@ -246,6 +284,7 @@ internal fun ListDetailsContent(
             onFilterClick = onFilterClick,
             onSortTypeClick = onSortTypeClick,
             onSortOrderClick = onSortOrderClick,
+            onLikeClick = onLikeClick,
             onBackClick = onBackClick,
         )
     }
@@ -256,9 +295,10 @@ private fun TitleBar(
     title: String,
     subtitle: String?,
     subtitleVisible: Boolean,
-    liked: Boolean?,
+    liked: LikedInfo?,
     modifier: Modifier = Modifier,
-    onBackClick: () -> Unit = {},
+    onLikeClick: () -> Unit,
+    onBackClick: () -> Unit,
 ) {
     Row(
         verticalAlignment = CenterVertically,
@@ -306,20 +346,28 @@ private fun TitleBar(
                     exit = fadeOut(tween(150)),
                     modifier = Modifier
                         .padding(start = 32.dp)
-                        .size(22.dp),
+                        .size(20.dp),
                 ) {
-                    Icon(
-                        painter = painterResource(
-                            when {
-                                liked ?: false -> R.drawable.ic_thumb_up2_fill
-                                else -> R.drawable.ic_thumb_up2
-                            },
-                        ),
-                        tint = TraktTheme.colors.textPrimary,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(22.dp),
-                    )
+                    if (liked?.loading == true) {
+                        FilmProgressIndicator(
+                            size = 20.dp,
+                            modifier = Modifier.padding(1.dp),
+                        )
+                    } else {
+                        Icon(
+                            painter = painterResource(
+                                when {
+                                    liked?.liked ?: false -> R.drawable.ic_thumb_up2_fill
+                                    else -> R.drawable.ic_thumb_up2
+                                },
+                            ),
+                            tint = TraktTheme.colors.textPrimary,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(20.dp)
+                                .onClick(onClick = onLikeClick),
+                        )
+                    }
                 }
             }
         }
@@ -336,7 +384,7 @@ private fun ContentList(
     listItems: ImmutableList<CustomListItem>,
     listFilter: MediaMode?,
     listSorting: Sorting?,
-    listLiked: Boolean?,
+    listLiked: LikedInfo?,
     collectionState: UserCollectionState,
     loading: Boolean,
     loadingMore: Boolean,
@@ -345,6 +393,7 @@ private fun ContentList(
     onFilterClick: (MediaMode) -> Unit,
     onSortTypeClick: () -> Unit,
     onSortOrderClick: () -> Unit,
+    onLikeClick: () -> Unit,
     onBackClick: () -> Unit,
     onEndOfList: () -> Unit,
 ) {
@@ -385,6 +434,7 @@ private fun ContentList(
                 subtitle = subtitle,
                 subtitleVisible = subtitleVisible,
                 liked = listLiked,
+                onLikeClick = onLikeClick,
                 onBackClick = onBackClick,
             )
         }

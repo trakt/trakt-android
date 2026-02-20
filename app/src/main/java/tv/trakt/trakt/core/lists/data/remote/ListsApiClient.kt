@@ -241,4 +241,19 @@ internal class ListsApiClient(
         )
         return response.body()
     }
+
+    override suspend fun addLikedList(listId: TraktId) {
+        listsApi.postListsLike(
+            id = listId.value.toString(),
+            body = null,
+        )
+        cacheMarker.invalidate()
+    }
+
+    override suspend fun removeLikedList(listId: TraktId) {
+        listsApi.deleteListsUnlike(
+            id = listId.value.toString(),
+        )
+        cacheMarker.invalidate()
+    }
 }

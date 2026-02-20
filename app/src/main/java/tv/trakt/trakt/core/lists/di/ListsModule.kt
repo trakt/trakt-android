@@ -31,6 +31,8 @@ import tv.trakt.trakt.core.lists.sections.liked.data.local.lists.ListsLikedLocal
 import tv.trakt.trakt.core.lists.sections.liked.data.local.lists.ListsLikedStorage
 import tv.trakt.trakt.core.lists.sections.liked.usecases.GetLikedListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.liked.usecases.GetLikedListsUseCase
+import tv.trakt.trakt.core.lists.sections.liked.usecases.manage.AddLikedListUseCase
+import tv.trakt.trakt.core.lists.sections.liked.usecases.manage.RemoveLikedListUseCase
 import tv.trakt.trakt.core.lists.sections.personal.ListsPersonalViewModel
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsStorage
@@ -176,6 +178,22 @@ internal val listsModule = module {
             listsItemsLocalDataSource = get(),
             userListsLocalDataSource = get(),
             listsLocalDataSource = get(),
+        )
+    }
+
+    factory {
+        AddLikedListUseCase(
+            remoteSource = get(),
+            localSource = get(),
+            listsLocalSource = get(),
+        )
+    }
+
+    factory {
+        RemoveLikedListUseCase(
+            remoteSource = get(),
+            localSource = get(),
+            listsLocalSource = get(),
         )
     }
 
@@ -349,6 +367,8 @@ internal val listsModule = module {
             savedStateHandle = get(),
             getListItemsUseCase = get(),
             getListLikedUseCase = get(),
+            addLikedListUseCase = get(),
+            removeLikedListUseCase = get(),
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
             collectionStateProvider = get(),

@@ -46,7 +46,7 @@ internal fun TraktSectionHeader(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = spacedBy(6.dp),
+            horizontalArrangement = spacedBy(7.dp),
             modifier = Modifier.weight(1F, false),
         ) {
             TraktHeader(

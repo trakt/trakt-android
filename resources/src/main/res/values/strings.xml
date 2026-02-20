@@ -349,6 +349,8 @@
     <string name="button_text_toggle_lists_collaborations">Collaborations</string>
 
     <string name="text_cta_liked_lists">Discover what others love. Explore and save lists from the community.</string>
+    <string name="text_info_liked_added">Added to liked lists.</string>
+    <string name="text_info_liked_removed">Removed from liked lists.</string>
 
     <!--  Non Translatable  -->
 

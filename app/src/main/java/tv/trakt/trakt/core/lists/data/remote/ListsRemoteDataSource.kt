@@ -61,4 +61,8 @@ internal interface ListsRemoteDataSource {
         sorting: Sorting,
         pagination: Pagination,
     ): List<ListMovieItemDto>
+
+    suspend fun addLikedList(listId: TraktId)
+
+    suspend fun removeLikedList(listId: TraktId)
 }

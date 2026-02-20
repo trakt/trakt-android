@@ -9,7 +9,6 @@ import kotlinx.coroutines.sync.withLock
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.TraktId
 import java.time.Instant
-import java.time.ZonedDateTime
 
 internal class ListsLikedStorage : ListsLikedLocalDataSource {
     private val mutex = Mutex()
@@ -35,15 +34,9 @@ internal class ListsLikedStorage : ListsLikedLocalDataSource {
         }
     }
 
-    override suspend fun notifyUpdate(
-        listId: TraktId,
-        updatedAt: ZonedDateTime,
-    ) {
+    override suspend fun notifyUpdate() {
         mutex.withLock {
-            val existing = storage[listId] ?: return
-            storage[listId] = existing.copy(
-                updatedAt = updatedAt,
-            )
+            updatedAt.tryEmit(Instant.now())
         }
     }
 
