@@ -12,6 +12,7 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.MovieItem
+import tv.trakt.trakt.core.lists.model.CustomListItem.SeasonItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.ShowItem
 import java.time.Instant
 
@@ -81,12 +82,14 @@ internal class UserListsStorage : UserListsLocalDataSource {
                             when (item) {
                                 is MovieItem -> item.copy(rank = items.size + 1)
                                 is ShowItem -> item.copy(rank = items.size + 1)
+                                is SeasonItem -> item.copy(rank = items.size + 1)
                             },
                         )
                         .distinctBy {
                             when (it) {
                                 is MovieItem -> it.movie.ids.trakt
                                 is ShowItem -> it.show.ids.trakt
+                                is SeasonItem -> it.season.ids.trakt
                             }
                         }
                     storage[listId] = updatedList to updatedItems

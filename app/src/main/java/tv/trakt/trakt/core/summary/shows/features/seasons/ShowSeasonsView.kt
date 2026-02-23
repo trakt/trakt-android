@@ -62,6 +62,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Ids
+import tv.trakt.trakt.common.model.Rating
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
@@ -522,6 +523,10 @@ private fun Preview() {
                             ),
                             number = 2,
                             episodeCount = 12,
+                            rating = Rating(
+                                rating = 8.5f,
+                                votes = 1000,
+                            ),
                             images = null,
                             firstAired = nowUtc(),
                             updatedAt = nowUtc(),

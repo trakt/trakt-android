@@ -39,6 +39,7 @@ internal fun AllPersonalListMovieView(
         watchlist = watchlist,
         enabled = enabled,
         onClick = { onClick(item.movie.ids.trakt) },
+        onImageClick = { onClick(item.movie.ids.trakt) },
         onLongClick = onLongClick,
         footerContent = {
             MovieMetaFooter(

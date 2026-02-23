@@ -5,11 +5,16 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
+import tv.trakt.trakt.common.model.MediaType.MOVIE
+import tv.trakt.trakt.common.model.MediaType.SEASON
+import tv.trakt.trakt.common.model.MediaType.SHOW
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.sorting.Sorting
+import tv.trakt.trakt.common.networking.ListItemDto
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.main.model.MediaMode
@@ -33,41 +38,21 @@ internal class GetPersonalListItemsUseCase(
             page = 1,
             extended = "full,cloud9,colors",
             sorting = sorting,
-        ).asyncMap {
-            val listedAt = it.listedAt.toInstant()
-            when {
-                it.movie != null -> {
-                    CustomListItem.MovieItem(
-                        rank = it.rank,
-                        movie = Movie.fromDto(it.movie!!),
-                        listedAt = listedAt,
-                    )
+        )
+            .asyncMap(::mapListItem)
+            .distinctBy { it.key }
+            .also {
+                localSource.setItems(
+                    listId = listId,
+                    items = it,
+                )
+            }.filter {
+                when (filter) {
+                    MEDIA -> true
+                    SHOWS -> it is CustomListItem.ShowItem
+                    MOVIES -> it is CustomListItem.MovieItem
                 }
-                it.show != null -> {
-                    CustomListItem.ShowItem(
-                        rank = it.rank,
-                        show = Show.fromDto(it.show!!),
-                        listedAt = listedAt,
-                    )
-                }
-                else -> {
-                    throw IllegalStateException("Watchlist item unknown type!")
-                }
-            }
-        }.distinctBy {
-            it.key
-        }.also {
-            localSource.setItems(
-                listId = listId,
-                items = it,
-            )
-        }.filter {
-            when (filter) {
-                MEDIA -> true
-                SHOWS -> it is CustomListItem.ShowItem
-                MOVIES -> it is CustomListItem.MovieItem
-            }
-        }.toImmutableList()
+            }.toImmutableList()
     }
 
     suspend fun getLocalItems(
@@ -173,29 +158,30 @@ internal class GetPersonalListItemsUseCase(
             page = page,
             extended = "full,cloud9,colors",
             sorting = sorting,
-        ).asyncMap {
-            val listedAt = it.listedAt.toInstant()
-            when {
-                it.movie != null -> {
-                    CustomListItem.MovieItem(
-                        rank = it.rank,
-                        movie = Movie.fromDto(it.movie!!),
-                        listedAt = listedAt,
-                    )
-                }
+        )
+            .asyncMap(::mapListItem)
+            .toImmutableList()
+    }
 
-                it.show != null -> {
-                    CustomListItem.ShowItem(
-                        rank = it.rank,
-                        show = Show.fromDto(it.show!!),
-                        listedAt = listedAt,
-                    )
-                }
-
-                else -> {
-                    throw IllegalStateException("Watchlist item unknown type!")
-                }
-            }
-        }.toImmutableList()
+    private fun mapListItem(dto: ListItemDto): CustomListItem {
+        return when (dto.type.value) {
+            SHOW.value -> CustomListItem.ShowItem(
+                rank = dto.rank,
+                show = Show.fromDto(dto.show!!),
+                listedAt = dto.listedAt.toInstant(),
+            )
+            MOVIE.value -> CustomListItem.MovieItem(
+                rank = dto.rank,
+                movie = Movie.fromDto(dto.movie!!),
+                listedAt = dto.listedAt.toInstant(),
+            )
+            SEASON.value -> CustomListItem.SeasonItem(
+                rank = dto.rank,
+                season = Season.fromDto(dto.season!!),
+                show = Show.fromDto(dto.show!!),
+                listedAt = dto.listedAt.toInstant(),
+            )
+            else -> throw IllegalStateException("TODO handle episode and person list items")
+        }
     }
 }

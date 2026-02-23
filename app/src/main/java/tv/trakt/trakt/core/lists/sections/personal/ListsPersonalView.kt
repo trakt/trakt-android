@@ -51,6 +51,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.MovieItem
+import tv.trakt.trakt.core.lists.model.CustomListItem.SeasonItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.ShowItem
 import tv.trakt.trakt.core.lists.sections.personal.features.context.movie.sheet.ListMovieContextSheet
 import tv.trakt.trakt.core.lists.sections.personal.features.context.show.sheet.ListShowContextSheet
@@ -355,6 +356,7 @@ private fun ContentList(
                     when (item) {
                         is ShowItem -> onShowLongClick(item.show)
                         is MovieItem -> onMovieLongClick(item.movie)
+                        is SeasonItem -> Unit
                     }
                 },
                 modifier = Modifier.animateItem(

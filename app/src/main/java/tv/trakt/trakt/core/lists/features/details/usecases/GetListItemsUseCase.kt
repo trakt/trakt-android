@@ -6,8 +6,10 @@ import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.MediaType.MOVIE
+import tv.trakt.trakt.common.model.MediaType.SEASON
 import tv.trakt.trakt.common.model.MediaType.SHOW
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
@@ -55,7 +57,7 @@ internal class GetListItemsUseCase(
         }
 
         if (type.containsAll(listOf(MOVIE, SHOW))) {
-            return remoteSource.getMediaListItems(
+            return remoteSource.getAllListItems(
                 listId = listId,
                 extended = "full,cloud9,colors",
                 sorting = sorting,
@@ -70,6 +72,12 @@ internal class GetListItemsUseCase(
                     SHOW.value -> CustomListItem.ShowItem(
                         rank = it.rank,
                         show = Show.fromDto(it.show!!),
+                        listedAt = it.listedAt.toInstant(),
+                    )
+                    SEASON.value -> CustomListItem.SeasonItem(
+                        rank = it.rank,
+                        show = Show.fromDto(it.show!!),
+                        season = Season.fromDto(it.season!!),
                         listedAt = it.listedAt.toInstant(),
                     )
                     else -> throw IllegalStateException("Invalid media type: ${it.type}")

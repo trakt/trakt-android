@@ -63,8 +63,10 @@ import tv.trakt.trakt.common.model.sorting.SortTypeList
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.MovieItem
+import tv.trakt.trakt.core.lists.model.CustomListItem.SeasonItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.ShowItem
 import tv.trakt.trakt.core.lists.sections.personal.features.all.views.AllPersonalListMovieView
+import tv.trakt.trakt.core.lists.sections.personal.features.all.views.AllPersonalListSeasonView
 import tv.trakt.trakt.core.lists.sections.personal.features.all.views.AllPersonalListShowView
 import tv.trakt.trakt.core.lists.sections.personal.features.context.movie.sheet.ListMovieContextSheet
 import tv.trakt.trakt.core.lists.sections.personal.features.context.show.sheet.ListShowContextSheet
@@ -118,12 +120,14 @@ internal fun AllPersonalListScreen(
             when (it) {
                 is MovieItem -> viewModel.navigateToMovie(it.movie)
                 is ShowItem -> viewModel.navigateToShow(it.show)
+                is SeasonItem -> viewModel.navigateToShow(it.show)
             }
         },
         onLongClick = {
             when (it) {
                 is MovieItem -> movieContextSheet = it
                 is ShowItem -> showContextSheet = it
+                is SeasonItem -> Unit
             }
         },
         onFilterClick = viewModel::setFilter,
@@ -542,6 +546,18 @@ private fun ContentList(
                     watchlist = collection.isWatchlist(item.id, item.type),
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
+                    modifier = Modifier
+                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
+                )
+
+                is SeasonItem -> AllPersonalListSeasonView(
+                    item = item,
+                    enabled = !loading,
+                    onClick = { onClick(item) },
                     modifier = Modifier
                         .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
                         .animateItem(

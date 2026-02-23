@@ -11,6 +11,7 @@ import org.openapitools.client.models.PutUsersListsListUpdateRequest
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.sorting.Sorting
+import tv.trakt.trakt.common.networking.ListItemDto
 import tv.trakt.trakt.common.networking.ListMediaItemDto
 import tv.trakt.trakt.common.networking.ListMovieItemDto
 import tv.trakt.trakt.common.networking.ListShowItemDto
@@ -165,6 +166,31 @@ class ListsApiClient(
             ),
         )
         cacheMarker.invalidate()
+    }
+
+    override suspend fun getAllListItems(
+        listId: TraktId,
+        extended: String?,
+        sorting: Sorting,
+        pagination: Pagination,
+    ): List<ListItemDto> {
+        val response = listsApi.getListsItemsAll(
+            id = listId.value.toString(),
+            extended = extended,
+            watchnow = null,
+            genres = null,
+            subgenres = null,
+            years = null,
+            ratings = null,
+            startDate = null,
+            endDate = null,
+            page = pagination.page,
+            limit = pagination.limit.toString(),
+            sortBy = sorting.type.value,
+            sortHow = sorting.order.value,
+            runtimes = null,
+        )
+        return response.body()
     }
 
     override suspend fun getMediaListItems(

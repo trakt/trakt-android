@@ -57,6 +57,7 @@ import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ColorImage
@@ -76,9 +77,11 @@ import tv.trakt.trakt.common.model.sorting.SortTypeList
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.features.details.ListDetailsState.LikedInfo
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsMovieView
+import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsSeasonView
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsShowView
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.MovieItem
+import tv.trakt.trakt.core.lists.model.CustomListItem.SeasonItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.ShowItem
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
@@ -162,12 +165,14 @@ internal fun ListDetailsScreen(
             when (it) {
                 is MovieItem -> viewModel.navigateToMovie(it.movie)
                 is ShowItem -> viewModel.navigateToShow(it.show)
+                is SeasonItem -> viewModel.navigateToShow(it.show)
             }
         },
         onLongClick = {
             when (it) {
                 is MovieItem -> movieContextSheet = it
                 is ShowItem -> showContextSheet = it
+                is SeasonItem -> Unit
             }
         },
         onFilterClick = viewModel::setFilter,
@@ -389,15 +394,17 @@ private fun TitleBar(
                             tint = TraktTheme.colors.textPrimary,
                             contentDescription = null,
                             modifier = Modifier
-                                .size(20.dp)
+                                .size(18.dp)
                                 .graphicsLayer {
-                                    translationY = -1.dp.toPx()
+                                    translationY = -0.75.dp.toPx()
                                 },
                         )
                         likesCount?.let {
                             Text(
                                 text = it.thousandsFormat(),
-                                style = TraktTheme.typography.buttonTertiary,
+                                style = TraktTheme.typography.buttonTertiary.copy(
+                                    fontSize = 12.sp,
+                                ),
                                 color = TraktTheme.colors.textPrimary,
                             )
                         }
@@ -543,6 +550,19 @@ private fun ContentList(
                         showIcon = true,
                         onClick = { onClick(item) },
                         onLongClick = { onLongClick(item) },
+                        modifier = Modifier
+                            .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                            .animateItem(
+                                fadeInSpec = null,
+                                fadeOutSpec = null,
+                            ),
+                    )
+
+                    is SeasonItem -> ListDetailsSeasonView(
+                        item = item,
+                        shadow = index == 0,
+                        enabled = !loading,
+                        onClick = { onClick(item) },
                         modifier = Modifier
                             .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
                             .animateItem(

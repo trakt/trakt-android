@@ -39,6 +39,7 @@ internal fun AllPersonalListShowView(
         watchlist = watchlist,
         enabled = enabled,
         onClick = { onClick(item.show.ids.trakt) },
+        onImageClick = { onClick(item.show.ids.trakt) },
         onLongClick = onLongClick,
         footerContent = {
             ShowMetaFooter(
