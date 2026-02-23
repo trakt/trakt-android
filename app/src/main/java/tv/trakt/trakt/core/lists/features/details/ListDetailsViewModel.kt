@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 import timber.log.Timber
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
@@ -25,6 +26,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -61,15 +63,16 @@ internal class ListDetailsViewModel(
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<ListsDetailsDestination>()
+    private val destinationList = Json.decodeFromString<CustomList>(destination.listJson)
+
     private val showFilters = destination.mediaType.size > 1
 
     private val initialState = ListDetailsState()
 
     private val listState = MutableStateFlow(
         ListDetailsInfo(
+            list = destinationList,
             mediaId = destination.mediaId.toTraktId(),
-            name = destination.listTitle.trim(),
-            description = destination.listDescription?.trim(),
         ),
     )
     private val itemsState = MutableStateFlow(initialState.items)
@@ -106,7 +109,7 @@ internal class ListDetailsViewModel(
                 val likedLists = getListLikedUseCase.loadIfNeeded()
                 likedState.update {
                     LikedInfo(
-                        liked = likedLists.containsKey(destination.listId.toTraktId()),
+                        liked = likedLists.containsKey(destinationList.ids.trakt),
                     )
                 }
             } catch (error: Exception) {
@@ -135,7 +138,7 @@ internal class ListDetailsViewModel(
 
                 itemsState.update {
                     getListItemsUseCase.getItems(
-                        listId = destination.listId.toTraktId(),
+                        listId = destinationList.ids.trakt,
                         type = filterState.value.toMediaTypes(),
                         sorting = sortingState.value,
                         pagination = Pagination(1, PAGE_LIMIT),
@@ -190,7 +193,7 @@ internal class ListDetailsViewModel(
             try {
                 loadingMoreState.update { LOADING }
                 val newItems = getListItemsUseCase.getItems(
-                    listId = destination.listId.toTraktId(),
+                    listId = destinationList.ids.trakt,
                     type = filterState.value.toMediaTypes(),
                     sorting = sortingState.value,
                     pagination = Pagination(
@@ -252,12 +255,11 @@ internal class ListDetailsViewModel(
             try {
                 likedState.update { it?.copy(loading = true) }
 
-                val listId = destination.listId.toTraktId()
                 if (liked) {
-                    addLikedListUseCase.addToLiked(listId)
+                    addLikedListUseCase.addToLiked(destinationList)
                     infoState.update { DynamicStringResource(R.string.text_info_liked_added) }
                 } else {
-                    removeLikedListUseCase.removeFromLiked(listId)
+                    removeLikedListUseCase.removeFromLiked(destinationList.ids.trakt)
                     infoState.update { DynamicStringResource(R.string.text_info_liked_removed) }
                 }
 

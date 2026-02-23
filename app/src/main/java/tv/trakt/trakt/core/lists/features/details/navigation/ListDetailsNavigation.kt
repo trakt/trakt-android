@@ -4,7 +4,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.MediaType.SHOW
@@ -13,9 +15,7 @@ import tv.trakt.trakt.core.lists.features.details.ListDetailsScreen
 
 @Serializable
 internal data class ListsDetailsDestination(
-    val listId: Int,
-    val listTitle: String,
-    val listDescription: String?,
+    val listJson: String,
     val mediaId: Int,
     val mediaType: List<String>,
     val mediaImage: String?,
@@ -47,18 +47,14 @@ internal fun NavGraphBuilder.listDetailsScreen(
 }
 
 internal fun NavController.navigateToListDetails(
-    listId: Int,
-    listTitle: String,
-    listDescription: String?,
+    list: CustomList,
     mediaId: TraktId,
     mediaType: List<MediaType>,
     mediaImage: String?,
 ) {
     navigate(
         route = ListsDetailsDestination(
-            listId = listId,
-            listTitle = listTitle,
-            listDescription = listDescription,
+            listJson = Json.encodeToString(list),
             mediaId = mediaId.value,
             mediaType = mediaType.map { it.name },
             mediaImage = mediaImage,

@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.StringResource
+import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.model.CustomListItem
@@ -27,9 +28,8 @@ internal data class ListDetailsState(
 ) {
     @Immutable
     data class ListDetailsInfo(
+        val list: CustomList,
         val mediaId: TraktId,
-        val name: String,
-        val description: String?,
     )
 
     @Immutable

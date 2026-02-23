@@ -185,11 +185,14 @@ internal fun ListDetailsScreen(
             }
         },
         onLikeClick = {
-            state.liked?.let {
-                if (!it.loading && it.liked) {
-                    confirmRemoveLikeSheet = true
+            state.liked
+                ?.takeIf { !it.loading }
+                ?.let {
+                    when {
+                        it.liked -> confirmRemoveLikeSheet = true
+                        else -> viewModel.setLiked(true)
+                    }
                 }
-            }
         },
         onBackClick = onNavigateBack,
     )
@@ -233,7 +236,7 @@ internal fun ListDetailsScreen(
         title = stringResource(R.string.button_text_toggle_lists_liked),
         message = stringResource(
             R.string.warning_prompt_remove_from_liked_lists,
-            state.list?.name ?: "",
+            state.list?.list?.name ?: "",
         ),
     )
 }
@@ -283,8 +286,8 @@ internal fun ListDetailsContent(
         )
 
         ContentList(
-            title = state.list?.name ?: "",
-            subtitle = state.list?.description,
+            title = state.list?.list?.name ?: "",
+            subtitle = state.list?.list?.description?.trim(),
             listItems = (state.items ?: emptyList()).toImmutableList(),
             listState = listState,
             listFilter = state.filter,

@@ -158,9 +158,7 @@ internal fun NavGraphBuilder.showsScreens(controller: NavHostController) {
             },
             onNavigateToList = { show, list ->
                 navigateToListDetails(
-                    listId = list.ids.trakt.value,
-                    listTitle = list.name,
-                    listDescription = list.description,
+                    list = list,
                     mediaId = show.ids.trakt,
                     mediaType = listOf(SHOW),
                     mediaImage = show.images?.getFanartUrl(),
@@ -227,9 +225,7 @@ internal fun NavGraphBuilder.moviesScreens(controller: NavHostController) {
             },
             onNavigateToList = { movie, list ->
                 navigateToListDetails(
-                    listId = list.ids.trakt.value,
-                    listTitle = list.name,
-                    listDescription = list.description,
+                    list = list,
                     mediaId = movie.ids.trakt,
                     mediaType = listOf(MOVIE),
                     mediaImage = movie.images?.getFanartUrl(),
@@ -264,11 +260,9 @@ internal fun NavGraphBuilder.listsScreens(controller: NavHostController) {
                     listDescription = it.description,
                 )
             },
-            onNavigateToCustomList = {
+            onNavigateToCustomList = { list ->
                 navigateToListDetails(
-                    listId = it.ids.trakt.value,
-                    listTitle = it.name,
-                    listDescription = it.description,
+                    list = list,
                     mediaId = (-1).toTraktId(),
                     mediaType = listOf(SHOW, MOVIE),
                     mediaImage = null,
@@ -306,11 +300,9 @@ internal fun NavGraphBuilder.searchScreens(
             onNavigateToShow = { navigateToShow(it) },
             onNavigateToMovie = { navigateToMovie(it) },
             onNavigateToPerson = { navigateToPerson(it, null, null) },
-            onNavigateToList = {
+            onNavigateToList = { list ->
                 navigateToListDetails(
-                    listId = it.ids.trakt.value,
-                    listTitle = it.name,
-                    listDescription = it.description,
+                    list = list,
                     mediaId = (-1).toTraktId(),
                     mediaType = listOf(SHOW, MOVIE),
                     mediaImage = null,
