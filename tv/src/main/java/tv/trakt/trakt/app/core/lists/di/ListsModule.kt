@@ -72,6 +72,7 @@ internal val listsModule = module {
             showsLocalSyncSource = get(),
             moviesLocalSyncSource = get(),
             appLifecycleProvider = get(),
+            cacheMarkerProvider = get(),
         )
     }
 

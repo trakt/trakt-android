@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import tv.trakt.trakt.app.core.details.lists.details.shows.navigation.CustomListShowsDestination
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONAL_LIST_PAGE_LIMIT
+import tv.trakt.trakt.app.core.lists.details.personal.navigation.PersonalListDestination
 import tv.trakt.trakt.app.core.lists.details.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.toTraktId
@@ -29,7 +29,7 @@ internal class PersonalListViewModel(
     private val itemsState = MutableStateFlow(initialState.items)
     private val errorState = MutableStateFlow(initialState.error)
 
-    val destination = savedStateHandle.toRoute<CustomListShowsDestination>()
+    val destination = savedStateHandle.toRoute<PersonalListDestination>()
 
     private var nextDataPage: Int = 1
     private var hasMoreData: Boolean = true

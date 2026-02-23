@@ -32,6 +32,7 @@ import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider.State.FOREGR
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import java.time.ZonedDateTime
 
 internal class ListsViewModel(
@@ -42,6 +43,7 @@ internal class ListsViewModel(
     private val showsLocalSyncSource: ShowsSyncLocalDataSource,
     private val moviesLocalSyncSource: MoviesSyncLocalDataSource,
     private val appLifecycleProvider: AppLifecycleProvider,
+    private val cacheMarkerProvider: CacheMarkerProvider,
 ) : ViewModel() {
     private val initialState = ListsState()
 
@@ -54,6 +56,7 @@ internal class ListsViewModel(
 
     private var showsLoadedAt: ZonedDateTime? = null
     private var moviesLoadedAt: ZonedDateTime? = null
+    private var marker: String? = null
 
     init {
         loadWatchlistData()
@@ -141,21 +144,24 @@ internal class ListsViewModel(
         }
     }
 
-    private fun loadLikedListsData() {
+    fun loadLikedListsData(reload: Boolean = false) {
         Timber.d("Loading liked lists data")
         viewModelScope.launch {
             try {
                 loadingState.update {
-                    it.copy(loadingLiked = true)
+                    it.copy(loadingLiked = !reload)
                 }
                 val lists = getLikedUseCase.getLists()
                 listsLikedState.update { lists }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.update { error }
+                    if (!reload) {
+                        errorState.update { error }
+                    }
                     Timber.e("Error loading liked lists: ${error.message}")
                 }
             } finally {
+                marker = cacheMarkerProvider.getMarker()
                 loadingState.update {
                     it.copy(loadingLiked = false)
                 }
@@ -199,6 +205,15 @@ internal class ListsViewModel(
                 error.rethrowCancellation {
                     Timber.e(error, "Error")
                 }
+            }
+        }
+    }
+
+    fun updateLikedListsData() {
+        if (marker == null) return
+        viewModelScope.launch {
+            if (marker != cacheMarkerProvider.getMarker()) {
+                loadLikedListsData(reload = true)
             }
         }
     }

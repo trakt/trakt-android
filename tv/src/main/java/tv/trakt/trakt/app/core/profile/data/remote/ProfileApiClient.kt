@@ -6,6 +6,7 @@ import org.openapitools.client.apis.UsersApi
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.networking.CalendarShowDto
 import tv.trakt.trakt.common.networking.LikedListDto
 import tv.trakt.trakt.common.networking.ListDto
@@ -120,14 +121,17 @@ internal class ProfileApiClient(
         return response.body()
     }
 
-    override suspend fun getLikedLists(minimal: Boolean): List<LikedListDto> {
+    override suspend fun getLikedLists(
+        minimal: Boolean,
+        pagination: Pagination,
+    ): List<LikedListDto> {
         val response = api.getUsersLikesLists(
             extended = when {
                 minimal -> "min"
                 else -> "cloud9,images"
             },
-            page = null,
-            limit = "all",
+            page = pagination.page,
+            limit = pagination.limit.toString(),
         )
         return response.body()
     }

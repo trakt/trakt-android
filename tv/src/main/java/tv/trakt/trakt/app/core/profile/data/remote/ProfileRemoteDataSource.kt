@@ -2,6 +2,7 @@ package tv.trakt.trakt.app.core.profile.data.remote
 
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.networking.CalendarShowDto
 import tv.trakt.trakt.common.networking.LikedListDto
 import tv.trakt.trakt.common.networking.ListDto
@@ -44,7 +45,10 @@ internal interface ProfileRemoteDataSource {
 
     suspend fun getUserLists(): List<ListDto>
 
-    suspend fun getLikedLists(minimal: Boolean = false): List<LikedListDto>
+    suspend fun getLikedLists(
+        minimal: Boolean = false,
+        pagination: Pagination,
+    ): List<LikedListDto>
 
     suspend fun getUserShowListItems(
         listId: TraktId,

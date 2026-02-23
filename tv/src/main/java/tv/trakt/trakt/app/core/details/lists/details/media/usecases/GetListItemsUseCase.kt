@@ -52,9 +52,51 @@ internal class GetListItemsUseCase(
             }
         }.toImmutableList()
 
-        showLocalSource.upsertShows(shows)
-        movieLocalSource.upsertMovies(movies)
+        return items.also {
+            showLocalSource.upsertShows(shows)
+            movieLocalSource.upsertMovies(movies)
+        }
+    }
 
-        return items
+    suspend fun getShowListItems(
+        listId: TraktId,
+        page: Int = 1,
+    ): ImmutableList<ListMediaItem> {
+        return remoteSource.getShowListItems(
+            listId = listId,
+            extended = "full,cloud9,streaming_ids",
+            pagination = Pagination(page, CUSTOM_LIST_PAGE_LIMIT),
+            sorting = Sorting.Default,
+        )
+            .map {
+                val show = Show.fromDto(it.show)
+                ShowItem(show)
+            }
+            .toImmutableList()
+            .also {
+                val shows = it.map { item -> item.show }
+                showLocalSource.upsertShows(shows)
+            }
+    }
+
+    suspend fun getMovieListItems(
+        listId: TraktId,
+        page: Int = 1,
+    ): ImmutableList<ListMediaItem> {
+        return remoteSource.getMovieListItems(
+            listId = listId,
+            extended = "full,cloud9,streaming_ids",
+            pagination = Pagination(page, CUSTOM_LIST_PAGE_LIMIT),
+            sorting = Sorting.Default,
+        )
+            .map {
+                val movie = Movie.fromDto(it.movie)
+                MovieItem(movie)
+            }
+            .toImmutableList()
+            .also {
+                val movies = it.map { item -> item.movie }
+                movieLocalSource.upsertMovies(movies)
+            }
     }
 }

@@ -22,6 +22,7 @@ import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle.Event.ON_CREATE
+import androidx.lifecycle.Lifecycle.Event.ON_START
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
@@ -59,6 +60,10 @@ internal fun ListsScreen(
     LifecycleEventEffect(ON_CREATE) {
         viewModel.updateShowsData()
         viewModel.updateMoviesData()
+    }
+
+    LifecycleEventEffect(ON_START) {
+        viewModel.updateLikedListsData()
     }
 
     ListsScreenContent(

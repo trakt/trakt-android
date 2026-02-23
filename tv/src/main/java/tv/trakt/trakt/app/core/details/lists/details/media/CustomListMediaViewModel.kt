@@ -25,7 +25,7 @@ import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLikedListsUseCase
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.resources.R
 
@@ -37,6 +37,8 @@ internal class CustomListMediaViewModel(
     private val removeLikedListUseCase: RemoveLikedListUseCase,
 ) : ViewModel() {
     val destination = savedStateHandle.toRoute<CustomListMediaDestination>()
+    private val destinationType = MediaType.entries.find { it.value == destination.listType }
+
     private val initialState = CustomListMediaState()
 
     private val loadingState = MutableStateFlow(initialState.isLoading)
@@ -46,7 +48,7 @@ internal class CustomListMediaViewModel(
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
 
-    private var nextDataPage: Int = 1
+    private var dataPage: Int = 1
     private var hasMoreData: Boolean = true
 
     init {
@@ -58,12 +60,25 @@ internal class CustomListMediaViewModel(
         viewModelScope.launch {
             try {
                 loadingState.update { true }
-                val items = getListItemsUseCase.getListItems(
-                    listId = destination.listId.toTraktId(),
-                    page = nextDataPage,
-                )
-                itemsState.update { items }
-                nextDataPage += 1
+
+                itemsState.update {
+                    when (destinationType) {
+                        MediaType.SHOW -> getListItemsUseCase.getShowListItems(
+                            listId = destination.listId.toTraktId(),
+                            page = dataPage,
+                        )
+                        MediaType.MOVIE -> getListItemsUseCase.getMovieListItems(
+                            listId = destination.listId.toTraktId(),
+                            page = dataPage,
+                        )
+                        else -> getListItemsUseCase.getListItems(
+                            listId = destination.listId.toTraktId(),
+                            page = dataPage,
+                        )
+                    }
+                }
+
+                dataPage += 1
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -106,10 +121,20 @@ internal class CustomListMediaViewModel(
             try {
                 loadingPageState.update { true }
 
-                val items = getListItemsUseCase.getListItems(
-                    listId = TraktId(destination.listId),
-                    page = nextDataPage,
-                )
+                val items = when (destinationType) {
+                    MediaType.SHOW -> getListItemsUseCase.getShowListItems(
+                        listId = destination.listId.toTraktId(),
+                        page = dataPage,
+                    )
+                    MediaType.MOVIE -> getListItemsUseCase.getMovieListItems(
+                        listId = destination.listId.toTraktId(),
+                        page = dataPage,
+                    )
+                    else -> getListItemsUseCase.getListItems(
+                        listId = destination.listId.toTraktId(),
+                        page = dataPage,
+                    )
+                }
 
                 itemsState.update { items ->
                     items
@@ -119,7 +144,7 @@ internal class CustomListMediaViewModel(
                 }
 
                 hasMoreData = (items.size >= CUSTOM_LIST_PAGE_LIMIT)
-                nextDataPage += 1
+                dataPage += 1
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

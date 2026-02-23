@@ -24,6 +24,7 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -41,10 +42,6 @@ import tv.trakt.trakt.app.core.details.episode.navigation.episodeDetailsScreen
 import tv.trakt.trakt.app.core.details.episode.navigation.navigateToEpisode
 import tv.trakt.trakt.app.core.details.lists.details.media.navigation.customListMedia
 import tv.trakt.trakt.app.core.details.lists.details.media.navigation.navigateToCustomListMedia
-import tv.trakt.trakt.app.core.details.lists.details.movies.navigation.customListMovies
-import tv.trakt.trakt.app.core.details.lists.details.movies.navigation.navigateToCustomListMovies
-import tv.trakt.trakt.app.core.details.lists.details.shows.navigation.customListShows
-import tv.trakt.trakt.app.core.details.lists.details.shows.navigation.navigateToCustomListShows
 import tv.trakt.trakt.app.core.details.movie.navigation.movieDetailsScreen
 import tv.trakt.trakt.app.core.details.movie.navigation.navigateToMovie
 import tv.trakt.trakt.app.core.details.show.navigation.navigateToShow
@@ -106,6 +103,7 @@ import tv.trakt.trakt.app.core.streamings.navigation.navigateToEpisodeStreamings
 import tv.trakt.trakt.app.core.streamings.navigation.navigateToMovieStreamings
 import tv.trakt.trakt.app.core.streamings.navigation.navigateToShowStreamings
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.resources.R
 
@@ -117,6 +115,7 @@ internal fun MainScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val localContext = LocalContext.current
+    val localRes = LocalResources.current
     val localSnackbar = LocalSnackbarState.current
     val localDrawerVisibility = LocalDrawerVisibility.current
 
@@ -132,7 +131,7 @@ internal fun MainScreen(
     LaunchedEffect(state.isSignedOut) {
         if (state.isSignedOut == true) {
             navController.navigateToAuth()
-            localSnackbar.showSnackbar(localContext.getString(R.string.text_info_signed_out))
+            localSnackbar.showSnackbar(localRes.getString(R.string.text_info_signed_out))
         }
     }
 
@@ -341,7 +340,7 @@ private fun MainNavHost(
             )
             listsScreen(
                 onNavigateToPersonalList = { navigateToPersonalList(it) },
-                onNavigateToLikedList = { navigateToCustomListMedia(it) },
+                onNavigateToLikedList = { navigateToCustomListMedia(it, null) },
                 onNavigateToShow = { navigateToShow(it) },
                 onNavigateToMovie = { navigateToMovie(it) },
                 onNavigateToWatchlistShow = { navigateToWatchlistShows() },
@@ -363,14 +362,14 @@ private fun MainNavHost(
                     navigateToEpisode(showId, episodeId)
                 },
                 onNavigateToPerson = { navigateToPerson(it) },
-                onNavigateToList = { navigateToCustomListShows(it) },
+                onNavigateToList = { navigateToCustomListMedia(it, MediaType.SHOW) },
                 onNavigateToVideo = { navigateToPlayer(it) },
                 onNavigateToStreamings = { navigateToShowStreamings(mediaId = it) },
             )
             movieDetailsScreen(
                 onNavigateToMovie = { navigateToMovie(it) },
                 onNavigateToPerson = { navigateToPerson(it) },
-                onNavigateToList = { navigateToCustomListMovies(it) },
+                onNavigateToList = { navigateToCustomListMedia(it, MediaType.MOVIE) },
                 onNavigateToVideo = { navigateToPlayer(it) },
                 onNavigateToStreamings = { navigateToMovieStreamings(mediaId = it) },
             )
@@ -392,12 +391,6 @@ private fun MainNavHost(
             )
             personDetailsScreen(
                 onNavigateToShow = { navigateToShow(it) },
-                onNavigateToMovie = { navigateToMovie(it) },
-            )
-            customListShows(
-                onNavigateToShow = { navigateToShow(it) },
-            )
-            customListMovies(
                 onNavigateToMovie = { navigateToMovie(it) },
             )
             customListMedia(
