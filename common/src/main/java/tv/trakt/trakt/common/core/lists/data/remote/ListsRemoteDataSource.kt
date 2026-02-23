@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.lists.data.remote
+package tv.trakt.trakt.common.core.lists.data.remote
 
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.pagination.Pagination
@@ -7,7 +7,7 @@ import tv.trakt.trakt.common.networking.ListMediaItemDto
 import tv.trakt.trakt.common.networking.ListMovieItemDto
 import tv.trakt.trakt.common.networking.ListShowItemDto
 
-internal interface ListsRemoteDataSource {
+interface ListsRemoteDataSource {
     suspend fun createList(
         name: String,
         description: String?,

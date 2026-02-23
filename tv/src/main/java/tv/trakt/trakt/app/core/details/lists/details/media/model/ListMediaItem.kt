@@ -30,7 +30,7 @@ internal sealed interface ListMediaItem {
 
     val key: String
         get() = when (this) {
-            is ShowItem -> "show_${id.value}"
-            is MovieItem -> "movie_${id.value}"
+            is ShowItem -> "show-${id.value}-tv"
+            is MovieItem -> "movie-${id.value}-tv"
         }
 }

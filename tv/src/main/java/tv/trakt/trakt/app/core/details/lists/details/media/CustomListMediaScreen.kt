@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,6 +26,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.app.LocalSnackbarState
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.common.ui.buttons.LikeButton
@@ -59,22 +62,34 @@ internal fun CustomListMediaScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    val localContext = LocalContext.current
+    val localSnack = LocalSnackbarState.current
+
     CustomListMediaContent(
         state = state,
         listName = viewModel.destination.listName,
-        listLikes = viewModel.destination.listLikes,
+        onLikeClick = {
+            viewModel.setLiked(!state.like.isLiked)
+        },
         onShowClick = onNavigateToShow,
         onMovieClick = onNavigateToMovie,
         onLoadNextPage = { viewModel.loadMoreData() },
     )
+
+    LaunchedEffect(state.info) {
+        state.info?.let {
+            localSnack.showSnackbar(it.get(localContext))
+            viewModel.clearInfo()
+        }
+    }
 }
 
 @Composable
 private fun CustomListMediaContent(
     state: CustomListMediaState,
     listName: String,
-    listLikes: Int,
     modifier: Modifier = Modifier,
+    onLikeClick: () -> Unit,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onLoadNextPage: () -> Unit,
@@ -142,13 +157,11 @@ private fun CustomListMediaContent(
                     )
 
                     LikeButton(
-                        text = listLikes.thousandsFormat(),
+                        text = state.like.likesCount.thousandsFormat(),
                         liked = state.like.isLiked,
                         loading = state.like.isLoading,
                         enabled = !state.like.isLoading,
-                        onClick = {
-                            TODO()
-                        },
+                        onClick = onLikeClick,
                     )
                 }
             }
@@ -269,7 +282,6 @@ private fun Preview() {
     TraktTheme {
         CustomListMediaContent(
             listName = "Custom List",
-            listLikes = 12345,
             state = CustomListMediaState(
                 items = (
                     (1..10).map {
@@ -285,6 +297,7 @@ private fun Preview() {
             ),
             onShowClick = {},
             onMovieClick = {},
+            onLikeClick = {},
             onLoadNextPage = {},
         )
     }

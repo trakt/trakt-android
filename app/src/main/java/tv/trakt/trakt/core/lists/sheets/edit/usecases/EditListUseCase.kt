@@ -1,7 +1,7 @@
 package tv.trakt.trakt.core.lists.sheets.edit.usecases
 
+import tv.trakt.trakt.common.core.lists.data.remote.ListsRemoteDataSource
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.lists.data.remote.ListsRemoteDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 
 internal class EditListUseCase(

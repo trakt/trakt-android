@@ -11,7 +11,6 @@ import org.openapitools.client.apis.EpisodeApi
 import org.openapitools.client.apis.EpisodesApi
 import org.openapitools.client.apis.HistoryApi
 import org.openapitools.client.apis.ListsApi
-import org.openapitools.client.apis.MinimalApi
 import org.openapitools.client.apis.MoviesApi
 import org.openapitools.client.apis.OauthApi
 import org.openapitools.client.apis.PeopleApi
@@ -67,7 +66,6 @@ val networkingApiModule = module {
             get<HistoryApi>(),
             get<ListsApi>(),
             get<MoviesApi>(),
-            get<MinimalApi>(),
             get<OauthApi>(),
             get<PeopleApi>(),
             get<ReactionsApi>(),

@@ -15,13 +15,13 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import tv.trakt.trakt.common.core.lists.data.remote.ListsApiClient
+import tv.trakt.trakt.common.core.lists.data.remote.ListsRemoteDataSource
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.ListsViewModel
-import tv.trakt.trakt.core.lists.data.remote.ListsApiClient
-import tv.trakt.trakt.core.lists.data.remote.ListsRemoteDataSource
 import tv.trakt.trakt.core.lists.features.details.ListDetailsViewModel
 import tv.trakt.trakt.core.lists.features.details.usecases.GetListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.liked.ListsLikedViewModel

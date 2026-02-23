@@ -7,8 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.plus
-import kotlinx.collections.immutable.toPersistentList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -20,25 +19,32 @@ import tv.trakt.trakt.app.core.details.lists.details.CustomListDetailsConfig.CUS
 import tv.trakt.trakt.app.core.details.lists.details.media.model.ListMediaItem
 import tv.trakt.trakt.app.core.details.lists.details.media.navigation.CustomListMediaDestination
 import tv.trakt.trakt.app.core.details.lists.details.media.usecases.GetListItemsUseCase
+import tv.trakt.trakt.app.core.lists.usecases.liked.AddLikedListUseCase
+import tv.trakt.trakt.app.core.lists.usecases.liked.RemoveLikedListUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLikedListsUseCase
+import tv.trakt.trakt.common.helpers.DynamicStringResource
+import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.resources.R
 
 internal class CustomListMediaViewModel(
     savedStateHandle: SavedStateHandle,
     private val getListItemsUseCase: GetListItemsUseCase,
     private val getUserLikedListsUseCase: LoadUserLikedListsUseCase,
+    private val addLikedListUseCase: AddLikedListUseCase,
+    private val removeLikedListUseCase: RemoveLikedListUseCase,
 ) : ViewModel() {
+    val destination = savedStateHandle.toRoute<CustomListMediaDestination>()
     private val initialState = CustomListMediaState()
 
     private val loadingState = MutableStateFlow(initialState.isLoading)
     private val loadingPageState = MutableStateFlow(initialState.isLoadingPage)
-    private val likeState = MutableStateFlow(initialState.like)
+    private val likeState = MutableStateFlow(initialState.like.copy(likesCount = destination.listLikes))
     private val itemsState = MutableStateFlow(initialState.items)
+    private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
-
-    val destination = savedStateHandle.toRoute<CustomListMediaDestination>()
 
     private var nextDataPage: Int = 1
     private var hasMoreData: Boolean = true
@@ -76,7 +82,7 @@ internal class CustomListMediaViewModel(
 
                 val likedLists = getUserLikedListsUseCase.loadIfNeeded()
                 likeState.update {
-                    CustomListMediaState.LikedState(
+                    it.copy(
                         isLiked = likedLists.containsKey(destination.listId.toTraktId()),
                     )
                 }
@@ -105,8 +111,11 @@ internal class CustomListMediaViewModel(
                     page = nextDataPage,
                 )
 
-                itemsState.update {
-                    it?.toPersistentList()?.plus(items)
+                itemsState.update { items ->
+                    items
+                        ?.plus(items)
+                        ?.distinctBy { it.key }
+                        ?.toImmutableList()
                 }
 
                 hasMoreData = (items.size >= CUSTOM_LIST_PAGE_LIMIT)
@@ -122,11 +131,51 @@ internal class CustomListMediaViewModel(
         }
     }
 
+    fun setLiked(liked: Boolean) {
+        if (likeState.value.isLiked == liked || likeState.value.isLoading) {
+            return
+        }
+
+        viewModelScope.launch {
+            try {
+                likeState.update { it.copy(isLoading = true) }
+
+                val traktId = destination.listId.toTraktId()
+                if (liked) {
+                    addLikedListUseCase.addToLiked(traktId)
+                    likeState.update { it.copy(likesCount = it.likesCount + 1) }
+                    infoState.update { DynamicStringResource(R.string.text_info_liked_added) }
+                } else {
+                    removeLikedListUseCase.removeFromLiked(traktId)
+                    likeState.update { it.copy(likesCount = (it.likesCount - 1).coerceAtLeast(0)) }
+                    infoState.update { DynamicStringResource(R.string.text_info_liked_removed) }
+                }
+
+                likeState.update {
+                    it.copy(
+                        isLiked = liked,
+                        isLoading = false,
+                    )
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    likeState.update { it.copy(isLoading = false) }
+                }
+            }
+        }
+    }
+
+    fun clearInfo() {
+        infoState.update { null }
+    }
+
     val state = combine(
         loadingState,
         loadingPageState,
         likeState,
         itemsState,
+        infoState,
         errorState,
     ) { state ->
         CustomListMediaState(
@@ -134,7 +183,8 @@ internal class CustomListMediaViewModel(
             isLoadingPage = state[1] as Boolean,
             like = state[2] as CustomListMediaState.LikedState,
             items = state[3] as? ImmutableList<ListMediaItem>,
-            error = state[4] as? Exception,
+            info = state[4] as? StringResource,
+            error = state[5] as? Exception,
         )
     }.stateIn(
         scope = viewModelScope,

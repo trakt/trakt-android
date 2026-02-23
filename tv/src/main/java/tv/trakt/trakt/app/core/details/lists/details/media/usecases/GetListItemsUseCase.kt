@@ -3,17 +3,19 @@ package tv.trakt.trakt.app.core.details.lists.details.media.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.openapitools.client.models.GetUsersWatchlistAll200ResponseInner.Type
-import tv.trakt.trakt.app.core.details.lists.data.remote.ListsRemoteDataSource
 import tv.trakt.trakt.app.core.details.lists.details.CustomListDetailsConfig.CUSTOM_LIST_PAGE_LIMIT
 import tv.trakt.trakt.app.core.details.lists.details.media.model.ListMediaItem
 import tv.trakt.trakt.app.core.details.lists.details.media.model.ListMediaItem.MovieItem
 import tv.trakt.trakt.app.core.details.lists.details.media.model.ListMediaItem.ShowItem
+import tv.trakt.trakt.common.core.lists.data.remote.ListsRemoteDataSource
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.pagination.Pagination
+import tv.trakt.trakt.common.model.sorting.Sorting
 
 internal class GetListItemsUseCase(
     private val remoteSource: ListsRemoteDataSource,
@@ -26,9 +28,9 @@ internal class GetListItemsUseCase(
     ): ImmutableList<ListMediaItem> {
         val dto = remoteSource.getMediaListItems(
             listId = listId,
-            limit = CUSTOM_LIST_PAGE_LIMIT,
-            page = page,
             extended = "full,cloud9,streaming_ids",
+            pagination = Pagination(page, CUSTOM_LIST_PAGE_LIMIT),
+            sorting = Sorting.Default,
         )
 
         val shows = mutableListOf<Show>()

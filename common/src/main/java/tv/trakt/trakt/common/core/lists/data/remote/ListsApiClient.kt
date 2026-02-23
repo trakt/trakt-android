@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.lists.data.remote
+package tv.trakt.trakt.common.core.lists.data.remote
 
 import org.openapitools.client.apis.ListsApi
 import org.openapitools.client.models.PostCheckinStartRequestOneOf1MovieIds
@@ -16,7 +16,7 @@ import tv.trakt.trakt.common.networking.ListMovieItemDto
 import tv.trakt.trakt.common.networking.ListShowItemDto
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
-internal class ListsApiClient(
+class ListsApiClient(
     private val listsApi: ListsApi,
     private val cacheMarker: CacheMarkerProvider,
 ) : ListsRemoteDataSource {

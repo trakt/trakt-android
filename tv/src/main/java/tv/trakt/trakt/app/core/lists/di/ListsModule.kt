@@ -11,6 +11,8 @@ import tv.trakt.trakt.app.core.lists.usecases.GetListsLikedUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsMoviesWatchlistUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsPersonalUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsShowsWatchlistUseCase
+import tv.trakt.trakt.app.core.lists.usecases.liked.AddLikedListUseCase
+import tv.trakt.trakt.app.core.lists.usecases.liked.RemoveLikedListUseCase
 
 internal val listsModule = module {
     factory {
@@ -44,6 +46,20 @@ internal val listsModule = module {
             remoteSource = get(),
             localShowSource = get(),
             localMovieSource = get(),
+        )
+    }
+
+    factory {
+        AddLikedListUseCase(
+            remoteSource = get(),
+            localSource = get(),
+        )
+    }
+
+    factory {
+        RemoveLikedListUseCase(
+            remoteSource = get(),
+            localSource = get(),
         )
     }
 

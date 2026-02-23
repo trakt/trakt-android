@@ -1,29 +1,22 @@
-package tv.trakt.trakt.core.lists.sections.liked.usecases.manage
+package tv.trakt.trakt.app.core.lists.usecases.liked
 
 import tv.trakt.trakt.common.core.lists.data.remote.ListsRemoteDataSource
 import tv.trakt.trakt.common.core.user.data.local.liked.UserLikedListsLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
-import tv.trakt.trakt.common.model.CustomList
-import tv.trakt.trakt.core.lists.sections.liked.data.local.lists.ListsLikedLocalDataSource
+import tv.trakt.trakt.common.model.TraktId
 
 internal class AddLikedListUseCase(
     private val remoteSource: ListsRemoteDataSource,
     private val localSource: UserLikedListsLocalDataSource,
-    private val listsLocalSource: ListsLikedLocalDataSource,
 ) {
-    suspend fun addToLiked(list: CustomList) {
+    suspend fun addToLiked(listId: TraktId) {
         remoteSource.addLikedList(
-            listId = list.ids.trakt,
+            listId = listId,
         )
 
         localSource.addList(
-            listId = list.ids.trakt,
+            listId = listId,
             likedAt = nowUtcInstant(),
         )
-
-        with(listsLocalSource) {
-            addList(list)
-            notifyUpdate()
-        }
     }
 }
