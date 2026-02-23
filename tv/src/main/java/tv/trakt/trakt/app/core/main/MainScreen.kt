@@ -338,7 +338,8 @@ private fun MainNavHost(
                 onNavigateToMovie = { navigateToMovie(it) },
             )
             listsScreen(
-                onNavigateToList = { navigateToPersonalList(it) },
+                onNavigateToPersonalList = { navigateToPersonalList(it) },
+                onNavigateToLikedList = { navigateToCustomListMovies(it) }, // TODO!
                 onNavigateToShow = { navigateToShow(it) },
                 onNavigateToMovie = { navigateToMovie(it) },
                 onNavigateToWatchlistShow = { navigateToWatchlistShows() },

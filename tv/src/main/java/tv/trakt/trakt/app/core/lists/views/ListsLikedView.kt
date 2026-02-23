@@ -35,7 +35,7 @@ import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.resources.R
 
 @Composable
-internal fun ListsPersonalView(
+internal fun ListsLikedView(
     items: ImmutableList<CustomList>?,
     isLoading: Boolean,
     focusRequesters: Map<String, FocusRequester>,
@@ -51,7 +51,7 @@ internal fun ListsPersonalView(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
         modifier = Modifier
             .focusGroup()
-            .focusRequester(focusRequesters.getValue("personal")),
+            .focusRequester(focusRequesters.getValue("liked")),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -59,13 +59,13 @@ internal fun ListsPersonalView(
             modifier = Modifier.padding(contentPadding),
         ) {
             Icon(
-                painter = painterResource(R.drawable.ic_person_trakt),
+                painter = painterResource(R.drawable.ic_thumb_up2),
                 contentDescription = null,
                 tint = TraktTheme.colors.textPrimary,
-                modifier = Modifier.size(18.dp),
+                modifier = Modifier.size(20.dp),
             )
             Text(
-                text = stringResource(R.string.button_text_toggle_lists_personal),
+                text = stringResource(R.string.button_text_toggle_lists_liked),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading5,
             )
@@ -130,7 +130,9 @@ private fun ContentList(
         ) { item ->
             CustomListCard(
                 list = item,
-                descriptionVisible = true,
+                descriptionVisible = false,
+                likesVisible = true,
+                liked = true,
                 onClick = { onClick(item) },
                 modifier = Modifier
                     .height(TraktTheme.size.detailsCustomListSize)
@@ -156,10 +158,10 @@ private fun ContentList(
 @SuppressLint("RememberInComposition")
 private fun ListsMoviesWatchlistViewPreview() {
     TraktTheme {
-        ListsPersonalView(
+        ListsLikedView(
             items = null,
             isLoading = true,
-            focusRequesters = mapOf("personal" to FocusRequester()),
+            focusRequesters = mapOf("liked" to FocusRequester()),
             onFocused = {},
             onClick = {},
         )

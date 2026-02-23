@@ -27,6 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaSkeletonCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
+import tv.trakt.trakt.app.core.lists.views.ListsLikedView
 import tv.trakt.trakt.app.core.lists.views.ListsMoviesWatchlistView
 import tv.trakt.trakt.app.core.lists.views.ListsPersonalView
 import tv.trakt.trakt.app.core.lists.views.ListsShowsWatchlistView
@@ -40,12 +41,14 @@ private val sections = listOf(
     "shows",
     "movies",
     "personal",
+    "liked",
 )
 
 @Composable
 internal fun ListsScreen(
     viewModel: ListsViewModel,
     onListClick: (CustomList) -> Unit = {},
+    onLikedListClick: (CustomList) -> Unit = {},
     onShowClick: (TraktId) -> Unit = {},
     onMovieClick: (TraktId) -> Unit = {},
     onShowViewAllClick: () -> Unit = {},
@@ -61,6 +64,7 @@ internal fun ListsScreen(
     ListsScreenContent(
         state = state,
         onListClick = onListClick,
+        onLikedListClick = onLikedListClick,
         onShowClick = onShowClick,
         onMovieClick = onMovieClick,
         onShowViewAllClick = onShowViewAllClick,
@@ -73,6 +77,7 @@ internal fun ListsScreenContent(
     modifier: Modifier = Modifier,
     state: ListsState,
     onListClick: (CustomList) -> Unit = {},
+    onLikedListClick: (CustomList) -> Unit = {},
     onShowClick: (TraktId) -> Unit = {},
     onMovieClick: (TraktId) -> Unit = {},
     onShowViewAllClick: () -> Unit = {},
@@ -121,7 +126,7 @@ internal fun ListsScreenContent(
             item {
                 ListsShowsWatchlistView(
                     items = state.watchlistShows,
-                    isLoading = state.isLoadingWatchlist,
+                    isLoading = state.loadingLists.loadingWatchlist,
                     focusRequesters = focusRequesters,
                     onFocused = {
                         focusedSection = "shows"
@@ -137,7 +142,7 @@ internal fun ListsScreenContent(
             item {
                 ListsMoviesWatchlistView(
                     items = state.watchlistMovies,
-                    isLoading = state.isLoadingWatchlist,
+                    isLoading = state.loadingLists.loadingWatchlist,
                     focusRequesters = focusRequesters,
                     onFocused = {
                         focusedSection = "movies"
@@ -153,7 +158,8 @@ internal fun ListsScreenContent(
             item {
                 ListsPersonalView(
                     items = state.personalLists,
-                    isLoading = state.isLoadingPersonal || state.isLoadingWatchlist,
+                    isLoading = state.loadingLists.loadingPersonal ||
+                        state.loadingLists.loadingWatchlist,
                     focusRequesters = focusRequesters,
                     onFocused = {
                         focusedSection = "personal"
@@ -161,6 +167,22 @@ internal fun ListsScreenContent(
                     },
                     onClick = {
                         onListClick(it)
+                    },
+                )
+            }
+
+            item {
+                ListsLikedView(
+                    items = state.likedLists,
+                    isLoading = state.loadingLists.loadingLiked ||
+                        state.loadingLists.loadingWatchlist,
+                    focusRequesters = focusRequesters,
+                    onFocused = {
+                        focusedSection = "liked"
+                        focusedImageUrl = null
+                    },
+                    onClick = {
+                        onLikedListClick(it)
                     },
                 )
             }
@@ -191,7 +213,6 @@ private fun Preview() {
             state = ListsState(
                 watchlistMovies = null,
                 watchlistShows = null,
-                isLoadingWatchlist = true,
                 error = null,
             ),
         )

@@ -55,6 +55,7 @@ internal fun MovieCustomListsList(
             ) { list ->
                 CustomListCard(
                     list = list,
+                    likesVisible = true,
                     onClick = { onClick(list) },
                     modifier = Modifier
                         .height(TraktTheme.size.detailsCustomListSize)

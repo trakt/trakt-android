@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package tv.trakt.trakt.app.core.lists
 
 import androidx.lifecycle.ViewModel
@@ -7,7 +9,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
@@ -18,6 +19,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.app.Config.REFRESH_DATA_THRESHOLD_MINUTES
 import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_SECTION_LIMIT
+import tv.trakt.trakt.app.core.lists.usecases.GetListsLikedUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsMoviesWatchlistUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsPersonalUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsShowsWatchlistUseCase
@@ -36,6 +38,7 @@ internal class ListsViewModel(
     private val getShowsWatchlistUseCase: GetListsShowsWatchlistUseCase,
     private val getMoviesWatchlistUseCase: GetListsMoviesWatchlistUseCase,
     private val getPersonalUseCase: GetListsPersonalUseCase,
+    private val getLikedUseCase: GetListsLikedUseCase,
     private val showsLocalSyncSource: ShowsSyncLocalDataSource,
     private val moviesLocalSyncSource: MoviesSyncLocalDataSource,
     private val appLifecycleProvider: AppLifecycleProvider,
@@ -44,9 +47,9 @@ internal class ListsViewModel(
 
     private val showsState = MutableStateFlow(initialState.watchlistShows)
     private val moviesState = MutableStateFlow(initialState.watchlistMovies)
-    private val listsState = MutableStateFlow(initialState.personalLists)
-    private val loadingWatchlistState = MutableStateFlow(initialState.isLoadingWatchlist)
-    private val loadingPersonalState = MutableStateFlow(initialState.isLoadingWatchlist)
+    private val listsPersonalState = MutableStateFlow(initialState.personalLists)
+    private val listsLikedState = MutableStateFlow(initialState.likedLists)
+    private val loadingState = MutableStateFlow(initialState.loadingLists)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var showsLoadedAt: ZonedDateTime? = null
@@ -55,6 +58,8 @@ internal class ListsViewModel(
     init {
         loadWatchlistData()
         loadPersonalListsData()
+        loadLikedListsData()
+
         observeApp()
     }
 
@@ -78,7 +83,9 @@ internal class ListsViewModel(
         viewModelScope.launch {
             try {
                 if (showLoading) {
-                    loadingWatchlistState.update { true }
+                    loadingState.update {
+                        it.copy(loadingWatchlist = true)
+                    }
                 }
 
                 coroutineScope {
@@ -101,11 +108,13 @@ internal class ListsViewModel(
                 moviesLoadedAt = nowUtc()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.value = error
+                    errorState.update { error }
                     Timber.e(error, "Error loading: ${error.message}")
                 }
             } finally {
-                loadingWatchlistState.update { false }
+                loadingState.update {
+                    it.copy(loadingWatchlist = false)
+                }
             }
         }
     }
@@ -114,16 +123,42 @@ internal class ListsViewModel(
         Timber.d("Loading personal lists data")
         viewModelScope.launch {
             try {
-                loadingPersonalState.update { true }
+                loadingState.update {
+                    it.copy(loadingPersonal = true)
+                }
                 val lists = getPersonalUseCase.getLists()
-                listsState.update { lists }
+                listsPersonalState.update { lists }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.value = error
+                    errorState.update { error }
                     Timber.e("Error loading personal lists: ${error.message}")
                 }
             } finally {
-                loadingPersonalState.update { false }
+                loadingState.update {
+                    it.copy(loadingPersonal = false)
+                }
+            }
+        }
+    }
+
+    private fun loadLikedListsData() {
+        Timber.d("Loading liked lists data")
+        viewModelScope.launch {
+            try {
+                loadingState.update {
+                    it.copy(loadingLiked = true)
+                }
+                val lists = getLikedUseCase.getLists()
+                listsLikedState.update { lists }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.e("Error loading liked lists: ${error.message}")
+                }
+            } finally {
+                loadingState.update {
+                    it.copy(loadingLiked = false)
+                }
             }
         }
     }
@@ -168,21 +203,20 @@ internal class ListsViewModel(
         }
     }
 
-    val state: StateFlow<ListsState> = combine(
+    val state = combine(
         showsState,
         moviesState,
-        listsState,
-        loadingWatchlistState,
-        loadingPersonalState,
+        listsPersonalState,
+        listsLikedState,
+        loadingState,
         errorState,
     ) { s ->
-        @Suppress("UNCHECKED_CAST")
         ListsState(
             watchlistShows = s[0] as ImmutableList<Show>?,
             watchlistMovies = s[1] as ImmutableList<Movie>?,
             personalLists = s[2] as ImmutableList<CustomList>?,
-            isLoadingWatchlist = s[3] as Boolean,
-            isLoadingPersonal = s[4] as Boolean,
+            likedLists = s[3] as ImmutableList<CustomList>?,
+            loadingLists = s[4] as ListsState.LoadingState,
             error = s[5] as Exception?,
         )
     }.stateIn(

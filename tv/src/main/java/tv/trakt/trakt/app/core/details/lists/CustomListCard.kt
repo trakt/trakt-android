@@ -3,6 +3,7 @@ package tv.trakt.trakt.app.core.details.lists
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -30,18 +32,20 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W700
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.tv.material3.Border
 import androidx.tv.material3.Card
 import androidx.tv.material3.CardDefaults
+import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
-import tv.trakt.trakt.app.common.ui.TvVipChip
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.CustomList.Type
@@ -51,10 +55,16 @@ import tv.trakt.trakt.resources.R
 internal fun CustomListCard(
     list: CustomList,
     modifier: Modifier = Modifier,
+    descriptionVisible: Boolean = false,
+    likesVisible: Boolean = false,
+    liked: Boolean = false,
     onClick: () -> Unit,
 ) {
     CustomListCardContent(
         list = list,
+        descriptionVisible = descriptionVisible,
+        likesVisible = likesVisible,
+        liked = liked,
         onClick = onClick,
         modifier = modifier,
     )
@@ -64,6 +74,9 @@ internal fun CustomListCard(
 private fun CustomListCardContent(
     list: CustomList,
     modifier: Modifier = Modifier,
+    descriptionVisible: Boolean = false,
+    likesVisible: Boolean = false,
+    liked: Boolean = false,
     onClick: () -> Unit,
 ) {
     val containerColor =
@@ -103,13 +116,21 @@ private fun CustomListCardContent(
         content = {
             CustomListContent(
                 list = list,
+                descriptionVisible = descriptionVisible,
+                likesVisible = likesVisible,
+                liked = liked,
             )
         },
     )
 }
 
 @Composable
-private fun CustomListContent(list: CustomList) {
+private fun CustomListContent(
+    list: CustomList,
+    descriptionVisible: Boolean,
+    likesVisible: Boolean,
+    liked: Boolean,
+) {
     Column(
         verticalArrangement = spacedBy(0.dp, Alignment.CenterVertically),
         modifier =
@@ -119,6 +140,9 @@ private fun CustomListContent(list: CustomList) {
     ) {
         CustomListHeader(
             list = list,
+            descriptionVisible = descriptionVisible,
+            likesVisible = likesVisible,
+            liked = liked,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
@@ -159,71 +183,116 @@ private fun CustomListContent(list: CustomList) {
 private fun CustomListHeader(
     list: CustomList,
     modifier: Modifier = Modifier,
+    descriptionVisible: Boolean,
+    likesVisible: Boolean,
+    liked: Boolean,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy(8.dp),
-        modifier = modifier,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = modifier.fillMaxWidth(),
     ) {
-        Box(
-            modifier =
-                Modifier
-                    .size(36.dp),
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = spacedBy(8.dp),
+            modifier = Modifier.weight(1F, fill = false),
         ) {
-            val avatarBorder = if (list.user.isAnyVip) Color.Red else Color.Transparent
-            val avatar = list.user.images?.avatar?.full
-            if (avatar != null) {
-                AsyncImage(
-                    model = avatar,
-                    contentDescription = "User avatar",
-                    contentScale = ContentScale.Crop,
-                    error = painterResource(R.drawable.ic_person_placeholder),
-                    modifier =
-                        Modifier
-                            .border(2.dp, avatarBorder, CircleShape)
-                            .clip(CircleShape),
-                )
-            } else {
-                Image(
-                    painter = painterResource(R.drawable.ic_person_placeholder),
-                    contentDescription = null,
-                    modifier =
-                        Modifier
-                            .border(2.dp, avatarBorder, CircleShape)
-                            .clip(CircleShape),
-                )
-            }
-        }
-
-        Column(verticalArrangement = spacedBy(3.dp)) {
-            Text(
-                text = list.name,
-                style = TraktTheme.typography.paragraph,
-                color = TraktTheme.colors.textPrimary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-            Row(
-                horizontalArrangement = spacedBy(4.dp),
-                verticalAlignment = Alignment.CenterVertically,
+            Box(
+                modifier = Modifier.size(36.dp),
             ) {
+                val avatarBorder = if (list.user.isAnyVip) Color.Red else Color.Transparent
+                val avatar = list.user.images?.avatar?.full
+                if (avatar != null) {
+                    AsyncImage(
+                        model = avatar,
+                        contentDescription = "User avatar",
+                        contentScale = ContentScale.Crop,
+                        error = painterResource(R.drawable.ic_person_placeholder),
+                        modifier =
+                            Modifier
+                                .border(2.dp, avatarBorder, CircleShape)
+                                .clip(CircleShape),
+                    )
+                } else {
+                    Image(
+                        painter = painterResource(R.drawable.ic_person_placeholder),
+                        contentDescription = null,
+                        modifier =
+                            Modifier
+                                .border(2.dp, avatarBorder, CircleShape)
+                                .clip(CircleShape),
+                    )
+                }
+            }
+            Column(verticalArrangement = spacedBy(2.dp)) {
                 Text(
-                    text = stringResource(R.string.text_by),
-                    style = TraktTheme.typography.paragraphSmall,
-                    color = TraktTheme.colors.textSecondary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                Text(
-                    text = list.user.displayName,
-                    style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
+                    text = list.name,
+                    style = TraktTheme.typography.paragraph,
                     color = TraktTheme.colors.textPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
-                if (list.user.isAnyVip) {
-                    TvVipChip()
+
+                if (descriptionVisible && !list.description.isNullOrBlank()) {
+                    Text(
+                        text = list.description?.trim() ?: "",
+                        style = TraktTheme.typography.paragraphSmall,
+                        color = TraktTheme.colors.textSecondary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                } else {
+                    Row(
+                        horizontalArrangement = spacedBy(4.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = stringResource(R.string.text_by),
+                            style = TraktTheme.typography.paragraphSmall,
+                            color = TraktTheme.colors.textSecondary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                        Text(
+                            text = list.user.displayName,
+                            style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
+                            color = TraktTheme.colors.textPrimary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
                 }
+            }
+        }
+
+        if (likesVisible) {
+            Row(
+                horizontalArrangement = spacedBy(4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(start = 16.dp),
+            ) {
+                val tint = when {
+                    list.type == Type.OFFICIAL -> TraktTheme.colors.textPrimary
+                    else -> TraktTheme.colors.textSecondary
+                }
+                Icon(
+                    painter = painterResource(
+                        when (liked) {
+                            true -> R.drawable.ic_thumb_up2_fill
+                            false -> R.drawable.ic_thumb_up2
+                        },
+                    ),
+                    contentDescription = null,
+                    tint = tint,
+                    modifier = Modifier.size(16.dp),
+                )
+                Text(
+                    text = list.likes?.thousandsFormat() ?: "0",
+                    style = TraktTheme.typography.meta.copy(
+                        fontSize = 11.sp,
+                    ),
+                    color = tint,
+                )
             }
         }
     }

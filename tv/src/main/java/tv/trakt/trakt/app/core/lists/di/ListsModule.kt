@@ -7,6 +7,7 @@ import tv.trakt.trakt.app.core.lists.details.movies.MoviesWatchlistViewModel
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListViewModel
 import tv.trakt.trakt.app.core.lists.details.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.app.core.lists.details.shows.ShowsWatchlistViewModel
+import tv.trakt.trakt.app.core.lists.usecases.GetListsLikedUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsMoviesWatchlistUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsPersonalUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsShowsWatchlistUseCase
@@ -33,6 +34,12 @@ internal val listsModule = module {
     }
 
     factory {
+        GetListsLikedUseCase(
+            remoteProfileSource = get(),
+        )
+    }
+
+    factory {
         GetPersonalListItemsUseCase(
             remoteSource = get(),
             localShowSource = get(),
@@ -45,6 +52,7 @@ internal val listsModule = module {
             getShowsWatchlistUseCase = get(),
             getMoviesWatchlistUseCase = get(),
             getPersonalUseCase = get(),
+            getLikedUseCase = get(),
             showsLocalSyncSource = get(),
             moviesLocalSyncSource = get(),
             appLifecycleProvider = get(),

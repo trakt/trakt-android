@@ -14,7 +14,8 @@ import tv.trakt.trakt.common.model.TraktId
 internal data object ListsDestination
 
 internal fun NavGraphBuilder.listsScreen(
-    onNavigateToList: (CustomList) -> Unit,
+    onNavigateToPersonalList: (CustomList) -> Unit,
+    onNavigateToLikedList: (CustomList) -> Unit,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToWatchlistShow: () -> Unit,
@@ -23,7 +24,8 @@ internal fun NavGraphBuilder.listsScreen(
     composable<ListsDestination> {
         ListsScreen(
             viewModel = koinViewModel(),
-            onListClick = onNavigateToList,
+            onListClick = onNavigateToPersonalList,
+            onLikedListClick = onNavigateToLikedList,
             onShowClick = onNavigateToShow,
             onMovieClick = onNavigateToMovie,
             onShowViewAllClick = onNavigateToWatchlistShow,

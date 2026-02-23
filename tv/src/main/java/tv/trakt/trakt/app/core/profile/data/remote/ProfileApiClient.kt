@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.networking.CalendarShowDto
+import tv.trakt.trakt.common.networking.LikedListDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.ListMovieItemDto
 import tv.trakt.trakt.common.networking.ListShowItemDto
@@ -114,7 +115,19 @@ internal class ProfileApiClient(
             id = "me",
             extended = "images",
             page = null,
-            limit = null,
+            limit = 100,
+        )
+        return response.body()
+    }
+
+    override suspend fun getLikedLists(minimal: Boolean): List<LikedListDto> {
+        val response = api.getUsersLikesLists(
+            extended = when {
+                minimal -> "min"
+                else -> "cloud9,images"
+            },
+            page = null,
+            limit = "all",
         )
         return response.body()
     }
