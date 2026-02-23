@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.user.data.remote
+package tv.trakt.trakt.common.core.user.data.remote
 
 import org.openapitools.client.apis.CalendarsApi
 import org.openapitools.client.apis.HistoryApi
@@ -35,7 +35,7 @@ import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import java.time.LocalDate
 import java.time.ZonedDateTime
 
-internal class UserApiClient(
+class UserApiClient(
     private val usersApi: UsersApi,
     private val historyApi: HistoryApi,
     private val calendarsApi: CalendarsApi,

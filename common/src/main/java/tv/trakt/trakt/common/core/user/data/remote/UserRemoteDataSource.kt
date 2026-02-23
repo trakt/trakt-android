@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.user.data.remote
+package tv.trakt.trakt.common.core.user.data.remote
 
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
@@ -25,7 +25,7 @@ import tv.trakt.trakt.common.networking.WatchlistMovieDto
 import java.time.LocalDate
 import java.time.ZonedDateTime
 
-internal interface UserRemoteDataSource {
+interface UserRemoteDataSource {
     suspend fun getProfile(): User
 
     suspend fun getWatchingNow(): UserWatchingDto?

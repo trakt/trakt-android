@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.user.usecases.lists
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Movie
@@ -9,7 +10,6 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
-import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 
 /**
  * Loads the user's watchlist from the remote source and updates the local cache.

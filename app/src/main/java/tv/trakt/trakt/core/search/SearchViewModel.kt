@@ -25,6 +25,7 @@ import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLikedListsUseCase
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
@@ -53,7 +54,6 @@ import tv.trakt.trakt.core.search.usecase.popular.GetPopularSearchUseCase
 import tv.trakt.trakt.core.search.usecase.popular.PostUserSearchUseCase
 import tv.trakt.trakt.core.user.CollectionStateProvider
 import tv.trakt.trakt.core.user.UserCollectionState
-import tv.trakt.trakt.core.user.usecases.lists.LoadUserLikedListsUseCase
 
 @OptIn(FlowPreview::class)
 internal class SearchViewModel(

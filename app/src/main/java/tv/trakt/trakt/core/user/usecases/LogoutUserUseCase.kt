@@ -6,6 +6,7 @@ import io.ktor.client.plugins.auth.authProvider
 import io.ktor.client.plugins.auth.providers.BearerAuthProvider
 import org.openapitools.client.infrastructure.ApiClient
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.user.data.local.liked.UserLikedListsLocalDataSource
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.discover.sections.recommended.data.local.movies.RecommendedMoviesLocalDataSource
@@ -24,7 +25,6 @@ import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.data.local.favorites.UserFavoritesLocalDataSource
 import tv.trakt.trakt.core.user.data.local.library.UserLibraryLocalDataSource
-import tv.trakt.trakt.core.user.data.local.liked.UserLikedListsLocalDataSource
 import tv.trakt.trakt.core.user.data.local.ratings.UserRatingsLocalDataSource
 import tv.trakt.trakt.core.user.data.local.reactions.UserReactionsLocalDataSource
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager

@@ -4,6 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Ids
@@ -12,7 +13,6 @@ import tv.trakt.trakt.common.model.toSlugId
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.sync.model.ProgressItem
 import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
-import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 
 internal class LoadUserProgressUseCase(
     private val remoteSource: UserRemoteDataSource,

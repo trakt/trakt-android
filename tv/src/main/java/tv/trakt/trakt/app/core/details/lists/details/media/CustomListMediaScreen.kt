@@ -65,7 +65,7 @@ internal fun CustomListMediaScreen(
         listLikes = viewModel.destination.listLikes,
         onShowClick = onNavigateToShow,
         onMovieClick = onNavigateToMovie,
-        onLoadNextPage = { viewModel.loadNextDataPage() },
+        onLoadNextPage = { viewModel.loadMoreData() },
     )
 }
 
@@ -143,8 +143,12 @@ private fun CustomListMediaContent(
 
                     LikeButton(
                         text = listLikes.thousandsFormat(),
-                        liked = false,
-                        onClick = {},
+                        liked = state.like.isLiked,
+                        loading = state.like.isLoading,
+                        enabled = !state.like.isLoading,
+                        onClick = {
+                            TODO()
+                        },
                     )
                 }
             }

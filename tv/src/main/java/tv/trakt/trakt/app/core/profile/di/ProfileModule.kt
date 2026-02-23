@@ -8,6 +8,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.openapitools.client.apis.CalendarsApi
 import org.openapitools.client.apis.HistoryApi
+import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
 import tv.trakt.trakt.app.core.profile.ProfileViewModel
 import tv.trakt.trakt.app.core.profile.data.remote.ProfileApiClient
@@ -24,6 +25,11 @@ import tv.trakt.trakt.app.core.profile.sections.history.usecases.SyncProfileHist
 import tv.trakt.trakt.app.core.profile.sections.history.viewall.ProfileHistoryViewAllViewModel
 import tv.trakt.trakt.app.core.profile.usecases.LogoutProfileUseCase
 import tv.trakt.trakt.common.Config.API_BASE_URL
+import tv.trakt.trakt.common.core.user.data.local.liked.UserLikedListsLocalDataSource
+import tv.trakt.trakt.common.core.user.data.local.liked.UserLikedListsStorage
+import tv.trakt.trakt.common.core.user.data.remote.UserApiClient
+import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
+import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLikedListsUseCase
 
 internal val profileDataModule = module {
     single<ProfileRemoteDataSource> {
@@ -47,6 +53,39 @@ internal val profileDataModule = module {
                 httpClientConfig = httpClientConfig,
             ),
         )
+    }
+
+    single<UserRemoteDataSource> {
+        val httpClientEngine = get<HttpClientEngine>()
+        val httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig"))
+
+        UserApiClient(
+            usersApi = UsersApi(
+                baseUrl = API_BASE_URL,
+                httpClientEngine = httpClientEngine,
+                httpClientConfig = httpClientConfig,
+            ),
+            historyApi = HistoryApi(
+                baseUrl = API_BASE_URL,
+                httpClientEngine = httpClientEngine,
+                httpClientConfig = httpClientConfig,
+            ),
+            calendarsApi = CalendarsApi(
+                baseUrl = API_BASE_URL,
+                httpClientEngine = httpClientEngine,
+                httpClientConfig = httpClientConfig,
+            ),
+            syncApi = SyncApi(
+                baseUrl = API_BASE_URL,
+                httpClientEngine = httpClientEngine,
+                httpClientConfig = httpClientConfig,
+            ),
+            cacheMarkerProvider = get(),
+        )
+    }
+
+    single<UserLikedListsLocalDataSource> {
+        UserLikedListsStorage()
     }
 }
 
@@ -89,6 +128,14 @@ internal val profileModule = module {
         GetFavoriteMoviesUseCase(
             remoteUserSource = get(),
             localMoviesSource = get(),
+        )
+    }
+
+    factory {
+        LoadUserLikedListsUseCase(
+            sessionManager = get(),
+            remoteSource = get(),
+            localSource = get(),
         )
     }
 

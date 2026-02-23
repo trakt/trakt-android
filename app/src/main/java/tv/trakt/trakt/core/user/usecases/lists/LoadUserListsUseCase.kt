@@ -5,6 +5,7 @@ import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.CustomList
@@ -18,7 +19,6 @@ import tv.trakt.trakt.common.networking.ListItemDto
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_MAX_PAGE_LIMIT
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
-import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 
 /**
  * Loads the user's lists from the remote source and updates the local cache.

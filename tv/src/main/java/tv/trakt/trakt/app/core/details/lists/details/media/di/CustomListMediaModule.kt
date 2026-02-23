@@ -19,6 +19,7 @@ internal val customListMediaModule = module {
         CustomListMediaViewModel(
             savedStateHandle = get(),
             getListItemsUseCase = get(),
+            getUserLikedListsUseCase = get(),
         )
     }
 }

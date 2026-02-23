@@ -2,11 +2,11 @@ package tv.trakt.trakt.core.lists.sections.liked.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.sections.liked.data.local.lists.ListsLikedLocalDataSource
-import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 
 internal class GetLikedListsUseCase(
     private val remoteSource: UserRemoteDataSource,

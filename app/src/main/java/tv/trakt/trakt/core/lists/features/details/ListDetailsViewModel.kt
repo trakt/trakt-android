@@ -20,6 +20,7 @@ import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLikedListsUseCase
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
@@ -45,7 +46,6 @@ import tv.trakt.trakt.core.lists.sections.liked.usecases.manage.RemoveLikedListU
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.user.CollectionStateProvider
 import tv.trakt.trakt.core.user.UserCollectionState
-import tv.trakt.trakt.core.user.usecases.lists.LoadUserLikedListsUseCase
 import tv.trakt.trakt.resources.R
 
 private const val PAGE_LIMIT = LISTS_ALL_LIMIT

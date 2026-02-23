@@ -1,19 +1,19 @@
-package tv.trakt.trakt.core.user.usecases.lists
+package tv.trakt.trakt.common.core.user.usecases.lists
 
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.user.data.local.liked.UserLikedListsLocalDataSource
+import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.core.user.data.local.liked.UserLikedListsLocalDataSource
-import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 import java.time.Instant
 
 /**
  * Use case for loading user's liked lists.
  */
-internal class LoadUserLikedListsUseCase(
+class LoadUserLikedListsUseCase(
     private val sessionManager: SessionManager,
     private val remoteSource: UserRemoteDataSource,
     private val localSource: UserLikedListsLocalDataSource,

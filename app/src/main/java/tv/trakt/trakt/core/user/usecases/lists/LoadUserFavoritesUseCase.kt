@@ -4,6 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Movie
@@ -13,7 +14,6 @@ import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.favorites.model.FavoriteItem
 import tv.trakt.trakt.core.favorites.model.getFavoriteSorting
 import tv.trakt.trakt.core.user.data.local.favorites.UserFavoritesLocalDataSource
-import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 
 /**
  * Loads the user's favorites from the remote source and updates the local cache.

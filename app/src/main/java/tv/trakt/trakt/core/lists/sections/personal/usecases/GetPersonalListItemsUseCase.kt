@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.lists.sections.personal.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Movie
@@ -15,7 +16,6 @@ import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
 import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
 import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
-import tv.trakt.trakt.core.user.data.remote.UserRemoteDataSource
 
 internal class GetPersonalListItemsUseCase(
     private val remoteSource: UserRemoteDataSource,

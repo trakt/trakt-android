@@ -7,7 +7,13 @@ import tv.trakt.trakt.app.core.details.lists.details.media.model.ListMediaItem
 @Immutable
 internal data class CustomListMediaState(
     val items: ImmutableList<ListMediaItem>? = null,
+    val like: LikedState = LikedState(),
     val isLoading: Boolean = false,
     val isLoadingPage: Boolean = false,
     val error: Exception? = null,
-)
+) {
+    data class LikedState(
+        val isLiked: Boolean = false,
+        val isLoading: Boolean = false,
+    )
+}
