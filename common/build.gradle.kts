@@ -16,6 +16,11 @@ android {
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
 
+        val versionCode = libs.versions.versionCode.get().toInt()
+        val versionName = libs.versions.versionName.get()
+
+        buildConfigField("int", "VERSION_CODE", versionCode.toString())
+        buildConfigField("String", "VERSION_NAME", "\"${versionName}\"")
         buildConfigField("String", "TRAKT_API_KEY", localProperties.getProperty("TRAKT_API_KEY"))
         buildConfigField("String", "TRAKT_API_SECRET", localProperties.getProperty("TRAKT_API_SECRET"))
         buildConfigField(

@@ -22,6 +22,9 @@ object Config {
     const val WEB_SUPPORT_MAIL: String = "support@trakt.tv"
     const val WEB_GOOGLE_SUBSCRIPTIONS: String = "https://play.google.com/store/account/subscriptions"
 
+    fun apiUserAgent(): String =
+        "Trakt/${BuildConfig.VERSION_NAME} (tv.trakt.trakt; build:${BuildConfig.VERSION_CODE}; android:${android.os.Build.VERSION.SDK_INT})"
+
     fun webUserUrl(userId: String): String = "https://trakt.tv/users/$userId?native_app_mode=true"
 
     fun webListUrl(

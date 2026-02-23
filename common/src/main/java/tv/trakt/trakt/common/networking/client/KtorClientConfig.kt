@@ -5,6 +5,7 @@ import io.ktor.client.HttpClientConfig
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.UserAgent
 import io.ktor.client.plugins.api.createClientPlugin
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
@@ -58,6 +59,10 @@ internal fun HttpClientConfig<*>.applyConfig(
     cacheMarkerProvider: CacheMarkerProvider,
 ) {
     expectSuccess = true
+
+    install(UserAgent) {
+        agent = Config.apiUserAgent()
+    }
 
     install(HttpCache) {
         val cacheFile = Files.createDirectories(context.cacheDir.resolve("ktor").toPath()).toFile()
