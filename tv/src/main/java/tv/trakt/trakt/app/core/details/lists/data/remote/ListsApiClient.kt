@@ -2,6 +2,7 @@ package tv.trakt.trakt.app.core.details.lists.data.remote
 
 import org.openapitools.client.apis.ListsApi
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.networking.ListMediaItemDto
 import tv.trakt.trakt.common.networking.ListMovieItemDto
 import tv.trakt.trakt.common.networking.ListShowItemDto
 
@@ -41,6 +42,32 @@ internal class ListsApiClient(
         extended: String,
     ): List<ListMovieItemDto> {
         val response = api.getListsItemsMovie(
+            id = listId.value.toString(),
+            extended = extended,
+            watchnow = null,
+            genres = null,
+            years = null,
+            ratings = null,
+            page = page,
+            limit = limit.toString(),
+            startDate = null,
+            endDate = null,
+            subgenres = null,
+            sortBy = null,
+            sortHow = null,
+            runtimes = null,
+        )
+
+        return response.body()
+    }
+
+    override suspend fun getMediaListItems(
+        listId: TraktId,
+        limit: Int,
+        page: Int,
+        extended: String,
+    ): List<ListMediaItemDto> {
+        val response = api.getListsItemsMedia(
             id = listId.value.toString(),
             extended = extended,
             watchnow = null,

@@ -21,6 +21,7 @@ import tv.trakt.trakt.app.core.auth.di.authModule
 import tv.trakt.trakt.app.core.comments.di.commentsDataModule
 import tv.trakt.trakt.app.core.comments.di.commentsModule
 import tv.trakt.trakt.app.core.details.episode.di.episodeDetailsModule
+import tv.trakt.trakt.app.core.details.lists.details.media.di.customListMediaModule
 import tv.trakt.trakt.app.core.details.lists.details.movies.di.customListMoviesModule
 import tv.trakt.trakt.app.core.details.lists.details.shows.di.customListShowsModule
 import tv.trakt.trakt.app.core.details.lists.module.customListsDataModule
@@ -118,6 +119,7 @@ class TvActivity : ComponentActivity() {
                     peopleDataModule,
                     personDetailsModule,
                     customListsDataModule,
+                    customListMediaModule,
                     customListMoviesModule,
                     customListShowsModule,
                     profileDataModule,

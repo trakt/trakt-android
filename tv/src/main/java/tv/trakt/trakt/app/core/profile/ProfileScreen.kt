@@ -317,6 +317,7 @@ private fun ProfileAvatar(
     device = "id:tv_4k",
     showBackground = true,
     backgroundColor = 0xFF131517,
+    locale = "us",
 )
 @Composable
 private fun Preview() {

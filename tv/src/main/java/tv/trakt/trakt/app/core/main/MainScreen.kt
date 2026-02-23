@@ -39,6 +39,8 @@ import tv.trakt.trakt.app.core.auth.navigation.authScreen
 import tv.trakt.trakt.app.core.auth.navigation.navigateToAuth
 import tv.trakt.trakt.app.core.details.episode.navigation.episodeDetailsScreen
 import tv.trakt.trakt.app.core.details.episode.navigation.navigateToEpisode
+import tv.trakt.trakt.app.core.details.lists.details.media.navigation.customListMedia
+import tv.trakt.trakt.app.core.details.lists.details.media.navigation.navigateToCustomListMedia
 import tv.trakt.trakt.app.core.details.lists.details.movies.navigation.customListMovies
 import tv.trakt.trakt.app.core.details.lists.details.movies.navigation.navigateToCustomListMovies
 import tv.trakt.trakt.app.core.details.lists.details.shows.navigation.customListShows
@@ -339,7 +341,7 @@ private fun MainNavHost(
             )
             listsScreen(
                 onNavigateToPersonalList = { navigateToPersonalList(it) },
-                onNavigateToLikedList = { navigateToCustomListMovies(it) }, // TODO!
+                onNavigateToLikedList = { navigateToCustomListMedia(it) },
                 onNavigateToShow = { navigateToShow(it) },
                 onNavigateToMovie = { navigateToMovie(it) },
                 onNavigateToWatchlistShow = { navigateToWatchlistShows() },
@@ -396,6 +398,10 @@ private fun MainNavHost(
                 onNavigateToShow = { navigateToShow(it) },
             )
             customListMovies(
+                onNavigateToMovie = { navigateToMovie(it) },
+            )
+            customListMedia(
+                onNavigateToShow = { navigateToShow(it) },
                 onNavigateToMovie = { navigateToMovie(it) },
             )
             allStreamingsScreen()
