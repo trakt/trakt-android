@@ -6636,194 +6636,201 @@
                         ]
                       },
                       "list": {
-                        "type": "object",
-                        "properties": {
-                          "name": {
-                            "type": "string"
-                          },
-                          "description": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "privacy": {
-                            "type": "string"
-                          },
-                          "share_link": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string"
-                          },
-                          "display_numbers": {
-                            "type": "boolean"
-                          },
-                          "allow_comments": {
-                            "type": "boolean"
-                          },
-                          "sort_by": {
-                            "type": "string"
-                          },
-                          "sort_how": {
-                            "type": "string",
-                            "enum": [
-                              "asc",
-                              "desc"
-                            ]
-                          },
-                          "created_at": {
-                            "type": "string"
-                          },
-                          "updated_at": {
-                            "type": "string"
-                          },
-                          "item_count": {
-                            "type": "integer"
-                          },
-                          "comment_count": {
-                            "type": "integer"
-                          },
-                          "likes": {
-                            "type": "integer"
-                          },
-                          "ids": {
+                        "oneOf": [
+                          {
                             "type": "object",
                             "properties": {
-                              "trakt": {
-                                "type": "integer"
-                              },
-                              "slug": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "trakt",
-                              "slug"
-                            ]
-                          },
-                          "user": {
-                            "type": "object",
-                            "properties": {
-                              "username": {
-                                "type": "string"
-                              },
-                              "private": {
-                                "type": "boolean"
-                              },
-                              "deleted": {
-                                "type": "boolean"
-                              },
                               "name": {
+                                "type": "string"
+                              },
+                              "description": {
                                 "type": "string",
                                 "nullable": true
                               },
-                              "vip": {
-                                "type": "boolean",
-                                "nullable": true
+                              "privacy": {
+                                "type": "string"
                               },
-                              "vip_ep": {
-                                "type": "boolean",
-                                "nullable": true
+                              "share_link": {
+                                "type": "string"
                               },
-                              "director": {
-                                "type": "boolean",
-                                "nullable": true
+                              "type": {
+                                "type": "string"
+                              },
+                              "display_numbers": {
+                                "type": "boolean"
+                              },
+                              "allow_comments": {
+                                "type": "boolean"
+                              },
+                              "sort_by": {
+                                "type": "string"
+                              },
+                              "sort_how": {
+                                "type": "string",
+                                "enum": [
+                                  "asc",
+                                  "desc"
+                                ]
+                              },
+                              "created_at": {
+                                "type": "string"
+                              },
+                              "updated_at": {
+                                "type": "string"
+                              },
+                              "item_count": {
+                                "type": "integer"
+                              },
+                              "comment_count": {
+                                "type": "integer"
+                              },
+                              "likes": {
+                                "type": "integer"
                               },
                               "ids": {
                                 "type": "object",
                                 "properties": {
-                                  "slug": {
-                                    "type": "string",
-                                    "nullable": true
-                                  },
                                   "trakt": {
                                     "type": "integer"
+                                  },
+                                  "slug": {
+                                    "type": "string"
                                   }
                                 },
                                 "required": [
-                                  "trakt"
+                                  "trakt",
+                                  "slug"
                                 ]
                               },
-                              "joined_at": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "location": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "about": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "gender": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "age": {
-                                "type": "integer",
-                                "nullable": true
+                              "user": {
+                                "type": "object",
+                                "properties": {
+                                  "username": {
+                                    "type": "string"
+                                  },
+                                  "private": {
+                                    "type": "boolean"
+                                  },
+                                  "deleted": {
+                                    "type": "boolean"
+                                  },
+                                  "name": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "vip": {
+                                    "type": "boolean",
+                                    "nullable": true
+                                  },
+                                  "vip_ep": {
+                                    "type": "boolean",
+                                    "nullable": true
+                                  },
+                                  "director": {
+                                    "type": "boolean",
+                                    "nullable": true
+                                  },
+                                  "ids": {
+                                    "type": "object",
+                                    "properties": {
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true
+                                      },
+                                      "trakt": {
+                                        "type": "integer"
+                                      }
+                                    },
+                                    "required": [
+                                      "trakt"
+                                    ]
+                                  },
+                                  "joined_at": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "location": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "about": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "gender": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "age": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
+                                  "images": {
+                                    "type": "object",
+                                    "properties": {
+                                      "avatar": {
+                                        "type": "object",
+                                        "properties": {
+                                          "full": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "full"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "avatar"
+                                    ],
+                                    "nullable": true
+                                  },
+                                  "vip_og": {
+                                    "type": "boolean",
+                                    "nullable": true
+                                  },
+                                  "vip_years": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
+                                  "vip_cover_image": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "required": [
+                                  "username",
+                                  "private",
+                                  "deleted",
+                                  "ids"
+                                ]
                               },
                               "images": {
                                 "type": "object",
                                 "properties": {
-                                  "avatar": {
-                                    "type": "object",
-                                    "properties": {
-                                      "full": {
-                                        "type": "string"
-                                      }
-                                    },
-                                    "required": [
-                                      "full"
-                                    ]
+                                  "posters": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
                                   }
                                 },
                                 "required": [
-                                  "avatar"
+                                  "posters"
                                 ],
                                 "nullable": true
-                              },
-                              "vip_og": {
-                                "type": "boolean",
-                                "nullable": true
-                              },
-                              "vip_years": {
-                                "type": "integer",
-                                "nullable": true
-                              },
-                              "vip_cover_image": {
-                                "type": "string",
-                                "nullable": true
                               }
-                            },
-                            "required": [
-                              "username",
-                              "private",
-                              "deleted",
-                              "ids"
-                            ]
+                            }
                           },
-                          "images": {
+                          {
                             "type": "object",
                             "properties": {
-                              "posters": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
+                              "id": {
+                                "type": "integer",
+                                "nullable": true
                               }
-                            },
-                            "required": [
-                              "posters"
-                            ],
-                            "nullable": true
-                          },
-                          "id": {
-                            "type": "integer"
+                            }
                           }
-                        },
-                        "required": [
-                          "id"
                         ]
                       }
                     },
