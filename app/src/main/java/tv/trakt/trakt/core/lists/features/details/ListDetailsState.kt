@@ -13,7 +13,7 @@ import tv.trakt.trakt.core.user.UserCollectionState
 
 @Immutable
 internal data class ListDetailsState(
-    val list: ListDetailsInfo? = null,
+    val list: ListDetails? = null,
     val liked: LikedInfo? = null,
     val items: ImmutableList<CustomListItem>? = null,
     val filter: MediaMode? = null,
@@ -27,7 +27,7 @@ internal data class ListDetailsState(
     val error: Exception? = null,
 ) {
     @Immutable
-    data class ListDetailsInfo(
+    data class ListDetails(
         val list: CustomList,
         val mediaId: TraktId,
     )

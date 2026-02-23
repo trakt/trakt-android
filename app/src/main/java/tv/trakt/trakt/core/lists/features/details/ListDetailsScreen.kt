@@ -42,6 +42,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
@@ -67,11 +68,12 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.common.helpers.extensions.toAnnotatedString
+import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.sorting.SortTypeList
 import tv.trakt.trakt.common.model.sorting.Sorting
-import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.lists.features.details.ListDetailsState.LikedInfo
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsMovieView
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsShowView
@@ -293,6 +295,7 @@ internal fun ListDetailsContent(
             listFilter = state.filter,
             listSorting = state.sorting,
             listLiked = state.liked,
+            listLikes = state.list?.list?.likes,
             collectionState = state.collection,
             contentPadding = contentPadding,
             loading = state.loading.isLoading,
@@ -315,6 +318,7 @@ private fun TitleBar(
     subtitle: String?,
     subtitleVisible: Boolean,
     liked: LikedInfo?,
+    likesCount: Int?,
     modifier: Modifier = Modifier,
     onLikeClick: () -> Unit,
     onBackClick: () -> Unit,
@@ -363,16 +367,18 @@ private fun TitleBar(
                     visible = liked != null,
                     enter = fadeIn(tween(150)),
                     exit = fadeOut(tween(150)),
-                    modifier = Modifier
-                        .padding(start = 32.dp)
-                        .size(20.dp),
+                    modifier = Modifier.padding(start = 32.dp),
                 ) {
-                    if (liked?.loading == true) {
-                        FilmProgressIndicator(
-                            size = 20.dp,
-                            modifier = Modifier.padding(1.dp),
-                        )
-                    } else {
+                    Row(
+                        verticalAlignment = CenterVertically,
+                        horizontalArrangement = spacedBy(6.dp),
+                        modifier = Modifier
+                            .alpha(if (liked?.loading == true) 0.25F else 1F)
+                            .onClick(
+                                enabled = liked?.loading != true,
+                                onClick = onLikeClick,
+                            ),
+                    ) {
                         Icon(
                             painter = painterResource(
                                 when {
@@ -384,8 +390,17 @@ private fun TitleBar(
                             contentDescription = null,
                             modifier = Modifier
                                 .size(20.dp)
-                                .onClick(onClick = onLikeClick),
+                                .graphicsLayer {
+                                    translationY = -1.dp.toPx()
+                                },
                         )
+                        likesCount?.let {
+                            Text(
+                                text = it.thousandsFormat(),
+                                style = TraktTheme.typography.buttonTertiary,
+                                color = TraktTheme.colors.textPrimary,
+                            )
+                        }
                     }
                 }
             }
@@ -404,6 +419,7 @@ private fun ContentList(
     listFilter: MediaMode?,
     listSorting: Sorting?,
     listLiked: LikedInfo?,
+    listLikes: Int?,
     collectionState: UserCollectionState,
     loading: Boolean,
     loadingMore: Boolean,
@@ -453,6 +469,7 @@ private fun ContentList(
                 subtitle = subtitle,
                 subtitleVisible = subtitleVisible,
                 liked = listLiked,
+                likesCount = listLikes,
                 onLikeClick = onLikeClick,
                 onBackClick = onBackClick,
             )
@@ -637,6 +654,14 @@ private fun Preview() {
             ListDetailsContent(
                 state = ListDetailsState(
                     loading = LoadingState.LOADING,
+                    liked = LikedInfo(
+                        liked = false,
+                        loading = false,
+                    ),
+                    list = ListDetailsState.ListDetails(
+                        list = PreviewData.customList1,
+                        mediaId = TraktId(1),
+                    ),
                 ),
             )
         }

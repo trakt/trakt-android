@@ -37,7 +37,7 @@ import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_ALL_LIMIT
 import tv.trakt.trakt.core.lists.features.details.ListDetailsState.LikedInfo
-import tv.trakt.trakt.core.lists.features.details.ListDetailsState.ListDetailsInfo
+import tv.trakt.trakt.core.lists.features.details.ListDetailsState.ListDetails
 import tv.trakt.trakt.core.lists.features.details.navigation.ListsDetailsDestination
 import tv.trakt.trakt.core.lists.features.details.usecases.GetListItemsUseCase
 import tv.trakt.trakt.core.lists.model.CustomListItem
@@ -70,7 +70,7 @@ internal class ListDetailsViewModel(
     private val initialState = ListDetailsState()
 
     private val listState = MutableStateFlow(
-        ListDetailsInfo(
+        ListDetails(
             list = destinationList,
             mediaId = destination.mediaId.toTraktId(),
         ),
@@ -336,7 +336,7 @@ internal class ListDetailsViewModel(
         ListDetailsState(
             loading = state[0] as LoadingState,
             loadingMore = state[1] as LoadingState,
-            list = state[2] as ListDetailsInfo,
+            list = state[2] as ListDetails,
             items = state[3] as ImmutableList<CustomListItem>?,
             filter = state[4] as MediaMode?,
             sorting = state[5] as Sorting,
