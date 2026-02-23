@@ -174,6 +174,7 @@ private fun ShowListItem(
         watched = watched,
         watchlist = watchlist,
         onClick = onClick,
+        onImageClick = onClick,
         onLongClick = onLongClick,
         footerContent = {
             ShowMetaFooter(
@@ -212,6 +213,7 @@ private fun MovieListItem(
         watched = watched,
         watchlist = watchlist,
         onClick = onClick,
+        onImageClick = onClick,
         onLongClick = onLongClick,
         footerContent = {
             MovieMetaFooter(

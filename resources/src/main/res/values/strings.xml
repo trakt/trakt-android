@@ -351,6 +351,7 @@
     <string name="text_cta_liked_lists">Discover what others love. Explore and save lists from the community.</string>
     <string name="text_info_liked_added">Added to liked lists.</string>
     <string name="text_info_liked_removed">Removed from liked lists.</string>
+    <string name="warning_prompt_remove_from_liked_lists">Are you sure you want to remove \"%1$s\" from your liked lists?</string>
 
     <!--  Non Translatable  -->
 

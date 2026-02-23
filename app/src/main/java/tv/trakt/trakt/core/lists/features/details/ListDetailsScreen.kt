@@ -87,6 +87,7 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
 import tv.trakt.trakt.ui.components.sorting.SortingSplitButton
 import tv.trakt.trakt.ui.components.sorting.sheets.SortSelectionSheet
@@ -144,6 +145,7 @@ internal fun ListDetailsScreen(
     var showContextSheet by remember { mutableStateOf<ShowItem?>(null) }
     var movieContextSheet by remember { mutableStateOf<MovieItem?>(null) }
     var sortSheet by remember { mutableStateOf<SortTypeList?>(null) }
+    var confirmRemoveLikeSheet by remember { mutableStateOf(false) }
 
     ListDetailsContent(
         state = state,
@@ -184,8 +186,8 @@ internal fun ListDetailsScreen(
         },
         onLikeClick = {
             state.liked?.let {
-                if (!it.loading) {
-                    viewModel.setLiked(!it.liked)
+                if (!it.loading && it.liked) {
+                    confirmRemoveLikeSheet = true
                 }
             }
         },
@@ -219,6 +221,20 @@ internal fun ListDetailsScreen(
         onDismiss = {
             sortSheet = null
         },
+    )
+
+    RemoveConfirmationSheet(
+        active = confirmRemoveLikeSheet,
+        onYes = {
+            viewModel.setLiked(false)
+            confirmRemoveLikeSheet = false
+        },
+        onNo = { confirmRemoveLikeSheet = false },
+        title = stringResource(R.string.button_text_toggle_lists_liked),
+        message = stringResource(
+            R.string.warning_prompt_remove_from_liked_lists,
+            state.list?.name ?: "",
+        ),
     )
 }
 
