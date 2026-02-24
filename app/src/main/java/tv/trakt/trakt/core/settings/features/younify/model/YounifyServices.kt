@@ -27,6 +27,7 @@ internal data class YounifyService(
     val name: String,
     val color: String,
     val images: Images,
+    val vip: Boolean,
 ) {
     @Serializable
     internal data class Images(

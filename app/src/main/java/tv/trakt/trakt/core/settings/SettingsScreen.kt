@@ -220,7 +220,6 @@ private fun SettingsScreenContent(
                 SettingsStreaming(
                     state = state,
                     onAutomaticTrackingClick = onYounifyClick,
-                    onVipClick = onVipClick,
                 )
 
                 SettingsNotifications(
@@ -451,12 +450,7 @@ private fun SettingsStreaming(
     state: SettingsState,
     modifier: Modifier = Modifier,
     onAutomaticTrackingClick: () -> Unit = {},
-    onVipClick: () -> Unit = {},
 ) {
-    val isVip = remember(state.user) {
-        state.user?.isAnyVip == true
-    }
-
     Column(
         verticalArrangement = spacedBy(SECTION_SPACING_DP.dp),
         modifier = modifier,
@@ -469,10 +463,10 @@ private fun SettingsStreaming(
 
         SettingsTextField(
             text = stringResource(R.string.text_automatic_tracking),
-            enabled = !state.logoutLoading.isLoading && isVip,
-            vipLocked = state.user != null && !isVip,
+            enabled = !state.logoutLoading.isLoading,
+            vipLocked = false,
             onClick = onAutomaticTrackingClick,
-            onVipClick = onVipClick,
+            onVipClick = { },
         )
     }
 }

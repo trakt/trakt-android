@@ -30,7 +30,6 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.StaticStringResource
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_ONLY
-import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.getHttpErrorCode
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
@@ -65,6 +64,7 @@ internal class YounifyViewModel(
 
     private val userState = MutableStateFlow(initialState.user)
     private val servicesState = MutableStateFlow(initialState.younifyServices)
+    private val freeServicesState = MutableStateFlow(initialState.freeServices)
     private val syncDataPromptState = MutableStateFlow(initialState.syncDataPrompt)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val infoState = MutableStateFlow(initialState.info)
@@ -102,13 +102,6 @@ internal class YounifyViewModel(
             try {
                 userState.update {
                     sessionManager.getProfile()
-                }
-
-                if (!sessionManager.isAuthenticated() || userState.value?.isAnyVip != true) {
-                    errorState.update {
-                        DynamicStringResource(R.string.error_text_vip_only_feature)
-                    }
-                    return@launch
                 }
 
                 val younifyDetails = getYounifyDetailsUseCase.getYounifyDetails(
@@ -158,16 +151,31 @@ internal class YounifyViewModel(
         younify.configure(options)
     }
 
-    private suspend fun loadYounifyServices(knownServices: YounifyServices) {
-        val knownServicesIds = knownServices.available.watched.asyncMap { it.id }
+    private suspend fun loadYounifyServices(traktServices: YounifyServices) {
+        val traktServicesMap = traktServices.available.watched.associateBy { it.id }
+        val traktFreeServices = traktServices.available.watched.filter { !it.vip }.map { it.id }
+
         val remoteServices = younify.fetchServices()
+
+        freeServicesState.update {
+            remoteServices
+                .mapNotNull {
+                    when (it.id) {
+                        in traktFreeServices -> it.id
+                        else -> null
+                    }
+                }
+                .toImmutableList()
+        }
 
         servicesState.update {
             remoteServices
-                .filter { it.id in knownServicesIds }
+                .filter { it.id in traktServicesMap }
                 .sortedWith(
                     compareByDescending<StreamingService> {
                         it.linkStatus == LinkStatus.LINKED
+                    }.thenBy {
+                        traktServicesMap[it.id]?.vip == true
                     }.thenBy {
                         it.name.lowercase()
                     },
@@ -387,6 +395,7 @@ internal class YounifyViewModel(
     val state = combine(
         userState,
         servicesState,
+        freeServicesState,
         syncDataPromptState,
         loadingState,
         infoState,
@@ -397,11 +406,12 @@ internal class YounifyViewModel(
         YounifyState(
             user = state[0] as User?,
             younifyServices = state[1] as ImmutableList<StreamingService>?,
-            syncDataPrompt = state[2] as String?,
-            loading = state[3] as LoadingState,
-            info = state[4] as StringResource?,
-            error = state[5] as StringResource?,
-            logs = state[6] as List<String>,
+            freeServices = state[2] as ImmutableList<String>?,
+            syncDataPrompt = state[3] as String?,
+            loading = state[4] as LoadingState,
+            info = state[5] as StringResource?,
+            error = state[6] as StringResource?,
+            logs = state[7] as List<String>,
         )
     }.stateIn(
         scope = viewModelScope,

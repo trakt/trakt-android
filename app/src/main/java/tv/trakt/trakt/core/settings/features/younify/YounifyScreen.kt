@@ -73,12 +73,14 @@ import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
+import tv.trakt.trakt.ui.components.vip.VipChip
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.younify.sdk.connect.StreamingService
 
 @Composable
 internal fun YounifyScreen(
     viewModel: YounifyViewModel,
+    onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -92,6 +94,10 @@ internal fun YounifyScreen(
 
     YounifyScreenContent(
         state = state,
+        onVipClick = {
+            onNavigateBack()
+            onNavigateVip()
+        },
         onServiceActionClick = {
             viewModel.onServiceAction(
                 service = it,
@@ -197,6 +203,7 @@ private fun YounifyScreenContent(
     onServiceEditClick: (StreamingService) -> Unit = { },
     onSendLogsClick: () -> Unit = { },
     onAllSettingsClick: () -> Unit = { },
+    onVipClick: () -> Unit = { },
     onBackClick: () -> Unit = { },
 ) {
     val context = LocalContext.current
@@ -257,13 +264,17 @@ private fun YounifyScreenContent(
             }
 
             if (state.loading.isDone && !state.younifyServices.isNullOrEmpty()) {
+                val isVip = state.user?.isAnyVip == true
                 Column(
                     verticalArrangement = Arrangement.spacedBy(14.dp),
                     modifier = Modifier.padding(top = 4.dp),
                 ) {
                     for (service in state.younifyServices) {
+                        val isFree = state.freeServices?.contains(service.id) == true
                         YounifyServiceView(
                             service = service,
+                            locked = !isVip && !isFree,
+                            onVipClick = onVipClick,
                             onActionClick = {
                                 onServiceActionClick(service)
                             },
@@ -294,8 +305,10 @@ private fun YounifyScreenContent(
 @Composable
 private fun YounifyServiceView(
     service: StreamingService,
+    locked: Boolean,
     modifier: Modifier = Modifier,
     onActionClick: () -> Unit = { },
+    onVipClick: () -> Unit = { },
     onEditClick: () -> Unit = { },
     onUnlinkClick: () -> Unit = { },
 ) {
@@ -389,43 +402,49 @@ private fun YounifyServiceView(
             }
         }
 
-        if (service.linkStatus != LinkStatus.LINKED) {
-            TertiaryButton(
-                text = when (service.linkStatus) {
-                    LinkStatus.UNLINKED -> stringResource(R.string.button_text_login)
-                    LinkStatus.BROKEN -> stringResource(R.string.button_text_younify_fix)
-                    LinkStatus.LINKED -> ""
-                },
-                containerColor = when (service.linkStatus) {
-                    LinkStatus.UNLINKED -> TraktTheme.colors.primaryButtonContainer
-                    LinkStatus.BROKEN -> Red400
-                    LinkStatus.LINKED -> TraktTheme.colors.primaryButtonContainer
-                },
-                onClick = onActionClick,
+        if (locked) {
+            VipChip(
+                onClick = onVipClick,
             )
-        } else if (service.linkStatus == LinkStatus.LINKED) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier.padding(start = 12.dp),
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_edit),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .size(18.dp)
-                        .onClick(onClick = onEditClick),
+        } else {
+            if (service.linkStatus != LinkStatus.LINKED) {
+                TertiaryButton(
+                    text = when (service.linkStatus) {
+                        LinkStatus.UNLINKED -> stringResource(R.string.button_text_login)
+                        LinkStatus.BROKEN -> stringResource(R.string.button_text_younify_fix)
+                        LinkStatus.LINKED -> ""
+                    },
+                    containerColor = when (service.linkStatus) {
+                        LinkStatus.UNLINKED -> TraktTheme.colors.primaryButtonContainer
+                        LinkStatus.BROKEN -> Red400
+                        LinkStatus.LINKED -> TraktTheme.colors.primaryButtonContainer
+                    },
+                    onClick = onActionClick,
                 )
+            } else if (service.linkStatus == LinkStatus.LINKED) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    modifier = Modifier.padding(start = 12.dp),
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_edit),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier
+                            .size(18.dp)
+                            .onClick(onClick = onEditClick),
+                    )
 
-                Icon(
-                    painter = painterResource(R.drawable.ic_trash),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .size(21.dp)
-                        .onClick(onClick = onUnlinkClick),
-                )
+                    Icon(
+                        painter = painterResource(R.drawable.ic_trash),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier
+                            .size(21.dp)
+                            .onClick(onClick = onUnlinkClick),
+                    )
+                }
             }
         }
     }
@@ -541,6 +560,7 @@ private fun TitleBar(
     device = "id:pixel_6",
     showBackground = true,
     backgroundColor = 0xFF131517,
+    locale = "us",
 )
 @Composable
 private fun Preview() {

@@ -33,6 +33,7 @@ internal data class YounifyServiceDto(
     val id: String,
     val name: String,
     val color: String,
+    val vip: Boolean,
     val images: YounifyServiceImagesDto,
 )
 

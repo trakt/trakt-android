@@ -29,6 +29,7 @@ internal data class YounifyDetails(
                                     images = YounifyService.Images(
                                         logo = it.images.logo,
                                     ),
+                                    vip = it.vip,
                                 )
                             }
                             .toImmutableList(),

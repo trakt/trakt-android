@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.younify.features.younify.navigation
+package tv.trakt.trakt.core.settings.features.younify.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -10,10 +10,14 @@ import tv.trakt.trakt.core.settings.features.younify.YounifyScreen
 @Serializable
 internal data object YounifyDestination
 
-internal fun NavGraphBuilder.younifyScreen(onNavigateBack: () -> Unit) {
+internal fun NavGraphBuilder.younifyScreen(
+    onNavigateToVip: () -> Unit,
+    onNavigateBack: () -> Unit,
+) {
     composable<YounifyDestination> {
         YounifyScreen(
             viewModel = koinViewModel(),
+            onNavigateVip = onNavigateToVip,
             onNavigateBack = onNavigateBack,
         )
     }

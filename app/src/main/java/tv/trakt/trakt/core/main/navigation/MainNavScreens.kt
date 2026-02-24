@@ -43,6 +43,8 @@ import tv.trakt.trakt.core.profile.sections.library.all.navigation.navigateToLib
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.navigateToSearch
 import tv.trakt.trakt.core.search.navigation.searchScreen
+import tv.trakt.trakt.core.settings.features.younify.navigation.navigateToYounify
+import tv.trakt.trakt.core.settings.features.younify.navigation.younifyScreen
 import tv.trakt.trakt.core.settings.navigation.navigateToSettings
 import tv.trakt.trakt.core.settings.navigation.settingsScreen
 import tv.trakt.trakt.core.summary.episodes.navigation.episodeDetailsScreen
@@ -53,8 +55,6 @@ import tv.trakt.trakt.core.summary.people.navigation.navigateToPerson
 import tv.trakt.trakt.core.summary.people.navigation.personDetailsScreen
 import tv.trakt.trakt.core.summary.shows.navigation.navigateToShow
 import tv.trakt.trakt.core.summary.shows.navigation.showDetailsScreen
-import tv.trakt.trakt.core.younify.features.younify.navigation.navigateToYounify
-import tv.trakt.trakt.core.younify.features.younify.navigation.younifyScreen
 
 internal fun NavGraphBuilder.homeScreens(
     controller: NavHostController,
@@ -382,6 +382,7 @@ internal fun NavGraphBuilder.settingsScreens(controller: NavHostController) {
         )
 
         younifyScreen(
+            onNavigateToVip = { navigateToBilling() },
             onNavigateBack = { popBackStack() },
         )
     }
