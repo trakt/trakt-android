@@ -46,10 +46,12 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.model.CustomListItem
+import tv.trakt.trakt.core.lists.model.CustomListItem.EpisodeItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.MovieItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.SeasonItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.ShowItem
@@ -73,17 +75,22 @@ internal fun ListsPersonalView(
     onAllClick: (CustomList) -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onShowClick: (TraktId) -> Unit,
+    onEpisodeClick: (TraktId, Episode) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(state.navigateMovie, state.navigateShow) {
+    LaunchedEffect(state.navigateMovie, state.navigateShow, state.navigateEpisode) {
         state.navigateShow?.let {
             onShowClick(it)
             viewModel.clearNavigation()
         }
         state.navigateMovie?.let {
             onMovieClick(it)
+            viewModel.clearNavigation()
+        }
+        state.navigateEpisode?.let { (showId, episode) ->
+            onEpisodeClick(showId, episode)
             viewModel.clearNavigation()
         }
     }
@@ -116,6 +123,11 @@ internal fun ListsPersonalView(
         onShowClick = {
             if (!state.loading.isLoading) {
                 viewModel.navigateToShow(it)
+            }
+        },
+        onEpisodeClick = { showId, episode ->
+            if (!state.loading.isLoading) {
+                viewModel.navigateToEpisode(showId, episode)
             }
         },
         onAllClick = {
@@ -153,6 +165,7 @@ internal fun ListsPersonalContent(
     onMovieLongClick: (Movie) -> Unit = {},
     onShowClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
+    onEpisodeClick: (Show, Episode) -> Unit = { _, _ -> },
     onMoreClick: () -> Unit = {},
     onAllClick: () -> Unit = {},
 ) {
@@ -246,6 +259,7 @@ internal fun ListsPersonalContent(
                                     onMovieLongClick = onMovieLongClick,
                                     onMovieClick = onMovieClick,
                                     onShowClick = onShowClick,
+                                    onEpisodeClick = onEpisodeClick,
                                 )
                             }
                         }
@@ -319,10 +333,11 @@ private fun ContentList(
     listFilter: MediaMode?,
     collectionState: UserCollectionState,
     contentPadding: PaddingValues,
-    onShowClick: (Show) -> Unit = {},
-    onMovieClick: (Movie) -> Unit = {},
-    onShowLongClick: (Show) -> Unit = {},
-    onMovieLongClick: (Movie) -> Unit = {},
+    onShowClick: (Show) -> Unit,
+    onMovieClick: (Movie) -> Unit,
+    onEpisodeClick: (Show, Episode) -> Unit,
+    onShowLongClick: (Show) -> Unit,
+    onMovieLongClick: (Movie) -> Unit,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
@@ -352,10 +367,12 @@ private fun ContentList(
                 watchlist = collectionState.isWatchlist(item.id, item.type),
                 onMovieClick = onMovieClick,
                 onShowClick = onShowClick,
+                onEpisodeClick = onEpisodeClick,
                 onLongClick = {
                     when (item) {
                         is ShowItem -> onShowLongClick(item.show)
                         is MovieItem -> onMovieLongClick(item.movie)
+                        is EpisodeItem -> Unit
                         is SeasonItem -> Unit
                     }
                 },

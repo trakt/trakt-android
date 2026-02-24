@@ -12,6 +12,7 @@ import tv.trakt.trakt.common.model.ImdbId
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Rating
+import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TmdbId
@@ -144,6 +145,25 @@ object PreviewData {
         originalTitle = "Episode Original Title",
         images = Images(
             screenshot = listOf(
+                "walter-r2.trakt.tv/images/movies/000/142/611/fanarts/medium/5248d0dfec.jpg.webp",
+            ).toImmutableList(),
+        ),
+        firstAired = ZonedDateTime.now(),
+        updatedAt = ZonedDateTime.now(),
+    )
+
+    val season1 = Season(
+        ids = Ids(
+            trakt = TraktId(1),
+            slug = SlugId("slug2"),
+            tmdb = TmdbId(1),
+            imdb = ImdbId("tt1234562"),
+        ),
+        number = 2,
+        rating = Rating(rating = 4.34f, votes = 5394),
+        episodeCount = 12,
+        images = Images(
+            poster = listOf(
                 "walter-r2.trakt.tv/images/movies/000/142/611/fanarts/medium/5248d0dfec.jpg.webp",
             ).toImmutableList(),
         ),

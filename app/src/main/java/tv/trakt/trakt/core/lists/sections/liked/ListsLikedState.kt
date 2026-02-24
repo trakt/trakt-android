@@ -5,6 +5,7 @@ import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.IDLE
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.lists.model.CustomListItem
@@ -20,6 +21,7 @@ internal data class ListsLikedState(
     val collection: UserCollectionState = UserCollectionState.Default,
     val navigateShow: TraktId? = null,
     val navigateMovie: TraktId? = null,
+    val navigateEpisode: Pair<TraktId, Episode>? = null,
     val loading: LoadingState = IDLE,
     val collapsed: Boolean? = null,
     val error: Exception? = null,

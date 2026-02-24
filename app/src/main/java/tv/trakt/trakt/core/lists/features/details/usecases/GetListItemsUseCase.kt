@@ -4,7 +4,9 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.lists.data.remote.ListsRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.MediaType.EPISODE
 import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.MediaType.SEASON
 import tv.trakt.trakt.common.model.MediaType.SHOW
@@ -78,6 +80,12 @@ internal class GetListItemsUseCase(
                         rank = it.rank,
                         show = Show.fromDto(it.show!!),
                         season = Season.fromDto(it.season!!),
+                        listedAt = it.listedAt.toInstant(),
+                    )
+                    EPISODE.value -> CustomListItem.EpisodeItem(
+                        rank = it.rank,
+                        show = Show.fromDto(it.show!!),
+                        episode = Episode.fromDto(it.episode!!),
                         listedAt = it.listedAt.toInstant(),
                     )
                     else -> throw IllegalStateException("Invalid media type: ${it.type}")

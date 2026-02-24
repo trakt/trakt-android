@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.lists.model
 
 import androidx.compose.runtime.Immutable
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
@@ -44,11 +45,21 @@ internal sealed class CustomListItem(
         override val loading: Boolean = false,
     ) : CustomListItem(rank, listedAt, loading)
 
+    @Immutable
+    internal data class EpisodeItem(
+        val show: Show,
+        val episode: Episode,
+        override val rank: Int,
+        override val listedAt: Instant,
+        override val loading: Boolean = false,
+    ) : CustomListItem(rank, listedAt, loading)
+
     val id: TraktId
         get() = when (this) {
             is ShowItem -> show.ids.trakt
             is MovieItem -> movie.ids.trakt
             is SeasonItem -> season.ids.trakt
+            is EpisodeItem -> episode.ids.trakt
         }
 
     val type: MediaType
@@ -56,15 +67,17 @@ internal sealed class CustomListItem(
             is ShowItem -> MediaType.SHOW
             is MovieItem -> MediaType.MOVIE
             is SeasonItem -> MediaType.SEASON
+            is EpisodeItem -> MediaType.EPISODE
         }
 
     val key: String
-        get() = "${id.value}-${type.value}"
+        get() = "${id.value}-${type.value}-cli"
 
     val images: Images?
         get() = when (this) {
             is ShowItem -> show.images
             is MovieItem -> movie.images
+            is EpisodeItem -> show.images
             is SeasonItem -> season.images.takeIf {
                 !it?.poster.isNullOrEmpty()
             } ?: show.images
@@ -75,6 +88,7 @@ internal sealed class CustomListItem(
             is ShowItem -> show.rating
             is MovieItem -> movie.rating
             is SeasonItem -> season.rating
+            is EpisodeItem -> episode.rating
         }
 
     val runtime: Duration?
@@ -82,6 +96,7 @@ internal sealed class CustomListItem(
             is ShowItem -> show.runtime
             is MovieItem -> movie.runtime
             is SeasonItem -> Duration.ZERO
+            is EpisodeItem -> episode.runtime
         }
 
     val released: ZonedDateTime?
@@ -89,5 +104,6 @@ internal sealed class CustomListItem(
             is ShowItem -> show.released
             is MovieItem -> movie.released?.atStartOfDay(UTC)
             is SeasonItem -> season.firstAired
+            is EpisodeItem -> episode.firstAired
         }
 }

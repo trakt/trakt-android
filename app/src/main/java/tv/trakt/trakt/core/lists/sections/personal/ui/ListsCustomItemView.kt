@@ -22,9 +22,14 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.relativeDateString
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.lists.model.CustomListItem
+import tv.trakt.trakt.core.lists.model.CustomListItem.EpisodeItem
+import tv.trakt.trakt.core.lists.model.CustomListItem.MovieItem
+import tv.trakt.trakt.core.lists.model.CustomListItem.SeasonItem
+import tv.trakt.trakt.core.lists.model.CustomListItem.ShowItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -38,41 +43,52 @@ internal fun ListsCustomItemView(
     showMoreIcon: Boolean = false,
     watched: Boolean = false,
     watchlist: Boolean = false,
-    onMovieClick: (Movie) -> Unit = { },
-    onShowClick: (Show) -> Unit = { },
-    onLongClick: () -> Unit = { },
+    onMovieClick: (Movie) -> Unit,
+    onShowClick: (Show) -> Unit,
+    onEpisodeClick: (Show, Episode) -> Unit,
+    onLongClick: (() -> Unit)?,
 ) {
     when (item) {
-        is CustomListItem.ShowItem -> {
+        is ShowItem -> {
             ShowItemView(
                 item = item,
                 watched = watched,
                 watchlist = watchlist,
                 showMoreIcon = showMoreIcon,
                 onShowClick = onShowClick,
-                onLongClick = onLongClick,
+                onLongClick = onLongClick ?: {},
                 showMediaIcon = showMediaIcon,
                 modifier = modifier,
             )
         }
 
-        is CustomListItem.MovieItem -> {
+        is MovieItem -> {
             MovieItemView(
                 item = item,
                 watched = watched,
                 watchlist = watchlist,
                 showMoreIcon = showMoreIcon,
                 onMovieClick = onMovieClick,
-                onLongClick = onLongClick,
+                onLongClick = onLongClick ?: {},
                 showMediaIcon = showMediaIcon,
                 modifier = modifier,
             )
         }
 
-        is CustomListItem.SeasonItem -> {
+        is SeasonItem -> {
             SeasonItemView(
                 item = item,
                 onShowClick = onShowClick,
+                modifier = modifier,
+            )
+        }
+
+        is EpisodeItem -> {
+            EpisodeItemView(
+                item = item,
+                onEpisodeClick = {
+                    onEpisodeClick(item.show, item.episode)
+                },
                 modifier = modifier,
             )
         }
@@ -81,7 +97,7 @@ internal fun ListsCustomItemView(
 
 @Composable
 private fun ShowItemView(
-    item: CustomListItem.ShowItem,
+    item: ShowItem,
     watched: Boolean,
     watchlist: Boolean,
     showMoreIcon: Boolean,
@@ -175,7 +191,7 @@ private fun ShowItemView(
 
 @Composable
 private fun MovieItemView(
-    item: CustomListItem.MovieItem,
+    item: MovieItem,
     watched: Boolean,
     watchlist: Boolean,
     showMoreIcon: Boolean,
@@ -261,7 +277,7 @@ private fun MovieItemView(
 
 @Composable
 private fun SeasonItemView(
-    item: CustomListItem.SeasonItem,
+    item: SeasonItem,
     onShowClick: (Show) -> Unit,
     modifier: Modifier,
 ) {
@@ -313,7 +329,75 @@ private fun SeasonItemView(
                         modifier = Modifier.size(13.dp),
                     )
                     Text(
-                        text = item.show.released?.relativeDateTimeString() ?: "",
+                        text = item.season.firstAired?.relativeDateTimeString() ?: "",
+                        style = TraktTheme.typography.cardTitle,
+                        color = TraktTheme.colors.textPrimary,
+                        textAlign = TextAlign.Center,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+            }
+        },
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun EpisodeItemView(
+    item: EpisodeItem,
+    onEpisodeClick: (EpisodeItem) -> Unit,
+    modifier: Modifier,
+) {
+    val isReleased = remember(item.episode.firstAired) {
+        item.episode.firstAired?.isBefore(nowUtc()) ?: false
+    }
+    VerticalMediaCard(
+        title = item.show.title,
+        watched = false,
+        watchlist = false,
+        more = false,
+        imageUrl = item.show.images?.getPosterUrl(),
+        onClick = { onEpisodeClick(item) },
+        chipSpacing = 10.dp,
+        chipContent = { modifier ->
+            if (isReleased) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = spacedBy(4.dp),
+                    modifier = modifier,
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_shows_off),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.chipContent,
+                        modifier = Modifier
+                            .size(13.dp),
+                    )
+
+                    Text(
+                        text = item.episode.seasonEpisodeString(),
+                        style = TraktTheme.typography.cardTitle,
+                        color = TraktTheme.colors.textPrimary,
+                        textAlign = TextAlign.Center,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+            } else {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = spacedBy(4.dp),
+                    modifier = modifier,
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_calendar_upcoming),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.chipContent,
+                        modifier = Modifier.size(13.dp),
+                    )
+                    Text(
+                        text = item.episode.firstAired?.relativeDateTimeString() ?: "",
                         style = TraktTheme.typography.cardTitle,
                         color = TraktTheme.colors.textPrimary,
                         textAlign = TextAlign.Center,
@@ -332,11 +416,15 @@ private fun SeasonItemView(
 private fun PreviewShow() {
     TraktTheme {
         ListsCustomItemView(
-            item = CustomListItem.ShowItem(
+            item = ShowItem(
                 rank = 0,
                 show = PreviewData.show1,
                 listedAt = nowUtcInstant().minus(3, DAYS),
             ),
+            onMovieClick = { },
+            onShowClick = { },
+            onEpisodeClick = { _, _ -> },
+            onLongClick = { },
         )
     }
 }
@@ -346,11 +434,15 @@ private fun PreviewShow() {
 private fun PreviewMovie() {
     TraktTheme {
         ListsCustomItemView(
-            item = CustomListItem.MovieItem(
+            item = MovieItem(
                 rank = 0,
                 movie = PreviewData.movie1,
                 listedAt = nowUtcInstant().minus(3, DAYS),
             ),
+            onMovieClick = { },
+            onShowClick = { },
+            onEpisodeClick = { _, _ -> },
+            onLongClick = { },
         )
     }
 }

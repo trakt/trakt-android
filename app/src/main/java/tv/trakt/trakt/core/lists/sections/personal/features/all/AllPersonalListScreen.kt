@@ -57,14 +57,17 @@ import timber.log.Timber
 import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.sorting.SortTypeList
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.model.CustomListItem
+import tv.trakt.trakt.core.lists.model.CustomListItem.EpisodeItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.MovieItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.SeasonItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.ShowItem
+import tv.trakt.trakt.core.lists.sections.personal.features.all.views.AllPersonalListEpisodeView
 import tv.trakt.trakt.core.lists.sections.personal.features.all.views.AllPersonalListMovieView
 import tv.trakt.trakt.core.lists.sections.personal.features.all.views.AllPersonalListSeasonView
 import tv.trakt.trakt.core.lists.sections.personal.features.all.views.AllPersonalListShowView
@@ -91,18 +94,23 @@ internal fun AllPersonalListScreen(
     viewModel: AllPersonalListViewModel,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
+    onEpisodeClick: (TraktId, Episode) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(state.navigateMovie, state.navigateShow) {
+    LaunchedEffect(state.navigateMovie, state.navigateShow, state.navigateEpisode) {
         state.navigateShow?.let {
             onShowClick(it)
             viewModel.clearNavigation()
         }
         state.navigateMovie?.let {
             onMovieClick(it)
+            viewModel.clearNavigation()
+        }
+        state.navigateEpisode?.let {
+            onEpisodeClick(it.first, it.second)
             viewModel.clearNavigation()
         }
     }
@@ -121,6 +129,7 @@ internal fun AllPersonalListScreen(
                 is MovieItem -> viewModel.navigateToMovie(it.movie)
                 is ShowItem -> viewModel.navigateToShow(it.show)
                 is SeasonItem -> viewModel.navigateToShow(it.show)
+                is EpisodeItem -> viewModel.navigateToEpisode(it.show, it.episode)
             }
         },
         onLongClick = {
@@ -128,6 +137,7 @@ internal fun AllPersonalListScreen(
                 is MovieItem -> movieContextSheet = it
                 is ShowItem -> showContextSheet = it
                 is SeasonItem -> Unit
+                is EpisodeItem -> Unit
             }
         },
         onFilterClick = viewModel::setFilter,
@@ -555,6 +565,18 @@ private fun ContentList(
                 )
 
                 is SeasonItem -> AllPersonalListSeasonView(
+                    item = item,
+                    enabled = !loading,
+                    onClick = { onClick(item) },
+                    modifier = Modifier
+                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
+                )
+
+                is EpisodeItem -> AllPersonalListEpisodeView(
                     item = item,
                     enabled = !loading,
                     onClick = { onClick(item) },

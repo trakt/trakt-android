@@ -11,6 +11,7 @@ import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.model.CustomListItem
+import tv.trakt.trakt.core.lists.model.CustomListItem.EpisodeItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.MovieItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.SeasonItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.ShowItem
@@ -83,6 +84,7 @@ internal class UserListsStorage : UserListsLocalDataSource {
                                 is MovieItem -> item.copy(rank = items.size + 1)
                                 is ShowItem -> item.copy(rank = items.size + 1)
                                 is SeasonItem -> item.copy(rank = items.size + 1)
+                                is EpisodeItem -> item.copy(rank = items.size + 1)
                             },
                         )
                         .distinctBy {
@@ -90,6 +92,7 @@ internal class UserListsStorage : UserListsLocalDataSource {
                                 is MovieItem -> it.movie.ids.trakt
                                 is ShowItem -> it.show.ids.trakt
                                 is SeasonItem -> it.season.ids.trakt
+                                is EpisodeItem -> it.episode.ids.trakt
                             }
                         }
                     storage[listId] = updatedList to updatedItems

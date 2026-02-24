@@ -18,6 +18,7 @@ import kotlinx.serialization.json.Json
 import timber.log.Timber
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLikedListsUseCase
@@ -28,6 +29,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -58,6 +60,7 @@ internal class ListDetailsViewModel(
     private val addLikedListUseCase: AddLikedListUseCase,
     private val removeLikedListUseCase: RemoveLikedListUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
+    private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val collectionStateProvider: CollectionStateProvider,
     private val sessionManager: SessionManager,
@@ -81,6 +84,7 @@ internal class ListDetailsViewModel(
     private val sortingState = MutableStateFlow(initialState.sorting)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
+    private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMoreState = MutableStateFlow(initialState.loadingMore)
     private val infoState = MutableStateFlow(initialState.info)
@@ -294,9 +298,27 @@ internal class ListDetailsViewModel(
         }
     }
 
+    fun navigateToEpisode(
+        show: Show,
+        episode: Episode,
+    ) {
+        if (navigateEpisode.value != null || processingJob?.isActive == true) {
+            return
+        }
+        processingJob = viewModelScope.launch {
+            showLocalDataSource.upsertShows(listOf(show))
+            episodeLocalDataSource.upsertEpisodes(listOf(episode))
+
+            navigateEpisode.update {
+                Pair(show.ids.trakt, episode)
+            }
+        }
+    }
+
     fun clearNavigation() {
         navigateShow.update { null }
         navigateMovie.update { null }
+        navigateEpisode.update { null }
     }
 
     fun clearInfoError() {
@@ -330,6 +352,7 @@ internal class ListDetailsViewModel(
         collectionStateProvider.stateFlow,
         navigateShow,
         navigateMovie,
+        navigateEpisode,
         infoState,
         errorState,
     ) { state ->
@@ -344,8 +367,9 @@ internal class ListDetailsViewModel(
             collection = state[7] as UserCollectionState,
             navigateShow = state[8] as TraktId?,
             navigateMovie = state[9] as TraktId?,
-            info = state[10] as StringResource?,
-            error = state[11] as Exception?,
+            navigateEpisode = state[10] as Pair<TraktId, Episode>?,
+            info = state[11] as StringResource?,
+            error = state[12] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -72,14 +72,17 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.common.helpers.extensions.toAnnotatedString
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.sorting.SortTypeList
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.features.details.ListDetailsState.LikedInfo
+import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsEpisodeView
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsMovieView
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsSeasonView
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsShowView
 import tv.trakt.trakt.core.lists.model.CustomListItem
+import tv.trakt.trakt.core.lists.model.CustomListItem.EpisodeItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.MovieItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.SeasonItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.ShowItem
@@ -106,6 +109,7 @@ internal fun ListDetailsScreen(
     viewModel: ListDetailsViewModel,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
+    onEpisodeClick: (TraktId, Episode) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -136,6 +140,7 @@ internal fun ListDetailsScreen(
     LaunchedEffect(
         state.navigateMovie,
         state.navigateShow,
+        state.navigateEpisode,
     ) {
         state.navigateShow?.let {
             onShowClick(it)
@@ -143,6 +148,10 @@ internal fun ListDetailsScreen(
         }
         state.navigateMovie?.let {
             onMovieClick(it)
+            viewModel.clearNavigation()
+        }
+        state.navigateEpisode?.let { (showId, episode) ->
+            onEpisodeClick(showId, episode)
             viewModel.clearNavigation()
         }
     }
@@ -166,13 +175,14 @@ internal fun ListDetailsScreen(
                 is MovieItem -> viewModel.navigateToMovie(it.movie)
                 is ShowItem -> viewModel.navigateToShow(it.show)
                 is SeasonItem -> viewModel.navigateToShow(it.show)
+                is EpisodeItem -> viewModel.navigateToEpisode(it.show, it.episode)
             }
         },
         onLongClick = {
             when (it) {
                 is MovieItem -> movieContextSheet = it
                 is ShowItem -> showContextSheet = it
-                is SeasonItem -> Unit
+                is SeasonItem, is EpisodeItem -> Unit
             }
         },
         onFilterClick = viewModel::setFilter,
@@ -559,6 +569,19 @@ private fun ContentList(
                     )
 
                     is SeasonItem -> ListDetailsSeasonView(
+                        item = item,
+                        shadow = index == 0,
+                        enabled = !loading,
+                        onClick = { onClick(item) },
+                        modifier = Modifier
+                            .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                            .animateItem(
+                                fadeInSpec = null,
+                                fadeOutSpec = null,
+                            ),
+                    )
+
+                    is EpisodeItem -> ListDetailsEpisodeView(
                         item = item,
                         shadow = index == 0,
                         enabled = !loading,

@@ -53,6 +53,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.home.views.HomeEmptyView
@@ -87,6 +88,7 @@ internal fun ListsScreen(
     onNavigateToSearch: () -> Unit,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToEpisode: (TraktId, Episode) -> Unit,
     onNavigateToWatchlist: () -> Unit,
     onNavigateToPersonalList: (CustomList) -> Unit,
     onNavigateToCustomList: (CustomList) -> Unit,
@@ -113,6 +115,7 @@ internal fun ListsScreen(
         onShowClick = onNavigateToShow,
         onMoviesClick = onNavigateToDiscover,
         onMovieClick = onNavigateToMovie,
+        onEpisodeClick = onNavigateToEpisode,
         onSearchListClick = onNavigateToSearch,
         onCreateListClick = { createListSheet = true },
         onEditListClick = { editListSheet = it },
@@ -145,6 +148,7 @@ private fun ListsScreenContent(
     onShowsClick: () -> Unit = {},
     onMoviesClick: () -> Unit = {},
     onMovieClick: (TraktId) -> Unit = {},
+    onEpisodeClick: (TraktId, Episode) -> Unit = { _, _ -> },
     onCreateListClick: () -> Unit = {},
     onSearchListClick: () -> Unit = {},
     onEditListClick: (CustomList) -> Unit = {},
@@ -274,6 +278,7 @@ private fun ListsScreenContent(
                                 contentPadding = sectionPadding,
                                 onShowClick = onShowClick,
                                 onMovieClick = onMovieClick,
+                                onEpisodeClick = onEpisodeClick,
                                 onMoreClick = { onEditListClick(list) },
                                 onAllClick = { onPersonalListClick(list) },
                                 modifier = Modifier.padding(
@@ -308,6 +313,7 @@ private fun ListsScreenContent(
                                 contentPadding = sectionPadding,
                                 onShowClick = onShowClick,
                                 onMovieClick = onMovieClick,
+                                onEpisodeClick = onEpisodeClick,
                                 onAllClick = { onCustomListClick(list) },
                                 modifier = Modifier.padding(
                                     top = verticalPadding,

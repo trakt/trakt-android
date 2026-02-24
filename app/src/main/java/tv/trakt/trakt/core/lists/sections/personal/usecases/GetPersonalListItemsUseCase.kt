@@ -5,6 +5,8 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
+import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaType.EPISODE
 import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.MediaType.SEASON
 import tv.trakt.trakt.common.model.MediaType.SHOW
@@ -181,7 +183,13 @@ internal class GetPersonalListItemsUseCase(
                 show = Show.fromDto(dto.show!!),
                 listedAt = dto.listedAt.toInstant(),
             )
-            else -> throw IllegalStateException("TODO handle episode and person list items")
+            EPISODE.value -> CustomListItem.EpisodeItem(
+                rank = dto.rank,
+                episode = Episode.fromDto(dto.episode!!),
+                show = Show.fromDto(dto.show!!),
+                listedAt = dto.listedAt.toInstant(),
+            )
+            else -> throw IllegalArgumentException("Unknown media type: ${dto.type}")
         }
     }
 }

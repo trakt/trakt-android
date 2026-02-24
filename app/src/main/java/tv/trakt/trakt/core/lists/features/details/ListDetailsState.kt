@@ -5,6 +5,7 @@ import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.model.CustomListItem
@@ -21,6 +22,7 @@ internal data class ListDetailsState(
     val collection: UserCollectionState = UserCollectionState.Default,
     val navigateShow: TraktId? = null,
     val navigateMovie: TraktId? = null,
+    val navigateEpisode: Pair<TraktId, Episode>? = null,
     val loading: LoadingState = LoadingState.IDLE,
     val loadingMore: LoadingState = LoadingState.IDLE,
     val info: StringResource? = null,

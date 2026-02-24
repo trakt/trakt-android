@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.MediaType.SHOW
@@ -35,6 +36,7 @@ internal fun NavGraphBuilder.listDetailsScreen(
     onNavigateBack: () -> Unit,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToEpisode: (TraktId, Episode) -> Unit,
 ) {
     composable<ListsDetailsDestination> {
         ListDetailsScreen(
@@ -42,6 +44,7 @@ internal fun NavGraphBuilder.listDetailsScreen(
             onNavigateBack = onNavigateBack,
             onShowClick = onNavigateToShow,
             onMovieClick = onNavigateToMovie,
+            onEpisodeClick = onNavigateToEpisode,
         )
     }
 }

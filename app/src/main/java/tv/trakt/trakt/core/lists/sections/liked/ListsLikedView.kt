@@ -43,6 +43,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -66,17 +67,22 @@ internal fun ListsLikedView(
     onAllClick: (CustomList) -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onShowClick: (TraktId) -> Unit,
+    onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(state.navigateMovie, state.navigateShow) {
+    LaunchedEffect(state.navigateMovie, state.navigateShow, state.navigateEpisode) {
         state.navigateShow?.let {
             onShowClick(it)
             viewModel.clearNavigation()
         }
         state.navigateMovie?.let {
             onMovieClick(it)
+            viewModel.clearNavigation()
+        }
+        state.navigateEpisode?.let { (showId, episode) ->
+            onEpisodeClick(showId, episode)
             viewModel.clearNavigation()
         }
     }
@@ -91,16 +97,6 @@ internal fun ListsLikedView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onCollapse = viewModel::setCollapsed,
-        onShowLongClick = {
-            if (!state.loading.isLoading) {
-                showContextSheet = it
-            }
-        },
-        onMovieLongClick = {
-            if (!state.loading.isLoading) {
-                movieContextSheet = it
-            }
-        },
         onMovieClick = {
             if (!state.loading.isLoading) {
                 viewModel.navigateToMovie(it)
@@ -109,6 +105,11 @@ internal fun ListsLikedView(
         onShowClick = {
             if (!state.loading.isLoading) {
                 viewModel.navigateToShow(it)
+            }
+        },
+        onEpisodeClick = { showId, episode ->
+            if (!state.loading.isLoading) {
+                viewModel.navigateToEpisode(showId, episode)
             }
         },
         onAllClick = {
@@ -141,10 +142,9 @@ internal fun ListsPersonalContent(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onCollapse: (collapsed: Boolean) -> Unit = {},
-    onShowLongClick: (Show) -> Unit = {},
-    onMovieLongClick: (Movie) -> Unit = {},
     onShowClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
+    onEpisodeClick: (Show, Episode) -> Unit = { _, _ -> },
     onAllClick: () -> Unit = {},
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
@@ -170,16 +170,6 @@ internal fun ListsPersonalContent(
                 onCollapse(!current)
             },
             maxSubtitleLength = 30,
-//            extraIcon = {
-//                Icon(
-//                    painter = painterResource(R.drawable.ic_thumb_up2_fill),
-//                    contentDescription = null,
-//                    tint = TraktTheme.colors.textPrimary,
-//                    modifier = Modifier
-//                        .padding(start = 11.dp, end = 6.dp)
-//                        .size(17.dp),
-//                )
-//            },
             modifier = Modifier
                 .padding(headerPadding)
                 .onClick(enabled = state.loading == DONE) {
@@ -232,10 +222,9 @@ internal fun ListsPersonalContent(
                                     listFilter = state.filter,
                                     collectionState = state.collection,
                                     contentPadding = contentPadding,
-                                    onShowLongClick = onShowLongClick,
-                                    onMovieLongClick = onMovieLongClick,
                                     onMovieClick = onMovieClick,
                                     onShowClick = onShowClick,
+                                    onEpisodeClick = onEpisodeClick,
                                 )
                             }
                         }
@@ -311,8 +300,7 @@ private fun ContentList(
     contentPadding: PaddingValues,
     onShowClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
-    onShowLongClick: (Show) -> Unit = {},
-    onMovieLongClick: (Movie) -> Unit = {},
+    onEpisodeClick: (Show, Episode) -> Unit = { _, _ -> },
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
@@ -342,12 +330,8 @@ private fun ContentList(
                 watchlist = collectionState.isWatchlist(item.id, item.type),
                 onMovieClick = onMovieClick,
                 onShowClick = onShowClick,
-//                onLongClick = {
-//                    when (item) {
-//                        is ShowItem -> onShowLongClick(item.show)
-//                        is MovieItem -> onMovieLongClick(item.movie)
-//                    }
-//                },
+                onEpisodeClick = onEpisodeClick,
+                onLongClick = null,
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
                     fadeOutSpec = null,
