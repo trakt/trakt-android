@@ -51,6 +51,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -334,6 +335,17 @@ private fun CalendarScreen(
         }
     }
 
+    // Observe scroll and clear focused day when user scrolls manually.
+    var lastTapFocusedDay by remember { mutableStateOf<LocalDate?>(null) }
+    LaunchedEffect(scrollConnection) {
+        snapshotFlow { scrollConnection.resultOffset }
+            .collect { offset ->
+                if (lastTapFocusedDay != null && offset != 0F) {
+                    lastTapFocusedDay = null
+                }
+            }
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -408,6 +420,7 @@ private fun CalendarScreen(
             enabled = !state.loading.isLoading,
             startDate = state.selectedStartDay,
             focusedDate = focusedDate,
+            lastTapFocusedDate = lastTapFocusedDay,
             availableItems = state.items,
             availableDates = remember(state.items) {
                 state.items?.keys
@@ -422,6 +435,7 @@ private fun CalendarScreen(
                     scrollOffset = scrollOffset,
                     gridState = gridState,
                 )
+                lastTapFocusedDay = date
             },
             onTodayClick = {
                 val today = nowLocalDay()

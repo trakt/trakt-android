@@ -53,6 +53,7 @@ internal fun CalendarControlsView(
     startDate: LocalDate,
     modifier: Modifier = Modifier,
     focusedDate: LocalDate? = null,
+    lastTapFocusedDate: LocalDate? = null,
     availableDates: ImmutableSet<LocalDate>? = null,
     availableItems: ImmutableMap<LocalDate, ImmutableList<CalendarItem>>? = null,
     enabled: Boolean = false,
@@ -63,6 +64,7 @@ internal fun CalendarControlsView(
     onBackClick: () -> Unit = {},
 ) {
     val shape = RoundedCornerShape(24.dp)
+
     Column(
         modifier = modifier
             .shadow(6.dp, shape = shape)
@@ -160,10 +162,11 @@ internal fun CalendarControlsView(
                     enabled = enabled,
                     itemDate = date,
                     focusedDate = focusedDate,
+                    lastTapFocusedDate = lastTapFocusedDate,
                     availableDates = availableDates,
                     episodesCount = episodes ?: 0,
                     moviesCount = movies ?: 0,
-                    onDayClick = onDayClick,
+                    onDayClick = { onDayClick(it) },
                     modifier = Modifier.weight(1F),
                 )
             }
@@ -176,6 +179,7 @@ private fun DayRowItem(
     enabled: Boolean,
     itemDate: LocalDate,
     focusedDate: LocalDate?,
+    lastTapFocusedDate: LocalDate?,
     availableDates: ImmutableSet<LocalDate>?,
     episodesCount: Int,
     moviesCount: Int,
@@ -191,7 +195,10 @@ private fun DayRowItem(
     }
 
     val dayAvailable = enabled && isAvailable
-    val dayFocused = enabled && (focusedDate == itemDate)
+    val dayFocused = enabled && when {
+        lastTapFocusedDate != null -> lastTapFocusedDate == itemDate
+        else -> focusedDate == itemDate
+    }
 
     val animatedColor by animateColorAsState(
         targetValue = when {
@@ -341,7 +348,7 @@ private fun Preview3() {
         val now = nowLocalDay()
         CalendarControlsView(
             startDate = now.minusDays(3L),
-            focusedDate = now,
+            focusedDate = now.minusDays(2L),
             enabled = true,
             availableDates = persistentSetOf(
                 now.minusDays(2L),
