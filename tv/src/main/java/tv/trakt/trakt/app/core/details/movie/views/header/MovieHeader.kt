@@ -29,6 +29,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
@@ -54,7 +55,7 @@ import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Images.Size.MEDIUM
 import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.common.ui.theme.colors.Red500
+import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.resources.R
 
 @Composable
@@ -199,15 +200,19 @@ internal fun MovieHeader(
                                 },
                             )
                         }
-                        val redFilter = remember {
-                            ColorFilter.tint(Red500)
+                        val colorFilter = remember {
+                            ColorFilter.tint(Purple400)
                         }
 
                         Image(
-                            painter = painterResource(R.drawable.ic_heart_on),
+                            painter = painterResource(R.drawable.ic_star),
                             contentDescription = null,
-                            modifier = Modifier.size(18.dp),
-                            colorFilter = if (movie.rating.rating > 0 && !hidden) redFilter else grayFilter,
+                            modifier = Modifier
+                                .size(20.dp)
+                                .graphicsLayer {
+                                    translationY = -0.5.dp.toPx()
+                                },
+                            colorFilter = if (movie.rating.rating > 0 && !hidden) colorFilter else grayFilter,
                         )
                         Text(
                             text = if (movie.rating.rating > 0 && !hidden) "${movie.rating.ratingPercent}%" else "-",

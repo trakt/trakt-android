@@ -22,11 +22,11 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
@@ -171,7 +171,7 @@ private fun runScaleAnimation(
     }
 }
 
-@Preview
+@DevicePreview
 @Composable
 private fun Preview() {
     TraktTheme {
@@ -179,7 +179,7 @@ private fun Preview() {
     }
 }
 
-@Preview
+@DevicePreview
 @Composable
 private fun Preview2() {
     TraktTheme {
@@ -193,7 +193,7 @@ private fun Preview2() {
     }
 }
 
-@Preview
+@DevicePreview
 @Composable
 private fun Preview3() {
     TraktTheme {
