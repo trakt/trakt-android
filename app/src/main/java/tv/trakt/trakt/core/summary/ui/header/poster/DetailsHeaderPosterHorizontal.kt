@@ -1,6 +1,8 @@
 package tv.trakt.trakt.core.summary.ui.header.poster
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -16,6 +18,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,6 +51,22 @@ fun DetailsHeaderPosterHorizontal(
     modifier: Modifier = Modifier,
 ) {
     val windowClass = currentWindowAdaptiveInfo().windowSizeClass
+
+    var animatedEnter by rememberSaveable { mutableStateOf(false) }
+    val animatedAlpha = animateFloatAsState(
+        targetValue = if (animatedEnter) 1F else 0F,
+        animationSpec = tween(500),
+    )
+    val animatedTranslation by animateDpAsState(
+        targetValue = if (animatedEnter) 0.dp else (2).dp,
+        animationSpec = tween(500),
+    )
+
+    LaunchedEffect(Unit) {
+        if (!animatedEnter) {
+            animatedEnter = true
+        }
+    }
 
     Column(
         verticalArrangement = spacedBy(16.dp),
@@ -83,6 +106,8 @@ fun DetailsHeaderPosterHorizontal(
         Box {
             DetailsHorizontalPoster(
                 imageUrl = imageUrl,
+                imageAlpha = animatedAlpha.value,
+                imageOffsetY = animatedTranslation,
                 color = accentColor,
             )
 

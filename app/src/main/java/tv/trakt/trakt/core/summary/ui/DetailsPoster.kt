@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.draw.shadow
@@ -29,6 +30,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import coil3.ColorImage
@@ -49,6 +51,8 @@ internal fun DetailsPoster(
     modifier: Modifier = Modifier,
     imageUrl: String?,
     imagePlaceholderUrl: String?,
+    imageAlpha: Float = 1F,
+    imageOffsetY: Dp = 0.dp,
     color: Color? = null,
 ) {
     var isError by remember(imageUrl) { mutableStateOf(false) }
@@ -77,6 +81,10 @@ internal fun DetailsPoster(
                             color = color?.copy(alpha = 0.27F) ?: Color.Transparent,
                         ),
                     )
+                    .graphicsLayer {
+                        translationY = imageOffsetY.toPx()
+                    }
+                    .alpha(imageAlpha)
                     .fillMaxSize()
                     .clip(cardShape),
             )
@@ -87,6 +95,10 @@ internal fun DetailsPoster(
                         elevation = 6.dp,
                         shape = cardShape,
                     )
+                    .graphicsLayer {
+                        translationY = imageOffsetY.toPx()
+                    }
+                    .alpha(imageAlpha)
                     .fillMaxSize()
                     .clip(cardShape)
                     .background(color = TraktTheme.colors.placeholderContainer),

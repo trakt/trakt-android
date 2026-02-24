@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
@@ -48,6 +49,8 @@ private val cardShape = RoundedCornerShape(24.dp)
 internal fun DetailsHorizontalPoster(
     imageUrl: String?,
     modifier: Modifier = Modifier,
+    imageAlpha: Float = 1F,
+    imageOffsetY: Dp = 0.dp,
     color: Color? = null,
     shadowRadius: Dp = 46.dp,
     shadowSpread: Dp = 8.dp,
@@ -78,6 +81,10 @@ internal fun DetailsHorizontalPoster(
                                 ?: Color.Black.copy(alpha = 0.4F),
                         ),
                     )
+                    .graphicsLayer {
+                        translationY = imageOffsetY.toPx()
+                    }
+                    .alpha(imageAlpha)
                     .fillMaxSize()
                     .clip(cardShape),
             )
@@ -93,6 +100,10 @@ internal fun DetailsHorizontalPoster(
                             color = (color ?: Color.Black).copy(alpha = 0.33F),
                         ),
                     )
+                    .graphicsLayer {
+                        translationY = imageOffsetY.toPx()
+                    }
+                    .alpha(imageAlpha)
                     .fillMaxSize()
                     .clip(cardShape)
                     .background(color = TraktTheme.colors.placeholderContainer),
