@@ -26,7 +26,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RadialGradientShader
+import androidx.compose.ui.graphics.Shader
+import androidx.compose.ui.graphics.ShaderBrush
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -48,6 +55,7 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.CustomList.Type
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.ui.theme.colors.Purple900
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -98,6 +106,22 @@ private fun CustomListContent(
     onClick: () -> Unit,
     onMoreClick: () -> Unit,
 ) {
+    val containerColor = TraktTheme.colors.customListContainer
+    val radialGradient = remember {
+        object : ShaderBrush() {
+            override fun createShader(size: Size): Shader {
+                return RadialGradientShader(
+                    colors = listOf(
+                        Purple900,
+                        containerColor,
+                    ),
+                    center = Offset(size.width / 4, size.height * 1.5F),
+                    radius = size.width * 1.2F,
+                )
+            }
+        }
+    }
+
     val images = remember(list.images?.posters) {
         list.images?.getPostersUrl()?.take(8)
     }
@@ -106,6 +130,13 @@ private fun CustomListContent(
         verticalArrangement = spacedBy(0.dp, Alignment.CenterVertically),
         modifier = Modifier
             .fillMaxSize()
+            .background(
+                brush = when {
+                    list.type == Type.OFFICIAL -> radialGradient
+                    else -> SolidColor(containerColor)
+                },
+                shape = RoundedCornerShape(24.dp),
+            )
             .padding(vertical = 16.dp),
     ) {
         CustomListHeader(
@@ -164,15 +195,22 @@ private fun CustomListContent(
                         start = 16.dp,
                         end = 16.dp,
                     )
+                    .shadow(4.dp, RoundedCornerShape(16.dp))
                     .background(
-                        color = TraktTheme.colors.skeletonShimmer,
+                        color = when {
+                            list.type == Type.OFFICIAL -> Purple900
+                            else -> TraktTheme.colors.skeletonShimmer
+                        },
                         shape = RoundedCornerShape(16.dp),
                     )
                     .fillMaxSize(),
             ) {
                 Text(
                     text = stringResource(R.string.list_placeholder_empty),
-                    color = TraktTheme.colors.textSecondary,
+                    color = when {
+                        list.type == Type.OFFICIAL -> Color.White
+                        else -> TraktTheme.colors.textSecondary
+                    },
                     style = TraktTheme.typography.heading6,
                     modifier = Modifier.padding(24.dp),
                 )
@@ -340,6 +378,21 @@ private fun Preview() {
                     list = PreviewData.customList1.copy(
                         name = "A very long list name that should be truncated",
                         likes = 12341,
+                        type = Type.OFFICIAL,
+                    ),
+                    liked = true,
+                    likesVisible = true,
+                    moreVisible = true,
+                    modifier = Modifier
+                        .aspectRatio(HorizontalImageAspectRatio),
+                    onClick = {},
+                )
+
+                CustomListCard(
+                    list = PreviewData.customList1.copy(
+                        name = "A very long list name that should be truncated",
+                        likes = 12341,
+                        type = Type.ALL,
                     ),
                     liked = true,
                     likesVisible = true,
