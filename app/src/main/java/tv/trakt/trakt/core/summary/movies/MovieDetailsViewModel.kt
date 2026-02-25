@@ -28,6 +28,7 @@ import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
@@ -92,6 +93,7 @@ internal class MovieDetailsViewModel(
     private val updateMovieFavoritesUseCase: UpdateMovieFavoritesUseCase,
     private val addListItemUseCase: AddPersonalListItemUseCase,
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
+    private val appReviewUseCase: RequestAppReviewUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
     private val userFavoritesLocalSource: UserFavoritesLocalDataSource,
     private val movieDetailsUpdates: MovieDetailsUpdates,
@@ -636,6 +638,7 @@ internal class MovieDetailsViewModel(
                     )
                 }
 
+                appReviewUseCase.incrementCount()
                 analytics.progress.logAddWatchlistMedia(
                     mediaType = "movie",
                     source = "movie_details",

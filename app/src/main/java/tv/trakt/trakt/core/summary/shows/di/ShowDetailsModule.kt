@@ -160,6 +160,7 @@ internal val showDetailsModule = module {
             updateShowFavoritesUseCase = get(),
             addListItemUseCase = get(),
             removeListItemUseCase = get(),
+            appReviewUseCase = get(),
             userWatchlistLocalSource = get(),
             userFavoritesLocalSource = get(),
             episodeLocalDataSource = get(),

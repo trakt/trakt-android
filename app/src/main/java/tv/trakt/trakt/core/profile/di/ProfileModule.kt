@@ -227,6 +227,7 @@ internal val profileModule = module {
             localUserLibrary = get(),
             localUserReactions = get(),
             localUserRatings = get(),
+            appReviewUseCase = get(),
         )
     }
 

@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -27,6 +28,7 @@ import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
@@ -63,6 +65,7 @@ internal class MainViewModel(
     private val loadUserWatchlistUseCase: LoadUserWatchlistUseCase,
     private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
     private val dismissWelcomeUseCase: DismissWelcomeUseCase,
+    private val inAppReviewUseCase: RequestAppReviewUseCase,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = MainState()
@@ -73,6 +76,7 @@ internal class MainViewModel(
     private val loadingUserState = MutableStateFlow(initialState.loadingUser)
     private val welcomeState = MutableStateFlow(initialState.welcome)
     private val whatsNewState = MutableStateFlow(initialState.whatsNew)
+    private val reviewState = MutableStateFlow(initialState.review)
 
     private var lastLoadTime: Instant? = null
 
@@ -84,19 +88,7 @@ internal class MainViewModel(
         observeUser()
         observeAuthCode()
         observeCheckIn()
-    }
-
-    private fun loadUser() {
-        viewModelScope.launch {
-            try {
-                delay(500)
-                getUserUseCase.loadUserProfile()
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.e(error)
-                }
-            }
-        }
+        observeInAppReview()
     }
 
     private fun observeUser() {
@@ -135,6 +127,32 @@ internal class MainViewModel(
                 checkInState.update { state }
             }
             .launchIn(viewModelScope)
+    }
+
+    private fun observeInAppReview() {
+        inAppReviewUseCase.observeCount()
+            .distinctUntilChanged()
+            .filterNotNull()
+            .debounce(200)
+            .onEach {
+                reviewState.update {
+                    inAppReviewUseCase.shouldRequest()
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun loadUser() {
+        viewModelScope.launch {
+            try {
+                delay(500)
+                getUserUseCase.loadUserProfile()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.e(error)
+                }
+            }
+        }
     }
 
     private fun loadWelcome() {
@@ -299,6 +317,10 @@ internal class MainViewModel(
         }
     }
 
+    fun dismissInAppReview() {
+        reviewState.update { null }
+    }
+
     private fun dismissOnboarding() {
         viewModelScope.launch {
             welcomeState.update { it.copy(onboarding = false) }
@@ -313,6 +335,7 @@ internal class MainViewModel(
         loadingUserState,
         welcomeState,
         whatsNewState,
+        reviewState,
     ) { state ->
         MainState(
             user = state[0] as User?,
@@ -321,6 +344,7 @@ internal class MainViewModel(
             loadingUser = state[3] as LoadingState,
             welcome = state[4] as MainState.WelcomeState,
             whatsNew = state[5] as WhatsNew?,
+            review = state[6] as Boolean?,
         )
     }.stateIn(
         scope = viewModelScope,

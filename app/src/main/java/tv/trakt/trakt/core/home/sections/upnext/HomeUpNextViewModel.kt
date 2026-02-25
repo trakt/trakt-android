@@ -23,6 +23,7 @@ import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
@@ -66,6 +67,7 @@ internal class HomeUpNextViewModel(
     private val getUpNextUseCase: GetUpNextUseCase,
     private val updateHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
+    private val appReviewUseCase: RequestAppReviewUseCase,
     private val homeUpNextSource: HomeUpNextLocalDataSource,
     private val userWatchlistSource: UserWatchlistLocalDataSource,
     private val homePersonalActivitySource: HomePersonalLocalDataSource,
@@ -286,6 +288,7 @@ internal class HomeUpNextViewModel(
                 }
 
                 itemsOrder = itemsState.value.items?.map { it.show.ids.trakt.value }
+                appReviewUseCase.incrementCount()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

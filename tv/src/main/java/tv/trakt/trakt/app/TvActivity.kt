@@ -27,7 +27,6 @@ import tv.trakt.trakt.app.core.details.movie.di.movieDetailsModule
 import tv.trakt.trakt.app.core.details.show.di.showDetailsModule
 import tv.trakt.trakt.app.core.episodes.di.episodesDataModule
 import tv.trakt.trakt.app.core.home.di.homeModule
-import tv.trakt.trakt.app.core.inappreview.di.inAppReviewModule
 import tv.trakt.trakt.app.core.lists.di.listsModule
 import tv.trakt.trakt.app.core.main.MainScreen
 import tv.trakt.trakt.app.core.main.di.mainModule
@@ -46,6 +45,7 @@ import tv.trakt.trakt.app.core.streamings.di.streamingsModule
 import tv.trakt.trakt.app.core.sync.di.syncModule
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.auth.di.commonAuthModule
+import tv.trakt.trakt.common.firebase.inappreview.di.inAppReviewModule
 import tv.trakt.trakt.common.helpers.extensions.isTelevision
 import tv.trakt.trakt.common.networking.di.networkingModule
 

@@ -88,6 +88,11 @@ dependencies {
     implementation(libs.ktor.client.negotiation)
     implementation(libs.ktor.client.auth)
 
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.config)
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
+
     implementation(project.dependencies.platform(libs.koin.bom))
     implementation(libs.koin.core)
     implementation(libs.koin.android.compose)

@@ -31,10 +31,10 @@ import tv.trakt.trakt.app.core.details.movie.usecases.collection.ChangeWatchlist
 import tv.trakt.trakt.app.core.details.movie.usecases.collection.GetCollectionUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.streamings.GetPlexUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.streamings.GetStreamingsUseCase
-import tv.trakt.trakt.app.core.inappreview.usecases.RequestAppReviewUseCase
 import tv.trakt.trakt.app.core.tutorials.TutorialsManager
 import tv.trakt.trakt.app.core.tutorials.model.TutorialKey.WATCH_NOW_MORE
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.StaticStringResource
 import tv.trakt.trakt.common.helpers.StringResource

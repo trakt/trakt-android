@@ -26,6 +26,7 @@ import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
+import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
@@ -93,6 +94,7 @@ internal class ShowDetailsViewModel(
     private val updateShowFavoritesUseCase: UpdateShowFavoritesUseCase,
     private val addListItemUseCase: AddPersonalListItemUseCase,
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
+    private val appReviewUseCase: RequestAppReviewUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
     private val userFavoritesLocalSource: UserFavoritesLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
@@ -590,6 +592,7 @@ internal class ShowDetailsViewModel(
                 infoState.update {
                     DynamicStringResource(R.string.text_info_watchlist_added)
                 }
+                appReviewUseCase.incrementCount()
                 analytics.progress.logAddWatchlistMedia(
                     mediaType = "show",
                     source = "show_details",

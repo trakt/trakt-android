@@ -7,6 +7,7 @@ import io.ktor.client.plugins.auth.providers.BearerAuthProvider
 import org.openapitools.client.infrastructure.ApiClient
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.user.data.local.liked.UserLikedListsLocalDataSource
+import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.discover.sections.recommended.data.local.movies.RecommendedMoviesLocalDataSource
@@ -53,6 +54,7 @@ internal class LogoutUserUseCase(
     private val localUserLists: UserListsLocalDataSource,
     private val localUserLikedLists: UserLikedListsLocalDataSource,
     private val localUserReactions: UserReactionsLocalDataSource,
+    private val appReviewUseCase: RequestAppReviewUseCase,
 ) {
     suspend fun logoutUser() {
         sessionManager.clear()
@@ -86,6 +88,7 @@ internal class LogoutUserUseCase(
         localRecommendedShows.clear()
         localRecommendedMovies.clear()
 
+        appReviewUseCase.clear()
         ScheduleNotificationsWorker.clear(appContext)
         WorkManager.getInstance(appContext).cancelAllWork()
     }

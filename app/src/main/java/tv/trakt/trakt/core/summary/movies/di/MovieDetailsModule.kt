@@ -149,6 +149,7 @@ internal val movieDetailsModule = module {
             updateMovieFavoritesUseCase = get(),
             addListItemUseCase = get(),
             removeListItemUseCase = get(),
+            appReviewUseCase = get(),
             userWatchlistLocalSource = get(),
             userFavoritesLocalSource = get(),
             movieDetailsUpdates = get(),

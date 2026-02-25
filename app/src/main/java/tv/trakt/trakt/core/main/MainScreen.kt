@@ -58,6 +58,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.rememberNavController
+import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.android.play.core.review.testing.FakeReviewManager
 import com.jakewharton.processphoenix.ProcessPhoenix
 import kotlinx.serialization.json.Json
 import timber.log.Timber
@@ -65,6 +67,7 @@ import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.LocalCheckInVisibility
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.MainActivity
+import tv.trakt.trakt.app.BuildConfig
 import tv.trakt.trakt.common.helpers.LaunchedUpdateEffect
 import tv.trakt.trakt.common.helpers.LoadingState.DONE
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -179,6 +182,32 @@ internal fun MainScreen(
             intent = newIntent?.value ?: intent,
             navController = navController,
         )
+    }
+
+    LaunchedEffect(state.review) {
+        if (state.review == true) {
+            viewModel.dismissInAppReview()
+            localActivity?.let { activity ->
+                val manager = when {
+                    BuildConfig.DEBUG -> FakeReviewManager(activity)
+                    else -> ReviewManagerFactory.create(activity)
+                }
+
+                manager
+                    .requestReviewFlow()
+                    .addOnCompleteListener { request ->
+                        if (request.isSuccessful) {
+                            val reviewInfo = request.result
+                            manager.launchReviewFlow(activity, reviewInfo)
+                            Timber.d("Review flow launched")
+                        } else {
+                            Timber.e("Review flow error: ${request.exception}")
+                        }
+                    }
+
+                Timber.d("Launching in-app review")
+            }
+        }
     }
 
     WhatsNewSheet(

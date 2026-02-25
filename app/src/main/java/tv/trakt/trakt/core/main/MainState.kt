@@ -14,6 +14,7 @@ internal data class MainState(
     val loadingUser: LoadingState = LoadingState.IDLE,
     val welcome: WelcomeState = WelcomeState(),
     val whatsNew: WhatsNew? = null,
+    val review: Boolean? = null,
 ) {
     @Immutable
     data class WelcomeState(

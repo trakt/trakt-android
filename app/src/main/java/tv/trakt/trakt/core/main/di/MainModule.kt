@@ -126,6 +126,7 @@ internal val mainModule = module {
             logoutUserUseCase = get(),
             dismissWelcomeUseCase = get(),
             loadWhatsNewUseCase = get(),
+            inAppReviewUseCase = get(),
             analytics = get(),
         )
     }
