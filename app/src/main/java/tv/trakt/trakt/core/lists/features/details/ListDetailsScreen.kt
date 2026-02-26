@@ -302,6 +302,9 @@ internal fun ListDetailsContent(
             translation = listScrollConnection.resultOffset,
         )
 
+        val userId = state.user?.ids?.trakt
+        val listUserId = state.list?.list?.user?.ids?.trakt
+
         ContentList(
             title = state.list?.list?.name ?: "",
             subtitle = state.list?.list?.description?.trim(),
@@ -309,7 +312,10 @@ internal fun ListDetailsContent(
             listState = listState,
             listFilter = state.filter,
             listSorting = state.sorting,
-            listLiked = state.liked,
+            listLiked = when {
+                userId == listUserId -> null
+                else -> state.liked
+            },
             listLikes = state.list?.list?.likes,
             collectionState = state.collection,
             contentPadding = contentPadding,

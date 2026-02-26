@@ -21,7 +21,7 @@ import tv.trakt.trakt.ui.components.FilterChipGroup
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun PersonalListsFilters(
+internal fun ListsFilters(
     modifier: Modifier = Modifier,
     selected: PersonalListType? = null,
     height: Dp = 28.dp,
@@ -74,11 +74,11 @@ private fun Preview() {
         Column(
             verticalArrangement = spacedBy(12.dp),
         ) {
-            PersonalListsFilters(
+            ListsFilters(
                 selected = null,
             )
             for (type in PersonalListType.entries) {
-                PersonalListsFilters(
+                ListsFilters(
                     selected = type,
                 )
             }

@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.core.user.data.local.liked.UserLikedListsLocalDataS
 import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.toTraktId
 import java.time.Instant
 
@@ -28,7 +29,10 @@ class LoadUserLikedListsUseCase(
             return emptyMap<TraktId, Instant>().toImmutableMap()
         }
         val listsResponse = remoteSource
-            .getLikedLists(minimal = true)
+            .getLikedLists(
+                minimal = true,
+                pagination = Pagination(1, 9999),
+            )
             .associateBy(
                 keySelector = { it.list.id?.toTraktId()!! },
                 valueTransform = { it.likedAt.toInstant() },

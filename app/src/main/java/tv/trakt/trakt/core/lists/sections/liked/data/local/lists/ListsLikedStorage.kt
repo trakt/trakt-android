@@ -29,6 +29,14 @@ internal class ListsLikedStorage : ListsLikedLocalDataSource {
         }
     }
 
+    override suspend fun addLists(items: List<CustomList>) {
+        mutex.withLock {
+            with(storage) {
+                putAll(items.associateBy { it.ids.trakt })
+            }
+        }
+    }
+
     override suspend fun getLists(): List<CustomList> {
         return mutex.withLock {
             storage.values.toList()
@@ -37,7 +45,10 @@ internal class ListsLikedStorage : ListsLikedLocalDataSource {
 
     override suspend fun addList(list: CustomList) {
         mutex.withLock {
+            val existing = storage.toMap()
+            storage.clear()
             storage[list.ids.trakt] = list
+            storage.putAll(existing - list.ids.trakt)
         }
     }
 

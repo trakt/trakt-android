@@ -27,7 +27,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.sorting.Sorting
-import tv.trakt.trakt.core.lists.ListsConfig.LISTS_SECTION_LIMIT
+import tv.trakt.trakt.core.lists.ListsConfig.LISTS_ITEMS_SECTION_LIMIT
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.sections.liked.usecases.GetLikedListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.liked.usecases.GetLikedListsUseCase
@@ -113,7 +113,7 @@ internal class ListsLikedViewModel(
                 itemsState.update {
                     getLikedListItemsUseCase.getItems(
                         listId = listId,
-                        limit = LISTS_SECTION_LIMIT,
+                        limit = LISTS_ITEMS_SECTION_LIMIT,
                         filter = filterState.value,
                         sorting = Sorting.Default,
                     )

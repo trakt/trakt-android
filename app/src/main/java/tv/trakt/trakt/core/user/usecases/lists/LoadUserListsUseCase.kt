@@ -12,13 +12,16 @@ import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.ListItemDto
-import tv.trakt.trakt.core.lists.ListsConfig.LISTS_MAX_PAGE_LIMIT
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
+
+private const val LISTS_MAX_LIMIT = 1000
+private const val LISTS_MAX_ITEMS_LIMIT = 1000
 
 /**
  * Loads the user's lists from the remote source and updates the local cache.
@@ -38,14 +41,19 @@ internal class LoadUserListsUseCase(
 
     suspend fun loadLists(): ImmutableMap<CustomList, List<CustomListItem>> =
         coroutineScope {
-            val listsResponse = remoteSource.getPersonalLists()
+            val listsResponse = remoteSource.getPersonalLists(
+                pagination = Pagination(
+                    page = 1,
+                    limit = LISTS_MAX_LIMIT,
+                ),
+            )
             val listsItemsResponse: List<Pair<ListDto, List<ListItemDto>>> = listsResponse
                 .map { list ->
                     async {
                         val items = remoteSource.getPersonalListItems(
                             listId = list.ids.trakt.toTraktId(),
                             extended = "min",
-                            limit = LISTS_MAX_PAGE_LIMIT, // TODO Better handling of listed check
+                            limit = LISTS_MAX_ITEMS_LIMIT, // TODO Better handling of listed check
                             sorting = Sorting.Default,
                         )
                         list to items

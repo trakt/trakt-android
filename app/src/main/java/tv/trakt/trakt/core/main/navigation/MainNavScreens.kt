@@ -27,6 +27,8 @@ import tv.trakt.trakt.core.home.sections.upnext.features.all.navigation.homeUpNe
 import tv.trakt.trakt.core.home.sections.upnext.features.all.navigation.navigateToAllUpNext
 import tv.trakt.trakt.core.home.sections.watchlist.features.all.navigation.homeWatchlistScreen
 import tv.trakt.trakt.core.home.sections.watchlist.features.all.navigation.navigateToAllHomeWatchlist
+import tv.trakt.trakt.core.lists.features.all.navigation.allListsScreen
+import tv.trakt.trakt.core.lists.features.all.navigation.navigateToAllLists
 import tv.trakt.trakt.core.lists.features.details.navigation.listDetailsScreen
 import tv.trakt.trakt.core.lists.features.details.navigation.navigateToListDetails
 import tv.trakt.trakt.core.lists.navigation.listsScreen
@@ -271,7 +273,26 @@ internal fun NavGraphBuilder.listsScreens(controller: NavHostController) {
                     mediaImage = null,
                 )
             },
+            onNavigateToAllLists = { navigateToAllLists(it) },
             onNavigateToVip = { navigateToBilling() },
+        )
+        allListsScreen(
+            onNavigateToList = {
+                navigateToListDetails(
+                    list = it,
+                    mediaId = (-1).toTraktId(),
+                    mediaType = listOf(SHOW, MOVIE),
+                    mediaImage = null,
+                )
+            },
+            onNavigateToPersonalList = {
+                navigateToPersonalList(
+                    listId = it.ids.trakt.value,
+                    listTitle = it.name,
+                    listDescription = it.description,
+                )
+            },
+            onNavigateBack = { popBackStack() },
         )
         allWatchlistScreen(
             onNavigateToShow = { navigateToShow(it) },

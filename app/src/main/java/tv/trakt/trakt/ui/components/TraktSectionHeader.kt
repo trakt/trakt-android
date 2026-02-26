@@ -79,7 +79,7 @@ internal fun TraktSectionHeader(
                 contentDescription = null,
                 tint = TraktTheme.colors.textSecondary,
                 modifier = Modifier
-                    .padding(start = 24.dp)
+                    .padding(start = 48.dp)
                     .rotate(animateRotation)
                     .size(16.dp)
                     .onClick(onClick = onCollapseClick),

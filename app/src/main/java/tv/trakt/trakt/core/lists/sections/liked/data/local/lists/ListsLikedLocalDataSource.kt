@@ -8,6 +8,8 @@ import java.time.Instant
 internal interface ListsLikedLocalDataSource {
     suspend fun setLists(items: List<CustomList>)
 
+    suspend fun addLists(items: List<CustomList>)
+
     suspend fun getLists(): List<CustomList>
 
     suspend fun addList(list: CustomList)

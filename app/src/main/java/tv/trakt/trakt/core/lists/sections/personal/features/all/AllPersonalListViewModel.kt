@@ -37,7 +37,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.core.lists.ListsConfig.LISTS_ALL_LIMIT
+import tv.trakt.trakt.core.lists.ListsConfig.LISTS_ITEMS_ALL_LIMIT
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.ListsPersonalDestination
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
@@ -158,13 +158,13 @@ internal class AllPersonalListViewModel(
                         type = filterState.value,
                         sorting = sortingState.value,
                         page = 1,
-                        limit = LISTS_ALL_LIMIT,
+                        limit = LISTS_ITEMS_ALL_LIMIT,
                     )
                         .distinctBy { it.key }
                         .toImmutableList()
                 }
 
-                hasMoreData = (itemsState.value?.size ?: 0) >= LISTS_ALL_LIMIT
+                hasMoreData = (itemsState.value?.size ?: 0) >= LISTS_ITEMS_ALL_LIMIT
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     if (!ignoreErrors) {
@@ -206,7 +206,7 @@ internal class AllPersonalListViewModel(
                     type = filterState.value,
                     sorting = sortingState.value,
                     page = page + 1,
-                    limit = LISTS_ALL_LIMIT,
+                    limit = LISTS_ITEMS_ALL_LIMIT,
                 )
 
                 itemsState.update { items ->
@@ -217,7 +217,7 @@ internal class AllPersonalListViewModel(
                 }
 
                 page += 1
-                hasMoreData = (newItems.size >= LISTS_ALL_LIMIT)
+                hasMoreData = (newItems.size >= LISTS_ITEMS_ALL_LIMIT)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

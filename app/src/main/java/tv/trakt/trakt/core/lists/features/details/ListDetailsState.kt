@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.main.model.MediaMode
@@ -25,6 +26,7 @@ internal data class ListDetailsState(
     val navigateEpisode: Pair<TraktId, Episode>? = null,
     val loading: LoadingState = LoadingState.IDLE,
     val loadingMore: LoadingState = LoadingState.IDLE,
+    val user: User? = null,
     val info: StringResource? = null,
     val error: Exception? = null,
 ) {

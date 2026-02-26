@@ -10,6 +10,7 @@ import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.ListsScreen
+import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 
 @Serializable
 internal data object ListsDestination
@@ -24,6 +25,7 @@ internal fun NavGraphBuilder.listsScreen(
     onNavigateToWatchlist: () -> Unit,
     onNavigateToPersonalList: (CustomList) -> Unit,
     onNavigateToCustomList: (CustomList) -> Unit,
+    onNavigateToAllLists: (PersonalListType) -> Unit,
     onNavigateToVip: () -> Unit,
 ) {
     composable<ListsDestination> {
@@ -38,6 +40,7 @@ internal fun NavGraphBuilder.listsScreen(
             onNavigateToWatchlist = onNavigateToWatchlist,
             onNavigateToPersonalList = onNavigateToPersonalList,
             onNavigateToCustomList = onNavigateToCustomList,
+            onNavigateToAllLists = onNavigateToAllLists,
             onNavigateToVip = onNavigateToVip,
         )
     }

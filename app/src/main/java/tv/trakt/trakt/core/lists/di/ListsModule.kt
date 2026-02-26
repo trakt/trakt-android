@@ -22,6 +22,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.ListsViewModel
+import tv.trakt.trakt.core.lists.features.all.AllListsViewModel
 import tv.trakt.trakt.core.lists.features.details.ListDetailsViewModel
 import tv.trakt.trakt.core.lists.features.details.usecases.GetListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.liked.ListsLikedViewModel
@@ -377,6 +378,18 @@ internal val listsModule = module {
             episodeLocalDataSource = get(),
             collectionStateProvider = get(),
             sessionManager = get(),
+        )
+    }
+
+    viewModel {
+        AllListsViewModel(
+            savedStateHandle = get(),
+            sessionManager = get(),
+            analytics = get(),
+            getPersonalListsUseCase = get(),
+            getLikedListsUseCase = get(),
+            localPersonalListsSource = get(),
+            localLikedListsSource = get(),
         )
     }
 }

@@ -195,7 +195,7 @@ private fun CustomListContent(
                         start = 16.dp,
                         end = 16.dp,
                     )
-                    .shadow(4.dp, RoundedCornerShape(16.dp))
+                    .shadow(2.dp, RoundedCornerShape(16.dp))
                     .background(
                         color = when {
                             list.type == Type.OFFICIAL -> Purple900

@@ -2,6 +2,7 @@ package tv.trakt.trakt.common.core.user.data.remote
 
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.CalendarMovieDto
 import tv.trakt.trakt.common.networking.CalendarShowDto
@@ -120,9 +121,12 @@ interface UserRemoteDataSource {
         days: Int,
     ): List<CalendarMovieDto>
 
-    suspend fun getPersonalLists(): List<ListDto>
+    suspend fun getPersonalLists(pagination: Pagination): List<ListDto>
 
-    suspend fun getLikedLists(minimal: Boolean = false): List<LikedListDto>
+    suspend fun getLikedLists(
+        minimal: Boolean = false,
+        pagination: Pagination,
+    ): List<LikedListDto>
 
     suspend fun getLikedListItems(
         listId: TraktId,

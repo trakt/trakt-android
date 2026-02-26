@@ -21,11 +21,33 @@ internal class ListsPersonalStorage : ListsPersonalLocalDataSource {
         onBufferOverflow = BufferOverflow.DROP_OLDEST,
     )
 
-    override suspend fun setItems(items: List<CustomList>) {
+    override suspend fun setItems(
+        items: List<CustomList>,
+        notify: Boolean,
+    ) {
         mutex.withLock {
             with(storage) {
                 clear()
                 putAll(items.associateBy { it.ids.trakt })
+            }
+
+            if (notify) {
+                updatedAt.tryEmit(nowUtcInstant())
+            }
+        }
+    }
+
+    override suspend fun addItems(
+        items: List<CustomList>,
+        notify: Boolean,
+    ) {
+        mutex.withLock {
+            with(storage) {
+                putAll(items.associateBy { it.ids.trakt })
+            }
+
+            if (notify) {
+                updatedAt.tryEmit(nowUtcInstant())
             }
         }
     }

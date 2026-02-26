@@ -27,6 +27,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.LOADING
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.lists.ListsState.UserState
 import tv.trakt.trakt.core.lists.sections.liked.data.local.lists.ListsLikedLocalDataSource
 import tv.trakt.trakt.core.lists.sections.liked.usecases.GetLikedListsUseCase
@@ -107,9 +108,11 @@ internal class ListsViewModel(
     private fun loadLocalData() {
         viewModelScope.launch {
             try {
+                val pagination = Pagination(1, ListsConfig.LISTS_PAGE_LIMIT)
+
                 val localLists = when (filterState.value) {
-                    Personal -> getPersonalListsUseCase.getLocalLists()
-                    Liked -> getLikedListsUseCase.getLocalLists()
+                    Personal -> getPersonalListsUseCase.getLocalLists(pagination)
+                    Liked -> getLikedListsUseCase.getLocalLists(pagination)
                 }
                 listsState.update { sortLists(localLists) }
             } catch (error: Exception) {
@@ -128,9 +131,11 @@ internal class ListsViewModel(
             }
 
             try {
+                val pagination = Pagination(1, ListsConfig.LISTS_PAGE_LIMIT)
+
                 val localLists = when (filterState.value) {
-                    Personal -> getPersonalListsUseCase.getLocalLists()
-                    Liked -> getLikedListsUseCase.getLocalLists()
+                    Personal -> getPersonalListsUseCase.getLocalLists(pagination)
+                    Liked -> getLikedListsUseCase.getLocalLists(pagination)
                 }
 
                 if (localLists.isNotEmpty()) {
@@ -141,8 +146,8 @@ internal class ListsViewModel(
                 }
 
                 val lists = when (filterState.value) {
-                    Personal -> getPersonalListsUseCase.getLists()
-                    Liked -> getLikedListsUseCase.getLists()
+                    Personal -> getPersonalListsUseCase.getLists(pagination, notify = false)
+                    Liked -> getLikedListsUseCase.getLists(pagination)
                 }
                 listsState.update { sortLists(lists) }
 

@@ -30,7 +30,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.sorting.Sorting
-import tv.trakt.trakt.core.lists.ListsConfig.LISTS_SECTION_LIMIT
+import tv.trakt.trakt.core.lists.ListsConfig.LISTS_ITEMS_SECTION_LIMIT
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
@@ -152,7 +152,7 @@ internal class ListsPersonalViewModel(
                 itemsState.update {
                     getListItemsUseCase.getItems(
                         listId = listId,
-                        limit = LISTS_SECTION_LIMIT,
+                        limit = LISTS_ITEMS_SECTION_LIMIT,
                         filter = filterState.value,
                         sorting = Sorting.Default,
                     )

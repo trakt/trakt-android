@@ -6,9 +6,12 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.aspectRatio
@@ -23,8 +26,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -32,13 +37,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastRoundToInt
@@ -57,13 +63,13 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.home.views.HomeEmptyView
-import tv.trakt.trakt.core.lists.ListsConfig.LISTS_FULL_VIEW_LIMIT
+import tv.trakt.trakt.core.lists.ListsConfig.LISTS_FULL_PREVIEW_LIMIT
 import tv.trakt.trakt.core.lists.sections.liked.ListsLikedView
 import tv.trakt.trakt.core.lists.sections.personal.ListsPersonalView
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Liked
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Personal
-import tv.trakt.trakt.core.lists.sections.personal.ui.PersonalListsFilters
+import tv.trakt.trakt.core.lists.sections.personal.ui.ListsFilters
 import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistView
 import tv.trakt.trakt.core.lists.sheets.CreateListSheet
 import tv.trakt.trakt.core.lists.sheets.EditListSheet
@@ -92,6 +98,7 @@ internal fun ListsScreen(
     onNavigateToWatchlist: () -> Unit,
     onNavigateToPersonalList: (CustomList) -> Unit,
     onNavigateToCustomList: (CustomList) -> Unit,
+    onNavigateToAllLists: (PersonalListType) -> Unit,
     onNavigateToVip: () -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
@@ -121,6 +128,7 @@ internal fun ListsScreen(
         onEditListClick = { editListSheet = it },
         onPersonalListClick = onNavigateToPersonalList,
         onCustomListClick = onNavigateToCustomList,
+        onAllListsClick = { onNavigateToAllLists(state.filter) },
         onVipClick = onNavigateToVip,
     )
 
@@ -155,6 +163,7 @@ private fun ListsScreenContent(
     onWatchlistClick: () -> Unit = {},
     onPersonalListClick: (CustomList) -> Unit = { _ -> },
     onCustomListClick: (CustomList) -> Unit = { _ -> },
+    onAllListsClick: () -> Unit = { },
     onVipClick: () -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
@@ -185,7 +194,7 @@ private fun ListsScreenContent(
             .nestedScroll(headerState.connection),
     ) {
         val listFullView = remember(state.lists?.size) {
-            (state.lists?.size ?: 0) <= LISTS_FULL_VIEW_LIMIT
+            (state.lists?.size ?: 0) <= LISTS_FULL_PREVIEW_LIMIT
         }
 
         val listVisible = remember(state.lists?.size, state.listsLoading) {
@@ -246,6 +255,7 @@ private fun ListsScreenContent(
                 MyListsHeader(
                     sectionPadding = sectionPadding,
                     state = state,
+                    onHeaderClick = onAllListsClick,
                     onFilterClick = onFilterClick,
                     onCreateListClick = onCreateListClick,
                     modifier = Modifier.padding(
@@ -254,7 +264,7 @@ private fun ListsScreenContent(
                 )
             }
 
-            val topVerticalPadding = 22.dp
+            val topVerticalPadding = 32.dp
             itemsIndexed(
                 items = state.lists ?: emptyList(),
                 key = { _, list -> list.ids.trakt.value },
@@ -368,6 +378,26 @@ private fun ListsScreenContent(
                     )
                 }
             }
+
+//            if (
+//                !state.lists.isNullOrEmpty() &&
+//                state.lists.size >= 3 &&
+//                state.listsLoading == DONE
+//            ) {
+//                item(key = "footer_button") {
+//                    Box(
+//                        contentAlignment = Alignment.Center,
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .padding(top = TraktTheme.spacing.mainSectionVerticalSpace),
+//                    ) {
+//                        ViewAllButton(
+//                            modifier = Modifier
+//                                .onClick(onClick = onAllListsClick),
+//                        )
+//                    }
+//                }
+//            }
         }
 
         ListsScreenHeader(
@@ -408,6 +438,7 @@ private fun MyListsHeader(
     sectionPadding: PaddingValues,
     state: ListsState,
     onFilterClick: (PersonalListType) -> Unit,
+    onHeaderClick: () -> Unit,
     onCreateListClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -416,37 +447,43 @@ private fun MyListsHeader(
             .fillMaxWidth()
             .padding(sectionPadding),
     ) {
-        TraktSectionHeader(
-            title = stringResource(R.string.list_title_personal_lists),
-            subtitle = stringResource(R.string.text_sort_recently_updated),
-            collapsable = false,
-            chevron = false,
-            extraIcon = {
-                AnimatedVisibility(
-                    visible = state.filter == Personal,
-                    enter = fadeIn(tween(150)),
-                    exit = fadeOut(tween(150)),
-                    modifier = Modifier
-                        .padding(start = 8.dp)
-                        .size(19.dp)
-                        .onClick(
-                            enabled = state.user.isAuthenticated &&
-                                !state.listsLoading.isLoading,
-                            onClick = onCreateListClick,
-                        ),
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_plus),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier
-                            .size(19.dp),
-                    )
-                }
-            },
-        )
+        Box {
+            TraktSectionHeader(
+                title = stringResource(R.string.list_title_personal_lists),
+                collapsable = false,
+                chevron = true,
+                modifier = Modifier
+                    .onClick(
+                        enabled = state.listsLoading != LOADING,
+                        onClick = onHeaderClick,
+                    ),
+            )
 
-        PersonalListsFilters(
+            this@Column.AnimatedVisibility(
+                visible = state.filter == Personal,
+                enter = fadeIn(tween(150)),
+                exit = fadeOut(tween(150)),
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .graphicsLayer {
+                        translationX = 1.dp.toPx()
+                    }
+                    .size(19.dp)
+                    .onClick(
+                        enabled = state.user.isAuthenticated && !state.listsLoading.isLoading,
+                        onClick = onCreateListClick,
+                    ),
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_plus),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier.size(19.dp),
+                )
+            }
+        }
+
+        ListsFilters(
             selected = state.filter,
             onClick = onFilterClick,
             paddingVertical = PaddingValues(top = 13.dp, bottom = 0.dp),
@@ -509,17 +546,38 @@ private fun ContentEmptyView(
     )
 }
 
-@Preview(
-    device = "id:pixel_9",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-    locale = "en",
-)
 @Composable
-private fun Preview() {
-    TraktTheme {
-        ListsScreenContent(
-            state = ListsState(),
+private fun ViewAllButton(modifier: Modifier = Modifier) {
+    Row(
+        horizontalArrangement = spacedBy(4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .border(
+                width = 1.dp,
+                color = TraktTheme.colors.chipContainer,
+                shape = RoundedCornerShape(100),
+            )
+            .padding(
+                start = 22.dp,
+                end = 15.dp,
+                top = 11.dp,
+                bottom = 11.dp,
+            ),
+    ) {
+        Text(
+            text = "View All",
+            style = TraktTheme.typography.buttonTertiary,
+            color = TraktTheme.colors.textPrimary,
+        )
+        Icon(
+            painter = painterResource(R.drawable.ic_chevron_right),
+            tint = TraktTheme.colors.textPrimary,
+            contentDescription = null,
+            modifier = Modifier
+                .size(16.dp)
+                .graphicsLayer {
+                    translationY = 0.5.dp.toPx()
+                },
         )
     }
 }

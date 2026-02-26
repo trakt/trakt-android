@@ -11,6 +11,7 @@ import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.CalendarMovieDto
 import tv.trakt.trakt.common.networking.CalendarShowDto
@@ -408,24 +409,27 @@ class UserApiClient(
         return response.body()
     }
 
-    override suspend fun getPersonalLists(): List<ListDto> {
+    override suspend fun getPersonalLists(pagination: Pagination): List<ListDto> {
         val response = usersApi.getUsersListsPersonal(
             id = "me",
             extended = "cloud9,images",
-            page = null,
-            limit = 1000,
+            page = pagination.page,
+            limit = pagination.limit,
         )
         return response.body()
     }
 
-    override suspend fun getLikedLists(minimal: Boolean): List<LikedListDto> {
+    override suspend fun getLikedLists(
+        minimal: Boolean,
+        pagination: Pagination,
+    ): List<LikedListDto> {
         val response = usersApi.getUsersLikesLists(
             extended = when {
                 minimal -> "min"
                 else -> "cloud9,images"
             },
-            page = null,
-            limit = "all",
+            page = pagination.page,
+            limit = pagination.limit.toString(),
         )
         return response.body()
     }

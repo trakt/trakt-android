@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.lists.sections.liked.data.local.lists.ListsLikedLocalDataSource
 
 internal class GetLikedListsUseCase(
@@ -18,21 +19,27 @@ internal class GetLikedListsUseCase(
             .firstOrNull { it.ids.trakt == listId }
     }
 
-    suspend fun getLocalLists(): ImmutableList<CustomList> {
+    suspend fun getLocalLists(pagination: Pagination): ImmutableList<CustomList> {
         return localSource.getLists()
-            .sortedByDescending { it.updatedAt }
+            .take(pagination.limit)
             .toImmutableList()
     }
 
-    suspend fun getLists(): ImmutableList<CustomList> {
-        return remoteSource.getLikedLists()
+    suspend fun getLists(pagination: Pagination): ImmutableList<CustomList> {
+        return remoteSource.getLikedLists(
+            minimal = false,
+            pagination = pagination,
+        )
             .asyncMap {
                 CustomList.fromDto(it)
             }
-            .sortedByDescending { it.updatedAt }
             .toImmutableList()
             .also {
-                localSource.setLists(it)
+                if (pagination.page == 1) {
+                    localSource.setLists(it)
+                } else {
+                    localSource.addLists(it)
+                }
             }
     }
 }

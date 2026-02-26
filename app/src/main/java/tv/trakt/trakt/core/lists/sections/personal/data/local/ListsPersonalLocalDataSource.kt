@@ -7,7 +7,15 @@ import java.time.Instant
 import java.time.ZonedDateTime
 
 internal interface ListsPersonalLocalDataSource {
-    suspend fun setItems(items: List<CustomList>)
+    suspend fun setItems(
+        items: List<CustomList>,
+        notify: Boolean,
+    )
+
+    suspend fun addItems(
+        items: List<CustomList>,
+        notify: Boolean,
+    )
 
     suspend fun getItems(): List<CustomList>
 
