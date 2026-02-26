@@ -12,9 +12,4 @@ data class Rating(
 ) {
     val ratingPercent: Int
         get() = (rating * 10).roundToInt()
-
-    val rating5Scale: String
-        get() = "%.1f"
-            .format(rating / 2f)
-            .removeSuffix(".0")
 }

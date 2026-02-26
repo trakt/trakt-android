@@ -27,5 +27,22 @@ data class UserRating(
             require(rating in 0.5F..5F) { "Rating must be between 0.5 and 5" }
             return (rating * 2).toInt()
         }
+
+        // TODO Move to resources.
+        fun getSlug(rating: Float): String {
+            return when (rating) {
+                0.5F -> "Weak"
+                1F -> "Terrible"
+                1.5F -> "Bad"
+                2F -> "Poor"
+                2.5F -> "Meh"
+                3F -> "Fair"
+                3.5F -> "Good"
+                4F -> "Great"
+                4.5F -> "Superb"
+                5F -> "Absolute Cinema!"
+                else -> ""
+            }
+        }
     }
 }

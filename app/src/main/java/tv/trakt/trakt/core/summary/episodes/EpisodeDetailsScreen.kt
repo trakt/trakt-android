@@ -5,6 +5,7 @@ package tv.trakt.trakt.core.summary.episodes
 import android.content.Context
 import android.content.Intent
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
@@ -41,6 +42,7 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -295,6 +297,13 @@ internal fun EpisodeDetailsContent(
         SimpleScrollConnection()
     }
 
+    var ratingAlphaMaskActive by remember { mutableStateOf(false) }
+    val ratingAlphaMask: Float by animateFloatAsState(
+        targetValue = if (ratingAlphaMaskActive) 0.1F else 1F,
+        animationSpec = tween(200),
+        label = "alpha",
+    )
+
     Box(
         contentAlignment = TopCenter,
         modifier = modifier
@@ -307,6 +316,7 @@ internal fun EpisodeDetailsContent(
                 imageUrl = state.show.images?.getFanartUrl(Size.THUMB),
                 color = state.show.colors?.colors?.second,
                 translation = listScrollConnection.resultOffset,
+                modifier = Modifier.alpha(ratingAlphaMask),
             )
         }
 
@@ -338,7 +348,9 @@ internal fun EpisodeDetailsContent(
                         onShowClick = onShowClick ?: {},
                         onBackClick = onBackClick ?: {},
                         onShareClick = onShareClick ?: {},
-                        modifier = Modifier.align(Center),
+                        modifier = Modifier
+                            .align(Center)
+                            .alpha(ratingAlphaMask),
                     )
                 }
 
@@ -356,6 +368,12 @@ internal fun EpisodeDetailsContent(
                         onPrimaryClick = onTrackClick,
                         onMoreClick = onMoreClick,
                         modifier = Modifier
+                            .alpha(
+                                when {
+                                    ratingAlphaMaskActive -> ratingAlphaMask * 0.3F
+                                    else -> ratingAlphaMask
+                                },
+                            )
                             .padding(top = 16.dp)
                             .ifOrElse(
                                 windowClass.isAtLeastMedium(),
@@ -375,6 +393,7 @@ internal fun EpisodeDetailsContent(
                         visible = isWatched && isLoaded,
                         rating = state.episodeUserRating?.rating,
                         onRatingClick = onRatingClick ?: {},
+                        onRatingDrag = { ratingAlphaMaskActive = it },
                     )
                 }
 
@@ -382,6 +401,7 @@ internal fun EpisodeDetailsContent(
                     DetailsOverview(
                         overview = state.episode.overview,
                         modifier = Modifier
+                            .alpha(ratingAlphaMask)
                             .fillMaxWidth()
                             .padding(top = 18.dp)
                             .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
@@ -393,6 +413,7 @@ internal fun EpisodeDetailsContent(
                         VipBanner(
                             onClick = onVipClick ?: {},
                             modifier = Modifier
+                                .alpha(ratingAlphaMask)
                                 .fillMaxWidth()
                                 .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
                                 .padding(top = 24.dp),
@@ -414,6 +435,7 @@ internal fun EpisodeDetailsContent(
                                 headerPadding = sectionPadding,
                                 contentPadding = sectionPadding,
                                 modifier = Modifier
+                                    .alpha(ratingAlphaMask)
                                     .padding(top = 24.dp),
                             )
                         }
@@ -430,6 +452,7 @@ internal fun EpisodeDetailsContent(
                             contentPadding = sectionPadding,
                             onMoreClick = onMoreCommentsClick,
                             modifier = Modifier
+                                .alpha(ratingAlphaMask)
                                 .padding(
                                     top = when {
                                         streamingsVisible -> 32.dp
@@ -450,6 +473,7 @@ internal fun EpisodeDetailsContent(
                             contentPadding = sectionPadding,
                             onPersonClick = onPersonClick ?: {},
                             modifier = Modifier
+                                .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),
                         )
                     }
@@ -465,6 +489,7 @@ internal fun EpisodeDetailsContent(
                             contentPadding = sectionPadding,
                             onEpisodeClick = onEpisodeClick ?: {},
                             modifier = Modifier
+                                .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),
                         )
                     }
@@ -480,6 +505,7 @@ internal fun EpisodeDetailsContent(
                             contentPadding = sectionPadding,
                             onClick = onShowClick,
                             modifier = Modifier
+                                .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),
                         )
                     }
@@ -497,6 +523,7 @@ internal fun EpisodeDetailsContent(
                                 loading = state.loadingProgress.isLoading,
                                 onClick = onHistoryClick,
                                 modifier = Modifier
+                                    .alpha(ratingAlphaMask)
                                     .padding(top = 32.dp),
                             )
                         }
@@ -508,6 +535,7 @@ internal fun EpisodeDetailsContent(
                             collapsed = state.metaCollapsed ?: false,
                             onCollapseClick = onMetaCollapseClick ?: {},
                             modifier = Modifier
+                                .alpha(ratingAlphaMask)
                                 .fillMaxWidth()
                                 .padding(top = 32.dp)
                                 .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
@@ -524,24 +552,35 @@ fun DetailsRating(
     modifier: Modifier = Modifier,
     visible: Boolean,
     rating: UserRating?,
+    onRatingDrag: (Boolean) -> Unit,
     onRatingClick: (Int) -> Unit,
 ) {
+    var animated by remember { mutableStateOf(false) }
+
     Box(
+        contentAlignment = Center,
         modifier = modifier
             .fillMaxWidth()
-            .animateContentSize(
-                animationSpec = tween(200, delayMillis = 250),
+            .ifOrElse(
+                condition = animated,
+                isTrue = Modifier,
+                isFalse = Modifier.animateContentSize(
+                    animationSpec = tween(200, delayMillis = 250),
+                ),
             ),
     ) {
         if (visible) {
             UserRatingBar(
                 rating = rating,
-                onRatingClick = onRatingClick,
                 favoriteVisible = false,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 20.dp)
-                    .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
+                onRatingDrag = {
+                    animated = it
+                    onRatingDrag(it)
+                },
+                onRatingClick = onRatingClick,
+                modifier = Modifier.padding(
+                    horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
+                ),
             )
         }
     }

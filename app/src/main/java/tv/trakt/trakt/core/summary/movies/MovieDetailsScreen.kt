@@ -5,6 +5,7 @@ package tv.trakt.trakt.core.summary.movies
 import android.content.Context
 import android.content.Intent
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
@@ -39,6 +40,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -324,6 +326,13 @@ internal fun MovieDetailsContent(
         SimpleScrollConnection()
     }
 
+    var ratingAlphaMaskActive by remember { mutableStateOf(false) }
+    val ratingAlphaMask: Float by animateFloatAsState(
+        targetValue = if (ratingAlphaMaskActive) 0.1F else 1F,
+        animationSpec = tween(200),
+        label = "alpha",
+    )
+
     Box(
         contentAlignment = TopCenter,
         modifier = modifier
@@ -341,6 +350,7 @@ internal fun MovieDetailsContent(
                 imageUrl = movie.images?.getFanartUrl(Images.Size.THUMB),
                 color = movie.colors?.colors?.second,
                 translation = listScrollConnection.resultOffset,
+                modifier = Modifier.alpha(ratingAlphaMask),
             )
 
             LazyColumn(
@@ -365,7 +375,9 @@ internal fun MovieDetailsContent(
                         onCreatorClick = onPersonClick ?: {},
                         onBackClick = onBackClick ?: {},
                         onShareClick = onShareClick ?: {},
-                        modifier = Modifier.align(Alignment.Center),
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .alpha(ratingAlphaMask),
                     )
                 }
 
@@ -392,6 +404,12 @@ internal fun MovieDetailsContent(
                         onSecondaryLongClick = onListsClick,
                         onMoreClick = onMoreClick,
                         modifier = Modifier
+                            .alpha(
+                                when {
+                                    ratingAlphaMaskActive -> ratingAlphaMask * 0.3F
+                                    else -> ratingAlphaMask
+                                },
+                            )
                             .padding(top = 16.dp)
                             .ifOrElse(
                                 windowClass.isAtLeastMedium(),
@@ -409,6 +427,7 @@ internal fun MovieDetailsContent(
                         visible = isWatched && isLoaded,
                         rating = state.movieUserRating?.rating,
                         loading = state.loadingFavorite.isLoading,
+                        onRatingDrag = { ratingAlphaMaskActive = it },
                         onRatingClick = onRatingClick ?: {},
                         onFavoriteClick = onFavoriteClick ?: {},
                     )
@@ -418,6 +437,7 @@ internal fun MovieDetailsContent(
                     DetailsOverview(
                         overview = movie.overview,
                         modifier = Modifier
+                            .alpha(ratingAlphaMask)
                             .fillMaxWidth()
                             .padding(top = 18.dp)
                             .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
@@ -429,6 +449,7 @@ internal fun MovieDetailsContent(
                         VipBanner(
                             onClick = onVipClick ?: {},
                             modifier = Modifier
+                                .alpha(ratingAlphaMask)
                                 .fillMaxWidth()
                                 .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
                                 .padding(top = 24.dp),
@@ -448,6 +469,7 @@ internal fun MovieDetailsContent(
                                 headerPadding = sectionPadding,
                                 contentPadding = sectionPadding,
                                 modifier = Modifier
+                                    .alpha(ratingAlphaMask)
                                     .padding(top = 24.dp),
                             )
                         }
@@ -462,6 +484,7 @@ internal fun MovieDetailsContent(
                                 headerPadding = sectionPadding,
                                 contentPadding = sectionPadding,
                                 modifier = Modifier
+                                    .alpha(ratingAlphaMask)
                                     .padding(
                                         top = when {
                                             showStreamings -> 32.dp
@@ -481,6 +504,7 @@ internal fun MovieDetailsContent(
                             contentPadding = sectionPadding,
                             onMoreClick = onMoreCommentsClick,
                             modifier = Modifier
+                                .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),
                         )
                     }
@@ -494,6 +518,7 @@ internal fun MovieDetailsContent(
                             contentPadding = sectionPadding,
                             onPersonClick = onPersonClick ?: {},
                             modifier = Modifier
+                                .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),
                         )
                     }
@@ -506,6 +531,7 @@ internal fun MovieDetailsContent(
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             modifier = Modifier
+                                .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),
                         )
                     }
@@ -519,6 +545,7 @@ internal fun MovieDetailsContent(
                             contentPadding = sectionPadding,
                             onClick = onMovieClick,
                             modifier = Modifier
+                                .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),
                         )
                     }
@@ -532,6 +559,7 @@ internal fun MovieDetailsContent(
                             contentPadding = sectionPadding,
                             onClick = onListClick ?: {},
                             modifier = Modifier
+                                .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),
                         )
                     }
@@ -546,6 +574,7 @@ internal fun MovieDetailsContent(
                                 contentPadding = sectionPadding,
                                 onClick = onHistoryClick,
                                 modifier = Modifier
+                                    .alpha(ratingAlphaMask)
                                     .padding(top = 32.dp),
                             )
                         }
@@ -558,6 +587,7 @@ internal fun MovieDetailsContent(
                             collapsed = state.metaCollapsed ?: false,
                             onCollapseClick = onMetaCollapseClick ?: {},
                             modifier = Modifier
+                                .alpha(ratingAlphaMask)
                                 .fillMaxWidth()
                                 .padding(top = 32.dp)
                                 .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
@@ -595,15 +625,22 @@ fun DetailsRating(
     visible: Boolean,
     rating: UserRating?,
     loading: Boolean,
+    onRatingDrag: (Boolean) -> Unit,
     onRatingClick: (Int) -> Unit,
     onFavoriteClick: () -> Unit,
 ) {
+    var animated by remember { mutableStateOf(false) }
+
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
             .fillMaxWidth()
-            .animateContentSize(
-                animationSpec = tween(200, delayMillis = 250),
+            .ifOrElse(
+                condition = animated,
+                isTrue = Modifier,
+                isFalse = Modifier.animateContentSize(
+                    animationSpec = tween(200, delayMillis = 250),
+                ),
             ),
     ) {
         if (visible) {
@@ -612,11 +649,15 @@ fun DetailsRating(
                 favoriteLoading = loading,
                 favoriteVisible = true,
                 favorite = rating?.favorite == true,
+                onRatingDrag = {
+                    animated = it
+                    onRatingDrag(it)
+                },
                 onRatingClick = onRatingClick,
                 onFavoriteClick = onFavoriteClick,
-                modifier = Modifier
-                    .padding(top = 20.dp)
-                    .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
+                modifier = Modifier.padding(
+                    horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
+                ),
             )
         }
     }
@@ -684,6 +725,7 @@ private fun shareMovie(
     device = "id:pixel_5",
     showBackground = true,
     backgroundColor = 0xFF131517,
+    locale = "us",
 )
 @Composable
 private fun Preview() {
