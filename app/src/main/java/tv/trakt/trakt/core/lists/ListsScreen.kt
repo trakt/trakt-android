@@ -370,12 +370,19 @@ private fun ListsScreenContent(
                 }
             } else if (state.lists.isNullOrEmpty() && state.listsLoading == LOADING) {
                 item(key = "list_loading") {
-                    CustomListSkeletonCard(
+                    Column(
+                        verticalArrangement = spacedBy(18.dp),
                         modifier = Modifier
                             .padding(top = topVerticalPadding)
-                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
-                            .aspectRatio(HorizontalImageAspectRatio),
-                    )
+                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
+                    ) {
+                        repeat(2) {
+                            CustomListSkeletonCard(
+                                modifier = Modifier
+                                    .aspectRatio(HorizontalImageAspectRatio),
+                            )
+                        }
+                    }
                 }
             }
 
