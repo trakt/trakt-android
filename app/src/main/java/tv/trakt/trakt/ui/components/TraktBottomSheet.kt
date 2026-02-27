@@ -1,5 +1,6 @@
 package tv.trakt.trakt.ui.components
 
+import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -13,6 +14,7 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -58,8 +60,15 @@ internal fun TraktBottomSheet(
         },
     ) {
         // Set light system bars appearance fix for dialogs
+        // https://issuetracker.google.com/issues/374013416
         val view = LocalView.current
         (view.parent as? DialogWindowProvider)?.window?.let { window ->
+            LaunchedEffect(Unit) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    window.isNavigationBarContrastEnforced = false
+                }
+            }
+
             SideEffect {
                 with(WindowCompat.getInsetsController(window, view)) {
                     isAppearanceLightStatusBars = false
