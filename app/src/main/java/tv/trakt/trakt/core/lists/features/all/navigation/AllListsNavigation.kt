@@ -29,7 +29,7 @@ internal fun NavGraphBuilder.allListsScreen(
     }
 }
 
-internal fun NavController.navigateToAllLists(initialFilter: PersonalListType? = null) {
+internal fun NavController.navigateToAllLists(initialFilter: PersonalListType?) {
     navigate(
         route = AllListsDestination(initialFilter),
     )

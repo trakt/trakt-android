@@ -24,6 +24,7 @@
 -keep class tv.trakt.trakt.core.discover.model.**
 -keep class tv.trakt.trakt.core.main.model.**
 -keep class tv.trakt.trakt.common.model.**
+-keep class tv.trakt.trakt.core.lists.sections.personal.model.**
 
 # Younify SDK
 
