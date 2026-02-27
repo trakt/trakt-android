@@ -250,7 +250,7 @@ internal fun ListDetailsScreen(
             confirmRemoveLikeSheet = false
         },
         onNo = { confirmRemoveLikeSheet = false },
-        title = stringResource(R.string.button_text_toggle_lists_liked),
+        title = stringResource(R.string.list_title_liked_lists),
         message = stringResource(
             R.string.warning_prompt_remove_from_liked_lists,
             state.list?.list?.name ?: "",

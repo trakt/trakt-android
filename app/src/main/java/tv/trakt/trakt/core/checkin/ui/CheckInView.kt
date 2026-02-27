@@ -64,6 +64,7 @@ import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onEmptyClick
+import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.common.ui.theme.colors.Shade300
 import tv.trakt.trakt.resources.R
@@ -209,9 +210,9 @@ internal fun CheckInView(
         onNo = {
             confirmClose = false
         },
-        title = stringResource(R.string.text_now_watching),
+        title = stringResource(R.string.button_text_checkin).uppercaseWords(),
         message = stringResource(
-            R.string.warning_prompt_stop_watching,
+            R.string.warning_prompt_stop_checkin,
             title ?: "",
         ),
         yesColor = Red400,
@@ -253,7 +254,7 @@ private fun ExpandedView(
                     .padding(vertical = 2.dp),
             ) {
                 Text(
-                    text = stringResource(R.string.text_now_watching),
+                    text = stringResource(R.string.button_text_checkin).uppercaseWords(),
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.cardTitle.copy(
                         fontWeight = W400,
@@ -308,7 +309,7 @@ private fun ExpandedView(
                         }
 
                         Text(
-                            text = stringResource(R.string.text_time_remaining, durationText),
+                            text = stringResource(R.string.tag_text_remaining_duration, durationText),
                             textAlign = TextAlign.End,
                             color = TraktTheme.colors.textSecondary,
                             style = TraktTheme.typography.cardSubtitle.copy(

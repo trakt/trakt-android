@@ -106,9 +106,9 @@ private fun Preview() {
     TraktTheme {
         val res = LocalResources.current
         val string = res.getString(
-            R.string.warning_prompt_mark_as_watched_show,
-            "Title",
+            R.string.warning_prompt_mark_as_watched_show_android,
             12,
+            "Title",
         )
 
         ConfirmationView(

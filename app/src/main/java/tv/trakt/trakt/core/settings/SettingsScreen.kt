@@ -422,7 +422,7 @@ private fun SettingsTracking(
         modifier = modifier,
     ) {
         TraktHeader(
-            title = stringResource(R.string.text_settings_tracking).uppercase(),
+            title = stringResource(R.string.header_settings_tracking).uppercase(),
             titleColor = TraktTheme.colors.textSecondary,
             titleStyle = TraktTheme.typography.heading6,
         )
@@ -511,7 +511,7 @@ private fun SettingsNotifications(
     ) {
         Column {
             TraktHeader(
-                title = stringResource(R.string.text_settings_notifications).uppercase(),
+                title = stringResource(R.string.header_settings_notifications).uppercase(),
                 titleColor = TraktTheme.colors.textSecondary,
                 titleStyle = TraktTheme.typography.heading6,
             )

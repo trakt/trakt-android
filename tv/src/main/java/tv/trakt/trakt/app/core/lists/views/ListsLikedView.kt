@@ -65,7 +65,7 @@ internal fun ListsLikedView(
                 modifier = Modifier.size(20.dp),
             )
             Text(
-                text = stringResource(R.string.button_text_toggle_lists_liked),
+                text = stringResource(R.string.list_title_liked_lists),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading5,
             )

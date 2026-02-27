@@ -114,7 +114,7 @@ internal fun CalendarControlsView(
                         },
                 )
                 GhostButton(
-                    text = stringResource(R.string.text_today),
+                    text = stringResource(R.string.button_text_reset_calendar_period),
                     onClick = { onTodayClick() },
                     fillWidth = false,
                     uppercase = false,

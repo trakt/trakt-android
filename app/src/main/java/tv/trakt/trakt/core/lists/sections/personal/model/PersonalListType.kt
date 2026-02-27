@@ -13,15 +13,11 @@ internal enum class PersonalListType(
     @param:DrawableRes val displayIcon: Int,
 ) {
     Personal(
-        R.string.button_text_toggle_lists_personal,
+        R.string.button_text_personal,
         R.drawable.ic_person_trakt,
     ),
     Liked(
-        R.string.button_text_toggle_lists_liked,
+        R.string.list_title_liked_lists,
         R.drawable.ic_thumb_up2,
     ),
-//    Collaborations(
-//        R.string.button_text_toggle_lists_collaborations,
-//        R.drawable.ic_person_double,
-//    ),
 }

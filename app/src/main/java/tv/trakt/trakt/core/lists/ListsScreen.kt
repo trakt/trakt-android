@@ -243,8 +243,10 @@ private fun ListsScreenContent(
             if (state.user.user != null && !state.user.user.isVip) {
                 item {
                     VipBanner(
-                        modifier = Modifier.padding(sectionPadding),
                         onClick = onVipClick,
+                        modifier = Modifier
+                            .padding(sectionPadding)
+                            .padding(top = TraktTheme.spacing.mainSectionVerticalSpace),
                     )
                 }
             }

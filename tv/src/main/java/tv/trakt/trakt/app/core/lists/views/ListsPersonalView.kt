@@ -65,7 +65,7 @@ internal fun ListsPersonalView(
                 modifier = Modifier.size(18.dp),
             )
             Text(
-                text = stringResource(R.string.button_text_toggle_lists_personal),
+                text = stringResource(R.string.button_text_personal),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading5,
             )

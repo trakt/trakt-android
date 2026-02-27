@@ -255,9 +255,9 @@ internal fun ShowDetailsScreen(
         title = stringResource(R.string.button_text_mark_as_watched),
         annotatedMessage = AnnotatedString.fromHtml(
             stringResource(
-                R.string.warning_prompt_mark_as_watched_show,
-                state.show?.title ?: "",
+                R.string.warning_prompt_mark_as_watched_show_android,
                 state.show?.airedEpisodes ?: 0,
+                state.show?.title ?: "",
             ),
         ),
         holdToYes = true,

@@ -9,6 +9,7 @@
     <string name="button_text_add_review">Add Review</string>
     <string name="button_text_apply">Apply</string>
     <string name="button_text_cancel">Cancel</string>
+    <string name="button_text_checkin">Now watching</string>
     <string name="button_text_comment_likes">%d likes</string>
     <string name="button_text_comment_replies">%d replies</string>
     <string name="button_text_continue">Continue</string>
@@ -23,6 +24,7 @@
     <string name="button_text_followers">Followers</string>
     <string name="button_text_following">Following</string>
     <string name="button_text_hide_details">Hide Details</string>
+    <string name="button_text_hold_to_confirm">Hold to Confirm</string>
     <string name="button_text_join_trakt">Join Trakt</string>
     <string name="button_text_join_trakt_for_free">Join Trakt for Free</string>
     <string name="button_text_login">Login</string>
@@ -41,6 +43,7 @@
     <string name="button_text_remove_from_favorites">Remove from Favorites</string>
     <string name="button_text_remove_from_history">Remove from Watched</string>
     <string name="button_text_remove_from_list">Remove from list</string>
+    <string name="button_text_reset_calendar_period">Today</string>
     <string name="button_text_retry">Retry</string>
     <string name="button_text_share">Share</string>
     <string name="button_text_shows">Shows</string>
@@ -51,8 +54,10 @@
     <string name="button_text_sort_release_date">Release Date</string>
     <string name="button_text_sort_runtime">Runtime</string>
     <string name="button_text_stream_on">Stream on</string>
+    <string name="button_text_toggle_search_lists">Lists</string>
     <string name="button_text_toggle_search_media">Media</string>
     <string name="button_text_toggle_search_people">People</string>
+    <string name="button_text_track">Track</string>
     <string name="button_text_trailer">Trailer</string>
     <string name="button_text_upgrade_to_vip">Upgrade to VIP</string>
     <string name="button_text_view_all">More</string>
@@ -80,21 +85,26 @@
     <string name="header_device_auth_qr_instruction">Scan the QR code, or sign in at:</string>
     <string name="header_device_auth_try_again">The activation was denied, expired, or something unforeseeable happened. Please try again.</string>
     <string name="header_genre">Genre</string>
+    <string name="header_get_notified">Get Notified!</string>
     <string name="header_height">Height</string>
     <string name="header_landing_discover">Discover</string>
     <string name="header_landing_share">Share</string>
     <string name="header_landing_track">Track</string>
     <string name="header_language">Language</string>
+    <string name="header_notifications_rationale">Enable notifications to stay on top of your media releases and current watching activity.</string>
     <string name="header_original_title">Original Title</string>
     <string name="header_post_credits">Post Credits</string>
     <string name="header_premiered">Premiered</string>
     <string name="header_profile_banner_greeting">Hello, %s</string>
     <string name="header_runtime">Runtime</string>
+    <string name="header_settings_notifications">Notifications</string>
+    <string name="header_settings_tracking">Tracking</string>
     <string name="header_status">Status</string>
     <string name="header_studio">Studio</string>
     <string name="input_placeholder_lists_description">Description (optional)</string>
     <string name="input_placeholder_lists_name">Name</string>
     <string name="input_placeholder_search">Search shows &amp; movies…</string>
+    <string name="input_placeholder_search_lists">Search lists…</string>
     <string name="input_placeholder_search_movies">Search movies…</string>
     <string name="input_placeholder_search_people">Search people…</string>
     <string name="input_placeholder_search_shows">Search shows…</string>
@@ -111,6 +121,8 @@
     <string name="link_text_view_profile">View profile</string>
     <string name="list_placeholder_comments">No reviews yet.</string>
     <string name="list_placeholder_empty">There is nothing in this list.</string>
+    <string name="list_placeholder_personal_list_empty_movies">There are no movies in this list yet.</string>
+    <string name="list_placeholder_personal_list_empty_shows">There are no shows in this list yet.</string>
     <string name="list_placeholder_replies">No replies yet.</string>
     <string name="list_title_activity">Activity</string>
     <string name="list_title_actors">Actors</string>
@@ -127,6 +139,7 @@
     <string name="list_title_from_my_history">From My History</string>
     <string name="list_title_history">History</string>
     <string name="list_title_library">Library</string>
+    <string name="list_title_liked_lists">Liked</string>
     <string name="list_title_most_anticipated">Anticipated</string>
     <string name="list_title_most_popular">Popular</string>
     <string name="list_title_most_popular_searches">Top Searches</string>
@@ -162,6 +175,7 @@
     <string name="list_title_watchlist_shows">Shows Watchlist</string>
     <string name="page_description_create_list">Enter a name and description for your list.</string>
     <string name="page_description_edit_list">Edit your list details.</string>
+    <string name="page_title_calendar">Calendar</string>
     <string name="page_title_create_list">Create List</string>
     <string name="page_title_discover">Discover</string>
     <string name="page_title_edit_list">Edit List</string>
@@ -178,6 +192,7 @@
     <string name="page_title_watchlist">Watchlist</string>
     <string name="page_title_where_to_watch">Where to Watch</string>
     <string name="tag_text_number_of_episodes">%d eps.</string>
+    <string name="tag_text_remaining_duration">%s remaining</string>
     <string name="tag_text_remaining_episodes">%d remaining</string>
     <string name="tag_text_watch_count">Watch count</string>
     <string name="tag_text_watched">Watched</string>
@@ -196,6 +211,7 @@
     <string name="text_cta_favorites">Your faves. Your story. Spotlight the movies and shows that left a mark.</string>
     <string name="text_cta_favorites_movies">Your faves. Your story. Spotlight the movies that left a mark.</string>
     <string name="text_cta_favorites_shows">Your faves. Your story. Spotlight the shows that left a mark.</string>
+    <string name="text_cta_liked_lists">Discover what others love. Explore and save lists from the community.</string>
     <string name="text_cta_personal_lists">Your lists. Your rules. Collect and organize movies and shows your way.</string>
     <string name="text_cta_up_next">Your shows. Your pace. Jump back in exactly where you left off. What are you currently watching?</string>
     <string name="text_cta_upcoming">Your timeline. See what\'s dropping next with a full list of upcoming episodes you care about.</string>
@@ -208,6 +224,8 @@
     <string name="text_info_favorites_removed">Removed from favorites.</string>
     <string name="text_info_history_added">Added to watched history.</string>
     <string name="text_info_history_removed">Removed from watched history.</string>
+    <string name="text_info_liked_added">Added to liked lists.</string>
+    <string name="text_info_liked_removed">Removed from liked lists.</string>
     <string name="text_info_list_added">Added to list.</string>
     <string name="text_info_list_created">List has been created.</string>
     <string name="text_info_list_deleted">List has been deleted.</string>
@@ -232,12 +250,32 @@
     <string name="text_landing_track">every movie, episode, and season you\'ve seen, all in one place.</string>
     <string name="text_location">Location</string>
     <string name="text_movies_watched">%d movies</string>
+    <string name="text_notification_episode_release">S%1$d • E%2$d is now available.</string>
+    <string name="text_notification_episodes_release">S%1$d • E%2$d-%3$d are now available.</string>
+    <string name="text_notification_movie_release">The movie is now available.</string>
+    <string name="text_onboarding_1_description">Track what you\'re watching and what you want to watch next.\n\nPick up right where you left off, save titles for later, and organise everything into smart watchlists or your own personal lists, in one place.</string>
+    <string name="text_onboarding_1_title">Everything you watch.\nIn one place.</string>
+    <string name="text_onboarding_2_description">See where movies and shows are streaming, renting, or available to buy, across all your favorite services.</string>
+    <string name="text_onboarding_2_title">Find where to watch it.\nJust press play.</string>
+    <string name="text_onboarding_3_description">Rate what you watch and join the conversation around movies and TV shows that are worth watching, or skipping.</string>
+    <string name="text_onboarding_3_title">Show how you feel.\nSay what you think.</string>
+    <string name="text_onboarding_4_description">You\'ve only scratched the surface.\nJoin Trakt for free and discover more features waiting for you.</string>
+    <string name="text_onboarding_4_title">There\'s more to\ndiscover.</string>
     <string name="text_overview_placeholder">Overview is not available.</string>
     <string name="text_reply_by">Reply by</string>
     <string name="text_review_by">Review by</string>
     <string name="text_season_episode_number">Season %1$d • Episode %2$d</string>
     <string name="text_season_number">Season %d</string>
     <string name="text_season_specials">Specials</string>
+    <string name="text_settings_adjust_delivery">Notification Time</string>
+    <string name="text_settings_adjust_delivery_description">Choose when to be notified.</string>
+    <string name="text_settings_enable_multiple_plays">Enable Multiple Plays</string>
+    <string name="text_settings_enable_multiple_plays_description">Allow more than 1 play for movies and episodes.</string>
+    <string name="text_settings_enable_notifications">Enable Notifications</string>
+    <string name="text_settings_notification_time_180_min">3 hours before</string>
+    <string name="text_settings_notification_time_30_min">30 minutes before</string>
+    <string name="text_settings_notification_time_60_min">1 hour before</string>
+    <string name="text_settings_notification_time_now">On release</string>
     <string name="text_share_movie">Just discovered \"%s\" - you need to see this! 🎬</string>
     <string name="text_share_show">Found this awesome show: %s! 📺</string>
     <string name="text_shout_by">Shout by</string>
@@ -249,6 +287,11 @@
     <string name="text_spoiler">Spoiler</string>
     <string name="text_streaming_sync">Streaming Sync</string>
     <string name="text_this_month">This month</string>
+    <string name="text_vip_costs">VIP helps cover the real costs of running Trakt.</string>
+    <string name="text_vip_costs_independence">Keeping Trakt independent, sustainable, and focused on users.</string>
+    <string name="text_vip_costs_infrastructure">Servers and infrastructure that keep Trakt fast and reliable.</string>
+    <string name="text_vip_costs_moderation">Moderation and tooling to keep the community safe and welcoming.</string>
+    <string name="text_vip_costs_team">The team building and maintaining the platform.</string>
     <string name="text_vip_upsell_default">Enhance your Trakt experience</string>
     <string name="text_vip_upsell_default_2">Upgrade to VIP!</string>
     <string name="text_vip_upsell_default_description">Upgrade to VIP and unlock the full Trakt experience, packed with features built for TV Shows and Movies lovers.</string>
@@ -263,95 +306,37 @@
     <string name="translated_value_position_acting">Acting</string>
     <string name="translated_value_type_movie">Movie</string>
     <string name="translated_value_type_show">Show</string>
+    <string name="vip_feature_description_early_access">Get early access to new versions of Trakt apps and brand new features before anyone else.</string>
+    <string name="vip_feature_description_increased_limits">Enjoy higher limits for your lists, ratings, and other features.</string>
+    <string name="vip_feature_description_mir">Get a personalized overview of everything you watched and rated each month.</string>
+    <string name="vip_feature_description_more_to_come">We\'re constantly building new features exclusively for VIP members, with exciting updates already on the way.</string>
+    <string name="vip_feature_description_streaming_sync">Automatically sync your watched history and ratings from all your favorite streaming services.</string>
+    <string name="vip_feature_description_vip_status">Show off your VIP status throughout the apps and website.</string>
+    <string name="vip_feature_description_yir">Lots of stats for every year you\'ve been a member.</string>
+    <string name="vip_feature_title_early_access">Early Access</string>
+    <string name="vip_feature_title_increased_limits">Increased Limits</string>
+    <string name="vip_feature_title_mir">Month in Review</string>
+    <string name="vip_feature_title_more_to_come">More to Come</string>
+    <string name="vip_feature_title_streaming_sync">Streaming Sync</string>
+    <string name="vip_feature_title_unlock">Unlock full potential with</string>
+    <string name="vip_feature_title_vip_status">VIP Status</string>
+    <string name="vip_feature_title_yir">Year in Review</string>
     <string name="warning_prompt_delete_comment">Are you sure you want to delete your review?</string>
     <string name="warning_prompt_delete_list">Are you sure you want to delete the list %s?</string>
     <string name="warning_prompt_delete_reply">Are you sure you want to delete your reply?</string>
     <string name="warning_prompt_drop_show">Are you sure you want to drop \"%s\" show? This will remove it from your Continue Watching list.</string>
     <string name="warning_prompt_log_out">Are you sure you want to log out?</string>
     <string name="warning_prompt_mark_as_watched_multiple_episodes">Are you sure you want to mark %d episodes as watched?</string>
+    <string name="warning_prompt_mark_as_watched_show">Are you sure you want to mark \"%s\" as watched? This will mark all episodes as watched.</string>
+    <string name="warning_prompt_mark_as_watched_show_android"><![CDATA[Are you sure you want to mark <b><u>all %1$d episodes</u></b> of \"%2$s\" as watched?]]></string>
     <string name="warning_prompt_remove_from_favorites">Are you sure you want to remove \"%s\" from your Favorites?</string>
+    <string name="warning_prompt_remove_from_liked_lists">Are you sure you want to remove \"%s\" from your liked lists?</string>
     <string name="warning_prompt_remove_from_personal_list">Are you sure you want to remove \"%1$s\" from %2$s?</string>
     <string name="warning_prompt_remove_from_watched">Are you sure you want to remove \"%s\" from your Watched list? All plays will be removed.</string>
     <string name="warning_prompt_remove_from_watchlist">Are you sure you want to remove \"%s\" from your Watchlist?</string>
     <string name="warning_prompt_remove_single_watched">Are you sure you want to remove this play of \"%s\" from your Watched list?</string>
+    <string name="warning_prompt_stop_checkin">Are you sure you want to stop watching \"%s\"?</string>
     <string name="warning_prompt_younify_unlink">Are you sure you want to unlink %s?</string>
-
-    <!-- TODO Sync with strings bank -->
-
-    <string name="text_onboarding_1_title">Everything you watch.\nIn one place.</string>
-    <string name="text_onboarding_1_description">Track what you\'re watching and what you want to watch next.\n\nPick up right where you left off, save titles for later, and organise everything into smart watchlists or your own personal lists, in one place.</string>
-
-    <string name="text_onboarding_2_title">Find where to watch it.\nJust press play.</string>
-    <string name="text_onboarding_2_description">See where movies and shows are streaming, renting, or available to buy, across all your favorite services.\n\nSpend less time looking. More time watching. Just press play.</string>
-
-    <string name="text_onboarding_3_title">Show how you feel.\nSay what you think.</string>
-    <string name="text_onboarding_3_description">Rate what you watch and join the conversation around movies and TV shows that are worth watching, or skipping.\n\nYour opinion matters, share it. Watching hits different when you\'re not alone, say what you think.</string>
-
-    <string name="text_onboarding_4_title">There\'s more to\ndiscover.</string>
-    <string name="text_onboarding_4_description">You\'ve only scratched the surface.\nJoin Trakt for free and discover more features waiting for you.</string>
-
-    <string name="text_vip_offer_unlock">Unlock full potential with</string>
-    <string name="text_vip_offer_support_1">Support independent media tracking!</string>
-    <string name="text_vip_offer_support_2">Your VIP membership keeps Trakt ad free and unlocks powerful VIP only features.\n\nWe\'re directly funded by VIP memberships and never sell your data.</string>
-    <string name="text_vip_offer_unlimited_lists">Unlimited Lists</string>
-    <string name="text_vip_offer_unlimited_lists_description">Increase the limits of your Watchlist and Personal Lists.</string>
-    <string name="text_vip_offer_streaming_sync">Streaming Sync</string>
-    <string name="text_vip_offer_streaming_sync_description">Automatically sync your watched history and ratings from your favorite streaming services.</string>
-    <string name="text_vip_offer_month_review">Month in Review</string>
-    <string name="text_vip_offer_month_review_description">Statistics for each month, with easy sharing to your socials using custom images.</string>
-    <string name="text_vip_offer_year_review">Year in Review</string>
-    <string name="text_vip_offer_year_review_description">Lots of stats for every year you\'ve been a member, including %d!</string>
-    <string name="text_vip_offer_alltime_stats">All-Time Stats</string>
-    <string name="text_vip_offer_alltime_stats_description">All of your statistics over the years, combined and visualized.</string>
-    <string name="text_vip_offer_early_access">Early Access</string>
-    <string name="text_vip_offer_early_access_description">Get early access to new versions of Trakt apps and brand new features before anyone else.</string>
-    <string name="text_vip_offer_badges">VIP Badges</string>
-    <string name="text_vip_offer_badges_description">Show off your VIP status with special badge throughout the apps and website.</string>
-    <string name="text_vip_offer_and_more">And more!</string>
-    <string name="text_vip_offer_and_more_description">Discover everything Trakt has to offer beyond the app.</string>
-
-    <string name="text_settings_tracking">Tracking</string>
-    <string name="text_settings_notifications">Notifications</string>
-    <string name="text_settings_enable_notifications">Enable Notifications</string>
-    <string name="text_settings_adjust_delivery">Notification Time</string>
-    <string name="text_settings_adjust_delivery_description">Choose when to be notified.</string>
-    <string name="text_settings_enable_multiple_plays">Enable Multiple Plays</string>
-    <string name="text_settings_enable_multiple_plays_description">Allow more than 1 play for movies and episodes.</string>
-
-    <string name="text_settings_notification_time_now">On release</string>
-    <string name="text_settings_notification_time_30_min">30 minutes before</string>
-    <string name="text_settings_notification_time_60_min">1 hour before</string>
-    <string name="text_settings_notification_time_180_min">3 hours before</string>
-
-    <string name="text_notification_movie_release">The movie is now available.</string>
-    <string name="text_notification_episode_release">S%1$d • E%2$d is now available.</string>
-    <string name="text_notification_episodes_release">S%1$d • E%2$d-%3$d are now available.</string>
-
-    <string name="page_title_calendar">Calendar</string>
-    <string name="text_today">Today</string>
-    <string name="text_now_watching">Now Watching</string>
-    <string name="text_time_remaining">%s remaining</string>
-    <string name="warning_prompt_stop_watching">Are you sure you want to stop watching \"%s\"?</string>
-    <string name="button_text_track">Track</string>
-    <string name="list_placeholder_personal_list_empty_shows">There are no shows in this list yet.</string>
-    <string name="list_placeholder_personal_list_empty_movies">There are no movies in this list yet.</string>
-
-    <string name="header_get_notified">Get Notified!</string>
-    <string name="header_notifications_rationale">Enable notifications to stay on top of your media releases and current watching activity.</string>
-
-    <string name="warning_prompt_mark_as_watched_show"><![CDATA[Are you sure you want to mark <b><u>all %2$d episodes</u></b> of \"%1$s\" as watched?]]></string>
-    <string name="button_text_hold_to_confirm">Hold to Confirm</string>
-    <string name="button_text_toggle_search_lists">Lists</string>
-    <string name="input_placeholder_search_lists">Search lists…</string>
-
-    <string name="button_text_toggle_lists_personal">Personal</string>
-    <string name="button_text_toggle_lists_liked">Liked</string>
-    <string name="button_text_toggle_lists_collaborations">Collaborations</string>
-
-    <string name="text_cta_liked_lists">Discover what others love. Explore and save lists from the community.</string>
-    <string name="text_info_liked_added">Added to liked lists.</string>
-    <string name="text_info_liked_removed">Removed from liked lists.</string>
-    <string name="warning_prompt_remove_from_liked_lists">Are you sure you want to remove \"%1$s\" from your liked lists?</string>
 
     <!--  Non Translatable  -->
 

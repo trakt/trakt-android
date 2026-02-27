@@ -328,7 +328,7 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
         modifier = modifier,
     ) {
         Text(
-            text = stringResource(R.string.text_vip_offer_unlock),
+            text = stringResource(R.string.vip_feature_title_unlock),
             style = TraktTheme.typography.heading4.copy(
                 letterSpacing = 0.em,
             ),
@@ -364,49 +364,42 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
                 .padding(top = 48.dp),
         ) {
             VipOfferItem(
-                text = stringResource(R.string.text_vip_offer_unlimited_lists),
-                description = stringResource(R.string.text_vip_offer_unlimited_lists_description),
+                text = stringResource(R.string.vip_feature_title_increased_limits),
+                description = stringResource(R.string.vip_feature_description_increased_limits),
                 icon = painterResource(R.drawable.ic_vip_lists),
             )
 
             VipOfferItem(
-                text = stringResource(R.string.text_vip_offer_streaming_sync),
-                description = stringResource(R.string.text_vip_offer_streaming_sync_description),
+                text = stringResource(R.string.vip_feature_title_streaming_sync),
+                description = stringResource(R.string.vip_feature_description_streaming_sync),
                 icon = painterResource(R.drawable.ic_vip_stream_sync),
                 iconPadding = 2.dp,
             )
 
             VipOfferItem(
-                text = stringResource(R.string.text_vip_offer_month_review),
-                description = stringResource(R.string.text_vip_offer_month_review_description),
+                text = stringResource(R.string.vip_feature_title_mir),
+                description = stringResource(R.string.vip_feature_description_mir),
                 icon = painterResource(R.drawable.ic_vip_month),
                 iconPadding = 2.dp,
             )
 
             VipOfferItem(
-                text = stringResource(R.string.text_vip_offer_year_review),
-                description = stringResource(R.string.text_vip_offer_year_review_description, nowUtc().year),
+                text = stringResource(R.string.vip_feature_title_yir),
+                description = stringResource(R.string.vip_feature_description_yir, nowUtc().year),
                 icon = painterResource(R.drawable.ic_vip_stats),
                 iconPadding = 2.dp,
             )
 
             VipOfferItem(
-                text = stringResource(R.string.text_vip_offer_alltime_stats),
-                description = stringResource(R.string.text_vip_offer_alltime_stats_description),
-                icon = painterResource(R.drawable.ic_vip_leaderboard),
-                iconPadding = 4.dp,
-            )
-
-            VipOfferItem(
-                text = stringResource(R.string.text_vip_offer_early_access),
-                description = stringResource(R.string.text_vip_offer_early_access_description),
+                text = stringResource(R.string.vip_feature_title_early_access),
+                description = stringResource(R.string.vip_feature_description_early_access),
                 icon = painterResource(R.drawable.ic_vip_mobile),
                 iconPadding = 4.dp,
             )
 
             VipOfferItem(
-                text = stringResource(R.string.text_vip_offer_badges),
-                description = stringResource(R.string.text_vip_offer_badges_description),
+                text = stringResource(R.string.vip_feature_title_vip_status),
+                description = stringResource(R.string.vip_feature_description_vip_status),
                 icon = painterResource(R.drawable.ic_vip_crown),
                 iconPadding = 4.dp,
             )
@@ -423,8 +416,8 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
                 },
         ) {
             VipOfferItem(
-                text = stringResource(R.string.text_vip_offer_and_more),
-                description = stringResource(R.string.text_vip_offer_and_more_description),
+                text = stringResource(R.string.vip_feature_title_more_to_come),
+                description = stringResource(R.string.vip_feature_description_more_to_come),
                 modifier = Modifier
                     .weight(1f, fill = false),
             )
@@ -452,7 +445,7 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
             )
 
             Text(
-                text = stringResource(R.string.text_vip_offer_support_1),
+                text = stringResource(R.string.text_vip_costs),
                 style = TraktTheme.typography.paragraphSmall.copy(
                     fontSize = 15.sp,
                     lineHeight = 1.3.em,
@@ -460,20 +453,36 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
                 color = TraktTheme.colors.textPrimary,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
             )
 
-            Text(
-                text = stringResource(R.string.text_vip_offer_support_2),
-                style = TraktTheme.typography.paragraphSmall.copy(
-                    lineHeight = 1.3.em,
-                ),
-                color = TraktTheme.colors.textSecondary,
-                textAlign = TextAlign.Center,
+            Column(
+                verticalArrangement = spacedBy(8.dp),
+                horizontalAlignment = CenterHorizontally,
                 modifier = Modifier
-                    .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
-                    .fillMaxWidth(),
-            )
+                    .fillMaxWidth()
+                    .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
+            ) {
+                val moreTexts = listOf(
+                    stringResource(R.string.text_vip_costs_independence),
+                    stringResource(R.string.text_vip_costs_team),
+                    stringResource(R.string.text_vip_costs_moderation),
+                    stringResource(R.string.text_vip_costs_infrastructure),
+                )
+
+                for (text in moreTexts) {
+                    Text(
+                        text = "• $text",
+                        style = TraktTheme.typography.paragraphSmall.copy(
+                            lineHeight = 1.1.em,
+                        ),
+                        color = TraktTheme.colors.textSecondary,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
+            }
         }
     }
 }

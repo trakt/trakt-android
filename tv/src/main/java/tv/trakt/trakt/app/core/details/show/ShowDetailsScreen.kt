@@ -538,9 +538,9 @@ private fun HistoryConfirmationOverlay(
             title = stringResource(R.string.button_text_mark_as_watched),
             annotatedMessage = AnnotatedString.fromHtml(
                 stringResource(
-                    R.string.warning_prompt_mark_as_watched_show,
-                    showTitle,
+                    R.string.warning_prompt_mark_as_watched_show_android,
                     showEpisodes,
+                    showTitle,
                 ),
             ),
             confirmColor = Red400,

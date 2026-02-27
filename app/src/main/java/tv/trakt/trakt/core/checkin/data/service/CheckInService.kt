@@ -33,6 +33,7 @@ import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source
@@ -123,15 +124,15 @@ internal class CheckInService : Service() {
         // Ensure progress is at least 1 to show the progress bar
         val normalizedProgress = progress.toInt().coerceIn(1, 100)
         val contentText = when {
-            secondsLeft > 60 -> getString(R.string.text_time_remaining, minutesLeft.durationFormat())
-            else -> getString(R.string.text_time_remaining, "<${1L.durationFormat()}")
+            secondsLeft > 60 -> getString(R.string.tag_text_remaining_duration, minutesLeft.durationFormat())
+            else -> getString(R.string.tag_text_remaining_duration, "<${1L.durationFormat()}")
         }
 
         val notification = NotificationCompat
             .Builder(applicationContext, TraktNotificationChannel.CHECK_IN.id)
             .setForegroundServiceBehavior(FOREGROUND_SERVICE_IMMEDIATE)
             .setSmallIcon(R.drawable.ic_trakt_icon_notification)
-            .setSubText(getString(R.string.text_now_watching))
+            .setSubText(getString(R.string.button_text_checkin).uppercaseWords())
             .setContentTitle(data.title)
             .setContentText(contentText)
             .setShowWhen(false)
