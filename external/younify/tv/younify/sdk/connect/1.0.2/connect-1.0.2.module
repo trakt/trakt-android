@@ -3,7 +3,7 @@
   "component": {
     "group": "tv.younify.sdk",
     "module": "connect",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "attributes": {
       "org.gradle.status": "release"
     }
@@ -56,13 +56,13 @@
       ],
       "files": [
         {
-          "name": "connect-1.0.0.aar",
-          "url": "connect-1.0.0.aar",
-          "size": 1342260,
-          "sha512": "a3a2ee5d7082459d3a3d0e1d01c7039c1fae90ab043d81a212e4edfa96211bf1d833f2f47405ff7260cbed7b630b5ce7ef90b726e65b6a9567f1e18c3fd0b6ab",
-          "sha256": "880bd2deb66d2a2ef346ccb44914c25544ad15471433511ae98108292a797aaf",
-          "sha1": "dc72a9814a878c2d27ef5adacf0821fe246b5f2b",
-          "md5": "a38a33643309839c8def2ae670546dd3"
+          "name": "connect-1.0.2.aar",
+          "url": "connect-1.0.2.aar",
+          "size": 1343308,
+          "sha512": "7312a9e6ff67a1696b5b5bc57adfdf8c53830b2967b8859a4a32c1505acf6143d9761a1fccfeb853ae55e09ac95e908547d55cff1514c117f21d6b4d991c49eb",
+          "sha256": "3183c0a82c47dc9ff58aa0656a17ffe3d58426e26b1e76d92ef35b68e0651d62",
+          "sha1": "46690091492f3f1e4c2b8d9226972ee54c3a712f",
+          "md5": "e69735e145a35789dcbe6c1a3f801d4f"
         }
       ]
     },
@@ -511,13 +511,13 @@
       ],
       "files": [
         {
-          "name": "connect-1.0.0.aar",
-          "url": "connect-1.0.0.aar",
-          "size": 1342260,
-          "sha512": "a3a2ee5d7082459d3a3d0e1d01c7039c1fae90ab043d81a212e4edfa96211bf1d833f2f47405ff7260cbed7b630b5ce7ef90b726e65b6a9567f1e18c3fd0b6ab",
-          "sha256": "880bd2deb66d2a2ef346ccb44914c25544ad15471433511ae98108292a797aaf",
-          "sha1": "dc72a9814a878c2d27ef5adacf0821fe246b5f2b",
-          "md5": "a38a33643309839c8def2ae670546dd3"
+          "name": "connect-1.0.2.aar",
+          "url": "connect-1.0.2.aar",
+          "size": 1343308,
+          "sha512": "7312a9e6ff67a1696b5b5bc57adfdf8c53830b2967b8859a4a32c1505acf6143d9761a1fccfeb853ae55e09ac95e908547d55cff1514c117f21d6b4d991c49eb",
+          "sha256": "3183c0a82c47dc9ff58aa0656a17ffe3d58426e26b1e76d92ef35b68e0651d62",
+          "sha1": "46690091492f3f1e4c2b8d9226972ee54c3a712f",
+          "md5": "e69735e145a35789dcbe6c1a3f801d4f"
         }
       ]
     }
