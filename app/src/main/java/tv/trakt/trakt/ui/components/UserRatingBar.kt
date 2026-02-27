@@ -147,16 +147,47 @@ internal fun UserRatingBar(
                             return (clampedX / starUnit).toInt().coerceIn(0, 4)
                         }
 
-                        awaitEachGesture {
-                            val down = awaitFirstDown()
-                            down.consume()
-                            isDragging = true
+                        val touchSlop = viewConfiguration.touchSlop
 
+                        awaitEachGesture {
+                            val down = awaitFirstDown(requireUnconsumed = false)
+                            val startPosition = down.position
+
+                            // Wait for direction to be determined
+                            var activationX = startPosition.x
+                            var dragActivated = false
+                            while (true) {
+                                val event = awaitPointerEvent()
+                                val change = event.changes
+                                    .firstOrNull { it.id == down.id } ?: break
+                                if (!change.pressed) break
+
+                                val dx = kotlin.math.abs(
+                                    change.position.x - startPosition.x,
+                                )
+                                val dy = kotlin.math.abs(
+                                    change.position.y - startPosition.y,
+                                )
+
+                                if (dx > touchSlop) {
+                                    change.consume()
+                                    activationX = change.position.x
+                                    dragActivated = true
+                                    break
+                                }
+                                if (dy > touchSlop) {
+                                    // vertical scroll wins
+                                    break
+                                }
+                            }
+
+                            if (!dragActivated) return@awaitEachGesture
+
+                            isDragging = true
                             onRatingDrag(true)
                             ratingAlphaMaskActive = true
-
-                            dragStars = xToStars(down.position.x)
-                            dragActiveIndex = xToIndex(down.position.x)
+                            dragStars = xToStars(activationX)
+                            dragActiveIndex = xToIndex(activationX)
 
                             while (true) {
                                 val event = awaitPointerEvent()
