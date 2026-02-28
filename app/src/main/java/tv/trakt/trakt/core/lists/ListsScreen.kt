@@ -80,7 +80,7 @@ import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
 import tv.trakt.trakt.ui.components.mediacards.CustomListCard
-import tv.trakt.trakt.ui.components.mediacards.skeletons.CustomListSkeletonCard
+import tv.trakt.trakt.ui.components.mediacards.skeletons.CustomListItemsSkeleton
 import tv.trakt.trakt.ui.components.vip.VipBanner
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -375,13 +375,13 @@ private fun ListsScreenContent(
                     Column(
                         verticalArrangement = spacedBy(18.dp),
                         modifier = Modifier
-                            .padding(top = topVerticalPadding)
-                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
+                            .padding(top = topVerticalPadding),
                     ) {
-                        repeat(2) {
-                            CustomListSkeletonCard(
-                                modifier = Modifier
-                                    .aspectRatio(HorizontalImageAspectRatio),
+                        repeat(4) {
+                            CustomListItemsSkeleton(
+                                contentPadding = PaddingValues(
+                                    horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
+                                ),
                             )
                         }
                     }

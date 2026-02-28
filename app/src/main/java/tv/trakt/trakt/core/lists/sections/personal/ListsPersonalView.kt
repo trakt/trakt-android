@@ -287,7 +287,6 @@ private fun ContentLoadingList(
             VerticalMediaSkeletonCard(
                 chipRatio = 0.66F,
                 chipSpacing = 8.dp,
-                shimmer = false,
             )
         }
     }
