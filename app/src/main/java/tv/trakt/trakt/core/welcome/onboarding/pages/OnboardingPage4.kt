@@ -40,14 +40,22 @@ internal fun OnboardingPage4(modifier: Modifier = Modifier) {
             textAlign = TextAlign.Start,
         )
 
-        Text(
-            text = stringResource(R.string.text_onboarding_4_description),
-            style = TraktTheme.typography.paragraphSmaller.copy(
-                lineHeight = 1.4.em,
-            ),
-            color = Color.White,
-            textAlign = TextAlign.Start,
-        )
+        Column(
+            verticalArrangement = spacedBy(4.dp),
+        ) {
+            Text(
+                text = stringResource(R.string.text_onboarding_4_description_1),
+                style = TraktTheme.typography.paragraphSmaller,
+                color = Color.White,
+                textAlign = TextAlign.Start,
+            )
+            Text(
+                text = stringResource(R.string.text_onboarding_4_description_2),
+                style = TraktTheme.typography.paragraphSmaller,
+                color = Color.White,
+                textAlign = TextAlign.Start,
+            )
+        }
     }
 }
 

@@ -31,14 +31,23 @@ internal fun OnboardingPage2(modifier: Modifier = Modifier) {
             tint = Color.White,
             modifier = Modifier.size(42.dp),
         )
-        Text(
-            text = stringResource(R.string.text_onboarding_2_title),
-            style = TraktTheme.typography.heading3.copy(
-                lineHeight = 1.4.em,
-            ),
-            color = Color.White,
-            textAlign = TextAlign.Start,
-        )
+
+        Column(
+            verticalArrangement = spacedBy(4.dp),
+        ) {
+            Text(
+                text = stringResource(R.string.text_onboarding_2_title_1),
+                style = TraktTheme.typography.heading3,
+                color = Color.White,
+                textAlign = TextAlign.Start,
+            )
+            Text(
+                text = stringResource(R.string.text_onboarding_2_title_2),
+                style = TraktTheme.typography.heading3,
+                color = Color.White,
+                textAlign = TextAlign.Start,
+            )
+        }
 
         Text(
             text = stringResource(R.string.text_onboarding_2_description),
