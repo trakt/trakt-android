@@ -260,6 +260,7 @@ private fun MainNavHost(
                 onNavigateToAvailableNow = { navigateToHomeAvailableNow() },
                 onNavigateToComingSoon = { navigateToHomeComingSoon() },
                 onNavigateToSocialActivity = { navigateToHomeSocial() },
+                onNavigateToHistory = { navigateToProfileHistoryViewAll() },
             )
             homeUpNextScreen(
                 onNavigateToEpisode = { showId, episode ->

@@ -13,6 +13,7 @@ import tv.trakt.trakt.common.networking.ProgressShowDto
 import tv.trakt.trakt.common.networking.SyncAddHistoryResponseDto
 import tv.trakt.trakt.common.networking.WatchedShowDto
 import tv.trakt.trakt.common.networking.WatchlistShowDto
+import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter.ISO_INSTANT
 
@@ -21,6 +22,7 @@ internal class ShowsSyncApiClient(
     private val syncApi: SyncApi,
     private val watchedApi: WatchedApi,
     private val collectionApi: CollectionApi,
+    private val cacheMarkerProvider: CacheMarkerProvider,
 ) : ShowsSyncRemoteDataSource {
     override suspend fun addToWatchlist(showId: TraktId) {
         val request = PostUsersListsListAddRequest(
@@ -39,6 +41,7 @@ internal class ShowsSyncApiClient(
             ),
         )
         syncApi.postSyncWatchlistAdd(request)
+        cacheMarkerProvider.invalidate()
     }
 
     override suspend fun removeFromWatchlist(showId: TraktId) {
@@ -58,6 +61,7 @@ internal class ShowsSyncApiClient(
             ),
         )
         syncApi.postSyncWatchlistRemove(request)
+        cacheMarkerProvider.invalidate()
     }
 
     override suspend fun getWatchlist(
@@ -122,6 +126,7 @@ internal class ShowsSyncApiClient(
         )
 
         val result = syncApi.postSyncHistoryAdd(request)
+        cacheMarkerProvider.invalidate()
         return result.body()
     }
 

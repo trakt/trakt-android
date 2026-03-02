@@ -3,6 +3,7 @@ package tv.trakt.trakt.app.core.home.di
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import tv.trakt.trakt.app.core.home.HomeViewModel
+import tv.trakt.trakt.app.core.home.sections.history.HomeHistoryViewModel
 import tv.trakt.trakt.app.core.home.sections.movies.availablenow.HomeAvailableNowViewModel
 import tv.trakt.trakt.app.core.home.sections.movies.availablenow.usecases.GetAvailableNowMoviesUseCase
 import tv.trakt.trakt.app.core.home.sections.movies.availablenow.viewall.AvailableNowViewAllViewModel
@@ -126,6 +127,14 @@ internal val homeModule = module {
     viewModel {
         SocialViewAllViewModel(
             getSocialActivityUseCase = get(),
+        )
+    }
+
+    viewModel {
+        HomeHistoryViewModel(
+            getHistoryCase = get(),
+            syncHistoryCase = get(),
+            appLifecycleProvider = get(),
         )
     }
 }

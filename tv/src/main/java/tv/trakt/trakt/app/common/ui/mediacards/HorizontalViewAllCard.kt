@@ -35,7 +35,7 @@ internal fun HorizontalViewAllCard(
 ) {
     Column(
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(9.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier,
     ) {
         Card(
@@ -84,7 +84,7 @@ internal fun HorizontalViewAllCard(
 
         Text(
             text = stringResource(R.string.button_text_view_all),
-            style = TraktTheme.typography.buttonPrimary,
+            style = TraktTheme.typography.cardTitle,
             color = TraktTheme.colors.textPrimary,
             maxLines = 1,
         )

@@ -21,6 +21,7 @@ internal fun NavGraphBuilder.homeScreen(
     onNavigateToAvailableNow: () -> Unit,
     onNavigateToComingSoon: () -> Unit,
     onNavigateToSocialActivity: () -> Unit,
+    onNavigateToHistory: () -> Unit,
 ) {
     composable<HomeDestination> {
         HomeScreen(
@@ -32,6 +33,7 @@ internal fun NavGraphBuilder.homeScreen(
             onNavigateToAvailableNow = onNavigateToAvailableNow,
             onNavigateToComingSoon = onNavigateToComingSoon,
             onNavigateToSocialActivity = onNavigateToSocialActivity,
+            onNavigateToHistory = onNavigateToHistory,
         )
     }
 }

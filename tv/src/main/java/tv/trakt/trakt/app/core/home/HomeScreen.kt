@@ -30,8 +30,7 @@ import kotlinx.coroutines.delay
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.home.HomeState.AuthenticationState.AUTHENTICATED
 import tv.trakt.trakt.app.core.home.HomeState.AuthenticationState.UNAUTHENTICATED
-import tv.trakt.trakt.app.core.home.sections.movies.availablenow.HomeAvailableNowView
-import tv.trakt.trakt.app.core.home.sections.movies.comingsoon.HomeComingSoonView
+import tv.trakt.trakt.app.core.home.sections.history.HomeHistoryView
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.HomeUpcomingView
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.HomeUpNextView
 import tv.trakt.trakt.app.core.home.sections.social.HomeSocialView
@@ -44,9 +43,10 @@ import tv.trakt.trakt.common.model.TraktId
 private val sections = listOf(
     "upNext",
     "upcomingSchedule",
-    "availableNow",
-    "comingSoon",
+//    "availableNow",
+//    "comingSoon",
     "socialActivity",
+    "history",
 )
 
 @Composable
@@ -59,6 +59,7 @@ internal fun HomeScreen(
     onNavigateToAvailableNow: () -> Unit,
     onNavigateToComingSoon: () -> Unit,
     onNavigateToSocialActivity: () -> Unit,
+    onNavigateToHistory: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -77,6 +78,7 @@ internal fun HomeScreen(
             onNavigateToAvailableNow = onNavigateToAvailableNow,
             onNavigateToComingSoon = onNavigateToComingSoon,
             onNavigateToSocialActivity = onNavigateToSocialActivity,
+            onNavigateToHistory = onNavigateToHistory,
         )
     }
 }
@@ -92,6 +94,7 @@ private fun HomeScreenContent(
     onNavigateToAvailableNow: () -> Unit,
     onNavigateToComingSoon: () -> Unit,
     onNavigateToSocialActivity: () -> Unit,
+    onNavigateToHistory: () -> Unit,
 ) {
     var focusedInitial by rememberSaveable { mutableStateOf(false) }
     var focusedSection by rememberSaveable { mutableStateOf<String?>(null) }
@@ -186,33 +189,49 @@ private fun HomeScreenContent(
                 )
             }
 
-            item {
-                HomeAvailableNowView(
-                    headerPadding = sectionPadding,
-                    contentPadding = sectionPadding,
-                    onNavigateToMovie = onNavigateToMovie,
-                    onNavigateToViewAll = onNavigateToAvailableNow,
-                    onFocused = { movie ->
-                        focusedSection = "availableNow"
-                        focusedImageUrl = movie?.images?.getFanartUrl(Size.FULL)
-                    },
-                    modifier = Modifier
-                        .focusRequester(focusRequesters.getValue("availableNow")),
-                )
-            }
+//            item {
+//                HomeAvailableNowView(
+//                    headerPadding = sectionPadding,
+//                    contentPadding = sectionPadding,
+//                    onNavigateToMovie = onNavigateToMovie,
+//                    onNavigateToViewAll = onNavigateToAvailableNow,
+//                    onFocused = { movie ->
+//                        focusedSection = "availableNow"
+//                        focusedImageUrl = movie?.images?.getFanartUrl(Size.FULL)
+//                    },
+//                    modifier = Modifier
+//                        .focusRequester(focusRequesters.getValue("availableNow")),
+//                )
+//            }
+
+//            item {
+//                HomeComingSoonView(
+//                    headerPadding = sectionPadding,
+//                    contentPadding = sectionPadding,
+//                    onNavigateToMovie = onNavigateToMovie,
+//                    onNavigateToViewAll = onNavigateToComingSoon,
+//                    onFocused = { movie ->
+//                        focusedSection = "comingSoon"
+//                        focusedImageUrl = movie?.images?.getFanartUrl(Size.FULL)
+//                    },
+//                    modifier = Modifier
+//                        .focusRequester(focusRequesters.getValue("comingSoon")),
+//                )
+//            }
 
             item {
-                HomeComingSoonView(
+                HomeHistoryView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     onNavigateToMovie = onNavigateToMovie,
-                    onNavigateToViewAll = onNavigateToComingSoon,
-                    onFocused = { movie ->
-                        focusedSection = "comingSoon"
-                        focusedImageUrl = movie?.images?.getFanartUrl(Size.FULL)
+                    onNavigateToEpisode = onNavigateToEpisode,
+                    onNavigateToViewAll = onNavigateToHistory,
+                    onFocused = { item ->
+                        focusedSection = "history"
+                        focusedImageUrl = item?.backdropImageUrl
                     },
                     modifier = Modifier
-                        .focusRequester(focusRequesters.getValue("comingSoon")),
+                        .focusRequester(focusRequesters.getValue("history")),
                 )
             }
 
@@ -251,6 +270,7 @@ private fun MainScreenPreview() {
             onNavigateToAvailableNow = {},
             onNavigateToComingSoon = {},
             onNavigateToSocialActivity = {},
+            onNavigateToHistory = {},
         )
     }
 }

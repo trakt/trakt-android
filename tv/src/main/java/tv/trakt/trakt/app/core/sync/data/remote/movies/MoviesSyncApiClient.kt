@@ -11,6 +11,7 @@ import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInner
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.WatchlistMovieDto
+import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
@@ -19,6 +20,7 @@ internal class MoviesSyncApiClient(
     private val syncApi: SyncApi,
     private val watchedApi: WatchedApi,
     private val collectionApi: CollectionApi,
+    private val cacheMarkerProvider: CacheMarkerProvider,
 ) : MoviesSyncRemoteDataSource {
     override suspend fun addToWatchlist(movieId: TraktId) {
         val request = PostUsersListsListAddRequest(
@@ -31,6 +33,7 @@ internal class MoviesSyncApiClient(
             ),
         )
         syncApi.postSyncWatchlistAdd(request)
+        cacheMarkerProvider.invalidate()
     }
 
     override suspend fun removeFromWatchlist(movieId: TraktId) {
@@ -44,6 +47,7 @@ internal class MoviesSyncApiClient(
             ),
         )
         syncApi.postSyncWatchlistRemove(request)
+        cacheMarkerProvider.invalidate()
     }
 
     override suspend fun addToHistory(
@@ -66,6 +70,7 @@ internal class MoviesSyncApiClient(
             ),
         )
         syncApi.postSyncHistoryAdd(request)
+        cacheMarkerProvider.invalidate()
     }
 
     override suspend fun removeFromHistory(movieId: TraktId) {
@@ -79,6 +84,7 @@ internal class MoviesSyncApiClient(
             ),
         )
         syncApi.postSyncHistoryRemove(request)
+        cacheMarkerProvider.invalidate()
     }
 
     override suspend fun getWatched(extended: String?): Map<String, List<String>> {

@@ -48,6 +48,7 @@ internal val syncModule = module {
                 httpClientEngine = httpClientEngine,
                 httpClientConfig = httpClientConfig,
             ),
+            cacheMarkerProvider = get(),
         )
     }
 
@@ -76,6 +77,7 @@ internal val syncModule = module {
                 httpClientEngine = httpClientEngine,
                 httpClientConfig = httpClientConfig,
             ),
+            cacheMarkerProvider = get(),
         )
     }
 
@@ -89,6 +91,7 @@ internal val syncModule = module {
                 httpClientEngine = httpClientEngine,
                 httpClientConfig = httpClientConfig,
             ),
+            cacheMarkerProvider = get(),
         )
     }
 
