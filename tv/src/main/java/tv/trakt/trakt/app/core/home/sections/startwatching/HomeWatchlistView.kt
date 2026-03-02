@@ -1,4 +1,4 @@
-package tv.trakt.trakt.app.core.home.sections.movies.availablenow
+package tv.trakt.trakt.app.core.home.sections.startwatching
 
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
@@ -10,7 +10,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle.Event.ON_CREATE
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -18,27 +20,32 @@ import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
-import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
-import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
-import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaSkeletonCard
-import tv.trakt.trakt.app.common.ui.mediacards.HorizontalViewAllCard
+import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
+import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaSkeletonCard
+import tv.trakt.trakt.app.common.ui.mediacards.VerticalViewAllCard
 import tv.trakt.trakt.app.core.home.HomeConfig.HOME_SECTION_LIMIT
-import tv.trakt.trakt.app.core.home.sections.movies.availablenow.model.WatchlistMovie
+import tv.trakt.trakt.app.core.home.sections.startwatching.model.WatchlistItem
+import tv.trakt.trakt.app.core.home.sections.startwatching.model.WatchlistItem.MovieItem
+import tv.trakt.trakt.app.core.home.sections.startwatching.model.WatchlistItem.ShowItem
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.resources.R
 
 @Composable
-internal fun HomeAvailableNowView(
+internal fun HomeWatchlistView(
     modifier: Modifier = Modifier,
-    viewModel: HomeAvailableNowViewModel = koinViewModel(),
+    viewModel: HomeWatchlistViewModel = koinViewModel(),
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onFocused: (Movie?) -> Unit = {},
+    onFocused: (WatchlistItem?) -> Unit = {},
+    onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToViewAll: () -> Unit,
 ) {
@@ -48,24 +55,26 @@ internal fun HomeAvailableNowView(
         viewModel.updateData()
     }
 
-    HomeAvailableNowContent(
+    HomeWatchlistContent(
         state = state,
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onFocused = onFocused,
+        onNavigateToEpisode = onNavigateToEpisode,
         onNavigateToMovie = onNavigateToMovie,
         onNavigateToViewAll = onNavigateToViewAll,
     )
 }
 
 @Composable
-internal fun HomeAvailableNowContent(
-    state: HomeAvailableNowState,
+internal fun HomeWatchlistContent(
+    state: HomeWatchlistState,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onFocused: (Movie?) -> Unit = {},
+    onFocused: (WatchlistItem?) -> Unit = {},
+    onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
     onNavigateToMovie: (TraktId) -> Unit = {},
     onNavigateToViewAll: () -> Unit = {},
 ) {
@@ -74,7 +83,7 @@ internal fun HomeAvailableNowContent(
         modifier = modifier,
     ) {
         Text(
-            text = stringResource(R.string.list_title_available_now),
+            text = stringResource(R.string.list_title_start_watching),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.heading5,
             modifier = Modifier.padding(headerPadding),
@@ -88,7 +97,7 @@ internal fun HomeAvailableNowContent(
                 )
             }
 
-            state.movies?.isEmpty() == true -> {
+            state.items?.isEmpty() == true -> {
                 Text(
                     text = stringResource(R.string.list_placeholder_empty),
                     color = TraktTheme.colors.textSecondary,
@@ -100,9 +109,12 @@ internal fun HomeAvailableNowContent(
 
             else -> {
                 ContentList(
-                    listItems = { state.movies ?: emptyList<WatchlistMovie>().toImmutableList() },
+                    listItems = state.items ?: EmptyImmutableList,
                     onFocused = onFocused,
-                    onClick = { onNavigateToMovie(it.ids.trakt) },
+                    onEpisodeClick = { show, episode ->
+                        onNavigateToEpisode(show.ids.trakt, episode)
+                    },
+                    onMovieClick = { onNavigateToMovie(it.ids.trakt) },
                     onViewAllClick = onNavigateToViewAll,
                     contentPadding = contentPadding,
                 )
@@ -113,9 +125,10 @@ internal fun HomeAvailableNowContent(
 
 @Composable
 private fun ContentList(
-    listItems: () -> ImmutableList<WatchlistMovie>,
-    onFocused: (Movie) -> Unit,
-    onClick: (Movie) -> Unit,
+    listItems: ImmutableList<WatchlistItem>,
+    onFocused: (WatchlistItem) -> Unit,
+    onEpisodeClick: (Show, Episode) -> Unit,
+    onMovieClick: (Movie) -> Unit,
     onViewAllClick: () -> Unit,
     contentPadding: PaddingValues,
 ) {
@@ -123,33 +136,62 @@ private fun ContentList(
         contentPadding = contentPadding,
     ) {
         items(
-            items = listItems(),
-            key = { it.movie.ids.trakt.value },
+            items = listItems,
+            key = { it.key },
         ) { item ->
-            HorizontalMediaCard(
-                title = item.movie.title,
-                containerImageUrl = item.movie.images?.getFanartUrl(),
-                contentImageUrl = item.movie.images?.getLogoUrl(),
-                paletteColor = item.movie.colors?.colors?.second,
-                onClick = { onClick(item.movie) },
-                footerContent = {
-                    val runtime = item.movie.runtime?.inWholeMinutes
-                    if (runtime != null) {
-                        InfoChip(
-                            text = runtime.durationFormat(),
+            VerticalMediaCard(
+                width = TraktTheme.size.verticalMediaCardSize,
+                title = item.title,
+                imageUrl = item.posterImage,
+                onClick = {
+                    when (item) {
+                        is ShowItem -> onEpisodeClick(
+                            item.show,
+                            item.progress?.nextEpisode ?: return@VerticalMediaCard,
+                        )
+                        is MovieItem -> onMovieClick(item.movie)
+                    }
+                },
+                chipContent = {
+                    val subtitle = when (item) {
+                        is ShowItem -> {
+                            item.progress?.nextEpisode?.seasonEpisodeString()
+                        }
+                        is MovieItem -> {
+                            item.movie.runtime?.inWholeMinutes?.durationFormat()
+                                ?: stringResource(R.string.translated_value_type_movie)
+                        }
+                    }
+
+                    Column(
+                        verticalArrangement = spacedBy(1.dp),
+                    ) {
+                        Text(
+                            text = item.title,
+                            style = TraktTheme.typography.cardTitle,
+                            color = TraktTheme.colors.textPrimary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                        Text(
+                            text = subtitle ?: "",
+                            style = TraktTheme.typography.cardSubtitle,
+                            color = TraktTheme.colors.textSecondary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 },
                 modifier = Modifier
                     .onFocusChanged {
-                        if (it.isFocused) onFocused(item.movie)
+                        if (it.isFocused) onFocused(item)
                     },
             )
         }
 
-        if (listItems().size >= HOME_SECTION_LIMIT) {
+        if (listItems.size >= HOME_SECTION_LIMIT) {
             item {
-                HorizontalViewAllCard(
+                VerticalViewAllCard(
                     onClick = onViewAllClick,
                 )
             }
@@ -166,14 +208,18 @@ private fun ContentLoadingList(
 ) {
     PositionFocusLazyRow(
         contentPadding = contentPadding,
+        modifier = Modifier
+            .padding(bottom = 10.dp),
     ) {
         items(count = 10) {
-            HorizontalMediaSkeletonCard(
-                modifier = Modifier.onFocusChanged {
-                    if (it.isFocused) {
-                        onFocused()
-                    }
-                },
+            VerticalMediaSkeletonCard(
+                width = TraktTheme.size.verticalMediaCardSize,
+                modifier = Modifier
+                    .onFocusChanged {
+                        if (it.isFocused) {
+                            onFocused()
+                        }
+                    },
             )
         }
     }
@@ -187,9 +233,9 @@ private fun ContentLoadingList(
 @Composable
 private fun Preview() {
     TraktTheme {
-        HomeAvailableNowContent(
-            state = HomeAvailableNowState(
-                movies = emptyList<WatchlistMovie>().toImmutableList(),
+        HomeWatchlistContent(
+            state = HomeWatchlistState(
+                items = emptyList<WatchlistItem>().toImmutableList(),
                 isLoading = false,
                 error = null,
             ),
@@ -205,8 +251,8 @@ private fun Preview() {
 @Composable
 private fun Preview2() {
     TraktTheme {
-        HomeAvailableNowContent(
-            state = HomeAvailableNowState(),
+        HomeWatchlistContent(
+            state = HomeWatchlistState(),
         )
     }
 }

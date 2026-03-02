@@ -49,14 +49,12 @@ import tv.trakt.trakt.app.core.details.show.navigation.showDetailsScreen
 import tv.trakt.trakt.app.core.home.navigation.HomeDestination
 import tv.trakt.trakt.app.core.home.navigation.homeScreen
 import tv.trakt.trakt.app.core.home.navigation.navigateToHome
-import tv.trakt.trakt.app.core.home.sections.movies.availablenow.navigation.homeAvailableNowScreen
-import tv.trakt.trakt.app.core.home.sections.movies.availablenow.navigation.navigateToHomeAvailableNow
-import tv.trakt.trakt.app.core.home.sections.movies.comingsoon.navigation.homeComingSoonScreen
-import tv.trakt.trakt.app.core.home.sections.movies.comingsoon.navigation.navigateToHomeComingSoon
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.navigation.homeUpNextScreen
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.navigation.navigateToHomeUpNext
 import tv.trakt.trakt.app.core.home.sections.social.navigation.homeSocialScreen
 import tv.trakt.trakt.app.core.home.sections.social.navigation.navigateToHomeSocial
+import tv.trakt.trakt.app.core.home.sections.startwatching.navigation.homeWatchlistScreen
+import tv.trakt.trakt.app.core.home.sections.startwatching.navigation.navigateToHomeWatchlist
 import tv.trakt.trakt.app.core.lists.details.movies.navigation.navigateToWatchlistMovies
 import tv.trakt.trakt.app.core.lists.details.movies.navigation.watchlistMoviesScreen
 import tv.trakt.trakt.app.core.lists.details.personal.navigation.navigateToPersonalList
@@ -257,8 +255,7 @@ private fun MainNavHost(
                     navigateToEpisode(showId, episodeId)
                 },
                 onNavigateToUpNext = { navigateToHomeUpNext() },
-                onNavigateToAvailableNow = { navigateToHomeAvailableNow() },
-                onNavigateToComingSoon = { navigateToHomeComingSoon() },
+                onNavigateToWatchlist = { navigateToHomeWatchlist() },
                 onNavigateToSocialActivity = { navigateToHomeSocial() },
                 onNavigateToHistory = { navigateToProfileHistoryViewAll() },
             )
@@ -267,11 +264,11 @@ private fun MainNavHost(
                     navigateToEpisode(showId, episode)
                 },
             )
-            homeAvailableNowScreen(
+            homeWatchlistScreen(
                 onNavigateToMovie = { navigateToMovie(it) },
-            )
-            homeComingSoonScreen(
-                onNavigateToMovie = { navigateToMovie(it) },
+                onNavigateToEpisode = { showId, episode ->
+                    navigateToEpisode(showId, episode)
+                },
             )
             homeSocialScreen(
                 onNavigateToEpisode = { showId, episode ->

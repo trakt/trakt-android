@@ -100,6 +100,7 @@ internal class MoviesSyncApiClient(
         page: Int?,
         limit: Int?,
         extended: String?,
+        hide: String?,
     ): List<WatchlistMovieDto> {
         val response = usersApi.getUsersWatchlistMovies(
             id = "me",
@@ -114,7 +115,7 @@ internal class MoviesSyncApiClient(
             startDate = null,
             endDate = null,
             subgenres = null,
-            hide = null,
+            hide = hide,
             runtimes = null,
             sortBy = null,
             sortHow = null,

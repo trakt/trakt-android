@@ -26,6 +26,7 @@ internal class GetUpNextUseCase(
         val remoteItems = remoteShowsSource.getUpNextProgress(
             limit = limit,
             page = page,
+            intent = "continue",
         )
         return remoteItems
             .asyncMap { item ->

@@ -4,12 +4,6 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import tv.trakt.trakt.app.core.home.HomeViewModel
 import tv.trakt.trakt.app.core.home.sections.history.HomeHistoryViewModel
-import tv.trakt.trakt.app.core.home.sections.movies.availablenow.HomeAvailableNowViewModel
-import tv.trakt.trakt.app.core.home.sections.movies.availablenow.usecases.GetAvailableNowMoviesUseCase
-import tv.trakt.trakt.app.core.home.sections.movies.availablenow.viewall.AvailableNowViewAllViewModel
-import tv.trakt.trakt.app.core.home.sections.movies.comingsoon.HomeComingSoonViewModel
-import tv.trakt.trakt.app.core.home.sections.movies.comingsoon.usecases.GetComingSoonMoviesUseCase
-import tv.trakt.trakt.app.core.home.sections.movies.comingsoon.viewall.ComingSoonViewAllViewModel
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.HomeUpcomingViewModel
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.usecases.GetUpcomingUseCase
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.HomeUpNextViewModel
@@ -18,19 +12,23 @@ import tv.trakt.trakt.app.core.home.sections.shows.upnext.viewall.UpNextViewAllV
 import tv.trakt.trakt.app.core.home.sections.social.HomeSocialViewModel
 import tv.trakt.trakt.app.core.home.sections.social.usecases.GetSocialActivityUseCase
 import tv.trakt.trakt.app.core.home.sections.social.viewall.SocialViewAllViewModel
+import tv.trakt.trakt.app.core.home.sections.startwatching.HomeWatchlistViewModel
+import tv.trakt.trakt.app.core.home.sections.startwatching.usecases.GetHomeMoviesWatchlistItemsUseCase
+import tv.trakt.trakt.app.core.home.sections.startwatching.usecases.GetHomeShowsWatchlistItemsUseCase
+import tv.trakt.trakt.app.core.home.sections.startwatching.viewall.WatchlistViewAllViewModel
 
 internal val homeModule = module {
     factory {
-        GetAvailableNowMoviesUseCase(
+        GetHomeMoviesWatchlistItemsUseCase(
             remoteSyncSource = get(),
             localMovieSource = get(),
         )
     }
 
     factory {
-        GetComingSoonMoviesUseCase(
+        GetHomeShowsWatchlistItemsUseCase(
             remoteSyncSource = get(),
-            localMovieSource = get(),
+            localShowsSource = get(),
         )
     }
 
@@ -63,17 +61,11 @@ internal val homeModule = module {
     }
 
     viewModel {
-        HomeAvailableNowViewModel(
-            getAvailableNowUseCase = get(),
-            localSyncSource = get(),
-            appLifecycleProvider = get(),
-        )
-    }
-
-    viewModel {
-        HomeComingSoonViewModel(
-            getComingSoonUseCase = get(),
-            localSyncSource = get(),
+        HomeWatchlistViewModel(
+            getMoviesUseCase = get(),
+            getShowsUseCase = get(),
+            localMoviesSyncSource = get(),
+            localShowsSyncSource = get(),
             appLifecycleProvider = get(),
         )
     }
@@ -111,16 +103,11 @@ internal val homeModule = module {
     }
 
     viewModel {
-        AvailableNowViewAllViewModel(
-            getAvailableNowUseCase = get(),
-            localSyncSource = get(),
-        )
-    }
-
-    viewModel {
-        ComingSoonViewAllViewModel(
-            getComingSoonUseCase = get(),
-            localSyncSource = get(),
+        WatchlistViewAllViewModel(
+            getShowsUseCase = get(),
+            getMoviesUseCase = get(),
+            localMoviesDataSource = get(),
+            localShowsDataSource = get(),
         )
     }
 

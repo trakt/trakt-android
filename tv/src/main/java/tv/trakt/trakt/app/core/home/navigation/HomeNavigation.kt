@@ -18,8 +18,7 @@ internal fun NavGraphBuilder.homeScreen(
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToUpNext: () -> Unit,
-    onNavigateToAvailableNow: () -> Unit,
-    onNavigateToComingSoon: () -> Unit,
+    onNavigateToWatchlist: () -> Unit,
     onNavigateToSocialActivity: () -> Unit,
     onNavigateToHistory: () -> Unit,
 ) {
@@ -30,8 +29,7 @@ internal fun NavGraphBuilder.homeScreen(
             onNavigateToMovie = onNavigateToMovie,
             onNavigateToEpisode = onNavigateToEpisode,
             onNavigateToUpNext = onNavigateToUpNext,
-            onNavigateToAvailableNow = onNavigateToAvailableNow,
-            onNavigateToComingSoon = onNavigateToComingSoon,
+            onNavigateToWatchlist = onNavigateToWatchlist,
             onNavigateToSocialActivity = onNavigateToSocialActivity,
             onNavigateToHistory = onNavigateToHistory,
         )

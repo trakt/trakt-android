@@ -1,8 +1,6 @@
-package tv.trakt.trakt.app.core.home.sections.movies.availablenow.usecases
+package tv.trakt.trakt.app.core.home.sections.startwatching.usecases
 
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.app.core.home.sections.movies.availablenow.model.WatchlistMovie
+import tv.trakt.trakt.app.core.home.sections.startwatching.model.WatchlistItem
 import tv.trakt.trakt.app.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -10,37 +8,36 @@ import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.pagination.Pagination
 
-internal const val PAGE_LIMIT = 100
+private val SortComparator =
+    compareByDescending<WatchlistItem> { it.released }
+        .thenByDescending { it.listedAt }
 
-internal class GetAvailableNowMoviesUseCase(
+internal class GetHomeMoviesWatchlistItemsUseCase(
     private val remoteSyncSource: MoviesSyncRemoteDataSource,
     private val localMovieSource: MovieLocalDataSource,
 ) {
-    suspend fun getMovies(
-        limit: Int = 100,
-        page: Int = 1,
-    ): ImmutableList<WatchlistMovie> {
+    suspend fun getItems(pagination: Pagination): List<WatchlistItem> {
         val nowDay = nowLocalDay().toString()
+
         val response = remoteSyncSource.getWatchlist(
-            page = page,
-            limit = PAGE_LIMIT,
-            sort = "released",
+            page = pagination.page,
+            limit = pagination.limit,
             extended = "full,cloud9,colors,streaming_ids",
+            sort = "released",
+            hide = "unreleased",
         ).filter {
             !it.movie.released.isNullOrBlank() && it.movie.released!! <= nowDay
         }.asyncMap {
-            WatchlistMovie(
+            WatchlistItem.MovieItem(
                 movie = Movie.fromDto(it.movie),
-                listedAt = it.listedAt.toZonedDateTime(),
                 rank = it.rank,
+                listedAt = it.listedAt.toZonedDateTime(),
             )
-        }.sortedByDescending {
-            it.movie.released
-        }.take(limit)
+        }.sortedWith(SortComparator)
 
         return response
-            .toImmutableList()
             .also {
                 val movies = response.asyncMap { it.movie }
                 localMovieSource.upsertMovies(movies)

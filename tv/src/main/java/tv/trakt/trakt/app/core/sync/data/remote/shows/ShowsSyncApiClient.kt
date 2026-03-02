@@ -95,11 +95,12 @@ internal class ShowsSyncApiClient(
     override suspend fun getUpNextProgress(
         limit: Int,
         page: Int,
+        intent: String,
     ): List<ProgressShowDto> {
         val response = syncApi.getSyncProgressUpNextNitro(
             page = page,
             limit = limit,
-            intent = null,
+            intent = intent,
         )
         return response.body()
     }

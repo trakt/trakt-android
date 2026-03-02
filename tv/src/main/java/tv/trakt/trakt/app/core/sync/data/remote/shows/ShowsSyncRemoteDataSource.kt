@@ -11,6 +11,7 @@ internal interface ShowsSyncRemoteDataSource {
     suspend fun getUpNextProgress(
         limit: Int,
         page: Int,
+        intent: String,
     ): List<ProgressShowDto>
 
     suspend fun getWatchlist(

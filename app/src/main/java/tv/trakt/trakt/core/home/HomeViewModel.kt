@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.update
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.home.HomeState.UserState
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
 
@@ -22,7 +21,6 @@ import tv.trakt.trakt.core.main.helpers.MediaModeManager
 internal class HomeViewModel(
     private val modeManager: MediaModeManager,
     private val sessionManager: SessionManager,
-    private val checkInManager: CheckInManager,
     analytics: Analytics,
 ) : ViewModel() {
     private val initialState = HomeState()

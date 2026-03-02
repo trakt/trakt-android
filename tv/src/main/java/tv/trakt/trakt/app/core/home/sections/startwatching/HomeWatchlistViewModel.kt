@@ -1,7 +1,11 @@
-package tv.trakt.trakt.app.core.home.sections.movies.availablenow
+package tv.trakt.trakt.app.core.home.sections.startwatching
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -15,22 +19,29 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.app.Config.REFRESH_DATA_THRESHOLD_MINUTES
 import tv.trakt.trakt.app.core.home.HomeConfig.HOME_SECTION_LIMIT
-import tv.trakt.trakt.app.core.home.sections.movies.availablenow.usecases.GetAvailableNowMoviesUseCase
+import tv.trakt.trakt.app.core.home.HomeConfig.HOME_WATCHLIST_PAGE_LIMIT
+import tv.trakt.trakt.app.core.home.sections.startwatching.model.WatchlistItem
+import tv.trakt.trakt.app.core.home.sections.startwatching.usecases.GetHomeMoviesWatchlistItemsUseCase
+import tv.trakt.trakt.app.core.home.sections.startwatching.usecases.GetHomeShowsWatchlistItemsUseCase
 import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalDataSource
+import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider.State.FOREGROUND
+import tv.trakt.trakt.common.model.pagination.Pagination
 import java.time.ZonedDateTime
 
-internal class HomeAvailableNowViewModel(
-    private val getAvailableNowUseCase: GetAvailableNowMoviesUseCase,
-    private val localSyncSource: MoviesSyncLocalDataSource,
+internal class HomeWatchlistViewModel(
+    private val getShowsUseCase: GetHomeShowsWatchlistItemsUseCase,
+    private val getMoviesUseCase: GetHomeMoviesWatchlistItemsUseCase,
+    private val localMoviesSyncSource: MoviesSyncLocalDataSource,
+    private val localShowsSyncSource: ShowsSyncLocalDataSource,
     private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
-    private val initialState = HomeAvailableNowState()
+    private val initialState = HomeWatchlistState()
 
-    private val moviesState = MutableStateFlow(initialState.movies)
+    private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.isLoading)
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -60,15 +71,28 @@ internal class HomeAvailableNowViewModel(
                     loadingState.update { true }
                 }
 
-                val movies = getAvailableNowUseCase.getMovies(
-                    limit = HOME_SECTION_LIMIT,
-                )
-                moviesState.update { movies }
+                coroutineScope {
+                    val showsAsync = async { getShowsUseCase.getItems(Pagination(1, HOME_WATCHLIST_PAGE_LIMIT)) }
+                    val moviesAsync = async { getMoviesUseCase.getItems(Pagination(1, HOME_WATCHLIST_PAGE_LIMIT)) }
+                    awaitAll(showsAsync, moviesAsync)
+                }
+                    .flatten()
+                    .distinctBy { it.key }
+                    .sortedWith(
+                        compareByDescending<WatchlistItem> { it.released }
+                            .thenByDescending { it.listedAt },
+                    )
+                    .take(HOME_SECTION_LIMIT)
+                    .also { items ->
+                        itemsState.update {
+                            items.toImmutableList()
+                        }
+                    }
 
                 loadedAt = nowUtc()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error, "Error loading available now movies")
+                    Timber.e(error, "Error loading watchlist movies")
                     errorState.update { error }
                 }
             } finally {
@@ -81,10 +105,15 @@ internal class HomeAvailableNowViewModel(
         Timber.d("updateData called")
         viewModelScope.launch {
             try {
-                val localUpdatedAt = localSyncSource.getWatchlistUpdatedAt()
-                if (localUpdatedAt != null && loadedAt?.isBefore(localUpdatedAt) == true) {
+                val localShowsUpdatedAt = localShowsSyncSource.getWatchlistUpdatedAt()
+                val localMoviesUpdatedAt = localMoviesSyncSource.getWatchlistUpdatedAt()
+
+                if (
+                    (localShowsUpdatedAt != null && loadedAt?.isBefore(localShowsUpdatedAt) == true) ||
+                    (localMoviesUpdatedAt != null && loadedAt?.isBefore(localMoviesUpdatedAt) == true)
+                ) {
                     loadData(showLoading = false)
-                    Timber.d("Updating available now movies")
+                    Timber.d("Updating watchlist movies")
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -94,13 +123,13 @@ internal class HomeAvailableNowViewModel(
         }
     }
 
-    val state: StateFlow<HomeAvailableNowState> = combine(
-        moviesState,
+    val state: StateFlow<HomeWatchlistState> = combine(
+        itemsState,
         loadingState,
         errorState,
     ) { s1, s2, s3 ->
-        HomeAvailableNowState(
-            movies = s1,
+        HomeWatchlistState(
+            items = s1,
             isLoading = s2,
             error = s3,
         )

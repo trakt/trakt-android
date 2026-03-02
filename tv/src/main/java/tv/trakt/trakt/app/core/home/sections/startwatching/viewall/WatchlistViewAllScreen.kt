@@ -1,9 +1,10 @@
-package tv.trakt.trakt.app.core.home.sections.movies.availablenow.viewall
+package tv.trakt.trakt.app.core.home.sections.startwatching.viewall
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -31,25 +32,29 @@ import androidx.lifecycle.Lifecycle.Event.ON_CREATE
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
+import kotlinx.coroutines.delay
 import tv.trakt.trakt.app.common.ui.GenericErrorView
-import tv.trakt.trakt.app.common.ui.InfoChip
-import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
+import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
-import tv.trakt.trakt.app.core.home.sections.movies.availablenow.model.WatchlistMovie
-import tv.trakt.trakt.app.core.home.sections.movies.availablenow.usecases.PAGE_LIMIT
+import tv.trakt.trakt.app.core.home.HomeConfig.HOME_WATCHLIST_PAGE_LIMIT
+import tv.trakt.trakt.app.core.home.sections.startwatching.model.WatchlistItem
+import tv.trakt.trakt.app.core.home.sections.startwatching.model.WatchlistItem.MovieItem
+import tv.trakt.trakt.app.core.home.sections.startwatching.model.WatchlistItem.ShowItem
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
-import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 
 @Composable
-internal fun AvailableNowViewAllScreen(
-    viewModel: AvailableNowViewAllViewModel,
+internal fun WatchlistViewAllScreen(
+    viewModel: WatchlistViewAllViewModel,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToEpisode: (TraktId, Episode) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -57,9 +62,12 @@ internal fun AvailableNowViewAllScreen(
         viewModel.updateData()
     }
 
-    AvailableNowViewAllContent(
+    WatchlistViewAllContent(
         state = state,
-        onClick = {
+        onEpisodeClick = { show, episode ->
+            onNavigateToEpisode(show.ids.trakt, episode)
+        },
+        onMovieClick = {
             onNavigateToMovie(it.ids.trakt)
         },
         onLoadNextPage = {
@@ -69,23 +77,20 @@ internal fun AvailableNowViewAllScreen(
 }
 
 @Composable
-private fun AvailableNowViewAllContent(
-    state: AvailableNowViewAllState,
+private fun WatchlistViewAllContent(
+    state: WatchlistViewAllState,
     modifier: Modifier = Modifier,
-    onClick: (Movie) -> Unit,
+    onEpisodeClick: (Show, Episode) -> Unit,
+    onMovieClick: (Movie) -> Unit,
     onLoadNextPage: () -> Unit,
 ) {
-    var focusedItem by remember { mutableStateOf<WatchlistMovie?>(null) }
-    var focusedItemId by rememberSaveable { mutableStateOf<Int?>(null) }
-    val focusRequesters = remember { mutableMapOf<Int, FocusRequester>() }
+    var focusedItem by remember { mutableStateOf<WatchlistItem?>(null) }
+    var focusedItemId by rememberSaveable { mutableStateOf<String?>(null) }
+    val focusRequesters = remember { mutableMapOf<String, FocusRequester>() }
 
-    LaunchedEffect(state.isLoading) {
-        // Used when list is updated after user comes back and modifies history/watchlist etc.
-        if (state.isLoading) {
-            focusedItem = null
-            focusedItemId = null
-            focusRequesters.clear()
-        }
+    LaunchedEffect(Unit) {
+        delay(500)
+        focusRequesters[focusedItemId]?.requestSafeFocus()
     }
 
     Box(
@@ -100,26 +105,26 @@ private fun AvailableNowViewAllContent(
             },
     ) {
         BackdropImage(
-            imageUrl = focusedItem?.movie?.images?.getFanartUrl(Images.Size.FULL),
+            imageUrl = focusedItem?.fullFanartImage,
             saturation = 0F,
             crossfade = true,
         )
 
         val gridSpace = TraktTheme.spacing.mainGridSpace
         LazyVerticalGrid(
-            columns = GridCells.Fixed(5),
+            columns = GridCells.Adaptive(minSize = TraktTheme.size.verticalMediaCardSize),
             horizontalArrangement = spacedBy(gridSpace),
             verticalArrangement = spacedBy(gridSpace * 2),
             contentPadding = PaddingValues(
                 start = TraktTheme.spacing.mainContentStartSpace,
-                end = 16.dp,
+                end = TraktTheme.spacing.mainContentEndSpace,
                 top = 30.dp,
                 bottom = TraktTheme.spacing.mainContentVerticalSpace,
             ),
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
-                    text = stringResource(R.string.list_title_available_now),
+                    text = stringResource(R.string.list_title_start_watching),
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.heading4,
                     overflow = TextOverflow.Ellipsis,
@@ -140,24 +145,56 @@ private fun AvailableNowViewAllContent(
             } else if (!state.items.isNullOrEmpty()) {
                 items(
                     count = state.items.size,
-                    key = { index -> state.items[index].movie.ids.trakt.value },
+                    key = { index -> state.items[index].key },
                 ) { index ->
                     val item = state.items[index]
-                    val focusRequester = focusRequesters.getOrPut(item.movie.ids.trakt.value) {
-                        FocusRequester()
+
+                    val focusRequester = remember(item.key) {
+                        focusRequesters.getOrPut(item.key) {
+                            FocusRequester()
+                        }
                     }
 
-                    HorizontalMediaCard(
-                        title = item.movie.title,
-                        containerImageUrl = item.movie.images?.getFanartUrl(),
-                        contentImageUrl = item.movie.images?.getLogoUrl(),
-                        paletteColor = item.movie.colors?.colors?.second,
-                        onClick = { onClick(item.movie) },
-                        footerContent = {
-                            val runtime = item.movie.runtime?.inWholeMinutes
-                            if (runtime != null) {
-                                InfoChip(
-                                    text = runtime.durationFormat(),
+                    VerticalMediaCard(
+                        width = TraktTheme.size.verticalMediaCardSize,
+                        title = item.title,
+                        imageUrl = item.posterImage,
+                        onClick = {
+                            when (item) {
+                                is ShowItem -> onEpisodeClick(
+                                    item.show,
+                                    item.progress?.nextEpisode ?: return@VerticalMediaCard,
+                                )
+                                is MovieItem -> onMovieClick(item.movie)
+                            }
+                        },
+                        chipContent = {
+                            val subtitle = when (item) {
+                                is ShowItem -> {
+                                    item.progress?.nextEpisode?.seasonEpisodeString()
+                                }
+                                is MovieItem -> {
+                                    item.movie.runtime?.inWholeMinutes?.durationFormat()
+                                        ?: stringResource(R.string.translated_value_type_movie)
+                                }
+                            }
+
+                            Column(
+                                verticalArrangement = spacedBy(1.dp),
+                            ) {
+                                Text(
+                                    text = item.title,
+                                    style = TraktTheme.typography.cardTitle,
+                                    color = TraktTheme.colors.textPrimary,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                                Text(
+                                    text = subtitle ?: "",
+                                    style = TraktTheme.typography.cardSubtitle,
+                                    color = TraktTheme.colors.textSecondary,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
                                 )
                             }
                         },
@@ -166,7 +203,7 @@ private fun AvailableNowViewAllContent(
                             .onFocusChanged {
                                 if (it.isFocused) {
                                     focusedItem = item
-                                    focusedItemId = item.movie.ids.trakt.value
+                                    focusedItemId = item.key
 
                                     loadNextPageIfNeeded(
                                         size = state.items.size,
@@ -207,7 +244,7 @@ private fun loadNextPageIfNeeded(
     index: Int,
     onLoadNextPage: () -> Unit,
 ) {
-    if (size >= PAGE_LIMIT && index >= size - PAGE_LIMIT) {
+    if (size >= HOME_WATCHLIST_PAGE_LIMIT && index >= size - HOME_WATCHLIST_PAGE_LIMIT) {
         onLoadNextPage()
     }
 }
@@ -221,9 +258,10 @@ private fun loadNextPageIfNeeded(
 @Composable
 private fun Preview() {
     TraktTheme {
-        AvailableNowViewAllContent(
-            state = AvailableNowViewAllState(),
-            onClick = {},
+        WatchlistViewAllContent(
+            state = WatchlistViewAllState(),
+            onEpisodeClick = { _, _ -> },
+            onMovieClick = {},
             onLoadNextPage = {},
         )
     }

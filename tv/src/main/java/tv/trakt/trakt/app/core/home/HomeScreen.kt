@@ -34,6 +34,7 @@ import tv.trakt.trakt.app.core.home.sections.history.HomeHistoryView
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.HomeUpcomingView
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.HomeUpNextView
 import tv.trakt.trakt.app.core.home.sections.social.HomeSocialView
+import tv.trakt.trakt.app.core.home.sections.startwatching.HomeWatchlistView
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.Episode
@@ -43,8 +44,7 @@ import tv.trakt.trakt.common.model.TraktId
 private val sections = listOf(
     "upNext",
     "upcomingSchedule",
-//    "availableNow",
-//    "comingSoon",
+    "watchlist",
     "socialActivity",
     "history",
 )
@@ -56,8 +56,7 @@ internal fun HomeScreen(
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToUpNext: () -> Unit,
-    onNavigateToAvailableNow: () -> Unit,
-    onNavigateToComingSoon: () -> Unit,
+    onNavigateToWatchlist: () -> Unit,
     onNavigateToSocialActivity: () -> Unit,
     onNavigateToHistory: () -> Unit,
 ) {
@@ -75,8 +74,7 @@ internal fun HomeScreen(
             onNavigateToMovie = onNavigateToMovie,
             onNavigateToEpisode = onNavigateToEpisode,
             onNavigateToUpNext = onNavigateToUpNext,
-            onNavigateToAvailableNow = onNavigateToAvailableNow,
-            onNavigateToComingSoon = onNavigateToComingSoon,
+            onNavigateToWatchlist = onNavigateToWatchlist,
             onNavigateToSocialActivity = onNavigateToSocialActivity,
             onNavigateToHistory = onNavigateToHistory,
         )
@@ -91,8 +89,7 @@ private fun HomeScreenContent(
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToUpNext: () -> Unit,
-    onNavigateToAvailableNow: () -> Unit,
-    onNavigateToComingSoon: () -> Unit,
+    onNavigateToWatchlist: () -> Unit,
     onNavigateToSocialActivity: () -> Unit,
     onNavigateToHistory: () -> Unit,
 ) {
@@ -176,6 +173,22 @@ private fun HomeScreenContent(
             }
 
             item {
+                HomeWatchlistView(
+                    headerPadding = sectionPadding,
+                    contentPadding = sectionPadding,
+                    onNavigateToMovie = onNavigateToMovie,
+                    onNavigateToEpisode = onNavigateToEpisode,
+                    onNavigateToViewAll = onNavigateToWatchlist,
+                    onFocused = { item ->
+                        focusedSection = "watchlist"
+                        focusedImageUrl = item?.fullFanartImage
+                    },
+                    modifier = Modifier
+                        .focusRequester(focusRequesters.getValue("watchlist")),
+                )
+            }
+
+            item {
                 HomeUpcomingView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
@@ -188,36 +201,6 @@ private fun HomeScreenContent(
                         .focusRequester(focusRequesters.getValue("upcomingSchedule")),
                 )
             }
-
-//            item {
-//                HomeAvailableNowView(
-//                    headerPadding = sectionPadding,
-//                    contentPadding = sectionPadding,
-//                    onNavigateToMovie = onNavigateToMovie,
-//                    onNavigateToViewAll = onNavigateToAvailableNow,
-//                    onFocused = { movie ->
-//                        focusedSection = "availableNow"
-//                        focusedImageUrl = movie?.images?.getFanartUrl(Size.FULL)
-//                    },
-//                    modifier = Modifier
-//                        .focusRequester(focusRequesters.getValue("availableNow")),
-//                )
-//            }
-
-//            item {
-//                HomeComingSoonView(
-//                    headerPadding = sectionPadding,
-//                    contentPadding = sectionPadding,
-//                    onNavigateToMovie = onNavigateToMovie,
-//                    onNavigateToViewAll = onNavigateToComingSoon,
-//                    onFocused = { movie ->
-//                        focusedSection = "comingSoon"
-//                        focusedImageUrl = movie?.images?.getFanartUrl(Size.FULL)
-//                    },
-//                    modifier = Modifier
-//                        .focusRequester(focusRequesters.getValue("comingSoon")),
-//                )
-//            }
 
             item {
                 HomeHistoryView(
@@ -267,8 +250,7 @@ private fun MainScreenPreview() {
             onNavigateToMovie = {},
             onNavigateToEpisode = { _, _ -> },
             onNavigateToUpNext = {},
-            onNavigateToAvailableNow = {},
-            onNavigateToComingSoon = {},
+            onNavigateToWatchlist = {},
             onNavigateToSocialActivity = {},
             onNavigateToHistory = {},
         )

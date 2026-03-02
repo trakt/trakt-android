@@ -48,6 +48,7 @@ internal class UpNextViewAllViewModel(
             try {
                 nextDataPage = 1
                 itemsState.update { null }
+
                 if (showLoading) {
                     loadingState.update { true }
                 }

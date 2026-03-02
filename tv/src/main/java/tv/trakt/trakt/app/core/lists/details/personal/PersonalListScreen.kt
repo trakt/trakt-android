@@ -134,8 +134,11 @@ private fun PersonalListContent(
                     key = { index -> state.items[index].id },
                 ) { index ->
                     val item = state.items[index]
-                    val focusRequester = focusRequesters.getOrPut(item.id) {
-                        FocusRequester()
+
+                    val focusRequester = remember(item.id) {
+                        focusRequesters.getOrPut(item.id) {
+                            FocusRequester()
+                        }
                     }
 
                     item.show?.let { show ->
