@@ -6,12 +6,10 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.aspectRatio
@@ -26,10 +24,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -387,26 +383,6 @@ private fun ListsScreenContent(
                     }
                 }
             }
-
-//            if (
-//                !state.lists.isNullOrEmpty() &&
-//                state.lists.size >= 3 &&
-//                state.listsLoading == DONE
-//            ) {
-//                item(key = "footer_button") {
-//                    Box(
-//                        contentAlignment = Alignment.Center,
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(top = TraktTheme.spacing.mainSectionVerticalSpace),
-//                    ) {
-//                        ViewAllButton(
-//                            modifier = Modifier
-//                                .onClick(onClick = onAllListsClick),
-//                        )
-//                    }
-//                }
-//            }
         }
 
         ListsScreenHeader(
@@ -553,40 +529,4 @@ private fun ContentEmptyView(
         onClick = onActionClick,
         modifier = modifier,
     )
-}
-
-@Composable
-private fun ViewAllButton(modifier: Modifier = Modifier) {
-    Row(
-        horizontalArrangement = spacedBy(4.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-            .border(
-                width = 1.dp,
-                color = TraktTheme.colors.chipContainer,
-                shape = RoundedCornerShape(100),
-            )
-            .padding(
-                start = 22.dp,
-                end = 15.dp,
-                top = 11.dp,
-                bottom = 11.dp,
-            ),
-    ) {
-        Text(
-            text = "View All",
-            style = TraktTheme.typography.buttonTertiary,
-            color = TraktTheme.colors.textPrimary,
-        )
-        Icon(
-            painter = painterResource(R.drawable.ic_chevron_right),
-            tint = TraktTheme.colors.textPrimary,
-            contentDescription = null,
-            modifier = Modifier
-                .size(16.dp)
-                .graphicsLayer {
-                    translationY = 0.5.dp.toPx()
-                },
-        )
-    }
 }
