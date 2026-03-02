@@ -36,6 +36,7 @@ internal val homeModule = module {
         GetUpcomingUseCase(
             remoteUserSource = get(),
             localShowSource = get(),
+            localMovieSource = get(),
             localEpisodeSource = get(),
         )
     }
@@ -74,6 +75,7 @@ internal val homeModule = module {
         HomeUpcomingViewModel(
             getUpcomingUseCase = get(),
             localShowsSyncSource = get(),
+            localMoviesSyncSource = get(),
             localEpisodesSyncSource = get(),
             appLifecycleProvider = get(),
         )

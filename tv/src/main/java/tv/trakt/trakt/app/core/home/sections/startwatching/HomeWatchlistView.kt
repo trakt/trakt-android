@@ -140,7 +140,7 @@ private fun ContentList(
             key = { it.key },
         ) { item ->
             VerticalMediaCard(
-                width = TraktTheme.size.verticalMediaCardSize,
+                width = TraktTheme.size.verticalMediaBigCardSize,
                 title = item.title,
                 imageUrl = item.posterImage,
                 onClick = {
@@ -192,6 +192,7 @@ private fun ContentList(
         if (listItems.size >= HOME_SECTION_LIMIT) {
             item {
                 VerticalViewAllCard(
+                    width = TraktTheme.size.verticalMediaBigCardSize,
                     onClick = onViewAllClick,
                 )
             }
@@ -213,7 +214,7 @@ private fun ContentLoadingList(
     ) {
         items(count = 10) {
             VerticalMediaSkeletonCard(
-                width = TraktTheme.size.verticalMediaCardSize,
+                width = TraktTheme.size.verticalMediaBigCardSize,
                 modifier = Modifier
                     .onFocusChanged {
                         if (it.isFocused) {

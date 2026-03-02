@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
@@ -16,6 +15,7 @@ import timber.log.Timber
 import tv.trakt.trakt.app.Config.REFRESH_DATA_THRESHOLD_MINUTES
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.usecases.GetUpcomingUseCase
 import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncLocalDataSource
+import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalDataSource
 import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
@@ -26,6 +26,7 @@ import java.time.ZonedDateTime
 internal class HomeUpcomingViewModel(
     private val getUpcomingUseCase: GetUpcomingUseCase,
     private val localShowsSyncSource: ShowsSyncLocalDataSource,
+    private val localMoviesSyncSource: MoviesSyncLocalDataSource,
     private val localEpisodesSyncSource: EpisodesSyncLocalDataSource,
     private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
@@ -61,7 +62,7 @@ internal class HomeUpcomingViewModel(
                     loadingState.update { true }
                 }
 
-                val items = getUpcomingUseCase.getCalendar()
+                val items = getUpcomingUseCase.getUpcoming()
                 itemsState.update { items }
 
                 loadedAt = nowUtc()
@@ -84,23 +85,31 @@ internal class HomeUpcomingViewModel(
                     return@launch
                 }
 
-                val localWatchlistUpdatedAt = localShowsSyncSource.getWatchlistUpdatedAt()
-                val localWatchedUpdatedAt = localShowsSyncSource.getWatchedUpdatedAt()
+                val showsWatchlistUpdatedAt = localShowsSyncSource.getWatchlistUpdatedAt()
+                val showsWatchedUpdatedAt = localShowsSyncSource.getWatchedUpdatedAt()
+
+                val moviesWatchlistUpdatedAt = localMoviesSyncSource.getWatchlistUpdatedAt()
+                val moviesWatchedUpdatedAt = localMoviesSyncSource.getWatchedUpdatedAt()
+
                 val localEpisodeHistoryUpdatedAt = localEpisodesSyncSource.getHistoryUpdatedAt()
 
-                if (localWatchlistUpdatedAt == null &&
-                    localWatchedUpdatedAt == null &&
+                if (showsWatchlistUpdatedAt == null &&
+                    showsWatchedUpdatedAt == null &&
+                    moviesWatchlistUpdatedAt == null &&
+                    moviesWatchedUpdatedAt == null &&
                     localEpisodeHistoryUpdatedAt == null
                 ) {
                     return@launch
                 }
 
-                if (localWatchlistUpdatedAt?.isAfter(loadedAt) == true ||
-                    localWatchedUpdatedAt?.isAfter(loadedAt) == true ||
+                if (showsWatchlistUpdatedAt?.isAfter(loadedAt) == true ||
+                    showsWatchedUpdatedAt?.isAfter(loadedAt) == true ||
+                    moviesWatchlistUpdatedAt?.isAfter(loadedAt) == true ||
+                    moviesWatchedUpdatedAt?.isAfter(loadedAt) == true ||
                     localEpisodeHistoryUpdatedAt?.isAfter(loadedAt) == true
                 ) {
                     loadData(showLoading = false)
-                    Timber.d("Updating upcoming shows")
+                    Timber.d("Updating upcoming items.")
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -110,7 +119,7 @@ internal class HomeUpcomingViewModel(
         }
     }
 
-    val state: StateFlow<HomeUpcomingState> = combine(
+    val state = combine(
         loadingState,
         itemsState,
         errorState,

@@ -17,6 +17,7 @@ import androidx.compose.ui.layout.FixedScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Border
 import androidx.tv.material3.Card
@@ -30,6 +31,7 @@ import tv.trakt.trakt.resources.R
 @Composable
 internal fun VerticalViewAllCard(
     modifier: Modifier = Modifier,
+    width: Dp = TraktTheme.size.verticalMediaCardSize,
     onClick: () -> Unit = {},
 ) {
     Column(
@@ -40,7 +42,7 @@ internal fun VerticalViewAllCard(
         Card(
             onClick = onClick,
             modifier = Modifier
-                .width(TraktTheme.size.verticalMediaCardSize)
+                .width(width)
                 .aspectRatio(CardDefaults.VerticalImageAspectRatio),
             shape = CardDefaults.shape(
                 shape = RoundedCornerShape(12.dp),
@@ -64,7 +66,7 @@ internal fun VerticalViewAllCard(
                     painter = painterResource(R.drawable.ic_view_all_horizontal),
                     contentDescription = "View All",
                     alignment = Alignment.CenterStart,
-                    contentScale = FixedScale(1.2F),
+                    contentScale = FixedScale(1F),
                     colorFilter = ColorFilter.tint(Purple300),
                     modifier = Modifier
                         .fillMaxHeight()

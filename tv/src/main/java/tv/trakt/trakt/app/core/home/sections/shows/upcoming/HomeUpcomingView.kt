@@ -20,19 +20,19 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.app.common.ui.InfoChip
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.common.ui.mediacards.EpisodeSkeletonCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
-import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.CalendarShow
+import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
+import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Episode
-import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.resources.R
 
@@ -42,8 +42,9 @@ internal fun HomeUpcomingView(
     viewModel: HomeUpcomingViewModel = koinViewModel(),
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onFocused: (Show?) -> Unit = {},
+    onFocused: (HomeUpcomingItem?) -> Unit = {},
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
+    onNavigateToMovie: (movieId: TraktId) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -57,6 +58,7 @@ internal fun HomeUpcomingView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onFocused = onFocused,
+        onNavigateToMovie = onNavigateToMovie,
         onNavigateToEpisode = onNavigateToEpisode,
     )
 }
@@ -67,7 +69,8 @@ internal fun HomeUpcomingContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onFocused: (Show?) -> Unit = {},
+    onFocused: (HomeUpcomingItem?) -> Unit = {},
+    onNavigateToMovie: (movieId: TraktId) -> Unit = {},
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
 ) {
     Column(
@@ -101,10 +104,22 @@ internal fun HomeUpcomingContent(
 
             else -> {
                 ContentList(
-                    listItems = { state.items ?: emptyList<CalendarShow>().toImmutableList() },
+                    listItems = state.items ?: EmptyImmutableList,
                     onFocused = onFocused,
-                    onClick = { show, episode ->
-                        onNavigateToEpisode(show.ids.trakt, episode)
+                    onClick = {
+                        when (it) {
+                            is HomeUpcomingItem.EpisodeItem -> {
+                                onNavigateToEpisode(
+                                    it.show.ids.trakt,
+                                    it.episode,
+                                )
+                            }
+                            is HomeUpcomingItem.MovieItem -> {
+                                onNavigateToMovie(
+                                    it.movie.ids.trakt,
+                                )
+                            }
+                        }
                     },
                     contentPadding = contentPadding,
                 )
@@ -135,17 +150,17 @@ private fun ContentLoadingList(
 
 @Composable
 private fun ContentList(
-    listItems: () -> ImmutableList<CalendarShow>,
-    onFocused: (Show) -> Unit,
-    onClick: (Show, Episode) -> Unit,
+    listItems: ImmutableList<HomeUpcomingItem>,
+    onFocused: (HomeUpcomingItem) -> Unit,
+    onClick: (HomeUpcomingItem) -> Unit,
     contentPadding: PaddingValues,
 ) {
     PositionFocusLazyRow(
         contentPadding = contentPadding,
     ) {
         items(
-            items = listItems(),
-            key = { it.episode.ids.trakt.value },
+            items = listItems,
+            key = { it.key },
         ) { item ->
             ContentListItem(
                 item = item,
@@ -160,24 +175,20 @@ private fun ContentList(
 
 @Composable
 private fun ContentListItem(
-    item: CalendarShow,
-    onFocused: (Show) -> Unit,
-    onClick: (Show, Episode) -> Unit,
+    item: HomeUpcomingItem,
+    onFocused: (HomeUpcomingItem) -> Unit,
+    onClick: (HomeUpcomingItem) -> Unit,
 ) {
     HorizontalMediaCard(
         title = "",
-        containerImageUrl =
-            item.show.images?.getFanartUrl()
-                ?: item.episode.images?.getScreenshotUrl(),
-        onClick = {
-            onClick(item.show, item.episode)
-        },
+        containerImageUrl = item.images?.getFanartUrl(),
+        onClick = { onClick(item) },
         cardContent = {
             val dateString = remember(item.releaseAt) {
-                item.releaseAt.toLocal().relativeDateTimeString()
+                item.releaseAt?.toLocal()?.relativeDateTimeString()
             }
             InfoChip(
-                text = dateString,
+                text = dateString ?: "TBA",
                 iconPainter = painterResource(R.drawable.ic_calendar_upcoming),
                 containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
             )
@@ -187,20 +198,26 @@ private fun ContentListItem(
                 verticalArrangement = spacedBy(1.dp),
             ) {
                 Text(
-                    text = item.show.title,
+                    text = item.title,
                     style = TraktTheme.typography.cardTitle,
                     color = TraktTheme.colors.textPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
 
-                val subtitle = when {
-                    item.isFullSeason -> stringResource(
-                        R.string.text_season_number,
-                        item.episode.season,
-                    )
-
-                    else -> item.episode.seasonEpisodeString()
+                val subtitle = when (item) {
+                    is HomeUpcomingItem.EpisodeItem -> {
+                        when {
+                            item.isFullSeason -> stringResource(
+                                R.string.text_season_number,
+                                item.episode.season,
+                            )
+                            else -> item.episode.seasonEpisodeString()
+                        }
+                    }
+                    is HomeUpcomingItem.MovieItem -> {
+                        item.movie.runtime?.inWholeMinutes?.durationFormat() ?: ""
+                    }
                 }
 
                 Text(
@@ -214,7 +231,9 @@ private fun ContentListItem(
         },
         modifier = Modifier
             .onFocusChanged {
-                if (it.isFocused) onFocused(item.show)
+                if (it.isFocused) {
+                    onFocused(item)
+                }
             },
     )
 }

@@ -3,6 +3,7 @@ package tv.trakt.trakt.app.core.profile.data.remote
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.pagination.Pagination
+import tv.trakt.trakt.common.networking.CalendarMovieDto
 import tv.trakt.trakt.common.networking.CalendarShowDto
 import tv.trakt.trakt.common.networking.LikedListDto
 import tv.trakt.trakt.common.networking.ListDto
@@ -22,6 +23,11 @@ internal interface ProfileRemoteDataSource {
         startDate: LocalDate,
         days: Int,
     ): List<CalendarShowDto>
+
+    suspend fun getUserMoviesCalendar(
+        startDate: LocalDate,
+        days: Int,
+    ): List<CalendarMovieDto>
 
     suspend fun getUserEpisodesHistory(
         page: Int = 1,

@@ -193,6 +193,7 @@ private fun HomeScreenContent(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     onNavigateToEpisode = onNavigateToEpisode,
+                    onNavigateToMovie = onNavigateToMovie,
                     onFocused = { show ->
                         focusedSection = "upcomingSchedule"
                         focusedImageUrl = show?.images?.getFanartUrl(Size.FULL)

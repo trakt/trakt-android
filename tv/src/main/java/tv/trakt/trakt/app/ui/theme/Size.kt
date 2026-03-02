@@ -6,6 +6,7 @@ import androidx.compose.ui.unit.dp
 
 internal val Size: TraktSize = TraktSize(
     verticalMediaCardSize = 102.dp,
+    verticalMediaBigCardSize = 110.dp,
     horizontalMediaCardSize = 160.dp,
     detailsPosterSize = 335.dp,
     detailsPersonPosterSize = 102.dp,
@@ -18,6 +19,7 @@ internal val Size: TraktSize = TraktSize(
 internal data class TraktSize(
     val horizontalMediaCardSize: Dp = Dp.Unspecified,
     val verticalMediaCardSize: Dp = Dp.Unspecified,
+    val verticalMediaBigCardSize: Dp = Dp.Unspecified,
     val detailsPosterSize: Dp = Dp.Unspecified,
     val detailsPersonPosterSize: Dp = Dp.Unspecified,
     val detailsCommentSize: Dp = Dp.Unspecified,

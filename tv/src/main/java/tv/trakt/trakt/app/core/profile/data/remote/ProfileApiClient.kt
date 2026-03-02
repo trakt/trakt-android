@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.pagination.Pagination
+import tv.trakt.trakt.common.networking.CalendarMovieDto
 import tv.trakt.trakt.common.networking.CalendarShowDto
 import tv.trakt.trakt.common.networking.LikedListDto
 import tv.trakt.trakt.common.networking.ListDto
@@ -37,6 +38,27 @@ internal class ProfileApiClient(
         days: Int,
     ): List<CalendarShowDto> {
         val response = calendarsApi.getCalendarsShows(
+            target = "my",
+            startDate = startDate.toString(),
+            days = days,
+            extended = "full,cloud9,colors,streaming_ids",
+            watchnow = null,
+            genres = null,
+            subgenres = null,
+            years = null,
+            ratings = null,
+            startDate2 = null,
+            endDate = null,
+            runtimes = null,
+        )
+        return response.body()
+    }
+
+    override suspend fun getUserMoviesCalendar(
+        startDate: LocalDate,
+        days: Int,
+    ): List<CalendarMovieDto> {
+        val response = calendarsApi.getCalendarsMovies(
             target = "my",
             startDate = startDate.toString(),
             days = days,

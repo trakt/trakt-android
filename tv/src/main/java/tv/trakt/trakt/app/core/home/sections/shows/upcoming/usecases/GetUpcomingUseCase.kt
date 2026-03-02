@@ -2,17 +2,24 @@ package tv.trakt.trakt.app.core.home.sections.shows.upcoming.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.CalendarShow
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.app.core.profile.data.remote.ProfileRemoteDataSource
 import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
+import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
-import tv.trakt.trakt.common.helpers.extensions.nowUtc
-import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
+import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
+import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
 
 private val premiereValues = listOf("season_premiere", "series_premiere")
 private val finaleValues = listOf("season_finale", "series_finale")
@@ -20,15 +27,42 @@ private val finaleValues = listOf("season_finale", "series_finale")
 internal class GetUpcomingUseCase(
     private val remoteUserSource: ProfileRemoteDataSource,
     private val localShowSource: ShowLocalDataSource,
+    private val localMovieSource: MovieLocalDataSource,
     private val localEpisodeSource: EpisodeLocalDataSource,
 ) {
-    suspend fun getCalendar(): ImmutableList<CalendarShow> {
-        val remoteItems = remoteUserSource.getUserShowsCalendar(
-            startDate = nowLocal().toLocalDate(),
+    suspend fun getUpcoming(): ImmutableList<HomeUpcomingItem> {
+        return coroutineScope {
+            val showsAsync = async { getShows() }
+            val moviesAsync = async { getMovies() }
+
+            return@coroutineScope (
+                showsAsync.await() +
+                    moviesAsync.await()
+            )
+                .sortedBy { it.releaseAt }
+                .toImmutableList()
+                .also {
+                    val episodeItems = it.filterIsInstance<HomeUpcomingItem.EpisodeItem>()
+                    val movieItems = it.filterIsInstance<HomeUpcomingItem.MovieItem>()
+
+                    val shows = episodeItems.asyncMap { item -> item.show }
+                    val episodes = episodeItems.asyncMap { item -> item.episode }
+                    val movies = movieItems.asyncMap { item -> item.movie }
+
+                    localShowSource.upsertShows(shows)
+                    localMovieSource.upsertMovies(movies)
+                    localEpisodeSource.upsertEpisodes(episodes)
+                }
+        }
+    }
+
+    private suspend fun getShows(): List<HomeUpcomingItem.EpisodeItem> {
+        val remoteShows = remoteUserSource.getUserShowsCalendar(
+            startDate = nowLocalDay().minusDays(1),
             days = 14,
         )
 
-        val fullSeasonItems = remoteItems
+        val fullSeasonItems = remoteShows
             .groupBy { it.show.ids.trakt }
             .filter { (_, episodes) ->
                 val isSeasonPremiere = episodes.any {
@@ -42,10 +76,10 @@ internal class GetUpcomingUseCase(
                 return@filter episodes.size > 1 && isSeasonPremiere && isSeasonFinale
             }
 
-        return remoteItems
+        val showsList = remoteShows
             .asyncMap {
-                val releaseAt = it.firstAired.toZonedDateTime()
-                if (releaseAt.isBefore(nowUtc())) {
+                val releaseAt = it.firstAired.toInstant()
+                if (releaseAt.isBefore(Instant.now())) {
                     return@asyncMap null
                 }
 
@@ -54,21 +88,39 @@ internal class GetUpcomingUseCase(
                     return@asyncMap null
                 }
 
-                CalendarShow(
-                    show = Show.fromDto(it.show),
+                HomeUpcomingItem.EpisodeItem(
                     episode = Episode.fromDto(it.episode),
-                    releaseAt = releaseAt,
+                    show = Show.fromDto(it.show),
                     isFullSeason = isFullSeason,
                 )
             }
-            .filterNotNull()
-            .toImmutableList()
-            .also {
-                val shows = it.asyncMap { item -> item.show }
-                val episodes = it.asyncMap { item -> item.episode }
 
-                localShowSource.upsertShows(shows)
-                localEpisodeSource.upsertEpisodes(episodes)
+        return showsList
+            .filterNotNull()
+    }
+
+    private suspend fun getMovies(): List<HomeUpcomingItem.MovieItem> {
+        val remoteMovies = remoteUserSource.getUserMoviesCalendar(
+            startDate = nowLocal().toLocalDate().minusDays(1),
+            days = 14,
+        )
+
+        val moviesList = remoteMovies
+            .asyncMap {
+                val releaseAt = LocalDate.parse(it.released)
+                    .atStartOfDay(ZoneId.of("UTC"))
+                    .toInstant()
+
+                if (releaseAt.isBefore(Instant.now())) {
+                    return@asyncMap null
+                }
+
+                HomeUpcomingItem.MovieItem(
+                    movie = Movie.fromDto(it.movie),
+                )
             }
+
+        return moviesList
+            .filterNotNull()
     }
 }
