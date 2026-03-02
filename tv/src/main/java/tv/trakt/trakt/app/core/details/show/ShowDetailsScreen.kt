@@ -41,8 +41,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.fromHtml
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -69,6 +69,7 @@ import tv.trakt.trakt.app.core.details.show.views.header.ShowHeader
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.people.navigation.PersonDestination
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.customAnnotatedString
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Comment
@@ -536,12 +537,17 @@ private fun HistoryConfirmationOverlay(
     Dialog(onDismissRequest = onDismiss) {
         ConfirmationDialog(
             title = stringResource(R.string.button_text_mark_as_watched),
-            annotatedMessage = AnnotatedString.fromHtml(
+            annotatedMessage = customAnnotatedString(
                 stringResource(
                     R.string.warning_prompt_mark_as_watched_show_android,
                     showEpisodes,
                     showTitle,
                 ),
+                style = TraktTheme.typography.paragraph.toSpanStyle()
+                    .copy(
+                        fontWeight = FontWeight.W600,
+                        textDecoration = TextDecoration.Underline,
+                    ),
             ),
             confirmColor = Red400,
             onConfirm = {

@@ -49,9 +49,9 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.fromHtml
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -64,6 +64,7 @@ import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.extensions.customAnnotatedString
 import tv.trakt.trakt.common.helpers.extensions.ifOrElse
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -253,12 +254,17 @@ internal fun ShowDetailsScreen(
         },
         onNo = { confirmAddWatchedSheet = false },
         title = stringResource(R.string.button_text_mark_as_watched),
-        annotatedMessage = AnnotatedString.fromHtml(
+        annotatedMessage = customAnnotatedString(
             stringResource(
                 R.string.warning_prompt_mark_as_watched_show_android,
                 state.show?.airedEpisodes ?: 0,
                 state.show?.title ?: "",
             ),
+            style = TraktTheme.typography.paragraph.toSpanStyle()
+                .copy(
+                    fontWeight = FontWeight.W600,
+                    textDecoration = TextDecoration.Underline,
+                ),
         ),
         holdToYes = true,
         yesText = stringResource(R.string.button_text_hold_to_confirm),

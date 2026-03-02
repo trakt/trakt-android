@@ -122,3 +122,29 @@ fun Spanned.toAnnotatedString(): AnnotatedString {
         }
     }
 }
+
+/**
+ * Converts a string with custom markup (e.g., **bold**) into an AnnotatedString with the specified style applied to the marked text.
+ */
+fun customAnnotatedString(
+    string: String,
+    style: SpanStyle,
+): AnnotatedString {
+    return buildAnnotatedString {
+        val regex = "\\*\\*(.*?)\\*\\*".toRegex()
+        var lastIndex = 0
+        regex.findAll(string).forEach { result ->
+            append(string.substring(lastIndex, result.range.first))
+            withStyle(
+                style.copy(
+                    fontWeight = FontWeight.W600,
+                    textDecoration = TextDecoration.Underline,
+                ),
+            ) {
+                append(result.groupValues[1])
+            }
+            lastIndex = result.range.last + 1
+        }
+        append(string.substring(lastIndex))
+    }
+}
