@@ -13,6 +13,7 @@ object Config {
     const val WEB_TERMS_URL: String = "https://trakt.tv/terms?native_app_mode=true"
     const val WEB_PRIVACY_URL: String = "https://trakt.tv/privacy?native_app_mode=true"
     const val WEB_FORUMS_URL: String = "https://forums.trakt.tv/"
+    const val WEB_ROADMAP_URL: String = "https://roadmap.trakt.tv/"
     const val WEB_SETTINGS_URL: String = "https://trakt.tv/settings?native_app_mode=true"
     const val WEB_SETTINGS_SCROBBLING_URL: String = "https://trakt.tv/settings/scrobblers?native_app_mode=true"
 

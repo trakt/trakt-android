@@ -612,6 +612,16 @@ private fun SettingsMisc(
             },
         )
 
+        if (state.user?.isAnyVip == true) {
+            SettingsTextField(
+                text = stringResource(R.string.link_text_roadmap),
+                enabled = !state.logoutLoading.isLoading,
+                onClick = {
+                    uriHandler.openUri(Config.WEB_ROADMAP_URL)
+                },
+            )
+        }
+
         SettingsTextField(
             text = stringResource(R.string.link_text_terms),
             enabled = !state.logoutLoading.isLoading,
