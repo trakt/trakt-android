@@ -76,6 +76,23 @@ platform :android do
       )
   end
 
+  desc "Upload version to PlayStore Closed Beta Track"
+    lane :playstore_upload_closed_beta do
+      gradle(
+        task: "app:bundlePlaystoreRelease"
+      )
+
+      supply(
+        track: "Trakt Beta",
+        aab: "app/build/outputs/bundle/playstoreRelease/app-playstore-release.aab",
+        rollout: "1",
+        skip_upload_apk: true,
+        skip_upload_metadata: true,
+        skip_upload_images: true,
+        skip_upload_screenshots: true
+      )
+  end
+
   desc "Promote PlayStore Closed Beta Track to Production"
     lane :playstore_promote_trakt_beta_to_production do
         supply(
