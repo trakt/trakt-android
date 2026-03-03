@@ -340,10 +340,6 @@
   <string name="warning_prompt_stop_checkin">Are you sure you want to stop watching \"%s\"?</string>
   <string name="warning_prompt_younify_unlink">Are you sure you want to unlink %s?</string>
 
-  <!-- TODO -->
-
-  <string name="link_text_roadmap">Roadmap</string>
-
   <!--  Non Translatable  -->
 
   <string name="translated_value_library_plex" translatable="false">Plex</string>
