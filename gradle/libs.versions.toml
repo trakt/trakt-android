@@ -1,5 +1,5 @@
 [versions]
-versionCode = "343"
+versionCode = "345"
 versionName = "3.4.0"
 
 minSdk = "28"
@@ -42,7 +42,7 @@ tvFoundation = "1.0.0-alpha12"
 tvMaterial = "1.0.1"
 workManager = "2.11.1"
 youtube-player = "13.0.0"
-younify = "1.0.2"
+younify = "1.0.3"
 
 # Testing Libraries
 
