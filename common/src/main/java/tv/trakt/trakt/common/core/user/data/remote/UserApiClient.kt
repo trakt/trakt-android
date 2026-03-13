@@ -12,6 +12,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.pagination.Pagination
+import tv.trakt.trakt.common.model.sorting.SortType
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.CalendarMovieDto
 import tv.trakt.trakt.common.networking.CalendarShowDto
@@ -163,12 +164,11 @@ class UserApiClient(
         page: Int?,
         limit: Int?,
         extended: String?,
-        sort: String?,
+        sorting: Sorting?,
         hide: String?,
     ): List<WatchlistMovieDto> {
         val response = usersApi.getUsersWatchlistMovies(
             id = "me",
-            sort = sort ?: "rank",
             extended = extended,
             page = page,
             limit = limit,
@@ -180,7 +180,8 @@ class UserApiClient(
             ratings = null,
             startDate = null,
             endDate = null,
-            sortHow = null,
+            sort = sorting?.type?.value ?: SortType.RANK.value,
+            sortHow = sorting?.order?.value,
             sortBy = null,
             runtimes = null,
         )

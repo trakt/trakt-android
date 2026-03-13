@@ -14,24 +14,19 @@ import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocal
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 
-private val SortComparator =
-    compareByDescending<WatchlistItem> { it.released }
-        .thenByDescending { it.listedAt }
-
 internal class GetHomeShowsWatchlistUseCase(
     private val remoteShowsSyncSource: ShowsSyncRemoteDataSource,
     private val homeWatchlistLocalSource: HomeWatchlistLocalDataSource,
 ) {
     suspend fun getLocalWatchlist(limit: Int? = null): ImmutableList<WatchlistItem> {
         return homeWatchlistLocalSource.getShowItems()
-            .sortedWith(SortComparator)
             .take(limit ?: Int.MAX_VALUE)
             .toImmutableList()
     }
 
-    suspend fun getWatchlist(limit: Int? = null): ImmutableList<WatchlistItem> {
+    suspend fun getWatchlist(limit: Int): ImmutableList<WatchlistItem> {
         return remoteShowsSyncSource.getUpNext(
-            limit = limit ?: Int.MAX_VALUE,
+            limit = limit,
             page = 1,
             intent = "start",
         ).asyncMap {
@@ -39,8 +34,7 @@ internal class GetHomeShowsWatchlistUseCase(
         }.also {
             homeWatchlistLocalSource.setShowItems(items = it)
         }
-            .sortedWith(SortComparator)
-            .take(limit ?: Int.MAX_VALUE)
+            .take(limit)
             .toImmutableList()
     }
 

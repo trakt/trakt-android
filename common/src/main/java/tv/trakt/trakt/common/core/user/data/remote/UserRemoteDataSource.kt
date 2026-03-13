@@ -66,7 +66,7 @@ interface UserRemoteDataSource {
         page: Int? = null,
         limit: Int? = null,
         extended: String? = null,
-        sort: String? = null,
+        sorting: Sorting? = null,
         hide: String? = null,
     ): List<WatchlistMovieDto>
 

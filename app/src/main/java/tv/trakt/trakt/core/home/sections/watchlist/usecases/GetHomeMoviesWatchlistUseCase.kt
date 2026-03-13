@@ -8,31 +8,32 @@ import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.sorting.SortOrder
+import tv.trakt.trakt.common.model.sorting.SortTypeList
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
-
-private val SortComparator =
-    compareByDescending<WatchlistItem> { it.released }
-        .thenByDescending { it.listedAt }
 
 internal class GetHomeMoviesWatchlistUseCase(
     private val homeWatchlistLocalSource: HomeWatchlistLocalDataSource,
     private val userRemoteSource: UserRemoteDataSource,
 ) {
-    suspend fun getLocalWatchlist(limit: Int? = null): ImmutableList<WatchlistItem> {
+    suspend fun getLocalWatchlist(limit: Int): ImmutableList<WatchlistItem> {
         return homeWatchlistLocalSource.getMovieItems()
-            .sortedWith(SortComparator)
-            .take(limit ?: Int.MAX_VALUE)
+            .take(limit)
             .toImmutableList()
     }
 
-    suspend fun getWatchlist(limit: Int? = null): ImmutableList<WatchlistItem> {
+    suspend fun getWatchlist(limit: Int): ImmutableList<WatchlistItem> {
         val nowDay = nowLocalDay()
         return userRemoteSource.getWatchlistMovies(
             page = 1,
             limit = limit,
             extended = "full,cloud9,colors",
-            sort = "released",
+            sorting = Sorting(
+                type = SortTypeList.RELEASED,
+                order = SortOrder.DESCENDING,
+            ),
             hide = "unreleased",
         )
             .asyncMap {
@@ -46,7 +47,6 @@ internal class GetHomeMoviesWatchlistUseCase(
                 it.movie.released != null &&
                     it.movie.released!! <= nowDay
             }
-            .sortedWith(SortComparator)
             .also {
                 homeWatchlistLocalSource.setMovieItems(items = it)
             }
