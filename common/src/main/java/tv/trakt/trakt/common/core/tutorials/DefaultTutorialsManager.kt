@@ -1,12 +1,13 @@
-package tv.trakt.trakt.app.core.tutorials
+package tv.trakt.trakt.common.core.tutorials
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import kotlinx.coroutines.flow.first
-import tv.trakt.trakt.app.core.tutorials.model.TutorialKey
-import tv.trakt.trakt.app.core.tutorials.model.TutorialKey.WATCH_NOW_MORE
+import tv.trakt.trakt.common.core.tutorials.model.TutorialKey
+import tv.trakt.trakt.common.core.tutorials.model.TutorialKey.RATING_BAR_SWIPE
+import tv.trakt.trakt.common.core.tutorials.model.TutorialKey.WATCH_NOW_MORE
 
 @Suppress("UNCHECKED_CAST")
 internal class DefaultTutorialsManager(
@@ -16,6 +17,7 @@ internal class DefaultTutorialsManager(
         val data = dataStore.data.first()
         return when (key) {
             WATCH_NOW_MORE -> data[booleanPreferencesKey(key.preferenceKey)] ?: false
+            RATING_BAR_SWIPE -> data[booleanPreferencesKey(key.preferenceKey)] ?: false
         }
     }
 
@@ -23,6 +25,7 @@ internal class DefaultTutorialsManager(
         dataStore.edit {
             when (key) {
                 WATCH_NOW_MORE -> it[booleanPreferencesKey(key.preferenceKey)] = true
+                RATING_BAR_SWIPE -> it[booleanPreferencesKey(key.preferenceKey)] = true
             }
         }
     }

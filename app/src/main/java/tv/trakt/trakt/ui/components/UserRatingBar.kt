@@ -2,6 +2,7 @@ package tv.trakt.trakt.ui.components
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.tween
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -36,12 +38,17 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
+import tv.trakt.trakt.common.core.tutorials.TutorialsManager
+import tv.trakt.trakt.common.core.tutorials.model.TutorialKey.RATING_BAR_SWIPE
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.ratings.UserRating
+import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -58,6 +65,7 @@ internal fun UserRatingBar(
     onFavoriteClick: () -> Unit = {},
 ) {
     val scope = rememberCoroutineScope()
+    val tutorials = koinInject<TutorialsManager>()
 
     val stars = remember(rating) {
         rating?.rating?.div(2f) ?: 0f
@@ -75,6 +83,12 @@ internal fun UserRatingBar(
     val density = LocalDensity.current
     val starSizePx = with(density) { size.toPx() }
     val spacingPx = with(density) { 8.dp.toPx() }
+    val starsWidth = 5 * starSizePx
+    val totalWidth = 5 * starSizePx + 4 * spacingPx
+
+    val tutorialX = remember { Animatable(0f) }
+    val tutorialAlpha = remember { Animatable(0f) }
+    var tutorialDone by remember { mutableStateOf(false) }
 
     val animatedAlpha: Float by animateFloatAsState(
         when {
@@ -92,6 +106,10 @@ internal fun UserRatingBar(
         animationSpec = tween(200),
         label = "alpha",
     )
+
+    LaunchedEffect(Unit) {
+        tutorialDone = tutorials.get(RATING_BAR_SWIPE)
+    }
 
     Box(
         modifier = modifier.padding(top = 22.dp),
@@ -121,150 +139,199 @@ internal fun UserRatingBar(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = spacedBy(10.dp, CenterHorizontally),
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = spacedBy(8.dp, CenterHorizontally),
-                modifier = Modifier
-                    .pointerInput(Unit) {
-                        val starUnit = starSizePx + spacingPx
-                        val totalWidth = 5 * starSizePx + 4 * spacingPx
+            Box {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = spacedBy(8.dp, CenterHorizontally),
+                    modifier = Modifier
+                        .pointerInput(Unit) {
+                            val starUnit = starSizePx + spacingPx
 
-                        fun xToStars(x: Float): Float {
-                            val clampedX = x.coerceIn(0f, totalWidth)
-                            val starIndex = (clampedX / starUnit).toInt().coerceIn(0, 4)
-                            val posInUnit = clampedX - starIndex * starUnit
+                            fun xToStars(x: Float): Float {
+                                val clampedX = x.coerceIn(0f, totalWidth)
+                                val starIndex = (clampedX / starUnit).toInt().coerceIn(0, 4)
+                                val posInUnit = clampedX - starIndex * starUnit
 
-                            val ratingInStar = when {
-                                posInUnit < starSizePx / 2 -> 0.5f
-                                else -> 1.0f
+                                val ratingInStar = when {
+                                    posInUnit < starSizePx / 2 -> 0.5f
+                                    else -> 1.0f
+                                }
+
+                                return (starIndex + ratingInStar).coerceIn(0.5f, 5f)
                             }
 
-                            return (starIndex + ratingInStar).coerceIn(0.5f, 5f)
-                        }
+                            fun xToIndex(x: Float): Int {
+                                val clampedX = x.coerceIn(0f, totalWidth)
+                                return (clampedX / starUnit).toInt().coerceIn(0, 4)
+                            }
 
-                        fun xToIndex(x: Float): Int {
-                            val clampedX = x.coerceIn(0f, totalWidth)
-                            return (clampedX / starUnit).toInt().coerceIn(0, 4)
-                        }
+                            val touchSlop = viewConfiguration.touchSlop
 
-                        val touchSlop = viewConfiguration.touchSlop
+                            awaitEachGesture {
+                                val down = awaitFirstDown(requireUnconsumed = false)
+                                val startPosition = down.position
 
-                        awaitEachGesture {
-                            val down = awaitFirstDown(requireUnconsumed = false)
-                            val startPosition = down.position
+                                // Wait for direction to be determined
+                                var activationX = startPosition.x
+                                var dragActivated = false
+                                var verticalScrollDetected = false
+                                while (true) {
+                                    val event = awaitPointerEvent()
+                                    val change = event.changes
+                                        .firstOrNull { it.id == down.id } ?: break
+                                    if (!change.pressed) break
 
-                            // Wait for direction to be determined
-                            var activationX = startPosition.x
-                            var dragActivated = false
-                            while (true) {
-                                val event = awaitPointerEvent()
-                                val change = event.changes
-                                    .firstOrNull { it.id == down.id } ?: break
-                                if (!change.pressed) break
+                                    val dx = kotlin.math.abs(
+                                        change.position.x - startPosition.x,
+                                    )
+                                    val dy = kotlin.math.abs(
+                                        change.position.y - startPosition.y,
+                                    )
 
-                                val dx = kotlin.math.abs(
-                                    change.position.x - startPosition.x,
+                                    if (dx > touchSlop) {
+                                        change.consume()
+                                        activationX = change.position.x
+                                        dragActivated = true
+                                        break
+                                    }
+                                    if (dy > touchSlop) {
+                                        // vertical scroll wins
+                                        verticalScrollDetected = true
+                                        break
+                                    }
+                                }
+
+                                if (!dragActivated) {
+                                    if (!tutorialDone && !verticalScrollDetected) {
+                                        scope.launch {
+                                            tutorialX.snapTo(starSizePx)
+                                            tutorialAlpha.snapTo(0f)
+                                            launch {
+                                                delay(400)
+                                                tutorialX.animateTo(
+                                                    targetValue = starsWidth,
+                                                    animationSpec = tween(500, easing = LinearEasing),
+                                                )
+                                            }
+                                            tutorialAlpha.animateTo(
+                                                targetValue = 1f,
+                                                animationSpec = tween(300),
+                                            )
+                                            delay(800)
+                                            tutorialAlpha.animateTo(
+                                                targetValue = 0f,
+                                                animationSpec = tween(300),
+                                            )
+                                        }
+                                    }
+                                    return@awaitEachGesture
+                                }
+
+                                isDragging = true
+                                onRatingDrag(true)
+                                ratingAlphaMaskActive = true
+                                dragStars = xToStars(activationX)
+                                dragActiveIndex = xToIndex(activationX)
+
+                                while (true) {
+                                    val event = awaitPointerEvent()
+                                    if (event.changes.all { !it.pressed }) break
+                                    event.changes.forEach { change ->
+                                        dragStars = xToStars(change.position.x)
+                                        dragActiveIndex = xToIndex(change.position.x)
+                                        change.consume()
+                                    }
+                                }
+
+                                isDragging = false
+                                onRatingDrag(false)
+                                ratingAlphaMaskActive = false
+
+                                if (!tutorialDone) {
+                                    tutorialDone = true
+                                    scope.launch {
+                                        tutorials.acknowledge(RATING_BAR_SWIPE)
+                                    }
+                                }
+
+                                dragActiveIndex = -1
+                                val finalRating = dragStars
+                                onRatingClick(UserRating.scaleTo10(finalRating))
+
+                                lastClickedIndex.intValue =
+                                    (finalRating - 0.5f).toInt().coerceIn(0, 4)
+                                runScaleAnimation(
+                                    scope = scope,
+                                    animation = scaleAnimation,
                                 )
-                                val dy = kotlin.math.abs(
-                                    change.position.y - startPosition.y,
-                                )
-
-                                if (dx > touchSlop) {
-                                    change.consume()
-                                    activationX = change.position.x
-                                    dragActivated = true
-                                    break
-                                }
-                                if (dy > touchSlop) {
-                                    // vertical scroll wins
-                                    break
-                                }
                             }
-
-                            if (!dragActivated) return@awaitEachGesture
-
-                            isDragging = true
-                            onRatingDrag(true)
-                            ratingAlphaMaskActive = true
-                            dragStars = xToStars(activationX)
-                            dragActiveIndex = xToIndex(activationX)
-
-                            while (true) {
-                                val event = awaitPointerEvent()
-                                if (event.changes.all { !it.pressed }) break
-                                event.changes.forEach { change ->
-                                    dragStars = xToStars(change.position.x)
-                                    dragActiveIndex = xToIndex(change.position.x)
-                                    change.consume()
-                                }
-                            }
-
-                            isDragging = false
-                            onRatingDrag(false)
-                            ratingAlphaMaskActive = false
-
-                            dragActiveIndex = -1
-                            val finalRating = dragStars
-                            onRatingClick(UserRating.scaleTo10(finalRating))
-
-                            lastClickedIndex.intValue =
-                                (finalRating - 0.5f).toInt().coerceIn(0, 4)
-                            runScaleAnimation(
-                                scope = scope,
-                                animation = scaleAnimation,
-                            )
+                        },
+                ) {
+                    repeat(5) { index ->
+                        val distance = if (isDragging && dragActiveIndex >= 0) {
+                            kotlin.math.abs(index - dragActiveIndex)
+                        } else {
+                            Int.MAX_VALUE
                         }
-                    },
-            ) {
-                repeat(5) { index ->
-                    val distance = if (isDragging && dragActiveIndex >= 0) {
-                        kotlin.math.abs(index - dragActiveIndex)
-                    } else {
-                        Int.MAX_VALUE
+
+                        val isLeftNeighbor = isDragging &&
+                            dragActiveIndex >= 0 &&
+                            index == dragActiveIndex - 1
+
+                        val elevationFraction = when {
+                            distance == 0 -> 1f
+                            isLeftNeighbor -> 0.33f
+                            else -> 0f
+                        }
+
+                        val activeScale by animateFloatAsState(
+                            targetValue = 1f + 0.35f * elevationFraction,
+                            animationSpec = tween(200),
+                            label = "activeScale$index",
+                        )
+                        val activeTranslationY by animateFloatAsState(
+                            targetValue = -starSizePx * 0.5f * elevationFraction,
+                            animationSpec = tween(200),
+                            label = "activeTranslationY$index",
+                        )
+
+                        val bounceScale = when {
+                            lastClickedIndex.intValue == index -> scaleAnimation.value
+                            else -> 1f
+                        }
+
+                        Icon(
+                            painter = painterResource(
+                                when {
+                                    displayStars >= index + 1 -> R.drawable.ic_star_trakt_on
+                                    displayStars >= index + 0.5F -> R.drawable.ic_star_trakt_half
+                                    else -> R.drawable.ic_star_trakt_off
+                                },
+                            ),
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier
+                                .size(size)
+                                .graphicsLayer {
+                                    scaleX = activeScale * bounceScale
+                                    scaleY = activeScale * bounceScale
+                                    translationY = activeTranslationY
+                                },
+                        )
                     }
+                }
 
-                    val isLeftNeighbor = isDragging &&
-                        dragActiveIndex >= 0 &&
-                        index == dragActiveIndex - 1
-
-                    val elevationFraction = when {
-                        distance == 0 -> 1f
-                        isLeftNeighbor -> 0.33f
-                        else -> 0f
-                    }
-
-                    val activeScale by animateFloatAsState(
-                        targetValue = 1f + 0.35f * elevationFraction,
-                        animationSpec = tween(200),
-                        label = "activeScale$index",
-                    )
-                    val activeTranslationY by animateFloatAsState(
-                        targetValue = -starSizePx * 0.5f * elevationFraction,
-                        animationSpec = tween(200),
-                        label = "activeTranslationY$index",
-                    )
-
-                    val bounceScale = when {
-                        lastClickedIndex.intValue == index -> scaleAnimation.value
-                        else -> 1f
-                    }
-
+                if (!tutorialDone && tutorialAlpha.value > 0f) {
                     Icon(
-                        painter = painterResource(
-                            when {
-                                displayStars >= index + 1 -> R.drawable.ic_star_trakt_on
-                                displayStars >= index + 0.5F -> R.drawable.ic_star_trakt_half
-                                else -> R.drawable.ic_star_trakt_off
-                            },
-                        ),
+                        painter = painterResource(R.drawable.ic_touch),
                         contentDescription = null,
-                        tint = Color.White,
+                        tint = Red400,
                         modifier = Modifier
                             .size(size)
                             .graphicsLayer {
-                                scaleX = activeScale * bounceScale
-                                scaleY = activeScale * bounceScale
-                                translationY = activeTranslationY
+                                rotationZ = -45F
+                                translationX = tutorialX.value
+                                alpha = tutorialAlpha.value
                             },
                     )
                 }

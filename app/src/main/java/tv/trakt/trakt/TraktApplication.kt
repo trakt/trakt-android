@@ -19,6 +19,7 @@ import org.koin.core.context.startKoin
 import timber.log.Timber
 import tv.trakt.trakt.app.TvActivity
 import tv.trakt.trakt.common.auth.di.commonAuthModule
+import tv.trakt.trakt.common.core.tutorials.di.tutorialsModule
 import tv.trakt.trakt.common.firebase.inappreview.di.inAppReviewModule
 import tv.trakt.trakt.common.helpers.extensions.isTelevision
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
@@ -128,6 +129,7 @@ internal class TraktApplication : Application() {
                 networkingApiModule,
                 mainModule,
                 authModule,
+                tutorialsModule,
                 commonAuthModule,
                 calendarModule,
                 homeModule,

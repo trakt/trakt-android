@@ -29,9 +29,9 @@ import tv.trakt.trakt.app.core.details.episode.usecases.streamings.GetPlexUseCas
 import tv.trakt.trakt.app.core.details.episode.usecases.streamings.GetStreamingsUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.GetRelatedShowsUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.GetShowDetailsUseCase
-import tv.trakt.trakt.app.core.tutorials.TutorialsManager
-import tv.trakt.trakt.app.core.tutorials.model.TutorialKey.WATCH_NOW_MORE
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.tutorials.TutorialsManager
+import tv.trakt.trakt.common.core.tutorials.model.TutorialKey
 import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.StaticStringResource
@@ -186,7 +186,7 @@ internal class EpisodeDetailsViewModel(
                             slug = plexService.plexSlug,
                             loading = false,
                             info = when {
-                                !tutorialsManager.get(WATCH_NOW_MORE) -> {
+                                !tutorialsManager.get(TutorialKey.WATCH_NOW_MORE) -> {
                                     DynamicStringResource(R.string.button_text_long_press_for_more)
                                 }
 
@@ -212,7 +212,7 @@ internal class EpisodeDetailsViewModel(
                         service = streamingService.streamingService,
                         noServices = streamingService.noServices,
                         info = when {
-                            !tutorialsManager.get(WATCH_NOW_MORE) -> {
+                            !tutorialsManager.get(TutorialKey.WATCH_NOW_MORE) -> {
                                 DynamicStringResource(R.string.button_text_long_press_for_more)
                             }
 
@@ -400,7 +400,7 @@ internal class EpisodeDetailsViewModel(
 
     fun clearWatchNowTip() {
         viewModelScope.launch {
-            tutorialsManager.acknowledge(WATCH_NOW_MORE)
+            tutorialsManager.acknowledge(TutorialKey.WATCH_NOW_MORE)
             episodeStreamingsState.update { it.copy(info = null) }
         }
     }

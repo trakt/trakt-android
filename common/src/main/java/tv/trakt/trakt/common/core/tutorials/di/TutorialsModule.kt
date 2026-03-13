@@ -1,4 +1,4 @@
-package tv.trakt.trakt.app.core.main.di
+package tv.trakt.trakt.common.core.tutorials.di
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -12,32 +12,24 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import tv.trakt.trakt.app.core.main.MainViewModel
-import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
-import tv.trakt.trakt.common.helpers.lifecycle.DefaultAppLifecycleProvider
+import tv.trakt.trakt.common.core.tutorials.DefaultTutorialsManager
+import tv.trakt.trakt.common.core.tutorials.TutorialsManager
 
-internal const val MAIN_PREFERENCES = "main_preferences"
+internal const val TUTORIAL_PREFERENCES = "tutorial_preferences"
 
-internal val mainModule = module {
-    single<DataStore<Preferences>>(named(MAIN_PREFERENCES)) {
+val tutorialsModule = module {
+    single<DataStore<Preferences>>(named(TUTORIAL_PREFERENCES)) {
         createStore(
             context = androidContext(),
-            key = MAIN_PREFERENCES,
+            key = TUTORIAL_PREFERENCES,
         )
     }
 
-    single<AppLifecycleProvider> {
-        DefaultAppLifecycleProvider()
-    }
-
-    viewModel {
-        MainViewModel(
-            sessionManager = get(),
-            mainDataStore = get(named(MAIN_PREFERENCES)),
-            loadUserProfileUseCase = get(),
+    single<TutorialsManager> {
+        DefaultTutorialsManager(
+            dataStore = get(named(TUTORIAL_PREFERENCES)),
         )
     }
 }

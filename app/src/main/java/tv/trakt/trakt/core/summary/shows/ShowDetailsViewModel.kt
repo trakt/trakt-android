@@ -752,14 +752,6 @@ internal class ShowDetailsViewModel(
         }
     }
 
-    fun clearInfo() {
-        infoState.update { null }
-    }
-
-    fun clearNavigation() {
-        navigateEpisode.update { null }
-    }
-
     fun toggleFavorite(add: Boolean) {
         if (showState.value == null ||
             loadingFavorite.value.isLoading
@@ -899,6 +891,14 @@ internal class ShowDetailsViewModel(
                 else -> collapsingManager.expand(CollapsingKey.SHOW_META)
             }
         }
+    }
+
+    fun clearInfo() {
+        infoState.update { null }
+    }
+
+    fun clearNavigation() {
+        navigateEpisode.update { null }
     }
 
     @Suppress("UNCHECKED_CAST")

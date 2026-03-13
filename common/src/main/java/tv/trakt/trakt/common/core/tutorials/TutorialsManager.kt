@@ -1,8 +1,8 @@
-package tv.trakt.trakt.app.core.tutorials
+package tv.trakt.trakt.common.core.tutorials
 
-import tv.trakt.trakt.app.core.tutorials.model.TutorialKey
+import tv.trakt.trakt.common.core.tutorials.model.TutorialKey
 
-internal interface TutorialsManager {
+interface TutorialsManager {
     /**
      * Checks if the tutorial with the given key has been acknowledged.
      * If it returns `true`, the tutorial has been completed and will not be shown again.

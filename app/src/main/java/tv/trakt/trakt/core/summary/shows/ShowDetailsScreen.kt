@@ -485,7 +485,9 @@ internal fun ShowDetailsContent(
                         visible = isWatched && isLoaded,
                         rating = state.showUserRating?.rating,
                         loading = state.loadingFavorite.isLoading,
-                        onRatingDrag = { ratingAlphaMaskActive = it },
+                        onRatingDrag = {
+                            ratingAlphaMaskActive = it
+                        },
                         onRatingClick = onRatingClick ?: {},
                         onFavoriteClick = onFavoriteClick ?: {},
                     )
