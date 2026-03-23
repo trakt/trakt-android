@@ -21,12 +21,12 @@ import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
 import java.time.LocalDate
 
 internal class ProfileApiClient(
-    private val api: UsersApi,
+    private val usersApi: UsersApi,
     private val calendarsApi: CalendarsApi,
     private val historyApi: HistoryApi,
 ) : ProfileRemoteDataSource {
     override suspend fun getUserProfile(): User {
-        val response = api.getUsersSettings(
+        val response = usersApi.getUsersSettings(
             extended = "browsing",
         ).body()
 
@@ -109,7 +109,7 @@ internal class ProfileApiClient(
         page: Int,
         limit: Int,
     ): List<SyncFavoriteShowDto> {
-        val response = api.getUsersFavoritesShows(
+        val response = usersApi.getUsersFavoritesShows(
             id = "me",
             sort = "added",
             extended = "full,cloud9,colors,streaming_ids",
@@ -123,7 +123,7 @@ internal class ProfileApiClient(
         page: Int,
         limit: Int,
     ): List<SyncFavoriteMovieDto> {
-        val response = api.getUsersFavoritesMovies(
+        val response = usersApi.getUsersFavoritesMovies(
             id = "me",
             sort = "added",
             extended = "full,cloud9,colors,streaming_ids",
@@ -134,7 +134,7 @@ internal class ProfileApiClient(
     }
 
     override suspend fun getUserLists(): List<ListDto> {
-        val response = api.getUsersListsPersonal(
+        val response = usersApi.getUsersListsPersonal(
             id = "me",
             extended = "images",
             page = null,
@@ -147,7 +147,7 @@ internal class ProfileApiClient(
         minimal: Boolean,
         pagination: Pagination,
     ): List<LikedListDto> {
-        val response = api.getUsersLikesLists(
+        val response = usersApi.getUsersLikesLists(
             extended = when {
                 minimal -> "min"
                 else -> "cloud9,images"
@@ -164,7 +164,7 @@ internal class ProfileApiClient(
         page: Int,
         extended: String,
     ): List<ListMovieItemDto> {
-        val response = api.getUsersListsListItemsMovie(
+        val response = usersApi.getUsersListsListItemsMovie(
             id = "me",
             listId = listId.value.toString(),
             limit = limit.toString(),
@@ -190,7 +190,7 @@ internal class ProfileApiClient(
         page: Int,
         extended: String,
     ): List<ListShowItemDto> {
-        val response = api.getUsersListsListItemsShow(
+        val response = usersApi.getUsersListsListItemsShow(
             id = "me",
             listId = listId.value.toString(),
             limit = limit.toString(),
@@ -214,7 +214,7 @@ internal class ProfileApiClient(
         limit: Int,
         type: String,
     ): List<SocialActivityItemDto> {
-        val response = api.getUsersActivities(
+        val response = usersApi.getUsersActivities(
             id = "me",
             type = type,
             extended = "full,cloud9,streaming_ids",

@@ -8,6 +8,7 @@ import org.openapitools.client.infrastructure.ApiClient
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.user.data.local.liked.UserLikedListsLocalDataSource
 import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
+import tv.trakt.trakt.core.billing.data.remote.BillingRemoteDataSource
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.discover.sections.recommended.data.local.movies.RecommendedMoviesLocalDataSource
@@ -21,6 +22,7 @@ import tv.trakt.trakt.core.lists.sections.liked.data.local.lists.ListsLikedLocal
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
+import tv.trakt.trakt.core.settings.features.younify.data.remote.YounifyRemoteDataSource
 import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
@@ -36,6 +38,8 @@ internal class LogoutUserUseCase(
     private val collapsingManager: CollapsingManager,
     private val checkInManager: CheckInManager,
     private val apiClients: Array<ApiClient>,
+    private val younifyApiClient: YounifyRemoteDataSource,
+    private val billingApiClient: BillingRemoteDataSource,
     private val localUpNext: HomeUpNextLocalDataSource,
     private val localWatchlistUpNext: HomeWatchlistLocalDataSource,
     private val localUpcoming: HomeUpcomingLocalDataSource,
@@ -64,9 +68,13 @@ internal class LogoutUserUseCase(
             context = appContext,
         )
 
-        apiClients.forEach { api ->
-            api.client.authProvider<BearerAuthProvider>()?.clearToken()
-        }
+        apiClients
+            .forEach { api ->
+                api.client.authProvider<BearerAuthProvider>()?.clearToken()
+            }.also {
+                younifyApiClient.clear()
+                billingApiClient.clear()
+            }
 
         localUpNext.clear()
         localWatchlistUpNext.clear()

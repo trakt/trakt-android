@@ -15,8 +15,6 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import org.openapitools.client.apis.CommentsApi
-import tv.trakt.trakt.common.Config.API_BASE_URL
 import tv.trakt.trakt.common.core.comments.data.remote.CommentsApiClient
 import tv.trakt.trakt.common.core.comments.data.remote.CommentsRemoteDataSource
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentReactionsUseCase
@@ -42,16 +40,8 @@ internal const val COMMENTS_PREFERENCES = "comments_preferences_mobile"
 internal val commentsDataModule = module {
     single<CommentsRemoteDataSource> {
         CommentsApiClient(
-            authedApi = CommentsApi(
-                baseUrl = API_BASE_URL,
-                httpClientEngine = get(),
-                httpClientConfig = get(named("authorizedClientConfig")),
-            ),
-            api = CommentsApi(
-                baseUrl = API_BASE_URL,
-                httpClientEngine = get(),
-                httpClientConfig = get(named("clientConfig")),
-            ),
+            api = get(),
+            authorizedApi = get(named("authorizedCommentsApi")),
             cacheMarker = get(),
         )
     }

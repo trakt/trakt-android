@@ -48,6 +48,7 @@ import tv.trakt.trakt.common.auth.di.commonAuthModule
 import tv.trakt.trakt.common.core.tutorials.di.tutorialsModule
 import tv.trakt.trakt.common.firebase.inappreview.di.inAppReviewModule
 import tv.trakt.trakt.common.helpers.extensions.isTelevision
+import tv.trakt.trakt.common.networking.di.networkingApiModule
 import tv.trakt.trakt.common.networking.di.networkingModule
 
 internal val LocalDrawerVisibility = compositionLocalOf { mutableStateOf(true) }
@@ -99,6 +100,7 @@ class TvActivity : ComponentActivity() {
                 androidLogger()
                 modules(
                     networkingModule,
+                    networkingApiModule,
                     mainModule,
                     tutorialsModule,
                     homeModule,

@@ -77,8 +77,8 @@ internal class DefaultCollapsingManager(
     override suspend fun clear() {
         mutex.withLock {
             cache.clear()
-            dataStore.edit {
-                clear()
+            dataStore.edit { store ->
+                store.clear()
             }
         }
     }

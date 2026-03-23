@@ -7,6 +7,8 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.openapitools.client.apis.CalendarsApi
 import org.openapitools.client.apis.CheckinApi
+import org.openapitools.client.apis.CollectionApi
+import org.openapitools.client.apis.CommentsApi
 import org.openapitools.client.apis.EpisodeApi
 import org.openapitools.client.apis.EpisodesApi
 import org.openapitools.client.apis.HistoryApi
@@ -21,8 +23,8 @@ import org.openapitools.client.apis.SearchApi
 import org.openapitools.client.apis.ShowsApi
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
+import org.openapitools.client.apis.WatchedApi
 import tv.trakt.trakt.common.Config.API_BASE_URL
-import tv.trakt.trakt.common.networking.api.SyncExtrasApi
 import tv.trakt.trakt.common.networking.client.KtorClientFactory
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import tv.trakt.trakt.common.networking.helpers.DefaultCacheMarkerProvider
@@ -61,6 +63,9 @@ val networkingApiModule = module {
         arrayOf(
             get<CalendarsApi>(),
             get<CheckinApi>(),
+            get<CollectionApi>(),
+            get<CommentsApi>(),
+            get<CommentsApi>(named("authorizedCommentsApi")),
             get<EpisodeApi>(),
             get<EpisodesApi>(),
             get<HistoryApi>(),
@@ -68,14 +73,31 @@ val networkingApiModule = module {
             get<MoviesApi>(),
             get<OauthApi>(),
             get<PeopleApi>(),
-            get<ReactionsApi>(),
             get<RatingsApi>(),
+            get<ReactionsApi>(),
             get<RecommendationsApi>(),
             get<SearchApi>(),
+            get<SearchApi>(named("authorizedSearchApi")),
             get<ShowsApi>(),
             get<SyncApi>(),
-            get<SyncExtrasApi>(),
             get<UsersApi>(),
+            get<WatchedApi>(),
+        )
+    }
+
+    single<WatchedApi> {
+        WatchedApi(
+            baseUrl = API_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
+        )
+    }
+
+    single<CollectionApi> {
+        CollectionApi(
+            baseUrl = API_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
         )
     }
 
@@ -167,16 +189,24 @@ val networkingApiModule = module {
         )
     }
 
-    single<SyncApi> {
-        SyncApi(
+    single<CommentsApi> {
+        CommentsApi(
+            baseUrl = API_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("clientConfig")),
+        )
+    }
+
+    single<CommentsApi>(named("authorizedCommentsApi")) {
+        CommentsApi(
             baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
         )
     }
 
-    single<SyncExtrasApi> {
-        SyncExtrasApi(
+    single<SyncApi> {
+        SyncApi(
             baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),

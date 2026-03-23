@@ -1,13 +1,6 @@
 package tv.trakt.trakt.app.core.sync.di
 
-import io.ktor.client.HttpClientConfig
-import io.ktor.client.engine.HttpClientEngine
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import org.openapitools.client.apis.CollectionApi
-import org.openapitools.client.apis.SyncApi
-import org.openapitools.client.apis.UsersApi
-import org.openapitools.client.apis.WatchedApi
 import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncLocalDataSource
 import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncStorage
 import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalDataSource
@@ -20,77 +13,31 @@ import tv.trakt.trakt.app.core.sync.data.remote.movies.MoviesSyncApiClient
 import tv.trakt.trakt.app.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
 import tv.trakt.trakt.app.core.sync.data.remote.shows.ShowsSyncApiClient
 import tv.trakt.trakt.app.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
-import tv.trakt.trakt.common.Config.API_BASE_URL
 
 internal val syncModule = module {
     single<ShowsSyncRemoteDataSource> {
-        val httpClientEngine = get<HttpClientEngine>()
-        val httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig"))
-
         ShowsSyncApiClient(
-            usersApi = UsersApi(
-                baseUrl = API_BASE_URL,
-                httpClientEngine = httpClientEngine,
-                httpClientConfig = httpClientConfig,
-            ),
-            syncApi = SyncApi(
-                baseUrl = API_BASE_URL,
-                httpClientEngine = httpClientEngine,
-                httpClientConfig = httpClientConfig,
-            ),
-            watchedApi = WatchedApi(
-                baseUrl = API_BASE_URL,
-                httpClientEngine = httpClientEngine,
-                httpClientConfig = httpClientConfig,
-            ),
-            collectionApi = CollectionApi(
-                baseUrl = API_BASE_URL,
-                httpClientEngine = httpClientEngine,
-                httpClientConfig = httpClientConfig,
-            ),
+            usersApi = get(),
+            syncApi = get(),
+            watchedApi = get(),
+            collectionApi = get(),
             cacheMarkerProvider = get(),
         )
     }
 
     single<MoviesSyncRemoteDataSource> {
-        val httpClientEngine = get<HttpClientEngine>()
-        val httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig"))
-
         MoviesSyncApiClient(
-            usersApi = UsersApi(
-                baseUrl = API_BASE_URL,
-                httpClientEngine = httpClientEngine,
-                httpClientConfig = httpClientConfig,
-            ),
-            syncApi = SyncApi(
-                baseUrl = API_BASE_URL,
-                httpClientEngine = httpClientEngine,
-                httpClientConfig = httpClientConfig,
-            ),
-            watchedApi = WatchedApi(
-                baseUrl = API_BASE_URL,
-                httpClientEngine = httpClientEngine,
-                httpClientConfig = httpClientConfig,
-            ),
-            collectionApi = CollectionApi(
-                baseUrl = API_BASE_URL,
-                httpClientEngine = httpClientEngine,
-                httpClientConfig = httpClientConfig,
-            ),
+            usersApi = get(),
+            syncApi = get(),
+            watchedApi = get(),
+            collectionApi = get(),
             cacheMarkerProvider = get(),
         )
     }
 
     single<EpisodesSyncRemoteDataSource> {
-        val httpClientEngine = get<HttpClientEngine>()
-        val httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig"))
-
         EpisodesSyncApiClient(
-            syncApi = SyncApi(
-                baseUrl = API_BASE_URL,
-                httpClientEngine = httpClientEngine,
-                httpClientConfig = httpClientConfig,
-            ),
+            syncApi = get(),
             cacheMarkerProvider = get(),
         )
     }

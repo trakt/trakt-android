@@ -60,7 +60,7 @@ internal class MainViewModel(
     private val authorizeUseCase: AuthorizeUserUseCase,
     private val loadWhatsNewUseCase: LoadWhatsNewUseCase,
     private val getUserUseCase: LoadUserProfileUseCase,
-    private val logoutUserUseCase: LogoutUserUseCase,
+    private val logoutUseCase: LogoutUserUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val loadUserWatchlistUseCase: LoadUserWatchlistUseCase,
     private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
@@ -271,7 +271,7 @@ internal class MainViewModel(
         viewModelScope.launch {
             try {
                 loadingUserState.update { LOADING }
-                logoutUserUseCase.logoutUser()
+                logoutUseCase.logoutUser()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)

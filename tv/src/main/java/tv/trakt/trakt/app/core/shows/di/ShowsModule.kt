@@ -1,10 +1,7 @@
 package tv.trakt.trakt.app.core.shows.di
 
 import org.koin.core.module.dsl.viewModel
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import org.openapitools.client.apis.RecommendationsApi
-import org.openapitools.client.apis.ShowsApi
 import tv.trakt.trakt.app.core.shows.ShowsViewModel
 import tv.trakt.trakt.app.core.shows.data.remote.ShowsApiClient
 import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
@@ -16,23 +13,14 @@ import tv.trakt.trakt.app.core.shows.usecase.GetAnticipatedShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetPopularShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetTrendingShowsUseCase
-import tv.trakt.trakt.common.Config.API_BASE_URL
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowStorage
 
 internal val showsDataModule = module {
     single<ShowsRemoteDataSource> {
         ShowsApiClient(
-            api = ShowsApi(
-                baseUrl = API_BASE_URL,
-                httpClientEngine = get(),
-                httpClientConfig = get(named("clientConfig")),
-            ),
-            recommendationsApi = RecommendationsApi(
-                baseUrl = API_BASE_URL,
-                httpClientEngine = get(),
-                httpClientConfig = get(named("authorizedClientConfig")),
-            ),
+            api = get(),
+            recommendationsApi = get(),
         )
     }
 

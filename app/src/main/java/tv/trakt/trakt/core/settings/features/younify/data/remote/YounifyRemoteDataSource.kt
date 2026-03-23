@@ -11,4 +11,6 @@ internal interface YounifyRemoteDataSource {
     )
 
     suspend fun postYounifyUnlink(serviceId: String)
+
+    suspend fun clear()
 }

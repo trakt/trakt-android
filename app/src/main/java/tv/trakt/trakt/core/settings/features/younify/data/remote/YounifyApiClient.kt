@@ -4,6 +4,8 @@ import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.call.body
 import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.plugins.auth.authProvider
+import io.ktor.client.plugins.auth.providers.BearerAuthProvider
 import io.ktor.client.request.delete
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
@@ -49,5 +51,9 @@ internal class YounifyApiClient(
         httpClient.delete {
             url("${baseUrl}younify/users/services/$serviceId")
         }
+    }
+
+    override suspend fun clear() {
+        httpClient.authProvider<BearerAuthProvider>()?.clearToken()
     }
 }

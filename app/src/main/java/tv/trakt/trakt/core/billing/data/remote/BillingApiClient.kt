@@ -3,6 +3,8 @@ package tv.trakt.trakt.core.billing.data.remote
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.plugins.auth.authProvider
+import io.ktor.client.plugins.auth.providers.BearerAuthProvider
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.request.url
@@ -22,5 +24,9 @@ internal class BillingApiClient(
             url("${baseUrl}vip/android/verify")
             setBody(request)
         }
+    }
+
+    override suspend fun clear() {
+        httpClient.authProvider<BearerAuthProvider>()?.clearToken()
     }
 }
