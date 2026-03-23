@@ -9,7 +9,7 @@ targetSdk = "36"
 # Libraries
 
 activityCompose = "1.13.0"
-agp = "8.13.2"
+agp = "9.1.0"
 androidxLifecycle = "2.10.0"
 # Used due to composeBom = "2025.12.00" LazyGrid bug
 androidxFoundation = "1.11.0-beta01"
@@ -38,7 +38,7 @@ openapi = "7.20.0"
 phoenix = "3.0.0"
 qr = "1.0.1"
 timber = "5.0.1"
-tvFoundation = "1.0.0-alpha12"
+tvFoundation = "1.0.0-beta01"
 tvMaterial = "1.0.1"
 workManager = "2.11.1"
 youtube-player = "13.0.0"
