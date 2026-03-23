@@ -2,7 +2,6 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
 }
@@ -65,7 +64,7 @@ android {
 
     sourceSets {
         getByName("main") {
-            java.srcDir("${rootDir}/build/generate-resources/main/src/main")
+            kotlin.directories += "${rootDir}/build/generate-resources/main/src/main"
         }
     }
 }
