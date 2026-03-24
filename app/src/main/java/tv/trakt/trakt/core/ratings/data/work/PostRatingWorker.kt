@@ -19,6 +19,7 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.ratings.DeleteRatingUseCase
 import tv.trakt.trakt.core.ratings.PostRatingUseCase
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates.Source.POST_RATING
@@ -34,6 +35,7 @@ internal class PostRatingWorker(
     workerParams: WorkerParameters,
     val sessionManager: SessionManager,
     val postRatingUseCase: PostRatingUseCase,
+    val deleteRatingUseCase: DeleteRatingUseCase,
     val loadUserRatingUseCase: LoadUserRatingsUseCase,
     val ratingsUpdates: RatingsUpdates,
     val analytics: Analytics,
@@ -101,16 +103,25 @@ internal class PostRatingWorker(
             }
 
             withContext(Dispatchers.IO) {
-                postRatingUseCase.postRating(
-                    mediaId = mediaId.toTraktId(),
-                    mediaType = mediaType,
-                    rating = ratingValue,
-                )
-
-                analytics.ratings.logRatingAdd(
-                    rating = ratingValue,
-                    mediaType = mediaType.value,
-                )
+                if (ratingValue <= 0) {
+                    deleteRatingUseCase.deleteRating(
+                        mediaId = mediaId.toTraktId(),
+                        mediaType = mediaType,
+                    )
+                    analytics.ratings.logRatingRemove(
+                        mediaType = mediaType.value,
+                    )
+                } else {
+                    postRatingUseCase.postRating(
+                        mediaId = mediaId.toTraktId(),
+                        mediaType = mediaType,
+                        rating = ratingValue,
+                    )
+                    analytics.ratings.logRatingAdd(
+                        rating = ratingValue,
+                        mediaType = mediaType.value,
+                    )
+                }
 
                 delay(500)
                 when (mediaType) {

@@ -1,8 +1,10 @@
 package tv.trakt.trakt.common.model.ratings
 
+import android.content.res.Resources
 import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.resources.R
 
 /**
  * User rating for a media item.
@@ -28,19 +30,21 @@ data class UserRating(
             return (rating * 2).toInt()
         }
 
-        // TODO Move to resources.
-        fun getSlug(rating: Float): String {
+        fun getSlug(
+            rating: Float,
+            resources: Resources,
+        ): String {
             return when (rating) {
-                0.5F -> "Weak"
-                1F -> "Terrible"
-                1.5F -> "Bad"
-                2F -> "Poor"
-                2.5F -> "Meh"
-                3F -> "Fair"
-                3.5F -> "Good"
-                4F -> "Great"
-                4.5F -> "Superb"
-                5F -> "Absolute Cinema!"
+                0.5F -> resources.getString(R.string.text_rating_1)
+                1F -> resources.getString(R.string.text_rating_2)
+                1.5F -> resources.getString(R.string.text_rating_3)
+                2F -> resources.getString(R.string.text_rating_4)
+                2.5F -> resources.getString(R.string.text_rating_5)
+                3F -> resources.getString(R.string.text_rating_6)
+                3.5F -> resources.getString(R.string.text_rating_7)
+                4F -> resources.getString(R.string.text_rating_8)
+                4.5F -> resources.getString(R.string.text_rating_9)
+                5F -> resources.getString(R.string.text_rating_10)
                 else -> ""
             }
         }

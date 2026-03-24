@@ -7,6 +7,10 @@ import org.openapitools.client.models.PostSyncRatingsAddRequest
 import org.openapitools.client.models.PostSyncRatingsAddRequestEpisodesInner
 import org.openapitools.client.models.PostSyncRatingsAddRequestMoviesInner
 import org.openapitools.client.models.PostSyncRatingsAddRequestShowsInner
+import org.openapitools.client.models.PostSyncRatingsRemoveRequest
+import org.openapitools.client.models.PostSyncRatingsRemoveRequestEpisodesInner
+import org.openapitools.client.models.PostSyncRatingsRemoveRequestMoviesInner
+import org.openapitools.client.models.PostSyncRatingsRemoveRequestShowsInner
 import org.openapitools.client.models.PostUsersListsListAddRequestEpisodesInnerIds
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
@@ -28,6 +32,25 @@ internal class RatingsApiClient(
                         slug = null,
                         imdb = null,
                         tmdb = 0,
+                    ),
+                ),
+            ),
+        )
+        ratingsApi.postSyncRatingsAdd(request)
+        cacheMarker.invalidate()
+    }
+
+    override suspend fun postEpisodeRating(
+        id: TraktId,
+        rating: Int,
+    ) {
+        val request = PostSyncRatingsAddRequest(
+            episodes = listOf(
+                PostSyncRatingsAddRequestEpisodesInner(
+                    rating = rating,
+                    ids = PostUsersListsListAddRequestEpisodesInnerIds(
+                        trakt = id.value,
+                        tvdb = -1,
                     ),
                 ),
             ),
@@ -58,22 +81,56 @@ internal class RatingsApiClient(
         cacheMarker.invalidate()
     }
 
-    override suspend fun postEpisodeRating(
-        id: TraktId,
-        rating: Int,
-    ) {
-        val request = PostSyncRatingsAddRequest(
-            episodes = listOf(
-                PostSyncRatingsAddRequestEpisodesInner(
-                    rating = rating,
-                    ids = PostUsersListsListAddRequestEpisodesInnerIds(
-                        trakt = id.value,
-                        tvdb = -1,
+    override suspend fun deleteMovieRating(id: TraktId) {
+        ratingsApi.postSyncRatingsRemove(
+            PostSyncRatingsRemoveRequest(
+                movies = listOf(
+                    PostSyncRatingsRemoveRequestMoviesInner(
+                        ids = PostCheckinStartRequestOneOf1MovieIds(
+                            trakt = id.value,
+                            slug = null,
+                            imdb = null,
+                            tmdb = 0,
+                        ),
                     ),
                 ),
             ),
         )
-        ratingsApi.postSyncRatingsAdd(request)
+        cacheMarker.invalidate()
+    }
+
+    override suspend fun deleteEpisodeRating(id: TraktId) {
+        ratingsApi.postSyncRatingsRemove(
+            PostSyncRatingsRemoveRequest(
+                episodes = listOf(
+                    PostSyncRatingsRemoveRequestEpisodesInner(
+                        ids = PostUsersListsListAddRequestEpisodesInnerIds(
+                            trakt = id.value,
+                            tvdb = -1,
+                        ),
+                    ),
+                ),
+            ),
+        )
+        cacheMarker.invalidate()
+    }
+
+    override suspend fun deleteShowRating(id: TraktId) {
+        ratingsApi.postSyncRatingsRemove(
+            PostSyncRatingsRemoveRequest(
+                shows = listOf(
+                    PostSyncRatingsRemoveRequestShowsInner(
+                        ids = PostCheckinStartRequestOneOfOneOfEpisodeIds(
+                            trakt = id.value,
+                            slug = null,
+                            imdb = null,
+                            tmdb = null,
+                            tvdb = -1,
+                        ),
+                    ),
+                ),
+            ),
+        )
         cacheMarker.invalidate()
     }
 }

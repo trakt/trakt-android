@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.ratings.di
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.workmanager.dsl.worker
 import org.koin.dsl.module
+import tv.trakt.trakt.core.ratings.DeleteRatingUseCase
 import tv.trakt.trakt.core.ratings.PostRatingUseCase
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import tv.trakt.trakt.core.ratings.data.RatingsUpdatesStorage
@@ -30,12 +31,19 @@ internal val ratingsModule = module {
         )
     }
 
+    factory {
+        DeleteRatingUseCase(
+            remoteSource = get(),
+        )
+    }
+
     worker {
         PostRatingWorker(
             appContext = androidApplication(),
             workerParams = get(),
             sessionManager = get(),
             postRatingUseCase = get(),
+            deleteRatingUseCase = get(),
             loadUserRatingUseCase = get(),
             ratingsUpdates = get(),
             analytics = get(),

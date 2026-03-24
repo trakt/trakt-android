@@ -121,12 +121,14 @@ internal class FirebaseAnalyticsRatings(
 ) : Analytics.Ratings {
     companion object Event {
         const val RATINGS_ADD = "ratings_add"
+        const val RATINGS_REMOVE = "ratings_remove"
         const val FAVORITES_ADD = "favorites_add"
         const val FAVORITES_REMOVE = "favorites_remove"
     }
 
     init {
         require(eventName(RATINGS_ADD).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
+        require(eventName(RATINGS_REMOVE).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
         require(eventName(FAVORITES_ADD).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
         require(eventName(FAVORITES_REMOVE).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
     }
@@ -139,6 +141,15 @@ internal class FirebaseAnalyticsRatings(
             eventName(RATINGS_ADD),
             bundleOf(
                 PARAMETER_RATING to rating,
+                PARAMETER_MEDIA_TYPE to mediaType.lowercase(),
+            ),
+        )
+    }
+
+    override fun logRatingRemove(mediaType: String) {
+        firebase.logEvent(
+            eventName(RATINGS_REMOVE),
+            bundleOf(
                 PARAMETER_MEDIA_TYPE to mediaType.lowercase(),
             ),
         )

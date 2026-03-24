@@ -61,6 +61,11 @@ interface Analytics {
         )
 
         /**
+         * Logs the removal of a rating.
+         */
+        fun logRatingRemove(mediaType: String)
+
+        /**
          * Logs the removal of a favorite media.
          */
         fun logFavoriteAdd(mediaType: String)

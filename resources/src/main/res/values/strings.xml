@@ -340,7 +340,19 @@
   <string name="warning_prompt_stop_checkin">Are you sure you want to stop watching \"%s\"?</string>
   <string name="warning_prompt_younify_unlink">Are you sure you want to unlink %s?</string>
 
-  <!--  Non Translatable  -->
+  <!-- TODO -->
+
+  <string name="text_no_rating">No rating</string>
+  <string name="text_rating_1">Weak</string>
+  <string name="text_rating_2">Terrible</string>
+  <string name="text_rating_3">Bad</string>
+  <string name="text_rating_4">Poor</string>
+  <string name="text_rating_5">Meh</string>
+  <string name="text_rating_6">Fair</string>
+  <string name="text_rating_7">Good</string>
+  <string name="text_rating_8">Great</string>
+  <string name="text_rating_9">Superb</string>
+  <string name="text_rating_10">Absolute Cinema!</string>
 
   <string name="translated_value_library_plex" translatable="false">Plex</string>
 

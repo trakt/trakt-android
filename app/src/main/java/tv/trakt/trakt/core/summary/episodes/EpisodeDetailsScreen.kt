@@ -73,6 +73,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
+import tv.trakt.trakt.core.ratings.ui.UserRatingBar
 import tv.trakt.trakt.core.summary.episodes.features.actors.EpisodeActorsView
 import tv.trakt.trakt.core.summary.episodes.features.comments.EpisodeCommentsView
 import tv.trakt.trakt.core.summary.episodes.features.context.history.EpisodeDetailsHistorySheet
@@ -88,7 +89,6 @@ import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
-import tv.trakt.trakt.ui.components.UserRatingBar
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.vip.VipBanner
@@ -168,6 +168,10 @@ internal fun EpisodeDetailsScreen(
         },
         onRatingClick = {
             viewModel.addRating(it)
+            haptic.performHapticFeedback(Confirm)
+        },
+        onRatingRemoveClick = {
+            viewModel.removeRating()
             haptic.performHapticFeedback(Confirm)
         },
         onVipClick = onNavigateVip,
@@ -265,6 +269,7 @@ internal fun EpisodeDetailsContent(
     onHistoryClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
     onPersonClick: ((Person) -> Unit)? = null,
     onRatingClick: ((Int) -> Unit)? = null,
+    onRatingRemoveClick: (() -> Unit)? = null,
     onVipClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
     onMetaCollapseClick: ((Boolean) -> Unit)? = null,
@@ -393,6 +398,7 @@ internal fun EpisodeDetailsContent(
                         visible = isWatched && isLoaded,
                         rating = state.episodeUserRating?.rating,
                         onRatingClick = onRatingClick ?: {},
+                        onRatingRemoveClick = onRatingRemoveClick ?: {},
                         onRatingDrag = { ratingAlphaMaskActive = it },
                     )
                 }
@@ -554,6 +560,7 @@ fun DetailsRating(
     rating: UserRating?,
     onRatingDrag: (Boolean) -> Unit,
     onRatingClick: (Int) -> Unit,
+    onRatingRemoveClick: () -> Unit,
 ) {
     var animated by remember { mutableStateOf(false) }
 
@@ -578,6 +585,7 @@ fun DetailsRating(
                     onRatingDrag(it)
                 },
                 onRatingClick = onRatingClick,
+                onRatingRemoveClick = onRatingRemoveClick,
                 modifier = Modifier.padding(
                     horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
                 ),

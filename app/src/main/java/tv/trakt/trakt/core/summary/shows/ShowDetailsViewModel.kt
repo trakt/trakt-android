@@ -352,16 +352,16 @@ internal class ShowDetailsViewModel(
                 }
 
                 val userRatings = loadRatingUseCase.loadLocalShows()
-                val userFavorites = loadFavoritesUseCase.loadLocalShows()
-                    .associateBy { it.show.ids.trakt }
+                val userFavorite = loadFavoritesUseCase.loadLocalShows()
+                    .associateBy { it.show.ids.trakt }[showId] != null
 
                 val userRating = userRatings[showId]?.copy(
-                    favorite = userFavorites[showId] != null,
+                    favorite = userFavorite,
                 ) ?: UserRating(
                     mediaId = showId,
                     mediaType = SHOW,
                     rating = 0,
-                    favorite = userFavorites[showId] != null,
+                    favorite = userFavorite,
                 )
 
                 showUserRatingsState.update {
@@ -378,39 +378,7 @@ internal class ShowDetailsViewModel(
         }
     }
 
-    fun toggleWatchlist() {
-        if (showState.value == null ||
-            loadingState.value.isLoading ||
-            loadingProgress.value.isLoading ||
-            loadingLists.value.isLoading
-        ) {
-            return
-        }
-
-        if (showProgressState.value?.inWatchlist == true) {
-            removeFromWatchlist()
-        } else {
-            addToWatchlist()
-        }
-    }
-
-    fun toggleList(
-        listId: TraktId,
-        add: Boolean,
-    ) {
-        if (showState.value == null ||
-            loadingState.value.isLoading ||
-            loadingProgress.value.isLoading ||
-            loadingLists.value.isLoading
-        ) {
-            return
-        }
-
-        when {
-            add -> addToList(listId)
-            else -> removeFromList(listId)
-        }
-    }
+    // History
 
     fun addToWatched(customDate: DateSelectionResult? = null) {
         if (showState.value == null ||
@@ -560,6 +528,42 @@ internal class ShowDetailsViewModel(
             } finally {
                 loadingProgress.update { DONE }
             }
+        }
+    }
+
+    // Lists
+
+    fun toggleWatchlist() {
+        if (showState.value == null ||
+            loadingState.value.isLoading ||
+            loadingProgress.value.isLoading ||
+            loadingLists.value.isLoading
+        ) {
+            return
+        }
+
+        if (showProgressState.value?.inWatchlist == true) {
+            removeFromWatchlist()
+        } else {
+            addToWatchlist()
+        }
+    }
+
+    fun toggleList(
+        listId: TraktId,
+        add: Boolean,
+    ) {
+        if (showState.value == null ||
+            loadingState.value.isLoading ||
+            loadingProgress.value.isLoading ||
+            loadingLists.value.isLoading
+        ) {
+            return
+        }
+
+        when {
+            add -> addToList(listId)
+            else -> removeFromList(listId)
         }
     }
 
@@ -731,26 +735,7 @@ internal class ShowDetailsViewModel(
         }
     }
 
-    fun navigateToEpisode(
-        show: Show,
-        episode: Episode,
-    ) {
-        if (navigateEpisode.value != null ||
-            loadingState.value.isLoading ||
-            loadingProgress.value.isLoading ||
-            loadingLists.value.isLoading
-        ) {
-            return
-        }
-
-        viewModelScope.launch {
-            episodeLocalDataSource.upsertEpisodes(listOf(episode))
-
-            navigateEpisode.update {
-                Pair(show.ids.trakt, episode)
-            }
-        }
-    }
+    // Favorites
 
     fun toggleFavorite(add: Boolean) {
         if (showState.value == null ||
@@ -854,6 +839,8 @@ internal class ShowDetailsViewModel(
         }
     }
 
+    // Ratings
+
     fun addRating(newRating: Int) {
         ratingJob?.cancel()
         ratingJob = viewModelScope.launch {
@@ -879,6 +866,62 @@ internal class ShowDetailsViewModel(
                 mediaType = SHOW,
                 rating = newRating,
             )
+        }
+    }
+
+    fun removeRating() {
+        ratingJob?.cancel()
+        ratingJob = viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+
+            if (showUserRatingsState.value?.rating?.rating == 0) {
+                Timber.d("Rating is already 0, skipping removal")
+                return@launch
+            }
+
+            showUserRatingsState.update {
+                UserRatingsState(
+                    rating = UserRating(
+                        mediaId = showId,
+                        mediaType = SHOW,
+                        rating = 0,
+                        favorite = it?.rating?.favorite == true,
+                    ),
+                    loading = DONE,
+                )
+            }
+
+            PostRatingWorker.scheduleOneTime(
+                appContext = appContext,
+                mediaId = showId,
+                mediaType = SHOW,
+                rating = 0, // A rating of 0 indicates removal of rating
+            )
+        }
+    }
+
+    // Misc
+
+    fun navigateToEpisode(
+        show: Show,
+        episode: Episode,
+    ) {
+        if (navigateEpisode.value != null ||
+            loadingState.value.isLoading ||
+            loadingProgress.value.isLoading ||
+            loadingLists.value.isLoading
+        ) {
+            return
+        }
+
+        viewModelScope.launch {
+            episodeLocalDataSource.upsertEpisodes(listOf(episode))
+
+            navigateEpisode.update {
+                Pair(show.ids.trakt, episode)
+            }
         }
     }
 

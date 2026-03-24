@@ -52,6 +52,10 @@ internal class DebugAnalyticsRatings : Analytics.Ratings {
         Timber.d("logRatingAdd: rating=$rating, mediaType=${mediaType.lowercase()}")
     }
 
+    override fun logRatingRemove(mediaType: String) {
+        Timber.d("logRatingRemove: mediaType=${mediaType.lowercase()}")
+    }
+
     override fun logFavoriteAdd(mediaType: String) {
         Timber.d("logFavoriteAdd: mediaType=${mediaType.lowercase()}")
     }

@@ -8,13 +8,19 @@ internal interface RatingsRemoteDataSource {
         rating: Int,
     )
 
+    suspend fun deleteMovieRating(id: TraktId)
+
     suspend fun postShowRating(
         id: TraktId,
         rating: Int,
     )
 
+    suspend fun deleteShowRating(id: TraktId)
+
     suspend fun postEpisodeRating(
         id: TraktId,
         rating: Int,
     )
+
+    suspend fun deleteEpisodeRating(id: TraktId)
 }

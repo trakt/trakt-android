@@ -372,6 +372,8 @@ internal class EpisodeDetailsViewModel(
         }
     }
 
+    // History
+
     fun addToWatched(customDate: DateSelectionResult? = null) {
         if (isLoading()) {
             return
@@ -511,29 +513,7 @@ internal class EpisodeDetailsViewModel(
         }
     }
 
-    fun navigateToEpisode(episode: Episode) {
-        if (isLoading()) {
-            return
-        }
-        if (episode.ids.trakt == episodeId) {
-            // Same episode, don't navigate
-            return
-        }
-        viewModelScope.launch {
-            episodeLocalDataSource.upsertEpisodes(listOf(episode))
-            navigateEpisode.update {
-                Pair(showId, episode)
-            }
-        }
-    }
-
-    fun clearInfo() {
-        infoState.update { null }
-    }
-
-    fun clearNavigation() {
-        navigateEpisode.update { null }
-    }
+    // Ratings
 
     fun addRating(newRating: Int) {
         ratingJob?.cancel()
@@ -560,6 +540,65 @@ internal class EpisodeDetailsViewModel(
                 rating = newRating,
             )
         }
+    }
+
+    fun removeRating() {
+        ratingJob?.cancel()
+        ratingJob = viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+
+            if (episodeUserRatingsState.value?.rating?.rating == 0) {
+                Timber.d("Rating is already 0, skipping removal")
+                return@launch
+            }
+
+            episodeUserRatingsState.update {
+                UserRatingsState(
+                    rating = UserRating(
+                        mediaId = episodeId,
+                        mediaType = EPISODE,
+                        rating = 0,
+                        favorite = it?.rating?.favorite == true,
+                    ),
+                    loading = DONE,
+                )
+            }
+
+            PostRatingWorker.scheduleOneTime(
+                appContext = appContext,
+                mediaId = episodeId,
+                mediaType = EPISODE,
+                rating = 0, // A rating of 0 indicates removal of rating
+            )
+        }
+    }
+
+    // Misc
+
+    fun navigateToEpisode(episode: Episode) {
+        if (isLoading()) {
+            return
+        }
+        if (episode.ids.trakt == episodeId) {
+            // Same episode, don't navigate
+            return
+        }
+        viewModelScope.launch {
+            episodeLocalDataSource.upsertEpisodes(listOf(episode))
+            navigateEpisode.update {
+                Pair(showId, episode)
+            }
+        }
+    }
+
+    fun clearInfo() {
+        infoState.update { null }
+    }
+
+    fun clearNavigation() {
+        navigateEpisode.update { null }
     }
 
     fun setMetaCollapsed(collapsed: Boolean) {

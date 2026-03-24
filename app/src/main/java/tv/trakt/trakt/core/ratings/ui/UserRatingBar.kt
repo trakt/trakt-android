@@ -1,4 +1,4 @@
-package tv.trakt.trakt.ui.components
+package tv.trakt.trakt.core.ratings.ui
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
@@ -32,7 +32,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -51,6 +53,7 @@ import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
+import kotlin.math.abs
 
 @Composable
 internal fun UserRatingBar(
@@ -62,9 +65,11 @@ internal fun UserRatingBar(
     size: Dp = 23.dp,
     onRatingDrag: (Boolean) -> Unit = {},
     onRatingClick: (Int) -> Unit = {},
+    onRatingRemoveClick: () -> Unit = {},
     onFavoriteClick: () -> Unit = {},
 ) {
     val scope = rememberCoroutineScope()
+    val context = LocalResources.current
     val tutorials = koinInject<TutorialsManager>()
 
     val stars = remember(rating) {
@@ -115,10 +120,15 @@ internal fun UserRatingBar(
         modifier = modifier.padding(top = 22.dp),
     ) {
         if (ratingAlphaMaskActive) {
-            val ratingText = dragStars.toString().removeSuffix(".0")
-            val slugText = UserRating.getSlug(dragStars)
+            val ratingText = if (dragStars == 0f) {
+                stringResource(R.string.text_no_rating)
+            } else {
+                val numText = dragStars.toString().removeSuffix(".0")
+                val slugText = UserRating.getSlug(dragStars, context)
+                "$numText • $slugText"
+            }
             Text(
-                text = "$ratingText • $slugText",
+                text = ratingText,
                 textAlign = TextAlign.Center,
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.meta.copy(
@@ -148,6 +158,7 @@ internal fun UserRatingBar(
                             val starUnit = starSizePx + spacingPx
 
                             fun xToStars(x: Float): Float {
+                                if (x < 0f) return 0f
                                 val clampedX = x.coerceIn(0f, totalWidth)
                                 val starIndex = (clampedX / starUnit).toInt().coerceIn(0, 4)
                                 val posInUnit = clampedX - starIndex * starUnit
@@ -161,6 +172,7 @@ internal fun UserRatingBar(
                             }
 
                             fun xToIndex(x: Float): Int {
+                                if (x < 0f) return -1
                                 val clampedX = x.coerceIn(0f, totalWidth)
                                 return (clampedX / starUnit).toInt().coerceIn(0, 4)
                             }
@@ -181,10 +193,10 @@ internal fun UserRatingBar(
                                         .firstOrNull { it.id == down.id } ?: break
                                     if (!change.pressed) break
 
-                                    val dx = kotlin.math.abs(
+                                    val dx = abs(
                                         change.position.x - startPosition.x,
                                     )
-                                    val dy = kotlin.math.abs(
+                                    val dy = abs(
                                         change.position.y - startPosition.y,
                                     )
 
@@ -256,7 +268,11 @@ internal fun UserRatingBar(
 
                                 dragActiveIndex = -1
                                 val finalRating = dragStars
-                                onRatingClick(UserRating.scaleTo10(finalRating))
+                                if (finalRating == 0f) {
+                                    onRatingRemoveClick()
+                                } else {
+                                    onRatingClick(UserRating.scaleTo10(finalRating))
+                                }
 
                                 lastClickedIndex.intValue =
                                     (finalRating - 0.5f).toInt().coerceIn(0, 4)
@@ -269,7 +285,7 @@ internal fun UserRatingBar(
                 ) {
                     repeat(5) { index ->
                         val distance = if (isDragging && dragActiveIndex >= 0) {
-                            kotlin.math.abs(index - dragActiveIndex)
+                            abs(index - dragActiveIndex)
                         } else {
                             Int.MAX_VALUE
                         }

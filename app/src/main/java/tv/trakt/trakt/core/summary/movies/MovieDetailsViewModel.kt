@@ -420,6 +420,8 @@ internal class MovieDetailsViewModel(
         }
     }
 
+    // History
+
     fun addToWatched(customDate: DateSelectionResult? = null) {
         if (movieState.value == null ||
             loadingState.value.isLoading ||
@@ -565,6 +567,8 @@ internal class MovieDetailsViewModel(
         }
     }
 
+    // Watchlist
+
     fun toggleWatchlist() {
         if (movieState.value == null ||
             loadingState.value.isLoading ||
@@ -578,37 +582,6 @@ internal class MovieDetailsViewModel(
             removeFromWatchlist()
         } else {
             addToWatchlist()
-        }
-    }
-
-    fun toggleList(
-        listId: TraktId,
-        add: Boolean,
-    ) {
-        if (movieState.value == null ||
-            loadingState.value.isLoading ||
-            loadingProgress.value.isLoading ||
-            loadingLists.value.isLoading
-        ) {
-            return
-        }
-
-        when {
-            add -> addToList(listId)
-            else -> removeFromList(listId)
-        }
-    }
-
-    fun toggleFavorite(add: Boolean) {
-        if (movieState.value == null ||
-            loadingFavorite.value.isLoading
-        ) {
-            return
-        }
-
-        when {
-            add -> addToFavorites()
-            else -> removeFromFavorites()
         }
     }
 
@@ -688,6 +661,26 @@ internal class MovieDetailsViewModel(
             } finally {
                 loadingLists.update { DONE }
             }
+        }
+    }
+
+    // Lists
+
+    fun toggleList(
+        listId: TraktId,
+        add: Boolean,
+    ) {
+        if (movieState.value == null ||
+            loadingState.value.isLoading ||
+            loadingProgress.value.isLoading ||
+            loadingLists.value.isLoading
+        ) {
+            return
+        }
+
+        when {
+            add -> addToList(listId)
+            else -> removeFromList(listId)
         }
     }
 
@@ -777,6 +770,21 @@ internal class MovieDetailsViewModel(
                     hasLists = listsCount > 0,
                 )
             }
+        }
+    }
+
+    // Favorites
+
+    fun toggleFavorite(add: Boolean) {
+        if (movieState.value == null ||
+            loadingFavorite.value.isLoading
+        ) {
+            return
+        }
+
+        when {
+            add -> addToFavorites()
+            else -> removeFromFavorites()
         }
     }
 
@@ -877,6 +885,8 @@ internal class MovieDetailsViewModel(
         }
     }
 
+    // Ratings
+
     fun addRating(newRating: Int) {
         ratingJob?.cancel()
         ratingJob = viewModelScope.launch {
@@ -904,6 +914,41 @@ internal class MovieDetailsViewModel(
             )
         }
     }
+
+    fun removeRating() {
+        ratingJob?.cancel()
+        ratingJob = viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+
+            if (movieUserRatingsState.value?.rating?.rating == 0) {
+                Timber.d("Rating is already 0, skipping removal")
+                return@launch
+            }
+
+            movieUserRatingsState.update {
+                UserRatingsState(
+                    rating = UserRating(
+                        mediaId = movieId,
+                        mediaType = MOVIE,
+                        rating = 0,
+                        favorite = it?.rating?.favorite == true,
+                    ),
+                    loading = DONE,
+                )
+            }
+
+            PostRatingWorker.scheduleOneTime(
+                appContext = appContext,
+                mediaId = movieId,
+                mediaType = MOVIE,
+                rating = 0, // A rating of 0 indicates removal of rating
+            )
+        }
+    }
+
+    // Misc
 
     fun clearInfo() {
         infoState.update { null }
