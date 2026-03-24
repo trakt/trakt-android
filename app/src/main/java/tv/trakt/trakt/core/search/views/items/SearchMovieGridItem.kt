@@ -72,10 +72,11 @@ internal fun SearchMovieGridItem(
                 Text(
                     text = remember {
                         val runtime = item.movie.runtime?.inWholeMinutes
+                        val year = item.movie.year?.toString() ?: "TBA"
                         if (runtime != null) {
-                            "${item.movie.year} • ${runtime.durationFormat()}"
+                            "$year • ${runtime.durationFormat()}"
                         } else {
-                            item.movie.year.toString()
+                            year
                         }
                     },
                     style = TraktTheme.typography.cardTitle,
