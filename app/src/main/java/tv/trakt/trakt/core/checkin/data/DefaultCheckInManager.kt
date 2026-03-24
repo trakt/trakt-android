@@ -50,7 +50,7 @@ internal class DefaultCheckInManager(
     private val userRemoteDataSource: UserRemoteDataSource,
     private val cacheMarkerProvider: CacheMarkerProvider,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
-    private val loadUserWatchlistUseCase: LoadUserWatchlistUseCase,
+    private val loadUserWatchlistMinUseCase: LoadUserWatchlistUseCase,
 ) : CheckInManager {
     private val state = MutableStateFlow<CheckInState>(CheckInState.Idle)
     private var lastCheckAt: Instant? = null
@@ -315,8 +315,10 @@ internal class DefaultCheckInManager(
     private suspend fun loadWatchlistIfNeeded(state: CheckInState) {
         try {
             when (state) {
-                is ActiveMovie, is ActiveEpisode -> loadUserWatchlistUseCase.loadWatchlist()
-                else -> Unit
+                is ActiveMovie, is ActiveEpisode -> {
+                    loadUserWatchlistMinUseCase.loadWatchlist()
+                }
+                else -> {}
             }
         } catch (error: Exception) {
             error.rethrowCancellation {

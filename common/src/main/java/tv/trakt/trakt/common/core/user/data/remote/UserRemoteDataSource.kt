@@ -23,6 +23,7 @@ import tv.trakt.trakt.common.networking.UserWatchingDto
 import tv.trakt.trakt.common.networking.WatchedShowDto
 import tv.trakt.trakt.common.networking.WatchlistItemDto
 import tv.trakt.trakt.common.networking.WatchlistMovieDto
+import tv.trakt.trakt.common.networking.WatchlistShowDto
 import java.time.LocalDate
 import java.time.ZonedDateTime
 
@@ -55,12 +56,22 @@ interface UserRemoteDataSource {
         sort: String? = null,
     ): List<SyncFavoriteMovieDto>
 
+    suspend fun getWatchlistMinimal(): Pair<Set<TraktId>, Set<TraktId>>
+
     suspend fun getWatchlist(
         page: Int? = null,
         limit: Int? = null,
         extended: String? = null,
-        sort: String? = null,
+        sorting: Sorting? = null,
     ): List<WatchlistItemDto>
+
+    suspend fun getWatchlistShows(
+        page: Int? = null,
+        limit: Int? = null,
+        extended: String? = null,
+        sorting: Sorting? = null,
+        hide: String? = null,
+    ): List<WatchlistShowDto>
 
     suspend fun getWatchlistMovies(
         page: Int? = null,

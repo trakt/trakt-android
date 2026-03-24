@@ -54,7 +54,8 @@ import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SE
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
-import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
@@ -69,8 +70,8 @@ internal class HomeUpNextViewModel(
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val appReviewUseCase: RequestAppReviewUseCase,
     private val homeUpNextSource: HomeUpNextLocalDataSource,
-    private val userWatchlistSource: UserWatchlistLocalDataSource,
     private val homePersonalActivitySource: HomePersonalLocalDataSource,
+    private val watchlistUpdates: WatchlistUpdates,
     private val upNextUpdates: UpNextUpdates,
     private val showUpdates: ShowDetailsUpdates,
     private val episodeUpdates: EpisodeDetailsUpdates,
@@ -130,7 +131,7 @@ internal class HomeUpNextViewModel(
     @OptIn(FlowPreview::class)
     private fun observeData() {
         merge(
-            userWatchlistSource.observeUpdates(),
+            watchlistUpdates.observeUpdates(Default),
             homePersonalActivitySource.observeUpdates(),
             showUpdates.observeUpdates(Source.PROGRESS),
             showUpdates.observeUpdates(Source.SEASONS),

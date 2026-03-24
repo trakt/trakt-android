@@ -44,8 +44,8 @@ internal val syncModule = module {
             sessionManager = get(),
             userWatchlistUseCase = get(),
             userProgressUseCase = get(),
-            userWatchlistLocalSource = get(),
             userProgressLocalSource = get(),
+            watchlistUpdates = get(),
         )
     }
 

@@ -22,7 +22,8 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowWatchlistUseCase
 import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
-import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
+import tv.trakt.trakt.core.user.data.local.watchlist.UserWatchlistLocalDataSource
+import tv.trakt.trakt.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 
@@ -32,6 +33,7 @@ internal class WatchlistShowContextViewModel(
     private val updateHistoryUseCase: UpdateShowHistoryUseCase,
     private val userProgressLocalSource: UserProgressLocalDataSource,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
+    private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalDataSource,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
@@ -68,6 +70,7 @@ internal class WatchlistShowContextViewModel(
 
                 updateWatchlistUseCase.removeFromWatchlist(showId = show.ids.trakt)
                 userWatchlistLocalSource.removeShows(setOf(show.ids.trakt))
+                userWatchlistMinLocalSource.removeShows(setOf(show.ids.trakt))
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -94,6 +97,7 @@ internal class WatchlistShowContextViewModel(
                     customDate = customDate,
                 )
                 userWatchlistLocalSource.removeShows(setOf(show.ids.trakt))
+                userWatchlistMinLocalSource.removeShows(setOf(show.ids.trakt))
 
                 loadProgressUseCase.loadShowsProgress()
 

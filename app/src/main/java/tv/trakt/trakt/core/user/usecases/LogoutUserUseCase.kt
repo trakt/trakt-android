@@ -25,11 +25,12 @@ import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
 import tv.trakt.trakt.core.settings.features.younify.data.remote.YounifyRemoteDataSource
 import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
-import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.data.local.favorites.UserFavoritesLocalDataSource
 import tv.trakt.trakt.core.user.data.local.library.UserLibraryLocalDataSource
 import tv.trakt.trakt.core.user.data.local.ratings.UserRatingsLocalDataSource
 import tv.trakt.trakt.core.user.data.local.reactions.UserReactionsLocalDataSource
+import tv.trakt.trakt.core.user.data.local.watchlist.UserWatchlistLocalDataSource
+import tv.trakt.trakt.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 
 internal class LogoutUserUseCase(
@@ -52,6 +53,7 @@ internal class LogoutUserUseCase(
     private val localRecommendedMovies: RecommendedMoviesLocalDataSource,
     private val localUserProgress: UserProgressLocalDataSource,
     private val localUserWatchlist: UserWatchlistLocalDataSource,
+    private val localUserWatchlistMin: UserWatchlistMinimalLocalDataSource,
     private val localUserFavorites: UserFavoritesLocalDataSource,
     private val localUserLibrary: UserLibraryLocalDataSource,
     private val localUserRatings: UserRatingsLocalDataSource,
@@ -86,6 +88,7 @@ internal class LogoutUserUseCase(
         localListsLiked.clear()
         localUserProgress.clear()
         localUserWatchlist.clear()
+        localUserWatchlistMin.clear()
         localUserLists.clear()
         localUserLikedLists.clear()
         localUserFavorites.clear()

@@ -48,8 +48,6 @@ import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.AddPersonalLi
 import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistViewModel
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.AllWatchlistViewModel
-import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource
-import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistStorage
 import tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies.WatchlistMovieContextViewModel
 import tv.trakt.trakt.core.lists.sections.watchlist.features.context.shows.WatchlistShowContextViewModel
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistUseCase
@@ -59,6 +57,8 @@ import tv.trakt.trakt.core.lists.sheets.create.CreateListViewModel
 import tv.trakt.trakt.core.lists.sheets.create.usecases.CreateListUseCase
 import tv.trakt.trakt.core.lists.sheets.edit.EditListViewModel
 import tv.trakt.trakt.core.lists.sheets.edit.usecases.EditListUseCase
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates
+import tv.trakt.trakt.core.user.data.local.watchlist.WatclistUpdatesStorage
 
 internal const val LISTS_PREFERENCES = "lists_preferences_mobile"
 
@@ -77,10 +77,6 @@ internal val listsDataModule = module {
         )
     }
 
-    single<AllWatchlistLocalDataSource> {
-        AllWatchlistStorage()
-    }
-
     single<ListsPersonalLocalDataSource> {
         ListsPersonalStorage()
     }
@@ -96,24 +92,31 @@ internal val listsDataModule = module {
     single<ListsLikedItemsLocalDataSource> {
         ListsLikedItemsStorage()
     }
+
+    single<WatchlistUpdates> {
+        WatclistUpdatesStorage()
+    }
 }
 
 internal val listsModule = module {
     factory {
         GetWatchlistUseCase(
-            loadUserWatchlistUseCase = get(),
+            remoteSource = get(),
+            userWatchlistLocalDataSource = get(),
         )
     }
 
     factory {
         GetShowsWatchlistUseCase(
-            loadUserWatchlistUseCase = get(),
+            remoteSource = get(),
+            userWatchlistLocalDataSource = get(),
         )
     }
 
     factory {
         GetMoviesWatchlistUseCase(
-            loadUserWatchlistUseCase = get(),
+            remoteSource = get(),
+            userWatchlistLocalDataSource = get(),
         )
     }
 
@@ -215,14 +218,13 @@ internal val listsModule = module {
             getWatchlistUseCase = get(),
             getShowsWatchlistUseCase = get(),
             getMoviesWatchlistUseCase = get(),
-            userWatchlistSource = get(),
-            allWatchlistSource = get(),
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
             collectionStateProvider = get(),
             modeManager = get(),
             sessionManager = get(),
             collapsingManager = get(),
+            watchlistUpdates = get(),
         )
     }
 
@@ -231,7 +233,6 @@ internal val listsModule = module {
             getWatchlistUseCase = get(),
             getShowsWatchlistUseCase = get(),
             getMoviesWatchlistUseCase = get(),
-            allWatchlistLocalDataSource = get(),
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
             loadUserProgressUseCase = get(),
@@ -239,6 +240,7 @@ internal val listsModule = module {
             showUpdatesSource = get(),
             episodeUpdatesSource = get(),
             movieDetailsUpdates = get(),
+            watchlistUpdates = get(),
             collectionStateProvider = get(),
             modeManager = get(),
             sessionManager = get(),
@@ -311,11 +313,13 @@ internal val listsModule = module {
             appContext = androidApplication(),
             updateMovieWatchlistUseCase = get(),
             userWatchlistLocalSource = get(),
+            userWatchlistMinLocalSource = get(),
             updateMovieHistoryUseCase = get(),
             loadProgressUseCase = get(),
             sessionManager = get(),
             checkInManager = get(),
             analytics = get(),
+            watchlistUpdates = get(),
         )
     }
 
@@ -326,6 +330,7 @@ internal val listsModule = module {
             updateHistoryUseCase = get(),
             userProgressLocalSource = get(),
             userWatchlistLocalSource = get(),
+            userWatchlistMinLocalSource = get(),
             loadProgressUseCase = get(),
             sessionManager = get(),
             analytics = get(),
@@ -342,8 +347,10 @@ internal val listsModule = module {
             removeListItemUseCase = get(),
             userProgressLocalSource = get(),
             userWatchlistLocalSource = get(),
+            userWatchlistMinLocalSource = get(),
             loadProgressUseCase = get(),
-            loadWatchlistUseCase = get(),
+            loadWatchlistMinUseCase = get(),
+            watchlistUpdates = get(),
             sessionManager = get(),
             checkInManager = get(),
             analytics = get(),
@@ -359,8 +366,10 @@ internal val listsModule = module {
             removeListItemUseCase = get(),
             userProgressLocalSource = get(),
             userWatchlistLocalSource = get(),
+            userWatchlistMinLocalSource = get(),
             loadProgressUseCase = get(),
-            loadWatchlistUseCase = get(),
+            loadWatchlistMinUseCase = get(),
+            watchlistUpdates = get(),
             sessionManager = get(),
             analytics = get(),
         )

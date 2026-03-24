@@ -39,8 +39,6 @@ import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserListsStorage
 import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserProgressStorage
-import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
-import tv.trakt.trakt.core.user.data.local.UserWatchlistStorage
 import tv.trakt.trakt.core.user.data.local.favorites.UserFavoritesLocalDataSource
 import tv.trakt.trakt.core.user.data.local.favorites.UserFavoritesStorage
 import tv.trakt.trakt.core.user.data.local.library.UserLibraryLocalDataSource
@@ -49,6 +47,10 @@ import tv.trakt.trakt.core.user.data.local.ratings.UserRatingsLocalDataSource
 import tv.trakt.trakt.core.user.data.local.ratings.UserRatingsStorage
 import tv.trakt.trakt.core.user.data.local.reactions.UserReactionsLocalDataSource
 import tv.trakt.trakt.core.user.data.local.reactions.UserReactionsStorage
+import tv.trakt.trakt.core.user.data.local.watchlist.UserWatchlistLocalDataSource
+import tv.trakt.trakt.core.user.data.local.watchlist.UserWatchlistStorage
+import tv.trakt.trakt.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
+import tv.trakt.trakt.core.user.data.local.watchlist.minimal.UserWatchlistMinimalStorage
 import tv.trakt.trakt.core.user.usecases.LoadUserProfileUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserFavoritesUseCase
@@ -69,6 +71,7 @@ internal val profileDataModule = module {
             historyApi = get(),
             calendarsApi = get(),
             syncApi = get(),
+            v3Api = get(),
             cacheMarkerProvider = get(),
         )
     }
@@ -76,6 +79,12 @@ internal val profileDataModule = module {
     single<UserWatchlistLocalDataSource> {
         UserWatchlistStorage(
             homeWatchlistStorage = get(clazz = HomeWatchlistLocalDataSource::class),
+        )
+    }
+
+    single<UserWatchlistMinimalLocalDataSource> {
+        UserWatchlistMinimalStorage(
+//            homeWatchlistStorage = get(clazz = HomeWatchlistLocalDataSource::class),
         )
     }
 
@@ -137,6 +146,13 @@ internal val profileModule = module {
     factory {
         GetThisMonthUseCase(
             loadUserProgressUseCase = get(),
+        )
+    }
+
+    factory {
+        LoadUserWatchlistUseCase(
+            remoteSource = get(),
+            localSource = get(),
         )
     }
 
@@ -222,6 +238,7 @@ internal val profileModule = module {
             localRecommendedShows = get(),
             localRecommendedMovies = get(),
             localUserWatchlist = get(),
+            localUserWatchlistMin = get(),
             localUserProgress = get(),
             localUserLists = get(),
             localUserLikedLists = get(),

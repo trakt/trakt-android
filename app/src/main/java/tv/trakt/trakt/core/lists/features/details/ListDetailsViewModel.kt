@@ -106,6 +106,11 @@ internal class ListDetailsViewModel(
         observeCollection()
     }
 
+    private fun observeCollection() {
+        collectionStateProvider
+            .launchIn(viewModelScope)
+    }
+
     private fun loadUser() {
         viewModelScope.launch {
             try {
@@ -139,10 +144,7 @@ internal class ListDetailsViewModel(
         }
     }
 
-    fun loadData(
-        ignoreErrors: Boolean = false,
-        ignoreLoading: Boolean = false,
-    ) {
+    fun loadData(ignoreErrors: Boolean = false) {
         dataJob?.cancel()
         dataJob = viewModelScope.launch {
             try {
@@ -153,10 +155,7 @@ internal class ListDetailsViewModel(
                     return@launch
                 }
 
-                if (!ignoreLoading) {
-                    loadingState.update { LOADING }
-                }
-
+                loadingState.update { LOADING }
                 itemsState.update {
                     getListItemsUseCase.getItems(
                         listId = destinationList.ids.trakt,
@@ -181,11 +180,6 @@ internal class ListDetailsViewModel(
                 dataJob = null
             }
         }
-    }
-
-    private fun observeCollection() {
-        collectionStateProvider
-            .launchIn(viewModelScope)
     }
 
     private suspend fun loadEmptyIfNeeded(): Boolean {

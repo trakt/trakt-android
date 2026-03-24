@@ -17,7 +17,7 @@ val checkInModule = module {
             userRemoteDataSource = get(),
             cacheMarkerProvider = get(),
             loadUserProgressUseCase = get(),
-            loadUserWatchlistUseCase = get(),
+            loadUserWatchlistMinUseCase = get(),
         )
     }
 

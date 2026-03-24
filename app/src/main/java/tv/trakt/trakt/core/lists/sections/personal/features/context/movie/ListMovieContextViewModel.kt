@@ -31,7 +31,10 @@ import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
 import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
-import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
+import tv.trakt.trakt.core.user.data.local.watchlist.UserWatchlistLocalDataSource
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source
+import tv.trakt.trakt.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
@@ -45,8 +48,10 @@ internal class ListMovieContextViewModel(
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
     private val userProgressLocalSource: UserProgressLocalDataSource,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
+    private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalDataSource,
     private val loadProgressUseCase: LoadUserProgressUseCase,
-    private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
+    private val loadWatchlistMinUseCase: LoadUserWatchlistUseCase,
+    private val watchlistUpdates: WatchlistUpdates,
     private val sessionManager: SessionManager,
     private val checkInManager: CheckInManager,
     private val analytics: Analytics,
@@ -78,22 +83,23 @@ internal class ListMovieContextViewModel(
                 loadingListState.update { LOADING }
 
                 coroutineScope {
-                    val watchlistAsync = async {
-                        if (!userWatchlistLocalSource.isMoviesLoaded()) {
-                            loadWatchlistUseCase.loadWatchlist()
+                    val watchlistMinAsync = async {
+                        if (!loadWatchlistMinUseCase.isMoviesLoaded()) {
+                            loadWatchlistMinUseCase.loadWatchlist()
                         }
                     }
+
                     val progressAsync = async {
                         if (!userProgressLocalSource.isMoviesLoaded()) {
                             loadProgressUseCase.loadMoviesProgress()
                         }
                     }
 
-                    watchlistAsync.await()
+                    watchlistMinAsync.await()
                     progressAsync.await()
 
                     isWatchlistState.update {
-                        userWatchlistLocalSource.containsMovie(movie.ids.trakt)
+                        userWatchlistMinLocalSource.containsMovie(movie.ids.trakt)
                     }
                     isWatchedState.update {
                         userProgressLocalSource.containsMovie(movie.ids.trakt)
@@ -133,8 +139,12 @@ internal class ListMovieContextViewModel(
                             listedAt = nowUtcInstant(),
                         ),
                     ),
-                    notify = true,
                 )
+                userWatchlistMinLocalSource.addMovies(
+                    movies = setOf(movie.ids.trakt),
+                )
+
+                watchlistUpdates.notifyUpdate(Source.Default)
 
                 analytics.progress.logAddWatchlistMedia(
                     mediaType = "movie",
@@ -164,10 +174,14 @@ internal class ListMovieContextViewModel(
                 updateMovieWatchlistUseCase.removeFromWatchlist(
                     movieId = movie.ids.trakt,
                 )
+
                 userWatchlistLocalSource.removeMovies(
                     ids = setOf(movie.ids.trakt),
-                    notify = true,
                 )
+                userWatchlistMinLocalSource.removeMovies(
+                    ids = setOf(movie.ids.trakt),
+                )
+                watchlistUpdates.notifyUpdate(Source.Default)
 
                 analytics.progress.logRemoveWatchlistMedia(
                     mediaType = "movie",
@@ -199,10 +213,14 @@ internal class ListMovieContextViewModel(
                     customDate = customDate,
                 )
                 loadProgressUseCase.loadMoviesProgress()
+
                 userWatchlistLocalSource.removeMovies(
                     ids = setOf(movie.ids.trakt),
-                    notify = true,
                 )
+                userWatchlistMinLocalSource.removeMovies(
+                    ids = setOf(movie.ids.trakt),
+                )
+                watchlistUpdates.notifyUpdate(Source.Default)
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
@@ -265,8 +283,11 @@ internal class ListMovieContextViewModel(
                 )
                 userWatchlistLocalSource.removeMovies(
                     ids = setOf(movie.ids.trakt),
-                    notify = true,
                 )
+                userWatchlistMinLocalSource.removeMovies(
+                    ids = setOf(movie.ids.trakt),
+                )
+                watchlistUpdates.notifyUpdate(Source.Default)
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",

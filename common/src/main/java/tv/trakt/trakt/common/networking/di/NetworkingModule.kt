@@ -25,6 +25,8 @@ import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
 import org.openapitools.client.apis.WatchedApi
 import tv.trakt.trakt.common.Config.API_BASE_URL
+import tv.trakt.trakt.common.Config.API_V3_BASE_URL
+import tv.trakt.trakt.common.networking.api.v3.V3Api
 import tv.trakt.trakt.common.networking.client.KtorClientFactory
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import tv.trakt.trakt.common.networking.helpers.DefaultCacheMarkerProvider
@@ -82,6 +84,15 @@ val networkingApiModule = module {
             get<SyncApi>(),
             get<UsersApi>(),
             get<WatchedApi>(),
+            get<V3Api>(),
+        )
+    }
+
+    single<V3Api> {
+        V3Api(
+            baseUrl = API_V3_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
         )
     }
 

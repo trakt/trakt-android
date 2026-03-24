@@ -29,6 +29,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -72,6 +73,7 @@ import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
+import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
 import tv.trakt.trakt.ui.components.sorting.SortingSplitButton
 import tv.trakt.trakt.ui.components.sorting.sheets.SortSelectionSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -113,6 +115,7 @@ internal fun AllWatchlistScreen(
     AllWatchlistContent(
         state = state,
         modifier = modifier,
+        onLoadMoreData = viewModel::loadMoreData,
         onClick = {
             when (it) {
                 is ShowItem -> viewModel.navigateToShow(it.show)
@@ -223,7 +226,6 @@ internal fun AllWatchlistScreen(
 internal fun AllWatchlistContent(
     state: AllWatchlistState,
     modifier: Modifier = Modifier,
-    onTopOfList: () -> Unit = {},
     onClick: (WatchlistItem) -> Unit = {},
     onCheckClick: (WatchlistItem) -> Unit = {},
     onCheckLongClick: (WatchlistItem) -> Unit = {},
@@ -232,6 +234,7 @@ internal fun AllWatchlistContent(
     onSortTypeClick: () -> Unit = {},
     onSortOrderClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
+    onLoadMoreData: () -> Unit = {},
 ) {
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
@@ -271,6 +274,7 @@ internal fun AllWatchlistContent(
             listSorting = state.sorting,
             collection = state.collection,
             loading = state.loading.isLoading,
+            loadingMore = state.loadingMore.isLoading,
             contentPadding = contentPadding,
             onFilterClick = onFilterClick,
             onSortTypeClick = onSortTypeClick,
@@ -279,8 +283,8 @@ internal fun AllWatchlistContent(
             onCheckClick = onCheckClick,
             onCheckLongClick = onCheckLongClick,
             onLongClick = onLongClick,
-            onTopOfList = onTopOfList,
             onBackClick = onBackClick,
+            onEndOfList = onLoadMoreData,
         )
     }
 }
@@ -316,6 +320,7 @@ private fun ContentList(
     listSorting: Sorting?,
     collection: UserCollectionState,
     loading: Boolean,
+    loadingMore: Boolean,
     contentPadding: PaddingValues,
     onClick: (WatchlistItem) -> Unit,
     onCheckClick: (WatchlistItem) -> Unit,
@@ -324,19 +329,18 @@ private fun ContentList(
     onFilterClick: (MediaMode) -> Unit,
     onSortTypeClick: () -> Unit,
     onSortOrderClick: () -> Unit,
-    onTopOfList: () -> Unit,
     onBackClick: () -> Unit,
+    onEndOfList: () -> Unit,
 ) {
-    val isScrolledToTop by remember {
+    val isScrolledToBottom by remember(listItems.size) {
         derivedStateOf {
-            listState.firstVisibleItemIndex == 0 &&
-                listState.firstVisibleItemScrollOffset == 0
+            listState.firstVisibleItemIndex >= (listItems.size - 5)
         }
     }
 
-    LaunchedEffect(isScrolledToTop) {
-        if (isScrolledToTop) {
-            onTopOfList()
+    LaunchedEffect(isScrolledToBottom) {
+        if (isScrolledToBottom) {
+            onEndOfList()
         }
     }
 
@@ -354,7 +358,7 @@ private fun ContentList(
             )
         }
 
-        if (listFilter != null && listSorting != null && !loading) {
+        if (listFilter != null && listSorting != null) {
             item {
                 ContentFilters(
                     watchlistFilter = listFilter,
@@ -373,6 +377,7 @@ private fun ContentList(
             when (item) {
                 is ShowItem -> AllWatchlistShowView(
                     item = item,
+                    enabled = !loading,
                     watched = collection.isWatched(item.id, SHOW),
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
@@ -386,6 +391,7 @@ private fun ContentList(
 
                 is MovieItem -> AllWatchlistMovieView(
                     item = item,
+                    enabled = !loading,
                     watched = collection.isWatched(item.id, MOVIE),
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
@@ -398,6 +404,34 @@ private fun ContentList(
                             fadeOutSpec = null,
                         ),
                 )
+            }
+        }
+
+        if (loading && listItems.isEmpty()) {
+            items(5) {
+                PanelMediaSkeletonCard(
+                    modifier = Modifier
+                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
+                )
+            }
+        } else if (loadingMore && listItems.isNotEmpty()) {
+            items(1) {
+                PanelMediaSkeletonCard(
+                    modifier = Modifier
+                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
+                )
+            }
+        } else if (listItems.isEmpty()) {
+            item {
+                ContentEmpty(filter = listFilter)
             }
         }
     }
@@ -433,6 +467,21 @@ private fun ContentFilters(
             onTrailingClick = onSortOrderClick,
         )
     }
+}
+
+@Composable
+private fun ContentEmpty(filter: MediaMode?) {
+    Text(
+        text = stringResource(
+            when (filter) {
+                MediaMode.MOVIES -> R.string.list_placeholder_personal_list_empty_movies
+                MediaMode.SHOWS -> R.string.list_placeholder_personal_list_empty_shows
+                else -> R.string.list_placeholder_empty
+            },
+        ),
+        color = TraktTheme.colors.textSecondary,
+        style = TraktTheme.typography.heading6,
+    )
 }
 
 @Composable

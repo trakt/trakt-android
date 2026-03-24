@@ -175,11 +175,13 @@ internal val moviesModule = module {
             updateMovieWatchlistUseCase = get(),
             userProgressLocalSource = get(),
             userWatchlistLocalSource = get(),
+            userWatchlistMinLocalDataSource = get(),
             loadProgressUseCase = get(),
             loadWatchlistUseCase = get(),
             sessionManager = get(),
             checkInManager = get(),
             analytics = get(),
+            watchlistUpdates = get(),
         )
     }
 }

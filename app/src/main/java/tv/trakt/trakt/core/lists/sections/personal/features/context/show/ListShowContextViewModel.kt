@@ -28,7 +28,10 @@ import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowWatchlistUseCase
 import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
-import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
+import tv.trakt.trakt.core.user.data.local.watchlist.UserWatchlistLocalDataSource
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source
+import tv.trakt.trakt.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
@@ -41,8 +44,10 @@ internal class ListShowContextViewModel(
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
     private val userProgressLocalSource: UserProgressLocalDataSource,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
+    private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalDataSource,
     private val loadProgressUseCase: LoadUserProgressUseCase,
-    private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
+    private val loadWatchlistMinUseCase: LoadUserWatchlistUseCase,
+    private val watchlistUpdates: WatchlistUpdates,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
 ) : ViewModel() {
@@ -72,22 +77,23 @@ internal class ListShowContextViewModel(
                 loadingListState.update { LOADING }
 
                 coroutineScope {
-                    val watchlistAsync = async {
-                        if (!userWatchlistLocalSource.isShowsLoaded()) {
-                            loadWatchlistUseCase.loadWatchlist()
+                    val watchlistMinAsync = async {
+                        if (!loadWatchlistMinUseCase.isShowsLoaded()) {
+                            loadWatchlistMinUseCase.loadWatchlist()
                         }
                     }
+
                     val progressAsync = async {
                         if (!userProgressLocalSource.isShowsLoaded()) {
                             loadProgressUseCase.loadShowsProgress()
                         }
                     }
 
-                    watchlistAsync.await()
+                    watchlistMinAsync.await()
                     progressAsync.await()
 
                     isWatchlistState.update {
-                        userWatchlistLocalSource.containsShow(show.ids.trakt)
+                        userWatchlistMinLocalSource.containsShow(show.ids.trakt)
                     }
                     isWatchedState.update {
                         val containsShow = userProgressLocalSource.containsShow(show.ids.trakt)
@@ -124,6 +130,7 @@ internal class ListShowContextViewModel(
                 updateShowWatchlistUseCase.addToWatchlist(
                     showId = show.ids.trakt,
                 )
+
                 userWatchlistLocalSource.addShows(
                     shows = listOf(
                         WatchlistItem.ShowItem(
@@ -132,8 +139,12 @@ internal class ListShowContextViewModel(
                             listedAt = nowUtcInstant(),
                         ),
                     ),
-                    notify = true,
                 )
+                userWatchlistMinLocalSource.addShows(
+                    shows = setOf(show.ids.trakt),
+                )
+
+                watchlistUpdates.notifyUpdate(Source.Default)
 
                 analytics.progress.logAddWatchlistMedia(
                     mediaType = "show",
@@ -163,10 +174,11 @@ internal class ListShowContextViewModel(
                 updateShowWatchlistUseCase.removeFromWatchlist(
                     showId = show.ids.trakt,
                 )
-                userWatchlistLocalSource.removeShows(
-                    ids = setOf(show.ids.trakt),
-                    notify = true,
-                )
+
+                userWatchlistLocalSource.removeShows(ids = setOf(show.ids.trakt))
+                userWatchlistMinLocalSource.removeShows(ids = setOf(show.ids.trakt))
+
+                watchlistUpdates.notifyUpdate(Source.Default)
 
                 analytics.progress.logRemoveWatchlistMedia(
                     mediaType = "show",
@@ -198,10 +210,10 @@ internal class ListShowContextViewModel(
                     customDate = customDate,
                 )
                 loadProgressUseCase.loadShowsProgress()
-                userWatchlistLocalSource.removeShows(
-                    ids = setOf(show.ids.trakt),
-                    notify = true,
-                )
+                userWatchlistLocalSource.removeShows(ids = setOf(show.ids.trakt))
+                userWatchlistMinLocalSource.removeShows(ids = setOf(show.ids.trakt))
+
+                watchlistUpdates.notifyUpdate(Source.Default)
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "show",

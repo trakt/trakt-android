@@ -33,6 +33,8 @@ import tv.trakt.trakt.common.networking.UserWatchingDto
 import tv.trakt.trakt.common.networking.WatchedShowDto
 import tv.trakt.trakt.common.networking.WatchlistItemDto
 import tv.trakt.trakt.common.networking.WatchlistMovieDto
+import tv.trakt.trakt.common.networking.WatchlistShowDto
+import tv.trakt.trakt.common.networking.api.v3.V3Api
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import java.time.LocalDate
 import java.time.ZonedDateTime
@@ -42,6 +44,7 @@ class UserApiClient(
     private val historyApi: HistoryApi,
     private val calendarsApi: CalendarsApi,
     private val syncApi: SyncApi,
+    private val v3Api: V3Api,
     private val cacheMarkerProvider: CacheMarkerProvider,
 ) : UserRemoteDataSource {
     override suspend fun getProfile(): User {
@@ -136,11 +139,11 @@ class UserApiClient(
         page: Int?,
         limit: Int?,
         extended: String?,
-        sort: String?,
+        sorting: Sorting?,
     ): List<WatchlistItemDto> {
         val response = usersApi.getUsersWatchlistAll(
             id = "me",
-            sort = sort ?: "rank",
+            sort = sorting?.type?.value ?: "rank",
             extended = extended,
             page = page,
             limit = limit,
@@ -153,7 +156,40 @@ class UserApiClient(
             endDate = null,
             hide = null,
             sortBy = null,
-            sortHow = null,
+            sortHow = sorting?.order?.value,
+            runtimes = null,
+        )
+
+        return response.body()
+    }
+
+    override suspend fun getWatchlistMinimal(): Pair<Set<TraktId>, Set<TraktId>> {
+        return v3Api.getWatchlistMinimal()
+    }
+
+    override suspend fun getWatchlistShows(
+        page: Int?,
+        limit: Int?,
+        extended: String?,
+        sorting: Sorting?,
+        hide: String?,
+    ): List<WatchlistShowDto> {
+        val response = usersApi.getUsersWatchlistShows(
+            id = "me",
+            extended = extended,
+            page = page,
+            limit = limit,
+            hide = hide,
+            watchnow = null,
+            genres = null,
+            subgenres = null,
+            years = null,
+            ratings = null,
+            startDate = null,
+            endDate = null,
+            sort = sorting?.type?.value ?: SortType.RANK.value,
+            sortHow = sorting?.order?.value,
+            sortBy = null,
             runtimes = null,
         )
 

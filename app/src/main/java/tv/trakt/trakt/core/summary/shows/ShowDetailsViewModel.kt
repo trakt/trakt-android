@@ -63,8 +63,11 @@ import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowFavoritesUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowWatchlistUseCase
-import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.data.local.favorites.UserFavoritesLocalDataSource
+import tv.trakt.trakt.core.user.data.local.watchlist.UserWatchlistLocalDataSource
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
+import tv.trakt.trakt.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserListsUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
@@ -96,10 +99,12 @@ internal class ShowDetailsViewModel(
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
     private val appReviewUseCase: RequestAppReviewUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
+    private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalDataSource,
     private val userFavoritesLocalSource: UserFavoritesLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val showDetailsUpdates: ShowDetailsUpdates,
     private val favoritesUpdates: FavoritesUpdates,
+    private val watchlistUpdates: WatchlistUpdates,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
     private val collapsingManager: CollapsingManager,
@@ -235,9 +240,6 @@ internal class ShowDetailsViewModel(
 
                     val watchlistAsync = async {
                         loadWatchlistUseCase.loadLocalShows()
-                            .firstOrNull {
-                                it.show.ids.trakt == showId
-                            }
                     }
 
                     val listsAsync = async {
@@ -256,7 +258,7 @@ internal class ShowDetailsViewModel(
                         ShowDetailsState.ProgressState(
                             aired = progress?.progress?.aired ?: 0,
                             plays = progress?.progress?.plays,
-                            inWatchlist = watchlist != null,
+                            inWatchlist = watchlist.contains(showId),
                             inLists = lists != null,
                             hasLists = listsCount > 0,
                         )
@@ -404,10 +406,11 @@ internal class ShowDetailsViewModel(
                     .firstOrNull {
                         it.show.ids.trakt == showId
                     }
-                userWatchlistLocalSource.removeShows(
-                    ids = setOf(showId),
-                    notify = true,
-                )
+
+                userWatchlistLocalSource.removeShows(ids = setOf(showId))
+                userWatchlistMinLocalSource.removeShows(ids = setOf(showId))
+
+                watchlistUpdates.notifyUpdate(Default)
 
                 showProgressState.update {
                     it?.copy(
@@ -584,8 +587,12 @@ internal class ShowDetailsViewModel(
                             listedAt = nowUtcInstant(),
                         ),
                     ),
-                    notify = true,
                 )
+                userWatchlistMinLocalSource.addShows(
+                    shows = setOf(showId),
+                )
+
+                watchlistUpdates.notifyUpdate(Default)
 
                 showProgressState.update {
                     it?.copy(
@@ -621,10 +628,10 @@ internal class ShowDetailsViewModel(
                 loadingLists.update { LOADING }
 
                 updateShowWatchlistUseCase.removeFromWatchlist(showId)
-                userWatchlistLocalSource.removeShows(
-                    ids = setOf(showId),
-                    notify = true,
-                )
+
+                userWatchlistLocalSource.removeShows(ids = setOf(showId))
+                userWatchlistMinLocalSource.removeShows(ids = setOf(showId))
+                watchlistUpdates.notifyUpdate(Default)
 
                 refreshLists()
 
@@ -709,9 +716,6 @@ internal class ShowDetailsViewModel(
         return coroutineScope {
             val watchlistAsync = async {
                 loadWatchlistUseCase.loadLocalShows()
-                    .firstOrNull {
-                        it.show.ids.trakt == showId
-                    }
             }
 
             val listsAsync = async {
@@ -727,7 +731,7 @@ internal class ShowDetailsViewModel(
 
             showProgressState.update {
                 it?.copy(
-                    inWatchlist = watchlist != null,
+                    inWatchlist = watchlist.contains(showId),
                     inLists = lists != null,
                     hasLists = listsCount > 0,
                 )

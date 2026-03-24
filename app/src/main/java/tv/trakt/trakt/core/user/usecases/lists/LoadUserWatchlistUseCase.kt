@@ -1,36 +1,23 @@
 package tv.trakt.trakt.core.user.usecases.lists
 
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.collections.immutable.toImmutableSet
 import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
-import tv.trakt.trakt.common.helpers.extensions.asyncMap
-import tv.trakt.trakt.common.helpers.extensions.toInstant
-import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.common.model.fromDto
-import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
-import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
+import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 
-/**
- * Loads the user's watchlist from the remote source and updates the local cache.
- */
 internal class LoadUserWatchlistUseCase(
     private val remoteSource: UserRemoteDataSource,
-    private val localSource: UserWatchlistLocalDataSource,
+    private val localSource: UserWatchlistMinimalLocalDataSource,
 ) {
-    suspend fun loadLocalAll(): ImmutableList<WatchlistItem> {
-        return localSource.getAll()
-            .toImmutableList()
-    }
-
-    suspend fun loadLocalShows(): ImmutableList<WatchlistItem.ShowItem> {
+    suspend fun loadLocalShows(): ImmutableSet<TraktId> {
         return localSource.getShows()
-            .toImmutableList()
+            .toImmutableSet()
     }
 
-    suspend fun loadLocalMovies(): ImmutableList<WatchlistItem.MovieItem> {
+    suspend fun loadLocalMovies(): ImmutableSet<TraktId> {
         return localSource.getMovies()
-            .toImmutableList()
+            .toImmutableSet()
     }
 
     suspend fun isShowsLoaded(): Boolean {
@@ -42,44 +29,18 @@ internal class LoadUserWatchlistUseCase(
     }
 
     suspend fun isLoaded(): Boolean {
-        return localSource.isShowsLoaded() && localSource.isMoviesLoaded()
+        return localSource.isShowsLoaded() &&
+            localSource.isMoviesLoaded()
     }
 
-    suspend fun loadWatchlist(): ImmutableList<WatchlistItem> {
-        val response = remoteSource.getWatchlist(
-            sort = "rank",
-            extended = "full,cloud9,colors",
-        ).asyncMap {
-            val listedAt = it.listedAt.toInstant()
-
-            when {
-                it.movie != null -> {
-                    WatchlistItem.MovieItem(
-                        movie = Movie.fromDto(it.movie!!),
-                        rank = it.rank,
-                        listedAt = listedAt,
-                    )
-                }
-
-                it.show != null -> {
-                    WatchlistItem.ShowItem(
-                        show = Show.fromDto(it.show!!),
-                        rank = it.rank,
-                        listedAt = listedAt,
-                    )
-                }
-
-                else -> {
-                    throw IllegalStateException("Watchlist item unknown type!")
-                }
-            }
-        }
+    suspend fun loadWatchlist(): Pair<ImmutableSet<TraktId>, ImmutableSet<TraktId>> {
+        val (shows, movies) = remoteSource.getWatchlistMinimal()
 
         with(localSource) {
-            setShows(response.filterIsInstance<WatchlistItem.ShowItem>())
-            setMovies(response.filterIsInstance<WatchlistItem.MovieItem>())
+            setShows(shows)
+            setMovies(movies)
         }
 
-        return response.toImmutableList()
+        return shows.toImmutableSet() to movies.toImmutableSet()
     }
 }

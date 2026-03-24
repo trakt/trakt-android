@@ -57,7 +57,10 @@ import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.MovieIte
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.ShowItem
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.main.model.MediaMode
-import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
+import tv.trakt.trakt.core.user.data.local.watchlist.UserWatchlistLocalDataSource
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
+import tv.trakt.trakt.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
@@ -72,11 +75,13 @@ internal class HomeWatchlistViewModel(
     private val addHistoryUseCase: AddHomeHistoryUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val userWatchlistSource: UserWatchlistLocalDataSource,
+    private val userWatchlistMinSource: UserWatchlistMinimalLocalDataSource,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val modeManager: MediaModeManager,
     private val checkInManager: CheckInManager,
     private val checkInUpdates: CheckInUpdates,
+    private val watchlistUpdates: WatchlistUpdates,
     private val sessionManager: SessionManager,
     private val collapsingManager: CollapsingManager,
     private val analytics: Analytics,
@@ -133,7 +138,7 @@ internal class HomeWatchlistViewModel(
 
     private fun observeData() {
         merge(
-            userWatchlistSource.observeUpdates(),
+            watchlistUpdates.observeUpdates(Default),
             checkInUpdates.observeUpdates()
                 .filterNot { it.first == Source.HomeWatchlist }
                 .takeWhile { dataJob == null },
@@ -535,17 +540,27 @@ internal class HomeWatchlistViewModel(
 
         viewModelScope.launch {
             when (item) {
-                is ShowItem -> userWatchlistSource.removeShows(
-                    ids = setOf(item.id),
-                    notify = notify,
-                )
+                is ShowItem -> {
+                    userWatchlistSource.removeShows(
+                        ids = setOf(item.id),
+                    )
+                    userWatchlistMinSource.removeShows(
+                        ids = setOf(item.id),
+                    )
+                }
+                is MovieItem -> {
+                    userWatchlistSource.removeMovies(
+                        ids = setOf(item.id),
+                    )
+                    userWatchlistMinSource.removeMovies(
+                        ids = setOf(item.id),
+                    )
+                }
+                else -> {}
+            }
 
-                is MovieItem -> userWatchlistSource.removeMovies(
-                    ids = setOf(item.id),
-                    notify = notify,
-                )
-
-                else -> Unit
+            if (notify) {
+                watchlistUpdates.notifyUpdate(Default)
             }
         }
     }

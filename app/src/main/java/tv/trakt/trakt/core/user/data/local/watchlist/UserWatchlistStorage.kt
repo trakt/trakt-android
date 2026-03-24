@@ -1,15 +1,10 @@
-package tv.trakt.trakt.core.user.data.local
+package tv.trakt.trakt.core.user.data.local.watchlist
 
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistStorage
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
-import java.time.Instant
 
 internal class UserWatchlistStorage(
     private val homeWatchlistStorage: HomeWatchlistStorage,
@@ -18,11 +13,6 @@ internal class UserWatchlistStorage(
 
     private var moviesStorage: MutableMap<TraktId, WatchlistItem>? = null
     private var showsStorage: MutableMap<TraktId, WatchlistItem>? = null
-
-    private val updatedAt = MutableSharedFlow<Instant?>(
-        extraBufferCapacity = 1,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST,
-    )
 
     override suspend fun setMovies(movies: List<WatchlistItem.MovieItem>) {
         mutex.withLock {
@@ -49,10 +39,7 @@ internal class UserWatchlistStorage(
         }
     }
 
-    override suspend fun addMovies(
-        movies: List<WatchlistItem.MovieItem>,
-        notify: Boolean,
-    ) {
+    override suspend fun addMovies(movies: List<WatchlistItem.MovieItem>) {
         mutex.withLock {
             if (moviesStorage == null) {
                 moviesStorage = mutableMapOf()
@@ -60,17 +47,10 @@ internal class UserWatchlistStorage(
             moviesStorage?.let { storage ->
                 storage.putAll(movies.associateBy { it.id })
             }
-
-            if (notify) {
-                updatedAt.tryEmit(Instant.now())
-            }
         }
     }
 
-    override suspend fun addShows(
-        shows: List<WatchlistItem.ShowItem>,
-        notify: Boolean,
-    ) {
+    override suspend fun addShows(shows: List<WatchlistItem.ShowItem>) {
         mutex.withLock {
             if (showsStorage == null) {
                 showsStorage = mutableMapOf()
@@ -78,15 +58,7 @@ internal class UserWatchlistStorage(
             showsStorage?.let { storage ->
                 storage.putAll(shows.associateBy { it.id })
             }
-
-            if (notify) {
-                updatedAt.tryEmit(Instant.now())
-            }
         }
-    }
-
-    override fun observeUpdates(): Flow<Instant?> {
-        return updatedAt.asSharedFlow()
     }
 
     override suspend fun containsShow(id: TraktId): Boolean {
@@ -137,10 +109,7 @@ internal class UserWatchlistStorage(
         }
     }
 
-    override suspend fun removeMovies(
-        ids: Set<TraktId>,
-        notify: Boolean,
-    ) {
+    override suspend fun removeMovies(ids: Set<TraktId>) {
         mutex.withLock {
             moviesStorage?.let { storage ->
                 ids.forEach { id ->
@@ -149,17 +118,10 @@ internal class UserWatchlistStorage(
             }
 
             homeWatchlistStorage.removeMovies(ids)
-
-            if (notify) {
-                updatedAt.tryEmit(Instant.now())
-            }
         }
     }
 
-    override suspend fun removeShows(
-        ids: Set<TraktId>,
-        notify: Boolean,
-    ) {
+    override suspend fun removeShows(ids: Set<TraktId>) {
         mutex.withLock {
             showsStorage?.let { storage ->
                 ids.forEach { id ->
@@ -168,10 +130,6 @@ internal class UserWatchlistStorage(
             }
 
             homeWatchlistStorage.removeShows(ids)
-
-            if (notify) {
-                updatedAt.tryEmit(Instant.now())
-            }
         }
     }
 
@@ -183,7 +141,5 @@ internal class UserWatchlistStorage(
         showsStorage = null
 
         homeWatchlistStorage.clear()
-
-        updatedAt.tryEmit(null)
     }
 }

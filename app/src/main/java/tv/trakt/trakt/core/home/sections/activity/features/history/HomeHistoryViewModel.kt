@@ -57,7 +57,8 @@ import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SE
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
-import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
@@ -66,11 +67,11 @@ internal class HomeHistoryViewModel(
     private val getPersonalActivityUseCase: GetPersonalActivityUseCase,
     private val userRatingsUseCase: LoadUserRatingsUseCase,
     private val homeUpNextSource: HomeUpNextLocalDataSource,
-    private val userWatchlistSource: UserWatchlistLocalDataSource,
     private val allActivitySource: AllActivityLocalDataSource,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
+    private val watchlistUpdates: WatchlistUpdates,
     private val showUpdates: ShowDetailsUpdates,
     private val movieUpdates: MovieDetailsUpdates,
     private val episodeUpdates: EpisodeDetailsUpdates,
@@ -136,7 +137,7 @@ internal class HomeHistoryViewModel(
     private fun observeUpdates() {
         merge(
             homeUpNextSource.observeUpdates(),
-            userWatchlistSource.observeUpdates(),
+            watchlistUpdates.observeUpdates(Default),
             allActivitySource.observeUpdates(),
             showUpdates.observeUpdates(Source.PROGRESS),
             showUpdates.observeUpdates(Source.SEASONS),

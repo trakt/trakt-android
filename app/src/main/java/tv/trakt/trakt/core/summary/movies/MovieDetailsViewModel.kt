@@ -64,8 +64,11 @@ import tv.trakt.trakt.core.summary.movies.usecases.GetMovieStudiosUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieFavoritesUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
-import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.data.local.favorites.UserFavoritesLocalDataSource
+import tv.trakt.trakt.core.user.data.local.watchlist.UserWatchlistLocalDataSource
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
+import tv.trakt.trakt.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserListsUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
@@ -95,9 +98,11 @@ internal class MovieDetailsViewModel(
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
     private val appReviewUseCase: RequestAppReviewUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
+    private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalDataSource,
     private val userFavoritesLocalSource: UserFavoritesLocalDataSource,
     private val movieDetailsUpdates: MovieDetailsUpdates,
     private val favoritesUpdates: FavoritesUpdates,
+    private val watchlistUpdates: WatchlistUpdates,
     private val checkInUpdates: CheckInUpdates,
     private val sessionManager: SessionManager,
     private val checkInManager: CheckInManager,
@@ -232,9 +237,6 @@ internal class MovieDetailsViewModel(
 
                     val watchlistAsync = async {
                         loadWatchlistUseCase.loadLocalMovies()
-                            .firstOrNull {
-                                it.movie.ids.trakt == movieId
-                            }
                     }
 
                     val listsAsync = async {
@@ -252,7 +254,7 @@ internal class MovieDetailsViewModel(
                     movieProgressState.update {
                         MovieDetailsState.ProgressState(
                             plays = progress?.plays ?: 0,
-                            inWatchlist = watchlist != null,
+                            inWatchlist = watchlist.contains(movieId),
                             inLists = lists != null,
                             hasLists = listsCount > 0,
                         )
@@ -397,12 +399,10 @@ internal class MovieDetailsViewModel(
                 )
 
                 loadProgressUseCase.loadMoviesProgress()
-                userWatchlistLocalSource.removeMovies(
-                    ids = setOf(movieId),
-                    notify = true,
-                )
 
-                loadUserProgressData()
+                userWatchlistLocalSource.removeMovies(ids = setOf(movieId))
+                userWatchlistMinLocalSource.removeMovies(ids = setOf(movieId))
+                watchlistUpdates.notifyUpdate(Default)
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
@@ -444,10 +444,11 @@ internal class MovieDetailsViewModel(
                     customDate = customDate,
                 )
                 loadProgressUseCase.loadMoviesProgress()
-                userWatchlistLocalSource.removeMovies(
-                    ids = setOf(movieId),
-                    notify = true,
-                )
+
+                userWatchlistLocalSource.removeMovies(ids = setOf(movieId))
+                userWatchlistMinLocalSource.removeMovies(ids = setOf(movieId))
+
+                watchlistUpdates.notifyUpdate(Default)
                 movieDetailsUpdates.notifyUpdate()
 
                 if (response.added.movies != 0) {
@@ -602,8 +603,12 @@ internal class MovieDetailsViewModel(
                             listedAt = nowUtcInstant(),
                         ),
                     ),
-                    notify = true,
                 )
+                userWatchlistMinLocalSource.addMovies(
+                    movies = setOf(movieId),
+                )
+
+                watchlistUpdates.notifyUpdate(Default)
 
                 movieProgressState.update {
                     it?.copy(
@@ -639,10 +644,10 @@ internal class MovieDetailsViewModel(
                 loadingLists.update { LOADING }
 
                 updateMovieWatchlistUseCase.removeFromWatchlist(movieId)
-                userWatchlistLocalSource.removeMovies(
-                    ids = setOf(movieId),
-                    notify = true,
-                )
+                userWatchlistLocalSource.removeMovies(ids = setOf(movieId))
+                userWatchlistMinLocalSource.removeMovies(ids = setOf(movieId))
+
+                watchlistUpdates.notifyUpdate(Default)
 
                 refreshLists()
 
@@ -747,9 +752,6 @@ internal class MovieDetailsViewModel(
         return coroutineScope {
             val watchlistAsync = async {
                 loadWatchlistUseCase.loadLocalMovies()
-                    .firstOrNull {
-                        it.movie.ids.trakt == movieId
-                    }
             }
 
             val listsAsync = async {
@@ -765,7 +767,7 @@ internal class MovieDetailsViewModel(
 
             movieProgressState.update {
                 it?.copy(
-                    inWatchlist = watchlist != null,
+                    inWatchlist = watchlist.contains(movieId),
                     inLists = lists != null,
                     hasLists = listsCount > 0,
                 )

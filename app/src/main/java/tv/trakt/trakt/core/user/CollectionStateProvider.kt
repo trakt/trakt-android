@@ -21,7 +21,8 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
-import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 
@@ -32,8 +33,8 @@ internal class CollectionStateProvider(
     private val sessionManager: SessionManager,
     private val userWatchlistUseCase: LoadUserWatchlistUseCase,
     private val userProgressUseCase: LoadUserProgressUseCase,
-    private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
     private val userProgressLocalSource: UserProgressLocalDataSource,
+    private val watchlistUpdates: WatchlistUpdates,
 ) {
     private val _stateFlow = MutableStateFlow(UserCollectionState.Default)
     val stateFlow = _stateFlow.asStateFlow()
@@ -44,7 +45,8 @@ internal class CollectionStateProvider(
     fun launchIn(scope: CoroutineScope) {
         merge(
             userProgressLocalSource.observeUpdates(),
-            userWatchlistLocalSource.observeUpdates(),
+            watchlistUpdates.observeUpdates(Source.Default),
+            watchlistUpdates.observeUpdates(Source.AllWatchlist),
         )
             .distinctUntilChanged()
             .onStart { loadData() }
@@ -135,8 +137,8 @@ internal class CollectionStateProvider(
 
                 _stateFlow.update { state ->
                     state.copy(
-                        watchlistShows = watchlistShows.asyncMap { it.id }.toImmutableSet(),
-                        watchlistMovies = watchlistMovies.asyncMap { it.id }.toImmutableSet(),
+                        watchlistShows = watchlistShows,
+                        watchlistMovies = watchlistMovies,
                     )
                 }
             }

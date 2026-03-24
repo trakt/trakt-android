@@ -13,6 +13,7 @@ internal fun AllWatchlistShowView(
     item: WatchlistItem.ShowItem,
     modifier: Modifier = Modifier,
     watched: Boolean = false,
+    enabled: Boolean = true,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
 ) {
@@ -30,6 +31,7 @@ internal fun AllWatchlistShowView(
         titleOriginal = item.show.titleOriginal,
         subtitle = genresText,
         watched = watched,
+        enabled = enabled,
         contentImageUrl = item.images?.getPosterUrl(),
         containerImageUrl = item.images?.getFanartUrl(Images.Size.THUMB),
         onClick = onClick,

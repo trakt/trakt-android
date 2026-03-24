@@ -1,24 +1,16 @@
-package tv.trakt.trakt.core.user.data.local
+package tv.trakt.trakt.core.user.data.local.watchlist
 
-import kotlinx.coroutines.flow.Flow
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
-import java.time.Instant
 
 internal interface UserWatchlistLocalDataSource {
     suspend fun setMovies(movies: List<WatchlistItem.MovieItem>)
 
     suspend fun setShows(shows: List<WatchlistItem.ShowItem>)
 
-    suspend fun addMovies(
-        movies: List<WatchlistItem.MovieItem>,
-        notify: Boolean = false,
-    )
+    suspend fun addMovies(movies: List<WatchlistItem.MovieItem>)
 
-    suspend fun addShows(
-        shows: List<WatchlistItem.ShowItem>,
-        notify: Boolean = false,
-    )
+    suspend fun addShows(shows: List<WatchlistItem.ShowItem>)
 
     suspend fun containsMovie(id: TraktId): Boolean
 
@@ -34,17 +26,9 @@ internal interface UserWatchlistLocalDataSource {
 
     suspend fun getAll(): List<WatchlistItem>
 
-    suspend fun removeMovies(
-        ids: Set<TraktId>,
-        notify: Boolean = false,
-    )
+    suspend fun removeMovies(ids: Set<TraktId>)
 
-    suspend fun removeShows(
-        ids: Set<TraktId>,
-        notify: Boolean = false,
-    )
-
-    fun observeUpdates(): Flow<Instant?>
+    suspend fun removeShows(ids: Set<TraktId>)
 
     fun clear()
 }

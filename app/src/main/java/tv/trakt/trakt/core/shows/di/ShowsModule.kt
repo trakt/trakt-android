@@ -182,10 +182,12 @@ internal val showsModule = module {
             updateHistoryUseCase = get(),
             userProgressLocalSource = get(),
             userWatchlistLocalSource = get(),
+            userWatchlistMinLocalSource = get(),
             loadProgressUseCase = get(),
             loadWatchlistUseCase = get(),
             sessionManager = get(),
             analytics = get(),
+            watchlistUpdates = get(),
         )
     }
 }

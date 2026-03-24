@@ -31,9 +31,8 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.ListsConfig.WATCHLIST_SECTION_LIMIT
-import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource
-import tv.trakt.trakt.core.lists.sections.watchlist.features.all.data.AllWatchlistLocalDataSource.Source
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetShowsWatchlistUseCase
@@ -45,7 +44,9 @@ import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
 import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
 import tv.trakt.trakt.core.user.CollectionStateProvider
 import tv.trakt.trakt.core.user.UserCollectionState
-import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.AllWatchlist
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
@@ -54,10 +55,9 @@ internal class ListsWatchlistViewModel(
     private val getWatchlistUseCase: GetWatchlistUseCase,
     private val getShowsWatchlistUseCase: GetShowsWatchlistUseCase,
     private val getMoviesWatchlistUseCase: GetMoviesWatchlistUseCase,
-    private val userWatchlistSource: UserWatchlistLocalDataSource,
-    private val allWatchlistSource: AllWatchlistLocalDataSource,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
+    private val watchlistUpdates: WatchlistUpdates,
     private val collectionStateProvider: CollectionStateProvider,
     private val sessionManager: SessionManager,
     private val collapsingManager: CollapsingManager,
@@ -114,8 +114,8 @@ internal class ListsWatchlistViewModel(
     @OptIn(FlowPreview::class)
     private fun observeWatchlist() {
         merge(
-            userWatchlistSource.observeUpdates(),
-            allWatchlistSource.observeUpdates(Source.ALL),
+            watchlistUpdates.observeUpdates(Default),
+            watchlistUpdates.observeUpdates(AllWatchlist),
         )
             .distinctUntilChanged()
             .debounce(200)
@@ -152,9 +152,21 @@ internal class ListsWatchlistViewModel(
 
                 itemsState.update {
                     when (filterState.value) {
-                        MEDIA -> getWatchlistUseCase.getWatchlist(WATCHLIST_SECTION_LIMIT)
-                        SHOWS -> getShowsWatchlistUseCase.getWatchlist(WATCHLIST_SECTION_LIMIT)
-                        MOVIES -> getMoviesWatchlistUseCase.getWatchlist(WATCHLIST_SECTION_LIMIT)
+                        MEDIA -> getWatchlistUseCase.getRemoteWatchlist(
+                            page = 1,
+                            limit = WATCHLIST_SECTION_LIMIT,
+                            sorting = Sorting.RecentlyAdded,
+                        )
+                        SHOWS -> getShowsWatchlistUseCase.getRemoteWatchlist(
+                            page = 1,
+                            limit = WATCHLIST_SECTION_LIMIT,
+                            sorting = Sorting.RecentlyAdded,
+                        )
+                        MOVIES -> getMoviesWatchlistUseCase.getRemoteWatchlist(
+                            page = 1,
+                            limit = WATCHLIST_SECTION_LIMIT,
+                            sorting = Sorting.RecentlyAdded,
+                        )
                     }
                 }
             } catch (error: Exception) {
@@ -214,9 +226,9 @@ internal class ListsWatchlistViewModel(
         collapseJob?.cancel()
         collapseJob = viewModelScope.launch {
             val key = when (filterState.value) {
-                MediaMode.MEDIA -> CollapsingKey.LISTS_MEDIA_WATCHLIST
-                MediaMode.SHOWS -> CollapsingKey.LISTS_SHOWS_WATCHLIST
-                MediaMode.MOVIES -> CollapsingKey.LISTS_MOVIES_WATCHLIST
+                MEDIA -> CollapsingKey.LISTS_MEDIA_WATCHLIST
+                SHOWS -> CollapsingKey.LISTS_SHOWS_WATCHLIST
+                MOVIES -> CollapsingKey.LISTS_MOVIES_WATCHLIST
             }
             when {
                 collapsed -> collapsingManager.collapse(key)
@@ -228,9 +240,9 @@ internal class ListsWatchlistViewModel(
     private fun isCollapsed(): Boolean {
         return collapsingManager.isCollapsed(
             key = when (filterState.value) {
-                MediaMode.MEDIA -> CollapsingKey.LISTS_MEDIA_WATCHLIST
-                MediaMode.SHOWS -> CollapsingKey.LISTS_SHOWS_WATCHLIST
-                MediaMode.MOVIES -> CollapsingKey.LISTS_MOVIES_WATCHLIST
+                MEDIA -> CollapsingKey.LISTS_MEDIA_WATCHLIST
+                SHOWS -> CollapsingKey.LISTS_SHOWS_WATCHLIST
+                MOVIES -> CollapsingKey.LISTS_MOVIES_WATCHLIST
             },
         )
     }

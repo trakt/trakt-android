@@ -24,7 +24,10 @@ import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
-import tv.trakt.trakt.core.user.data.local.UserWatchlistLocalDataSource
+import tv.trakt.trakt.core.user.data.local.watchlist.UserWatchlistLocalDataSource
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
+import tv.trakt.trakt.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 
@@ -33,9 +36,11 @@ internal class WatchlistMovieContextViewModel(
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
     private val updateMovieWatchlistUseCase: UpdateMovieWatchlistUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
+    private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalDataSource,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val sessionManager: SessionManager,
     private val checkInManager: CheckInManager,
+    private val watchlistUpdates: WatchlistUpdates,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = WatchlistMovieContextState()
@@ -77,6 +82,8 @@ internal class WatchlistMovieContextViewModel(
                     customDate = customDate,
                 )
                 userWatchlistLocalSource.removeMovies(setOf(movieId))
+                userWatchlistMinLocalSource.removeMovies(setOf(movieId))
+
                 loadProgressUseCase.loadMoviesProgress()
 
                 analytics.progress.logAddWatchedMedia(
@@ -104,6 +111,7 @@ internal class WatchlistMovieContextViewModel(
 
                 updateMovieWatchlistUseCase.removeFromWatchlist(movieId = movieId)
                 userWatchlistLocalSource.removeMovies(setOf(movieId))
+                userWatchlistMinLocalSource.removeMovies(setOf(movieId))
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -129,8 +137,12 @@ internal class WatchlistMovieContextViewModel(
                 )
                 userWatchlistLocalSource.removeMovies(
                     ids = setOf(movieId),
-                    notify = true,
                 )
+                userWatchlistMinLocalSource.removeMovies(
+                    ids = setOf(movieId),
+                )
+
+                watchlistUpdates.notifyUpdate(Default)
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",

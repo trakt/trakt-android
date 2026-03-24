@@ -50,7 +50,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.ratings.UserRating
-import tv.trakt.trakt.common.ui.theme.colors.Red400
+import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.math.abs
@@ -341,7 +341,7 @@ internal fun UserRatingBar(
                     Icon(
                         painter = painterResource(R.drawable.ic_touch),
                         contentDescription = null,
-                        tint = Red400,
+                        tint = Purple400,
                         modifier = Modifier
                             .size(size)
                             .graphicsLayer {
