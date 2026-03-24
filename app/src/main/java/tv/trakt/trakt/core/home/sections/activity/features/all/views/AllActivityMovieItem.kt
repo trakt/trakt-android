@@ -53,6 +53,7 @@ internal fun AllActivityMovieItem(
         containerImageUrl = item.movie.images?.getFanartUrl(Images.Size.THUMB),
         onClick = onClick,
         onLongClick = onLongClick,
+        onImageClick = onClick,
         more = moreButton,
         footerContent = {
             Row(

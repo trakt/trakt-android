@@ -33,6 +33,7 @@ internal fun AllFavoritesMovieView(
         containerImageUrl = item.images?.getFanartUrl(Images.Size.THUMB),
         onClick = onClick,
         onLongClick = onLongClick,
+        onImageClick = onClick,
         footerContent = {
             MovieMetaFooter(
                 movie = item.movie,

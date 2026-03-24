@@ -26,6 +26,7 @@ internal fun AllWatchlistEpisodeView(
         containerImageUrl = item.images?.getFanartUrl(THUMB),
         onClick = onClick,
         onLongClick = onLongClick,
+        onImageClick = onClick,
         footerContent = {
             ShowMetaFooter(
                 show = item.show,

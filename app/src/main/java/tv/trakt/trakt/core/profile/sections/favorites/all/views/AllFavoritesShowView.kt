@@ -33,6 +33,7 @@ internal fun AllFavoritesShowView(
         containerImageUrl = item.images?.getFanartUrl(Images.Size.THUMB),
         onClick = onClick,
         onLongClick = onLongClick,
+        onImageClick = onClick,
         footerContent = {
             ShowMetaFooter(
                 show = item.show,

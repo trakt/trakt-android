@@ -45,6 +45,7 @@ internal fun AllLibraryMovieView(
         containerImageUrl = item.movie.images?.getFanartUrl(Images.Size.THUMB),
         more = false,
         onClick = onClick,
+        onImageClick = onClick,
         footerContent = {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),

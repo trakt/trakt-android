@@ -36,6 +36,7 @@ internal fun AllLibraryEpisodeView(
         containerImageUrl = item.show.images?.getFanartUrl(Images.Size.THUMB),
         more = false,
         onClick = onClick,
+        onImageClick = onClick,
         footerContent = {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
