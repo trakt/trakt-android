@@ -6,6 +6,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -91,6 +92,7 @@ internal class AllWatchlistViewModel(
 
     private var dataJob: Job? = null
     private var processingJob: Job? = null
+    private var loadingJob: Job? = null
 
     private var page: Int = 1
     private var hasMoreData: Boolean = true
@@ -141,7 +143,14 @@ internal class AllWatchlistViewModel(
                 val filter = filterState.value
                 val sorting = sortingState.value
 
-                loadingState.update { LOADING }
+                loadingJob = launch {
+                    if (itemsState.value?.isNotEmpty() == true) {
+                        // Avoid blinking loading but still show it if loading takes too long
+                        delay(100)
+                    }
+                    loadingState.update { LOADING }
+                }
+
                 itemsState.update {
                     when (filter) {
                         MEDIA -> getWatchlistUseCase.getRemoteWatchlist(
@@ -176,6 +185,8 @@ internal class AllWatchlistViewModel(
             } finally {
                 loadingState.update { DONE }
                 dataJob = null
+                loadingJob?.cancel()
+                loadingJob = null
             }
         }
     }
@@ -250,10 +261,8 @@ internal class AllWatchlistViewModel(
         if (newFilter == filterState.value || loadingState.value.isLoading) {
             return
         }
-        viewModelScope.launch {
-            filterState.update { newFilter }
-            loadData()
-        }
+        filterState.update { newFilter }
+        loadData()
     }
 
     fun setSorting(newSorting: Sorting) {
