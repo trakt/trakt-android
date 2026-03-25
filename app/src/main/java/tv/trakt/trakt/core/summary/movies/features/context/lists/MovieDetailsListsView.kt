@@ -10,14 +10,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,9 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
@@ -49,6 +42,8 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.buttons.lists.ListButton
+import tv.trakt.trakt.ui.components.buttons.lists.WatchlistButton
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -234,13 +229,6 @@ private fun ActionButtons(
                 textAlign = TextAlign.Start,
                 modifier = Modifier,
             )
-
-//            if (loading) {
-//                FilmProgressIndicator(
-//                    modifier = Modifier
-//                        .size(14.dp),
-//                )
-//            }
         }
 
         for (list in lists) {
@@ -255,85 +243,6 @@ private fun ActionButtons(
                     },
             )
         }
-    }
-}
-
-@Composable
-private fun ListButton(
-    text: String,
-    checked: Boolean,
-    enabled: Boolean,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        verticalAlignment = CenterVertically,
-        horizontalArrangement = spacedBy(14.dp),
-        modifier = modifier
-            .alpha(if (enabled) 1F else 0.33F),
-    ) {
-        Checkbox(
-            checked = checked,
-            onCheckedChange = null,
-            enabled = false,
-            colors = CheckboxDefaults.colors().copy(
-                uncheckedBoxColor = Color.Transparent,
-                uncheckedBorderColor = TraktTheme.colors.primaryButtonContent,
-                checkedBoxColor = TraktTheme.colors.primaryButtonContent,
-                checkedBorderColor = TraktTheme.colors.primaryButtonContent,
-                checkedCheckmarkColor = TraktTheme.colors.dialogContainer,
-                disabledUncheckedBoxColor = Color.Transparent,
-                disabledUncheckedBorderColor = TraktTheme.colors.primaryButtonContent,
-                disabledCheckedBoxColor = TraktTheme.colors.primaryButtonContent,
-                disabledBorderColor = TraktTheme.colors.primaryButtonContent,
-            ),
-        )
-
-        Text(
-            text = text.uppercase(),
-            color = TraktTheme.colors.primaryButtonContent,
-            style = TraktTheme.typography.buttonSecondary,
-            maxLines = 1,
-            overflow = Ellipsis,
-            textAlign = TextAlign.Start,
-            modifier = Modifier
-                .weight(1F, false)
-                .padding(vertical = 10.dp),
-        )
-    }
-}
-
-@Composable
-private fun WatchlistButton(
-    checked: Boolean,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        verticalAlignment = CenterVertically,
-        horizontalArrangement = spacedBy(16.dp),
-        modifier = modifier,
-    ) {
-        Icon(
-            painter = when {
-                checked -> painterResource(R.drawable.ic_bookmark_on)
-                else -> painterResource(R.drawable.ic_bookmark_off)
-            },
-            contentDescription = null,
-            tint = TraktTheme.colors.primaryButtonContent,
-            modifier = Modifier
-                .size(22.dp),
-        )
-
-        Text(
-            text = stringResource(R.string.button_text_watchlist).uppercase(),
-            color = TraktTheme.colors.primaryButtonContent,
-            style = TraktTheme.typography.buttonSecondary,
-            maxLines = 1,
-            overflow = Ellipsis,
-            textAlign = TextAlign.Start,
-            modifier = Modifier
-                .weight(1F, false)
-                .padding(vertical = 8.dp),
-        )
     }
 }
 
