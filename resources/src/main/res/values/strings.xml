@@ -115,9 +115,9 @@
   <string name="link_text_discover_shows">Discover shows</string>
   <string name="link_text_forums">Forums</string>
   <string name="link_text_general_settings">General</string>
-  <string name="link_text_policy">Privacy Policy</string>
+  <string name="link_text_policy">Privacy</string>
   <string name="link_text_support">Support</string>
-  <string name="link_text_terms">Terms of Use</string>
+  <string name="link_text_terms">Terms</string>
   <string name="link_text_view_profile">View profile</string>
   <string name="list_placeholder_comments">No reviews yet.</string>
   <string name="list_placeholder_empty">There is nothing in this list.</string>
@@ -355,6 +355,7 @@
   <string name="text_rating_10">Absolute Cinema!</string>
 
   <string name="translated_value_library_plex" translatable="false">Plex</string>
+  <string name="link_text_roadmap">Roadmap</string>
 
   <string name="header_whats_new" translatable="false">What\'s New</string>
   <string name="header_rate_us_1" translatable="false">Loving Trakt so far?</string>

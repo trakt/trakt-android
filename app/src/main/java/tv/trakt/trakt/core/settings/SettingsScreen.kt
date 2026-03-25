@@ -30,6 +30,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -37,6 +38,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -47,6 +49,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -613,26 +616,22 @@ private fun SettingsMisc(
         )
 
         SettingsTextField(
-            text = stringResource(R.string.link_text_terms),
-            enabled = !state.logoutLoading.isLoading,
-            onClick = {
-                uriHandler.openUri(Config.WEB_TERMS_URL)
-            },
-        )
-
-        SettingsTextField(
-            text = stringResource(R.string.link_text_policy),
-            enabled = !state.logoutLoading.isLoading,
-            onClick = {
-                uriHandler.openUri(Config.WEB_PRIVACY_URL)
-            },
-        )
-
-        SettingsTextField(
             text = "Google Play Subscriptions",
             enabled = !state.logoutLoading.isLoading,
             onClick = onSubscriptionsClick,
         )
+
+        if (state.user?.isAnyVip == true) {
+            SettingsTextField(
+                text = stringResource(R.string.link_text_roadmap),
+                enabled = !state.logoutLoading.isLoading,
+                icon = R.drawable.ic_roadmap,
+                iconSize = 18.dp,
+                onClick = {
+                    uriHandler.openUri(Config.WEB_ROADMAP_URL)
+                },
+            )
+        }
 
         SettingsTextField(
             text = stringResource(R.string.button_text_logout),
@@ -641,6 +640,44 @@ private fun SettingsMisc(
             enabled = !state.logoutLoading.isLoading,
             onClick = onLogoutClick,
         )
+
+        Row(
+            horizontalArrangement = spacedBy(8.dp),
+            verticalAlignment = CenterVertically,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(top = 24.dp),
+        ) {
+            Text(
+                text = stringResource(R.string.link_text_terms),
+                color = TraktTheme.colors.textSecondary,
+                style = TraktTheme.typography.paragraph.copy(
+                    fontSize = 14.sp,
+                ),
+                modifier = Modifier.onClick {
+                    uriHandler.openUri(Config.WEB_TERMS_URL)
+                },
+            )
+
+            Text(
+                text = "•",
+                color = TraktTheme.colors.textSecondary,
+                style = TraktTheme.typography.paragraph.copy(
+                    fontSize = 14.sp,
+                ),
+            )
+
+            Text(
+                text = stringResource(R.string.link_text_policy),
+                color = TraktTheme.colors.textSecondary,
+                style = TraktTheme.typography.paragraph.copy(
+                    fontSize = 14.sp,
+                ),
+                modifier = Modifier.onClick {
+                    uriHandler.openUri(Config.WEB_PRIVACY_URL)
+                },
+            )
+        }
     }
 }
 
