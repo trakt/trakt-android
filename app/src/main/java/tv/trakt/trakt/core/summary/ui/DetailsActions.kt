@@ -37,7 +37,7 @@ internal fun DetailsActions(
     primaryEnabled: Boolean = true,
     secondaryVisible: Boolean = true,
     loading: Boolean = false,
-    inLists: Boolean? = false,
+    watchlist: Boolean? = false,
     trailer: Boolean = false,
     primaryIcon: Int = R.drawable.ic_check,
     onPrimaryClick: (() -> Unit)? = null,
@@ -112,7 +112,7 @@ internal fun DetailsActions(
             if (secondaryVisible) {
                 Icon(
                     painter = when {
-                        inLists == true -> painterResource(R.drawable.ic_bookmark_on)
+                        watchlist == true -> painterResource(R.drawable.ic_bookmark_on)
                         else -> painterResource(R.drawable.ic_bookmark_off)
                     },
                     tint = when {
@@ -179,7 +179,7 @@ private fun Preview() {
             DetailsActions()
 
             DetailsActions(
-                inLists = true,
+                watchlist = true,
             )
 
             DetailsActions(

@@ -242,21 +242,14 @@ internal class ShowDetailsViewModel(
                         loadWatchlistUseCase.loadLocalShows()
                     }
 
-                    val listsAsync = async {
-                        loadListsUseCase.loadLocalLists()
-                    }
-
                     val progress = progressAsync.await()
                     val watchlist = watchlistAsync.await()
-                    val lists = listsAsync.await()
 
                     showProgressState.update {
                         ShowDetailsState.ProgressState(
                             aired = progress?.progress?.aired ?: 0,
                             plays = progress?.progress?.plays,
                             inWatchlist = watchlist.contains(showId),
-                            inLists = false, // TODO Remove?
-                            hasLists = lists.isNotEmpty(),
                         )
                     }
                 }
@@ -663,9 +656,6 @@ internal class ShowDetailsViewModel(
                     show = show,
                 )
 
-                showProgressState.update {
-                    it?.copy(inLists = true)
-                }
                 infoState.update {
                     DynamicStringResource(R.string.text_info_list_added)
                 }
@@ -710,22 +700,10 @@ internal class ShowDetailsViewModel(
 
     private suspend fun refreshLists() {
         return coroutineScope {
-            val watchlistAsync = async {
-                loadWatchlistUseCase.loadLocalShows()
-            }
-
-            val listsAsync = async {
-                loadListsUseCase.loadLocalLists()
-            }
-
-            val watchlist = watchlistAsync.await()
-            val lists = listsAsync.await()
-
+            val watchlist = loadWatchlistUseCase.loadLocalShows()
             showProgressState.update {
                 it?.copy(
                     inWatchlist = watchlist.contains(showId),
-                    inLists = false, // TODO Remove?
-                    hasLists = lists.isNotEmpty(),
                 )
             }
         }

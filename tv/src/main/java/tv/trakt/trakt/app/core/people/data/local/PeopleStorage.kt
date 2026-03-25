@@ -5,7 +5,6 @@ import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
 import java.util.concurrent.ConcurrentHashMap
 
-// TODO Temporary cache implementation, replace with a proper database solution later.
 internal class PeopleStorage : PeopleLocalDataSource {
     private val cache = ConcurrentHashMap<TraktId, Person>(persistentMapOf())
 

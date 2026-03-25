@@ -454,13 +454,10 @@ internal fun ShowDetailsContent(
                             !state.loadingLists.isLoading,
                         loading = state.loadingProgress.isLoading ||
                             state.loadingLists.isLoading,
-                        inLists = state.showProgress?.inAnyList,
+                        watchlist = state.showProgress?.inWatchlist,
                         trailer = !show.trailer.isNullOrBlank(),
                         onPrimaryClick = onTrackClick,
-                        onSecondaryClick = when {
-                            state.showProgress?.hasLists == true -> onListsClick
-                            else -> onWatchlistClick
-                        },
+                        onSecondaryClick = onWatchlistClick,
                         onSecondaryLongClick = onListsClick,
                         onTrailerClick = onTrailerClick,
                         onMoreClick = onMoreClick,

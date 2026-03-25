@@ -239,20 +239,13 @@ internal class MovieDetailsViewModel(
                         loadWatchlistUseCase.loadLocalMovies()
                     }
 
-                    val listsAsync = async {
-                        loadListsUseCase.loadLocalLists()
-                    }
-
                     val progress = progressAsync.await()
                     val watchlist = watchlistAsync.await()
-                    val lists = listsAsync.await()
 
                     movieProgressState.update {
                         MovieDetailsState.ProgressState(
                             plays = progress?.plays ?: 0,
                             inWatchlist = watchlist.contains(movieId),
-                            inLists = false, // TODO Remove?
-                            hasLists = lists.isNotEmpty(),
                         )
                     }
                 }
@@ -699,9 +692,6 @@ internal class MovieDetailsViewModel(
                     movie = movie,
                 )
 
-                movieProgressState.update {
-                    it?.copy(inLists = true)
-                }
                 infoState.update {
                     DynamicStringResource(R.string.text_info_list_added)
                 }
@@ -746,22 +736,10 @@ internal class MovieDetailsViewModel(
 
     private suspend fun refreshLists() {
         return coroutineScope {
-            val watchlistAsync = async {
-                loadWatchlistUseCase.loadLocalMovies()
-            }
-
-            val listsAsync = async {
-                loadListsUseCase.loadLocalLists()
-            }
-
-            val watchlist = watchlistAsync.await()
-            val lists = listsAsync.await()
-
+            val watchlist = loadWatchlistUseCase.loadLocalMovies()
             movieProgressState.update {
                 it?.copy(
                     inWatchlist = watchlist.contains(movieId),
-                    inLists = false, // TODO Remove?
-                    hasLists = lists.isNotEmpty(),
                 )
             }
         }
