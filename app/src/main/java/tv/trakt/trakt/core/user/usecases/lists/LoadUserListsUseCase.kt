@@ -1,7 +1,9 @@
 package tv.trakt.trakt.core.user.usecases.lists
 
 import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableMap
+import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.core.user.data.remote.personallists.UserPersonalListsRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -24,6 +26,14 @@ internal class LoadUserListsUseCase(
     suspend fun loadLocalLists(): ImmutableMap<TraktId, CustomListMinimal> {
         return localSource.getLists()
             .toImmutableMap()
+    }
+
+    suspend fun loadMovieLists(movieId: TraktId): ImmutableSet<TraktId> {
+        return remoteSource.getMovieLists(movieId).toImmutableSet()
+    }
+
+    suspend fun loadShowLists(showId: TraktId): ImmutableSet<TraktId> {
+        return remoteSource.getShowLists(showId).toImmutableSet()
     }
 
     suspend fun loadLists(): ImmutableMap<TraktId, CustomListMinimal> =

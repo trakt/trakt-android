@@ -37,4 +37,8 @@ interface UserPersonalListsRemoteDataSource {
         extended: String,
         sorting: Sorting,
     ): List<ListMovieItemDto>
+
+    suspend fun getMovieLists(movieId: TraktId): Set<TraktId>
+
+    suspend fun getShowLists(showId: TraktId): Set<TraktId>
 }

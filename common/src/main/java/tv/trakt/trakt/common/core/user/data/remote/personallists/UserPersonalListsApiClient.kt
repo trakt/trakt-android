@@ -4,6 +4,7 @@ import org.openapitools.client.apis.UsersApi
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.sorting.Sorting
+import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.ListItemDto
 import tv.trakt.trakt.common.networking.ListMovieItemDto
@@ -117,5 +118,15 @@ class UserPersonalListsApiClient(
         )
 
         return response.body()
+    }
+
+    override suspend fun getShowLists(showId: TraktId): Set<TraktId> {
+        val response = v3Api.getShowMeLists(showId)
+        return response.map { it.toTraktId() }.toSet()
+    }
+
+    override suspend fun getMovieLists(movieId: TraktId): Set<TraktId> {
+        val response = v3Api.getMovieMeLists(movieId)
+        return response.map { it.toTraktId() }.toSet()
     }
 }

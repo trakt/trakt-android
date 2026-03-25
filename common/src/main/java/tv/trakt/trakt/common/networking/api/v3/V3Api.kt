@@ -33,4 +33,14 @@ class V3Api(
         val response = client.get("${baseUrl}users/me/lists")
         return response.body()
     }
+
+    suspend fun getMovieMeLists(movieId: TraktId): List<Int> {
+        val response = client.get("${baseUrl}movies/${movieId.value}/me/lists")
+        return response.body<List<Int>>()
+    }
+
+    suspend fun getShowMeLists(showId: TraktId): List<Int> {
+        val response = client.get("${baseUrl}shows/${showId.value}/me/lists")
+        return response.body<List<Int>>()
+    }
 }
