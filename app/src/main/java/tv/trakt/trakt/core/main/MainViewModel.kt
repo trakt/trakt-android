@@ -45,6 +45,7 @@ import tv.trakt.trakt.core.main.usecases.LoadWhatsNewUseCase
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
 import tv.trakt.trakt.core.user.usecases.LoadUserProfileUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
+import tv.trakt.trakt.core.user.usecases.lists.LoadUserListsUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
@@ -63,6 +64,7 @@ internal class MainViewModel(
     private val logoutUseCase: LogoutUserUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val loadUserWatchlistUseCase: LoadUserWatchlistUseCase,
+    private val loadUserListsUseCase: LoadUserListsUseCase,
     private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
     private val dismissWelcomeUseCase: DismissWelcomeUseCase,
     private val inAppReviewUseCase: RequestAppReviewUseCase,
@@ -206,11 +208,13 @@ internal class MainViewModel(
                 coroutineScope {
                     val progressAsync = async { loadUserProgressUseCase.loadProgress() }
                     val watchlistAsync = async { loadUserWatchlistUseCase.loadWatchlist() }
+                    val listsAsync = async { loadUserListsUseCase.loadLists() }
                     val ratingsAsync = async { loadUserRatingsUseCase.loadAll() }
 
                     awaitAll(
                         progressAsync,
                         watchlistAsync,
+                        listsAsync,
                         ratingsAsync,
                     )
                 }

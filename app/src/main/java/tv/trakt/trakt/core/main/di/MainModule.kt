@@ -119,6 +119,7 @@ internal val mainModule = module {
             checkInManager = get(),
             loadUserProgressUseCase = get(),
             loadUserWatchlistUseCase = get(),
+            loadUserListsUseCase = get(),
             loadUserRatingsUseCase = get(),
             authorizePreferences = get(named(AUTH_PREFERENCES)),
             authorizeUseCase = get(),
