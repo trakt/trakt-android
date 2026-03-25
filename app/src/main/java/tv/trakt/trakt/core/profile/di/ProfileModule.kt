@@ -19,6 +19,22 @@ import tv.trakt.trakt.common.core.user.data.local.liked.UserLikedListsLocalDataS
 import tv.trakt.trakt.common.core.user.data.local.liked.UserLikedListsStorage
 import tv.trakt.trakt.common.core.user.data.remote.UserApiClient
 import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.calendar.UserCalendarApiClient
+import tv.trakt.trakt.common.core.user.data.remote.calendar.UserCalendarRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.favorites.UserFavoritesApiClient
+import tv.trakt.trakt.common.core.user.data.remote.favorites.UserFavoritesRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.history.UserHistoryApiClient
+import tv.trakt.trakt.common.core.user.data.remote.history.UserHistoryRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.likedlists.UserLikedListsApiClient
+import tv.trakt.trakt.common.core.user.data.remote.likedlists.UserLikedListsRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.personallists.UserPersonalListsApiClient
+import tv.trakt.trakt.common.core.user.data.remote.personallists.UserPersonalListsRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.ratings.UserRatingsApiClient
+import tv.trakt.trakt.common.core.user.data.remote.ratings.UserRatingsRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.social.UserSocialApiClient
+import tv.trakt.trakt.common.core.user.data.remote.social.UserSocialRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.watchlist.UserWatchlistApiClient
+import tv.trakt.trakt.common.core.user.data.remote.watchlist.UserWatchlistRemoteDataSource
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLikedListsUseCase
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -68,11 +84,57 @@ internal val profileDataModule = module {
     single<UserRemoteDataSource> {
         UserApiClient(
             usersApi = get(),
-            historyApi = get(),
-            calendarsApi = get(),
             syncApi = get(),
-            v3Api = get(),
             cacheMarkerProvider = get(),
+        )
+    }
+
+    single<UserHistoryRemoteDataSource> {
+        UserHistoryApiClient(
+            historyApi = get(),
+        )
+    }
+
+    single<UserWatchlistRemoteDataSource> {
+        UserWatchlistApiClient(
+            usersApi = get(),
+            v3Api = get(),
+        )
+    }
+
+    single<UserFavoritesRemoteDataSource> {
+        UserFavoritesApiClient(
+            usersApi = get(),
+        )
+    }
+
+    single<UserLikedListsRemoteDataSource> {
+        UserLikedListsApiClient(
+            usersApi = get(),
+        )
+    }
+
+    single<UserCalendarRemoteDataSource> {
+        UserCalendarApiClient(
+            calendarsApi = get(),
+        )
+    }
+
+    single<UserRatingsRemoteDataSource> {
+        UserRatingsApiClient(
+            usersApi = get(),
+        )
+    }
+
+    single<UserPersonalListsRemoteDataSource> {
+        UserPersonalListsApiClient(
+            usersApi = get(),
+        )
+    }
+
+    single<UserSocialRemoteDataSource> {
+        UserSocialApiClient(
+            usersApi = get(),
         )
     }
 
@@ -83,9 +145,7 @@ internal val profileDataModule = module {
     }
 
     single<UserWatchlistMinimalLocalDataSource> {
-        UserWatchlistMinimalStorage(
-//            homeWatchlistStorage = get(clazz = HomeWatchlistLocalDataSource::class),
-        )
+        UserWatchlistMinimalStorage()
     }
 
     single<UserProgressLocalDataSource> {

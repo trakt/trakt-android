@@ -8,7 +8,7 @@ import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.calendar.UserCalendarRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.helpers.extensions.toLocal
@@ -32,7 +32,7 @@ private val finaleValues = listOf("season_finale", "series_finale")
 
 internal class GetCalendarItemsUseCase(
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
-    private val remoteUserSource: UserRemoteDataSource,
+    private val remoteUserSource: UserCalendarRemoteDataSource,
     private val sessionManager: SessionManager,
 ) {
     suspend fun getCalendarItems(day: LocalDate): ImmutableMap<LocalDate, ImmutableList<CalendarItem>> {

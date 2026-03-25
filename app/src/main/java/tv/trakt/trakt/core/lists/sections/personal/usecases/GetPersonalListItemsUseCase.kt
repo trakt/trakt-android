@@ -2,7 +2,7 @@ package tv.trakt.trakt.core.lists.sections.personal.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.personallists.UserPersonalListsRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Episode
@@ -25,7 +25,7 @@ import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
 import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
 
 internal class GetPersonalListItemsUseCase(
-    private val remoteSource: UserRemoteDataSource,
+    private val remoteSource: UserPersonalListsRemoteDataSource,
     private val localSource: ListsPersonalItemsLocalDataSource,
 ) {
     suspend fun getItems(

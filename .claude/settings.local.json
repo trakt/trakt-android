@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__mobile-mcp__mobile_list_available_devices",
+      "mcp__mobile-mcp__mobile_launch_app",
+      "mcp__mobile-mcp__mobile_take_screenshot",
+      "mcp__mobile-mcp__mobile_click_on_screen_at_coordinates",
+      "mcp__mobile-mcp__mobile_terminate_app",
+      "mcp__mobile-mcp__mobile_list_apps",
+      "Bash(adb:*)",
+      "mcp__mobile-mcp__mobile_list_elements_on_screen"
+    ]
+  }
+}

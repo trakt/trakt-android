@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.calendar.UserCalendarRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
@@ -29,7 +29,7 @@ private val premiereValues = listOf("season_premiere", "series_premiere")
 private val finaleValues = listOf("season_finale", "series_finale")
 
 internal class GetUpcomingUseCase(
-    private val remoteUserSource: UserRemoteDataSource,
+    private val remoteUserSource: UserCalendarRemoteDataSource,
     private val localDataSource: HomeUpcomingLocalDataSource,
 ) {
     suspend fun getLocalUpcoming(filter: MediaMode): ImmutableList<HomeUpcomingItem> {

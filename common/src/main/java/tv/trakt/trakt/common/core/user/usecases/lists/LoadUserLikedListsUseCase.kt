@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.user.data.local.liked.UserLikedListsLocalDataSource
-import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.likedlists.UserLikedListsRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.pagination.Pagination
@@ -16,7 +16,7 @@ import java.time.Instant
  */
 class LoadUserLikedListsUseCase(
     private val sessionManager: SessionManager,
-    private val remoteSource: UserRemoteDataSource,
+    private val remoteSource: UserLikedListsRemoteDataSource,
     private val localSource: UserLikedListsLocalDataSource,
 ) {
     suspend fun loadLocalLists(): ImmutableMap<TraktId, Instant> {

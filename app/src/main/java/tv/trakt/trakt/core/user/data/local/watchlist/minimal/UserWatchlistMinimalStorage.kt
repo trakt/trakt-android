@@ -7,9 +7,7 @@ import kotlinx.coroutines.sync.withLock
 import tv.trakt.trakt.common.model.TraktId
 import java.time.Instant
 
-internal class UserWatchlistMinimalStorage(
-//    private val homeWatchlistStorage: HomeWatchlistStorage,
-) : UserWatchlistMinimalLocalDataSource {
+internal class UserWatchlistMinimalStorage : UserWatchlistMinimalLocalDataSource {
     private val mutex = Mutex()
 
     private var moviesStorage: MutableSet<TraktId>? = null
@@ -93,8 +91,6 @@ internal class UserWatchlistMinimalStorage(
                     storage.remove(id)
                 }
             }
-
-//            homeWatchlistStorage.removeMovies(ids)
         }
     }
 
@@ -105,8 +101,6 @@ internal class UserWatchlistMinimalStorage(
                     storage.remove(id)
                 }
             }
-
-//            homeWatchlistStorage.removeShows(ids)
         }
     }
 
@@ -128,8 +122,6 @@ internal class UserWatchlistMinimalStorage(
 
         moviesStorage = null
         showsStorage = null
-
-//        homeWatchlistStorage.clear()
 
         updatedAt.tryEmit(null)
     }

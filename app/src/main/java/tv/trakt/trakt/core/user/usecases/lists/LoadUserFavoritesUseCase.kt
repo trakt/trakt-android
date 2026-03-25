@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.favorites.UserFavoritesRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Movie
@@ -19,7 +19,7 @@ import tv.trakt.trakt.core.user.data.local.favorites.UserFavoritesLocalDataSourc
  * Loads the user's favorites from the remote source and updates the local cache.
  */
 internal class LoadUserFavoritesUseCase(
-    private val remoteSource: UserRemoteDataSource,
+    private val remoteSource: UserFavoritesRemoteDataSource,
     private val localSource: UserFavoritesLocalDataSource,
 ) {
     suspend fun loadLocalAll(sort: Sorting? = null): ImmutableList<FavoriteItem> {
