@@ -5,6 +5,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.CustomList.Type
+import tv.trakt.trakt.common.model.CustomListMinimal
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.Images
@@ -182,8 +183,6 @@ object PreviewData {
         privacy = "public",
         displayNumbers = true,
         allowComments = true,
-//        sortType = SortType.RANK,
-//        sortOrder = SortOrder.ASCENDING,
         createdAt = ZonedDateTime.now(),
         updatedAt = ZonedDateTime.now(),
         shareLink = "",
@@ -191,6 +190,15 @@ object PreviewData {
         likes = 12,
         images = null,
         user = user1,
+    )
+
+    val customListMinimal1 = CustomListMinimal(
+        id = TraktId(1),
+        ownerId = 1,
+        name = "My Custom List",
+        type = "official",
+        itemsCount = 42,
+        displayOrder = 1,
     )
 
     val comment1 = Comment(

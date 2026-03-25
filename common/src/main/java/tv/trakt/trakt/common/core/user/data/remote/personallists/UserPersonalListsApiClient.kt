@@ -8,9 +8,12 @@ import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.ListItemDto
 import tv.trakt.trakt.common.networking.ListMovieItemDto
 import tv.trakt.trakt.common.networking.ListShowItemDto
+import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalList
 
 class UserPersonalListsApiClient(
     private val usersApi: UsersApi,
+    private val v3Api: V3Api,
 ) : UserPersonalListsRemoteDataSource {
     override suspend fun getPersonalLists(pagination: Pagination): List<ListDto> {
         val response = usersApi.getUsersListsPersonal(
@@ -20,6 +23,10 @@ class UserPersonalListsApiClient(
             limit = pagination.limit,
         )
         return response.body()
+    }
+
+    override suspend fun getPersonalListsMinimal(): List<V3MinimalList> {
+        return v3Api.getListsMinimal()
     }
 
     override suspend fun getPersonalListItems(

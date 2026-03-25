@@ -1,30 +1,14 @@
 package tv.trakt.trakt.core.user.data.local
 
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import tv.trakt.trakt.common.helpers.extensions.nowUtc
-import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
-import tv.trakt.trakt.common.model.CustomList
-import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.CustomListMinimal
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.lists.model.CustomListItem
-import tv.trakt.trakt.core.lists.model.CustomListItem.EpisodeItem
-import tv.trakt.trakt.core.lists.model.CustomListItem.MovieItem
-import tv.trakt.trakt.core.lists.model.CustomListItem.SeasonItem
-import tv.trakt.trakt.core.lists.model.CustomListItem.ShowItem
-import java.time.Instant
 
 internal class UserListsStorage : UserListsLocalDataSource {
     private val mutex = Mutex()
 
-    private var storage: MutableMap<TraktId, Pair<CustomList, List<CustomListItem>>>? = null
-    private val updatedAt = MutableSharedFlow<Instant?>(
-        extraBufferCapacity = 1,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST,
-    )
+    private var storage: MutableMap<TraktId, CustomListMinimal>? = null
 
     private fun ensureInitialized() {
         if (storage == null) {
@@ -32,28 +16,21 @@ internal class UserListsStorage : UserListsLocalDataSource {
         }
     }
 
-    override suspend fun setLists(
-        lists: Map<CustomList, List<CustomListItem>>,
-        notify: Boolean,
-    ) {
+    override suspend fun setLists(lists: List<CustomListMinimal>) {
         mutex.withLock {
             ensureInitialized()
             storage?.let { storage ->
                 storage.clear()
-                lists.forEach { (list, items) ->
-                    storage[list.ids.trakt] = list to items
+                lists.forEach { list ->
+                    storage[list.id] = list
                 }
-            }
-
-            if (notify) {
-                updatedAt.tryEmit(nowUtcInstant())
             }
         }
     }
 
-    override suspend fun getLists(): Map<CustomList, List<CustomListItem>> {
+    override suspend fun getLists(): Map<TraktId, CustomListMinimal> {
         return mutex.withLock {
-            storage?.values?.associate { it.first to it.second } ?: emptyMap()
+            storage?.toMap() ?: emptyMap()
         }
     }
 
@@ -63,85 +40,8 @@ internal class UserListsStorage : UserListsLocalDataSource {
         }
     }
 
-    override suspend fun addListItem(
-        listId: TraktId,
-        item: CustomListItem,
-        notify: Boolean,
-    ) {
-        mutex.withLock {
-            storage?.let { storage ->
-                val entry = storage[listId]
-                if (entry != null) {
-                    val (list, items) = entry
-
-                    val updatedList = list.copy(
-                        updatedAt = nowUtc(),
-                    )
-
-                    val updatedItems = items
-                        .plus(
-                            when (item) {
-                                is MovieItem -> item.copy(rank = items.size + 1)
-                                is ShowItem -> item.copy(rank = items.size + 1)
-                                is SeasonItem -> item.copy(rank = items.size + 1)
-                                is EpisodeItem -> item.copy(rank = items.size + 1)
-                            },
-                        )
-                        .distinctBy {
-                            when (it) {
-                                is MovieItem -> it.movie.ids.trakt
-                                is ShowItem -> it.show.ids.trakt
-                                is SeasonItem -> it.season.ids.trakt
-                                is EpisodeItem -> it.episode.ids.trakt
-                            }
-                        }
-                    storage[listId] = updatedList to updatedItems
-                }
-            }
-
-            if (notify) {
-                updatedAt.tryEmit(nowUtcInstant())
-            }
-        }
-    }
-
-    override suspend fun removeListItem(
-        listId: TraktId,
-        itemId: TraktId,
-        itemType: MediaType,
-        notify: Boolean,
-    ) {
-        mutex.withLock {
-            storage?.let { storage ->
-                val entry = storage[listId]
-                if (entry != null) {
-                    val (list, items) = entry
-
-                    val updatedList = list.copy(
-                        updatedAt = nowUtc(),
-                    )
-
-                    val updatedItems = items.filterNot {
-                        it.id == itemId &&
-                            it.type == itemType
-                    }
-                    storage[listId] = updatedList to updatedItems
-                }
-            }
-
-            if (notify) {
-                updatedAt.tryEmit(nowUtcInstant())
-            }
-        }
-    }
-
-    override fun observeUpdates(): Flow<Instant?> {
-        return updatedAt
-    }
-
     override fun clear() {
         storage?.clear()
         storage = null
-        updatedAt.tryEmit(null)
     }
 }

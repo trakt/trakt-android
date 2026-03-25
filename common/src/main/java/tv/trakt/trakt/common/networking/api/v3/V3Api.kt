@@ -7,6 +7,7 @@ import io.ktor.client.request.get
 import org.openapitools.client.infrastructure.ApiClient
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalList
 import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalWatchlistResponse
 
 class V3Api(
@@ -26,5 +27,10 @@ class V3Api(
         val movies = responseBody.movies.orEmpty().map { it.toTraktId() }.toSet()
 
         return shows to movies
+    }
+
+    suspend fun getListsMinimal(): List<V3MinimalList> {
+        val response = client.get("${baseUrl}users/me/lists")
+        return response.body()
     }
 }

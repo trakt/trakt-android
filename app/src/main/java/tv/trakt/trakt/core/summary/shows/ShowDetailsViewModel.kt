@@ -243,24 +243,20 @@ internal class ShowDetailsViewModel(
                     }
 
                     val listsAsync = async {
-                        val lists = loadListsUseCase.loadLocalLists()
-                        lists.size to lists.values.flatten()
-                            .firstOrNull {
-                                it.type == SHOW && it.id == showId
-                            }
+                        loadListsUseCase.loadLocalLists()
                     }
 
                     val progress = progressAsync.await()
                     val watchlist = watchlistAsync.await()
-                    val (listsCount, lists) = listsAsync.await()
+                    val lists = listsAsync.await()
 
                     showProgressState.update {
                         ShowDetailsState.ProgressState(
                             aired = progress?.progress?.aired ?: 0,
                             plays = progress?.progress?.plays,
                             inWatchlist = watchlist.contains(showId),
-                            inLists = lists != null,
-                            hasLists = listsCount > 0,
+                            inLists = false, // TODO Remove?
+                            hasLists = lists.isNotEmpty(),
                         )
                     }
                 }
@@ -719,21 +715,17 @@ internal class ShowDetailsViewModel(
             }
 
             val listsAsync = async {
-                val lists = loadListsUseCase.loadLocalLists()
-                lists.size to lists.values.flatten()
-                    .firstOrNull {
-                        it.type == SHOW && it.id == showId
-                    }
+                loadListsUseCase.loadLocalLists()
             }
 
             val watchlist = watchlistAsync.await()
-            val (listsCount, lists) = listsAsync.await()
+            val lists = listsAsync.await()
 
             showProgressState.update {
                 it?.copy(
                     inWatchlist = watchlist.contains(showId),
-                    inLists = lists != null,
-                    hasLists = listsCount > 0,
+                    inLists = false, // TODO Remove?
+                    hasLists = lists.isNotEmpty(),
                 )
             }
         }

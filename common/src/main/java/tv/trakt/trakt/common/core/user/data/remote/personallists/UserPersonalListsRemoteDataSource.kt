@@ -7,9 +7,12 @@ import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.ListItemDto
 import tv.trakt.trakt.common.networking.ListMovieItemDto
 import tv.trakt.trakt.common.networking.ListShowItemDto
+import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalList
 
 interface UserPersonalListsRemoteDataSource {
     suspend fun getPersonalLists(pagination: Pagination): List<ListDto>
+
+    suspend fun getPersonalListsMinimal(): List<V3MinimalList>
 
     suspend fun getPersonalListItems(
         listId: TraktId,

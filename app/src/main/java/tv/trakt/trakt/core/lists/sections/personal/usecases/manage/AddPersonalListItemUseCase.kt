@@ -2,20 +2,16 @@ package tv.trakt.trakt.core.lists.sections.personal.usecases.manage
 
 import tv.trakt.trakt.common.core.lists.data.remote.ListsRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
-import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
-import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
 
 internal class AddPersonalListItemUseCase(
     private val remoteSource: ListsRemoteDataSource,
     private val listsLocalDataSource: ListsPersonalLocalDataSource,
     private val listsItemsLocalDataSource: ListsPersonalItemsLocalDataSource,
-    private val userListsLocalDataSource: UserListsLocalDataSource,
 ) {
     suspend fun addMovie(
         listId: TraktId,
@@ -24,16 +20,6 @@ internal class AddPersonalListItemUseCase(
         remoteSource.addMovieToList(
             listId = listId,
             movieId = movie.ids.trakt,
-        )
-
-        userListsLocalDataSource.addListItem(
-            listId = listId,
-            item = CustomListItem.MovieItem(
-                rank = Int.MAX_VALUE,
-                movie = movie,
-                listedAt = nowUtcInstant(),
-            ),
-            notify = true,
         )
 
         listsItemsLocalDataSource.addMovies(
@@ -54,16 +40,6 @@ internal class AddPersonalListItemUseCase(
         remoteSource.addShowToList(
             listId = listId,
             showId = show.ids.trakt,
-        )
-
-        userListsLocalDataSource.addListItem(
-            listId = listId,
-            item = CustomListItem.ShowItem(
-                rank = Int.MAX_VALUE,
-                show = show,
-                listedAt = nowUtcInstant(),
-            ),
-            notify = true,
         )
 
         listsItemsLocalDataSource.addShows(

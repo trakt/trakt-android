@@ -14,7 +14,6 @@ import timber.log.Timber
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserListsUseCase
@@ -48,12 +47,9 @@ internal class MovieDetailsListsViewModel(
             try {
                 viewModelScope.launch {
                     val lists = loadListsUseCase.loadLocalLists()
-                        .map { (list, items) ->
-                            val containsMovie = items.any {
-                                it.id == movie.ids.trakt &&
-                                    it.type == MOVIE
-                            }
-                            list to containsMovie
+                        .map {
+                            // TODO: load list items and check if the movie is in the list!
+                            it.value to false
                         }
 
                     listsState.update {
@@ -73,7 +69,7 @@ internal class MovieDetailsListsViewModel(
 
     fun isInList(listId: TraktId): Boolean {
         return listsState.value.any { (list, inList) ->
-            list.ids.trakt == listId && inList
+            list.id == listId && inList
         }
     }
 

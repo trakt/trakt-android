@@ -172,7 +172,6 @@ internal val listsModule = module {
             remoteSource = get(),
             listsItemsLocalDataSource = get(),
             listsLocalDataSource = get(),
-            userListsLocalDataSource = get(),
         )
     }
 
@@ -180,7 +179,6 @@ internal val listsModule = module {
         AddPersonalListItemUseCase(
             remoteSource = get(),
             listsItemsLocalDataSource = get(),
-            userListsLocalDataSource = get(),
             listsLocalDataSource = get(),
         )
     }
@@ -286,7 +284,6 @@ internal val listsModule = module {
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
             episodeLocalDataSource = get(),
-            userListLocalDataSource = get(),
             collectionStateProvider = get(),
             sessionManager = get(),
             modeManager = get(),

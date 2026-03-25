@@ -11,9 +11,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -46,7 +43,6 @@ import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.user.CollectionStateProvider
 import tv.trakt.trakt.core.user.UserCollectionState
-import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
 
 @OptIn(FlowPreview::class)
 internal class AllPersonalListViewModel(
@@ -58,7 +54,6 @@ internal class AllPersonalListViewModel(
     private val showLocalDataSource: ShowLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
-    private val userListLocalDataSource: UserListsLocalDataSource,
     private val collectionStateProvider: CollectionStateProvider,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
@@ -89,28 +84,11 @@ internal class AllPersonalListViewModel(
         loadData()
         loadUser()
 
-        observeLists()
         observeCollection()
 
         analytics.logScreenView(
             screenName = "all_personal_list",
         )
-    }
-
-    private fun observeLists() {
-        viewModelScope.launch {
-            merge(
-                userListLocalDataSource.observeUpdates(),
-            )
-                .distinctUntilChanged()
-                .debounce(200)
-                .collect {
-                    loadData(
-                        ignoreErrors = true,
-                        ignoreLoading = true,
-                    )
-                }
-        }
     }
 
     private fun observeCollection() {

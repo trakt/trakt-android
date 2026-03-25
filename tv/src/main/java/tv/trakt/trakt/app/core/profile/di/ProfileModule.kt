@@ -103,6 +103,7 @@ internal val profileDataModule = module {
     single<UserPersonalListsRemoteDataSource> {
         UserPersonalListsApiClient(
             usersApi = get(),
+            v3Api = get(),
         )
     }
 

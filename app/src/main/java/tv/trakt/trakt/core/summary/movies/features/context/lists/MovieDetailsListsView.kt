@@ -32,7 +32,7 @@ import coil3.annotation.ExperimentalCoilApi
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.preview.PreviewData
-import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.CustomListMinimal
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
@@ -54,7 +54,7 @@ internal fun MovieDetailsListsView(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var confirmRemoveWatchlistSheet by remember { mutableStateOf(false) }
-    var confirmRemoveListSheet by remember { mutableStateOf<CustomList?>(null) }
+    var confirmRemoveListSheet by remember { mutableStateOf<CustomListMinimal?>(null) }
 
     MovieDetailsListsContent(
         movie = movie,
@@ -68,10 +68,10 @@ internal fun MovieDetailsListsView(
             }
         },
         onListClick = {
-            if (viewModel.isInList(it.ids.trakt)) {
+            if (viewModel.isInList(it.id)) {
                 confirmRemoveListSheet = it
             } else {
-                onAddListClick?.invoke(it.ids.trakt)
+                onAddListClick?.invoke(it.id)
             }
         },
         modifier = modifier,
@@ -95,7 +95,7 @@ internal fun MovieDetailsListsView(
         active = confirmRemoveListSheet != null,
         onYes = {
             confirmRemoveListSheet?.let {
-                onRemoveListClick?.invoke(it.ids.trakt)
+                onRemoveListClick?.invoke(it.id)
                 confirmRemoveListSheet = null
             }
         },
@@ -113,10 +113,10 @@ internal fun MovieDetailsListsView(
 private fun MovieDetailsListsContent(
     movie: Movie,
     inWatchlist: Boolean,
-    lists: ImmutableList<Pair<CustomList, Boolean>>,
+    lists: ImmutableList<Pair<CustomListMinimal, Boolean>>,
     modifier: Modifier = Modifier,
     onWatchlistClick: (() -> Unit)? = null,
-    onListClick: ((CustomList) -> Unit)? = null,
+    onListClick: ((CustomListMinimal) -> Unit)? = null,
 ) {
     val genresText = remember(movie.genres) {
         movie.genres.take(2).joinToString(" / ") { genre ->
@@ -176,9 +176,9 @@ private fun MovieDetailsListsContent(
 private fun ActionButtons(
     modifier: Modifier = Modifier,
     inWatchlist: Boolean,
-    lists: ImmutableList<Pair<CustomList, Boolean>>,
+    lists: ImmutableList<Pair<CustomListMinimal, Boolean>>,
     onWatchlistClick: (() -> Unit)? = null,
-    onListClick: ((CustomList) -> Unit)? = null,
+    onListClick: ((CustomListMinimal) -> Unit)? = null,
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -232,7 +232,7 @@ private fun Preview() {
         MovieDetailsListsContent(
             movie = PreviewData.movie1,
             inWatchlist = true,
-            lists = listOf(PreviewData.customList1 to true).toImmutableList(),
+            lists = listOf(PreviewData.customListMinimal1 to true).toImmutableList(),
         )
     }
 }
@@ -249,7 +249,7 @@ private fun Preview2() {
         MovieDetailsListsContent(
             movie = PreviewData.movie1,
             inWatchlist = false,
-            lists = listOf(PreviewData.customList1 to false).toImmutableList(),
+            lists = listOf(PreviewData.customListMinimal1 to false).toImmutableList(),
         )
     }
 }
