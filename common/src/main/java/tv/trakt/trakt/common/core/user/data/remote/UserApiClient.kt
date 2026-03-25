@@ -143,7 +143,7 @@ class UserApiClient(
     ): List<WatchlistItemDto> {
         val response = usersApi.getUsersWatchlistAll(
             id = "me",
-            sort = sorting?.type?.value ?: "rank",
+            sort = "",
             extended = extended,
             page = page,
             limit = limit,
@@ -155,7 +155,7 @@ class UserApiClient(
             startDate = null,
             endDate = null,
             hide = null,
-            sortBy = null,
+            sortBy = sorting?.type?.value ?: SortType.RANK.value,
             sortHow = sorting?.order?.value,
             runtimes = null,
         )

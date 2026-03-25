@@ -21,9 +21,9 @@ internal fun getWatchlistSorting(sort: Sorting?): Comparator<WatchlistItem> {
         }
 
         ADDED -> when (sort.order) {
-            ASCENDING -> compareBy { it.listedAt }
+            ASCENDING -> compareBy<WatchlistItem> { it.listedAt }
             DESCENDING -> compareByDescending { it.listedAt }
-        }
+        }.thenBy { it.rank }
 
         RUNTIME -> when (sort.order) {
             ASCENDING -> compareBy { it.runtime }

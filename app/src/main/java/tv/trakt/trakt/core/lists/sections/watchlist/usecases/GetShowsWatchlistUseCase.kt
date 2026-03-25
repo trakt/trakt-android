@@ -17,12 +17,12 @@ internal class GetShowsWatchlistUseCase(
     private val userWatchlistLocalDataSource: UserWatchlistLocalDataSource,
 ) {
     suspend fun getLocalWatchlist(
-        limit: Int? = null,
-        sort: Sorting? = null,
+        limit: Int,
+        sort: Sorting,
     ): ImmutableList<WatchlistItem> {
         return userWatchlistLocalDataSource.getShows()
             .sortedWith(getWatchlistSorting(sort))
-            .take(limit ?: Int.MAX_VALUE)
+            .take(limit)
             .toImmutableList()
     }
 
@@ -47,6 +47,7 @@ internal class GetShowsWatchlistUseCase(
         }
 
         return response
+            .sortedWith(getWatchlistSorting(sorting))
             .toImmutableList()
             .also {
                 if (skipLocal) return@also

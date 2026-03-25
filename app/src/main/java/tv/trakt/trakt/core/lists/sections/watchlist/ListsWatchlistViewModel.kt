@@ -138,9 +138,18 @@ internal class ListsWatchlistViewModel(
                 }
 
                 val localItems = when (filterState.value) {
-                    MEDIA -> getWatchlistUseCase.getLocalWatchlist(WATCHLIST_SECTION_LIMIT)
-                    SHOWS -> getShowsWatchlistUseCase.getLocalWatchlist(WATCHLIST_SECTION_LIMIT)
-                    MOVIES -> getMoviesWatchlistUseCase.getLocalWatchlist(WATCHLIST_SECTION_LIMIT)
+                    MEDIA -> getWatchlistUseCase.getLocalWatchlist(
+                        limit = WATCHLIST_SECTION_LIMIT,
+                        sort = Sorting.RecentlyAdded,
+                    )
+                    SHOWS -> getShowsWatchlistUseCase.getLocalWatchlist(
+                        limit = WATCHLIST_SECTION_LIMIT,
+                        sort = Sorting.RecentlyAdded,
+                    )
+                    MOVIES -> getMoviesWatchlistUseCase.getLocalWatchlist(
+                        limit = WATCHLIST_SECTION_LIMIT,
+                        sort = Sorting.RecentlyAdded,
+                    )
                 }
 
                 if (localItems.isNotEmpty()) {
