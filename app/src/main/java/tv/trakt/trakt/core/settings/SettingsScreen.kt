@@ -646,7 +646,7 @@ private fun SettingsMisc(
             verticalAlignment = CenterVertically,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(top = 24.dp),
+                .padding(top = 8.dp),
         ) {
             Text(
                 text = stringResource(R.string.link_text_terms),
