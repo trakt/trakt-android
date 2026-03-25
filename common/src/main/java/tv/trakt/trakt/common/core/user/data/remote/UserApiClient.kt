@@ -268,34 +268,30 @@ class UserApiClient(
     }
 
     override suspend fun getFavoriteShows(
-        page: Int?,
-        limit: Int?,
         extended: String?,
         sort: String?,
     ): List<SyncFavoriteShowDto> {
         val response = usersApi.getUsersFavoritesShows(
             id = "me",
             extended = extended,
-            page = page,
-            limit = limit ?: 999,
             sort = sort ?: "rank",
+            page = 1,
+            limit = 1000,
         )
 
         return response.body()
     }
 
     override suspend fun getFavoriteMovies(
-        page: Int?,
-        limit: Int?,
         extended: String?,
         sort: String?,
     ): List<SyncFavoriteMovieDto> {
         val response = usersApi.getUsersFavoritesMovies(
             id = "me",
             extended = extended,
-            page = page,
-            limit = limit ?: 999,
             sort = sort ?: "rank",
+            page = 1,
+            limit = 1000,
         )
 
         return response.body()

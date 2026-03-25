@@ -43,15 +43,11 @@ interface UserRemoteDataSource {
     suspend fun getRatingsEpisodes(): List<UserRatingDto>
 
     suspend fun getFavoriteShows(
-        page: Int? = null,
-        limit: Int? = null,
         extended: String? = null,
         sort: String? = null,
     ): List<SyncFavoriteShowDto>
 
     suspend fun getFavoriteMovies(
-        page: Int? = null,
-        limit: Int? = null,
         extended: String? = null,
         sort: String? = null,
     ): List<SyncFavoriteMovieDto>
