@@ -5,6 +5,7 @@ package tv.trakt.trakt.core.summary.shows.features.context.lists
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,25 +20,30 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.annotation.ExperimentalCoilApi
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableSet
+import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomListMinimal
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.buttons.GhostButton
+import tv.trakt.trakt.ui.components.buttons.lists.ListButton
+import tv.trakt.trakt.ui.components.buttons.lists.WatchlistButton
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -58,7 +64,9 @@ internal fun ShowDetailsListsView(
 
     ShowDetailsListsContent(
         show = show,
+        loading = state.loading,
         lists = state.lists,
+        showLists = state.showLists,
         inWatchlist = inWatchlist,
         onWatchlistClick = {
             if (inWatchlist) {
@@ -68,7 +76,7 @@ internal fun ShowDetailsListsView(
             }
         },
         onListClick = {
-            if (viewModel.isInList(it.id)) {
+            if (viewModel.isListed(it.id)) {
                 confirmRemoveListSheet = it
             } else {
                 onAddListClick?.invoke(it.id)
@@ -112,8 +120,10 @@ internal fun ShowDetailsListsView(
 @Composable
 private fun ShowDetailsListsContent(
     show: Show,
+    loading: LoadingState,
     inWatchlist: Boolean,
-    lists: ImmutableList<Pair<CustomListMinimal, Boolean>>,
+    lists: ImmutableList<CustomListMinimal>,
+    showLists: ImmutableSet<TraktId>,
     modifier: Modifier = Modifier,
     onWatchlistClick: (() -> Unit)? = null,
     onListClick: ((CustomListMinimal) -> Unit)? = null,
@@ -162,8 +172,10 @@ private fun ShowDetailsListsContent(
         )
 
         ActionButtons(
+            loading = loading.isLoading,
             inWatchlist = inWatchlist,
             lists = lists,
+            showLists = showLists,
             onWatchlistClick = onWatchlistClick,
             onListClick = onListClick,
             modifier = Modifier
@@ -175,8 +187,10 @@ private fun ShowDetailsListsContent(
 @Composable
 private fun ActionButtons(
     modifier: Modifier = Modifier,
+    loading: Boolean,
     inWatchlist: Boolean,
-    lists: ImmutableList<Pair<CustomListMinimal, Boolean>>,
+    lists: ImmutableList<CustomListMinimal>,
+    showLists: ImmutableSet<TraktId>,
     onWatchlistClick: (() -> Unit)? = null,
     onListClick: ((CustomListMinimal) -> Unit)? = null,
 ) {
@@ -187,34 +201,46 @@ private fun ActionButtons(
             .verticalScroll(
                 state = scrollState,
                 overscrollEffect = null,
-            )
-            .graphicsLayer {
-                translationX = -8.dp.toPx()
-            },
+            ),
     ) {
-        GhostButton(
-            text = stringResource(R.string.button_text_watchlist),
-            onClick = onWatchlistClick ?: {},
-            iconSize = 22.dp,
-            iconSpace = 16.dp,
-            icon = when {
-                inWatchlist -> painterResource(R.drawable.ic_minus)
-                else -> painterResource(R.drawable.ic_plus)
-            },
+        WatchlistButton(
+            checked = inWatchlist,
+            modifier = Modifier
+                .fillMaxWidth()
+                .onClick {
+                    onWatchlistClick?.invoke()
+                },
         )
 
+        Row(
+            verticalAlignment = CenterVertically,
+            horizontalArrangement = spacedBy(6.dp),
+            modifier = Modifier
+                .padding(top = 8.dp, bottom = 8.dp),
+        ) {
+            Text(
+                text = stringResource(R.string.list_title_personal_lists),
+                color = TraktTheme.colors.textSecondary,
+                style = TraktTheme.typography.heading5.copy(
+                    fontSize = 16.sp,
+                ),
+                maxLines = 1,
+                overflow = Ellipsis,
+                textAlign = TextAlign.Start,
+                modifier = Modifier,
+            )
+        }
+
         for (list in lists) {
-            GhostButton(
-                text = list.first.name,
-                onClick = {
-                    onListClick?.invoke(list.first)
-                },
-                iconSize = 22.dp,
-                iconSpace = 16.dp,
-                icon = when {
-                    list.second -> painterResource(R.drawable.ic_minus)
-                    else -> painterResource(R.drawable.ic_plus)
-                },
+            ListButton(
+                text = list.name,
+                enabled = !loading,
+                checked = showLists.contains(list.id),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .onClick {
+                        onListClick?.invoke(list)
+                    },
             )
         }
     }
@@ -227,8 +253,10 @@ private fun Preview() {
     TraktTheme {
         ShowDetailsListsContent(
             show = PreviewData.show1,
+            loading = LoadingState.DONE,
             inWatchlist = true,
-            lists = listOf(PreviewData.customListMinimal1 to true).toImmutableList(),
+            lists = listOf(PreviewData.customListMinimal1).toImmutableList(),
+            showLists = setOf(PreviewData.show1.ids.trakt).toImmutableSet(),
         )
     }
 }
@@ -240,8 +268,10 @@ private fun Preview2() {
     TraktTheme {
         ShowDetailsListsContent(
             show = PreviewData.show1,
+            loading = LoadingState.DONE,
             inWatchlist = false,
-            lists = listOf(PreviewData.customListMinimal1 to false).toImmutableList(),
+            lists = listOf(PreviewData.customListMinimal1).toImmutableList(),
+            showLists = emptySet<TraktId>().toImmutableSet(),
         )
     }
 }
