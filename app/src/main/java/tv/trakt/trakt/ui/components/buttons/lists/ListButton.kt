@@ -28,7 +28,7 @@ internal fun ListButton(
         verticalAlignment = CenterVertically,
         horizontalArrangement = spacedBy(16.dp),
         modifier = modifier
-            .alpha(if (enabled) 1F else 0.33F),
+            .alpha(if (enabled) 1F else 0.2F),
     ) {
         Checkbox(
             checked = checked,
@@ -88,7 +88,7 @@ private fun PreviewUnchecked() {
         ListButton(
             text = "Favorites",
             checked = false,
-            enabled = true,
+            enabled = false,
         )
     }
 }

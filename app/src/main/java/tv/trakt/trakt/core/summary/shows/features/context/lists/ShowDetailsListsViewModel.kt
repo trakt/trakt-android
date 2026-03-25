@@ -59,6 +59,15 @@ internal class ShowDetailsListsViewModel(
                     loadListsUseCase.loadShowLists(show.ids.trakt)
                 }
 
+                listsState.update { lists ->
+                    lists.sortedBy {
+                        when {
+                            showListsState.value.contains(it.id) -> 0
+                            else -> 1
+                        }
+                    }.toImmutableList()
+                }
+
                 loadingState.update { LoadingState.DONE }
             } catch (error: Exception) {
                 error.rethrowCancellation {

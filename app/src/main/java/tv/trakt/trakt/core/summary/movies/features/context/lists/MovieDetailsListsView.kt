@@ -238,7 +238,7 @@ private fun ActionButtons(
                 checked = movieLists.contains(list.id),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .onClick {
+                    .onClick(enabled = !loading) {
                         onListClick?.invoke(list)
                     },
             )

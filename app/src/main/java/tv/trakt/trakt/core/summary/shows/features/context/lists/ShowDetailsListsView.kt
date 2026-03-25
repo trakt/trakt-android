@@ -238,7 +238,7 @@ private fun ActionButtons(
                 checked = showLists.contains(list.id),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .onClick {
+                    .onClick(enabled = !loading) {
                         onListClick?.invoke(list)
                     },
             )
