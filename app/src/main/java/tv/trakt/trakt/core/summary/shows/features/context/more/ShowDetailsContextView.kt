@@ -52,21 +52,25 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun ShowDetailsContextView(
     show: Show,
     watched: Boolean,
+    lists: Boolean,
     viewModel: ShowDetailsContextViewModel,
     modifier: Modifier = Modifier,
     onShareClick: (() -> Unit)? = null,
     onRemoveClick: (() -> Unit)? = null,
     onCheckClick: (() -> Unit)? = null,
+    onListsClick: (() -> Unit)? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     ShowDetailsContextViewContent(
         show = show,
         watched = watched,
+        lists = lists,
         state = state,
         onShareClick = onShareClick,
         onRemoveClick = onRemoveClick,
         onCheckClick = onCheckClick,
+        onListsClick = onListsClick,
         modifier = modifier,
     )
 }
@@ -75,11 +79,13 @@ internal fun ShowDetailsContextView(
 private fun ShowDetailsContextViewContent(
     show: Show,
     watched: Boolean,
+    lists: Boolean,
     state: ShowDetailsContextState,
     modifier: Modifier = Modifier,
     onCheckClick: (() -> Unit)? = null,
     onRemoveClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
+    onListsClick: (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
 
@@ -161,10 +167,12 @@ private fun ShowDetailsContextViewContent(
         ActionButtons(
             watched = watched,
             released = isReleased,
+            lists = lists,
             watchOnlyOnce = state.user?.settings?.watchOnlyOnce,
             onCheckClick = onCheckClick ?: {},
             onRemoveClick = onRemoveClick ?: {},
             onShareClick = onShareClick ?: {},
+            onListsClick = onListsClick ?: {},
             modifier = Modifier
                 .padding(top = 14.dp),
         )
@@ -214,11 +222,13 @@ private fun WatchButton(
 private fun ActionButtons(
     watched: Boolean,
     released: Boolean,
+    lists: Boolean,
     watchOnlyOnce: Boolean?,
     modifier: Modifier = Modifier,
     onCheckClick: () -> Unit,
     onShareClick: () -> Unit,
     onRemoveClick: () -> Unit,
+    onListsClick: () -> Unit,
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
@@ -252,12 +262,26 @@ private fun ActionButtons(
                 text = stringResource(R.string.button_text_remove_from_history),
                 icon = painterResource(R.drawable.ic_close),
                 iconSize = 22.dp,
-                iconSpace = 16.dp,
+                iconSpace = 15.5.dp,
                 modifier = Modifier
                     .graphicsLayer {
                         translationX = -4.dp.toPx()
                     },
                 onClick = onRemoveClick,
+            )
+        }
+
+        if (lists) {
+            GhostButton(
+                text = stringResource(R.string.button_text_manage_lists),
+                icon = painterResource(R.drawable.ic_lists_off),
+                iconSize = 22.dp,
+                iconSpace = 16.dp,
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationX = -4.dp.toPx()
+                    },
+                onClick = onListsClick,
             )
         }
 
@@ -292,6 +316,7 @@ private fun Preview() {
             ShowDetailsContextViewContent(
                 show = PreviewData.show1,
                 watched = true,
+                lists = true,
                 state = ShowDetailsContextState(
                     streamings = StreamingsState(
                         loading = false,

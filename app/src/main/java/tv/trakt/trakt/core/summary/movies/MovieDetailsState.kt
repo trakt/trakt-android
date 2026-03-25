@@ -30,6 +30,7 @@ internal data class MovieDetailsState(
     data class ProgressState(
         val plays: Int,
         val inWatchlist: Boolean,
+        val inLists: Boolean,
     )
 
     data class UserRatingsState(

@@ -228,6 +228,7 @@ internal fun MovieDetailsScreen(
     MovieDetailsContextSheet(
         movie = contextSheet,
         watched = (state.movieProgress?.plays ?: 0) > 0,
+        lists = state.movieProgress?.inLists == true,
         onShareClick = {
             state.movie?.let { shareMovie(it, context) }
         },
@@ -236,6 +237,9 @@ internal fun MovieDetailsScreen(
         },
         onRemoveClick = {
             confirmRemoveWatchedSheet = true
+        },
+        onListsClick = {
+            listsSheet = state.movie
         },
         onDismiss = {
             contextSheet = null

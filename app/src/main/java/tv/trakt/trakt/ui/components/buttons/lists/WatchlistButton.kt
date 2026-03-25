@@ -25,7 +25,7 @@ internal fun WatchlistButton(
 ) {
     Row(
         verticalAlignment = CenterVertically,
-        horizontalArrangement = spacedBy(16.dp),
+        horizontalArrangement = spacedBy(17.dp),
         modifier = modifier,
     ) {
         Icon(

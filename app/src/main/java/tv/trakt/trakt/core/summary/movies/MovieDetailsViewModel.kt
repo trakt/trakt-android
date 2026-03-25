@@ -235,17 +235,18 @@ internal class MovieDetailsViewModel(
                             }
                     }
 
-                    val watchlistAsync = async {
-                        loadWatchlistUseCase.loadLocalMovies()
-                    }
+                    val watchlistAsync = async { loadWatchlistUseCase.loadLocalMovies() }
+                    val listsAsync = async { loadListsUseCase.loadLocalLists() }
 
                     val progress = progressAsync.await()
                     val watchlist = watchlistAsync.await()
+                    val lists = listsAsync.await()
 
                     movieProgressState.update {
                         MovieDetailsState.ProgressState(
                             plays = progress?.plays ?: 0,
                             inWatchlist = watchlist.contains(movieId),
+                            inLists = lists.isNotEmpty(),
                         )
                     }
                 }
@@ -736,10 +737,16 @@ internal class MovieDetailsViewModel(
 
     private suspend fun refreshLists() {
         return coroutineScope {
-            val watchlist = loadWatchlistUseCase.loadLocalMovies()
+            val watchlistAsync = async { loadWatchlistUseCase.loadLocalMovies() }
+            val listsAsync = async { loadListsUseCase.loadLocalLists() }
+
+            val watchlist = watchlistAsync.await()
+            val lists = listsAsync.await()
+
             movieProgressState.update {
                 it?.copy(
                     inWatchlist = watchlist.contains(movieId),
+                    inLists = lists.isNotEmpty(),
                 )
             }
         }

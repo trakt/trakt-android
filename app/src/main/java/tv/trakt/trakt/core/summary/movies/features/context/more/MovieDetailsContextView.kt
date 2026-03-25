@@ -51,21 +51,25 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun MovieDetailsContextView(
     movie: Movie,
     watched: Boolean,
+    lists: Boolean,
     viewModel: MovieDetailsContextViewModel,
     modifier: Modifier = Modifier,
     onShareClick: (() -> Unit)? = null,
     onRemoveClick: (() -> Unit)? = null,
     onCheckClick: (() -> Unit)? = null,
+    onListsClick: (() -> Unit)? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     MovieDetailsContextViewContent(
         movie = movie,
         watched = watched,
+        lists = lists,
         state = state,
         onCheckClick = onCheckClick,
         onShareClick = onShareClick,
         onRemoveClick = onRemoveClick,
+        onListsClick = onListsClick,
         modifier = modifier,
     )
 }
@@ -74,11 +78,13 @@ internal fun MovieDetailsContextView(
 private fun MovieDetailsContextViewContent(
     movie: Movie,
     watched: Boolean,
+    lists: Boolean,
     state: MovieDetailsContextState,
     modifier: Modifier = Modifier,
     onCheckClick: (() -> Unit)? = null,
     onRemoveClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
+    onListsClick: (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
 
@@ -157,10 +163,12 @@ private fun MovieDetailsContextViewContent(
         ActionButtons(
             watched = watched,
             released = isReleased,
+            lists = lists,
             watchOnlyOnce = state.user?.settings?.watchOnlyOnce,
             onCheckClick = onCheckClick ?: {},
             onRemoveClick = onRemoveClick ?: {},
             onShareClick = onShareClick ?: {},
+            onListsClick = onListsClick ?: {},
             modifier = Modifier
                 .padding(top = 14.dp),
         )
@@ -209,12 +217,14 @@ private fun WatchButton(
 @Composable
 private fun ActionButtons(
     watched: Boolean,
+    lists: Boolean,
     released: Boolean,
     watchOnlyOnce: Boolean?,
     modifier: Modifier = Modifier,
     onCheckClick: () -> Unit,
     onShareClick: () -> Unit,
     onRemoveClick: () -> Unit,
+    onListsClick: () -> Unit,
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
@@ -248,12 +258,26 @@ private fun ActionButtons(
                 text = stringResource(R.string.button_text_remove_from_history),
                 icon = painterResource(R.drawable.ic_close),
                 iconSize = 22.dp,
-                iconSpace = 16.dp,
+                iconSpace = 15.5.dp,
                 modifier = Modifier
                     .graphicsLayer {
                         translationX = -4.dp.toPx()
                     },
                 onClick = onRemoveClick,
+            )
+        }
+
+        if (lists) {
+            GhostButton(
+                text = stringResource(R.string.button_text_manage_lists),
+                icon = painterResource(R.drawable.ic_lists_off),
+                iconSize = 22.dp,
+                iconSpace = 16.dp,
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationX = -4.dp.toPx()
+                    },
+                onClick = onListsClick,
             )
         }
 
@@ -316,12 +340,14 @@ private fun Preview() {
                 MovieDetailsContextViewContent(
                     movie = PreviewData.movie1,
                     watched = false,
+                    lists = false,
                     state = state,
                 )
 
                 MovieDetailsContextViewContent(
                     movie = PreviewData.movie1,
                     watched = true,
+                    lists = true,
                     state = state,
                 )
             }

@@ -356,6 +356,7 @@
 
   <string name="translated_value_library_plex" translatable="false">Plex</string>
   <string name="link_text_feedback">Feedback</string>
+  <string name="button_text_manage_lists">Manage Lists</string>
 
   <string name="header_whats_new" translatable="false">What\'s New</string>
   <string name="header_rate_us_1" translatable="false">Loving Trakt so far?</string>

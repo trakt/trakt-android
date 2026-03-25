@@ -26,7 +26,7 @@ internal fun ListButton(
 ) {
     Row(
         verticalAlignment = CenterVertically,
-        horizontalArrangement = spacedBy(14.dp),
+        horizontalArrangement = spacedBy(16.dp),
         modifier = modifier
             .alpha(if (enabled) 1F else 0.33F),
     ) {

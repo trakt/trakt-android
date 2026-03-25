@@ -226,6 +226,7 @@ internal fun ShowDetailsScreen(
     ShowDetailsContextSheet(
         show = contextSheet,
         watched = state.showProgress?.isWatched == true,
+        lists = state.showProgress?.inLists == true,
         onShareClick = {
             state.show?.let { shareShow(it, context) }
         },
@@ -234,6 +235,9 @@ internal fun ShowDetailsScreen(
         },
         onRemoveClick = {
             confirmRemoveWatchedSheet = true
+        },
+        onListsClick = {
+            listsSheet = state.show
         },
         onDismiss = {
             contextSheet = null
