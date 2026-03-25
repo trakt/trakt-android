@@ -7,7 +7,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source
 import java.time.Instant
 
-internal class WatclistUpdatesStorage : WatchlistUpdates {
+internal class WatchlistUpdatesStorage : WatchlistUpdates {
     private val updatesMaps = Source.entries.associateWith {
         MutableSharedFlow<Instant>(
             extraBufferCapacity = 1,

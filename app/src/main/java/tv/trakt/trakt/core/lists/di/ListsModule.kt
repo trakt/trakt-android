@@ -58,7 +58,7 @@ import tv.trakt.trakt.core.lists.sheets.create.usecases.CreateListUseCase
 import tv.trakt.trakt.core.lists.sheets.edit.EditListViewModel
 import tv.trakt.trakt.core.lists.sheets.edit.usecases.EditListUseCase
 import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates
-import tv.trakt.trakt.core.user.data.local.watchlist.WatclistUpdatesStorage
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdatesStorage
 
 internal const val LISTS_PREFERENCES = "lists_preferences_mobile"
 
@@ -94,7 +94,7 @@ internal val listsDataModule = module {
     }
 
     single<WatchlistUpdates> {
-        WatclistUpdatesStorage()
+        WatchlistUpdatesStorage()
     }
 }
 
