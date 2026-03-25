@@ -623,10 +623,10 @@ private fun SettingsMisc(
 
         if (state.user?.isAnyVip == true) {
             SettingsTextField(
-                text = stringResource(R.string.link_text_roadmap),
+                text = stringResource(R.string.link_text_feedback),
                 enabled = !state.logoutLoading.isLoading,
-                icon = R.drawable.ic_roadmap,
-                iconSize = 18.dp,
+                icon = R.drawable.ic_feedback,
+                iconSize = 17.dp,
                 onClick = {
                     uriHandler.openUri(Config.WEB_ROADMAP_URL)
                 },
