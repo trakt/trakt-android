@@ -4858,48 +4858,46 @@
                       "type": "object",
                       "properties": {
                         "facebook": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "nullable": true
                         },
                         "twitter": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "nullable": true
                         },
                         "mastodon": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "nullable": true
                         },
                         "google": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "nullable": true
                         },
                         "tumblr": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "nullable": true
                         },
                         "medium": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "nullable": true
                         },
                         "slack": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "nullable": true
                         },
                         "apple": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "nullable": true
                         },
                         "dropbox": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "nullable": true
                         },
                         "microsoft": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "nullable": true
                         }
                       },
-                      "required": [
-                        "facebook",
-                        "twitter",
-                        "mastodon",
-                        "google",
-                        "tumblr",
-                        "medium",
-                        "slack",
-                        "apple",
-                        "dropbox",
-                        "microsoft"
-                      ],
                       "nullable": true
                     },
                     "sharing_text": {
