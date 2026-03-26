@@ -27,7 +27,7 @@ internal class GetPersonalListsUseCase(
 
     suspend fun getLists(
         pagination: Pagination,
-        notify: Boolean,
+        notify: Boolean = false,
     ): ImmutableList<CustomList> {
         return remoteSource.getPersonalLists(pagination)
             .asyncMap {

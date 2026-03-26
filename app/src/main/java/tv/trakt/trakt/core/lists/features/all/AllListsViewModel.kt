@@ -108,11 +108,15 @@ internal class AllListsViewModel(
                     val pagination = Pagination(page, ListsConfig.LISTS_ALL_PAGE_LIMIT)
                     val localLists = when (filterState.value) {
                         Personal -> getPersonalListsUseCase.getLocalLists(pagination)
-                        Liked -> getLikedListsUseCase.getLocalLists(pagination)
+                            .sortedByDescending { it.updatedAt }
                         Collaborations -> getCollaborationsListsUseCase.getLocalLists()
+                            .sortedByDescending { it.updatedAt }
+                        Liked -> getLikedListsUseCase.getLocalLists(pagination)
                         else -> EmptyImmutableList
                     }.also { items ->
-                        itemsState.update { items }
+                        itemsState.update {
+                            items.toImmutableList()
+                        }
                     }
 
                     if (localLists.isNotEmpty() && (localLists.size < ListsConfig.LISTS_PAGE_LIMIT)) {
@@ -138,10 +142,12 @@ internal class AllListsViewModel(
                     val pagination = Pagination(page, ListsConfig.LISTS_ALL_PAGE_LIMIT)
                     when (filterState.value) {
                         Personal -> getPersonalListsUseCase.getLists(pagination, notify = reload)
-                        Liked -> getLikedListsUseCase.getLists(pagination)
+                            .sortedByDescending { it.updatedAt }
                         Collaborations -> getCollaborationsListsUseCase.getLists()
+                            .sortedByDescending { it.updatedAt }
+                        Liked -> getLikedListsUseCase.getLists(pagination)
                         else -> EmptyImmutableList
-                    }
+                    }.toImmutableList()
                 }
 
                 hasMorePages = filterState.value != Collaborations &&
@@ -172,16 +178,20 @@ internal class AllListsViewModel(
                 val pagination = Pagination(page, ListsConfig.LISTS_ALL_PAGE_LIMIT)
 
                 val newItems = when (filterState.value) {
-                    Personal -> getPersonalListsUseCase.getLists(pagination, notify = false)
+                    Personal -> getPersonalListsUseCase.getLists(pagination)
                     Liked -> getLikedListsUseCase.getLists(pagination)
-                    else -> EmptyImmutableList
+                    Collaborations, null -> EmptyImmutableList
                 }
 
                 if (newItems.isNotEmpty()) {
-                    itemsState.update {
-                        it
-                            ?.plus(newItems)
-                            ?.toImmutableList()
+                    itemsState.update { state ->
+                        val lists = state?.plus(newItems)
+                        when (filterState.value) {
+                            Personal -> lists?.sortedByDescending { it.updatedAt }
+                            Collaborations -> lists?.sortedByDescending { it.updatedAt }
+                            Liked -> lists
+                            else -> lists
+                        }?.toImmutableList()
                     }
                 }
 

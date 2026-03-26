@@ -2,7 +2,6 @@ package tv.trakt.trakt.core.lists
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
@@ -26,7 +25,6 @@ import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.lists.ListsState.UserState
 import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsCollaborationsLocalDataSource
@@ -62,7 +60,6 @@ internal class ListsViewModel(
     private val errorState = MutableStateFlow(initialState.error)
 
     private var dataJob: Job? = null
-    private var listsOrder: List<Int>? = null
 
     init {
         observeUser()
@@ -120,10 +117,14 @@ internal class ListsViewModel(
 
                 val localLists = when (filterState.value) {
                     Personal -> getPersonalListsUseCase.getLocalLists(pagination)
-                    Liked -> getLikedListsUseCase.getLocalLists(pagination)
+                        .sortedByDescending { it.updatedAt }
                     Collaborations -> getCollaborationsListsUseCase.getLocalLists()
+                        .sortedByDescending { it.updatedAt }
+                    Liked -> getLikedListsUseCase.getLocalLists(pagination)
                 }
-                listsState.update { sortLists(localLists) }
+                listsState.update {
+                    localLists.toImmutableList()
+                }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.value = error
@@ -144,25 +145,31 @@ internal class ListsViewModel(
 
                 val localLists = when (filterState.value) {
                     Personal -> getPersonalListsUseCase.getLocalLists(pagination)
-                    Liked -> getLikedListsUseCase.getLocalLists(pagination)
+                        .sortedByDescending { it.updatedAt }
                     Collaborations -> getCollaborationsListsUseCase.getLocalLists()
+                        .sortedByDescending { it.updatedAt }
+                    Liked -> getLikedListsUseCase.getLocalLists(pagination)
                 }
 
                 if (localLists.isNotEmpty()) {
-                    listsState.update { sortLists(localLists) }
+                    listsState.update {
+                        localLists.toImmutableList()
+                    }
                     listsLoadingState.update { Done }
                 } else {
                     listsLoadingState.update { Loading }
                 }
 
                 val lists = when (filterState.value) {
-                    Personal -> getPersonalListsUseCase.getLists(pagination, notify = false)
-                    Liked -> getLikedListsUseCase.getLists(pagination)
+                    Personal -> getPersonalListsUseCase.getLists(pagination)
+                        .sortedByDescending { it.updatedAt }
                     Collaborations -> getCollaborationsListsUseCase.getLists()
+                        .sortedByDescending { it.updatedAt }
+                    Liked -> getLikedListsUseCase.getLists(pagination)
                 }
-                listsState.update { sortLists(lists) }
-
-                listsOrder = listsState.value?.map { it.ids.trakt.value }
+                listsState.update {
+                    lists.toImmutableList()
+                }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -185,24 +192,6 @@ internal class ListsViewModel(
         listsLoadingState.update { Idle }
 
         loadData()
-    }
-
-    private fun sortLists(lists: ImmutableList<CustomList>): ImmutableList<CustomList> {
-        val order = listsOrder ?: return lists
-
-        val orderMap = order
-            .withIndex()
-            .reversed()
-            .associate {
-                it.value to it.index
-            }
-
-        return lists
-            .distinctBy { it.ids.trakt.value }
-            .sortedBy {
-                orderMap[it.ids.trakt.value] ?: Int.MIN_VALUE
-            }
-            .toImmutableList()
     }
 
     private suspend fun loadEmptyIfNeeded(): Boolean {
