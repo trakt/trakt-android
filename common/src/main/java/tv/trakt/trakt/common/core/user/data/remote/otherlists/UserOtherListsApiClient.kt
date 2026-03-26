@@ -28,6 +28,6 @@ class UserOtherListsApiClient(
             id = "me",
             extended = "cloud9,images",
         )
-        return emptyList()
+        return response.body()
     }
 }
